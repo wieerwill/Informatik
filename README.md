@@ -11,9 +11,10 @@ bisher:
 - [Rechnerarchitekturen 1](Rechnerarchitekturen%201.md)
 - [Telematik 1](Telematik%201.md)
 
-Hilf und noch weitere Fächer abzudecken. Schreib den Admin an
+Keine Garantie auf Vollständigkeit! Hilf und noch weitere Fächer abzudecken. Schreib den Admin an
 
 ## Verwendung
+Alle Dokumente werden in Markdown (bevorzugt) oder LaTex geschrieben. Bilder etc erhalten einen eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google fragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
 Dieses Repo ist zum Selbststudium und lernen neues Wissens gedacht. Kein Inhalt o. Teile  dieses Repositories darf kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 

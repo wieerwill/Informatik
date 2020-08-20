@@ -1549,3 +1549,4 @@ t.join();
 ### Datenparallele Verarbeitung
 ### Kommunikation zwischen Threads
 ### Taskparallelität
+...

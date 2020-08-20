@@ -79,7 +79,7 @@ Merkmale bioelektrischer Signale:
 - Kostengünstig
 
 Quellen/Ursprung bioelektrischer Signale: Nerven und Muskeln
-| ![Quelle: Quasar Jarosz (www.wikipedia)](bilder/267.png) | ![Quelle: TU Ilmenau EIMI](bilder/311.png)| 
+| ![Von Quasar Jarosz in der Wikipedia auf Englisch, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=7616130](Assets/640px-Neuron_Hand-tuned.svg.png) | ![Von Action_potential.svg: Original by en:User:Chris 73, updated by en:User:Diberri, converted to SVG by tiZomderivative work: de:Benutzer:Jnns - Action_potential.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10316004](Assets/Aktionspotential.svg)| 
 | -- | -- |
 
 Beide Gewebearten haben spezielle Eigenschaften:
@@ -151,9 +151,9 @@ Die verschiedenen Ryhtmen (Frequenzbänder) können beim EEG immer bestimmten Zu
 
 ![Aufmerksamkeitsbedingte Veränderungen](bilder/516.png)
 ### Positionen zur EEG Ableitung
-| ![Lagebezeichnungen](bilder/526.jpg) | ![Standardposition 10-20 System](bilder/553.png) |
+| ![Von Brylie Christopher Oxley - https://commons.wikimedia.org/wiki/File:International_10-20_system_for_EEG-MCN.svg, CC0, https://commons.wikimedia.org/w/index.php?curid=86731792](Assets/805px-International_10-20_system_for_EEG-MCN.png) | ![Von Albert Kok in der Wikipedia auf Niederländisch - Übertragen aus nl.wikipedia nach Commons., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=2213404](Assets/10-20.PNG) |
 | :--: | :--: |
-| ![Ableitung im 10-20-System - Seitlich](bilder/562.jpg) | ![Ableitung im 10-20-System - von oben](bilder/563.jpg) |
+| ![Von Der ursprünglich hochladende Benutzer war MBq in der Wikipedia auf Deutsch - Henry Gray (1825–1861). Anatomy of the Human Body. 1918., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11794362](Assets/Gray_Surface-head.jpg) | |
 
 ### Diagnostischer Informationsgehalt
 Anwendungsgebiete in Diagnostik und Therapie: Epilepsie, Objektive Perimetrie (objektive Vermessung des Gesichtsfeldes), Neurofeedback, Narkosetiefe, Schlafmedizin (Polysomnographie), Kognitionsforschung (Gedächtnisprozesse), Hirntodbestimmung, Schlaganfall, Tumore, Hirnreifung, Psychiatrische Erkrankungen
@@ -168,7 +168,7 @@ Elektrokardiogramm ist der zeitliche Verlauf der an der Körperoberfläche abgel
   - Ösophagus-EKG => EKG-Ableitung in der Speiseröhre
   - Intrakardiales EKG => EKG-Ableitung am offenen Herzen
 
-|![Anatomie des Herzens](bilder/611.jpg) | ![EKG-Komponenten einer Herzperiode](bilder/621.png) |
+|![Von Tvanbr - Eigenes Werk, Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11616158](Assets/1117px-Anatomy_Heart_Latin_Tiesworks.jpg) | ![Von Kalumet - selbst erstellt = Eigenes Werk, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=438152](Assets/ECG_Principle_fast.gif) |
 | -- | -- |
 | Anatomie des Herzens | EKG-Komponenten einer Herzperiode |
 
@@ -206,12 +206,7 @@ Elektrokardiogramm ist der zeitliche Verlauf der an der Körperoberfläche abgel
 - Projektion der Horizontalebene
 - Referenzelektrode: Herzmitte => hochohmige Zusammenschaltung der Extremitätenableitung
 
-| | I | II | III |
-| -- | -- | -- | -- | 
-| nach Einthoven | ![Einthov I](bilder/einthoven-1.png) | ![Einthov II](bilder/einthoven-2.png) | ![Einthov III](bilder/einthoven-3.png) | 
-| nach Goldberg | ![Goldberg I](bilder/goldberg-1.png) | ![Goldberg II](bilder/goldberg-2.png) | ![Goldberg III](bilder/goldberg-3.png) |
-| nach Wilson | ![Wilson](bilder/wilson-1.png) | | |
-
+nach Wilson: ![Von Jmarchn - modified from Precordial_Leads.svg and Rib_Cage (Jeroen Hut), CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=9426668](Assets/Precordial_Leads_2.svg)
 
 
 #### Altersabhängigkeit der Herzachse
@@ -228,7 +223,6 @@ Morphologische Untersuchung und Herzfrequenz Analyse
   - Verengung oder Verschluß eines koronaren Herzkranzgefäßes
   - deutliche Hebung der ST-Strecke
   - Verschmelzung mit folgender T-Welle ("monophasische Deformierung")
-  - ![Herzinfarkt](bilder/789.png)
 - Extra-Systolen
   - frühzeitig auftretender Extraschlag aus dem Kammerbereich
   - Einsetzen eines verbreiterten und deformierten QRS-Komplexes
@@ -284,8 +278,7 @@ elektrische Aktivität hervorgerufen durch Muskelaktivität. Gemessen über Ober
 - **Grob**: Wenige ME mit vielen Muskelfasern pro ME z.B. Oberschenkelmuskel (bis zu 2000 Muskelfasern)
 - **Fein**: Viele ME mit wenigen Muskelfasern pro ME z.B. äußere Augenmuskeln (4–40 Muskelfasern)
 
-### Übersicht 
-![Überischt EMG](bilder/938.png)
+### Übersicht
 
 - Oberflächen EMG
   - Ableitung des Summenaktionspotentials eines Muskels oder Muskelanteils über Einzelelektronen
@@ -365,7 +358,7 @@ Signalpegelanpassung
 - Komperator mit Schwellspannung
 - Überschreitung = Interrupt am Mikrocontroller
 
-![EKG Monitor](bilder/ekg-verstärker.png)
+![Von Ernstl - Eigenes Werk, CC BY-SA 2.5, https://commons.wikimedia.org/w/index.php?curid=625305](Assets/960px-Defibrillator_Monitor_Closeup.jpg)
 
 # Pulsoximetrie
 - Die Versorgung der Organe mit Sauerstoff ist für den Organismus von entscheidender Bedeutung.
@@ -394,9 +387,7 @@ Lichtquelle (einfallende Lichtintensität $I_0$) Durchstrahlt Medium (Weglänge 
 - Absorption $A = -ln(T) = \epsilon(\lambda)cd$
 - Mehrfachabsorption $A_{tot}=\epsilon_1 (\lambda) c_1 d_1 + \epsilon_2 (\lambda) c_2 d_2 +...+ \epsilon_n (\lambda) c_n d_n$
 
-| ![Lambert-Beer-Gesetz](bilder/Lambert-beer.png "Lambert-Beer-Gesetz") | ![Absorptionsspektrum](bilder/absorbtionsspektrum.png) |
-| -- | -- |
-| ![Absorption der Gewebeschichten](bilder/gewebe-absorbption.png) | ![Absorption der Gewebeschichten](bilder/gewebe-absorption-2.png) |
+(Hinweis für die Klausur: Lernt die Funktionsbezeichnenden Bilder!)
 
 ## Normierung
 Um Rotes und Infrarotlicht zu normieren und vergleichbar zu machen, benötigt man folgende Formel:
@@ -442,10 +433,6 @@ Photodioden werden meist elektrisch Vorgespannt, indem sie an eine Negative Span
 Für Hochgeschwindigkeitsanwendungen
 - Besonders große Vorspannung -> begrenzt durch Sperrspannungsfestigkeit der Diode
 - Großer Lichtstrom benötigt
-
-| ![Pulsoximetrie Elementbetrieb](bilder/pulsoximetrie-element.png) | ![Pulsoximetrie Vorgespannt](bilder/pulsoximetrie-vorgespannt.png) |
-| -- | -- |
-
 
 # Grundlagen der Biosignalverarbeitung
 ## Analog-Digital-Wandlung
@@ -530,8 +517,6 @@ IIR -(Zeitdiskrete)- Filter
   - Grenzfrequenz: $\omega = \frac{1}{RC}$
 - Sinn: das Eingangssignal erscheint am Ausgang eines Tschebysheff-Filters wegen nichtkonstanter Gruppenlaufzeit verzerrt
   - Die Form der Biosignale ist diagnostisch relevant, Formverzerrungen können zur falschen Diagnose führen
-
-
 
 # Bildgebende Systeme in der Medizin
 - radiologische BS
@@ -668,8 +653,6 @@ Einsatzgebiet zwischen Bild-Segmentierung und Merkmalsextraktion
   - Hit-or-Miss Operator
     - Hit Operator: betrachtetes Pixel wird gesetzt wenn Maske übereinstimmt, Rest gelöscht
     - Miss-Operator: betrachtetes Pixel wird gelöscht wenn Maske übereinstimmt, Rest bleibt
-    - 
-
 
 # Informationssysteme in der Medizin und im Gesundheitswesen
 ## Medizinische Dokumentation

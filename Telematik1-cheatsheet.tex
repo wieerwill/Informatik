@@ -128,21 +128,8 @@ für das Internet
     \item[Skalierbarkeit] Spätere Entdeckung
 \end{description}
 
-\section{ISO/OSI vs TCP/IP}
-\begin{itemize}
-    \item ISO/OSI: Sehr nützliches Modell, keine existierenden Protokolle
-    \item TCP/IP: Nicht existentes Modell, sehr nützliche Protokolle
-    \item Deshalb: ISO/OSI Modell aber TCP/IP Stack
-\end{itemize}
-
 \section{Medium Access Control (MAC)}
-Verteilter Algorithmus, der bestimmt, wie Knoten auf ein geteiltes Medium zugreifen
-
-Kollisionsfreie Protokolle
-Limited Contention Protokolle (beschränkt Kollisionsbehaftet)
-Kollisionsprotokolle 
-
-\subsection{Annahmen für die dynmaische Kanalzuweisung}
+\subsection{Annahmen für die dynamische Kanalzuweisung}
 \begin{itemize}
     \item Stationsmodell
     \begin{itemize}
@@ -156,7 +143,7 @@ Kollisionsprotokolle
         \item Kontinuierlich: Übertragungen können jederzeit stattfinden
         \item Geslottet: Zeit ist in Slots eingeteilt, Übertragung kann nur an Slotgrenzen beginnen
     \end{itemize}
-    \item Carrier Sensing
+    \item Carrier Sensing (CSMA)
     \begin{itemize}
         \item Stationen können (oder auch nicht) erkennen, ob der Kanal frei oder in Benutzung ist
         \item Falls Kanal als belegt angesehen, so wird nichts übertragen
@@ -172,9 +159,7 @@ Kollisionsprotokolle
 \end{description}
 
 \subsection{Collision Detetion - CSMA/CD}
-Bei Kollision zweier Pakete geht viel Zeit durch die Beendigung der Übertragung verloren
-Abhängig vom physischen Layer können Kollisionen erkann werden
-Sollte eine Kollision aufgetreten sein, so warte eine zufällige Zeit k
+Abhängig vom physischen Layer können Kollisionen erkannt werden, so warte eine zufällige Zeit k
 
 \subsection{Bit-Map-Protokoll}
 Stationen melden Sendewunsch während eines Reservierungsslots an
@@ -235,15 +220,8 @@ Stationen melden Sendewunsch während eines Reservierungsslots an
     \item leite spezifisch weiter, wenn das Ziel bekannt ist
 \end{itemize}
 
-\subsection{Router}
-Bisher haben alle Geräte Adressen entweder ignoriert, oder arbeiteten mit MAC-Layer Adressen
-Für Verbindungen außerhalb eines LANs sind solche Adressen nicht ausreichend
-Hauptproblem: flache Adressstruktur, nicht skalierbar
-Benötigen ausgefeiltere Adressstruktur
-
 \subsection{Gateways}
-Wenn selbst Router nicht ausreichend, dann sind Higher-Layer-Verbindungen notwendig
-Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
+Wenn selbst Router nicht ausreichend, dann sind Higher-Layer-Verbindungen notwendig; Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
 
 \subsection{Verbindung einzelner LANs}
 \begin{itemize}
@@ -254,11 +232,6 @@ Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
 \end{itemize}
 
 \section{Netzwerklayer}
-\begin{description}
-    \item[Weiterleiten] Bewege Pakete vom Routereingang auf den entsprechenden Ausgang
-    \item[Routing] Berechnen der Route, die die Pakete von Quelle bis zum Ziel gegangen sind
-\end{description}
-
 \subsection{Durchsuchen der Routingtabelle}
 \begin{itemize}
     \item Suche nach übereinstimmender Hostadresse (Flag H gesetzt)
@@ -306,7 +279,7 @@ Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
 
 \subsection{Klassen von IP-Adressen}
 \begin{itemize}
-    \item Class A: sehr große Organisationen, bis 16 Millionen Hosts
+    \item Class A: rießige Organisationen, bis 16 Mil. Hosts
     \item Class B: große Organisationen, bis 65 Tausend Hosts
     \item Class C: kleine Organisationen, bis 255 Hosts
     \item Class D: Multicast, keine Netzwerk/Host Hierarchie
@@ -317,7 +290,7 @@ Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
 
 \subsection{IP-Adressierung}
 \begin{itemize}
-    \item IP Adresse: 32 Bit Identifier für Hosts oder Routinginterfaces
+    \item IPv4 Adresse: 32 Bit Identifier für Hosts oder Routinginterfaces
     \item Interface: Verbindung zwischen Host und dem physischen Link. IP Adressen werden an das jeweilige Interface vergeben
 \end{itemize}
 
@@ -332,7 +305,6 @@ Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
 \subsection{NAT - Network Address Translation}
 \begin{itemize}
     \item Lokale Netzwerke haben nur eine der Außenwelt bekannte IP-Adresse, somit hat nicht jedes Gerät eine vom ISP bereitgestellte Adresse
-    \item Vorteile:
     \begin{itemize}
         \item Möglichkeit intern Adressen zu vergeben ohne die Außenwelt informieren zu müssen
         \item Wechsel des ISPs möglich, ohne intern Adressen zu verändern
@@ -341,15 +313,12 @@ Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
     \item 16 Bit Portnummernfeld -> 60 000 simultane Verbindung mit nur einer einzigen LAN-Side Adresse
 \end{itemize}
 
-\subsection{ARP - Adress Resolution Protocol}
-Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat -> Antwort des Nodes mit der MAC-Adresse -> Zustellung möglich
-
 \subsection{ICMP: Internet Control Message Protocol}
 \begin{itemize}
     \item Verwendet von Hosts und Routern um auf Netzwerkebene Informationen auszutauschen
     \item In Netzwerkebenen oberhalb von IP werden ICMP Nachrichten als IP Datagramme versendet
     \item ICMP Nachrichten: Typ, Code + erste 8 Bytes des den Fehler auslösenden IP-Datagramms
-\end{itemize}    
+\end{itemize}
 
 \subsection{IPv6}
 \begin{itemize}
@@ -420,7 +389,7 @@ Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat -> Antwort des
     \end{itemize}
 \end{itemize}
 
-\subsection{Routing im Internet}
+\subsection{Routing im Internet - Autonome Systeme}
 Das globale Internet besteht aus miteinander verbundenen AS
 \begin{description}
     \item[Stub AS] kleine Unternehmen (ein Link zum Internet)
@@ -450,7 +419,6 @@ Zwei Level Routing:
 
 
 \section{Transport Layer}
-
 \subsection{Multiplexing und Demultiplexing}
 Hosts verwenden IP-Adressen und Portnummern um Segmente an korrekte Sockets zuzustellen
 \begin{description}
@@ -723,11 +691,10 @@ Synchronisation: Charakterisiert die Effekte von verlorenen Ciphertexten auf den
 
 \subsection{Sicherheitsziele von IPSec}
 \begin{description}
-    \item[Datenherkunftsauthentisierung/ Verbindungslose Datenintegrität] Es soll unmöglich sein, ein IP Datagramm mit einer maskierten Quell- oder Zieladresse zu versenden, ohne, dass dies der Emfpänger erkennen kann; ein IP Paket während der Übertragung so zu verändern, dass es dem Empfänger nicht auffallen kann. Wiederholungsschutz: Es soll nicht möglich sein, ein gespeichertes Paket zu späterem Zeitpunkt zu versenden, ohne, dass dies der Empfänger mitbekommt
+    \item[Datenherkunftsauthentisierung/Datenintegrität] maskierte Quell- oder Zieladresse zu versenden, Pakete während der Übertragung zu verändern, gespeichertes Paket zu späterem Zeitpunkt zu versenden soll unmöglich sein (dass der Empfänger dies nicht merkt)
     \item[Vertrauenswürdigkeit] Es soll nicht möglich sein, den Inhalt der IP Datagramme auszuspähen; Es soll weiterhin eine begrenzte Traffic Flow Confidentiality geben
     \item[Sicherheitsrichtlinie] Sender, Empfänger und zwischenliegende Knoten sollen erkennen können, ob ein Paket ihrer Sicherheitsrichtlinie entspricht und dieses gegebenenfalls verwerfen
 \end{description}
-
 
 
 \subsection{Pakete}
@@ -752,7 +719,6 @@ UDP/TCP: SrcPort \& DstPort\\
 IP: SrcIP \& DstIP\\
 MAC: SrcAddr \& DestAddr
 
-
 \section{Ports}
 \begin{tabular}{l| l}
     UDP DHCP &  67/68 \\
@@ -767,9 +733,6 @@ Non-privileg & >1023 \\
 \end{tabular}
 
 
-
-
-
 \newpage
 \section{Begriffe}
 \begin{description}
@@ -779,7 +742,7 @@ Non-privileg & >1023 \\
     \item[Circuit Switching] einfach; einmal aufgesetzt verbleiben die Ressourcen beim Nutzer; Circuit muss hergestellt werden, bevor kommuniziert werden kann
     \item[Packet Switching] Aufteilen von Daten in kleinere Pakete die nach und nach gesendet werden; Problem: Informationen zu Sender/Empfänger und Start/Endzeitpunkt eines Pakets müssen mit übermittelt werden; Wird deshalb 'Store and Forward' Netzwerk genannt
     \item[Broadcast Medium] Nur ein Sender zu jeder Zeit; Zugriffskontrolle (MUX o. Absprache)
-    \item[Baudrate] beschreibt die Anzahl der Symbole welche innerhalb einer Zeiteinheit übertragen werden
+    \item[Baudrate] beschreibt die Anzahl der Symbole welche innerhalb einer Zeiteinheit übertragen werden; Symbolrate * Informationsgehalt je Symbol
     \item[Protokoll] Protokolle sind Regelsätze, welche beschreiben wie zwei oder mehr entfernte Teile (peers oder protocol entities) eines Layers kooperieren, um den Dienst des gegebenen Layers zu implementieren. Ein Protokoll ist die Implementierung eines Services
     \item[Signale] sind die physische Repräsentation von Daten in der Form einer charakteristischen Variation in Zeit oder Ausbreitung…
     \item[Delay d] = distance / speed v
@@ -800,7 +763,10 @@ Non-privileg & >1023 \\
     \item[Bustoplogie] Alle Geräte sind an einem Kabel angebunden und sind in einer Kollisionsdomäne
     \item[Sterntopologie] einfachere automatische Verwaltung und Wartung bei fehlerhaften Adaptern
     \item[Spannbaum] Gegeben sei ein Graph G=(V,E), ein Spannbaum T = (V,E-T) ist ein Subgrap von V, wobei E-T ein Teil von E ist, welcher ein Spannbaum, der verbunden und azyklisch ist. 
+    \item[Weiterleiten] Bewege Pakete vom Routereingang auf den entsprechenden Ausgang
+    \item[Routing] Berechnen der Route, die die Pakete von Quelle bis zum Ziel gegangen sind
     \item[DHCP] Dynamic Host Configuration Protocol. beziehe die Adresse dynamisch von einem Server 
+    \item[ARP] Adress Resolution Protocol Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat -> Antwort des Nodes mit der MAC-Adresse -> Zustellung möglich
     \item[Hot Potato Routing] Wenn ein Paket ankommt, so leite es auf schnellste Art und Weise an den Ausgang mit der kleinsten Ausgangswarteschlange, ganz egal wohin dieser Ausgang dann führt
     \item[Rückwärtslernen (Routing)] Paketheader enthalten wichtige Infos, wie Quelle, Ziel, Hopzähler -> Netzwerkknoten lernen etwas über die Netzwerktopologie während sie Pakete behandeln
     \item[RIP] Routing Information Protocol. Distanzvektoralgorithmus mit Hops als Metrik. Falls nach 180s kein Advertisement empfangen wurde, so deklariere den Nachbarn als tot
@@ -856,21 +822,71 @@ Non-privileg & >1023 \\
     \item[Proxy] ein Programm, welches sich im Auftrag interner Clients mit externen Servern beschäftigt. Proxies leiten genehmigte Clientanfragen an die Server, und die Antworten auch wieder an den Client weiter
     \item[Network Address Translation (NAT)] eine Prozedur, durch welche ein Router die Daten in Paketen ändert um die Netzwerkadressen zu modifizieren; Dies erlaubt es die interne Netzwerkstruktur zu verschleiern
     \item[Perimeternetzwerk] Ein Subnetz, welches zwischen einem externen und einem internen Netzwerk hinzugefügt wird, um eine weitere Sicherheitseben bereitzustellen; Ein Synonym hierfür ist DMZ (De Militarized Zone)
-
+    \item[QPSK] Quadrature Phase Shift Keying; Phasenverschiebung für Multiplexing
+    \item[Medium Access Control (MAC)] Verteilter Algorithmus, der bestimmt, wie Knoten auf ein geteiltes Medium zugreifen
 \end{description}
+
+\end{multicols}
+
+
+\section{Formeln}
+\begin{multicols}{2}
+    Bitzeit  $t_{Bit}=\frac{1}{Bitrate}$ 
+    
+    Bitlänge  $l_{Bit}=v_s * t_{Bit}$ 
+
+    Ausbreitungsverzögerung   $d_{prop} = \frac{dist}{v_s}$  
+    
+    Übertragungszeit  $d_{trans} = \frac{L}{R} = [\frac{bit}{s}]$ 
+    
+    Ende-zu-Ende-Verzögerung  $d_{e2e} = d_{prop} + d_{trans}$ 
+    
+    Leitungsverm. Übertragung  $t_L = \frac{L_{Nachricht}}{R}$ 
+    
+    Nachrichtenver. Übertragung  $t_N = (k + 1)\frac{L_{Nachricht}}{R}$ 
+    
+    Paketver. Übertragung  $t_{P} = (k + \frac{Laenge_{Nachricht}}{Laenge_{Pakete}})*\frac{L_{Packet}}{R} = (1+ \frac{k}{n})* \frac{L_{Nachricht}}{R}$ 
+    
+    Kanalkap. Nyquist  $R_{max} = 2* H * log_2n$ 
+    
+    Kanalkap. Shannon  $R_{max} = H* log_2(1+\frac{P_signalleistung}{P_rauschleistung})$ mit $r=10*log_{10}*{\frac{P_s}{P_n}}$ 
+    
+    Bandwirth Delay 
+
+    Link Last 
+    
+    LAN last 
+    
+    Fehlerfrei Send and Wait  $S = \frac{1}{(1+2a)}$ wobei $a = \frac{T_{prop}}{T_{trans}}$ 
+    
+    Fehlerhaft Send and Wait  $S = \frac{1-P}{1+2a}$ 
+    
+    Fehlerfreies Sliding Window  $S = {1, falls W >= 2a+1, W/(2a+1) sonst}$ 
+    
+    Selective Reject  $S = {1-P, falls W >= 2a+1, (W(1-P))/(2a+1) sonst}$ 
+    
+    Go-Back-N  $S = {\frac{1-P}{1+2aP}, falls W >= 2a+1, \frac{W(1-P)}{(2a+1)(1-P+WP)} sonst}$ 
+    
+    Effizienz  $\frac{T_{packet} }{ T_{packet} + d + T_{ack} + d}$ 
+    
+    efficiency  $\frac{1}{ (1+ 5 * \frac{t_{prop}}{t_{trans}}}$ 
+    
+    Round Trip Time  $EstimatedRTT = (1-a) * EstimatedRTT + a * SampleRTT$ 
+    
+    ~ TCP Durchsatz  $ 0,75 * \frac{W}{RTT}$ 
+
 
 \end{multicols}
 \newpage
 
 \section{ISO/OSI - sehr nützliches Modell, keine existierenden Protokolle}
+Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hinzu und erstellt eine neue Dateneinheit und schickt diese an das Layer darunter
 \begin{tabular}{l | l | l}
     PH & Physisches Layer & 
         Bietet eine bittransparente Schnittstelle zum physischen Medium\\
         &&Spezifiziert mechanische, elektrische, funktionale und prozedurale Mittel um die physische Verbindung zwischen zwei offenen Systemen zu unterstützen.\\
-        &&Physische Verbindung impliziert nicht die verbindungsorientierte Operation\\
-        &&Verschiedene Übertragungsmedien können genutzt werden, jeweils verschiedene Protokolle sind von Nöten\\
         &&In-sequence Zustellung der Bits ist sichergestellt\\
-        &&Fehlererkennung ist manchmal inkludiert\\ \hline
+        &&Fehlererkennung ist manchmal inkludiert\\
         && Zeitliche Synchronisation (Non-Return to Zero Level oder Manchstercodierung)\\
         && Breitband- vs Basisbandübertragung (Amplituden-/Phasen-/Frequenzmodulation ) Bsp: QPSK, 16-QAM  \\
         && Digital vs Analog \\
@@ -878,28 +894,21 @@ Non-privileg & >1023 \\
     L & Link Layer & 
         Unterstützt Übertragung von service data units (SDU) größer als "word" unter Systemen, welche über einen einzigen physischen Pfad verbunden sind.\\
         &&Essentielle Funktion ist block synchronization\\
-        &&Teilweise wird Fehlererkennung oder Fehlerkontrolle zur Verfügung gestellt.\\
-        &&Im Fall von Halb-duplex oder multipoint links muss der Zugriff auf das Medium kontrolliert werden und Peersysteme müssen addressiert werden.\\ \hline
+        &&Im Fall von Halb-duplex oder multipoint links muss der Zugriff auf das Medium kontrolliert werden und Peersysteme müssen addressiert werden.\\
         && Framing durch Charakterzählen, Flagbitmuster/Bitstuffing oder Codeverletzung \\
         && Fehlererkennung \& -kontrolle (vorwärts/rückwärts) mit Redundanz (Parität), Hemmingdistanz, Cyclic Redundancy Check (CRC)\\
         && Send and Wait (Sliding Window) , Go-Back-N, Selective Reject \\
-        && Verbindungsaufbau \\
-        && Flusskontrolle \\
+        && Verbindungsaufbau \& Flusskontrolle \\
         \hline
     N & Network Layer & 
-        Erschafft einen logischen Pfad zwischen offenen Systemen, welche verbunden sind mit individuellen, möglicherweise verschiedenen Subnetworks\\
-        &&Dieser logische Pfad kann durch mehrere, möglicherweise verschiedene dazwischenliegende Subnetworks gehen\\
+        Erschafft eine logischen Kommunikation zwischen offenen Systemen, welche verbunden sind mit verschiedenen Subnetworks\\
         &&Diese Netzwerkebene unterstützt Routing, also müssen sich N-Service Benutzer nicht um den Pfad kümmern\\
         &&Der N-Service ist uniform, unabhängig von der Variation an Subnetwork Technologien, Topologien, QoS und der Organisation\\
         &&Netzwerk Addresse = Endsystem Addresse\\
         \hline
-        && logische Kommunikation zwischen zwei Hosts \\
-        \hline
     T & Transport Layer & 
-        Unterstützt die Übertragung mit gefordertem QoS, auf wirtschaftliche Weise zwischen (T)-nutzern, unabhängig von der Netzwerkstruktur\\
-        &&Verschiedene Klassen von Protokollen mit verschiedenen Funktionalitäten sind festgelegt (connectionoriented / connectionless; reliable / unreliable)\\
-        \hline
-        && logische Kommunikation zwischen zwei Prozessen \\
+    logische Kommunikation zwischen zwei Prozessen/Nutzern, unabhängig von der Netzwerkstruktur\\
+        &&Verschiedene Klassen von Protokollen mit verschiedenen Funktionalitäten sind festgelegt (connectionoriented/connectionless; reliable/unreliable)\\
         && Sendeseite: Segmentiert Anwendungsnachrichten und leitet diese Segmente an die Netzwerkschicht \\
         && Empfangsseite: Reassembliert Segmente in Nachrichten und leitet diese an die Anwendungsschicht weiter \\
         && Als Transportprotokolle werden im Internet hauptsächlich TCP und UDP verwendet \\
@@ -908,7 +917,7 @@ Non-privileg & >1023 \\
         && Staukontrolle: Durch das Verlangsamen des Senders, wenn Pakete oder ACKs verloren gehen\\
         \hline
     S & Session Layer &
-        Unterstützt die Synchronisation des Dialogs und die Verwaltung des Datenaustausches (möglicherweise über mehrere transport layer connections aufspannend)\\
+        Unterstützt die Synchronisation des Dialogs und die Verwaltung des Datenaustausches\\
         &&Quarantine Data delivery - Eine ganze Gruppe von übertragenen S-SDUs wird zugestellt auf explizite Anfrage des Senders\\
         &&Interaktionsverwaltung erlaubt ausdrücklich festzulegen, welcher S-User das Recht bekommt zu übertragen\\
         &&Zurücksetzen der Verbindung auf vordefinierte Synchronisationspunkte\\
@@ -921,15 +930,12 @@ Non-privileg & >1023 \\
         \hline
     A & Application Layer &
         Unterstützt den direkten Endnutzer durch die Bereitstellung einer Vielzahl an application services\\
-        &&Dies kann sein:\\
         &&Genereller Typ (z.B. Entfernte prozedurale Anrufe, Transaktionsdurchführung,...)\\
         &&Spezifischer Typ (z.B. Virtuelles Terminal, Dateiübertragungszugriff und Verwaltung, Arbeitswechsel,...)\\
         &&Ein typisches Beispiel: virtuelles Terminal (Funktionen des reellen Terminals werden in virtuelle Funktionen gemappt)\\
-
 \end{tabular}
 
-\section{TCP/IP - nicht existentes Modell, sehr nürtliches Protokoll}
-Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hinzu und erstellt eine neue Dateneinheit und schickt diese an das Layer darunter
+\section{TCP/IP - nicht existentes Modell, sehr nützliches Protokoll}
 \begin{tabular}{l | l}
     Internetlayer & Packetswitching, Adressierung, Routing und Forwarding. Insbesondere für hierarchische Netze \\
     \hline
@@ -950,27 +956,8 @@ Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hi
 
 
 \section{Formeln}
+\begin{multicols}{2}
 
-Fehlerfreies Send and Wait: $S = \frac{1}{(1+2a)}$ wobei $a = \frac{T_{prop}}{T_{frame}}$
-
-Fehlerbehaftetes Send and Wait: $S = \frac{1-P}{1+2a}$
-
-Fehlerfreies Sliding Window: Sei W die Anzahl an Frames $S = {1, falls W >= 2a+1, W/(2a+1) sonst}$
-
-Selective Reject: $S = {1-P, falls W >= 2a+1, (W(1-P))/(2a+1) sonst}$
-
-Go-Back-N: $S = {\frac{1-P}{1+2aP}, falls W >= 2a+1, \frac{W(1-P)}{(2a+1)(1-P+WP)} sonst}$
-
-CRC Bitfehler: $\frac{m(x)}{G(x)} = (T(x)+E(x)) / G(x) = T(x)/G(x) + E(x)/G(x)$
-
-Effizienz = $\frac{T_{packet} }{ T_{packet} + d + T_{ack} + d}$
-
-efficiency = $\frac{1}{ (1+ 5 * \frac{t_{prop}}{t_{trans}}}$
-
-Distanztabellen $D^X(Y,Z) =$ Distanz von X nach Y mit Z als nächsten Hop
-
-Round Trip Time: $EstimatedRTT = (1-a) * EstimatedRTT + a * SampleRTT$
-
-Durchschnittliche Durchsatz von TCP $ 0,75 * \frac{W}{RTT}$
+\end{multicols}
 
 \end{document}

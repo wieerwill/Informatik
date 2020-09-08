@@ -20,6 +20,14 @@ Alle Dokumente werden in Markdown (bevorzugt) oder LaTex geschrieben. Bilder etc
 Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Kein Inhalt oder Teile dieses Repositories darf kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 
+## Mitmachen
+- Erstelle ein 'issue'. Gehe zuerst die offene 'issues' durch. (Oder Überlege dir welches Fach noch fehlt)
+- Klone das repository oder erstelle einen Fork.
+- Erstelle deinen eigenen feature branch: git checkout -b my-new-feature
+- Committe deine Änderungen: git commit -m 'Add some feature'
+- Push auf deinen Branch: git push origin your-new-feature
+- Erstelle ein pull request damit deine Änderungen in diesem Repository übernommen werden.
+
 ## Bild- und Textrechte
 Der Inhalt aller Dokumente hier ist die Mitschrift aus besuchten Vorlesungen. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt. Die Verletzung des Copyright oder anderer Rechte Dritte wird mit einem Ausschluss aus dem Repository gehandelt. Sollte Ihnen ein Verstoß auffallen geben Sie uns bitte umgehend bescheid, wir werden jedem Fall nachgehen.
 Bilder werden zum Großteil von uns selbst erstellt oder unter ausführlicher Quellangabe verwendet.

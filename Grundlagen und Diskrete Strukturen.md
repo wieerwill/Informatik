@@ -154,3 +154,120 @@ Sei $R\in AxA$ binäre Relation auf A
 - R heißt Ordnung $\leftrightarrow$ R reflexiv, antisymetrisch und transitiv
 - R heißt Totalordnung \$leftrightarrow$ R Ordnung und total
 - R heißt Quasiordnung $\leftrightarrow$ R reflexiv und transitiv
+
+## Äqivalenzrelation
+Sei A Menge, $C\wp (A)$ Menge von teilmengen von A. C heißt Partition von A, falls gilt:
+1. $UC=A$ d.h. jedes $x\in A$ liegt in (wenigstens) einem $y\in C$
+2. $\varemtpy \not in C$ d.h. jedes $y\in C$ enthält (wenigstens) ein Element von A
+3. $X \cap Y = \varemtpy$ f.a. $X\not \in Y$ aus C
+
+Zwei Mengen $X\cap Y = \varemtpy$ heißten disjunkt. 
+Die Elemente von C heißten Teile, Klassen oder Partitionen.
+Satz: Sei ~ Äquivalenzrelation auf A. Für $x\in A$ betrachtet $[x]_{/~}:={y\in A: y~x}$. Dann ist {[x]_{/~}:x\in A}= C_{/~}$ Partition von A. Die Elemente $[x]_{/~}$ von $C_{/~}$ heißen Äquivalenzklassen.
+
+Wichtiges Bsp: Restklassen modulo m\
+$m\not \in \Z, m \geq 2$; Für $x,y \in \Z$ schreibe $x \equiv y$ mod m ("x konvergent y modulo m") falls $m | (x-y)$. $\equiv (mod m)$ ist eine binäre Relation auf $\Z$
+"$\equiv§ transitiv" aus $x=y mod m$ und $y\equiv z mod m$ folgt $\rightarrow m| x-z$
+
+Somit ist $\equiv(mod m)$ eine Äquivalenzrelation. Ihre Äquivalenzklassen heißen Restklassen mod m
+
+Ein Graph $G=(V,E)$ ist ein Paar bestehend aus einer Menge V und $Eßsubseteq {x,y: x\not = y$ aus V $}$.
+Zu $a,b\in V$ heißt eine Folge $P=x_1,..,x_n$ von paarweise verschiedenen Ebenen mit $a=x_0, b=x_j; x_{j-1},x_i \in E{a*i \in b*j}$ ein a,b-Weg der Länge l oder Weg a nach b. Durch a~b gibt es einen a,b-Weg in G, wird eine Äquivalenzrelation auf V definiert, denn:
+- "~ reflexiv": es ist $x~x$, denn $P=x$ ist ein x,x-Weg in G
+- "~ symetrisch": aus $x~y$ folgt, es gibt einen x,y-Weg $\rightarrow$ es gibt einen y,x-Weg $y~x$
+- "~ transitiv": aus $x~y$ und $y~x$ folgt, es gibt einen x,y-Weg und einen y,x-Weg
+Die Äquivalenzklassen von $~_G$ erzeugen die Zusammenhangskomponenten von G
+
+Satz: Sei C eine Partition von A, dann wird durch $x~_G y \leftrightarrow$ es gibt ein $X\in C$ mit $x,y\in X$ eine Äquivalenzrelation auf A definiert.
+
+## (Halb) Ordnungen
+Sei also $leq$ eine Ordnung auf X. Seo $A\subseteq X, b\in X$
+- b minimal in A $\leftrightarrow b\in A$ und $(c\leq b \rightarrow c=b f.a. c\in A)$
+- b maximal in A $\leftrightarrow b\in A$ und $(b\leq c \rightarrow b=c f.a. c\in A)$
+- b kleinstes Element in A $\leftrightarrow b\in A$ und $(b\leq c f.a. c\in A)$
+- b größtes Element in A $\leftrightarrow b\in A$ und $(c\leq b f.a. c\in A)$
+- b untere Schranke von A $\leftrightarrow b\leq c f.a. c\in A$
+- b obere Schranke von A $\leftrightarrow c\leq b f.a. c\in A$
+- b kleinste obere Schranke von A $\leftrightarrow b ist kleinstes Element von ${b'\in X:$ b' obere Schranke von A $}$ auch Supremum von A; $\lor A = b$
+- b größte untere Schranke von A $\leftrightarrow b ist das größte Element von ${b'\in X:$ b' untere Schranke von A $}$ auch Infinium von A; $\land A = b$
+kleinstes und größtes Element sind jew. eindeutig bestimmt (falls existent)
+
+Satz: Sei X Menge. $\subseteq$ ist Ordnung auf $\wp(X)$. Ist $O\subseteq \wp(X)$, so ist $sup O=\bigcup O$ und $inf O=\bigcap O$
+
+Satz: Die Teilbarkeitsrelation | ist Ordnung auf den natürlichen Zahlen $\N$. Es gibt $sup(a,b)=kgV(a,b)$ (kleinstes gemeinsames Vielfaches) und $inf(a,b)=ggT(a,b)$ (größtes gemeinsames Vielfaches)
+
+## Hesse Diagramm
+Darstellung einer Ordnung $\subseteq$ auf X
+1. Im Fall $x\subseteq y$ zeichne x "unterhalb" von y in die Ebene
+2. Gilt $x\subseteq y (x\not = y)$ und folgt aus $x \subseteq z \subseteq y$ stets $x=z$ oder $y=z$ so wird x mit y "verbunden"
+
+## Zoonsche Lemma
+Zu jeder Menge und für jede Ordnung $\leq$ auf X mit der Eigenschaft, dass jede nicht-leere Kette nach der beschränkt ist, gibt es ein maximales Element.
+
+## Wohlordnungssatz
+Jede Menge lässt sich durch eine Ordnung $\subseteq$ so ordnen, dass jede nichtleere Teilmenge von X darin ein kleinstes Element ist
+
+# Induktion
+X ist eine Menge, $X:=X\vee {X}$\
+M Menge heißt induktiv $:\leftrightarrow \varempty \in M \wedge \forall X \in M$  $X^+ \in M$
+Ist O eine Menge von induktiven Mengen, $O\pm O$ dann ist auch $\bigcap O$ induktiv. Insbesondere ist der Durchschnitt zweier induktiver Mengen induktiv. Es gibt eine induktive Menge M: $M =\bigcap {A \in \wp(M): A induktiv}$.
+Sei M' irgendeine (andere) induktive Menge $\rightarrow M \cap M'$ ist induktive Teilmenge von M. $\N_M$ ist der Durchschnitt über alle induktiven Teilmengen von M $\N_M \subseteq M\cap M' \subseteq M'$. Folglich ist $\N_m$ Teilmenge jeder induktiven Menge.
+
+## Satz I (Induktion I)
+Sei p(n) ein Prädikat über $\N$. Gelte p(0) und $p(n)\rightarrow p(n^+)$ f.a. $n\in \N$ dann ist p(n) wahr f.a. $n\in N$. Schreibe $x=y:\leftrightarrow x\in y \vee x=y$
+
+## Satz II (Induktion II)
+Sei p(n) ein Prädikat über $\N$, gelte ($\forall x < n: p(x9))\rightarrow p(n)$ f.a. $n\in \N$. Damit ist p(n) wahr für alle $n\in \N$.
+
+# Funktionen
+Seien A,B Mengen: Eine Relation $f\subseteq A x B$ heißt Funktion. A nach B ("$f:A\rightarrow B$") falls es zu jedem $x\in A$ genau ein $y\in B$ mit $(x,y)\in f$ gibt. Dieses y wird mit $f(x) bezeichnet.
+
+Satz: $f:A\rightarrow B, g:A\rightarrow B$; dann gilt $f=g \leftrightarrow f(x)=g(x)$. Sei $f:A\rightarrow B$ Funktion
+1. f heißt injektiv $\leftrightarrow$ jedes y aus B hat höchstens ein Urbild
+2. f heißt subjektiv $\leftrightarrow$ jedes y aus B hat wenigstens ein Urbild
+3. f heißt bijektiv $\leftrightarrow$ jedes y aus B hat genau ein Urbild
+
+Ist $f:A\rightarrow B$ bijektive Funktion, dann ist auch $f^{-1}\subseteq BxA$ bijektiv von B nach A, die Umkehrfunktion von f.
+Man nennt f dann Injektion, Surjektion bzw Bijektion
+- f injektiv $\leftrightarrow (f(x)=f(y)\rightarrow x=y)$ f.a. $x,y\in A$ oder $(x\not = y \rightarrow f(x)\not = f(y))$
+- f surjektiv $\leftrightarrow$ Zu jedem $x\in B$ existiert ein $x\in A$ mit $f(x)=y$
+- f bijektiv $\leftrightarrow$ f injektiv und surjektiv
+
+Sind $f:A\rightarrow B$ und $g:B\rightarrow C$ Funktionen, so wird durch $(g \circ f)(x):=g(f(x))$ eine Funktion $g \circ f: A \rightarrow C$ definiert, die sog. Konkatenation/Hintereinanderschaltung/Verkettung/Verkopplung von f und g (gesprochen "g nach f").
+
+Satz: $f:A\rightarrow B, g:B\rightarrow C$ sind Funktionen. Sind f,g bijektiv, so ist auch $g \circ f: A\rightarrow C$ bijektiv
+
+Satz: ist $f:A\rightarrow B$ bijektiv, so ist $f^{-1}$ eine Funktion B nach A. Mengen A,B, heißen gleichmächtig ($|A|=|B| \equiv A\cong B$) falls Bijektion von A nach B. $\cong$ ist auf jeder Menge von Mengen eine Äquivalenzrelation
+- "$\cong$ reflexiv": $A\cong A$, denn $f:A\rightarrow A, f(x)=X$, ist Bijektion von A nach A
+- "$\cong$ symetrisch": Aus $A\cong B$ folgt Bijektion von A nach B $\rightarrow B\cong A$
+- "$\cong$ transitiv": Aus $A\cong B$ und $B\cong C$ folgt $A\cong C$
+
+$|A|=|A|:|A|$ ist die Kordinalität von A, d.h. die kleisnte zu A gleichmächtige Ordinalzahö. Eine Ordinalzahl ist eine e-transitive Menge von e-transitiven Mengen. Eine Menge X heißt e-transitiv, wenn aus $a\in b$ und $b\in c$ stets $a\in c$ folgt.
+Sei $A:=\N$ und $B={0,2,4,...}={n\in \N: 2|n}$, dann sind A und B gleichmächtig, denn $f:A\rightarrow B, f(x)=2x$ ist Bijektion von A nach B.
+Eine Menge A heißt endlich, wenn sie gleichmächtig zu einer natürlichen Zahl ist; sonst heißt A unendlich.
+Eine Menge A heißt Deckend-unendlich, falls es eine Injektion $f:A\rightarrow B$ gibt die nicht surjektiv ist.
+
+Satz: A unendlich $\leftrightarrow$ A deckend-unendlich
+A,B sind Mengen. A heißt höchstens so mächtig wie B, falls es eine Injektion von A nach B gibt. $|A|\leq |B|$ bzw $A\preceq B$. $\preceq$ ist Quasiordnung auf jeder Menge von Mengen.
+- "\preceq$ reflexiv": Injektion von A nach A
+- "\preceq$ transitiv": $A\preceq B$ und $B\preceq C$ folgt Injektion $f:A\rightarrow B$ und $g:B\rightarrow C$. Verkopplung $g \circ f \rightarrow A \preceq C$
+
+Satz (Vergleichbarkeitssatz):
+Für zwei Mengen A,B gilt $|A|\leq |B|$ oder $|B| \leq |A|$. Eine Relation f von A nach B heißt partielle Bijektion (oder Matching), falls es Teilmengen $A'\subseteq A$ und $B'\subseteq B$ gibt sodass f eine Bijektion von A' nach B' gibt.
+
+Sei M die Menge aller Matchings von A nach B und wie jede Menge durch $\subseteq$ geordnet. Sei $K\subseteq M$ eine Kette von Matchings. K besitzt eine obere Schranke ($\bigcup K$) in M. Seien $(x,y);(x',y')$ zwei Zuordnungspfeile aus $\bigcup K$, zeige $x\not = x'$ und $y\not = y'$ dann folgt Matching.
+Jede Kette von Matchings benutzt eine obere Schranke, die ebenfalls ein Matching ist $\rightarrow$ es gibt ein maximales Matching von A nach B, etwa h. Im Fall ($x\in A, y\in B$ mit $(x,y)\in h$) ist h eine Injektion von A nach B, d.h. $|A| \subseteq |B|$ andernfalls $y\in B, x\in A$ mit $(x,y)}\in h$ ist $h^{-1}$ eine Injektion von B nach A, d.h. $|B| \subseteq |A|$.
+
+## Satz - Cantor/Schröder/Bernstein
+Für zwei Mengen A,B gilt: Aus $|A|\subseteq |B|$ und $|B| \subseteq |A|$ folgt $|A| = |B|$.
+
+Die Komponenten von f und g sind:
+- endliche Kreise
+- einseitig unendliche Wege
+- beidseitig unendliche Wege
+
+## Satz Cantor
+Für jede Menge X gilt: $|X|\leq \wp(X)$ und $|X|\not = |\wp (X)|$. Z.B. ist $|\N|<|\R|$; zu $|\N|$ gleichmächtige Mengen nennt man abzählbar; unendliche nicht-abzählbare Mengen nennt man überzählbar.
+
+## Kontinuitätshypothese
+Aus $|\N|\leq |A| \leq |\R|$ folgt $|A|=|\N|$ oder $|A|=|\R|$ (keine Zwischengrößen)

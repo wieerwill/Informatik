@@ -6,7 +6,7 @@ Aussagen sind Sätze die wahr oder falsch sind, d.h. der Wahrheitswert ist wahr 
 > "5 ist prim" -> Aussage, wahr \
 > "dieser Satz ist falsch" -> keine Aussage
 
-Für keine natürliche Zahl n>3 ist die Gleichung x^n+y^n=z^n in positiven ganzen Zahl lösbar ~ Fermatsche Ex-Vermutung
+Für keine natürliche Zahl n>3 ist die Gleichung x^n+y^n=z^n in positiven ganzen Zahl lösbar \sim  Fermatsche Ex-Vermutung
 
 ## Verknüpfungen von Aussagen
 Seien p und q Aussagen, dass sind folgende Sätze auch Aussagen
@@ -96,7 +96,7 @@ Bsp: ${M,A,T,H,E,M,A,T,I,K} \approx {M,A,T,H,E,I,K}:$ Mengen der Buchstaben des 
 ### Wunsch 1
 "$x\in y$" soll Aussagenform über dem Universum U aller Mengen sein. D.h. für je zwei Mengen x und y ist entweder x ein Element von y oder nciht. D.h. "$x\in y$" ist ein 2-stelliges Prädikat über U.
 ### Wunsch 2
-Ist p(x) ein Prädikat über U, so soll es eine Menge geben, die aus genau denjenigen Mengen x besteht, für die p(x) wahr ist. Bezeichnung ${x:p(x)$ ist wahr $}$.
+Ist p(x) ein Prädikat über U, so soll es eine Menge geben, die aus genau denjenigen Mengen x besteht, für die p(x) wahr ist. Bezeichnung ${x:p(x) "ist-wahr" }$.
 Danach gäbe es eine Menge M, die aus genau denjenigen Mengen x mit $x\not \in x$ besteht: $M={x:x\not \in x}$.
 D.h. Wunsch 1 und 2 führen zu einem Widerspruch in der Mengenlehre!\
 Lösung: Aussonderung nur an bereits "gesicherten" Mengen\
@@ -108,12 +108,12 @@ Folgerung: die Gesamtheit aller Mengen ist selbst keine Menge, sonst findet man 
 Zwei Mengen x,y sind genau dann gleich wenn sie diesselben Elemente enthalten. D.h. $x=y: \leftrightarrow \forall z:(z\in x \leftrightarrow z\in y)$. Somit gilt für zwei Prädikate p(x), q(x) über U und jede Menge A: ${x\in A: p(x) wahr} = {x\in A: q(x) wahr}$ genau dann, wen q(x), p(x) den gleichen Wahrheitswert für jedes x aus A haben.
 
 ### Wunsch 0
-Es gibt eine Menge. Ist A irgendeine Menge, so ist ${x \in A: \neg (x=x)}$ eine Menge ohne Elemente, die sogenannte leere Menge $\varemtpy$.
+Es gibt eine Menge. Ist A irgendeine Menge, so ist ${x \in A: \neg (x=x)}$ eine Menge ohne Elemente, die sogenannte leere Menge $\emptyset$.
 
 ### Wunsch 4
 Zu jeder Menge A gibt es eine Menge B, die aus genau denjenigen Mengen besteht, die Teilmengen von A sind. Dabei ist x eine Teilmenge von $y: \leftrightarrow \forall z:(z\in x \rightarrow z \in y) [x \subseteq y]$\
 $B={x:x\subseteq A}=\wp(A)$ B heißt Potentmenge von A\
-Bsp: $\wp({1,2,3}) = {\varempty, {1},{2},{3},{1,2},{1,3},{2,3},{1,2,3})$ (Daraus lässt sich ein Hesse-Diagramm zeichnen).
+Bsp: $\wp({1,2,3}) = (\emptyset, (1),(2),(3),(1,2),(1,3),(2,3),(1,2,3))$ (Daraus lässt sich ein Hesse-Diagramm zeichnen).
 
 ## Teilmengen
 A Teilmenge von B $\leftrightarrow \forall x: (x\in A \rightarrow x \in B):\Rightarrow A\subseteq B$\
@@ -122,7 +122,7 @@ Folglich $A=B \leftrightarrow A\subseteq B \wedge B\subseteq A$\
 Schnittmenge von A und B: $A\cap B = {x: x\in A \wedge x\in B}$\
 Vereinigungsmenge von A und B: $A\cup B = {x: x\in A \vee x\in B}$
 
-Sei eine Menge (von Mengen) dann gibt es eine Menge die aus genau den Mengen besteht, die in jeder Menge von A enthalten sind (außer $A=\varemtpy$).
+Sei eine Menge (von Mengen) dann gibt es eine Menge die aus genau den Mengen besteht, die in jeder Menge von A enthalten sind (außer $A=\emptyset$).
 Ebenso gibt es Mengen die aus genau den Mengen besteht, die in wenigstens einer Menge aus A liegen. Die Existenz dieser Menge wird axiomatisch gefordert in ZFC:$ UA = {x: \exists z \in A: x \in z}$\
 
 Seien A,B Mengen, dann sei $A/B:={x\in A: x\not \in B } = A\bigtriangleup B$\
@@ -137,10 +137,10 @@ Ist A=B, so heißt R auch binäre Relation auf A
 
 ## binäre Relation
 1. Allrelation $R:=AxA \subseteq AxA$
-2. Nullrelation $R:=\varemtpy \subseteq AxA$
+2. Nullrelation $R:=\emptyset \subseteq AxA$
 3. Gleichheitsrelation $R:={(x,y)... x=y}
 4. $A=R$ $R:={(x,y)\in \R x \R, x \leq y}$
-5. $A=\Z$ $R:={(x,y)\in \Z x \Z:$ x ist Teiler von y $}$ kurz: x|y
+5. $A=\Z$ $R:={(x,y)\in \Z x \Z: \text{x ist Teiler von y} }$ kurz: x|y
 
 ## Eigenschaften von Relationen
 Sei $R\in AxA$ binäre Relation auf A
@@ -159,12 +159,12 @@ Sei $R\in AxA$ binäre Relation auf A
 ## Äqivalenzrelation
 Sei A Menge, $C\wp (A)$ Menge von teilmengen von A. C heißt Partition von A, falls gilt:
 1. $UC=A$ d.h. jedes $x\in A$ liegt in (wenigstens) einem $y\in C$
-2. $\varemtpy \not in C$ d.h. jedes $y\in C$ enthält (wenigstens) ein Element von A
-3. $X \cap Y = \varemtpy$ f.a. $X\not \in Y$ aus C
+2. $\emptyset \not \in C$ d.h. jedes $y\in C$ enthält (wenigstens) ein Element von A
+3. $X \cap Y = \emptyset$ f.a. $X\not \in Y$ aus C
 
-Zwei Mengen $X\cap Y = \varemtpy$ heißten disjunkt. 
+Zwei Mengen $X\cap Y = \emptyset$ heißten disjunkt. 
 Die Elemente von C heißten Teile, Klassen oder Partitionen.
-Satz: Sei ~ Äquivalenzrelation auf A. Für $x\in A$ betrachtet $[x]_{/~}:={y\in A: y~x}$. Dann ist {[x]_{/~}:x\in A}= C_{/~}$ Partition von A. Die Elemente $[x]_{/~}$ von $C_{/~}$ heißen Äquivalenzklassen.
+Satz: Sei \sim  Äquivalenzrelation auf A. Für $x\in A$ betrachtet $[x]_{/\sim }:={y\in A: y\sim x}$. Dann ist {[x]_{/\sim }:x\in A}= C_{/\sim }$ Partition von A. Die Elemente $[x]_{/\sim }$ von $C_{/\sim }$ heißen Äquivalenzklassen.
 
 Wichtiges Bsp: Restklassen modulo m\
 $m\not \in \Z, m \geq 2$; Für $x,y \in \Z$ schreibe $x \equiv y$ mod m ("x konvergent y modulo m") falls $m | (x-y)$. $\equiv (mod m)$ ist eine binäre Relation auf $\Z$
@@ -172,14 +172,14 @@ $m\not \in \Z, m \geq 2$; Für $x,y \in \Z$ schreibe $x \equiv y$ mod m ("x konv
 
 Somit ist $\equiv(mod m)$ eine Äquivalenzrelation. Ihre Äquivalenzklassen heißen Restklassen mod m
 
-Ein Graph $G=(V,E)$ ist ein Paar bestehend aus einer Menge V und $Eßsubseteq {x,y: x\not = y$ aus V $}$.
-Zu $a,b\in V$ heißt eine Folge $P=x_1,..,x_n$ von paarweise verschiedenen Ebenen mit $a=x_0, b=x_j; x_{j-1},x_i \in E{a*i \in b*j}$ ein a,b-Weg der Länge l oder Weg a nach b. Durch a~b gibt es einen a,b-Weg in G, wird eine Äquivalenzrelation auf V definiert, denn:
-- "~ reflexiv": es ist $x~x$, denn $P=x$ ist ein x,x-Weg in G
-- "~ symetrisch": aus $x~y$ folgt, es gibt einen x,y-Weg $\rightarrow$ es gibt einen y,x-Weg $y~x$
-- "~ transitiv": aus $x~y$ und $y~x$ folgt, es gibt einen x,y-Weg und einen y,x-Weg
-Die Äquivalenzklassen von $~_G$ erzeugen die Zusammenhangskomponenten von G
+Ein Graph $G=(V,E)$ ist ein Paar bestehend aus einer Menge V und $E\subseteq (x,y: x\not = y \text{ aus V} )$.
+Zu $a,b\in V$ heißt eine Folge $P=x_1,..,x_n$ von paarweise verschiedenen Ebenen mit $a=x_0, b=x_j; x_{j-1},x_i \in E{a*i \in b*j}$ ein a,b-Weg der Länge l oder Weg a nach b. Durch a\sim b gibt es einen a,b-Weg in G, wird eine Äquivalenzrelation auf V definiert, denn:
+- "$\sim$ reflexiv": es ist $x\sim x$, denn $P=x$ ist ein x,x-Weg in G
+- "$\sim$ symetrisch": aus $x\sim y$ folgt, es gibt einen x,y-Weg $\rightarrow$ es gibt einen y,x-Weg $y\sim x$
+- "$\sim$ transitiv": aus $x\sim y$ und $y\sim x$ folgt, es gibt einen x,y-Weg und einen y,x-Weg
+Die Äquivalenzklassen von $\sim _G$ erzeugen die Zusammenhangskomponenten von G
 
-Satz: Sei C eine Partition von A, dann wird durch $x~_G y \leftrightarrow$ es gibt ein $X\in C$ mit $x,y\in X$ eine Äquivalenzrelation auf A definiert.
+Satz: Sei C eine Partition von A, dann wird durch $x\sim _G y \leftrightarrow$ es gibt ein $X\in C$ mit $x,y\in X$ eine Äquivalenzrelation auf A definiert.
 
 ## (Halb) Ordnungen
 Sei also $leq$ eine Ordnung auf X. Seo $A\subseteq X, b\in X$
@@ -189,8 +189,8 @@ Sei also $leq$ eine Ordnung auf X. Seo $A\subseteq X, b\in X$
 - b größtes Element in A $\leftrightarrow b\in A$ und $(c\leq b f.a. c\in A)$
 - b untere Schranke von A $\leftrightarrow b\leq c f.a. c\in A$
 - b obere Schranke von A $\leftrightarrow c\leq b f.a. c\in A$
-- b kleinste obere Schranke von A $\leftrightarrow b ist kleinstes Element von ${b'\in X:$ b' obere Schranke von A $}$ auch Supremum von A; $\lor A = b$
-- b größte untere Schranke von A $\leftrightarrow b ist das größte Element von ${b'\in X:$ b' untere Schranke von A $}$ auch Infinium von A; $\land A = b$
+- b kleinste obere Schranke von A $\leftrightarrow$ b ist kleinstes Element von $(b'\in X: \text{b' obere Schranke von A})$ auch Supremum von A: $\lor A = b$
+- b größte untere Schranke von A $\leftrightarrow$ b ist das größte Element von $(b'\in X: \text{ b' untere Schranke von A} )$ auch Infinium von A; $\land A = b$
 kleinstes und größtes Element sind jew. eindeutig bestimmt (falls existent)
 
 Satz: Sei X Menge. $\subseteq$ ist Ordnung auf $\wp(X)$. Ist $O\subseteq \wp(X)$, so ist $sup O=\bigcup O$ und $inf O=\bigcap O$
@@ -210,7 +210,8 @@ Jede Menge lässt sich durch eine Ordnung $\subseteq$ so ordnen, dass jede nicht
 
 # Induktion
 X ist eine Menge, $X:=X\vee {X}$\
-M Menge heißt induktiv $:\leftrightarrow \varempty \in M \wedge \forall X \in M$  $X^+ \in M$
+M Menge heißt induktiv $:\leftrightarrow \emptyset \in M \wedge \forall X \in M$  $X^+ \in M$.
+
 Ist O eine Menge von induktiven Mengen, $O\pm O$ dann ist auch $\bigcap O$ induktiv. Insbesondere ist der Durchschnitt zweier induktiver Mengen induktiv. Es gibt eine induktive Menge M: $M =\bigcap {A \in \wp(M): A induktiv}$.
 Sei M' irgendeine (andere) induktive Menge $\rightarrow M \cap M'$ ist induktive Teilmenge von M. $\N_M$ ist der Durchschnitt über alle induktiven Teilmengen von M $\N_M \subseteq M\cap M' \subseteq M'$. Folglich ist $\N_m$ Teilmenge jeder induktiven Menge.
 
@@ -250,14 +251,14 @@ Eine Menge A heißt Deckend-unendlich, falls es eine Injektion $f:A\rightarrow B
 
 Satz: A unendlich $\leftrightarrow$ A deckend-unendlich
 A,B sind Mengen. A heißt höchstens so mächtig wie B, falls es eine Injektion von A nach B gibt. $|A|\leq |B|$ bzw $A\preceq B$. $\preceq$ ist Quasiordnung auf jeder Menge von Mengen.
-- "\preceq$ reflexiv": Injektion von A nach A
-- "\preceq$ transitiv": $A\preceq B$ und $B\preceq C$ folgt Injektion $f:A\rightarrow B$ und $g:B\rightarrow C$. Verkopplung $g \circ f \rightarrow A \preceq C$
+- "$\preceq$ reflexiv": Injektion von A nach A
+- "$\preceq$ transitiv": $A\preceq B$ und $B\preceq C$ folgt Injektion $f:A\rightarrow B$ und $g:B\rightarrow C$. Verkopplung $g \circ f \rightarrow A \preceq C$
 
 Satz (Vergleichbarkeitssatz):
 Für zwei Mengen A,B gilt $|A|\leq |B|$ oder $|B| \leq |A|$. Eine Relation f von A nach B heißt partielle Bijektion (oder Matching), falls es Teilmengen $A'\subseteq A$ und $B'\subseteq B$ gibt sodass f eine Bijektion von A' nach B' gibt.
 
 Sei M die Menge aller Matchings von A nach B und wie jede Menge durch $\subseteq$ geordnet. Sei $K\subseteq M$ eine Kette von Matchings. K besitzt eine obere Schranke ($\bigcup K$) in M. Seien $(x,y);(x',y')$ zwei Zuordnungspfeile aus $\bigcup K$, zeige $x\not = x'$ und $y\not = y'$ dann folgt Matching.
-Jede Kette von Matchings benutzt eine obere Schranke, die ebenfalls ein Matching ist $\rightarrow$ es gibt ein maximales Matching von A nach B, etwa h. Im Fall ($x\in A, y\in B$ mit $(x,y)\in h$) ist h eine Injektion von A nach B, d.h. $|A| \subseteq |B|$ andernfalls $y\in B, x\in A$ mit $(x,y)}\in h$ ist $h^{-1}$ eine Injektion von B nach A, d.h. $|B| \subseteq |A|$.
+Jede Kette von Matchings benutzt eine obere Schranke, die ebenfalls ein Matching ist $\rightarrow$ es gibt ein maximales Matching von A nach B, etwa h. Im Fall ($x\in A, y\in B$ mit $(x,y)\in h$) ist h eine Injektion von A nach B, d.h. $|A| \subseteq |B|$ andernfalls $y\in B, x\in A$ mit $x,y\in h$ ist $h^{-1}$ eine Injektion von B nach A, d.h. $|B| \subseteq |A|$.
 
 ## Satz - Cantor/Schröder/Bernstein
 Für zwei Mengen A,B gilt: Aus $|A|\subseteq |B|$ und $|B| \subseteq |A|$ folgt $|A| = |B|$.
@@ -274,7 +275,7 @@ Für jede Menge X gilt: $|X|\leq \wp(X)$ und $|X|\not = |\wp (X)|$. Z.B. ist $|\
 Aus $|\N|\leq |A| \leq |\R|$ folgt $|A|=|\N|$ oder $|A|=|\R|$ (keine Zwischengrößen)
 
 Seien M,I zwei Mengen. Eine FUnktion $f:I\rightarrow M$ von I nach M heißt auch Familie über der Indexmenge I auf M. Schreibweise $(m_i)_{i\in I}$ wobei $m_i=f(i)$. Damilien über $I=\N$ heißen Folgen (bzw. unendliche Folgen).
-Eine (endliche) Folge ist eine Familie über einer endlichen Indexmenge I. Funktionen von ${1,...,n}$ in einer Menga A ($a_q,...,a_n\in A$) heißen n-Tupel. Für eine Mengenfamilie $(A_i)_{i\in A}$ sei ihr Produkt durch $\prod A_i={$ f: f Funktion von I nach $\bigcup A_i$ mit $f(i)\in A_i$ f.a. $i\in I}$. Ist allgemein $A_i=A$ konstant, so schreibe $\prod A_i=A^I={f:I\rightarrow R}$. Bezeichnung auch $2^{\N}$.
+Eine (endliche) Folge ist eine Familie über einer endlichen Indexmenge I. Funktionen von ${1,...,n}$ in einer Menga A ($a_q,...,a_n\in A$) heißen n-Tupel. Für eine Mengenfamilie $(A_i)_{i\in A}$ sei ihr Produkt durch $\prod A_i=(f: \text{ Funktion von I nach}\bigcup A_i \text{ mit } f(i)\in A_i \text{ f.a. } i\in I)$. Ist allgemein $A_i=A$ konstant, so schreibe $\prod A_i=A^I={f:I\rightarrow R}$. Bezeichnung auch $2^{\N}$.
 
 # Gruppen, Ringe, Körper
 Eine Operation auf eine Menge A ist eine Funktion $f:AxA\rightarrow A$; schreibweise $xfy$. EIne Menge G mit einer Operation $\circ$ auf G heißt Gruppe, falls gilt:
@@ -293,7 +294,7 @@ Bsp: Sei X Menge und $S_X$ sei die Menge aller Bijektionen von X nach X. EIne Bi
 Zwei Gruppen $(G, \circ_G)$ und $(H,\circ_H)$ heißen isomorph, falls es einen Isomorphismus von $(G,\circ_G)$ nach $(H,\circ_H)$ gibt (bzw. von G nach H). Schreibweise $(G,\circ_G)\cong (H,\circ_H)$
 - "$\cong$ reflexiv": $G\cong G$, denn $id_G$ ist ein Isomorphismus
 - "$\cong$ symetrisch": aus $G\cong G$ folt: es exisitert ein bijektiver Homomorphismus
-- "$\cong$ transitiv": sei $G\cong H$ und $H\cong J \rightarrow$ es gibt einen Isomorphismus $\phi:G\rightarrow H$ und $\psi:H\rightarrow J \rightarrow \phi\circ\psi:G\rightarrow J \rightarrow$ J ist bijektiv. $\phi\cric G$ ist Homomorphismus von G nach J und bijektiv also Isomorph
+- "$\cong$ transitiv": sei $G\cong H$ und $H\cong J \rightarrow$ es gibt einen Isomorphismus $\phi:G\rightarrow H$ und $\psi:H\rightarrow J \rightarrow \phi\circ \psi :G\rightarrow J \rightarrow$ J ist bijektiv. $\phi\circ G$ ist Homomorphismus von G nach J und bijektiv also Isomorph
 
 Satz: Jede Gruppe $(G,\circ)$ ist zu einer Untergruppe von $(S_G, \circ)$ isomorh
 
@@ -320,18 +321,18 @@ Es gilt:
 5. $a*(b+c)=a*b+a*c$ (Distributivgesetz)
 
 ## Die ganzen Zahlen $\Z$
-Durch $(a,b)~(c,d)\leftrightarrow a+d=b+c$ wird eine Äquivalenzrelation auf $\Nx\N$ definiert.
-Die Äquivalenzklassen bzgl ~ heißen ganze Zahlen (Bezeichnung $\Z$, Bsp $17=[(17,0)]_{/~}$).
+Durch $(a,b)\sim (c,d)\leftrightarrow a+d=b+c$ wird eine Äquivalenzrelation auf $\N x\N$ definiert.
+Die Äquivalenzklassen bzgl \sim  heißen ganze Zahlen (Bezeichnung $\Z$, Bsp $17=[(17,0)]_{/\sim }$).
 Wir definieren Operationen +, * auf $\Z$ durch
-- $[(a,b)]_{/~} + [(c,d)]_{/~} = [(a+c, b+d)]_{/~}$
-- $[(a,b)]_{/~} * [(c,d)]_{/~} = [(ac+bd, ad+bc)]_{/~}$
+- $[(a,b)]_{/\sim } + [(c,d)]_{/\sim } = [(a+c, b+d)]_{/\sim }$
+- $[(a,b)]_{/\sim } * [(c,d)]_{/\sim } = [(ac+bd, ad+bc)]_{/\sim }$
 Zu zeigen ist: DIe auf der rechten Seite definierten Klassen hängen nicht von der Wahl der "Repräsentanten" der Klassen auf der linken Seite ab (Wohldefiniert).
 
-Formal (für +): $[(a,b)]_{/~} = [(a',b')]_{/~}$ und $[(c,d)]_{/~} = [(c',d')]_{/~}$ impliziert $[(a,b)]_{/~} + [(c,d)]_{/~} = [(a'+c', b'+d')]_{/~}$. Aus der Vss konstant kommt $a+b'=b+a'$ und $c+d'=c'+d$. Dann folgt $a+c+b'+d'=b+d+a'+c'$, also $(a+c, b+d)~(a'+c',b'+d')$.
+Formal (für +): $[(a,b)]_{/\sim } = [(a',b')]_{/\sim }$ und $[(c,d)]_{/\sim } = [(c',d')]_{/\sim }$ impliziert $[(a,b)]_{/\sim } + [(c,d)]_{/\sim } = [(a'+c', b'+d')]_{/\sim }$. Aus der Vss konstant kommt $a+b'=b+a'$ und $c+d'=c'+d$. Dann folgt $a+c+b'+d'=b+d+a'+c'$, also $(a+c, b+d)\sim (a'+c',b'+d')$.
 
 Satz: $\Z$ ist eine abelsche Gruppe (+ assoziativ, enhält neutrales Element, additiv Invers).
-$[(a,0)]_{/~}$ wird als a notiert. $-[(a,0)]_{/~}=[(0,a)]_{/~}$ wird als -a notiert.
-Anordnung: $[(a,b)]_{/~} \subseteq [(c,d)]_{/~} \leftrightarrow a+d\leq b+c$
+$[(a,0)]_{/\sim }$ wird als a notiert. $-[(a,0)]_{/\sim }=[(0,a)]_{/\sim }$ wird als -a notiert.
+Anordnung: $[(a,b)]_{/\sim } \subseteq [(c,d)]_{/\sim } \leftrightarrow a+d\leq b+c$
 
 Ein Ring R ist eine Menge mit zwei Operationen $+,*: \R x\R \rightarrow \R$ mit:
 1. $a+(b+c) = (a+b)+c$ f.a. $a,b,c\in \R$
@@ -351,7 +352,7 @@ Bemerkung: $O$ kann kein multiplivativ inverses haben.
 
 - Ist $\R$ ein Körper, so ist $\R*=\R\\{0}$ mit $*$ eine abelsche Gruppe.
 - $\Z$ mit + und * ist ein kommutativer RIng mit $1\not=0$ aber kein Körper
-- $\Q,\C,\R$ mit + und * ist ein Körper
+- $\mathbb{Q}, \mathbb{C}, \R$ mit + und * ist ein Körper
 
 ## Division mt Rest in $\Z$
 Satz: Zu $a,b\in\Z, b\not=0$, gibt es eindeutig bestimmte $q,r\in\Z$ mit $a=q*b+r$ und $0\leq q <|b|$ (d.h. $\Z$ ist ein euklidischer Ring). (Beweis über Induktion)
@@ -377,39 +378,39 @@ Satz: Sei $m\geq 2$ dann ist $\Z_m$ mit +,* ein kommutativer Ring mit $\bar{1}\n
 
 Satz: Genau dann gibt es einen Körper mit n ELementen, wenn n eine Primzahl ist. D.h.. wenn $n=p^a$ ist für eine Primzahl p und $a\geq 1$.
 
-## Konstruktion von $\Q$ aus $\Z$
-Sei $M=\Zx(\Z\\{0}$ die Menge von Brüchen. Durch $(a,b)~(c,d)\leftrightarrowad=bc$ wird Äquivalenzrelation auf M durchgefühert. Schreibweise für die Äquivalenzklassen $\frac{a}{b}$ Die Elemente von $\Q:{\frac{a}{b}:a,b\in\Z, b\not=0}$ heißten rationale Zahlen.
-Definiere Operationen +,* auf $\Q$ wie folgt:
+## Konstruktion von $\mathbb{Q}$ aus $\Z$
+Sei $M=\Z x(\Z /{0}$ die Menge von Brüchen. Durch $(a,b)\sim (c,d)\leftrightarrow ad=bc$ wird Äquivalenzrelation auf M durchgefühert. Schreibweise für die Äquivalenzklassen $\frac{a}{b}$ Die Elemente von $\mathbb{Q} :{\frac{a}{b}:a,b\in\Z, b\not=0}$ heißten rationale Zahlen.
+Definiere Operationen +,* auf $\mathbb{Q}$ wie folgt:
 - $\frac{a}{b}+\frac{c}{d} = \frac{ad+bc}{b*d}$ (wohldefiniert)
 - $\frac{a}{b}*\frac{c}{d} = \frac{a*c}{b*d}$
 
-Satz: $\Q$ mit +,* ist ein Körper.
-Durch $\frac{a}{b}\leq\frac{c}{d}$ wird eine totale Ordnung auf $\Q$ definiert. Konstruktion von $\R$ aus $\Q$ mit Dedchin-Schnitten.
+Satz: $\mathbb{Q}$ mit +,* ist ein Körper.
+Durch $\frac{a}{b}\leq\frac{c}{d}$ wird eine totale Ordnung auf $\mathbb{Q}$ definiert. Konstruktion von $\R$ aus $\mathbb{Q}$ mit Dedchin-Schnitten.
 
 ### Ring der formalen Potenzreihe
-Sei k ein Körper (oder nur ein Ring mit 1+0). Eine Filge $(a_0, a_1,...,a:n)\in\K^{\N}$ mit Einträgen aus K heißt formale Potenzreihe. Die Folge (0,1,0,0,...) wird mit x bezeichnet. Statt $K^{\N}$ schreibt man $K[[x]]$. $(0_0,a_1,a_2,...)$ heißt Polynom in x, falls es ein $d\in\N$ gibt mit $a_j=0$ f.a. $j<n$. Die Menge aller Polynome wird mit $K[x]$ bezeichnet.
+Sei k ein Körper (oder nur ein Ring mit 1+0). Eine Folge $(a_0, a_1,...,a:n)\in K^{\N}$ mit Einträgen aus K heißt formale Potenzreihe. Die Folge (0,1,0,0,...) wird mit x bezeichnet. Statt $K^{\N}$ schreibt man $K[[x]]$. $(0_0,a_1,a_2,...)$ heißt Polynom in x, falls es ein $d\in\N$ gibt mit $a_j=0$ f.a. $j<n$. Die Menge aller Polynome wird mit $K[x]$ bezeichnet.
 
 Satz: $K[[x]]$ wird mit +,* wie folgt zu einem kommutativen Ring mit $1\not=0$
 - +: $(a_0,a_1,...) + (b_0,b_1,...) = (a_o+b_0, a_1+b_1, ...)$
 - *: $(a_0,a_1,...) + (b_0,b_1,...) = (c_0, c_1,...)$ mit $c_K=\sum_{j=a}^{k} a_j*b_{k-j}$
 Die formale Potenzreihe $(a,0,0,0,...)$ wird ebenfalls mit a bezeichnet.
 
-Die bzgl $\leq$ minimalen Elemente von $B\{\perp}$ heißen Atom von B.
-Satz: Sei $b\in B\{\perp}$ und $a_1,...,a_k$ dijenigen Atome a mit $a\leq b$, dann ist $b= a_1 \vee a_2 \vee ... \vee a_k$.
+Die bzgl $\leq$ minimalen Elemente von $B /\perp$ heißen Atom von B.
+Satz: Sei $b\in B /\perp$ und $a_1,...,a_k$ dijenigen Atome a mit $a\leq b$, dann ist $b= a_1 \vee a_2 \vee ... \vee a_k$.
 
-B mit $\vee, \wedge, \bar$ und $\dot{B}$ mit $\dot{\vee}, \dot{\wedge}, \dot{\bar}$ seien boolsche Algebren. Sie heißen isomorph, falls es einen Isomorphismus von B nach $\dot{B}$ gibt, d.h. eine Bijektion $\phi: B \rightarrow \dot{B}$ mit:
+B mit $\vee, \wedge, \bar{ }$ und $\dot{B}$ mit $\dot{\vee}, \dot{\wedge}, \dot{\bar{}}$ seien boolsche Algebren. Sie heißen isomorph, falls es einen Isomorphismus von B nach $\dot{B}$ gibt, d.h. eine Bijektion $\phi: B \rightarrow \dot{B}$ mit:
 - $\phi(a\vee b) =\phi(a)\dot{\vee}\phi(b)$ f.a. $a,b \in B$
 - $\phi(a\wedge b)=\phi(a)\dot{\wedge}\phi(b)$ f.a. $a,b\in B$
 - $\phi(\bar{a}) = \dot{\bar{\phi(a)}}$ f.a. $a\in B$
 
-Satz (Stone): Ist B mit $\vee, \wedge, \bar$ eine boolsche Algebra, B endlich und A die Menge ihrer Atome, so ist B isomorph zur boolschen Algebra $\wp(A)$ mit $\cap,\cup,\dot{\bar}$, wobei $\dot{\bar{X}}=A\\X$.
+Satz (Stone): Ist B mit $\vee, \wedge, \bar{}$ eine boolsche Algebra, B endlich und A die Menge ihrer Atome, so ist B isomorph zur boolschen Algebra $\wp(A)$ mit $\cap,\cup,\dot{\bar{}}$, wobei $\dot{\bar{X}}=A\\X$.
 Also ist in jeder Teilmenge X von A Bild eines Elements von B unter $\phi$.
 
 Satz: $\perp$, T sind durch die Bedingung 3 eindeutig bestimmt.
 
 Satz: $\bar{a}$ ist durch die Bedingung 1,2,4 eindeutig bestimmt.
 
-Lemma: Sei B mit $\vee, \wedge, \bar$ eine boolsche Algebra, dann gilt:
+Lemma: Sei B mit $\vee, \wedge, \bar{}$ eine boolsche Algebra, dann gilt:
 1. Dominanz
     - $a\vee T = T$ f.a. $a\in B$
     - $a\wedge \perp = \perp$ f.a. $a\in B$
@@ -426,7 +427,7 @@ Lemma: Sei B mit $\vee, \wedge, \bar$ eine boolsche Algebra, dann gilt:
     - $\bar{a\vee b} = \bar{a}\wedge \bar{b}$ f.a. $a,b\in B$
     - $\bar{a\wedge b} = \bar{a}\vee \bar{b}$ f.a. $a,b\in B$
 
-Satz: Durch $a\leq b:\leftrightarrow a\vee b=b$ wird eine Ordnung auf der boolschen Algebra B mit $\vee, \wedge, \bar$ definiert
+Satz: Durch $a\leq b:\leftrightarrow a\vee b=b$ wird eine Ordnung auf der boolschen Algebra B mit $\vee, \wedge, \bar{}$ definiert
 - $a\vee b = sup{a,b}$
 - $a\wedge b = inf{a,b}$
 Es gilt $a\vee b= b \rightarrow a\wedge b = a\wedge(a\vee b)= a$
@@ -440,7 +441,7 @@ Beispiel: Sei X eine endliche Menge von Variablen. Eine aussagenlogische Formel 
 - atomar: ""x" mit $x\in X$ oder "f" oder "w" oder
 - zusammengesetzt: $(P\vee Q), (P \wedge Q), (\neg P)$ aus den Formeln P,Q
 Der Wahrheitswert von F unter der Belegung $\beta: X\rightarrow {f,w}$ ergibt sich wie in Kapitel 1. Bezeichnung für den Wahrheitswert von F unter $\beta: W_F(\beta)$. Es gibt $2^{|x|}$ Belegungen.
-Der Wahrheitswerteverlauf ist die so definierte Funktion $W_F:{f,w}^X\rightarrow{f,w}$. Folglich gibt es $2^{2^{|x|}}$ verscheidene Wahrheitswertverläufe für logische Formeln. Formeln F, F' heißen äquivalent, falls $W_F=W_{F'} \rightarrow$ es gibt $2^2^{|x|}$ verschiedene Äquivalenzklassen aussagenlogischer Formeln in X. Die Äquivalenzklassen werden mit $[F]_{/\equiv}$ bezeichnet.
+Der Wahrheitswerteverlauf ist die so definierte Funktion $W_F:{f,w}^X\rightarrow{f,w}$. Folglich gibt es $2^ {2^{|x|}}$ verscheidene Wahrheitswertverläufe für logische Formeln. Formeln F, F' heißen äquivalent, falls $W_F=W_{F'} \rightarrow$ es gibt $2^ {2^{|x|}}$ verschiedene Äquivalenzklassen aussagenlogischer Formeln in X. Die Äquivalenzklassen werden mit $[F]_{/\equiv}$ bezeichnet.
 
 Sei $B:={[F]_{/\equiv}}:$ F aussagenlogische Formel in X $}$ die Menge aller Äquivalenzklassen aussagenlogischer Formeln in X.
 - $[P]_{/\equiv} \vee [Q]_{/\equiv} = [(P\vee Q)]_{/\equiv}$
@@ -455,7 +456,7 @@ Zu jeder aussagenlogischen Formel f kann man die Atome $[P]_{/\equiv}$ mit $[P]_
 
 Satz Jede Formel ist äquivalent zu einer Formel in DNF (disjunkte normal Form)
 
-Coatome der boolschen Algebra B mit $\vee, \wedge, \bar$ := Atome der dualen boolschen Algebra B mit $\vee, \wedge, \bar$
+Coatome der boolschen Algebra B mit $\vee, \wedge, \bar{}$ := Atome der dualen boolschen Algebra B mit $\vee, \wedge, \bar{}$
 
 Ist $b\in B$ und $a_1,...,a_k$ die Coatome a mit $b\leq a$ so gibt $b=a_1 \wedge ... \wedge a_k$. Max-Terme sind "$x_1\vee ... \vee x_k$" und alle j die durch Ersetzung einiger $x_j$ durch $\neg x_j$ daraus hervorgehen und sind die kanonische Repräsentation der Coatome von B.
 
@@ -464,12 +465,12 @@ Satz: Jede aussagenlogische Formel ist äquivalent zu einer Formel in konjunktiv
 
 # Diskrete Wahrscheinlichkeitsräume
 Ein (endlicher, diskreter) Wahrscheinlichkeitsraum ist ein Paar $(\Omega, p)$ bestehnd aus einer endlichen Menge $\Omega$ und einer Funktion $p:\Omega \rightarrow [0,1]\in \R$ mit $\sum_{\omega \in \Omega} p(\omega)=1$. Jeder derartige p heißt (Wahrscheinlichtkeits-) Verteilung auf $\Omega$. Die Elemente aus $\Omega$ heißen Elementarereignis, eine Teilmenge A von $\Omega$ heißt ein Ereignis; seine Wahrscheinlichkeit ist definiert durch $p(A):=\sum_{\omega in A} p(\omega)$.
-$A=\varemtpy$ und jede andere Menge $A\subseteq \Omega$ mit $p(A)=0$ heißt unmöglich (unmögliches Ereignis).
+$A=\emptyset$ und jede andere Menge $A\subseteq \Omega$ mit $p(A)=0$ heißt unmöglich (unmögliches Ereignis).
 $A=\Omega$ und jede andere Menge $A\subseteq \Omega$ mit $p(A)=1$ heißt sicher (sicheres Ereignis).
 Es gilt für Ereignisse $A,B,A_1,...,A_k$:
 1. $A\subseteq B \rightarrow p(A)\leq p(B)$ denn $p(A)=\sum p(\omega) \leq \sum p(\omega) = p(B)$
 2. $p(A\cup B) \rightarrow p(A)+p(B)-p(A\cap B)$
-3. Sind $A_1,...,A_k$ paarweise disjunkt (d.h. $A_i \cap A_J=\varemtpy$ für $i\not =j$) so gilt $p(A_1 \cup ... cup A_k)= p(A_1)+...+p(A_k)$
+3. Sind $A_1,...,A_k$ paarweise disjunkt (d.h. $A_i \cap A_J=\emptyset$ für $i\not =j$) so gilt $p(A_1 \cup ... cup A_k)= p(A_1)+...+p(A_k)$
 4. $p(\Omega \\ A):=$ Gegenereigns von $A=1-p(A)$
 5. $p(A_1,...,A_k) \leq p(A_1)+...+p(A_k)$
 
@@ -481,7 +482,7 @@ Es gilt für Ereignisse $A,B,A_1,...,A_k$:
 - gezinkt:
   - $\Omega = {1,2,3,4,5,6}$
   - $p=(\frac{1}{4}, \frac{1}{10}, \frac{1}{5}, \frac{1}{4}, \frac{1}{10}, \frac{1}{10})=(25%, 10%, 20%, 25%, 10%, 10%)$
-  - $p({\oemga \in \Omega: \omega gerade})=p({2,4,6})=p(2)+p(4)+p(6)= \frac{1}{10}+ \frac{1}{4}+ \frac{1}{10} = \frac{9}{20}$
+  - $p({\omega \in \Omega: \omega gerade})=p({2,4,6})=p(2)+p(4)+p(6)= \frac{1}{10}+ \frac{1}{4}+ \frac{1}{10} = \frac{9}{20}$
 
 
 Satz: Sind $(\Omega, p_1),...,(\Omega, p_m)$ Wahrscheinlichkeitsräume so ist durch $p((\omega_1,...,\omega_m))=\prod p_i(\omega_i)$ eine Verteilung auf $\Omega = \Omega_1 x ... x \Omega_m = {(\omega_1,...,\omega_m): \omega \in \Omega, f.a. i\in{1,...,m}}$. Für $A_1\subseteq \Omega_1, A_2\subseteq \Omega_2,...,A_m\subseteq \Omega_m$ gilt $p(A_1x...xA_m)=\prod p_i(A_i)$.
@@ -501,7 +502,7 @@ Satz (Totale Wahrscheinlichkeit): Seien $A_1, ...,A_k$ paarweise disjunkt, $\big
 Satz (Bayer, erweitert): $A_1,...,A_k,B$ wie eben, $p(B)>0$. Für $i\in {1,...,k}$ gilt $p(A_i|B)=\frac{p(B|A_i)*p(A_i)}{\sum p(B|A_j)*p(A_j)}$
 
 Bespiel: In einem Hut liegen drei beidseitig gefärbte Karten. Jemand zieht ("zufällig") eine Karte und leg sie mit einer ("zufälligen") Seite auf den Tisch. Karten rot/rot, rot/blau und blau/blau. Gegeben er sieht rot, wie groß ist die Wahrscheinlichkeit, dass die andere Seite auch rot ist?
-p(unten rot | oben rot) = p(unten rot und oben rot)/p(oben rot) = $\frac{\p(\binom{r}{r})}{p(\binom{r}{r}\binom{r}{b})}=\frac{\frac{2}{6}}{\frac{3}{6}}=\frac{2}{3}$
+p(unten rot | oben rot) = p(unten rot und oben rot)/p(oben rot) = $\frac{p\binom{r}{r}}{p(\binom{r}{r}\binom{r}{b})}=\frac{\frac{2}{6}}{\frac{3}{6}}=\frac{2}{3}$
 
 Eine Funktion $X:\Omega \rightarrow \R$ heißt (reellwertige) Zufallsvariable. Weil $\Omega$ endlich ist, ist auch $X(\Omega)={X(\omega): \omega \in \Omega}\subseteq \R$ endlich. Durch $p_x(x):=p(X=x):=p({\omega \in \Omega: X(\omega)=x})$ wird ein Wahrscheinlichkeitsraum $(X(\Omega),p_x)$ definiert; denn $\sum p_x(x)=p(\Omega)=1$. $p_x$ heißt die von X induzierte Verteilung. $X(\Omega)$ ist meist erheblich kleiner als $\Omega$.
 Beispiel: Augensumme beim Doppelwurf: $X:\Omega\rightarrow \R, X((i,j))=i+j \rightarrow X(\Omega)={2,3,4,...,12}$
@@ -529,8 +530,136 @@ Sei $(\Omega, p)$ Wahrscheinlichkeitsraum, $X:\Omega\rightarrow \R$ Zufallsvaria
 Für $X:\Omega\rightarrow {0,1}$ ist $X^2=X$: $Var(X)=E(X^2)-E(X)^2 = p-p^2 = p(1-p)=p*q$
 
 ## Binominalkoeffizienten
-Sei N eine Menge, dann ist $\binom{N}{k}:={x\subseteq N:$ x hat genau k Elemente $(|x|=k)}$ für $k\in \N$. Für $n\in \N$ sei $\binom{n}{k}:=|(\binom{1,...,k}{k})$.
+Sei N eine Menge, dann ist $\binom{N}{k} := (x \subseteq N: \text{x hat genau k Elemente } (|x|=k) )$ für $k\in \N$. Für $n\in \N$ sei $\binom{n}{k}:=|(\binom{1,...,k}{k})$.
 
 Satz: $\binom{n}{0}={n}{n}=1$ f.a. $n\geq 0$ $\binom{n}{k}=\binom{n-1}{k-1}+\binom{n-1}{k}$ f.a. $n\geq 0,k\geq 1, k\geq n-1$
 
-Dür jede n-elementige Menge N ist $\binom{N}{0}={\varempty}, \binom{N}{n}={N}\rightarrow \binom{n}{0}=\bino{n}{n}=1$. Den zweiten Teil der Behauptung zeigt man induktiv über n.
+Jede n-elementige Menge N ist $\binom{N}{0}=(\emptyset), \binom{N}{n}={N}\rightarrow \binom{n}{0}=\binom{n}{n}=1$. Den zweiten Teil der Behauptung zeigt man induktiv über n.
+
+
+## Binominalsatz
+$(a+b)^n = \sum_{k=0}^n a^k b^{n-k}$ für $a,b\in \R$
+Für $n\in \N$ sei $n!=n(n-1)(n-2)...*3*2*1=\prod i$; für $n\in\N$ und $k\geq 0$ sei $[\binom{n}{k}]=\frac{n!}{k!(n-k)!}$
+
+Satz: $\binom{n}{0}=\binom{n}{n}=1$ für jedes $n\in\N$, $\binom{n}{k}=\binom{n-1}{k}+\binom{n-1}{k-1}$ für $k\geq 1$ und $k\leq n-1$.
+Zweiter Teil: $[\binom{n-1}{k}]+[\binom{n-1}{k-1}]=\frac{n!}{k!(n-k)!} = [\binom{n}{k}]$. Also stimmen die Rekursionsgleichungen von $\binom{n}{k}$ und $[\binom{n}{k}]$ überein sowie $\binom{n}{k}=[\binom{n}{k}]$. Folglich ist die Anzahl k-elementiger Teilmengen eine n-elementige Menge gleich $\frac{n!}{k!(n-k)!}.
+
+Seien $X_1,...,X_n$ unabhängige ZVAen, alle $X_i$ seien Bernoulli-Verteilt im Parameter $p[0,1]$, d.h. $p(X_1=1)=p$, $p(X_i=0)=(1-p)$. Dann ist $X_i=X_1+X_2+...+X_n$ ebenfalls reelwertige ZVA. Im Fall $X_i:\Omega\rightarrow {0,1}$ ist $X:\Omega\rightarrow {0,1,...,n}$. Die Verteilung von X ergibt sich wie folgt, für $k\in {0,1,...,n}$: $p(X=k)=\binom{n}{k}*p^k(1-p)^{n-k}$
+
+Eine ZVA heißt binominalverteilt in den Parametern n und p falls gilt: $p(X=k)=\binom{n}{k}p^k (1-p)^{n-k}$ für $k\in{0,1,...,n}$; schreibe $X\sim L(n,p)$. Sonst ist X Bernoulliverteilt (genau dann wenn $X\sim L(1,p)$).
+
+## Erwartungswert und Varianz
+Sei $X\sim L(n,p)$ OBdA $X=X_1,+...+X_n$ wobei $X_i$ unabhängig und Bernoulliverteilt.
+
+$E(X)=n*p$, $E(X_i)=p$
+
+$Var(X)=nÜp*(1-p)$, $Var(X_i)=p*(1-p)$
+
+## Multinominalverteilung
+$\binom{N}{k_1,...,k_n}$ sei Menge der Abbildungen $f:N\rightarrow {1,...,r}$ mit $k1,...,k_r\geq 0$, $k_1+...+k_r=|\N|$ und $f^{-1}[{j}]=k_j \binom{n}{k_1,...,k_r} = |\binom{N}{k_1,...,k_r}$.
+
+## Hypergeometrische Verteilung
+Beispiel: Urne mit zwei Sorten Kugeln; N Gesamtzahl der Kugeln, M Gesamtzahl Kugeln Sorte 1, N-M Gesamtzahl Kugeln Sorte 2, $n\leq N$ Anzahl Elemente einer Stichprobe. X Anzahl der Kugeln Sorte 1 in einer zufälligen n-elementigen Stichprobe.
+$p(X=k)=\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}}
+Eine ZVA $X:\Omega\rightarrow \R$ heißt hypergeometrisch Verteilt in den Parametern M,N,n falls $p(X=k)$ für alle $k\geq 0, k\geq M$ gilt.
+
+$E(X)=\sum_{x=0}^M \frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}}=...=n*\frac{M}{N}$
+
+$Var(X)=E(X^2)-E(X)^2 =...= n*\frac{M}{N}(1-\frac{M}{N})(\binom{N-n}{N-1})$
+
+# Elementare Graphentheorie
+$G=(V,E)$ heißt Graph mit Eckenmenge $V(G)=V$ und Kantenmenge $E(G)=E\subseteq {{x,y}:x\not=y \in V}$. Veranschaulichung als Punkte in der Ebene (V) mit "Verknüpfungslinien" von x nach y. Bsp $G=({1,2,3,4},{12,13,14,15,16})$.
+
+$P=x_0,...,x_e$ Folge pw verschiedener Ecken mit $x_{i-1},...,x_i \in E(k)$ für $i\in{1,...,l}$ heißt ein Weg von $x_0$ nach $x_e$ der Länge l. Für $(a,b)\in V(G)$ heißt $d_G(a,b)=min{l: es_gibt_einen_a,b-Weg_der_Länge_l}$ Abstand von a nach b. Falls es keinen a,b-Weg gibt, definiere $d_G(a,b)=+\infty$.
+
+$a\sim b \leftrightarrow$ es gibt einen a,b-Weg in G wird eine Äquivalenzrelation auf V(G) definiert. DIe Äquivalenzklassen heißen (Zusammenhangs-) Komponenten von G.
+
+G heißt zusammenhängend, wenn G höchstens eine Komponente besitzt. $d_G: V(G) x V(G) \leftrightarrow \R_{\geq 0}$ ist eine Matrix
+1. $d_G(x,y)=0 \leftrightarrow x=y$ f.a. $x,y \in V(G)$
+2. $d_G(x,y)=d_G(y,x)$ f.a. $x,y\in V(F)$
+3. $d_G(x,z)\leq d_G(x,y) + d_G(y,z))$ f.a. $x,y,z \in V(G)$
+
+Für $A\subseteq V(G)$ sei $G[A]:= (A, {x,y\in E(G):x,y\in A})$. Für $F\subseteq E(G)$ sei $G[F]:=(V(G), F)$. $G[A]$ bzw $G[F]$ heißt von A bzw F induzierte Teilgraph. Ein Graph H mit $V(H)\subseteq V(G)$ und $E(H)\subseteq E(G)$ heißt Teilgraph von G, schreibweise $H\leq G$. $\leq$ ist Ordnung, denn:
+1. $G\leq G$
+2. $H\leq G \wedge G\leq H \rightarrow H=G$
+3. $H\leq G \wedge G=L \rightarrow H\leq L$
+
+Ist $P=x_0,...,x_p$ Weg, so heißt auch der Teilgraph ein Weg von $x_0$ nach $x_e$.
+Graphen G, H heißen isomorph, falls es einen Isomorphismus von V(G) nach V(H) gibt. Das heißt eine Bijektion.
+$V(G)\rightarrow V(H)$ mit $f(x)f(y)\in E(H)\leftrightarrow x,y \in E(G)$. Es gilt:
+1. $G\cong G$
+2. $G\cong H \rightarrow H \cong G$
+3. $G\cong H \wedge H\cong L \rightarrow G\cong L$
+
+Eine Folge $C=x_0,x_1,...,x_{l-1}$ von Ecken mit $x_i,x_{i+1}\in E(G)$ für $i\in {0,...,l-2}$ und $x_{l-1}x_0 \in E(G)$ heißt Kreis in G der Länge l, falls $x_0,...,x_{l-1}$ pw versceiden sind. Bsp: Kreis der Länge 5.
+
+EIn Teilgraph H des Graphen G (also $H\leq G$) heißt aufspannend, falls $V(H)=V(G)$. Für eine Ecke $x\in V(G)$ sei $d_G(x)=|{x,y\in E(G), y\in V(G)}|$ die Anzahl der mit x indizierten Kanten, der sogenannte Grad von x in G.
+
+Weiter $N_G(x):={x\in V(G): xy \in E(G)}$ die Menge der nachbarn von x in G. Hier gilt: $|N_G(x)=d_G(x)|$.
+
+In jedem Graph G gilt $\sum_{x\in V(G)} d_G(x)=2|E(G)|$. Der Durchschnittsgrad von G ist somit $\bar{d(G)}=\frac{1}{|V(G)|}\sum d_G(x)=\frac{2|E(G)|}{|V(G)|}$.
+
+Ein Graph ist ein Baum wenn G zusammenhängend und G-e nicht zusammenhängend für jedes $e\in E(G)$ "G ist minimal zusammenhängend"
+Graph G ist ein Baum wenn G kreisfrei und Graph G+xy nicht kreisfrei für jedes $xy \not\in E(G)$
+G ist Baum, wenn
+- G ist kreisfrei und zusammenhängend
+- G kreisfrei und $|E(G)|=|V(G)|-1$
+- G zusammenhängend und $|E(G)|=|V(G)|-1$
+
+Jeder Baum mit wenigstens einer Ecke besitzt eine Ecke vom Grad $\leq 1$, ein sog. Blatt ("jeder Baum besitzt ein Blatt").
+$\rightarrow E(G)=|V(G)|-1$ für jeden Baum also $d(G)=\frac{2|V(G)| -2}{|V(G)|}<2$.
+
+G Wald $\leftrightarrow$ die Komponenten von G sind Bäume
+
+G Baum $\leftrightarrow$ G ist zusammenhängender Wald
+
+Ein Teilgraph H von G heißt Teilbaum von G, falls H ein Baum ist. Ein aufspannender Teilbaum von G heißt Spannbaum von G. G zusammenhängend $\leftrightarrow$ G Spannbaum.
+
+Ein Spannbaum T von G heißt Breitensuchbaum von G bei $x\in V(G)$ falls $d_F(z,x)=d_G(z,x)$ f.a. $z\in V(G)$.
+
+Ein Spannbaum T von G heißt Tiefensuchbaum von G bei $x\in V(G)$ falls für jede Kante zy gilt: z liegt auf dem y,x-Weg in T oder y liegt auf dem z,t-Weg in T.
+
+Satz: Sei G zusammenhängender Graph $x\in V(G)$.
+(X) sind $x_0,...,x_{e-1}$ schon gewählt und gibt es ein $+ \in {0,..., e-1}$ so, dass $x_+$ einen Nachbarn y in V(G)\{$x_0,...,x_{e-1}$}, so setze $x_e=y$ und $f(e):=t$; iteriere mit $e+1$ statt e.
+Dann ist $T:=({x_0,...,x_e},{x_j*x_{f(j)}: j\in {1,...,e}})$ ein Spannbaum
+- (X) wird in + stets kleinstmöglich gewählt, so ist T ein Breitensuchbaum
+- wird in (X) + stets größtmöglich gewählt, so ist T ein Tiefensuchbaum
+
+## Spannbäume minimaler Gewichte
+G Graph, $F \subseteq E(G)$ heißt kreisfrei, falls G(F) kreisfrei ist.
+
+Lemma (Austauschlemma für Graphen):
+Seien F, F' zwei kreisfreie Kantenmengen in Graph G und $|F|<|F'|$, dann gibt es ein $e \in F'/F$ so, dass $F\vee {e}$ kreisfrei ist.
+
+G, $\omega:E(G)\rightarrow \R$ (Gewichtsfunktion an den Kanten). Für $F\subseteq E(G)$ sei $\omega (F)=\sum \omega (e)$, speziell $\omega (\emptyset)=0$.
+
+Für einen Teilgraphen H von G sei $\omega (G)=\omega (E(G))$. Ein Spannbaum minimalen Gewichts ist ein Spannbaum T von G mit $\omega (T)\leq \omega (S)$ für jeden Spannbaum S von G.
+
+Satz (Kruskal): Sei G zuständiger Graph, $\omega:E(G)\rightarrow \R$; Setze $F=\emptyset$. Solange es eine Kante $e\in E(G)\\F$ gibt so, dass $F \vee {e}$ kreisfrei ist, wähle e mit minimalem Gewicht $\omega(e)$, setzte $F=F\vee {e}$, iterieren. Das Verfahren endet mit einem Spannbaum $T=G(F)$ minimalen Gewichts.
+
+Beweis: Weil G endlich ist endet das Verfahren mit einem maximal kreisfreien Graphen T. Seien $e_1,...,e_n$ die Kanten von T in der Reihenfolge ihres Erscheinens, sei S Spannbaum minimalen Gewichts und $f_1,...,f_m$ die Kanten in Reihenfolge aufsteigenden Gewichts. Angenommen (redactio ad absurdum) $\omega(T)>\omega(S)$. Dann gibt es ein $i\in{1,...,m}$ mit $\omega(e_i)>\omega(f_i)$. Wähle i kleinstmöglich, dann ist $F={e_1,...,e_{i-1}}$ und $F'={f_1,...,f_i}$ kreisfrei. Nach Austaschlemma gibt es ein $f\in F'/F$ so, dass $F\vee {f}$ kreisfrei ist. Also ist f ein Kandidat bei der Auswahl von $e_i$ gewesen, also $\omega(e_i)\leq \omega(f)$ (Fehler!). Folglich ist $\omega(T)\leq \omega(S) \Rightarrow \omega(T)=\omega(S)$ also T und S Spannbaum mit minimalen Gewichten.
+
+## Das Traveling Salesman Problem
+G sei Graph (vollständig) auf n Ecken, d.h. $xy\in E(G) \forall x\not =y$ aus V(G) und $\omega*E(G)\rightarrow \R$. Finde aufspannenden Kreis C von G minimalen Gewichts. Zusatzannahme (metrische TSP) $\omega(xz)\leq \omega(xy)+\omega(yz)$. 
+Finde einen aufspannenden Kreis C, der um einen Faktor von höchstens zwei von einem aufspannenden Kreis D minimalen Gewichts abweicht ($\omega(C)\leq 2 \omega(D)$) sog. Approximationsalgorithmus mit Gütefaktor $\leq$.
+
+Konstruiere eine Folge$x_0,...,x_m$ mit der Eigenschaft, dass jede Kante von T genau zweimal zum Übergang benutzt wird, d.h. zu $e\in E(T)$ existieren $i\not = j$ mit $e=x_i x_{i+1}$ und $e=x_j x_{j+1}$ und zu jedem k existieren $e\in E(T)$ mit $e=x_k x_{k+1}$. Das Gewicht dieser Folge sei $\sum \omega(x_i x_{i+1})= 2\omega(T)$.
+
+Eliminiere Mehrfachnennungen in der Folge. Gibt es $i\not= j$ mit $x_j=x_i$ so streiche x aus der Folge. Das Gewicht der neuen Folge ist maximal so groß wie das Gewicht der alten. Durch iteration erhält man einen aufspannenden Kreis mit $\omega(X) \leq 2 \omega(T)$. Sei e Kante von D $\rightarrow D-e=S$ ist aufspanndender Weg $\rightarrow \omega(T) \leq w(D-e) \leq \omega (D)$.
+
+G Graph, $k\geq 0$. Eine Funktion $f:V(G)\rightarrow C$ mit $|C|\leq k$ heißt k-Färbung, falls $f(x)\not = f(y)$ für $xy\in E(G)$. G heißt k-färbbar, falls G eine k-Färbung besitzt. Das kleinste $k\geq 0$ für das G k-färbbar ist heißt dramatische Zahl von G, Bezeichnung $X(G)$.
+
+
+
+Satz (Tuga): Sei $k\geq 2$ und G ein Graph ohne Kreise eine Lösung $l\equiv 1 mod k$, dann ist G k-faltbar. G 2-färbbar $\leftrightarrow$ G hat keine Kreise ungerader Länge. Ein Graph heißt bipartit mit den Klassen A,B falls $(x\in A \wedge y\in B)\vee (x\in B \wedge y\in A)$ für alle $xy \in E(G)$ gilt. Genau dann ist G bipoartit mit gewissen Klassen A,B wenn G 2-färbbar ist.
+
+Satz (Hall) "Heiratssatz": Sei G bipartit mit Klassen A,B. Dann gilt G hat ein Matching von A $\leftrightarrow |N_G(X)|\leq |X|$ für alle $X\subseteq A$.
+
+Satz: "$\rightarrow$" sei M Matching von A in G $\rightarrow |N_G(X)| \leq N_{G[M]}(X)=|X|$. "$\leftarrow$" Induktiv über $|V(G)|$.
+Ein schneller Zeuge für die Existenz eines Matchings von A im bipartiten Graphen G mit Klassen A,B ist das Matching selbst. Ein schneller Zeuge für die nicht-existenz eines Matchings ist ein $X\subseteq A$ mit $|N_G(X)| < |X|$.
+
+Das Entscheidungsproblem "hat ein bipartiter Graph ein Matching?" ist im NP und zugleich in co-NP. Also ist auch Problem "ist ein Graph 2-färbbar?" in NP und co-NP. Das Problem "ist ein Graph 3-färbbar" ist in NP. Es ist sogar NP-vollständig, d.h. jedes Problem in NP (jedes Entscheidungsproblem mit schnellen Zeugen für Ja) lässt sich in Polynomalzeit in dieses Färbungsproblem überführen.
+
+Ein weiteres Problem in NP ist: aussagenlogische Formel gegeben $F=C_1 \wedge C_2 \wedge ... \wedge C_m$, jedes $C_b$ ist von der Form $P\vee Q \vee R$ mit $P=x_i; Q=x_j; R=x_2$ oder $P=\neg x_i; Q=\neg x_j; R=\neg x_2$. Auch dieses Problem ist NP-vollständig. 
+- SAT ist die "Mutter aller Probleme in NP"
+- Färbbarkeit lässt sich darauf zurückführen und umgekehrt

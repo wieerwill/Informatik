@@ -6,6 +6,7 @@ bisher:
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
 - [Grundlagen und Diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
+  - [Grundlagen und Diskrete Strukturen - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md)
 - [Programmierparadigmen](Programmierparadigmen.md)

@@ -5,8 +5,9 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 bisher:
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
-- [Grundlagen und Diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
-  - [Grundlagen und Diskrete Strukturen - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
+- [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
+  - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
+  - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md)
 - [Programmierparadigmen](Programmierparadigmen.md)
@@ -22,12 +23,12 @@ Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Kein Inhal
 Wir freuen uns über jeden der mitmacht.
 
 ## Mitmachen
-- Erstelle ein 'issue'. Gehe zuerst die offene 'issues' durch. (Oder Überlege dir welches Fach noch fehlt)
-- Klone das repository oder erstelle einen Fork.
-- Erstelle deinen eigenen feature branch: git checkout -b my-new-feature
-- Committe deine Änderungen: git commit -m 'Add some feature'
-- Push auf deinen Branch: git push origin your-new-feature
-- Erstelle ein pull request damit deine Änderungen in diesem Repository übernommen werden.
+- Erstelle ein 'issue'. Gehe davor die offene 'issues' durch. (Oder überlege dir welches Fach noch fehlt)
+- Klone das repository oder erstelle einen Fork: ```git clone https://github.com/wieerwill/Informatik.git```
+- Erstelle deinen eigenen feature branch: ```git checkout -b my-new-feature```
+- Stelle deine Änderungen bereit: ```git commit -m "Add some feature"``` (in "" kommt dein Kommentar)
+- Lade auf deinen Branch hoch: ```git push origin your-new-feature```
+- Erstelle ein 'pull request' damit deine Änderungen in diesem Repository übernommen werden.
 
 ## Bild- und Textrechte
 Der Inhalt aller Dokumente hier ist die Mitschrift aus besuchten Vorlesungen. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt. Die Verletzung des Copyright oder anderer Rechte Dritte wird mit einem Ausschluss aus dem Repository gehandelt. Sollte Ihnen ein Verstoß auffallen geben Sie uns bitte umgehend bescheid, wir werden jedem Fall nachgehen.

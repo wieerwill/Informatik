@@ -12,6 +12,7 @@ bisher:
 - [Neuroinformatik](Neuroinformatik.md)
 - [Programmierparadigmen](Programmierparadigmen.md)
 - [Rechnerarchitekturen 1](Rechnerarchitekturen%201.md)
+- [Stochastik](Stochastik.md)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
 

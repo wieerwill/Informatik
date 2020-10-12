@@ -4,15 +4,16 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 
 bisher:
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
+- [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md) (ongoing)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
-- [Neuroinformatik](Neuroinformatik.md)
+- [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - [Programmierparadigmen](Programmierparadigmen.md)
 - [Rechnerarchitekturen 1](Rechnerarchitekturen%201.md)
-- [Stochastik](Stochastik.md)
+- [Stochastik](Stochastik.md) (ongoing)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
 

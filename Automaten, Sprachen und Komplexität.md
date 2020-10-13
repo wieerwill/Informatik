@@ -1,5 +1,5 @@
 ---
-title: automaten, Sprachen und Komplexität
+title: Automaten, Sprachen und Komplexität
 date: Wintersemester 20/21
 author: Robert Jeutter
 ---
@@ -15,7 +15,7 @@ bzw
 Wo ist die grenze der Problemlösung mit unseren Resourcen?
 
 ## Probleme (als Abbildung)
-f: menge der mögl Eingaben $\rightarrow$ Menge der mögl Ausgaben
+f: Menge der mögl Eingaben $\rightarrow$ Menge der mögl Ausgaben
 
 Spezialfall A={0,1} heißt Entscheidungsproblem. Sie ist gegeben durch die Menge der Eingaben. 
 

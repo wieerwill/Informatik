@@ -5,6 +5,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 bisher:
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md) (ongoing)
+  - [Flashcards - Karteikarten für Definitionen](Automaten,%20Sprachen%20und%20Komplexität%20-%20Flashcards.pdf) (ongoing)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)

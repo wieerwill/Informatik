@@ -34,8 +34,8 @@ Natürliche Zahlen $\N = {0,1,2,3,...}$
 
 > Definition: Ein Alphabet ist eine endliche nichtleere Menge.
 
-üblicherweise heißen Alphabete hier: $\Sum, \Gamma, \Delta$
-Ist $\Sum$ Alphabet, so nennen wir die Elemente oftBuchstaben.
+üblicherweise heißen Alphabete hier: $\sum, \Gamma, \Delta$
+Ist $\Sum$ Alphabet, so nennen wir die Elemente oft Buchstaben.
 Ist $\Sum$ ein Alphabet, so heißen die Elemente von $\Sum*$ auch Wörter über $\Sum$ (auch String/Zeichenkette)
 
 Beispiele:

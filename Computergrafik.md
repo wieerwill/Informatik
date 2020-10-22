@@ -213,8 +213,72 @@ Richtungsvektoren können als Differenz zweier Ortsvektoren hergeleitet werden. 
 
 Eine Translations-Matrix wirkt sich nur auf Ortsvektoren aus. Richtungsvekoren bleiben bei Translation unverändert. Da bei der Berechnung nicht zwischen Orts- und Richtungsvektoren unterschiedenwerden lassen sich verknüpfte Transformationen effizient berechnen.
 
-### Zusammenfassung
+### Zusammenfassung bisher
 - durch den "Kunstgriff" werden Transformationen vereinheitlicht und damit vereinfacht
 - 2D kartesische Vektoren werden im 3D homogenen Vektorraum dargestellt
 - wichtige Transformationen können einheitlich durch 3x3 Matrizen dargestellt werden
 - Orts- und Richtungsvektoren werden unterschiedlich dargestellt aber mit der selben Transformationsmatrix automatisch korrekt und effizient transformiert.
+
+## Homogene Transformation in 3D
+Analog zum 2D Fall wird der Vektorraum um eine zusätzliche Dimension erweitert (Koordinate w).
+
+3 Dimensionale kartesische koordinaten werden durch eine 4-dimensionale homogeen Vektorraum repräsentiert; er wird als 4-Tupel dargestellt. In vielen Anwendungsfällen wir w=1 gewählt (karteische Hyperebene).
+
+Affine Abbildungen lassen die w-Koordinate unverändert
+
+### Ebenen
+- lassen sich grundsätzlich auch als Referenzpunkt und Richtung speichern
+- für Berechnungen ist folgende Repräsentation sinnvoll: (a,b,c,d) wobei (a,b,c)=(nx,ny,nz) und d der Abstand der Ebene zum Ursprung. Dann ist für einen in der Ebene enthaltenen Punkt das Skalarprodukt aus Ebene und Punkt gleich 0
+
+1. Ebene definiert durch 3 Punkte
+   $$\begin{pmatrix}
+    x_1 & x_2 & x_3 & 0\\
+    y_1 & y_2 & y_3 & 0\\ 
+    z_1 & z_2 & z_3 & 0\\
+    1 & 1 & 1 & 1
+    \end{pmatrix}$$
+2. Translation um Vektor $(\Delta x, \Delta y,\Delta z)$
+   $$\begin{pmatrix}
+    1 & 0 & 0 & \Delta x\\
+    0 & 1 & 0 & \Delta y\\ 
+    0 & 0 & 1 & \Delta z\\
+    0 & 0 & 0 & 1
+    \end{pmatrix}$$
+3. Skalierung um Faktor $F_x,F_y,F_z$
+   $$\begin{pmatrix}
+    F_y & 0 & 0 & 0\\
+    0 & F_y & 0 & 0\\ 
+    0 & 0 & F_z & 0\\
+    0 & 0 & 0 & 1
+    \end{pmatrix}$$
+4. Rotation um z-Achse
+   $$\begin{pmatrix}
+    cos(\theta) & -sin(\theta) & 0 & 0\\
+    sin(\theta) & \cos(\theta) & 0 & 0\\ 
+    0 & 0 & 1 & 0\\
+    0 & 0 & 0 & 1
+    \end{pmatrix}$$
+5. Rotation um die x-Achse
+   $$\begin{pmatrix}
+    1 & 0 & 0 & 0\\
+    0 & cos(\theta) & -sin(\theta) & 0\\ 
+    0 & sin(\theta) & cos(\theta) & 0\\
+    0 & 0 & 0 & 1
+    \end{pmatrix}$$
+6. Rotation um die y-Achse
+   $$\begin{pmatrix}
+    cos(\theta) & 0 & sin(\theta) & 0\\
+    0 & 1 & 0 & 0\\ 
+    -sin(\theta) & 0 & cos(\theta) & 0\\
+    0 & 0 & 0 & 1
+    \end{pmatrix}$$
+
+### Kommutativität
+allgemein sind Transformationen nicht kommutativ; außnahme bilden zwei Rotationen um die selbe Achse
+
+### Kameratransformation
+Kamera ist definiert durch
+- Lage des Augpunktes E (in Weltkoordinaten)
+- Blickrichtung D
+- Oben-Vektor U ("view up vector", senkrecht zu D)
+

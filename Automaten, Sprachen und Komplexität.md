@@ -172,3 +172,84 @@ Bemerkung:
 
 > Satz: Es gibt einen Algorithmus, der als Eingabe eine Typ-1-Grammatik G und ein Wort w bekommst und nach endlicher Zeit entscheidet ob $w\in L(G)$ gilt.
 
+
+# Rechtslineare Sprachen
+werden durch Typ 3 erzeugt
+
+## endliche Automaten (Maschinen)
+anderer blickwinkel für rechtslineare Sprachen (ohne Speichereinheit)
+Eingabe: Folge von " Buchstaben"
+
+> Definition: ein deterministischer endlicher Automat M ist ein 5-Tupel $M=(Z, \sum, z_0, \delta, E)$
+- $Z$ eine endliche Menge von Zuständen
+- $\sum$ das Eingabealphabet (mit $Z\cap\sum = \varemtpy$)
+- $z_0\inZ$ der Start/Anfangszustand
+- $\delta: Z \times \sum \rightarrow Z$ die Überführungs/Übergangsfunktion
+- $E\subseteq Z$ die Menge der Endzustände
+
+Abkürzung: DFA (deterministic finite automaton)
+
+Bsp:
+- $Z={0,1}$
+- $\sum={a,b$}
+- $z_0=0$
+- $\delta(0,a)=\delta(1,b)=1, \delta(1,a)=\delta(0,b)=0$
+- $E={0}$
+- 
+in DFA darf es nur einen einzigen Startzustand geben!
+im Graphendiagramm: jeder Knoten hat die anzahl der alphabete als kanten
+
+die (einmal lesende) $\delta$ Funktion wird verallgemeinert: $\roof{\delta}$, die die Übergänge für ganze Wörter ermittelt
+
+> Definition: Zu einem gegebenen DFA definieren wir die Funktion $\roof{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
+- $\roof{\delta}(z, \epsilon) = z$
+- $\roof{\delta}(z,aw)= $\roof{\delta}(\delta(z,a),w)$
+
+Der Zustand $\rrof{\delta)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
+
+> Definition: die von einem DFA **akzeptierte Sprache** ist: $L(M)={w\in\sum^* | \roof{\delta}(z_0,w)\in E}$
+
+d.h. wenn der Pfad der im Anfangszuststand beginnt nach den Übergangen durch w-markierte Pfade in einem Endzustand endet
+
+> Definition: EIne Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA #####################################
+(wird von einem DFA akzeptiert)
+
+
+> Proposition: Jede reguläre Sprache ist rechtslinear
+Beweis: sei M ein DFA, definiere eine Typ-3 Grammatik G wie folgt:
+- $V=Z$
+- $S=z_0$
+- $P={z\rightarrow a \delta(z,a) | z\in Z, a\in \sum} \cup {z\rightarrow \epsilon | z\in E}$ (Regeln abgeleitet aus Graphen mit Kanten; letzte Regel um ENdzustand in ein Terminal zu wandeln).
+
+Behauptung: für alle $z,z'\inZ$ und $w\in \sum^*$ gilt: $z\Rightarrow^*_G wz' \Leftrightarrow \roof{\delta} (z,w)=z'$. Beweis durch Induktion über $|w|$.
+Für $w\in\sum^*$ gilt dann $w\in L(G) \Leftrightarrow \exist z\in V: z_0\Rightarrow^*_G wz \Rightarrow_G w \Leftrightarrow \exists z\in Z:\roof{\delta}(z_o, w)=z$ und $Zz\rightarrow \epsilon)\in P \leftrightarrow \roof{\delta}(z_0, w)\in E \leftrightarrow w\in L(M)$
+
+ALso ist $L(M)=L(G)$ und damit rechtslinear
+
+DFAs sind deterministisch, Grammatiken nichtdeterministisch
+
+erweiterte DFA um Nichtdeterminismus zu NFAs (nichtdeterministic finite automaton)
+
+> Definition: ein nichtdeterministischer endlicher Automat M ist ein 5-Tupel $M=(Z,\sum,S,\delta,E)$ mit
+- $Z$ ist eine endliche Menge von Zuständen
+- $\sum$ ist das Eingabealphabet
+- $S\subseteq Z$ die Menge der Startzustände (können mehrere sein)
+- $\delta: Z \times \sum \rightarrow P(Z)$ ist die (Menge der) Überführungs/Übergangsfunktion
+- $E\subseteq Z$ die Menge der Endzustände
+
+$P(Z)={Y | Y \subseteq Z}$ ist die Potenzmenge von Z (die Menge aller Teilmengen von Z). Diese Menge wird manchmal auch mit "2^Z$ bezeichnet
+
+Bsp
+- $\delta={2,3}$ heißt aus einem Zustand gibt es zwei mögliche Wege mit gleicher belegung
+- $\delta=\varemtpy$ heißt es gibt keinen Weg aus dem Zustand
+
+> Definition: Zu einem gegebenen NFA M definieren wir die Funktion $\roof{\delta}:P(Z)\times \sum^* \rightarrow P(Z)$ induktiv wie folgt, woebei $Y \subseteq Z$, $w\in \sum^*$ und $a\in\sum$: $\roof{\delta}(Y,\epsilon)=Y$, $\roof{\delta}(Y,aw)=\roof{delta}(\bigcup \delta(z,a),w)$
+
+> Definition: die von einem NFA M akzeptierte Sprache ist $L(M)={w\in \sum^* | \roof{\delta}(S,w)\cap E \not = \varemtpy}$
+( Das Wort wird akzeptiert wenn es mindestens einen Pfad vom anfangs in den endzustand gibt)
+
+> Proposition: Jede von einem NFA akzeptierte Sprache ist regulär
+Zustände des DFA sind Mengen von Zuständen des NFA, daher auch Potzenmengenkonstruktion
+
+$w\in L(M') \leftrightarrow \roof\gamma (S,w)\in F \leftrightarrow \roof\delta(S,w)ßcap E\not = \varempty \leftrightarrow w\in L(M)$ und damit $l(M')=L(M)$
+

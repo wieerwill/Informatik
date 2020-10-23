@@ -40,7 +40,7 @@ Ist $\Sum$ ein Alphabet, so heißen die Elemente von $\Sum*$ auch Wörter über 
 
 Beispiele:
 - Alphabete:{0},{0,1,2},...{A,K,S,0,1,2,3,4,5,6,7,8,9}, {groß,klein}
-- keine Alphabete: $\varempty, \N, \Q$
+- keine Alphabete: $\emptyset, \N, \Q$
 - Das Alphabet{0,1,2}hat also die drei Buchstaben 0, 1 und 2.
 - Das Alphabet{groß,klein}hat die zwei Buchstabengroßundklein
 - (0),()und(1,2,0,0) sind also Wörter über dem Alphabet{0,1,2}.
@@ -81,7 +81,7 @@ Beispiele:
   
 - Die Verkettung von Sprachen ist assoziativ
 - es gibt ein neutrales Element $\epsilon$
-- es gibt ein auslöschendes Element $\varempty$
+- es gibt ein auslöschendes Element $\emptyset$
 
 > Definition: Sei L Sprache und $n\in\N$. Dann ist $L^n$ induktiv definiert:
 $L^n = {\epsilon} \text{ falls } n=0; LL^{n-1} \text{ falls } n>0$
@@ -92,7 +92,7 @@ $L+ = L* L* = L* * L$
 
 Beobachtung: Sei $\Sum$ Alphabet.
 - Sind $L_1$ und $L_2$ Sprachen über $\Sum$, so auch die Verkettung $L_1L_2$, die Kleene-Iteration $L_1*$, die positive Iteration $L_1+$, die Vereinigung $L_1\cup L_2$, die Differenz $L_1 \ L_2$ und der Schnitt $L_1 \cap L_2$.
-- $\varempty, \Sum, \Sum*$ sind Sprachen über $\Sum$
+- $\emptyset, \Sum, \Sum*$ sind Sprachen über $\Sum$
 
 Prioritätsregeln für Operationen auf Sprachen
 - Potenz/Iteration binden stärker als Konkatenation
@@ -182,7 +182,7 @@ Eingabe: Folge von " Buchstaben"
 
 > Definition: ein deterministischer endlicher Automat M ist ein 5-Tupel $M=(Z, \sum, z_0, \delta, E)$
 - $Z$ eine endliche Menge von Zuständen
-- $\sum$ das Eingabealphabet (mit $Z\cap\sum = \varemtpy$)
+- $\sum$ das Eingabealphabet (mit $Z\cap\sum = \emptyset$)
 - $z_0\inZ$ der Start/Anfangszustand
 - $\delta: Z \times \sum \rightarrow Z$ die Überführungs/Übergangsfunktion
 - $E\subseteq Z$ die Menge der Endzustände
@@ -199,15 +199,15 @@ Bsp:
 in DFA darf es nur einen einzigen Startzustand geben!
 im Graphendiagramm: jeder Knoten hat die anzahl der alphabete als kanten
 
-die (einmal lesende) $\delta$ Funktion wird verallgemeinert: $\roof{\delta}$, die die Übergänge für ganze Wörter ermittelt
+die (einmal lesende) $\delta$ Funktion wird verallgemeinert: $\hat{\delta}$, die die Übergänge für ganze Wörter ermittelt
 
-> Definition: Zu einem gegebenen DFA definieren wir die Funktion $\roof{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
-- $\roof{\delta}(z, \epsilon) = z$
-- $\roof{\delta}(z,aw)= $\roof{\delta}(\delta(z,a),w)$
+> Definition: Zu einem gegebenen DFA definieren wir die Funktion $\hat{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
+- $\hat{\delta}(z, \epsilon) = z$
+- $\hat{\delta}(z,aw)= $\hat{\delta}(\delta(z,a),w)$
 
 Der Zustand $\rrof{\delta)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
 
-> Definition: die von einem DFA **akzeptierte Sprache** ist: $L(M)={w\in\sum^* | \roof{\delta}(z_0,w)\in E}$
+> Definition: die von einem DFA **akzeptierte Sprache** ist: $L(M)={w\in\sum^* | \hat{\delta}(z_0,w)\in E}$
 
 d.h. wenn der Pfad der im Anfangszuststand beginnt nach den Übergangen durch w-markierte Pfade in einem Endzustand endet
 
@@ -221,8 +221,8 @@ Beweis: sei M ein DFA, definiere eine Typ-3 Grammatik G wie folgt:
 - $S=z_0$
 - $P={z\rightarrow a \delta(z,a) | z\in Z, a\in \sum} \cup {z\rightarrow \epsilon | z\in E}$ (Regeln abgeleitet aus Graphen mit Kanten; letzte Regel um ENdzustand in ein Terminal zu wandeln).
 
-Behauptung: für alle $z,z'\inZ$ und $w\in \sum^*$ gilt: $z\Rightarrow^*_G wz' \Leftrightarrow \roof{\delta} (z,w)=z'$. Beweis durch Induktion über $|w|$.
-Für $w\in\sum^*$ gilt dann $w\in L(G) \Leftrightarrow \exist z\in V: z_0\Rightarrow^*_G wz \Rightarrow_G w \Leftrightarrow \exists z\in Z:\roof{\delta}(z_o, w)=z$ und $Zz\rightarrow \epsilon)\in P \leftrightarrow \roof{\delta}(z_0, w)\in E \leftrightarrow w\in L(M)$
+Behauptung: für alle $z,z'\inZ$ und $w\in \sum^*$ gilt: $z\Rightarrow^*_G wz' \Leftrightarrow \hat{\delta} (z,w)=z'$. Beweis durch Induktion über $|w|$.
+Für $w\in\sum^*$ gilt dann $w\in L(G) \Leftrightarrow \exist z\in V: z_0\Rightarrow^*_G wz \Rightarrow_G w \Leftrightarrow \exists z\in Z:\hat{\delta}(z_o, w)=z$ und $Zz\rightarrow \epsilon)\in P \leftrightarrow \hat{\delta}(z_0, w)\in E \leftrightarrow w\in L(M)$
 
 ALso ist $L(M)=L(G)$ und damit rechtslinear
 
@@ -241,15 +241,57 @@ $P(Z)={Y | Y \subseteq Z}$ ist die Potenzmenge von Z (die Menge aller Teilmengen
 
 Bsp
 - $\delta={2,3}$ heißt aus einem Zustand gibt es zwei mögliche Wege mit gleicher belegung
-- $\delta=\varemtpy$ heißt es gibt keinen Weg aus dem Zustand
+- $\delta=\emptyset$ heißt es gibt keinen Weg aus dem Zustand
 
-> Definition: Zu einem gegebenen NFA M definieren wir die Funktion $\roof{\delta}:P(Z)\times \sum^* \rightarrow P(Z)$ induktiv wie folgt, woebei $Y \subseteq Z$, $w\in \sum^*$ und $a\in\sum$: $\roof{\delta}(Y,\epsilon)=Y$, $\roof{\delta}(Y,aw)=\roof{delta}(\bigcup \delta(z,a),w)$
+> Definition: Zu einem gegebenen NFA M definieren wir die Funktion $\hat{\delta}:P(Z)\times \sum^* \rightarrow P(Z)$ induktiv wie folgt, woebei $Y \subseteq Z$, $w\in \sum^*$ und $a\in\sum$: $\hat{\delta}(Y,\epsilon)=Y$, $\hat{\delta}(Y,aw)=\hat{delta}(\bigcup \delta(z,a),w)$
 
-> Definition: die von einem NFA M akzeptierte Sprache ist $L(M)={w\in \sum^* | \roof{\delta}(S,w)\cap E \not = \varemtpy}$
+> Definition: die von einem NFA M akzeptierte Sprache ist $L(M)={w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset}$
 ( Das Wort wird akzeptiert wenn es mindestens einen Pfad vom anfangs in den endzustand gibt)
 
 > Proposition: Jede von einem NFA akzeptierte Sprache ist regulär
 Zustände des DFA sind Mengen von Zuständen des NFA, daher auch Potzenmengenkonstruktion
 
-$w\in L(M') \leftrightarrow \roof\gamma (S,w)\in F \leftrightarrow \roof\delta(S,w)ßcap E\not = \varempty \leftrightarrow w\in L(M)$ und damit $l(M')=L(M)$
+$w\in L(M') \leftrightarrow \roof\gamma (S,w)\in F \leftrightarrow \roof\delta(S,w)ßcap E\not = \emptyset \leftrightarrow w\in L(M)$ und damit $l(M')=L(M)$
+
+> Proposition: Zu jeder rechtslinearen Grammatik G gibt es einen NFA M mit $L(G)=L(M)$
+
+> Satz: Sei $\sum$ ein Alphabet und $L\subseteq \sum^*$ eine Sprache. Dann sind äquivalent
+> 1. L ist regulär (d.h. von einem DFA akzeptiert)
+> 2. L wird von einem NFA akzeptiert
+> 3. L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
+
+verschiedene Modelle zur Beschreibung regulärer  Sprachen:
+- *Rechtslineare Grammatiken*: Verbindung zu Chomsky-Hierarchie, erzeugen Sprachen, wenig geeignet für Entscheidung, ob Wort zu Sprache gehört
+- *NFAs*: kompakte Darstellungen von Sprachen, intuitive graphische Darstellung; wenig geeignet für Entscheidung, ob Wort zu Sprache gehört
+- *DFAs*:u.U. exponentiell größer als NFA bzw. Grammatik; gut geeignet für Entscheidung, ob Wort zu Sprache gehört
+
+> Definition: Gegeben sei eine Klasse K und ein n-stelliger Operator $\otimes : K^n \rightarrow K$. Man sagt, eine Klasse $K'\subseteq K$ ist unter $\otimes$ abgeschlossen, wenn für beliebige Elemente $k_1,k_2,...,k_n\in K'$ gilt $\otimes (k_1,k_2,...,k_n)\in K'$
+
+> Satz: Wenn $L\subseteq \sum^*$ eine reguläre Sprache ist, dann ist auch $\sum^* \backslash L$ regulär
+
+Beweis: Da L regulär ist, gibt es einen DFA M mit $L(M)=L$. In diesem vertauschen wir die End- und Nicht-Endzustände, d.h. $M'=(Z,\sum ,z_0, \delta, Z\backslash E)$. Dann gilt für $w\in\sum^*$:
+$$w\in\sum^* \backslash L \leftrightarrow w\not \in L(M) \leftrightarrow \hat{\delta}(z_0, w)\not \in E \leftrightarrow \hat{\delta}(z_0, w)\in Z\backslash E \leftrightarrow w\in L(M')$$
+
+> Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1 \cup L_2$ regulär.
+
+Beweis: Es gibt NFAs M für $i=1,2$ mit $L(M_i)=L_i$: $M=(Z_1 \cup Z_2, \sum, S_1\cup S_2, \delta, E_1\cup E_2)$ wobei $\delta(z,a)=\delta_1(z,a) \text{ für } z\in Z_1; \delta_2(z,a) \text{ für } z\in Z_2$
+
+> Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1 \cap L_2$ regulär.
+
+Beweis: es gilt $L_1 \cap L_2 = \overline{\overline{L_1}\cup \overline{L_2}}$ und die Klasse der regulären Sprache unter Komplement und Vereinigung ist abgeschlossen.
+
+Bemerkung: wird $L_i$ von dem NFA M akzeptiert so existiert ein DFA mit $2^{2 |Z_1| + 2 |Z_2|}$ Zuständen, der $L(M_1)\cap L(M_2)$ akzeptiert. Es gibt eine Konstruktion die mit $|Z_1|*|Z_2|$ Zuständen auskommt.\\
+In dieser Konstruktion werden die zwei Automaten miteinander synchronisiert und quasi "parallelgeschaltet". Dies erfolgt durch das Bilden des Kreuzprodukt. Seien $M_i$ NFAs mit $L(M_i)=L_i$. Betrachte den NFA $M=(Z_1 \times Z_2, \sum, S_1 \times S_2, \delta, E_1 \times E_2)$
+
+
+> Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1L_2$ regulär
+
+Beweis: Es gibt NFAs $M_i$ mit $L(M_i)=L_i$ o.B.d.A $Z_1\cap Z_2 =\emptyset$. Verknüpfe nun $M_1$ und $M_2$ sequentiell zu einem NFA $M=(Z_1 \cup Z_2, \sum, S,\delta, E_2)$. 
+
+$$S=\begin{cases} S_1 &\quad\text{ für } \epsilon \not = L_1 \\ S_1\cup S_2 &\quad\text{ für } \epsilon \in L_1 \end{cases}$$
+
+$$\delta(z,a)= \begin{cases} 
+\delta_2(z,a) &\quad\text{für } z\in Z_2 \\ 
+\delta_1(z,a) &\quad\text{für } z\in Z_1 \text{ mit } \delta_1\cap E_1 =\emptyset \\ 
+\delta_1(z,a)\cup S_2 &\quad\text{für } z\in Z_1 \text{ mit } E_1 \not = \emptyset \end{cases}$$
 

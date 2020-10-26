@@ -35,7 +35,17 @@ Programmiermodelle
 > Unter dem CPI (cycles per instruction) -Wert einer Menge von Maschinenbefehlen versteht man die mittlere Anszahl der Taktzyklen pro Maschinenbefehl
 
 
+Master-Slave Flip-Flops
+- Master übernimmt Wert bei steigender Taktflanke
+- Slave übernimmt Wert bei fallender Taktflanke
+- Instruktionszyklus beginnt bei fallender Taktflanke
+
+
+P39 16-Bit Operandten version i statt r
+
+
 # Prozessorarchitektur
+
 
 
 # Speicherarchitektur

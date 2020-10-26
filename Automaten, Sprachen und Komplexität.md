@@ -295,3 +295,80 @@ $$\delta(z,a)= \begin{cases}
 \delta_1(z,a) &\quad\text{für } z\in Z_1 \text{ mit } \delta_1\cap E_1 =\emptyset \\ 
 \delta_1(z,a)\cup S_2 &\quad\text{für } z\in Z_1 \text{ mit } E_1 \not = \emptyset \end{cases}$$
 
+> Satz: Wenn L eine reguläre Sprache ist, dann ist auch $L^+$ regulär
+
+Beweis: es gibt einen NFA M mit $L(M)=L$
+
+Betrachte den NFA M' mit $\begin{cases}
+\delta(z,a) &\text{ falls } \delta(z,a)\cap E = \varemtpy \\
+\delta(z,a)\cup S &\text{ sonst } \end{cases}$
+
+
+> Satz: Wenn L eine reguläre Sprache ist, dann ist auch $L^*$ regulär.
+
+Beweis: Nach dem Lemma zuvor ist $L^+$ regulär. Da auch ${\epsilon}$ regulär ist folgt mit ${\epsilon}\cup L^+ = L^0 \cup \bigcup L^n = L^*$
+
+## Reguläre Ausdrücke
+reguläre Ausdrücke erlauben es, die regulären Sprachen kompakt in "Textform" zu beschreiben
+
+> Definition: Die Menge $Reg(\sum)$ der **regulären Ausdrücke über dem Alphabet $\sum$** ist die kleinste Menge mit folgenden Eigenschaften:
+> - $\varempty \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+> - Wenn $\alpha, \betaa \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+
+- für $\alpha * \beta$ schreibt man oft $\alpha\beta$
+- für $\alpha + \beta$ schreibt man auch $\alpha|\beta$
+
+Beispiel: $\sum={a,b,c,d}: \lambda ((ab)b) ((a+d)a) ((((ab)a)) + ((ba)b*))$
+
+> Definition: Für einen regulären Ausdruck $\alpha \in Reg(\sum)$ ist die Sprache $L(\alpha)\subseteq \sum^*$ induktiv definiert
+$$L(\alpha)=\begin{cases}
+\varemtpy &\text{ falls } alpha=\not O \\
+{\epsilon} &\text{ falls } \alpha = \lambda \\
+{a} &\text{ falls } \alpha=a\in \sum \\
+L(\beta)\cup L(\gamma) &\text{ falls } \alpha =(\beta + \gamma)\\
+L(\beta)L(\gamma) &\text{ falls } \alpha=(\beta*\gamma)\\
+(L(\beta))^* &\text{ falls } \alpha=(\beta^*)
+\end{cases}$$
+
+Klammern sparen:
+- äußere Klammern weglassen
+- bei Operatoren auf gleicher Ebene weglassen
+
+Präferenzregel:
+- $^x$ bindet stärker als $*$
+- $*$ bindet stärker als $+$
+
+Wo tauchen reguläre Ausdrücke auf:
+- Suchen und Ersetzten
+- Pattern Matching
+- Übersetzung (von Programmiersprachen)
+
+> Proposition: zu jedem regulären Ausdruck $\gamma$ gibt es einen NFA M mit $L(\gamma)=L(M)$
+
+Beweis: per Induktion über den Aufbau von $\gamma$
+
+> Proposition: zu jedem DFA M gibt es einen regulären Ausdruck $\gamma$ mit $L(M)=L(\gamma)$
+
+Beweis: Sei M ein DFA. Konstruiere einen regulären Ausdruck mit $\gamma$ mit $L(M)=L(\gamma)$. Für ein Wort $w\in \sum^*$ sei $Pref(w)={u\in\sum^* | \exists v:w = uv, \epsilon\not= u\not= w}$ die Menge aller nicht-leeren echten Präfixe von w.
+
+Sei $L\subseteq \sum^*$ eine Sprache, dann sind äquivalent
+- L ist regulär, d.h. es gibt einen DFA M mit $L(M)=L$
+- es gibt einen NFA M mit $L(M)=L$
+- L ist rechtslinear, d.h. es gibt eine rechtslineare Grammatik G mit $L(G)=L$
+- Es igbt einen regulären Ausdruck $\gamma$ mit $L(\gamma)=L$
+
+## Zusammenfassung
+- Rechtslineare Grammatiken
+  - Verbindung zur Chomsky Hierarchie
+  - erzeugen Sprachen
+  - nicht geeignet, um zu entscheiden, ob ein gegebenes Wort zur Sprache gehört
+- NFA
+  - erlauben kleine Kompakte Darstellung
+  - intuitive graphische Notation
+  - nicht geeignet, um zu entscheiden, ob ein gegebenes Wort zur Sprache gehört
+- DFA
+  - für effiziente Beantwortung der Frage, ob ein Wort zur Sprache gehört
+  - sind uU exponentiell größer als NFA
+- Reguläre Ausdrücke
+  - erlauben kompakte Darstellung in Textform
+

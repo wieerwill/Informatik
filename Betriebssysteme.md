@@ -199,3 +199,92 @@ durch
 1. Freigabe der Ressourcen
 2. Benachrichtigung der "Eltern"
 3. Adoption der "Kinder"
+
+## Threads
+Naive Lösung: für jede nebenläufige Aktivität einen Prozess erstellen. Jedoch hat ein Prozess:
+- Kosten des Managements
+- kosten der isolation
+- Kosten der Kommunikation
+
+$\rightarrow$ Parallelität mittels Prozessen ist teuer (revidiertes Prozessmodell)
+
+Daher suche nach kostengünstigerem Modell zur Parallelisierung nebenläufiger Aktivitäten
+
+> Definition Prozess: Ein (Multithread-) Prozess ist eine vollständige Beschreibung einer ablaufenden Aktivität. Dazu gehört insbesondere 
+> 1. Das ablaufende Programm
+> 2. zugeordnete Betriebsmittel
+> 3. Rechte
+> 4. prozessinterne parallele Aktivitäten (Threads) und ihre Bearbeitungszustände
+
+> Definition Thread: ist eine sequenzielle Aktivität im Betriebsmittelkontext (d.h. innerhalb) eines Prozesses
+
+parallele Aktivitäten innerhalb eines Prozesses werden durch parallele Threads repräsentiert.
+
+Anmerkung:
+1. **Eigentümer von Ressourcen und Rechten** sind immer noch prozesse
+2. das **Programm eines Prozesses** kann nun Code für mehr als eine sequenzielle Aktivität enthalten
+3. **Gegenstand der Prozesszuteilung** sind nun Threads
+4. das **ursprüngliche Prozessmodell** ist eine Spezialisierung dieses Modells (ein Prozess mit genau einem Thread)
+5. ein **Prozessdescriptor** (PCB) eines Multithread-Prozessmodells enhält alle Informationen des PCBs eines Single-Thread-Prozessmodells plus Informationen über alle seine Threads
+6. ein **TCB** enthält lediglich den Threadszustand und den Ablaufkontext
+
+Threads werden daher oft als *Leichtgewichtprozesse* bezeichnet
+
+
+Threads treten in verschiedenen Varianten auf
+1. komfortabel (integriert in Programmiersprache)
+2. "zu Fuß" (durch Bibiliotheken oder API)
+
+Implementierungsebenen
+1. Prozessmodell des Betriebssystems ist Multithread Modell
+   - Thread Implementierung im Betriebssystem
+   - das Betriebssystem hat Kenntnis über Threads
+   - Kernel Level Threads (KLTs)
+2. Prozessmodell des Betriebssystems ist Single-Thread-Modell
+   - Thread Implementierung auf Anwendungsebene
+   - nur auf Endbenutzer-Ebene ist Kenntnis über Threads
+   - User Level Thread (ULTs)
+
+| Pro KLT | Pro ULT |
+| Performanz durch Parallelität | Performanz durch geringen Overhead |
+| Nutzung von Mehrprozessor/Mehrkernarchitektur | Thread Management ohne Systemaufrufe | 
+| ein blockierender Systemaufruf in einem Thread blockiert nicht auch gleichzeitig alle anderen Threads des gleichen Prozesses | Thread Umschaltung ohne Mitwirkung des Betriebssystems |
+| | Individualität: anwendungsindividuelle Thread Schedulingstrategien möglich | 
+| | Portabilität | 
+
+es gibt Work-Arounds: alle gefählrichen Systemaufrufe einpacken (in Pakete)
+
+Wahl zwischen ULT- und KLT hängt ab von:
+1. Vorraussetzung: Prozessmodell des Betriebssystems Multithread Modell?
+2. Anwendungsprofil: E/A-Profil, Parallelität, Portabilität, Individualität
+
+# Scheduling
+## Das Problem
+Anzahl der Aktivitäten >> Anzahl der Prozessoren
+- nicht alle können gleichzeitig arbeiten
+- eine Auswahl muss getroffen werden
+- Auswahlstrategie: Schedunling-Strategie/Algorithmus
+- die Betriebssystem Komponente Scheduler
+- Ziel: Effizientes Ressourcenmanagement
+
+Threads können
+- aktiv sein (besitzt einen Prozessor)
+- rechenbereit sein (Bsp. hätte gerne einen Prozessor)
+- kurzfristig warten (Bsp. benötigt keinen Prozesoor aber Arbeitsspeicher)
+- langfristig warten (Bsp. benötigt länger keinen Prozessor/Arbeitsspeicher)
+
+Folge: effizientes Ressourcenmanagement benötigt präzise Informationen über Threadzustände.
+
+## Aufgabe der Zustandsmodelle
+Beschreibung:
+- des Ablaufzustands von Threads (aktiv/bereit/wartend)
+- der mögliche Zustandsübergänge (z.B. bereit->aktiv)
+
+Nutzung
+- jeder Thread ist zu jedem Zeitpunkt in genau einem dieser Zustände
+- jeder Thread wechselt seinen Zustand gemäß der im Modell definierten Zustandsübergänge, hervorgerufen durch z.B. Zuteilung eines Prozessors
+- Ressourcenmanagement: nutz Zustand als Informationsquelle für Entscheidungen
+
+Beschreibungsmittel: endliche deterministische Automaten
+- Menge der annehmbaren Zustände ist endlich
+- Folgezustand ist immer eindeutig bestimmt

@@ -372,3 +372,89 @@ Sei $L\subseteq \sum^*$ eine Sprache, dann sind äquivalent
 - Reguläre Ausdrücke
   - erlauben kompakte Darstellung in Textform
 
+## Nicht-Reguläre Sprachen
+ist vielleicht jede Sprache regulär? Zeige für jede Alphabet $\sum$
+1. es gibt nur abzählbar unendlich viele Sprachen über $\sum$, die Sprache einer Grammatik sind
+2. Es gibt überabzählbar viele Sprachen über $\sum$
+
+> Lemma: Für jedes Alphabet $\sum$ ist die Menge ${L(G) | \text{G Grammatik über} \sum}$ abzählbar unendlich.
+
+$|P(\sum^*)\cap RE|=|RE|=|\N|$
+
+> Satz: Für jedes Alphabet $\sum$ ist die Menge $P(\sum^*)={L|L \text{Sprache über} \sum}$ überabzählbar, d.h. es gibt keine bijektive Funktion $F:\N \rightarrow P(\sum^*)$.
+
+Beweis: Indirekt "Diagonalisierung"
+
+> Korollar: Für jedes Alphabet $\sum$ existiert eine Sprache L über $\sum$, die von keiner Grammatik G erzeugt wird.
+
+### Konkrete nicht-reguläre Sprachen
+Um zu zeigen, dass eine konkrete Sprache L regulär ist, kann man
+- einen NFA M angeben mit $L(M)=L$, oder
+- eine rechtslineare Grammatik G angeben mit $L(G)=L$, oder
+- einen regulären Ausdruck $\gamma$ angeben mit $L(\gamma)=L$, oder
+- zeigen, dass $L=L_1 \cap L_2$ ist und $L_1$ und $L_2$ regulär sind, oder
+- ...
+
+### Pumping Lemma (auswendig lernen!)
+Wenn L eine reguläre Sprache ist, dann gibt es $n\leq 1$ derart, dass für alle $x\in L$ mit $|x|\geq n$ gilt: es gibt Wörter $u,v,w \in \sum^*$ mit:
+1. $x=uvw$
+2. $|uv|\leq n$
+3. $|v|\geq 1$
+4. $uv^i w\in L$ für alle $i\geq 0$
+
+Dieses Lemma spricht nicht über Automaten, sondern nur über die Eigenschaften der Sprache.
+
+### Myhill-Nerode Äquivalenz
+[...]
+
+Der Index $index(R)$ von R ist die Anzahl der Äquivalenzklassen von R.
+
+> Satz von Myhill-Nerode: Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$
+(d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat)
+
+Beweis:
+- "$Rightarrow$": Sei L regulär -> es gibt DFA M mit $L(M)=L$;
+- "$Leftarrow$": sei $index(R_L)< \infty$;
+
+## Minimalautomat
+Es gibt bekanntlich sehr verschiedene endliche Beschreibungen einer regulären Sprache. Diese können ineinander übersetzt werden aber eine einzelne Sprache kann auch durch verschiedene DFAs dargestellt werden.
+
+Gibt es einen "besten DFA" bzw was macht einen Automaten besser? D.h. gibt es einen DFA mit möglichst wenig Zuständen?
+
+> Definition: Ein DFA M heißt reduziert, wenn es für jeden Zustand $z \in Z$ ein Wort $x_z\in \sum^*$ gibt mit $\hat{\sigma}(l, x_z)=z$
+
+Wenn in einem DFA M aus Startzustand X und Y dieselben Sprachen akzeptiert werden, heißen diese "erkennungsäquivalent" und werden "verschmolzen" (es entsteht M'). M und M' akzeptieren diesselbe Sprache. Sind keine Zustände mehr erkennungsäquivalent können keine weiteren verschmolzen werden und es gibt keinen DFA der mit weniger Zuständen L(M) akzeptiert
+
+> Definition: Sei M ein DFA. Zwei Zustände $z,z'\in Z$ heißen erkennungsäquivalent (in Zeichen $z\equiv z'$) wenn für jedes Wort $w\in \sum^*$ gilt: $\hat{\sigma}(z,w)\in E \leftrightarrow \hat{\sigma}(z',w)\in E$
+
+> Lemma: Sei M ein DFA, $z,z'\in Z$ und $a\in \sum$:
+> - $\equiv$ ist eine Äquivalenzrelation auf Z
+> - $z\equiv z'$ impliziert $(z\in E \leftrightarrow z'\in E)$
+> - $z\equiv z'$ impliziert $\hat{\sigma}(z,a)\equiv \sigma(z',a)$
+
+> Definition: Sei M ein DFA. Dann ist $M'=(Z\/_{\equiv},\sum, [z_0],\sigma', E')$ mit
+> - $\sigma'([z],a)=[\sigma (z,a)]$ für $z\in Z$ und $a\in \sum$ und
+> - $E'=\{[z]|z\in E\}
+> der Quotient von M bzgl $\equiv$
+(es wird nicht mehr jeder einzelne Fall betrachtet sondern "ganze Gruppen"; Bsp Sitz->Reihe)
+
+> Lemma: Ist M ein DFA und M' sein Quotient bzgl. $\equiv$, so ist M' ein DFA mit $L(M)=L(M')$
+
+Es bleibt zu zeigen, dass $\sigma'$ wohldefiniert ist $\rightarrow z\equiv z' \rightarrow \sigma (z,a)\equiv \sigma (z',a) \rightarrow [\sigma (z,a)]=[\sigma (z',a)]$. Also ist M' tatsächlich ein DFA.
+
+> Definition: Seien $M_i$ DFAs und $f:Z_1 \rightarrow Z_2$ eine Funktion. Dann ist f ein Homomorphismus von $M_1$ auf $M_2$, falls gilt:
+> - $f(l_1)=l_2$
+> - $f(\sigma_1(z,a))=\sigma_2(f(z),a)$ für alle $z\in Z_1$ und $a\in \sum$
+> - $z\in E_1 \leftrightarrow f(z)\in E_2$ für alle $z\in Z_1$ (bildet Endzustände aufeinander ab)
+
+> Satz: Seien $M_i$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Sei weiter $M_2'$ der Quotient von $M_2$ bzgl $\equiv$. Dann existiert ein surjektiver Homomorphismus von $M_1$ auf $M_2'$
+
+- die Abbildung f ist surjektiv (auf $M_2$). Und damit ist $M_2 < M_1$
+- die Abbildung f ist ein Homomorphismus
+
+> Satz: Seien $M_1$ und $M_2$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Sei $M_1'$ der Quotient von M bzgl $\equiv$
+> - $M_2$ hat wenigstens so viele Zustände wie $M_1'$
+> - Hat $M_2$ genauso viele Zustände wie $M_1'$, so sind $M_2$ und $M_1'$ bis auf Umbennenung der Zustände identisch (sie sind Isomorph)
+
+> Folgerung: Seien $M_1$ und $M_2$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Seien $M_1'$ und $M_2'$ die Quotienten bzgl $\equiv$. Dann sind $M_1'$ und $M_2'$ isomorph, d.h. für jede reguläre Sprache gibt es (bis auf Umbenennung der Zustände) genau einen minimalen DFA
+

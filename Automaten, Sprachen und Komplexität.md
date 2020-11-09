@@ -303,6 +303,8 @@ Betrachte den NFA M' mit $\begin{cases}
 \delta(z,a) &\text{ falls } \delta(z,a)\cap E = \varemtpy \\
 \delta(z,a)\cup S &\text{ sonst } \end{cases}$
 
+Behauptung: für alle $Y\subseteq Z$ und $w\in\sum^+$ gilt $\top{\sigma}(Y,w)=\top{sigma}(Y,w)\cup \bigcup \top{\sigma}(S, u_n)$
+
 
 > Satz: Wenn L eine reguläre Sprache ist, dann ist auch $L^*$ regulär.
 
@@ -335,13 +337,13 @@ Klammern sparen:
 - bei Operatoren auf gleicher Ebene weglassen
 
 Präferenzregel:
-- $^x$ bindet stärker als $*$
-- $*$ bindet stärker als $+$
+- $*$ bindet stärker als $\times$
+- $\times$ bindet stärker als $+$
 
 Wo tauchen reguläre Ausdrücke auf:
 - Suchen und Ersetzten
 - Pattern Matching
-- Übersetzung (von Programmiersprachen)
+- Übersetzung (von Programmiersprachen): Lexikalische Analyse
 
 > Proposition: zu jedem regulären Ausdruck $\gamma$ gibt es einen NFA M mit $L(\gamma)=L(M)$
 
@@ -355,7 +357,7 @@ Sei $L\subseteq \sum^*$ eine Sprache, dann sind äquivalent
 - L ist regulär, d.h. es gibt einen DFA M mit $L(M)=L$
 - es gibt einen NFA M mit $L(M)=L$
 - L ist rechtslinear, d.h. es gibt eine rechtslineare Grammatik G mit $L(G)=L$
-- Es igbt einen regulären Ausdruck $\gamma$ mit $L(\gamma)=L$
+- Es gibt einen regulären Ausdruck $\gamma$ mit $L(\gamma)=L$
 
 ## Zusammenfassung
 - Rechtslineare Grammatiken
@@ -377,13 +379,13 @@ ist vielleicht jede Sprache regulär? Zeige für jede Alphabet $\sum$
 1. es gibt nur abzählbar unendlich viele Sprachen über $\sum$, die Sprache einer Grammatik sind
 2. Es gibt überabzählbar viele Sprachen über $\sum$
 
-> Lemma: Für jedes Alphabet $\sum$ ist die Menge ${L(G) | \text{G Grammatik über} \sum}$ abzählbar unendlich.
+> Lemma: Für jedes Alphabet $\sum$ ist die Menge $\{L(G) | \text{G Grammatik über} \sum\}$ abzählbar unendlich.
 
 $|P(\sum^*)\cap RE|=|RE|=|\N|$
 
 > Satz: Für jedes Alphabet $\sum$ ist die Menge $P(\sum^*)={L|L \text{Sprache über} \sum}$ überabzählbar, d.h. es gibt keine bijektive Funktion $F:\N \rightarrow P(\sum^*)$.
 
-Beweis: Indirekt "Diagonalisierung"
+Beweis: Indirekte "Diagonalisierung" auf die bijektive Funktion $F:\N\rightarrow P(\sum^*)$
 
 > Korollar: Für jedes Alphabet $\sum$ existiert eine Sprache L über $\sum$, die von keiner Grammatik G erzeugt wird.
 
@@ -402,19 +404,40 @@ Wenn L eine reguläre Sprache ist, dann gibt es $n\leq 1$ derart, dass für alle
 3. $|v|\geq 1$
 4. $uv^i w\in L$ für alle $i\geq 0$
 
-Dieses Lemma spricht nicht über Automaten, sondern nur über die Eigenschaften der Sprache.
+Dieses Lemma spricht nicht über Automaten, sondern nur über die Eigenschaften der Sprache. Es ist geeignet, Aussagen über Nicht-Regularität zu machen. Dabei ist es aber nur eine notwendige Bedingung. Es kann nicht genutzt werden, um die Regularität einer Sprache L zu zeigen.
 
 ### Myhill-Nerode Äquivalenz
-[...]
+Ein zweites Verfahren um Nicht-Regularität zu zeigen. Dieses kann auch genutzt werden um Regularität zu beweisen. 
 
-Der Index $index(R)$ von R ist die Anzahl der Äquivalenzklassen von R.
+> Definition Myhill-Nerode-Äquivalenz: Für eine Sprache $L\subseteq \sum^*$ definieren wir eine binäre Relation $R_L \subseteq \sum^* \times \sum^*$ wie folgt: Für alle $x,y\in \sum^*$ setze $(x,y)\in R_L$ genau dann, wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt. Wir schreiben hierfür auch $x R_L y$.
+
+Beispiel: Gegeben sei die Sprache $L=\{ w\in \{a,b}^*: |w|_a gerade\}$. Seien $x,z\in \{a,b\}^*$. Betrachte zwei Fälle:
+- $|z|_a$ gerade: $xz\in L \leftrightarrow |xz|_a$ gerade $\leftrightarrow |x|_a$ gerade
+- $|z|_a$ ungerade: $xz\in L \leftrightarrow |xz|_a$ gerade $\leftrightarrow |x|_a$ ungerade
+also: $x R_L y \leftrightarrow |x|_a \equiv |y|_a$
+
+> Lemma: Sei $L \subseteq \sum^*$ eine Sprache
+> - die binäre Relation $R_L$ ist eine Äquivalenzrelation
+> - aus $x R_L y$ und $a\in\sum$ folgt $xa R_L ya$
+
+> Definition: Für eine Sprache L und ein Wort $x\in \sum^*$ ist $[x]_L=\{y\in\sum^* | x R_L y \}$ die Äquivalenzklasse von x. Ist L klar, so schreiben wir einfacher $[x]$.
+
+Beispiel Äquivalentklassen für $R_L$ mit der Sprache $L=\sum^*\{abc\}$
+- $[\epsilon]=\{w\in\{a,b,c}^* | kein nichtleerer Präfix von abc ist Suffix von w\}$
+- $[a]=\{w\in\{a,b,c}^* | w endet auf a\}$
+- $[ab]=\{w\in\{a,b,c}^* | w endet auf ab\}$
+- $[abc]=\{w\in\{a,b,c}^* | w endet auf abc\}$
+
+
+Der Index $index(R)$ von R ist die Anzahl der Äquivalenzklassen von R: $index(R)=|\{[x]:x \in A \} | \in \N \cup \{\infty\}$
 
 > Satz von Myhill-Nerode: Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$
 (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat)
 
 Beweis:
-- "$Rightarrow$": Sei L regulär -> es gibt DFA M mit $L(M)=L$;
-- "$Leftarrow$": sei $index(R_L)< \infty$;
+- "$Rightarrow$": Sei L regulär -> es gibt DFA M mit $L(M)=L$...
+- "$Leftarrow$": sei $index(R_L)< \infty$ -> Definiere einen DFA $M_L=(\{[x_1],...,[x_n]\},\sum,[\epsilon],\sigma,\{[w]|w\in L\})$
+  
 
 ## Minimalautomat
 Es gibt bekanntlich sehr verschiedene endliche Beschreibungen einer regulären Sprache. Diese können ineinander übersetzt werden aber eine einzelne Sprache kann auch durch verschiedene DFAs dargestellt werden.
@@ -442,7 +465,7 @@ Wenn in einem DFA M aus Startzustand X und Y dieselben Sprachen akzeptiert werde
 
 Es bleibt zu zeigen, dass $\sigma'$ wohldefiniert ist $\rightarrow z\equiv z' \rightarrow \sigma (z,a)\equiv \sigma (z',a) \rightarrow [\sigma (z,a)]=[\sigma (z',a)]$. Also ist M' tatsächlich ein DFA.
 
-> Definition: Seien $M_i$ DFAs und $f:Z_1 \rightarrow Z_2$ eine Funktion. Dann ist f ein Homomorphismus von $M_1$ auf $M_2$, falls gilt:
+> Definition: Seien $M_i$ DFAs (für $i\in\{1,2\}$) und $f:Z_1 \rightarrow Z_2$ eine Funktion. Dann ist f ein Homomorphismus von $M_1$ auf $M_2$, falls gilt:
 > - $f(l_1)=l_2$
 > - $f(\sigma_1(z,a))=\sigma_2(f(z),a)$ für alle $z\in Z_1$ und $a\in \sum$
 > - $z\in E_1 \leftrightarrow f(z)\in E_2$ für alle $z\in Z_1$ (bildet Endzustände aufeinander ab)
@@ -458,3 +481,78 @@ Es bleibt zu zeigen, dass $\sigma'$ wohldefiniert ist $\rightarrow z\equiv z' \r
 
 > Folgerung: Seien $M_1$ und $M_2$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Seien $M_1'$ und $M_2'$ die Quotienten bzgl $\equiv$. Dann sind $M_1'$ und $M_2'$ isomorph, d.h. für jede reguläre Sprache gibt es (bis auf Umbenennung der Zustände) genau einen minimalen DFA
 
+Um den minimalen DFA zu erhalten bildet man den Quotienten eines beliebigen zur Sprache passenden DFA.
+
+> Satz: Für einen reduzierten DFA M wird ein Paar ${z,z'}\subseteq Z$ mit $z\not = z'$ genau dann durch den Markierungsalgorithmus markiert werden, wenn $z\not \equiv z'$
+
+### Algorithmus Minimalautomat
+Eingabe: reduzierter DFA M\\
+Ausgabe: Menge der Paare erkennungsäquivalenter Zustände
+1. Stelle eine Tabelle aller ungeordneten Zustandspaare $\{z,z'\}$ mit $z\not = z'$ auf
+2. Markiere alle Paare $\{z,z'\}$ mit $z\in E$ und $z'\not\in E$
+3. Markiere ein beliebiges unmarkiertes Paar $\{z,z'\}$, für das es ein $a\in\sum$ gibt, sodass $\{\sigma(z,a),\sigma(z',a)\}$ bereits markiert ist (falls möglich)
+4. Wiederhole den vorherigen Schritt, bis sich keine Änderung in der Tabelle mehr ergibt
+
+> Satz: Für einen gegebenen reduzierten DFA M markiert der Minimierungsalgorithmus ein $\{z,z'\}(z,z'\in Z, z\not=z')$ genau dann, wenn $z\not\equiv z'$
+
+## Entscheidbarkeit
+Fragestellungen/Probleme für reguläre Sprachen
+
+### Wortproblem
+Gilt $w\in L$ für eine gegebene reguläre Sprache L und $w\in\sum^*$
+
+Eingabe: DFA M und $w\in\sum^*$
+
+Verfahren: Verfolge die Zustandsübergänge von M, die durch die Symbole $a_1,...,a_n$ vorgegeben sind.
+
+
+### Leerheitsproblem
+Gilt $L=\varemtpy$ für eine gegebene reguläre Sprache L?
+
+Eingabe: NFA M
+
+Verfahren: Sei $G=(Z,\rightarrow)$ der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in \sum: z'\in\sigma(z,a)$. Dann gilt $L(M)\not =\varemtpy$ genau dann, wenn es in dem Graphen G einen Pfad von einem Knoten aus S zu einem Knoten aus E gibt. Dies kann zB mit dem Algorithmus von Dijkstra entschieden werden.
+
+
+### Endlichkeitsproblem
+Ist eine gegebene reguläre Sprache L endlich?
+
+Eingabe: NFA M
+
+Verfahren: Sei $G=(Z,\rightarrow)$ wieder der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in\sum:z'\in\sigma(z,a)$. Dann gilt L(M) ist genau dann unendlich, wenn es $z\in Z,z_0\in S$ und $z_1\in E$ gibt mit $z_0\rightarrow^* z \rightarrow^+ z \rightarrow^* z_1$. D.h. z liegt auf einem Zyklus, ist von einem Startzustand aus erreichbar und von z kann ein Endzustand erreicht werden. Dies kann wieder mit dem Algorithmus von Dijkstra entschieden werden.
+
+### Schnittproblem
+Gilt $L_1\cap L_2=\varempty$ für gegebene reguläre $L_1,L_2$?
+
+Eingabe: NFAs $M_1$ und $M_2$
+
+Verfahren: Konstruiere aus $M_1$ und $M_2$ einen NFA M mit $L(M)=L(M_1)\cap L(M_2)$. Teste ob $L(M)=\varemtpy$
+
+### Inklusionsproblem
+Gilt $L_1 \subseteq L_2$ für gegebene reguläre $L_1,L_2$?
+
+Eingabe: NFAs $M_1$ und $M_2$
+
+Verfahren: Aus $M_1$ und $M_2$ kann ein NFA M mit $L(M)=\bar{L(M_2)}\cap L(M_1)$ konstruieren. Es gilt $L(M_1)\subseteq L(M_2)$ genau dann, wenn $L(M)=\varemtpy$.
+
+### Äquivalenzproblem
+Gilt $L_1=L_2$ für gegebene reguläre $L_1,L_2$?
+
+Eingabe: NFAs $M_1$ und $M_2$
+
+Verfahren 1: es gilt $L(M_1)=L(M_2)$ genau dann, wenn $L(M_1)\subseteq L(M_2)$ und $L(M_2)\subseteq L(M_1)$.
+
+Verfahren 2: bestimme zu $M_i (i\in\{1,2\})$ den äquivalenten minimalen DFA $N_i$. Dann gilt $L(M_1)=L(M_2)$ genau dann, wenn $N_1$ und $N_2$ isomorph sind (d.h. sie können durch Umbennenung der Zustände ineinander überführt werden).
+
+### Effizientbetrachtung
+Die Komplexität der oben beschriebenen Verfahren sehr unterschiedlich ausfallen. Bei Eingabe der regulären Sprache als NFA bzw DFA ergeben sich die folgenden Zeitschranken:
+
+| Problem | NFA | DFA |
+| Wort~   | polynomiell | linear |
+| Leerheits~| polynomiell | polynomiell |
+| Endlichkeits~ | polynomiell | polynomiell |
+| Schnitt~ | polynomiell | polynomiell |
+| Inklusions~ | exponentiell | polynomiell |
+| Äquivalenz~ | exponentiell | polynomiell |
+
+Es spricht viel dafür, dass die exponentiellen Zeitschranken nicht durch polynomielle ersetzt werden können.

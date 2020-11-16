@@ -1,0 +1,155 @@
+\documentclass[10pt, a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{datetime}
+\usepackage[]{amsmath} 
+\usepackage[]{amsthm} 
+\usepackage[]{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Rechnerarchitekturen 1 - Praktikum A2 - WS20/21}
+\rfoot{Page \thepage}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+\newdateformat{myformat}{\THEDAY{ten }\monthname[\THEMONTH], \THEYEAR}
+
+\title{Rechnerarchitekturen 1 - Praktikum A2}
+\author{}
+\date\today
+\begin{document}
+
+
+\begin{center}
+        \begin{tabular}{| l | c | c | c | c | c | c | c | c | }
+                \hline
+                \multicolumn{9}{|c|}{Frequenzen der C-Dur Tonleiter}\\
+                \hline
+                \hline
+                Ton   & c'    & d'    & e'    & f'    & g'    & a'    & h'    & c''   \\\hline
+                f(Hz) & 261,6 & 293,7 & 329,6 & 349,2 & 392,0 & 440,0 & 493,9 & 523,2 \\\hline
+                Zählkonstante & 7662 & 6825 & 6079 & 5730 & 5102 & 4545 & 4056 & 3824 \\\hline
+                Freq(Hex) & 1DEEH & 1AA9H & 17BFH & 1662H & 13EEH & 11C1 & FD8H & EF0H\\\hline
+        \end{tabular}
+\end{center}
+
+\section*{ Grundaufgabe a)}
+\scriptsize{Der  Kanal  0  des  Timerbausteins  soll  als  programmierbarer  Frequenzgenerator  benutzt  werden.  Dazu  wird  die  Betriebsart  „Mode  3“  verwendet  (Frequenzteiler  mit  symmetrischer  Rechteckschwingung  am  Output).  Die  Output-Frequenz  soll  440  Hz  betragen. Als Input benutzen Sie den eingebauten 2-MHz-Generator.}
+$$\text{Zählkonstante: } \frac{2 MHz}{440 Hz} = 4545,4545 = (11C1)_{16}$$
+\begin{lstlisting}
+        MOV AL, 36H; Steuerbyte 00110110
+        OUT 57H, AL
+        MOV AL, 0C1H; LSB
+        OUT 54H, Al
+        MOV AL, 011H; MSB
+        OUT 54H, AL
+\end{lstlisting}
+
+
+\section*{ Grundaufgabe b)}
+\scriptsize{Schalten  Sie  die  Tonausgabe  zunächst  wieder  ab  und  erweitern  Sie  das  Programm  um  die  Initialisierung der PIT-Kanäle 1 und 2. Die am Output des Kanals 2 angeschlossene LED soll mit  einer  Periodendauer  von  0,5s  blinken.  Es  ist  wiederum  Mode  3  zu  benutzen.  Da  beide  Kanäle hintereinander geschaltet (kaskadiert) sind, müssen Sie die benötigte Frequenzteilung auf beide Kanäle aufteilen. Außer der LED haben Sie diesmal keine weitere Kontrollmöglichkeit. }
+$$\text{Zählkonstante: } \frac{2 MHz}{2 Hz} /2 = 1000000 / 2 = 500000$$
+\begin{lstlisting}
+        MOV AL, 0B6H; Kanal 2
+        OUT 57H, AL
+        MOV AL, 0FFH
+        OUT 56H, AL
+        MOV AL, 0FFH
+        OUT 56H, AL
+
+        MOV AL, 076H ;Kanal 1
+        OUT 57H, AL
+        MOV AL, 0FFH
+        OUT 55H, AL
+        MOV AL, 0FFH
+        OUT 56H, AL
+
+\end{lstlisting}
+\clearpage
+
+\section*{ Grundaufgabe c)}
+\scriptsize{Die Tonausgabe von Kanal 0 wird wieder eingeschaltet. Sie soll jetzt aber nur noch dann aktiv sein, wenn gerade eine beliebige Taste in der blauen Tastenreihe gedrückt ist. Dazu müssen Sie in der Endlosschleife des Programms eine entsprechende Abfrage einbauen.}
+
+\begin{lstlisting}
+noton:  MOV AL, 59H
+        OUT 57H, AL
+taste:  IN AL, 59H
+        AND AL, 0FFH
+        JZ noton        ;keine taste gedrueckt
+        JMP ton
+ton:    MOV AL, 0C1H
+        OUT 54H, AL
+        MOV AL, 011H
+        OUT 54H, AL
+        JMP taste
+\end{lstlisting}
+
+\section*{ Fortgeschrittene Aufgabe d)}
+\scriptsize{Erweitern Sie das Programm dann so, dass den einzelnen Tasten unterschiedliche Frequenzen zugeordnet sind. Es wird angenommen, dass nicht mehrere Tasten gleichzeitig gedrückt werden. Das  Blinken  der  LED  von  Aufgabe  b)  soll  weiterhin  funktionieren. }
+
+\begin{lstlisting}
+noton:  MOV AL, 59H
+        OUT 57H, AL
+taste:  IN AL, 59H
+        MOV BL, AL
+        AND AL, 0FFH
+        JZ noton        ;keine taste gedrueckt
+        MOV AL, BL
+        AND AL, 001H    ; Taste A
+        JNZ tonA
+        MOV AL, BL
+        AND AL, 003H    ; Taste B
+        JNZ tonB
+        MOV AL, BL
+        AND AL, 004H    ;Taste C
+        JNZ tonC
+        JMP taste
+tonA:   MOV AL, 0C1H
+        OUT 54H, AL
+        MOV AL, 011H
+        OUT 54H, AL
+        JMP taste
+tonB:   MOV AL, 008H
+        OUT 54H, AL
+        MOV AL, 0FDH
+        OUT 54H, AL
+        JMP taste
+tonC:   MOV AL, 000H
+        OUT 54H, AL
+        MOV AL, 0EFH
+        OUT 54H, AL
+        JMP taste
+
+\end{lstlisting}
+
+\end{document}

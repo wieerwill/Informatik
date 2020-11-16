@@ -556,3 +556,71 @@ Die Komplexität der oben beschriebenen Verfahren sehr unterschiedlich ausfallen
 | Äquivalenz~ | exponentiell | polynomiell |
 
 Es spricht viel dafür, dass die exponentiellen Zeitschranken nicht durch polynomielle ersetzt werden können.
+
+[...]
+
+## Zusammenfassung/Fragen
+
+### Pumping Lemma mit Alphabet aus einem Zeichen 
+$\sum=\{a\}$, $L(M)=\{a\} regulär \rightarrow \exists n \geq 1 \forall z\in Z(M)$ mit $|z|\geq n$, z.B. $n=3$
+
+Bei geschickter Wahl von n ist das Pumping Lemma nicht voll ausführbar und ist korrekt.
+Wenn n endlich ist gibt es ein z das Länger ist.
+
+(Sind alle endlichen Sprachen regulär? Ja, jede Sprache ist aufgebaut aus der verknüpfung von einelementigen Sprachen; diese selbst sind regulär.)
+
+### Spielschema oder anderes Schema in Prüfung gefirdert
+kann noch keine aussage dazu treffen, Klausur existiert noch nicht. Jedoch grundsätzlich: es wird auswendig gelernt! Sätze/Definitionen etc werden mit Lückentext abgefragt. Ein großer Teil der Aufgaben orientiert sich an den Übungsaufgaben.
+
+### Produktbildung von zwei regulären Sprachen. Wenn die erste Sprache als Startzustand da leere Wort enthält, muss man den Startzustand der zweiten Sprache beibehalten?
+Bei Automaten die nicht das leere Wort akzeptieren unter umständen, bei Automaten die kein leeres Wort akzeptieren nicht.
+
+- es gibt (in dieser Vorlesung) keine unendlich langen Wörter
+
+# Kontextfreie Sprachen
+bei Kontext-freien Grammatiken haben alle Produktionen die Form $A\rightarrow w$ mit $A\in V$ und $w\in (V\cup \sum)^*$.
+
+Anwendung kontext-freier Sprachen: Beschreibung der Syntax von Programmiersprachen (besonders höheren Sprachen). Viele der Techniken daher interessant für den Compilerbau
+
+Bemerkung: die natürliche Sprache hat viele kontext-freie Bestandteile, ist aber nicht wirklich kontext-frei.
+
+## Ableitungsbäume
+Ein Ableitungsbaum wird aus den Ableitungen einer Grammatik gebildet. Die Blätter (von links nach rechts) bilden immer den letzten Abbildungsschritt. Unterschiedliche Ableitungen können unterschiedliche Bäume konstruieren während diese das gleiche Wort ableiten.
+
+> Definition: Sei G eine kontext-freie Grammatik und $X\in V\cup \sum$. Ein X-Ableitungsbaum ist ein gerichteter, geordneter Baum T mit Wurzel, dessen Knoten mit Elementen von $V\cup\sum\cup\{\epsilon\}$ beschriftet sind, wobei:
+> - die Wurzel mit X beschriftet ist
+> - Knoten $v$ mit $a\in\sum\cup\{\epsilon\}$ beschriftet $\Rightarrow$ v ist ein Blatt
+> - Knoten $v$ mit $A\in V$ beschriftet und kein Blatt $\Rightarrow$
+>   - es gibt eine Produktion $A\rightarrow X_1...X_r$ mit $X_1...X_r\in\sum\cup V$ $(r\geq 1)$ sodass die Nachfolgerknoten von $v$ mit $X_1,X_2,...,X_r$ beschriftet sind
+>   - oder es gibt Produktion $A\rightarrow \epsilon$ und $v$ hat genau einen Nachfolger; dieser ist mit $\epsilon$ beschriftet
+> - Das Blattwort $\alpha(T)$ des X-Ableitungsbaumes T erhält man, indem man die Beschriftungen der Blätter von links nach rechts betrachtet. Ein Ableitungsbaum ist ein S-Ableitungsbaum.
+> - ein X-Ableitungsbaum ist vollständig, wenn seine Blätter mit Elementen von $\sum\cup\{\epsilon\}$ beschriftet sind.
+
+> Lemma: Sei $G$ eine kontext-freie Grammatik, $X\in V\cup\sum, w\in(V\bigcup\sum)^*$. Dann sind äquivalent:
+> - $X\rightarrow^* w$
+> - es gibt einen X-Ableitungsbaum T mit $w=\alpha(T)$
+
+Die Ableitung innerhalb eines Ableitungsbaumes ist die Verkettung der Ableitungen seiner Unterbäume. $\alpha(T)=\alpha(X_1)\cap \alpha(X_2)\cap...\cap\alpha(X_3)=...$
+
+## Linksableitung
+Zu jedem Ableitungsbaum kann es eine oder mehrere Ableitungen geben. 
+> Definition: Eine Ableitung heißt Linksableitung wenn in jedem Schritt das am weitesten links stehende Nichtterminal ersetzt wird.
+
+Analog werden Rechtsableitungen definiert.
+
+Ableitungsbäume und Linksableitungen für w entsprechen einander eineindeutig, genauer:
+> Satz: Die Konstruktion auf Folie 10.10 ist eine Bijektion der Menge der Linksableitungen von Wörtern aus $\sum^*$ auf die Menge der vollständigen Ableitungsbäume.
+
+Aus Linksableitungen (nicht-Linksableitungen) können auch Rechtsableitungen erzeugt werden (und umgekehrt) ohne die Ableitung zu verändern.
+
+Es gibt auch Wörter, mit verschiedenen Linksableitungen (und damit unterschiedlichen Ableitungsbäumen). Da der Ableitungsbaum Strukturinformationen über das Wort wiedergibt ist dies nicht erwünscht.
+> Definition: Eine Kontextfreie Grammatik G heißt mehrdeutig, wenn es zwei verschiedene vollständige Ableitungsbäume $T$ und $T'$ gibt mit $\alpha(T)=\alpha(T')$.
+> Sonst heißt G eindeutig, d.h. G ist eindeutig wenn jedes Wort $w\in L(G)$ genau eine Ableitung besitzt.
+> Eine Kontextfreie Sprache heißt [...]
+
+## kontextfreie Sprachen sind kontext-sensitiv
+> Lemma: aus einer kontextfreien Grammatik G kann eine kontextsensitive und gleichzeitig kontextfreie Grammatik G' berechnet werden mit $L(G)=L(G')$
+
+Sprachen: Regulär < Kontextfrei < Kontextsensitiv < RE < alle
+
+> Folgerung: Es gibt einen Algorithmus, der als Eingabe eine Typ-2-Grammatik G und ein Wort $w\in\sum^*$ bekommt und nach endlicher Zeit entscheidet, ob $w\in L(G)$ gilt.

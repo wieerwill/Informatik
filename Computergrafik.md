@@ -463,13 +463,327 @@ analog zu Quad- und Octrees:
 
 
 ### Octree
-### KD Tree
-### BSP Tree
-### Hüllkörper Hierarchie
-### weitere Anwendungsfälle
-### Ray Picking mit KD Baum
-### Aufwandsabschätzung bzgl Dreiecksanzahl
-### Aufwandsabschätzung in fps
-### Heurisitk zur Unterteilung
-### Behandlung ausgedehnter Objekte
+Jeder Knoten hat 0 oder 8 Kindknoten. Damit wird bei Bedarf ein 3D Bereich in 8 Unterbereiche unterteilt. Geometrische Objekte (z.B. 3D Punkte) können in diese hierarchische Strukturen einsortiert werden, wodurch die räumliche Suche nach diesen Punkten beschleunigt wird.
 
+Beispiel Punktsuche:\\
+Suche einen Punkt mit Koordinaten (x,y,z) im Octree. Rekursive Suche von der Wurzel. In jedem Schritt wird einer von 8 möglichen Pfaden im Teilbaum ausgewählt -> Zeitaufwand Tiefe des Baumes O(log n)
+
+### KD Tree
+- mehrdimensionaler binärer Baum (k-dimensional)
+- unterteilt z.B. abwechselnd in x-,y-, und z-Richtung (deshalb binärer Baum)
+- Teilung nicht zwangsläufig mittig (wie bei Octre) -> an Daten angepasst
+- jeder neue Punkt teilt den Bereich in dem er einsortiert wird; pro Hierarchiestufe stets wechsel der Teilungsrichtung
+- ein Octree lässt sich auf einen kd-Baum abbilden, beide Baumarten haben daher vergleichbare Eigenschaften
+
+KD-Baum mit der Median-Cut Strategie:\\
+Der Median-Cut teilt Daten in zwei gleich großen Hälften. Damit wird der Baum garantiert balanciert und die tiefe wird minimal. Damit wird das O(log n) Verhalten garantiert. Probleme können bei lokalen Häufungen (Cluster) auftreten. Die Mediancut Strategie bewirkt eine degenerierte globale Teilung des Gesamtraumes aufgrund von lokalen Situationen. Dies wirkt sich ungünstig bei der Suche weit weg vom Cluster aus
+- vollständig balanciert
+- unnötige Unterteilung weit weg vom Cluster (Artefakt)
+
+Vergleich Middlecut-Strategie:
+- nicht balanciert
+- keine Unterteilung weit weg vom Cluster
+
+Praxis: Kompromiss Strategie, Mischung zwischen Median und Mitte. Bei Situations-Analyse: Explizite Abkapselung des Clusters. Außerdem: In (2D, 3D) kann man natürlich das strikt zyklische Abwechseln der Achsen aufgeben und bei fast ebenen/linearen Strukturen lokal nur noch in zwei bzw 1 Richtung(en) unterteilen!
+
+### BSP Tree
+Verallgemeinerung des kd-Baums. Trennebenen sind nicht nur achsenparallel. Unterteilung in beliebigen Richtungen, adaptiv an Modellflächen angepasst.
+
+Beachte: Trennebenen die an einer Objektebene anliegen können dennoch weiter wegliegende Objekte schneiden.
+
+BSP-Tree führt bei konvexen Polyedern zu entarteten Bäumen
+
+### Hüllkörper Hierarchie
+#### AABB (Axia-Aligned-Bounding-Box)
+sehr einfache Abfrage (nur ein Vergleich < in jeder Koordinatenrichtung, wie bei kd-Baum) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte.
+
+#### OBB (Oriented Bounding Boxes)
+passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren (Rotation bei Animation). Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung (Transformation, Ebenengleichung).
+D.h. OBB-trees werden typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe. 
+
+#### KDOP (k-dimensional Discretly Oriented Polytopes)
+Polyeder mit festen vorgegebenen Richtungen (z.B. 45 Grad). Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
+
+#### BS (Bounding Spheres)
+Schnelle 3D Überlappungstest (Abstand der Mittelpunkte < Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln (Bounding Spheres) begrenz werden um besseren Füllgrad zu erreichen. BS sind bis auf die Lage der Kugelmittelpunkte invariant gegenüber Rotation (eignen sich für Kollisionserkennung bewegter Objekte/ Echtzeit-Computer-Animation).
+
+#### weitere Anwendungsfälle
+- Kollisionserkennung in Computeranmiation (Computerspiele). Reduktion der potenziellen Kollisionspaare durch räumliche Trennung
+- Beschleunigung des Echtzeitrenderings großer Datenmengen. Reduktion des Aufwands durch Culling (Weglassen)
+
+### Ray Picking mit KD Baum
+Raytracing/Strahlverfolgung, Ray picking mit KD-Baum: Vorverarbeitun, abspeicherung von Objekten (Dreiecken) im kd-Baum O(n log n)
+
+Strahl/Objektschnitt: (als rekursive Suche im kd-Baum)
+
+treeIntersect(p,d): Findet Schnittpunkt des Strahls (Punkt p, Richtung d) mit den im Baum gepseicherten Dreiecken und liefert die Beschreibung des nächsten Schnittpunktes bzw t=unendlich, falls kein Schnittpunkt existiert.
+
+triangleIntersect(node,p,d): Findet Schnittpunkt des Strahles (Punkt p, Richtung d) mit einer Menge von Dreiecken in node
+
+subdivide(node, p, d, tmin, tmax): Findet rekursiv den nächstgelegenen Schnittpunkt (kleinstes t) des Strahls (p,d) mit den Dreiecken in oder unterhalb von node im Parameterbereich tmin ...tmax
+
+### Aufwandsabschätzung bzgl Dreiecksanzahl
+Komplexität Strahl Objektschnitt (Extremfälle + typischer Fall)
+1. Extremfall (beinahe) kovexes Objekt (max 2 Schnitte möglich)
+  - hat ca die Komplexität einer räumlichen Punktsuche, also dem Aufwand zur Untersuchung einer Baumzelle (finden + dortige Dreiecke testen) O(log n)
+2. Extremfall "Polygonnebel" (viele sehr kleine Dreiecke im Such-Volumen)
+  - Annahme: alle Zellen enthalten konstante kleine Anzahl von Dreiecken -> Aufwand proportional zur Anzahl durchlaufener Baumzellen
+  - Anzahl dieser Zellen ist proportional zur Länge des Strahls durchs Volumen, da der 1. Schnitt sehr wahrscheinlich mitten im Volumen oder gar nicht stattfindet -> Anzahl ist proportional zur Seitenlänge des Suchvolumens
+  - bei n Dreiecken im Suchvolumen ist die Anzahl t der zu untersuchenden Zellen also ca $t=O(\sqrt{n})$ -> Suchaufwand pro Strahl folglich $O(\sqrt{n} log (n))$
+
+typische Szene: Suchaufwand fast immer wesentlich besser als O(n). Aufwand oft zwischen beiden extremen, bei mittlerer Dichte sogar eher O(log n).
+
+### Aufwandsabschätzung in fps
+Effektiver Zeitauwand für Raytracing (RT):
+- absoluter Gesamtaufwand zum Raytracing einer Szene (z.B. in ms) ist (auch) proportional zur Anzahl der Strahlen
+- Annahme: 1 Strahl pro Pixel (keine Rekursion), typische Bildgröße sei 1 Mio Pixel, Szene haben mittlere Komplexität (1 Mio Polygone)
+- Performancebeispiel:
+  - Stand 2006, PC mit 1 CPU ca 1 Mio Strahlen/Sek -> 1 fps
+  - Stand 2019, PC mit "RTX 2080 Sup23" ca 10 Giga Strahlen/Sek -> 10000 fps
+- rekursives RT (Reflexion, Brechung, Schattenstrahlen etc) entsprechend mehr Strahlen, d.h. weniger Performance
+- Parallelisierung einfach möglich (z.B. da Pixel voneinander unabhängig berechenbar) -> früher CPU-basiert, heute eher GPU
+- 2019 mit entsprechender Hardware: rekursives Echtzeit Raytracing möglich
+
+### Heurisitk zur Unterteilung
+Surface Area Heuristic (SAH):
+- Annahme: Strahl i, trifft Zelle j mit Wahrscheinlichkeit P(i,j), zudem sei $n_j$ die Anzahl Dreiecke in Zelle j,
+- Aufwand für Raytracing pro Zelle proportional zur Baumtiefe ( O(log n) für balancierte Bäume, wird nicht weiter betrachtet) sowie die Anzahl der dortigen Dreiecke $n_j$; beachte $n_j$ wird hier nicht als konstant angenommen -> Gesamtaufwand für Strahl i sei also $\sum(P(i,j)*n_j)$
+
+Heuristik: große Zellen mit wenigen Dreiecken, senken Gesamtaufwand
+- Schätzung: P(i,j) ist etwa proportional zur Oberfläche einer Zelle (auf großer Oberfläche treffen mehr Strahlen auf)
+- die SAH optimiert auf jeder Teilstufe im Baum das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum gilt bei der Unterteilung des Bereichs D in Richtung k: $D_k = D_{k_links} + D_{k_rechts}$
+
+Bei ungleicher Verteilung der Dreiecke (z.B. Cluster) enthalten dann große Zellen wenige oder keine Dreiecke und Baum ist nicht balanciert -> implizite Abtrennung des Clusters vom Rest des Baums (vgl Middle-Cut-Strategie)
+
+### Behandlung ausgedehnter Objekte
+Problematik: Abspeicherung ausgedehnter Objekte
+
+Punkte haben keine Ausdehnung und können an einem eindeutigen Ort im kD-Baum abgelegt sein. Ausgedehnte Objekte (Kreise, Kugeln, Rechtecke, Dreiecke, Hüllquader, etc) können räumlich mehrere Blatt-Zellen überlappen. Ein solches Objekt müsste dann in mehreren Blattzellen einsortiert sein.
+
+1. Ansatz: Auftrennung von Objekten, d.h. Objekte müssen an der Zellgrenze aufgeteilt werden. Einsortierung der Teilobjekte in passende Zellen. Geht gut für Dreiecke
+2. Ansatz: Keine Unterscheidung zwischen Blattknoten und inneren Knoten. In diesem Ansatz werden Objekte soweit oben im Baum einsortiert, dass sie keine Zellgrenze schneiden. Nachteil: auch relativ kleine Objekte müssen in große Zellen einsortiert werden, wenn sie deren Unterteilungsgrenze schneiden
+3. Ansatz: Loose Octree (überlappende Zellen): die Zellen des Octrees werden so vergrößert, dass sie mit ihren direkten Nachbarn in jeder Richtung um 50% überlappen. Objekte, die im einfachen Octree aufgrund ihrer Größe Grenzen schneiden würden, können im Loose Octree in den Zwischenknoten gespeichert werden. Ein Objekt mit Durchmesser bis zu $\frac{D}{2^L}$ kann auf der Ebene L abgelegt werden. Eine Suche im Loose Octree muss daher außer der direkt betroffenen Zelle auch die überlappenden direkten Nachbarn berücksichtigen. Dadurch vergrößert sich der Aufwand einer Suche um einen konstantne Faktor. Beachte: Die asymptotosche Komplexität (O-Notation) ist dadurch nicht beeinflusst.
+
+# Rastergrafik
+## Rasterkonversion grafischer Objekte
+Algorithmus zum Zeichnen einer Strecke:\\
+Endpunktkoordinaten sind nach Projektion in die Bildebene passend auf die Fensterkoordinaten skaliert und auf ganzzahlige Werte (Pixelkoordinaten) gerundet.
+
+## Midpoint Algorithmus
+- von J. Bresenham 1965 bei IBM entwickelt
+- Grundidee: Effizient durch Verwendung von Ganzzahlen, Vermeiden von Multiplikation/Division sowie Nutzung einer inkrementellen Arbeitsweise
+
+Die Linie geht zwischen den Endpunkten nicht durch ganzzahlige Gitterpunkte. Da nur ganzzahlige Pixel-Koordinaten gesetzt werden können müssten auch zwischenpunkte zuerst genau berechnet werden und dann auf ganzzahlige Pixelwerte gerundet werden. Dies ist unzuverlässig und ineffizient. Zur Herleitung des effizienten Bresenham-Algorithmus führen wir den Mittelpunkt M als Referenzpunkt ein. Fernser seinen der jeweils aktuellen Punkt P, der rechts von im liegende E (east) und der rechts oben liegende NE north-east) benannt.
+- die Linie wird als Funktion $y=f(x)$ repräsentiert: $y=\frac{\delta y}{\delta x}*x+B$
+- in implizierter Form: $d: F(x,y)=\delta y*x-\delta x*y+B*\delta x = 0$
+- für Punkte aud der Linie wird $F(x,y)=0$
+- für Punkte unterhalb der Linie wird $F(x,y)>0$
+- für Punkte oberhalb der Linie wird $F(x,y)<0$
+
+Herleitung mit Einschränkung:\\
+Steigung der Linie m ($1 < m < 1$), Mittelpunkt M = Punkt vertikal zwischen zwei möglichen Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
+
+Insgesamt acht verschiedene Fälle:
+1. Oktant($\delta y < \delta x$)
+2. Oktant($\delta y > \delta x$)
+3. Oktant($\frac{\delta y}{\delta x}<  0$)
+4. Oktant($\frac{\delta y}{\delta x}< -1$)
+5. -8. Oktant($\delta x < 0$)
+
+## Anti Aliasing
+Effekte der Rasterisierung: Aliasing
+- Treffenstufeneffekt bei gerasterten Linien
+- Regelmäßigkeiten werden verstärkt vom Auge wahrgenommen
+
+Das Auflösungsvermögen des Auges für Punkte sei e. Strukturen wie Linien (bestehend aus vielen Punkten) werden durch Mittelwertbildung (Fitting) vom auge viel genauer als e lokalisiert. Eine Stufe wird umso eher erkannt, jelänger die angrenzenden Segmente sind.
+
+### Grundlagen
+Grundidee des Anti-Aliasing
+1. Original der Linie
+2. Statt der Linie wird ein Rechteck mit der Breite von einem Pixel betrachtet
+3. Graustufen der darunter liegenden Pixelflächen entsprechen dem jeweiligen Überdekckungsgrad
+
+Praktische Umsetzung mit vereinfachtem/effizienterem Algorithmus
+1. Rasterkonvertierung der Linie bei doppelter örtlicher Auflösung (Supersampling)
+2. Replizieren der Linie (vertikal und/oder horizontal) um Linienbreite näherungsweise zu erhalten
+3. Bestimmmung des Überdeckungsgrades pro Pixel in der ursprünglichen Auflösung (Downsampling)
+4. Bestimmung des Farbwertes entsprechend des Überdeckungsgrades
+
+Problem:
+- Ausgabe von Linien/Polygonen auf Rastergeräten muss auf vorgegebenem Raster erfolgen
+- Farbvariation ist zwar möglich, Farbberechnung muss aber effizient erfolgen
+
+Ohne Antialiasing:
+- es erfolgt ein einfacher Test über die Pixelkoordinate
+- verwendet Farbe in der Pixelmitte
+
+Ideales Antialiasing: Hat wegen der beliebig komplexen Geometrie allgemein einen sehr/zu hohen Aufwand!
+
+Ansatz für eine "reale Lösung"
+- eine ideale Berechnung von Farbwerten nach dem Überdeckungsgrad ist allgemein beliebig aufwendig und daher praktisch irrelevant
+- Gesucht werden Ansätze mit gut abschätzbarem/konstanten Aufwand
+- "reales" Antialiasing beruht in der Regel auf der Verwendung von mehreren Samples pro Pixel, d.h. Berechnung dieser n Samples statt nur einem
+
+### Supersampling + Downsampling
+### Supersampling + Rotated Grids
+### Supersampling + Multisampling
+### Quincunx Verfahren
+
+## Polygonfüllalgorithmus
+### Füllmuster
+### Dithering
+
+
+# Farbräume
+## Motivation
+Wie (und wie gut) lässt sich der visuelle Eindruck der physischen Realität durch eine Bildanzeige technisch reproduzieren? Bzw durch Computergrafik simulieren?
+
+Ziel realistische Darstellung von Bildern:
+- möglichst genaue Reproduktion von Farben und Helligkeitswerten (auf der Bildfläche)
+- Ziel existiere schon bevor es Computergrafik gab (Photorealistische Malereien)
+
+Ziel der Computergrafik:
+- die technische Realisierung eines digitalen Bildes mit Hilfe des Computers aufeinem Bildschirm oder Druck,
+- dazu Herleitung einer systematischen Repräsentation des Bildes als mathematisches Modell, bzw in einer Datenstruktur sowie ihre physische Reproduktion
+
+## Farbwahrnehmung
+Verschiedene Aspekte zum Verständnis des menschlichen visuellen Systems (Farbe, Helligkeit, Bild,...)
+- Phänonmenologische Betrachtung: Hell- und Farbempfinden als Sinneseindruck beschreiben. Einiges kann dadurch bereits qualitativ erschlossen werden
+- Phisiologie des menschlichen visuellen Systems: (Rezeptoren des Auges und neuronale Verschaltung) Dies hilft beim Verstehen der Wahrnehmung der physischen Realität und der Herleitung von exakten Farbraummodellen
+- Physik: Licht als elektromagnetische Strahlung
+- 
+### Phänomenologisch
+- Tageslicht kann als weiß bzw grau mit unterschiedlichen Helligkeiten, jedoch unbunt (farblos) empfunden werden
+- Abwesenheit von Licht wird als schwarz empfunden (zB Nachthimmel)
+- Regenbogen wird als bunt mit verschiedenen Farbtönen empfunden: Rot, Orange, Gelb, Grün, Cyan, Blau, Violett,...
+
+
+### Farbton
+- Zwischen den grob unterscheidbaren Farbtönen des Regenbogens lassen sich zwischenstufen orten, welche eine praktisch stufenlose Farbpalette ergeben
+- direkt nebeneinanderliegende Farben im Farbspektrum werden als ähnlich empfunden 
+- wieder andere Farben werden als sehr unterschiedlich empfunden
+- mit dieser Beobachtung lassen sich Farbwerte ordnen (Dimensionen des Farbtons als eine der Dimensionen zur Beschreibung von Farbwerten)
+- All diese Farben ist jedoch gemein, dass sie als sehr bunt empfunden werden (voll gesättigte Farben im Gegensatz zu Grautönen)
+
+### Farbsättigung
+- Zwischen bunten Farben und Grau lassen sich Zwischenstufen finden
+- Pastelltöne sind zwar weniger bunt aber nicht völlig farblos (Farbwerte sind noch unterscheidbar)
+- Grauton (keine Farbwerte unterscheidbar)
+- zu jedem einzelnen bunten Farbton können Abstufungen von Pastelltönen bis zum gänzlich unbunten Grau zugeordnet werden
+  - diese Abstufung nennen wir Sättigung der Farbe
+  - Links maximal gesättigte Farbe, rechts völlig ungesättigte Farbe (grau)
+- In jeder Zeile wird der gesättigte Farbton als nicht prinzipiell anders als die zugehörige Pastellfarbe empfunden (aber weniger bunt) nur weniger gesättigt
+- 
+### Helligkeitsstufen
+- Zu jedem Farbton (gesättigt oder nicht) können unterschiedliche Helligkeitsabstufungen bis zum tiefen Schwarz zugeordnet werden
+  - links maximale Helligkeit, rechts dunkelster Wert (schwarz)
+  - in jeder Zeile werden die hellen Farbtöne als nicht prinzipiell anders als die zugehörigen dunkleren Farbtöne empfunden
+  - im schwarzen sind ebenfalls keine Farbtöne mehr unterscheidbar
+
+### Zusammenfassung
+damit haben wir phänomenologisch drei unabhängige Richtungen identifiziert, die wir den Farbeindrücken zuordnen können:
+- Farbton (Hue)
+- Farbsättigung (Saturation)
+- Helligkeit (Lightness)
+
+## Das Modell der Farben
+> Definition DIN 5033: Farbe ist die Empfindung eines dem Auge strukturlos erscheinenden Teils eines Gesichtsfeldes, durch die sich dieser Teil bei einäugiger Beobachtung mit unbewegtem Auge von einem gleichzeitig gesehenem, ebenfalls strukturlos angrenzendem bezirk allein unterscheidet.
+> Farbe (in unbunter Umgebung) ist durch Helligkeit, Buntton und Sättigung eindeutig bestimmt. Dieses oder ein ähnliches dreidimensionales (3D) Modell ist für das Verständnis der Farbe erforderlich
+
+
+### HSL Farbraum
+bzw HSB, HSV, HSI
+
+Mit den gewonnen Erkenntnissen wir der HSL Farbraum definiert:
+- Farbton: **H**ue
+- Sättigung: **S**aturation
+- Helligkeit: **L**ightness/**B**rightness/**V**alue/**I**ntensity
+Da sich die Dimension des Farbtons periodisch wiederholt wird das System oft als Winkelkoordinate eines Polarkooridnaten-Systems in der HS-Ebene, bzw dreidimensional als Zylinderkoordinaten HSl darstellt.
+
+Darstellungsformen: Die Darstellungsform des HSL Farbraums ist nicht fest vorgeschrieben. Eine Darstellung als (Doppel)-Kegel oder sechseitige (Doppel-) Pyramide ist ebenso möglich.
+
+Der HSl Farbraum entspricht zumindest grob unserer Farbwahrnehmung. Daher eignet er sich zur intuitiven und qualitativen Einstellung von Farben in Illustrationsgrafiken
+- Relative Skala 0..255
+- Quantisierbarkeit der Farben und Helligkeit z.B. beruhend auf physiologischen Messungen
+- Bezug zur Physik des Lichtes (Energie, Spektrum)
+
+### RGB Farbraum
+> Hypothese, dass Farbsehen auf drei Arten von Sinneszellen beruht (rot, grün, blau) ~ T. Young, 1807
+
+> ein und diesselbe Farbwahrnehmung kann durch unendlich viele unterschiedliche Farbreize erzeugt werden, Farbwahrnehmungen sind durch drei beliebige, linear unabhängige Größen darstellbar. ~ Graßmann, 1853
+
+Im menschlichen Auge befinden sich Zäpfchen, welche mit unterschiedlicher Empfindlichkeit auf die verschiedenen Wellenlängen des Lichtes reagieren. Es gilt: gleicher Reiz heißt gleiche Farbwahrnehmung
+
+Beispiel für Reizung durch monochromatisches Licht (Laser) einer bestimmten Stärke:
+- $r=0,2R(\lambda)4
+- $y=0,5R(\lambda)+0,3G(\lambda)$
+- $g=0,2R(\lambda)+0,5G(\lambda)$
+- $b=0,02B(\lambda)$
+
+Farberzeugung durch Mischung:
+$$1,9r + 0,6g = 0,38R(\lambda)+0,12R(\lambda)+0,3G(\lambda)=0,5R(\lambda)+0,3G(\lambda) = y$
+
+geschichtliche/physikalische Aspekte:
+- Sonnenlicht ist eine Mischung von einzelnen Farben
+- Korpuskular- bzw Emissiontheorie
+- Spektralfarben sind objektive Eigenschaften des Lichtes
+- Prisma spaltet das weiße (Sonnen-) Licht in Spektralfarben
+- durch Sammellinse lässt sich aus dem Spektrum wieder weißes Licht erzeugen
+- kammartige Ausblendung führt zu bunten Mischfarben
+
+Additive Farbmischung in RGB:\\
+Mit den Grundfarben Rot, Grün und Blau können weitere bekannte Farben additiv gemischt werden (Rot+Blau=Magenta). Weitere Zwischenfarbtöne können durch kontinuierliches Variieren der Anteile der Grundfarben gemischt werden (alle Pastellfarben und Graustufen)
+
+Bestimmen der Anteile der Mischfarben:\\
+- zur Mischung beliebiger Farben verwenden wir die experimentiell bestimmten drei Empfindlichkeitskurven: R,G,B und zugehörige Lichtquellen r,g,b
+- alle 3 Lichtquellen zusammen ergeben weiß wahrgenommenes Licht: r=g=b=1~weiß (muss gut abgestimmt werden -> Weißabgleich)
+- wir können damit einen dreidimensionalen Farbraum (RGB-Farbraum) aufspannen
+- die Lage einer monochromatischen Lichtwuelle $x(\lambda_0)$ in diesem RGB Farbraum lässt sich wie folgt berechnen: $x(\lambda_0)=p*r+\gamma*g+\beta*b$
+- Achtung: die Lösung hängt von den Wellenlängen der verwendeten Grundfarben r,g,b (Primärvalenzen) ab. Nimmt man andere Grundfarben, ergeben sich andere Werte für $p,\gamma,\beta$
+- RGB ist nicht gleich RGB! Man muss "eigentlich" immer die Wellenlängen der verwendeten Grundfarben r,g und b mit angeben!
+
+Innere Farbmischung: $F=p*r + \gamma*g + \beta*b$
+
+Äußere Farbmischung:\\
+die gemischte Farbe Cyan wird zwar als derselbe Buntton wie die Referenzfarbe F wahrgenommen, jedoch weniger gesättigt. Um die beiden Farben gleich aussehen zu lassen wird der Referenzfarbe F etwas Rot beigemischt. Damit sind beide Farben gleich ungesättigt. Das Verfahren wird äußere Farbmischung genannt: $F=p*r + \gamma *g - \beta *b$.
+Um die aus Blau und Grün gemischte Farbe Cyan voll gesättigt aussehend zu lassen, müsste Rot aus der Mischfarbe subtrahiert werden. Dies ist allerdings technisch nicht realisierbar. Durch die negative Farbvalenz wird das Modell jedoch theoretisch konsistent und es lassen sich alle Farben durch Mischen von Rot, Grün und Blau darstellen. Daraus wird ein vollstänfiges RGB-Farbmodell abgeleitet.
+
+Idee:
+- es werden drei linear-unabhängige Größen benötigt
+  - zur beschreibung der Farbempfindung
+  - zur (technischen) Reproduktion der Farbempfindung
+- zunächst werden folgende Werte gewertet
+  - die additive Mischung als Reproduktionsmethode
+  - drei Primärfarben Rot, Grün, Blau
+- drei linear unabhängige Größen spannen stets einen 3D Raum auf
+  - die RGB Werte werden den drei ortogonalen Achsen dieses Raumes zugeordnet
+
+Darstellung des RGB Farbraums:
+- alle mit drei Farblichtquellen technisch (additiv) erzeugbaren Farben liegen innerhalb eines Würfels
+- Im Koordinatenursprung befindet sich Schwarz, diagonal gegenüber weiß.
+- auf der Raumdiagonalen liegen dazwischen die Graustufen
+
+Bei entsprechender Normierung liegen die vom RGB Farbsynthesesystem erzeugbare Farben im Einheitswürfel. Zunächst wird der Begriff Intensität eingeführt: $I=\frac{R+G+B}{3}$. Der Ausschnitt aus der Ebene konstanter Intensität, der im Einheitswürfel liegt, wird im Interesse der einfachen Darstellung als Farbebene (Farbtafel) genutzt. Dabei bleibt die Ordnung der Farbvalenzen erhalten. Die Länge |F| der Farbvalenz bzw die Intensität geht verloren.
+Die in der Ebene konstanter Intensität liegenden Werte definieren die Chrominanz durch welche die Farbwertanteile erfasst werden (zwei reichen aus da 2D). Es kann auch die Projektion der Ebene auf RG (grau überlagert) als Farbtafel genutzt werden, ohne die Ordnung der Farborte zu stören. Vorteil: orthonoales rg-System
+
+RGB Farbtafel:\\
+Alle Farben gleicher Buntheit (unterscheiden sich nur in der Länge von F) führen zum gleichen Farbort, der durch die Farbwertantwile r,g,b beschrieben wird:
+$$r=\frac{R}{R+G+B}, g=\frac{G}{R+G+B}, b=\frac{B}{R+G+B} \leftrightarrow r+g+b=1$$
+
+Aus dem rechten Teil der Gleichung folgt mit $b=1-r-g$, dass sich die Buntheit allein durch r und g darstellen lässt (entspricht $\R^2$).
+Die Farbwertanteile lassen sich bei bekanntem Farbort in der Farbtafel nach der angegebenen Konstruktionsvorschrift ermitteln oder direkt ablesen.
+
+
+### CIE System
+Um eine Relation zwischen der menschlichen Farbwahrnehmung und den physikalischen ursachen des Farbreizes herzustellen, wurde das CIE-Normvalenzsystem von der Internationalen Beleuchtungskommission (CIE) definiert. Es stellt die Gesammtheit der wahrnehmbaren Farben dar.
+
+Farbkörperunterschiede:\\
+Es finden sich Unterschiede welche Farbbereiche nach dem CIE Normalvalenzsystem von den jeweiligen Systemen dargestellt werden können:
+- menschliche Farbwahrnehmung ca 2-6 Mio Farben
+- Monitor: ca 1/3 davon. Bei Monitoren wird die additive Farbmischung verwendet, da die einzelnen Lichtquellen aufsummiert werden.
+- Druckprozess: meist deutlich weniger Farben. Bei Druckernwerden einzelne Farbschichten auf Papier gedruckt und das resultierende Bild wird über die subtraktive Farbmischung bestimmt.
+
+Subtraktive Farbmischung:\\
+Je nachdem welche Farbe ein Material hat, werden entsprechende Farbanteile absorbiert oder reflektiert. Eine gelbe Oberfläche sieht gelb aus, das sie das Blau aus weißem Licht absorbiert, aber Rot und Grün reflektiert.
+
+Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.

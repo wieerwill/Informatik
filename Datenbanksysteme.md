@@ -317,10 +317,161 @@ Kardinalitätsangaben
   - totale funktionale Beziehung: $liefert(Lieferant[0,*],Produkt[1,1])$
 
 ## Weitere Konzepte im ER Modell
+- abhängiger Entity-Typ: Identifikation über funktionale Beziehungen (Bsp x "gehört zu" y)
+- Spezialisierungs-/Generalisierungsbeziehung oder auch *IST*-Beziehung
+  - E1 *IST* E2
+  - entspricht semantisch einer injektiven funktionalen Beziehung
+  - Attribute des Entity-Typs E2 treffen auch auf E1 zu: "vererbte" Attribute
+  - nicht nur Atrributsdeklarationen vererben sich, sondern auch jeweils die aktuellen Werte für eine Instanz
+  - Kardinalitätsangabe immer: $IST(E_1[1,1], E_2[0,1])$
+  - Jede Instanz von E1 nimmt genau einmal an der Ist-Beziehung teil, während Instanzen des Obertyps E2 nicht teilnehmen müssen
+
+Die Konzepte im Überblick:
+| **Begriff** | **Informale Bedeutung** |
+| -- | -- |
+| Entity | zu repräsentierende Informationseinheit |
+| Entity Typ | Gruppierung von Entitys mit gleichen Eigenschaften |
+| Beziehungstyp | Gruppierung von Beziehungen zwischen Entitys |
+| Attribut | datenwertige Eigenschaft eines Entitys oder einer Beziehung |
+| Schlüssel | identifizierende Eigenschaft von Entitys |
+| Kardinalitäten | Einschränkung von Beziehungstypen bezüglich der mehrfachen Teilnahme von Entitys an der Beziehung |
+| Stelligkeit | Anzahl der an einem Beziehungstyp beteiligten Entity Typen |
+| funktionale Beziehungen | Beziehungstyp mit Funktionseigenschaften |
+| abhängige Entitys | Entitys, die nur abhängig von anderen Entitys existieren können |
+| IST Beziehung | Spezialisierung von Entity Typen |
+| Optionalität | Attribute oder Funktionale Beziehungen als partielle Funktionen |
 
 
 # Relationaler DB-Entwurf
+## Phasen des Datenbankentwurfs
+- Datenerhaltung für mehrere Anwendungssysteme und mehrere Jahre
+- Anforderungen an Entwurf:
+  - Anwendungsdaten jeder Anwendung sollen aus Daten der Datenbank ableitbar sein (mögl effizient)
+  - nur "vernünftige" Daten sollen gespeichert werden
+  - nicht-redundante Speicherung
 
+### Phasenmodell
+Anforderungsanalyse $\leftrightarrow$ Konzeptioneller Entwurf  $\leftrightarrow$ Verteilungsentwurf $\leftrightarrow$ Logischer Entwurf $\leftrightarrow$ Datendefinition $\leftrightarrow$ Physischer Entwurf $\leftrightarrow$ Implementierung & Wartung
+
+### Anforderungsanalyse
+- Vorgehensweise: Sammeln des Informationsbedarfs in den Fachabteilungen
+- Ergebnis: 
+  - informale Beschreibung des Fachproblems (Texte, Tabellen, Formblätter,...)
+  - Trennen der Informationen über Daten (Datenanalyse) von den Informationen über Funktionen (Funktionsanalyse)
+- "Klassischer" Entwurf: nur Datenanalyse und Folgeschritte
+- Funktionsentwurf: siehe Methoden des Software Engineering
+
+### Konzeptioneller Entwurf
+- erste Formale Beschreibung des Fachproblems
+- Sprachmittel: semantisches Datenmodell
+- Vorgehensweise:
+  - Modellierung von Sichen z.B. für verschiedene Fachabteilungen
+  - Analyse der vorliegenden Sichten in Bezug auf Konflikte
+  - Integration der Sichten in ein Gesamtschema
+- Phasen:
+  - Sichtentwurf
+  - Sichtanalyse
+  - Sichtintegration
+- Ergebnis: konzeptionelles Gesamtschema (z.B. ER Schema)
+
+#### weiteres Vorgehen beim Entwurf
+- ER-Modellierung von verschiedenen Sichten auf Gesamtinformation, z.B. für verschiedene Fachabteilungen eines Unternehmens -> konzeptueller Entwurf
+- Verteilungsentwurf bei verteilter Speicherung
+- Abbildung auf konkretes Implementierungsmodell -> logischer Entwurf
+- Datendefinition, Implementierung und Wartung -> physischer Entwurf
+
+#### Sichtintegration
+- Analyse der vorliegenden Sichten in Bezug auf Konflikte
+- Integration der Sichten in ein Gesamtschema
+
+#### Integrationskonflikte
+- Namenskonflikte: Homonyme/Synonyme
+- Typkonflikte: verschiedene Strukturen für das gleiche Element
+- Wertebereichskonflikte: verschiedene Wertebereiche für ein Element
+- Bedingungskonflikte: z.B. verschiedene Schlüssel für ein Element
+- Strukturkonflikte: gleicher Sachverhalt durch unterschiedliche Konstrukte ausgedrückt
+
+### Verteilungsentwurf
+- sollen Daten auf mehreren Rechnern verteilt vorliegen, muss Art und Weise der verteilten Speicherung festgelegt werden
+  - horizontale Verteilung z.B. Kunden 1-1000 und Kunden 10001-20000
+  - vertikale Verteilung z.B. Adresse in DB1, Konto in DB2
+
+### Logischer Entwurf
+- Sprachmittel: Datenmodell des ausgewählten "Realisierungs"DBMS
+- Vorgehensweise
+    1. (automatische) Transformation des konzeptionellen Schemas z.B. ER -> relationales Modell
+    2. Verbesserung des relationalen Schemas anhand von Gütekriterien
+- Ergebnis: logisches Schema
+
+### Datendefinition
+- Umsetzung des logischen Schemas in ein konkretes Schema
+- Sprachmittel: DDL und DML eines DBMS
+  - Datenbankdeklaration in der DDL des DBMS
+  - Realisierung der Integritätssicherung
+  - Definition der Benutzersichten
+
+### Physischer Entwurf
+- Ergänzen des physischen Entwurfs um Zugriffsunterstützung bzgl Effizienzverbesserung, z.B. Definition von Indexen
+- Index:
+  - Zugriffspfad: Datenstruktur für zusätzlichen, schlüsselbasierten Zugriff auf Tupel
+  - meist als B*-Baum realisiert
+- Sprachmittel: Speicherstruktursprache SSL
+
+Indexe in SQL, z.B.: ```create index WeinIdx on WEINE (Name)```
+
+Notwendigkeit für Zugriffspfade:
+- Beispiel: Tabelle mit 100GB Daten, Festplattentransferrate ca 50MB/s
+- Operation: Suchen eines Tupels (Selektion)
+- Implementierung: sequentielles Durchsuchen
+- Aufwand: 102.500/50 = 2048 sec ~ 34 Minuten
+
+### Implementierung & Wartung
+- Wartung
+- weitere Optimierung der physischen Ebene
+- Anpassung an neue Anforderungen und Systemplattformen
+- Portierung auf neue Datenbankmanagementsysteme
+- etc
+
+
+## Kapazitätserhaltende Abbildungen
+Umsetzung des konzeptionellen Schemas
+- Umsetzung auf logisches Schema
+- Erhaltung der Informationskapazität
+- Kapazitäts**erhöhende** Abbildung: Abbildung auf R mit genau einem Schlüssel K ( K={{A},{B}} )
+- Kapazitäts**vermindernde** Abbildung: Relationsschema mit einem Schlüssel
+- Kapazitäts**erhaltende** Abbildung: kapazitätserhaltend mit Schlüssel beider Entity Typen im Relationsschema als neuer Schlüssel
+
+## ER-auf-RM Abbildung
+### ER Abbildung auf Relationen
+- Entity-Typen und Beziehungstypen: jeweils auf Relationenschemata
+- Attribute: Attribute des Relationenschemas, Schlüssel werden übernommen
+- Kardinalitäten der Beziehungen: durch Wahl der Schlüssel bei den zugehörigen Relationenschemata ausgedrückt
+- in einigen Fällen: Verschmelzen der Relationenschemata von Entity- und Beziehungstypen
+- zwischen den verbleibenden Relationenschemata diverse Fremdschlüsselbedingungen einführen
+
+### Abbildung von Beziehungstypen
+- neues Relationenschema mit allen Attributen des Beziehungstyps, zusätzlich Übernahme aller Primärschlüssel der beteiligten Entity-Typen
+- Festlegung der Schlüssel:
+  - m:n-Beziehung: beide Primärschlüssel zusammen werden Schlüssel im neuen Relationenschema
+  - 1:n-Beziehung: Primärschlüssel der n-Seite (bei der funktionalen Notation die Seite ohne Pfeilspitze) wird Schlüssel im neuen Relationenschema
+  - 1:1-Beziehung: beide Primärschlüssel werden je ein Schlüssel im neuen Relationenschema, der Primärschlüssel wird dann aus diesen Schlüsseln gewählt
+- optionale Beziehungen ([0,1] oder [0,n]) werden nicht verschmolzen
+- bei Kardinalitäten [1,1] oder [1,n] (zwingende Beziehungen) Verschmelzung möglich:
+  - 1:n-Beziehung: das Entity-Relationenschema der n-Seite kann in das Relationenschema der Beziehung integriert werden
+  - 1:1-Beziehung: beide Entity-Relationenschemata können in das Relationenschema der Beziehung integriert werden
+
+## Übersicht über Transformationen
+| ER Konzept | wird abgebildet auf relationales Konzept |
+| -- | -- |
+| Entity Typ $E_i$      | Relationsenschema $R_i$ |
+| Attribute von $E_i$   | Attribute von $R_i$     |
+| Primärschlüssel $P_i$ | Primärschlüssel $P_i$   |
+| Beziehungstyp         | Relationenschema, Attribute $P_1,P_2$ |
+| dessen Attribute      | weitere Attribute       |
+| 1:n                   | $P_2$ wird Primärschlüssel der Beziehung |
+| 1:1                   | $P_1$ und $P_2$ werden Schlüssel der Beziehung |
+| m:n                   | $P_1 \cup P_2$ wird Primärschlüssel der Beziehung |
+| IST Beziehung         | $R_1$ erhält zusätzlichen Schlüssel $P_2$ |
 
 # Relationale Entwurfstheorie
 

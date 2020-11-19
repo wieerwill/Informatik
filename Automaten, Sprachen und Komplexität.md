@@ -624,3 +624,44 @@ Es gibt auch Wörter, mit verschiedenen Linksableitungen (und damit unterschiedl
 Sprachen: Regulär < Kontextfrei < Kontextsensitiv < RE < alle
 
 > Folgerung: Es gibt einen Algorithmus, der als Eingabe eine Typ-2-Grammatik G und ein Wort $w\in\sum^*$ bekommt und nach endlicher Zeit entscheidet, ob $w\in L(G)$ gilt.
+
+## Chomsky Normalform
+> Definition: Eine kontextfreie Grammatik g ist in Chomsky Normalform, falls
+> - alle Produktionen von G die Form $A\rightarrow AB$ oder $A\rightarrow a$ haben
+> - oder alle Produktionen von G die Form $A\rightarrow BC$ oder $A\rightarrow a$ oder $S\rightarrow\epsilon$ haben und S nie auf der rechten Seite einer Produktion vorkommt.
+
+Beobachtung: Sei G in Chomsky Normalform und T ein Ableitungsbaum eines Wortes w der Länge n. Dann gilt:
+- jeder innere Knoten hat genau 2 mit Nichtterminalen beschriftete Kinder oder genau ein mit einem Terminal beschriftetes Kind und
+- es gibt n Blätter
+Also hat T genau $3n-1$ viele Knoten
+
+> Satz: Zu jeder kontextfreien Grammatik gibt es eine Grammatik G' in Chomsky Normalform mit $L(G)=L(G')$
+
+Mit dieser Grammatik weiß man genau die Länge die man benötigt um ein Wort abzuleiten
+
+## Der Cocke-Younger-Kasami- oder CYK-Algorithmus
+Sei G kontextfreie Grammatik.  Gesucht ist ein Algorithmus mit dessen Hilfe wir entscheiden können, ob ein gegebenes Wort zu L(G) gehört.
+
+1. Versuch sei kontextsensitiv, dann werden diejenigen Wörter berechnet, die sich in < w vielen schritten ableiten lassen und getestet ob w darunter ist. Dieses Verfahren hat also exponentielle Laufzeit
+2. heutiges Ziel: polynomiieller Algorithmus; Vorraussetzung: Die grammatik ist in Chomsky Normalform
+
+Idee: Gegeben sei ein Wort $w\in\sum^*$. Wir wollen feststellen, aus welchen Nichtterminalen es abgeleitet werden kann.
+- Möglichkeit 1: $w=a\in\sum$, d.h. w besteht aus einem einzigen Alphabetsymbol. Dann kann w nur aus denjenigen Nichtterminalen A abgeleitet werden, für die es eine Produktion $A\rightarrow a4 gibt.
+- Möglichkeit 2: $w=a_1...a_n$ mit $n\geq 2$. Zunächst muss eine Produktion $A\rightarrow BC$ angewandt werden, dann muss  ein Teil $a_1...a_k$ des Wortes aus B und der andere Teil $a_{k+1}...a_n$ des Wortes aus C abgeleitet werden. Es ist jedoch nicht klar, wo das Wort w geteilt werden musss, d.h. wie groß die Position k ist! Probiere alle möglichen k's durch.
+
+Um Mehraufwand zu vermeiden, verwenden wir die Methode der dynamischen Programmierung, d.h.
+- berechne zunächst alle Nichtterminale aus denen sich Faktoren der Länge 1 ableiten lassen
+- berechne dann alle Nichtterminale, aus denen sich Faktoren der Länge 2 (3,4,...) ableiten lassen
+- zuletzt berechne alle Nichtterminale, aus denen sich w ableiten lässt
+Das Wort w liegt genau dann in der von der Grammatik erzeugten Sprache, wenn S sich unter diesen Nichtterminalen befindet.
+
+Komplexität des CYK-Algorithmus:\\
+sei $n=|w|$ die Länge dees Wortes, das untersucht wird. Die größe der Grammatik wird als konstant angesehen. Dann gilt:
+- $O(n^2)$ Tabellenfelder müssen ausgefüllt werden
+- für das Ausfüllen jedes Tablellenfeldes müssen höchstens n Paare anderer Felder betrachtet werden
+Daher ergibt sich insgesamt als Zeitkomplexität $O(n^3)$.
+
+
+
+
+

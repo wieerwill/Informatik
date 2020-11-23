@@ -662,6 +662,49 @@ sei $n=|w|$ die Länge dees Wortes, das untersucht wird. Die größe der Grammat
 Daher ergibt sich insgesamt als Zeitkomplexität $O(n^3)$.
 
 
+## Kellerautomaten
+um ein Automatenmodell für Kontextfreie Sprachen zu erhalten
+- führen wir daher einen keller oder Pushdown-Speicher ein, auf dem sich eine beliebig lange Sequenz von Zeichen befinden darf
+- beim Einlesen eines neuen Zeichens wird das oberste Zeichen des Kellers gelesen und durch eine (evtl. leere) Sequenz von Zeichen ersetzt. An anderen Stellen kann der Keller nicht gelesen/geändert werden
+- im Rechnermodell
+  - Art des Speicherzugriffs: Kellerspeicher
+  - Art der Steuereinheit: nichtdeterministisch
+- der Keller
+  - Zu beginn einer jeden Berechnung enhält der Keller genau das Kellerinitialisierungszeichen #
+  - der Keller ist nicht beschränkt und kann beliebig wachsen, es gibt aleo unendlich viele Mögliche Kellerinhalte. Mit anderen Worten: im gegensatz zu endlichen Automaten haben Kellerautomaten unendlich viele interne "Zustände"
+  - die von uns betrachteten Kellerautomaten akzeptieren immer mit leerem Keller (in diesem Fall gibt es auch keine Übergangsmöglichkeiten mehr).
 
+(Pushdown: nur oben etwas darauflegen, wenn etwas weggenommen wird ist es immer auf derselben Höhe. Bsp Mensadamen Teller)
 
+> Definition: Ein Kellerautomat M ist ein 6-Tupel $M=(Z,\sum,\Gamma, z_0, \delta, #)$, wobei
+> - Z die endliche Menge der Zustände
+> - $\sum$ das Eingabealphabet
+> - $\Gamma$ das Kelleralphabet
+> - $z_o\in Z$ der Startzustand
+> - $\delta: Z \times (\sum \cup \{\epsilon\})\times \Gamma \rightarrow P_{\epsilon}Z\times\Gamma^*)$ die Überführungsfunktion
 
+Bemerkung: $P_{\epsilon}Z\times\Gamma^*)$ bezeichnet die Menge aller endlichen Teilmengen von $Z\times\Gamma^*$
+
+Abkürzungen: PDA (pushdown automaton) oder NPDA (nondeterministic pushown automaton)
+
+> Definition: Ein **Konfiguration** eines PDA ist ein Tripel $k\in Z \times \sum^* \times \Gamma^*$
+- $z\in Z$ ist der aktuelle Zustand
+- [...]
+Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$
+
+> Definition: Seien $\gamma\in\Gamma^*, A_1B_1,...,B_k\in\Gamma, w, w'\in\sum^*$ und $z,z'\in Z$. Dann gilt $(z,w,A\gamma)\rightarrow (z',w', B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum \cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
+
+[...] |- S.16
+
+> Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z $\text{mit} (z_0, x,#) [...] ^*(z,\epsilon, \epsilon)\}$
+
+D.h. die akzeptierte Sprache enthält diejenigen Wörter, mit deren Hilfe es möglich ist den Keller vollständig zu leeren. Da Kellerautomaten jedoch nicht-deterministisch sind, kann es auch Berechnungen für diese Wort [...]
+
+Idee: statt auf das Zeichen $ zu warten, kann sich der Automat jederzeit nicht-deterministisch entscheiden, in den Zustand $z_2$(=Keller abbauen) überzugehen (d.h. eine Konfiguration kann mehrere Nachfolgerkonfigurationen haben).
+
+## die Greibach-Normalform
+Wir haben als nächstes zu zeigen, dass jede kontextfreie Sprache von einem PDA akzeptiert werden kann. Hierzu wandeln wir die kontextfreie Grammatik zunächst in eine Grammatik in Greibach Normalform um
+> Definition: eine kontextfreie Grammatik G ist in **Greibach Normalform** falls alle Produktionen aus P folgende Form haben: $A\rightarrow aB_1B_2...B_k$, mit $k\in \N$, $A,B_1,...,B_k\in V$ und $a\in \sum$
+Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein Alphabetsymbol entsteht.
+
+> Satz: aus einer kontextfreien Grammatik G kann eine kontextfreie Grammatik G' in Greibach Normalform berechnetwerden mit $L(G')=L(G)\ \{\epsilon\}$.

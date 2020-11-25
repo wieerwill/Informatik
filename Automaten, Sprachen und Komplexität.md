@@ -708,3 +708,31 @@ Wir haben als nächstes zu zeigen, dass jede kontextfreie Sprache von einem PDA 
 Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein Alphabetsymbol entsteht.
 
 > Satz: aus einer kontextfreien Grammatik G kann eine kontextfreie Grammatik G' in Greibach Normalform berechnetwerden mit $L(G')=L(G)\ \{\epsilon\}$.
+
+## Von Grammatiken zu PDAs
+Konstruktion: Sei G eine kontextfreie Grammatik in Greibach Normalform. Konstruiere den PDA $M_G$:
+- $Z=\{l\}$ es gibt nur einen Zustand
+- $\Gamma = V$ die Nichtterminalen der Grammatik bilden das Kelleralphabet
+- $\delta(l,a,A)=\{(l,B_1...B_k) | (A\rightarrow aB_1...B_k) \in P\}$ für $a\in\sum, A\in V$ und $\delta(l,\epsilon,A)=\varempty$ für $A\in V$ es gibt keine $\epsilon$-Transition
+- $#=S$ das Kellerinitialisierungssymbol ist das Startsymbol der Grammatik
+
+> Lemma: $L(G)\subseteq L(M_G)$ und $L(M_G)\supseteq L(G)$, es folgt $L(M_G)=L(G)$
+
+> Jede kontextfreie Sprache L ist Sprache eines PDA M mit nur einem Zustand. Gilt $\epsilon\not\in L$, so werden keine $\epsilon$-Transitionen benötigt
+
+## Von PDAs zu Grammatiken
+Ziel/Idee: kontextfreie Grammatik G, so dass für alle $w\in\sum^*$: $(i,w,A,)|-^*(j,\epsilon, \epsilon)$ gdw $_iA_j \Rightarrow w$
+
+Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum,P,S)$:
+- $V=\{S\}\cup (Z\times\Gamma\times Z)$
+- folgende Produktionen
+  - $S\rightarrow (\yota, #, z)$ für alle $z \in Z$
+  - $(z_0,A,z_{k+1})\rightarrow a(z_1,B_1,z_2)(z_2,B_2,z_3)...(z_k,B_k,z_{k+1})$ f.a. $z_0\in Z, A\in\Gamma,a\in\sum\cup\{\epsilon\}, (z_1,B_1B_2...B_k)\in\delta(z_0,a,A)$ und $z_2,...,z_{k+1}\in Z$
+
+[...]
+
+> Lemma: Für alle $z,z'\in Z,A\in\Gamma$ und $w\in\sum^*$ gilt $(z,w,A)|-^*(z',\epsilon,\epsilon)\Rightarrow (z,A,z')\Rightarrow w$
+
+[...] Beweisführung
+
+Ist M ein PDA so ist L(M) kontextfrei

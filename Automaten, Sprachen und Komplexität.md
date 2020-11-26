@@ -557,9 +557,16 @@ Die Komplexität der oben beschriebenen Verfahren sehr unterschiedlich ausfallen
 
 Es spricht viel dafür, dass die exponentiellen Zeitschranken nicht durch polynomielle ersetzt werden können.
 
-[...]
-
-## Zusammenfassung/Fragen
+Anwendung: Verifikation
+- zwei Prozesse 1 und 2 wollen auf eine gemeinsame Ressource zugreifen
+- jeder Prozess hat einen kritischen Bereich in dem auf die Ressource zugegriffen wird. Nur ein Prozess darf sich im kritischen Bereich befinden
+- es stehen gemeinsame Variablen zur Verfügung über die sich die Prozesse synchronisieren können
+- wir möchten zeigen,d ass der wechselseitige Ausschluss gewährleistet ist und eine gewisse Fairnessbedingung eingehalten wird
+- betrachtung der Prozesse als Wort
+  - jeder Ablauf eines Prozesses ist ein Wort, die Menge der Abläufe ist eine Sprache
+  - ebenso ist die Menge der Abläufe des Gesamtsystems eine Sprache
+  - auch die Menge der erlaubten/verbotenen Abläufe ist eine Sprache
+- damit ist das Inklusionsproblem/Schnittproblem $L_{Sys}\subseteq L_{Spec}$ zu lösen
 
 ### Pumping Lemma mit Alphabet aus einem Zeichen 
 $\sum=\{a\}$, $L(M)=\{a\} regulär \rightarrow \exists n \geq 1 \forall z\in Z(M)$ mit $|z|\geq n$, z.B. $n=3$
@@ -609,14 +616,14 @@ Zu jedem Ableitungsbaum kann es eine oder mehrere Ableitungen geben.
 Analog werden Rechtsableitungen definiert.
 
 Ableitungsbäume und Linksableitungen für w entsprechen einander eineindeutig, genauer:
-> Satz: Die Konstruktion auf Folie 10.10 ist eine Bijektion der Menge der Linksableitungen von Wörtern aus $\sum^*$ auf die Menge der vollständigen Ableitungsbäume.
+> Satz: Die Konstruktion ist eine Bijektion der Menge der Linksableitungen von Wörtern aus $\sum^*$ auf die Menge der vollständigen Ableitungsbäume.
 
 Aus Linksableitungen (nicht-Linksableitungen) können auch Rechtsableitungen erzeugt werden (und umgekehrt) ohne die Ableitung zu verändern.
 
 Es gibt auch Wörter, mit verschiedenen Linksableitungen (und damit unterschiedlichen Ableitungsbäumen). Da der Ableitungsbaum Strukturinformationen über das Wort wiedergibt ist dies nicht erwünscht.
 > Definition: Eine Kontextfreie Grammatik G heißt mehrdeutig, wenn es zwei verschiedene vollständige Ableitungsbäume $T$ und $T'$ gibt mit $\alpha(T)=\alpha(T')$.
 > Sonst heißt G eindeutig, d.h. G ist eindeutig wenn jedes Wort $w\in L(G)$ genau eine Ableitung besitzt.
-> Eine Kontextfreie Sprache heißt [...]
+> Eine Kontextfreie Sprache heißt inhärent mehrdeutig, wenn jede kontextfreie Grammatik mit $L=L(G)$ mehrdeutig ist
 
 ## kontextfreie Sprachen sind kontext-sensitiv
 > Lemma: aus einer kontextfreien Grammatik G kann eine kontextsensitive und gleichzeitig kontextfreie Grammatik G' berechnet werden mit $L(G)=L(G')$
@@ -689,18 +696,44 @@ Abkürzungen: PDA (pushdown automaton) oder NPDA (nondeterministic pushown autom
 
 > Definition: Ein **Konfiguration** eines PDA ist ein Tripel $k\in Z \times \sum^* \times \Gamma^*$
 - $z\in Z$ ist der aktuelle Zustand
-- [...]
+- $w\in\sum$ ist der noch zu lesende Teil der Eingabe
+- $\gamma \in \Gamma^*$ ist der aktuelle Kellerinhalt. Dabei steht das oberste Kellerzeichen ganz links
+ 
 Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$
 
 > Definition: Seien $\gamma\in\Gamma^*, A_1B_1,...,B_k\in\Gamma, w, w'\in\sum^*$ und $z,z'\in Z$. Dann gilt $(z,w,A\gamma)\rightarrow (z',w', B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum \cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
 
-[...] |- S.16
-
 > Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z $\text{mit} (z_0, x,#) [...] ^*(z,\epsilon, \epsilon)\}$
 
-D.h. die akzeptierte Sprache enthält diejenigen Wörter, mit deren Hilfe es möglich ist den Keller vollständig zu leeren. Da Kellerautomaten jedoch nicht-deterministisch sind, kann es auch Berechnungen für diese Wort [...]
+Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$:
+- seien $\gamma\in\Gamma, A,B_1...B_2\in\Gamma, w,w'\in\sum^*, z,z'\in Z$. Dann gilt $(z,w,A\gamma)\vdash (z',w',B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum\cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
+- gilt $a\in\sum$ so wird ein Zeichen der Eingabe gelesen. Falls $a=\epsilon$ gilt, so nicht
+- $(z',B_1...B_k)\in\delta(z,a,A)$
+  - Zeichen a wird gelesen
+  - Zustand ändert sich von z nach z'
+  - Symbol A wird durch mehrere neue Symbole ersetzt
+- $(z',BA)\in\delta(z,a,A)$
+  - Zeichen a wird gelesen
+  - Zustand ändert sich von z nach z'
+  - Symbol B wird zusätzlich auf den Keller gelegt
+- $(z',B)\in\delta(z,a,A)$
+  - Zeichen a wird gelesen
+  - Zustand ändert sich von z nach z'
+  - Symbol A auf dem Keller wird durch B ersetzt
+- $(z',A)\in\delta(z,a,A)$
+  - Zeichen a wird gelesen
+  - Zustand ändert sich von z nach z'
+  - Keller bleibt unverändert
+- $(z',\epsilon)\in\delta(z,a,A)$
+  - Zeichen a wird gelesen
+  - Zustand ändert sich von z nach z'
+  - Symbol A wird vom Keller gelöscht
 
-Idee: statt auf das Zeichen $ zu warten, kann sich der Automat jederzeit nicht-deterministisch entscheiden, in den Zustand $z_2$(=Keller abbauen) überzugehen (d.h. eine Konfiguration kann mehrere Nachfolgerkonfigurationen haben).
+> Definition: Sei M ein PDA. Dann ist die von M akzeptierte Sprache $L(M)=\{x\in\sum^* | \text{es gibt} z\in Z $\text{mit} (z_0,x,#)\vdash^* (z,\epsilon,\epsilon)}$
+
+D.h. die akzeptierte Sprache enthält diejenigen Wörter, mit deren Hilfe es möglich ist den Keller vollständig zu leeren. Da Kellerautomaten jedoch nicht-deterministisch sind, kann es auch Berechnungen für dieses Wort geben, die den Keller nicht leeren.
+
+Idee: statt auf das Zeichen \$ zu warten, kann sich der Automat jederzeit nicht-deterministisch entscheiden, in den Zustand $z_2$(=Keller abbauen) überzugehen (d.h. eine Konfiguration kann mehrere Nachfolgerkonfigurationen haben).
 
 ## die Greibach-Normalform
 Wir haben als nächstes zu zeigen, dass jede kontextfreie Sprache von einem PDA akzeptiert werden kann. Hierzu wandeln wir die kontextfreie Grammatik zunächst in eine Grammatik in Greibach Normalform um
@@ -720,8 +753,27 @@ Konstruktion: Sei G eine kontextfreie Grammatik in Greibach Normalform. Konstrui
 
 > Jede kontextfreie Sprache L ist Sprache eines PDA M mit nur einem Zustand. Gilt $\epsilon\not\in L$, so werden keine $\epsilon$-Transitionen benötigt
 
+Sei L kontextfrei. Dann existiert eine Grammatik G in Greibach-Normalform mit $L(G)=L\backslash \{\epsilon\}$. Nach den beiden gezeigten Lemmata existiert eine PDA M mit einem Zustand, ohne $\epsilon$-Transitionen und mit $L(M)=L(G)=L\backslash\{\epsilon\}$. Gilt $\epsilon\not\in L$, so ist Proposition bewiesen.
+
+Beispiel: 
+G hat die Regeln $S\rightarrow 0SES | 0ES | 0SE | 0E$ und $E\rightarrow 1$
+| Linksableitung | PDA Berechnung | Regelbildung |
+| -- | -- | -- |
+| $S\Rightarrow 0SE$    | $(\iota, 001011, S) \vdash (\iota, 01011, SE)$ | $(\iota, SE)\in\delta(\iota, 0, S)$ |
+| $S\Rightarrow 00ESE$  | $\vdash (\iota,1011, ESE)$  | $(\iota, ES)\in\delta(\iota, 0, S)$       |
+| $S\Rightarrow 001SE$  | $\vdash (\iota, 011, SE)$   | $(\iota, \epsilon)\in\delta(\iota, 1,E)$  |
+| $S\Rightarrow 0010EE$ | $\vdash (\iota, 11, EE)$    | $(\iota, E)\in\delta(\iota, 0, S)$ |
+| $S\Rightarrow 00101E$ | $\vdash (\iota, 1, E)$      | $(\iota, \epsilon)\in\delta(\iota,1,E)$ |
+| $S\Rightarrow 001011$ | $\vdash (\iota, \epsilon, \epsilon)$ | $(\iota,\epsilon)\in\delta(\iota, 1, E)$ |
+
+- die vorgestellte Methode heißt LL-Parsing: Berechnung des PDA entsprechen Linksableitung und Wort wird von links nach rechts gelesen oder Top-Down-Parsing: Ableitungsbaum wird an der Wurzel beginnend erzeugt
+- aus Grammatik Regeln $A\rightarrowaU | aV$ entsteht der Nichtdeterminisumus. LL(1)-Grammatiken enthalten keine solche Regeln, sodass $M_G$ deterministisch wird
+- allgemein: in LL(k)-Grammatiken legen die nächsten k zu lesenden Buchstaben fest, welche Regel angewant wird - auch dann kann man einen deterministischen PDAs konstruieren
+- LR-Parsing oder Bottom-Up-Parsing sind alternative Methoden, einen PDA aus einer kontextfreien Grammatik zu konstruieren, auch LR(k)-Grammatiken führen zu deterministischen PDAs
+
+
 ## Von PDAs zu Grammatiken
-Ziel/Idee: kontextfreie Grammatik G, so dass für alle $w\in\sum^*$: $(i,w,A,)|-^*(j,\epsilon, \epsilon)$ gdw $_iA_j \Rightarrow w$
+Ziel/Idee: kontextfreie Grammatik G, so dass für alle $w\in\sum^*$: $(i,w,A,)\vdash^*(j,\epsilon, \epsilon)$ gdw $_iA_j \Rightarrow w$
 
 Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum,P,S)$:
 - $V=\{S\}\cup (Z\times\Gamma\times Z)$
@@ -729,10 +781,12 @@ Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum
   - $S\rightarrow (\yota, #, z)$ für alle $z \in Z$
   - $(z_0,A,z_{k+1})\rightarrow a(z_1,B_1,z_2)(z_2,B_2,z_3)...(z_k,B_k,z_{k+1})$ f.a. $z_0\in Z, A\in\Gamma,a\in\sum\cup\{\epsilon\}, (z_1,B_1B_2...B_k)\in\delta(z_0,a,A)$ und $z_2,...,z_{k+1}\in Z$
 
-[...]
+> Lemma: Für alle $z,z'\in Z,A\in\Gamma$ und $w\in\sum^*$ gilt $(z,w,A)\vdash^*(z',\epsilon,\epsilon)\Rightarrow (z,A,z')\Rightarrow w$
 
-> Lemma: Für alle $z,z'\in Z,A\in\Gamma$ und $w\in\sum^*$ gilt $(z,w,A)|-^*(z',\epsilon,\epsilon)\Rightarrow (z,A,z')\Rightarrow w$
+> Ist M ein PDA, so ist L(M) kontextfrei
 
-[...] Beweisführung
-
-Ist M ein PDA so ist L(M) kontextfrei
+> Satz: Sei L eine Sprache. Dann sind äquivalent
+> - L ist kontextfrei
+> - es gibt einen PDA M mit $L(M)=L$
+> - es gibt einen PDA M mit nur einem Zustand und $L(M)=L$. Gilt $\epsilon\not\in\L$, so sind diese Aussagen äquivalent zu
+> - es gibt einen PDA M mit nur einem Zustand und ohne eine $\epsilon$-Transitionen, so dass $L(M)=L$ gilt

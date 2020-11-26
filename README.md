@@ -28,7 +28,7 @@ bisher:
 Keine Garantie auf Vollständigkeit/Korrektheit! Hilf uns Fehler zu korrigieren und noch weitere Fächer abzudecken.
 
 ## Verwendung
-Alle Dokumente werden in Markdown (bevorzugt) oder LaTex geschrieben. Bilder, Grafiken, Musik etc ist in einem eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
+Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder, Grafiken, Musik etc ist in einem eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
 Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Kein Inhalte oder Teile dieses Repositories dürfen kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 

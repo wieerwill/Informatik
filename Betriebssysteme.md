@@ -308,7 +308,7 @@ Ein Kontextwechsel umfasst:
 - bei Wechsel zwischen Threads desselben Prozesses
   - Stackkontext
   - Prozessorregister
-  - floating point unit (hohe Kosten)
+  - floating point unit (hohe Kosten) (FPU)
 - zusätzlicher Wechsel zwischen Threads verschiedener Prozesse
   - Speicherlayout (sehr hohe Kosten)
 - starke Auswirkungen auf
@@ -506,3 +506,233 @@ Sämtliche Schutz- und Sicherheitsmechanismen von
 - Anwendungsprozessen
 - Betriebssystem
 beruhen elementar auf 2 Bits: „Current Privilege Level“ (CPL) im Prozessor-Status-Register (PSR)
+
+
+# Kommunikation und Synchronisation
+## Elementare Konzepte
+Beispiele:
+- Aufträge an Geräte und (Dienstleistungs-)Prozesse, z.B.
+- Kooperative Arbeit von Betriebssystem-Komponenten
+- Arbeit verschiedener Betriebssystemkomponenten mit (gemeinsamen) Management-Datenstrukturen
+- Interaktionen zwischen Anwendungsprozessen
+
+Die Auftragstabelle ist eine (Software-)Ressource.
+- Problem: ein Fehler entsteht dadurch, dass zwei (oder mehr) Prozesse oder Threads „durcheinander“ auf der Ressource arbeiten
+- Lösung: Unkoordiniertes Arbeiten mit der Ressource muss verhindert werden!
+Erst wenn ein Prozess (oder Thread) seine Arbeit mit der Ressource vollständig abgeschlossen hat, darf der nächste aktiv werden.
+Die Befehlsfolge innerhalb der Prozesse, während deren Abarbeitung auf die Ressource zugegriffen wird, ist ein kritischer Abschnitt. 
+- Außerdem: genauere Betrachtung eines einzelnen Auftrags; kann aus mehreren Komponenten bestehen
+- Problem: durch „unkoordiniertes“ Arbeiten mehrerer Threads kann es auch bei den Auftrags-Einträgen zu Inkonsistenzen kommen
+
+Fazit:
+- Gesamte Arbeit an Auftragstabelle ist kritischer Abschnitt.
+- Nur 1 Thread darf zu einem Zeitpunkt mit Auftragstabelle arbeiten.
+- Erst wenn dieser Arbeit beendet hat, darf ein neuer Thread mit der Auftragstabelle arbeiten.
+
+Definitionen:\\
+Es gibt Ressourcen, die als ganzes oder bzgl. einzelner Operationen nur exklusiv, d.h. zu einem Zeitpunkt nur durch einen einzigen Thread nutzbar sind.
+1. Eine Phase, in der ein Thread eine exklusive Operation auf einer Ressource ausführt, heißt kritischer Abschnitt.
+2. Kritische Abschnitte erfordern den wechselseitigen Ausschluss (die Isolation) konkurrierender Threads bzw. Prozesse.
+
+Beispiel 2: Kommunikation von 2 Prozessen über gemeinsamen Speicherbereich („Erzeuger-Verbraucher-Problem“)
+- Problembeschreibung:
+  - Ein Prozess schreibt Daten in den Speicherbereich ...
+  - Der zweite Prozess liest diese Daten ...
+  - Die Datenmenge ist so umfangreich, dass dieser Vorgang mehrmals (abstrahiert: unendlich oft) wiederholt werden muss.
+- 1. Problem (Puffer voll, Puffer leer); unterschiedliche Geschwindigkeiten von Erzeuger und Verbraucher
+- 2. Problem (Puffer wird gerade benutzt); gleichzeitiges Lesen und Schreiben des selben Pufferelements
+
+## Algorithmen zum wechselseitigen Ausschluss
+Genauere Definition des Problems (Annahmen)
+1. konkurrierende Threads arbeiten asynchron, z.B. in einer unendlichen Schleife
+2. dabei betreten und verlassen sie irgendwann einen kritischen Abschnitt
+3. Betreten und Verlassen dieses Abschnitts: wird durch Algorithmen organisiert, die den kritischen Abschnitt umgeben (Entry/Exit-Code)
+
+Grundsätzliche Anforderungen
+1. Korrektheit: In einem kritischen Abschnitt befindet sich zu jedem Zeitpunkt höchstens ein Thread (**wechselseitiger Ausschluss**).
+2. Lebendigkeit: Falls ein Thread einen kritischen Abschnitt betreten möchte, dann betritt (irgendwann) (irgend) ein Thread diesen Abschnitt. [Folglich kann **irgendwann** auch der erstgenannte Thread **den kritischen Abschnitt betreten**.]
+3. Verhungerungsfreiheit: **Kein Thread wartet für immer** vor einem kritischen Abschnitt.
+
+Wechselseitiger Ausschluss: ein erster (naiver) Versuch
+- Ideen
+  1. während Benutzung des Puffers: wird dieser als „busy“ markiert
+  2. bei Vorfinden eines so markierten Puffers: wird gewartet
+- Verhungern: z.B. bei Pseudoparallelität (fortwährende Unterbrechung des Writers im kritischen Abschnitt)
+
+## Synchronisations- & Kommunikationsmechanismen
+- Austausch von Daten zwischen Prozessen $\rightarrow$ Kommunikation (Inter-Prozess-Kommunikation, IPC)
+- Abweichende Geschwindigkeiten von Sender und Empfänger $\rightarrow$ Synchronisation
+
+Betrachtete Mechanismen:
+- Semaphore
+- Hoare ́sche Monitore
+- Transaktionalen Speicher
+- Botschaften
+- Fernaufrufe
+
+### (binäre) Semaphore
+Idee: Flagge
+- mit 2 Zuständen
+    1. frei
+    2. belegt
+- mit 2 atomaren Operationen
+    1. belegen: P( Semaphorname ) („Passeren“)
+    2. freigeben: V (Semaphorname) („Vriegeven“)
+- Sämtliche Nutzer dieses kritischen Abschnitts müssen diese semaphore verwenden (Entry-/Exit-Code, Türwächter)
+- besser: kein aktives Warten
+
+```cpp
+// pic ← codePicFromCamStream();
+if bufferBusy.zustand = frei then
+bufferBusy.zustand ← belegt
+else
+bufferBusy.warteliste ← aufrufer
+fi
+//write(buffer, pic);
+if bufferBusy.warteliste = leer then
+bufferBusy.zustand ← frei
+else
+bufferBusy.warteliste.vorne.continue
+fi
+```
+
+Implementierung von Semaphoren z.B. als Klasse (Objekt-Orientiert),
+- die die Methoden P und V exportiert
+- mit einer lokalen Thread-Warteliste
+- mit (aus dem Maschinenraum) importierten Operationen atomicBegin und atomicEnd, die Atomarität herstellen
+```cpp
+P(semaphore s) {
+  atomicBegin(s);
+  if (s.zustand = frei)
+    s.zustand ← belegt;
+  else
+    s.warteliste ← aufrufer;
+      scheduler.suspend(aufrufer);
+  fi
+  atomicEnd(s);
+}
+
+V(semaphore s) {
+  atomicBegin(s);
+  if (s.warteliste = leer)
+    s.zustand ← frei;
+  else
+    scheduler.continue
+      (s.warteliste.vorne)
+  fi
+  atomicEnd(s);
+}
+```
+
+Unterstützung durch Hardware: die TSL-Operation
+- Atomarität
+- Ausschluss paralleler Ausführung
+→ TestAndSetLock („TSL“) im Instruktionssatz eines Prozessors
+```cpp
+atomicBegin(s):
+TSL s.state, callingThread.Id // try to get lock
+CMP s.state, callingThread.Id // did I get it?
+JZE gotIt // yes
+CALL scheduler.yield // optional in manycores, mandatory
+// in monocores: yield processor
+JMP atomicBegin // try again
+gotIt: RET // got it, may enter critical region
+```
+
+Nutzung von Semaphoren:
+- Multi-Thread-Anwendungen (Webserver, PowerPoint, etc.)
+- auf Betriebssystem Ebene von allen nebenläufigen Aktivitäten
+
+Implementierung
+- im Ressourcenmanagement des Betriebssystems
+- mit Hilfe des „Maschinenraums“: atomicBegin(s), atomicEnd(s)
+
+!ungelöst: Geschwindigkeitsdifferenz
+```cpp
+//Writer-Thread:
+forever do { 
+  codePicFromCamStream(pic);
+  P(bufferEmpty);
+  P(bufferBusy);
+  write(buffer,pic);
+  V(bufferBusy);
+  V(bufferFull);
+}
+```
+- bufferBusy: verhindert gleichzeitigen Zugriff
+- bufferEmpty: gibt Weg frei, wenn der Puffer leer ist
+- bufferFull: gibt Weg frei, wenn er gefüllt ist
+
+Mehrwertiger Semaphor (oder Zählsemaphor) mit mehreren Semaphoren; maximaler Sem-Wert = n, bestimmt maximale Anzahl von Threads, die gleichzeitig aktiv sein können
+
+Zusammenfassend:
+| bei Eintritt in kritischen Abschnitt | Bei Verlassen eines kritischen Abschnitts |
+| -- | -- |
+| P(Sem) - binärer Semaphor | V(Sem) - binärer Semaphor |
+| Down(Sem) - Zählsemaphor | Up(Sem) - Zählsemaphor |
+| Wait(Sem) - allgemein |  Signal(Sem) - allgemein |
+| Haben die gleiche Wirkung auf den Wert des Semaphors: | Haben die gleiche Wirkung auf den Wert des Semaphors: |
+| - Dekrementieren, bis Wert „Null“ erreicht | - Inkrementieren des Semaphorwertes |
+| - Trifft ein Thread auf den Wert „Null“, wird dieser blockiert (und in eine Warteliste eingefügt) | |
+| - Nimmt der Semaphor wieder einen Wert > 0 an, setzt (normalerweise) erster Thread in Warteliste fort | |
+
+### Hoare'sche Monitore
+- Problem bei Anwendung von Semaphoren: Softwarequalität
+- Problematisch in größeren Systemen:
+  - Synchronisationsoperationen (P und V)
+    - umgeben kritische Operationen (z.B. read/write)
+    - müssen explizit gesetzt werden
+
+Korrektheitsproblem. Die unabdingbare
+  - Vollständigkeit
+  - Symmetrie
+der P- und V-Operationen ist schwierig erreichbar und nachweisbar.
+
+- Die Idee: implizite/automatische Synchronisation kritischer Operationen
+- Der Weg: Nutzung des Prinzips der Datenabstraktion
+  - Zusammenfassung von Daten, darauf definierten Operationen und der Zugriffssynchronisation zu einem abstrakten Datentyp, dessen Operationen wechselseitigen Ausschluss garantieren
+  - Zugriff auf Daten: über implizit synchronisierende Operationen („Inseln der Ruhe“ in turbulenten Multithread-Umgebungen)
+  - Die kritischen Abschnitte und die zugehörigen Daten liegen jetzt in einem durch einen Monitor geschütztem Bereich
+
+Aufrufer muss nicht wissen
+1. ob Synchronisation nötig ist
+2. mit welchen Mechanismen dies erfolgen muss
+3. welche Regeln dabei gelten
+
+Ziel der Regeln\\
+Wechselseitiger Ausschlusses der Monitoroperationen ⟺ zu jedem Zeitpunkt ist höchstens ein Thread in einem Monitor aktiv
+1. Jede Monitoroperation ist am Eingang und an den Ausgängen durch einen Türsteher gesichert
+2. Das Betreten des Monitors erfolgt nur mit dessen Zustimmung („Anklopfen“)
+3. Falls ein anderer Thread im Monitor aktiv ist, wird die Zustimmung verweigert und der anklopfende Thread suspendiert ( $\approx$ P-Operation)
+4. Wenn ein Thread den Monitor verlässt, wird ein wartender Thread eingelassen (fortgesetzt), ( $\approx$ V-Operation)
+5. Gerät ein Thread innerhalb einer Monitoroperation in eine Wartesituation (Warten auf Bedingungsvariable), so verlässt er den Monitor
+6. Bevor ein auf eine Bedingung wartender Thread fortgesetzt wird, muss er wieder am Türsteher vorbei
+
+Implementierung der Regeln basierend auf Semaphoren
+- je Monitor: ein Semaphor
+- jede Operation eines Monitors enthält
+  - am Eingang: eine P-Operation
+  - an jedem (!) Ausgang: eine V-Operation
+$\rightarrow$ wechselseitiger Ausschluss
+
+Bedingungsvariable „Puffer nicht voll“, „Puffer nicht leer“ mit 2 Operationen:
+1. Warten auf das Vorliegen der Bedingung
+2. Signalisieren des Vorliegens der Bedingung
+$\rightarrow$ Monitore mit Bedingungsvariablen
+
+Monitore: komfortabler Mantel für Semaphore
+
+Allgemeines Erzeuger/Verbraucher-Problem
+Lösung 2er Aspekte der Synchronisation
+1. wechselseitiger Ausschluss der Zugriffe auf gemeinsame Daten („buffer“)
+    - durch wechselseitigen Ausschluss von Monitoroperationen
+    - kurzzeitiges Ausbremsen
+2. Anpassung unterschiedlicher Geschwindigkeiten von Erzeuger und Verbraucher
+    - durch Warten auf und Signalisieren von Bedingungen (nonFull, nonMt)
+    - längerfristiges Ausbremsen
+
+Methoden und Mechanismen verwendbar für
+1. Threads und Prozesse innerhalb eines Betriebssysteme
+2. Threads innerhalb eines Anwendungsprozesses
+3. Anwendungsprozesse untereinander (notwendig: gemeinsamer Speicher!)
+

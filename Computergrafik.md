@@ -314,7 +314,7 @@ $$P=\begin{pmatrix}
         0 & 1 & -sin(\alpha)*f & 0 \\
         0 & 0 & 0 & 0 \\
         0 & 0 & 0 & 1 
-      \end{pmatrix$$}
+      \end{pmatrix}$$
 - es gilt: $x'=x-cos(\alpha)*f*z$ und $y'=y-sin(\alpha)*f*z$
 
 
@@ -622,16 +622,161 @@ Ideales Antialiasing: Hat wegen der beliebig komplexen Geometrie allgemein einen
 Ansatz für eine "reale Lösung"
 - eine ideale Berechnung von Farbwerten nach dem Überdeckungsgrad ist allgemein beliebig aufwendig und daher praktisch irrelevant
 - Gesucht werden Ansätze mit gut abschätzbarem/konstanten Aufwand
-- "reales" Antialiasing beruht in der Regel auf der Verwendung von mehreren Samples pro Pixel, d.h. Berechnung dieser n Samples statt nur einem
+- "reales" Antialiasing beruht in der Regel auf der Verwendung von mehreren Samples pro Pixel, d.h. Berechnung dieser n Samples statt nur einem (typisch: n-facher Aufwand)
 
 ### Supersampling + Downsampling
+Beim Supersampling-Ansatz wird die Graphik zunächst in höherer Auflösung gerendert (z.B. 4-fach), und dann aus den Samples ein Farbwert gemittelt (z.B. per arithmetischem Mittel).
+Wie wirksam ist das Antialiasing bei 4x-Supersampling
+- Ohne Anti-Aliasing kommt pro Pixel genau eine Sampleposition zum Zuge. Das Pixel wird demnach gefärbt oder nicht gefärbt: Das sind zwei mögliche Stufen.
+- Bei vier Subpixeln können minimal 0 und maximal 4 Subpixel im (Makro-)Pixel gesetzt sein, d.h. es sind Intensitäten von 0%, 25%, 50%, 75% oder 100% möglich (nur 5 Abstufungen)!
+- Der Zusammenhang ist einfach: Es gibt immer eine Abstufung mehr als Subpixel pro Pixel.
+- Beim idealen Antialiasing entsprechend Flächenbedeckungsgrad gibt es "beliebig" viele Abstufungen (aus Aufwandsgründen aber praktisch nicht relevant).
+- Gibt es eine Formabhängigkeit? Ja, z.B. bei 45° gibt es z.B. nur eine Zwischenstufe, und zwar je nach Phasenlage mit 25% oder 75% → Kante "pumpt" bei Objektbewegung.
+
 ### Supersampling + Rotated Grids
+Minderung der Formabhängigkeit → Supersampling mit Rotated Grids
+- Kleine Winkel zu den Achsen führen zu langen "Stufen" der digitalen Polygonkante
+- Bessere Verhältnisse der Grauabstufung ergeben sich für flache Winkel, wenn statt des "ordered grid" ein "rotated grid" für das Supersampling verwendet wird.
+- Rotated grids sind dafür bei anderen Winkeln etwas schlechter als das ordered grid. Dies wird aber kaum wahrgenommen, da dort die Treppen der digitalen Geraden kürzer sind.
+
+Vorteile:
+- Gute Grauabstufung bei sehr flachen Kanten zur Zeilen- oder Spaltenrichtung.
+- Optimaler Winkel liegt bei ca. 20 ◦ − 30 ◦ (z.B. arctan(0.5) ≈ 26, 6 ◦ ).
+- Sehr dünne Linien (dünner als 1 Pixel) bleiben auch bei Bewegung zusammenhängend bzw. sichtbar (Vermeidung von "Line Popping").
+
+
 ### Supersampling + Multisampling
+Realisierung der Subpixelberechnung durch einen Superbackbuffer (Supersampling in entsprechend großem Buffer) oder mehrere Multisamplebuffer (Multisampling in mehrere Buffer der ursprünglichen Größe):
+1. Superbackpuffer
+    - Nachteil (bei rotated grid): Anpassung der Rasterkonvertierung an verschobene Positionen erforderlich
+    - Vorteil: Verwendung von mehr Texturinformation (Textur wird subpixelgerecht eingetragen)
+2. Multisamplebuffer
+    - Mehrfachrendering in normaler Größe mit leicht versetzter Geometrie (Vertexverschiebung pro Sub-Bild)
+    - Vorteil: keine Veränderung im Rendering
+    - Nachteil: nur ein Texturwert pro Makro-/Sub-Pixel
+
+Gezielter Ressourceneinsatz:
+1. Kantenglättung:
+    - Effizienzsteigerung durch Beschränkung auf reine Kantenglättung möglich!
+    - Kanten vs. Flächen: Anzahl der Kantenpixel oft wesentlich kleiner als Anzahl der Flächenpixel
+    - Aliasing bei Kanten/Mustern in Texturen schon beim Auslesen der Werte aus der Pixeltextur unterdrückbar
+    - Kantenpixel bekannt als: separate Linien oder Berandung von Polygonen/Dreiecken
+2. adaptives Samplen:
+    - statt feste Anzahl von Samples kann die Anzahl nach dem Bedarf gesteuert werden
+
 ### Quincunx Verfahren
+Quincunx → Überfilterung
+
+Ausgangspunkt ist das 2x Multisampling mit rotated grid! Entsprechend dem Grundprinzip des Anti-Aliasings sollen Aliasingartefakte durch Erzeugung höher aufgelöster Information reduziert werden. Bei dem vorausgesetzten Muster ist der Informationszuwachs durch die doppelte Anzahl von Samples gekennzeichnet, egal wie ausgewertet wird!
+
+Quincunx-Verfahren:
+- Information für die Kantenglättung beruht nach wie vor auf 2 Subpixeln
+- Entspricht einer zusätzlichen Tiefpass-Überfilterung. Durch die Unschärfe sehen Polygonkanten glatter aus.
+- Harte Kanten sind gar nicht mehr möglich, dadurch wird auch "Zappeln" an Polygonrändern reduziert.
+- Aber Nachteil: Texturinformation, die nur zu 2 Subpixeln gehört, wird verschmiert !
+
+### Pseudozufälliges Supersampling
+Kombinationen und Pseudozufälliges Supersampling:
+- Grundsätzlich ist die Kombination von Supersampling, Multisampling und Quincunx möglich und einige Graphikkarten unterstützen solche Überlegungen in jeweils festgelegten Grenzen (ordered oder rotated grid, gemischtes Sampling, Downsampling-Ansatz). Der Gewinn hält sich bisher in Grenzen, bei unqualifiziertem Mix ergeben sich eher Nachteile.
+- Bei Überwindung der für Füllrate und Bandbreite gegebenen Grenzen überwiegen die Vorteile des Supersamplings.
+- Ordered grid und rotated grid weisen bei bestimmten Strukturklassen Vor- und Nachteile auf. Die verbleibenden Artefakte wiederholen sich bei großen Flächen, so dass derartige Muster vom Menschen oft als störend empfunden werden. → aus diesen und ähnlichen Überlegungen → Ansätze für die Weiterentwicklung:
+    - pseudozufällige Auswahl von Abtastmustern für das Supersampling
+    - nachträgliche Abminderung regelmäßiger Strukturen durch vorsichtiges Verrauschen (Rauschfilter)
+    - entfernungsabhängiges Antialiasing
+
+pseudozufällig:
+- Samples können nur an n vordefinierten Positionen stattfinden (Sample-Positionsmuster).
+- Je nach Methode werden daraus m Positionen für das Samplen zufällig ausgewählt (beachte: m < n)
+- Anzahl der Muster als kombinatorisches Problem: m aus n (ohne Wiederholungen)
+
+### abschließende Betrachtung zum Downsampling:
+Beim Anti-Aliasing zur Glättung von Polygonkanten kommt für das Downsampling die Mittelwertbildung in Frage (lineare Filterung (2x – AA), bilineare Filterung (4x – AA)), gleichgültig ob ordered oder rotated grid. Beim pseudozufälligen Supersampling ist entsprechend der "frei gewählten" Positionen der "Subpixel" zu modifizieren (z.B. Gewichte nach Abstand der Abfragepositionen zur Makropixelposition).
+
 
 ## Polygonfüllalgorithmus
+Ansatz:
+- finde die Pixel innerhalb des Polygons
+- weise ihnen Farbe zu
+- dabei zeilenweises Vorgehen, pro Rasterlinie:
+- für jede Polygonkante:
+  - schneide die Polygonkante mit der aktuellen Bildzeile (→ $x_s$ )
+  - füge Schnittpunkt $x_s$ in eine Liste ein
+- sortiere Schnittpunkte der aktuellen Bildzeile in x-Richtung
+- Paritätsregel: fülle die Pixel jeweils zwischen ungeradem und nächstem geraden Schnittpunkt (Pixel zwischen geraden und ungeraden Schnittpunkten aber nicht!)
+
+Beachte: Die Schnittpunkte in floating point zu berechnen und zu runden ist ineffizient. Wir suchen, ähnlich wie beim Bresenham-Algorithmus, einen inkrementellen Ansatz mit Ganzzahl-Arithmetik.
+
+Allgemeinere Sicht auf die Füll- bzw. Auswahlstrategie: Ein Pixel wird mit der Farbe des Polygons gefüllt, das sich rechts von ihm befindet. Sollte dort eine Kante sein, so wird die Farbe des oberen Polygons verwendet. 
+Grundsätzlich könnten beliebige Richtungen als Referenzrichtung zur Farbbestimmung gewählt werden. Dann müssten die zuvor besprochenen Regeln oder der gesamte Algorithmus entsprechend angepasst werden.
+
+Effiziente Ermittlung der Schnittpunkte von Polygonkante und Rasterzeile:
+- Vorbetrachtungen:
+  - Polygonkanten werden stets von unten nach oben bearbeitet
+  - horizontale Polygonkanten müssen nicht bearbeitet werden (geschieht in Scanline) → im Algorithmus stets m ungleich 0
+  - $d_y = y_1 - y_0$ ist stets positiv (auch nie 0)
+  - $d_x = x_1 - x_0$ kann positiv und negativ sein
+  - damit können 4 Bereiche unterschieden werden
+- Idee
+  - Berechnung von x bzw y: $y=y_0+m(x-x_0)$,$y=y_0+\frac{y_1-y_0}{x_1-x_0}(x-x_0)$,$x=x_0+\frac{1}{m}(y-y_0)$, $x=x_0+\frac{x_1-x_0}{y_1-y_0}(y-y_0)$
+  - Zwar sind die x- bzw. y-Werte immer noch nicht ganzzahlig, jedoch können sie als rationale Zahlen explizit mit Zähler und Nenner repräsentiert werden.
+  - Die Rundung (nächstes x oder y erreicht?) kann inkrementell ermittelt werden.
+  - Die Rundungsregel für Bruchwerte hängt davon ab, ob es eine linke oder rechte Kante ist. Links wird z.B. aufgerundet (Pixel ist auf oder rechts v. der Kante).
+
+
+Edge-Tabelle:
+- Verkettete Liste (oder Array, siehe unten) für die nicht horizontalen Kanten.
+- Sortierung nach der Scan-Line, wo die Kanten beginnen (unteres Ende, $y_0$ ).
+- Innerhalb der Scan-Line wiederum Liste (nach $x_0$-Werten sortiert). Je nach Implementierung werden z.B. $x_0 , y_1$ , sowie Zähler und Nenner gespeichert.
+
+Active-Edge-Tabelle:
+- Die AET speichert alle Kanten, die die gegenwärtige Scan-Linie schneiden.
+- Die Liste hat die gleiche Struktur wie eine Zeile der ET.
+- Die Kanten werden gelöscht, wenn das obere Ende der Kante erreicht ist.
+
+Bemerkung zu Scan Convert Polygon:
+1. Es existiert immer eine gerade Anzahl Kanten. Bei konvexen Polygonen sind immer null oder zwei Kanten in der AET. Die Sortierung ist dadurch trivial bzw. entfällt bei konvexen Polygonen. Bei vielen Grafikbibliotheken (z.B. OpenGL) beschränkt man sich auf konvexe Polygone. Nichtkonvexe Polygone müssen daher vorher in konvexe Komponenten zerlegt werden. Dafür ist das Füllen dieser Polygone danach effizienter.
+2. Dieser Teil entspricht einem Schleifendurchlauf der Prozedur EdgeScan. Die Unterscheidung zwischen linker und rechter Kante wird beim Auffüllen der Pixel gemacht.
+
+Bemerkungen zur Effizienz:\\
+Der Polygonfüllalgorithmus ist zentraler Bestandteil jeder Grafikbibliothek für Rastergrafik. Für Echtzeitanwendungen ist Effizienz essentiell. Ein Polygon belegt
+meistens viel mehr Pixel als es Eckpunkte bzw. Kanten besitzt. Deshalb sind effiziente per-Pixel-Operationen besonders wichtig. Der Rechenaufwand sollte folglich möglichst vermieden werden (mit fallender Priorität):
+- pro Pixel (Annahme: sehr häufig auszuführen, deshalb möglichst effizient)
+- pro Rasterzeile
+- pro Kante (hier sollte möglichst viel vorberechnet werden, um pro Rasterzeile bzw. Pixel Rechenzeit zu sparen)
+Neben der reinen Rasterisierung des Polygons existieren Erweiterungen des inkrementellen Ansatzes für effiziente Berechnungen in der 3D-Grafik, z.B.:
+- Füllen des Z-Buffers (Tiefenwertberechnung)
+- lineare Interpolation beim Gouraud Shading (Farbwertberechnungen)
+
 ### Füllmuster
+Füllen eines Polygons mit einem Pattern statt mit einem konstanten Farbwert
+- benutze dazu BITMAPs:
+  - 2-dimensionales Array
+  - besteht aus M Spalten und N Zeilen
+  - BITMAP = ARRAY [0 · · · M − 1, 0 · · · N − 1]
+
+Anwendung des Backsteinmusters bei einem Polygon:
+```cpp
+drawPoly(Polygon poly, Pattern pat){
+  foreach pixelPosition x, y in poly
+    poly.set(x, y, pat[x mod pat.width, y mod pat.height]);
+}
+```
+
 ### Dithering
+Grundidee: Ersetzen "genauer" Farbwerte durch grobe Quantisierung
+- gegeben sei Tabelle (z.B. Lookup-Table) von im Output zulässigen Farben
+- Durchlaufen aller Pixel (mit genauen Werten) beginnend links oben
+- pro Pixel P die beste Ersetzung in Tabelle finden + setzen
+- verursachten Fehler ∆ jeweils nach Schema auf unbearbeitete Nachbarpixel in der (noch) genauen Repräsentation verteilen
+
+bei kleinen Bildern mit hoher Auflösung ist Dithering kaum wahrnehmbar
+
+Dithering vs. Anti-Aliasing:\\ Anti-Aliasing und Dithering sind komplementär zueinander:
+- Anti-Aliasing erhöht die empfundene räumlich Auflösung durch Anwendung von Zwischenwerten in der Grau-, bzw. Farbabstufung
+- Dithering erhöht die Farbauflösung (verringert die empfundene Farbquantisierung) durch das Verteilen des Quantisierungsfehlers auf mehrere Pixel → Verringerung der räumlichen Auflösung.
+- Beispiele zur Anwendung von Dithering:
+  - verlustbehaftete Bildkompression (z.B. GIF)
+  - Drucker (Halbtonverfahren) – benötigt eine feine Auflösung des Druckrasters
 
 
 # Farbräume
@@ -721,7 +866,7 @@ Beispiel für Reizung durch monochromatisches Licht (Laser) einer bestimmten St�
 - $b=0,02B(\lambda)$
 
 Farberzeugung durch Mischung:
-$$1,9r + 0,6g = 0,38R(\lambda)+0,12R(\lambda)+0,3G(\lambda)=0,5R(\lambda)+0,3G(\lambda) = y$
+$$1,9r + 0,6g = 0,38R(\lambda)+0,12R(\lambda)+0,3G(\lambda)=0,5R(\lambda)+0,3G(\lambda) = y$$
 
 geschichtliche/physikalische Aspekte:
 - Sonnenlicht ist eine Mischung von einzelnen Farben
@@ -787,3 +932,6 @@ Subtraktive Farbmischung:\\
 Je nachdem welche Farbe ein Material hat, werden entsprechende Farbanteile absorbiert oder reflektiert. Eine gelbe Oberfläche sieht gelb aus, das sie das Blau aus weißem Licht absorbiert, aber Rot und Grün reflektiert.
 
 Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.
+
+# Licht \& Reflexion
+

@@ -798,3 +798,100 @@ Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum
 
 PDAEs akzeptieren also so, wie es NFAs tun: Der Inhalt des Kellers nach dem kompletten Lesen der Eingabe ist irrelevant, es kommt nur auf den erreichten Zustand an.
 
+> Lemma: Jede kontextfreie Sprache wird von einem PDAE akzeptiert
+
+> Lemma: Ist M ein PDAE, so wird L(M) von einem PDA akzeptiert, ist also kontextfrei
+
+> Satz: Eine Sprache L ist genau dann kontextfrei, wenn sie von einem PDAE akzeptiert wird
+
+> Satz: Seien L eine kontextfreie und R eine reguläre Sprache. Dann ist $L\cap R$ kontextfrei
+
+## Deterministisch kontextfreie Sprachen
+> Definition: ein deterministischer Kellerautomat oder DPDA ist ein PDAE M, so dass für alle $z\in Z, a\in\sum, A\in\Gamma$ gilt: $|\delta(z,a,A)|+|\delta(z,\epsilon,A)|\leq 1$.
+
+> Definition: eine Sprache L ist deterministisch kontextfrei, wenn es einen deterministischen Kellerautomaten M gibt mit $L(M)=L$
+
+- Ziel: ist $L\subseteq \sum^*$ deterministisch kontextfrei, so auch $\sum^*\backslash L$\\
+- Beweisidee: vertausche die akzeptierenden und die nichtakzeptierenden Zustände\\
+- Problem: es kann Wörter w geben, die vom DPDA M nicht vollständig gelesen werden, weil
+    - der Keller leer ist, bevor das Eingabewort vollständig gelesen wurde
+    - es keine passende Anweisung gibt
+    - M in eine endlose Folge von $\epsilon$-Transitionen gerät, ohne das Wort bis zu Ende zu lesen
+- vorläufiges Ziel, ein äquivalenter DPDA M':
+    - M' den Keller niemals leert
+    - M' niemals blockiert
+    - M' erlaubt keine endlosen Folgen von $\epsilon$-Transitionen
+- Lösungen:
+    - Füge neues Kellerinitialisierungssymbol ein, wird dieses gesehen, so blockiere
+    - Wenn sich neuer DPDA M' in Zustand $z_{abl}$ befindet, so liest er Wort zu Ende und akzeptiert nicht
+    - Wenn sich M' in Zustand $z_{akz}$ befindet, so liest er Wort zu Ende. Ist das restliche Wort $\epsilon$, so akzeptiert er, ist es nicht $\epsilon$, so wechselt er in $z_{abl}$ (und akzeptiert also nicht).
+
+> Lemma: Sei M ein DPDA. Dann existiert ein DPDA $M_1$ mit $L(M)=L(M_1)$, so dass $M_1$ den Keller nie vollständig leert.
+
+> Lemma: Zu jedem DPDA M existiert ein DPDA M' mit $L(M)=L(M')$, so dass M' jedes Wort w bis zum Ende liest
+
+> Satz: Ist $L\subseteq \sum^*$ deterministisch kontextfrei, so auch $\sum^*\backslash L$
+
+> Satz: aus einem DPDA M kann ein DPDA M' berechnet werden mit $L/M')=\sum^*\backslash L(M)$
+
+## Abschlusseigenschaften
+Erinnerung: Die Klasse der **regulären Sprachen** ist abgeschlossen unter
+- Vereinigung ($L_1, L_2 \text{ regulär } \Rightarrow L_1\cup L_2 \text{ regulär }$)
+- Schnitt ($L_1, L_2  \text{ regulär } \Rightarrow L_1\cap L_2 \text{ regulär }$)
+- Komplement ($L \text{ regulär }\Rightarrow \sum^*\backslash L  \text{ regulär }$)
+- Produkt/Konkatenation ($L_1, L_2 \text{ regulär }\Rightarrow L_1L_2 \text{ regulär }$ )
+- Stern-Operation ($L \text{ regulär }\Rightarrow L^* \text{ regulär }$ )
+
+Satz: die Klasse der **kontextfreien Sprachen** ist abgeschlossen unter
+- Vereinigung ($L_1, L_2 \text{ kontextfrei } \Rightarrow L_1\cup L_2 \text{ kontextfrei }$)
+- Produkt/Konkatenation ($L_1, L_2 \text{ kontextfrei }\Rightarrow L_1L_2 \text{ kontextfrei }$ )
+- Stern-Operation ($L \text{ kontextfrei }\Rightarrow L^* \text{ kontextfrei }$ )
+- 
+die Klasse der kontextfreien Sprachen ist **nicht** abgeschlossen unter
+- Schnitt ($L_1, L_2  \text{ kontextfrei } \Rightarrow L_1\cap L_2 \text{ kontextfrei }$)
+- Komplement ($L \text{ kontextfrei }\Rightarrow \sum^*\backslash L  \text{ kontextfrei }$)
+- 
+es folgt
+- Es gibt kontextfreie Sprachen, die nicht deterministisch kontextfrei sind.
+
+## das Pumping Lemma für kontextfreie Sprachen
+Idee: Man versucht auszunutzen, daß eine kontextfreie Sprache von einer Grammatik mit endlich vielen Nichtterminalen erzeugt werden muss. Das bedeutet auch: wenn ein Ableitungsbaum ausreichend tief ist, so gibt es einen Ast, der ein Nichtterminal mehrfach enthält. Die durch diese zwei Vorkommen bestimmten Teilbäume werden wir „pumpen“.
+
+Pumping Lemma (Bar-Hillel, Perles, Shamir ’61):
+```
+Wenn L eine kontextfreie Sprache ist,
+dann gibt es n>= 1 derart,
+  daß für alle z in L mit |z| >= n gilt:
+    es gibt Wörter u, v , w , x, y in SUM mit
+      (i)   z = uvwxy ,
+      (ii)  |vwx| <= n,
+      (iii) |vx| >= 1 und
+      (iv)  uv^i  wx^i y in L für alle i >= 0
+```
+Dieses Lemma spricht nicht über kontextfreie Grammatiken, sondern nur über die Eigenschaften der Sprache. Daher ist es dazu geeignet, Aussagen über Nicht-Kontextfreiheit zu machen.
+
+- alle Sprachen, enthalten
+  - Typ-0-Sprachen, enthalten
+    - Typ-1-Sprachen (kontext sensitiv), enthalten
+      - Typ-2-Sprachen (kontext frei), enthalten
+        - Typ-3-Sprachen (rechtslinear)
+
+Spielschema: Wir (die Beweiser) wollen zeigen, daß die Sprache L nicht kontextfrei ist. Dazu müssen wir das folgende Spiel (gegen den Gegner) gewinnen
+1. G wählt eine Zahl $n\geq 1$
+2. B wählt ein $z\in L$ mit $|z|\geq n$
+3. G wählt u,v,w,x,y mit 
+   1. $z=uvwxy$
+   2. $|vwx|\leq n$
+   3. $|vx|\geq 1$
+4. B wählt ein i und zeigt, dass $uv^i wx^i y \not\in L$
+
+Die Sprache L ist nicht kontextfrei, falls B unabhängig von den Wahlen von G in Runden 1 und 3 immer so wählen kann (in Runden 2 und 4), dass schließlich  $uv^i wx^i \not\in L$ gilt
+
+Beispiel: $L=\{w2w| w\in\{0,1\}^*\}$ ist nicht kontextfrei
+
+## das Lemma von Ogden (William Ogden)
+Wenn L eine kontextfreie Sprache ist, dann gibt es $n\geq 1$ derart, dass für alle $z\in L$, in denen n Positionen markiert sind, gilt: es gibt Wörter $u,v,w,x,y\in\sum^*$ mit
+1. $z=uvwxy$
+2. v oder x enthält wenigstens eine der Markierungen oder
+3. $uv^i wx^i y \in L$ für alle $i\geq 0$
+

@@ -35,12 +35,12 @@ Natürliche Zahlen $\N = {0,1,2,3,...}$
 > Definition: Ein Alphabet ist eine endliche nichtleere Menge.
 
 üblicherweise heißen Alphabete hier: $\sum, \Gamma, \Delta$
-Ist $\Sum$ Alphabet, so nennen wir die Elemente oft Buchstaben.
-Ist $\Sum$ ein Alphabet, so heißen die Elemente von $\Sum*$ auch Wörter über $\Sum$ (auch String/Zeichenkette)
+Ist $\sum$ Alphabet, so nennen wir die Elemente oft Buchstaben.
+Ist $\sum$ ein Alphabet, so heißen die Elemente von $\sum*$ auch Wörter über $\sum$ (auch String/Zeichenkette)
 
 Beispiele:
 - Alphabete:{0},{0,1,2},...{A,K,S,0,1,2,3,4,5,6,7,8,9}, {groß,klein}
-- keine Alphabete: $\emptyset, \N, \Q$
+- keine Alphabete: $\emptyset, \N, Q$
 - Das Alphabet{0,1,2}hat also die drei Buchstaben 0, 1 und 2.
 - Das Alphabet{groß,klein}hat die zwei Buchstabengroßundklein
 - (0),()und(1,2,0,0) sind also Wörter über dem Alphabet{0,1,2}.
@@ -54,24 +54,24 @@ Beispiele:
 
 An Stelle von $u*v$ schreibt man auch $uv$
 
-Beobachtung: $\Sum* x \Sum* \rightarrow \Sum*$ ist eine Abbildung
+Beobachtung: $\sum* x \sum* \rightarrow \sum*$ ist eine Abbildung
 - Assoziativ: $u*(w*v)=(u*w)*v$
 - neutrales Element: $\epsilon * u = u * \epsilon = u$
 
-Kürzer: $(\Sum, *, \epsilon)$ ist ein Monoid
+Kürzer: $(\sum, *, \epsilon)$ ist ein Monoid
 
-> Definition: Für $\omega \in \Sum*$ und $n\in \N$ ist $w^n$ induktiv definiert
+> Definition: Für $\omega \in \sum*$ und $n\in \N$ ist $w^n$ induktiv definiert
 
 $w^n=\epsilon \text{ falls } n=0; \omega*\omega^{n-1} \text{ falls } n>0$
 
-> Definition: Seien y,w Wörter über $\Sum$. Dann heißt
-- Präfix/Anfangsstück von w, wenn es $z\in\Sum*$ gibt mit $yz=w$
-- Infix/Faktor von w, wenn es $x,z \in \Sum*$ gibt mit $xyz=w$
-- Suffix/Endstück von w, wenn es $x\in \Sum*$ gibt mit $xy=w$
+> Definition: Seien y,w Wörter über $\sum$. Dann heißt
+- Präfix/Anfangsstück von w, wenn es $z\in\sum*$ gibt mit $yz=w$
+- Infix/Faktor von w, wenn es $x,z \in \sum*$ gibt mit $xyz=w$
+- Suffix/Endstück von w, wenn es $x\in \sum*$ gibt mit $xy=w$
 
-> Definition: Sei $\Sum$ ein Alphabet. Teilmengen von $\Sum*$ werden formale Sprachen über $\Sum$ genannt.
+> Definition: Sei $\sum$ ein Alphabet. Teilmengen von $\sum*$ werden formale Sprachen über $\sum$ genannt.
 
-> Definition: Eine Menge L ist eine formale Sprache wenn es ein Alphabet $\Sum$ gibt, so dass L formale Sprache über $\Sum$ ist (d.h. $L\subseteq \Sum*$)
+> Definition: Eine Menge L ist eine formale Sprache wenn es ein Alphabet $\sum$ gibt, so dass L formale Sprache über $\sum$ ist (d.h. $L\subseteq \sum*$)
 
 > Definition: Sind $L_1$ und $L_2$ Sprachen, so heißt die Sprache $L_1 L_2={w | \exists w_1 \in L_1, w_2 \in L_2: w=w_1 w_2}$ die Konkatenation/Verkettung von $L_1$ und $L_2$.
 
@@ -90,9 +90,9 @@ $L^n = {\epsilon} \text{ falls } n=0; LL^{n-1} \text{ falls } n>0$
 
 $L+ = L* L* = L* * L$
 
-Beobachtung: Sei $\Sum$ Alphabet.
-- Sind $L_1$ und $L_2$ Sprachen über $\Sum$, so auch die Verkettung $L_1L_2$, die Kleene-Iteration $L_1*$, die positive Iteration $L_1+$, die Vereinigung $L_1\cup L_2$, die Differenz $L_1 \ L_2$ und der Schnitt $L_1 \cap L_2$.
-- $\emptyset, \Sum, \Sum*$ sind Sprachen über $\Sum$
+Beobachtung: Sei $\sum$ Alphabet.
+- Sind $L_1$ und $L_2$ Sprachen über $\sum$, so auch die Verkettung $L_1L_2$, die Kleene-Iteration $L_1*$, die positive Iteration $L_1+$, die Vereinigung $L_1\cup L_2$, die Differenz $L_1 \ L_2$ und der Schnitt $L_1 \cap L_2$.
+- $\emptyset, \sum, \sum*$ sind Sprachen über $\sum$
 
 Prioritätsregeln für Operationen auf Sprachen
 - Potenz/Iteration binden stärker als Konkatenation
@@ -122,7 +122,7 @@ Sowohl auf der linken, als auch auch der rechten Seite können zwei Tpyen von Sy
 
 > Definition: Eine Grammatik G ist ein 4-Tupel $G=(V, \sum, P, S)$ das folgende Bedingungen erfüllt
 - V ist eine endliche Menge von Nicht-Terminalen oder Variablen
-- $\sum$ ist ein Alphabet (Menge der Terminale) mit $V\cap \sum= \veremtpy$, d.h. kein Zeichen ist gleichzeitig Terminal und Nicht-Terminal
+- $\sum$ ist ein Alphabet (Menge der Terminale) mit $V\cap \sum= \varnothing$, d.h. kein Zeichen ist gleichzeitig Terminal und Nicht-Terminal
 - $P\subseteq (V\cup \sum)^+ \times (v\cup\sum)^*$ ist eine endliche Menge von Regeln oder Produktionen (Produktionsmenge)
 - $S\in V$ ist das Startsymbol/ die Startvariable oder das Axiom
 
@@ -144,7 +144,7 @@ Konventionen:
 
 Dabei ist $\Rightarrow_G^*$ der reflexive und transitive Abschluss von $\Rightarrow_G$. D.h. die von G erzeugte Sprache L(G) besteht genau aus den Wörtern, die in beliebig vielen Schritten aus S abgeleitet werden können und nur aus Terminalen besteht.
 
-Bemerkung: Für ein $u\in(V\cip\sum)^*$ kann es entweder gar kein, ein oder mehrere v geben mit $u\Rightarrow_G v$. Ableiten ist also kein deterministischer sondern ein nichtdeterministoscher Prozess. Mit anderen Worten: $\Rightarrow_G$ ist keine Funktion.
+Bemerkung: Für ein $u\in(V\cup\sum)^*$ kann es entweder gar kein, ein oder mehrere v geben mit $u\Rightarrow_G v$. Ableiten ist also kein deterministischer sondern ein nichtdeterministoscher Prozess. Mit anderen Worten: $\Rightarrow_G$ ist keine Funktion.
 
 Nichtdeterminismus kann verursacht werden durch:
 - eine Regel ist an zwei verschiednen Stellen anwendbar
@@ -183,7 +183,7 @@ Eingabe: Folge von " Buchstaben"
 > Definition: ein deterministischer endlicher Automat M ist ein 5-Tupel $M=(Z, \sum, z_0, \delta, E)$
 - $Z$ eine endliche Menge von Zuständen
 - $\sum$ das Eingabealphabet (mit $Z\cap\sum = \emptyset$)
-- $z_0\inZ$ der Start/Anfangszustand
+- $z_0\in Z$ der Start/Anfangszustand
 - $\delta: Z \times \sum \rightarrow Z$ die Überführungs/Übergangsfunktion
 - $E\subseteq Z$ die Menge der Endzustände
 
@@ -191,7 +191,7 @@ Abkürzung: DFA (deterministic finite automaton)
 
 Bsp:
 - $Z={0,1}$
-- $\sum={a,b$}
+- $\sum = \{a,b\}$
 - $z_0=0$
 - $\delta(0,a)=\delta(1,b)=1, \delta(1,a)=\delta(0,b)=0$
 - $E={0}$
@@ -203,15 +203,15 @@ die (einmal lesende) $\delta$ Funktion wird verallgemeinert: $\hat{\delta}$, die
 
 > Definition: Zu einem gegebenen DFA definieren wir die Funktion $\hat{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
 - $\hat{\delta}(z, \epsilon) = z$
-- $\hat{\delta}(z,aw)= $\hat{\delta}(\delta(z,a),w)$
+- $\hat{\delta}(z,aw)= \hat{\delta}(\delta(z,a),w)$
 
-Der Zustand $\rrof{\delta)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
+Der Zustand $\hat{\delta}(z,w)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
 
 > Definition: die von einem DFA **akzeptierte Sprache** ist: $L(M)={w\in\sum^* | \hat{\delta}(z_0,w)\in E}$
 
 d.h. wenn der Pfad der im Anfangszuststand beginnt nach den Übergangen durch w-markierte Pfade in einem Endzustand endet
 
-> Definition: EIne Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA #####################################
+> Definition: Eine Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA mit $L(M)=L$ gibt. 
 (wird von einem DFA akzeptiert)
 
 
@@ -221,7 +221,7 @@ Beweis: sei M ein DFA, definiere eine Typ-3 Grammatik G wie folgt:
 - $S=z_0$
 - $P={z\rightarrow a \delta(z,a) | z\in Z, a\in \sum} \cup {z\rightarrow \epsilon | z\in E}$ (Regeln abgeleitet aus Graphen mit Kanten; letzte Regel um ENdzustand in ein Terminal zu wandeln).
 
-Behauptung: für alle $z,z'\inZ$ und $w\in \sum^*$ gilt: $z\Rightarrow^*_G wz' \Leftrightarrow \hat{\delta} (z,w)=z'$. Beweis durch Induktion über $|w|$.
+Behauptung: für alle $z,z'\in Z$ und $w\in \sum^*$ gilt: $z\Rightarrow^*_G wz' \Leftrightarrow \hat{\delta} (z,w)=z'$. Beweis durch Induktion über $|w|$.
 Für $w\in\sum^*$ gilt dann $w\in L(G) \Leftrightarrow \exist z\in V: z_0\Rightarrow^*_G wz \Rightarrow_G w \Leftrightarrow \exists z\in Z:\hat{\delta}(z_o, w)=z$ und $Zz\rightarrow \epsilon)\in P \leftrightarrow \hat{\delta}(z_0, w)\in E \leftrightarrow w\in L(M)$
 
 ALso ist $L(M)=L(G)$ und damit rechtslinear
@@ -251,7 +251,7 @@ Bsp
 > Proposition: Jede von einem NFA akzeptierte Sprache ist regulär
 Zustände des DFA sind Mengen von Zuständen des NFA, daher auch Potzenmengenkonstruktion
 
-$w\in L(M') \leftrightarrow \roof\gamma (S,w)\in F \leftrightarrow \roof\delta(S,w)ßcap E\not = \emptyset \leftrightarrow w\in L(M)$ und damit $l(M')=L(M)$
+$w\in L(M') \leftrightarrow \hat\gamma (S,w)\in F \leftrightarrow \hat\delta(S,w)\cap E\not = \emptyset \leftrightarrow w\in L(M)$ und damit $l(M')=L(M)$
 
 > Proposition: Zu jeder rechtslinearen Grammatik G gibt es einen NFA M mit $L(G)=L(M)$
 
@@ -300,7 +300,7 @@ $$\delta(z,a)= \begin{cases}
 Beweis: es gibt einen NFA M mit $L(M)=L$
 
 Betrachte den NFA M' mit $\begin{cases}
-\delta(z,a) &\text{ falls } \delta(z,a)\cap E = \varemtpy \\
+\delta(z,a) &\text{ falls } \delta(z,a)\cap E = \varnothing \\
 \delta(z,a)\cup S &\text{ sonst } \end{cases}$
 
 Behauptung: für alle $Y\subseteq Z$ und $w\in\sum^+$ gilt $\top{\sigma}(Y,w)=\top{sigma}(Y,w)\cup \bigcup \top{\sigma}(S, u_n)$
@@ -314,8 +314,8 @@ Beweis: Nach dem Lemma zuvor ist $L^+$ regulär. Da auch ${\epsilon}$ regulär i
 reguläre Ausdrücke erlauben es, die regulären Sprachen kompakt in "Textform" zu beschreiben
 
 > Definition: Die Menge $Reg(\sum)$ der **regulären Ausdrücke über dem Alphabet $\sum$** ist die kleinste Menge mit folgenden Eigenschaften:
-> - $\varempty \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
-> - Wenn $\alpha, \betaa \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+> - $\varnothing \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+> - Wenn $\alpha, \beta \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
 
 - für $\alpha * \beta$ schreibt man oft $\alpha\beta$
 - für $\alpha + \beta$ schreibt man auch $\alpha|\beta$
@@ -324,7 +324,7 @@ Beispiel: $\sum={a,b,c,d}: \lambda ((ab)b) ((a+d)a) ((((ab)a)) + ((ba)b*))$
 
 > Definition: Für einen regulären Ausdruck $\alpha \in Reg(\sum)$ ist die Sprache $L(\alpha)\subseteq \sum^*$ induktiv definiert
 $$L(\alpha)=\begin{cases}
-\varemtpy &\text{ falls } alpha=\not O \\
+\varnothing &\text{ falls } alpha=\not O \\
 {\epsilon} &\text{ falls } \alpha = \lambda \\
 {a} &\text{ falls } \alpha=a\in \sum \\
 L(\beta)\cup L(\gamma) &\text{ falls } \alpha =(\beta + \gamma)\\
@@ -411,7 +411,7 @@ Ein zweites Verfahren um Nicht-Regularität zu zeigen. Dieses kann auch genutzt 
 
 > Definition Myhill-Nerode-Äquivalenz: Für eine Sprache $L\subseteq \sum^*$ definieren wir eine binäre Relation $R_L \subseteq \sum^* \times \sum^*$ wie folgt: Für alle $x,y\in \sum^*$ setze $(x,y)\in R_L$ genau dann, wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt. Wir schreiben hierfür auch $x R_L y$.
 
-Beispiel: Gegeben sei die Sprache $L=\{ w\in \{a,b}^*: |w|_a gerade\}$. Seien $x,z\in \{a,b\}^*$. Betrachte zwei Fälle:
+Beispiel: Gegeben sei die Sprache $L=\{ w\in \{a,b\}^*: |w|_a gerade\}$. Seien $x,z\in \{a,b\}^*$. Betrachte zwei Fälle:
 - $|z|_a$ gerade: $xz\in L \leftrightarrow |xz|_a$ gerade $\leftrightarrow |x|_a$ gerade
 - $|z|_a$ ungerade: $xz\in L \leftrightarrow |xz|_a$ gerade $\leftrightarrow |x|_a$ ungerade
 also: $x R_L y \leftrightarrow |x|_a \equiv |y|_a$
@@ -423,10 +423,10 @@ also: $x R_L y \leftrightarrow |x|_a \equiv |y|_a$
 > Definition: Für eine Sprache L und ein Wort $x\in \sum^*$ ist $[x]_L=\{y\in\sum^* | x R_L y \}$ die Äquivalenzklasse von x. Ist L klar, so schreiben wir einfacher $[x]$.
 
 Beispiel Äquivalentklassen für $R_L$ mit der Sprache $L=\sum^*\{abc\}$
-- $[\epsilon]=\{w\in\{a,b,c}^* | kein nichtleerer Präfix von abc ist Suffix von w\}$
-- $[a]=\{w\in\{a,b,c}^* | w endet auf a\}$
-- $[ab]=\{w\in\{a,b,c}^* | w endet auf ab\}$
-- $[abc]=\{w\in\{a,b,c}^* | w endet auf abc\}$
+- $[\epsilon]=\{w\in\{a,b,c\}^* | \text{kein nichtleerer Präfix von abc ist Suffix von w} \}$
+- $[a]=\{w\in\{a,b,c\}^* | \text{w endet auf a}\}$
+- $[ab]=\{w\in\{a,b,c\}^* | \text{w endet auf ab}\}$
+- $[abc]=\{w\in\{a,b,c\}^* | \text{w endet auf abc}\}$
 
 
 Der Index $index(R)$ von R ist die Anzahl der Äquivalenzklassen von R: $index(R)=|\{[x]:x \in A \} | \in \N \cup \{\infty\}$
@@ -455,7 +455,7 @@ Wenn in einem DFA M aus Startzustand X und Y dieselben Sprachen akzeptiert werde
 > - $z\equiv z'$ impliziert $(z\in E \leftrightarrow z'\in E)$
 > - $z\equiv z'$ impliziert $\hat{\sigma}(z,a)\equiv \sigma(z',a)$
 
-> Definition: Sei M ein DFA. Dann ist $M'=(Z\/_{\equiv},\sum, [z_0],\sigma', E')$ mit
+> Definition: Sei M ein DFA. Dann ist $M'=(Z_{\equiv},\sum, [z_0],\sigma', E')$ mit
 > - $\sigma'([z],a)=[\sigma (z,a)]$ für $z\in Z$ und $a\in \sum$ und
 > - $E'=\{[z]|z\in E\}
 > der Quotient von M bzgl $\equiv$
@@ -507,11 +507,11 @@ Verfahren: Verfolge die Zustandsübergänge von M, die durch die Symbole $a_1,..
 
 
 ### Leerheitsproblem
-Gilt $L=\varemtpy$ für eine gegebene reguläre Sprache L?
+Gilt $L=\varnothing$ für eine gegebene reguläre Sprache L?
 
 Eingabe: NFA M
 
-Verfahren: Sei $G=(Z,\rightarrow)$ der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in \sum: z'\in\sigma(z,a)$. Dann gilt $L(M)\not =\varemtpy$ genau dann, wenn es in dem Graphen G einen Pfad von einem Knoten aus S zu einem Knoten aus E gibt. Dies kann zB mit dem Algorithmus von Dijkstra entschieden werden.
+Verfahren: Sei $G=(Z,\rightarrow)$ der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in \sum: z'\in\sigma(z,a)$. Dann gilt $L(M)\not =\varnothing$ genau dann, wenn es in dem Graphen G einen Pfad von einem Knoten aus S zu einem Knoten aus E gibt. Dies kann zB mit dem Algorithmus von Dijkstra entschieden werden.
 
 
 ### Endlichkeitsproblem
@@ -522,18 +522,18 @@ Eingabe: NFA M
 Verfahren: Sei $G=(Z,\rightarrow)$ wieder der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in\sum:z'\in\sigma(z,a)$. Dann gilt L(M) ist genau dann unendlich, wenn es $z\in Z,z_0\in S$ und $z_1\in E$ gibt mit $z_0\rightarrow^* z \rightarrow^+ z \rightarrow^* z_1$. D.h. z liegt auf einem Zyklus, ist von einem Startzustand aus erreichbar und von z kann ein Endzustand erreicht werden. Dies kann wieder mit dem Algorithmus von Dijkstra entschieden werden.
 
 ### Schnittproblem
-Gilt $L_1\cap L_2=\varempty$ für gegebene reguläre $L_1,L_2$?
+Gilt $L_1\cap L_2=\varnothing$ für gegebene reguläre $L_1,L_2$?
 
 Eingabe: NFAs $M_1$ und $M_2$
 
-Verfahren: Konstruiere aus $M_1$ und $M_2$ einen NFA M mit $L(M)=L(M_1)\cap L(M_2)$. Teste ob $L(M)=\varemtpy$
+Verfahren: Konstruiere aus $M_1$ und $M_2$ einen NFA M mit $L(M)=L(M_1)\cap L(M_2)$. Teste ob $L(M)=\varnothing$
 
 ### Inklusionsproblem
 Gilt $L_1 \subseteq L_2$ für gegebene reguläre $L_1,L_2$?
 
 Eingabe: NFAs $M_1$ und $M_2$
 
-Verfahren: Aus $M_1$ und $M_2$ kann ein NFA M mit $L(M)=\bar{L(M_2)}\cap L(M_1)$ konstruieren. Es gilt $L(M_1)\subseteq L(M_2)$ genau dann, wenn $L(M)=\varemtpy$.
+Verfahren: Aus $M_1$ und $M_2$ kann ein NFA M mit $L(M)=\bar{L(M_2)}\cap L(M_1)$ konstruieren. Es gilt $L(M_1)\subseteq L(M_2)$ genau dann, wenn $L(M)=\varnothing$.
 
 ### Äquivalenzproblem
 Gilt $L_1=L_2$ für gegebene reguläre $L_1,L_2$?
@@ -683,7 +683,7 @@ um ein Automatenmodell für Kontextfreie Sprachen zu erhalten
 
 (Pushdown: nur oben etwas darauflegen, wenn etwas weggenommen wird ist es immer auf derselben Höhe. Bsp Mensadamen Teller)
 
-> Definition: Ein Kellerautomat M ist ein 6-Tupel $M=(Z,\sum,\Gamma, z_0, \delta, #)$, wobei
+> Definition: Ein Kellerautomat M ist ein 6-Tupel $M=(Z,\sum,\Gamma, z_0, \delta, \#)$, wobei
 > - Z die endliche Menge der Zustände
 > - $\sum$ das Eingabealphabet
 > - $\Gamma$ das Kelleralphabet
@@ -703,7 +703,7 @@ Abkürzungen: PDA (pushdown automaton) oder NPDA (nondeterministic pushown autom
 
 > Definition: Seien $\gamma\in\Gamma^*, A_1B_1,...,B_k\in\Gamma, w, w'\in\sum^*$ und $z,z'\in Z$. Dann gilt $(z,w,A\gamma)\rightarrow (z',w', B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum \cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
 
-> Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z $\text{mit} (z_0, x,#) [...] ^*(z,\epsilon, \epsilon)\}$
+> Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z $\text{mit} (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
 
 Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$:
 - seien $\gamma\in\Gamma, A,B_1...B_2\in\Gamma, w,w'\in\sum^*, z,z'\in Z$. Dann gilt $(z,w,A\gamma)\vdash (z',w',B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum\cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
@@ -729,7 +729,7 @@ Abkürzungen: PDA (pushdown automaton) oder NPDA (nondeterministic pushown autom
   - Zustand ändert sich von z nach z'
   - Symbol A wird vom Keller gelöscht
 
-> Definition: Sei M ein PDA. Dann ist die von M akzeptierte Sprache $L(M)=\{x\in\sum^* | \text{es gibt} z\in Z $\text{mit} (z_0,x,#)\vdash^* (z,\epsilon,\epsilon)}$
+> Definition: Sei M ein PDA. Dann ist die von M akzeptierte Sprache $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0,x,\#)\vdash^* (z,\epsilon,\epsilon)\}$
 
 D.h. die akzeptierte Sprache enthält diejenigen Wörter, mit deren Hilfe es möglich ist den Keller vollständig zu leeren. Da Kellerautomaten jedoch nicht-deterministisch sind, kann es auch Berechnungen für dieses Wort geben, die den Keller nicht leeren.
 
@@ -746,8 +746,8 @@ Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein A
 Konstruktion: Sei G eine kontextfreie Grammatik in Greibach Normalform. Konstruiere den PDA $M_G$:
 - $Z=\{l\}$ es gibt nur einen Zustand
 - $\Gamma = V$ die Nichtterminalen der Grammatik bilden das Kelleralphabet
-- $\delta(l,a,A)=\{(l,B_1...B_k) | (A\rightarrow aB_1...B_k) \in P\}$ für $a\in\sum, A\in V$ und $\delta(l,\epsilon,A)=\varempty$ für $A\in V$ es gibt keine $\epsilon$-Transition
-- $#=S$ das Kellerinitialisierungssymbol ist das Startsymbol der Grammatik
+- $\delta(l,a,A)=\{(l,B_1...B_k) | (A\rightarrow aB_1...B_k) \in P\}$ für $a\in\sum, A\in V$ und $\delta(l,\epsilon,A)=\varnothing$ für $A\in V$ es gibt keine $\epsilon$-Transition
+- $\#=S$ das Kellerinitialisierungssymbol ist das Startsymbol der Grammatik
 
 > Lemma: $L(G)\subseteq L(M_G)$ und $L(M_G)\supseteq L(G)$, es folgt $L(M_G)=L(G)$
 
@@ -767,7 +767,7 @@ G hat die Regeln $S\rightarrow 0SES | 0ES | 0SE | 0E$ und $E\rightarrow 1$
 | $S\Rightarrow 001011$ | $\vdash (\iota, \epsilon, \epsilon)$ | $(\iota,\epsilon)\in\delta(\iota, 1, E)$ |
 
 - die vorgestellte Methode heißt LL-Parsing: Berechnung des PDA entsprechen Linksableitung und Wort wird von links nach rechts gelesen oder Top-Down-Parsing: Ableitungsbaum wird an der Wurzel beginnend erzeugt
-- aus Grammatik Regeln $A\rightarrowaU | aV$ entsteht der Nichtdeterminisumus. LL(1)-Grammatiken enthalten keine solche Regeln, sodass $M_G$ deterministisch wird
+- aus Grammatik Regeln $A\rightarrow aU | aV$ entsteht der Nichtdeterminisumus. LL(1)-Grammatiken enthalten keine solche Regeln, sodass $M_G$ deterministisch wird
 - allgemein: in LL(k)-Grammatiken legen die nächsten k zu lesenden Buchstaben fest, welche Regel angewant wird - auch dann kann man einen deterministischen PDAs konstruieren
 - LR-Parsing oder Bottom-Up-Parsing sind alternative Methoden, einen PDA aus einer kontextfreien Grammatik zu konstruieren, auch LR(k)-Grammatiken führen zu deterministischen PDAs
 
@@ -778,7 +778,7 @@ Ziel/Idee: kontextfreie Grammatik G, so dass für alle $w\in\sum^*$: $(i,w,A,)\v
 Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum,P,S)$:
 - $V=\{S\}\cup (Z\times\Gamma\times Z)$
 - folgende Produktionen
-  - $S\rightarrow (\yota, #, z)$ für alle $z \in Z$
+  - $S\rightarrow (\iota, \#, z)$ für alle $z \in Z$
   - $(z_0,A,z_{k+1})\rightarrow a(z_1,B_1,z_2)(z_2,B_2,z_3)...(z_k,B_k,z_{k+1})$ f.a. $z_0\in Z, A\in\Gamma,a\in\sum\cup\{\epsilon\}, (z_1,B_1B_2...B_k)\in\delta(z_0,a,A)$ und $z_2,...,z_{k+1}\in Z$
 
 > Lemma: Für alle $z,z'\in Z,A\in\Gamma$ und $w\in\sum^*$ gilt $(z,w,A)\vdash^*(z',\epsilon,\epsilon)\Rightarrow (z,A,z')\Rightarrow w$
@@ -788,5 +788,13 @@ Konstruktion: Sei M ein PDA. Konstruiere die kontextfreie Grammatik $G_M=(V,\sum
 > Satz: Sei L eine Sprache. Dann sind äquivalent
 > - L ist kontextfrei
 > - es gibt einen PDA M mit $L(M)=L$
-> - es gibt einen PDA M mit nur einem Zustand und $L(M)=L$. Gilt $\epsilon\not\in\L$, so sind diese Aussagen äquivalent zu
+> - es gibt einen PDA M mit nur einem Zustand und $L(M)=L$. Gilt $\epsilon\not\in L$, so sind diese Aussagen äquivalent zu
 > - es gibt einen PDA M mit nur einem Zustand und ohne eine $\epsilon$-Transitionen, so dass $L(M)=L$ gilt
+
+## PDAs mit Endzuständen
+> Definition: Ein Kellerautomat mit Endzuständen oder PDAE ist ein 7-Tupel M, wobei $(Z,\sum,\Gamma, \iota, \delta, \#)$ ein PDa und $E\subseteq Z$ eine Menge von Endzuständen ist
+
+> Definition: Sei M ein PDAE. Die von M akzeptierte Sprache ist $L(M)=\{w\in\sum^* | \text{es gibt } e\in E \text{ und } \gamma\in\Gamma^* \text{ mit } (\iota, w,\#)\vdash^* (e,\epsilon,\gamma)\}$
+
+PDAEs akzeptieren also so, wie es NFAs tun: Der Inhalt des Kellers nach dem kompletten Lesen der Eingabe ist irrelevant, es kommt nur auf den erreichten Zustand an.
+

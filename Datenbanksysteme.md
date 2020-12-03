@@ -342,7 +342,7 @@ Die Konzepte im Überblick:
 | Optionalität | Attribute oder Funktionale Beziehungen als partielle Funktionen |
 
 
-# Relationaler DB-Entwurf
+# Datenbankentwurf
 ## Phasen des Datenbankentwurfs
 - Datenerhaltung für mehrere Anwendungssysteme und mehrere Jahre
 - Anforderungen an Entwurf:
@@ -473,7 +473,164 @@ Umsetzung des konzeptionellen Schemas
 | m:n                   | $P_1 \cup P_2$ wird Primärschlüssel der Beziehung |
 | IST Beziehung         | $R_1$ erhält zusätzlichen Schlüssel $P_2$ |
 
-# Relationale Entwurfstheorie
+# Relationaler Entwurf
+## Zielmodell des logischen Entwurfs
+
+Begriffe des Relationenmodells
+| Begriff | Informale Bedeutung |
+| -- | -- |
+| Attribut | Spalte einer Tabelle |
+| Wertebereich | mögliche Werte eines Attributs (auch Domäne) |
+| Attributwert | Element eines Wertebereichs |
+| Relationenschema | Menge von Attributen | 
+| Relation | Menge von Zeilen einer Tabelle |
+| Tupel | Zeile einer Tabelle |
+| Datenbankschema | Menge von Relationenschemata |
+| Datenbank | Menge von Relationen (Basisrelationen) |
+| Schlüssel | minimale Menge von Attributen, deren Werte ein Tupel einer Tabelle eindeutig identifizieren |
+| Primärschlüssel | ein beim Datenbankentwurf ausgezeichneter Schlüssel |
+| Fremdschlüssel | Attributmenge, die in einer anderen Relation Schlüssel ist |
+| Fremdschlüsselbedingung | alle Attributwerte des Fremdschlüssels tauchen in der anderen Relation als Werte des Schlüssels auf |
+
+Formalisierung Relationenmodell
+- Attribute und Domänen
+  - $U$ nichtleere, endliche Menge: Universum
+  - $A\in U$: Attribut
+  - $D = {D_1,..., D_m}$ Menge endlicher, nichtleerer Mengen: jedes $D_i$: Wertebereich oder Domäne
+  - total definierte Funktion $dom:U \rightarrow D$
+  - $dom(A)$: Domäne von A
+  - $w \in dom(A)$: Attributwert für A
+- Relationenschemata und Relationen
+  - $R\subseteq U$: Relationenschema
+  - Relation $r$ über $R = {A_1,..., A_n}$ (kurz: $r(R)$) ist endliche Menge von Abbildungen $t:R \rightarrow \bigcup_{i=1}^{m} D_i$, Tupel genannt
+  - Es gilt $t(A) \in dom(A)$ ($t(A)$ Restriktion von $t$ auf $A \in R$)
+  - für $X\subseteq R$ analog $t(X)$ X-Wert von $t$
+  - Menge aller Relationen über $R: REL(R) := {r | r(R)}$
+- Datenbankschema und Datenbank
+  - Menge von Relationenschemata $S := {R_1,..., R_p }:$ Datenbankschema
+  - Datenbank über $S$: Menge von Relationen $d:={r_1,..., r_p}$, wobei $r_i (R_i)$
+  - Datenbank $d$ über $S: d(S)$
+  - Relation $r\in d$: Basisrelation
+
+Integritätsbedingung
+- Identifizierende Attributmenge $K:= {B_1,..., B_k } \subseteq R: \forall t_1, t_2 \in r [t_1 \not = t_2 \Rightarrow \exists B \in K: t_1(B) \not = t_2(B)]$
+- Schlüssel: ist minimale identifizierende Attributmenge
+- Primattribut: Element eines Schlüssels
+- Primärschlüssel: ausgezeichneter Schlüssel
+- Oberschlüssel oder Superkey: jede Obermenge eines Schlüssels (= identifizierende Attributmenge)
+- Fremdschlüssel: $X(R_1)\rightarrow Y(R_2)$
+
+
+## Relationaler DB-Entwurf
+**Redundanzen** in Basisrelationen sind aus mehreren Gründen unerwünscht:
+- Redundante Informationen belegen unnötigen Speicherplatz
+- Änderungsoperationen auf Basisrelationen mit Redundanzen nur schwer korrekt umsetzbar: 
+  - wenn eine Information redundant vorkommt, muss eine Änderung diese Information in allen ihren Vorkommen verändern
+  - mit normalen relationalen Änderungsoperationen und den in
+    - relationalen Systemen vorkommenden lokalen
+    - Integritätsbedingungen (Schlüsseln) nur schwer realisierbar
+
+Funktionale Abhängigkeit zwischen Attributemengen X und Y
+> Wenn in jedem Tupel der Relation der Attributwert unter den X-Komponenten den Attributwert unter den Y-Komponenten festlegt.
+- Unterscheiden sich zwei Tupel in den X-Attributen nicht, so haben sie auch gleiche Werte für alle Y-Attribute
+- Notation für funktionale Abhängigkeit (FD, von functional dependency): X → Y
+
+> Ziel des Datenbankentwurfs: alle gegebenen funktionalen Abhängigkeiten in Schlüsselabhängigkeiten umformen, ohne dabei semantische Information zu verlieren
+
+## Normalformen
+Schemaeigenschaften
+- Relationenschemata, Schlüssel und Fremdschlüssel so wählen, dass
+    1. alle Anwendungsdaten aus den Basisrelationen hergeleitet werden können,
+    2. nur semantisch sinnvolle und konsistente Anwendungsdaten dargestellt werden können und
+    3. die Anwendungsdaten möglichst nicht-redundant dargestellt werden.
+- Hier: Forderung 3
+  - Redundanzen innerhalb einer Relation: Normalformen
+  - globale Redundanzen: Minimalität
+
+Normalformen
+- legen Eigenschaften von Relationenschemata fest
+- verbieten bestimmte Kombinationen von funktionalen Abhängigkeiten in Relationen
+- sollen Redundanzen und Anomalien vermeiden
+
+1. Erste Normalform
+    - erlaubt nur atomare Attribute in den Relationenschemata, d.h. als Attributwerte sind Elemente von Standard-Datentypen wie integer oder string erlaubt, aber keine Konstruktoren wie array oder set
+2. Zweite Normalform
+    - Zweite Normalform eliminiert derartige partielle Abhängigkeiten bei Nichtschlüsselattributen
+    - partielle Abhängigkeit liegt vor, wenn ein Attribut funktional schon von einem Teil des Schlüssels abhängt
+    - Beispielrelation in 2 NF
+        - R1(Name, Weingut, Preis)
+        - R2(Name, Farbe)
+        - R3(Weingut, Anbaugebiet, Region)
+3. Dritte Normalform
+    - eliminiert (zusätzlich) transitive Abhängigkeiten
+    - etwa Weingut $\rightarrow$ Anbaugebiet und Anbaugebiet $\rightarrow$ Region in Relation
+    - man beachte: 3 NF betrachtet nur Nicht-Schlüsselattribute als Endpunkt transitiver Abhängigkeiten
+    - Beispielrelation in 3NF, transitive Abhängigkeit in R3, d.h. R3 verletzt 3NF
+      - R3_1(Weingut, Anbaugebiet)
+      - R3_2(Anbaugebiet, Region)
+
+> Dritte Normalform: 
+> - $A \in R$ heißt transitiv abhängig von X bezüglich F genau dann, wenn es ein $Y\subseteq R$ gibt mit $X \rightarrow Y, Y \not\rightarrow X, Y \rightarrow A, A \not\in XY$
+> - erweitertes Relationenschema $R=(R, \bf{K})$ ist in 3 NF bezüglich F genau dann, wenn $\not\exists A \in R$:
+>   - A ist Nicht-Primattribut in R
+>   - $\wedge A$ transitiv abhängig von einem $K\in \bf{K}$ bezüglich $F_i$.
+>   - Nicht-Primattribut: A ist in keinem Schlüssel von R enthalten
+
+> Boyce-Kodd-Normalform (Verschärfung der 3NF): Eliminierung transitiver Abhängigkeiten auch zwischen Primattributen
+- $\not\exists A \in R$: A transitiv abhängig von einem $K\in\bf{K}$ bezüglich F
+
+Minimalität
+- Global Redundanzen vermeiden
+- andere Kriterien (wie Normalformen) mit möglichst wenig Schemata erreichen
+- Beispiel: Attributmenge ABC, FD-Menge ${A \rightarrow B, B \rightarrow C}$
+
+Übersicht
+| Kennung | Schemaeigenschaft | Kurzcharakteristik |
+| -- | -- | -- |
+| | 1 NF | nur atomare Attribute |
+| | 2 NF | keine partielle Abhängigkeit eines Nicht-Primattributes von einem Schlüssel |
+| S1 | 3 NF | keine transitive Abhängigkeit eines Nicht-Primattributs von einem Schlüssel |
+| | BCNF | keine transitive Abhängigkei eines Attributes von einem Schlüssel |
+| S2 | Minimalität | minimale Anzahl von Relationsschemata, die die anderen Eigenschaften erfüllt |
+
+## Transformationseigenschaften
+- bei einer Zerlegung einer Relation in mehrere Relationen ist darauf zu achten, dass
+    1. nur semantisch sinvolle und konsistente Anwendungsdaten dargestellt (Abhängigkeitstreue) und
+    2. alle Anwendungsdaten aus den Basisrelationen hergeleitet werden können (Verbundtreue)
+- Abhänggikeitstreue (Kennung T1)
+  - alle gegebenen Abhängigkeiten sind durch Schlüssel repräsentiert
+  - eine Menge von Abhängigkeiten kann äquivalent in eine zweite Menge von Abhängigkeiten transformiert werden
+  - spezieller: in die Menge der Schlüsselabhängigkeiten, da diese vom Datenbanksystem effizient überprüft werden kann
+    - die Menge der Abhängigkeiten soll äquivalent zu der Menge der Schlüsselbedingungen im resultierenden Datenbankschema sein
+    - Äquivalenz sichert zu, dass mit den Schlüsselabhängigkeiten semantisch genau die gleichen Integritätsbedingungen ausgedrückt werden wie mit den funktionalen oder anderen Abhängigkeiten vorher
+  - S charakterisiert vollständig F (oder: ist abhängigkeitstreu bezüglich F) genau dann, wenn $F\equiv \{K\rightarrow R | (R,\bf{K})\in S, K\in\bf{K}\}$
+- Verbundtreue (Kennung T2)
+  - Originalrelationen können durch den Verbund der Basisrelationen wiedergewonnen werden
+  - zur Erfüllung des Kriteriums der Normalformen müssen Relationenschemata teilweise in kleinere Relationenschemata zerlegt werden
+  - für Beschränkung auf „sinnvolle“ Zerlegungen gilt Forderung, dass die Originalrelation wieder aus den zerlegten Relationen mit dem natürlichen Verbund zurückgewonnen werden kann
+    - Zerlegung des Relationenschemas $R = ABC$ in $R_1 = AB$ und $R_2 = BC$
+    - Dekomposition bei Vorliegen der Abhängigkeiten $F = \{A \rightarrow B, C \rightarrow B\}$ ist nicht verbundtreu
+    - dagegen bei Vorliegen von $F′ = \{A \rightarrow B, B \rightarrow C\}$ verbundtreu
+
+> Verbundtreue: Die Dekomposition einer Attributmenge $X$ in $X_1,..., X_p$ mit $X = \bigcup_{i=1}^p X_i$ heißt verbundtreu ($\pi \bowtie$-treu, lossless) bezüglich einer Menge von Abhängigkeiten F über X genau dann, wenn $\forall r \in SAT_X(F) : \pi_{X_1}(r) \bowtie ··· \bowtie \pi_{X_p}(r) = r$ gilt.
+
+## Weitere Abhängigkeiten
+- Mehrwertige Abhängigkeit (kurz: MVD)
+  - innerhalb einer Relation r wird einem Attributwert von X eine Menge von Y-Werten zugeordnet, unabhängig von den Werten der restlichen Attribute $\rightarrow$ Vierte Normalform
+  - Folge der 1NF: Mehrwertige Abhängigkeiten erzeugen Redundanz
+    - eine (oder mehrere) Gruppe von Attributwerten ist von einem Schlüssel bestimmt, unabhängig von anderen Attributen
+    - Resultat: Redundanz durch Bildung aller Kombinationen
+  - wünschenswerte Schemaeigenschaft bei Vorliegen von MVDs: vierte Normalform
+    - fordert die Beseitigung derartiger Redundanzen: keine zwei MVDs zwischen Attributen einer Relation
+    - Elimination der rechten Seite einer der beiden mehrwertigen Abhängigkeiten,
+    - linke Seite mit dieser rechten Seite in neue Relation kopiert
+- Verbundabhängigkeit (kurz: JD)
+  - R kann ohne Informationsverlust in $R_1,..., R_p$ aufgetrennt werden: $\bowtie [R_1,..., R_p]$
+- Inklusionsabhängigkeit (kurz: IND)
+  - auf der rechten Seite einer Fremdschlüsselabhängigkeit nicht unbedingt der Primärschlüssel einer Relation
+
+> Vierte Normalform: erweitertes Relationenschema $R = (R, \bf{K})$ ist in vierter Normalform (4NF) bezüglich M genau dann, wenn für alle $X\rightarrow\rightarrow Y \in M^+$ gilt: $X\rightarrow\rightarrow Y$ ist trivial oder $X\supseteq K$ für ein $K\in\bf{K}$
+
 
 
 # die Datenbanksprache SQL

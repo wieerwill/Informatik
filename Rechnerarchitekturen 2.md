@@ -5,8 +5,15 @@ author: Robert Jeutter
 ---
 
 # Einführung
-> Rechnerarchitektur = Programmierschnittstelle + Interner Aufbau
+> Rechnerarchitektur = Programmierschnittstelle + Interner Aufbau\\
 > Einheit von Struktur und Funktion
+
+- Programmierschnittstelle
+    - Schnittstelle zwischen Rechner und Benutzer bzw. der Hardware und der untersten Softwareschicht
+    - Befehlssatzarchitektur (Instruction Set Architecture)
+- Interner Aufbau
+    - Hardware-Aufbau von Komponenten, die die Rechnerarchitektur realisieren
+    - Speichereinheiten, Recheneinheiten, Verbindungssysteme,
 
 Abstraktionsebenen eines Rechnersystems
 | Anwendungsprogramm | Java, C,... |
@@ -21,31 +28,338 @@ Grundarchitekturen:
 - Harvard (Zugriff direkt durch Prozessor)
 - Princton/von-Neumann (Zugriff über Systembus)
 
-- Speicher, Steuerwerk: Daten und Instruktionen speichern; beinhaltet Programmzähler um Ausführung zu steuern
-- Rechenwerk: auch ALU (Arithmetic and Logic Unit) um Berechnung durchzuführen
-    - Daten aus Hauptspeicher in Register laden
-    - Berechnungsaufgaben durchführen
-    - Ergebnisse in Hauptspeicher ablegen
+| Speicher | Daten und Instruktionen speichern |
+| Steuerwerk | beinhaltet Programmzähler um Ausführung zu steuern |
+| Rechenwerk | auch ALU (Arithmetic and Logic Unit) um Berechnung durchzuführen
+Üblicherweise besitzt eine Recheneinheit (CPU) Daten- oder Rechenregister (Registermaschine). Berechnungen werden ausschließlich mit den Registern vorgenommen.
+- Daten aus Hauptspeicher in Register laden
+- Berechnungsaufgaben durchführen
+- Ergebnisse in Hauptspeicher ablegen
 
-Programmiermodelle
-- CISC - Complex Instruction Set Computers
-- RISC - Reduced Instruction Set Computers
-- MIPS - Microprozessor without interlocked pipeline stages
+Klassifikation von Befehlssatzarchitekturen
+- 0-Operand (Stack): Add
+- 1-Operand (Akkumulator): Add R1
+- 2-Operand: Add R1, R3
+- 3-Operand: Add R1, R2, R3
+
+
+# Prozessorarchitektur
+Programmiermodelle, Instruction Set Architectures (ISAs): 
+Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandenen Maschinenbefehle
+
+| CISC | RISC | MIPS |
+| -- | -- | -- |
+| Complex Instruction Set Computing | Reduced Instruction Set Computing | Microprocessor without interlocked pipeline stages |
+| Einfache und komplexe Befehle | Nur einfache Befehle | |
+| Heterogener Befehlssatz | Orthogonaler Befehlssatz | |
+| Verschiedene Taktzahl pro Befehl | Meist 1 Takt pro Befehl | |
+| Viele Befehlscode-Formate mit unterschiedlicher Länge | Wenige Befehlscode-Formate mit einheitlicher Länge | |
+| Mikroprogrammwerk | Direktverdrahtung | |
+| Vermischung von Verarbeitungs- und Speicherbefehlen | Trennung von Verarbeitungs- und Speicherbefehlen | |
+| schwierig, unter CPI = 2 zu kommen | CPI möglichst nicht über 1 | |
 
 > Unter dem CPI (cycles per instruction) -Wert einer Menge von Maschinenbefehlen versteht man die mittlere Anszahl der Taktzyklen pro Maschinenbefehl
 
 
-Master-Slave Flip-Flops
-- Master übernimmt Wert bei steigender Taktflanke
-- Slave übernimmt Wert bei fallender Taktflanke
-- Instruktionszyklus beginnt bei fallender Taktflanke
+## Einzelzyklusmaschine
+- Programmzähler (32 bit, PZ, engl. Program Counter, PC)
+  - Speichert und liefert die aktuelle auszuführende Instruktionsadresse
+  - an den Instruktionsspeicher (b) und das Addierwerk (a)
+  - übernimmt die Adresse der Folgeinstruktion (c)
+- Addierwerk
+  - Fortlaufende Addition mit 4, da 4-Byte Instruktionen
+  - Der neue Wert für PZ wird im Register gespeichert (c)
+  - Die hintersten 2 Bit im PZ sind immer Null
+- Instruktionsspeicher
+  - Liefert die auszuführende Maschineninstruktion
+- Instruktionswort (32 bit)
+  - Gelesener Wert erscheint am Ausgang des Speichers
+  - Instruktionsformat bestimmt den weiteren Ablauf
+- Master-Slave Flip-Flops
+  - Master übernimmt Wert bei steigender Taktflanke
+  - Slave übernimmt Wert bei fallender Taktflanke
+  - Instruktionszyklus beginnt bei fallender Taktflanke
+- Ansteuerung des Registersatzes
+  - Register immer auslesen (kein Takt) und Transport zur ALU
+  - Schreiben des Zielregisters Register[rd] am Ende der Taktperiode
+  - Zeit für Speicherzugriff und für die primäre ALU muss eingeplant werden
+  - Ausgabe des Instruktionsspeichers wird über die ganze Dauer gehalten
+- Vorzeichenerweiterung des Direktoperanden von 16 auf 32 Bit
+  - Erleichtert die Unterbringung kleiner Konstanten im Befehlswort
+  - Vom Steuerwerk aus abschaltbar für „unsigned“ Befehle
+
+### Ausführungsphase
+- ALU-Registeroperationen
+  - Operanden im Register oder als
+- Direktoperand
+  - Üblicher Satz an ALU-Operationen
+  - Register $0 liefert Wert 0
+- Adressierung von Variablen im Speicher
+  - Adressrechnung in der primären ALU
+  - Basisregister plus Direktoperand
+  - Registerinhalt lesen/schreiben
+- Load/Store-Architektur
+  - Speicheroperationen können keine Arithmetik
+  - also z.B. kein inc 0xaff0($7),0x0004
+  - ALU schon zur Adressberechnung benötigt
+- Separater Addierer zur Sprungzielberechnung
+  - Prüfschaltung auf Gleichheit zweier Register in der primären ALU („eql“) 
+  - Bedingte Sprünge mit einem 16-bit Direktoperanden (beq $7,$8,loop)
+  - Maximal möglicher Offset von ±17 Bit nach einer 2-bit Verschiebung
+  - Unbedingte Sprünge mit 28-bit Adresse später
+
+### Speicherzugriff
+- Getrennte Speicher für Code & Daten
+  - Aktuelle Instruktion wird bis zum Ende des Gesamtzyklus gehalten
+  - Kein zweiter Zugriff im gleichen Taktzyklus möglich 
+- Quellregister speichern, falls Store
+  - Speichersteuerung durch besonderes Schreibsignal
+- Zielregister laden
+  - Falls Ladebefehl aus dem Speicher
+  - Falls Rücksprungadresse (PC-magic)
+  - Falls Resultat aus ALU
+- ALU-Resultat nutzen
+  - Für „Register Write-Back“
+  - Als Datenspeicheradresse
+  - Nicht direkt speichern, wg. Load/Store-Architektur!
+
+### Register zurückschreiben
+- Nummer des Zielregisters (Zielregisterselektor)
+  - Stammt aus IR[15-11] oder IR[20-16], 5-bit Bereich für Werte 0-31
+- Steuersignal
+  - Zielregister zum Ende des Instruktionszyklus schreiben
+  - Schreibsignal an Registersatz, falls nötig
+- Pseudorelative Sprünge (jump xLabel)
+  - Kein separater Addierer erforderlich, nur ein zusätzlicher MUX-Eingang
+  - Oberste 4 Bits unverändert, untere 28 Bits werden ersetzt (4, 26, 2)
+  - Jump-and-Link (jal) sichert alten Programmzähler in $31 (Subroutine)
+
+### erforderliche Steuerleitung
+- Für Speicher
+  - 2-bit Steuersignal: 0/8/16/32 Bit zum Datenspeicher schreiben
+  - Instruktionsspeicher liest immer
+- Für Registersatz
+  - 2-bit Steuersignal: 0/8/16/32 Bit zum Registerfile schreiben
+- Für 4 Multiplexer
+  - 2-bit Steuersignal: Auswahl des Zielregisters (1 aus 3)
+  - 2-bit Steuersignal: Datenquelle für Zielregister
+  - 2-bit Steuersignal: Sprungziel wählen
+  - 1-bit Steuersignal: Direkt- oder Registeroperand für ALU
+- Für Arithmetik
+  - 1-bit Steuersignal: Vorzeichenerweiterung ja/nein
+  - 6-bit Steuersignal: ALU-Operation
+
+Einzyklusmaschine ist unwirtschaftlich
+- Komponenten arbeiten jeweils nur einen kleinen Teil der Gesamtzeit
+- Zeitverlust bei potentiell kurzen Instruktionen
+
+## Mehrzyklen CPU
+- Gesamtzyklus der bisherigen MIPS
+  - Dauer des Instruktionszyklus ist die Summe der Einzelverzögerungen
+  - Unteraktivitäten müssen abwarten, bis die Parameter sicher vorliegen
+  - Anderenfalls können sich „spurious writes“ ergeben
+  - z.B. in Registersatz oder in den Speicher
+- Mehrzyklen-CPU als Überleitung zum Fließbandprinzip
+  - Aufteilung der Befehlsausführung auf mehrere gleich lange Taktzyklen
+  - Einfügen von Registern für in den Stufen entstandene Zwischenresultate
+  - Noch immer nur eine Instruktion zu einem Zeitpunkt in Ausführung
+  - CPU-Zustand bezieht sich auf eine einzelne aktuelle Instruktion
+- Pipelined CPU – mit Fließbandprinzip
+  - In jedem Taktzyklus beginnt eine neue Maschineninstruktion
+  - Mehrere Instruktionen gleichzeitig in Ausführung
+  - Aber unterschiedlicher Fertigstellungsgrad
+  - Bessere Auslastung der Hardware
+  - Höherer Durchsatz
+- Große Pipeline-Tiefe:
+  - Zusätzliche Ressourcen, höherer Energieaufwand (Taktfrequenz!)
+  - Längere Instruktionssequenzen für gleichen oder besseren Speedup (→ Registeroverhead!)
+  - Bei unterschiedlichen Stufenverzögerungen bestimmt die langsamste Stufe die Taktfrequenz
+- Lange Instruktionssequenzen:
+  - Meist wegen Daten- und Kontrollabhängigkeiten nicht machbar
+  - Hohe Latenz – Füllen und Leeren der Pipeline!
+- Warum geht die Anzahl der Pipeline-Stufen zurück?
+  - hoher Energieverbrauch
+  - hohe Leistungseinbußen durch Kontroll- und Datenabhängigkeiten (Füllen/Leeren der Pipeline)
+  - mehr Parallelität in den einzelnen Pipeline-Stufen → superskalare Prozessoren
+  - mehr Prozessorkerne mit geringerer Leistungsaufnahme pro Kern
+- Fließband-Architektur (engl. pipeline architecture): Bearbeitung mehrerer Befehle gleichzeitig, analog zu Fertigungsfließbändern.
+
+Aufgaben der einzelnen Phasen
+- Befehlsholphase
+  - Lesen des aktuellen Befehls; separater Speicher, zur Vermeidung von Konflikten mit Datenzugriffen
+- Dekodier- und Register-Lese-Phase
+  - Lesen der Register möglich wegen fester Plätze für Nr. im Befehlswort
+- Ausführungs- und Adressberechnungsphase
+  - Berechnung arithmetischer Funktion bzw. Adresse für Speicherzugriff
+- Speicherzugriffsphase
+  - Wird nur bei Lade- und Speicherbefehlen benötigt
+- Abspeicherungsphase
+  - Speichern in Register, bei Speicherbefehlen nicht benötigt
+
+Pipeline-Hazards
+> Structural Hazards (deutsch: strukturelle Abhängigkeiten oder Gefährdungen): Verschiedene Fließbandstufen müssen auf dieselbe Hardware-Komponente zugreifen, weil diese nur sehr aufwändig oder überhaupt nicht zu duplizieren ist.
+
+> Definition: Ein Befehl i heißt von einem nachfolgenden Befehl j antidatenabhängig, falls j eine Speicherzelle beschreibt, die von i noch gelesen werden müsste.
+
+> Definition: Zwei Befehle i und j heißen voneinander Ausgabeabhängig, falls i und j die selbe Speicherzelle beschreiben.
+
+- Gleichheit der Register wird schon in der instruction decode-Stufe geprüft
+- Sprungziel wird in separatem Adressaddierer ebenfalls bereits in der instruction decode-Stufe berechnet
+- Sofern weiterhin noch Verzögerungen auftreten:
+  - nächsten Befehl einfach ausführen (delayed branch)
+  - oder weiterhin NOOP(s) einfügen (stall)
+
+### Pipelining – Zusammenfassung
+- Die Fließbandverarbeitung (engl. pipelining) ermöglicht es, in jedem Takt die Bearbeitung eines Befehls abzuschließen, selbst wenn die Bearbeitung eines Befehls ≥ 1 Takte dauert
+- Mehrere Pipelines -> pro Takt können mehrere Befehle beendet
+werden
+- 3 Typen von Gefährdungen des Fließbandbetriebs:
+  - resource hazards
+  - control hazards
+  - data hazards (RAW, WAR, WAW)
+- Gegenmaßnahmen
+  - pipeline stall
+  - branch prediction
+  - forwarding / bypassing
+  - delayed branches
+  - out-of-order execution
+  - dynamic sched
+
+## Sprungvorhersage
+Je mehr die Parallelität ausgenützt werden soll, desto mehr sind Kontrollkonflikte der limitierender Faktor!
+
+Dynamische Sprungvorhersage
+- Zur Laufzeit durch Prozessor-Hardware
+- Vorhersage, ob ein bedingter Sprung genommen wird oder nicht
+- Abhängig von der Vorhersage: Füllen der Prozessor-Pipeline mit Befehlen ab der vorhergesagten Programm-Stelle
+- Reduktion der branch penalty, falls vorhergesagtes Programm-Verhalten mit tatsächlichem übereinstimmt
+
+### Einfache lokale Prädiktoren
+- Liefern Vorhersage, ob bedingter Sprung genommen wird oder nicht
+- Prädiktion allein anhand der Historie des betrachteten, aktuellen Sprungs
+- Historie eines Sprungs wird mit 1, 2 oder n Bits gepuffert
+
+- Sprungvorhersage-Puffer
+  - Branch prediction buffer oder branch history table
+  - Kleiner Speicher, der mit (Teil der) Adresse des Sprungbefehls indiziert wird
+    - Verwendet nur wenige untere Bits der Adresse
+    - Enthält 1 Bit: Sprung beim letzten Mal ausgeführt (taken) oder nicht (not taken)
+  - Prädiktion: Sprung verhält sich wie beim letzten Mal
+  - Nachfolgebefehle ab vorhergesagter Adresse holen
+  - Falls Prädiktion fehlerhaft: Prädiktionsbit invertieren
+- Einfachste Art von Puffer (keine Tags, d.h. keine Überprüfung, ob Adresse tatsächlich im Puffer)
+  - Entspricht sehr einfachem Cache
+  - Hat eine bestimmte Kapazität
+  - Kann nicht für alle Sprünge (aktuelle) Einträge enthalten
+- Reduziert branch penalty nur, wenn branch delay länger als Berechnung der Zieladresse mit branch prediction buffer dauert
+  - Prädiktion kann fehlerhaft sein
+  - Prädiktion kann von anderem Sprungbefehl stammen (mit gleichen Bits im Indexteil der Adressen)
+
+- Nachteile des einfachen 1-Bit Vorhersageschemas
+  - Höhere Fehlerrate als überhaupt möglich, wenn Häufigkeit der Sprungentscheidungen betrachtet wird
+  - D.h. auch wenn Sprung fast immer ausgeführt (taken) wird, entstehen 2 Fehler anstatt 1
+
+2-Bit Branch-Prediction Buffer
+- Speicherung der Historie, Befehlsadressen als Zugriffsschlüssel:
+
+Allgemein: n-Bit Prädiktor (Spezialfall: 2-Bit)
+- Verwendet n-Bit Zähler
+  - Sättigungsarithmetik (kein wrap around bei Überlauf)
+  - Kann Werte zwischen 0 und 2 n - 1 annehmen
+  - Wenn Zähler größer als Hälfte des Maximums (2 n - 1): Vorhersagen, dass Sprung ausgeführt wird; ansonsten vorhersagen, dass Sprung nicht genommen wird
+  - Zähler wird bei ausgeführtem Sprung inkrementiert und bei nicht ausgeführtem dekrementiert
+- In der Praxis: 2-Bit Prädiktor ähnlich gut wie n-Bit Prädiktor
+  - In den meisten Prozessoren heute: 2-Bit Prädiktor für (lokale) Vorhersage
+- Einschränkung des n-Bit (bzw. 2-Bit) Prädiktors:
+  - Betrachtet nur (vergangenes) Verhalten eines Sprungs, um dessen (zukünftiges) Verhalten vorherzusagen.
+  - Arbeitet rein lokal!
+- Idee: Verbesserung durch Betrachtung des Verhaltens anderer Sprünge
+  - Man erhält so genannten korrelierenden Prädiktor (correlating predictor) oder zweistufigen Prädiktor
+  - Prinzip: Aufgrund globaler Information (anderer Sprünge) wird einer von mehreren lokalen Prädiktoren ausgewählt
 
 
-P39 16-Bit Operandten version i statt r
+### Korrelierende Prädikatoren
+- Beziehen zur Vorhersage des Verhaltens eines Sprungs Kontext-Information mit ein, d.h. die Historie anderer Sprungbefehle
+- Prädiktor benutzt globale Kontext-Bits, um einen von mehreren lokalen Prädiktoren auszuwählen
 
+- Betrachten wiederholte Ausführung des Codefragments (ignorieren dabei alle anderen Sprünge, inkl. dem für Wiederholung)
+- Einschränkung: Statt aller möglicher Sequenzen: d wechselt zwischen 2 und 0
 
-# Prozessorarchitektur
+Zweistufiger Prädiktor
+- Verwendet 1 Bit Kontextinformation
+- Es existieren 2 lokale Prädiktoren, beide je 1-Bit
+  - Kontext: Letzter (i.a. anderer) Sprung wurde ausgeführt/nicht ausgeführt (1 Bit)
+  - Vorhersage des zweistufigen Prädiktors: Anhand des Kontexts wird lokaler Prädiktor für die Vorhersage des aktuell betrachteten Sprungs ausgewählt
+  - Letzter Sprung ist i.a. nicht gleich aktuellem, vorherzusagendem Sprung (nur in einfachen Schleifen)
+- Notation des Prädiktorstatus: <X>/<Y> mit
+  - <X>: Vorhersage, falls letzter Sprung not taken, d.h. Kontext = NT
+  - <Y>: Vorhersage, falls letzter Sprung taken, d.h. Kontext = T
+  - <X> und <Y> Vorhersagen: jeweils entweder T oder NT
 
+(m,n)-Prädiktor
+- Betrachtet als Kontext das Verhalten der letzten m Sprünge, um aus $2^m$ vielen lokalen Prädiktoren einen n-Bit Prädiktor auszuwählen
+- Vorteil gegenüber (rein lokalem) 2-Bit Prädiktor
+  - Höhere Vorhersagegenauigkeit
+  - Erfordert kaum Hardwareaufwand
+  - Sprunggeschichte (Kontext, „Ausgang“ vorangegangener Sprünge) kann in m-Bit Schieberegister gespeichert werden (1 Bit für jeden der m vielen letzten Sprünge im Kontext, Bit gleich 1 wenn Sprung taken)
+- Vorhersagepuffer adressiert via Konkatenation von
+  - Unteren Adressbits der Sprungbefehlsadresse
+  - m Bit globaler Sprunggeschichte
+
+### High Performance Befehlsdekodierung
+In Hochleistungs-Pipelines ist reine Vorhersage eines Sprungs i.d.R. nicht ausreichend
+- Insbesondere: Falls mehrere Befehle pro Takt auszugeben sind
+  - Befehlsstrom mit großer Bandbreite erforderlich!
+  - Kontrollflussabhängigkeiten dürfen nicht „wahrnehmbar“ sein 
+- Maßnahmen hierfür
+  - Pufferung von Sprungzielen, und nicht nur Vorhersage des Sprungverhaltens (branch target buffer)
+  - Integrierte Einheit für das Holen der Befehle (d.h. nicht nur [relativ] einfache erste Stufe der Pipeline)
+  - Vorhersage von Rücksprungadressen (bei Prozeduraufruf)
+
+### Branch Target Buffer
+5-stufige Pipeline, Auswertung von Sprungbedingungen in EX:
+- Branch delay von 2 Takten
+- Mit Sprungvorhersage (branch prediction buffer)
+  - Zugriff erfolgt in ID (Adresse des Sprungbefehls schon in IF bekannt; aber:
+  - evtl. angesprungenes Ziel erst nach Befehlsdecodierung [ID])
+  - Nächste vorhergesagte Instruktion kann erst nach ID geholt werden
+  - Branch delay = 1, falls Prädiktion korrekt
+- Mit Pufferung des Sprungziels (branch target buffer)
+  - Zugriff auf branch target buffer erfolgt in IF. Verhalten wie „echter“ Cache,
+  - adressiert mit Sprungbefehlsadresse (überprüft, ob Cache-Hit)
+  - Liefert vorhergesagte Adresse als Ergebnis, d.h. nächsten PC (d.h. nicht nur Vorhersage über Sprungverhalten)
+  - Keine Verzögerung, falls Prädiktion korrekt!
+
+Zusätzliche Speicherung auch des Sprungziels, z.B. Kombination mit branch prediction buffer
+
+Bei geschickter Organisation kann das Fließband immer gefüllt bleiben; die Sprünge kosten dann effektiv keine Zeit; CPI <1 möglich.
+
+Eigenschaften
+- Verzögerung durch Sprung kann vollständig vermieden werden (sofern Vorhersage korrekt), da bereits in IF Entscheidung über nächsten Befehlszähler (PC) getroffen wird.
+- Da Entscheidung allein auf Basis des PC getroffen wird, muss überprüft werden, ob Adresse im Puffer (impliziert, dass Sprungbefehl vorliegt)
+- Speicherung im Prinzip nur für Sprünge notwendig, die als ausgeführt vorhergesagt werden (not taken = normale sequentielle Dekodierung geht weiter)
+- Achtung – bei falscher Vorhersage
+  - Entsteht ursprüngliche Sprung-Verzögerung, plus
+  - Aufwand zur Aktualisierung des Vorhersagepuffers
+
+### Integrierte Befehls-Hol-Einheit (IF Unit)
+Insbesondere mit Blick auf multiple-issue Prozessoren eigene (autonome) funktionale Einheit für Befehlsholphase
+- Führt Befehlscodes in Pipeline ein
+- Integrierte Funktionalitäten
+  - Sprungvorhersage: Wird Teil der Befehlsholphase
+  - Instruction Pre-fetch: Insbes. um mehrere Befehle pro Takt liefern (und später ausgeben) zu können, läuft Befehlsholen weiterer Dekodierung voraus (= pre-fetch)
+  - Zugriff auf Befehlsspeicher: Bei mehreren Befehlen pro Takt mehrere Zugriffe erforderlich (bei Cache auf ggfs. mehrere cache lines). Werden hier koordiniert/geplant
+  - Befehlspuffer: Befehle können hier (lokal im Prozessor!) von Issue-Stufe nach Bedarf abgerufen werden
+
+### Vorhersage von Rücksprungadressen
+Allgemeines Ziel: Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Register)
+- Hauptverwendung: Rückkehr aus Prozeduraufrufen
+  - MIPS: Prozeduraufruf per jal proc, Rückkehr per jr $31
+  - Vorhersage mit branch target buffer schlecht, da Aufruf aus unterschiedlichen Codeteilen heraus möglich
+- Methode: (Stack-) Speicher für Rücksprungadressen
+  - Push bei Prozeduraufruf (call), und
+  - Pop bei Rücksprung (return)
+- Vorhersagequalität „perfekt“, wenn Stack-Puffer größer als maximale Aufruftiefe
 
 
 # Speicherarchitektur

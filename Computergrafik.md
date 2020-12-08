@@ -1217,3 +1217,216 @@ Unterschiedliche Definitionen sind möglich, z.B. mit mehrere Lichtquellen:
 - Vollständig physikbasiertes Modell, keine willkürlichen Reflexionskonstanten
 - Aufwendige Berechnung (verschiedene Näherungsformeln existieren)
 - Beckmann-Verteilung: $l_{spec}=\frac{exp(-\frac{tan^2(\alpha)}{m^2})}{\pi m^2 cos^4 (\alpha)}$, $\alpha=arccos(N*H)$
+
+# Schattierungsverfahren
+## Direkte Schattierung
+Bisher:
+- Zerlegung gekrümmter Flächen in Polygone (meist Drei- oder Vierecke)
+- Positionen der (Eck-)Punkte und Normalen im 3D sowie der Punkte im 2D-Bild sind bekannt (per Matrixmultiplikation für Transformationen und Projektion)
+- Pixelpositionen für Polygone/Dreiecke im Bild per Scanline-Algorithmus
+- lokale Beleuchtungsmodelle für 3D-Punkte (z.B. per Phong-Beleuchtungsmodell)
+
+Jetzt: Wie kommt Farbe (effizient) in die Pixel?
+- Wie oft muss lokales Beleuchtungsmodell bei n Pixeln im Dreieck angewendet werden?
+
+| Verfahren  | Anz. | Idee |
+| -- | -- | -- |
+| Flat-Shading | 1 | eine Berechnung, dann gleiche Farbe für alle Pixel des Dreiecks/Polygons verwenden |
+| Gouraud-Shading | 3 | pro Eckpunkt eine Farbe berechnen, dann lineare Interpolation (pro Dreieck) für jedes Pixel |
+| Phong-Shading | n | eine Berechnung pro Pixel, davor aber jeweils lineare Interpolation der Normalen pro Pixel |
+
+→ Phong-Beleuchtungsmodell in jedem der obigen Shading-Verfahren nutzbar
+→ hier nur direkte Schattierung (nur lokal, wo sind die Lichtquellen), d.h. nicht global (wie bei Radiosity & Raytracing)
+
+### Flat-Shading
+Arbeitsweise des Flat-Shadings
+- stets nur 1 Farbwert pro (ebener) Fläche,
+- Stelle der Berechnung frei wählbar (möglichst repräsentativ),
+- repräsentativ wäre z.B.: Punkt (Ort mit Normale) in der Mitte der Fläche
+- $\rightarrow$ trivial für Drei- und Vierecke? → für Dreiecke und konvexe Vierecke!
+
+Auswirkungen
+- "flaches" Aussehen und Helligkeitssprünge an den Kanten, das ist:
+  - schlecht für Fotorealismus,
+  - gut für abstraktere technische Darstellungen und
+  - u.U. wichtig für realistische Darstellung kantiger Körper (insbes. wenn pro Eckpunkt nur eine Normale modelliert ist).
+- schneller als die anderen Verfahren,
+- u.U. genauso gut wie z.B. Phong-Shading, wenn z.B.:
+  - das Objekt sehr fein modelliert wurde oder
+  - sehr weit entfernt ist
+- $\rightarrow$ d.h. nur ca. 1 Pixel pro Polygon/Dreieck gerendert wird (n==1)
+
+### Gouraud-Shading
+- Gouraud-Shading [H. Gouraud 1971] schattiert Dreiecke (bzw. aus Dreiecken zusammengesetzte Polygone) kontinuierlich,
+- beseitigt damit die Diskontinuitäten des Flat-Shadings,
+- meist gleiche Normalen pro Vertex, d.h. pro Dreieck wirken oft 3 verschiedene Richtungsvektoren statt nur eine Normale (Dreiecksmitte) wie beim Flat-Shading und
+- lineare Interpolation der Schattierung (Intensitäten) im Inneren des Dreiecks aus den 3 Farbwerten der Eckpunkte.
+- Es werden "Normalenvektoren" $n_i$ für jeden Eckpunkt $P_i$ des Polygons ermittelt bzw. ausgelesen.
+- Die Herleitung der "Normalenvektoren" $n_i$ ist aus der Originaloberfläche (z.B. Zylinder, Kegel, Bèzier-Fläche) oder Nachbarpolygonen möglich.
+- Für jeden Eckpunkt: Berechnung der Beleuchtungsintensität $I_i$ (z. B. nach dem Phong-Beleuchtungsmodell).
+- Normalen $n_i$ der Eckpunkte werden entweder direkt aus den Flächen (z.B. Regelgeometrien, bei Kugel z.B. Richtung des Radiusvektors) oder aus den Flächennormalen der benachbarten Polygone durch flächengewichtete Mittelung berechnet.
+- Die Schattierungsrechnung (RGB-Werte) erfolgt für die Eckpunkte und liefert die reflektierte Leuchtdichte $I_i$ . Zur Erinnerung, das Phong-Beleuchtungsmodell:
+  - $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
+  - $\cos(\phi)=V^T_I*n_i$, $cos^n(\theta)=(V^T_r * V_e)^n$
+- Nach Anwendung des Beleuchtungsmodells an den Eckpunkten (auch Vertex-Shading genannt)
+- Bei der Rasterkonvertierung wird zwischen den Eckwerte $I_i$ linear interpoliert und damit die Intensität jedes Pixels der Rasterlinie berechnet (Intensität I steht hier für die Leuchtdichte oder für Farbwerte usw.)
+- Die Interpolation erfolgt nach dem gleichen arithmetischen Muster wie die Interpolation der x-Werte beim Polygonfüllalgorithmus, bzw. der $1/z$-Werte im z-Buffer-Verfahren (d. h. inkrementell, mit Ganzzahlarithmetik).
+- Für farbige Oberflächen werden die Leuchtdichten an den Polygonecken durch RGB-Werte beschrieben und ebenso zwischen den Ecken linear interpoliert.
+- Resultat: Kontinuierlich schattierte dreidimensionale Oberflächen
+
+![Gourad Shading; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Gourad-Shading.png)
+
+Artefakte des Gouraud-Shading, bedingt durch die lineare Interpolation:
+- Fehlen von gut ausgeprägten Glanzlichtern (verwischt oder verschwunden)
+- Mach-Band-Effekt: ((helle) Bänder) Kontrastverstärkung durch das Auge an den Übergängen zwischen Polygonen
+- Diese Artefakte werden im Folgenden genauer untersucht.
+
+#### Fehlende Glanzlichter
+Auf Grund der linearen Interpolation von Intensitäten können Glanzlichter, die auf spekulare Reflexion zurückzuführen sind, verloren gehen oder abgeschwächt/verschmiert werden. Das wird umso kritischer, je spitzer die spekulare Reflexion ist (großes n im $\cos^n$- Term).
+
+Feinere Unterteilung der Oberfläche verbessert Resultat
+
+![fehlende Glanzlichter; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Gourad_Glanzlichter.png)
+
+#### Mach-Band-Effekt
+Die lineare Interpolation der Leuchtdichte zwischen den Polygonkanten entlang der Rasterlinie führt zu einem Verlauf, der durch plötzliche Änderungen im Anstieg der Intensität gekennzeichnet ist (nicht stetig differenzierbar).
+
+Der Mach-Band-Effekt: physiologisches Phänomen (Ernst Mach, 1865)
+- Bei Sprüngen in der Helligkeitsänderung (c0-Stetigkeit, c1-Unstetigkeit, typisch für Approximation durch ebene Polygone beim Gouraud-Shading, z.B. Zylinder) stört dieser Effekt u. U. erheblich.
+- Gleiche Information benachbarter Rezeptoren wirkt bei der weiteren visuellen Verarbeitung lateral hemmend auf die lokale Lichtempfindung.
+- Modellhaft entstehen neben dem eigentlichen Helleindruck auch "Signale", die dem Helligkeitsgradienten (erste Ableitung) und dem Laplacefilter-Output (Laplacian of Gaussian / LoG, zweite Ableitung) entsprechen.
+- Die Empfindung wird insgesamt nicht nur durch die Lichtintensität selbst, sondern auch durch die Überlagerung mit ihrer ersten und zweiten räumlichen Ableitung bestimmt.
+- Das führt zu einer Verstärkung von Konturen an "Sprungkanten" (c0-Unstetigkeiten, Intensitätssprünge). In der dunklen Fläche zeigt sich eine dunklere, in den hellen Flächen eine hellere Kantenlinie. Dort, wo Konturen vorhanden sind, ist das vorteilhaft (evolutionäre Entwicklung der menschlichen visuellen Wahrnehmung), obwohl Täuschungen damit verbunden sind (photometrischer Eindruck).
+
+- zunächst Kanten: Liegen eine helle und eine dunkle Fläche nebeneinander, beobachtet man einen dunklen Streifen auf der dunkleren Seite und einen hellen Streifen auf der helleren Seite (Kontrastverstärkung).
+- Bei einer Abfolge von Flächen unterschiedlicher Graufärbung, die in sich keine Farbgraduierung haben, beobachten wir entlang der Grenzen machsche Streifen (nach Ernst Mach 1865). Dabei handelt es sich um helle und dunkle Streifen, die den Kontrast zwischen den Flächen verstärken. [Quelle: Wikipedia]
+
+### Phong-Shading
+Phong-Shading [Phong 1975]:
+- Lineare Interpolation der Normalenvektoren zwischen den Polygonecken anstelle von Interpolation der Intensitätswerte (bei Grafikkarten/-software als Pixelshader bekannt).
+- Exakte Berechnung der $\cos^n$-Funktion im Phong-Beleuchtungsmodell für jedes Pixel : Glanzlichter werden erhalten!
+- Keine Diskontinuität der ersten Ableitung: Mach-Band-Effekt wird vermieden!
+
+
+## 3D-Rendering
+Soll nur ein konvexes Objekt gerendert werden, dann ist die Entscheidung, welche Flächen zu zeichnen sind, einfach anhand der jeweiligen Normalen möglich.\\
+Annahme: mehrere konvexe Objekte oder auch konkave Objekte sollen gerendert werden. Verdeckungen sind also möglich!
+- Korrekte Behandlung von Verdeckungen bedarf spezieller Ansätze/Datenstrukturen (Lösung des Reihenfolgeproblems).
+- Rein opake Szenen sind typischerweise wesentlich leichter zu implementieren als (teilweise) transparente (zusätzlich ein Berechnungsproblem).
+- Zeichenreihenfolge ist teilweise wichtig (z.B. von hinten nach vorn), 
+- Algorithmen/Ansätze unterscheiden sich auch in der Granularität/Genauigkeit was auf einmal gezeichnet/sortiert wird:
+  - Objekte (ganze Objekte nach z-Position sortieren, dann jeweils zeichnen...)
+  - allg. (d.h. ggfs. überlappende) Polygone: Painters-Algorithmus,
+  - überlappungsfreie Dreiecke/Polygone: Depth-Sort-Algorithmus,
+  - Pixel: Z-Buffer-Verfahren (oft auch in Verbindung mit Obj.-Sort.)
+- Beliebte Testszene sind sich zyklisch überlappende Dreicke, z.B.
+
+### Painter’s-Algorithmus
+- Gegeben sei eine 3D-Szene, bestehend aus grauen Polygonen mit diffus reflektierender Oberfläche, sowie eine gerichtete Lichtquelle.
+- Für jedes Polygon wird die reflektierte Strahldichte L auf Basis des eingestrahlten Lichts (Richtung & Stärke) und der Flächennormale berechnet:
+  - $I_{out} = L = I_{in}* k_d * \cos(\phi)$
+- Die Polygone werden mittels perspektivischer Kameratransformation (4 x 4 Matrix) in das Kamera-Koordinatensystem (Bildraum) transformiert und nach absteigendem z-Wert (Distanz des Polygonschwerpunkts zum Betrachter) sortiert.
+- Die sortierten Polygone werden der Reihe nach (entfernte zuerst) mit dem 2D-Polygonfüllalgorithmus in das Pixelraster der x/y-Bildebene konvertiert.
+- Die Pixel für jedes Polygon werden per Overwrite-Modus mit dem Farbwert L (nach obiger Berechnung) im Bildspeicher gespeichert.
+- Die Verdeckungsprobleme lösen sich durch die Reihenfolge quasi automatisch.
+
+Gleichnis: Der Algorithmus arbeitet wie ein Maler, der zuerst den Hintergrund und dann Schritt für Schritt das jeweils weiter vorn liegende Objekt (oder Polygon bzw. Dreieck) zeichnet - und dabei die dahinterliegenden verdeckt. ABER, potentielle Probleme des Painter’s-Algorithmus: selbst bei Dreiecken sind trotzdem falsche Verdeckungen möglich!
+
+### Depth-Sort-Algorithmus
+- Unterteilung in sich nicht überlappende und vollständig überdeckende Teilpolygone
+- Ist in der Projektionsebene durch gegenseitigen Schnitt aller Polygone möglich (allerdings blickabhängig – muss in jedem Bild neu berechnet werden!).
+- Die sichtbaren Teilpolygone können nun ausgegeben werden:
+  - Zeichnen der nicht überlappenden Teilpolygone
+  - Von den sich vollständig überlappenden Teilpolygonen wird nur das vordere gezeichnet.
+
+![Depth Sorth Algorithmus; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Depth-Sort-Algorithmus.png)
+
+- Eine einfache, nicht blickwinkelabhängige Unterteilung tut es in diesem Falle auch!
+- Die Teilpolygone sollten dabei möglichst nicht größer sein als der Tiefenunterschied, damit sie in jeder Situation eindeutig sortiert werden können!
+- Die 6 Teilpolygone können mittels Painter‘s Algorithmus korrekt sortiert und dargestellt werden
+
+Anwendungsbereiche des Painter ́s Algorithmus / Depth-Sort Algorithmus:
+- Einfache Szenen, kleine Objekte, die sich in den z-Werten hinreichend unterscheiden.
+- Dort, wo keine Hardware-Unterstützung für 3D-Rendering angeboten wird (begrenzter Speicher, keine Z-Buffer Unterstützung).
+- Viele 2D-Grafiksystem bieten bereits Polygonfüllverfahren an.
+- Ähnliche Vorgehensweise wird auch für das Schattieren von semi-transparenten Flächen notwendig (s. später)!
+
+Als Sortierverfahren für Echtzeitsysteme eignet sich z.B. "Insertion-Sort":
+- Begründung: Von Bild zu Bild ändert sich die Tiefenwerte (und damit die Reihenfolge) der Polygone relativ wenig. Damit sind die Polygone beim nächsten Bild bereits mehr oder weniger vorsortiert (nur wenige Polygone) müssen neu einsortiert werden. Die Komplexität von Insertion-Sort wird bei bereits sortierten Listen linear (O-Notation / best case).
+- Folglich tritt beim Painters-Algorithmus der best case sehr häufig ein (außer beim ersten Bild, wo man vom average case ausgehen kann– hier wird die Komplexität quadratisch).
+
+### Z-Buffer-Verfahren
+- Einer der einfachsten "visible surface"-Algorithmen (CATMULL 1974)
+- Probleme des Painters-Algorithmus werden überwunden durch zusätzliche Berechnung des z-Wertes für jeden Punkt jedes Polygons und Speicherung des zur Projektionsebene nächstliegenden Farb- und Z-Wertes.
+- Dazu ist ein zusätzlicher Speicher (z-Buffer) für jedes Pixel notwendig.
+- Es sind weder Vorsortieren von Objekten noch Polygonzerlegung erforderlich (wenn alle Objekte opak sind).
+
+Initialisierung: Für alle Pixel
+- Setze Farbe auf Hintergrundfarbe (z.B. Weiß)
+- Setze alle Z -Werte auf $\infty$ (max. ganzzahliger Wert)
+- Setze Z min auf Wert der Near-Plane
+
+Für alle Polygone (im 3D-Kamerakoordinatensystem)
+- Rasterumwandlung in der Projektionsebene ($x_p/y_p$ Koordinaten) durch modifizierten 2D-Polygonfüllalgorithmus. Modifiziert heißt: zusätzliche Berechnung des z-Wertes für jedes Pixel
+- Anwendung einer Write Pixel ZB-Prozedur:
+  - Wenn der z-Wert des aktuellen Pixels (im abzuarbeitenden Polygon) kleiner als der bereits abgespeicherte z-Wert ($z_p$) an dieser Position ist, wird im z-Buffer bei $x_p , y_p$ die Farbe sowie $z_p$ ) überschrieben (mit den neuen Werten).
+  - Sonst: alte Werte im Speicher bleiben erhalten
+- Die näher an der Kamera liegen Pixel überschreiben somit die weiter weg liegenden.
+- Pixelgenaue Sichtbarkeitsbestimmung und -behandlung der Polygone
+
+Berechnen der z-Werte durch lineare Interpolation:
+- Die Tiefenwerte sind auch nach der Ansichten-Transformation (View-Transformation) zunächst nur für die Eckpunkte gegeben.
+- Zunächst erfolgt die lineare Interpolation der z-Werte entlang der Polygonkanten $P_i P_j$ für die y-Position der gerade aktuellen Scanline
+- Danach wird mit dem Füllen der Bildzeile (z.B. durch einen konventionellen Polygonfüll-Algorithmus) die Interpolation der z-Werte entsprechend der x-Position in der Scanline (Bildzeile) fortgesetzt (pixelgenaues Befüllen des z-Buffers).
+
+Berechnung der z-Werte eines Pixels x/y:
+- Die y-Koordinate reicht zur Interpolation von $z_A$ und $z_B$ (Strahlensatz).
+- Pixel-z-Wert $z_p$ wird äquivalent ermittelt, allerdings die Interpolationskoordinate jetzt x (y = const für die Rasterlinie)
+- Die Werte $z_A, z_B, x_A, x_B$, in $z_p$ werden gleichzeitig mit den $x_A$-Werten (Schnitte) von einer Rasterlinie zur nächsten inkrementiert (s. Polygonfüllalgorithmus)
+- Die Brüche bleiben in allen Ausdrücken rational. 
+- Die Ausdrücke für die z-Werte haben identische Form wie die der x-Werte beim Polygonfüllalgorithmus.
+
+Immer Ganzzahlarithmetik! (ähnlich wie x-Werte im Polygonfüllagorithmus)
+
+Beispiel: Mögliche Berechnungen eines Tiefenwertes der Pixel\\
+- Als Beispiel dient hier eine Tischplatte (Rechteck, Größe 3m x 1m) in der Perspektive 
+- Achtung: Eine lineare Interpolation der z-Werte im Bildraum (links) ist nicht wirklich korrekt! (höchstens als Näherung, OK für kleine nahe Flächen)
+- $\frac{1}{z}$ kann exakt linear in x- & y-Richtung interpoliert werden (Abbildung rechts).
+- Da $z_1$ abnimmt, wenn z zunimmt, muss aber der z-Test invertiert werden!
+- positive Auswirkung: Tiefeninfos naher Obj. werden mit höherer z-Genauigkeit gespeichert als weiter von der Kamera entfernte. Statistisch gesehen gibt es damit weniger "z-Fighting“-Effekte (z.B. bei Bewegungen willkürliche Farbwechsel zwischen den Farben von Objekten mit nahezu der selben Tiefeninfo im z-Buffer).
+
+![Z-Buffer-Beispiel; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Z-buffer-verfahren.png)
+
+- Das Ergebnis des Z-Buffer-Verfahrens ist vergleichbar mit dem Painters-Algorithmus.
+- Es ist jedoch bei opaken Objekten keine vorgängige Sortierung der Polygone nötig. Sie können in beliebiger Reihenfolge gezeichnet werden.
+- Die Interpolation der 1/z-Werte erfolgt im Polygonfüll-Algorithmus durch wenige Ganzzahl-Operationen (wie bei den x-Werten)
+- Das Verfahren ist pixelgenau: Es werden auch zyklisch sich überlappende (und sogar räumlich sich durchdringende) Polygone korrekt dargestellt.
+- Kaum Mehraufwand gegenüber dem 2D-Polygonfüllalgorithmus!
+- Mögliches Problem: Korrekte Berücksichtigung von Transparenzen!
+
+### Transparenz
+Alpha-Blending-Verfahren: 
+- Annahme: Verwendung eines Z-Buffers 
+- Mit dem Alpha-Blending-Verfahren kann die transparente Überlagerung zweier Objekte im Bildspeicher wie folgt gelöst werden
+  - $C_f$ Farbe des Objekts im Vordergrund (kleinster z-Wert),
+  - $\alpha$ Opazität der Vordergrundfarbe, Wert zwischen 0 und 1 (bzw. 100%),
+  - $C_b$ Hintergrundfarbe (die im Bildspeicher für das entsprechende Pixel zuletzt eingetragene Farbe)
+- Die resultierende Farbe C ergibt sich zu: $C=\alpha*C_f+(1-\alpha)*C_b$
+- Für Alpha-Blending wird der Bildspeicher (mit z-Buffer) um den Opazitätswert $\alpha$ erweitert:
+  - Speicherbedarf pro Pixel typischerweise mindestens 48 Bit: R + G + B + Z + $\alpha$.
+  - Bei einer Auflösung des Bildschirms von 1.000.000 Pixel benötigen wir ca. 6MB Speicher.
+  - z-Wert und $\alpha$-Wert des Vordergrund Objektes werden nach dem Alpha-Blending in den Bildspeicher übernommen!
+
+![Transparenz Probleme](Assets/Computergrafik_Transparenz-Fehler.png)
+
+- Reines Z-Buffering (ohne $\alpha$) ignoriert alle Objektepixel, die weiter entfernt sind als vorn liegende Objektpixel (siehe rechts, hier ist die Reihenfolge egal).
+- Bei Berücksichtigung von $\alpha$-Werten (Transparenzen) ist die Renderreihenfolge für korrekte Ergebnisse aber sehr wichtig! (siehe Mitte bzw. links)
+
+- Erläuterung zum Transparenz-Problem: 
+  - Die Formel für $\alpha$-Blending berücksichtigt nur die Überlagerung des aktuellen Objektes mit dem davor existierenden Bildschirminhalt. Wird ein dazwischenliegendes Objekt nachträglich gezeichnet, dann kann die Farbe nicht korrekt bestimmt werden. Dies passiert aber beim Z-Buffering, da die Zeichenreihenfolge der Polygone beliebig ist. 
+- **Im Beispiel**
+  - Die opake grüne Kreisscheibe liegt zwischen dem hinteren Objekt (blau) und dem transparenten vorderen Objekt (rot), wird aber als letztes gerendert. → Grün kann Blau nicht mehr verdecken, denn Blau wurde zuvor schon mit Rot verrechnet (ist nun mit "vorderer" z-Koordinate im Z-Buffer hinterlegt). Dort, wo die grüne Kreisscheibe hinter dem transparenten Rot (bzw. dem nun Rot-Blau) liegt wird ein nicht korrekter Blauanteil gezeigt. Auch der weiße Hintergrund kann hinter dem transparenten Rot (insgesamt ein transparentes Rosa) nicht mehr vom Grün verdeckt werden!
+- algorithmische Lösung des Problems: 
+  - Zuerst: Darstellung aller opaken Objekte ($\alpha$ = 1) nach dem Z-Buffering (reihenfolgeunabhängig)
+  - Dann Sortieren aller semitransparenten Polygone nach der Tiefe und Zeichnen nach dem Painters-Algorithmus unter Berücksichtigung des Z-Buffers mittels Alpha-Blending!
+  - Restfehler: sich zyklisch überlappende oder sich durchdringende semi-transparente Flächen → exakte Behandlung durch die vorn beschriebenen Maßnahmen (Unterteilung der Polygone notwendig!)

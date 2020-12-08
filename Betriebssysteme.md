@@ -736,3 +736,397 @@ Methoden und Mechanismen verwendbar für
 2. Threads innerhalb eines Anwendungsprozesses
 3. Anwendungsprozesse untereinander (notwendig: gemeinsamer Speicher!)
 
+## weitere Konzepte
+### Transaktionaler Speicher
+Problem: Semaphore/ Hoare‘sche Monitore lösen das Problem wechselseitigen Ausschlusses durch Sperren.
+damit: Verhinderung paralleler Abläufe (da in einem kritischen Abschnitt jeweils nur ein Thread aktiv sein kann, werden gegebenenfalls weitere Threads blockiert, und somit für bestimmte Zeit von der Bearbeitung ausgeschlossen, d.h. also zeitweilig gestoppt)
+
+Lange Zeit war Performanz sehr bequem/ Wachsende Leistung der Hardware durch:
+1. Erhöhung der Taktfrequenz
+2. Erhöhung der Transistorzahl
+    - Pipelining: Zerlegung und fließbandartige parallele Abarbeitung einzelner Instruktionen
+    - Hyperthreading: Lückenfüllung in den Pipelines durch Füttern aus verschiedenen Threads
+    - spekulative Ausführung von Instruktionsfolgen
+    - Arbeitsspeichercaches
+    - TLBs
+- für Software weitgehend unsichtbar
+- vertraute sequenzielle Programmierparadigmen ausreichend
+
+Diese Ära ist beendet
+1. physikalische Aspekte der Energieverteilung/Wärmeableitung auf Chip; Limitierung der Steigerung der Taktfrequenz
+2. logische Aspekte der Instruktionsausführung; Limitierung spekulativer Ausführung und Instruktionsparallelität
+Weitere Leistungssteigerung
+- durch Paradigmenwechsel der Prozessorarchitektur: Multicore-Prozessoren
+- dadurch bedingt: Paradigmenwechsel der Software: Parallele (und verteilte) Algorithmen
+
+Parallele Algorithmen
+- erfordern:
+  - hochparallele, sperrenfreie Synchronisationsmodelle
+  - Konzept: transaktionaler Speicher
+- Beobachtung:
+  - nicht jede konkurrente Benutzung kritischer Abschnitte durch mehr als 1 Thread verursacht Fehler
+- Pessimistische Herangehensweise:
+  - „Aussperren“ weiterer Threads (z.B. durch Semaphore u. Monitore)
+  - Dadurch: ausgesperrte Threads werden am Weiterkommen gehindert (Performanzverluste besonders bei intensiver Parallelarbeit)
+- Optimistische Herangehensweise:
+  - Kein „Aussperren“ von Threads (z.B. durch Semaphore u. Monitore)
+  - Hinterher: Untersuchung auf Fehler und Korrektur, z.B. durch erneuten Versuch
+- Geeignete Verfahrensweise:
+  - Kombination mit Transaktionen (-> transaktionaler Speicher)
+- Transaktionen:
+  - stammen aus der Datenbanktechnik
+  - ermöglichen u.a.: Zurückfahren fehlerhaft ausgeführter Programmabschnitte (genannt Transaktionen) u. Wiederholung von deren Ausführung auf elegante Weise
+
+### Botschaften
+Problem: Semaphore/Hoare‘sche Monitore/Transaktionaler Speicher erfordern zu ihrer Implementierung gemeinsamen Speicher der Beteiligten
+
+Gibt es nicht
+1. falls die Beteiligten auf unterschiedlichen Rechnern ablaufen
+2. falls die Beteiligten disjunkte Adressräume besitzen
+3. in lose gekoppelten Multiprozessor-Architekturen
+Hierfür: muss ein anderes Kommunikationsparadigma her
+
+2 elementare Operationen
+1. Senden einer Botschaft an einen Empfänger
+    `send(IN Empfänger, IN Botschaft)`
+2. Empfangen einer Botschaft von einem Absender
+    `receive(OUT Absender, OUT Botschaft)`
+
+Anmerkungen
+- genutzt: für Kommunikation zwischen
+  - Prozessen innerhalb eines (Mikrokern-) Betriebssystems
+  - Anwendungsprozesse untereinander (Klienten, Server)
+- Betriebssysteme: implementieren send/receive-IPC
+- Anwendungsprozesse: nutzen Bibliotheken oder Betriebssystem-Dienste,
+
+### Fernaufrufe (Remote Procedure Calls, RPCs)
+- Problem
+  - Datenmodell des send/receive-Modells: Zeichenfolge $\rightarrow$ sehr primitiv
+  - gewohnte Datenmodelle z.B. aus Programmiersprachen $\rightarrow$ Signaturen (Methodenaufruf, typisierte Parameterlisten)
+- Idee: Anpassung eines
+  - anwendungsnahen,
+  - unkomplizierten und
+  - vertrauten
+- Kommunikationsmodells an die Eigenschaften verteilter Systeme:
+  - Prozedurfernaufruf (Remote Procedure Call, RPC)
+  - Methodenfernaufruf (Remote Method Invocation, RMI $\rightarrow$ Objekt-orientiert)
+
+Grundidee dieser Architekturform
+1. elementare Betriebssystem-Funktionalität: 
+    - in sehr kleinem, hochprivilegiertem Betriebssystemkern (  Kern)
+    - typische Aufgaben: Threads, Adressräume, IPC
+2. weniger elementare Aufgaben:
+    -schwächer privilegiert ( reguläre Anwendungssysteme = „Nutzerprozesse“)
+3. Folgen
+     - Isolation der Betriebssystem-Komponenten
+       - → Robustheit (Fehlerisolation)
+       - → IT-Sicherheit [Security] (TCB-Größe) $\rightarrow$ TCB: Trusted Computing Base
+       - → Korrektheit (Verifizierbarkeit)
+       - → Adaptivität (Auf- und Abskalierung der Systemfunktionalität)
+       - → Kommunikationskosten
+
+Kommunikationskosten
+- Prozeduraufruf: monolithische Architektur: innerhalb eines Adressraums
+- Prozedurfernaufruf: $\mu$-Kern-Architektur: über Adressraumgrenzen hinweg
+
+### Systemaufrufe
+Problem: Kommunikation Anwendungsprozess ↔ BS
+- BS stellt zahlreiche Dienste bereit (Linux  250, Apple OS X  500); z.B.
+  - Prozesserzeugung (fork)
+  - Programmausführung (exec∗)
+  - Dateimanagement (open, close, read, write)
+  - Kommunikation (msg∗, socket, shm∗)
+- In diesem Abschnitt: Aufrufmethoden und -mechanismen
+
+1. Wünsche des Anwendungsentwicklers
+    - Bequemlichkeit
+    - Performanz (hohe Aufruffrequenz, tausende pro Sekunde)
+2. Wünsche des Betriebssystem-Entwicklers
+    - Sicherheit
+    - Robustheit
+- reguläre Prozeduraufrufe: erfüllen Kriterien nicht (isolierte Adressräume, Privilegien, Programmiersprachen)
+- Prozedurfernaufrufe:
+  - bequem, performant, sicher, robust
+  - teuer
+- gesucht: leichtgewichtiges RPC-Modell
+
+1. Problem: Unterschiedliche Programmiersprachen
+    - kein einheitliches Format der Aufrufparameter (Reihenfolge, Format)
+    - Lösung: normierte Parameterstruktur und Datentyprepräsentation zwischen Anwendungsprogramm und Betriebssystem
+      - definiert durch: API-Spezifikation des Betriebssystems
+      - implementiert durch: zwischengeschaltete Bibliothek
+      - (z.B. libc; Stellvertreter-Prozeduren, Urform heutiger Middleware-Stubs)
+2. Problem: Separate Namensräume
+    - „do_sys_write“ liegt nicht im Namensraum des Anwendungsprozesses
+    - Lösung: Einigung auf Namenskonventionen („push(write_C)“)
+3. Problem: Separate Adressräume/Adressraumbereiche
+    - kein direkter Zugriff auf Parameter seitens der aufgerufenen Prozedur
+    - Lösung:
+      - Parameter-Datenstruktur auf User-Stack
+      - performante Alternative: in Registern
+4. Problem: Privilegienwechsel User→Kernel→User
+    - TRAP/RTT-Mechanismus (ReTurn from Trap)
+
+Kosten: Systemaufruf = Prozeduraufruf+X
+X=
+1. Standardisierung der Parameterübergabe
+    - Kosten gering bei Übergabe in Registern (  reguläre Prozedur)
+2. Isolation
+    - Privilegienwechsel durch Interrupt ( TRAP/RTT )
+    - je  100 Taktzyklen (Kontextsicherung)
+    - Verlust der Sprungziel-Vorausberechnungen
+    - Verlust spekulativer Ausführungen
+    - sehr teuer
+    - Optimierung (seit Pentium 2): SysEnter/SysCall-Instruktionen
+- Kosten gegenüber regulärem Prozeduraufruf: heute ca. Faktor 2
+
+### Ereignismanagement
+Das Problem: Betriebssystemen laufen sehr viele Aktivitäten parallel ab
+1. Ausführung von Anwendungsprogrammen
+2. Management von Prozessor-, Speicher-, Kommunikations-Ressourcen
+3. Bedienung der E/A-Peripherie
+dabei: entstehen immer wieder Situationen, in denen auf unterschiedlichste Ereignisse reagiert werden muss, z.B.
+- Timerablauf
+- Benutzereingaben (Maus, Tastatur)
+- Eintreffen von Daten von Netzwerken, Festplatten, ...
+- Einlegen/stecken von Datenträgern
+- Aufruf von Systemdiensten
+- Fehlersituationen
+
+- Qualitativ
+  - Windows-System (Laptop), gestartete GUI
+  - Jederzeit: können ca. 400 verschiedene Ereignisse eintreten
+- Quantitativ
+  - MacOS MacBook Pro
+  - allein Systemaufruf-Ereignisse („SysEnter“) > 1.000.000/sek
+- $\rightarrow$ Umgangsformen mit Ereignissen
+
+Umgangsformen mit Ereignissen
+1. „busy waiting“
+    - spezialisierte Threads innerhalb des BS prüfen andauernd Ereigniseintritt
+    - sehr kurze Reaktionszeit
+    - ineffiziente Prozessornutzung
+    - hoher Energieverbrauch
+    - akzeptabel bei
+      - bekannt kurzen Wartezeiten
+      - Multiprozessormaschinen, falls
+        - ausreichend Prozessoren vorhanden sind
+        - ausreichend Energie vorhanden ist
+2. „periodic testing“
+    - spezialisierte Threads prüfen hin und wieder den Ereigniseintritt
+    - je nach Prüfperiode
+      - lang: fragliche Reaktionszeit
+      - kurz: fragliche Effizienz der Prozessornutzung
+    - akzeptabel bei: relaxten Reaktionszeitanforderungen
+3. Unterbrechungen („Interrupts“)
+    - Benachrichtigung über Ereignis
+    - Zur Wirksamkeit dieser Technik
+      - Verhältnis Anzahl Festplattenoperationen zu CPU-Operationen
+      - Laptop: ca. 1:10.000.000
+
+Ereignisklassen
+1. E/A-Gerätemeldung („ich habe fertig“, „ich habe Fehler“)
+2. Timer-Ablauf
+3. Ausfall der Hardware (Stromausfall, Speicher-Paritätsfehler)
+4. Fehlverhalten ablaufender Programme , z.B.
+    - Ausführung privilegierter oder illegaler Instruktionen
+    - Zugriff auf geschützte Speicheradressen
+    - arithmetischer Überlauf (z.B. „$2^{40}* 2^{40}$ “ bei 64-Bit-Arithmetik)
+    - Division durch 0
+5. Seitenfehler (bei virtueller Speicherverwaltung, s.u.)
+6. explizit per Programm ausgelöste Ereignisse („TRAP“)
+
+Ereignisquellen
+1. Hardware: E/A-Geräte, Uhren, CPU, MMU, ALU, FPU
+2. Software: Instruktionen wie TRAP, SysCall
+Technisch: Signalisierung z.B. durch „5 Volt an Prozessorbeinchen“
+Programmiermodell: HW/SW-Schnittstelle?
+
+Programmiermodelle zur Unterbrechungsbehandlung
+- Idee
+  - Verknüpfung von (HW-)Interrupts mit (SW-)Abstraktionen;
+  1. Prozeduren (→ inline Prozeduraufrufmodell)
+  2. IPC-Operationen (→ IPC-Modell)
+  3. Threads (→ pop-up Thread Modell)
+- Wirkung
+  - Interrupt ↷ Ausführung der assoziierten Abstraktion, z.B.
+  1. Interrupt Nr. 42: ↷ rufe Prozedur „InterruptHandler_42()“ auf
+  2. Interrupt Nr. 42: ↷ sende Botschaft „Interrupt 42“ an einen Thread
+  3. Interrupt Nr. 42: ↷ erzeuge Thread „Interrupt_42_Thread“
+
+Das inline-Prozeduraufrufmodell
+- Interruptbehandlungen: besitzen syntaktisches Aussehen einer Prozedur:
+  - „Handlerprozeduren“ (interrupt service routines (ISRs))
+- Ablauf der Interruptbehandlung: erzwungener Prozeduraufruf
+  - kein Threadwechsel, sondern
+  1. Unterbrechung des Tuns des momentan ablaufenden Threads
+  2. Sicherung seines Ablaufkontexts (Lesezeichen: IP, SP, PSR, ...)
+  3. Versetzen des Threads in Ablaufkontext der Unterbrechungsbehandlung (z.B. andere Privilegierungsebene)
+  4. Ausführung der Handlerprozedur (untergeschobener (inline-) Prozeduraufruf)
+  5. Restauration des Threads in den unterbrochenen Ablaufkontext (beim Lesezeichen)
+- Planung der Interruptbehandlung:
+  - Prozedurname mit Interruptquelle assoziieren
+  - Interruptvektortabelle
+  - es gibt: viele unterschiedliche Interruptquellen
+  - es gibt: entsprechend viele unterschiedliche Reaktionen auf Interrupts
+- Aufruf der zugehörigen Handlerprozedur:
+  - wir haben: ein konkretes Interruptsignal: „5 Volt“ und eine Nummer $\rightarrow$ Hardwareebene
+  - wir möchten: die Ausführung der zugehörigen Handlerprozedur im Betriebssystem, z.B. im Timer-Management $\rightarrow$ Softwareebene
+
+Problem also: geeignete Hardware/Softwareschnittstelle
+
+Lösung: Die Interruptvektor-Tabelle (IVT): Assoziationen („Interruptvektoren“) der Form
+  - Interruptquelle → Handlerprozedur (ISR)
+  - Interruptquelle: Nummer
+  - Handlerprozedur: Code oder Codeadresse
+  - Speicherort: BS und Interrupthardware bekannt; Varianten:
+    1. fester Ort: z.B. im Arbeitsspeicher, beginnend bei Adresse 0
+    2. variabel: lokalisiert über Adressregister (Interruptvektor Adressregister, IVA)
+  - Format: (HW-)architekturspezifisch, dem Betriebssystem bekannt
+  - erstellt:
+    - in früher Boot-Phase des Systems
+    - als Ergebnis einer Analyse möglicher Interrupt-Quellen (z.B. vorhandene E/A-Geräte) (BIOS, UEFI)
+
+Fazit des inline-Prozeduraufrufmodells
+1. Unterbrechungsbehandlung: durch Interrupt Service Routinen
+2. Planung: in Interruptvektor-Tabelle
+3. Ablauf: erzwungener Prozeduraufruf
+      1. Sicherung des Ablaufkontexts des momentan aktiven Threads
+      2. Auswahl der Handlerprozedur gemäß IVT-Eintrag
+      3. Ausführung der Handlerprozedur durch untergeschobenen Prozeduraufruf
+      4. Restaurierung des unterbrochenen Tuns des Threads
+
+### IPC Modell
+2-stufig
+1. Stufe der Interruptbehandlung: erzeugt IPC-Operation
+2. Stufe der Interruptbehandlung: Reaktion auf diese IPC-Operation
+- Interrupts: abgebildet auf reguläre IPC-Operationen
+- Interruptbehandlungen: sind reguläre Reaktionen der IPC-Adressaten
+- zeitliche Kalkulierbarkeit und Kürze der primären Interruptbehandlung (Echtzeitsysteme!)
+
+Planung
+- IPC-Erzeugung mit Interruptquelle verknüpfen → Interruptvektor
+- Beim Interrupt
+    1. Stufe:
+        - I. Unterbrechung des momentan aktiven Threads
+        - II. Erzeugen der IPC-Operation, z.B. Senden einer Botschaft (klein – passt in IVT, sehr schnell)
+        - III. Fortsetzung des unterbrochenen Threads
+    2. Stufe: IPC-Adressat, z.B. Thread eines Gerätemanagers, reagiert auf IPC
+
+### pop-up-Thread-Modell
+2-stufig
+1. Stufe der Interruptbehandlung: erzeugt Thread
+2. Stufe der Interruptbehandlung: erfolgt in diesem Thread
+- Interruptsignale: abgebildet auf Thread-Erzeugungen
+- Interruptbehandlungen: sind reguläre Thread-Abläufe
+- zeitliche Kalkulierbarkeit und Kürze der primären Interruptbehandlung (Echtzeitsysteme!)
+
+Planung
+- Thread-Erzeugung mit Interruptquelle verknüpfen → Interruptvektor
+- Beim Interrupt
+  1. Stufe:
+      - I. Unterbrechung des momentan aktiven Threads
+      - II. Erzeugen des Threads (klein – passt in IVT, sehr schnell)
+      - III. Fortsetzung des unterbrochenen Threads
+  2. Stufe:
+      - Thread (z.B. in Gerätemanager) wird (irgendwann) vom Scheduler aktiviert
+
+
+### Implementierungstechniken 
+Ablauf
+1. Ereignis entsteht: z.B. auf E/A-Geräteplatine, in MMU, in SW ...
+2. Interruptsignal wird (evtl. über Kommunikationsbus) Prozessor zugestellt
+3. Prozessor schließt Ausführung der laufenden Instruktion ab (falls möglich)
+4. Prozessor sichert Ablaufkontext des aktiven Threads
+5. Prozessor stellt Ablaufkontext der Interruptbehandlung her
+    - dazu benötigt er minimal: Adresse der Interrupt-Behandlungsroutine
+    - dies: setzt vorherige Einplanung in der IVT voraus
+6. Fortsetzung des aktiven Threads im neuen Kontext der Interrupt-Behandlung; dabei u.U. Wechsel der Privilegierungsebene
+7. der neue Kontext
+    - führt Code in der IVT aus
+    - dies ist je nach Interrupt-Programmiermodell: Aufruf einer Prozedur, Erzeugung einer IPC-Operation, Erzeugung eines Threads
+8. bei Abschluss (RTI):
+    - Rückversetzen des aktiven Threads in den gesicherten Ablaufkontext; dabei u.U. Rückkehr zur vorherigen Privilegierungsebene
+
+Was bleibt der Software?
+- Definition der Interrupt-Behandlungsalgorithmen (in Form von Prozeduren, IPC-Reaktionen, Threads; oft Teil des BS-E/A-Systems)
+- Vorausplanung der Interrupt-Behandlungen in der IVT
+  - Bootphase
+  - Nachladen von Gerätemanagern
+
+Die Realität ist häufig komplexer
+1. Interruptquellen besitzen unterschiedliche Wichtigkeit
+    - Priorisierung (Eignung der 3 Modelle?)
+2. Echtzeiteigenschaften (zeitlich garantierte Reaktion auf Ereignisse)
+    1. Unterbrechbarkeit der Interruptbehandlung durch höherpriore Interrupts
+    2. geschachtelte Interruptbehandlung (Eignung der 3 Modelle?)
+3. moderne Prozessorarchitekturen (superskalare (intern parallele)
+    - Prozessoren) arbeiten mit spekulativer und paralleler Instruktionsausführung
+    - viele Instruktionen befinden sich zum Unterbrechungszeitpunkt in unterschiedlichen Bearbeitungszuständen
+    - Sicherung/Wiederaufsetzung des unterbrochenen Ablaufkontexts (HW) komplex und zeitaufwändig
+
+Fazit soweit
+- 100e von Ereignissen jede Sekunde
+  - erfordert: effizientes und ökonomisches Ereignismanagement
+- die Hardware hilft
+  1. Schnittstelle: IVT
+  2. Unterbrechungsmanagement
+- Software: 3 alternative Programmiermodelle
+  1. eine Prozedur wird aufgerufen
+  2. eine Botschaft wird gesendet
+  3. ein Thread wird erzeugt
+- Wahl abhängig von
+  1. Echtzeiteigenschaften
+  2. Performanzanforderungen
+
+Asynchrone Signalisierungsmechanismen außerhalb von Betriebssystemen
+1. Meldung von Ereignissen (terminierte Kindprozesse, Ausführung illegaler Instruktionen, Speicherschutzverletzungen ...)
+2. Stoppen, Fortsetzen, Abbruch von Prozessen
+
+Umgang damit
+1. Definition von ESRs (event service routines) in Anwendungssystemen;
+deren syntaktische Form z.B. in C: Prozeduren (inline-Modell)
+2. Planung der Ereignisreaktion
+    1. Reaktionstyp festlegen
+        - a) ignorieren
+        - b) Prozessabbruch
+        - c) ESR-Aufruf
+    2. im letzteren Fall: Verknüpfen einer ESR mit einem Ereignis per Systemaufruf (z.B. in Unix: signal( <Ereignisnummer>, <ESR> ) )
+    3. Betriebssystem: merkt sich Anbindung im Prozessdeskriptor (Ereignismanagement, „Handler-Vektor“; = Interruptvektortabelle) PD
+    4. bei Ereigniseintritt: untergeschobener Prozeduraufruf (durch Modifikation des IP*-Registers (Anfang der ESR-Prozedur))
+    5. nach Prozedurende: Fortsetzen an unterbrochener Stelle
+
+Auslösung von Ereignissen durch
+1. Hardware (z.B. Speicherzugriffsfehler, arithmetischer Fehler)
+2. Betriebssystem (z.B. Prozessmanagement: Terminierung von Kindprozessen)
+3. andere Benutzerprozesse (API-Aufruf) (z.B. in Unix: kill( <Prozess-Id>, <Ereignisnummer> ) )
+
+bei Auftreten des Ereignisses; erfolgt gemäß obiger Planung
+- a) ignorieren
+- b) Prozessabbruch
+- c) ESR-Aufruf
+    1. inline-Prozeduraufruf der ESR-Prozedur
+    2. Rückkehr zum unterbrochen Kontext nach dessen Ende
+
+Zusammenfassung Ereignismanagement/Botschaften
+1. Ereignismanagement erlaubt:
+    - schnelle
+    - effiziente
+    - hardwareunterstützte
+    - Reaktionen auf synchrone und asynchrone Ereignisse
+2. Programmiermodelle: Abbildung von Ereignissen auf
+   1. erzwungene Prozeduraufrufe
+   2. IPC-Operationen
+   3. Threaderzeugung
+3. Planung: durch Definition der ISR und Eintrag in IVT
+4. analoges Konzept auf Anwendungsebene , z.B.
+    - Unix-Signale
+    - Apple Events
+
+## Zusammenfassung
+IPC: Kommunikation und Synchronisation
+  - a) Semaphore und Hoare‘sche Monitore: blockierend, pessimistisch 
+  - b) transaktionaler Speicher: neu, optimistisch, transaktional
+  - c) Botschaften: kein gemeinsamer Speicher, Datentransport
+  - d) Fernaufrufe, Systemaufrufe: „Spezialisierungen“
+  - e) Ereignismanagement: Interrupts, Unterbrechungen auf Anwendungsebene

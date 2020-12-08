@@ -159,3 +159,63 @@ Fragen und Fragestellungen zum Verständnis zur Vorlesung
 
 
 ---
+
+## Transaktionaler Speicher
+> Welche Entwicklungen führten zu Entwicklungsarbeiten bezüglich dieses Konzepts?
+
+---
+> Verbirgt sich hinter diesem Konzept eine pessimistische oder eine optimistische Herangehensweise an die Synchronisationsproblematik – und warum?
+
+
+
+## Botschaften und botschaftenbasierte Kommunikation
+> Unter welchen Bedingungen muss botschaftenbasierte Kommunikation zur Anwendung kommen?
+
+
+---
+> Charakterisieren Sie die 2 elementaren Methoden zur Realisierung botschaftenbasierter Kommunikation!
+## Fernaufrufe
+> Warum wird unter den entsprechenden Bedingungen (siehe oben) nicht alle Kommunikation über Botschaften abgewickelt – was ist das Besondere an den stattdessen auch verwendeten Prozedurfernaufrufen bzw. Methodenfernaufrufen?
+
+
+---
+> Wie ist die Kommunikation in Mikrokern-Betriebssystemen organisiert?
+
+
+## Systemaufrufe
+> Welchem Zweck dienen Systemaufrufe?
+
+---
+> Welche Beispiele von Systemaufrufen sind Ihnen bekannt? – Wozu dienen diese jeweils?
+
+
+---
+> Warum realisieren Systemaufrufe keinen direkten Einsprung in den Betriebssystemkern?
+
+
+---
+> Mit welchen Problemen muss bei der Realisierung von Systemaufrufen umgegangen werden – und wie sehen die Lösungen aus?
+
+
+## Ereignisse und Ereignismanagement
+> Welche Dinge sind im Betriebssystemkontext Ereignisse?
+
+---
+> Welche Möglichkeiten gibt es, mit Ereignissen umzugehen?
+
+---
+> Welche Vorteile bieten Interrupts (Unterbrechungen)?
+
+---
+> Welche drei Modelle gibt es zum Umgang mit Interrupts?
+
+---
+> Was sind Interruptvektor, Interruptvektortabelle und Interrupt-Service-Routinen?
+
+---
+> Warum und inwieweit ist die Rechner-Hardware in die Interrupt-Bearbeitung involviert?
+
+
+---
+> Was versteht man unter Interrupts auf Anwendungsebene und wie kann damit umgegangen werden?
+

@@ -934,4 +934,286 @@ Je nachdem welche Farbe ein Material hat, werden entsprechende Farbanteile absor
 Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.
 
 # Licht \& Reflexion
+## Strahlung
+Grundfrage: Was ist Licht?
+- Teil der elektromagnetischen Strahlung
+- ist für das menschliche Auge wahrnehmbar
+- Lichtspektrum liegen zwischen 380 nm und 780 nm
+- Farbe entspricht der Wellenlänge
+- längere Wellenlängen = weniger Photonenenergie
+- durch Überlagerungen vieler Frequenzen erscheint das Licht weiß
 
+Radiometrie:
+- Wissenschaft von der Messung elektromagnetischer Strahlung
+- Größen sind physikalische Einheiten (ohne Berücksichtigung des menschl. Sehens)
+  
+Photometrie:
+- Messverfahren im Wellenlängenbereich des sichtbaren Lichtes (Messung mithilfe eines Photometers)
+- lassen sich aus den radiometrischen Größen, bei bekanntem Spektrum bestimmen
+- berücksichtigen die wellenlängenabhängige Empfindlichkeit des Auges
+
+Photon:
+- Elementarteilchen der elektromagnetischen Wechselwirkung
+- besitzen keine Masse
+- Energie und Impuls sind proportional zur Frequenz
+- kürzere Wellenlänge = höhere Frequenz = höhere Energie
+
+Strahlungsenergie (radiant energy):
+- durch Strahlung (elektromagnetische Wellen) übertragene Energie
+- entspricht dem Produkt von Photonenanzahl und der Energie der Photonen
+- Formelzeichen : Q
+- Einheit: J (Joule)
+- photometrisches Äquivalent: Lichtmenge (luminous energy)
+
+Strahlungsleistung (auch Strahlungsfluss, engl. radiant flux, radiant power):
+- transportierte Strahlungsenergie in einer bestimmten Zeit
+- Formelzeichen : $\phi$
+- Einheit: W (Watt)
+- Berechnung: $\phi = \frac{Q}{t}$
+- photometrisches Äquivalent: Lichtstrom (luminous flux, luminous power)
+
+Zusammenhang zwischen Radiometrie und Photometrie:\\
+In der Radiometrie wird sich mit objektiven Messgrößen beschäftigt, in der Photometrie gibt es jeweils eine entsprechende Messgrößen, bei denen die spektrale Empfindlichkeit des menschlichen Auges mit einfließt.
+- Beispiel:
+  - radiometrisch: Strahlungsleistung $\phi_e$ gemessen in Watt W
+  - photometrisch: Lichtstrom $\phi_v$ gemessen in Lumen lm
+- Verknüpfung von Radiometrie und Photometrie erfolgt über das photometrische Strahlungsäquivalent: $K =\frac{\phi_v}{\phi_e}$
+- gibt die Empfindlichkeit des menschlichen Auges an
+- radiometrische Größe: Index $_e$ für energetisch
+- photometrische Größe: Index $v_$ für visuell
+Die radiometrischen Größen gewichtet mit dem photometrischen Strahlungsäquivalent K sind somit die photometrischen Größen.
+
+Ausbreitung eines Strahls:
+- geradlinig von einer Quelle zum Ziel,
+- Richtung ändert sich durch Brechung
+- an Oberflächen tritt Reflexion und Streuung auf
+- eine Strahlungsquelle sendet dabei Strahlen in alle Raumrichtungen unter einem gewissen Raumwinkel aus
+
+### Raumwinkel
+Der Steradiant ist eine Maßeinheit für den Raumwinkel, der von der Mitte M einer Kugel mit Radius r aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt. $\Omega=\frac{Fläche}{Radius^2}=\frac{A}{r^2}sr$
+Eine komplette Kugeloberfläche $A_k$ beträgt allg. $A_k = 4\pi r^2$, entspricht also einem Raumwinkel $\Omega$ von $\frac{A_k}{r^2}= 4\pi r\approx 12,5sr$. Ein Steradiant =1sr entspricht einem Öffnungswinkel $\alpha$ von ca. 65,54°
+
+### Strahlstärke
+- auch Intensität, engl. radiant intensity
+- Strahlungsleistung die in eine Raumrichtung mit Raumwinkel $\Omega$ emittiert wird
+- Formelzeichen : I
+- Berechnung: $I=\frac{\phi}{\Omega}$
+- photometrisches Äquivalent: Lichtstärke (luminous intensity)
+
+Beispiel: Berechnen Sie die Strahlstärke einer Lampe mit einem Öffnungswinkel von 180° und einer Strahlungsleistung von 20W.
+$$\alpha=180°\rightarrow A=2\pi r^2; \phi =20W; \Omega=\frac{A}{r^2}=2\pi ; I_e=\frac{\phi_e}{\Omega}=\frac{20}{2\pi}\approx 3,2 \frac{W}{sr}$$
+
+### Räumliche Ausbreitung
+Energieübertragung zwischen zwei Flächen:
+Eine Fläche $A_r$ strahlt Licht auf eine Fläche $A_i$ ab.\\
+Frage: Wie viel Lichtleistung von einer infinitesimalen abstrahlenden Fläche $A_r$ wird auf einer Fläche $A_i$ empfangen?
+- der Abstand zwischen den beiden infinitesimalen Flächen beträgt r
+- die Flächen stehen nicht notwendigerweise senkrecht zur Ausbreitungsrichtung des Lichts (gerade Verbindungslinie zwischen den Flächen)
+- Wir projizieren daher die abstrahlende und die empfangende Fläche jeweils in Ausbreitungsrichtung. Die projizierten Flächen nennen wir $A'_r$ und $A'_i$.
+- Wir betrachten Punktlichtquellen von der abstrahlenden Fläche $A_r$ , welche ihre Strahlungsleistung in den Raumwinkel $\Omega$ abgeben.
+- $\Omega$ ist somit die in Abstrahlrichtung reduzierte Fläche $A'_i$ , projiziert auf die Einheitskugel: $\Omega=\frac{A'_i}{r^2}$
+  - Die übertragene Energie nimmt quadratisch zu r ab
+
+### Strahldichte
+- engl. radiance
+- Strahlstärke welche von einer Sendefläche $A_r$ in eine bestimmte Richtung abgegeben wird
+- Formelzeichen : L
+- photometrisches Äquivalent: Leuchtdichte (auch Luminanz, engl. luminance)
+- Berechnung: $L = \frac{I}{A'_r}=\frac{I}{\cos(\phi_r)*A_r} = \frac{\phi}{\cos(\phi_r)*A_r*\Omega}$
+- $\phi_r$ ist der Winkel zwischen der Normalen n und der Abstrahlrichtung (von der abstrahlenden Fläche $A_r$ zur empfangenden $A_i$)
+
+Leuchtdichte (Luminanz) als Vorstufe der Helligkeit:
+- Strahlungsleistung bewertet mit der spektralen Empfindlichkeitsfunktion des menschlichen Auges für das Hellempfinden
+- Das menschliche Auge hat seine maximale Empfindlichkeit, bei einer Wellenlänge von 555 nm (gelbgrün)
+- 1 Lumen ist definiert als der Lichtstrom einer 1,464 mW starken 555-nm-Lichtquelle mit 100% Lichtausbeute.
+
+
+### Bestrahlungsstärke
+- auch Strahlungsflussdichte, engl. irradiance
+- Strahlungsleistung durch die bestrahlte Fläche $A_i$ bzw. Strahlstärke die auf die Empfängerfläche trifft
+- Formelzeichen : E
+- Berechnung: $E =\frac{\Phi}{A_i}$
+- photometrisches Äquivalent: Beleuchtungsstärke (auch Lichtstromdichte, engl. illuminance)
+- erweitert: $E=\frac{\Phi}{A_i}=\frac{L*\cos(\phi_i)*\cos(\phi_r)*A_r}{r^2}$
+
+### Zusammenfassung
+Radiometrische (physikalische) und Photometrische (unter Berücksichtigung des menschlichen Auges) Größen
+
+| Symbol | Radiometrie (energetisch $_e$) | Photometrie (visuell $_v$ ) |
+| -- | -- | -- |
+| $Q$ | Strahlungsenergie $Joule$ | Lichtmenge $lm*s$ |
+| $\Phi$ | Strahlungsleistung Watt $W$ | Lichtstrom Lumen $lm$ |
+| $I$ | Strahlstärke $\frac{w}{sr}$ | Lichtstärke Candela $cd$ |
+| $E$ | Bestrahlungsstärke $\frac{W}{m^2}$ | Beleuchtungsstärke Lux $\frac{lm}{m^2}$ |
+| $L$ | Strahldichte $\frac{w}{sr*m^2}$ | Leuchtdichte $\frac{cd}{m^2}$ |
+
+
+
+## Reflexion
+Nach dem Auftreffen auf einer opaken Oberfläche wird die Strahlung spektral
+unterschiedlich stark und geometrisch auf unterschiedliche Weise reflektiert. Es
+können 2 Idealfälle der Reflexion unterschieden werden:
+- ideal spiegelnde Reflexion (Einfallswinkel = Ausfallswinkel)
+- ideal diffuse Reflexion
+
+Aus den zwei Idealfällen der reflexion werden weitere (gemischte) Fälle abgeleitet:
+- spekuläre Reflexion (diffus und gerichtete Reflexion)
+- gemischte Reflexion: ideal diffus, gerichtet diffus und ideal spiegelnd
+
+Bei der Betrachtung der Reflexion ist offensichtlich die Art der Bestrahlung und
+insbesondere auch die Richtung der Einstrahlung zu beachten.
+
+
+
+### Diffuse Reflexion
+![Diffuse Reflexion; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Diffuse_Reflexion.png)
+
+Lichtquelle im Unendlichen; Irradiance $E=\frac{A'_i}{A_i}I_{in}=I_{in}\cos(\phi)$
+
+Eingestrahlte Strahlstärke I in durch $A'_i$ verteilt sich durch die Projektion auf die größere Fläche $A_i$ Die Bestrahlungsstärke E (Irradiance) ist dadurch proportional zum Vergrößerungsfaktor der Fläche abgeschwächt.
+
+In Richtung Betrachter reflektierte Strahlstärke $I_{out}$ Aufgrund von Interferenz phasengleicher Lichtstrahlen → Projektion auf Normalenrichtung $\frac{I_{out}}{E_{refl}}=\cos(\phi)$
+- Senkrecht zur Oberfläche: Maximale Kohärenz (Addition)
+- Parallel zur Oberfläche: n Keine Kohärenz (Auslöschung)
+
+![Diffuse Reflexion Addition und Auslöschung; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Diffuse_Reflexion_2.png)
+
+Annahme kohärentes Licht: Parallel zur reflektierenden Oberfläche findet sich zu jeder Punktlichtquelle immer eine gleichphasige Punktlichtquelle im Abstand $\frac{\lambda}{2}$
+- Auslöschung parallel zur Fläche,
+
+![Diffuse Reflexion Betrachter; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Diffuse_Reflexion_3.png)
+
+$$\frac{A_r}{A'_r}=\frac{1}{\cos(\phi)} \rightarrow L=\frac{I_{out}}{\cos(\phi)}=I_{refl}$$
+Ein Betrachter mit flachem Blickwinkel sieht Licht aus größerer Fläche $A_r$ durch Kombination dieser Effekte, kürzt sich der Einfluss des Betrachterwinkels $\cos(\phi)$ weg und es bleibt nur der Einfluss des Lichteinfallswinkels übrig: Strahldichte des reflektierten Lichtes: $L=I_{in}*k_d(\lambda)*\cos(\phi)$
+
+### Spekuläre Reflexion
+Spekuläre (gestreut spiegelnde) Reflexion:
+- Speckles (Fleckchen), bzw. (Micro-) Facetten sind einzeln jeweils "ideal"
+- spiegelnd: Einfallswinkel $\phi$ = neg. Ausfallswinkel = $-\phi$.
+- Die Ausrichtung der Microfacetten weichen von der Gesamtflächennormalen ab. → Statistische Abweichung von der Flächennormalen (z. B. Gauß-Verteilung)
+- dadurch Streuung des Lichts (Keule) um den Winkel $\theta$ der idealen Spiegelung herum
+- Je größer der Winkel $\theta$ zwischen idealer Spiegelrichtung und Richtung zum Betrachter, desto schwächer ist die Reflexion
+- Modellierung meist per $\cos^k(\theta$)$ (Phong-Beleuchtungsmodell) - nicht physikalisch begründet.
+
+![Spekuläre Reflexion; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Spekuläre_Reflexion.png)
+
+Gestreute Spiegelung im Phong Modell mit $L=I*k_s*\cos^k(\theta)$
+- glänzende Oberfläche: großer Exponent k (16,...,128); kleine Streuung $\epsilon$
+- matte Oberfläche: kleiner Exponent k (1,...,2); große Streuung $\epsilon$
+
+Energieerhaltung $\rightarrow$ Verhinderung der Abnahme bei großen Exponenten $\rightarrow$ Für die Energieerhaltung wird ein zusätzlicher Normierungsfaktor benötigt:
+- physikalisch nicht korrekt:  $L=I*k_s*\cos^k(\theta)$
+- gebräuchliche Normierung $\frac{k+2}{2\pi}$ somit: $L=I*k_s*\frac{k+2}{2\pi}*cos^k(\theta)$
+
+### Remittierende Flächen
+- Wegen der spektralen Unterschiede bei der Reflexion bleiben wir bei den spektralen physikalischen (radiometrischen) Größen!
+- Erst im Auge bzw. im Bildsensor erfolgt die Wandlung in die wellenlängenintegralen photometrischen (colorimetrischen) Größe!
+
+Zunächst ideal diffus remittierende weiße Flächen $(\beta(\lambda) = 1)$:
+- Die von den Quellen in die Fläche $dA$ eingetragene Leistung führt zu einer Bestrahlungsstärke $E_{\lambda}$
+- Bei vollständiger Reflexion $\beta(\lambda) = 1$ ist $E_{\lambda} = R_{\lambda}$ (spektrale Radiosity, spezifische spektrale Ausstrahlung).
+- Der zugehörige spektrale Strahlungsfluss $d\phi = R_{\lambda} * dA = E_{\lambda} * dA$ wird bei ideal diffusen streuenden Oberflächen gleichmäßig über den Halbraum verteilt, wobei die Strahldichte (Lambertsches Gesetz) konstant ist.
+
+
+## BRDF: Bidirektionale Reflexionsverteilungsfunktion
+### Bidirektionale Reflexion
+- englisch Bidirectional Reflectance Distribution Function, BRDF
+- eine Funktion für das Reflexionsverhalten von Oberflächen eines Materials unter beliebigen Einfallswinkeln
+- Ziel: Oberfläche möglichst realistisch und physikalisch korrekt darstellen
+- nach gewählter Genauigkeit sehr komplex
+- in der Computergrafik wird meist eine vereinfachte Variante gewählt um Rechenzeit zu sparen
+- erstmals 1965 definiert (Fred Nicodemus): $\f_r(\omega_i, \omega_r)=\frac{dL_r(\omega_r)}{dE_i(\omega_i)}=\frac{dL_r(\omega_r)}{L_i(\omega_i)\cos(\theta_i)d\omega_i}$
+- Eine BRDF beschreibt wie eine gegebene Oberfläche Licht reflektiert.
+- Das Verhältnis von reflektierter Strahldichte (radiance) $L_r$ in eine Richtung $\vec{ω}_r$ zur einfallenden Bestrahlungsstärke (irradiance) $E_i$ aus einer Richtung $\vec{ω}_i$ wird "bidirectional reflectance distribution function"(BRDF) genannt.
+  - $p(\lambda)=\frac{L_r}{E_i}=[\frac{1}{sr}]$
+- Die BRDF (für jeden Punkt x) ist eine 5-dimensionale skalare Funktion: $p(\lambda, \phi_e, \theta_e, \phi_i, \theta_i)$
+- Keine Energie-Einheiten, nur Verhältniszahl!
+- Kann durch Messung für verschiedene Materialien bestimmt werden (Messkamera/Normbeleuchtung)
+- Eigenschaften der BRDF:
+  - Reziprozität: $ρ(\lambda)$ ändert sich nicht, wenn Einfalls- und Ausfallsrichtung vertauscht werden (wichtig für Ray-Tracing).
+  - $ρ(\lambda)$ kann anisotrop sein, d.h. der Anteil des reflektierten Lichtes ändert sich, wenn bei gleicher Einfalls- undAusfallsrichtung die Fläche um die Normale gedreht wird (Textilien, gebürstete Metalle, Metalleffektlacke)
+  - Superposition gilt, d.h. mehrere Quellen überlagern sich linear.
+
+Es ist in der Computergrafik üblich, die bidirektionale Reflektivität als Gemisch von ambienten, diffusen und spekularen Komponenten $ρ_d, ρ_s$ aufzufassen und
+einen ambienten Anteil $ρ_a$ zu addieren. Für eine Menge Q von Lichtquellen berechnen wir damit die gesamte reflektierte Strahlstärke: $L_r=p_a*E_a+\sum_{1\leq j \leq Q} E_j * (k_d*p_d + k_s*p_s)$ mit $k_d+k_s=1$ und Q= Anzahl der Lichtquellen
+
+### Rendering-Equation
+Für ambiente und gerichtete Lichtquellen aus der Hemisphäre ergibt sich eine spezielle Form der BRDF, die Render-Gleichung (Jim Kajiya 1986):
+- eine BRDF mit Integral über alle Lichtquellen (bzw. Hemisphären)
+- $L_r=p_a + \int_{Omega} L*(k_d*p_d+k_s*p_s) \omega_i*n d\Omega$
+
+![Rendering Equation; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Rendering_Equation.png)
+
+### Strahlungsquellenarten
+- Ambiente Strahlung:
+  - es ist keine "eigentliche" Quelle zuordenbar
+  - stark vereinfachtes Modell für die Streuung der Atmosphäre, für viele "durchmischte" Strahlungsquellen, für indirekte Reflexionen
+  - Strahlung kommt von allen Seiten "Die Quelle ist überall und nirgends"
+  - keine Abhängigkeit von Winkeln und Entfernungen
+  - Beschreibung nur indirekt durch konstante Bestrahlungsstärke (Irradiance) von Flächen möglich
+  - $E=\frac{\Phi}{A}=E_a$
+- Parallele Strahlung:
+  - Strahlung ist gerichtet und parallel (kollimiertes Licht, Strahlungsquelle im Unendlichen, Sonnenlicht)
+  - für derartige Quellen lässt sich kein Ort (aber uneigentlicher Ort, Richtung) angeben
+  - Wichtig sind die Richtung und die Strahlungsleistung, bezogen auf die senkrecht zur Ausbreitungsrichtung stehende Fläche (spezifische Ausstrahlung oder Radiosity $R_e$) $R=E_q=\frac{\Phi}{A_q}$
+  - für die Schattierungsrechnung lässt sich die Bestrahlungsstärke $E_e$ der Oberfläche (Flächenelement dA) berechnen: $E=\frac{\Phi}{A}=\frac{E_q*A_q}{A}=E_q*\cos(\phi) = E_q*V_I^T*n$
+- Ideale Punktlichtquelle:
+  - für die Punktquelle ist der Ort bekannt und die Strahlstärke in alle Richtungen konstant: $I=\frac{\Phi}{\Omega}=konstant$
+  - die Bestrahlungsstärke eines physikalischen vorliegenden, beliebig orientierten Flächenelementes A ergibt sich zu:
+    - $E=\frac{\Phi}{A}=\frac{I*\Omega}{A}, \Omega=\frac{A}{r^2}*\cos(\phi)*\omega_r \rightarrow E=\frac{I}{r^2}*\cos(\phi)*\omega_r$
+  - zum Ausgleich der Adaptionsfähigkeit des menschlichen Auges wird in der Computergrafik oft der folgende Ansatz verwendet:
+    - $E=\frac{I}{c_1+c_2*|r|+c_3*r^2}*\cos(\phi)*\omega_r$
+- Remittierende Flächen (radiometrische Betrachtung):
+  - Zur Berechnung der von der reflektierenden Fläche weitergegebenen Strahldichte L sind die weiter oben berechneten Bestrahlungsstärken E für die unterschiedlichen Quellen mit dem Faktor $\frac{\beta(\lambda)}{\pi\omega_r}$ zu bewerten
+
+| Quelle | Reflexion | Spektale Strahldichte $L(\lambda)$ |
+| -- | -- | -- |
+| ambient | diffus | $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\beta(\lambda)$ |
+| gerichtet | diffus | $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\cos(\phi)*\beta(\lambda)$ |
+| punktförmig | diffus | $L(\lambda) = \frac{I(\lambda)}{\pi r^2 }*\cos(\phi)*\beta(\lambda)$ |
+| gerichtet diffus | diffus | $L(\lambda)=\frac{I(\lambda)}{\pi r^2 }* \cos^m(\theta)*\cos(\phi)*\beta(\lambda)$ |
+
+
+## Beleuchtungsmodelle
+Ein Beleuchtungsmodell ist eine Verfahren in der Computergrafik welches das Verhalten von Licht simuliert. Die Simulation unterscheidet dabei zwischen lokaler und globaler Beleuchtung:
+- Lokale Beleuchtungsmodelle:
+  - simulieren das Verhalten von Licht auf den einzelnen Materialoberflächen
+  - nur Beleuchtungseffekte welche direkt durch Lichtquellen auf einzelnen Objekt entstehen
+  - indirekte Beleuchtung bleibt zunächst unberücksichtigt
+- Globale Beleuchtungsmodelle:
+  - simulieren die Ausbreitung von Licht innerhalb der Szene
+  - dabei wird die Wechselwirkung in der Szene beachtet (Schatttenwurf, Spiegelung, indirekte Beleuchtung)
+
+### Phong-Modell
+- lokales Beleuchtungsmodell (lässt sich durch BRDF beschreiben)
+- eignet sich zur Darstellung von glatten, plastikähnlichen Oberflächen
+- baut nicht auf physikalischen Grundlagen auf
+- widerspricht dem Energieerhaltungssatz
+- Reflexion des Lichts = ambienter+ ideal diffuser + ideal spiegelnder Reflexion
+
+![Phong Modell; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Phong_Modell.png)
+
+- Allgemein: $L=I_{out}=I_{ambient}+I_{diffus}+I_{specular}$
+- Ambiente: $I_{ambient}=I_a * k_a$ mit $I_a$ Intensität des Lichtes und $k_a$ Materialkonstante
+- Diffus: $I_{diffus}=I_{in}*k_d*\cos(\phi)$ mit $I_{in}$ Lichtstärke der Punktlichtquelle; $k_d$ empirischem Reflexionsfaktor; $\phi$ Winkel zwischen Oberflächennormale und Richtung des einfallenden Lichtstrahls
+- Spiegelnd: $I_{specular}=I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n({\theta})$ mit
+  - $I_{in}$ Lichtstärle des eingallendes Lichtstrahls der Punktlichtquelle
+  - $k_s$ empirisch bestimmter Reflexionsfaktor
+  - $\theta$ Winkel zwischen idealer Reflexionsrichtung des Lichtstrahls und Blickrichtung
+  - $n$ konstante Exponent zur Beschreibung der Oberflächenbeschaffenheit
+  - $\frac{n+2}{2\pi}$ Normalisierungsfaktor zur Helligkeitsregulierung
+- Vollständige Formel: $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
+
+Unterschiedliche Definitionen sind möglich, z.B. mit mehrere Lichtquellen:
+- jeweiligen Komponenten für jede Lichtquelle separat berechnet
+- diese werden anschließend aufsummiert
+
+### Cook-Torrance
+- Physik-basierte spekulare Reflexion:
+- Microfacetten: Grundidee ähnlich Phong-Modell
+- Statistische Abweichung der Microfacetten von der Flächennormalen (z. B. Beckmann-Verteilung)
+- Streuung des Lichts (Keule) um den Winkel der idealen Spiegelung herum
+- Berücksichtigt auch die gegenseitigen Abschattung (insbesondere bei flachen Lichtstrahlen)
+- Vollständig physikbasiertes Modell, keine willkürlichen Reflexionskonstanten
+- Aufwendige Berechnung (verschiedene Näherungsformeln existieren)
+- Beckmann-Verteilung: $l_{spec}=\frac{exp(-\frac{tan^2(\alpha)}{m^2})}{\pi m^2 cos^4 (\alpha)}$, $\alpha=arccos(N*H)$

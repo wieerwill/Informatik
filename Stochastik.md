@@ -74,10 +74,10 @@ author: Wieerwill
 ## Vierfeldertafel
 Alle vier Felder zusammen entsprechen dem Ergebnisraum $\Omega$
 
-| $\Omega$  | $B$             | $\bar{B}$           |
-| --        | --              | --                  |
-| $A$       | $A\cap B$       | $A\cap \bar{B}$     |
-| $\bar{A}$ | $\bar{A}\cap B$ | $\bar{A}\cap\bar{B}$|
+| $\Omega$  | $B$             | $\bar{B}$            |
+| --------- | --------------- | -------------------- |
+| $A$       | $A\cap B$       | $A\cap \bar{B}$      |
+| $\bar{A}$ | $\bar{A}\cap B$ | $\bar{A}\cap\bar{B}$ |
 
 
 ## Absolute Häufigkeit
@@ -150,25 +150,166 @@ Die Summe der Wahrscheinlichkeiten auf den Ästen, die von einem Verzweigungspun
     - Durch eine kleine Modifikation des Zählers und des Nenners gelangen wir schließlich zur Formel für eine Kombination mit Wiederholung
     - $\frac{(n+k-1)!}{(n-1)!*k!} = \binom{n+k-1}{k}$
 
-| | | Menge | Reihenfolge |
-| -- | -- | -- | -- |
-| Permutation ohne Wiederholung | $n!$ | n aus n | beachtet |
-| Permutation mit Wiederholung | $\frac{n!}{k_1!*k_2!*...}$ | n aus n | beachtet |
-| Variation ohne Wiederholung | $\frac{n!}{(n-k)!}$ | k aus n | beachtet |
-| Variation mit Wiederholung | $n^k$ | k aus n | beachtet |
-| Kombination ohne Wiederholung | $\binom{n}{k}$ | k aus n | nicht beachtet |
-| Kombination mit Wiederholung | $\binom{n+k-1}{k}$ | k aus n | nicht beachtet |
+|                               |                            | Menge   | Reihenfolge    |
+| ----------------------------- | -------------------------- | ------- | -------------- |
+| Permutation ohne Wiederholung | $n!$                       | n aus n | beachtet       |
+| Permutation mit Wiederholung  | $\frac{n!}{k_1!*k_2!*...}$ | n aus n | beachtet       |
+| Variation ohne Wiederholung   | $\frac{n!}{(n-k)!}$        | k aus n | beachtet       |
+| Variation mit Wiederholung    | $n^k$                      | k aus n | beachtet       |
+| Kombination ohne Wiederholung | $\binom{n}{k}$             | k aus n | nicht beachtet |
+| Kombination mit Wiederholung  | $\binom{n+k-1}{k}$         | k aus n | nicht beachtet |
 
 
 
 ## Laplace Expriment
 > Ein Zufallsexperiment heißt Laplace-Experiment, wenn alle Elementarereignisse die gleiche Wahrscheinlichkeit besitzen. $P(E)=\frac{|E|}{|\Omega|}$
 
-$\Omega$ sei eindlich und $P(\omega)=\frac{1}{\Omega} \rightarrow$ Laplace-Verteilung oder diskrete Gleichverteilung $\rightarrow$ für $A \subseteq \Omega: P(A)=\sum_{\omega \in A} P(\omega)=\frac{*A}{*\Omega}=\frac{\text{Anzahl "günstige" Ausgänge"}}{\text{Anzahl "alle" Ausgänge}}$ 
+$\Omega$ sei endlich und $P(\omega)=\frac{1}{\Omega} \rightarrow$ Laplace-Verteilung oder diskrete Gleichverteilung $\rightarrow$ für $A \subseteq \Omega: P(A)=\sum_{\omega \in A} P(\omega)=\frac{*A}{*\Omega}=\frac{\text{Anzahl "günstige" Ausgänge"}}{\text{Anzahl "alle" Ausgänge}}$ 
+
+Vorgehen: Laplace Wahrscheinlichkeit
+1. Anzahl aller überhaupt möglichen Elementarereignisse berechnen
+2. Anzahl der Elementarereignisse berechnen, bei denen E eintritt
+3. Laplace Wahrscheinlichkeit berechnen
+
+> Satz von de Moivre-Laplace: Für eine binomialverteilte Zufallsgröße X mit den Parametern n und p sowie reelle Zahlen a und b gilt $P(a\leq X \leq b)= \int_{a-0,5}^{b+0,5} \varphi_{\mu_i \delta} (x) dx_i$ wobei $\mu = n*p$ und $\delta?\sqrt{n*p*(1-p)}$ ist.
+
+## Stochastische Unabhängigkeit
+> Zwei Ereignisse A und B sind stochastisch unabhängig, wenn das Eintreten des einen Ereignisses das Eintreten des anderen Ereignisses nicht beeinflusst.
+
+Bsp: 
+- Ziehen mit Zurücklegen (unabhängig): Die Wahrscheinlichkeit des Eintretens von A im 2. Zug ist unabhängig davon, ob im 1. Zug das Ereignis B oder $\bar{B}$ eintritt. In beiden Fällen ist die Wahrscheinlichkeit gleich P(A).
+- Ziehen ohne Zurücklegen (anhängig): Die Wahrscheinlichkeit des Eintretens von A im 2. Zug ist abhängig davon, ob im 1. Zug das Ereignis B oder $\bar{B}$ eintritt:
+$P_B(A)$ ist die Wahrscheinlichkeit von A unter der Bedingung, dass B eingetreten ist. $P_{\bar{B}}(A)$ ist die Wahrscheinlichkeit von A unter der Bedingung, dass $\bar{B}$ eingetreten ist.
+
+Zwei Ereignisse A und B heißen (stochastisch) unabhängig, wenn gilt: $P(A \cap B)=P(A)*P(B)$. Wenn die Ereignisse A und B unabhängig sind, dann sind dies auch $\bar{A}$ und B, A und $\bar{B}$ sowie $\bar{A}$ und $\bar{B}$.
+
+Bei stochastischer Unabhängigkeit zweier Ereignisse hat jeder in die gleiche Richtung zeigende Ast in einem Baumdiagramm die gleiche Wahrscheinlichkeit.
+
+Bei stochastischer Unabhängigkeit zweier Ereignisse ist die Wahrscheinlichkeit eines Feldes in der Vierfeldertafel gleich dem Produkt der Wahrscheinlichkeiten der zugehörigen Zeile und der zugehörigen Spalte.
+
 
 ## Bedingte Wahrscheinlichkeiten
-$A,B \subseteq \Omega$ mit $P(B)> 0$; man beobachtet, dass B eintritt
-
+$P_B(A)$ ist die Wahrscheinlichkeit von A unter der Bedingung, dass B eingetreten ist; häufig schreibt man auch $P(A|B)$.
 die bedingte Wahrscheinlichkeit von "A gegeben B": $P(A|B)=\frac{P(A \cap B)}{P(B)}$
 
+$A,B \subseteq \Omega$ mit $P(B)> 0$; man beobachtet, dass B eintritt nachdem A eingetreten ist.
+
 die totale Wahrscheinlichkeit: $P(A)=\sum_{i=1}^n P(A|B_i)P(B_i)$
+
+### Multiplikationssatz
+Die Wahrscheinlichkeit eines Elementarereignisses ist gleich dem Produkt der Wahrscheinlichkeiten des zugehörigen Pfades.
+
+Bsp: $P(A\cap B)= P(B)*P_B(A)$
+
+### Totale Wahrscheinlichkeit
+Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen.
+
+Satz der totalen Wahrscheinlichkeit für zwei Ereignisse A und B: 
+Bsp: $P(A) = P(A\cap B) + P(A\cap \bar{B}) = P(B)*P_B(A)+P(\bar{B})*P_{\bar{B}}(A)$
+
+### Satz von Bayes
+Der Satz von Bayes erlaubt das Umkehren von Schlussfolgerungen:
+Man geht von einem bekannten Wert $P_A(B)$ aus, mit dessen Hilfe man $P_B(A)$ berechnet.
+
+Um die Formel für die Berechnung von $P_A(B)$ aus $P_B(A)$ zu erhalten, müssen wir zwei Baumdiagramme mit unterschiedlichem Ablauf miteinander verknüpfen. Nach dem Multiplikationssatz gilt: $P(A\cap B)=P(B)*P_B(A)$. Nach $P_B(A)$ aufgelöst gilt $P_B(A)=\frac{P(A\cap B)}{P(B)}$. Nach dem zweiten Multiplikationssatz gilt $P(A\cap B)=P(A)*P_A(B)$. Einsetzten der Formel in die erste Abbildung: $P_B(A)=\frac{P(A\cap B)}{P(B)} \Rightarrow P(A\cap B)=P(A)*P_A(B)$. daraus erhält man den Satz von Bayes $P_B(A)=\frac{P(A)*P_A(B)}{P(B)}$
+
+Satz von Bayes: $P_B(A)=\frac{P(A)*P_A(B)}{P(B)}=\frac{P(A)*P_A(B)}{P(A)*P_A(B)+P(\bar{A})*P_{\bar{A}}(B) }$
+
+## Zufallsvariable
+Eine Funktion X, die jedem Ergebnis $\omega$ des Ergebnisraum $\Omega$ genau eine Zahl x der Menge der reelen Zahlen $\R$ zuordnet, heißt Zufallsvariable. 
+Kurz $X:\Omega\rightarrow\R$ 
+Veranschaulicht: Eine Zufallsvariable ordnet jedem $\omega_i$ aus $\Omega$ genau ein $x_i$ aus $\R$ zu.
+
+Es gibt drei Möglichkeiten, eine (diskrete) Zufallsvariable darzustellen:
+1. als Wertetabelle
+2. als abschnittsweise definierte Funktion
+3. als Mengendiagramm
+
+### Diskrete Zufallsvariable
+Eine Zufallsvariable X wird als diskret bezeichnet, wenn sie nur endlich viele oder abzählbar unendlich viele Werte annimmt.
+
+1. Bsp: X:=„Anzahl Würfe, bis zum ersten Mal 6 erscheint“ -> unendliche Wertemenge, die jedoch abzählbar ist
+2. Bsp: X:=„Anzahl defekter Artikel in einer Stichprobe“ -> endliche Wertemenge
+
+Diskrete Zufallsvariablen entstehen meist durch einen Zählvorgang.
+
+Diskrete Wahrscheinlichkeitsverteilung: Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen.
+
+Erwartungswert :$\mu_x =E(X)=\sum_i x_i*P(X=x_i)$\\
+Varianz: $\omega^2_X = Var(X) = \sum_i(x_i-\mu_X)^2 *P(X=x_i)$\\
+Standardabweichung: $\omega_X = \sqrt{Var(x)}$
+
+### Stetige Zufallsvariable
+Eine Zufallsvariable X wird als stetig bezeichnet, wenn sie überabzählbar unendlich viele Werte annimmt.
+
+1. Bsp: X:=„Gewicht einer zufällig ausgewählten Person“ -> unendliche Wertemenge, die nicht abzählbar ist
+2. Bsp X:=„Geschwindigkeit eines an einer Radarkontrolle vorbeifahrenden Autos“ -> unendliche Wertemenge, die nicht abzählbar ist
+
+Stetige Zufallsvariablen entstehen meist durch einen Messvorgang.
+
+Erwartungswert: $\mu_X= E(X)=\int_{-\infty}^{\infty} x*f(x)dx$\\
+Varianz: $\omega_X^2 =Var(X) = \int_{-\infty}^{\infty} (x-\mu_X)^2 *f(x)dx$\\
+Standardabweichung: $\omega_X= \sqrt{Var(X)}$
+
+## Wahrscheinlichkeitsverteilung
+Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen.
+
+Eine Wahrscheinlichkeitsverteilung lässt sich entweder
+- durch die Verteilungsfunktion oder
+- die Wahrscheinlichkeitsfunktion (bei diskreten Zufallsvariablen)
+- bzw. die Dichtefunktion (bei stetigen Zufallsvariablen)
+vollständig beschreiben.
+
+### Wahrscheinlichkeitsfunktion
+Die Wahrscheinlichkeitsfunktion ist ein Hilfsmittel zur Beschreibung einer diskreten Wahrscheinlichkeitsverteilung. 
+Eine Funktion f, die jedem x einer Zufallsvariablen X genau ein p aus [0;1] zuordnet, heißt Wahrscheinlichkeitsfunktion. Kurz: $f:x\rightarrow p$
+
+$P(X=x)$ gibt die Wahrscheinlichkeit dafür an, dass die Zufallsgröße X den Wert x annimmt.
+
+Die Wahrscheinlichkeitsfunktion f der Zufallsvariablen X gibt die Wahrscheinlichkeiten für die möglichen Realisationen von X an: $f(x)=P(X=x)= \begin{cases} p_i \text{für } x=x_i (i=1,2,...,n) \\ 0 \text{sonst} \end{cases}$
+Für die Summe der Wahrscheinlichkeiten gilt $\sum_{i=1}^n p_i=1$
+
+### Dichtefunktion
+Die Dichtefunktion ist ein Hilfsmittel zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung.\\
+Eigenschaften der Dichtefunktion
+- Die Dichtefunktion kann nur positive Werte annehmen. $f(x) \geq 0$ für alle $x\in\R$
+- Die Fläche unter der Dichtefunktion hat den Inhalt 1. $\int_{-\infty}^{\infty} f(x)dx= 1$
+
+Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wert x annimmt, ist stets Null. $P(X=x)=0$
+
+
+### Verteilungsfunktion
+Die Verteilungsfunktion ist ein Hilfsmittel zur Beschreibung einer diskreten oder stetigen Wahrscheinlichkeitsverteilung.
+
+### Diskrete Verteilungsfunktionen
+1. $P(X\leq a)=F(a)$
+2. $P(X<a)= F(a)−P(X=a)$
+3. $P(X>a)= 1−F(a)$
+4. $P(X\geq a)=1−F(a)+P(X=a)$
+5. $P(a<X\leq b)=F(b)−F(a)$
+6. $P(a\leq X \leq b)=F(b)−F(a)+P(X=a)$
+7. $P(a<X<b) = F(b)−F(a)−P(X=b)$
+8. $P(a\leq X < b)=F(b)−F(a)+P(X=a)−P(X=b)$
+
+Eigenschaften einer Verteilungsfunktion
+- F(x) ist monoton steigend.
+- F(x) ist rechtsseitig stetig.
+- $lim_{x\rightarrow -\infty} F(x)=0$ und $lim_{x\rightarrow +\infty} F(x)=1$
+
+### Stetige Verteilungsfunktion
+$$F(X)=P(X\leq x)=\int_{-\infty}^{x} f(u) du$$
+
+Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wert x annimmt, ist stets Null. 
+- $P(X=x)=0$
+- $P(X\leq a)=F(a)$
+- $P(a<X\leq b)=F(b)−F(a)$
+- $P(X>a)=1−F(a)$
+
+
+    Normalverteilung
+    Stetige Gleichverteilung
+    Exponentialverteilung
+
+    Binomialverteilung
+    Hypergeometrische Verteilung
+    Poisson-Verteilung

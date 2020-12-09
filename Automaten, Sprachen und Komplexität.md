@@ -895,3 +895,97 @@ Wenn L eine kontextfreie Sprache ist, dann gibt es $n\geq 1$ derart, dass für a
 2. v oder x enthält wenigstens eine der Markierungen oder
 3. $uv^i wx^i y \in L$ für alle $i\geq 0$
 
+## Entscheidbarkeit
+Wir geben Algorithmen an, mit denen übliche Probleme für kontextfreie Sprachen gelöst werden können.
+> Wortproblem für eine kontextfreie Sprache $L$. Gegeben $w\in\sum^*$. Gilt $w\in L$?
+
+Ist die kontextfreie Sprache L durch eine kontextfreie Grammatik in Chomsky-Normalform gegeben, so kann das Wortproblem mit dem CYK-Algorithmus in Zeit $O(|w|^3)$ gelöst werden. 
+Ist L durch einen deterministischen PDA gegeben, so kann das Wortproblem für L sogar in Zeit $O(n)$ gelöst werden.
+
+> Uniformes Wortproblem für kontextfreie Sprachen: Gegeben kontextfreie Grammatik G und Wort $w\in\sum^*$. Gilt $w\in L(G)$?
+
+Lösung:
+- berechne kontextfreie Grammatik G' in Chomsky Normalform mit $L(G)=L(G')$
+- Wende CYK-Algorithmus auf die Frage $w\in L(G')$ an
+
+> Leerheitsproblem für kontextfreie Sprachen: Gegeben eine kontextfreie Grammatik $G=(V,\sum,P,S)$. Gilt $L(G)=\varnothing$
+
+Lösung: Sei $W=\{A\in V | \exists w\in\sum^*: A\Rightarrow_G^* w\}$ die Menge aller produktiven Nichtterminale. Dann gilt $L(G)\not= \varnothing \leftrightarrow S\in W$. Berechnung von W: 
+$W_0:=\{A\in V | \exists w\in\sum^*:(A\rightarrow w)\in P\}$
+
+`for i=0 to |V| do`
+
+  $W_{i+1}:= W_i \cup \{A\in V | \exists v \in (\sum\cup W_i)^* : (A\rightarrow v)\in P\}$
+  
+`endfor`
+
+---
+Beispiel
+G sei kontextfreie Grammatik mit folgenden Produktionen:
+- S -> AC
+- A -> BC
+- B -> CA | b
+- C -> a
+  
+Wir haben
+1. $W_0={B,C}$
+2. $W_1={A,B,C}$
+3. $W_2=W_3=W_4=W_5={S,A,B,C}$
+4. 
+Also sind alle Nichtterminale produktiv. Insbesondere gilt $L(G)\not=\varnothing$
+
+> Behauptung: $W_{|V|}$ ist die Menge der produktiven Nichtterminale W
+
+Beweis: 
+1. zunächst $W_i\subseteq W$ per Induktion über i beweisen
+2. dann zeige $W\supseteq W_{|V|}$
+---
+
+> Endlichkeitsproblem für kontextfreie Sprachen: Gegeben eine kontextfreie Grammatik G. Ist $L(G)$ endlich?
+
+O.E. können wir annehmen, daß G in Chomsky-Normalform ist. Wir definieren einen Graphen $(W , E )$ auf der Menge der produktiven Nichtterminale mit folgender Kantenrelation: $E=\{(A,B)\in W\times W | \exists C \in W: (A\rightarrow BC)\in P \text{ oder } (A\rightarrow CB)\in P\}$
+
+Beobachtung: $(A,B)\in E$ gilt genau dann, wenn es einen vollständigen A-Ableitungsbaum gibt, so daß B ein Kind der Wurzel beschriftet.
+
+
+### Unentscheidbarkeit bei kontextfreien Sprachen
+Folgende Probleme sind für kontextfreie Sprachen nicht entscheidbar, d.h. es gibt kein entsprechendes Verfahren (vgl. Abschnitt „Unentscheidbare Probleme“):
+- Universalitätsproblem: Gegeben eine kontextfreie Grammatik G . Gilt $L(G ) =\sum^*$?
+- Äquivalenzproblem: Gegeben zwei kontextfreie Grammatiken $G_1$ und $G_2$. Gilt $L(G_1)=L(G_2)$?
+- (Inhärente) Mehrdeutigkeit: Gegeben eine kontextfreie Grammatik G. Ist G (inhärent) mehrdeutig?
+- Komplementierbarkeit: Gegeben eine kontextfreie Grammatik G. Ist $\sum^*\backslash L(G)$ kontextfrei?
+- Determinisierbarkeit: Gegeben ein PDA M. Existiert ein DPDA M' mit $L(M) = L(M')$?
+- Regularität: Gegeben ein PDA M. Ist $L(M)$ regulär?
+
+### Entscheidbarkeit bei deterministisch kontextfreien Sprachen
+Folgende Probleme sind entscheidbar:
+- Regularität: Gegeben ein deterministischer Kellerautomat P. Ist $L(P)$ regulär?
+- Äquivalenzproblem: Gegeben zwei deterministische Kellerautomaten $P_1$ und $P_2$. Gilt $L(P_1) = L(P_2)$?
+- Universalitätsproblem: Gegeben ein deterministischer Kellerautomat P. Gilt $L(P) = \sum^*$?
+
+Bemerkung: Die anderen Probleme der vorherigen Sektion sind für DPDAs trivial:
+- Jede deterministisch kontextfreie Sprache hat eine eindeutige Grammatik.
+- Das Komplement jeder deterministisch kontextfreien Sprache ist wieder kontextfrei.
+- Zu jedem DPDA existiert ein äquivalenter DPDA.
+
+### Unentscheidbarkeit bei deterministisch kontextfreien Sprachen
+Folgende Probleme sind für deterministische Kellerautomaten nicht entscheidbar:
+- Inklusionsproblem: Gegeben zwei deterministische Kellerautomaten $P_1$ und $P_2$ . Gilt $L(P_1)\subseteq L(P_2)$?
+- Schnittproblem: Gegeben zwei deterministische Kellerautomaten $P_1$ und $P_2$. Gilt $L(P_1)\backslash L(P_2) = \varnothing$?
+
+Damit sind diese Probleme auch für allgemeine kontextfreie Sprachen unentscheidbar.
+Das folgende Schnittproblem ist jedoch entscheidbar:
+- Gegeben eine kontextfreie Grammatik $G_1$ und eine rechtslineare Grammatik $G_2$. Gilt $L(G_1)\cap L(G_2)=\varnothing$?
+
+
+## Zusammenfassung kontextfreie Sprachen
+- durch kontextfreie Grammatiken erzeugt, durch PDAs bzw. PDAEs erkannt, LL-Parsing
+- Chomsky- und Greibach-Normalform, Pumping-Lemma, CYK-Algorithmus
+- Klasse der 
+  - abgeschlossen unter Vereinigung, Verkettung, Iteration, Schnitt mit reg. Sprachen; 
+  - nicht abgeschlossen unter Komplement und Schnitt
+- Algorithmen für Wortproblem, Leerheit, Endlichkeit; es gibt keinen Algorithmus für Äquivalenz usw.
+- Klasse der det. kontextfreien Sprachen abgeschlossen unter Komplement,
+  - es gibt Algorithmus für Äquivalenz,
+  - es gibt keine Algorithmen für Schnitt- und Inklusionsproblem
+

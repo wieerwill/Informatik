@@ -989,3 +989,103 @@ Das folgende Schnittproblem ist jedoch entscheidbar:
   - es gibt Algorithmus für Äquivalenz,
   - es gibt keine Algorithmen für Schnitt- und Inklusionsproblem
 
+# Berechenbarkeit
+Welche Funktionen $\N\rightarrow \N$ können von einem Algorithmus berechnet werden?
+
+> Intuitiver Berechenbarkeitsbegriff: Eine Funktion $f:\N^k\rightarrow\N$ ist intuitiv berechenbar, wenn es einen Algorithmus gibt, der f berechnet, d.h.
+> - das Verfahren erhält $(n_1,..., n_k)$ als Eingabe,
+> - terminiert nach endlich vielen Schritten
+> - und gibt $f(n_1,...,n_k )$ aus.
+
+Behauptung: Es gibt eine totale Funktion $f:\N\rightarrow\N$, die nicht intuitiv berechenbar ist.
+
+Begründung: Wir nehmen zusätzlich an, daß es ein Alphabet gibt, so dass jeder Algorithmus als Wort über beschrieben werden kann.
+Sei $P\subseteq\Gamma^*$ die Menge der syntaktisch korrekten Algorithmenbeschreibungen. 
+Wörter aus $\Gamma^*\backslashP$ fassen wir als "Algorithmenbeschreibungen mit syntaktischen Fehlern" auf. Für $w\in\Gamma^*$ definieren wir eine Funktion $[[w]]:\N\rightarrow\N$ wie folgt: 
+Gilt $w\in P$, so ist $[[w]]:\N\rightarrow\N$ die von der Algorithmenbeschreibung $w$ berechnete Funktion. 
+Andernfalls setze $[[w]](n) = 0$ für alle $n\in\N$.
+
+Wir nehmen o.E. $\Gamma={0,1,...,b,1}$ an. Für $w= a_k a_{k-1}... a_1 a_0\in\Gamma^*$ sei $(w)_b = b^{k+1}+ \sum_{k\geq i \geq 0} a_ib^i-1$.
+Dann ist $w\rightarrow (w)_b$ eine Bijection von $\Gamma^*$ auf $\N$; sei $w:\N\rightarrow\Gamma^*$ die Umkehrabbildung, d.h. $w(n)$ ist die "n-te Algorithmenbeschreibung (u.U. mit syntaktischen Fehlern)". Wir definieren die Funktion $f:\N\rightarrow\N$ gemäß $f(n) =[[w(n)]](n) + 1$.
+Sei jetzt $w\in\Gamma^*$. Mit $n=(W)_b$ gilt $w=w(n)$, dann haben wir $[[w]](n)\not=[[w]](n)+1=[[w(n)]](n)+1=f(n)$. 
+Die Funktion f ist also keine der Funktionen $[[w]]$, insbesondere wird sie von keinem der Algorithmen mit Beschreibung in P berechnet.
+
+## Loop-Berechenbarkeit
+Wir betrachten eine einfache Programmiersprache.
+- Die Programme haben Variablen, die mit natürlichen Zahlen belegt sind. Diesen Variablen dürfen arithmetische Ausdrücke (mit Konstanten, Variablen, Inkrementierungen und Dekrementierungen) zugewiesen werden.
+- Außerdem enthalten die Programme ein Schleifenkonstrukt.
+
+Syntaktische Komponenten für Loop-Programme
+- Variablen: $x_1, x_2, x_3 ,...$
+- Trennsymbole: $;$ und $:=$
+- Operatorsymbole: $+$,$\div$
+- Konstanten: 0 und 1
+- Schlüsselwörter: loop, do, end
+
+> Definition: Ein Loop-Programm ist von der Form
+> - $x_i := c, x_i := x_j + c, x_i := x_j \div c$ mit $c\in\{0, 1\}$ und $i, j$ (Wertzuweisung) oder
+> - $P_1 ; P_2$, wobei $P_1$ und $P_2$ Loop-Programme sind (sequentielle Komposition) oder
+> - loop $x_i$ do P end, wobei P ein Loop-Programm ist und i 1.
+
+Informelle Beschreibung der Semantik
+- Ein Loop-Programm, das eine k-stellige Funktion berechnen soll, startet mit den Parametern in den Variablen $x_1,...,x_k$. Alle anderen Variablen haben den Startwert 0. Das Ergebnis liegt bei Terminierung in $x_1$.
+- Interpretation der Wertzuweisungen:
+  - $x_i := c, x_i := x_j + c$, wie üblich
+  - $x_i := x_j \div c$, modifizierte Subtraktion: falls $c > x_j$, so ist das Resultat gleich 0, sonst $x_j-c$
+- Sequentielle Komposition $P_1; P_2:$ erst $P_1$, dann $P_2$ ausführen.
+- loop $x_i$ do P end: das Programm P wird so oft ausgeführt, wie die Variable $x_i$ zu Beginn angibt.
+
+> Definition: Die modifizierte Subtraktion $\div$ ist definiert durch $\div: \N^2 \rightarrow \N: (m,n)\rightarrow max(0,m-n)$
+
+> Definition: Für jedes Loop-Programm P, in dem keine Variable $x_i$ mit $i>k$ vorkommt, definieren wir zunächst eine Funktion $[[P]]_k:\N^k\rightarrow \N^k$ durch Induktion über den Aufbau von P 
+
+> Definition: Eine Funktion $f:\N^k\rightarrow\N$ (mit $k\geq 0$) heißt loop-berechenbar, falls es ein $l\geq k$ und ein Loop-Programm P, in dem höchstens die Variablen $\forall n_1,...,n_k\in\N:f(n_1,...,n_k)=\pi_1^l([[P]]_l(n_1,...,n_k,0,...,0))$.
+
+> Loop-Vermutung: Eine Funktion $\N^k\rightarrow \N$ mit $k \geq 0$ ist genau dann intuitiv berechenbar, wenn sie loop-berechenbar ist.
+
+Dies ist keine mathematische, sonderen eine erkenntnistheoretische Vermutung, denn der Begriff „intuitiv berechenbar“ ist nicht genau definiert. Natürlich ist jede loop-berechenbare Funktion auch intuitiv berechenbar. Folgende Argumente können mich davon überzeugen, daß die Loop-Vermutung falsch ist, d.h. daß es intuitiv berechenbare Funktionen gibt, die nicht loop-berechenbar sind:
+- (K) Gib eine konkrete Funktion an, überzeuge mich, daß sie intuitiv berechenbar ist, und beweise, daß sie nicht loop-berechenbar ist.
+- (A) Gib Abschlußeigenschaften an, überzeuge mich, daß die Klasse der intuitiv berechenbaren Funktionen sie erfüllt, und beweise, daß die Klasse der loop-berechenbaren Funktionen sie nicht erfüllt.
+
+Umgekehrt kann die Loop-Vermutung nur gestützt werden, wie z.B. physikalische Gesetze gestützt werden: Versuche, die Loop-Vermutung zu widerlegen, und scheitere dabei.Mit anderen Worten:
+- (K+) Beweise von vielen Funktionen, daß sie loop-berechenbar sind.
+- (A+) Beweise von vielen Abschlußeigenschaften, daß die Klasse der loop-berechenbaren Funktionen sie erfüllt.
+
+### (K+) viele Loop-berechenbare Funktionen
+Loop-Programme können gewisse Programmkonstrukte simulieren, die in der Syntax nicht enthalten sind.
+- Simulation von if $x_1 = 0$ then A end ($x_n$ sei neue Variable)
+- Simulation von if $x_1 \not= 0$ then A end ($x_n$ sei neue Variable)
+- Simulation von $x_i := x_j + x_k$ ($x_n$ sei neue Variable)
+- Simulation von $x_i := x_j \div x_k$ ($x_n$ sei neue Variable)
+- Simulation von $x_i := x_j * x_k$ ($x_n$ sei neue Variable)
+- Simulation von if $x_i\leq x_j$ then A end (x n sei neue Variable)
+- Simulation von $x_i := x_j \text{ div } x_k$ ($x_n$ ist neue Variable)
+
+### (A+) viele Abschlusseigenschaften
+Lemma: Sind $f:\N^k\rightarrow \N$ und $g_i:\N^l\rightarrow \N$ für alle $leq i \leq k$ loop-berechenbar, so auch die Funktion $f\circ (g_1,...,g_k):\N^l\rightarrow\N:\bar{n}=(n_1,...,n_l)\rightarrow f(g_1(\bar{n}), g_2(\bar{n}),...,g_k(\bar{n}))$.
+Die Abbildung $(f,g_1,g_2,...,g_k)\rightarrow f\circ(g_1,...,g_k)$ wird als Substitution bezeichnet. Das Lemma sagt also, daß die Klasse der loop-berechenbaren Funktionen unter der Substitution abgeschlossen ist.
+
+> Lemma: Ist die Funktion $f:\N^k\rightarrow\N$ mit $k\geq 1$ loop-berechenbar, so auch die Funktion $g:\N^k\rightarrow\N$ mit
+> $g(x_1,...,x_k)=\begin{cases}min\{x\leq x_1 | f(x,x_2,...,x_k)=0\} \text{ falls diese Menge nicht leer}\\ 0 \text{ sonst}\end{cases}$
+
+Die Abbildung $f\rightarrow g$ wird als beschränkter min-Operator bezeichnet. Das Lemma sagt also, daß die Klasse der loop-berechenbaren Funktionen unter dem beschränkten min-Operator abgeschlossen ist.
+
+> Definition: Seien $k\geq 0, \N^k\rightarrow \N$ und $h:\n^{k+2}$. Die Funktion $f:\N^{k+1}\rightarrow\N$ mit $f(0,n_2,...,n_{k+2})=g(n_2,...,n_{k+1})$ und $f(m+1, n_2,...,n_{k+1})=h(f(m,n_2,...,n_{k+1}),m,n_2,...,n_{k+1})$ ensteht aus g und h mittels Rekursion.
+
+Das bedeutet, daß die Rekursion immer terminiert und wohldefiniert ist. Sind g und h intuitiv berechenbar, so sicher auch f . Also sollte auch die Klasse der loop-berechenbaren Funktionen unter Rekursion abgeschlossen sein.
+
+> Lemma: Sind $k\geq 0,g:\N^k\rightarrow\N$ und $h:\N^{k+2}\rightarrow\N$ loop-berechenbar und geht $f:\N^{k+1}\rightarrow\N$ durch Rekursion aus g und h hervor, so ist auch f loop-berechenbar.
+
+> Hilberts Vermutung (1926): Eine Funktion $\N^k\rightarrow\N$ mit $k\geq 0$ ist genau dann intuitiv berechenbar, wenn sie primitiv rekursiv ist. 
+
+## Primitiv-rekursive Funktionen
+Loop-Programme sind vereinfachte imperative Programme und stehen für imperative Programmiersprachen, bei denen Programme als Folgen von Befehlen aufgefaßt werden.
+Parallel dazu gibt es jedoch auch funktionale Programme, deren Hauptbestandteil die rekursive Definition von Funktionen ist. Es gibt auch Berechnungsbegriffe, die sich eher an funktionalen Programmen orientieren. Zum Beispiel die hier behandelten primitiv rekursiven Funktionen.
+
+Definition: Die primitiv rekursiven Funktionen sind induktiv wie folgt definiert:
+- Alle konstanten Funktionen der Form $k_c:\N^0\rightarrow\N:()\rightarrow c$ (für ein festes $c\in\N$) sind primitiv rekursiv.
+- Alle Projektionen der Form $\pi_i^k:\N^k\rightarrow\N: (n_1,..., n_k)\rightarrow n_i$ (mit $1\geq i\geq k$) sind primitiv rekursiv.
+- Die Nachfolgerfunktion $s:\N\rightarrow\N: n\rightarrow n + 1$ ist primitiv rekursiv.
+- Wenn $f:\N^k\rightarrow\N$ und $g_11,...,g_k:\N^l\rightarrow\N$ (mit $k,l\geq 0$) primitiv rekursiv sind, dann ist auch die Funktion $f(g_1,..., g_k):\N^l\rightarrow\N$ primitiv rekursiv (Substitution).
+- Sind $g:\N^k\rightarrow\N$ und $h:\N^{k+2}\rightarrow\N$ primitiv rekursiv (mit $k\geq 0$) und entsteht $f:\N^{k+1}\rightarrow\N$ aus g und h mittels Rekursion, so ist auch f primitiv rekursiv (Rekursion).
+

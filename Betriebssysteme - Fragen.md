@@ -219,3 +219,177 @@ Fragen und Fragestellungen zum Verständnis zur Vorlesung
 ---
 > Was versteht man unter Interrupts auf Anwendungsebene und wie kann damit umgegangen werden?
 
+# Speichermanagement
+> Welche Eigenschaften sollte ein idealer Speicher haben?
+
+---
+> Warum gibt es stattdessen in der Praxis Speicher-Hierarchien?
+
+
+---
+> Charakterisieren Sie (grob) die bei Speicherhierarchien zum Einsatz kommenden Technologien und Speicherklassen.
+
+---
+> Was sollte ein Arbeitsspeicher können?
+
+---
+> Aus welchem Grund wurde die Relokation von Prozessen erforderlich – und was wird hierdurch erreicht?
+
+---
+> Welche Nachteile bringt die Relokation mit sich?
+
+---
+> Wie „funktioniert“ Relokation – technisch gesehen? 
+
+---
+> Welche Technik „steckt“ hinter dem Begriff „Swapping“? 
+
+
+---
+> Welche Probleme werden hiermit gelöst – welche nicht? 
+
+
+
+---
+> Welche neuen Probleme entstehen durch diese Technik (Swapping)?
+
+---
+> Welche Verfahren der Speicherverwaltung werden als Realspeicherverwaltung (im Gegensatz zu virtueller Speicherverwaltung) bezeichnet?
+
+---
+> Welches sind Grundidee und Zweck des virtuellen Speichers? 
+
+
+---
+> Wie wird virtueller Speicher implementiert? 
+
+
+---
+> Welche Rolle spielt dabei eine Memory Management Unit (MMU)? 
+
+
+---
+> Was versteht man unter „virtueller Speicher“ und „virtuelles Speichermanagement“? 
+
+---
+> Was versteht man ganz allgemein unter einem Adressraum? 
+
+---
+> Erklären Sie die Begriffe „Adressraum eines Prozesses“, „physischer Adressraum“ und „virtueller Adressraum“ in ausreichender Tiefe. 
+
+---
+> Welchem Zweck dient die genannte Abbildung $vm_p$? 
+
+
+---
+> Warum wird für jeden virtuellen Adressraum eine individuelle Abbildung benötigt?
+
+
+---
+> Aus welchem Grund gibt es unbenutzte bzw. undefinierte Adressbereiche? 
+
+
+---
+> Wieso realisiert vm p nur eine partielle Abbildung des virtuellen in den physischen Adressraum? 
+
+
+---
+> Durch welchen Effekt wird durch vm p die Isolation verschiedener virtueller Adressräume erreicht? 
+
+
+---
+> Warum kann es Ausnahmen von dieser Isolation geben – und was soll hierdurch ermöglicht werden? 
+
+
+---
+> Welche Aufgaben hat eine MMU? 
+
+
+---
+> Könnten die Aufgaben einer MMU auch ohne eine solche gelöst werden – und welche Nachteile hätte dies gegebenenfalls?
+
+---
+> Was versteht man jeweils unter „Seite“ (page) und Seitenrahmen (page frame) im Kontext der virtuellen Speicherverwaltung? 
+
+
+---
+> Welche Aufgaben hat die Seiten(abbildungs)tabelle? 
+
+---
+> Welche Struktur hat ein Seitentabelleneintrag? 
+
+---
+> Welche Problemfelder existieren bei der virtuellen Speicherverwaltung (VMM)?
+
+---
+> Welche Lösungsmöglichkeiten existieren für die Probleme 1 bis 3?
+
+---
+> Was ist unter einem Seitenfehler zu verstehen – und wie kommt ein solcher zustande? 
+
+---
+> Was ist ein Seitenfehler-Interrupt – und welchem Zweck dient er? 
+
+---
+> Welche Aufgaben lösen jeweils die Hardware bzw. die Software im Zusammenhang mit einem Seitenfehler-Interrupt?
+
+---
+> Was ist der Translation Look-aside Buffer und welche Funktion hat er? 
+
+---
+> Was ist bei der Verwaltung (Management) des TLB zu beachten? 
+
+---
+> Welche prinzipielle Frage stellt sich bei den Seitenaustausch-Algorithmen?
+
+---
+> Was versteht man unter der optimalen Seitenaustausch-Strategie – und warum wendet man diese aber nicht an?
+
+---
+> Worin besteht die Grundannahme bei der First-In-First-Out-Strategie und was ist von dieser zu halten? 
+
+---
+> Welche Vorteile besitzt sie trotzdem? 
+
+---
+> Wodurch verbessert die Second-Chance-Strategie die FIFO-Strategie?
+
+---
+> Welche Vor- und Nachteile besitzt die Second-Chance-Strategie? 
+
+---
+> Wie unterscheidet sich die Grundannahme der LRU-Strategie von derder Second-Chance-Strategie?
+
+---
+> Warum sind die Voraussetzungen zur Realisierung von LRU „teuer“ – und wie sehen tatsächliche technische Realisierungen aus? 
+
+---
+> Welche Komponenten eines Seitentabelleneintrags sind für die technischen Realisierungen von LRU erforderlich?
+
+---
+> Was versteht man unter dem Working Set („Arbeitsmenge“) eines Prozesses?
+
+---
+> Von welcher Grundannahme geht die Working-Set-Strategie aus – und welcher Typ von Seiten sind hier Auslagerungskandidaten? 
+
+---
+> Wie ist die Arbeitsmenge eines Prozesses definiert? 
+
+---
+> Welche Komponenten eines Seitentabelleneintrags sind zu einer technischen Realisierung der Working-Set-Strategie erforderlich? 
+
+---
+> Wie ist die Working-Set-Strategie einzuschätzen (Bewertung)? 
+
+---
+> Wie funktioniert die WSClock-Strategie?
+
+---
+> Welche (schon vorher bekannten) Ideen wurden für die WSClock verwendet? 
+
+---
+> Welche Probleme werden mittels Segmentierung gelöst?
+
+---
+> Wie funktioniert Segmentierung mit Paging – und wozu ist diese Verfahrensweise gut?
+

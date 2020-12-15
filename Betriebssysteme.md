@@ -1125,8 +1125,560 @@ Zusammenfassung Ereignismanagement/Botschaften
 
 ## Zusammenfassung
 IPC: Kommunikation und Synchronisation
-  - a) Semaphore und Hoare‘sche Monitore: blockierend, pessimistisch 
-  - b) transaktionaler Speicher: neu, optimistisch, transaktional
-  - c) Botschaften: kein gemeinsamer Speicher, Datentransport
-  - d) Fernaufrufe, Systemaufrufe: „Spezialisierungen“
-  - e) Ereignismanagement: Interrupts, Unterbrechungen auf Anwendungsebene
+  - Semaphore und Hoare‘sche Monitore: blockierend, pessimistisch 
+  - transaktionaler Speicher: neu, optimistisch, transaktional
+  - Botschaften: kein gemeinsamer Speicher, Datentransport
+  - Fernaufrufe, Systemaufrufe: „Spezialisierungen“
+  - Ereignismanagement: Interrupts, Unterbrechungen auf Anwendungsebene
+
+
+# Speichermanagement
+Ideale Speichermedien sind
+- beliebig schnell und
+- beliebig groß und
+- beliebig billig und
+- persistent (speichern Daten ohne andauernde Energiezufuhr)
+
+Reale Speichermedien sind
+- schnell, teuer, flüchtig oder 
+- langsam, preiswert, persistent oder
+- eine Vielzahl von Schattierungen dazwischen
+
+Fazit: Speicherhierarchie
+- Speichermanagement: Management dieser Speicherhierarchie
+
+## Speichertechnologien und -klassen
+- Prozessorregister, Cache-Speicher
+  - sehr schnell (Pikosek., 10 11 -10 12 Zugriffe/s)
+  - sehr teuer → klein (≈ KByte-MByte)
+  - flüchtig
+- Arbeitsspeicher
+  - schnell (Nanosekunden, ≈ 10 10 Zugriffe/s)
+  - weniger teuer → mittelgroß (≈ GByte)
+  - flüchtig
+- Flash-EEPROM (SSDs, USB-Sticks)
+  - langsam (Mikrosekunden, 10 8 Zugriffe/s)
+  - preiswert → groß (≈ GByte-TByte)
+  - persistent
+- Magnetplatten, optische Medien, Archivierungsbänder
+  - langsam (Mikro-/Millisekunden, 10 6 -10 8 Zgr./s)
+  - mittel bis sehr groß (≈ GByte-PByte)
+  - persistent
+
+### Was muss Arbeitsspeicher können?
+- Prozesse: Programmcode, statische Daten, dynamische Daten, Stack
+  - Struktur
+  - Typisierung
+- große Prozesse -> Größe
+- parallele, potentiell fehlerhafte/unfreundliche Prozesse -> Isolation
+
+### Layout des (physischen) Arbeitsspeichers: 50er Jahre
+Merkmale:
+- extrem einfaches Speichermanagement (fester Adressbereich für Anwendungsprogramm)
+- keine Hardware-Unterstützung
+- Betriebssystem: Bibliothek
+- Problem: zu jedem Zeitpunkt nur ein Programm
+
+### Layout des physischen Arbeitsspeichers: 60er Jahre
+Merkmale:
+- einfaches Speichermanagement (Freiliste, first-fit oder best-fit-Vergabe)
+- parallele Prozesse
+
+Bezahlt mit
+- Verletzbarkeit: Zugriff auf Speicherbereiche fremder Prozesse
+- Enge: weniger Raum für einzelne Prozesse
+- Komplexität:
+  - Wachsen von Prozessen problematisch
+  - keine feste Startadresse; Erzeugung von
+    - Codeadressen (Sprünge, Prozeduraufrufe)
+    - Datenadressen (Variablen
+  
+-> Relokation
+
+## Relokation
+Ziele
+1. Platzieren eines Prozesses an beliebigen Speicheradressen
+2. Verschieben zwecks Vergrößerung/Speicherbereinigung
+
+Idee
+1. sämtliche Speicheradressen in einem Programm werden
+  - vom Compiler/Linker relativ zur Speicheradresse „0“ berechnet
+  - als „Relativadressen“ markiert
+2. beim Anlegen/Verschieben eines Prozesses werden markierte Adressen aktualisiert (= Relokation):
+    `tatsächliche Adresse = Relativadresse + Prozessanfangsadresse`
+
+Realisierung
+- per Software → durch Betriebssystem beim Erzeugen/Verschieben
+- per Hardware → durch Offset-Register zur Laufzeit: „my first MMU“
+
+Erreicht
+1. Anlegen eines Prozesses an beliebiger Adresse
+2. Verschiebbarkeit
+( gegen Enge und Verletzbarkeit hilft Relokation nicht)
+
+Bezahlt mit
+- entweder: verteuertem Programmstart (wenn Startadresse bekannt):
+  - Aktualisierung der Relativadressen per Software (Betriebssystem-Prozessmanagement)
+- oder: höheren Hardware- und Laufzeitkosten:
+  - mini-MMU mit Offset-Register
+  - Adressumrechnung bei jedem Speicherzugriff
+
+## Swapping
+Ziel: Beseitigung der Enge 
+- Schaffen von freiem Arbeitsspeicher durch Auslagerung von Prozessen
+- Erstes Auftauchen einer Speicherhierarchie
+
+Erreicht: mehr Platz (gegen Verletzbarkeit hilft Relokation nicht)
+
+Bezahlt mit:
+1. Prozesswechsel werden teurer
+    - Aus/Einlagerungszeiten
+    - Relokation bei Wiedereinlagerung an neue Adresse
+2. fortschreitende Zerstückelung des Arbeitsspeichers
+    - Verluste durch Verschnitt
+3. der pro Prozess adressierbare Speicherbereich wird durch Swapping nicht größer (limitiert durch physische Arbeitsspeichergröße)
+    - virtueller Speicher
+
+## Virtueller Speicher
+Idee: Jeder Prozess erhält einen privaten, sehr großen Arbeitsspeicher
+
+Damit
+- besitzt jeder Prozess einen riesigen Vorrat an Speicheradressen
+- bei $2^{Adressenlänge}$ = Anzahl Speicheradressen gilt: sämtliche von einem Prozess erzeugbaren Speicheradressen (sein Adressraum)
+  - gehören per Definition: zu seinem eigenen Arbeitsspeicher
+  - dadurch: keine Möglichkeit des Zugriffs auf Arbeitsspeicher anderer Prozesse
+- ist keine Relokation mehr notwendig
+
+Problem: so viel Speicher können wir physisch gar nicht bauen (es gibt nicht einmal $2^64$ Atome im Sonnensystem!!)
+Lösung:
+- Betriebssysteme lügen (vermitteln Prozessen eine Illusion)
+- virtuelle Adressräume
+
+### Virtuelles Speichermanagement (VMM)
+ist die Realisierung dieser Idee durch
+1. Abstraktionen physischen Arbeitsspeichers:
+    - private virtuelle Adressräume
+2. Abbildungen $vm_p$:
+    - virtueller Adressraum → physischer Adressraum
+3. MMUs:
+    - Hardware, die diese Abbildungen effizient implementiert
+
+Ausgangsidee: Jeder Prozess p besitzt einen privaten, großen virtuellen Adressraum $VA_p$ (z.B. 2 64 adressierbare Speicherzellen). 
+Damit 
+1. ist es nicht mehr eng
+2. können Prozesse sich gegenseitig nicht mehr verletzen
+
+### Begriffe
+> Adressraum: Ein Adressraum ist eine (endliche) Menge von Adressen
+> - Menge aller Postadressen einer Stadt
+> - Menge aller IP-Adressen
+> - die natürlichen Zahlen 0 ... 2 64 -1
+
+> Adressraum eines Prozesses: Der Adressraum eines Prozesses (im Kontext des VMMs) ist die Menge aller ihm zur Verfügung stehender Arbeitsspeicheradressen
+
+> physischer Adressraum: Ein physischer Adressraum (PA) ist die Menge aller Adressen eines physischen (realen) Speichers
+
+> virtueller Adressraum: Ein virtueller Adressraum (VA) ist die Menge aller Adressen eines virtuellen Speichers; im Allgemeinen gilt: |VA|>>|PA|
+
+> virtueller Speicher: ist eine Abstraktion physischen Speichers zwecks Vortäuschung großer physischer Adressräume
+
+> virtuelles Speichermanagement (besser: Management virtueller Speicher): befasst sich mit der Abbildung virtueller auf physische Adressräume
+
+### Abbildung $vm_p$
+Realisierung: Jeder virtuelle Adressraum $VA_p$ wird mittels einer individuellen Abbildung $vm_p: VA_p \rightarrow PA$ auf den physischen Adressraum PA abgebildet (siehe: „Speicherlayout“). 
+
+Eigenschaften der Abbildung $vm_p$
+1. Definitionsbereich
+    - $VA_p$ sehr groß
+    - $\exists$ unbenutzte/undefinierte Adressbereiche
+    - $vm_p$ partiell
+2. Realisierung
+    - $|VA_p | >> |PA|$
+    - Abwesenheit (Seitenfehler, s.u.)
+    - $vm_p$ nicht zu jedem Zeitpunkt vollständig gültig
+3. Isolation
+    - Adressen verschiedener virtueller Adressräume werden nie zum selben Zeitpunkt auf dieselbe Adresse des physischen Adressraums abgebildet
+
+Aufgaben des virtuellen Memory Management (VMM): Realisierung der Abbildung $vm_{pi}: VA_{pi} \rightarrow PA$ einschließlich
+- Definitionsbereich: $vm_{pi} partiell
+- Anwesenheitskontrolle: $vm_{pi} nicht immer gültig
+- Isolation und Kommunikation: Injektivität
+- Zugriffsschutz: lesen/schreiben/ausführen
+
+... bei jedem einzelnen Speicherzugriff!
+
+Effizienz
+- massive Unterstützung durch Hardware (MMU)
+- Mengenreduktion: sowohl $VA_{pi}\rightarrow PA$ als auch die Definition von Zugriffsrechten
+  - erfolgen nicht für jede virtuelle Adresse individuell
+  - sondern in größeren Einheiten („Seiten“); typische Größe 4 oder 8 KByte
+
+### Memory Management Units (MMUs)
+Integration in die Hardware-Architektur im Zugriffspfad: Prozessor (virtuelle Adressen) → Speicher (physische Adressen)
+
+Abbildung $vm_p: VA_p\rightarrow PA$ in der MMU
+1. Aufteilung jedes virtuellen Prozessadressraums in Seiten gleicher Größe (typisch 4 oder 8 KByte)
+2. Aufteilung des physischen Adressraums in Seitenrahmen gleicher Größe
+3. Seite eines virtuellen Prozessadressraums mit Seitenrahmen des physischen Adressraums assoziieren („Fliesen legen“): die Seiten(abbildungs)tabelle
+   
+$\rightarrow$ Realisierung der Abbildung $vm_p: VA_p\rightarrow PA$ seitenweise
+
+### Seitenabbildungstabellen
+Beispiel (mit kleinen Zahlen)
+- Seitengröße: 2 KByte
+- Größe des VA: 2^14 =16 KByte (→ 8 Seiten, virtuelle Adressen haben 14 Bit)
+- Größe des PA: 2^13 =8 KByte (→ 4 Seitenrahmen, phys. Adressen haben 13 Bit )
+
+Prinzipieller Aufbau eines Seitentabelleneintrags (davon gibt es genau einen je Seite eines virtuellen Adressraums):
+`| Rahmennummer im Arbeitsspeicher (PA) | anwesend | benutzt | verändert | Schutz | Caching |`
+
+Seitenattribute
+1. anwesend: Indikator, ob Seite im Arbeitsspeicher liegt („present“-Bit)
+2. benutzt: Indikator, ob auf die Seite zugegriffen wurde („used/referenced“- Bit )
+3. verändert: Indikator, ob Seite „schmutzig“ ist („dirty/ modified “-Bit)
+4. Schutz: erlaubte Zugriffsart je Privilegierungsebene („access control list“)
+5. Caching: Indikator, ob Inhalt der Seite ge“cached“ werden darf
+
+Von MMU und BS gemeinsam genutzte Datenstruktur: HW/SW Schnittstelle
+- von MMU bei jedem Speicherzugriff genutzt zur
+  - Prüfung auf Präsenz der die Zugriffsadresse enthaltenden Seite
+  - Prüfung der Rechte des Zugreifers (Privilegierungsebene und Zugriffsart vs. Schutz)
+  - Umrechnung der virtuellen in die physische Adresse
+- vom BS verändert
+  - bei jedem Adressraumwechsel (Prozesswechsel; Grundlage: Adressraum-Beschreibung im Prozessdeskriptor)
+  - beim Einlagern/Auslagern einer Seite (present-Bit, phys. (Seitenrahmen-)Adresse)
+  - bei Rechteänderungen
+- von der MMU verändert: zur Lieferung statistischer Informationen
+  - bei einem Zugriff auf eine Seite (used-Bit)
+  - bei einem Schreibzugriff auf eine Seite (dirty-Bit)
+- vom BS genutzt: zum effizienten Speichermanagement
+  - z.B. zum Finden selten genutzter Seiten bei Arbeitsspeicher-Engpässen (used-Bit)
+  - z.B. müssen nur veränderte Seiten bei Freigabe zurückgeschrieben werden (dirty-Bit)
+
+Problem: VMM „is not for free“
+1. Speicher: Seitentabellen können sehr sehr groß werden
+2. Performanz: je Speicherzugriff (mehrere) Zugriff(e) auf Seitentabelle
+3. algorithmische Komplexität: Auftreten von Seitenfehlern (Zugriff auf abwesende Seiten) bei vollständig belegtem physischen Arbeitsspeicher:
+      1. Untersuchung: Welche Seite soll verdrängt werden?
+      2. Ausführen: Seitenaustauschalgorithmen
+      3. viele Prozesse können gleichzeitig aktiv sein: jederzeit kann ein Seitenfehler („Page Fault“) auftreten
+
+Lösungen
+1. mehrstufige Seitentabellen: basieren auf Beobachtung, dass Adressräume häufig nur dünn besetzt sind
+2. alternative Datenstrukturen
+      1. gesehen: mehrstufige, baumstrukturierte Seitentabellen
+          - grundsätzlich beliebige Baumtiefe
+          - können selbst dem Paging unterliegen (belegen dann zwar Adressraum, jedoch physischen Speicher nur dann, wenn sie tatsächlich gebraucht werden)
+          - Nachteil: Performanz; mehrere Tabellenzugriffe zur Umrechnung einer virtuellen Adresse erforderlich, evtl. dabei erneut Seitenfehler
+      2. invertierte Seitentabellen (1 Eintrag je physischer Seite)
+          - Nachteil: virtuelle Adresse kann nicht mehr als Index zum Finden des Tabelleneintrags verwendet werden → aufwendige Suchoperationen
+      3. gehashte Seitentabellen
+      4. guarded page tables
+3. Seitentabelle in schnellem Register-Array (innerhalb der MMU)
+    - schnell (keine Speicherzugriffe für Adressumrechnung)
+    - teuer in der Realisierung (Hardware-Kosten)
+    - teuer bei Prozess-(Adressraum-)Wechsel (Umladen)
+    - sinnvoll daher nur für relativ kleine Tabellen
+4. Seitentabellen im Arbeitsspeicher, Ort in Adressregister
+    - schnelle Prozesswechsel (keine Rekonfigurierung der MMU, lediglich Aktualisieren des Adressregisters)
+    - skaliert für große Seitentabellen
+    - hohe Adressumrechnungskosten (Zugriff(e) auf Arbeitsspeicher)
+5. Seitentabellen im Arbeitsspeicher, Ort in Adressregister, plus Caching von Seitentabelleneinträgen
+    - „TLBs“ (Translation Look-aside Buffer)
+    - Aufbewahren benutzter Tabelleneinträge
+    - basiert auf Lokalität von Speicherzugriffen
+    - reduziert Adressumrechnungskosten speichergehaltener Seitentabellen
+
+
+
+Translation Look-aside Buffer (TLB)
+- schneller Cache-Speicher für Seitentabelleneinträge
+- lokalisiert in der MMU
+- Aufbau eines Cacheeintrags identisch dem eines Seitentabelleneintrags
+- Cache-Management:
+    1. Invalidierung bei Adressraumwechsel erforderlich!
+        - Sekundärkosten eines Adressraumwechsels durch „kalten“ TLB
+    2. cache-refill bei TLB-miss aus Seitentabelle
+        1. durch MMU-Hardware („Page Table Walker“, automatisch)
+        2. durch Betriebssystem (nach Aufforderung durch MMU (Interrupt))
+
+Ablauf einer Seitenfehlerbehandlung
+1. Erkennung durch MMU (present-Bit in Seitentabelleneintrag)
+2. Anfertigungung einer Seitenfehlerbeschreibung
+3. Auslösung eines Seitenfehler-Interrupts; hierdurch:
+      - a) Unterbrechung der auslösenden Instruktion (mittendrin!)
+      - b) Aufruf der Seitenfehlerbehandlung (ISR des VMM); dort:
+        - Suche eines freien Seitenrahmens
+          - evtl. explizit freimachen (auslagern);
+          - Auswahl: strategische Entscheidung durch Seitenaustauschalgorithmus
+        - Einlagern der fehlenden Seite vom Hintergrundspeicher
+          - z.B. von lokaler Festplatte
+          - z.B. über LAN von Server
+        - Aktualisierung des Seitentabelleneintrags (physische Adresse, present-Bit)
+4. Fortsetzung des unterbrochenen Prozesses
+
+### Seitenaustausch-Algorithmen
+Problem: Seitenfehler bei vollständig belegtem physischen Arbeitsspeicher
+
+Strategie: Welche Seite wird verdrängt?
+
+Optimale Strategie: Auslagerung derjenigen Arbeitsspeicherseite, deren ...
+1. nächster Gebrauch am weitesten in der Zukunft liegt (dazu müsste man Hellseher sein)
+2. Auslagerung nichts kostet, dazu müsste man wissen, ob eine Seite seit ihrer Einlagerung verändert wurde
+ 
+im Folgenden: einige Algorithmen, die sich diesem Optimum annähern
+1. First-In, First-Out (FIFO)
+2. Second-Chance
+3. Least Recently Used (LRU)
+4. Working Set / WSClock
+
+#### First-In , First-Out (FIFO)
+- Annahme: Je länger eine Seite eingelagert ist, desto weniger wahrscheinlich ist ihre zukünftige Nutzung
+- Strategie: Auslagerung der ältesten Seite
+- Realisierung
+  - Einlagerungsreihenfolge merken, z.B. durch FIFO-organisierte Seitenliste
+  - Auslagerung derjenigen Seite, die am „out“-Ende der Liste steht
+- Wertung
+  - einfacher Algorithmus
+  - effizient implementierbar (Komplexität: Listenoperationen in O(1))
+- Beobachtung: soeben ausgelagerte Seiten werden oft wieder benötigt
+  - Annahme stimmt oft nicht (entfernt z.B. alte, aber oft benutzte Seiten)
+
+#### Second Chance (Variante des FIFO-Algorithmus)
+- Annahme
+  -statt: Je länger eine Seite eingelagert ist, desto weniger wahrscheinlich ist ihre zukünftige Nutzung
+  - nun: Je länger eine Seite nicht mehr benutzt wurde, desto weniger wahrscheinlich ist ihre zukünftige Nutzung
+- Strategie
+  - Eine FIFO-gealterte Seite bekommt eine 2. Chance, falls die Seite während des Alterns benutzt wurde (used-Bit der MMU)
+  - Verjüngungskur:
+    1. Umsortieren der Seite ans junge Ende der FIFO-Liste,
+    2. Löschen des used-Bits
+- Wertung
+  - einfacher Algorithmus
+  - effizient implementierbar
+    - used-Bit der MMU
+    - Listenoperationen in O(1)
+  - bessere Ergebnisse im Vergleich zu FIFO → die „Kur“ wirkt
+    - zutreffendere Seitenmerkmale berücksichtigt: Zeitpunkt der letzten Nutzung
+  - aber immer noch sehr grobgranular: 16 GByte physischer Adressraum u. 4 KByte Seitengröße: ~4.000.000 Seiten im physischen Adressraum -> Prüfintervall ~ 4.000.000 Seitenfehler
+
+#### Least Recently Used (LRU)
+- Annahme: Je länger eine Seite nicht mehr benutzt wurde, desto weniger wahrscheinlich ist ihre zukünftige Nutzung (also dieselbe wie 2 nd Chance)
+- Strategie: Feinere Granularität: genauere Nutzungszeitpunkte je Seite
+- Notwendiges Wissen: ist teuer
+  1. Speicher: Nutzungszeitpunkte für jede Seite des Prozess-Adressraums (einige Millionen)
+  2. Laufzeit: Aktualisierung bei jedem Speicherzugriff (einige Milliarden/Sekunde)
+- Griff in die Trickkiste
+  - Hardware-Unterstützung speziell für diesen Algorithmus (MMU)
+    - eine logische Uhr
+      - tickt bei jeder ausgeführten Prozessorinstruktion
+      - wird bei jedem Arbeitsspeicherzugriff in den Seitentabelleneintrag der betroffenen Seite eingetragen
+    - die am längsten nicht mehr benutzte Seite hat dann den ältesten Uhrenstand
+  - Software-Realisierungen: Annäherung des Hardware-Tickers
+
+Variante 1
+- jeder Seitentabelleneintrag erhält Zählerfeld
+- periodisch (nicht bei jedem Zugriff, wäre zu teuer) wird für residente Seiten
+    1. used-Bit zu diesem Zähler addiert
+    2. used-Bit anschließend gelöscht
+- Ergebnis
+  - recht effizient implementierbar
+  - Zählerwert: nur Annäherung der Nutzungshäufigkeit
+  - daher: suboptimale Ergebnisse
+
+Variante 2
+- jeder Seitentabelleneintrag erhält Zählerfeld (wie eben)
+- periodisch wird
+    1. der Zähler aber gealtert: nach rechts verschoben (= Division durch 2)
+    2. das used-Bit jetzt in das höchstwertige Bit des Zählers geschrieben
+    3. das used-Bit anschließend gelöscht
+- Ergebnis
+  - recht effizient implementierbar
+  - Zähler: enthält jetzt einen Alterungsfaktor
+  - Annäherung an Zeitpunkt der letzten Nutzung
+  - bessere Annäherung an LRU-Grundannahme
+  - bessere Ergebnisse
+
+#### Working Set
+- Annahmen
+    1. Arbeitsspeicher-Zugriffsmuster von Prozessen besitzen „hot spots“: Bereiche, innerhalb derer fast sämtliche Zugriffe stattfinden
+    2. hot spots: bewegen sich während des Prozessablaufs relativ langsam durch den virtuellen Adressraum
+    3. die zu den hot spots eines Prozesses gehörenden Seiten nennt man seine Arbeitsmenge (Working Set) 
+- Idee
+    1. Zugriffe auf Seiten der Arbeitsmenge: sind erheblich wahrscheinlicher als auf nicht zur Arbeitsmenge gehörende Seiten
+    2. Auslagerungskandidaten: sind Seiten, die zu keiner der Arbeitsmengen irgendeines Prozesses gehören
+
+Bestimmung der Arbeitsmenge eines Prozesses
+1. Wann gehört eine Seite dazu? Beobachtung der Speicherzugriffe
+2. Wann tut sie es nicht mehr? Beobachtungs-Zeitfenster der Größe
+
+> Definition: Die Arbeitsmenge $W_p (t, \tau)$ eines Prozesses p zum Zeitpunkt t ist die Menge der virtuellen Seiten, die p innerhalb des Intervalls $[t-\tau , t]$ benutzt hat.
+
+Quantifizierung von $\tau$:
+- asymptotisches Verhalten
+- für $\tau$ existieren sinnvolle Schranken
+
+Beobachtung von Arbeitsspeicherzugriffen: ist teuer
+- Speicher: Zeitpunkt der letzten Nutzung für jede Seite eines VA (Linux: Billionen/VA)
+- Zeit: Aktualisierung bei jedem Speicherzugriff (Milliarden/Sekunde)
+- also auch hier gesucht: gute Annäherung (vgl. LRU)
+
+Schema der Implementierung
+- wir brauchen
+    1. used-Bit der MMU
+    2. virtuelle Laufzeit der Prozesse
+- das VMM
+    1. stempelt benutzte Seiten (used-Bit) periodisch mit virtueller Laufzeit des Eigentümers (prozessindividuell)
+    2. löscht deren used-Bits
+
+- Wir kennen damit (ungefähr) die Zeitpunkte der letzten Nutzung aller Seiten aller Prozesse (ausgedrückt in virtueller Prozesslaufzeit).
+- Wir können damit ausrechnen: Die Arbeitsmengen aller Prozesse
+- Wir nutzen diese nun zur Bestimmung von Auslagerungskandidaten
+- Wann? → Genau dann wenn
+    1. ein Seitenfehler auftritt und
+    2. kein Seitenrahmen (im Arbeitsspeicher) frei ist
+- Wie?
+    1. Bestimmung der Arbeitsmenge $W_p$ eines Prozesses p zum Zeitpunkt t mit
+        - $z_s$ als Zeitstempel einer Seite $s\in VA_p$
+        - $v_p(t)$ als virtueller Prozesszeit von p zum Zeitpunkt t
+        - $\tau$ als Beobachtungsintervall gilt:
+        - $s\in W_p(t,\tau)\leftrightarrow z_s\geq v_p(t)-\tau$
+    2. Bestimmung der Auslagerungskandidaten
+        - Seite s ist Auslagerungskandidat zum Zeitpunkt t $\leftrightarrow$ s gehört zu keiner Arbeitsmenge, d.h.
+        - $s\not\in\bigcup_{p\in P} W_p(t,\tau)$
+        - $\exists$ kein Kandidat: Auswahl gemäß LRU-Regel
+        - $\exists$ mehrere Kandidaten: Auslagerungskosten berücksichtigen (dirty-Bit)
+
+Algorithmus zur Kandidatenbestimmung:
+```cpp
+for p in P
+  W_p ← null;
+  for s in PA
+    if s in VA_p OR z_s >= v_p(t)-tau then W_p ← W_p + {s};
+kandSet ← PA-U + W_p ;
+```
+
+Bewertung:
+- bei zutreffender Grundannahme (hot spots): sehr gute Ergebnisse
+- Effizienz: Arbeitsmenge kann schon vor einer Prozessreaktivierung eingelagert werden („prepaging“)
+  - schneller Prozessanlauf
+- Kosten
+  - periodisch:
+      1. Löschen der used-Bits sämtlicher PA-Seiten
+      2. Stempeln (z.B. 16GB → 2 21 Seiten, verteilt auf die Seitentabellen der Prozesse)
+  - je Suche eines Auslagerungskandidaten
+    - Bestimmung sämtlicher Working Sets: $O(|P|*|PA|)$
+    - Bestimmung der Auslagerungskandidaten: $PA- U_{p\in P} W_p$
+
+2 Methoden zur Kostenreduzierung
+1. Trennung
+    - Seitentabellen der Prozesse und
+    - Seitentabelle zur Buchführung der Zeitstempel (nur auf Seiten im PA kann überhaupt zugegriffen werden)
+    - Reduzierung der Tabellenzugriffe bei Stempeln und W p –Bildung
+2. Nutzung von Informationen der letzten Suche (soo viel hat sich seitdem nicht geändert)
+    - Reduzierung der Suchoperationsanzahl
+- WSClock , der heute wohl meistgebrauchte Paging-Algorithmus
+
+#### WSClock
+Umsetzung:
+- Zeitstempel-Datenstruktur: ringartige Liste der Seiten im physischen Adressraum („Uhren-Zifferblatt“)
+- Kandidatensuche: je Seite Zugehörigkeit zum Working Set prüfen
+- Zustandsinformationen: Ende der letzten Suche (Uhrzeiger)
+- Stopp der Suche: sobald eine Seite $s\not\in U_{p\in P} W_p$ gefunden wird
+
+- Beobachtung: hot spots → individuelle Arbeitsmenge je Prozess
+- Idee: Verdrängung von nicht zu einer Arbeitsmenge gehörenden Seiten
+- Realisierung: Arbeitsmengenbildung über Zeitstempel der letzten Nutzung
+
+effizient implementiert durch
+1. Zeitstempel virtueller Prozesslaufzeit in den Seitentabellen (Hardware)
+2. periodische Inspektion des used-Bits (vgl. LRU)
+3. Nutzung vorausgegangener Scan-Ergebnisse durch zifferblattartige Datenstruktur der Seiten im physischen Adressraum
+
+### Zusammenfassung
+- Ziele:
+   1. großer Arbeitsspeicher  virtuelle Adressräume
+   2. Isolation von Prozessen  private Adressräume
+- Methoden und Techniken
+  - Abbildung vm p : VA p → PA
+  - effizient implementiert durch MMU: Seitentabellen
+    1. Abbildung: $vm_p: VA_p\rightarrow PA$
+    2. Zugriffsüberwachung: Rechte, Anwesenheit
+    3. Statistik: used, dirty
+- Problembereiche
+  1. sehr große Seitentabellen/Adressräume: mehrstufige (/invertierte/gehashte) Seitentabellen
+  2. Zugriffszeit auf Seitentabelle: TLBs
+  3. $|VA_p| >> |PA|$: Paging, Seitenaustauschalgorithmen
+
+## Segmentierung
+Das Problem: Arbeitsspeicher aus Sicht eines Prozesses -> strukturiert, typisiert
+
+Probleme des Speichermanagements der Compiler und Linker
+- Bibliotheken
+  - a) dynamisch gebunden: Adressen (Code, Daten) zur Übersetzungszeit unbekannt
+  - b) gemeinsame Nutzung: Relokation der Adressen zur Nutzungszeit nicht möglich
+- Speichertypen
+  - vom Compiler organisierte statische Datensegmente (Programmvariablen)
+  - vom Compiler organisierte dynamische Datensegmente (Stacks)
+  - vom Prozess zur Laufzeit organisierte dynamische Datensegmente (Heaps) („new“: malloc, shared segments)
+
+Dies alles in einem eindimensionalen, linearen Adressraum
+
+Strukturierung des Arbeitsspeichers → Zweidimensionales Adressraum-Layout
+- n Segmente (z.B.16384 bei Intel Pentium Architektur)
+- je Segment eigener linearer Adressraum, z.B. Adressen 0..2 32 -1
+- je Segment individuelle Schutzmöglichkeiten, z.B. rw oder x
+
+Aufbau einer Arbeitsspeicheradresse eines Programms (erzeugt vom Compiler/Linker): 2-dimensional
+
+Gewinn
+1. typisierte Segmente (Code, Daten, Stack) mit dediziertem Zugriffsschutz
+     - Robustheit, Sicherheit
+2. je Segment beginnen Adressen bei 0
+    - komfortabel für Compiler/Linker, gemeinsame Nutzung (Bibliotheken, IPC)
+3. viele Segmente
+    - Organisierbarkeit; Shared Libraries, DLLs
+
+## VMM- Abstraktionen in der Praxis
+Wir kennen nun die Abstraktionen des VMMs zum Umgang mit physischem Speicher:
+1. private Adressräume
+     - schaffen Illusion individuellen Arbeitsspeichers je Prozess
+2. virtuelle Adressräume
+     - schaffen Illusion beliebig großen Arbeitsspeichers
+3. Segmente
+    - schaffen Abstraktion typisierten 2-dimensionalen Arbeitsspeichers
+4. Schutzmechanismen auf Seiten- und Segmentebene
+
+Nutzung von Sicherheits- und Robustheitseigenschaften
+- Standard: Isolation
+  1. Anwendungsprozesse untereinander
+  2. Anwendungs- und Systemprozesse
+
+## Zusammenfassung
+1. viele Prozesse
+    - Relokation, Swapping
+2. Prozess-Adressraum >> physischer Adressraum
+    - virtueller Speicher
+3. Isolation von Anwendungsprozessen
+    - private Adressräume
+4. strukturierter und typisierter 2D-Arbeitsspeicher
+    - Segmentierung
+5. differenzierter Zugriffsschutz auf Segmente und Seiten
+    - schützt Prozesse vor eigenen Fehlern
+    - schützt Betriebsystem vor Anwendungsprozessen
+6. effiziente Realisierungen:
+    - Hardware: MMUs
+
+Adressraum-Layout beeinflusst massiv
+1. Sicherheitseigenschaften
+2. Robustheitseigenschaften
+3. Korrektheitseigenschaften
+4. Performanzeigenschaften
+
+Architekturprinzipien
+1. monolithische Betriebssystem-Architekturen
+    - großer, monolithischer Betriebssystem-Adressraum
+    - aus Performanzgründen oft in private Adressräume der Anwendungsprozesse eingeblendet (s. Linux-Beispiel)
+2. mikrokernbasierte Architekturen
+    - feingranulare Adressraum-Isolation, auch zwischen Betriebssystem-Komponenten
+

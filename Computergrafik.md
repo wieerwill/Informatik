@@ -1430,3 +1430,182 @@ Alpha-Blending-Verfahren:
   - Zuerst: Darstellung aller opaken Objekte ($\alpha$ = 1) nach dem Z-Buffering (reihenfolgeunabhängig)
   - Dann Sortieren aller semitransparenten Polygone nach der Tiefe und Zeichnen nach dem Painters-Algorithmus unter Berücksichtigung des Z-Buffers mittels Alpha-Blending!
   - Restfehler: sich zyklisch überlappende oder sich durchdringende semi-transparente Flächen → exakte Behandlung durch die vorn beschriebenen Maßnahmen (Unterteilung der Polygone notwendig!)
+
+# Globale Beleuchtung
+- BRDF: physikbasiertes, lokales Reflektionsmodell (Lichtquelle auf Material) → Funktion von Einfalls-, Betrachterwinkel, Wellenlänge (bzw. -breiche)
+- Rendergleichung (Kajiya) = BRDF, Integral über alle Lichtquellen (bzw. Hemisphäre)
+- Approximation durch lokales Phong-Beleuchtungsmodell → für "einfache" Materialien und Lichtquellen "korrekt genug"
+- direkte (lokale) Schattierungsverfahren (Flat-, Gouraud- und Phong-Shading)
+- Was noch fehlt: Interreflektionen zwischen Objekten...
+  - globale Beleuchtung, d.h. jede Fläche kann als Lichtquelle dienen
+
+## Ray-Tracing
+einfaches Ray-Tracing: Strahlenverfolgung, nicht rekursiv
+- Strahlen vom Augpunkt (Ursprung des Kamerakoordinatensystems) durch jedes Pixel des Rasters senden → keine Löcher
+- Schnittpunktberechnung mit allen Objekten → Schnittpunkt mit dem größtem z-Wert stammt vom sichtbaren Objekt
+- Strahlverfolgung (Anwendung des BRDF-Reziprozitätsprinzips) und Aufsummierung der (Lichtquellen-)Anteile aufgrund von material- und geometrieabhängigen Parametern (ggf. neben Relflektion auch Brechung) → Ergebnis: Helligkeits-/Farbwert pro Pixel
+- Bestimmung der diffusen und spekularen Lichtreflexion nach dem Phong-Beleuchtungsmodell
+- Bis hier nur einfache, lokale Beleuchtung (keine Spiegelung, Schatten, indirekte Beleuchtung)! → Vorzüge des RT kommen erst bei rekursivem Raytracing zum Tragen!
+
+
+### Rekursiver Ansatz
+- Berechnung von Sekundärstrahlen am Auftreffpunkt (Reflexions- und Schattenfühler)
+- Annäherung der Interreflektionen (mehrfache Reflexion zwischen den Objekten) durch ideale Spiegelung, d.h. Spiegelung des primären Strahls an $\bar{n}$ im Auftreffpunkt und Erzeugung des sekundären Strahls
+- beim Auftreffen des Strahls auf ein weiteres Objekt B Berechnung der diffusen und spekularen Reflexion der jeweiligen Lichtquelle (Schattenfühler, Phong-Modell) sowie Erzeugung eines weiteren Strahls durch ideale Spiegelung
+- Addition der Sekundärstrahlen an Objekt B zum Farbwert des Pixel am Objekt A (Anteil bei jeder weiteren Rekursion meistens fallend, da reflektierter Anteil bei jeder Reflexion abgeschwächt wird) → Rekursion kann abgebrochen werden, wenn Beitrag vernachlässigbar!
+
+
+### Brechungseffekte
+Transparenz unter Berücksichtigung der Brechung beim Ray-Tracing: Richtung des gebrochenen Strahls berechnet sich aus dem Einfallswinkel zum Normalenvektor sowie den material- und wellenlängenabhängen Brechungsindices.
+$$\eta_{e\lambda}*sin(\theta_e) = \eta_{t\lambda}*sin(\theta_t)$$
+Beispiel Luft-Glas: $\eta_{Luft, rot}*sin(\theta_{Luft})=\eta_{Glas,rot}*sin(\theta_{Glas}) \Rightarrow 1.0*sin(30°)=1.5*sin(\theta_{Glas})\rightarrow \theta_{Glas} \approx arcsin(\frac{sin(30°)}{1.5})\approx 20°$
+
+![Brechungseffekt; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Brechungseffekt.png)
+Die Farbe im betrachteten Punkt wird nicht durch die Farbe von Hintergrundobjekt B1 (wie im Fall nichtbrechender Transparenz) sondern durch die Farbe von B2 beeinflusst!
+
+Berechnung des Einheitsvektors $\vec{V}_t(\vec{V}_e,n,\theta_t)$ in Richtung der Brechung:
+- An Grenzflächen mit unterschiedlichen Brechungsindizes tritt neben der Transparenz ($\vec{V}_t$) auch Reflexion (Komponente mit der Richtung $\vec{V}_r$) auf.
+- $\vec{M}$ ist ein Einheitsvektor (Länge=1) mit der Richtung von $\vec{n}*\cos(\theta_e)-\vec{V}_e$ und 
+- es gilt: $\vec{M}*sin(\theta_e)=\vec{n}*\cos(\theta_e)-\vec{V}_e \rightarrow \vec{M}=\frac{\vec{n}*\cos(\theta_e)-\vec{V}_e}{\sin(\theta_e)}$
+- Effekte an transparentem Material:
+  - Simulation brechungsbedingter Verzerrungen wird so möglich (z.B. bei optischen Linsen, Wasser).
+  - Transparentes und reflektierendes Material erzeugt 2 weiter zu verfolgende Sekundärstrahlen.
+
+
+
+### Erweiterungen
+Unzulänglichkeiten des einfachen rekursiven Ansatzes:
+- Reale Objekte sind eher diffus spekular, d.h. ein ganzes Set von Sekundärstrahlen wäre zu verfolgen.
+- Die ideale Spiegelung zur Erzeugung von Sekundärstrahlen ist eine sehr starke Vereinfachung
+- Aus der Umkehrbarkeit von Licht- und Beleuchtungsrichtung ließe sich eine Menge von Sekundarstrahlen aus dem Phong-Modell $(\cos^n(\theta)$-Term) ermitteln.
+- Aus Aufwandsgründen (rein theoretisch wären unendlich viele Sekundärstrahlen zu berücksichtigen) muss vereinfacht werden, z.B. Monte-Carlo-Ray-Tracing
+
+**Monte Carlo Ray-Tracing**:
+- Reflexion ist selten ideal spekular, meist entsteht ein Bündel von Strahlen
+- Ansatz: Verfolgung mehrerer "zufälliger" Sekundärstrahlen, deren Beitrag zum Farbwert des Pixel statistisch gewichtet wird.
+- Je gestreuter die Reflexion, um so mehr Sekundärstrahlen sind nötig. Sehr breite Remissionskeulen oder gar diffuse Interreflexionen sind wegen des Aufwandes nicht (bzw. nur schwer) behandelbar.
+
+Beleuchtungsphänomen Kaustik:
+- Das Licht der Lichtquelle werde zuerst spekular, dann diffus reflektiert. Beispiel: Lichtstrahlen, die von Wasserwellen reflektiert auf eine diffuse Wand auftreffen.
+- Vom Auge bzw. Pixel ausgehendes Ray Tracing versagt wegen des vorzeitigen Abbruchs der Rekursion am diffus remittierenden Objekt.
+- Inverses Ray Tracing [Watt/Watt 1992] : Man erzeugt einen von der Lichtquelle ausgehenden Strahl und reflektiert diesen an glänzenden Oberflächen. Auch Photon Mapping kann hier helfen.
+- Die reflektierten Lichtstrahlen wirken als zusätzliche Lichtquellen, die dann zu diffusen Reflexionen führen können.
+
+Optimierungsmöglichkeiten (einfache Hüllgeometrien, Raumzerlegung, ...):
+- Berechnung von achsenparallelen Hüllquadern (Bounding Boxes) oder Hüllkugeln (Bounding Spheres) um Objekte aus mehreren Polygonen.
+  - Zunächst Test, ob der Strahl die Hülle schneidet und falls ja
+  - → Schnittpunktberechnung von Strahl mit allen Polygonen in der Hülle
+  - → zunächst Berechnung des Schnittpunktes mit der jeweiligen Polygonebene
+  - → danach effizienter Punkt-im-Polygon-Test
+- Effiziente Zugriffsstruktur auf die Hüllquader: Bäume für rekursive Zerlegungen des 3D-Raumes (Octrees), Binary-Space-Partition-Trees
+- Verwendung von direktem, hardware-unterstützten Rendering (z.B. Gouraud- oder Phong-Shading) anstelle von einfachem, nichtrekursivem Ray-Tracing, nur bei Bedarf Erzeugung von Sekundärstrahlen.
+- Verwendung von Hardware mit RTX-Unterstützung
+
+### Zusammenfassung
+Anwendung:
+- Erzeugung realistischerer Bilder als bei lokalem Shading, da indirekte (spekuläre) Beleuchtungsphänomene physikalisch (geometr. und radiometr.) viel genauer als bei direkter Schattierung berechnet werden können.
+- Ray-Tracing ist aufgrund der hohen Komplexität für interaktive Anwendungen (oft noch) wenig geeignet (hardware- und szenenabhängig), mögliche Lösung: Vorberechnung der Bildsequenzen im Stapel-Betrieb (batch mode)
+  - Fotorealistisches Visualisieren (Designstudien usw.)
+  - Computeranimation in Filmen
+- Interaktive Programme (CAD, Spiele) verwenden noch eher direktes Rendering mit Texturen (shadow map, environment map) um Schatten, Spiegeleffekte oder Brechung zu simulieren. 
+- Aufwendige Teiloperation: Geometrischer Schnitt im Raum:
+  - für jedes Pixel: Berechnung des Schnittes eines Strahles mit potentiell allen Objekten der Szene (einfaches Ray-Tracing, ohne Rekursion)
+  - z.B. Bildschirm mit 1.000 x 1.000 Pixeln und 1.000 Objekten
+  - **Rekursives Ray-Tracing** für den ideal spiegelnden Fall: Anzahl der Operationen wächst zusätzlich, d.h. Multiplikation des Aufwandes mit der Anzahl der Reflexionen und Refraktionen und Lichtquellen (Schattenfühler) → für ca. 4 Rekursionsstufen bei 2 Lichtquellen haben wir etwa $4*(2 + 1) = 12$ Millionen Strahlen, was schon bei 1.000 Objekten 12 Milliarden Schnittoperationen bedeutet.
+  - **Monte-Carlo-Ray-Tracing** für die Approximation diffuser Anteile: Weiteres Anwachsen der Anzahl an erforderlichen Operationen durch zusätzliche Verfolgung sehr vieler Sekundärstrahlen (durchschnittlich 10 pro Reflexion) → Mehrere 100 Millionen bis Milliarden Strahlen (bzw. Billionen Schnittoperationen)
+  - Durch **effiziente räumliche Suchstrukturen** kann die Anzahl der tatsächlich auszuführenden Schnittoperationen wesentlich reduziert werden. Die Anzahl der Schnitte steigt nicht mehr linear (sondern etwa logarithmisch) mit der Anzahl der Objekte (siehe räumliche Datenstrukturen). Damit ist auch bei großen Szenen nur noch die Anzahl der Strahlen wesentlich → je nach Bildauflösung und Verfahren, mehrere Millionen bis Milliarden Strahlen!
+- Eigenschaften des Ray-Tracing-Verfahrens:
+  - Implementierung ist konzeptionell einfach + einfach parallelisierbar.
+  - Hohe Komplexität durch Vielzahl der Strahlen, deshalb meistens Beschränkung auf wenige Rekursionen.
+  - Exponentielle Komplexität bei Monte-Carlo-Ray-Tracing bzw. wenn alle Objekte gleichzeitig transparent (Brechung) und reflektierend sind.
+- Resultat:
+  - RT ist sehr gut geeignet, wenn die spiegelnde Reflexion zwischen Objekten (und/oder die Brechung bei transparenten Objekten) frei von Streuung ist.
+  - Die diffuse Reflexion zwischen Objekten wird beim Ray-Tracing durch ambiente Terme berücksichtigt. Eine bessere Beschreibung dieser Zusammenhänge ist mit Modellen der Thermodynamik möglich.
+- Weitere Ansätze:
+  - Cone-Tracing - statt eines Strahles wird ein Kegel verwendet, der die Lichtverteilung annähert [Watt/Watt 1992].
+  - Radiosity (siehe Abschnitt weiter unten)
+  - Photon Mapping (nächster Abschnitt)
+
+## Photon Mapping
+- Verfahren von Henrik Wann Jensen 1995 veröffentlicht
+- angelehnt an Teichencharakter des Lichts
+- 2-stufiges Verfahren
+- Quelle: Vorlesung von Zack Waters, Worcester Polytechnic Inst.
+
+![Photonmapping; Quelle Vorlesung Computergrafik 2020](Assets/Computergrafik_Photonmapping.png)
+
+1. Phase: Erzeugung der Photon Map
+     1. Photonenverteilung in der Szene: Von der Lichtquelle ausgestrahlte Photonen werden zufällig in der Szene gestreut. Wenn ein Photon eine Oberfläche trifft, kann ein Teil der Energie absorbiert, reflektiert oder gebrochen werden.
+     2. Speichern der Photonen in der Photon Map Daten enthalten also u.a. Position und Richtung beim Auftreffen sowie Energie für die Farbkanäle R,G,B
+        - Photon wird in 3D-Suchstruktur (kd-Baum) gespeichert (Irradiance cache) 
+        - Reflektionskoeffizienten als Maß für Reflektionswahrscheinlichkeit (analog Transmissionswahrscheinlichkeit) 
+        - dafür: Energie bleibt nach Reflexion unverändert. Neue Richtung wird statistisch auf Basis der BRDF gewählt.
+2. Phase: Aufsammeln der Photonen aus Betrachtersicht (gathering)
+   - Verwende Ray-Tracing um für den Primärstrahl von der Kamera durch einen Pixel den Schnittpunkt x mit der Szene zu bestimmen. Basierend auf den Informationen aus der Photon Map werden für x folgende Schritte ausgeführt:
+       1. Sammle die nächsten N Photonen um x herum auf durch Nächste-Nachbar-Suche in der Photon Map (N = konst., z. B. 10)
+       2. S sei die (kleinste) Kugel, welche die N Photonen enthält.
+       3. Für alle Photonen: dividiere die Summe der Energie der gesammelten Photonen durch die Fläche von S (→ Irradiance) und multipliziere mit der  BRDF angewendet auf das Photon.
+       4. Dies ergibt die reflektierte Strahldichte, welche von der Oberfläche (an der Stelle x) in Richtung des Beobachters abgestrahlt wird.
+
+## Radiosity
+Grundprinzip des Radiosity-Verfahrens:
+- Ansatz: Erhaltung der Lichtenergie in einer geschlossenen Umgebung
+- Die Energierate, die eine Oberfläche verlässt, wird Radiosity (spezifische Ausstrahlung) genannt.
+- Die gesamte Energie, die von einer Oberfläche (Patch, Polygon) emittiert oder reflektiert wird, ergibt sich aus Reflexionen oder Absorptionen anderer Oberflächen (Patches, Polygone).
+- Es erfolgt keine getrennte Behandlung von Lichtquellen und beleuchteten Flächen, d.h. alle Lichtquellen werden als emittierende Flächen modelliert.
+- Da nur diffuse Strahler (Lambertstrahler) betrachtet werden, herrscht Unabhängigkeit der Strahldichte vom Blickwinkel vor.
+- Die Lichtinteraktionen werden im 3D-Objektraum (ohne Berücksichtigung der Kamera) berechnet.
+- Danach lassen sich beliebig viele Ansichten schnell ermitteln (Ansichtstransformation, perspektivische Projektion, Verdeckungsproblematik, Interpolation).
+
+Die gesamte von Patch $A_s$ stammende Strahldichte an der Stelle von $dA_r$ ist: $L_r=\beta_r(\lambda)*\int_{A_s}\frac{L_s}{\pi * r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s$ (s=Sender, r=Reveiver)
+![Radiosity; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Radiosity.png)
+
+Für das Polygon $A_r$ ist die mittlere Strahldichte zu ermitteln!
+$$L_r=\beta_r(\lambda)*\frac{1}{A_r}*\int_{A_r}\int_{A_s}\frac{L_s}{\pi*r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s*dA_r$$
+Die Geometrieanteile aus dieser Gleichung werden als Formfaktoren bezeichnet (+Sichtbarkeitsfaktor $H_{sr}$).
+$$F_{sr}=\frac{1}{A_R}\int_{A_r}\int_{A_s}\frac{\cos(\theta_s)*\cos(\theta_r)}{\pi*r^2}*H_{sr}*dA_s*dA_r, H_{sr}=\begin{cases}1\rightarrow A_s \text{ sichtbar}\\ 0\rightarrow A_s \text{ unsichtbar}\end{cases}$$
+Für Flächen, die klein im Verhältnis zu ihrem Abstand sind, ergibt sich eine Vereinfachung des Formfaktors. In diesem Fall können die Winkel $\theta_s,\theta_r$ und Radius r über den zu integrierenden Flächen als konstant (Mittelwerte) angenommen werden.
+$$F_{sr}=A_S \frac{\cos(\theta_s)*cos(\theta_r)}{\pi*r^2}*H_{sr}$$
+
+Bei dicht benachbarten Flächen gelten die obigen, vereinfachenden Annahmen u.U. nicht mehr. Es müsste exakt gerechnet oder in diesen Bereichen feiner untergliedert werden. 
+Wird statt $\beta8\lambdaβ$ vereinfachend ein konstanter Remissionsfaktor R (R diff im monochromatischen Fall oder $R_{diff R}, R_{diffG}, R_{diffB}$ für die drei typischen Farbkanäle) eingeführt, so ergibt sich zwischen der Strahldichte $L_r$ der bestrahlten Fläche und der Strahldichte $L_s$ der bestrahlenden Fläche der folgende Zusammenhang: $L_r=R_r*F_sr*L_s$
+
+Jedes Patch wird nun als opaker Lambertscher (d.h. ideal diffuser) Emitter und Reflektor betrachtet (d.h. alle Lichtquellen werden genauso wie einfache remittierende Flächen behandelt, allerdings mit emittierendem Strahldichte-Term $L_{emr}$). $L_r=L_{emr}+R_r*\sum_S F_{sr}*L_s$
+
+Es ergibt sich schließlich als Gleichungssystem:
+$$ \begin{pmatrix}  1-R_1F_{11} & -R_1F_{12} &...$ -R_1F_{1n}\\ 1-R_2F_{21} & -R_2F_{22} &...$ -R_2F_{2n}\\ \vdots  & \vdots  & \ddots & \vdots  \\  1-R_nF_{n1} & -R_nF_{n2} &...$ -R_nF_{nn}\end{pmatrix}*\begin{pmatrix}L_1\\L_2\\\vdots\\L_n\end{pmatrix} = \begin{pmatrix} L_{em1}\\L_{em2}\\\vdots\\L_{emn}\end{pmatrix}$$
+Das Gleichungssystem ist für jedes Wellenlängenband, das im Beleuchtungsmodell betrachtet wird, zu lösen ($R_r, R_{rR}, R_{rG}, R_{rB}, L_{emr}$ sind im Allgemeinen wellenlängenabhängig).
+
+### Adaptives Refinement
+Adaptives Radiosity-Verfahren:
+- vereinfachte Formfaktor-Berechnung ist ungenau bei eng beieinander liegenden Flächenstücken (z. B. in der Nähe von Raumecken), oder bei kontrastreichen Übergängen)
+- deshalb adaptive Unterteilung solcher Flächen in feinere Polygone
+
+Im adaptiven Radiosity-Verfahren werden deshalb große Flächen (insbesondere dort wo Flächen relativ hell sind im Vergleich zur Nachbarfläche → kontrastreiche Übergänge) unterteilt. Die Notwendigkeit wird durch erste Berechnung mit grober Unterteilung geschätzt.
+
+### Progressive Refinement
+- das Radiosity-Verfahren ist sehr aufwendig (Bestimmung aller Formfaktoren, Anwendung des Gauß-Seidel-Verfahrens zum Lösen des Gleichungssystems)
+- jedoch viel weniger Samples als Monte-Carlo-Raytracing (1 mal pro Kachel-Paar mal Anzahl Interationen)!
+- beim progressive Refinement ist die inkrementelle Approximation des Ergebnisses des exakten Algorithmus durch ein vereinfachtes Verfahren wünschenswert
+- ein entsprechender Algorithmus, der die Patches einzeln behandelt, stammt von Cohen, Chen, Wallace und Greenberg
+- akkumuliert mehr Energie in jedem Schritt, verletzt Gleichgewicht der Strahlung → Korrektur notwendig:
+      $L_r^{k+1}=L_{emr} + R_r*\sum_s F_{sr}* L_s^k$
+
+
+### Radiosity Eigenschaften
+- ausschließlich Berücksichtigung der diffusen Reflexion
+- blickwinkelunabhängig, direkt im 3D-Raum arbeitend
+- realistische Schattenbilder, insbesondere Halbschatten (viele, bzw. flächig ausgedehnte Lichtquellen)
+- sehr rechenintensiv, deshalb meist Vorausberechnung einer Szene in 3D
+- → Beleuchtungsphänomene wie z.B. indirektes Licht (besonders augenfällig in Innenräumen, Museen, Kirchen, Theaterbühnen usw.) sind mit Radiosity sehr gut/realistisch darstellbar.
+- → die Kombination von Radiosity und Ray Tracing (und ggfs. anderen Verfahren/Filtern etc) ermöglicht computergenerierte Szenen mit sehr hohem Grad an Realismus.
+
+## Zusammenfassung
+- BRDF für physikbasierte, lokale Berechnung der Reflexion von Lichtquellen als Funktion von Einfallswinkel und Betrachterwinkel (evtl. wellenlängenabhängig, oder einfach durch RGB) 
+- Rendergleichung (Kajiya) = BRDF, Integral über alle Lichtquellen (bzw. Hemisphäre)
+- für indirekte Beleuchtung / Global Illumination: (verschiedene algorithmische Verfahren unter Verwendung der lokalen Beleuchtung (BRDF)
+  - (rekursives) Raytracing (einfache Spiegelung, Brechung, Schatten)
+  - Monte Carlo RT, (gestreute Spiegelung, diffuse Reflexion), Backward Ray Tracing (Kaustik), Photon Mapping → jedoch extrem rechenaufwendig!)
+  - Radiosity (indirekte diffuse Reflexion – sichtunabhängige Voraus-berechnung in 3D für statische Szenen)
+- verschiedene Verfahren können kombiniert werden um die globale Beleuchtungsphänomene effizienter zu berechnen. – z. B. Radiosity + Ray Tracing: Indirekte diffuse Beleuchtung + Spiegelung und Schatten, etc.
+

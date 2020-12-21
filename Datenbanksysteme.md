@@ -632,8 +632,359 @@ Minimalität
 > Vierte Normalform: erweitertes Relationenschema $R = (R, \bf{K})$ ist in vierter Normalform (4NF) bezüglich M genau dann, wenn für alle $X\rightarrow\rightarrow Y \in M^+$ gilt: $X\rightarrow\rightarrow Y$ ist trivial oder $X\supseteq K$ für ein $K\in\bf{K}$
 
 
+# Relationale Theorie
+## Rechnen mit FDs
+- gilt für f über R $SAT_R(F)\subseteq SAT_R(f)$, dann impliziert F die FD f (kurz: $F|= f$)
+- Hüllenbildung: Ermittlung aller funktionalen Abhängigkeiten, die aus einer gegebenen FD_Menge abgeleitet werden können
+- Hülle: $F_R^+ := \{ f | (f \text{ FD über R} ) \wedge F |= f\}$
 
-# die Datenbanksprache SQL
+Ableitungsregel:
+- F1: Reflexivität $X\supseteq Y \Rightarrow X\rightarrow Y$
+- F2: Augumentation $\{X\rightarrow Y\}\Rightarrow XZ\rightarrow YZ, \text{ sowie } XZ\rightarrow Y$
+- F3: Transitivität $\{ X\rightarrow Y,Y\rightarrow Z\}\Rightarrow X\rightarrow Y$
+- F4: Dekomposition $\{X\rightarrow YZ\} \Rightarrow X\rightarrow Y$
+- F5: Vereinigung $\{X\rightarrow Y, X\rightarrow Z\}\Rightarrow X\rightarrow YZ$
+- F6: Pseudotransitivität $\{X\rightarrow Y, WY\rightarrow Z\}\Rightarrow WX\rightarrow Z$
+
+F1-F3 bekannt als Armstrong-Axiome (sound, complete)
+- gültig (sound): Regeln leiten keine FDs ab, die logisch nicht impliziert
+- vollständig (complete): alle implizierten FDs werden abgeleitet
+- unabhängig (independent) oder  auch bzgl. ⊆ minimal: keine Regel kann weggelassen werden
+
+Alternative Regelmenge
+- B-Axiome oder RAP-Regeln
+  - R Reflexivität $\{\}\Rightarrow X\rightarrow X$
+  - A Akkumulation $\{X\rightarrow YZ, Z\rightarrow AW\}\Rightarrow X\rightarrow YZA$
+  - P Projektivität $\{X\rightarrow YZ\}\Rightarrow X\rightarrow Y$
+- Regelmenge ist vollständig, da Armstrong-Axiome daraus abgeleitet werden können
+
+> Membership Problem: Kann eine bestimmte FD $X\rightarrow Y$ aus der vorgegebenen Menge F abgeleitet werden, d.h. wird sie von F impliziert? $X\rightarrow Y \in F^+$
+- Hülle einer Attributmenge X bzgl. F ist $X^+_F := \{A | X\rightarrow A \in F^+\}$
+- Membership-Problem kann durch das modifizierte Problem $Y\subseteq X_F^+$ in linearer Zeit gelöst werden
+
+Überdeckungen
+- F heißt äquivalent zu G; oder
+- F Überdeckung von G; kurz: $F\equiv G$ falls $F^+=G^+$
+- verschiedene Formen von Überdeckung: nicht-redundant, reduziert, minimal, ringförmig
+
+Reduktionsoperationen
+- Ziel: Entfernen überflüssiger Attribute auf linker bzw. rechter Seite von FDs
+- Linksreduktion: entfernt unwesentliche Attribute auf der linken Seite einer FD
+- Rechtsreduktion: entsprechend auf der rechten Seite
+- erw. Relationenschema $R = (R, K)$, FD-Menge F über R, A ist ein Attribut aus R und $X\rightarrow Y$ eine FD aus F 
+> Unwesentliche Attribute
+> A heißt unwesentlich in $X\rightarrow Y$ bzgl. F, wenn
+>- $X=AZ,Z\not= X \Rightarrow (F-\{X\rightarrow Y\})\cup \{Z\rightarrow Y\} \equiv F$ oder
+>- $Y=AW, W\not=Y\Rightarrow (F-\{X\rightarrow Y\})\cup \{X\rightarrow W\} \equiv F$
+- A kann also aus der FD $X\rightarrow Y$ entfernt werden, ohne dass sich die Hülle von F ändert
+- FD $X\rightarrow Y$ heißt linksreduziert, wenn kein Attribut in X unwesentlich ist
+- FD $X\rightarrow Y$ heißt rechtsreduziert, wenn kein Attribut in Y unwesentlich ist
+
+Minimale Überdeckung
+- Eine minimale Überdeckung ist eine Überdeckung, die eine minimale Anzahl von FDs enthält
+- Auswahl der kleinsten aller nicht-redundanten Überdeckungen
+- FD-Menge F heißt minimal gdw. $\forall F' [F'\equiv \Rightarrow |F|\leq |F'|]$
+- Bestimmung etwa durch reduzierte Überdeckung mit anschließender Äquivalenzklassenbildung (später)
+
+Äquivalenzklassen
+- FDs mit äquivalenten linken Seiten werden zu einer Äquivalenzklasse zusammengefasst
+- FDs $X_1 \rightarrow Y_1$ und $X_2\rightarrow Y_2$ liegen in einer Äquivalenzklasse, wenn $X_1\rightarrow X_2$ und $X_2\rightarrow X_1$ gelten
+- In einigen Fällen können nun zwei solche FDs in einer Äquivalenzklasse zu einer FD $X\rightarrow Y_1 Y_2$ zusammengefasst werden
+- Da die FDs einer Äquivalenzklasse in die Form $X_1\rightarrow X_2, X_2\rightarrow X_3,..., X_n\rightarrow X_1, X_1\rightarrow Y$ überführt werden können, nennt man eine Überdeckung dieser Form eine ringförmige Überdeckung
+- linke Seiten sind äquivalent, wenn sie sich gegenseitig funktional bestimmen
+
+
+## Mehr zu Normalformen
+- partielle Abhängigkeit liegt vor, wenn ein Attribut funktional schon von einem Teil des Schlüssels abhängt
+- Hinweis: partiell abhängiges Attribut stören nur, wenn es kein Primattribut ist
+- 2NF formal: erweitertes Relationenschema $R = (R, K)$, FD-Menge F über R
+
+> Zweite Normalform
+> - Y hängt partiell von X bzgl. F ab, wenn die FD $X\rightarrow Y$ nicht linksreduziert ist
+> - Y hängt voll von X ab, wenn die FD $X\rightarrow Y$ linksreduziert ist
+> - R ist in 2NF, wenn R in 1NF ist und jedes Nicht-Primattribut von R voll von jedem Schlüssel von R abhäng
+
+## Entwurfsverfahren
+Ziele:
+- Universum $U$ und FD-Menge F gegeben
+- lokal erweitertes Datenbankschema $S=\{(R_1, K_1),...,(R_p, K_p)\}$ berechnen mit
+  - T1: S charakterisiert vollständig F
+  - S1: S ist in 3NF bezüglich F
+  - T2: Dekomosition von $U$ in $R_1,...,R_p$ ist verbundtreu bezüglich F
+  - S2: Minimalität, d.h. $\not\exists S':S'$ erfüllt T1,S1,T2 und $|S'|<|S|$
+
+Dekomposition:
+- Geg.: initiales Universalrelationenschema $R = (U, K(F))$ mit allen Attributen und einer von erfassten FDs F über R implizierten Schlüsselmenge
+  - Attributmenge U und eine FD-Menge F
+  - suche alle $K\rightarrow U$ mit K minimal, für die $K\rightarrow U \in F^+$ gilt $(K(F))$
+- Ges.: Zerlegung in $D = \{R_1, R_2,... \}$ von 3NF-Relationenschemata
+- Beispiel:
+  - initiales Relationenschema $R=ABC$
+  - funktionale Abhängigkeiten $F=\{A\rightarrow B, B\rightarrow C\}$
+  - Schlüssel $K=A$
+- Bewertung
+  - Vorteile: 3NF, Verbundtreue
+  - Nachteile: restliche Kriterien nicht, reihenfolgeabhängig, NP-vollständig (Schlüsselsuche)
+
+Details zum Syntheseverfahren
+- Prinzip: Synthese formt Original-FD-Menge F in resultierende Menge von Schlüsselabhängigkeiten G so um, dass $F\equiv G$ gilt
+- „Abhängigkeitstreue“ im Verfahren verankert
+- 3NF und Minimalität wird auch erreicht, reihenfolgeunabhängig
+- Zeitkomplexität: quadratisch
+
+Syntheseverfahren für Relationenschema R mit FDs F
+- Ges.: verlustfreie und abhängigkeitstreue Zerlegung in $R_1,... R_n$, wobei alle $R_i$ in 3NF sind
+- Bilde Äquivalentklassen $C_i$ von FD aus $\hat{F}$ mit gleichen oder äquivalenten linken Seiten, d.h. $C_i=\{X_i\rightarrow A_{i1},X_i\rightarrow A_{i2},...\}$. Bilde zu jeder Äquivalenzklasse $C_i$ ein Schema der Form $R_{Ci}=\{X_i\cup \{A_{i1}\}\cup \{A_{i2}\}\cup ... \}$. Falls keines der Schemata $R_{Ci}$ enthält einen Schlüssel von R, erzeuge weiteres Relationenschema $R_K$ mit Attributen aus R, die Schlüssel bilden
+- Beispiel
+  - FD-Menge $F=\{A\rightarrow B, AB\rightarrow C, A\rightarrow C, B\rightarrow A, C\rightarrow E\}$
+  - minimale Überdeckung $\hat{F}=\{A\rightarrow B,B\rightarrow C, B\rightarrow A, C\rightarrow E\}$
+  - Zusammenfassung zu Äquivalenzklassen $C_1=\{A\rightarrow B,B\rightarrow C, B\rightarrow A\}, C_2=\{C\rightarrow E\}$
+  - Syntheseergebnis: $(ABC,\{\{A\},\{B\}\}),(CE,\{C\})$
+
+Erreichung der Verbundtreue
+- Erreichen der Verbundtreue durch einfachen „Trick“:
+  - Erweitern der Original-FD-Menge F um $U\rightarrow \delta$ um Dummy-Attribut $\delta$
+  - $\delta$ wird nach Synthese entfernt
+- Beispiel: $\{A\rightarrow B, C\rightarrow E\}$
+  - Syntheseergebnis $(AB, \{A\}), (CE, \{C\})$ ist nicht verbundtreu, da Universalschlüssel in keinem Schema enthalten ist
+  - Dummy-FD $ABCE\rightarrow \delta$; reduziert auf $AC\rightarrow\delta$
+  - liefert drittes Relationenschema $(AC,\{AC\})$
+
+
+# Die relationale Anfragesprache SQL
+## Aufbau von SQL-Anfragen
+- `select`
+  - Projektionsliste
+  - Festlegung der Projektionsattribute
+  - arithmetische Operationen und Aggregatfunktionen
+  - Attribute der hinter from stehenden Relationen, optional mit Präfix, der Relationennamen oder Namen der Tupelvariablen angibt
+  - arithmetische Ausdrücke über Attributen dieser Relationen und passenden Konstanten
+  - Aggregatfunktionen über Attributen dieser Relationen
+  - Spezialfall der Projektionsliste: * ,liefert alle Attribute der Relation(en) aus dem from-Teil
+  - distinct eliminiert Duplikate
+- `from`
+  - zu verwendende Relationen, evtl. Umbenennungen
+  - einfachste Form; hinter jedem Relationennamen kann optional eine Tupelvariable stehen
+- `where`
+  - Selektions-, Verbundbedingungen
+  - Geschachtelte Anfragen (wieder ein SFW-Block)
+
+### Verbunde
+- bei mehr als einer Relation wird das kartesische Produkt gebildet:
+    `select * from WEINE, ERZEUGER`
+- alle Kombinationen werden ausgegeben!
+- Einführung von Tupelvariablen erlaubt mehrfachen Zugriff auf eine Relation:
+    `select * from WEINE w1, WEINE w2`
+    - Spalten lauten dann:
+    `w1.WeinID, w1.Name, w1.Farbe, w1.Jahrgang, w1.Weingut, w2.WeinID, w2.Name, w2.Farbe, w2.Jahrgang, w2.Weingut`
+- Natürlicher Verbund in SQL92
+    `select * from WEINE, ERZEUGER where WEINE.Weingut = ERZEUGER.Weingut`
+- Verbund mit "join"; kennen mehrere explizite Verbundoperatoren (engl. join);  als Abkürzung für die ausführliche Anfrage mit Kreuzprodukt aufzufassen
+    `select * from WEINE natural join ERZEUGER`
+    - Verbund mit beliebigem Prädikat: `select * from WEINE join ERZEUGER on WEINE.Weingut = ERZEUGER.Weingut`
+    - Gleichverbund mit using: `select * from WEINE join ERZEUGER using (Weingut)`
+- Kreuzprodukt `select * from WEINE, ERZEUGER`
+- als cross join `select * from WEINE cross join ERZEUGER`
+- "Zwischenrelationen" aus SQL-Operationen oder einem SFW-Block können über Tupelvariablen mit Namen versehen werden
+    `select Ergebnis.Weingut from (WEINE natural join ERZEUGER) as Ergebnis`
+- Präfixe für Eindeutigkeit `select Name, Jahrgang, ERZEUGER.Weingut from WEINE natural join ERZEUGER`
+- bei der Verwendung von Tupelvariablen, kann der Name einer Tupelvariablen zur Qualifizierung eines Attributs benutzt werden:
+    `select w1.Name, w2.Weingut from WEINE w1, WEINE w2`
+
+### Selektionen
+- where Klausel: `select ...from ... where bedingung`
+  - Formen der Bedingung:
+    - Vergleich eines Attributs mit einer Konstanten: `attribut θ konstante`
+    - mögliche Vergleichssymbole θ abhängig vom Wertebereich; etwa =, <>, >, <, >= sowie <=.
+    - Vergleich zwischen zwei Attributen mit kompatiblen Wertebereichen: `attribut1 θ attribut2`
+    - logische Konnektoren or, and und not
+- Verbundbedingung
+  - Verbundbedingung hat die Form: `relation1.attribut = relation2.attribut`
+  - Beispiel: `select Name, Jahrgang, ERZEUGER.Weingut from WEINE, ERZEUGER where WEINE.Weingut = ERZEUGER.Weingut`
+- Bereichsselektion
+  - `attrib between konstante_1 and konstante_2`
+  - ist Abkürzung für `attrib ≥ konstante_1 and attrib ≤ konstante_2`
+  - schränkt damit Attributwerte auf das abgeschlossene Intervall $[konstante_1 , konstante_2 ]$ ein
+  - Beispiel: `select * from WEINE where Jahrgang between 2000 and 2005`
+- Ungewissheitsselektion
+  - Notation `attribut like spezialkonstante`
+  - Mustererkennung in Strings (Suche nach mehreren Teilzeichenketten)
+  - Spezialkonstante kann die Sondersymbole `%` und `_` beinhalten  
+    - `%` steht für kein oder beliebig viele Zeichen
+    - `_` steht für genau ein Zeichen
+  - Beispiel: `select * from WEINE where Name like 'La Rose%'`
+
+### Mengenoperationen
+Mengenoperationen erfordern kompatible Wertebereiche für Paare korrespondierender Attribute:
+- beide Wertebereiche sind gleich oder
+- beide sind auf character basierende Wertebereiche (unabhängig von der Länge der Strings) oder
+- beide sind numerische Wertebereiche (unabhängig von dem genauen Typ) wie integer oder float
+- Ergebnisschema := Schema der „linken“ Relation
+```sql
+select A, B, C from R1 
+union 
+select A, C, D from R2
+```
+
+- Vereinigung, Durchschnitt und Differenz als union, intersect und except
+- orthogonal einsetzbar:
+- `select * from (select Weingut from ERZEUGER except select Weingut from WEINE)`
+- äquivalent zu `select * from ERZEUGER except corresponding WEINE`
+- über corresponding by-Klausel: Angabe der Attributliste, über die Mengenoperation ausgeführt wird
+- `select * from ERZEUGER except corresponding by (Weingut) WEINE`
+- bei Vereinigung: Defaultfall ist Duplikateliminierung (union distinct); ohne Duplikateliminierung durch union all
+
+### Geschachtelte Anfragen
+Schachtelung von Anfragen
+- für Vergleiche mit Wertemengen notwendig:
+- Standardvergleiche in Verbindung mit den Quantoren all ($\forall$) oder any ($\exists$)
+- spezielle Prädikate für den Zugriff auf Mengen, in und exists
+- in-Prädikat und geschachtelte Anfragen
+  - Notation: `attribut in ( SFW-block )`
+  - Beispiel: `select Name from WEINE where Weingut in (select Weingut from ERZEUGER where Region = 'Bordeaux')`
+  - Auswertung von geschachtelten Anfragen
+      1. Auswertung der inneren Anfrage zu den Weingütern aus Bordeaux
+      2. Einsetzen des Ergebnisses als Menge von Konstanten in die äußere Anfrage hinter in
+      3. Auswertung der modifizierten Anfrage
+      `select Name from WEINE where Weingut in ( 'Château La Rose', 'Château La Pointe')`
+  - interne Auswertung: Umformung in einen Verbund
+    `select Name from WEINE natural join ERZEUGER where Region = 'Bordeaux'`
+- Negation des in-Prädikats
+  - Simulation des Differenzoperators $^π Weingut^{(ERZEUGER)}- ^π Weingut^{(WEINE)}$ durch SQL-Anfrage
+    `select Weingut from ERZEUGER where Weingut not in ( select Weingut from WEINE )`
+
+
+### Mächtigkeit des SQL-Kerns
+| Relationenalgebra  | SQL |
+| -- | -- |
+| Projektion | select distinct | 
+| Selektion | where ohne Schachtelung | 
+| Verbund | from, where\\ from mit join oder natural join |
+| Umbenennung | from mit Tupelvariable; as | 
+| Differenz | where mit Schachtelung\\ except corresponding |
+| Durchschnitt | where mit Schachtelung\\ intersect corresponding |
+| Vereinigung | union corresponding |
+
+## Erweiterungen des SFW-Blocks
+Erweiterungen des SFW-Blocks
+- innerhalb der from-Klausel weitere Verbundoperationen (äußerer Verbund),
+- innerhalb der where-Klausel weitere Arten von Bedingungen und Bedingungen mit Quantoren,
+- innerhalb der select-Klausel die Anwendung von skalaren Operationen und Aggregatfunktionen,
+- zusätzliche Klauseln group by und having
+- rekursive Anfragen
+
+### Skalare Ausdrücke
+Umbenennung von Spalten: `ausdruck as neuer-name`
+- skalare Operationen auf
+  - numerischen Wertebereichen: etwa +, −, ∗ und /,
+  - Strings: Operationen wie char_length (aktuelle Länge eines Strings), die Konkatenation ∥ und die Operation substring (Suchen einer Teilzeichenkette an bestimmten Positionen des Strings),
+  - Datumstypen und Zeitintervallen: Operationen wie current_date (aktuelles Datum), current_time (aktuelle Zeit), +, − und ∗
+- bedingte Ausdrücke
+- Typkonvertierung
+- skalare Ausdrücke können mehrere Attribute umfassen
+- Anwendung ist tupelweise: pro Eingabetupel entsteht ein Ergebnistupel
+- Ausgabe der Namen aller Grand Cru-Weine
+    `select substring(Name from 1 for (char_length(Name) - position('Grand Cru' in Name))) from WEINE where Name like '%Grand Cru'`
+- Annahme: zusätzliches Attribut HerstDatum in WEINE
+    `alter table WEINE add column HerstDatum date update WEINE set HerstDatum = date '2004-08-13' where Name = 'Zinfandel'`
+  - Anfrage:
+      `select Name, year(current_date - HerstDatum) as Alter from WEINE`
+
+### Bedingte Ausdrücke
+- case-Anweisung: Ausgabe eines Wertes in Abhängigkeit von der Auswertung eines Prädikats
+    `case when prädikat_1 then ausdruck_1 ... when prädikat_n−1 then ausdruck_n−1 [ else ausdruck_n ] end`
+- Einsatz in select- und where-Klausel
+    `select case when Farbe = 'Rot' then 'Rotwein' when Farbe = 'Weiß' then 'Weißwein' else 'Sonstiges' end as Weinart, Name from WEINE`
+
+### Typkonvertierung
+- explizite Konvertierung des Typs von Ausdrücken 
+    `cast(ausdruck as typname)`
+- Beispiel: int-Werte als Zeichenkette für Konkatenationsoperator
+    `select cast(Jahrgang as varchar) || 'er ' || Name as Bezeichnung from WEINE`
+
+### Quantoren und Mengenvergleiche
+- Quantoren: all, any, some und exists
+- Notation
+    `attribut θ { all | any | some } ( select attribut from ...where ...)`
+- all: where-Bedingung wird erfüllt, wenn für alle Tupel des inneren SFW-Blocks der θ-Vergleich mit attribut true wird
+- any bzw. some: where-Bedingung wird erfüllt, wenn der θ-Vergleich mit mindestens einem Tupel des inneren SFW-Blocks true wird
+- Bestimmung des ältesten Weines
+    `select * from WEINE where Jahrgang <= all ( select Jahrgang from WEINE)`
+- alle Weingüter, die Rotweine produzieren
+    `select * from ERZEUGER where Weingut = any ( select Weingut from WEINE where Farbe = 'Rot')`
+
+### Vergleich von Wertemengen
+- Test auf Gleichheit zweier Mengen allein mit Quantoren nicht möglich
+- Beispiel: „Gib alle Erzeuger aus, die sowohl Rot- als auch Weißweine produzieren.“
+- falsche Anfrage `select Weingut from WEINE where Farbe = 'Rot' and Farbe = 'Weiß'`
+- richtige Anfrage `select w1.Weingut from WEINE w1, WEINE w2 where w1.Weingut = w2.Weingut and w1.Farbe = 'Rot' and w2.Farbe = 'Weiß'`
+
+### Das exists/not exists-Prädikat
+- einfache Form der Schachtelung
+    `exists ( SFW-block )`
+- liefert true, wenn das Ergebnis der inneren Anfrage nicht leer ist
+- speziell bei verzahnt geschachtelten (korrelierte) Anfragen sinnvoll
+  - in der inneren Anfrage wird Relationen- oder Tupelvariablen-Name aus dem from-Teil der äußeren Anfrage verwendet
+
+### Verzahnt geschachtelte Anfragen
+Weingüter mit 1999er Rotwein
+```sql
+select * from ERZEUGER
+where 1999 in (
+select Jahrgang from WEINE
+where Farbe='Rot' and
+WEINE.Weingut = ERZEUGER.Weingut)
+```
+konzeptionelle Auswertung
+1. Untersuchung des ersten ERZEUGER-Tupels in der äußeren Anfrage (Creek) und Einsetzen in innere Anfrage
+2. Auswertung der inneren Anfrage
+3. Weiter bei 1. mit zweitem Tupel ...
+
+## Aggregatfunktionen und Gruppierungen
+- Aggregatfunktionen berechnen neue Werte für eine gesamte Spalte, etwa die Summe oder den Durchschnitt der Werte einer Spalte
+- Beispiel: Ermittlung des Durchschnittspreises aller Artikel oder des Gesamtumsatzes über alle verkauften Produkte
+- bei zusätzlicher Anwendung von Gruppierung: Berechnung der Funktionen pro Gruppe, z.B. der Durchschnittspreis pro Warengruppe oder der Gesamtumsatz pro Kunde
+- Aggregatfunktionen in Standard-SQL:
+  - count: berechnet Anzahl der Werte einer Spalte oder alternativ (im Spezialfall count(∗)) die Anzahl der Tupel einer Relation
+  - sum: berechnet die Summe der Werte einer Spalte (nur bei numerischen Wertebereichen)
+  - avg: berechnet den arithmetischen Mittelwert der Werte einer Spalte (nur bei numerischen Wertebereichen)
+  - max bzw. min: berechnen den größten bzw. kleinsten Wert einer Spalte
+- Argumente einer Aggregatfunktion:
+  - ein Attribut der durch die from-Klausel spezifizierten Relation,
+  - ein gültiger skalarer Ausdruck oder
+  - im Falle der count-Funktion auch das Symbol ∗
+- vor dem Argument (außer im Fall von count(∗)) optional auch die Schlüsselwörter distinct oder all
+  - distinct: vor Anwendung der Aggregatfunktion werden doppelte Werte aus der Menge von Werten, auf die die Funktion angewendet wird
+  - all: Duplikate gehen mit in die Berechnung ein (Default-Voreinstellung)
+  - Nullwerte werden in jedem Fall vor Anwendung der Funktion aus der Wertemenge eliminiert (außer im Fall von count(∗))
+- Beispiel: Anzahl der Weine:
+  `select count(*) as Anzahl from WEINE`
+- Beispiel: Anzahl der verschiedenen Weinregionen:
+  `select count(distinct Region) from ERZEUGER`
+- Weine, die älter als der Durchschnitt sind:
+  `select Name, Jahrgang from WEINE where Jahrgang < ( select avg(Jahrgang) from WEINE)`
+- Schachtelung von Aggregatfunktionen nicht erlaubt
+  `select f 1 (f 2 (A)) as Ergebnis from R ...` -- (falsch!); 
+  mögliche Formulierung: `select f 1 (Temp) as Ergebnis from ( select f 2 (A) as Temp from R ...)`
+
+- Aggregatfunktionen in where-Klausel
+  - Aggregatfunktionen liefern nur einen Wert ⇝ Einsatz in Konstanten-Selektionen der where-Klausel möglich
+  - alle Weingüter, die nur einen Wein liefern:
+    `select * from ERZEUGER e where 1 = ( select count(*) from WEINE w where w.Weingut = e.Weingut )`
+
+- group by und having
+  - Notation
+    - select ...
+    - from ...
+    - [where ...]
+    - [group by attributliste ]
+    - [having bedingung ]
+  - Beispiel
+    - Regionen mit mehr als einem Wein
+      `select Region, count(*) as Anzahl from ERZEUGER natural join WEINE group by Region having count(*) > 1`
+
+      
+## Rekursion
 
 
 # Grundlagen von Anfragen: Algebra & Kalkül

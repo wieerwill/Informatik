@@ -393,3 +393,121 @@ Fragen und Fragestellungen zum Verständnis zur Vorlesung
 ---
 > Wie funktioniert Segmentierung mit Paging – und wozu ist diese Verfahrensweise gut?
 
+
+# Dateisysteme
+> Wozu werden Dateien benutzt?
+
+
+---
+> Wie ist eine Datei definiert? 
+
+
+---
+> Welche wichtigen Eigenschaften sollten Dateien haben – und warum?
+
+
+---
+> Welche Aufgabe haben Dateimodelle?
+
+
+---
+> Wodurch unterscheiden sich verschiedene Dateimodelle? 
+
+
+---
+> Wozu werden (symbolische) Dateinamen benutzt?
+
+
+---
+> Welche Transparenzeigenschaften können durch die Gestaltung der Dateinamen ausgedrückt werden? 
+
+
+---
+> Was ist ein hierarchischer Namensraum und welche vorteilhafte
+
+
+---
+> Eigenschaft besitzt dieser? 
+
+
+
+---
+> Welche Vorteile besitzen unstrukturierte Dateien? 
+
+
+---
+> Warum gibt es trotzdem strukturierte Dateien? 
+
+
+---
+> Nennen Sie typische Dateiattribute. 
+
+
+---
+> Was sind Sicherheitsattribute und wie können diese aussehen?
+
+
+---
+> Welche Dateioperationen werden in jedem Dateisystem benötigt?
+
+
+---
+> Welche Funktion haben die Operationen „lseek“ und „mmap“ – und käme man auch ohne diese beiden Funktionen aus?
+
+
+---
+> Welche Aufgaben haben Dateisysteme?
+
+
+---
+> Was ist Ihnen über das physische Layout von Magnetplatten bekannt?
+
+
+---
+> Charakterisieren Sie den Begriff „Sektor“ – warum ist er wichtig?
+
+
+---
+> Welches sind wichtige Parameter von Speichermedien?
+
+
+---
+> Wie unterscheiden sich die Eigenschaften von Magnetplatten und SSDs prinzipiell?
+
+
+---
+> Welche prinzipiellen Management-Datenstrukturen gibt es?
+
+
+---
+> Welche Informationen enthält ein i-Node?
+
+
+
+---
+> Welche Aufgaben haben Verzeichnisse?
+
+
+---
+> Wie kann ein symbolischer hierarchischer Namensraum dargestellt werden?
+
+
+---
+> Durch welche 2 Formen können freie Speicherbereiche beschrieben werden?
+
+
+---
+> Was wird durch den Superblock beschrieben? 
+
+
+---
+> Welche prinzipiellen Informationen sind hier zu finden?
+
+
+---
+> Beschreiben Sie die einzelnen Schritte verschiedener Dateizugriffsarten
+
+
+---
+> Welche Management-Datenstrukturen sind dabei und zu welchem Zweck beteiligt?
+

@@ -1682,3 +1682,327 @@ Architekturprinzipien
 2. mikrokernbasierte Architekturen
     - feingranulare Adressraum-Isolation, auch zwischen Betriebssystem-Komponenten
 
+# Dateisystem
+Prozesse
+- verarbeiten Informationen,
+- speichern diese,
+- rufen diese ab,
+  - deren Lebenszeit >> Lebenszeit Prozesse → Persistenz
+  - deren Datenvolumen >> Arbeitsspeicher → Größe
+  - zur gemeinsamen Nutzung → individuelle Zugriffsrechte
+- benötigt wird: geeignetes Paradigma
+  - Datei: Betriebssystem-Abstraktion zum Management persistenter Daten
+  - Dateisystem: „Aktenschrank“, der Dateien enthält
+
+## Dateimodelle
+### Aufgabe: Präzise Festlegung der Semantik der Abstraktion „Datei“
+Varianten unterscheiden sich durch:
+1. Dateinamen; z.B.
+    - Typtransparenz („kap4.pptx“ vs. „kap4“)
+    - Ortstransparenz („C:\Users\maier“ vs. „/Users/maier“)
+    - Struktur (flach, hierarchisch)
+2. Dateiattribute; z.B.
+    - Sicherheitsattribute,
+    - Zugriffsstatistiken
+3. Operationen auf Dateien
+    - Erzeugen,
+    - Löschen,
+    - Lese/Schreiboperationen
+
+### Aufgabe: Identifikation von Dateien mittels symbolischer Namen
+Namensmerkmale
+1. Grundmerkmale
+    - verwendbare Zeichen, Groß/Kleinschreibungssensitivität, Längenbeschränkungen, ...
+2. Typtransparenz
+    - Windows-Familie: explorer.exe, kap4.pdf, LadyInBlack.flac
+    - Unix-Familie: explorer, kap4, LadyInBlack
+3. Ortstransparenz
+    - Windows: C:\Users\maier
+    - Mac OS X, Linux: /Users/maier
+4. Namensstruktur
+
+Hierarchischer Namensraum: Kennen wir schon; z.B.
+- Postadressen: Land/Stadt/Straße/Hausnummer/Name
+- große Dateianzahlen: Beherrschbarkeit
+1. Eindeutigkeit
+    - vorlesungen/bs/kap1 vs. vorlesungen/va/kap1
+2. Eingrenzung von Sichten (Mehrbenutzersysteme)
+    - /Users/schindler vs. /Users/amthor
+- Darstellung: baumartige Strukturen
+  - „Pfadnamen“ = Pfade im Namensraum
+
+Varianten
+1. unstrukturiert: lineare Bytefolgen (Linux, Windows, Mac OS X)
+2. satz- oder baumstrukturiert, indexsequenziell (Mainframes)
+
+Unstrukturierte Dateien (= das Unix/Windows/-Modell)
+- Datei: Bytefolge
+  - keinerlei inhaltliche/strukturelle Interpretation durch Betriebssystem
+  - elementares Model
+    - hohe Flexibilität
+    - performant realisierbar
+    - manchmal: auch mühevoll, z.B.
+      - Speicherung strukturierter Daten wie Bankkonten
+      - Datenstrukturen aus Programmen etc.
+
+Strukturierte Dateien (Mainframe-Dateisysteme)
+- oft genutzte Standard-Strukturen
+  - satzstrukturiert, baumstrukturiert, indexsequenziell
+  - komfortabel, anwendungsnah
+  - Vorstufe der DBMS-Schemata
+- z.B. satzstrukturiert oder baumstrukturiert mit Schlüsseln
+
+### Datei-Attribute
+Sicherheitsattribute
+- Standard seit 50 Jahren: wahlfreie Zugriffssteuerung (Discretionary Access Control [DAC])
+1. Eigentümer, Gruppe
+2. Zugriffssteuerungslisten: Listen mit Benutzern und Rechten
+    - z.B. Unix: Eigentümer, Gruppe, Rest der Welt; jeweils rwx-Flags
+    - z.B. NTFS, Mac OS EFS: Listen von Paaren (Name, Rechte), (etwas) leistungsfähiger
+- jüngere, leistungsfähigere Dateisysteme (SELinux, TrustedBSD, SEAndroid): obligatorische Zugriffssteuerung (Mandatory Access Control [MAC])
+1. Klassifikationen (z.B. „öffentlich/vertraulich/geheim“)
+2. Sicherheitslabel (z.B. Zugehörigkeit zu Organisationseinheit, örtliche Beschränkungen)
+
+Weitere Attribute
+1. Zugriffsstatistiken; Datum
+    - der Erstellung
+    - des letzten Lesezugriffs
+    - des letzten Schreibzugriffs
+2. Nutzungszähler
+
+### Operationen auf Dateien
+Benutzung von Dateien: Operationen der Betriebssystem-API
+
+| Operationen (Systemaufrufe) | Typische Parameter|
+| -- | -- |
+| Erzeugen (create, open) | Name, Attribute -> Filedesckriptor (fd) |
+| Löschen (unlink) | Name |
+| Öffnen (open) | Name, Zugriffsart -> fd |
+| Schließen (close) | fd |
+| Inhalt lesen (read) | fd, Anzahl Bytes (,Position)-> Daten |
+| Inhalt schreiben (write) | fd, Anzahl Bytes (, Position), Daten |
+| Positionszeiger setzten (Iseek) | fd, Position |
+| in virtuellen AR einbinden (mmap) | fd, virtuelle Adresse |
+| Attribute lesen (stat) | Name -> Attribute |
+| Attribute setzten (chmod/own/grp) | Name, Attribute |
+
+(in Klammern die Namen der Unix-API)
+
+ Syntax und Semantik: BS-spezifisch, definiert in API-Spezifikation
+
+### Zusammenfassung Dateimodelle 
+- unterscheiden sich durch
+    1. Namen und Namensräume (hierarchisch, Semantik)
+    2. Dateistrukturen (un-, satz- oder baumstrukturiert)
+    3. Attribute (Zugriffsschutz (Eigentümer, Zugriffsrechte, Klassifikationen, Zugriffsstatistiken)
+    4. Operationen (Semantik von Erzeugen, Löschen, Lese/Schreiboperationen)
+- werden implementiert: durch Dateisysteme
+
+## Dateisysteme
+Problem
+  1. schnelles
+  2. effizientes
+  3. robustes
+  4. sicheres
+Speichern und Wiederfinden von Dateien auf persistenten Speichermedien
+
+Dateisystem $\approx$ Aktenschrank, bestehend aus
+1. Metadaten: Datenstrukturen zum Management der Nutzdaten
+2. Nutzdaten der Dateien
+3. Algorithmen, die ein Dateisystem realisieren
+4. 
+Verbreitete „Aktenschrank“-Typen:
+- FAT (File Allocation Table): QDOS, MS-DOS (1978)
+- NTFS (New Technology File System): Windows 2000/XP/Vista/7+
+- HFS+ (Mac OS Extended (journaled)): Mac OS, APFS: iOS
+- Ext∗ (Extended File System (∗=4: journaled)): Linux, IBM AIX
+- NFS (Network File System): Sun; Unix-Systeme, Windows-Systeme, ...
+- ISO 9660 für optische Speichermedien
+
+### Speichermedien
+- Physisches Layout von **Magnetplattenlaufwerken**
+    1. Plattengeometrie: Sektoren, Spuren; mehrere Lagen: Oberflächen
+    2. Sektoren: elementare Zugriffseinheiten, z.B. 1024 Byte groß
+- Sektor eindeutig identifiziert durch 3D-Adresse (Sektornummer, Spurnummer, Oberflächennummer)
+- Zugriffszeiten (Desktop/Server Laufwerke, 2017)
+  - Rotationszeit = 4-8 Millisekunden (10.000 min -1 )
+  - Armpositionierzeit = 4-8 Millisekunden (voller Schwenk, 200-400 Armpositionierungen/Sek)
+  - Zugriffszeit auf Sektor
+    - abhängig von Lage des Sektors in Relation zur aktuellen
+    - Rotationsposition der Platte
+    - Schwenkposition des Armes
+    - Größenordnung bei heutigen PC-typischen Laufwerken: 6-12 Millisekunden
+    - kein wahlfreier Speicher !!
+  - Datenrate = 40-170 MByte/Sekunde
+    - um Größenordnungen langsamer als Arbeitsspeicher !!
+
+SSDs vs. Magnetplatten (2017)
+1. wahlfreier Zugriff (c.g.s.)
+2. erheblich geringerer Stromverbrauch (technologieabhängig, 10%)
+3. erheblich geringere Zugriffszeiten, 5%
+4. erheblich höhere Datenraten, Faktor 3
+5. erheblich teurer, Faktor 5-10
+
+### Management-Datenstrukturen auf Speichermedien
+- Ziele
+   1. Speichern
+   2. Wiederfinden
+   von Dateien; schnell, effizient, robust, sicher
+- Management-Datenstrukturen (Metadatenstrukturen)
+- Datenstrukturen zur Organisation der Nutzdaten
+    1. Informationen über das Dateisystem selbst
+    2. Inhaltsverzeichnisse
+    3. Informationen über individuelle Dateien
+
+Informationen über individuelle Dateien: i-Nodes
+- i-Node: Metainformationen über genau eine Datei (allg.: persistentes Objekt)
+- abhängig von konkretem Dateisystem:
+    1. enthaltene Informationen
+    2. Layout
+    3. Größe (≥ 128 Byte, teils >>)
+- beim Lesen von Dateien
+    1. i-Node-Index der Datei besorgen (aus Verzeichnis, s.u.)
+    2. mit diesem Index: i-Node in der i-Node-Tabelle finden
+    3. aus dem i-Node lesen:
+        - a) Schutzinformationen (Sicherheitsattribute)
+        - b) Adressen der Nutzdaten
+- beim Erzeugen von Dateien create(“/home/anna/ProjectXBoard“,<Schutzinformationen>)
+    1. Suche nach freiem i-Node in der i-Node-Tabelle
+    2. Dateiinfos in i-Node schreiben (z.B. Struktur, Schutzinformationen)
+    3. Name und i-Node-Index in Verzeichnis eintragen
+- beim Schreiben von Daten
+    1. Adressierungsinformationen im i-Node aktualisieren
+- bei der Freigabe von Dateien
+    1. Verzeichniseintrag löschen
+    2. falls letzter Verzeichniseintrag dieser Datei (↑Referenzzähler):
+        - a) i-Node in i-Node-Tabelle als „frei“ markieren
+        - b) Ressourcen (belegte Sektoren) freigeben
+
+
+#### Verzeichnisse
+Aufgabe: Symbolische, hierarchische Namen ⟼ eindeutige Objekt-Id (=i-Node-Index)
+- Idee
+    1. Verzeichnis: Abbildung
+        - symbolischer Namensraum → Objektnamensraum
+        - Pfadnamenskomponente ⟼ Objekt-Id
+    2. alle Verzeichnisse gemeinsam: Abbildung
+        - hierarchischer symbolischer Namensraum → Objektnamensraum
+        - Pfadname ⟼ Objekt-Id
+- in Graph-Notation
+  - symbolischer Namensraum: baumähnlicher Graph
+    - Knoten: Verzeichnisse
+    - Kanten: attributiert mit Namen
+  - Pfadname: Folge von Kantennamen
+- Realisierung: Verzeichnis = Menge von Paaren (Name, i-Node-Index)
+
+#### Freiliste
+Management-Datenstruktur für freien Speicher
+- Sektoren sind
+  1. entweder in Benutzung; enthalten dann
+    - a) Nutzdaten von Dateien oder Verzeichnissen
+    - b) Metadaten, z.B. i-Nodes
+  2. oder frei
+- alle freien Plattensektoren: Freiliste
+- Organisation
+  - z.B. als Bitmap, je Plattensektor ein Bit (frei/belegt)
+  - z.B. als B-Baum (HFS)
+    - effiziente Suche von Mustern
+      - zusammenhängende Bereiche
+      - benachbarte Bereiche
+      - Bereiche bestimmter Größe
+
+#### Superblock
+Einstiegspunkt eines Dateisystems
+- erzeugt: bei Erstellung eines Dateisystems („mkfs“, „formatieren“)
+- steht: an wohldefiniertem Ort (direkt hinter (eventuellem) Boot-Sektor)
+- enthält: Schlüsselparameter
+    1. Name des Dateisystems
+    2. Typ (NTFS, Ext ∗ , HFS, ...) → Layout der Metadaten
+    3. Größe und Anzahl Sektoren
+    4. Ort und Größe der i-Node-Tabelle
+    5. Ort und Größe der Freiliste
+    6. i-Node-Nummer des Wurzelverzeichnisses
+- wird als erstes beim Öffnen („montieren“, s.u.) eines Dateisystems vom Betriebssystem gelesen:
+  - Typ: passende Betriebssystem-Komponente
+  - i-Node-Liste, Freiliste: Metadaten zum Management
+  - Wurzelverzeichnis: logischer Einstiegspunkt
+
+## Datenstrukturen u. Algorithmen des Betriebssystems
+Ablauf eines Dateizugriffs
+1. Anwendungsprogramm
+2. im Folgenden: beteiligte Datenstrukturen und Algorithmen des Betriebssystems
+
+`fd=open(“/home/jim“, O_RDONLY);`
+Pfadnamenauflösung
+1. Lesen des i-Nodes des Wurzelverzeichnisses (Superblock)
+2. Lesen der Nutzdaten des Wurzelverzeichnisses: Suchen von „home“
+3. Lesen des i-Nodes von „home“
+4. Lesen der Nutzdaten des „home“-Verzeichnisses: Suchen von „jim“
+5. Lesen des i-Nodes von „jim“: Prüfen der Rechte zum Lesen (O_RDONLY)
+6. Anlegen eines Filedeskriptors im Prozess-Deskriptor,
+7. Rückgabe von dessen Index (fd) an Aufrufer
+
+`read(fd, &buffer, nbytes);`
+Transfer von nbytes aus der geöffneten Datei fd zur Variablen buffer
+1. Rechteprüfung
+2. Zugriff auf Nutzdatenadressen im i-Node über fd-Tabelle im Prozessdeskriptor; Ergebnis: Sektornummer(n) auf Speichermedium
+3. Auftrag an Gerätetreiber: „Transfer der Sektoren in den BS-Cache“
+4. Nach Fertigstellung (Interrupt):
+    - Kopie des Caches nach buffer,
+    - Rückgabe der Anzahl der tatsächlich gelesenen Bytes / Fehler
+
+Alternative Zugriffsmethode: per VMM
+- `mmap(start, length, PROT_READ, MAP_PRIVATE, fd, offset);`
+- Einblenden einer Datei in (eigenen) Adressraum: vm p , Kap. 3
+- Zugriffsoperationen: sind reguläre Arbeitsspeicherzugriffe
+- Zugriff auf Medium: durch reguläre Seitenfehlerbehandlung des VMMs
+
+Vergleich Bsp Kontozugriff
+
+read/write 
+```bash
+struct konto_t konto;
+off_t kontoOffset;
+fd=open(“kontodatei“, O_RDWR);
+kontoOffset = kontoNr*sizeof(konto_t);
+lseek(fd,kontoOffset);
+read(fd, &konto, sizeof(konto_t));
+konto.stand = 0;
+lseek(fd,kontoOffset);
+write(fd, &konto, sizeof(konto_t));
+``` 
+=> 6 Operationen
+
+mmap
+```bash
+struct konto_t kontenDB[kontenZahl];
+fd=open(“kontodatei“, O_RDWR);
+mmap(&kontenDB, ... , RW, ..., fd, 0);
+kontenDB[kontoNr].stand = 0;
+``` 
+=> 1 Operation 
+
+
+- read/write
+  - Umständliche Benutzung
+  - jede Operation erfordert Kopieren (teuer!)
+  - Caching des Dateisystems wird genutzt
+  - kleinste Transfereinheit 1 Sektor
+- mmap
+  - direkter Zugriff auf Daten, implizite Leseoperationen per VMM
+  - keine Kopieroperationen
+  - VMM, working set, wird genutzt
+  - kleinste Transfereinheit 1 Seite
+
+- close(fd)
+  1. Freigabe des Filedeskriptors im Prozess-Deskriptor
+  2. Zurückschreiben der gecachten Informationen (i-Node, Nutzdaten)
+      - implizit, im Rahmen des Dateisystem-internen Cachemanagements (Alterung)
+      - explizit, durch fsync()
+- munmap(start,length)
+  1. hebt Assoziation zwischen Datei und Arbeitsspeicher auf (vm p )
+      - weitere Zugriffe: Speicherzugriffsfehler
+  2. Zurückschreiben modifizierter Seiten
+      - implizit, im Rahmen des regulären Pagings (Verlassen des working sets)
+      - explizit, durch msync()
+

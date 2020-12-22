@@ -305,11 +305,11 @@ Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wer
 - $P(a<X\leq b)=F(b)−F(a)$
 - $P(X>a)=1−F(a)$
 
-
-    Normalverteilung
-    Stetige Gleichverteilung
-    Exponentialverteilung
-
-    Binomialverteilung
-    Hypergeometrische Verteilung
-    Poisson-Verteilung
+| | Dichtefunktion | Verteilungsfunktion |
+| -- | -- | -- |
+| Normalverteilung | $f(x)=\frac{1}{\sigma*\sqrt{2\pi}}*e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}$ | $F(x)=\frac{1}{1-\sigma*\sqrt{2\pi}}\int_{-\infty}^{x}e^{-\frac{1}{2}(\frac{u-\mu}{\sigma})^2}du$ |
+| Stetige Gleichverteilung | $f(x)=\begin{cases}0 \text{ für } x<a \\ \frac{1}{b-a} \text{ für } a\leq x \leq b \\ 0 \text{ für } x>b \end{cases}$ | $F(x)=\begin{cases} o \text{ für } x\leq a \\ \frac{x-a}{b-a} \text{ für } a< x < b \\ 1 \text{ für } x\geq b\end{cases}$ |
+| Exponentialverteilung | $f(x)=\begin{cases}0 \text{ f+r } x<0 \\ \frac{1}{\mu}e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x<0 \\ 1-e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$
+| Binomialverteilung | 
+| Hypergeometrische Verteilung | 
+| Poisson-Verteilung | 

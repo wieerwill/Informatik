@@ -1956,3 +1956,105 @@ Perspektive Shadow-Map
   - Beim Abtasten (Rekonstruktion):Trilineare Filterung in x, y, und k (Mip-Map-Stufe)
 - Texturinhalt als Material, Beleuchtung, Geometrie interpretiert
 
+# Grafik (GPU) Pipeline
+- algorithmisches Konzept, sowie Realisierung der Grafikkartenhardware ist vergleichbar mit Fließband
+- spezialisierte Arbeitsstationen (Spezialprozessoren)
+- jedes geometrische Objekt durchläuft Arbeitsstationen sequenziell
+- Arbeitsschritte können dadurch gleichzeitig auf verschiedenen Daten ausgeführt werden
+
+## Bestandteile
+Programm API -> Treiber -> Vertex-Verarbeitung -> Primitivenbehandlung -> Rasterisierung & Interpolation -> Fragment Verarbeitung -> Rasteroperation -> Bildspeicher
+
+## Allgemeines
+- Anwendungsprogramm:
+  - läuft auf der CPU,
+  - definiert Daten und Befehlsabfolge,
+  - greift dazu über das Grafik-API (Application Programming Interface, z. B. OpenGL, Direct3D) auf die Grafikkarte zu
+- Treiber: übersetzt die Grafikbefehle des Programms in die Maschinensprache der speziellen Grafikhardware (Graphics Processing Unit / GPU, z.B. von nVidia, AMD oder Intel)
+- Befehle und Daten werden über den Bus (z.B. PCI-Express) von der CPU auf die GPU übertragen
+- OpenGL-Pipeline: Abarbeitung der Grafikbefehle auf der GPU
+- Ausgabe des Bildspeichers auf dem Monitor
+- typischer OpenGL "Draw"-Befehl (im Anwendungsprogramm via OpenGL-API aufgerufen)
+  ```bash
+  glBegin(GL Polygon);
+    glVertex3f (1.0, 1.0, 0.0);
+    glVertex3f (0.0, 1.0, 0.0);
+    ...
+  glEnd();
+  ```
+- Treiber schickt Daten/Befehle an die GPU (z. B. via PCIe -Bus)
+- Funktionsausführung auf der GPU ist dann abhängig vom aktuellen Zustand (OpenGL State Machine bzw. den gewählten Shadern):
+  - z. B. vorher definierter Primitivtyp (hier GL Polygon), Transformation, Lichtquellen, Interpolationsart (z.B. Gouraud Shading vs. Flat Shading)
+
+Abarbeitungsreihenfolge auf der GPU:
+- Empfangen der Vertices in einer geordneten Sequenz.
+- Vertexverarbeitung via Vertex Shader. Jeder Input-Vertex im Datenstrom wird in einen Output-Vertex transformiert und beleuchtet.
+- Primitive culling (Verwerfen wenn nicht sichtbar) und clipping (Abschneiden der Polygone am Rand)
+- Rasterkonvertierung (Polygon Filling) und Interpolation der Attributwerte (x-Koordinate, 1/z, R, G, B, Texturkoordinaten u/v, ...)
+- Die Daten jedes Fragmentes (Pixel/Subpixel) wird mit einem Fragment Shader verarbeitet. Zu jedem Fragment gehört eine Anzahl Attribute.
+- Per-Sample Operationen: Blending (Alpha-Blending bei Transparenz), Tiefen- und Stencil- Operationen ...
+
+
+## Vertex-Verarbeitung
+- Transformationen:
+  - Modell-Transformation, Kamera-Transformation (Model View Matrix) → Matrixmultiplikationen → Skalarprodukt
+- Beleuchtung (Lighting):
+  - Lichtquellen, diffuses & spekuläres Material: (Gouraud Shading) Lambert, Phong-Modell → Skalarprodukt
+- Skalarprodukte (Gleitkomma-Multiplikationen und Additionen) werden durch viele parallele Prozessoren auf der GPU effizient verarbeitet.
+
+## Primitive & Primitivenbehandlung
+![Primitive; Quelle Computergrafik Vorlesung 2020/21](Assets/Computergrafik-Renderpipeline-primitive.png)
+
+## Rasterkonvertierung
+- Edge Tables bereits erzeugt (Polygonsetup in Primitivenbeh.)
+- Rasterkonvertierung/Interpolation entspricht der Scan-Line-Konvertierung (s. Polygonfüllalgoritmus), generiert Pixel (Fragments)
+- Interpolation der x-Werte der Kanten (siehe left edge scan /bzw. right edge scan)
+- pro Scan Line: inkrementiere x-Wert (left edge, right edge) (OpenGL behandelt nur konvexe Polygone/Dreiecke – d. h. immer 2 Kanten pro Bildzeile!)
+- lineare Interpolation weiterer Attribute:
+  - z (1/z)-Werte,
+  - RGB-Werte (Gouraud Shading),
+  - Texturkoordinaten u/v (affines Texturmapping),
+  - Normalen (Phong Shading)
+- sehr wenige Ganzzahloperationen pro Pixel/Bildzeile 
+- Ausnahmen: z. B. perspektivische Texture Maps (FP-Division!)
+
+
+## Fragment-Verarbeitung
+Weiterverarbeitung auf Basis der interpolierten Attribute im Fragment Shader
+
+Beispiel: Phong-Shading
+  - Berechnung des Phong-Beleuchtungsmodells auf Basis der vorher linear interpolierten Fragmentnormalen, -position und Materialdaten sowie der Daten der Lichtquellen und Kameraposition
+
+## Rasteroperationen
+- Abschließende Auswahl/Zusammenfassung der berechneten Fragmentdaten (pro Pixel)
+- Beispiel: nicht transparente Objekte, Übernahme der Farbwerte mit z-Position, welche am dichtesten an der Kamera ist (z-Buffer)
+- Beispiel: 
+  - transparente Objekte (z.B. Glashaus), lineares Blending zwischen schon existierenden Farbwerten und neuesten entsprechend der Transparenz
+  - z.B. 40% Transparenz (bzw. 60% Opakheit) für rotes Quadrat $\begin{pmatrix} R & G & B \end{pmatrix} = \begin{pmatrix} 0,6*1+0,4*0 & 0,6*0+0,4*0 & 0,6*0+0,4*1 \end{pmatrix} = \begin{pmatrix} 0,6 & 0 & 0,4 \end{pmatrix}$
+
+
+## Performance
+Einfaches Modell zur Bestimmung der Rechenzeit T:
+$T = a * \text{Anzahl Vertices} + b * \text{Anzahl Bildpixel}$ (a = Aufwand pro Vertex, b = Aufwand pro Pixel)
+
+- Grafikkarten geben ihre Performance an in:
+  - Anzahl Polygone / Sekunde (Polygone mit kleiner Pixelanzahl)
+  - Anzahl verarbeitete Pixel / Sekunde
+  - z.B. ca. 100 Millionen Polygone/sec à 10 Pixel / Polygon (mit Texturen, tri-lineare Filterung, etc. mehrere Milliarden Pixel / s (Gouraud Shader) (Angaben: nVidia Geforce 6800 - Jahr 2005)
+- Problem der Grafik-Pipeline: Flaschenhals! - Langsamste Operation hält Pipeline auf (bestimmt Durchsatz) → Zwei extreme Situationen:
+  - Vertex-limited: viele Vertices, kleine Polygone (wenige Pixel), einfache lineare Interpolation der Vertex-Attribute pro Fragment (kleines b )
+  - Fill rate limited: anspruchsvolle Fragment-Shader (großes b), weniger dafür große Polygone (viele Pixel)
+- Außerdem: Grafikspeicher-Zugriffe sind teuer (Latenz und Bandbreite beachten!) z.B. Auslesen gerenderter Bilder aus dem Grafikspeicher 
+- Eine für die Grafikkarte angegebene Performance (z. B. 100 Mio Polygone/sec bei G-Force 6800) ist nur unter unrealistisch günstigen Bedingungen zu erreichen.
+  - d. h. z.B. nicht 100 Mio. unterschiedliche Polygone mit 1 fps (wegen Speicherbandbreite für Vertexzugriffe)
+  - auch nicht 10.000 Polygone mit 10.000 fps (da Framebuffer-Reset teuer)
+  - Herstellerangaben gelten nur unter optimalen Bedingungen (z. B. 10 Pixel / projiziertem Polygon)!
+  - realistisch (verschieden große Polygone) → ca. 1 Mio Polygone mit 10 fps (10 Mio Polygone/s) = 10% der Peak Performance!
+
+$$\text{Durchsatz (fps)} \approx \text{Konst.} / \text{Polygonanzahl}$$
+- unter realitischem Durchsatz: Begrenzung durch Bildspeicher
+- über realisitschem Durchsatz: Begrenzung durch Geometriespeicher
+
+## Hardware-Architektur
+![GPU Architektur](Assets/Computergrafik_GPU_Hardware.png)
+

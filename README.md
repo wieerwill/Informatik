@@ -8,6 +8,7 @@ bisher:
   - [Flashcards - Karteikarten für Definitionen](Automaten,%20Sprachen%20und%20Komplexität%20-%20Flashcards.pdf) (ongoing)
 - [Betriebssysteme](Betriebssysteme.md) (ongoing)
 - [Computergrafik](Computergrafik.md) (ongoing)
+  - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf) (work in progress)
 - [Datenbanksysteme](Datenbanksysteme.md) (ongoing)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)

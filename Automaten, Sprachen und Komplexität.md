@@ -195,7 +195,7 @@ Bsp:
 - $z_0=0$
 - $\delta(0,a)=\delta(1,b)=1, \delta(1,a)=\delta(0,b)=0$
 - $E={0}$
-- 
+
 in DFA darf es nur einen einzigen Startzustand geben!
 im Graphendiagramm: jeder Knoten hat die anzahl der alphabete als kanten
 

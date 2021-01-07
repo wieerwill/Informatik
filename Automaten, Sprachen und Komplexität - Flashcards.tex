@@ -6,27 +6,27 @@
 % beim ausdrucken auf doppelseitiges Drucken achten
 %
 %
-
 \documentclass[avery5371]{flashcards}
-
+\usepackage[utf8]{inputenc}
+\usepackage[]{amsmath} 
+\usepackage[]{amssymb}
 \cardfrontstyle{headings}
-
-
 \begin{document}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{flashcard}[Definition]{Alphabet}
 Ein Alphabet ist eine endliche nichtleere Menge.
 
-Üblicherweise heißen Alphabete hier $\sum, \Gamma, \Delta$. Ist $\sum$ Alphabet, so nennen wir die Elemente oft Buchstaben. Ist $\sum$ ein Alphabet, so heißen die Elemente von $\sum*$ auch Wörter über $\sum$ (auch String/Zeichenkette).
+Üblicherweise heißen Alphabete hier $\sum, \Gamma, \Delta$. Ist $\sum$ Alphabet, so nennen wir die Elemente oft Buchstaben und die Elemente von $\sum*$ auch Wörter über $\sum$ (auch String/Zeichenkette).
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{flashcard}[Definition]{Menge der endlichen Folgen}
-    Für eine Menge X ist X* die Menge der endlichen Folgen über X.
+    Für eine Menge X ist X* die Menge der endlichen Folgen über X.\\
+
+    Beispiel: Elemente von ${a,b,c,d}*:(a,b,c),()$
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -38,9 +38,24 @@ An Stelle von $u*v$ schreibt man auch $uv$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{flashcard}[Definition]{Sprachen}
-f: Menge der mögl Eingaben $\rightarrow$ Menge der mögl Ausgaben
+\begin{flashcard}[Definition]{Induktiv $w^n$ definieren}
+$$w^n = \begin{cases} \epsilon \quad\text{falls } n=0 \\ {w * w^{n-1}} \quad\textfalls } n>0 \end{cases}$$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\begin{flashcard}[Definition]{y,w sind Wörter über $\sum$. Dann heißt y:}
+\begin{itemize}
+    \item Präfix/Anfangsstück von w, wenn es $z\in\sum^*$ gibt mit $yz=w$
+    \item Infix/Faktor von w, wenn es $x,z\in\sum^*$ gibt mit $xyz = w$
+    \item Suffix/Endstück von w, wenn es $x\in\sum^*$ gibt mit $xy=w$
+\end{itemize}    
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{flashcard}[Definition]{Sprachen}
+f: Menge der möglichen Eingaben $\rightarrow$ Menge der möglichen Ausgaben\\
 Spezialfall $A={0,1}$ heißt Entscheidungsproblem. Sie ist gegeben durch die Menge der Eingaben. 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,9 +86,15 @@ Eine Menge L ist eine formale Sprache wenn es ein Alphabet $\sum$ gibt, so dass 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{flashcard}[Definition]{Verkettung von Sprachen}
+Sind $L_1$ und $L_2$ Sprachen, so heißt die Sprache $L_1L_2=\{w|\exists w_1\in L_1,w_2\in L_2:w=w_1w_2\}$ (auch $L_1*L_2$) die Konkatenation oder Verkettung von $L_1$ und $L_2$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \begin{flashcard}[Definition]{Kleene Abschluss}
-    Sei L eine Sprache. Dann ist $L*=\bigcup_{n\geq 0} L^n$ der Kleene-Abschluss oder die Kleene-Iteration von L. Weiter ist $L+ = \bigcup_{n\geq 0} L^n$
+    Sei L eine Sprache. Dann ist $L*=\bigcup_{n\geq 0} L^n$ der Kleene-Abschluss oder die Kleene-Iteration von L. Weiter ist $L^{+} = \bigcup_{n\geq 0} L^n$\\
+    ($L^{+} = L*L = L^* *L$)
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -86,6 +107,119 @@ Eine Menge L ist eine formale Sprache wenn es ein Alphabet $\sum$ gibt, so dass 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    
+\begin{flashcard}[Definition]{Grammatik}\scriptsize
+Grammatiken sind ein Mittel um alle syntaktisch korrekten Sätze einer Sprache zu erzeugen.\\
+Eine Grammatik G ist ein 4-Tupel $G=(V, \sum, P, S)$ das folgende Bedingungen erfüllt
+\begin{itemize}
+    \item V ist eine endliche Menge von Nicht-Terminalen oder Variablen
+    \item $\sum$ ist ein Alphabet (Menge der Terminale) mit 
+    $V\cap \sum = \varnothing$
+    ,d.h. kein Zeichen ist gleichzeitig Terminal und Nicht-Terminal
+    \item $P\subseteq (V\cup \sum)^+ \times (v\cup\sum)^*$ ist eine endliche Menge von Regeln oder Produktionen (Produktionsmenge)
+    \item $S\in V$ ist das Startsymbol/ die Startvariable oder das Axiom
+\end{itemize}
+
+Jede Grammatik hat nur endlich viele Regeln!
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ableitung einer Grammatik}
+Sei $G=(V, \sum, P, S)$  eine Grammatik. Eine Ableitung ist eine endliche Folge von Wörtern $w_0, w_1, w_2,...,w_n$ mit $w_0\Rightarrow w_1 \Rightarrow w_2 \Rightarrow ... \Rightarrow w_n$.
+\end{flashcard}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{flashcard}[Definition]{Wort ist Satzform}
+Ein Wort $w\in (V\cup\sum)^*$ heißt Satzform, wenn es eine Ableitung gibt, deren letztes Wort w ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{erzeugte Sprache}
+Die Sprache $L(G)={w\in \sum^* | S\Rightarrow_G^* w}$ aller Satzformen aus $\sum^*$ heißt von G erzeugte Sprache.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-0}
+    Jede Grammatik ist vom Typ 0 (Semi-Thue-System) und wird auch als rekursiv-aufzählbar bezeichnet.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-1}
+    Eine Regel heißt kontext-sensitiv, wenn es Wörter $u,v,w\in(V\cup\sum)^*,|v|>0$ und ein Nichtterminal $A\in V$ gibt mit $l=uAw$ und $r=uvw$. Eine Grammatik ist vom Typ 1 (oder kontext-sensitiv) falls
+    \begin{itemize}
+        \item alle Regeln aus P kontext-sensitiv sind
+        \item $(S\rightarrow \epsilon)\in P$ die einzige nicht kontext-sensitive Regel in P ist und S auf keiner rechten Seite einer Regel aus P vorkommt
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-2}
+    Eine Regel $(l\rightarrow r)$ heißt kontext-frei wenn $l\in V$ und $r\in (V\cup \sum)^*$ gilt. Eine Grammatik ist vom Typ 2, falls sie nur kontext-freie Regeln enthält
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-3}
+    Eine Regl ist rechtslinear, wenn $l\in V$ und $r\in \sum V\cup {\epsilon}$ gilt. Eine Grammatik ist vom Typ 3 wenn sie nur rechtslineare Regeln enthält.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Beweise]{Es gibt einen Algorithmus, der als Eingabe eine Typ-1-Grammatik G und ein Wort w bekommst und nach endlicher Zeit entscheidet ob $w\in L(G)$ gilt.}
+    \scriptsize{
+    \begin{enumerate}
+        \item $w=\epsilon$: Da G vom Typ 1 ist, gilt $w\in L(G)$ genau dann wenn $(S\rightarrow \epsilon)\in P$. Dies kannn ein Algorithmus entscheiden
+        \item $|w|\geq 1$: Definiere einen gerichteten Graphen (W,E) wie folgt
+        \begin{itemize}
+            \item Knoten sind die nichtleeren Wörter über $V\cup\sum$ der Länge $\geq|w|$ (insbes. $S,w \in W$)
+            \item $(u,v)\in E$ genau dann wenn $u\Rightarrow_G v$
+        \end{itemize}
+        da kontext-sensitiv ist, gilt $1 = |u_0|\geq |u_1|\geq |u_2|\geq...\geq |u_n| = |w|$, also $u_i\in W$  f.a. $1\geq i \geq n$. Also existiert Pfad von S nach w im Graphen (W , E ), womit die Behauptung bewiesen ist.
+    \end{enumerate}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Deterministische endliche Automaten}
+    ein deterministischer endlicher Automat M ist ein 5-Tupel $M=(Z, \sum, z_0, \delta, E)$
+\begin{itemize}
+    \item $Z$ eine endliche Menge von Zuständen
+    \item $\sum$ das Eingabealphabet (mit $Z\cap\sum = \emptyset$)
+    \item $z_0\in Z$ der Start/Anfangszustand (max Einer)
+    \item $\delta: Z \times \sum \rightarrow Z$ die Überführungs/Übergangsfunktion
+    \item $E\subseteq Z$ die Menge der Endzustände
+\end{itemize}
+Abkürzung: DFA (deterministic finite automaton)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{DFA mit Funktion $\hat{\delta}$}
+    Zu einem gegebenen DFA definieren wir die Funktion $\hat{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
+    \begin{itemize}
+        \item $\hat{\delta}(z, \epsilon) = z$
+        \item $\hat{\delta}(z,aw)= \hat{\delta}(\delta(z,a),w)$
+    \end{itemize}
+    Der Zustand $\hat{\delta}(z,w)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{flashcard}[Definition]{von einem DFA akzeptierte Sprache}
+    die von einem DFA akzeptierte Sprache ist: $L(M)={w\in\sum^* | \hat{\delta}(z_0,w)\in E}$\\
+    Mit anderen Worten: Ein Wort w wird genau dann akzeptiert, wenn derjenige Pfad, der im Anfangszustand beginnt und dessen Übergänge mit den Zeichen von w markiert sind, in einem Endzustand endet.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{flashcard}[Definition]{Wann ist eine Sprache regulär?}
+    Eine Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA mit $L(M)=L$ gibt ( bzw. wird von einem DFA akzeptiert).  Jede reguläre Sprache ist rechtslinear.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%V3-10
+\begin{flashcard}[Definition]{Text}
+    Text
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 
 \end{document}

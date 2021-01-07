@@ -2,10 +2,10 @@
 Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
 
-bisher:
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md) (ongoing)
   - [Flashcards - Karteikarten für Definitionen](Automaten,%20Sprachen%20und%20Komplexität%20-%20Flashcards.pdf) (ongoing)
+  - [Mind Map](Automaten,%20Sprachen%20und%20Komplexität%20-%20MindMap.pdf)
 - [Betriebssysteme](Betriebssysteme.md) (ongoing)
 - [Computergrafik](Computergrafik.md) (ongoing)
   - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf) (work in progress)
@@ -25,6 +25,8 @@ bisher:
 - [Stochastik](Stochastik.md) (ongoing)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
+
+Lernen ist viel Arbeit und bereitet dir Schwierigkeiten? Lies unsere [Hilfe](richtig%20lernen.md)
 
 Keine Garantie auf Vollständigkeit/Korrektheit! Hilf uns Fehler zu korrigieren und noch weitere Fächer abzudecken.
 

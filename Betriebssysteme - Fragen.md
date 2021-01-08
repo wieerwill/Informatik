@@ -1,5 +1,20 @@
 Fragen und Fragestellungen zum Verständnis zur Vorlesung
 
+# Einführung
+> Wo sind Betriebssysteme zu finden?
+
+
+---
+> Welches Spektrum decken sie ab?
+
+
+---
+> Welche Arten von Betriebssystemen gibt es?
+
+
+---
+> Welche funktionalen und nichtfunktionalen Eigenschaften spielen dabei eine Rolle?
+
 # Prozesszustände und Zustandsmodelle
 > Warum existieren Prozesszustände? Gehen Sie speziell auf die Prozesszustände „bereit“ und „blockiert“ ein.
 

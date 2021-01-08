@@ -4,6 +4,89 @@ date: Wintersemester 20/21
 author: Robert Jeutter
 ---
 
+- [Einführung](#einführung)
+  - [Extrem breites Anwendungsspektrum](#extrem-breites-anwendungsspektrum)
+  - [Funktionale und nicht-Funktionale Eigenschaften](#funktionale-und-nicht-funktionale-eigenschaften)
+    - [Funktionale Eigenschaften (= Funktionen, Aufgaben)](#funktionale-eigenschaften--funktionen-aufgaben)
+    - [Nichtfunktionale Eigenschaften](#nichtfunktionale-eigenschaften)
+  - [Blick in Betriebssystem-Zoo](#blick-in-betriebssystem-zoo)
+- [Prozessormanagement: Prozesse und Threads](#prozessormanagement-prozesse-und-threads)
+  - [Grundsätzliches](#grundsätzliches)
+  - [Prozesserzeugung](#prozesserzeugung)
+    - [Was geschieht bei der Prozesserzeugung](#was-geschieht-bei-der-prozesserzeugung)
+    - [Prozesserzeugung: notwenige Vorraussetzungen](#prozesserzeugung-notwenige-vorraussetzungen)
+    - [Prozesserzeugung: Namensvergabe](#prozesserzeugung-namensvergabe)
+    - [Prozesserzeugung: Stammbaumpflege](#prozesserzeugung-stammbaumpflege)
+    - [Prozesserzeugung: Allokation (Zuordnung) von Ressourcen](#prozesserzeugung-allokation-zuordnung-von-ressourcen)
+    - [Prozesserzeugung: Management Datenstrukturen](#prozesserzeugung-management-datenstrukturen)
+    - [Aktionen des Prozessmanagements](#aktionen-des-prozessmanagements)
+    - [Prozessterminierung](#prozessterminierung)
+  - [Threads](#threads)
+- [Scheduling](#scheduling)
+  - [Das Problem](#das-problem)
+  - [Aufgabe der Zustandsmodelle](#aufgabe-der-zustandsmodelle)
+  - [Scheduleraktivierung](#scheduleraktivierung)
+  - [Scheduling Strategien](#scheduling-strategien)
+    - [Batch-System („Stapelverarbeitungs“-System)](#batch-system-stapelverarbeitungs-system)
+    - [Interaktives System](#interaktives-system)
+      - [Einbeziehung von Prioritäten](#einbeziehung-von-prioritäten)
+    - [Schedulingziele in Echtzeitsystemen](#schedulingziele-in-echtzeitsystemen)
+  - [Zusammenfassung](#zusammenfassung)
+- [Privilegierungsebenen](#privilegierungsebenen)
+- [Kommunikation und Synchronisation](#kommunikation-und-synchronisation)
+  - [Elementare Konzepte](#elementare-konzepte)
+  - [Algorithmen zum wechselseitigen Ausschluss](#algorithmen-zum-wechselseitigen-ausschluss)
+  - [Synchronisations- & Kommunikationsmechanismen](#synchronisations---kommunikationsmechanismen)
+    - [(binäre) Semaphore](#binäre-semaphore)
+    - [Hoare'sche Monitore](#hoaresche-monitore)
+  - [weitere Konzepte](#weitere-konzepte)
+    - [Transaktionaler Speicher](#transaktionaler-speicher)
+    - [Botschaften](#botschaften)
+    - [Fernaufrufe (Remote Procedure Calls, RPCs)](#fernaufrufe-remote-procedure-calls-rpcs)
+    - [Systemaufrufe](#systemaufrufe)
+    - [Ereignismanagement](#ereignismanagement)
+    - [IPC Modell](#ipc-modell)
+    - [pop-up-Thread-Modell](#pop-up-thread-modell)
+    - [Implementierungstechniken](#implementierungstechniken)
+  - [Zusammenfassung](#zusammenfassung-1)
+- [Speichermanagement](#speichermanagement)
+  - [Speichertechnologien und -klassen](#speichertechnologien-und--klassen)
+    - [Was muss Arbeitsspeicher können?](#was-muss-arbeitsspeicher-können)
+    - [Layout des (physischen) Arbeitsspeichers: 50er Jahre](#layout-des-physischen-arbeitsspeichers-50er-jahre)
+    - [Layout des physischen Arbeitsspeichers: 60er Jahre](#layout-des-physischen-arbeitsspeichers-60er-jahre)
+  - [Relokation](#relokation)
+  - [Swapping](#swapping)
+  - [Virtueller Speicher](#virtueller-speicher)
+    - [Virtuelles Speichermanagement (VMM)](#virtuelles-speichermanagement-vmm)
+    - [Begriffe](#begriffe)
+    - [Abbildung $vm_p$](#abbildung-vm_p)
+    - [Memory Management Units (MMUs)](#memory-management-units-mmus)
+    - [Seitenabbildungstabellen](#seitenabbildungstabellen)
+    - [Seitenaustausch-Algorithmen](#seitenaustausch-algorithmen)
+      - [First-In , First-Out (FIFO)](#first-in--first-out-fifo)
+      - [Second Chance (Variante des FIFO-Algorithmus)](#second-chance-variante-des-fifo-algorithmus)
+      - [Least Recently Used (LRU)](#least-recently-used-lru)
+      - [Working Set](#working-set)
+      - [WSClock](#wsclock)
+    - [Zusammenfassung](#zusammenfassung-2)
+  - [Segmentierung](#segmentierung)
+  - [VMM- Abstraktionen in der Praxis](#vmm--abstraktionen-in-der-praxis)
+  - [Zusammenfassung](#zusammenfassung-3)
+- [Dateisystem](#dateisystem)
+  - [Dateimodelle](#dateimodelle)
+    - [Aufgabe: Präzise Festlegung der Semantik der Abstraktion „Datei“](#aufgabe-präzise-festlegung-der-semantik-der-abstraktion-datei)
+    - [Aufgabe: Identifikation von Dateien mittels symbolischer Namen](#aufgabe-identifikation-von-dateien-mittels-symbolischer-namen)
+    - [Datei-Attribute](#datei-attribute)
+    - [Operationen auf Dateien](#operationen-auf-dateien)
+    - [Zusammenfassung Dateimodelle](#zusammenfassung-dateimodelle)
+  - [Dateisysteme](#dateisysteme)
+    - [Speichermedien](#speichermedien)
+    - [Management-Datenstrukturen auf Speichermedien](#management-datenstrukturen-auf-speichermedien)
+      - [Verzeichnisse](#verzeichnisse)
+      - [Freiliste](#freiliste)
+      - [Superblock](#superblock)
+  - [Datenstrukturen u. Algorithmen des Betriebssystems](#datenstrukturen-u-algorithmen-des-betriebssystems)
+
 # Einführung
 worauf es ankommt:
 - Korrektheit
@@ -77,12 +160,6 @@ Wie - mit welchen speziellen weiteren Eigenschaften sollen die funktionalen Eige
 - Eingebettete Systeme
   - in Fahrzeugen, Kaffeemaschinen, Telefonen...
   - z.T. Spezialaufgaben
-
-## Grundbegriffe 
-- Wo sind Betriebssysteme zu finden?
-- Welches Spektrum decken sie ab?
-- Welche Arten von Betriebssystemen gibt es?
-- Welche funktionalen und nichtfunktionalen Eigenschaften spielen dabei eine Rolle?
 
 # Prozessormanagement: Prozesse und Threads
 ## Grundsätzliches

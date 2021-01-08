@@ -23,7 +23,9 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Praktikum A1](Rechnerarchitekturen%201%20-%20Praktikum%20A1.pdf)
   - [Praktikum A2](Rechnerarchitekturen%201%20-%20Praktikum%20A2.pdf)
 - [Rechnerarchitekturen 2](Rechnerarchitekturen%202.md) (ongoing)
-- [Softwaretechnik](Softwaretechnik%201.md) (ongoing)
+- [Softwaretechnik](Softwaretechnik.md) (ongoing)
+  - [MindMap](Softwaretechnik%20-%20MindMap.pdf) (ongoing)
+  - [Seminar](Softwaretechnik%20-%20Seminar.pdf) (ongoing)
 - [Stochastik](Stochastik.md) (ongoing)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
@@ -41,9 +43,9 @@ Wir freuen uns über jeden der mitmacht.
 Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet haben. Vorraussetzung für diese Aktionen ist es, ein Github-Konto zu besitzen.
 - Erstelle ein 'issue'. Gehe davor die offene 'issues' durch (oder überlege dir welches Fach/Seminar noch fehlt)
 - Klone das Repository oder erstelle einen Fork. Über die Kommandozeile: ```git clone https://github.com/wieerwill/Informatik.git```
-- Erstelle deinen eigenen Feature Branch, damit deine Version nicht mit anderen kollidiert: ```git checkout -b my-new-feature``` (in "" kannst du frei wählen wie du deinen Branch nennst)
-- Nachdem du Änderungen vorgenommen hast, stelle deine Änderungen bereit: ```git add * && git commit -m "dein Kommentar"``` (in "" kommt dein Kommentar was sich geändert hat bzw woran du gearbeitet hast. Nicht der Dateiname!)
-- Lade die Änderung auf deinen Branch hoch: ```git push origin my-new-feature```
+- Erstelle deinen eigenen Feature Branch, damit deine Version nicht mit anderen kollidiert: ```git checkout -b <my-new-feature>``` (in <> kannst du frei wählen wie du deinen Branch nennst)
+- Nachdem du Änderungen vorgenommen hast, stelle deine Änderungen bereit: ```git add * && git commit -m <dein Kommentar>``` (in <> kommt dein Kommentar was sich geändert hat bzw woran du gearbeitet hast. Nicht der Dateiname!)
+- Lade die Änderung auf deinen Branch hoch: ```git push origin <my-new-feature>```
 - Erstelle ein 'pull request' damit deine Änderungen in diesem Repository übernommen werden können. Dies kannst du über dein Github Dashboard machen.
 
 ## Bild- und Textrechte

@@ -1089,3 +1089,130 @@ Definition: Die primitiv rekursiven Funktionen sind induktiv wie folgt definiert
 - Wenn $f:\N^k\rightarrow\N$ und $g_11,...,g_k:\N^l\rightarrow\N$ (mit $k,l\geq 0$) primitiv rekursiv sind, dann ist auch die Funktion $f(g_1,..., g_k):\N^l\rightarrow\N$ primitiv rekursiv (Substitution).
 - Sind $g:\N^k\rightarrow\N$ und $h:\N^{k+2}\rightarrow\N$ primitiv rekursiv (mit $k\geq 0$) und entsteht $f:\N^{k+1}\rightarrow\N$ aus g und h mittels Rekursion, so ist auch f primitiv rekursiv (Rekursion).
 
+Hilberts Vermutung $\Rightarrow$ Loop Vermutung
+> Lemma: Jede primitiv rekursive Funktion $F:\N^r \rightarrow \N$ ist loop-berechenbar
+
+Beweis: Durch Induktion über den Aufbau von F zeigen wir, dass F loop-berechenbar ist.
+
+Hilberts Vermutung $\Leftarrow$ Loop Vermutung
+> Lemma: Seien $f,g:\N^{k+1}\rightarrow \N$ Funktionen, so dass g durch den beschränkten min-Operator aus f hervorgeht. Ist f primitiv rekursiv, so auch g.
+
+> Definition: Seien $f,g: \N^{k+1}\rightarrow\N$ Funktionen mit 
+> $$g(m,\bar{n})= \begin{cases} 1 \quad\text{falls } \exists i\leq m: f(i,\bar{n}\geq 1) \\ 0 \quad\text{sonst} \end{cases}$$ 
+> für alle $\bar{n}\in\N^k$. Wir sagen, g geht durch den beschränkten Existenzwuantor aus f hervor.
+
+> Lemma: Ist $f:\N^{k+1}\rightarrow\N$ eine primitiv rekursiv Funktion und geht g durch den beschränkten Existenzquantor aus f hervor, so ist auch g primitiv rekursiv.
+
+## Argument K- gegen die Loop Vermutung
+Behauptung: Es gibt eine intuitiv berechenbare Funktion $\N\rightarrow\N$ die nicht loop-berechenbar ist (und damit auch nicht primitiv rekursiv).
+
+### Ackermann Funktion
+eine Funktion die intuitiv berechenbar ist aber nicht primitiv rekursiv
+
+Grundidee:
+1. $(m,n)\rightarrow m+1$
+2. $(m,n)\rightarrow m+n = m+ 1+ 1 +1...$
+3. $(m,n)\rightarrow m*n = m+m+m...$
+4. $(m,n)\rightarrow m^m^m^{...}$
+5. usw.
+
+Loop berechenbare Funktionen können sehr schnell wachsen, die Ackermann Funktion wächst jedoch noch schneller!
+
+Konstruktion: Für $f:\N\rightarrow\N$ sei $F(f)=g:\N\rigtharrow\N$ definiert durch $$g(y)=\begin{cases} f(1)\quad\text{falls } y=0\\ f(g(y-1)) \quad\text{falls } y>0\end{cases}$$ Also ist $F:\N^{\N}\rightarrow\N^{\N}$ Funktion, die numerische Funktionen auf numerische Funktionen abbildet. Wir definieren nun ein Folge von Funktionen $ack_x:\N\rightarrow\N$ für $x\in\N$:
+- $ack_0:\N\rightarrow\N:y\rightarrow y+1$
+- $ack_{x+1}=F(ack_x), d.h.
+  - $ack_{x+1}(y) = \begin{cases} ack_x(1) \quad\text{falls } y=0\\ ack_x(ack_{x+1}(y-1)) \quad\text{falls } y>0 \end{cases}$
+
+> Definition: Die Funktion $ack:\N^2\rightarrow\N$ mit $ack(x,y,)=ack_x(y)$ heißt Ackermann Funktion
+
+> Lemma: Ist $x>0$ und $y\in\N$ so gilt $ack_x(y)=(ack_{x-1})^{y+1}(1)$.
+
+> Behauptung: Die Ackermann Funktion $ack$ ist intuitiv berechenbar.
+> Begründung: folgender Algorithmus
+```cpp
+function A(x,y: integer): integer
+  if x == 0 then return y+1;
+  h = 1;
+  for(i=1; i <= y+1; i++)
+    h=A(x-1, h)
+  return h;
+```
+
+Monotonie-Lemma: Für alle $x,y,x',y'\in\N$ mit $x\leq x',y\leq y'$ und $(x,y)\not =(x',y')$ gilt $ack_x(y)< ack_{x'}(y')$.
+
+> Definition: Sei P Loop-Programm mit Variablen $x_1,x_2,...,x_n$. Für Anfangswerte $(n_i)$ seien $(n'_i)$ die Werte der Variablen bei Programmende.
+> $$f_p:\N\rightarrow\N: n\rightarrow max\{\sum_{1\leq i\leq l} n'_i | \sum_{1\leq i \leq l} n_i\leq n \}$$
+
+> Satz: Die Ackermann Funktion ist nicht berechenbar
+Beweis indirekt: Angenommen P wäre Loop-Programm, das $ack$ berechnet. Nach Beschränkungslemma existiert $k\in\N$ mit $f_p(m)< ack_k(m)$, damit $ack_k(k)\leq f_p(2k)< ack_k(2k)$ im Widerspruch zum Monotonielemma. 
+
+## While Programme
+Syntaktische Komponenten für While Programme: wie Loop Programme, nur Schlüsselwort loop durch while ersetzt.
+
+> Definition: Ein While Programm ist von der Form
+> - $x_i=c; x_i=x_j+c; x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$ (Wertzuweisung) oder
+> - $P_1;P_2$, wobei $P_1$ und $P_2$ bereits While Programme sind (sequentielle Komposition) oder
+> - while $x_i\not = 0$ do P end, wobei P ein While Programm ist und $i\geq 1$.
+
+Intuition: Programm P wird so oft ausgeführt, bis der Wert von $x_i$ gleich 0 ist.
+
+Da while-Schleifen nicht unbedingt terminieren, berechnen While-Programme i.a. keine totalen, sondern nur partielle Funktionen:
+> Definition: Seien $r\in\N und $D\subseteq\N^r$. Eine Funktion $f:D\rightarrow\N$ heißt partielle Funktion von $\N^r$ nach $\N$. Wir schreiben hierfür $f:\N^r --\rightarrow\N$.
+
+> Definition: wie bei Loop Programmen definieren wir zunächst für jedes While Programm P in dem keine Variable $x_i$ mit $i>k$ vorkommt induktiv eine partielle Abbildung $[[P]]_k:\N^k--\rightarrow\N^k$. Hierfür sei $\bar{n}\in\N^k$
+> - $[[x_i=c]]_k(n_1,...,n_k)=(m_1,...,m_k)$ genau dann, wenn $m_i=c$ und $m_l=n_l$ für $l\not = i$
+> - $[[x_i=x_j \pm c]]_k(n_1,...,n_k)=(m_1,...,m_k)$ genau dann, wenn $m_i=n_j\pm c$ und $m_l=n_l$ für $l\not = i$
+> - $[[P_1; P_2]]_k(\bar{n})$ ist genau dann definiert, wenn $\bar{m}=[[P_1]]_k(\bar{n})\in\N^k$ und $[[P_2]]_k(\bar{m})$ definiert sind. In diesem Falle gilt $[[P_1; P_2]]_k(\bar{n})=[[P_2]]_k([[P_1]]_k(\bar{n}))$, sonst undefiniert.
+
+> Definition: Eine partielle Funktion $f:\N^k--\rightarrow\N$ heißt while Berechenbar, falls es ein $l\geq k$ und ein While Programm P, in dem höchstens die Variablen $x_1,...,x_l$ vorkommen, gibt, sodass für alle $n_1,...,n_k\in\N$ gilt:
+> - $f(n_1,...,n_k)$ definiert $\leftrightarrow [[P]]_l(n_1,...,n_k,0,...,0)$ definiert
+> - Falls $f(n_1,...,n_k)$ definiert ist, gilt $f(n_1,...,n_k)=\pi_1^l ([[P]]_l(n_1,...,n_k,0,...,0))$.
+
+> Lemma: Jede loop-berechenbare Funktion ist auch while-Berechenbar
+
+Die While-Vermutung: eine partielle Funktion $\N^k--\rightarrow\N$ ist gneua dann intuitiv berechenbar, wenn sie while-berechenbar ist.
+Da jede loop-berechenbare Funktion auch while-berechenbar ist, haben wir schon „viele“ while-berechenbare Funktionen. Außerdem kann man zeigen, daß die Ackermann-Funktion while-berechenbar ist.
+
+### Gödels Vermutung
+Eine partielle Funktion $\N^k--\rightarrow\N$ ist gneau dann intuitiv berechenbar, wenn sie $\mu$-rekursiv ist.
+> Definition $\mu$-rekurisve Funktion: Sei $f:\N^{k+1}--\rightarrow\N$ eine partielle Funktion. Dann ist $\mu f:\N^k--\rightarrow\N$ definiert durch $\mu f(n_1,...,n_k)= min\{m| f(m,n_1,...,n_k)=0 \text{ und } \forall x< m: f(x,n_1,...,n_k) \text{ definiert } \}$. Dabei ist min $\varnothing$ undefiniert. Wir sagen, dass die Funktion $\mu f$ aus f durch den $\mu$-Operator hervorgeht.
+
+> Definition: Die Klasse der $\mu$-rekursiven Funktionen ist rekursiv definiert:
+> - Alle konstanten Funktionen $k_m:\N^0\rightarrow\N:()\rightarrow m$, alle Projektionen $\pi_i^k:\N^k\rightarrow \N: (n_1,...,n_k)\rightarrow n_i$ und die Nachfolgerfunktion $s:\N\rightarrow \N:n\rightarrow n+1$ sind $\mu$-rekursiv.
+> - Sind $f:\N^k--\rightarrow\N$ und $g_1,...,g_k:\N^r--\rightarrow\N$ $\mu$-rekursiv, so auch $F:\N^r--\rightarrow\N$ mit $F(n) = f(g_1(\bar{n}),..., g_k(\bar{n}))$ (wobei $F(n)$ genau dann definiert ist, wenn $g_i(n)$ für alle i definiert ist und wenn f auf diesen Werten definiert ist).
+> - Jede partielle Funktion f , die durch Rekursion aus $\mu$-rekursiven Funktionen entsteht, ist $\mu$-rekursiv.
+> - Ist f $\mu$-rekursiv, so auch $\mu f$.
+
+Durch den $\mu$-Operator können auch echt partielle Funktionen erzeugt werden.
+
+## GoTo Programme
+- Die While-Programme abstrahieren strukturierte („höhere“) Programmiersprachen, d.h. while-berechenbare Funktionen sind durch Programme einer „höheren“ Programmiersprache berechenbar.
+- $\mu$-rekursive Funktionen sind durch Programme einer funktionalen Programmiersprache berechenbar.
+
+> Definition: Ein GoTo Programm ist eine endliche nichtleere File $P=A_1;A_2;...;A_m$ von Anweisungen $A_i$ der folgenden Form:
+> - $x_i=c, x_i=x_j+c, x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$
+> - goto l mit $0\leq l\leq m$ (unbedingter Sprung)
+> - if $x_i=0$ then l mit $i\geq 1$ und $0\leq l \leq m$ (bedingter Sprung)
+
+> Definition: Sei $P=A_1;A_2;...;A_m$ ein Goto Programm, in dem keine Variable $x_i$ mit $i>k$ vorkommt. Eine Konfiguration von P ist ein $(k+1)$-Tupel $(n_1,n_2,...,n_k,p)\in\N^k\times\{0,1,...,m\}$, wobei $n_i$ die Belegung der Variablen $x_i$ und p den Wert des Programmzählers beschreibt.
+
+> Definition: $[[P]]_k(\bar{n})$ ist definiert, falls es $\bar{n'}\in\N^k$ gibt mit $(\bar{n},1)\vdash_P^* (\bar{n'},0)$. In diesem Fall gilt $[[P]]_k(\bar{n})=\bar{n'}$
+
+> Definition: Eine partielle Funktion $f:\N^k--\rightarrow\N$ heißt Goto berechenbar, falls es ein $l\geq k$ und ein Goto Programm P, in dem keine Variable $x_i$ mit $i>l$ vorkommt, gibt, sodass für alle $\bar{n}\in\N^k$ gilt:
+> - $f(n)$ definiert $\leftrightarrow [[P]]_l(\bar{n},0,...,0)$ definiert
+> - Falls $f(\bar{n})$ definiert ist, gilt $f(\bar{n})=\pi_1^l ([[P]]_l(\bar{n},0,...,0))$
+
+> Definition: Seien $P=A_1;A_2;...;A_m;$ ein GoTo Programm und $(\bar{n},p), (\bar{n'},p')$ zwei Konfigurationen. Wir setzen $(\bar{n},p)\vdash_P (\bar{n'},p'), falls $p>0$ und eine der folgenden Bedingungen gilt:
+> - $A_p=(x_i=c), n'_i=c, n'_l=n_l \text{ für } l\not\ =i \text { und } p'=p+1$
+> - $A_p=(x_i=x_j+c), n'_i=n_j+c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
+> - $A_p=(x_i=x_j-c), n'_i=n_j-c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
+> - $A_p=(goto l), \bar{n'}=\bar{n} \text{ und } p'=l$
+> - $A_p=(if x_i=0 then l), n_i=0, \bar{n'}=\bar{n}, p'=l$
+> - $A_p=(if x_i=0 then l), n_i\not=0, \bar{n'}=\bar{n}, p'=p+1$
+
+### Ein kleiner Ausflug - Kleenesche Normalform
+Die Simulation von Goto-Programmen durch While-Programme verwendet nur eine while-Schleife (falls man if ... then als elementares Konstrukt erlaubt).
+
+Das bedeutet: Ein While-Programm kann durch Umwandlung in ein Goto-Programm und Zurückumwandlung in ein While-Programm in ein äquivalentes While-Programm mit nur einer While-Schleife umgewandelt werden (Kleenesche Normalform für While- Programme).
+Die analoge Aussage für Loop-Programme gilt nicht (siehe Beweis, daß die Ackermann-Funktion nicht loop-berechenbar ist).
+

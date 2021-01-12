@@ -396,9 +396,9 @@ Ein Kontextwechsel umfasst:
 Kostenfaktor FPU
 - Kopieren des FPU-Kontexts: sehr viele Register (sofortkosten)
   - Realisierung: "faul"
-  - Hardware hilft: FPU Protextion
+  - Hardware hilft: FPU Protection
 - Auswirkung
-  - nur ein THread benutzt FPU: tatsächliches Sichern erfolgt nie
+  - nur ein Thread benutzt FPU: tatsächliches Sichern erfolgt nie
   - wenige Threads benutzen FPU: tatsächliches Sichern minimiert
 
 ## Scheduling Strategien
@@ -536,7 +536,7 @@ Verhinderung zeitlicher Wechselwirkungen
   - Scheduler-Aktivierungen durch asynchrone Ereignisse
 - kritisch also: Operationen zum Abschalten von
   1. Uhr
-  2. Ereignismanagement (s. Kap. 5.4)
+  2. Ereignismanagement
 - weitere kritische Operationen
   1. Veränderung des Speicherlayouts
   2. Veränderung kritischer Prozessorkontrollregister
@@ -627,7 +627,7 @@ Genauere Definition des Problems (Annahmen)
 
 Grundsätzliche Anforderungen
 1. Korrektheit: In einem kritischen Abschnitt befindet sich zu jedem Zeitpunkt höchstens ein Thread (**wechselseitiger Ausschluss**).
-2. Lebendigkeit: Falls ein Thread einen kritischen Abschnitt betreten möchte, dann betritt (irgendwann) (irgend) ein Thread diesen Abschnitt. [Folglich kann **irgendwann** auch der erstgenannte Thread **den kritischen Abschnitt betreten**.]
+2. Lebendigkeit: Falls ein Thread einen kritischen Abschnitt betreten möchte, dann betritt (irgendwann) (irgend-) ein Thread diesen Abschnitt. [Folglich kann **irgendwann** auch der erstgenannte Thread **den kritischen Abschnitt betreten**.]
 3. Verhungerungsfreiheit: **Kein Thread wartet für immer** vor einem kritischen Abschnitt.
 
 Wechselseitiger Ausschluss: ein erster (naiver) Versuch

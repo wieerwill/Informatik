@@ -1001,7 +1001,7 @@ Behauptung: Es gibt eine totale Funktion $f:\N\rightarrow\N$, die nicht intuitiv
 
 Begründung: Wir nehmen zusätzlich an, daß es ein Alphabet gibt, so dass jeder Algorithmus als Wort über beschrieben werden kann.
 Sei $P\subseteq\Gamma^*$ die Menge der syntaktisch korrekten Algorithmenbeschreibungen. 
-Wörter aus $\Gamma^*\backslashP$ fassen wir als "Algorithmenbeschreibungen mit syntaktischen Fehlern" auf. Für $w\in\Gamma^*$ definieren wir eine Funktion $[[w]]:\N\rightarrow\N$ wie folgt: 
+Wörter aus $\Gamma^*\backslash P$ fassen wir als "Algorithmenbeschreibungen mit syntaktischen Fehlern" auf. Für $w\in\Gamma^*$ definieren wir eine Funktion $[[w]]:\N\rightarrow\N$ wie folgt: 
 Gilt $w\in P$, so ist $[[w]]:\N\rightarrow\N$ die von der Algorithmenbeschreibung $w$ berechnete Funktion. 
 Andernfalls setze $[[w]](n) = 0$ für alle $n\in\N$.
 
@@ -1070,7 +1070,7 @@ Die Abbildung $(f,g_1,g_2,...,g_k)\rightarrow f\circ(g_1,...,g_k)$ wird als Subs
 
 Die Abbildung $f\rightarrow g$ wird als beschränkter min-Operator bezeichnet. Das Lemma sagt also, daß die Klasse der loop-berechenbaren Funktionen unter dem beschränkten min-Operator abgeschlossen ist.
 
-> Definition: Seien $k\geq 0, \N^k\rightarrow \N$ und $h:\n^{k+2}$. Die Funktion $f:\N^{k+1}\rightarrow\N$ mit $f(0,n_2,...,n_{k+2})=g(n_2,...,n_{k+1})$ und $f(m+1, n_2,...,n_{k+1})=h(f(m,n_2,...,n_{k+1}),m,n_2,...,n_{k+1})$ ensteht aus g und h mittels Rekursion.
+> Definition: Seien $k\geq 0, \N^k\rightarrow \N$ und $h:\N^{k+2}$. Die Funktion $f:\N^{k+1}\rightarrow\N$ mit $f(0,n_2,...,n_{k+2})=g(n_2,...,n_{k+1})$ und $f(m+1, n_2,...,n_{k+1})=h(f(m,n_2,...,n_{k+1}),m,n_2,...,n_{k+1})$ ensteht aus g und h mittels Rekursion.
 
 Das bedeutet, daß die Rekursion immer terminiert und wohldefiniert ist. Sind g und h intuitiv berechenbar, so sicher auch f . Also sollte auch die Klasse der loop-berechenbaren Funktionen unter Rekursion abgeschlossen sein.
 
@@ -1113,12 +1113,12 @@ Grundidee:
 1. $(m,n)\rightarrow m+1$
 2. $(m,n)\rightarrow m+n = m+ 1+ 1 +1...$
 3. $(m,n)\rightarrow m*n = m+m+m...$
-4. $(m,n)\rightarrow m^m^m^{...}$
+4. $(m,n)\rightarrow m^m$ (n-mal "hoch m")
 5. usw.
 
 Loop berechenbare Funktionen können sehr schnell wachsen, die Ackermann Funktion wächst jedoch noch schneller!
 
-Konstruktion: Für $f:\N\rightarrow\N$ sei $F(f)=g:\N\rigtharrow\N$ definiert durch $$g(y)=\begin{cases} f(1)\quad\text{falls } y=0\\ f(g(y-1)) \quad\text{falls } y>0\end{cases}$$ Also ist $F:\N^{\N}\rightarrow\N^{\N}$ Funktion, die numerische Funktionen auf numerische Funktionen abbildet. Wir definieren nun ein Folge von Funktionen $ack_x:\N\rightarrow\N$ für $x\in\N$:
+Konstruktion: Für $f:\N\rightarrow\N$ sei $F(f)=g:\N\rightarrow\N$ definiert durch $$g(y)=\begin{cases} f(1)\quad\text{falls } y=0\\ f(g(y-1)) \quad\text{falls } y>0\end{cases}$$ Also ist $F:\N^{\N}\rightarrow\N^{\N}$ Funktion, die numerische Funktionen auf numerische Funktionen abbildet. Wir definieren nun ein Folge von Funktionen $ack_x:\N\rightarrow\N$ für $x\in\N$:
 - $ack_0:\N\rightarrow\N:y\rightarrow y+1$
 - $ack_{x+1}=F(ack_x), d.h.
   - $ack_{x+1}(y) = \begin{cases} ack_x(1) \quad\text{falls } y=0\\ ack_x(ack_{x+1}(y-1)) \quad\text{falls } y>0 \end{cases}$
@@ -1215,4 +1215,176 @@ Die Simulation von Goto-Programmen durch While-Programme verwendet nur eine whil
 
 Das bedeutet: Ein While-Programm kann durch Umwandlung in ein Goto-Programm und Zurückumwandlung in ein While-Programm in ein äquivalentes While-Programm mit nur einer While-Schleife umgewandelt werden (Kleenesche Normalform für While- Programme).
 Die analoge Aussage für Loop-Programme gilt nicht (siehe Beweis, daß die Ackermann-Funktion nicht loop-berechenbar ist).
+
+## Turing Berechenbarkeit
+Eigenschaften von Turingmaschinen:
+- Wie endliche bzw. Kellerautomaten lesen Turingmaschinen eine Eingabe von einem Band und haben endlich viele Zustände.
+- Im Unterschied zu endlichen und Kellerautomaten
+  - kann der Lese- und Schreibkopf sich nach links und rechts bewegen,
+  - Zeichen überschreiben und
+  - das Band außerhalb der Eingabe verwenden.
+- Vergleich mit "Rechnendem":
+  - sich Notizen machen auf beliebig viel Papier, das linear angeordnet gedacht wird (= das Band),
+  - sich endlich viel merken (= endlich viele Zustände),
+  - nur einen begrenzten Teil seiner Notizen auf einmal überblicken (= der Lese- und Schreibkopf befindet sich immer auf genau einem Feld) und sich nur blätternd durch seine Notizen bewegen (= der Lese- und Schreibkopf bewegt sich höchstens einen Schritt nach rechts bzw. links).
+  -  Außerdem arbeitet er mechanisch.
+
+> Church-Turing-These: Eine partielle Funktion $\N^k--\rightarrow \N$ ist genau dann intuitiv berechenbar, wenn sie Turing-berechenbar ist.
+
+### Beispiel einer Turingmaschine (intuitiv)
+Turingmaschine, die eine Binärzahl auf dem Band um eins inkrementiert.
+Idee:
+- Kopf der Turingmaschine steht zunächst auf dem am weitesten links befindlichen (höchstwertigen) Bit der Binärzahl.
+- Kopf nach rechts laufen lassen, bis ein Leerzeichen gefunden wird.
+- Dann wieder nach links laufen und jede 1 durch 0 ersetzen, solange bis eine 0 oder ein Leerzeichen auftaucht.
+- Dieses Zeichen dann durch 1 ersetzen, bis zum Zahlanfang laufen und in einen Endzustand übergehen.
+
+> Definition: Eine Turingmaschine (TM) ist ein 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$, weobei
+> - $\sum$ das Eingabealphabet
+> - $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
+> - $z_0\in Z$ der Startzustand,
+> - $\delta:Z\times\Phi\rightarrow(Z\times\Phi\times\{L,N,R\})$ die Überführungsfunktion
+> - $\Box\in\Phi/\sum$ das Leerzeichen oder Blank und
+> - $E\subseteq Z$ die Menge der Endzustände ist
+
+ein Berechnungsschritt: Falls Lesekopf der TM im Zustand z auf dem Symbol a steht:
+- schlägt die Anweisung $(z',b,x)=\delta(z,a)$ in "Tabelle" nach
+- wechselt in den Zustand $z'$
+- überschreibt a durch b
+- führt Kopfbewegung aus
+  - Kopf nach links, falls $x=L$
+  - Kopf belibt stehen, falls $x=N$
+  - Kopf nach rechts, falls $x=R$
+
+## Beispiel Turingmaschine (formal)
+TM zur Inkrementierung einer Binärzahl: $M=(\{z_0,z_1,z_2,z_e\},\{0,1\},\{0,1,\Box\},\delta, z_0, \Box, \{z_e\})$ mit folgender Überfürhungsfunktion:
+- $z_0$: Zahlende finden
+    $$\delta(z_0,0)=(z_0,0,R), \delta(z_0,1)=(z_0,1,R), \delta(z,_0,\Box)=(z_1,\Box,L)$$
+- $z_1$: 1 und 0 vertauschen
+    $$\delta(z_1,0)=(z_2,1,L), \delta(z_1,1)=(z_1,0,L), \delta(z_1,\Box)=(z_e, 1, N)$$
+- $z_2$: zurück zum Zahlanfang
+    $$\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_e, \Box, R)$$
+- $z_e$: Endzustand
+    $$\delta(z_e,0)=(z_e,0,N), \delta(z_e,1)=(z_e,1,N), \delta(z_e,\Box)=(z_e, \Box, N)$$
+
+> Definition: Eine Konfiguration einer Turingmaschine ist ein Wort $k\in\Phi^*Z\Phi^+$
+Bedeutung: k=uzv
+- $u\in\Phi^*$ ist Abschnitt des Bandes vor Kopfposition der bereits besucht wurde
+- $z\in Z$ ost aktueller Zustand
+- $c\in\Phi^+$ ist Abschnitt des Bandes ab Kopfposition, der Besicht wurde oder im Bereich des Eingabewortes liegt.
+
+Übergangsrelation $\vdash_M$, die beschreibt welche Konfigurationsübergänge möglich sind:
+- Keine Bewegung: $\quad a_1\dots a_mzb_1b_2\dots b_n \vdash_M a_1\dots a_mz'cb_2\dots b_n$
+- Schritt nach Links: $\quad a_1\dots a_mzb_1b_2\dots b_n \vdash_M a_1\dots z'a_mcb_2\dots b_n$
+- Schritt nach Links am linken Bandende: $\quad zb_1b_2\dots b_n\vdash_m z'\Box cb_2\dots b_n$
+- Schritt nach Rechts: $\quad a_1\dots a_mzb_1b_2\dots b_n \vdash_M a_1\dots a_mcz'b_2\dots b_n$
+- Schritt nach Rechts am rechten Bandende: $\quad a_1\dots a_m zb_1\vdash_M a_1\dots a_m cz'\Box$
+
+> Definition: Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM und k eine Konfiguration. Dann heißt k Haltekonfiguration falls für alle Konfigurationen $k'$ gilt: $k\vdash_M k'\Rightarrow k=k'$ (d.h. ist %k=uzav$, so gilt $\delta(z,a)=(z,a,N)$). Die Haltekonfiguration k ist akzeptierend, wenn zusätzlich $k\in\Box^*E\sum^*\Box^*$ gilt.
+
+> Definition: Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM. Die von M berechnete partielle Funktion $f_M:\sum^*--\rightarrow \sum^*$ erfüllt f+r alle $x,y\in\sum^*: f_M(x)=y\leftrightarrow \exists z_e \in E,i,j,\in\N:z_0x\Box \vdash_M^* \Box^i z_e y\Box^j$ und $\Box^iz_ey\Box^j$ ist Haltekonfiguration.
+
+> Definition: Eine partielle Funktion $f:\sum^*--\rightarrow\sum^*$ heißt Turing berechenbar, wenn es eine TM M gibt mti $g_M=f$.
+
+> Definition: Sei $f:\N^k--\rightarrow\N$ eine partielle Funktion. Definiere eine partielle Funktion $F:\{0,1,\#\}^*--\rightarrow\{0,1,\#\}^*$ durch $F(w)=\begin{cases} bin(f(n_1,\dots ,n_k)) \quad\text{ falls } w=bin(n_1)\#bin(n_2)\#\dots \#bin(n_k) \text{ und } f(n_1,\dots,n_k) \text{ definiert} \\ \text{undefiniert} \quad{text{ sonst }}\end{cases}$. Dann heißt f Turing berechenbar, wenn F Turing berechenbar ist.
+> (Für $n\in\N$ sei $bin(n)$ die Binärdarstellung der Zahl n)
+
+### Mehrband Tunringmaschine
+- Eine Mehrband-Turingmaschine besitzt $k(k\geq 1)$ Bänder mit k unabhängigen Köpfen, aber nur eine Steuereinheit.
+- Aussehen der Übergangsfunktion: $\delta:Z\times\Phi^k\rightarrow (Z\times\Phi^k\times\{L,N,R\}^k)$ (ein Zustand, k Bandsymbole, k Bewegungen)
+- Die Ein- und Ausgabe stehen jeweils auf dem ersten Band. Zu Beginn und am Ende (in einer akzeptierenden Haltekonfiguration) sind die restlichen Bänder leer.
+
+> Satz: Zu jeder Mehrband Turingmaschine M gibt es eine (Einband) Turingmaschine M' die diesselbe Funktion löst
+Beweis:
+- Simulation mittels Einband-Turingmaschine durch Erweiterung des Alphabets: Wir fassen die übereinanderliegenden Bandeinträge zu einem Feld zusammen und markieren die Kopfpositionen auf jedem Band durch $\ast$. Neues Bandalphabet: $\Phi'=\sum\uplus\{\Box\}\uplus (\Phi\times\{\ast, \diamond\})^k$
+- Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Phi\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopd anwesen ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
+
+Beispiel: Die Funktion $*$ ist Turing-berechenbar.
+Beweisidee: Wir verwenden eine 4-Band-Turingmaschine, deren 1. Band am Anfang den Inhalt $bin(x)\#bin(y)$ enthält.
+1. Schritt: schreibe $bin(x)$ auf 2., $bin(y )$ auf 3. und $0$ auf 1. Band, danach stehen die Köpfe am rechten Rand der jeweiligen Inschriften
+2. Schritt: in jedem Unterschritt
+   1. bewegt sich 2. Kopf eine Stelle nach links (bis er 2 liest),
+   2. wird (falls 2. Kopf eine 1 liest) die Summe von 1. und 3. Band auf 4. Band geschrieben,
+   3. wird Inhalt des 4. Bandes auf 1. Band kopiert und
+   4. wird eine 0 an Beschriftung des 3. Bandes angehängt.
+
+Ähnlich sind $mod$ und $div$ mit fester Anzahl von Bändern Turing Berechenbar
+
+Problem: Was passiert, wenn $g(n)$ nicht definiert ist? Nach Definition erreicht M g dann keine Haltekonfiguration aus $\Box^*E\sum^*\Box^*$. Hierfür gibt es zwei Möglichkeiten:
+1. $M_g$ erreicht keine Haltekonfiguration („terminiert nicht“) (okay)
+2. $M_g$ terminiert in einer Haltekonfiguration, die nicht zu $\Box^*E\sum^*\Box^*$ gehört (problematisch)
+
+> Satz: Sei $g:\sum^*--\rightarrow\sum^*$ eine Turing-berechenbare partielle Funktion. Dann wird g von einer TM M berechnet, für die gilt: $\forall x\in\sum^*\forall k$ Haltekonfiguration: $z_ox\Box\vdash_M^* k\Rightarrow k\in \Box^*E\sum^*\Box^*$.
+
+- Neuer Fehlerzustand $\perp$ mit $\delta(\perp,a)=(\perp,a,R)$ ("im Fehlerzustand läuft die Maschine immer weiter nach rechts")
+- neues Bandsymbol $\tilde{\Box}$, lässt M immer $\tilde{\Box}$ an Stelle von $\Box$ schreiben.
+
+> Satz: Sind $f:\N^k--\rightarrow\N$ und $g_1,g_2,\dots,g_k:\N^l--\rightarrow\N$ Turing berechenbar, so auch die partielle Funktion $f(g_1,g_2,\dots,g_k):\N^l--\rightarrow\N$
+
+> Lemma: jede Turing berechenbare Funkion ist while-berechenbar
+
+> Lemma: jede Turing berechenbare Funktion ist goto-berechenbar
+
+## Ausflug: Zählermaschine
+Jede Turing-berechenbare Funktion $\N--\rightarrow\N$ ist durch ein Goto-Programm berechenbar, das
+- nur die Variablen $x_1,x_2$ und $x_3$ und
+- nur die Wertzuweisungen $x_i := x_i\pm ± 1$ (für $i\in\{1, 2, 3\}$) verwendet.
+Diese eingeschränkten Programme heißen 3-Zähler-Maschinen. Ist $f:\N--\rightarrow\N$ Turing-berechenbar, so ist $\N--\rightarrow\N:2^n\rightarrow2^{f(n)}$ durch eine 2-Zähler- oder Minsky-Maschine berechenbar (aber $n\rightarrow2^n$ kann nicht durch eine Minsky-Maschine berechnet werden).
+
+
+# Entscheidbarkeit
+Formal ist ein Entscheidungsproblem eine Sprache (die Menge aller "Probleminstanzen", auf die die Antwort "ja" sein muss).
+
+Das allgemeine Wortproblem ist die Menge $\{(G,w)|w\in L(G), G \text{ Chomsky Grammatik} \}$, weobei die Paare $(G,w)$ geeignet als Zeichenkette kodiert werden müssen.
+
+Das Schnittproblem für kontextfreie Grammatiken ist die Menge $\{(G_1,G_2)| G_1,G_2 \text{ kontextfreie Grammatiken }, L(G_1)\cap L(G_2) \}$
+
+Das allgemeine Halteproblem ist die Menge aller Paare $(M,x)$, wobei M eine TM ist und $x\in\{0,1\}^*$, so dass M bei EIngabe von x hält.
+
+> Definition: Eine Sprache $L\subseteq\sum^*$ hei entscheidbar, falls die charakteristische Funktion von L, d.h. die Funktion $\chi_L:\sum^*\rightarrow\{0,1\}$ mit $\chi_L(w= = \begin{cases} 1 \quad\text{ falls } w\in L \\ 0 \quad\text{ falls } w\not\in L \end{cases}$ berechenbar ist. Eine Sprache die nicht entscheidbar ist, heißt unentscheidbar.
+
+## Halteproble
+Unser Ziel ist es nun zu beweisen, daß das Halteproblem unentscheidbar ist. Halteproblem (informell):
+- Eingabe: Turing-Maschine M und deren Eingabe x.
+- Frage: Hält M auf x?
+Dazu werden wir jedoch zunächst genauer definieren, wie eine Turing-Maschine kodiert werden kann, um als Eingabe einer berechenbaren Funktion verwendet zu werden.
+- Ziel: Kodierung von Turing-Maschinen über dem Alphabet $\sum = \{0, 1\}$.
+- Annahme: alle Elemente von $\Phi$ (Bandalphabet) bzw. $Z$ (Zustandsmenge) sind durchnummeriert und Endzustände ($E$) haben großen Index
+  - Um die berechnete Funktion zu bestimmen, reichen die Kenntnis von $\delta$ und $E$ (bzw. m).
+- Kodierung der TM: Konkatenation aller Wörter w für $z_i\in Z$ in beliebiger Reihenfolge, gefolgt von $01^{m+1}$ (um Endzustände zu kodieren)
+- Dekodierung: Fixiere zunächst eine TM $\hat{M}$. Sei $w\in L_{TM}$; mit $M_w$ bezeichnen wir die Turing Maschine, die die Kodierung w hat. Falls w nicht die Kodierung einer Turing Maschine ist, so setzten wir $M_w=\hat{M}$.
+
+> Definition: das allgemeine Halteproblem ist die Sprache $H=\{w\#x | w\in L_{TM}, x\in\{0,1\}^*, M_w \text{ angesetzt auf x hält}\}$
+
+> Definition: das spezielle Halteproblem ist die Sprache $K=\{w\in L_{TM} | M_w \text{ angesetzt auf w hält}\}$
+
+> Satz: Das spezielle Halteproblem ist unentscheidbar
+
+## Reduktion
+Wir haben die Unentscheidbarkeit eines Problems, des speziellen Halteproblems, nachgewiesen.
+Daraus sollen weitere Unentscheidbarkeitsresultate gewonnen werden.
+Dies erfolgt mit Argumentationen folgender Art:
+1. Wenn man Problem B lösen könnte, dann könnte man auch A lösen. (Reduktionsschritt).
+2. Daraus folgt, daß B schwieriger bzw. allgemeiner ist als A ($A\leq B$).
+3. Wir wissen jedoch bereits, daß A unentscheidbar ist.
+4. Also muss das schwierigere Problem B auch unentscheidbar sein.
+
+> Definition: Seien $A\subseteq\sum^*,B\subseteq\Phi^*$. Eine Reduktion von A auf B ist eine totale und berechenbare Funktion $f:\sum^*\rightarrow\Phi^*$, so dass für alle $w\in\sum^*$ gilt: $w\in A\leftrightarrow f(x)\in B$. A heißt auf B reduzierbar (in Zeichen $A\leq B$), falls es eine Reduktion von A auf B gibt.
+
+> Lemma: Seien $A, B\subseteq\sum^*,a\leq B$ und sei B entscheidbar. Dann ist auch A entscheidbar.
+
+Kochrezept um die Unentscheidbarkeit eines Problems B zu zeigen
+- Finde ein geeignetes Problem A, von dem bekannt ist, daß es unentscheidbar ist. (Bisher kennen wir nur das spezielle Halteproblem K , wir werden allerdings bald weitere geeignete Probleme kennenlernen.)
+- Finde eine geeignete Funktion f , die A auf B reduziert.
+- Dann folgt, daß B unentscheidbar ist.
+
+> Satz: Das allgemeine Halteproblem ist unentscheidbar
+
+# Rechnen mit Kodierungen
+Sei M eine Turing-Maschine und $x\in\{0, 1\}^*$. Dann existiert eine Turing-Maschine M', die, wenn sie mit leerem Band gestartet wird, zunächst x auf das Band schreibt und dann M simuliert. 
+Frage: Können wir aus einem Kode w für M und dem Wort x einen q Kode w' für M' berechnen?
+
+> Lemma: Es gibt eine berechenbare Funktion $f:\{0,1,\#\}^*\rightarrow L_{TM}$, so dass für alle $w\in L_{TM}$ und $x,y,\in\{0,1\}^*$ gilt: $\phi_{f(w\#x)}(y)=\phi_w(xy)$
+
+> Satz: Das Halteproblem auf leerem Band ist unentscheidbar
 

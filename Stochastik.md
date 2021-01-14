@@ -4,6 +4,41 @@ date: Wintersemester 20/21
 author: Wieerwill
 ---
 
+- [Wahrscheinlichkeiten](#wahrscheinlichkeiten)
+  - [Wahrscheinlichkeitsraum $(\Omega , P)$](#wahrscheinlichkeitsraum-omega--p)
+  - [Ereignisalgebra](#ereignisalgebra)
+  - [Rechengesetze](#rechengesetze)
+  - [Vierfeldertafel](#vierfeldertafel)
+  - [Absolute Häufigkeit](#absolute-häufigkeit)
+  - [Relative Häufigkeit](#relative-häufigkeit)
+  - [Mehrstufige Zufallsexperimente](#mehrstufige-zufallsexperimente)
+    - [Baumdiagramm](#baumdiagramm)
+  - [Kombinatorik](#kombinatorik)
+  - [Laplace Expriment](#laplace-expriment)
+  - [Stochastische Unabhängigkeit](#stochastische-unabhängigkeit)
+  - [Bedingte Wahrscheinlichkeiten](#bedingte-wahrscheinlichkeiten)
+    - [Multiplikationssatz](#multiplikationssatz)
+    - [Totale Wahrscheinlichkeit](#totale-wahrscheinlichkeit)
+    - [Satz von Bayes](#satz-von-bayes)
+  - [Zufallsvariable](#zufallsvariable)
+    - [Diskrete Zufallsvariable](#diskrete-zufallsvariable)
+    - [Stetige Zufallsvariable](#stetige-zufallsvariable)
+  - [Wahrscheinlichkeitsverteilung](#wahrscheinlichkeitsverteilung)
+    - [Wahrscheinlichkeitsfunktion](#wahrscheinlichkeitsfunktion)
+    - [Dichtefunktion](#dichtefunktion)
+    - [Verteilungsfunktion](#verteilungsfunktion)
+    - [Diskrete Verteilungsfunktionen](#diskrete-verteilungsfunktionen)
+    - [Stetige Verteilungsfunktion](#stetige-verteilungsfunktion)
+  - [Erwartungswert](#erwartungswert)
+  - [Varianz](#varianz)
+  - [Standardabweichung](#standardabweichung)
+  - [Diskrete & Stetige Verteilung](#diskrete--stetige-verteilung)
+- [Deskriptive Statistik](#deskriptive-statistik)
+  - [Merkmale](#merkmale)
+  - [Lageparamter](#lageparamter)
+  - [Streuungsparameter](#streuungsparameter)
+  - [Skalenniveaus](#skalenniveaus)
+
 # Wahrscheinlichkeiten
 > Ein Zufallsexperiment ist ein Versuch mit zufälligem Ausgang.
 ## Wahrscheinlichkeitsraum $(\Omega , P)$
@@ -270,16 +305,25 @@ Die Wahrscheinlichkeitsfunktion f der Zufallsvariablen X gibt die Wahrscheinlich
 Für die Summe der Wahrscheinlichkeiten gilt $\sum_{i=1}^n p_i=1$
 
 ### Dichtefunktion
-Die Dichtefunktion ist ein Hilfsmittel zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung.\\
+Die Dichtefunktion ist ein Hilfsmittel zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung.
+
 Eigenschaften der Dichtefunktion
 - Die Dichtefunktion kann nur positive Werte annehmen. $f(x) \geq 0$ für alle $x\in\R$
 - Die Fläche unter der Dichtefunktion hat den Inhalt 1. $\int_{-\infty}^{\infty} f(x)dx= 1$
 
-Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wert x annimmt, ist stets Null. $P(X=x)=0$
+Die Verteilungsfunktion ergibt sich durch Integration der Dichtefunktion: 
+$$F(X)=P(X\leq x)=\int_{-\infty}^x f(u)du$$
 
+Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wert x annimmt, ist stets Null. $P(X=x)=0$
 
 ### Verteilungsfunktion
 Die Verteilungsfunktion ist ein Hilfsmittel zur Beschreibung einer diskreten oder stetigen Wahrscheinlichkeitsverteilung.
+
+Eine Funktion F, die jedem x einer Zufallsvariablen X genau eine Wahrscheinlichkeit $P(X\leq x)$ zuordnet, heißt Verteilungsfunktion: $F:x \rightarrow P(X\leq x$). $P(X\leq x)$ gibt die Wahrscheinlichkeit dafür an, dass die Zufallsvariable X höchstens den Wert x annimmt.
+- Die Verteilungsfunktion F einer diskreten Zufallsgröße X ist eine Treppenfunktion
+- $F(x)$ ist monoton steigend
+- $F(x)$ ist rechtssteitig stetig
+- $lim_{x\rightarrow -\infty} F(x)=0$ und $lim_{x\rightarrow +\infty} F(x) =1$
 
 ### Diskrete Verteilungsfunktionen
 1. $P(X\leq a)=F(a)$
@@ -305,11 +349,106 @@ Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wer
 - $P(a<X\leq b)=F(b)−F(a)$
 - $P(X>a)=1−F(a)$
 
-| | Dichtefunktion | Verteilungsfunktion |
-| -- | -- | -- |
+| | Dichtefunktion | Verteilungsfunktion | Erwartungswert | Varianz |
+| -- | -- | -- | -- | -- |
 | Normalverteilung | $f(x)=\frac{1}{\sigma*\sqrt{2\pi}}*e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}$ | $F(x)=\frac{1}{1-\sigma*\sqrt{2\pi}}\int_{-\infty}^{x}e^{-\frac{1}{2}(\frac{u-\mu}{\sigma})^2}du$ |
-| Stetige Gleichverteilung | $f(x)=\begin{cases}0 \text{ für } x<a \\ \frac{1}{b-a} \text{ für } a\leq x \leq b \\ 0 \text{ für } x>b \end{cases}$ | $F(x)=\begin{cases} o \text{ für } x\leq a \\ \frac{x-a}{b-a} \text{ für } a< x < b \\ 1 \text{ für } x\geq b\end{cases}$ |
-| Exponentialverteilung | $f(x)=\begin{cases}0 \text{ f+r } x<0 \\ \frac{1}{\mu}e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x<0 \\ 1-e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$
-| Binomialverteilung | 
-| Hypergeometrische Verteilung | 
-| Poisson-Verteilung | 
+| Stetige Gleichverteilung | $f(x)=\begin{cases}0 \text{ für } x<a \\ \frac{1}{b-a} \text{ für } a\leq x \leq b \\ 0 \text{ für } x>b \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x\leq a \\ \frac{x-a}{b-a} \text{ für } a< x < b \\ 1 \text{ für } x\geq b\end{cases}$ |
+| Exponentialverteilung | $f(x)=\begin{cases}0 \text{ f+r } x<0 \\ \frac{1}{\mu}e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x<0 \\ 1-e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | | - |
+| Binomialverteilung |  | - | | |
+| Geometrische Verteilung | | - | | - |
+| Hypergeometrische Verteilung |  | - | - | - |
+| Poisson-Verteilung |  | - | | |
+| uniforme Verteilung | | | | |
+| empirische Verteilung | | | | |
+| Laplace Verteilung |  | - | - | - |
+| Dirac Maß | | | | |
+
+| diskret | stetig |
+| -- | -- |
+| Binominalverteilung | Normalverteilung |
+| Hypergeometrische Verteilung | Stetige Gleichverteilung |
+| Poisson Verteilung | Exponentialverteilung |
+
+
+## Erwartungswert
+Der Erwartungswert ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die zentrale Lage einer Verteilung. 
+
+Ist X eine diskrete Zufallsvariable, so heißt $\mu_x = E(X)=\sum_i x_i*P(X=x_i)$ der Erwartungswert von X.
+
+Ist X eine stetige Zufallsvariable, so heißt $\mu_x=E(X)=\int_{-\infty}^{\infty} x*f(x) dx$ der Erwartungswert von X.
+
+## Varianz
+Die Varianz ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die erwartete quadratische Abweichung der Zufallsvariablen von ihrem Erwartungswert.
+
+Ist X eine diskrete Zufallsvariable, so heißt $\delta_x^2 = Var(X) = \sum_i (x_i-\mu_x)^2*P(X=x_i)$ die Varianz von X. 
+
+Ist X eine stetige Zufallsvariable, so heißt $\delta_x^2 = Var(X)= \int_{-\infty}^{\infty} (x-\mu x)^2*f(x) dx$ die Varianz von X.
+
+Verschiebungssatz: $Var(X)=E(X^2)-(E(X))^2$
+
+## Standardabweichung
+Die Standardabweichung ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die erwartete Abweichung der Zufallsvariablen von ihrem Erwartungswert.
+$$\delta_x = \sqrt{Var(X)}$$
+
+## Diskrete & Stetige Verteilung
+Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen. 
+Eine Verteilung lässt sich entweder durch eine
+- Wahrscheinlichkeitsfunktion (diskret)
+- Dichtefunktion (stetig) oder
+- Verteilungsfunktion (beide)
+
+vollständig beschreiben.
+
+
+# Deskriptive Statistik
+Aufgabe der deskriptiven Statistik ist es, große Datenmengen auf einige wenige Maßzahlen zu reduzieren, um damit komplexe Sachverhalte übersichtlich darzustellen.
+
+Die Menge aller Elemente, auf die ein Untersuchungsziel in der Statistik gerichtet ist, heißt Grundgesamtheit. Eine Datenerhebung der Grundgesamtheit nennt man Vollerhebung, wohingegen man eine Datenerhebung einer Stichprobe als Stichprobenerhebung bezeichnet. Die in einer Stichprobe beobachteten Werte heißen Stichprobenwerte oder Beobachtungswerte.
+
+## Merkmale
+Merkmale sind jene Eigenschaften, die bei einer Datenerhebung untersucht werden.
+
+| qualititativ || vs.| quantitativ ||
+| -- | -- | -- | -- | -- |
+| nominal (Ausprägung) | ordinal (Rangfolge) |\|| diskret (ganzzahlig) | stetig (beliebig) |
+| Geschlecht | Schulnote |\|| Schülerzahl | Gewicht |
+
+- Qualitative Merkmale lassen sich artmäßig erfassen.
+  - nominale Merkmale (Bsp. Geschlecht): Einzelne Ausprägungen des Merkmals lassen sich feststellen und willkürlich nebeneinander aufreihen. Es lässt sich keine Aussage über eine Reihenfolge oder über Abstände einzelner Ausprägungen machen.
+  - ordinale Merkmale (Bsp. Schulnoten): Einzelne Merkmale lassen sich zwar nicht im üblichen Sinne messen, wohl aber in eine Reihenfolge bringen. Eine Aussage über den Abstand der Ränge lässt sich dagegen nicht machen.
+- Quantitative (metrische) Merkmale lassen sich zahlenmäßig erfassen.
+  - diskrete Merkmale (Bsp. Schülerzahl): Es gibt nur bestimmte Ausprägungen, die sich abzählen lassen. Die Merkmalsausprägungen diskreter Merkmale sind also ganze, meist nichtnegative Zahlen.
+  - stetige Merkmale (Bsp. Gewicht): Einzelne Ausprägungen eines Merkmals können jeden beliebigen Wert innerhalb eines gewissen Intervalls annehmen.
+
+## Lageparamter
+Unter dem Begriff Lageparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Lage einer Verteilung machen.
+| Lageparamter | | 
+| -- | -- |
+| Arithmetisches Mittel | $x=\frac{x_1+x_2+\dots+x_n}{n}=\frac{1}{n}*\sum_{i=1}^n x_i$ |
+| Geometrisches Mittel | $\bar{x}_{geom} = \sqrt[n]{x_1*x_2*\dots*x_n}$ |
+| Harmonisches Mittel | $\bar{x}_{harm} = \frac{n}{\frac{1}{x_1}+\dots+\frac{1}{x_n}}$ |
+| Median | $\tilde{x} = \begin{cases} x_{\frac{n+1}{2}} \quad\text{ für n ungerade} \\ \frac{1}{2}(x_{\frac{n}{2}}+x_{\frac{n}{2}+1}) \quad\text{ für n gerade}\end{cases}$ Der Wert, welcher größer oder gleich 50% aller Werte ist. |
+| Modus | $\bar{x}_d=$ Häufigster Beobachtungswert |
+
+## Streuungsparameter
+Unter dem Begriff Streuungsparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Verteilung von einzelnen Werten um den Mittelwert machen.
+
+| Streuungsparameter | |
+| -- | -- |
+| Spannweite | $R=x_{max}-x_{min}$ |
+| Interquartilsabstand | $IQR=Q_{0,75}-Q_{0,25}$ |
+| Mittlere absolute Abweichung | $D=\frac{1}{n} * \sum_{i=1}^{n} \|x_i-\bar{x}\|$ |
+
+- Das 0,75-Quartil $Q_{0,75}$ entspricht dem Wert, welcher größer oder gleich 75% aller Werte ist.
+- Das 0,25-Quartil $Q_{0,25}$ entspricht dem Wert, welcher größer oder gleich 25% aller Werte ist.
+
+
+## Skalenniveaus
+
+| Skalen | diskret | qualitiativ | | für | 
+| -- | -- | -- | -- | -- |
+| Nominalskala    |   |   | Klassifikation, Kategorien | Geschlecht, Studiengang |
+| Ordinalskala    |   |   | Rangordnung ist definiert | Schulnoten |
+| Intervallskala  |   |   | Rangordnung und Abstände sind definiert | Temperatur |
+| Verhältnisskala |   |   | Rangordnung, Abstände und natürlicher Nullpunkt definiert | Gehalt, Gewicht |
+| Absolutskala    | Y | Y | Rangordnung, Abstände, natürlicher Nullpunkt und natürliche Einheiten | Anzahl Fachsemester |

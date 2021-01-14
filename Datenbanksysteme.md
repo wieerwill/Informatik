@@ -983,15 +983,226 @@ konzeptionelle Auswertung
     - Regionen mit mehr als einem Wein
       `select Region, count(*) as Anzahl from ERZEUGER natural join WEINE group by Region having count(*) > 1`
 
-      
-## Rekursion
+### Äußere Verbunde
+- outer join übernimmt alle Tupel beider Operanden (Langfassung: full outer join)
+- left outer join bzw. right outer join übernimmt alle Tupel des linken bzw. des rechten Operanden
+- äußerer natürlicher Verbund jeweils mit Schlüsselwort natural, also z.B. natural left outer join
 
+### Sortierung
+order by attributliste
+
+select w1.Name, count(*) as Rang
+from WEINE w1, WEINE w2
+where w1.Jahrgang <= w2.Jahrgang
+group by w1.Name, w1.WeinID
+having count(*) <= 4
+order by Rang
+
+### Nullwerte
+- skalare Ausdrücke: Ergebnis null, sobald Nullwert in die Berechnung eingeht
+- in allen Aggregatfunktionen bis auf count(∗) werden Nullwerte vor Anwendung der Funktion entfernt
+- fast alle Vergleiche mit Nullwert ergeben Wahrheitswert unknown (statt true oder false)
+- Ausnahme: is null ergibt true, is not null ergibt false
+- Boolesche Ausdrücke basieren dann auf dreiwertiger Logik
+- Null-Selektion wählt Tupel aus, die bei einem bestimmten Attribut Nullwerte enthalten
+  - Notation `attribut is null`
+
+
+## Rekursion
+- Anwendung: Bill of Material-Anfragen, Berechnung der transitiven Hülle (Flugverbindungen etc.)
+- Formulierung über erweiterte with recursive-Anfrage
+  - Notation
+    ```sql
+    with recursive rekursive-tabelle as (
+      anfrage-ausdruck -- rekursiver Teil
+    )
+    [traversierungsklausel] [zyklusklausel]
+    anfrage-ausdruck -- nicht rekursiver Teil
+    ```
+- Sicherheit (= Endlichkeit der Berechnung) ist wichtige Anforderung an Anfragesprache
+  - Behandlung in SQL
+    - Begrenzung der Rekursionstiefe
+    - Zyklenerkennung
 
 # Grundlagen von Anfragen: Algebra & Kalkül
+## Kriterien für Anfragesprachen
+- bisher: Relationenschemata mit Basisrelationen, die in der Datenbank gespeichert sind
+- jetzt: „abgeleitete“ Relationenschemata mit virtuellen Relationen, die aus den Basisrelationen berechnet werden (Basisrelationen bleiben unverändert)
 
+Begriffe
+- Anfrage: Folge von Operationen, die aus den Basisrelationen eine Ergebnisrelation berechnet
+  - Ergebnisrelation interaktiv auf dem Bildschirm anzeigen oder
+  - per Programm weiterverarbeiten („Einbettung“)
+- Sicht: Folge von Operationen, die unter einem Sichtnamen langfristig abgespeichert wird und unter diesem Namen wieder aufgerufen werden kann; ergibt eine Sichtrelation
+- Snapshot: Ergebnisrelation einer Anfrage, die unter einem Snapshot-Namen abgelegt wird, aber nie ein zweites Mal (mit geänderten Basisrelationen) berechnet wird (etwa Jahresbilanzen)
+
+Kriterien für Anfragesprachen
+- Ad-Hoc-Formulierung: Benutzer soll eine Anfrage formulieren können, ohne ein vollständiges Programm schreiben zu müssen
+- Deskriptivität: Benutzer soll formulieren „Was will ich haben?“ und nicht „Wie komme ich an das, was ich haben will?“
+- Mengenorientiertheit: jede Operation soll auf Mengen von Daten gleichzeitig arbeiten, nicht navigierend nur auf einzelnen Elementen („one-tuple-at-a-time“)
+- Abgeschlossenheit: Ergebnis ist wieder eine Relation und kann wieder als Eingabe für die nächste Anfrage verwendet werden
+- Adäquatheit: alle Konstrukte des zugrundeliegenden Datenmodells werden unterstützt
+- Orthogonalität: Sprachkonstrukte sind in ähnlichen Situationen auch ähnlich anwendbar
+- Optimierbarkeit: Sprache besteht aus wenigen Operationen, für die es Optimierungsregeln gibt 
+- Effizienz: jede Operation ist effizient ausführbar (im Relationenmodell hat jede Operation eine Komplexität ≤ O(n 2 ), n Anzahl der Tupel einer Relation).
+- Sicherheit: keine Anfrage, die syntaktisch korrekt ist, darf in eine Endlosschleife geraten oder ein unendliches Ergebnis liefern
+- Eingeschränktheit: (folgt aus Sicherheit, Optimierbarkeit, Effizienz) Anfragesprache darf keine komplette Programmiersprache sein
+- Vollständigkeit: Sprache muss mindestens die Anfragen einer Standardsprache ausdrücken können
+
+## Anfragealgebren
+- Mathematik: Algebra definiert durch Wertebereich und auf diesem definierte Operatoren
+- für Datenbankanfragen: Inhalte der Datenbank sind Werte, und Operatoren definieren Funktionen zum Berechnen von Anfrageergebnissen
+  - Relationenalgebra
+  - Algebra-Erweiterungen
+
+Relationenalgebra
+- Spalten ausblenden: Projektion π
+- Zeilen heraussuchen: Selektion σ
+- Tabellen verknüpfen: Verbund (Join) ⋊
+- Tabellen vereinigen: Vereinigung ∪
+- Tabellen voneinander abziehen: Differenz −
+- Spalten umbenennen: Umbenennung β (wichtig für ⋊ und ∪, −)
+
+Projektion
+- Syntax $\pi_{Attributmenge}(Relation)$
+- Semantik $\pi_X (r) := \{t(X) | t \in r\}$
+  - für r(R) und X ⊆ R Attributmenge in R
+- Eigenschaft für Y ⊆ X ⊆ R
+  - $\pi_Y (\pi_X (r)) = \pi_Y (r)$
+- Achtung: π entfernt Duplikate (Mengensemantik)
+
+Selektion
+- Syntax $\sigma_{Bedingung} (Relation)$
+- Semantik (für A ∈ R) $\sigma_{A=a}(r) := \{t \in r | t(A) = a\}$
+- Konstantenselektion $Attribut θ Konstante$
+  - boolesches Prädikat θ ist = oder$\not=$, bei linear geordneten Wertebereichen auch ≤, <, ≥ oder >
+- Attributselektion $Attribut1 θ Attribut2$
+- logische Verknüpfung mehrerer Konstanten- oder Attribut-Selektionen mit ∧, ∨ oder ¬
+- Eigenschaften
+  - Kommutativität $\sigma_{A=a}(\sigma_{B=b} (r)) = \sigma_{B=b} (\sigma_{A=a} (r))$
+  - falls $A\in X, X \subseteq R: \pi_X(\sigma_{A=a} (r)) = \sigma_{A=a} (\pi_{X} (r))$
+  - Distributivität bzgl. ∪, ∩, − $\sigma_{A=a} (r \cup s) = \sigma_{A=a} (r) \cup \sigma_{A=a} (s)$
+- Verbund
+  - Syntax des (natürlichen) Verbundes (engl.: natural join) $Relation1 \bowtie Relation2$
+  - Semantik $r_1 \bowtie r_2 := {t | t(R_1\cup  R_2 ) \vee [\forall i \in \{1, 2\}\exists t_i ∈ r_i : t_i = t(R_i )]}$
+  - Verbund verknüpft Tabellen über gleichbenannten Spalten bei gleichen Attributwerten
+  - Schema für $r(R) \bowtie r(S)$ ist Vereinigung der Attributmengen $RS = R \cup S$
+  - aus $R_1 \cap R_2 = \{\}$ folgt $r_1\bowtie r_2 = r_1 \times r_2$
+  - Kommutativität: r 1 ⋊ r 2 = r 2 ⋊ r 1
+  - Assoziativität: (r 1 ⋊ r 2 ) ⋊ ⋉ r 3 = r 1 ⋉ (r 2 ⋊ r 3 )
+  - daher erlaubt: $\bowtie_{i=1}^p r_i$
+- Umbenennung
+  - Syntax $\beta_{neu\leftarrow alt} (Relation)$
+  - Semantik $\beta_{B\leftarrow A} (r) := \{t' | \exists t \in r : t' (R - A) = t(R - A) \vee t'(B) = t(A)\}$
+  - ändert Attributnamen von alt in neu 
+- Berechnung des Kreuzproduktes
+  - natürlicher Verbund entartet zum Kreuzprodukt, wenn keine gemeinsamen Attribute existieren
+  - Erzwingen durch Umbenennung
+  - Kreuzprodukt + Selektion simuliert natürlichen Verbund
+
+Unabhängigkeit und Vollständigkeit
+- Minimale Relationenalgebra: Ω = π, σ, ⋊, β, ∪ und −
+- unabhängig: kein Operator kann weggelassen werden ohne Vollständigkeit zu verlieren
+- andere unabhängige Menge: ⋉ und β durch × ersetzen
+- Relationale Vollständigkeit: jede andere Menge von Operationen genauso mächtig wie Ω
+- strenge relationale Vollständigkeit: zu jedem Ausdruck mit Operatoren aus Ω gibt es einen Ausdruck auch mit der anderen Menge von Operationen
+
+## Erweiterungen der Relationenalgebra
+Verbundvarianten
+- Gleichverbund (engl. equi-join): Gleichheitsbedingung über explizit angegebene und evtl. verschiedene Attribute
+  - $r(R) \bowtie_{C=D} r(S)$
+- Theta-Verbund (engl. θ-join): beliebige Verbundbedingung
+  - $r(R) \bowtie_{C>D} r(S)$
+- Semi-Verbund: nur Attribute eines Operanden erscheinen im Ergebnis
+  - $r(L) \bowtie r(R) = \pi_L (r(L) \bowtie r(R))$
+- äußere Verbunde (engl. outer join)
+  - voller äußerer Verbund übernimmt alle Tupel beider Operanden
+  - linker äußerer Verbund übernimmt alle Tupel des linken Operanden
+  - rechter äußerer Verbund übernimmt alle Tupel des rechten Operanden
+
+Problem: Quantoren
+- Allquantor in Relationenalgebra ausdrücken, obwohl in Selektionsbedingungen nicht erlaubt
+- Division (kann aus Ω hergeleitet werden)
+
+> Division: Die ganzzahlige Division ist in dem Sinne die Inverse zur Multiplikation, indem sie als Ergebnis die größte Zahl liefert, für die die Multiplikation mit dem Divisor kleiner ist als der Dividend.
+Analog gilt: $r = r_1 / r_2$ ist die größte Relation, für die $r \bowtie r_2 \subseteq r_1$ ist.
+
+Gruppierungsoperator γ
+- erweitert Attributschema von r(R) um neue Attribute, die mit den Funktionsanwendungen $f_1 (x_1 ), f_2 (x_2 ),..., f_n (x_n )$ korrespondieren
+- Anwendung der Funktionen $f_i (x_i)$ auf die Teilmenge derjenigen Tupel von $r(R)$ die gleiche Attributwerte für die Attribute A haben
+
+## Anfragekalküle
+- Kalkül: eine formale logische Sprache zur Formulierung von Aussagen
+- Ziel: Einsatz eines derartigen Kalküls zur Formulierung von Datenbank-Anfragen
+- Logikbasierter Ansatz:
+  - Datenbankinhalte entsprechen Belegungen von Prädikaten einer Logik
+  - Anfragen abgeleiteten Prädikaten
+
+Ein allgemeiner Kalkül
+- Motivation: mathematische Notation $\{x^2 | x \in\N \vee x^3 > 0 \vee x^3 < 1000\}$
+- Anfrage hat die Form $\{f(\bar{x}) | p(\bar{x})\}$
+  - x bezeichnet Menge von freien Variablen $x = \{x_1:D_1,...,x_n:D_n\}$
+  - Funktion f bezeichnet Ergebnisfunktion über $\bar{x}$
+  - p Selektionsprädikat über freien Variablen $\bar{x}$
+- Ergebnisbestimmung einer Anfrage
+  - Bestimme aller Belegungen der freien Variablen in x, für die das Prädikat p wahr wird.
+  - Wende Funktion f auf die durch diese Belegungen gegebenen Werte an.
+- Unter welchen Umständen liefern Kalkülanfragen endliche Ergebnisse? → Sicherheit von Anfragen
+
+Relationale Kalküle
+- Bereichskalkül: Variablen nehmen Werte elementarer Datentypen (Bereiche) an
+  - Terme:
+    - Konstanten, etwa 42 oder 'MZ-4'
+    - Variablen zu Datentypen, etwa x Datentypangabe erfolgt in der Regel implizit und wird nicht explizit deklariert! 
+    - Funktionsanwendung $f(t_1,...,t_n )$: Funktion f, Terme $t_i$ , etwa $plus(12, x)$ bzw. in Infixnotation $12 + x$
+  - Atomare Formeln:
+    - Prädikatanwendung $\Theta(t_1,...,t_n ), \Theta\in\{<, >, \leq, \geq, \not = , =,...\}$
+      - Datentypprädikat, Terme $t_i$ 
+      - Zweistellige Prädikate wie üblich in Infix-Notation.
+      - Beispiele: $x = y$, $42 > x$ oder $3 + 7 = 11$.
+    - Prädikatanwendungen für Datenbankprädikate, notiert als $R(t_1,...,t_n)$ für einen Relationennamen R
+      - Voraussetzung: n muss die Stelligkeit der Relation R sein und alle $t_i4 müssen vom passenden Typ sein
+      - Beispiel: `ERZEUGER(x, ’Hessen’, z)`
+    - Formeln wie üblich $\vee, \wedge, \neg, \forall, \exists$
+  - Anfragen: $\{x_1,..., x_n | \phi(x_1,..., x_n )\}$
+    - $\phi$ ist Formel über den in der Ergebnisliste aufgeführten Variablen $x_1$ bis $x_n$
+    - Ergebnis ist eine Menge von Tupeln
+    - Tupelkonstruktion erfolgt implizit aus den Werten der Variablen in der Ergebnisliste
+- Basiskalkül
+  - Einschränkung des Bereichskalküls:
+    - Wertebereich: ganze Zahlen
+    - Datentypprädikate werden wie bei der Relationenalgebra auf Gleichheit und elementare Vergleichsoperatoren eingeschränkt
+    - Funktionsanwendungen sind nicht erlaubt; nur Konstanten dürfen neben Bereichsvariablen als Terme verwendet werden
+- Tupelkalkül: Variablen variieren über Tupelwerte (entsprechend den Zeilen einer Relation)
+  - Grundlage von SFW-Anfragen in SQL
+  - Variablen sind tupelwertig
+  - Beispiel: $\{w | w\in WEINE \vee w.Farbe = 'Rot'\}$
+
+Motivation: Die Sprache QBE
+- „Query by Example“
+- Anfragen in QBE: Einträge in Tabellengerüsten
+- Intuition: Beispieleinträge in Tabellen
+- Vorläufer verschiedener tabellenbasierter Anfrageschnittstellen kommerzieller Systeme
+- basiert auf logischem Kalkül mit Bereichsvariablen
+
+> Semantisch sichere Anfragen: Anfragen, die für jeden Datenbankzustand $\sigma(R)$ ein endliches Ergebnis liefern
+
+> Semantische Sicherheit Semantische Sicherheit ist im Allgemeinen nicht entscheidbar!
+
+> Syntaktische Sicherheit: Jede freie Variable $x_i$ muss überall in $\phi(x_1,...)$ durch positives Auftreten $x_i = t$ oder $R(. . . , x_i , . . . )$ an endliche Bereiche gebunden werden.
+- Syntaktisch sichere Anfragen: Anfragen, die syntaktischen Einschränkungen unterliegen, um die semantische Sicherheit zu erzwingen.
+- Bindung an endliche Bereiche muss für die ganze Bedingung gelten, also insbesondere für alle Zweige einer Disjunktion
+
+## Eigenschaften des Bereichskalküls
+- Ausdrucksfähigkeit des Bereichskalküls: Bereichskalkül ist streng relational vollständig, d.h. zu jedem Term τ der Relationenalgebra gibt es einen äquivalenten (sicheren) Ausdruck η des Bereichskalküls.
 
 # Transaktionen, Integrität und Trigger
-
+## Grundbegriffe
+## Transaktionsbegriff
+## Transaktionen in SQL
+## Integritätsbedingungen in SQL
+## Trigger
+## Schemaevolution
 
 # Sichten und Zugriffskontrolle
 

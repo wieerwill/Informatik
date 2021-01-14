@@ -771,9 +771,712 @@ Pflichtenheft (Beispiel)
 
 
 # Grobentwurf
+## Einführung
+Systementwurf – Aufgabe
+- Sicht des geplanten Systems von innen (Entwickler)
+- Wie sollen vereinbartes Verhalten und Funktionen (Analysemodell) intern realisiert werden?
+- Von Spezifikation von Anforderungen und Funktionen -> Vorbereitung der Implementierung
+- Formal: Transformation des Analysemodells in ein Systementwurfsmodell
+- System(grob)entwurf, Feinentwurf/Objektentwurf
 
+Teile und herrsche
+- Grobentwurf
+  - Entwurfsziele identifizieren
+  - Grobe Systemstruktur festlegen (Architektur)
+  - Zerlegung in Subsysteme, Spezifikation
+    - Schichten, Pakete, Komponenten
+  - Bewerten der Zerlegung anhand der Entwurfsziele
+  - Schnittstellen festlegen
+- Feinentwurf
+  - Subsysteme im Detail entwerfen
+    - Strukturierung der Komponenten
+    - Klassen, Objekte, Funktionen, Datenstrukturen
+    - Verhalten, Algorithmen – Teillösungen
+
+
+## Systemzerlegung
+Vorgehen
+- Zerlegung eines Systems in Subsysteme
+- Betrachtung der Lösungsdomäne!
+- Subsysteme weiter zerlegen bis Komplexität ausreichend klein ist z.B. für Arbeitspakete
+
+Was macht ein Subsystem aus?
+- Schnittstellen, Funktionen, „Verantwortung“
+- Was bietet es an?
+- Was benutzt es?
+- Was tut es intern?
+
+Operation
+- Name und Parameter
+- Funktion, Prozedur, Methode, Eintrittspunkt ...
+
+Dienst
+- Satz von Operationen, die bereitgestellt werden
+
+Abhängigkeiten von Subsystemen
+- Subsysteme untereinander: Kopplung (coupling)
+- Maß für die Abhängigkeit von Subsystemen
+
+Möglichst lose Kopplung
+- Änderungen in einem beteiligten Subsystem haben geringe Auswirkungen (Stabilität)
+- Erleichtert Wartbarkeit und Arbeitsteilung
+
+Mittel zur Verringerung der Kopplung
+- Zusätzliche Unterteilung in Subsysteme
+- Aber: dann größere Komplexität!
+
+Abhängigkeiten von Subsystemen
+| Kopplungsart | Bemerkung |
+| -- | -- |
+| Datenkopplung (gemeinsame Daten) | Möglichst vermeiden! Wenn nicht möglich, Verwaltung zentralisieren und Zugriff über Schnittstelle |
+| Schnittstellenkopplung (gegenseitiger Aufruf) | Akzeptabel |
+| Strukturkopplung (gemeinsame Strukturelemente) | Vermeiden! (z.B. keine Vererbung über Paketgrenzen hinweg) |
+
+- Elemente eines Subsystems: Kohäsion (cohesion)
+- Maß für Zusammengehörigkeit der Elemente
+- Möglichst hohe Kohäsion
+  - Enge Beziehung oder ähnliche Aufgaben der Elemente
+  - Erleichtert Verständnis, Wartung und Anpassung
+- Mittel zum Erreichen hoher Kohäsion
+  - Datenkapselung, Objektorientierung
+  - Benutzung geeigneter Patterns (Kapitel 5)
+
+Metriken für modulare Entwürfe
+- Fan-in / fan-out-Metrik [S.Henry, D. Kafura 1981]:
+  - Fan-in: Anzahl der Stellen, wo Kontrollfluss auf das betrachtete Modul M übergeht (Aufrufe von Funktionen / Prozeduren in M) + Anzahl globaler Variablen, die in M zugänglich sind
+  - Fan-out: Anzahl von Stellen, an denen M andere Module aufruft + Anzahl der globalen Variablen, die von M verändert werden
+- Heuristik Kopplung / Kohäsion
+  - Hoher Fan-out bedeutet hohe Kopplung, minimieren
+  - Hoher Fan-in kann auf geringe Kohäsion von M hindeuten
+
+Komplexität beherrschen: "Wenn Du es nicht in fünf Minuten erklären kannst, hast Du es entweder selbst nicht verstanden oder es funktioniert nicht." [Rechtin, Maier: The Art of Systems Architecting 2000]
+
+Vorgehen: Heuristiken und Erfahrungen
+- „Erfahrung ist die härteste Lehrerin. Sie gibt Dir zuerst den Test und anschließend den Unterricht.“ [Ruth 1993]
+- „Ein Architekt der zu Beginn seiner Arbeit vollständige und konsistente Anforderungen benötigt, mag ein brillanter Entwickler sein – aber er ist kein Architekt“ [Rechtin 2000]
+- „Das Leben von Software-Architekten besteht aus einer langen und schnellen Abfolge suboptimaler Entwurfs-entscheidungen, die teilweise im Dunkeln getroffen werden.“ [Kruchten2001]
+
+Wie organisiert man Subsysteme?
+- Innerhalb einer Verfeinerungsstufe: fachlich orientierte Zerlegung
+- Mehrfache Zerlegung: Hierarchie-Graph der Verfeinerung
+
+Schicht
+- Gruppe von Subsystemen in der Zerlegungshierarchie
+- Verwandte Dienste
+- Ähnlicher Abstraktionsgrad
+- Abhängigkeit nur von darunter liegenden!
+
+- Geschlossene Schichtenarchitektur
+  - Beispiel: OSI-Modell für Kommunikationssysteme
+- Offene Schichtenarchitektur
+  - Beispiel: Java Swing auf X11-Plattform
+
+Prinzipien des OO-Entwurfs
+- So-einfach-wie-möglich-Prinzip (KISS)
+- Fehler berücksichtigen (Strukturierung, Kapselung, Modularisierung, Wiederverwendung)
+- Entwerfen nach Verantwortlichkeiten
+- Hohe Kohäsion / Geringe Kopplung
+- Zyklische Abhängigkeiten vermeiden
+- Auf Schnittstellen konzentrieren
+  - Abhängigkeiten nur von Schnittstellen
+  - Abtrennung von Schnittstellen (eher viele kleine als eine große)
+  - Umkehr der Abhängigkeiten (dependency inversion-Prinzip)
+- Offen / Geschlossen Prinzip
+
+Zyklische Abhängigkeiten vermeiden
+- Änderungen wirken sich auf beide Komponenten aus
+- Probleme beim Löschen und Initialisieren
+- Auflösen durch
+  - Gemeinsame Klassen in separates Paket
+  - Gemeinsame Schnittstellen definieren
+
+Symptome schlechten Designs
+- Starrheit
+  - Einfache Änderungen schwierig realisierbar
+  - Einfache Änderungen führen zur Modifikation einer Vielzahl von Komponenten
+- Zerbrechlichkeit
+  - Änderungen an einer Stelle führen zu Fehlern an völlig anderer Stelle
+- Schlechte Wiederverwendbarkeit
+  - Komponenten können Aufgrund spezieller Anhängigkeiten kaum wiederverwendet werden
+
+Wann ist ein Entwurf „gut“?
+- Korrekt
+  - Erfüllung der Anforderungen
+  - Wiedergabe aller Funktionen des Systemmodells
+  - Sicherstellung der nichtfunktionalen Anforderungen
+- Verständlich und präzise, gut dokumentiert
+- Anpassbar
+- Hohe Kohäsion innerhalb der Komponenten
+- Schwache Kopplung zwischen den Komponenten
+- Wiederverwendung
+- Kriterien gelten auf allen Ebenen des Entwurfs! (Architektur, Subsysteme, Komponenten)
+
+## Architekturmodelle
+- Modellierung mit UML
+  - Bisher: logische Sicht
+  - Technisch: Organisation in Paketen, Namensraum, Import
+- Paketdiagramm
+  - Gliederung (Strukturierung) des Systems in Teile
+  - Zuordnung von Elementen zu einem Paket
+  - Hierarchien und Abhängigkeiten zwischen den Paketen
+  - Anwendung: Definition von Schichten
+- Enthält-Beziehung
+  - Definiert, in welchem Paket ein Element enthalten ist
+  - Ermöglicht qualifizierten Zugriff auf enthaltene Elemente
+  - Löschen des Pakets bewirkt Löschen beinhalteter Elemente
+  - Definition von Sichtbarkeit / Zugriffsrechte
+    - Auswirkung auf weitere Enthält-Beziehung
+    - '+' - public (default)
+    - '-' - private
+- Paket- / Element-Import
+  - Unqualifizierter Zugriff auf Elemente eines anderen Namensraums (Paketes)
+- Komponentendiagramm
+  - Komponente – modulare, austauschbare Einheit
+  - Strukturierung des Systems durch Komponenten
+  - Modellierung der
+    - Abhängigkeiten zwischen Komponenten
+    - inneren Struktur von Komponenten
+  - Definition von Schnittstellen
+  - Verwendung von Elementen aus Klassen- und Objektdiagramm
+  - Stärkere dynamische Sicht -> kein Verhalten
+  - Komponente <<component>>
+    - Kapselt Funktionalitäten (Physisch gruppierte Klassen)
+    - „Spezialisierte“ Klasse (Vererbung, Exemplare möglich)
+    - Stellt Funktionalitäten über Schnittstellen bereit
+    - Definiert benötigte Schnittstellen
+    - Enthält Klassen oder weitere Komponenten
+    - Modulares Element: Substitution (Austauschbarkeit) steht im Vordergrund
+  - Black-Box-Darstellung
+    - Zur Verfügung gestellte Funktionalität `<<provided interfaces>>`
+    - Benötigte Funktionalität `<<required interfaces>>`‚
+  - White-Box-Darstellung
+    - Interner Aufbau der Komponente `<<realization>>`
+    - Artefakte `<<artifacts>>`‚ Realisierende physische Einheit (z.B.: .dll)
+
+Schnittstellen / Interfaces
+- Definition Diagrammunabhängig
+  - Meist Klassendiagramm 
+- Ähnlich Semantik einer Klasse
+  - Nur public-Attribute und Operationen
+- Definiert Verpflichtung zur Implementierung von
+  - Operationen
+  - Merkmale -> Attribute dürfen definiert werden
+  - Verpflichtungen (z.B.: Vor- / Nachbedingungen)
+- Meist abstrakte Klassen mit abstrakten Operationen
+- Abstrakt – muss überschrieben werden
+- Notation
+  - Stereotyp: <<Interface>>
+  - Meist kursiv geschrieben, da abstrakte Klasse
+
+Schnittstellenrealisierung, Implementierungsbeziehung
+- Schnittstellen werden realisiert, nicht instanziiert
+- Schnittstellenkonform
+  - Klasse realisiert alle Attribute und Operationen
+- Schnittstelle kann von anderen Schnittstellen erben
+- Keine Schnittstellenrealisierung zwischen zwei Interface-Klassen -> Generalisierung verwenden
+- Darstellung
+  - Gestrichelte Linie mit nicht gefülltem Dreieck an der Seite der Superklasse
+  - Alternativ: Lollipop-Darstellung
+
+
+## Softwarearchitekturmuster
+- Wiederverwendung auf sehr hoher Abstraktionsstufe
+- Falls geplante Anwendung passt, anwenden!
+
+Schichten-Architektur (layers)
+- Problem
+  - Komplexität: Strukturierung des Systems, unterschiedliche Abstraktionsebenen
+  - Änderungen sollen möglichst lokal bleiben
+  - Teilsysteme sollen austauschbar, wiederverwendbar und getrennt entwickelbar sein
+  - Schnittstellen sollen stabil sein
+- Lösung
+  - Zuordnung von Subsystemen zu horizontalen Schichten gleicher Abstraktionsebene
+  - Komponenten einer Schicht bieten Dienste der darüber liegenden Schicht an
+
+Client-Server (Klient/Anbieter)
+- Client (front-end)
+  - Benutzungsschnittstelle
+  - Einbindung in Geschäftsprozesse
+  - Entkoppelt von Netztechnologie und Datenhaltung
+- Server (back-end)
+  - Datenhaltung, evtl. Fachlogik
+- Genauer: Two-tier client/server architecture
+- Asynchroner Kontrollfluss
+- Aufteilung Funktionen Client / Server
+  - Mehr Funktionen im Server:
+    - zentrale Verwaltung, Wartungsaufwand geringer, Portabilität, einfache Client-Hardware (Net PC)
+    - „Thin Client“ – nur GUI
+  - Mehr Funktionen im Client: Flaschenhals Server wird entlastet, individuellere Client-Funktionen
+    - „Fat Client“ – Teil der Anwendung im Client
+  - Entscheidet mit über Umsetzung (Java Script, ...)
+
+Three-Tier / Four-Tier Architecture
+- Client/Server mit weiterer Aufteilung ähnlich Repository
+
+Bewertung Client-Server
+- Vorteile
+  - Leicht verständlich
+  - Änderungen bleiben lokal
+  - Geringere Kopplung zwischen den Schichten
+  - Schichten austauschbar und wiederverwendbar
+  - Getrennte Entwicklung der Schichten möglich
+  - Vorhandene / stabilere Schnittstellen
+- Nachteile
+  - Geringere Performance
+  - Zusätzlicher Verwaltungs- oder Datenoverhead
+  - Manche Änderungen führen zu Änderungen in allen Schichten (z.B. neues Datenfeld)
+
+Pipes and Filters
+- Datenstrom- oder Kontrollflussorientiertes System
+- Lose verbundene Berechnungskomponenten
+- Kombination der Berechnungskomponenten nur vom Typ der Ein- und Ausgabedaten abhängig
+- Leicht erweiterbar System gewünscht
+- Parallele Verarbeitung vorteilhaft
+- Verwendung von globalen Steuerungskontrollstrukturen (Parallelisierung, Verzweigung, Schleifen) gewünscht
+- Vorteile
+  - Stark entkoppelte Komponenten
+  - Hohe Flexibilität gegenüber Änderungen & Erweiterungen
+  - Hoher Wiederverwendungsgrad der Komponenten
+  - Unabhängige Entwicklung der Komponenten
+  - Leichte Parallelisierung der Berechnungen möglich
+  - Überprüfung der Datenkompatibilität dynamisch / statisch
+- Nachteile
+  - Schwierige Fehlerbehandlung, kein expliziter Kontrollfluss
+  - Fehler durch inkompatible Datentypfehler erst zur Laufzeit
+  - Häufig zusätzliche Datenkonvertierungen notwendig
+
+
+Plug-In Architektur (Microkernel)
+- Zielstellung
+  - Stabile, verbreitete Standard-Anwendung (Kern)
+  - Funktionalität soll durch Komponenten leicht erweiterbar sein
+  - Dritte sollen Komponenten leicht erstellen können
+- Lösung
+  - Möglichst schlanker zentraler Kern
+  - Plugin-Manager verwaltet Komponenten: Laden, Entladen, Zugriffskontrolle, Konfiguration
+- Plugin
+  - Komponente mit Standard-Schnittstelle
+  - Erweitert Funktionalität (extension point)
+- Vorteile
+  - Robustes Verhalten
+  - Trennung der Zuständigkeiten
+  - Erweiterbar, Austauschbar, Wiederverwendbar
+  - Geringe Kopplung zu den Komponenten
+  - Anpassung an eigene Bedürfnisse möglich
+  - Leichte Aufteilung der Entwicklung der Arbeitspakete
+- Nachteile
+  - Höherer initialer Aufwand
+  - Verwaltungsoverhead zur Laufzeit
+  - Versionsverwaltung der Komponenten nötig
+  - Abhängigkeiten unter den Komponenten schwierig realisierbar
+  - Geschickte Definition der Extension Points nötig
+
+Repository (Depot, blackboard)
+- Zentrale Datenhaltung
+  - Datenbankmanagementsystem, Dateisystem
+- Anwendungen tauschen Daten nur über Repository aus
+- Kontrollfluss z.B. über Signale oder Semaphore
+- Gut für datenintensive Verarbeitungsaufgaben geeignet
+
+Peer-to-peer
+- Gleichberechtigte Partner, “Föderation”
+- Verteilte kommunizierende Subsysteme
+- Orts- und Umgebungsunabhängigkeit
+
+Model-View-Controller (MVC)
+- Modell / Sicht / Steuerung
+- Trennung verschiedener Aufgabengebiete:
+  - Model: verwaltet Domänenwissen, Daten und Zustand; häufig Datenbank
+  - View: Darstellung, Anzeige, GUI
+  - Controller: Steuerung der Interaktion, Nutzerbefehle
+- Erlauben Austausch von Anzeige- und Speichersystem 
+- Kontrollfluss
+  - Controller steuert
+  - View wird über Datenänderungen benachrichtigt (callback)
+- Geeignet für interaktive Systeme
+- Problem
+  - Lose Kopplung zwischen verschiedenen Komponenten
+  - Daten werden in verschiedenen Sichten dargestellt
+  - Realisierung von GUI‘s
+- Lösung durch drei Komponenten
+  - Daten (Model) enthält die Kernfunktionalität / Durchführung der Geschäftsprozesse, kapselt und Speichert die Daten
+  - Sichten bzw. Dialoge (View) stellt die Daten für den Anwender in unterschiedlicher Art dar
+  - Logik bzw. Steuerung (Controller) Realisiert die Interaktion mit dem Benutzer, übernimmt die Eingaben vom View und ändert die Daten im Modell, legt die Darstellungsart der Sichten fest
+- Vorteile
+  - Unabhängige Entwicklung der Komponenten
+  - Änderung der Oberfläche ohne Änderung des Modells
+  - Unterschiedliche Oberflächen für das selbe Modell
+- Nachteile
+  - Performance
+  - Erhöhter initialer Entwicklungsaufwand
+
+
+## Frameworks
+Was ist ein Framework?
+- A framework is a set of prefabricated software building blocks that programmers can use, extend, or customize for specific computing solutions [Taligent]
+- Ein framework (Rahmenwerk, Anwendungsgerüst) ist eine Menge von zusammengehörigen Klassen, die einen abstrakten Entwurf für eine Problemfamilie darstellen [nach Pomberger/Blaschek]
+
+Ziele
+- Wiederverwendung von Code, Architektur, Entwurfsprinzipien und Verhaltensschema
+- Ähnliche Benutzungsschnittstelle
+
+Klassifikation I
+- Anwendungs-Framework (application framework)
+  - Gibt Systemarchitektur für typische Anwendungsstruktur vor
+  - GUI-Framework: Motif, Qt, Swing, ...
+- Bereichsspezifisches Framework (domain framework)
+  - Expertenwissen für Anwendungsbereich
+  - für typische Anwendungen u.a. in den Bereichen Luftfahrt, Produktion, Finanzwesen, Automotive, ...
+  - Beispiel: AUTOSAR
+- Infrastrukturgerüst (support framework)
+  - Gerätetreiber, Anpassung an Hardware
+  - Middleware: DCOM, Java RMI, CORBA, WebSphere, ...
+
+Klassifikation II
+- Offene Programmgerüste (white box)
+  - Erweiterbarkeit durch Vererbung und dynamische Bindung
+  - Funktionen konkretisieren durch Ableitung von Basisklassen des Programmgerüsts und Überschreiben vordefinierter Methoden
+- Geschlossene Programmgerüste (black box)
+  - Erweiterbarkeit durch Definition von Schnittstellen für Module, die für eine konkrete Anwendung in das Gerüst eingesetzt werden können
+  - Wiederverwendung durch Komponenten, die sich an Schnittstellen halten; Aufruf über Delegation
+
+
+Webframeworks – Angular JS
+- Clientseitiges Webframework von Google
+- Frei verwendbar (Open Source)
+- Erstellung von Single-Page-Webanwendungen
+- Model View Prinzip
+
+- Vorteile
+  - Weitergabe von Expertenwissen
+  - Durchdachtes Design: langfristige Aufwandsersparnis
+  - Wartungsaufwand reduziert, systematische Tests möglich
+  - Prinzipiell sehr hohe Produktivität möglich
+  - Erleichtert Integration und Konsistenz verwandter Anforderungen
+- Nachteile
+  - Erstellung und Einarbeitung aufwändig
+  - Zusätzlicher Dokumentations- und Wartungsaufwand
+  - Fehlersuche erschwert durch Overhead des Frameworks
+  - Kombination verschiedener Frameworks sehr schwierig
+
+## Systemarchitektur und Verteilung
+Systemarchitektur
+- Aufbau und Elemente der Ablaufumgebung, Hardware
+- Häufig enger Zusammenhang mit Softwarearchitektur
+  - Architekturmuster
+  - Ablaufmuster
+- Besonders bei eingebetteten Systemen
+- Systemarchitektur hat Einfluss auf Softwarearchitektur
+  - Grenzobjekte, Schnittstellen, ...
+- Gute Systemarchitektur?
+  - Nichtfunktionale Anforderungen
+  - Modellierung und Simulation, Lastmessungen
+  - 
+Typische Strukturen
+- Zentralrechner (mainframe) mit Terminals
+- Server und einfache Stationen
+- PCs und Server
+- Kommunikationsverbindungen, Sensoren, Speicher, ...
+
+
+- Blockdiagramm
+  - Klassisches Beschreibungsmittel für Systemaufbau
+  - Nicht Teil von UML
+- Konfigurationsdiagramm
+  - meistverbreitetes Hilfsmittel zur Beschreibung der physikalischen Verteilung von System-Komponenten
+  - Nicht Teil von UML
+- Verteilungsdiagramm (UML deployment diagram)
+  - Darstellung der Hardwaretopologie
+  - Zuordnung von Artefakten zu Hardwareeinheiten (Knoten)
+    - Verteilung von Systembestandteilen auf Hardware
+  - Kommunikationsverbindung und Abhängigkeiten zwischen Knoten
+  - Relativ spät im Projekt Installation / Wartung des Systems
+
+## Globaler Kontrollfluss
+Globaler Kontrollfluss
+- Ablaufsicht der Architektur
+  - Definition nebenläufiger Systemeinheiten (z.B. Prozesse)
+  - Steuerung der Abfolge von Einzelfunktionen
+  - Synchronisation und Koordination
+  - Reaktion auf externe Ereignisse  
+  - Darstellung z.B. durch Sequenzdiagramme
+- Nebenläufigkeit auf Architekturebene
+  - Threads , Prozesse, verteiltes System
+  - Asynchroner Nachrichtenaustausch
+- Einfluss auf Architektur / abhängig von Architektur!
+- Ablaufmuster
+  - Zentral
+    - Call/Return (prozedural, synchron)
+    - Master/Slave (nebenläufig mit zentraler Steuerung)
+  - Dezentral
+    - Ereignisgesteuert (event-driven)
+      - interrupts
+      - publish-subscribe (ähnlich observer)
+      - (selective) broadcast
+    - Datenflussgesteuert (data flow architecture)
+
+## Sonstiges
+Ablauf des OO-Systementwurfs [B. Oesterreich]
+- Schichtenmodell definieren
+- Verteilungsmodell definieren
+- Fachliches Subsystemmodell definieren
+- Ablaufverantwortlichkeiten definieren
+- Komponentenspezifisches Klassenmodell entwickeln
+- Komponentenschnittstelle entwerfen
+- Zustandsmodelle weiterentwickeln
+- Objektfluss modellieren
+- Interaktionsmodelle entwickeln, Attribute definieren
+- Dialoge spezifizieren
+- Design-Diskurs
+- Testgetriebene Entwicklung
+
+Weitere Aufgaben beim Grobentwurf
+- Entwurf einer persistenten Datenverwaltung
+  - Dateisystem, Datenbank
+- Sicherheit
+  - Zugriffskontrolle
+  - Fehlertoleranz (Daten und Hardware)
+  - Protokollfunktionen
+- Kontrollfluss
+  - Ausnahmen
+  - Starten, Initialisieren und Beenden der Anwendung
+  - „Randanwendungsfälle“
+
+Notwendigkeit der Architekturdokumentation
+- Quellcode aufgrund niedrigen Abstraktionsniveaus ungünstig für Dokumentation
+- Überblick und Arbeitsteilung
+- Lebensdauer von Systemen länger als geplant
+- Fehler und Probleme leichter finden und beseitigen
+- Neue Anforderungen mit angemessenem Aufwand erfüllen
+- Vereinfachung der Wartung, Pflege, Erweiterung, Wiederverwendung
+
+## Dokumentation
+- Grundprinzipien
+  - Verständlich aus Sicht des Lesers formulieren (Glossar)
+  - Das Warum beschreiben (Entwurfsentscheidungen)
+  - Annahmen, Voraussetzungen, Randbedingungen dokumentieren
+  - Wiederholungen vermeiden
+  - Notation erklären oder Standards verwenden (UML)
+    - Legende hinzufügen
+  - Auf Zweckdienlichkeit prüfen, Reviews durchführen (Inhalt, Qualität)
+  - Verschiedene Sichten für verschiedene Zielgruppen
 
 # Feinentwurf
+
+| Analyse-Modell | Entwurfs-Modell |
+| -- | -- |
+| Fachliche Domäne  | Lösungsdomäne |
+| Teilweise unvollständig in Attributen und Operationen | Vollständige Angabe aller Attribute und Operationen |
+| Datentypen und Parameter können noch fehlen | Vollständige Angabe von Datentypen und Parametern |
+| Noch kaum Bezug zur Realisierungssprache | Auf Umsetzung in gewählter Programmiersprache bezogen |
+| Keine Überlegungen zur Realisierung von Assoziationen | Navigationsangaben, Qualifikation, Ordnung, Verwaltungsklassen |
+| | Entscheidung über Datenstrukturen, Anbindung GUI |
+
+Schließen der Lücke zwischen Grobentwurf und Implementierung
+- Identifizieren und Entwerfen von Klassen der Lösungsdomäne
+- Identifikation und Verwendung von Entwurfsmustern
+- Detaillierte Beschreibung der Klassen
+- Beschreibung von Schnittstellen
+- Iterativer Prozess!
+  - Verbesserung des Entwurfs – Refactoring
+  - Optimieren des Entwurfsmodells zur Erfüllung nichtfunktionaler Anforderungen
+
+Objektorientierter Feinentwurf
+- Ausgangspunkt
+  - Grobdefinition der Architektur, Zerlegung in Subsysteme (evtl. unter Verwendung von Standardarchitekturen)
+  - Verteilungskonzept
+  - Ablaufmodell
+- Ergebnis
+  - OO-Modell für jedes Subsystem der Architektur
+  - OO-Modell für unterstützende Subsysteme unter Berücksichtigung gewählter Technologien
+  - Spezifikationen der Klassen
+  - Spezifikationen von externen Schnittstellen
+
+## Klassen- und Objektentwurf
+- Klassen der Lösungsdomäne
+  - Klassen, die nicht durch objektorientierte Analyse der Anwendungsdomäne entstehen
+- Entstehungsgründe
+  - Architektur von Software und System
+  - nichtfunktionale Anforderungen
+  - Beispiele: Kommunikation, Fehlertoleranz, Adapter, Datenhaltung, Effizienz, Benutzerschnittstellenobjekte, Middleware, ...
+  - Sichtbare (Grenz- und Steuerungsobjekte) werden schon in der Analyse identifiziert
+
+Klassen identifizieren (responsibility-driven design (Wirfs-Brock, McKean))
+> Verantwortlichkeits-Prinzip: Sichtweise: Objekte und Klassen sind nicht nur Behälter für Verhalten und Daten, sondern erfüllen in Zusammenarbeit mit anderen Objekten bestimmte Aufgaben eigenverantwortlich
+
+Responsibility-Driven Design – Begriffe
+- Sichtweise auf Softwaresystem
+- Application = set of interacting objects
+- Object = implementation of role(s)
+- Role = set of related responsibilities
+- Responsibility = obligation to perform a task or know information
+- Collaboration = interaction of objects or roles 
+- Contract = agreement outlining collaboration terms
+
+Arten von Rollen
+|||
+|--|--|
+| Information holder  | knows and provides information |
+| Structurer | maintains relationship between objects and information about relationships |
+| Service provider | performs work, offers computing services |
+| Coordinator | reacts to events by delegating tasks to others |
+| Controller | makes decisions and directs other’s actions |
+| Interfacer | transforms information and requests between system parts |
+
+Hilfsmittel: CRC-Karten
+- Candidate (or class), Responsibility, Collaboration
+- Informelles Mittel zum
+  - Finden,
+  - Beschreiben und
+  - iterativen Verändern von Klassen
+
+Ein Objekt
+- implementiert eine Schnittstelle und beeinflusst andere Objekte
+- wird in drei Teilen entworfen
+  - Öffentliche Schnittstelle
+  - Art und Weise der Benutzung
+  - Innere Details der Funktionsweise
+- Kohärenz: zusammengehörende Verantwortlichkeiten in einer Klasse konzentrieren!
+
+
+## Entwurfsprinzipien
+- Kapselung
+  - Probleme: Zugriff auf private oder ebenen-fremde Attribute
+  - Verwenden von get- und set-Operationen
+  - Zusicherungen einhalten
+  - Zugriffe zentralisieren
+  - Verbalisierung
+  - Zugriffsbeschränkung
+- Zerlegung
+  - Teile und Herrsche
+  - Zerlegen in Komponenten
+  - Verantwortlichkeitsprinzip: Komponente ist klar für eine Aufgabe verantwortlich
+  - Eigenschaften und Schnittstellen im Klassendiagramm
+  - Beziehungen zwischen Klassen: Assoziationen
+  - Aggregation
+    - „besteht aus“, „ist Teil von“ oder „Ganzes-/Teile-Beziehung“
+    - Schwache Bindung der Teile mit dem Ganzen
+    - Notation: ungefüllte Raute am Ganzen
+  - Komposition
+    - Wie Aggregation, jedoch stärkere Bindung
+    - Teil nur einem Ganzen zugeordnet
+    - Nur Multiplizität von 1 oder 0..1 möglich!
+    - Gefüllte Raute am Ganzen
+- Polymorphie
+  - Reaktion auf eine Nachricht abhängig vom Typ des Objektes
+  - Variablen können Objekte verschiedener Klassen aufnehmen (Voraussetzung: Typ der Variablen ist eine gemeinsame Basisklasse der (davon) abgeleiteten Klasse(n) der Objekte)
+  - Überladen von Operationen
+    - gleicher Operationsname, unterschiedliche Signatur
+  - abstrakte Operationen: Virtuelle Operationen ohne Implementierung
+  - abstrakte Klasse: Klasse mit abstrakten Operationen
+  - Folgen
+    - von abstrakten Klassen können keine Objekte angelegt werden (Implementierung fehlt)
+    - Abgeleitete Klassen müssen Operation implementieren, damit Objekte angelegt werden können
+
+Vererbung im Entwurf
+- In der Analyse: Klassifikation von Objekten, Taxonomie, Spezialisierung/Verallgemeinerung, Organisation von Klassen in Hierarchien
+- Verringerung von Redundanz und damit Inkonsistenzen
+  - Funktionalität nur einmal implementieren!
+  - Spezifikations-Wiederverwendung
+  - Implementierungs-Wiederverwendung
+- Verbesserung der Erweiterbarkeit
+  - Abstrakte Schnittstellen einsetzen!
+
+Vererbung oder Assoziation
+- Schlüsselwort Vererbung: ist ein
+- Schlüsselwort Assoziation: besteht aus, ist Teil, hat,...
+- Vererbung: Unterscheidungsmerkmal definierbar (Diskriminator)
+- Vermeide Vererbung, wenn es Alternativen gibt
+- Mehrfachvererbung
+  - Problem: Unabhängige Aspekte der Vererbungshierarchie
+  - Vermeidung: abstrakte Klassen oder Komposition
+
+Abstrakte Klassen
+- Nur Unterklassen, keine Instanzen
+- Attribute in Unterklassen füllen
+- Notation: Kursiv oder Stereotyp <<abstract>>
+
+Offen / Geschlossen-Prinzip [Meyer 1988]
+- Erweiterbarkeit eines Entwurfs
+- Offen für Erweiterungen,
+  - z.B. durch Vererbung / Polymorphie
+  - Virtuelle Operationen verwenden
+  - Verändert vorhandenes Verhalten nicht
+  - Erweiterung um zusätzliche Funktionen oder Daten
+- Geschlossen für Änderungen
+  - private Attribute
+  - Möglichst protected Operationen
+- Beschränkung der Erweiterbarkeit
+  - Keine Einschränkungen der Funktionalität der Basisklasse!
+
+Liskovsches Ersetzungsprinzip
+- Wenn S eine Unterklasse von T ist, dann können Objekte des Typs T in einem Programm durch Objekte des Typs S ersetzt werden, ohne die Funktion des Programms zu verändern. [Barbara Liskov 1987]
+- Engere Definition als „ist-ein“-Beziehung
+- Kein unerwartetes Verhalten eines Objektes eines Subtyps
+- Methoden, die Objekte der Basisklasse erwarten, müssen auch mit Objekten der abgeleiteten Klasse funktionieren
+- Zusicherungen der Basisklasse müssen von der abgeleiteten Klasse erfüllt werden!
+
+Gesetz von Demeter (LoD)
+- Gesetz von „schüchternen“ Objekten
+- Objekte sollen nur mit Objekten in ihrer unmittelbaren Umgebung kommunizieren
+- Aus einer Methode M dürfen (sollten) nur Nachrichten an Objekte gesendet werden, die ...
+  - unmittelbarer Bestandteil des Objekts von M sind (super)
+  - M als Argument übergeben wurden
+  - direkt in M erzeugt wurden
+  - (oder sich in globalen Variablen befinden)
+- Als Metrik überprüfbar
+
+Ein Objekt sollte
+- Nur Methoden aufrufen, die zur eigenen Klasse gehören
+- Nur Methoden von Objekten aufrufen, die:
+  - Von Attributen referenziert werden
+  - Als Parameter übergeben wurden
+  - Selbst erzeugt wurden
+
+
+## Entwurfsmodelle
+Klassendiagramm
+- Eigenschaften
+  - Modellierung der statischen Struktur (Aufbau)
+  - Modellierung der Struktur von Daten
+  - Klasse im Mittelpunkt (Aufbau, Beziehungen zueinander)
+  - Wichtigstes und bekanntestes Diagramm der UML!
+- Elemente des Klassendiagramms
+  - Klasse (Attribute, Operationen)
+  - Vererbung / Realisierung
+  - Assoziationen
+  - Beziehungen / Abhängigkeiten
+- Attribute
+  - Klassenattribut: "X" static – statisch, nur einmal pro Klasse vorhanden
+  - Sichtbarkeit
+    - "+" public – im Namensraum sichtbar
+    - "#" protected – nur in abgeleiteten Klassen sichtbar
+    - "~" package – im Paket sichtbar
+    - "-" private – nur in der Klasse selbst sichtbar
+  - Ableitung "/" derived – abgeleitetes Attribut
+- Weitere Eigenschaften
+  - readOnly – nach Initialisierung nicht änderbar
+  - composite – Aggregation: Composition
+  - redefines X – überschreibe Attr. der Oberklasse
+  - subsets X – Teilmenge
+  - union – Attribut ist Vereinigung der subsets
+  - unique – Elemente eindeutig (Schlüsselattribut)
+  - ordered – Elemente sind geordnet (unordered)
+  - sequence – Speicherung der Elemente als Liste
+  - bag – Elemente sind Multimenge
+
+
+## Schnittstellen
+
+
+## Entwurfsmuster
+
+
+## Klassenbibliotheken und Komponenten
+
+
+## Dokumentation
+
 # Implementierung
 # Vorgehensweise
 # Projektmanagement

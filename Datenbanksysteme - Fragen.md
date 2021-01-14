@@ -200,7 +200,6 @@ Hinweis: Neue Mitarbeiter werden in der Tabelle Neueinstellungen mit dem Schema 
 ## Es gibt einen Beziehungstyp arbeiten zwischen Mitarbeitern und Projekten. Dieser sei wie folgt charakterisiert:
 `arbeiten ( Mitarbeiter [0, 1], Projekte [2, 10] )`
 Welche Aussagen lassen sich daraus ableiten?
-- [ ] Wählen Sie eine oder mehrere Antworten:
 - [x] Es gibt Mitarbeiter, die an keinem Projekt arbeiten.
 - [x] Ein Projekt hat wenigstens 2 Mitarbeiter.
 - [ ] Ein Mitarbeiter arbeitet an genau einem Projekt.
@@ -240,3 +239,321 @@ Welche Aussagen lassen sich daraus ableiten?
 - [x] In der konzeptuellen Entwurfsphase werden Sichten behandelt, die festlegen, welcher Datenbanknutzer später Zugang zu welchen Daten erhalten soll. Dabei werden auch Konflikte zwischen den Sichten betrachtet.
 - [x] Der Verteilungsentwurf ist optional und wird dann eingesetzt, wenn eine Datenbank über mehrere Knoten (Orte, Systeme, etc.) verteilt werden soll.
 
+# Weiteren Vorgehen beim Entwurf
+## Welche der folgenden Aussagen über das weitere Vorgehen beim Datenbankentwurf ist korrekt?
+- [ ] Nach dem physischen Entwurf folgt der konzeptuelle Entwurf und schließlich der logische Entwurf, z.B. SQL in das ER-Modell und schließlich in das Relationenmodell.
+- [ ] Nach dem konzeptuellen Entwurf folgt der physische Entwurf und schließlich der logische Entwurf, z.B. ER-Modell in SQL und schließlich in das Relationenmodell.
+- [x] Nach dem konzeptuellen Entwurf folgt der logische Entwurf und schließlich der physische Entwurf, z.B. ER-Modell ins Relationenmodell und schließlich in SQL.
+
+## Welche der folgenden Aussagen über Sichten sind korrekt?
+- [ ] Es gibt Integrationskonflikte, die sich nicht auflösen lassen und eine vollständige Neuerstellung des Datenbankentwurfs erfordern.
+- [ ] Sichten können direkt nach ihrer Erstellung in das Gesamtschema überführt werden, da Konflikte (wie z.B. Überlappungen) bei der Integration nicht entstehen können.
+- [x] Nach der Erstellung von Sichten müssen diese auf Konflikte überprüft werden, ehe sie in ein Gesamtschema überführt werden können.
+
+## Welche der folgenden Aussagen sind korrekt?
+- [x] In der Phase der Datendefinition werden auch die Datentypen der Attribute deklariert, z.B. Integer oder Varchars.
+- [ ] Am Ende des logischen Entwurfs steht immer genau ein einzelnes Relationenschema, welches dann an den nächsten Schritt (Datendefinition) weitergegeben wird.
+- [x] Im logischen Entwurf kann das konzeptuelle Schema (z.B. ER-Diagramm) in ein relationales Schema überführt werden. Dies wird anschließend noch verfeinert, z.B. durch Normalisierung.
+- [x] Bei der Datendefinition werden auch Integritätsbedingungen (Fremdschlüssel, etc.) umgesetzt.
+- [x] Im physischen Entwurf wird die Performance für Datenzugriffe verbessert, z.B. durch die Verwendung von Indexstrukturen.
+
+# Kapazitätserhaltenden Abbildung
+## Welche der folgenden Aussagen über Abbildungen sind korrekt?
+- [ ] Eine kapazitätserhaltende Abbildung lässt sich immer erreichen, indem Schlüssel beider Entities zum Schlüssel der Beziehung gemacht werden statt nur einer von beiden.
+- [ ] Eine kapazitätserhöhende Abbildung kann durch eine kapazitätsvermindernde Abbildung ausgeglichen werden.
+- [x] Eine Abbildung ist kapazitätserhaltend, wenn sich hinterher genau dieselben Daten speichern lassen wie vorher.
+
+# ER-auf-RM-Abbildung
+## Welche der folgenden Aussagen über die Abbildung vom ER-Modell in das Relationenmodell sind korrekt?
+- [ ] Primärschlüssel der beteiligten Entity-Typen werden in das Relationenschema der Beziehung übernommen und sind dort ebenfalls Primärschlüssel.
+- [x] Verschiedene Kardinalitäten können durch die geeignete Wahl von Schlüsseln ausgedrückt werden.
+- [ ] Es können neue Schlüssel entstehen, d.h. aus Attributen, die im ER-Modell zuvor kein Schlüssel waren.
+- [ ] Nur Entity-Typen ergeben je eine Relation bzw. ein Relationenschema, Attribute und Beziehungstypen nicht.
+- [ ] In einer 1:N Beziehung wird der Primärschlüssel vom Entity-Typen der 1-Seite übernommen.
+
+## Welche der folgenden Aussagen über Verschmelzungen von Relationenschemata sind korrekt?
+- [x] Beim Verschmelzen von zwingenden Beziehungen können niemals NULL-Werte entstehen.
+- [x] Beim Verschmelzen einer 1:N Beziehung sind hinterher noch zwei Relationenschemata übrig, das verschmolzene Schema und das Schema auf der 1-Seite.
+- [x] Nur bei einer 1:1 Beziehung können beide Entity-Relationenschemata in ein einzelnes Schema verschmolzen werden.
+- [ ] Optionale Beziehungen können einfach verschmolzen (zusammengefasst) werden, da es bei diesen keine Rolle spielt, ob sie im späteren Schema noch vorhanden sind.
+
+## Welche der folgenden Aussagen über abhängige Entity-Typen sind korrekt?
+- [x] Bei abhängigen Entities erhält die abhängige Entität im Relationenschema zusätzlich den Primärschlüssel der Entität, von der sie abhängig ist.
+- [x] Der Primärschlüssel der abhängigen Entität muss zwingend aus dem eigenen Schlüssel und dem der übergeordneten Entität gebildet werden.
+- [x] Bei abhängigen Entities ergibt die Beziehung zur übergeordneten Entität kein eigenes Relationenschema.
+
+## Welche der folgenden Aussagen sind korrekt?
+- [x] In einer IST-Beziehung bildet die Beziehung kein eigenes Relationenschema.
+- [ ] In einer IST-Beziehung kann ein Relationenschema entstehen, welches keinen Schlüssel enthält.
+- [x] Bei rekursiven funktionalen Beziehungen entstehen in den Beziehungen Fremdschlüssel auf die eigene Relation.
+
+## Welche der folgenden Aussagen über mehrstellige Beziehungen sind korrekt?
+- [x] Der Primärschlüssel der mehrstelligen Beziehung (bestehend aus den Primärschlüsseln aller beteiligten Entity-Typen) ist zugleich Fremdschlüssel auf die jeweiligen - [ ] Primärschlüssel der beteiligten Entity-Typen.
+- [x] In mehrstelligen Beziehungen bilden alle Primärschlüssel der beteiligten Entity-Typen gemeinsam den Primärschlüssel der Beziehung.
+- [ ] In mehrstelligen Beziehungen (M:N:K) kann der Primärschlüssel aus den Primärschlüsseln der beteiligten Entity-Typen gewählt werden.
+
+# Zielmodell
+## Welche der folgenden Aussagen über das Relationenmodell sind korrekt?
+- [x] Relationen enthalten keine Duplikate.
+- [x] Der Primärschlüssel ist ein ausgezeichneter Schlüssel, der Tupel eindeutig identifiziert.
+- [ ] Eine Domäne beschreibt Elemente eines Wertebereichs.
+- [ ] Die minimale Menge, die Attribute eindeutig identifiziert, heißt Oberschlüssel.
+- [x] Das Datenbankschema ist eine Menge von Relationenschemata, ein Relationenschema ist eine Menge von Attributen.
+
+# Relationalen DB-Entwurf
+## Welche der folgenden Ziele werden bei der Verfeinerung des Relationenmodells angestrebt?
+- [x] Redundanzvermeidung
+- [x] Abhängigkeitstreue
+- [x] Verbundtreue
+- [ ] Änderungstreue
+- [ ] Duplikatbildung
+- [ ] Resonanzvermeidung
+
+## Welche der folgenden Operationen können zu Anomalien führen?
+- [x] INSERT
+- [x] UPDATE
+- [ ] CREATE TABLE
+- [ ] SELECT ... FROM ...
+- [x] DELETE
+
+## Welche der folgenden Aussagen über funktionale Abhängigkeiten sind korrekt?
+- [x] Für Schlüssel X gilt zweierlei: Abhängigkeit X->Relationenschema, sowie X ist minimal.
+- [ ] X->X, d.h. X bestimmt sich selbst, ist aus Trivialitätsgründen nicht erlaubt.
+- [ ] Bei der Ableitung von funktionalen Abhängigkeiten X->Y sowie Y->Z gilt auch Z->X (Ringschluss).
+- [x] X->Y bedeutet: Haben zwei Tupel gleiche Werte in Attribut X, sind ihre Werte für Attribut Y auch gleich.
+
+# Normalformen
+## Welche der folgenden Aussagen über Normalformen sind korrekt?
+- [ ] Normalformen minimieren globale Redundanzen zwischen den Relationen.
+- [x] Normalformen vermeiden Redundanzen und Anomalien.
+- [x] Eigenschaften von Relationenschemata werden von Normalformen bestimmt.
+- [ ] Normalformen stellen sicher, dass alle Anwendungsdaten aus den Basisrelationen hergeleitet werden können.
+- [x] In Normalformen sind bestimmte Kombinationen von funktionalen Abhängigkeiten verboten.
+
+## Welche der folgenden Aussagen über die ersten drei Normalformen sind richtig?
+- [x] Die zweite Normalform eliminiert partielle Abhängigkeiten, d.h. ein Attribut ist bereits funktional von einem Teil des Schlüssels abhängig.
+- [ ] Wenn die beiden funktionalen Abhängigkeiten X->Y und Y->Z existieren (Transitivität), wird diese immer in der dritten Normalform entfernt.
+- [ ] In der ersten Normalform liegen alle Attribute nullfrei vor, d.h. ohne NULL Attributwerte.
+- [ ] Die zweite Normalform eliminiert transitive Abhängigkeiten, d.h. im Allgemeinen wenn Attribut A das Attribut B bestimmt und B das Attribut C bestimmt.
+- [x] Die dritte Normalform eliminiert partielle Abhängigkeiten, d.h. ein Attribut ist bereits funktional von einem Teil des Schlüssels abhängig.
+- [x] Die Normalformen bauen aufeinander auf, d.h. die zweite Normalform enthält auch die Anforderungen der ersten Normalform, usw.
+- [x] Die erste Normalform fordert, dass alle Attribute atomar vorliegen, wie z.B. als Integer oder als Double.
+- [x] Die dritte Normalform eliminiert transitive Abhängigkeiten, d.h. im Allgemeinen wenn Attribut A das Attribut B bestimmt und B das Attribut C bestimmt.
+
+## Welche der folgenden Aussagen über die Boyce-Codd-Normalform (BCNF) sind korrekt?
+- [ ] Die Verbundtreue wird von der BCNF nicht garantiert.
+- [x] Die BCNF eliminiert im Gegensatz zur dritten Normalform jegliche transitive Abhängigkeiten.
+- [x] Die Abhängigkeitstreue wird von der BCNF nicht garantiert.
+- [ ] Die BCNF eliminiert im Gegensatz zur dritten Normalform jegliche partielle Abhängigkeiten.
+
+## Welche der folgenden Aussagen über Minimalität sind korrekt?
+- [x] Die Minimalität versucht, andere Kriterien (wie Normalformen) mit möglichst wenigen Schemata zu erreichen.
+- [ ] Die Minimalität versucht, andere Kriterien (wie Normalformen) so umzusetzen, dass die Schemata möglichst klein sind.
+- [x] Die Minimalität befasst sich mit globalen Redundanzen, d.h. Redundanzen, die alle Relationen betreffen.
+- [ ] Die Minimalität befasst sich mit lokalen Redundanzen, d.h. Redundanzen, die innerhalb einer Relation auftreten.
+
+# Transformationseigenschaften
+## Was bedeutet die Eigenschaft "Verbundtreue" im Rahmen des relationalen Entwurfs?
+- [x] Die Originalrelation kann nach der Dekomposition aus den zerlegten Relationen mit natürlichen Verbundoperationen zurückgewonnen werden.
+- [ ] Eine Dekomposition ist immer verbundtreu.
+- [ ] Bei der Zerlegung eines Relationenschemas in mehrere kleinere muss beachtet werden, dass jeweils zwei davon ein gemeinsames Attribut als Grundlage für spätere Verbundoperationen haben.
+- [ ] Bei der Dekomposition werden keine funktionalen Abhängigkeiten zerstört.
+
+## Gegeben sei ein relationales Schema 
+$R = \{ A B C D E \}$ mit genau einem Schlüssel $K = \{\{ AC \}\}$. Durch Dekomposition entstehen $R_1 = \{ A B C \}$ mit dem Schlüssel $K_1 = \{\{ AC \}\}$ und $R_2 = \{ C D E \}$ mit dem Schlüssel $K_2 = \{\{ C \}\}$
+- [ ] Die Zerlegung ist abhängigkeitstreu, aber nicht verbundtreu.
+- [x] Die Zerlegung ist nicht abhängigkeitstreu und nicht verbundtreu.
+- [ ] Die Zerlegung erfüllt alle Transformationseigenschaften. Sie ist abhängigkeitstreu und verbundtreu.
+- [ ] Die Zerlegung ist verbundtreu, aber nicht abhängigkeitstreu.
+
+# weiteren Abhängigkeiten
+Welche der folgenden Aussagen zu mehrwertigen Abhängigkeiten sind korrekt?
+- [x] Ein Schema in vierter Normalform (4NF) enthält nur noch triviale MVDs.
+- [ ] Mehrwertige Abhängigkeiten steigern den Wert eines relationalen Schemas. Sie sind ausdrucksstärker als einfache funktionale Abhängigikeiten.
+- [x] Für eine Relation r zum Schema R mit den Attributen XYZ bedeutet die MVD X →→ Y Folgendes: Wenn $(x1, y1, z1)$ und $(x1, y2, z2)$ Tupel der Relation r sind, so sind auch $(x1, y2, z1)$ und $(x1, y1, z2)$ Tupel der Relation r.
+- [x] Mehrwertige Abhängigkeiten können als Folge der Forderungen der 1. Normalform entstehen.
+- [ ] Triviale MVDs kann man beim Schema-Entwurf vernachlässigen.
+
+# Rechnen mit FDs
+## Welche der folgenden Aussagen sind korrekt?
+- [x] Bei der Hüllenbildung werden alle funktionalen Abhängigkeiten (FDs) gefunden, die sich aus einer gegebenen Menge an FDs ableiten lassen.
+- [x] Für die Hüllenbildung können Ableitungsregeln (Reflexivität, Transitivität, etc.) genutzt werden.
+- [x] Aus den funktionalen Abhängigkeiten A->B und B->C kann auch A->C impliziert werden.
+
+## Welche der folgenden Aussagen über Ableitungsregeln sind korrekt?
+- [ ] Bei der Dekomposition (F4) können bei gegebener funktionaler Abhängigkeit AB->CD auch die FDs AB->C und AB->D abgeleitet werden.
+- [x] Es lässt sich immer die funktionale Abhängigkeit A->∅ (leere Menge) bilden.
+- [x] Durch Reflexivität (F1) lässt sich immer die funktionale Abhängigkeit A->A bilden.
+- [x] Durch die Vereinigung (F5) können die funktionalen Abhängigkeiten A->B und A->C zu A->BC zusammengefasst werden.
+- [x] Bei der Augmentation (F2) können zu einer gegebenen Abhängigkeit A->B immer zusätzliche Attribute hinzugenommen werden, wie beispielsweise AC->BC.
+- [ ] Aus der Transitivität (F3) lässt sich bei den gegebenen funktionalen Abhängigkeiten A->B und B->C auch C->A ableiten.
+- [x] Bei der Dekomposition (F4) können bei gegebener funktionaler Abhängigkeit AB->CD auch die FDs A->CD und B->CD abgeleitet werden.
+
+## Welche der folgenden Aussagen über B-Axiome bzw. RAP-Regeln ist richtig?
+- [x] Die Regelmenge ist vollständig, da alle Armstrong-Axiome daraus hergeleitet werden können.
+- [ ] Die Regelmenge ist im Gegensatz zu den Armstrong-Axiomen nicht vollständig, da diese nur aus drei Regeln (Reflexivität, Akkumulation und Projektivität) besteht.
+
+
+## Welche der folgenden Aussagen über das Membership-Problem sind richtig?
+- [ ] Das modifizierte Membership-Problem ist ebenso wie das Membership-Problem nicht in linearer Zeit lösbar (O(n²)).
+- [x] Der Member-Algorithmus mit der CLOSURE-Funktion löst das Membership-Problem.
+- [x] Beim modifizierten Membership-Problem wird überprüft, ob bei der funktionalen Abhängigkeit A->B das Attribut B zur Attributmenge gehört, welche von A bestimmt wird.
+- [x] Das Membership-Problem fragt, ob sich eine bestimmte funktionale Abhängigkeit (FD) aus einer gegebenen Menge an FDs ableiten lässt.
+- [x] Der Member-Algorithmus mit der CLOSURE-Funktion löst das modifizierte Membership-Problem.
+
+## Welche der folgenden Aussagen über Überdeckungen ist korrekt?
+- [x] Ein Attribut ist unwesentlich, wenn es nach seiner Entfernung aus den funktionalen Abhängigkeiten die Hülle nicht verändert hat.
+- [ ] Eine Links- bzw. Rechtsreduktion entfernt unnötige (triviale) funktionale Abhängigkeiten mit dem Ziel der Minimalität.
+- [ ] Die leere Menge ist ein Beispiel für eine immer gültige minimale Überdeckung.
+- [x] Es soll beim Vergleich zweier Mengen von funktionalen Abhängigkeiten (FDs) eine Überdeckung gefunden werden, die minimal ist bzgl. ihrer FD-Anzahl und Attributen in den FDs.
+- [x] Wenn sich zwei Mengen funktionaler Abhängigkeiten überdecken, sind sie äquivalent.
+
+## Welche der nachfolgenden Aussagen über Äquivalenzklassen sind richtig?
+- [ ] Damit zwei funktionale Abhängigkeiten in der gleichen Äquivalenzklasse landen, müssen diese eine äquivalente rechte Seite haben, z.B. A->C, B->C.
+- [x] Damit zwei funktionale Abhängigkeiten in der gleichen Äquivalenzklasse landen, müssen diese eine äquivalente linke Seite haben, z.B. A->B, A->C.
+- [ ] Für eine ringförmige Überdeckung muss zu den funktionalen Abhängigkeiten A->B, B->A und A->C zusätzlich C->A gelten.
+- [x] Die funktionalen Abhängigkeiten A->B, B->C, C->A sowie A->D bilden eine ringförmige Überdeckung.
+
+# Mehr zu Normalformen
+Wir betrachten ein erweitertes Relationenschema $R = ( R, K )$ und die FD-Menge F über R. Welche Aussagen zur 2. Normalform sind zutreffend?
+- [x] In 2NF gibt es keine partiellen funktionalen Abhängigkeiten von Nichtschlüsselattributen vom Schlüssel, und die 1NF ist erfüllt.
+- [ ] Das Schema R ist in 2NF, wenn jedes Nicht-Primattribut von R voll von jedem Schlüssel von R abhängt.
+- [x] Das Schema R ist in 2NF, wenn R in 1NF ist und jedes Nicht-Primattribut von R voll von jedem Schlüssel von R abhängt.
+- [ ] In 2NF sind die partiellen funktionalen Abhängigkeiten beseitigt.
+
+# Entwurfsverfahren
+Welche Aussagen sind zutreffend?
+- [ ] Die Synthese dient zur Wiederherstellung der ursprünglichen Relation durch Verschmelzen.
+- [ ] Synthese und Dekomposition sind unterschiedliche Entwurfsverfahren, aber das Ergebnis ist das gleiche Datenbankschema.
+- [x] Synthese und Dekomposition sind Verfahren zum Entwurf eines Datenbankschemas.
+- [ ] Synthese und Dekomposition erzeugen ein "optimales" Datenbankschema, das alle Entwurfskriterien erfüllt.
+- [x] Die Dekomposition wird angewandt zur Erzeugung eines Datenbankschemas in 3NF durch Zerlegung.
+- [x] Synthese und Dekomposition sind Schema-Entwurfsverfahren mit Vor- und Nachteilen bzgl. der Entwurfskriterien.
+
+Welches der Entwurfsverfahren gewährleistet die Abhängigkeitstreue (Kriterium T1)?
+- [ ] nur die Dekomposition
+- [ ] keines der Verfahren
+- [x] nur die Synthese
+- [ ] beide Verfahren
+
+Welches der Entwurfsverfahren entwirft ein Schema in 3NF (Kriterium S1)?
+- [ ] nur die Dekomposition
+- [x] beide Verfahren
+- [ ] nur die Synthese
+- [ ] keines
+
+Welches der Entwurfsverfahren erzeugt ein Datenbankschema, das verbundtreu (Kriterium T2) ist?
+- [ ] keines
+- [x] Die Dekomposition erfüllt das Kriterium.
+- [ ] Beide Verfahren sind in jedem Fall verbundtreu.
+- [x] Die Synthese KANN das Kriterium erfüllen.
+
+Welches der Verfahren erzeugt ein minimales Datenbankschema (Kriterium S2)?
+- [ ] beide Verfahren
+- [ ] keiner
+- [x] nur die Synthese
+- [ ] nur die Dekomposition
+
+# Verbunden
+Welche der folgenden Aussagen über den natürlichen Verbund in SQL sind korrekt?
+- [ ] Die gewählte Variante des Joins (JOIN...ON..., JOIN...USING..., etc.) in einer Anfrage beeinflusst die Ausführungszeit der Anfrage deutlich.
+- [ ] Gegeben sind die Relationen X ( A , B , C , D ) und Y ( A , B , E , F ). Das Ergebnis von "... FROM X, Y WHERE X.A=Y.A" ist identisch zum Ergebnis von "... FROM X NATURAL JOIN Y".
+- [x] "SELECT * FROM Tabelle1, Tabelle2" liefert das Kreuzprodukt.
+- [x] Wenn in zwei miteinander verbundenen Tabellen gemeinsame Attribute vorkommen, die im SELECT explizit angefragt werden, braucht es immer einen Präfix vor dem - [ ] Attributnamen (z.B. SELECT Tabelle1.gemeinsames_Attribut).
+
+# Selektionen
+Gegeben ist folgende Anfrage über der Tabelle Student:`SELECT * FROM Student WHERE Vorname like 'E_%';` Was liefert diese Anfrage als Ergebnis zurück?
+- [ ] Alle Tupel der Student Tabelle, deren Vornamen mit E beginnt.
+- [ ] Alle Tupel der Student Tabelle, deren Vornamen mit E beginnen und mindestens drei Buchstaben lang sind.
+- [ ] Alle Vornamen von Tupeln der Student Tabelle, die mit E beginnen.
+- [x] Alle Tupel der Student Tabelle, deren Vornamen mit E beginnen und mindestens zwei Buchstaben lang sind.
+- [ ] Die Anfrage ist nicht ausführbar (Semantikfehler).
+
+Gegeben ist folgende Anfrage über der Tabelle Student:
+```sql
+   SELECT *
+   FROM Student
+   WHERE Matrikelnummer between 40000 and (
+      SELECT Matrikelnummer
+      FROM Student
+      WHERE Matrikelnummer between 40002 and 40002
+   );
+```
+Was liefert diese Anfrage als Ergebnis zurück?
+- [x] Die Studenten mit Matrikelnummer 40000, 40001 und 40002.
+- [ ] Den Studenten mit Matrikelnummer 40001.
+- [ ] Ein leeres Ergebnis.
+- [ ] Die Studenten mit Matrikelnummer 40001 und 40002.
+- [ ] Die Anfrage ist nicht ausführbar (Semantikfehler).
+- [ ] Die Studenten mit Matrikelnummer 40000 und 40001.
+
+# Mengenoperationen
+Gegeben sind die Relationen 
+![Relationen; Quelle Datenbanksysteme Moodle 2021](Assets/Datenbanksysteme_Fragen_Mengenoperationen.jpeg)
+
+Welche der folgenden SQL-Anweisungen erzeugt die Tupel der Relation T mit dem Schema von T?
+- [x] select * from R intersect corresponding by (A, C) S
+- [x] select * from ( ( select A, C from R ) intersect (select A, C from S) )
+- [ ] select * from R intersect S
+- [x] select * from R intersect corresponding S
+
+# Geschachtelten Anfragen I
+Gegeben seien die Relationen `Student ( MatrNr, Name, Studiengang )` und `Prüfungen ( MatrNr, Fach, Datum, Note )`.
+Welche der SQL-Anweisungen ergibt die Matrikelnummern MatrNr der Studierenden, die noch keine Prüfung abgelegt haben?
+- [ ] `SELECT MatrNr FROM Prüfungen WHERE MatrNr  NOT IN ( SELECT MatrNr FROM Student )`
+- [ ] `SELECT * FROM Prüfungen EXCEPT CORRESPONDING Student`
+- [x] `SELECT * FROM Student EXCEPT CORRESPONDING BY (MatrNr) Prüfungen`
+- [x] `SELECT MatrNr FROM Student WHERE MatrNr NOT IN ( SELECT MatrNr  FROM Prüfungen )`
+- [x] `SELECT * FROM Student EXCEPT CORRESPONDING Prüfungen`
+- [ ] `SELECT * FROM Student WHERE MatrNr NOT IN ( SELECT * FROM Prüfungen )`
+
+# Skalaren Ausdrücken
+Es gibt in der Datenbank folgendes Schema: `Student ( Matrikelnummer, Vorname, Nachname, Semester )`
+Nun wird folgende SQL-Anfrage (in SQLite) ausgeführt: `SELECT * FROM Student WHERE SUBSTR( Matrikelnummer, 5 ) = '2';`
+Was liefert diese Anfrage zurück?
+- [x] Alle Studenten, deren Matrikelnummer mindestens eine 2 enthält.
+- [ ] Alle Studenten mit zwei Matrikelnummern.
+- [ ] Alle Studenten, deren Matrikelnummer auf eine gerade Zahl endet.
+- [ ] Auf jeden Fall ein leeres Ergebnis.
+- [ ] Alle Studenten, deren Matrikelnummer mit einer 2 endet.
+
+Es gibt in der Datenbank folgendes Schema: `Student ( Matrikelnummer, Vorname, Nachname, Semester )`
+Nun wird folgende SQL-Anfrage (in SQLite) ausgeführt:
+```sql
+   SELECT Matrikelnummer, (
+      CASE Semester
+      WHEN '1' THEN 'Ersti'
+                      ELSE  'Kein Ersti'
+      END) Klassifizierung
+   FROM   Student
+   WHERE Klassifizierung = 'Ersti'
+   AND      Matrikelnummer % 2 = 0;
+```
+Was ist das Ergebnis?
+- [ ] Matrikelnummer und Klassifizierung von Studenten mit Matrikelnummern die eine 2 enthalten und im ersten Semester sind.
+- [ ] Matrikelnummern von Studenten mit geraden Matrikelnummern im ersten Semester.
+- [ ] Das Ergebnis ist identisch zu folgender SQL-Anfrage: 
+    ```sql
+        SELECT Matrikelnummer, Semester
+        FROM   Student
+        WHERE Semester = '1'
+        AND      Matrikelnummer % 2 = 0;
+    ```
+- [ ] Matrikelnummer und Klassifizierung von Studenten mit Matrikelnummern die auf 0 enden und im ersten Semester sind.
+- [x] Matrikelnummer und Klassifizierung von Studenten mit geraden Matrikelnummern im ersten Semester.
+
+# Geschachtelten Anfragen II
+Gegeben sei eine Relation für Prüfungsanmeldungen mit dem Schema `Anmeldung ( MatrNr, Name, FachNr, Datum )`. Gesucht sind Studenten, die sich zu zwei oder mehr Prüfungen angemeldet haben.
+Welche der SQL-Anfragen beantwortet die Frage korrekt?
+- [x] `SELECT  MatrNr FROM  Anmeldung  A WHERE  EXISTS  ( SELECT  * FROM  Anmeldung  B WHERE  B.MatrNr = A.MatrNr AND  B.FachNr <> A.FachNr )`
+- [x] `SELECT  MatrNr FROM  Anmeldung  A ,  Anmeldung  B WHERE  A.MatrNr = B.MatrNr  AND  B.FachNr <> A.FachNr`
+- [ ] Keine der Anfragen ist geeignet, denn es wird eine Funktion zum Zählen benötigt.
+- [x] `SELECT  MatrNr FROM  Anmeldung  A WHERE  A.MatrNr  IN  ( SELECT  B.MatrNr FROM  Anmeldung  B WHERE  B.FachNr <> A.FachNr )`
+
+Gegeben seien zwei Relationen `Student ( MatrNr , Name , Studgang )` und `Prüfung ( MatrNr , Fach , FürStudgang , Note )`. 
+Gesucht sind Studenten, die schon eine, mehrere oder - idealerweise - alle Prüfungen in ihrem Studiengang absolviert haben.
+Welche SQL-Anfragen sind geeignet?
+- [x] `SELECT  Name FROM  Student  S WHERE  MatrNr  IN  ( SELECT  MatrNr FROM  Prüfung  P WHERE  P.FürStudgang = S.Studgang )`
+- [ ] Keine Anfrage ist geeignet.
+- [ ] `SELECT  Name FROM  Student  S WHERE  MatrNr <= ALL  ( SELECT  MatrNr FROM  Prüfung  P WHERE  P.FürStudgang = S.Studgang )`
+- [x] `SELECT  Name FROM  Student  S WHERE  MatrNr  = ANY  ( SELECT  MatrNr FROM  Prüfung  P WHERE  P.FürStudgang = S.Studgang )`

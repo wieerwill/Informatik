@@ -15,32 +15,24 @@ author: Robert Jeutter
     - Hardware-Aufbau von Komponenten, die die Rechnerarchitektur realisieren
     - Speichereinheiten, Recheneinheiten, Verbindungssysteme,
 
-Abstraktionsebenen eines Rechnersystems
-| Anwendungsprogramm | Java, C,... |
-| Assemblerprogramm | Betriebssystem-Ebene |
-| Maschinenprogramm | Betriebssystem-Ebene |
-| Register Transfer Verhaltensebene | Reg[2]:=Reg[3] |
-| Register Transfer Strukturebene | Addierer, Multiplexer, Register |
-| Gatterebene | $f=a\vee bc$ |
-| Transistorebene |  |
-
 Grundarchitekturen:
 - Harvard (Zugriff direkt durch Prozessor)
 - Princton/von-Neumann (Zugriff über Systembus)
 
+|||
+| -- | -- |
 | Speicher | Daten und Instruktionen speichern |
 | Steuerwerk | beinhaltet Programmzähler um Ausführung zu steuern |
-| Rechenwerk | auch ALU (Arithmetic and Logic Unit) um Berechnung durchzuführen
-Üblicherweise besitzt eine Recheneinheit (CPU) Daten- oder Rechenregister (Registermaschine). Berechnungen werden ausschließlich mit den Registern vorgenommen.
+| Rechenwerk | auch ALU (Arithmetic and Logic Unit) um Berechnung durchzuführen |
+
+Üblicherweise besitzt eine Recheneinheit (CPU) Daten- oder Rechenregister (Registermaschine). Berechnungen werden ausschließlich mit den Registern vorgenommen. Die Hauptaufgabe der Recheneinheit besteht darin,
 - Daten aus Hauptspeicher in Register laden
 - Berechnungsaufgaben durchführen
 - Ergebnisse in Hauptspeicher ablegen
 
 Klassifikation von Befehlssatzarchitekturen
-- 0-Operand (Stack): Add
-- 1-Operand (Akkumulator): Add R1
-- 2-Operand: Add R1, R3
-- 3-Operand: Add R1, R2, R3
+![Quelle RA2 Vorlesung 2020/21](Assets/RA2_Operanden.png)
+
 
 
 # Prozessorarchitektur
@@ -50,13 +42,13 @@ Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandene
 | CISC | RISC | MIPS |
 | -- | -- | -- |
 | Complex Instruction Set Computing | Reduced Instruction Set Computing | Microprocessor without interlocked pipeline stages |
-| Einfache und komplexe Befehle | Nur einfache Befehle | |
+| Einfache und komplexe Befehle | wenige, einfache Befehle | 32-bit Architektur/64-bit Erweiterung|
 | Heterogener Befehlssatz | Orthogonaler Befehlssatz | |
 | Verschiedene Taktzahl pro Befehl | Meist 1 Takt pro Befehl | |
 | Viele Befehlscode-Formate mit unterschiedlicher Länge | Wenige Befehlscode-Formate mit einheitlicher Länge | |
 | Mikroprogrammwerk | Direktverdrahtung | |
 | Vermischung von Verarbeitungs- und Speicherbefehlen | Trennung von Verarbeitungs- und Speicherbefehlen | |
-| schwierig, unter CPI = 2 zu kommen | CPI möglichst nicht über 1 | |
+| schwierig, unter CPI = 2 zu kommen | Hohe Ausführungsgeschwindigkeit $(CPI \leq 1)$ | |
 
 > Unter dem CPI (cycles per instruction) -Wert einer Menge von Maschinenbefehlen versteht man die mittlere Anszahl der Taktzyklen pro Maschinenbefehl
 
@@ -88,10 +80,38 @@ Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandene
   - Erleichtert die Unterbringung kleiner Konstanten im Befehlswort
   - Vom Steuerwerk aus abschaltbar für „unsigned“ Befehle
 
+### Decodierphase
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_decodierphase.png)
+Zwei Register lesen, eines schreibt
+- Gelesene Register weiter zur ALU
+- Drei Instruktionsfelder à 5 Bit
+- Resultat zurück von ALU
+
+z.B. R-Format Instruction `opcode rs rt rd shamt func`
+- rt = IR[20-16] selektiert Register[rt] zur ALU
+- rs = IR[25-21] selektiert Register[rs] zur ALU
+- rd = IR[15-11] wählt Register[rd] für Resultat
+
+z.B. I-Format Instruction `opcode rs rt Direktoperand`
+- Ein Basis-/Indexregister: rs = IR[25-21]
+- Ein Ziel-/Quellregister: rt = IR[20-16]
+- Direktoperand: imm = IR[15-0]
+
+Zeitverhalten:
+- Register immer auslesen (kein Takt) und Transport zur ALU
+- Schreiben des Zielregisters Register[rd] am Ende der Taktperiode
+- Zeit für Speicherzugriff und für die primäre ALU muss eingeplant werden
+- Ausgabe des Instruktionsspeichers wird über die ganze Dauer gehalten
+
+Multiport-Registersatz
+- Zwei gleichzeitige Lesezugriffe im selben Taktzyklus
+- Kein Schreibzugriff bei Store-Operationen (Mem-Write)
+- Zwei Lesebusse, ein Schreibbus zu den Registern
+
 ### Ausführungsphase
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_Ausführungsphase.png)
 - ALU-Registeroperationen
-  - Operanden im Register oder als
-- Direktoperand
+  - Operanden im Register oder als Direktoperand
   - Üblicher Satz an ALU-Operationen
   - Register $0 liefert Wert 0
 - Adressierung von Variablen im Speicher
@@ -100,15 +120,15 @@ Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandene
   - Registerinhalt lesen/schreiben
 - Load/Store-Architektur
   - Speicheroperationen können keine Arithmetik
-  - also z.B. kein inc 0xaff0($7),0x0004
   - ALU schon zur Adressberechnung benötigt
 - Separater Addierer zur Sprungzielberechnung
-  - Prüfschaltung auf Gleichheit zweier Register in der primären ALU („eql“) 
-  - Bedingte Sprünge mit einem 16-bit Direktoperanden (beq $7,$8,loop)
-  - Maximal möglicher Offset von ±17 Bit nach einer 2-bit Verschiebung
+  - Prüfschaltung auf Gleichheit zweier Register in der primären ALU ("eql") 
+  - Bedingte Sprünge mit einem 16-bit Direktoperanden
+  - Maximal möglicher Offset von $\pm 17$ Bit nach einer 2-bit Verschiebung
   - Unbedingte Sprünge mit 28-bit Adresse später
 
 ### Speicherzugriff
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_Speicherzugriff.png)
 - Getrennte Speicher für Code & Daten
   - Aktuelle Instruktion wird bis zum Ende des Gesamtzyklus gehalten
   - Kein zweiter Zugriff im gleichen Taktzyklus möglich 
@@ -123,18 +143,22 @@ Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandene
   - Als Datenspeicheradresse
   - Nicht direkt speichern, wg. Load/Store-Architektur!
 
-### Register zurückschreiben
+### Register zurückschreiben (Write Back)
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_WriteBack.png)
 - Nummer des Zielregisters (Zielregisterselektor)
   - Stammt aus IR[15-11] oder IR[20-16], 5-bit Bereich für Werte 0-31
 - Steuersignal
   - Zielregister zum Ende des Instruktionszyklus schreiben
   - Schreibsignal an Registersatz, falls nötig
+
+### weitere Sprungbefehle
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_weitereSprungbefehle.png)
 - Pseudorelative Sprünge (jump xLabel)
   - Kein separater Addierer erforderlich, nur ein zusätzlicher MUX-Eingang
   - Oberste 4 Bits unverändert, untere 28 Bits werden ersetzt (4, 26, 2)
   - Jump-and-Link (jal) sichert alten Programmzähler in $31 (Subroutine)
 
-### erforderliche Steuerleitung
+erforderliche Steuerleitung
 - Für Speicher
   - 2-bit Steuersignal: 0/8/16/32 Bit zum Datenspeicher schreiben
   - Instruktionsspeicher liest immer
@@ -148,12 +172,14 @@ Klassifikation von Befehlssätzen nach der Gestaltung/Ausprägung der vorhandene
 - Für Arithmetik
   - 1-bit Steuersignal: Vorzeichenerweiterung ja/nein
   - 6-bit Steuersignal: ALU-Operation
+- Ca. 20 Steuersignale sind erforderlich: Mittelgroßes PLA auf Chip
 
 Einzyklusmaschine ist unwirtschaftlich
 - Komponenten arbeiten jeweils nur einen kleinen Teil der Gesamtzeit
 - Zeitverlust bei potentiell kurzen Instruktionen
 
 ## Mehrzyklen CPU
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_pipelineCPU.png)
 - Gesamtzyklus der bisherigen MIPS
   - Dauer des Instruktionszyklus ist die Summe der Einzelverzögerungen
   - Unteraktivitäten müssen abwarten, bis die Parameter sicher vorliegen
@@ -164,25 +190,28 @@ Einzyklusmaschine ist unwirtschaftlich
   - Einfügen von Registern für in den Stufen entstandene Zwischenresultate
   - Noch immer nur eine Instruktion zu einem Zeitpunkt in Ausführung
   - CPU-Zustand bezieht sich auf eine einzelne aktuelle Instruktion
-- Pipelined CPU – mit Fließbandprinzip
+- Pipelined CPU - mit Fließbandprinzip
   - In jedem Taktzyklus beginnt eine neue Maschineninstruktion
   - Mehrere Instruktionen gleichzeitig in Ausführung
   - Aber unterschiedlicher Fertigstellungsgrad
   - Bessere Auslastung der Hardware
   - Höherer Durchsatz
-- Große Pipeline-Tiefe:
-  - Zusätzliche Ressourcen, höherer Energieaufwand (Taktfrequenz!)
-  - Längere Instruktionssequenzen für gleichen oder besseren Speedup (→ Registeroverhead!)
-  - Bei unterschiedlichen Stufenverzögerungen bestimmt die langsamste Stufe die Taktfrequenz
-- Lange Instruktionssequenzen:
-  - Meist wegen Daten- und Kontrollabhängigkeiten nicht machbar
-  - Hohe Latenz – Füllen und Leeren der Pipeline!
-- Warum geht die Anzahl der Pipeline-Stufen zurück?
-  - hoher Energieverbrauch
-  - hohe Leistungseinbußen durch Kontroll- und Datenabhängigkeiten (Füllen/Leeren der Pipeline)
-  - mehr Parallelität in den einzelnen Pipeline-Stufen → superskalare Prozessoren
-  - mehr Prozessorkerne mit geringerer Leistungsaufnahme pro Kern
-- Fließband-Architektur (engl. pipeline architecture): Bearbeitung mehrerer Befehle gleichzeitig, analog zu Fertigungsfließbändern.
+  - Große Pipeline-Tiefe:
+    - Zusätzliche Ressourcen, höherer Energieaufwand (Taktfrequenz!)
+    - Längere Instruktionssequenzen für gleichen oder besseren Speedup (→ Registeroverhead!)
+    - Bei unterschiedlichen Stufenverzögerungen bestimmt die langsamste Stufe die Taktfrequenz
+  - Lange Instruktionssequenzen:
+    - Meist wegen Daten- und Kontrollabhängigkeiten nicht machbar
+    - Hohe Latenz – Füllen und Leeren der Pipeline!
+  - Warum geht die Anzahl der Pipeline-Stufen zurück?
+    - hoher Energieverbrauch
+    - hohe Leistungseinbußen durch Kontroll- und Datenabhängigkeiten (Füllen/Leeren der Pipeline)
+    - mehr Parallelität in den einzelnen Pipeline-Stufen → superskalare Prozessoren
+    - mehr Prozessorkerne mit geringerer Leistungsaufnahme pro Kern
+  - Fließband-Architektur (engl. pipeline architecture): Bearbeitung mehrerer Befehle gleichzeitig, analog zu Fertigungsfließbändern.
+    - Aufteilung des Rechenwerks in Fließbandstufen, Trennung durch Pufferregister (IF/ID,ID/EX,EX/MEM, MEM/WB)
+
+![Quelle RA2 Vorlesung 20/21](Assets/RA2_mehrzyklenCPU.png)
 
 Aufgaben der einzelnen Phasen
 - Befehlsholphase
@@ -196,32 +225,26 @@ Aufgaben der einzelnen Phasen
 - Abspeicherungsphase
   - Speichern in Register, bei Speicherbefehlen nicht benötigt
 
-Pipeline-Hazards
-> Structural Hazards (deutsch: strukturelle Abhängigkeiten oder Gefährdungen): Verschiedene Fließbandstufen müssen auf dieselbe Hardware-Komponente zugreifen, weil diese nur sehr aufwändig oder überhaupt nicht zu duplizieren ist.
+## Pipeline-Hazards
+> Structural Hazards ("strukturelle Abhängigkeiten oder Gefährdungen"): Verschiedene Fließbandstufen müssen auf dieselbe Hardware-Komponente zugreifen, weil diese nur sehr aufwändig oder überhaupt nicht zu duplizieren ist.
 
-> Definition: Ein Befehl i heißt von einem nachfolgenden Befehl j antidatenabhängig, falls j eine Speicherzelle beschreibt, die von i noch gelesen werden müsste.
+- resource hazards
+- data hazards: Datenabhängigkeiten
+  - **Antidatenabhängig**: falls Befehl j eine Speicherzelle beschreibt, die von i noch gelesen werden müsste.
+    - WAR (write after read) Abhängigkeit
+  - **Ausgabeabhängig**: falls Befehle i und j die selbe Speicherzelle beschreiben
+    - WAW (write after write) Abhängigkeit
+  - **Datenabhängigkeit**: Operation hängt von der vorhergehenden Operation ab
+    - RAW (read after write) Abhängigkeit
+- control hazards: Kontrollabhängigkeiten
+  - Gleichheit der Register wird schon in der instruction decode-Stufe geprüft
+  - Sprungziel wird in separatem Adressaddierer ebenfalls bereits in der instruction decode-Stufe berechnet
 
-> Definition: Zwei Befehle i und j heißen voneinander Ausgabeabhängig, falls i und j die selbe Speicherzelle beschreiben.
-
-- Gleichheit der Register wird schon in der instruction decode-Stufe geprüft
-- Sprungziel wird in separatem Adressaddierer ebenfalls bereits in der instruction decode-Stufe berechnet
-- Sofern weiterhin noch Verzögerungen auftreten:
-  - nächsten Befehl einfach ausführen (delayed branch)
-  - oder weiterhin NOOP(s) einfügen (stall)
-
-### Pipelining – Zusammenfassung
-- Die Fließbandverarbeitung (engl. pipelining) ermöglicht es, in jedem Takt die Bearbeitung eines Befehls abzuschließen, selbst wenn die Bearbeitung eines Befehls ≥ 1 Takte dauert
-- Mehrere Pipelines -> pro Takt können mehrere Befehle beendet
-werden
-- 3 Typen von Gefährdungen des Fließbandbetriebs:
-  - resource hazards
-  - control hazards
-  - data hazards (RAW, WAR, WAW)
-- Gegenmaßnahmen
-  - pipeline stall
+Gegenmaßnahmen
+  - pipeline stall (Anhalten des Fließbandes, NOOPS(s) einfügen)
   - branch prediction
   - forwarding / bypassing
-  - delayed branches
+  - delayed branches (nächsten Befehl einfach ausführen)
   - out-of-order execution
   - dynamic sched
 
@@ -362,7 +385,7 @@ Allgemeines Ziel: Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Reg
 - Vorhersagequalität „perfekt“, wenn Stack-Puffer größer als maximale Aufruftiefe
 
 
-# Speicherarchitektur
+# Multiple-Issue-Architekturen
 
 
 # Microcontroller und Digitale Signalprozessoren

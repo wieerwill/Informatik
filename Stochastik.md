@@ -39,8 +39,11 @@ author: Wieerwill
   - [Streuungsparameter](#streuungsparameter)
   - [Skalenniveaus](#skalenniveaus)
 
+---
 # Wahrscheinlichkeiten
 > Ein Zufallsexperiment ist ein Versuch mit zufälligem Ausgang.
+
+---
 ## Wahrscheinlichkeitsraum $(\Omega , P)$
 - Ergebnis-/Grundraum $\Omega$, Menge aller möglichen Elementarereignisse (Bsp: $\Omega={heil, kaputt}^x$)
   - die Anzahl aller möglichen Ergebnisse heißt Mächtigkeit des Ergebnisraums $|\Omega|$ (Bsp: $|\Omega|=2$)
@@ -61,6 +64,7 @@ author: Wieerwill
 - Wahrscheinlichkeit, dass A eintritt: $\Omega \supseteq A \rightarrow P(A) \in [0,1]$
 - $\sigma$-Additivität: $P(U_{k\in N} A_k)= \sum_{k\in N} P(A_k)$ für disjunkte $A_k, k\in N$
 
+---
 ## Ereignisalgebra
 - Vereinigung: $A\cup B= \{\omega | \omega\in A \vee \omega\in B \}$
   - Bsp: $A=\{1,2\}, B=\{2,3\}, A\cup B=\{1,2,3\}$
@@ -76,6 +80,7 @@ author: Wieerwill
 - disjunkte Ereignisse $A\cap B = \varnothing$
   - wenn sie keine gemeinsamen Elemente haben (unvereinbar)
 
+---
 ## Rechengesetze
 - Kommutativ: 
   - $A\cup B = B\cup A$
@@ -106,6 +111,7 @@ author: Wieerwill
   - $A\cup \bar{A} = \Omega$
   - $\bar{\bar{A}} = A$
 
+---
 ## Vierfeldertafel
 Alle vier Felder zusammen entsprechen dem Ergebnisraum $\Omega$
 
@@ -115,6 +121,7 @@ Alle vier Felder zusammen entsprechen dem Ergebnisraum $\Omega$
 | $\bar{A}$ | $\bar{A}\cap B$ | $\bar{A}\cap\bar{B}$ |
 
 
+---
 ## Absolute Häufigkeit
 > Die absolute Häufigkeit $H_n(E)$ gibt an, wie oft das Ereignis E innerhalb eines Zufallsexperiments, welches n-mal ausgeführt wird, aufgetreten ist.
 
@@ -124,6 +131,7 @@ Bsp: Münze wird 20 mal geworfen. Man erhält 8 mal Kopf und 12 mal Zahl:
 - $H_{20}(Kopf)=8$
 - $H_{20}(Zahl)=12$
 
+---
 ## Relative Häufigkeit
 > Tritt ein Ereignis $E$ bei $n$ Versuchen $k$-mal ein, so heißt die Zahl $h_n(E)=\frac{k}{n}$ relative Häufigkeit des Ereignisses E.
 
@@ -140,6 +148,7 @@ Bsp: Münze wird 20 mal geworfen. Man erhält 8 mal Kopf und 12 mal Zahl:
 - $h_n(A\cup B)= h_n(A)+h_n(B)-h_n(A\cap B)$
 - $H_n(E)=h_n(E)*n$
 
+---
 ## Mehrstufige Zufallsexperimente
 ### Baumdiagramm
 > Ein Baumdiagramm ist eine graphische Darstellung, welche die möglichen Ergebnisse eines bestimmten Ablaufs hierarchischer Entscheidungen zeigt.
@@ -153,6 +162,7 @@ Die Summe der Wahrscheinlichkeiten auf den Ästen, die von einem Verzweigungspun
 2. (ODER) Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen.
      - Bsp: $P(\{SW, WS\})=\frac{1}{2}*\frac{1}{3} + \frac{1}{3}*\frac{1}{2}$
 
+---
 ## Kombinatorik
 > Die Kombinatorik hilft bei der Bestimmung der Anzahl möglicher Anordnungen (Permutationen) oder Auswahlen (Variationen oder Kombinationen) von Objekten.
 
@@ -196,6 +206,7 @@ Die Summe der Wahrscheinlichkeiten auf den Ästen, die von einem Verzweigungspun
 
 
 
+---
 ## Laplace Expriment
 > Ein Zufallsexperiment heißt Laplace-Experiment, wenn alle Elementarereignisse die gleiche Wahrscheinlichkeit besitzen. $P(E)=\frac{|E|}{|\Omega|}$
 
@@ -208,6 +219,7 @@ Vorgehen: Laplace Wahrscheinlichkeit
 
 > Satz von de Moivre-Laplace: Für eine binomialverteilte Zufallsgröße X mit den Parametern n und p sowie reelle Zahlen a und b gilt $P(a\leq X \leq b)= \int_{a-0,5}^{b+0,5} \varphi_{\mu_i \delta} (x) dx_i$ wobei $\mu = n*p$ und $\delta?\sqrt{n*p*(1-p)}$ ist.
 
+---
 ## Stochastische Unabhängigkeit
 > Zwei Ereignisse A und B sind stochastisch unabhängig, wenn das Eintreten des einen Ereignisses das Eintreten des anderen Ereignisses nicht beeinflusst.
 
@@ -223,6 +235,7 @@ Bei stochastischer Unabhängigkeit zweier Ereignisse hat jeder in die gleiche Ri
 Bei stochastischer Unabhängigkeit zweier Ereignisse ist die Wahrscheinlichkeit eines Feldes in der Vierfeldertafel gleich dem Produkt der Wahrscheinlichkeiten der zugehörigen Zeile und der zugehörigen Spalte.
 
 
+---
 ## Bedingte Wahrscheinlichkeiten
 $P_B(A)$ ist die Wahrscheinlichkeit von A unter der Bedingung, dass B eingetreten ist; häufig schreibt man auch $P(A|B)$.
 die bedingte Wahrscheinlichkeit von "A gegeben B": $P(A|B)=\frac{P(A \cap B)}{P(B)}$
@@ -231,25 +244,28 @@ $A,B \subseteq \Omega$ mit $P(B)> 0$; man beobachtet, dass B eintritt nachdem A 
 
 die totale Wahrscheinlichkeit: $P(A)=\sum_{i=1}^n P(A|B_i)P(B_i)$
 
+---
 ### Multiplikationssatz
 Die Wahrscheinlichkeit eines Elementarereignisses ist gleich dem Produkt der Wahrscheinlichkeiten des zugehörigen Pfades.
 
 Bsp: $P(A\cap B)= P(B)*P_B(A)$
 
+---
 ### Totale Wahrscheinlichkeit
 Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen.
 
 Satz der totalen Wahrscheinlichkeit für zwei Ereignisse A und B: 
 Bsp: $P(A) = P(A\cap B) + P(A\cap \bar{B}) = P(B)*P_B(A)+P(\bar{B})*P_{\bar{B}}(A)$
 
+---
 ### Satz von Bayes
 Der Satz von Bayes erlaubt das Umkehren von Schlussfolgerungen:
 Man geht von einem bekannten Wert $P_A(B)$ aus, mit dessen Hilfe man $P_B(A)$ berechnet.
 
 Um die Formel für die Berechnung von $P_A(B)$ aus $P_B(A)$ zu erhalten, müssen wir zwei Baumdiagramme mit unterschiedlichem Ablauf miteinander verknüpfen. Nach dem Multiplikationssatz gilt: $P(A\cap B)=P(B)*P_B(A)$. Nach $P_B(A)$ aufgelöst gilt $P_B(A)=\frac{P(A\cap B)}{P(B)}$. Nach dem zweiten Multiplikationssatz gilt $P(A\cap B)=P(A)*P_A(B)$. Einsetzten der Formel in die erste Abbildung: $P_B(A)=\frac{P(A\cap B)}{P(B)} \Rightarrow P(A\cap B)=P(A)*P_A(B)$. daraus erhält man den Satz von Bayes $P_B(A)=\frac{P(A)*P_A(B)}{P(B)}$
 
-Satz von Bayes: $P_B(A)=\frac{P(A)*P_A(B)}{P(B)}=\frac{P(A)*P_A(B)}{P(A)*P_A(B)+P(\bar{A})*P_{\bar{A}}(B) }$
 
+---
 ## Zufallsvariable
 Eine Funktion X, die jedem Ergebnis $\omega$ des Ergebnisraum $\Omega$ genau eine Zahl x der Menge der reelen Zahlen $\R$ zuordnet, heißt Zufallsvariable. 
 Kurz $X:\Omega\rightarrow\R$ 
@@ -260,6 +276,7 @@ Es gibt drei Möglichkeiten, eine (diskrete) Zufallsvariable darzustellen:
 2. als abschnittsweise definierte Funktion
 3. als Mengendiagramm
 
+---
 ### Diskrete Zufallsvariable
 Eine Zufallsvariable X wird als diskret bezeichnet, wenn sie nur endlich viele oder abzählbar unendlich viele Werte annimmt.
 
@@ -274,6 +291,7 @@ Erwartungswert :$\mu_x =E(X)=\sum_i x_i*P(X=x_i)$\\
 Varianz: $\omega^2_X = Var(X) = \sum_i(x_i-\mu_X)^2 *P(X=x_i)$\\
 Standardabweichung: $\omega_X = \sqrt{Var(x)}$
 
+---
 ### Stetige Zufallsvariable
 Eine Zufallsvariable X wird als stetig bezeichnet, wenn sie überabzählbar unendlich viele Werte annimmt.
 
@@ -286,6 +304,7 @@ Erwartungswert: $\mu_X= E(X)=\int_{-\infty}^{\infty} x*f(x)dx$\\
 Varianz: $\omega_X^2 =Var(X) = \int_{-\infty}^{\infty} (x-\mu_X)^2 *f(x)dx$\\
 Standardabweichung: $\omega_X= \sqrt{Var(X)}$
 
+---
 ## Wahrscheinlichkeitsverteilung
 Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen.
 
@@ -295,6 +314,7 @@ Eine Wahrscheinlichkeitsverteilung lässt sich entweder
 - bzw. die Dichtefunktion (bei stetigen Zufallsvariablen)
 vollständig beschreiben.
 
+---
 ### Wahrscheinlichkeitsfunktion
 Die Wahrscheinlichkeitsfunktion ist ein Hilfsmittel zur Beschreibung einer diskreten Wahrscheinlichkeitsverteilung. 
 Eine Funktion f, die jedem x einer Zufallsvariablen X genau ein p aus [0;1] zuordnet, heißt Wahrscheinlichkeitsfunktion. Kurz: $f:x\rightarrow p$
@@ -304,6 +324,7 @@ $P(X=x)$ gibt die Wahrscheinlichkeit dafür an, dass die Zufallsgröße X den We
 Die Wahrscheinlichkeitsfunktion f der Zufallsvariablen X gibt die Wahrscheinlichkeiten für die möglichen Realisationen von X an: $f(x)=P(X=x)= \begin{cases} p_i \text{für } x=x_i (i=1,2,...,n) \\ 0 \text{sonst} \end{cases}$
 Für die Summe der Wahrscheinlichkeiten gilt $\sum_{i=1}^n p_i=1$
 
+---
 ### Dichtefunktion
 Die Dichtefunktion ist ein Hilfsmittel zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung.
 
@@ -316,6 +337,7 @@ $$F(X)=P(X\leq x)=\int_{-\infty}^x f(u)du$$
 
 Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wert x annimmt, ist stets Null. $P(X=x)=0$
 
+---
 ### Verteilungsfunktion
 Die Verteilungsfunktion ist ein Hilfsmittel zur Beschreibung einer diskreten oder stetigen Wahrscheinlichkeitsverteilung.
 
@@ -325,6 +347,7 @@ Eine Funktion F, die jedem x einer Zufallsvariablen X genau eine Wahrscheinlichk
 - $F(x)$ ist rechtssteitig stetig
 - $lim_{x\rightarrow -\infty} F(x)=0$ und $lim_{x\rightarrow +\infty} F(x) =1$
 
+---
 ### Diskrete Verteilungsfunktionen
 1. $P(X\leq a)=F(a)$
 2. $P(X<a)= F(a)−P(X=a)$
@@ -340,6 +363,7 @@ Eigenschaften einer Verteilungsfunktion
 - F(x) ist rechtsseitig stetig.
 - $lim_{x\rightarrow -\infty} F(x)=0$ und $lim_{x\rightarrow +\infty} F(x)=1$
 
+---
 ### Stetige Verteilungsfunktion
 $$F(X)=P(X\leq x)=\int_{-\infty}^{x} f(u) du$$
 
@@ -370,6 +394,7 @@ Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wer
 | Poisson Verteilung | Exponentialverteilung |
 
 
+---
 ## Erwartungswert
 Der Erwartungswert ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die zentrale Lage einer Verteilung. 
 
@@ -377,6 +402,7 @@ Ist X eine diskrete Zufallsvariable, so heißt $\mu_x = E(X)=\sum_i x_i*P(X=x_i)
 
 Ist X eine stetige Zufallsvariable, so heißt $\mu_x=E(X)=\int_{-\infty}^{\infty} x*f(x) dx$ der Erwartungswert von X.
 
+---
 ## Varianz
 Die Varianz ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die erwartete quadratische Abweichung der Zufallsvariablen von ihrem Erwartungswert.
 
@@ -386,10 +412,12 @@ Ist X eine stetige Zufallsvariable, so heißt $\delta_x^2 = Var(X)= \int_{-\inft
 
 Verschiebungssatz: $Var(X)=E(X^2)-(E(X))^2$
 
+---
 ## Standardabweichung
 Die Standardabweichung ist eine Maßzahl zur Charakterisierung einer Wahrscheinlichkeitsverteilung und beschreibt die erwartete Abweichung der Zufallsvariablen von ihrem Erwartungswert.
 $$\delta_x = \sqrt{Var(X)}$$
 
+---
 ## Diskrete & Stetige Verteilung
 Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen. 
 Eine Verteilung lässt sich entweder durch eine
@@ -400,11 +428,13 @@ Eine Verteilung lässt sich entweder durch eine
 vollständig beschreiben.
 
 
+---
 # Deskriptive Statistik
 Aufgabe der deskriptiven Statistik ist es, große Datenmengen auf einige wenige Maßzahlen zu reduzieren, um damit komplexe Sachverhalte übersichtlich darzustellen.
 
 Die Menge aller Elemente, auf die ein Untersuchungsziel in der Statistik gerichtet ist, heißt Grundgesamtheit. Eine Datenerhebung der Grundgesamtheit nennt man Vollerhebung, wohingegen man eine Datenerhebung einer Stichprobe als Stichprobenerhebung bezeichnet. Die in einer Stichprobe beobachteten Werte heißen Stichprobenwerte oder Beobachtungswerte.
 
+---
 ## Merkmale
 Merkmale sind jene Eigenschaften, die bei einer Datenerhebung untersucht werden.
 
@@ -420,6 +450,7 @@ Merkmale sind jene Eigenschaften, die bei einer Datenerhebung untersucht werden.
   - diskrete Merkmale (Bsp. Schülerzahl): Es gibt nur bestimmte Ausprägungen, die sich abzählen lassen. Die Merkmalsausprägungen diskreter Merkmale sind also ganze, meist nichtnegative Zahlen.
   - stetige Merkmale (Bsp. Gewicht): Einzelne Ausprägungen eines Merkmals können jeden beliebigen Wert innerhalb eines gewissen Intervalls annehmen.
 
+---
 ## Lageparamter
 Unter dem Begriff Lageparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Lage einer Verteilung machen.
 | Lageparamter | | 
@@ -430,6 +461,7 @@ Unter dem Begriff Lageparameter werden alle statistischen Maßzahlen zusammengef
 | Median | $\tilde{x} = \begin{cases} x_{\frac{n+1}{2}} \quad\text{ für n ungerade} \\ \frac{1}{2}(x_{\frac{n}{2}}+x_{\frac{n}{2}+1}) \quad\text{ für n gerade}\end{cases}$ Der Wert, welcher größer oder gleich 50% aller Werte ist. |
 | Modus | $\bar{x}_d=$ Häufigster Beobachtungswert |
 
+---
 ## Streuungsparameter
 Unter dem Begriff Streuungsparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Verteilung von einzelnen Werten um den Mittelwert machen.
 
@@ -443,6 +475,7 @@ Unter dem Begriff Streuungsparameter werden alle statistischen Maßzahlen zusamm
 - Das 0,25-Quartil $Q_{0,25}$ entspricht dem Wert, welcher größer oder gleich 25% aller Werte ist.
 
 
+---
 ## Skalenniveaus
 
 | Skalen | diskret | qualitiativ | | für | 

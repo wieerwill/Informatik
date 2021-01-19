@@ -86,6 +86,14 @@ author: Robert Jeutter
       - [Freiliste](#freiliste)
       - [Superblock](#superblock)
   - [Datenstrukturen u. Algorithmen des Betriebssystems](#datenstrukturen-u-algorithmen-des-betriebssystems)
+- [Netzwerkmanagement](#netzwerkmanagement)
+- [E/A Systeme](#ea-systeme)
+  - [Hardware Prinzipien](#hardware-prinzipien)
+    - [Kommunikationsmuster mit einem Controller](#kommunikationsmuster-mit-einem-controller)
+    - [E/A- Adressräume](#ea--adressräume)
+    - [Memory Mapped E/A](#memory-mapped-ea)
+  - [Software Prinzipien](#software-prinzipien)
+  - [Zusammenfassung](#zusammenfassung-4)
 
 # Einführung
 worauf es ankommt:
@@ -2082,4 +2090,212 @@ kontenDB[kontoNr].stand = 0;
   2. Zurückschreiben modifizierter Seiten
       - implizit, im Rahmen des regulären Pagings (Verlassen des working sets)
       - explizit, durch msync()
+
+# Netzwerkmanagement
+Räumlich verteilte Systeme
+- Arbeitsplatzrechner, Server, Laptops, Smartphones, dedizierte IT-Geräte
+- Kommunikationsmedien (LANs, WLANs, WANs; diverse Technologien)
+
+Verteilte Dienste und Anwendungen
+- Email, Web
+- Netzwerk-Dateisysteme, ssh
+- Grid-Computing, Cloud-Computing
+- Energieinfrastrukturmanagementsysteme
+
+Rechnergrenzen überschreitende Kommunikation
+- ein geeignetes Paradigma muss her
+- Socket: standardisierte Betriebssystem-Abstraktion zur Botschaften basierten Kommunikation in heterogenen verteilten Systemen
+
+(Berkeley * -)Sockets
+- botschaftenbasiert, send/receive-Modell
+- komplex in der Nutzung, da
+  1. universell: Implementierungsbasis anwendungsnäherer Modelle (RPC, RMI, Blackboards, Tuple Spaces, ... → Kommunikationsmodelle)
+  2. problemspezifisch konfigurierbar hinsichtlich
+    - Synchronität (send/receive-Operationen)
+    - Verlässlichkeit (Garantien über Zustellung, Reihenfolgeerhalt)
+    - Kommunikationsdomäne (Internet, lokales System, Novell-Netz, ...)
+
+Die Socket-Abstraktion:
+- Socket: Steckdose ins Netzwerk (Betriebssystem-)Objekt, zu dem gesendet oder von dem empfangen wird)
+- mit Socket assoziiert:
+    1. Name (z.B. IP-Adresse in der Internet-Domäne, Port-Nummer)
+    2. Protokoll (z.B. TCP, UDP)
+- Kommunikation: über Socket-Paare
+
+Betriebssystem-Integration
+- Socket als Betriebssystem-Abstraktion: Teil der API
+- BS-Komponente: Integrationsrahmen für Protokollimplementierungen
+- Darstellung: Rahmen, den Betriebssysteme zur Integration von Protokollen bieten
+
+Socketframework des Betriebssystems
+- auf Anwendungsebene implementierte, Sockets nutzende Protokolle (smtp, http, ftp, ...)
+- Kommunikationsframework im Betriebssystem
+    1. Socket-Level
+    2. TCP/UDP/...-Level
+    3. IP-Level
+    4. Netzwerktreiber
+    5. Gerätecontroller-Hardware ("Netzwerkkarten")
+   
+  werden die 7 Ebenen des ISO/OSI-Schichtenmodells implementiert
+
+Zusammenfassung
+- Betriebssystem-Abstraktion zur (Rechnergrenzen überschreitenden) Kommunikation
+- botschaftenorientiertes Kommunikationsmodell
+- vielfältig konfigurierbar (Protokolle, Verlässlichkeit, Synchronität, ...)
+- weitgehend unabhängig von Netzwerk-Technologien
+- als Betriebssystem-Abstraktion Teil der API
+- Betriebssystem-Komponente: Integrationsrahmen für Protokollimplementierungen
+
+# E/A Systeme
+85% der Ausfälle heutiger Standard-Betriebssysteme haben ihre Ursache im E/A-System!
+
+Programmierung eines Plattenlaufwerks
+- Geräteschnittstelle
+  - ein Bündel von Steuerungs-, Status-, Adress- und Datenregistern
+  - erreichbar über bestimmte (s.u.) Adressen
+- Typische Operationen
+  - Start/Stopp/Zustandsabfrage des Spindelmotors
+  - Positionierung des Lese/Schreibkopfes
+  - Datentransferoperationen (bspw. Toshiba Laptop-Laufwerk)
+- Nach Abschluss einer Operation: Ergebnisanalyse
+  - 23 Status- und Fehlerbits, verteilt über diverse Kontroll- und Statusregister
+  - Traum eines jeden Softwareentwicklers
+
+Umgang damit
+1. Kapselung gerätespezifischer Merkmale
+  - Anzahl, Layout und Adressen der Steuerungs-, Status- und Adressregister
+  - Gerätekommandos und Timing
+  - Fehler und Fehlerbehandlung in gerätespezifischen Softwarekomponenten → Gerätemanager („Treiber“)
+2. hierauf aufbauende Abstraktionsschichten
+
+## Hardware Prinzipien
+- Prinzipieller Aufbau von E/A-Geräten: Hardware/Software-Interface (Programmierschnittstelle): Controllerregister
+- Programmierparadigma: Lesen und Schreiben von Steuerungs- und Datenregistern
+  
+### Kommunikationsmuster mit einem Controller
+Das Betriebssystem (Gerätemanager)
+1. schreibt einen Befehlscode in ein Steuerungsregister
+2. schreibt Parameter in Datenregister
+3. setzt Interrupt-Enable-Bit des Steuerungsregisters
+4. setzt go-Bit des Kontrollregisters
+Wenn die Operation ausgeführt ist: Die Controller-Hard/Firmware
+1. löscht go- und Interrupt-Enable-Bits
+2. schreibt Ergebnis/Fehlercode in Statusregister
+3. setzt ready-Bit
+4. löst (evtl.) Interrupt aus
+
+Wie "sieht" ein Betriebssystem diese Geräte-Register?
+- adressiert: über Arbeitsspeicheradressen
+- 2 Varianten
+  - in separatem E/A Adressraum (I/O Address Space)
+    - Zugriff: über spezielle Operationen (Prozessor-Instruktionssatz) auf
+    - "I/O-Ports"
+  - in regulärem physischen Adressraum (Memory Mapped I/O)
+    - Zugriff: durch Einblendung in regulären virtuellen Adressraum
+    - Nutzung regulärer virtueller Adressen
+
+### E/A- Adressräume
+E/A-Adressraumzugriff über 2 (privilegierte!) Prozessorinstruktionen:
+  - `IN R8, #0x42` liest im E/A-Adressraum das auf Adresse 0x42 liegende Controllerregister `(I/O-Port 42_16)` ins Prozessorregister R8
+  - `OUT #0x42,R8` schreibt den Inhalt von Prozessorregister R8 in das im E/A-Adressraum auf Adresse `42_16` liegende Controllerregister
+
+Technik: PCI-Bridge
+- Bridge-Stellung bei Zugriff auf regulären physischen Speicher:
+  ![PCI Bridge](Assets/Betriebssysteme_PCI_Bridge.png)
+- Bridge-Stellung bei Zugriff auf E/A-Adressen:
+  ![PCI Bridge 2](Assets/Betriebssysteme_PCI_Bridge2.png)
+- Bridge-Umschaltung
+  - Benachrichtigen der PCI-Bridge durch eigene Busleitung
+  - veranlasst durch "IN"- und "OUT"-Instruktionen
+- Probleme hiermit
+  - IN/OUT sind Operationen im Prozessorinstruktionssatz
+    - stehen in höheren Programmiersprachen nicht direkt zur Verfügung
+    - (Teile der) Gerätemanagementsoftware in nativem Code des Prozessors
+  - Schutzkonzept des E/A-Adressraums:
+    - ist die Privilegierung der IN/OUT-Operationen (IO Privilege Level)
+    - extrem grobgranular:
+      - jeder Gerätemanager hat Zugriff auf sämtliche Geräte
+      - keine Isolation nicht vertrauenswürdiger Gerätemanager
+      - keine Fehlerisolation
+      - nicht sicher, nicht robust
+
+### Memory Mapped E/A
+Controllerregisterzugriff über reguläre physische Arbeitsspeicheradressen
+
+Schutzkonzept
+  - Abbildung verschiedener Geräte auf verschiedene Seiten des PA
+  - Abbildung dieser Seiten in die verschiedenen privaten VAe der Gerätemanager
+    - Isolation nicht vertrauenswürdiger Treibersoftware
+    - Robustheit, Sicherheit, kleine TCB (Mikrokernarchitekturen!)
+
+Technik
+- Zugriff auf Controllerregister:
+  - Konfiguration der PCI-Bridge beim Booten: "alle Adressen > 0xFF00... sind E/A-Register"
+- E/A-Controllerregister sind hier Teil des Arbeitsspeichers
+  - Arbeitsspeicher: unterliegt i.A. Caching-Mechanismen
+  - MMU: muss „nicht cachebare Seiten“ kennen (Cache bekommt Veränderungen der Controllerregister durch Gerät nicht mit!)
+- Varianten in der Praxis
+    1. reiner E/A-Adressraum
+    2. reine memory mapped I/O
+    3. Hybridansätze (z.B. Pentium-Architektur): sowohl als auch
+
+## Software Prinzipien
+- E/A-Operationen dauern – vergleichsweise – lange
+  - Wartesituationen
+- ökonomische Überbrückung
+  - Prozessor: führt andere Aktivitäten durch
+- am Ende einer E/A-Operation
+  - Prozessor: erhält Nachricht (Interrupt)
+  - von E/A-Controllern erzeugt
+  - über Kommunikationsbusse dem Prozessor zugestellt, dort
+    - asynchrone Unterbrechung des regulären Prozessablaufs
+    - Start der ISRs der Gerätemanager
+
+Gerätemanager ("Treiber")
+- gerätespezifische Software mit direktem Zugriff auf HW-Ressourcen
+- Komponenten:
+    1. Auftragsannahme
+      - Schnittstelle zu höheren BS-Ebenen (Reader/Writer-Queues)
+      - Kommunikation mit Gerät (Controller-HW): Auftragserteilung
+    2. Ergebnisanalyse (ISR)
+      - Kommunikation mit Gerät (Controller-HW): Interruptbehandlung
+      - Kommunikation mit höheren BS-Ebenen: Ergebnisrückgabe
+
+BS-Integration
+- im Maschinenraum
+- Integrationsrahmen für gerätespezifische Software
+
+In heutigen Standardbetriebssystemen
+- nehmen Gerätemanager ca. 80% der Distributionssoftware ein
+  - Hardware spezifische Konfiguration
+- liegt die Ursache ca. 85% aller Systemausfälle in (Fremd-) Gerätemanagern:
+  - Komplexität der Programmierung: zeitliche Bedingungen, Parallelität, Synchronisation
+  - Diversität des Gerätezoos
+  - Diversität der HW- und Gerätemanager-Hersteller
+  - Innovationsfreudigkeit und time-to-market → Bananensoftware
+- Massive Robustheits- und Sicherheitsprobleme !
+
+Problemfolgen
+1. Management der Schwachstellen
+    - Treiberzertifizierung (automatisierte Korrektheitsanalysen)
+    - Flicken "42 wichtige Updates stehen bereit" ...
+2. Architekturprinzipien robuster und sicherer Systeme (→ Kap. 7)
+    - Isolation nicht verifizierter verifizierbarer (Treiber-)Software
+    - Ausfallerkennung und -behandlung
+      - Treiberwrapping, micro-reboot
+      - Mikrokernarchitekturen
+
+## Zusammenfassung
+HW-Programmierung mittels
+- Controller-Register
+  - in E/A-Adressräumen
+  - im Arbeitsspeicher (Memory Mapped E/A)
+  - Isolation, Robustheit, Sicherheit
+- Interruptsystem
+  - asynchrone Benachrichtigungen
+
+Software-Prinzipien
+- Gerätemanager (Treiber)
+  - Auftragsmanagement
+  - ISRs
 

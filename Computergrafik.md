@@ -2056,5 +2056,285 @@ $$\text{Durchsatz (fps)} \approx \text{Konst.} / \text{Polygonanzahl}$$
 - über realisitschem Durchsatz: Begrenzung durch Geometriespeicher
 
 ## Hardware-Architektur
+
 ![GPU Architektur](Assets/Computergrafik_GPU_Hardware.png)
 
+# Bildverarbeitung
+## Operationen auf dem Bildraster
+Problem der Vorwärtstransformation:
+- Farbwerte sitzen im Zielbild an nicht ganzzahligen Koordinaten, das Ausgabegerät benötigt aber Farbwerte in einem Raster (ganzzahlige Koordinaten)
+- durch Runden können Löcher im Bild entstehen, einige Pixel werden u. U. mehrfach belegt
+
+![Bildraster Skalieren](Assets/Computergrafik_Bildraster_skalieren.png)
+
+Problemdiskussion: 
+- 45° - Drehung eines 3x3 Pixel großen Quadrates $\rightarrow$ Den Koodinaten (-1,1) und (1,1) beinhalten 2 Pixel aus dem Original (0,2) ist kein Pixelzugeordnet!
+- Runden: führt zu Ausfallartefakten, da bestimmte Zielbildpixel je nach Transformation nicht erreicht werden
+- Betrachtung eines Bildes aus 2 Kamerapositionen (Stereo)
+  - Bild aus verschiedenen Kameraperspektiven betrachtet.
+  - Beide Kameras sind auf den gleichen Punkt FP gerichtet.
+  - Die unterschiedlichen Pixel des Quellbildes werden an unterschiedliche Positionen in den beiden Zielbildern (jeweils Kamerabild in Kamerakoordinatensystem) abgebildet (Vorwärtstransformation).
+  - Störstrukturen bei Skalierung auf jeweils beiden Bildern
+
+Lösungs-Idee: Inverse Transformation
+- inverse Transformation, d.h. indirekte Methode
+- da jedes Pixel im Zielbild B an der Position (k, l) Ausgangspunkt der Rechnung ist, bleibt keines unbelegt
+- keine Löcher mehr!
+- Problem: Auch das Quellbild A ist nur an ganzzahligen Rasterpunkten i,j gegeben. Wie ermittelt man A(x,y) aus den Pixeln A(i,j) im Umfeld von x,y? Wie groß muss das Umfeld sein? → Resamplingproblem (Wiederabtastung)
+
+Lösungsansatz: Rückwärtstransformation der Pixelkoordinaten
+- Inverse Transformation der Koordination vom Zielbild + Sampling im Originalbild
+- Es entstehen zwar keine Lücken im Zielbild, aber durch Rundung nichtganzzahliger Pixelkoordinaten auf den nächstenganzzahligen Wert können dennoch Aliasing-Artefakte entstehen: $B(k.l)=A(h^{-1}(k,l)$
+  - einzelne Pixel im Originalbild werden öfter gesampelt als andere
+  - einige Pixel im Originalbild werden ausgelassen!
+  
+![Rücktransformation I](Assets/Computergrafik_Rückwärtstransformation_Pixelkoordinaten.png)
+
+Rückwärtstransformation der Pixelkoordinaten mit Interpolation benachbarter Pixel:
+- Inverse Transformation der Koordination vom Zielbild + Sampling im Originalbild
+- bei nicht ganzzahligen Pixelkoordinaten kann man zwischen den benachbarten Pixelwerten im Originalbild interpolieren (RGB-Werte)
+  - Rekonstruktion eines genaueren Zwischenwertes / Antialiasing
+- dadurch werden die scharfen (aber ungenau positionierten Flächengrenzen) zwar unscharf. . .
+- aber die wahrgenommenen Grenzen zwischen schwarzen und weißen Flächen können so zwischen den ganzzahligen Pixelwerten positioniert werden
+- die empfundene Genauigkeit wird durch Antialiasing sogar erhöht!
+
+![Rückwärtstransformation II](Assets/Computergrafik_Rückwärtstransformation_Interpolation.png)
+
+Rückwärtstransformation bei doppelter Auflösung des Zielbildes:
+- Vergleich mit exakter Darstellung nur bei doppelter Auflösung möglich
+
+Verkleinern eines Bildes durch Skalierung
+- Inverse Transformation der Koordination vom Zielbild + Sampling im Originalbild
+  - auch hier entstehen zwar keine Lücken im Zielbild beim Transformieren zusammenhängender Bilder
+  - aber beim Sampeln im Originalbild entstehen Aliasing-Artefakte:
+    - z.B. Auslassen jedes zweiten Pixels im Originalbild → Zielbild wird uniform weiß (oder schwarz)
+- exakte Lösung wäre nur bei doppelter Auflösung möglich
+- jedoch Auflösung im Zielbild begrenzt, gute Näherung muss gefunden werden
+- Näherung durch Sampeln und Interpolation mehrerer Nachbarpixel führt zu möglicher Lösung
+
+
+Fazit:
+- Vorwärtstransformation:
+  - gesuchte Farbwerte im Zielbild liegen nicht immer an ganzzahligen Koordinaten
+  - durch Rundung können Lücken im Zielbild entstehen
+- Rückwärtstransformation:
+  - es entstehen keine Lücken im Zielbild, dennoch können (Sampling) Artefakte (Aliasing) auftreten
+  - diese Artefakte können durch Interpolation mehrerer Pixel teilweise abmildert werden
+
+
+## Frequenzraum
+Um das Thema Sampling und Rekonstruktion und Aliasing-Artefakte besser verstehen zu können und um eine möglichst optimale (und theoretisch begründbare) Lösung zu finden machen wir einen Ausflug in die Signaltheorie und digitale Filter.
+Zur Beschreibung der Filtereigenschaften wird der Frequenzraum des Bildes eingeführt.
+Def.: Frequenz ist die Wiederholrate eines periodischen Signals. Bei zeitabhängigen Signalen S(t) gibt die Frequenz an, wie oft sich das Signal pro Sekunde wiederholt: $f(Hertz)=\frac{1}{t}$
+
+Ein Bild ist im zweidimensionalen Ortsraum definiert:
+- Farb-/Helligkeitswert als Funktion des Ortes W(x,y)
+- Bei ortsabhängigen Signalen (z.B. Bildmustern) ist mit Frequenz gemeint, nach welcher Distanz (in Pixeln gemessen) sich das Muster im Bild wiederholt.
+- Die Umwandlung vom Ortsraum in den Frequenzraum (und umgekehrt) geschieht durch eine Fourier-Transformation.
+  - damit kann ein Bild im Frequenzraum f definiert werden
+  - $S(f)$ wird Spektrum genannt
+  
+![Frequenzraum](Assets/Computergrafik_Frequenzraum_Signal.png)
+
+Beispiel: 2D-Spektrum eines Schachbrettmusters
+- Kleinstes auf einem Pixelraster darstellbares Muster hat Durchmesser von 2 Pixel (d.h. 0,5 Wiederholungen pro Pixel)
+- Höchste darstellbare Frequenz $f_x = f_y = 0,5 \text{Pixel}^{-1}$
+- Diese Frequenz nennt man Nyquist-Frequenz!
+
+Bildraster als P-dimensionaler Vektorraum:
+- Das diskrete Grauwertbild $F (i* \delta x, j * \delta y )$ habe M Spalten und N Zeilen
+- $P = M * N$ (=Anzahl Bildpunkte) ist damit die Dimension des Primärdatenraumes des Bildes
+- Wir stellen uns bewusst das Bild aus Punkten zusammengesetzt vor, d.h.
+  - wir können von $M * N$ Basisbildern der Dimension $M * N$ ausgehen, in denen jeweils nur ein Pixel den Wert 1 (weiß) besitzt (alle anderen Pixel Schwarz = 0)
+  - diese Basisbilder sind damit alle orthonormal → Wichtungsfaktoren durch inneres Produkt!
+  - sie ergeben in der grauwertgewichteten Summe das diskrete Bild F
+  
+![Frequenzraum II](Assets/Computergrafik_Frequenzraum_diskretes_Bild.png)
+
+Vektoroperationen im Bildraum:
+- Mit der mathematischen Definition eines Rasterbildes als Vektor in einem hochdimensionalen Vektorraum, lassen sich viele Bildoperationen als Vektoroperatoren elegant darstellen:
+  - z.B. Skalarprodukte zwischen zwei Bildern (Linearkombination lineare Unabhängigkeit)
+  - Basistransformation: Ganze Bilder (als Vektoren) dienen als Basis eines transformierten Bildraumes.
+  - Die neuen Basisvektoren müssen linear unanhängig sein und idealerweise orthonormal zueinander stehen.
+  - Eine Basistransformation entspricht einer "Drehung" des Vektorraumes um den Nullpunkt.
+
+### Transformation
+Jedes Pixel im gedrehten Raum entspricht einem Bild im Ursprungs-Raum.
+Jedes Bild ist eine Linearkombination der Basisvektoren, entspricht also einer gewichteten Addition von Bildern im Ursprungsraum.
+
+![Transformation](Assets/Computergrafik_Frequenzraum_Transformation.png)
+
+4 neue Basisvektoren $B_i$ (2 x 2 Pixel), welche unterschiedliche Frequenzen darstellen:
+
+![Basisvektoren](Assets/Computergrafik_Transformation_Basisvektoren.png)
+
+(Weiß=+1; Schwarz=-1; Grau=0)
+
+Die 4 Basisvektoren stehen orthonormal zueinander. Test mittels paarweisen Skalar-produkten: $B_iB_k=\begin{cases}1 \text{ falls } i=k\\ 0 \text{ sonst }\end{cases}$.
+Jedes einzelne Pixel aber auch jedes Bild kann als Linearkombination aus 4 Basisvektoren $B_1$ bis $B_4$ konstruiert werden: $P=a*B_1+b*B_2+c*B_3+d*B_4$
+- Gleichungssystem: 4 Gleichungen für die Koeffizienten a,b,c,d 
+- Berechnung der Frequenzanteile a bis d über Lösung des Gleichungssystems oder Projektion von P auf $B_1$ bis $B_4$ (mittels Skalarprodukt): $a=P*B_1$
+![Basisvektoren II](Assets/Computergrafik_Basisvektor_Linearkombination.png)
+
+Bsp: $a=P*B_1 = <-1, 1, -1, -1><\frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}> = -1*\frac{1}{2}+1*\frac{1}{2}-1*\frac{1}{2}-1*\frac{1}{2} = -1$
+
+
+### DCT - Discrete Cosinus Transformation
+- Spezielle Basistransformation: Cosinus Transformation
+- Jedes Pixel im Cosinus Raum entspricht einem Bild mit Cosinus-Funktionen verschiedener Frequenzen oder Phasen (in x- oder y-Richtung)
+  - Links oben: Frequenz = Null (Durchschnittswert des Bildes)
+  - Rechts unten: Anteil der höchsten Frequenz
+- Der Cosinus Raum bildet ein Orthonormalsystem
+- ein Pixelbild im Ursprungsraum lässt sich zusammensetzen als gewichtete Addition von Bildern mit unterschiedlichen Frequenzen → Spektralzerlegung
+- Ähnlich funktioniert die Fouriertransformation (Sinus und Cosinustransformation)
+
+![DCT](Assets/Computergrafik_DCT.png)
+
+### Fouriertransformation
+- Grundidee: jede beliebige periodische Funktion lässt sich darstellen als Summe von $\sin$ und $\cos$ Funktionen unterschiedlicher Frequenzen
+- Transformation: verändert eine Funktion nicht, sondern stellt sie nur anders dar
+- Transformation ist umkehrbar: somit existiert auch eine inverse Fourier-Transformation
+- Hochpassfilter: ausblenden der tiefen Frequenzen im Frequenzraum
+  ![Hochpassfilter](Assets/Computergrafik_Fourier_Hochpass.png)
+- Tiefpassfilter: ausblenden der hohen Frequenzen im Frequenzraum
+  ![Tiefpassfilter](Assets/Computergrafik_Fourier_Tiefpass.png)
+
+
+### Signalrekonstruktion
+- die Abtastfrequenz viel höher als die Signalfrequenz im Original
+- Konkret: Die Signalfrequenz liegt unter der halben Abtastfrequenz, der sogenannten Nyquistfrequenz
+- Samplingtheorem von Nyquist:
+  - Signale unterhalb der Nyquistfrequenz der Samples können rekonstruiert werden
+  - andererseits: Signale oberhalb der Nyquistfrequenz können nicht rekonstruiert werden
+    - stattdessen entsteht ein völlig fremdes Signal, welches mit dem Original offensichtlich nichts mehr zu tun hat
+    - Aliasing-Effekt (entsteht z. B. auch bei digitalen Tonaufnahmen von hohen Frequenzen, wenn die Samplingrate für diese Frequenzen zu niedrig ist)
+
+
+### Anitaliasing
+- Aliasing bei Bildern entsteht u.a. bei der Kameraaufnahme von diskreten, digitalen Bildern, wenn das Bild in Bezug auf das Abtastraster zu hohe Frequenzen enthält (Verletzung des Abtasttheorems).
+- die höchste zulässige Frequenz wird als Nyquistfrequenz bezeichnet
+  - sie ist gleich der halben Abtastfrequenz:$K_{x,Nyqu}=\frac{1}{2*\delta x}, x = Pixelabstand$
+  - zum besseren Verständnis des Grundproblems noch mal drei Beispiele nebeneinander:
+      ![Beispiel](Assets/Computergrafik_Antialiasing_Nyquist.png)
+  - Nachträgliches Filtern kann das Aliasing nicht mehr beseitigen.
+- Rekonstruktion eines Signals mittels Interpolation durch Erzeugen weiterer Samples zwischen den gemessenen Samples mittels eines Interpolationsalgorithmus (Supersampling)
+- z.B. durch polynomiale Interpolation (mehrere Nachbarsamples)
+  - Dennoch entsteht ein etwas gestörtes Signal (hier nicht harmonische Verzerrung / Modulation)
+  - → Aliasing-Effekt, allerdings in abgemildertem Umfang
+
+Bei der eingangs vorgeschlagenen Rückwärtstransformation (vom Zielbild zurück ins Originalbild) ist die Samplingrate durch das Zielbild bestimmt (d.h. ein Sample pro Pixel im Zielbild). 
+Wir können damit das Aliasing Phänomen besser erklären: Bei der Verkleinerung um ein Faktor 2 ist die Samplingrate im Originalbild nur halb so groß wie die
+Nyquistfrequenz des Originalbildes! ($0,25 Pixel^{-1}$ statt $0,5 Pixel^{-1}$).
+Beim Sampeln mit zu niedriger Samplingrate (unterhalb der Nyquistfrequenz) kann das Originalbild nicht mehr rekonstruiert werden. Es entstehen Aliasingeffekte: Das Zielbild wird  uniform weiß (oder schwarz, wenn Original um ein Pixel verschoben wird).
+Der Begriff der Nyquistfrequenz erklärt das bekannte Phänomen und verweist auf mögliche Lösungen.
+
+Aliasing kann bei der Ausgabe von Graphiken oder Bildinhalten auf Ausgabegeräten entstehen, denn dieser Prozess ist in der Regel mit einer Rasterung (Rasterisation) verbunden.
+- Dies betrifft die Computergraphik vielerorts und steht deshalb hier im Mittelpunkt!
+- Aliasing entsteht in der Computergraphik insbesondere dann, wenn die Originale in viel höherer Auflösung vorliegen als das Raster des Ausgabegerätes (z.B. hochaufgelöste Bilder, feinste Texturen, aber auch beim Raytracing kleinster Objekte (Strahlverfolgung = Sampling), etc.)
+- Aliasing kann auch bei digitalen Fotografien von kleinteiligen (analogen) Mustern entstehen.
+- Da sich Aliasing-Artefakte nicht nachträglich beseitigen lassen, kann Anti-Aliasing nicht erst dann ansetzen, wenn das Bild bereits fertig gerendert ist.
+- Beachte: Tiefpassfilterung muss deshalb immer vor dem Resampling angewendet werden.
+
+### Anwendung Tiefpassfilter
+Um Bild (durch **Koordinatentransformation**) korrekt rekonstruieren zu können, müssen wir zuerst im Originalbild die hohen Frequenzen, die oberhalb der Nyquistfrequenz des Zielbildes liegen, eliminieren.
+
+Um Bild (durch **inverse Transformation**) korrekt rekonstruieren zu können müssen wir:
+1. Zuerst im Originalbild die hohen Frequenzen, die oberhalb der Samplingrate des Zielbildes transformiert in das Originalbild liegen, eliminieren.
+2. Danach Sampling des gefilterten Originalbildes durch inverse Transformation jedes Pixels im Zielbild
+
+→ Die höchsten Frequenzen des Originalbildes können aufgrund der zu geringen Auflösung im Zielbild ohnehin nicht dargestellt werden. Dieser Ansatz findet die beste Lösung unter den gegebenen Umständen. 
+
+Achtung! Reihenfolge ist wichtig: Wenn man zuerst sampelt und dann das Zielbild filtert, lässt sich u.U. die Originalinformation (wenn dort Frequenzen oberhalb der Nyquistfrequenz enthalten sind) nicht mehr rekonstruieren!
+
+## Rekonstruktionsfilter
+Die oben beschriebene Filterung im Frequenzraum erfordert eine Fouriertransformation des Bildes in den Frequenzraum. Nach Eliminierung der hohen Frequenzen ist die Rücktransformation erforderlich. Dies ist noch sehr aufwendig!
+
+Das selbe Ergebnis können wir einfacher erreichen, indem wir die Filterfunktion vom Frequenzraum ı́n den Ortsraum transformieren (durch eine inverse Fouriertransformation) und dann direkt im Ortsraum anwenden:
+- Box-Filter = ideales Tiefpass-Filter in Frequenzraum; eliminiert alle Frequenzen oberhalb
+- Boxfilter im FR = sinc-Funktion im Ortsraum (Fouriertransformierte der Rechtecksf.) $sinc(x)=\frac{sin(x)}{x}$
+
+Rekonstruktion von Zwischenpixelwerten durch Interpolation benachbarter Pixel:
+- Inverse Transformation der Koordination vom Zielbild + Sampling im Originalbild
+- Bei einer Vergrößerung findet hierbei eine Überabtastung statt (d. h. das Signal im Originalbild liegt unter der halben Nyquistfrequenz der Samplingrate des Zielbildes)
+- Zur genauen Rekonstruktion von Zwischenwerten kann man interpolieren, d.h. ein gewichtetes Mittel zwischen Werten der benachbarten Pixel im Originalbild berechnen
+- Dadurch werden die scharfen (aber ungenau positionierten Flächengrenzen) zwar unscharf... Aber die wahrgenommene Genauigkeit nimmt zu → Antialiasing
+- Zur Gewichtung können ebenfalls Filterfunktionen im Ortsraum verwendet werden – Cut-off-Frequenz = Nyquistfrequenz im Originalbild (z. B. lineare Interpolation oder Nearest Neighbor, Sinc Funktion, etc.)
+
+### Exakte Interpolation
+Rekonstruktionsfilter (supersampling) per Sinc-Funktion (Exakte Interpolation):
+- Inverse Transformation: $B(k, l) = A(h^{-1} \{k, l\}) = A(x, y )$
+- Interpolationsansatz 1 für das Resampling: 
+  - gewichtete Überlagerung der Abtastwerte aus der lokalen Umgebung des Quellbildes. Die Gewichte werden durch Interpolationsfunktionen festgelegt. Die Interpolations-funktionen bestimmen die Qualität des Zielbildes (Störungen, Artefakte).
+  - $A(x,y)=\sum_{i=-\infty}^{\infty}\sum_{j=-\infty}^{\infty}A(i,j) * f_{int}(x-i, y-j)$
+  - Filterkern $f_{int}$ ist zentriert um das Pixel $A(x, y)$
+  - Filter ist selbst auch als Rasterbild definiert
+
+Anwendung der Filter auf Bildinformationen: 
+$$G(x,y)=\sum_{m=-size}^{size} \sum_{n=-size}^{size} F(x+m, y+n) * H(m,n)$$
+mit Ausgabebild $G(x,y)$, Eingabebild $F(x+m,y+n)$ und Filterkern $H(m,n)$
+
+Beispiel 3x3 Spalttiefpass (Boxfilter im Ortsraum):
+- $m=(-1,1), n=(-1,1)$
+- $H=\frac{1}{9} \begin{pmatrix} 1&1&1\\ 1&1&1 \\ 1&1&1 \end{pmatrix}$
+- einfache Mittelwertbildung der Nachbarpixel → unscharfes Bild und hochfrequente Artefakte
+- Faltungsoperatoren zur Tiefpassfilterung → Beispiel Rauschunterdrückung
+
+Beispiel Filterfern: 5x5 Binominalfilter
+
+$H_{5x5} =\frac{1}{256} * \begin{pmatrix} 1\\4\\6\\4\\1 \end{pmatrix} \begin{pmatrix} 1&4&6&4&1 \end{pmatrix}=\frac{1}{256} \begin{pmatrix} 1&4&6&4&1\\ 4&16&24&16&4\\ 6&24&36&24&6\\ 4&16&24&16&4\\ 1&4&6&4&1 \end{pmatrix}$
+
+Interpolatiponsansatz 1 / Methode 1: Exakte Interpolation
+- Hinreichend bandbegrenzte Bilder lassen sich theoretisch exakt interpolieren: Multiplikation des Quellbild-spektrum mit Rechtecktiefpass im Frequenzbereich
+- Im Ortsbereich führt das auf eine diskrete Faltung mit der sinc-Funktion.
+- In der Theorie gibt es keinerlei Störungen / keine Artefakte.
+- Praxisproblem: die sinc-Funktion ist unendlich ausgedehnt!
+
+Sinc-Filter: Das Sinc-Filter ist zwar theoretisch ideal (scharfe Grenze im Frequenzraum) doch gilt dies nur bei gleichmäßiger Abtastung über der Nyquist-Frequenz, was in der Computergrafik meist nicht realisierbar ist. Besonders bei Kanten führt der Sinc-Filter zu starken Ringing-Artefakten. 
+Die Sinc-Funktion einen unendlichen Träger, sodass zur Berechnung des Farbwerts eines Pixels alle Abtastwerte des Bildes herangezogen werden müssen. Ein einfaches Abschneiden der Sinc-Funktion (Lanczos-Filter) führt zu schlechten Ergebnissen.
+
+**Box-Filter**: 
+- Alle Abtastwerte innerhalb eines um das Pixel gelegte Quadrat (meist mit der Kantenlänge von einem Pixelabstand) haben die gleiche Gewichtung: → Mittelwertbildung
+- Das Box-Filter liefert im Allgemeinen schlechte Ergebnisse, da seine Fourier-Transformierte eine Sinc-Funktion ist, die den gewünschten Frequenzbereich nur schlecht isoliert
+
+**Kegel-Filter**: 
+- Beim Kegel-Filter fällt die Gewichtung mit zunehmender Distanz zum Pixel linear ab. 
+- Es liefert etwas bessere Ergebnisse als das Box-Filter
+- Artefakte sind noch vorhanden, aber deutlich abgeschwächt!
+
+**Gauß-Filter**: 
+- Beim Gauß-Filter wird zur Rekonstruktion eine Gauß-Funktion verwendet. Die Fouriertransformierte einer Gauß-Funktion ist wieder eine Gauß-Funktion. 
+- Dieser Filter führt zu Unschärfe (höhere Frequenzen, auch unterhalb der Nyquistfrequenz werden zu stark abgeschwächt), 
+- dafür werden aber Aliasing-Effekte sehr gut unterdrückt
+
+**Mitchell-Netravali-Filter**: 
+- sind stückweise kubische Filter mit vier Pixel breiten Trägern. 
+- Sie sind durch zwei freie Parameter änderbar und wurden speziell dafür entworfen, die aus Rekonstruktionsfiltern resultierenden Artefakte zu untersuchen.
+- Bei geeigneter Parameterwahl liefern die Filter einen guten Kompromiss zwischen Unschärfe, Anisotropie und Ringing. 
+- Die Mitchell-Netravali-Filter werden auch als bikubische Filter bezeichnet, z. B. kubische B-Splines, o. Ä.
+
+### Nearest Neighbour
+- Einfache Übernahme des geometrisch nächsten Nachbarn aus dem Quellbild.
+- Entspricht der Faltung mit einem Rechteck der Breite$\delta x$ im Ortsbereich, d.h. Multiplikation des periodifizierten Bildspektrums mit einer Sinc-Funktion im Frequenzbereich.
+- Ergebnis: Massive Störungen (Artefakte) durch skalierte, z.T. phasengespiegelte Reste von periodifizierten Frequenzanteilen. Verunschärfungen halten sich in Grenzen, da die entsprechende sinc-Funktion bei der Nyquistfrequenz noch nicht wesentlich abgefallen ist. Die unsymmetrische Operation führt zu frequenzabhängigen, örtlichen Verschiebungen.
+
+### Bilinearer Interpolation
+- Entspricht der Faltung mit einem Dreieck der Breite $2*\delta x$ im Ortsbereich, d.h. Multiplikation des periodifizierten Bildspektrums mit einer $sinc^2$-Funktion im Frequenzbereich.
+- Reduziertes Aliasing / Artefakte durch schnelleren Abfall der $sinc^2$-Funktion gegenüber sinc, merkliche Verunschärfung durch stärkeren Abfall bei der Nyquistfrequenz. Außermittige Interpolation führt zu frequenzabhängigen örtlichen Verschiebungen (Achtung bei Messanwendungen).
+
+### Weitere Filter
+- Filter zur Hoch- bzw. Bandpassfilterung:
+- Anwendung: z.B. Kantenextraktion
+- Sobelgradient: $H_{xS} =\begin{pmatrix} 1&0&-1\\ 2&0&-2\\ 1&0&-1\end{pmatrix}, H_{yS}=\begin{pmatrix} 1&2&1\\ 0&0&0\\ -1&-2&-1 \end{pmatrix}$
+- Differenzbildung (Ableitung) → hohe Frequenzen werden verstärkt!
+- im Gegensatz dazu sind Tiefpassfilter Integralfilter = gewichtete Summe der Nachbarpixel
+
+### Zusammenfassung/Kontrollfragen
+1. Grundlagen der Bildverarbeitung und Signaltheorie helfen beim Verständnis der Möglichkeiten und Grenzen der Darstellung und Transformation von Bildern.
+2. Hohe Frequenz (oberhalb der halben Abtastfrequenz / Nyquistfrequenz) führen zu Artefakten (Aliasing!) – Das Signal lässt sich aus den Samples nicht mehr korrekt rekonstruieren.
+3. Hohe Frequenzen müssen daher vor dem Sampling / Resampling herausgefiltert werden!
+4. Die Fouriertransformation und die CosinusTransformation sind solche Basistransformationen, welche das Bild in den Frequenzraum / (Phasenraum) transformieren.
+  
+5. Frage: Was verstehen wir unter einer Basistransformation des Bildraumes? Welche Eigenschaften haben die neuen Basisvektoren (notwendigerweise / idealerweise)?
+6. Frage: Was versteht man unter einem Tiefpassfilter? (Anwendung im Frequenzraum, bzw. Ortsraum)
+7. Frage: Was ist ein Rekonstruktionsfilter? Wo wird es angewendet? Bezug zu Aussage 2?
+8. Frage: Welches sind Qualitätsunterschiede von Tiefpass-Filterfuntionen (Sinc, Linear, Gauß, Mitchell-Netravali)?

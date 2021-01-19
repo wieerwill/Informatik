@@ -526,3 +526,36 @@ Fragen und Fragestellungen zum Verständnis zur Vorlesung
 ---
 > Welche Management-Datenstrukturen sind dabei und zu welchem Zweck beteiligt?
 
+# Netzwerkmanagement
+> Wie sind Sockets definiert?
+
+---
+> In welchem Zusammenhang werden Sockets benutzt?
+
+
+---
+> Wie kann man sich Sockets – symbolisch gesehen – vorstellen?
+
+
+---
+> Warum treten Sockets immer paarweise auf?
+
+
+---
+> Beschreiben Sie das durch Sockets implementierte Kommunikationsmodell. 
+
+
+---
+> Wie und wozu sind Sockets konfigurierbar? 
+
+
+---
+> Nennen Sie Beispiele für räumlich verteilte Systeme (Hardware) und verteilte Dienste und Anwendungen (Software).
+
+
+---
+> Wozu dient das Socketframework des Betriebssystems?
+
+
+---
+> Aus welchen Ebenen (levels) besteht die Implementierung dieses Frameworks?

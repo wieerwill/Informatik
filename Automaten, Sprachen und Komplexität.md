@@ -1380,7 +1380,7 @@ Kochrezept um die Unentscheidbarkeit eines Problems B zu zeigen
 
 > Satz: Das allgemeine Halteproblem ist unentscheidbar
 
-# Rechnen mit Kodierungen
+## Rechnen mit Kodierungen
 Sei M eine Turing-Maschine und $x\in\{0, 1\}^*$. Dann existiert eine Turing-Maschine M', die, wenn sie mit leerem Band gestartet wird, zunächst x auf das Band schreibt und dann M simuliert. 
 Frage: Können wir aus einem Kode w für M und dem Wort x einen q Kode w' für M' berechnen?
 
@@ -1388,3 +1388,99 @@ Frage: Können wir aus einem Kode w für M und dem Wort x einen q Kode w' für M
 
 > Satz: Das Halteproblem auf leerem Band ist unentscheidbar
 
+## Satz von Rice
+Jede Eigenschaft der von einer Turing Maschine berechneten Funktion ist unentscheidbar. Das bedeutet, es gibt keine Methode, mit der man für alle Turing-Maschinen verlässliche Aussagen über die ihnen berechneten Funktionen machen kann
+
+> Satz von Rice: Sei $R$ die Klasse aller Turing-berechenbaren Funktionen $\{0,1\}^*--\rightarrow\{0,1\}^*$, $\Omega$ die nirgendwo definierte Funktion und sei $S\subseteq R$ mit $\Omega\in S$ und $\not = R$. Dann ist die Sprache $C(S)=\{w\in L_{TM} | \phi_w\in S\}$ unentscheidbar.
+
+Beweis:
+1. $\Omega \in S$: Dann ist $C(S)$ nach dem Satz unentscheidbar
+2. $\Omega \not\in S$: Dann gilt $\Omega\in R\backslash S$ und $R\backslash S\not = R$. Nach dem Satz von Rice ist $C(R\backslash S)$ also unentscheidbar und damit auch $C(S)$
+
+Konsequenzen aus dem Satz von Rice:
+Folgende Probleme sind unentscheidbar
+- Konstante Funktion: $\{w \in L_{TM} | \phi_w \text{ ist konstante Funktion}\}$
+- Identität: $\{w\in L_{TM} | \phi_w \text{ ist Identitätsfunktion}\}$
+- Totale Funktion: $\{w\in L_{TM} | \phi_w \text{ ist totale Funktion}\}$
+- Überall undefinierte Funktion: $\{w\in L_{TM} | \phi_w=\Omega \}$
+
+Der Satz von Rice erlaubt es, Unentscheidbarkeitsresultate für die Eigenschaften der von einer Turing-Maschine berechneten Funktion zu zeigen, nicht jedoch für andere Eigenschaften einer Turing-Maschine (wie z.B. die Anzahl ihrer Zustände oder die Größe des Bandalphabets).
+Konsequenz des Satzes von Rice für die Verifikation von Programmen: Kein Programm kann  automatisch die Korrektheit von Software überprüfen.
+
+## Semi Entscheidbarkeit
+Auch wenn das Halteproblem bei leerer Eingabe $H_0$ unentscheidbar ist, so kann doch nach endlicher Zeit festgestellt werden, daß die Maschine $M_w$ bei leerer Eingabe anhält - $H_0$ ist also "halb-" oder "semi-entscheidbar".
+> Definition: Eine Sprache $L\subseteq \sum^*$ heißt semi-entscheidbar, falls die "halbe" charakteristische Funktion von L, d.h. die partielle Funktion $X'_L:\sum^* --\rightarrow \{1\}$ mit $x'_L=\begin{cases} 1 \quad\text{ falls } w\in L\\ undef. \quad\text{ falls } w\not\in L \end{cases}$ berechenbar ist.
+
+Bei Semi-Entscheidbarkeit erlaubt man also, dass die berechnete Funktion $x'_L$ im negativen Fall undefiniert ist, d.h. keine Antwort zurückkommt.
+
+Bei jeder Eingabe rechnet die Maschine und gibt im Fall $w\in L$ nach endlicher Zeit "Ja" aus. Falls $w \not\in L$ gilt, so terminiert die Maschine nicht. Das heißt, man kann sich nie sicher sein, ob nicht doch irgendwann "Ja" ausgegeben wird, da die Antwortzeit der Maschine nicht beschränkt ist.
+
+Beispiel: Sei G eine Grammatik, dann ist L(G) semi-entscheidbar
+- Um $x'_{L(G)$ zu berechnen, geht die Turing Maschine wie folgt vor
+- sei $v_p,v_1,...$ die längenlexikographische Aufzählung von $(V\cup\sum\cup\{\#\})^*$.
+- Teste nacheinander, für jedes n, ob $v_n=w_0\#w_1\#...\#w_k$ mit $w_0=S,w_i\Rightarrow w_{i+1}$ für alle $1\leq i \leq k$ und $w_k=w$
+- Ist dies der Fall, so terminiere mit Ausgabe 1, sonst betrachte $v_{n+1}$.
+
+> Satz: Ein Problem $L\subseteq \sum^*$ ist gneua dann entscheidbar, wenn sowohl L als auch $\bar{L}=\sum^*\backslash L$ semi-entscheidbar sind.
+1. $w\in L$, dann existiert $t\in\N$, so dass $M_L$ nach t Schritten terminiert. Wegen $w\not\in\bar{L}$ terminiert $M_{\bar{L}}$ niemals.
+2. $w\not\in L$, dann existiert $t\in\N$, so dass $M_{\bar{L}}$ nach t Schritten terminiert. Wegen $w\not\in L$ terminiert $M_L$ niemals.
+
+Dieses letzte Argument heißt mitunter "Schwalbenschwanz-Argument".
+
+> Satz: Sei $L\subseteq \sum^*$ eine nichtleere Sprache. Dann sind äquivalent:
+> - L ist semi-entscheidbar
+> - L wird von einer Turing-Maschine akzeptiert
+> - L ist vom Typ 0 (d.h. von einer Grammatik erzeugt)
+> - L ist Bild einer berechenbaren partiellen Funktion $\sum^*--\rightarrow\sum^*$
+> - L ist Bild einer berechenbaren totalen Funktion $\sum^*--\rightarrow\sum^*$
+> - L ist rekursiv aufzählbar
+> - L ist Definitionsbereich einer berechenbaren partiellen Funktion $\sum^*--\rightarrow\sum^*$
+
+> Definition: Sei $M$ eine Turing Maschine. DIe von M akzeptierte Sprache ist $L(M)=\{ w\in\sum^* | \text{es gibt akzept. Haltekonf. mit } z_0w\Box\vdash_M^* k\}$.
+
+> Definition: Eine Sprache $L\subseteq \sum^*$ heißt rekursiv aufzählbar, falls $L\not\in\varnothing$ oder es eine totale und berechenbare Funktion $f:\N\rightarrow\sum^*$ gibt mit $L=\{f(n)| n\in\N\}=\{f(0), f(1),f(2),...\}$.
+
+Beispiel: Sei M TM und L die Menge der Konfigurationen, die M bei Eingabe des leeren Wortes erreicht. Die Funktion $f:\N\rightarrow\Gamma^*Z\Gamma^+$ mit $f(n)$ ist die Konfiguration, die M bei EIngabe des leeren Wortes nach n Schritten erreicht, ist berechenbar und total und sie erfüllt $L=\{f(n)|n\in\N\}$. Also ist L rekursiv aufzählbar.
+
+Die Sprachen vom Typ 0 heißen rekursiv aufzählbar, weil es genau die rekursiv aufzählbaren sind.
+
+## Universelle Turing Maschine
+Wir wollen jetzt zeigen, daß es eine Turing-Maschine gibt, die jede Turing-Maschine simulieren kann, wenn deren Kodierung gegeben ist.
+
+Problem: Bandalphabete sind beliebig groß, die zu konstruierende universelle TM hat aber ein festes Bandalphabet.
+
+Lösung: Kodiere Buchstaben des Bandalphabets als Wörter über $\{0, 1, 2\}$ mit $\Box = 2$. Ab jetzt nehmen wir an, daß wir immer dieses Bandalphabet haben.
+
+> Definition: Eine Turing Maschine U heißt universelle Turing Maschine, wenn sie die folgende partielle Funktion berechnet. $\{0,1\}^*--\rightarrow\{0,1\}^*$
+> $$y\rightarrow\begin{cases} \phi_w(x) \quad\text{ falls } y=w000x,w\in L_{TM},x\in\{0,1\}^* \\ undef. \quad\text{ sonst}\end{cases}$$
+- U hält bei Eingabe $w000x$ genau dann, wenn $M_w$ bei Eingabe x hält
+- U akzeptiert $w000x$ genau dann, wenn $M_w$ das Wort x akzeptiert
+
+> Satz: Es gibt eine universelle Turing Maschine
+Beweis: eine Turing Maschine mit drei Bändern. 
+- 1.Band: Kode w der zu simulierenden Turing Maschine $M_w$
+- 2.Band: aktueller Zustand der zu simulierenden Turing Maschine $M_w$
+- 3.Band: augenblicklicher Bandinhalt der Turing Maschine $M_w$
+1. Initialisierung: auf 1.Band steht w000x mit $w\in L_{TM}$. Kopiere x auf 3.Band und lösche 000x auf erstem, schreibe 010 auf 2.Band
+2. Simulation: stehen auf 2.Band $01^{i+1}0$ und auf 3. an Kopfposition j, so suche auf 1.Band Anweisung $(z_{i'},a_{j'},y)=\delta(z_i,a_j)$ und schreibe $01^{i'+1}0$ auf 2.Band; ersetzte j an Kopfposition auf 3.Band durch $j'$; bewege 3.Kopf entsprechend y nah rechts, links oder aber auch nicht.
+3. Aufräumen: bei Erreichen einer akzeptierenden Haltekonfiguration auf 3.Band
+
+> Satz: das spezielle Halteproblem $K=\{w\in L_{TM} | M_w \text{ angesetzt auf w hält}\}$ ist semi-entscheidbar.
+
+> Satz: es gibt eine Grammatik G, deren Wortproblem $L(G)$ unentscheidbar ist.
+
+Folgerung: es gibt eine Typ-0 Sprache, die nicht vom Typ 1 ist.
+
+> Satz: das allgemeine Wortproblem $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$ ist unentscheidbar.
+
+## Totale berechenbare Funktionen
+Gesucht ist eine „Programmiersprache“, in der genau die totalen berechenbaren Funktionen programmierbar sind.
+1. Idee: nimm einfach $TOT := \{w\in L_{TM} | \phi_w ist total\}$. Problem: nach dem Satz von Rice ist $TOT$ nicht entscheidbar.
+2. Idee: $TOT$ ist verschwenderisch, denn für jede totale berechenbare Funktion gibt es viele „Programme“. Vielleicht können wir ja geschickt einige „Programme“ verbieten, um die gesuchte Programmiersprache zu finden. 
+ 
+Gesucht ist also $C\subseteq TOT \subseteq L_{TM}$, so dass $\{\phi_w | w\in C \} = {\phi_w | w \in TOT\}$ die Menge der totalen berechenbaren Funktionen ist.
+- es gibt keine "Programmiersprache" mit auch nur semi-entscheidbarer Syntax, in der genau die totalen berechenbaren Funktionen programmierbar sind
+- $TOT$ ist nicht einmal semi-entscheidbar
+- indirekt nehmen wir an, dass C semi-entscheidbar ist
+  - dann existiert eine totale berechenbare Funktion $f:\{0,1\}^*\rightarrow\{0,1\}^*$ mit Bild C
+  - neue Funktion $g:\{0,1\}^*\rightarrow\{0,1}^*:w\vdash 1\phi_{f(w)}(w)$

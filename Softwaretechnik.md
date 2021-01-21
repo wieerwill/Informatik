@@ -1464,19 +1464,226 @@ Klassendiagramm
   - ordered – Elemente sind geordnet (unordered)
   - sequence – Speicherung der Elemente als Liste
   - bag – Elemente sind Multimenge
+- Parameterlisten
+  - in: Eingangsparameter
+  - out: Ausgangsparameter
+  - inout: Eingangs- und Ausgangsparameter
+  - return: Rückgabewert
+- Beziehungen
+  - navigierbar/unspezifiziert/nicht-navigierbar
+  - ungerichtete/gerichtete Relation/assoziation
 
+Aktive Klassen
+- Reagieren nicht nur, sondern werden von sich aus aktiv
+- Z.B. Steuerobjekte
+- Als Thread oder Prozess realisiert
 
 ## Schnittstellen
+- Vereinbarung über Art des Aufrufs
+  - Homogenität gleicher Funktionen
+  - Enthält
+    - Spezifikation von Operationen
+    - keine Implementierung ( Java, nicht UML!)
+    - keine Attribute
+  - In Java außerdem anstelle von Mehrfachvererbung
+- Schnittstellen in UML
+  - Funktion ähnlich abstrakter Klasse
+  - Meist für technische Aspekte
+  - Notation: Stereotyp <<interface>> oder grafisch (lollipop notation)
+- Verträge („design by contract“)
+  - Schnittstelle sagt bisher nichts über Effekt der Klasse aus
+  - Vollständige Beschreibung wäre Programm?
+  - Vereinfachte Beschreibung für Abfolgen:
+    - Vorbedingung: Prädikat, das vor Aufruf gelten muss <<precondition>>
+    - Nachbedingung: Prädikat, das nach Aufruf gelten muss <<postcondition>>
+    - Invariante: Prädikat, das immer gilt <<invariant>>
+  - Jeweils Einschränkungen!
 
+Protokollrollen - Dynamisches Verhalten von Schnittstellen
+- Ohne Sicht auf innere Implementierung (anders als beim Objektlebenszyklus)
+- Protokoll = Kollaboration von Protokollrollen (protocol, protocol role)
+- Modell: Zustandsautomat
+  - Genauer: Spezialisierung
+  - Beschreibung der Synchronisation von Objekten
 
 ## Entwurfsmuster
+- Warum Wiederverwendung?
+  - Geringerer Aufwand
+  - Das Rad nicht noch einmal neu erfinden
+  - Verwenden üblicher, aus Erfahrung gewachsener Strukturen
+- ... und warum nicht?
+  - Aufwand für Anpassung kann hoch sein!
+  - Einarbeiten in teilweise komplexe Schnittstellen
+  - Abhängigkeit von externen Komponenten, Zwang zu späterer Portierung
 
+> Was ist ein Entwurfsmuster? Eine schematische Lösung für eine Klasse verwandter Probleme (Höhere Ebene: Architekturmuster)
+- Wie helfen Muster im Entwurf?
+  - Identifizieren von Klassen (Anwendungs- und Lösungsdomäne)
+  - Regeln sind abstrakt oder an realen Objekten orientiert
+  - Muster: Arten von Rollen bzw. Lösungshinweise für typische Strukturierungsaufgaben
+  - Änderbarkeit und Lesbarkeit des Entwurfs verbessern
+- Arten von Entwurfsmustern
+  - Erzeugungsmuster
+  - Strukturmuster
+  - Verhaltensmuster
+- Erzeugungsmuster
+  - Factory Method, Fabrikmethode
+    - Implementierungsvarianten; Erzeugung von Objekten wird an Unterklassen delegiert
+  - Abstract Factory, Abstrakte Fabrik
+    - Schnittstelle zur Erzeugung von Familien verwandter Objekte
+  - Prototype, Prototyp
+    - Objekterzeugung durch Vorlage und Kopie
+  - Builder, Erbauer
+    - Trennung von Erzeugung und Repräsentation komplexer Objekte, für Erzeugung unterschiedlicher Repräsentationen
+  - Singleton
+    - Sicherstellung, dass nur ein Objekt einer Klasse erzeugt wird, die einen globalen Zugriff bietet
+
+Strukturmuster
+- Adapter
+  - Anpassung der (inkompatiblen) Schnittstelle einer Klasse oder eines Objekts an eine erwartete Schnittstelle
+- Bridge, Brücke
+  - Abstraktion (Schnittstelle) von Implementierung entkoppeln, um beide unabhängig zu ändern; Impl.-Klasse nur als Verweis
+- Decorator, Dekorierer
+  - Objekt dynamisch um Zuständigkeiten erweitern (Alternative zur Bildung von Unterklassen)
+- Facade, Fassade
+  - Einheitliche Schnittstelle zu einer Schnittstellenmenge, vereinfacht Zugriff
+- Flyweight, Fliegengewicht
+  - Gemeinsame Nutzung kleiner Objekte zur effizienten Verwendung großer Mengen davon (Speicheraufwand)
+- Composite, Verbund, Kompositum
+  - Zusammenfügen verschiedener Objekte zur Repräsentation von Teil-Ganzes-Beziehungen; Objekte und Kompositionen können einheitlich behandelt werden, Baumstruktur
+- Proxy, Stellvertreter
+  - Kontrollierter Zugriff auf Objekt durch vorgeschaltetes Stellvertreterobjekt
+  - Gründe: Schutz, entfernter Zugriff (remote proxy), smart pointer, Erzeugung on demand
+
+Adapter
+- Vorteile
+  - Kommunikation unabhängiger Softwarekomponenten
+  - Einfache Erweiterung um zusätzliche Funktionalität
+  - Austausch der Komponente durch Änderung des Adapters leicht möglich
+- Nachteile
+  - Zusätzlicher Adaptierungsschritt benötigt Zeit
+  - Schlechte Wiederverwendbarkeit der Adapter
+- Bekannte Verwendung, Spezialfälle
+  - Fassade: Adapter eines Teilsystems
+  - Proxy: erweitert die Funktionalität bei gleicher Schnittstelle
+  - Brücke: keine Anpassung, sondern vorherige Strukturierung
+
+Verhaltensmuster 
+- Command, Befehl
+  - Befehl / Operation als Objekt kapseln (Parameterübergabe, Operations-Warteschlangen, logging, Rückgängig machen)
+- Observer, Beobachter
+  - 1-zu-n-Beziehung zwischen Objekten, so dass die Änderung des zentralen Objekts zu einer Benachrichtigung und Aktualisierung der n (abhängigen) Zustände führt
+- Visitor, Besucher
+  - Beschreibung und Kapselung einer zu definierenden Operation, die auf einer Objektmenge ausgeführt wird
+- Interpreter
+  - Repräsentation der Grammatik einer Sprache sowie Interpreter zur Analyse von Sätzen der Sprache
+- Iterator
+  - Sequentieller Zugriff auf die Elemente einer Sammlung ohne Kenntnis der Implementierung der Sammlung
+- Memento
+  - Internen Zustand eines Objekts erfassen und speichern, um Objektzustand wiederherstellen zu können
+- Template Method, Schablonenmethode
+  - Beschreibung des Skeletts eines Algorithmus mit Delegation der Einzelschritte an Unterklassen; Teilschritte können von Unterklassen geändert werden
+- Strategy, Strategie
+  - Ermöglicht Austausch verschiedener Implementierungen einer Aufgabe ohne Beeinflussung der sie benutzenden Objekte
+- Mediator, Vermittler
+  - Objekt, welches das Zusammenspiel einer lose gekoppelten Objektmenge in sich kapselt. Vermeidet direkten Bezug der Objekte untereinander und ermöglicht unabhängige Änderung des Zusammenspiels
+- State, Zustand
+  - Ermöglicht Objekt, sein Verhalten abhängig von seinem inneren Zustand zu ändern, als ob es die Klasse wechselt
+- Chain of Responsibility, Zuständigkeitskette
+  - Vermeidet direkte Kopplung von Auslöser und Empfänger einer Anfrage bzw. Operation. Mehrere Objekte werden nacheinander benachrichtigt, bis die Anfrage erledigt ist
+
+Bewertung Observer
+- Vorteile
+  - Entkopplung von Komponenten und Schichten möglich
+  - Broadcast und selective Broadcast möglich
+- Nachteile
+  - Bei vielen Beobachtern: Benachrichtigung aufwendig
+  - Unerwartete Änderung, Änderungskaskaden und Rekursion
+  - Abmelden der Beobachter vor dem Löschen
+- Bekannte Verwendung, Spezialfälle
+  - Verwendung im Model-View-Controller Muster
+  - Qt: Signal / Slot-Prinzip ähnlich
+
+Anwendung von Entwurfsmustern
+- Untersuche Anwendbarkeit und Konsequenzen
+- Analysiere Struktur, Teilnehmer und Kollaborationen
+- Wähle aus dem Anwendungskontext Namen für Teilnehmer
+- Spezifiziere die teilnehmenden Klassen
+  - Deklariere Schnittstellen, Vererbung und Variablen
+  - Identifiziere existierende Entwurfsklassen, die durch das Muster beeinflusst werden
+- Wähle anwendungsspezifische Namen für Operationen
+- Implementiere Operationen entsprechend den Verantwortlichkeiten und Kollaborationen des Musters
 
 ## Klassenbibliotheken und Komponenten
+Klassenbibliotheken
+- Zusammenfassung von Modulen, Klassen, etc.
+- Mit einem bestimmten (abstrakten) Zweck
+  - Abstrakte Datenverwaltung, Templates
+  - Grundlegende System-Aufgaben
+  - Untere Kapselungs-Schicht des Laufzeitsystems oder der Programmierumgebung
+  - Numerische Routinen, Simulation, ...
+- Wird in Anwendung eingebunden (importiert), API
+  - Objekte instanziieren oder Klassen ableiten
+- Meist passiv: Kontrollfluss wird von Anwendung gesteuert
+- Beispiele: stdlib, MFC, GNU scientific library, Java 3D, IPP
 
+Komponentenbasierte Entwicklung
+- Bausteinorientierte Programmierung (component-ware)
+- Softwareentwicklung: Konstruktion aus vorgegebenen Bausteinen
+- Entsprechung für Wiederverwendung: Generische Bausteine (components)
+  - Anpassbar, zusammensetzbar
+- Werkzeuggestützte bzw. grafische Kompositionsmechanismen
+- Beispiele: Java Beans, Enterprise Java Beans (EJBs), Microsoft COM+
+- Komponenten-Entwicklung oft auch projektspezifisch
+- Warum Komponenten
+  - Monolithische, proprietäre Software führt zunehmend zu Problemen
+  - Zunehmend verteilte Anwendungen mit offener Struktur und Internet-Anbindung
+  - Zusammensetzen der Funktionalität aus standardisierten Elementen, die über offene Schnittstellen kommunizieren
+  - Komponenten sollen Flexibilität bei sich ändernden Anforderungen erhöhen
+  - Weg aus der „Software-Krise“?
+- Eigenschaften von Komponenten
+  - müssen von ihrer Umgebung und anderen Komponenten unabhängig und getrennt sein
+    - Kontextabhängigkeiten: benötigte Komponenten-Infrastruktur und Systemressourcen
+    - Kapseln ihre angebotenen Funktionen
+  - Werden immer als ganze Einheit eingesetzt; alle Bestandteile sind enthalten (Archiv-Datei)
+  - Sind nicht von Kopien ihrer selbst unterscheidbar
+  - Klare Spezifikation der Schnittstelle nötig; explizit definierte Interaktionen mit Komponenten und Umgebung
+  - Komposition durch Dritte: Endbenutzer, Komponenten-Hersteller und Komponenten-Integrator; meist nur kompilierter Code verfügbar
+
+Komponenten für Client/Server-Architekturen
+- Wichtige Aspekte
+  - Transaktionen
+  - Sicherheit
+  - Ressourcenverwaltung
+  - Persistenz
+- Komponentenkonzept für Server-Komponenten
+  - meist unsichtbare Komponenten
+  - standardisierte Realisierung der wichtigen Eigenschaften für Client/Server-Anwendungen
+  - Realisierung: Enterprise Java Beans (EJBs) innerhalb eines Java Enterprise Edition Servers
 
 ## Dokumentation
+Dokumentation des Feinentwurfs
+- Möglichkeiten
+  - Eigenständiges Dokument
+  - Erweiterung des Lastenhefts / Grobkonzepts
+  - Eingebettet in den Quellcode (Werkzeug, z.B. Javadoc)
+- Inhalt
+  - Ähnlich Grobkonzept
+  - Zusätzlich detaillierte Modelle
+  - Abwägungen des Objektentwurfs
+  - Klassenschnittstellen
 
 # Implementierung
+## Konventionen und Werkzeuge
+## Code-Qualität
+## Dokumentation
+## Codegenerierung
+## Implementierung aktiver Objekte
+## Verifikation und Testen
+## Testaktivitäten und Werkzeuge
+## Softwareverteilung
+
 # Vorgehensweise
+
+
 # Projektmanagement

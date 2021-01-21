@@ -1198,13 +1198,429 @@ Motivation: Die Sprache QBE
 
 # Transaktionen, Integrität und Trigger
 ## Grundbegriffe
+Integritätsbedingung (engl. integrity constraint oder assertion): Bedingung für die „Zulässigkeit“ oder „Korrektheit“
+
+1. Typintegrität
+    - SQL erlaubt Angabe von Wertebereichen zu Attributen
+    - Erlauben oder Verbieten von Nullwerten
+2. Schlüsselintegrität
+    - Angabe eines Schlüssels für eine Relation
+3. Referentielle Integrität
+    - die Angabe von Fremdschlüsseln
+
 ## Transaktionsbegriff
+Beispiel:
+- Platzreservierung für Flüge gleichzeitig aus vielen Reisebüros → Platz könnte mehrfach verkauft werden, wenn mehrere Reisebüros den Platz als verfügbar identifizieren
+- überschneidende Kontooperationen einer Bank
+- statistische Datenbankoperationen → Ergebnisse sind verfälscht, wenn während der Berechnung Daten geändert werden
+
+> Transaktion: Eine Transaktion ist eine Folge von Operationen (Aktionen), die die Datenbank von einem konsistenten Zustand in einen konsistenten, eventuell veränderten, Zustand überführt, wobei das ACID-Prinzip eingehalten werden muss.
+- Aspekte:
+  - Semantische Integrität: Korrekter (konsistenter) DB-Zustand nach Ende der Transaktion
+  - Ablaufintegrität: Fehler durch "gleichzeitigen" Zugriff mehrerer Benutzer auf dieselben Daten vermeiden
+
+ACID-Eigenschaften
+- Atomicity (Atomarität): Transaktion wird entweder ganz oder gar nicht ausgeführt
+- Consistency (Konsistenz oder auch Integritätserhaltung): Datenbank ist vor Beginn und nach Beendigung einer Transaktion jeweils in einem konsistenten Zustand
+- Isolation (Isolation): Nutzer, der mit einer Datenbank arbeitet, sollte den Eindruck haben, dass er mit dieser Datenbank alleine arbeitet
+- Durability (Dauerhaftigkeit / Persistenz): nach erfolgreichem Abschluss einer Transaktion muss das Ergebnis dieser Transaktion „dauerhaft“ in der Datenbank gespeichert werden
+
+Kommandos einer Transaktionssprache
+- Beginn einer Transaktion: Begin-of-Transaction-Kommando BOT (in SQL implizit!)
+- commit: die Transaktion soll erfolgreich beendet werden
+- abort: die Transaktion soll abgebrochen werden
+
+Vereinfachtes Modell für Transaktion
+- Repräsentation von Datenbankänderungen einer Transaktion
+  - `read(A,x)`: weise den Wert des DB-Objektes A der Variablen x zu
+  - `write(x, A)`: speichere den Wert der Variablen x im DB-Objekt A
+- Beispiel einer Transaktion T:
+  - `read(A, x); x := x − 200; write(x, A);`
+  - `read(B, y); y := y + 100; write(y, B);`
+- Ausführungsvarianten für zwei Transaktionen T_1 , T_2 :
+  - seriell, etwa T_1 vor T_2
+  - „gemischt“, etwa abwechselnd Schritte von T_1 und T_2
+- Probleme im Mehrbenutzerbetrieb
+  - Inkonsistentes Lesen: Nonrepeatable Read
+    - Variablen/Speicher ändert sich durch fertigstellen anderer Transaktionen während des Ablaufs
+  - Abhängigkeiten von nicht freigegebenen Daten: Dirty Read
+    - T_1 ändert X
+    - T_2 liest X und rechnet damit
+    - T_1 bricht ab und setzt änderung zurück
+    - Ergebnis von T_2 ist damit falsch
+  - Das Phantom-Problem
+    - durch `insert` ändert sich `select` ergebnis; nachfolgende rechnungen auf vorherigen abruf sind falsch
+  - Verlorengegangenes Ändern: Lost Update
+    - updates gehen verloren, wenn gleiche Variablen gleicheitig beschrieben werden (oder kurz nacheinander)
+
+> Serialisierbarkeit: Eine verschränkte Ausführung mehrerer Transaktionen heißt serialisierbar, wenn ihr Effekt identisch zum Effekt einer (beliebig gewählten) seriellen Ausführung dieser Transaktionen ist.
+- Schedule: "Ablaufplan" für Transaktion, bestehend aus Abfolge von Transaktionsoperationen
+
 ## Transaktionen in SQL
+Aufweichung von ACID in SQL: Isolationsebenen
+```sql
+set transaction
+  [ { read only | read write }, ]
+  [isolation level
+    { read uncommitted |
+      read committed |
+      repeatable read |
+      serializable }, ]
+  [ diagnostics size ...]
+```
+Standardeinstellung:
+```sql
+set transaction read write,
+  isolation level serializable
+```
+
+Bedeutung der Isolationsebenen
+- **read uncommitted**
+  - schwächste Stufe: Zugriff auf nicht geschriebene Daten, nur für read only Transaktionen
+  - statistische und ähnliche Transaktionen (ungefährer Überblick, nicht korrekte Werte)
+  - keine Sperren → effizient ausführbar, keine anderen Transaktionen werden behindert
+- **read committed**: nur Lesen endgültig geschriebener Werte, aber nonrepeatable read möglich
+- **repeatable read**: kein nonrepeatable read, aber Phantomproblem kann auftreten
+- **serializable**: garantierte Serialisierbarkeit
+
+
 ## Integritätsbedingungen in SQL
+- **not null**: Nullwerte verboten
+- **default**: Angabe von Default-Werten
+- **check** ( search-condition ):
+    - Attributspezifische Bedingung (in der Regel Ein-Tupel-Integritätsbedingung) 
+    - Festlegung weitere lokale Integritätsbedingungen innerhalb der zu definierenden Wertebereiche, Attribute und Relationenschemata
+    - Beispiel:
+      ```sql
+      create table WEINE (
+        WeinID int primary key,
+        Name varchar(20) not null,
+        Jahr int check(Jahr between 1980 and 2010),
+        ...
+      )
+      ```
+- **primary key**: Angabe eines Primärschlüssel
+- **foreign key** ( Attribut(e) ) **references** Tabelle( Attribut(e) ): Angabe der referentiellen Integrität
+- **create domain**: Festlegung eines benutzerdefinierten Wertebereichs
+    - Beispiel:
+      ```sql
+        create domain WeinFarbe varchar(4)
+          default 'Rot'
+          check (value in ('Rot', 'Weiß', 'Rose'))
+
+        create table WEINE ( WeinID int primary key, Name varchar(20) not null, Farbe WeinFarbe, ...)
+      ```
+
+Erhaltung der referentiellen Integrität
+- Überprüfung der Fremdschlüsselbedingungen nach Datenbankänderungen
+- Überprüfungsmodi von Bedingungen
+  - `on update | delete`: Angabe eines Auslöseereignisses, das die Überprüfung der Bedingung anstößt
+  - `cascade | set null | set default | no action`: Kaskadierung: Behandlung einiger Integritätsverletzungen pflanzt sich über mehrere Stufen fort, z.B. Löschen als Reaktion auf Verletzung der referentieller Integrität
+  - `deferred | immediate` legt Überprüfungszeitpunkt für eine Bedingung fest
+    - `deferred`: Zurückstellen an das Ende der Transaktion
+    - `immediate`: sofortige Prüfung bei jeder relevanten Datenbankänderung
+  - Beispiel: `... foreign key (Weingut) references ERZEUGER (Weingut) on delete cascade`
+
+Die assertion-Klausel
+- Assertion: Prädikat, das eine Bedingung ausdrückt, die von der Datenbank immer erfüllt sein muss
+- Syntax (SQL:2003) `create assertion name check ( prädikat )`
+
 ## Trigger
+- Trigger: Anweisung/Prozedur, die bei Eintreten eines bestimmten Ereignisses automatisch vom DBMS ausgeführt wird
+- Anwendung:
+  - Erzwingen von Integritätsbedingungen („Implementierung“ von Integritätsregeln)
+  - Auditing von DB-Aktionen
+  - Propagierung von DB-Änderungen
+- Definition:
+  ```sql
+    create trigger ...
+    after Operation
+    Anweisungen
+  ```
+- Beispiel: Einfügen von neuen Aufträgen
+  ```sql
+  create trigger Auftragszählung+
+    on insertion of Auftrag A:
+    update Kunde
+    set AnzAufträge = AnzAufträge + 1
+    where KName = new A.KName
+
+  create trigger Auftragszählung-
+    on deletion ...:
+    update ...- 1 ...
+  ```
+- Spezifikation von
+  - Ereignis und Bedingung für Aktivierung des Triggers
+  - Aktion(en) zur Ausführung
+- Syntax in SQL:2003 festgelegt
+  ```sql
+  create trigger Name
+  after | before Ereignis
+  on Relation
+  [ when Bedingung ]
+  begin atomic SQL-Anweisungen end
+  ```
+- verfügbar in den meisten kommerziellen Systemen (aber mit anderer Syntax)
+- Weitere Angaben bei Triggern
+  - **for each row** bzw. **for each statement**: Aktivierung des Triggers für jede Einzeländerungen einer mengenwertigen Änderung oder nur einmal für die gesamte Änderung
+  - **before** bzw. **after**: Aktivierung vor oder nach der Änderung
+  - **referencing new as** bzw. **referencing old as**: Binden einer Tupelvariable an die neu eingefügten bzw. gerade gelöschten („alten“) Tupel einer Relation ⇝ Tupel der Differenzrelationen
+
+Integritätssicherung durch Trigger
+1. Bestimme Objekt $o_i$ , für das die Bedingung $\phi$ überwacht werden soll
+  - i.d.R. mehrere $o_i$ betrachten, wenn Bedingung relationsübergreifend ist
+  - Kandidaten für $o_i$ sind Tupel der Relationsnamen, die in $\phi$ auftauchen
+2. Bestimme die elementaren Datenbankänderungen $u_{ij}$ auf Objekten $o_i$ , die $\phi$ verletzen können
+  - Regeln: z.B. Existenzforderungen beim Löschen und Ändern prüfen, jedoch nicht beim Einfügen etc.
+3. Bestimme je nach Anwendung die Reaktion $r_i$ auf Integritätsverletzung
+  - Rücksetzen der Transaktion (rollback)
+  - korrigierende Datenbankänderungen
+4. Formuliere folgende Trigger:
+  `create trigger t-phi-ij after u ij on o i when ¬φ begin r i end`
+5. Wenn möglich, vereinfache entstandenen Trigger
+
+Trigger in Oracle: Arten
+- Prädikat zur Einschränkung (when)
+- Zugriff auf altes (:old.col) bzw. neues (:new.col) Tupel
+  - für delete: nur (:old.col)
+  - für insert: nur (:new.col)
+  - in when-Klausel nur (new.col) bzw. (old.col)
+- Transaktionsabbruch durch raise_application_error(code, message)
+- Unterscheidung der Art der DML-Anweisung
+  - `if deleting then ... end if;`
+  - `if updating then ... end if;`
+  - `if inserting then ... end if;`
+
 ## Schemaevolution
+- Änderung eines Datenbankschemas durch neue/veränderte Anforderungen
+  - Hinzufügen oder Löschen von Tabellen, Spalten, Integritätsbedingungen
+  - Umbenennen oder Datentypänderungen
+- erfordert oft auch Anpassung/Übertragung der vorhandenen Datenbank ⇝ Datenbankmigration
+- leider nur eingeschränkte Unterstützung durch DB-Werkzeuge (DDL + Export/Import der Daten)
+
+- SQL-DDL zum Löschen von Tabellen
+  - Löschen von Tabellendefinitionen (beachte Unterschied zu delete)
+    `drop table relationenname [ restrict | cascade ]`
+  - cascade: erzwingt Löschen aller Sichten und Integritätsbedingungen, die zu dieser Basisrelation gehören
+  - restrict (Defaultfall): das drop-Kommando wird zurückgewiesen, falls noch solche Sichten und Integritätsbedingungen existieren
+- SQL-DDL zur Änderung von Tabellen
+  - `alter table relationenname modifikation`
+  - **add column spaltendefinition** fügt eine neue Spalte hinzu; alle bereits in der Tabelle existierenden Tupel erhalten als Wert der neuen Spalte den angegebenen Defaultwert bzw. den null-Wert
+  - **drop column spaltenname** löscht die angegebene Spalte (inkl. restrict- bzw. cascade)
+  - **alter column spaltenname set default defaultwert** verändert Defaultwert der Spalte
+- Änderung von Integritätsbedingungen
+  - nachträgliches Hinzufügen/Löschen von Tabellenbedingungen über **alter table**
+  - Vergabe von Namen für Bedingungen über constraint bed-name-Klausel
+    ```sql
+    alter table WEINE
+      add constraint WeinBed_Eindeutig
+      unique (Name, Weingut)
+    ```
+  - Löschen über Namen `alter table WEINE drop constraint WeinBed_Eindeutig`
 
 # Sichten und Zugriffskontrolle
+## Sichtenkonzept
+> Sichten: virtuelle Relationen (bzw virtuelle Datenbankobjekte in anderen Datenmodellen) (englisch view)
+- Sichten sind externe DB-Schemata folgend der 3-Ebenen-Schemaarchitektur
+  - Sichtdefinition
+    - Relationenschema (implizit oder explizit)
+    - Berechnungsvorschrift für virtuelle Relation, etwa SQL-Anfrage
+- Vorteile
+  - Vereinfachung von Anfragen für den Benutzer der Datenbank, etwa indem oft benötigte Teilanfragen als Sicht realisiert werden
+  - Möglichkeit der Strukturierung der Datenbankbeschreibung, zugeschnitten auf Benutzerklassen
+  - logische Datenunabhängigkeit ermöglicht Stabilität der Schnittstelle für Anwendungen gegenüber Änderungen der Datenbankstruktur
+  - Beschränkung von Zugriffen auf eine Datenbank im Zusammenhang mit der Zugriffskontrolle
+- Probleme
+  - automatische Anfragetransformation
+  - Durchführung von Änderungen auf Sichten
+- Definition von Sichten in SQL
+  ```sql
+    create view SichtName [ SchemaDeklaration ]
+    as SQLAnfrage
+    [ with check option ]
+  ```
+- Beispiel: alle Rotweine aus Bordeaux
+  ```sql
+  create view Rotweine as
+    select Name, Jahrgang, WEINE.Weingut
+    from WEINE natural join ERZEUGER
+    where Farbe = 'Rot' and Region = 'Bordeaux'
+  ```
 
+## Änderungen auf Sichten
+Kriterien für Änderungen auf Sichten
+- Effektkonformität: Benutzer sieht Effekt als wäre die Änderung auf der Sichtrelation direkt ausgeführt worden
+- Minimalität: Basisdatenbank sollte nur minimal geändert werden, um den erwähnten Effekt zu erhalten
+- Konsistenzerhaltung: Änderung einer Sicht darf zu keinen Integritätsverletzungen der Basisdatenbank führen
+- Respektierung des Datenschutzes: Wird die Sicht aus Datenschutzgründen eingeführt, darf der bewusst ausgeblendete Teil der Basisdatenbank von Änderungen der Sicht nicht betroffen werden
+
+Projektionssicht: $WNW:=\pi_{WeinID, Name, Weingut}(WEINE)$
+- in sql mit create view Anweisung
+  `create view WNW as select WeinID, Name, Weingut from WEINE`
+- Änderungsanweisung für die Sicht WNW:
+  `insert into WNW values (3333, 'Dornfelder', 'Müller')`
+  - Problem der Konsistenzerhaltung falls Farbe oder Jahrgang als not null deklariert!
+
+Selektionssichten: $WJ:=\sigma_{Jahrgang>2000}(\pi_{WeinID, Jahrgang}(WEINE))$
+  ```sql
+  create view WJ as
+  select WeinID, Jahrgang
+  from WEINE
+  where Jahrgang > 2000
+  ```
+
+Kontrolle der Tupelmigration
+```sql
+create view WJ as
+select WeinID, Jahrgang
+from WEINE
+where Jahrgang > 2000
+with check option
+```
+
+Verbundsichten $WE := WEINE \bowtie ERZEUGER$
+- In SQL:
+  ```sql
+  create view WE as
+  select WeinID, Name, Farbe, Jahrgang,
+    WEINE.Weingut, Anbaugebiet, Region
+  from WEINE, ERZEUGER
+  where WEINE.Weingut = ERZEUGER.Weingut
+  ```
+- Änderungsoperationen hier in der Regel nicht eindeutig übersetzbar:
+  `insert into WE values (3333, 'Dornfelder', 'Rot', 2002, 'Helena', 'Barossa Valley', 'Südaustralien')`
+- Änderung wird transformiert zu
+  `insert into WEINE values (3333, 'Dornfelder', 'Rot', 2002, 'Helena')`
+- plus Änderung auf ERZEUGER !
+
+Aggregierungssichten
+  ```sql
+  create view FM (Farbe, MinJahrgang) as
+  select Farbe, min(Jahrgang)
+  from WEINE
+  group by Farbe
+  ```
+- Folgende Änderung ist nicht eindeutig umsetzbar:
+  ```sql
+  update FM
+  set MinJahrgang = 1993
+  where Farbe = 'Rot'
+  ```
+
+Klassifikation der Problembereiche
+1. Verletzung der Schemadefinition (z.B. Einfügen von Nullwerten bei Projektionssichten)
+2. Datenschutz: Seiteneffekte auf nicht-sichtbaren Teil der Datenbank vermeiden (Tupelmigration, Selektionssichten)
+3. nicht immer eindeutige Transformation: Auswahlproblem 
+4. Aggregierungssichten (u.a.): keine sinnvolle Transformation möglich
+5. elementare Sichtänderung soll genau einer atomaren Änderung auf Basisrelation entsprechen: 1:1-Beziehung zwischen Sichttupeln und Tupeln der Basisrelation (kein Herausprojizieren von Schlüsseln)
+
+SQL-92-Standard
+- Integritätsverletzende Sichtänderungen nicht erlaubt
+- datenschutzverletzende Sichtänderungen: Benutzerkontrolle (with check option)
+- Sichten mit nicht-eindeutiger Transformation: Sicht nicht änderbar (SQL-92 restriktiver als notwendig)
+
+Einschränkungen für Sichtänderungen
+- änderbar nur Selektions- und Projektionssichten (Verbund und Mengenoperationen nicht erlaubt)
+- 1:1-Zuordnung von Sichttupeln zu Basistupeln: kein distinct in Projektionssichten
+- Arithmetik und Aggregatfunktionen im select-Teil sind verboten
+- genau eine Referenz auf einen Relationsnamen im from-Teil erlaubt (auch kein Selbstverbund)
+- keine Unteranfragen mit „Selbstbezug“ im where-Teil erlaubt (Relationsname im obersten SFW-Block nicht in from-Teilen von Unteranfragen verwenden)
+- group by und having verboten
+- seit SQL:2003 Aufhebung einiger Einschränkungen, insbesondere
+  - updates auf union all-Sichten (ohne Duplikateliminierung)
+  - Inserts in Verbundsichten mit Primär-/Fremdschlüsselbeziehungen (mit einigen Einschränkungen)
+  - Updates auf Verbundsichten mit Cursor 
+
+Alternative: Sichtänderungen mit Instead-of-Triggern
+- Definition von Triggern auf Sichten zur anwendungsspezifischen Propagierung der Änderungen auf die Basistabellen
+```sql
+create view V_WEINERZEUGER as
+  select * from WEINE natural join ERZEUGER;
+create trigger V_WEINERZEUGER_Insert
+  instead of insert on V_WEINERZEUGER
+referencing new as N
+for each row
+begin
+  insert into WEINE values (:N.WeinID, :N.Name,
+  :N.Farbe, :N.Jahrgang, :N.Weingut);
+end;
+```
+
+Auswertung von Anfragen an Sichten
+- select: Sichtattribute evtl. umbenennen bzw. durch Berechnungsterm ersetzen
+-  from: Namen der Originalrelationen
+- konjunktive Verknüpfung der where-Klauseln von Sichtdefinition und Anfrage (evtl. Umbenennungen)
+- Vorsicht bei Aggregationssichten!
+  - having versus where
+  - keine geschachtelten Aggregationen in SQL
+
+## Rechtevergabe
+- Zugriffsrechte (AutorisierungsID, DB-Ausschnitt, Operation)
+- AutorisierungsID ist interne Kennung eines „Datenbankbenutzers“
+- Datenbank-Ausschnitte: Relationen und Sichten
+- DB-Operationen: Lesen, Einfügen, Ändern, Löschen
+
+```sql
+grant Rechte
+on Tabelle
+to BenutzerListe
+[with grant option]
+```
+- In Rechte-Liste: all bzw. Langform all privileges oder Liste aus select, insert, update, delete
+- Hinter on: Relationen- oder Sichtname
+- Hinter to: Autorisierungsidentifikatoren (auch public, group)
+- spezielles Recht: Recht auf die Weitergabe von Rechten (with grant option)
+
+Autorisierung für public: „Jeder Benutzer kann seine Aufträge sehen und neue Aufträge einfügen (aber nicht löschen!).“
+```sql
+create view MeineAufträge as
+select *
+from AUFTRAG
+where KName = user;
+grant select, insert
+on MeineAufträge
+to public;
+```
+
+Zurücknahme von Rechten
+```sql
+revoke Rechte
+on Tabelle
+from BenutzerListe
+[restrict | cascade ]
+```
+- restrict: Falls Recht bereits an Dritte weitergegeben: Abbruch von revoke
+- cascade: Rücknahme des Rechts mittels revoke an alle Benutzer propagiert, die es von diesem Benutzer mit grant erhalten haben
+
+
+## Privacy-Aspekte
+> Privacy (Privatsphäre): das Recht jedes Einzelnen auf einen geschützten privaten Raum, der von anderen nur in definierten Ausnahmefällen verletzt werden darf
+- elektronische Autobahn-Mautsysteme: Überwachung von Fahrzeugen
+- Kreditkartenaktivitäten und diverse Payback- bzw. Rabattkarten: Kaufverhalten von Kunden
+- Mobilfunksysteme: Bewegungsprofile der Nutzer
+- RFID-Technologie: etwa im Einzelhandel Kaufverhalten, Warenflüsse, etc.
+
+Statistische Datenbanken
+- Datenbanken, in denen die Einzeleinträge dem Datenschutz unterliegen, aber statistische Informationen allen Benutzern zugänglich sind
+- statistische Information = aggregierte Daten (Durchschnittseinkommen etc.)
+- Problem: Gewinnung von Einzelinformationen durch indirekte Anfragen
+  - Abhilfe: keine Anfragen, die weniger als n Tupel selektieren
+  - Abhilfe: statistische Anfragen nicht erlauben, die paarweise einen Durchschnitt von mehr als m vorgegebenen Tupeln betreffen
+> Sind nur Ergebnisse von Aggregatfunktionen erlaubt, dann benötigt eine Person 1 + (n − 2)/m Anfragen, um einen einzelnen Attributwert zu ermitteln
+
+> k-Anonymität: ein bestimmter Sachverhalt kann nicht zwischen einer vorgegebenen Anzahl k von Tupeln unterschieden werden
+- für viele Zwecke (klinische Studien etc.) werden auch Detaildaten (Mikrodaten) benötigt
+  - weitere Zuordnungen (Namen etc.) etwa durch Verbund mit anderen Daten möglich?
+  - Lösung: Data Swapping (??)
+    - Vertauschen von Attributwerten einzelner Tupel
+    - statistische Analysen noch gültig?
+  - eine Anfrage nach einer beliebigen Kombination von Alter, Geschlecht, Familienstand und Postleitzahl liefert entweder eine leere Relation oder mindestens k Tupel
+- Ansätze
+  - Generalisierung: Attributwerte durch allgemeinere Werte ersetzen, die einer Generalisierungshierarchie entnommen sind
+    - die Verallgemeinerung des Alters einer Person zu Altersklassen: $\{35, 39\} \rightarrow 30-40$
+    - Weglassen von Stellen bei Postleitzahlen: $\{ 39106, 39114 \}\rightarrow 39***$
+  - Unterdrücken von Tupeln: Löschen von Tupeln, welche die k-Anonymität verletzen und damit identifizierbar sind
 
 # NoSQL Datenbanken
+
+# Anwendungsprogrammierung

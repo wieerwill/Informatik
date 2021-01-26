@@ -1125,18 +1125,18 @@ Zunächst ideal diffus remittierende weiße Flächen $(\beta(\lambda) = 1)$:
 - in der Computergrafik wird meist eine vereinfachte Variante gewählt um Rechenzeit zu sparen
 - erstmals 1965 definiert (Fred Nicodemus): $\f_r(\omega_i, \omega_r)=\frac{dL_r(\omega_r)}{dE_i(\omega_i)}=\frac{dL_r(\omega_r)}{L_i(\omega_i)\cos(\theta_i)d\omega_i}$
 - Eine BRDF beschreibt wie eine gegebene Oberfläche Licht reflektiert.
-- Das Verhältnis von reflektierter Strahldichte (radiance) $L_r$ in eine Richtung $\vec{ω}_r$ zur einfallenden Bestrahlungsstärke (irradiance) $E_i$ aus einer Richtung $\vec{ω}_i$ wird "bidirectional reflectance distribution function"(BRDF) genannt.
+- Das Verhältnis von reflektierter Strahldichte (radiance) $L_r$ in eine Richtung $\vec{\omega}_r$ zur einfallenden Bestrahlungsstärke (irradiance) $E_i$ aus einer Richtung $\vec{\omega}_i$ wird "bidirectional reflectance distribution function"(BRDF) genannt.
   - $p(\lambda)=\frac{L_r}{E_i}=[\frac{1}{sr}]$
 - Die BRDF (für jeden Punkt x) ist eine 5-dimensionale skalare Funktion: $p(\lambda, \phi_e, \theta_e, \phi_i, \theta_i)$
 - Keine Energie-Einheiten, nur Verhältniszahl!
 - Kann durch Messung für verschiedene Materialien bestimmt werden (Messkamera/Normbeleuchtung)
 - Eigenschaften der BRDF:
-  - Reziprozität: $ρ(\lambda)$ ändert sich nicht, wenn Einfalls- und Ausfallsrichtung vertauscht werden (wichtig für Ray-Tracing).
-  - $ρ(\lambda)$ kann anisotrop sein, d.h. der Anteil des reflektierten Lichtes ändert sich, wenn bei gleicher Einfalls- undAusfallsrichtung die Fläche um die Normale gedreht wird (Textilien, gebürstete Metalle, Metalleffektlacke)
+  - Reziprozität: $\roh(\lambda)$ ändert sich nicht, wenn Einfalls- und Ausfallsrichtung vertauscht werden (wichtig für Ray-Tracing).
+  - $\roh(\lambda)$ kann anisotrop sein, d.h. der Anteil des reflektierten Lichtes ändert sich, wenn bei gleicher Einfalls- undAusfallsrichtung die Fläche um die Normale gedreht wird (Textilien, gebürstete Metalle, Metalleffektlacke)
   - Superposition gilt, d.h. mehrere Quellen überlagern sich linear.
 
-Es ist in der Computergrafik üblich, die bidirektionale Reflektivität als Gemisch von ambienten, diffusen und spekularen Komponenten $ρ_d, ρ_s$ aufzufassen und
-einen ambienten Anteil $ρ_a$ zu addieren. Für eine Menge Q von Lichtquellen berechnen wir damit die gesamte reflektierte Strahlstärke: $L_r=p_a*E_a+\sum_{1\leq j \leq Q} E_j * (k_d*p_d + k_s*p_s)$ mit $k_d+k_s=1$ und Q= Anzahl der Lichtquellen
+Es ist in der Computergrafik üblich, die bidirektionale Reflektivität als Gemisch von ambienten, diffusen und spekularen Komponenten $\roh_d, \roh_s$ aufzufassen und
+einen ambienten Anteil $\roh_a$ zu addieren. Für eine Menge Q von Lichtquellen berechnen wir damit die gesamte reflektierte Strahlstärke: $L_r=p_a*E_a+\sum_{1\leq j \leq Q} E_j * (k_d*p_d + k_s*p_s)$ mit $k_d+k_s=1$ und Q= Anzahl der Lichtquellen
 
 ### Rendering-Equation
 Für ambiente und gerichtete Lichtquellen aus der Hemisphäre ergibt sich eine spezielle Form der BRDF, die Render-Gleichung (Jim Kajiya 1986):
@@ -1346,7 +1346,7 @@ Gleichnis: Der Algorithmus arbeitet wie ein Maler, der zuerst den Hintergrund un
 - Die Teilpolygone sollten dabei möglichst nicht größer sein als der Tiefenunterschied, damit sie in jeder Situation eindeutig sortiert werden können!
 - Die 6 Teilpolygone können mittels Painter‘s Algorithmus korrekt sortiert und dargestellt werden
 
-Anwendungsbereiche des Painter ́s Algorithmus / Depth-Sort Algorithmus:
+Anwendungsbereiche des Painter's Algorithmus / Depth-Sort Algorithmus:
 - Einfache Szenen, kleine Objekte, die sich in den z-Werten hinreichend unterscheiden.
 - Dort, wo keine Hardware-Unterstützung für 3D-Rendering angeboten wird (begrenzter Speicher, keine Z-Buffer Unterstützung).
 - Viele 2D-Grafiksystem bieten bereits Polygonfüllverfahren an.
@@ -1569,7 +1569,7 @@ Für Flächen, die klein im Verhältnis zu ihrem Abstand sind, ergibt sich eine 
 $$F_{sr}=A_S \frac{\cos(\theta_s)*cos(\theta_r)}{\pi*r^2}*H_{sr}$$
 
 Bei dicht benachbarten Flächen gelten die obigen, vereinfachenden Annahmen u.U. nicht mehr. Es müsste exakt gerechnet oder in diesen Bereichen feiner untergliedert werden. 
-Wird statt $\beta8\lambdaβ$ vereinfachend ein konstanter Remissionsfaktor R (R diff im monochromatischen Fall oder $R_{diff R}, R_{diffG}, R_{diffB}$ für die drei typischen Farbkanäle) eingeführt, so ergibt sich zwischen der Strahldichte $L_r$ der bestrahlten Fläche und der Strahldichte $L_s$ der bestrahlenden Fläche der folgende Zusammenhang: $L_r=R_r*F_sr*L_s$
+Wird statt $\beta \lambda \beta$ vereinfachend ein konstanter Remissionsfaktor R (R diff im monochromatischen Fall oder $R_{diff R}, R_{diffG}, R_{diffB}$ für die drei typischen Farbkanäle) eingeführt, so ergibt sich zwischen der Strahldichte $L_r$ der bestrahlten Fläche und der Strahldichte $L_s$ der bestrahlenden Fläche der folgende Zusammenhang: $L_r=R_r*F_sr*L_s$
 
 Jedes Patch wird nun als opaker Lambertscher (d.h. ideal diffuser) Emitter und Reflektor betrachtet (d.h. alle Lichtquellen werden genauso wie einfache remittierende Flächen behandelt, allerdings mit emittierendem Strahldichte-Term $L_{emr}$). $L_r=L_{emr}+R_r*\sum_S F_{sr}*L_s$
 
@@ -2249,7 +2249,7 @@ Achtung! Reihenfolge ist wichtig: Wenn man zuerst sampelt und dann das Zielbild 
 ## Rekonstruktionsfilter
 Die oben beschriebene Filterung im Frequenzraum erfordert eine Fouriertransformation des Bildes in den Frequenzraum. Nach Eliminierung der hohen Frequenzen ist die Rücktransformation erforderlich. Dies ist noch sehr aufwendig!
 
-Das selbe Ergebnis können wir einfacher erreichen, indem wir die Filterfunktion vom Frequenzraum ı́n den Ortsraum transformieren (durch eine inverse Fouriertransformation) und dann direkt im Ortsraum anwenden:
+Das selbe Ergebnis können wir einfacher erreichen, indem wir die Filterfunktion vom Frequenzraum in den Ortsraum transformieren (durch eine inverse Fouriertransformation) und dann direkt im Ortsraum anwenden:
 - Box-Filter = ideales Tiefpass-Filter in Frequenzraum; eliminiert alle Frequenzen oberhalb
 - Boxfilter im FR = sinc-Funktion im Ortsraum (Fouriertransformierte der Rechtecksf.) $sinc(x)=\frac{sin(x)}{x}$
 

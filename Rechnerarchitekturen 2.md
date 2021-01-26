@@ -250,18 +250,22 @@ Gegenmaßnahmen
 
 ## Sprungvorhersage
 Je mehr die Parallelität ausgenützt werden soll, desto mehr sind Kontrollkonflikte der limitierender Faktor!
+- wichtig für single-issue Prozessoren (pro Takt ein Befehl ausgegeben)
+- aber essentiell für multiple-issue (n Befehle pro Takt ausgegeben)
 
 Dynamische Sprungvorhersage
 - Zur Laufzeit durch Prozessor-Hardware
 - Vorhersage, ob ein bedingter Sprung genommen wird oder nicht
 - Abhängig von der Vorhersage: Füllen der Prozessor-Pipeline mit Befehlen ab der vorhergesagten Programm-Stelle
 - Reduktion der branch penalty, falls vorhergesagtes Programm-Verhalten mit tatsächlichem übereinstimmt
+- jedoch: Vorhersagen sind schwierig
 
-### Einfache lokale Prädiktoren
+Einfache lokale Prädiktoren
 - Liefern Vorhersage, ob bedingter Sprung genommen wird oder nicht
 - Prädiktion allein anhand der Historie des betrachteten, aktuellen Sprungs
 - Historie eines Sprungs wird mit 1, 2 oder n Bits gepuffert
 
+### Einfache Sprungvorhersage (1 Bit)
 - Sprungvorhersage-Puffer
   - Branch prediction buffer oder branch history table
   - Kleiner Speicher, der mit (Teil der) Adresse des Sprungbefehls indiziert wird
@@ -270,6 +274,7 @@ Dynamische Sprungvorhersage
   - Prädiktion: Sprung verhält sich wie beim letzten Mal
   - Nachfolgebefehle ab vorhergesagter Adresse holen
   - Falls Prädiktion fehlerhaft: Prädiktionsbit invertieren
+  - Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet.
 - Einfachste Art von Puffer (keine Tags, d.h. keine Überprüfung, ob Adresse tatsächlich im Puffer)
   - Entspricht sehr einfachem Cache
   - Hat eine bestimmte Kapazität
@@ -278,35 +283,45 @@ Dynamische Sprungvorhersage
   - Prädiktion kann fehlerhaft sein
   - Prädiktion kann von anderem Sprungbefehl stammen (mit gleichen Bits im Indexteil der Adressen)
 
+### Einführung von Tag Bits
 - Nachteile des einfachen 1-Bit Vorhersageschemas
   - Höhere Fehlerrate als überhaupt möglich, wenn Häufigkeit der Sprungentscheidungen betrachtet wird
   - D.h. auch wenn Sprung fast immer ausgeführt (taken) wird, entstehen 2 Fehler anstatt 1
+- Tag beseitigt eines der Probleme: gültiger Eintrag, falls Tag-Bits gleich sind
+- Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet. Überprüfung mittels tags, ob es der richtige Eintrag ist.
+- Allgemein: Fehlerrate von 1-Bit Prädiktor ist für Sprünge in Schleifenkonstrukten doppelt so hoch wie die Anzahl ausgeführter Sprünge
 
-2-Bit Branch-Prediction Buffer
-- Speicherung der Historie, Befehlsadressen als Zugriffsschlüssel:
+### 2 Bit Vorhersagen
+- Änderung der Vorhersage nur, wenn 2 falsche Vorhersagen in Folge
+- 2-Bit Branch-Prediction Buffer: Speicherung der Historie, Befehlsadressen als Zugriffsschlüssel
 
+![Sprungvorhersage](Assets/RA2_Sprungvorhersage.png)
+
+Vorhersagequalität für 2-Bit Prädiktor
+- Studie von 1992 für SPEC89 auf IBM Power-Architektur
+- Qualität nicht durch die Größe des Speichers beschränkt
+- Fehlerwahrscheinlichkeit höher für Integer-Programme (gcc, eqntott)
+
+### n-Bit Prädikator
 Allgemein: n-Bit Prädiktor (Spezialfall: 2-Bit)
 - Verwendet n-Bit Zähler
   - Sättigungsarithmetik (kein wrap around bei Überlauf)
-  - Kann Werte zwischen 0 und 2 n - 1 annehmen
-  - Wenn Zähler größer als Hälfte des Maximums (2 n - 1): Vorhersagen, dass Sprung ausgeführt wird; ansonsten vorhersagen, dass Sprung nicht genommen wird
+  - Kann Werte zwischen 0 und $2^{n-1}$ annehmen
+  - Wenn Zähler größer als Hälfte des Maximums $(2^{n-1})$: Vorhersagen, dass Sprung ausgeführt wird; ansonsten vorhersagen, dass Sprung nicht genommen wird
   - Zähler wird bei ausgeführtem Sprung inkrementiert und bei nicht ausgeführtem dekrementiert
 - In der Praxis: 2-Bit Prädiktor ähnlich gut wie n-Bit Prädiktor
   - In den meisten Prozessoren heute: 2-Bit Prädiktor für (lokale) Vorhersage
+
+### Korrelierende Prädikatoren
 - Einschränkung des n-Bit (bzw. 2-Bit) Prädiktors:
   - Betrachtet nur (vergangenes) Verhalten eines Sprungs, um dessen (zukünftiges) Verhalten vorherzusagen.
   - Arbeitet rein lokal!
 - Idee: Verbesserung durch Betrachtung des Verhaltens anderer Sprünge
   - Man erhält so genannten korrelierenden Prädiktor (correlating predictor) oder zweistufigen Prädiktor
   - Prinzip: Aufgrund globaler Information (anderer Sprünge) wird einer von mehreren lokalen Prädiktoren ausgewählt
-
-
-### Korrelierende Prädikatoren
 - Beziehen zur Vorhersage des Verhaltens eines Sprungs Kontext-Information mit ein, d.h. die Historie anderer Sprungbefehle
 - Prädiktor benutzt globale Kontext-Bits, um einen von mehreren lokalen Prädiktoren auszuwählen
-
 - Betrachten wiederholte Ausführung des Codefragments (ignorieren dabei alle anderen Sprünge, inkl. dem für Wiederholung)
-- Einschränkung: Statt aller möglicher Sequenzen: d wechselt zwischen 2 und 0
 
 Zweistufiger Prädiktor
 - Verwendet 1 Bit Kontextinformation
@@ -314,10 +329,10 @@ Zweistufiger Prädiktor
   - Kontext: Letzter (i.a. anderer) Sprung wurde ausgeführt/nicht ausgeführt (1 Bit)
   - Vorhersage des zweistufigen Prädiktors: Anhand des Kontexts wird lokaler Prädiktor für die Vorhersage des aktuell betrachteten Sprungs ausgewählt
   - Letzter Sprung ist i.a. nicht gleich aktuellem, vorherzusagendem Sprung (nur in einfachen Schleifen)
-- Notation des Prädiktorstatus: <X>/<Y> mit
-  - <X>: Vorhersage, falls letzter Sprung not taken, d.h. Kontext = NT
-  - <Y>: Vorhersage, falls letzter Sprung taken, d.h. Kontext = T
-  - <X> und <Y> Vorhersagen: jeweils entweder T oder NT
+- Notation des Prädiktorstatus: `<X>/<Y>` mit
+  - `<X>`: Vorhersage, falls letzter Sprung not taken, d.h. Kontext = NT
+  - `<Y>`: Vorhersage, falls letzter Sprung taken, d.h. Kontext = T
+  - `<X>` und `<Y>` Vorhersagen: jeweils entweder T oder NT
 
 (m,n)-Prädiktor
 - Betrachtet als Kontext das Verhalten der letzten m Sprünge, um aus $2^m$ vielen lokalen Prädiktoren einen n-Bit Prädiktor auszuwählen
@@ -386,7 +401,168 @@ Allgemeines Ziel: Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Reg
 
 
 # Multiple-Issue-Architekturen
+## Mehrere Ausführungseinheiten
+- Techniken der vorangegangenen Abschnitte geeignet, um Daten- und Kontrollkonflikte zu lösen
+  - Idealer CPI ~1
+- Weitere Leistungssteigerung: 
+  - CPI < 1
+- Mehrere Befehle pro Takt ausgeben (fertigstellen)
+- Zwei Grundtypen von multiple-issue Prozessoren:
+  - Superskalar
+    - Geben variable Anzahl von Befehlen pro Takt aus
+    - Mit statischem (vom Compiler erzeugtem) oder dynamischem Scheduling in Hardware
+  - VLIW/EPIC
+    - Feste Anzahl von Befehlen ausgegeben, definiert durch Befehlscode (weitgehende Planung der Issue-Phase durch Compiler)
 
+![In Order Pipeline](Assets/RA2_in-order-pipeline.png)
+
+## Superskalar
+statisch: Details der Befehlsausgabe
+- In IF werden 1-n Befehle von Instruction Fetch Unit geholt (ggfs. Max. von n nicht immer möglich, z.B. bei Sprüngen)
+- Befehlsgruppe, die potentiell ausgegeben werden kann = issue packet
+- Konflikte bzgl. Befehlen im issue packet werden in Issue-Stufe in Programmreihenfolge (d.h. in-order) geprüft
+  - Befehl ggfs. nicht ausgegeben (und alle weiteren)
+- Aufwand für Prüfung in Issue-Stufe groß!
+  - Wegen Ausgewogenheit der Pipeline-Stufen ggfs. Issue weiter „pipelinen“, d.h. in mehrere Stufen unterteilen = nicht-trivial
+- Parallele Ausgabe von Befehlen limitierender Faktor superskalarer Prozessoren!
+
+MIPS mit statischem Scheduling
+- Annahme: 2 Befehle pro Takt können ausgegeben werden (1x ALU, Load/Store plus 1x FP)
+  - Einfacher als 2 beliebige Befehle (wegen „Entflechtung“)
+- Befehlsstart umfasst
+  - 2 Befehlsworte holen (64-Bit Zugriff, d.h. komplexer als bei nur 1 Befehl - ggfs. Pre-fetch?)
+  - Prüfen, ob 0, 1 oder 2 Befehle ausgegeben werden können
+  - Befehl(e) ausgeben an korrespondierende funktionale Einheiten
+- Prüfen auf Konflikte durch Entflechtung vereinfacht
+  - Integer und FP-Operationen nahezu unabhängig (verschiedene Registersätze)
+  - Abhängigkeiten nur bei Speichertransfers möglich (von Integer-ALU für FP ausgeführt) - Einschränkung des issue 
+- Leistungssteigerung nur bei „geeignetem“ Anteil von FP-Operationen im Programm sowie geeigneter „Verflechtung“ durch Compiler!
+
+## Dynamisches Befehlsscheduling – in-order execution
+Bislang
+- Reihenfolge der Befehlsabarbeitung = Reihenfolge der Befehle im Speicher, abgesehen von Sprüngen
+- Behindert schnelle Ausführung
+
+Scoreboarding
+- Jeder Befehl, der aus der Instruction fetch-Einheit kommt, durchläuft das Scoreboard.
+- Wenn für einen Befehl alle Daten/Operanden bekannt sind und die Ausführungseinheit frei ist, wird der Befehl gestartet.
+- Alle Ausführungseinheiten melden abgeschlossene Berechnungen dem Scoreboard.
+- Dieses erteilt Befehlen die Berechtigung zum Abspeichern von Ergebnissen, sofern
+  - Speichereinheit frei ist und
+  - Antidaten- und Ausgabeabhängigkeiten berücksichtigt sind und prüft, ob dadurch neue Befehle ausführbereit werd
+- Zentrale Datenstruktur hierfür: Scoreboard (deutsch etwa „Anzeigetafel“ [für Befehlsstatus])
+  - Ursprünglich realisiert für CDC 6600 (1964):
+    - load/store-Architektur
+    - mehrere funktionale Einheiten (4xFP, 6xMem, 7xInteger ALU)
+  - Scoreboarding für MIPS nur sinnvoll
+    - für FP-Pipeline (Operationen mit mehreren Taktzyklen)
+    - und mehrere funktionale Einheiten (hier: 2 x Mult, Div, Add, Int)
+
+![Out Of Order Execution](Assets/RA2_out-of-order-execution.png)
+
+
+### Verfahren von Tomasulo
+- Erdacht für IBM 360
+- Verfahren von Tomasulo erlaubt auch bei Ausgabe- und Antidatenabhängigkeiten, die Reihenfolge zu vertauschen
+- Umbenennung der Register; verschiedenen Benutzungen eines Registers werden verschiedene Speicherzellen zugeordnet
+- Jeder funktionalen Einheit wird eine Reservation Station zugeordnet
+- Reservation Stations enthalten die auszuführende Operation und, soweit bekannt, die Operanden bzw. eine Kennzeichnung in Form von tag bits des Operanden
+- Sind alle Operanden bekannt und ist die funktionale Einheit frei, so kann die Bearbeitung beginnen
+- Am Ende der Bearbeitung wird das Ergebnis von allen Einheiten übernommen, die das Ergebnis benötigen
+- Verteilen der Daten erfolgt vor der Abspeicherung im Registerspeicher
+- Aus den tag bits geht hervor, aus welcher Einheit der Operand kommen muss
+- Registeradressen werden dynamisch auf größere Anzahl von Plätzen in den Reservation Stations abgebildet, d.h. Register effektiv umbenannt. Performance-Beschränkungen wegen weniger Register werden so umgangen
+
+### Register Renaming
+- Prinzip: Verwendung temporärer Register für (logisch) neue möglicherweise interferierende Belegung
+- Beispiel
+  - Annahme: es existieren zwei temporäre Register S und T
+  - Kollidierende Belegungen von F8 durch `sub.d` bzw. F6 durch `add.d` in (eindeutige) temporäre Register „umleiten“
+    ```cpp
+    div.d $F0,$F2,$F4 
+    add.d $T,$F0,$F8   // Lesen von F8, Schreiben von T (F6)
+    s.d   $T,0($R1)    // Lesen von T (F6)
+    sub.d S,$F10,$F14  // Schreiben von S (F8)
+    mul.d $F6,$F10,S   // Schreiben von F6
+    ```
+- Alle Namenskonflikte durch Umbenennung auflösbar (Voraussetzung: genügend temporäre Register)
+- Weitere Verwendung von F8/F6 durch S/T ersetzen!
+- Wichtige Hardwarestruktur: Reservation Stations
+  - Zugeordnet zu funktionalen Einheiten (i.d.R. eine pro Einheit)
+- Arbeitsweise von Reservation Stations
+  - Puffern Operanden für Befehle (sobald verfügbar/geladen)
+    - Müssen nicht aus Registern gelesen werden!
+  - Ausstehende Operanden verweisen auf Reservation Station, die Eingabe bereitstellen wird
+  - Bei aufeinander folgenden Schreibzugriffen auf Register: Nur letzter für Aktualisierung des Inhalts verwendet
+- Wichtige Eigenschaften der Verwendung von Reservation Stations anstelle des zentralen Registersatzes
+  - Konfliktdetektion und Ausführungskontrolle verteilt
+    - Informationen in Reservation Stations bei den funktionalen Einheiten bestimmen, wann Ausführung eines Befehls möglich ist
+  - Ergebnisse werden direkt zu den funktionalen Einheiten (in jeweiliger Reservation Station) weitergereicht
+    - Erweiterte Form des Forwarding
+    - Realisiert implizit Register Renaming
+    - Möglich durch gemeinsamen Ergebnisbus (common data bus)
+
+
+## Multiple-Issue mit dynamischem Scheduling
+- Wesentlicher Nachteil von statischem Scheduling für superskalare Prozessoren: Latenzzeiten werden ca. mit Länge des issue packets skaliert
+- „Längere“ Verzögerung (in Anzahl Befehlen) für Load/Stores bzw. Branches
+- Lösung: Erweiterung des Tomasulo-Algorithmus auf Multiple-Issue durch
+  - Sequentielles Ausgeben mehrerer Befehle an Reservation Stations innerhalb eines Taktes, oder
+  - „Verbreiterung“ der Ausgabe-Logik (issue logic) zur Behandlung mehrerer Operationen parallel
+  - (alle Abhängigkeiten gleichzeitig überprüfen!)
+
+### VLIW - Very Long Instruction Word
+VLIW (Very Long Instruction Word)-Prozessor
+- verschiedene parallele Ausführungseinheiten
+- Verteilung von Maschinencode direkt vom Befehlswort im Speicher vorgegeben
+- Sieht für jede Ausführungseinheit dezidierte Anweisungen vor
+- keine Abhängigkeiten daher geringere Komplexität in Hardware
+- Meist für stark parallelisierbare Aufgaben verwendet (Signalverarbeitung, Vektorrechner, DSP)
+
+- Vorteile:
+  - Die parallele Architektur des Prozessors kann schon während der der Programmerstellung (Kompilieren) zur Optimierung genutzt werden.
+  - Keine aufwendige Prozessorhardware zur Befehlsverteilung/Abhängigkeitsanalyse erforderlich (einfacherer Prozessor)
+  - Ausführungszeiten sind im wesentlichen bekannt
+- Nachteile:
+  - Aufwendigere Compiler
+  - Schlechte Prozessorauslastung bei ungünstigem Code
+  - Rekompilierung für den Prozessor erforderlich (kein Universalrechner)
+  - Größerer Speicherbedarf (Programm), wenn Code nicht parallelisiert werden kann.
+
+![VLIW Dynamisch](Assets/RA2_VLIW-dynamisch.png)
+
+EPIC = Explicitely Parallel Instruction Computing = IA64
+- Im wesentlichen Prinzip des VLIW-Prozessors
+- Umsortieren der Befehle und Auflösung der Abhängigkeiten werden durch den Compiler durchgeführt
+  - Hauptnachteil; Neukompilierung erforderlich)
+- Keine statische Aufteilung auf Funktionseinheiten
+- Effizienteres Befehlswort - Keine Verwendung von zwangsweise NOPs
+
+Bei der IA64-Architektur werden verschiedene Ansätze verfolgt, um die Prozessorlogik zu vereinfachen.
+1. Bedingte Befehlsverarbeitung
+    - Ein Befehl wird abhängig von einem Statusbit ausgeführt
+    - Dadurch kann die Sprungvorhersage bei einfachen if-then-else Zweigen entfallen
+    - Die then und else Befehle sind parallel, wobei jeweils nur einer ausgeführt wird
+2. Statische Sprungvorhersage (Compiler)
+3. Die Optimierung (Finden paralleler Befehle) wird im wesentlichen dem Compiler überlassen.
+4. Spekulatives Laden von Operanden
+    - Möglichst geringe Wartezeit auf Operanden
+    - Schon im Compiler werden entsprechende Ladebefehle vorgezogen.
+
+![VLIW Vergleich](Assets/RA2_VLIW-vergleich.png)
+
+## Simultaneous Multithreading (SMT)
+![SMT](Assets/RA2_Simultaneous-Multithreading.png)
+
+- Modellprozessor I (2-fach Superskalar)
+- Modellprozessor II (2-fach Out-of-Order)
+
+Ansätze zur Effizienzsteigerung durch Mikroparallelität
+| Bezeichnung | Konflikterkennung | Issue-Struktur | Scheduling | Hauptmerkmal | Beispiele |
+| -- | -- | -- | -- | -- | -- |
+| Superskalar (statisch) | Hardware | Dynamisch | Statisch | In-order Execution | Sun UltraSPARC II/ III |
+| Out of Order | Hardware | Dynamisch | Dynamisch mit Spekulation | Out of Order mit Spekulation | Pentium III, Pentium 4, MIPS 10000 | 
+| VLIW | Software | Statisch | Statisch | Keine Konflikte | Trimedia, diverse DSPs |
 
 # Microcontroller und Digitale Signalprozessoren
 

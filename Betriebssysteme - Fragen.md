@@ -559,3 +559,86 @@ Fragen und Fragestellungen zum Verständnis zur Vorlesung
 
 ---
 > Aus welchen Ebenen (levels) besteht die Implementierung dieses Frameworks?
+
+# E/A Systeme
+> Welche Aufgaben erledigt ein Geräte-Treiber?
+
+
+---
+> Wie muss man sich seine Arbeitsweise vorstellen?
+
+
+---
+> Welcher Zusammenhang besteht zwischen Geräte-Treibern und dem Interrupt-System?
+
+
+---
+> Warum sind die Geräte-Treiber der fehleranfälligste Teil der Betriebssystem-Software?
+
+
+---
+> In welcher Form werden Geräte-Register im Betriebssystem sichtbar?
+
+
+---
+> Wie kann man sich prinzipiell die E/A-Arbeitsweise bei Verwendung eines eigenen E/A-Adressraums vorstellen?
+
+
+---
+> Welche Probleme existieren in diesem Zusammenhang?
+
+
+
+---
+> Wie funktioniert prinzipiell E/A unter Verwendung von Memory-Mapped-E/A?
+
+
+---
+> Was ist von dem hierbei implementierten Schutzkonzept – auch im Vergleich zu E/A-Adressräumen zu halten?
+
+
+---
+> Was sind in diesem Zusammenhang „nicht-cachebare Seiten“ und wodurch entstehen diese?
+
+# High End Betriebssysteme
+> Welche Entwicklungen und Erkenntnisse der Betriebssystem-Forschung zeichnen aktuelle „High-End-Betriebssysteme“ aus?
+
+
+---
+> Welche Ziele sind mit diesen „modernen“ Entwicklungen verbunden – und warum ist dies wichtig und notwendig?
+
+
+---
+> Welche nichtfunktionalen Eigenschaften von Betriebssystemen sind für gesellschaftlich relevante Industriezweige und Einrichtungen von herausgehobener Bedeutung – und warum?
+
+
+---
+> Warum reichen die Sicherheitseigenschaften herkömmlicher Betriebssysteme für heutige Anforderungen nicht mehr aus – und was soll durch verbesserte 
+
+---
+> Sicherheitseigenschaften erreicht werden?
+
+
+---
+> Durch welche Maßnahmen wird SELinux zu einem Beispiel eines „zeitgemäßen“ Betriebssystem mit verbesserten Sicherheitseigenschaften?
+
+
+---
+> Welche Rolle spielt der Security-Server bei SELinux?
+
+
+---
+> Wie kann man sich prinzipiell die Sicherheitspolitik von SELinux vorstellen?
+
+
+
+---
+> Was ist unter Robustheit zu verstehen?
+
+
+---
+> Wodurch unterscheiden sich monolithische und Mikrokern-Architekturen von Betriebssystemen?
+
+
+---
+> Durch welche prinzipiellen Gegebenheiten sind Mikrokern-Architekturen robuster als monolithische Betriebssystemarchitekturen?

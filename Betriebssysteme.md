@@ -94,6 +94,12 @@ author: Robert Jeutter
     - [Memory Mapped E/A](#memory-mapped-ea)
   - [Software Prinzipien](#software-prinzipien)
   - [Zusammenfassung](#zusammenfassung-4)
+- [High-End-Betriebssysteme](#high-end-betriebssysteme)
+  - [Was sind High-End- Betriebssysteme?](#was-sind-high-end--betriebssysteme)
+  - [Sicherheit](#sicherheit)
+    - [Ein Beispiel: SELinux](#ein-beispiel-selinux)
+  - [Robustheit](#robustheit)
+  - [Abschließend](#abschließend)
 
 # Einführung
 worauf es ankommt:
@@ -2299,3 +2305,93 @@ Software-Prinzipien
   - Auftragsmanagement
   - ISRs
 
+# High-End-Betriebssysteme
+## Was sind High-End- Betriebssysteme?
+In-etwa-Übersetzung: „Fortgeschrittene“ Betriebssysteme (engl. „Advanced Operating Systems“)
+
+Es geht um:
+- „Einbau“ nichtfunktionaler Eigenschaften
+- neue Konzepte für die Architektur von Betriebssystemen
+- neue Abstraktionen innerhalb von Betriebssystemen
+- ...
+
+Wir greifen 2 nichtfunktionale Eigenschaften von Betriebssystemen heraus, die insbesondere damit zu tun haben, dass kein (Betriebs)System vollständig fehlerfrei ist! und eine wichtige Notwendigkeit besteht in der **Reduktion operationaler Risiken Verantwortbarkeit**
+
+## Sicherheit
+Das Problem: Paradigmatische Grundlagen heutiger Mainstream-Betriebssysteme stammen aus den 60er Jahren des letzten Jahrtausends (Prozesse, Dateien, Kommunikation, ...)
+
+Die Folge: Für viele kritische Anwendungsgebiete
+- unzulängliche Paradigmen
+- schwache Implementierungen
+- unzureichende Sicherheit (engl. Security – nicht Safety!!) z.B. gegen Hacker, Spionage, Sabotage ...
+  
+High End: Paradigmenwechsel
+
+### Ein Beispiel: SELinux
+Ziel: Security Enhanced Linux
+1. state-of-the-art Betriebssystem
+2. state-of-the-art Sicherheitsparadigmen
+
+Idee: durch Sicherheitspolitik gesteuertes Betriebssystem
+
+Technischer Ansatz (z.B.) SELinux = Linux + Sicherheitspolitiken
+
+Sicherheitspolitiken in SELinux
+- neue Betriebssystem-Abstraktion (die erste seit 50 Jahren)
+- absolute Kontrolle über kritische Funktionen des Betriebssystems
+- spezifiziert durch Regelmenge
+- implementiert durch die SELinux-Sicherheitsarchitektur
+
+SELinux-Sicherheitsarchitektur
+- Security Server (strategische Komponente): Laufzeitumgebung für Sicherheitspolitik in Schutzdomäne des BS-Kerns
+- Interzeptoren (Politikdurchsetzung): vollständige Kontrolle
+  
+Spezifikation einer Sicherheitspolitik
+- Sicherheitspolitik: Regelmenge der Art
+  ```
+    allow <user_dom>
+    <apps_dom>: <mailer>
+    allow <execute>
+    <auth_dom> <auth_dom>: <passwd> <write>
+  ```
+- kritisch
+  - Korrektheit (100.000 Regeln ...)
+  - Vollständigkeit
+  - Widerspruchsfreiheit
+- Security Engineering
+  - Politikspezifikation
+  - Politikanalyse
+  - Sicherheitsarchitekturen
+
+## Robustheit
+Ziel: Tolerierung unvorhergesehener Fehler und Ausfälle
+
+Auch hier ein Beispiel: Architekturprinzipien
+1. monolithische Architektur
+  - BS-Komponenten zusammengefasst zu
+    - einem Programmsystem
+    - in einem Adressraum
+  - Kommunikation untereinander mittels Prozeduraufrufen
+  - Fehlerausbreitung: innerhalb des (großen) BS-Adressraums
+2. Mikrokernarchitektur
+  - BS-Komponenten bilden
+    - separate Funktionseinheiten
+    - mit individuellen Adressräumen
+  - Kommunikation: mittels Prozedurfernaufrufen
+  - Fehlerausbreitung: gestoppt an Adressraumgrenze(n)
+
+Folgen
+1. Korrektheit
+    - Fehlerausbreitung
+    - Aussagekraft formaler Verifikation von BS-Komponenten
+2. Robustheit
+    - Fehlerisolation
+    - Fehlerbehebung (vgl. Micro-Reboot)
+
+## Abschließend
+Risikoszenarien und High-End Betriebssysteme
+- IT-Sicherheit & Security Engineering
+  - Design von Sicherheitseigenschaften und Architekturen
+- AOS
+  - (z.B. Robustheit)
+  - Konzepte, Architekturen, Algorithmen

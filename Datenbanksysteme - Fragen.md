@@ -557,3 +557,262 @@ Welche SQL-Anfragen sind geeignet?
 - [ ] Keine Anfrage ist geeignet.
 - [ ] `SELECT  Name FROM  Student  S WHERE  MatrNr <= ALL  ( SELECT  MatrNr FROM  Prüfung  P WHERE  P.FürStudgang = S.Studgang )`
 - [x] `SELECT  Name FROM  Student  S WHERE  MatrNr  = ANY  ( SELECT  MatrNr FROM  Prüfung  P WHERE  P.FürStudgang = S.Studgang )`
+
+# Aggregatfunktionen und Gruppierung
+Welche der folgenden Aussagen über Aggregatfunktionen und Gruppierung sind korrekt?
+- [ ] SUM(*) aggregiert über alle Spalten einer Tabelle.
+- [ ] Aggregatfunktionen lassen sich wie in der Mathematik auch im SQL-Standard schachteln, z.B. SUM(COUNT(*)).
+- [x] Ein Aggregat wie z.B. SUM kann als Argument auch einen skalaren Ausdruck bekommen, z.B. SUM(Attribut_A+Attribut_B).
+- [ ] Um die Anzahl von verschiedenen Werten eines Attributs zu bekommen, kann "SELECT COUNT(DISTINCT Attribut) ..." verwendet werden.
+- [x] COUNT(*) zum Bestimmen der Anzahl von Tupeln zählt NULL-Werte als Tupel mit.
+- [x] Um die Anzahl von verschiedenen Werten eines Attributs zu bekommen, kann "SELECT DISTINCT COUNT(Attribut) ..." verwendet werden.
+- [ ] Enthält eine Tabelle NULL-Werte, gibt die Funktion MIN immer NULL zurück.
+
+
+Gesucht ist die Anzahl von Prüfungen, die jeder Student bereits abgelegt hat, zusammen mit seinem Vornamen.
+Das Schema der Datenbank sieht wie folgt aus:
+```sql
+   Student ( Matrikelnummer, Vorname, Nachname, Semester )
+   Pruefung ( Matrikelnummer, FachID, Datum, Note )
+```
+Welche der folgenden SQL-Anfragen liefert das gewünschte Ergebnis?
+Wählen Sie eine Antwort:
+- [ ] 
+   ```sql
+   SELECT Vorname, Anzahl
+   FROM (
+      SELECT COUNT(*) AS Anzahl
+      FROM Pruefung NATURAL JOIN Student
+      GROUP BY (Matrikelnummer)
+   ) NATURAL JOIN Student
+   ```
+- [x] 
+      ```sql
+         SELECT Vorname, COUNT(*)
+         FROM Pruefung, Student
+         GROUP BY (Matrikelnummer)
+         ```
+         ```sql
+         SELECT Vorname, COUNT(*)
+         FROM Pruefung NATURAL JOIN Student
+         GROUP BY (Matrikelnummer, Vorname)
+      ```
+- [ ] 
+   ```sql
+   SELECT Vorname, Anzahl
+   FROM (
+      SELECT COUNT(*) AS Anzahl
+      FROM Pruefung NATURAL JOIN Student
+      GROUP BY (Matrikelnummer)
+   )
+   ```
+- [ ] 
+   ```sql
+   SELECT Vorname, COUNT(*)
+   FROM Pruefung NATURAL JOIN Student
+   ```
+
+Das Schema der Datenbank sieht wie folgt aus:
+```sql
+   Student ( Matrikelnummer, Vorname, Nachname, Semester )
+   Pruefung ( Matrikelnummer, FachID, Datum, Note )
+```
+Gegeben ist folgende SQL-Anfrage:
+```sql
+   SELECT Vorname, Anzahl
+   FROM (
+      SELECT Vorname, COUNT(*) AS Anzahl
+      FROM Pruefung NATURAL JOIN Student
+      GROUP BY (Matrikelnummer)
+   )
+   GROUP BY Vorname
+   HAVING Anzahl > 2
+```
+Was errechnet diese Anfrage? Wählen Sie eine Antwort:
+- [ ] Anzahl von Matrikelnummern mit Vornamen von Studenten, die mindestens drei unterschiedliche Matrikelnummern besitzen.
+- [ ] Die Anzahl von Studenten, die mindestens drei Prüfungen hatten.
+- [ ] Die Anzahl von erfolgten Prüfungen sowie Vornamen von Studenten, deren Prüfung von mindestens zwei weiteren Studenten abgelegt wurde.
+- [x] Vorname und Anzahl von abgelegten Prüfungen von Studenten, die mindestens drei Prüfungen hatten.
+- [ ] Vornamen mit der Anzahl von durchgeführten Prüfungen von Studenten, deren Note schlechter als 2 war.
+
+# Äußere Verbunde
+![Frage](Assets/DB_tabelle_fragen-äußere-verbunde.png)
+
+Nun wird folgende Anfrage ausgeführt:
+```sql
+   SELECT A, X.B, D
+      FROM X LEFT JOIN Y  ON X.B = Y.B
+```
+Welche der nachfolgenden Tupel sind im Ergebnis enthalten?
+Wählen Sie eine oder mehrere Antworten:
+- [x] (2, 3, NULL)
+- [ ] (1, 2, NULL)
+- [x] (1, 2, 4)
+- [ ] (NULL, 1, 5)
+- [x] (NULL, 2, 4)
+- [ ] (NULL, 2, 3, 4)
+- [ ] (NULL, 1, 3, 5)
+- [ ] (1, 2, 3, 4)
+- [ ] (NULL, 2, 3, NULL)
+- [ ] (2, 3, NULL, NULL)
+
+# Sortierung
+Welche der folgenden Aussagen über Sortierung in SQL sind richtig?
+- [ ] Das SQL-Konstrukt zum Sortieren heißt ORDERED BY.
+- [x] Das Attribut, über welches sortiert wird, muss nicht zwingend in der SELECT-Klausel vorkommen.
+- [ ] Die Sortierung nach einem Aggregat (SUM, AVG, etc.) ist nicht erlaubt.
+- [x] Das SQL-Konstrukt zum Sortieren heißt ORDER BY.
+- [x] Das SQL-Konstrukt zur Sortierung steht immer am Ende der SQL-Anfrage.
+- [ ] Das SQL-Konstrukt zum Sortieren heißt ORDER WITH.
+- [ ] Das SQL-Konstrukt zur Sortierung kommt direkt nach dem FROM und vor den WHERE-Bedingungen.
+
+# Behandlung von Nullwerten
+Welche der folgenden Aussagen über Nullwerte sind korrekt?
+- [ ] Boole'sche Ausdrücke (true/false) entarten bei NULL-Werten zu vierwertiger Logik (true/false/known/unknown).
+- [ ] Da NULL-Werte keinen sinnvollen Wert enthalten, kann auch nicht nach NULL-Werten ausgewählt werden.
+- [ ] In allen Aggregatfunktionen werden NULL-Werte entfernt, ehe das Aggregat (wie z.B. COUNT(*)) berechnet wird.
+- [ ] Wird ein NULL-Wert mit einem anderen Wert verglichen, ist das Ergebnis immer NULL.
+- [ ] In skalaren Ausdrücken (wie z.B. "1+NULL+3") werden NULL-Werte ignoriert. Das Ergebnis des Beispiels würde zu 1+3=4 ausgewertet.
+- [x] COUNT(*) zählt auch NULL-Werte mit.
+
+# Rekursion
+Welche der folgenden Aussagen über benannte Anfragen sind richtig?
+- [ ] "WITH ... AS ..."-Tabellen dürfen nur ein einziges Mal in nachfolgenden FROM-Klauseln auftauchen.
+- [ ] "WITH Name AS (SELECT Vorname FROM Student) SELECT * FROM Name" als SQL-Anfrage ist syntaktisch nicht korrekt.
+- [ ] "WITH ... AS ..."-Tabellen werden dauerhaft in der Datenbank gespeichert.
+- [x] Nach "WITH ... AS" folgt immer ein SELECT, also z.B. "WITH Name AS (SELECT...)".
+- [x] Zusätzliche Spaltenbezeichner, wie z.B. "A, B, C" bei "WITH X (A, B, C) AS..." sind optional.
+- [x] Mit "WITH ... AS ..." lassen sich temporäre Ergebnistabellen erstellen, die in der gleichen SQL-Anfrage nutzbar sind.
+
+Welche der folgenden Aussagen über Rekursion sind korrekt?
+- [x] Rekursive SQL-Anfragen können endlos laufen, enden also möglicherweise nie.
+- [ ] Es ist nicht möglich, eine rekursive SQL-Anfrage so zu formulieren, dass sie niemals terminiert (endet).
+- [ ] Die Rekursionstiefe in SQL ist im Datenbankmanagementsystem begrenzt und lässt sich vom Nutzer in seiner Anfrage nicht weiter reduzieren.
+
+# Kriterien für Anfragesprachen
+Welche der Aussagen sind inhaltlich korrekt?
+- [x] Unter dem Sichtnamen ist nur die Berechnungsvorschrift (d.h. die Anfrage) abgelegt. Die Ergebnisrelation kann wiederholt mit den gerade aktuellen Daten berechnet werden.
+- [ ] Ein Snapshot ist eine einmalig formulierte Anfrage. Das Ergebnis wird nicht gespeichert (wegen Redundanz).
+- [ ] Nur Anfragen und Snapshots berechnen eine Ergebnisrelation.
+
+Anfragesprachen sollen einer Menge von Kriterien genügen. Diese Kriterien werden im Folgenden mit anderen Worten als im Skript beschrieben. Welche der Interpretationen sind korrekt?
+- [ ] sicher: Jede Anfrage liefert ein sicheres Ergebnis.
+- [x] abgeschlossen: Das Anfrageergebnis verlässt nicht den Rahmen des Modells.
+- [ ] effizient: Jedes Anfrageergebnis wird schnellstmöglich angezeigt.
+- [ ] optimierbar: Die beste Strategie für die Formulierung von Anfragen ist die Vermeidung von Verschachtelungen bzw. Unteranfragen.
+- [x] adäquat: Alle Konstrukte im Rahmen des Modells sind nutzbar / werden unterstützt.
+- [x] orthogonal: Operationen sind in ähnlichen Situationen auch ähnlich anwendbar.
+- [ ] deskriptiv: Eine Anfrage muss das Anliegen der Suche verständlich beschreiben können.
+- [ ] ad-hoc: Anfragen sind jederzeit formulierbar.
+- [ ] eingeschränkt und vollständig: Die Anfragesprache sollte nicht zu viele und auch nicht zu wenige Operationen beinhalten.
+- [ ] mengenorientiert: Zum Ergebnis einer Anfrage gehört im Allgemeinen eine Menge von Tupeln.
+
+# Anfragealgebren
+Welche der folgenden Aussagen sind korrekt?
+- [x] Der Schnitt ∩ zwischen den Relationen X und Y lässt sich durch die Differenz ausdrücken: $X \cap Y = X - (X - Y)$.
+- [x] Die Projektion π blendet Spalten in Tabellen aus.
+- [x] Die Differenz - liefert die Tupel der ersten Tabelle, die in der zweiten Tabelle nicht vorhanden sind.
+- [ ] Die Addition + verknüpft Tabellen miteinander.
+- [ ] Die Selektion σ entfernt Spalten in Tabellen.
+- [x] Das Kreuzprodukt zwischen den Relationen X und Y kann durch die Umbenennung der Attribute von X und einen darauffolgenden natürlichen Verbund zwischen X und Y ausgedrückt werden.
+- [x] Durch die Umbenennung β heißen Attribute temporär anders als zuvor.
+
+
+Gegeben ist die folgende Relation Studenten:
+![Tabelle](Assets/DB_tabelle_fragen-anfragenalgebren.png)
+Welche der folgenden Aussagen sind richtig?
+- [ ] π_Studiengang (Studenten) liefert exakt fünf Zeilen zurück.
+- [ ] π_Studiengang (Studenten) liefert genau so viele Zeilen zurück wie die Studentenrelation besitzt, da die Projektion nur Spalten auswählt.
+- [ ] π_Matrikelnummer (π_Vorname (Studenten)) liefert die Spalten Matrikelnummer und Vorname der Studentenrelation.
+- [x] π_Matrikelnummer (π_Vorname (Studenten)) liefert ein leeres Ergebnis.
+- [ ] π_Matrikelnummer (π_Vorname (Studenten)) liefert nur die Spalte Matrikelnummer der Studentenrelation.
+- [x] π_Studiengang (Studenten) liefert exakt so viele Zeilen zurück wie π BA/MA (Studenten).
+
+
+Gegeben ist die folgende Relation Studenten:
+![Tabelle](Assets/DB_tabelle_fragen-anfragenalgebren2.png)
+Welche der folgenden Aussagen sind richtig?
+- [ ] σ_Semester > 1 (π_Matrikelnummer (Studenten)) liefert dasselbe Ergebnis wie π_Matrikelnummer (σ_Semester > 1 (Studenten)) (Kommutativität).
+- [ ] σ_Matrikelnummer = Semester (Studenten) ist syntaktisch nicht erlaubt.
+- [x] σ_Semester > 1 (σ_Matrikelnummer < 40004 (Studenten)) liefert dasselbe Ergebnis wie σ_Matrikelnummer < 40004 (σ_Semester > 1 (Studenten)) (Kommutativität).
+- [x] σ_Studiengang="Informatik" (Studenten) liefert drei Tupel zurück.
+- [x] σ_Semester > 1 (σ_Matrikelnummer < 40004 (Studenten)) liefert dasselbe Ergebnis wie σ_Semester > 1 ∧ Matrikelnummer < 40004 (Studenten).
+- [ ] σ_Studiengang="Informatik" (Studenten) liefert ein Tupel zurück (Duplikateliminierung).
+
+Gegeben sind die folgenden Relationen Studenten (links) und Studium (rechts):
+![Tabelle](Assets/DB_tabelle_fragen-anfragenalgebren3.png)
+Welche der folgenden Aussagen sind korrekt?
+- [ ] (π_Matrikelnummer (Studenten)) ⋈ (π_Vorname,Nachname (Studenten)) ergibt wieder die ursprüngliche Relation Studenten.
+- [ ] Studenten ⋈ Studium liefert hier sieben Ergebnistupel.
+- [x] (π_Matrikelnummer (Studenten)) ⋈ (π_Matrikelnummer (Studium)) hat dieselbe Anzahl von Ergebnistupeln wie Studenten ⋈ Studium (ohne Projektionen).
+- [ ] Studenten ⋈ Studium liefert dasselbe wie Studenten ∪ Studium.
+- [x] Studenten ⋈ Studium liefert dasselbe wie Studium ⋈ Studenten.
+- [x] Das gemeinsame Verbundattribut ist die Matrikelnummer.
+- [x] Studenten ⋈ Studium liefert hier fünf Ergebnistupel.
+- [ ] (π_Vorname,Nachname (Studenten)) ⋈ (π_Semester,Studiengang,BA/MA (Studium)) liefert dasselbe Ergebnis wie das Kreuzprodukt ✕ zwischen Studenten und Studium.
+
+Gegeben sind die folgenden Relationen Studenten (links) und Studium (rechts):
+![Tabelle](Assets/DB_tabelle_fragen-anfragenalgebren4.png)
+Welche der folgenden Aussagen sind korrekt?
+- [x] (π_Matrikelnummer,Vorname (Studenten)) ∪ (β_Vorname←Studiengang (π_Matrikelnummer,Studiengang (Studium))) hat zwei Attribute im Ergebnis.
+- [x] β_MatNr←Matrikelnummer (Studenten) ⋈ (Studium) erzwingt ein kartesisches Produkt (Kreuzprodukt ✕) zwischen den beiden Relationen.
+- [ ] (π_Matrikelnummer,Vorname (Studenten)) ∪ (β_Vorname←Studiengang (π_Matrikelnummer,Studiengang (Studium))) liefert 7 Tupel.
+- [ ] β_MatNr←Matrikelnummer (Studenten) ⋈ (Studenten) liefert genausoviele Tupel wie in der Studenten-Ausgangsrelation vorhanden sind.
+- [ ] (π_Matrikelnummer,Vorname (Studenten)) ∪ (β_Vorname←Studiengang (π_Matrikelnummer,Studiengang (Studium))) hat vier Attribute im Ergebnis.
+- [ ] β_Nachname←Name (Studenten) benennt das Attribut Nachname in Name um.
+- [x] β_Name←Nachname (Studenten) benennt das Attribut Nachname in Name um.
+- [x] (π_Matrikelnummer,Vorname (Studenten)) ∪ (β_Vorname←Studiengang (π_Matrikelnummer,Studiengang (Studium))) liefert 12 Tupel. 
+
+# Erweiterungen der Relationenalgebra
+Welche der folgenden Fragen zu Verbundoperationen sind richtig?
+- [ ] Der Gleichverbund (Equi-Join) kann immer über einen natürlichen Verbund erreicht werden.
+- [x] Der Semi-Verbund (Semi-Join) reduziert das Verbundergebnis auf die Attribute einer der beteiligten Relationen.
+- [x] Der natürliche Verbund verknüpft Relationen über gleichnamige Attribute.
+- [x] Der natürliche Verbund kann immer über einen Gleichverbund (Equi-Join) erreicht werden.
+- [x] Der Theta-Verbund (Theta-Join) erlaubt beliebige Verbundbedingungen über beliebige Attribute der Relationen, wie z.B. A > B.
+- [ ] Der Gleichverbund (Equi-Join) erlaubt beliebige Verbundbedingungen über beliebige Attribute der Relationen, wie z.B. A > B.
+- [x] Der Semi-Verbund (Semi-Join) kann durch einen einfachen natürlichen Verbund mit anschließender geeigneter Projektion der Attribute erreicht werden.
+
+Anmerkung:
+- "⋈" ist ein natürlicher Verbund (Natural Join),
+- "⊐▷◁⊏" ist ein voller äußerer Verbund (Full Outer Join),
+- "⊐▷◁" ist ein linker äußerer Verbund (Left Outer Join),
+- "▷◁⊏" ist ein rechter äußerer Verbund (Right Outer Join).
+Welche der folgenden Aussagen über Verbunde (Joins) sind richtig?
+- [x] In einem vollen äußeren Verbund (Full Outer Join) kommt jedes Tupel der beiden Ausgangsrelationen mindestens einmal vor.
+- [x] Bei äußeren Verbunden können Nullwerte entstehen, allerdings nicht zwingend in jedem Fall.
+- [x] Gegeben sind zwei beliebige Relationen R und S. Folgende beiden Ausdrücke sind äquivalent:
+  1) (R ⊐▷◁⊏ S) ∩ (R ⋈ S)
+  2) (R ⋈ S)
+- [ ] Bei äußeren Verbunden entstehen prinzipiell immer Nullwerte.
+- [x] Gegeben sind zwei beliebige Relationen R und S. Folgende beiden Ausdrücke sind äquivalent:
+  1) (R ⊐▷◁ S) ∩ (R ▷◁⊏ S)
+  2) (R ⋈ S)
+- [x] Gegeben sind zwei beliebige Relationen R und S. Folgende beiden Ausdrücke sind äquivalent:
+  1) (R ⊐▷◁⊏ S)
+  2) (R ⊐▷◁ S) ∪ ( R ▷◁⊏ S).
+
+Gegeben sind folgende Relationen Prüfungen (links) und Fach_Auszug (rechts):
+![Tabelle](Assets/DB_tabelle_fragen-relationenalgebra.png)
+Welche der folgenden Aussagen sind richtig?
+- [x] (Prüfungen ÷ Fach_Auszug) ermittelt die Studenten (Tupel), die sowohl das Fach Datenbanksysteme als auch Betriebssysteme bereits abgelegt haben.
+- [ ] Das Relationenschema des Ergebnisses E von (Prüfungen ÷ Fach_Auszug) ergibt sich zu "E (Matrikelnummer)".
+- [x] (Prüfungen ÷ Fach_Auszug) enthält zwei Tupel im Ergebnis.
+- [ ] (Prüfungen ÷ Fach_Auszug) enthält sechs Tupel im Ergebnis.
+- [x] Das Relationenschema des Ergebnisses E von (Prüfungen ÷ Fach_Auszug) ergibt sich zu "E (Matrikelnummer, Fach)".
+- [ ] Der Divisionsoperator gehört zur minimalen Relationenalgebra.
+- [ ] Der Divisionsoperator lässt sich nicht durch eine Kombination anderer Operatoren der Relationenalgebra ausdrücken. 
+
+Gegeben ist die folgende Relation Prüfungen:
+![Tabelle](Assets/DB_tabelle_fragen-relationenalgebra2.png)
+Welche der nachfolgenden Aussagen sind korrekt?
+Wählen Sie eine oder mehrere Antworten:
+- [x] Der Ausdruck π_{Matrikelnummer, besteNote} (σ_{Fächeranzahl>2} (γ_{MIN(Note)←besteNote, COUNT(Fach)←Fächeranzahl, Matrikelnummer} (Prüfungen))) sucht die beste Note für jeden Studenten (Matrikelnummer), der bereits drei oder mehr Fächer als Prüfung abgelegt hat.
+- [ ] Eine Gruppierung γ ohne Funktion und ohne Attribute ist nicht erlaubt.
+- [x] Eine Gruppierung γ ohne Funktion und ohne Attribute liefert die Ausgangsrelation, z.B. "γ (Prüfungen)" entspräche (Prüfungen).
+- [x] Der Ausdruck π_{Matrikelnummer, besteNote} (σ_{Fächeranzahl>2} (γ_{MIN(Note)←besteNote, COUNT(Fach)←Fächeranzahl, Matrikelnummer} (Prüfungen))) liefert als Ergebnis drei Tupel mit den Werten ('40000', 1.0), ('40002', 3.0) und ('40003', 2.3) zurück.
+- [x] Eine Gruppierung γ ohne Attribute berechnet die gegebenen Funktionen auf der gesamten Relation und liefert entsprechend ein einziges Ergebnis pro Funktion zurück, z.B. für "γ_{MIN(Note)}(Prüfungen)" wäre das Ergebnis ein Tupel mit einem Attribut und dem Attributwert 1.0.
+- [ ] Der Ausdruck π_{Matrikelnummer, besteNote} (σ_{Fächeranzahl>2} (γ_{MIN(Note)←besteNote, COUNT(Fach)←Fächeranzahl, Matrikelnummer} (Prüfungen))) sucht unter allen Studenten (Matrikelnummer) denjenigen mit der besten Note in mindestens drei Fächern.
+- [ ] Eine Gruppierung γ ohne Attribute ist nicht erlaubt.
+- [ ] Der Ausdruck π_{Matrikelnummer, besteNote} (σ_{Fächeranzahl>2} (γ_{MIN(Note)←besteNote, COUNT(Fach)←Fächeranzahl, Matrikelnummer} (Prüfungen))) liefert als Ergebnis das Tupel ('40000', 1.0) zurück.
+

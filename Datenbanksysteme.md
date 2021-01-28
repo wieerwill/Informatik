@@ -1622,5 +1622,262 @@ Statistische Datenbanken
   - Unterdrücken von Tupeln: Löschen von Tupeln, welche die k-Anonymität verletzen und damit identifizierbar sind
 
 # NoSQL Datenbanken
+## Motivation für NoSQL
+- NoSQL = Not only SQL
+- im Umfeld vieler aktueller Buzzwords
+  - NoSQL
+  - Big Data
+  - BASE
+  - ...
+- oft einfach als Etikett einer Neuentwicklung eines DBMS pauschal vergeben
+
+Was ist NoSQL?
+- SQL - No!
+  - SQL-Datenbanken sind zu komplex, nicht skalierbar, ...
+  - man braucht was einfacheres!
+- Not only SQL
+  - SQL-Datenbanken haben zu wenig (oder die falsche) Funktionalität
+  - Operationen auf Graphen, Data Mining Operatoren, ...
+- New SQL
+  - SQL-Datenbanken sind (software-technisch) in die Jahre gekommen
+  - eine neue Generation von DBMS muss her (ohne die etablierten Vorteile von SQL zu ignorieren)
+
+Kritik an RDBMS / SQL
+- nicht skalierbar
+  - Normalisierung von Relationen, viele Integritätsbedingungen zu prüfen
+  - kann man in RDBMS auch vermeiden!
+- starre Tabellen nicht flexibel genug
+  - schwach typisierte Tabellen (Tupel weichen in den tatsächlich genutzten Attributen ab)
+  - viele Nullwerte wenn alle potentiellen Attribute definiert
+  - alternativ Aufspaltung auf viele Tabellen
+  - Schema-Evolution mit alter table skaliert bei Big Data nicht
+  - tatsächlich in vielen Anwendungen ein Problem
+- Integration von spezifischen Operationen (Graphtraversierung, Data-Mining-Primitive) mit Stored Procedures zwar möglich führt aber oft zu schwer interpretierbarem Code
+
+
+## Datenmodelle für NoSQL
+Datenmodelle für NoSQL
+- KV-Stores
+- Wide Column Stores
+- Dokumenten-orientierte Datenhaltung
+- Graph-Speicher
+- ...
+
+Anfragesprachen für NoSQL
+- unterschiedliche Ansätze:
+- einfache funktionale API
+- Programmiermodell für parallele Funktionen
+- angelehnt an SQL-Syntax
+- ...
+
+## KV-Stores und Wide Column
+Datenmodell: Key-Value-Stores
+- Key-Value-Store: binäre Relationen, bestehend aus
+  - einem Zugriffsschlüssel (dem Key) und
+  - den Nutzdaten (dem Value)
+- Nutzdaten
+  - binäre Daten ohne Einschränkung,
+  - Dateien oder Dokumente, → Document Databases
+  - oder schwachstrukturierte Tupel → Wide Column Store
+- Anfragen an KV-Stores
+  - einfache API
+    ```sql
+    store.put(key, value)
+    value = store.get(key)
+    store.delete(key)
+    ```
+  - aufgesetzte höherer Sprache angelehnt an SQL
+    - Map-Reduce: Framework zur Programmierung paralleler Datenaggregation auf KV-Stores
+- Beispielsysteme für KV-Stores
+  - Amazon DynamoDB
+  - Riak
+
+Datenmodell: Wide Column
+- Basisidee: KV-Store mit schwachstrukturiertem Tupel als Value
+- Value = Liste von Attributname-Attributwert-Paaren
+  - schwache Typisierung für Attributwerte (auch Wiederholgruppen)
+- nicht alle Einträge haben die selben Attributnamen
+  - offene Tupel
+  - Hinzufügen eines neuen Attributs unproblematisch
+  - Nullwerte aus SQL ersetzt durch fehlende Einträge
+- Beispiel in DynamoDB
+- Anfragen bei Wide Column
+  - CRUD: Create, Read, Update und Delete
+  - in DynamoDB
+    - *PutItem* fügt einen neuen Datensatz mit der gegebenen Attribut-Wert-Liste ein bzw. ersetzt einen existierenden Datensatz mit gleichem Schlüssel.
+    - *GetItem*-Operation liest alle Felder eines über einen Primärschlüssel identifizierten Datensatzes.
+    - *Scan* erlaubt einen Lauf über alle Datensätze mit Angabe von Filterkriterien.
+  - Aufruf über HTTP oder aus Programmiersprachen heraus
+
+
+## Document Stores
+Datenmodell: dokumentenorientierte Speicherung
+- Basisidee: KV-Store mit (hierarchisch) strukturiertem Dokument als Value
+- strukturiertes Dokument:
+  - JSON-Format: geschachtelte Wide Column-Daten
+  - XML (eher unüblich auf KV-Stores)
+- Anfragen bei dokumentenorientierter Speicherung
+  - CRUD erweitert um dokumentspezifische Suche
+  - Beispiele (MongoDB mit BSON statt JSON) `db.kritiker.find({Name: "Bond"})`
+- Beispielsysteme für dokumentenorientierte Speicherung
+  - MongoDB
+  - CouchDB
+
+## Graph Stores
+Graph-Datenmodelle: Grundlagen
+- spezielle Form der Datenrepräsentation = Graphen, insb. Beziehungen zwischen Objekten
+- Anwendungsgebiete:
+  - Transportnetze
+  - Networking: Email-Verkehr, Mobilfunk-Nutzer
+  - Soziale Netzwerke: Eigenschaften, Communities
+  - Web: Verlinkte Dokumente
+  - Chemie: Struktur chemischer Komponenten
+  - Bioinformatik: Proteinstrukturen, metabolische Pathways, Genexpressionen
+- Graph $G = (V, E)$
+  - $V$: Menge der Knoten (vertices)
+  - $E \subseteq V \times V$: Menge der Kanten (edges)
+  - Kanten können mit Gewicht versehen werden
+- Adjazenzmatrix
+  - Repräsentation von Graphen durch Matrix (Knoten als Zeilen und Spalten)
+  - ungerichteter Graph: symmetrische Matrix
+  - ungewichteter Graph: Zellen nur 0 oder 1
+- Knotengrad
+  - Eigenschaft eines Knotens: Anzahl der verbundenen Knoten
+  - bei gerichteren Graphen: Unterscheidung in Eingangs- und Ausgangsgrad
+- Traversierung
+  - Tiefensuche (DFS): zunächst rekursiv alle Kindknoten besuchen bevor alle Geschwisterknoten besucht werden
+    - Bestimmung der Zusammenhangskomponente
+    - Wegsuche um Labyrinth
+  - Breitensuche (BFS): zunächst alle Geschwisterknoten besuchen bevor die Kindknoten besucht werden
+    - Bestimmung des kürzesten Weges
+
+Subjekt-Prädikat-Objekt-Modell: RDF
+- Sprache zur Repräsentation von Informationen über (Web)-Ressourcen
+- Ziel: automatisierte Verarbeitung
+- zentraler Bestandteil von Semantic Web, Linked (Open) Data
+- Repräsentation von Daten, aber auch Wissensrepräsentation (z.B. Ontologie)
+
+Ontologien
+- Ontologie = formale Spezifikation einer Konzeptualisierung, d.h. einer Repräsentation von Begriffen (Konzepten) und deren Beziehungen
+- Anwendung: Annotation von Daten, semantische Suche
+
+RDF: Graphen & Tripel
+  - Graph = Menge von Tripeln, die Aussagen über Web-Ressourcen repräsentieren
+  - Identifikation der Web-Ressourcen über Uniform Resource Identifier (URI)
+  - Tripel: subjekt prädikat objekt .
+  - Beispiel `<http://weindb.org/weine/2171> \ ` und `<http://weindb.org/ontologie/name> "Pinot Noir".`
+  - Subjekt: URI-Referenz, d.h. Ressource, auf die sich die Aussage bezieht
+  - Prädikat: Eigenschaft, ebenfalls in Form einer URI-Referenz
+  - Objekt: Wert der Eigenschaft als Literal (Konstante) oder URI- Referenz
+- abkürzende Notation für Namensräume über Präfixe:
+    ```sql
+      prefix wo: <http://weindb.org/ontologie/>
+      prefix weine: <http://weindb.org/weine/>
+      weine:2171 wo:name "Pinot Noir".
+    ```
+- Komplexe Graphen
+  - mehrere Aussagen zum gleichen Subjekt
+  - Objekte nicht nur Literale sondern selbst Objekte (URI)
+    ```sql
+    weine:2171 wo:name "Pinot Noir".
+    weine:2171 wo:farbe "Rot".
+    weine:2171 wo:jahrgang "1999".
+    weine:2171 wo:erzeuger werzeuger:567 .
+    ```
+- Repräsentation, Schema und Vokabulare
+  - Repräsentation von RDF-Daten: N-Tripel, RDF/XML
+  - RDF Schema:
+    - objektorientierte Spezifikationssprache
+    - erweitert RDF um Typsystem: Definition von Klassen und Klassenhierarchien mit Eigenschaften, Ressourcen als Instanzen von Klassen
+    - RDF Schema ist selbst RDF-Spezifikation
+  - Beispiel RDF Schema
+    ```sql
+    Wein rdf:type rdfs:Class .
+    Schaumwein rdf:type rdfs:Class .
+    Schaumwein rdfs:subClassOf Wein .
+    Name rdf:type rdf:Property .
+    Jahrgang rdf:type rdf:Property .
+    Jahrgang rdfs:domain Wein .
+    Jahrgang rdfs:range xsd:integer .
+    ```
+  - für komplexere Ontologien: OWL (Web Ontology Language)
+  - Vokabular: vordefinierte Klassen und Eigenschaften
+    - Bsp: Dublin Core (Metadaten für Dokumente), FOAF (Soziale Netze), ...
+    - wichtig z.B. für Linked Open Data
+
+SPARQL als RDF-Anfragesprache
+- SPARQL Protocol And RDF Query Language: Anfragesprache für RDF
+- W3C-Recommendation
+- unterschiedliche Implementierungen möglich:
+  - Aufsatz für SQL-Backends (z.B. DB2, Oracle)
+  - Triple Stores (RDF-Datenbank)
+  - SPARQL-Endpoints
+- syntaktisch an SQL angelehnt, aber Unterstützung für Graph-Anfragen
+- SPARQL-Elemente
+  - Grundelemente: select-where-Block und Tripelmuster `?wein wo:name ?name .`
+  - Auswertung: finden aller Belegungen (Bindung) für Variable (?name) bei Übereinstimmung mit nicht-variablen Teilen
+    ```sql
+    <http://weindb.org/weine/2171> wo:name "Pinot Noir".
+    <http://weindb.org/weine/2168> wo:name "Creek Shiraz".
+    <http://weindb.org/weine/2169> wo:name "Chardonnay".
+    ```
+- SPARQL: Basic Graph Pattern
+  - Graphmuster (BGP = Basic Graph Pattern): Kombination von Tripelmustern über gemeinsame Variablen
+    ```sql
+    ?wein wo:name ?name .
+    ?wein wo:farbe ?farbe .
+    ?wein wo:erzeuger ?erzeuger .
+    ?erzeuger wo:weingut ?ename .
+    ```
+  - Einsatz in SPARQL-Anfragen im where-Teil
+    ```sql
+    select ?wein ?name ?farbe ?ename
+    where { ?wein wo:name ?name .
+      ?wein wo:farbe ?farbe .
+      ?wein wo:erzeuger ?erzeuger .
+      ?erzeuger wo:weingut ?ename . }
+    ```
+- SPARQL: Weitere Elemente
+  - filter: Filterbedingungen für Bindungen
+  - optional: optionale Muster – erfordern nicht zwingend ein Matching
+    ```sql
+    prefix wo: <http://weindb.org/ontologie/>
+    select ?name
+    where { ?wein wo:name ?name . }
+      optional { ?wein wo:jahrgang ?jahrgang } .
+      filter ( bound(?jahrgang) && ?jahrgang < 2010 )
+    ```
+- Property-Graph-Modell
+  - Knoten und (gerichtete) Kanten mit Eigenschaften (Properties)
+  - nicht streng typisiert, d.h. Eigenschaften als Name-Wert-Paare
+  - Unterstützung in diversen Graph-Datenbanksystemen: neo4j, Microsoft Azure Cosmos DB, OrientDB, Amazon, Neptune, ...
+  - Property-Graph-Modell in Neo4j
+    - Elemente: Nodes, Relationships, Properties, Labels
+    - Properties = Key-Value-Paare: Key (=String), Value (=Java-Datentypen + Felder)
+    - Nodes mit Labels (≈ Klassenname)
+    - Relationships: sind gerichtet, mit Namen und ggf. Properties
+  - Anfragen auf Graphen
+    - keine Standardsprache
+    - aber wiederkehrende Grundelemente
+      - Graph Matching: Knoten, Kanten, Pfade (siehe BGP in SPARQL)
+      - Filter für Knoten- und Kanteneigenschaften
+      - Konstruktion neuer Graphen
+    - Anfragen in Cypher
+      - Basis: Muster der Form „Knoten → Kante → Knoten ...“ `(von)-[:relationship]->(nach)`
+      - Beschränkung über Label und Properties `(e:ERZEUGER)-[:LIEGT_IN]->(a:ANBAUGEBIET {gebiet: 'Napa Valley' } )`
+      - Klauseln
+        - match: Beispielmuster für Matching
+        - return: Festlegung der Rückgabedaten (Projektion)
+        - where: Filterbedingung für „gematchte“ Daten
+        - create: Erzeugen von Knoten oder Beziehungen
+        - set: Ändern von Property-Werten
+
+Zusammenfassung
+- NoSQL als Oberbegriff für diverse Datenbanktechniken
+- große Bandbreite: von einfachen KV-Stores bis zu Graphdatenbanken
+- höhere Skalierbarkeit / Performance gegenüber SQL-DBMS meist durch Einschränkungen erkauft
+- Abschwächung von ACID-Eigenschaften
+- begrenzte Anfragefunktionalität
+- Nicht-Standard bzw. proprietäre Schnittstellen
 
 # Anwendungsprogrammierung

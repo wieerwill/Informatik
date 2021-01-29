@@ -590,7 +590,7 @@ Ansätze zur Effizienzsteigerung durch Mikroparallelität
     - Durch Dekodierung der Spaltenadresse wird das gewünscht Datenwort ausgewählt
   - Blocktransfer (Burst): Auslesen des kompletten Zeilenpuffers durch automatisches Inkrementieren der Spaltenadresse
 
-Typischer DRAM-Speicher
+## Typischer DRAM-Speicher
 - Matrixaufbau eines DRAM-Speichers
 - Adressleitungen werden i.d.R. gemultiplext
   - Die gleichen Adressleitungen werden einmal zur Auswahl der Zeile verwendet, danach zur Auswahl der Spalte
@@ -624,7 +624,7 @@ Typischer DRAM-Speicher
 Interleaving
 ![Interleaving](Assets/RA2_Interleaving.png)
 
-Caches
+## Caches
 - Cache = schneller Speicher, der vor einen größeren, langsamen Speicher geschaltet wird
 - Im weiteren Sinn: Puffer zur Aufnahme häufig benötigter Daten
   - Für Daten die schon mal gelesen wurden oder in der Nähe von diesen liegen
@@ -685,6 +685,25 @@ Trefferquote $T=\frac{N_C}{N_G}$ mit $N_G$ Gesamtzahl der Zugriffe auf Speicher 
 
 
 # Microcontroller und Digitale Signalprozessoren
+## Microcontroller Atmel ATtiny15L
+- 8-Bit CPU
+- Taktfrequenz 1,6 MHz
+- Sehr niedriger Stromverbrauch (3 mA Aktiv, < 1μA PowerDown)
+- Die 8 gezeichneten Anschlüsse sind wirklich die einzigen Pins des Microcontrollers
+- Einfach programmieren, Strom anschließen, und man hat eine voll funktionsfähigen programmierbare Steuerung
+
+## Digital-Signal-Prozessoren
+Entwickelt für hohe Leistung, u.a. sich wiederholende, numerisch intensive Aufgaben.
+In einem Befehlszyklus kann man ausführen:
+- eine oder mehrere MAC-Operationen
+- ein oder mehrere Speicherzugriffe
+- spezielle Unterstützung für effiziente Schleifen
+
+Die Hardware enthält:
+- Eine oder mehrere MAC-Einheiten
+- On-Chip- und Off-Chip-Speicher mit mehreren Ports
+- Mehrere On-Chip-Busse
+- Adressgenerierungseinheit, die auf DSP-Anwendungen zugeschnittene Adressierungsmodi unterstützt
 
 
 # Parallele Architekturen

@@ -564,6 +564,126 @@ Ansätze zur Effizienzsteigerung durch Mikroparallelität
 | Out of Order | Hardware | Dynamisch | Dynamisch mit Spekulation | Out of Order mit Spekulation | Pentium III, Pentium 4, MIPS 10000 | 
 | VLIW | Software | Statisch | Statisch | Keine Konflikte | Trimedia, diverse DSPs |
 
+# Speicherarchitektur
+## Speicherhierarchie
+- Große Speicher sind langsam
+- Anwendung verhalten sich üblicherweise lokal
+- Häufig benötigte Speicherinhalte in kleinen Speichern, seltener benötigte Inhalte in großen Speichern ablegen!
+- Einführung einer „Speicherhierarchie“
+- Illusion eines großen Speichers mit (durchschnittlich) kleinen Zugriffszeiten
+- Bis zu sechs Ebenen in modernen Systemen unterscheidbar
+  Ebene | Latenz | Kapazität 
+  -- | -- | --
+   Register | 100ps | 1 KByte
+   Cache | 1ns | 12 MByte
+   Hauptspeicher/RAM | 10ns | 8 GByte
+   Festplatte | 10ms | 1 TByte
+   CD-ROM/DVD/BlueRay | 100ms | 50 GByte
+   Magnetbänder | 100s | 5 TByte
+- Adresspipelining
+    ![Pipelining](Assets/RA2_Adresspipelining.png)
+- Matrixaufbau eines Speichers
+  - Aufteilen der Speicheradresse in Zeilen- und Spaltenadresse
+  - Lesezugriff auf Speicher
+    - Dekodierung der Zeilenadresse bestimmt Select-Leitung
+    - Komplette Zeile wird in den Zeilenpuffer geschrieben
+    - Durch Dekodierung der Spaltenadresse wird das gewünscht Datenwort ausgewählt
+  - Blocktransfer (Burst): Auslesen des kompletten Zeilenpuffers durch automatisches Inkrementieren der Spaltenadresse
+
+Typischer DRAM-Speicher
+- Matrixaufbau eines DRAM-Speichers
+- Adressleitungen werden i.d.R. gemultiplext
+  - Die gleichen Adressleitungen werden einmal zur Auswahl der Zeile verwendet, danach zur Auswahl der Spalte
+  - Einsparung von Leitungen, gerade für große Speicher wichtig
+- Steuerleitungen RAS/CAS codieren, ob Adressleitungen Zeile oder Spalte auswählen
+  - RAS (Row Address Strobe): Bei einer fallenden Flanke auf RAS wird die anliegende Adresse als Zeilenadresse interpretiert
+  - CAS (Column Address Strobe): Bei einer fallenden Flanke auf CAS wird die anliegende Adresse als Spaltenadresse interpretiert
+- Zugriff auf DRAM
+  - Erster Schritt
+    - Zeilenadressdecoder liefert Select-Leitung für eine Zeile
+    - Komplette Zeile wird in einen Zwischenpuffer übernommen
+    - Und zurückgeschrieben!
+  - Zweiter Schritt
+    - Aus dem Zwischenpuffer wird ein Wort ausgelesen
+    - Schritt kann mehrfach wiederholt werden (mehrere aufeinanderfolgende Wörter können gelesen werden)
+- Auffrischung
+  - Heute auf dem DRAM-Speicher integriert
+  - Früher durch externe Bausteine ausgelöst
+- DRAM-Eigenschaften
+  - Weniger Platzbedarf
+  - Nur 1 Transistor und 1 Kondensator pro Speicherzelle, statt 6 Transistoren bei SRAM
+  - Integrationsdichte Faktor 4 höher als bei SRAMs
+- Langsamerer Zugriff
+  - Insbes. Lesezugriff wegen Zwischenspeicherung und Auffrischung
+  - Multiplexen der Adressleitungen
+  - Auf DRAM-Zeile kann während Auffrischung nicht zugegriffen werden
+- Hoher Energieverbrauch sowohl bei Aktivität als auch bei Inaktivität
+  - Ausgleich des Ladungsverlusts durch periodische Auffrischung
+  - Zwischenpuffer und Logik zur Auffrischung
+
+Interleaving
+![Interleaving](Assets/RA2_Interleaving.png)
+
+Caches
+- Cache = schneller Speicher, der vor einen größeren, langsamen Speicher geschaltet wird
+- Im weiteren Sinn: Puffer zur Aufnahme häufig benötigter Daten
+  - Für Daten die schon mal gelesen wurden oder in der Nähe von diesen liegen
+  - 90% der Zeit verbringt ein Programm in 10% des Codes
+- Im engeren Sinn: Puffer zwischen Hauptspeicher und Prozessor
+- Ursprung: cacher (frz.) – verstecken („versteckter Speicher“)
+- Organisation von Caches
+  - Prüfung anhand der Adresse, ob benötigte Daten im Cache vorhanden sind („Treffer“; cache hit)
+  - Falls nicht (cache miss): Zugriff auf den (Haupt-) Speicher, Eintrag in den Cache
+  - Prinzip eines Cache (Hit) ![Cachehit](Assets/RA2_Cachehit.png)
+- Cache-Strategien und Organisationen
+  - Wo kann ein Block im Cache abgelegt werden?
+    - Platzierung abhängig von der Organisationsform
+    - Organisationsform: direkt, mengenassoziativ, vollassoziativ
+  - Welcher Speicherblock sollte bei einem Fehlzugriff ersetzt werden?
+    - Ersetzungsstrategie: Zufällig, FIFO, LRU
+  - Was passiert beim Schreiben von Daten in den Cache?
+    - Schreibstrategie: write-back, write-through
+- Direkt abgebildeter Cache
+  - Such-Einheit im Cache: Cache-Zeile (cache line).
+  - Weniger tag bits, als wenn man jedem Wort tag bits zuordnen würde.
+- Cache-Blöcke, cache blocks
+  - Die Blockgröße ist die Anzahl der Worte, die im Fall eines cache misses aus dem Speicher nachgeladen werden.
+  - Beispiel: (Blockgröße = line size)
+  - Wenn block size < line size, dann sind zusätzliche Gültigkeitsbits erforderlich. Beispiel: (Blockgröße = line size / 2)
+  - Wenn block size > line size, dann werden bei jedem miss mehrere Zeilen nachgeladen.
+  - Stets wird zuerst das gesuchte Wort, dann der Rest des Blocks geladen.
+  - Verbindung Speicher ↔ Cache ist so entworfen, dass der Speicher durch das zusätzliche Lesen nicht langsamer wird.
+  - Methoden dazu:
+      1. Schnelles Lesen aufeinanderfolgender Speicherzellen (Burst-Modus der Speicher)
+      2. Interleaving (mehrere Speicher ICs mit überlappenden Zugriffen)
+      3. Fließbandzugriff auf den Speicher (EDO-RAM, SDRAM)
+      4. Breite Speicher, die mehrere Worte parallel übertragen können
+- 2-Wege Cache (Datensicht)
+    ![2 Wege Cache](Assets/RA2_2-wege-cache.png)
+  - 2-fach satz-assoziativer Cache
+- Organisationsformen von Caches
+  - Direkt abgebildet (Direct mapping): Für caching von Befehlen besonders sinnvoll, weil bei Befehlen Aliasing sehr unwahrscheinlich ist
+  - Satz-assoziativ abgebildet (Set-associative mapping): Sehr häufige Organisationsform, mit Set-Größe = 2, 4 oder 8
+  - Vollassoziativ abgebildet (Associative mapping): Wegen der Größe moderner Caches kommt diese Organisationsform kaum in Frage
+- Ersetzungs-Strategien
+  - Zufallsverfahren: Hier wird der zu ersetzende Block innerhalb des Satzes zufällig ausgewählt.
+  - FIFO-Verfahren: Beim FIFO-Verfahren (engl. First In, First Out) wird der älteste Block ersetzt, auch wenn auf diesem gerade erst noch zugegriffen wurde
+  - LRU-Verfahren: Beim LRU-Verfahren (engl. least recently used ) wird der Block ersetzt, auf den am längsten nicht mehr zugegriffen wurde
+  - LFU-Verfahren: Beim LFU-Verfahren (engl. least frequently used ) wird der am seltensten gelesene Block ersetzt
+  - CLOCK-Verfahren: Hier werden alle Platzierungen gedanklich im Kreis auf einem Ziffernblatt angeordnet. Ein Zeiger wird im Uhrzeigersinn weiterbewegt und zeigt den zu ersetzenden Eintrag an.
+ 
+Schreibverfahren: Strategien zum Rückschreiben Cache → (Haupt-) Speicher
+- Write-Through (Durchschreiben): 
+   -  Jeder Schreibvorgang in den Cache führt zu einer unmittelbaren Aktualisierung des (Haupt-) Speichers
+   -  Speicher wird Engpass, es sei denn, der Anteil an Schreiboperationen ist klein oder der (Haupt-) Speicher ist nur wenig langsamer als der Cache.
+- Copy-Back, conflicting use write back
+  - Rückschreiben erfolgt erst, wenn Cache-Zeile bei Miss verdrängt wird
+  - Funktioniert auch bei großen Geschwindigkeitsunterschieden zwischen Cache und Speicher. Vorkehrungen erforderlich, damit keine veralteten Werte aus dem Speicher kopiert werden.
+  ![Write Trough vs Write Back](Assets/RA2_cache-write-trough-vs-back.png)
+
+Trefferquote $T=\frac{N_C}{N_G}$ mit $N_G$ Gesamtzahl der Zugriffe auf Speicher und $N_C$ Anzahl der Zugriffe mit Hit auf Cache
+
+
 # Microcontroller und Digitale Signalprozessoren
 
 

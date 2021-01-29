@@ -705,6 +705,28 @@ Die Hardware enthält:
 - Mehrere On-Chip-Busse
 - Adressgenerierungseinheit, die auf DSP-Anwendungen zugeschnittene Adressierungsmodi unterstützt
 
+# Multiprozessorarchitekturen
+Klassifikation nach Flynn
+| | Ein Datenstrom | mehrere Datenströme |
+| -- | -- | -- |
+| ein Befehlsstrom | SISD | SIMD |
+| mehrere Befehlsströme | MISD | MIMD |
+
+![SISD](Assets/RA2_SISD.png)
+![SIMD](Assets/RA2_SIMD.png)
+![MISD](Assets/RA2_MISD.png)
+![MIMD](Assets/RA2_MIMD.png)
+
+Speicherstrukturen:
+![Speicherstrukturen](Assets/RA2_Speicherstrukturen.png)
+
+Enge und lose Kopplung
+![Enge und lose Kopplung](Assets/RA2_Enge%20und%20lose%20Kopplung.png)
+
+Verbindungsnetzwerke
+![Verbindungsnetzwerke](Assets/RA2_Verbindungsnetzwerke.png)
+![Verbindungsnetzwerke2](Assets/RA2_Verbindungsnetzwerke2.png)
+
 
 # Parallele Architekturen
 

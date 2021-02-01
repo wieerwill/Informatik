@@ -1478,9 +1478,93 @@ Gesucht ist eine „Programmiersprache“, in der genau die totalen berechenbare
 1. Idee: nimm einfach $TOT := \{w\in L_{TM} | \phi_w ist total\}$. Problem: nach dem Satz von Rice ist $TOT$ nicht entscheidbar.
 2. Idee: $TOT$ ist verschwenderisch, denn für jede totale berechenbare Funktion gibt es viele „Programme“. Vielleicht können wir ja geschickt einige „Programme“ verbieten, um die gesuchte Programmiersprache zu finden. 
  
-Gesucht ist also $C\subseteq TOT \subseteq L_{TM}$, so dass $\{\phi_w | w\in C \} = {\phi_w | w \in TOT\}$ die Menge der totalen berechenbaren Funktionen ist.
+Gesucht ist also $C\subseteq TOT \subseteq L_{TM}$, so dass $\{ \phi_w | w\in C \} = \{\phi_w | w \in TOT\}$ die Menge der totalen berechenbaren Funktionen ist.
 - es gibt keine "Programmiersprache" mit auch nur semi-entscheidbarer Syntax, in der genau die totalen berechenbaren Funktionen programmierbar sind
 - $TOT$ ist nicht einmal semi-entscheidbar
 - indirekt nehmen wir an, dass C semi-entscheidbar ist
   - dann existiert eine totale berechenbare Funktion $f:\{0,1\}^*\rightarrow\{0,1\}^*$ mit Bild C
-  - neue Funktion $g:\{0,1\}^*\rightarrow\{0,1}^*:w\vdash 1\phi_{f(w)}(w)$
+  - neue Funktion $g:\{0,1\}^*\rightarrow\{0,1\}^*:w\vdash 1\phi_{f(w)}(w)$
+
+## Einige unentscheidbare Probleme
+Posts Korrespondenzproblem (PCP): ein kombinatorisches Problem auf Wörtern, wichtiges (Hilfs-)Problem, um damit die Unentscheidbarkeit anderer Probleme zu zeigen
+
+> Definition:
+> 1. Ein Korrespondezsystem ist eine endliche Folge von Paaren $K=((x_1,y_1),(x_2,y_2),...,(x_k,y_k))$ mit $x_i,y_i\in\sum^+$ für alle $1\leq i \leq k$ (dabei ist $\sum$ ein beliebiges Alphabet)
+> 2. Eine Lösung von K ist eine endliche Folge von Indizes $i_1,i_2,...,i_n \in \{1,2,...,k\}$ mit $n\geq 1$ und $x_{i1} x_{i2} ... x_{in}=y_{i1} y_{i2}... y_{in}$.
+> 3. MPCP ("modifiziertes PCP") ist die Menge der Korrespondezsysteme, die eine Lösung mit $i_1=1$ besitzen
+> 4. PCP ist die Menge der Korrespondenzsysteme, die eine Lösung besitzen
+ 
+Ziel: die Menge PCP ist unentscheidbar, dazu $h_0\leq MPCP \leq PCP$
+
+Beispiel: Ist das folgende Korrespondezsystem lösbar?
+$x_1=0, x_2=1, x_3=0101, y_1=010, y_2=101, y_3=01$
+Eine mögliche Lösung ist (3,3,1,2): $\begin{cases} 01 01|010 1|0|1 \\ 01|01|010|1 0 1 \end{cases}$
+
+> Lemma: MPCP $\leq$ PCP 
+
+Beweis: sei $K=((x_1,y_1)...(x_k,y_k))$ Korrespondenzsystem über $\sum$ mit $\$ \in \sum$ für $w=a_1a_2...a_m\in\sum^*$: $\overrightarrow{w}=a_1\$ a_2\$ ...a_m\$, \overleftarrow{w}=\$ a_1\$ a_2\$ ...a_m, w^{\leftrightarrow}=\$ a_1\$ a_2\$ ...a_m\$$. Setzte $f(K)=((\overrightarrow{x_1},\overleftarrow{y_1}),(\overrightarrow{x_2},\overleftarrow{y_2}),...,(\overrightarrow{x_k},\overleftarrow{y_k}),(x_1^{\leftrightarrow},\overleftarrow{y_1}),(\$,\$\$))$ da f berechenbar ist, ist noch $k\in MPCP \leftrightarrow f(K)\in PCP$ zu zeigen: 
+- $\Rightarrow$ Sei $k\in MPCP$, dann exisitert Lösung $1,i_2,...,i_n$ von K. Also ist $k+1,i_2,...,i_n,k+2$ Lösung von $f(K)$, d.h. $F(K)\in PCP$.
+- $\Leftarrow$ Sei nun $f(K)\in PCP$, dann existiert Lösung $i_1,i_2,...,i_n$ von $f(K)$. Eine Lösung von K erhält man indem man in der Folge $i_1,i_2,...,i_n$ 
+  - alle Vorkommen von $k+1$ durch 1 ersetzt und
+  - alle Vorkommen von $k+2$ streicht
+Vergleich der ersten Buchstaben liefert $i_1\in\{k+1,k+2\}$. Also erhaltebn wir $i_1=k+1$ und damit $i'_1=1$, d.h. $K\in MPCP$
+
+Wir werden nun $H_0 \leq MPCP$ zeigen, d.h. aus (dem Kode) einer Turing Maschine M werden wir ein Korrespondenzsystem $K(M)$ berechnen mit "M hält bei leerer Eingabe $\leftrightarrow$ $K(M)$ hat keine Lösung mit $i_1=1$."
+Wir können annehmen, dass die TM M nur anhält, wenn sie sich in Endzustand E und der Kopf sich am Anfang des beschrifteten Bandes befindet.
+$K(M)$ hat folgende Wortpaare:
+- $(x_1,y_1)=(\#,\#\triangleright z_0 \Box\triangleleft)$ ist erstes Wortpaar
+- Kopierpaare $(a,a)$ für $a\in\Roh\cup\{\triangleright,\triangleleft\}$
+- Überführungspaare $(z,z'\in Z,a,b,c\in\Roh)$
+- Löschpaare $(azb,zb)$ und $(zba,zb)$ für alle $z\in E, a,b\in\Roh$ mit $\sigma(z,b)=(zb,N)$
+- Abschlusspaare $(\triangleright za \triangleleft \#,\#)$ für alle $z\in E,a,\in\Roh$ mit $\sigma(z,a)=(z,a,N)$
+
+> Lemma Die Abbildung K , die der Turing-Maschine M das Korrespondenzsystem $K(M)$ zuordnet, ist eine Reduktion von $H_0$ auf $MPCP$, es gilt also $H_0\leq MPCP$.
+
+M hält bei leerer Eingabe $\Rightarrow K(M) \in MPCP$. umgekehrte Implikation wird ähnlich gezeigt (aber wir tun dies hier nicht). damit: Die Abbildung K , die jeder Turing-Maschine ein Korrespondenzsystem zuordnet, ist eine Reduktion von $H_0$ auf $MPCP$ $\rightarrow H_0 \leq MPCP$.
+
+> Satz (Emil Post, 1947): PCP ist unentscheidbar. (T. Neary 2015: 5 Paare reichen hierfür.)
+
+> Satz: PCP ist semi-entscheidbar.
+
+Beweis: Probiere erst alle Indexfolgen der Länge 1 aus, dann alle Indexfolgen der Länge 2,... Falls irgendwann eine passende Indexfolge gefunden wird, so gib 1 aus.
+
+> Korollar: Das Komplement $\bar{PCP}$ von PCP ist nicht semi-entscheidbar.
+
+Beweis: PCP unentscheidbar und semi-entscheidbar $\rightarrow \bar{PCP}$ nicht semi-entscheidbar
+
+#### Kontextfreie Sprachen
+Wort- und Leerheitsproblem haben wir auch für Kellerautomaten gelöst. Wir werden zeigen, daß u.a. die restlichen Probleme für Kellerautomaten nicht semi-entscheidbar (und damit nicht entscheidbar) sind. Dazu zeigen wir:
+- $\bar{PCP} \leq Reg_{PDA}$
+- $\bar{PCP} \leq Schn_{DPDA} \leq Inkl_{DPDA} \leq Univ_{PDA} \leq EQ_{PDA}$
+- $Univ_{PDA} \leq Eq_{DFA,PDA}$
+- $Univ_{PDA} \leq Inkl_{DFA,PDA}$
+
+Zunächst daher eine Konstruktion, die Korrespondenzsysteme mit Kellerautomaten in Beziehung setzt.
+Konstruktion: Sei $K=((x_1,y_1),...,(x_k,y_k))$ Korrespondenzsystem über $\sum$. Setze:
+- $\Roh=\sum\cup\{1,2,...,k,\$\}$
+- $X_k=\{i_n i_{n-1}... i_1\$ x_{i1} x_{i2} ... x_{in} | n\geq 1, 1,\leq i_1,i_2,...,i_n\leq k\}$
+- $Y_K=\{i_n i_{n-1}... i_1\$ y_{i1} y_{i2} ... y_{in} | n\geq 1, 1,\leq i_1,i_2,...,i_n\leq k\}$
+Daraus enstehen:
+- Behauptung 1: Aus einem Korrespondenzsystem K können deterministische Kellerautomaten (=DPDA) $P_X$ und $P_Y$ berechnet werden mit $L(P_X)=X_K$ und $L(P_Y)=Y_K$
+- Behauptung 2: Aus einem Korrespondenzsystem K kann ein Kellerautomat (=PDA) $P_K$ berechnet werden mit $L(P_K)=\Roh^*\backslash (X_K\cap Y_K)$
+- Behauptung 3: Sei K Korrespondenzsystem. Dann sind äquivalent:
+    1. K hat eine Lösung.
+    2. $X_K\cap Y_K \not=\varemtpy$
+    3. $X_K\cap Y_K$ ist unendlich
+    4. $X_K\cap Y_K$ ist nicht regulär
+
+> Satz: Das Regularitätsproblem für PDAs $Reg_{PDA} = \{P | \text{P PDA mit L(P) regulär}\}$ ist nicht semi-entscheidbar.
+
+Beweis: Zeige $\bar{PCP}\leq Reg_{PDA}$
+
+> Satz (Stearns 1967): Das Regularitätsproblem für DPDAs $Reg_{DPDA} = \{ P | \text{P DPDA mit L(P) regulär}\}$ ist entscheidbar.
+
+> Satz: Das Schnittproblem für DPDAs $Schn_{DPDA} = \{(P_1, P_2 ) | P_1, P_2 \text{ DPDAs mit } L(P_1)\cap L(P_2) = \varnothing\}$ ist nicht semi-entscheidbar.
+
+- Korollar: Das Inklusionsproblem für DPDAs $Inkl_{DPDA}=\{(P_1,P_2)| P_1,P_2 \text{ DPDAs mit } L(P_1)\subseteq L(P_2)\}$ ist nicht semi-entscheidbar
+- Korollar: Das Universalitätsproblem für PDAs $Univ_{PDA} =\{ P PDA| L(P)=\sum^*\}$
+- Korollar: Das Äquivalenzproblem für PDAs $Eq_{PDA} =\{(P_1,P_2) | P_1,P_2 \text{ PDA mit } L(P_1)=L(P_2)\}$
+- Korollar: Die folgenden Probleme sind nicht semi entscheidbar: $Eq_{DFA,PDA}=\{(M,P)| M DFA, P PDA \text{ mit } L(M)=L(P)\}$, $Inkl_{DFA,PDA}=\{(M,P)| M DFA, P PDA \text{ mit } L(M)\subseteq L(P)\}$
+- Bemerkung: Das folgende Problem ist hingegen entscheidbar $Inkl_{PDA,DFA}=\{(P,M)| P PDA, M DFA \text{ mit } L(P)\subseteq L(M)\}$
+- Bemerkung: Für DPDAs sind diese Probleme entscheidbar $Eq_{DFA,DPDA} = \{(M,P)| M DFA, P DPDA \text{ mit } L(M)=L(P)\}$, $Inkl_{DFA,DPDA} =\{(M,P)| M DFA, P DPDA \text{ mit } L(M)\subseteq L(P)\}$
+

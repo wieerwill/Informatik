@@ -100,6 +100,7 @@ author: Robert Jeutter
     - [Ein Beispiel: SELinux](#ein-beispiel-selinux)
   - [Robustheit](#robustheit)
   - [Abschließend](#abschließend)
+- [Abschließende Zusammenfassung und Schwerpunkte](#abschließende-zusammenfassung-und-schwerpunkte)
 
 # Einführung
 worauf es ankommt:
@@ -2395,3 +2396,90 @@ Risikoszenarien und High-End Betriebssysteme
 - AOS
   - (z.B. Robustheit)
   - Konzepte, Architekturen, Algorithmen
+
+# Abschließende Zusammenfassung und Schwerpunkte
+1. Betriebssysteme
+    - Spektrum der Anwendungsszenarien
+    - Spektrum der Aufgaben
+    - funktionale u. nichtfunktionale Eigenschaften von Betriebssystemen
+2. Prozessormanagement
+  1. Prozesse u. Threads
+      - Betriebssystem-Abstraktion „Prozess“
+      - Prozessmodelle
+      - Prozessmanagement und Prozessdeskriptor
+      - Threads, Multithread-Prozessmodelle u. Threaddeskriptor
+  2. Prozesse u. Threads
+      - Betriebssystem-Abstraktion „Prozess“
+      - Prozessmodelle
+      - Prozessmanagement und Prozessdeskriptor
+      - Threads u. Thread-Typen
+      - Multithread-Prozessmodelle u. Threaddeskriptor
+  3. Scheduling u. Scheduling-Strategien
+      - Scheduling: Notwendigkeit, Sinn u. Grundaufgabe
+      - Zustandsmodelle
+      - Kontextwechsel
+      - diverse Scheduling-Strategien
+  4. Privilegierungsebenen
+      - Prozessormodi: Zweck u. Handhabung
+3. Kommunikation & Synchronisation
+  1. Kommunikation und Synchronisation
+      - Kritische Abschnitte u. wechselseitiger Ausschluss
+      - Mechanismen zur Kommunikation u. Synchronisation
+  2. Botschaften und Botschaften basierte Kommunikation
+      - Motivation
+      - elementare Operationen
+      - Fernaufrufe (RPCs)
+      - Systemaufrufe
+  3. Ereignismanagement
+      - Notwendigkeit des Ereignismanagement
+      - Umgangsformen mit Ereignissen
+      - Interrupts und Programmiermodelle zum Umgang damit
+      - Interrupt-Vektor(en) und Interrupt-Service-Routinen
+      - Interrupts auf Anwendungsebene
+4. Speichermanagement
+  1. Speichermedien
+      - Speichertechnologien u. deren Eigenschaften
+      - Speicherhierarchien
+      - Arbeitsspeicher, Relokation u. Swapping
+  2. Virtueller Speicher und dessen Management
+      - Virtuelle Prozessadressräume und physischer Adressraum
+      - Abbildungen aus virtuellen Adressräumen in den physischen Adressraum
+      - Seiten(abbildungs)tabellen: Funktion u. Aufbau
+      - Seitentabelleneinträge
+      - Funktion von MMU und TLB
+      - Seitenfehler u. Seitenfehlerbehandlung
+      - Seitenaustauschalgorithmen
+  3. Segmentierung
+      - Prinzip
+      - Sinn der Segmentierung
+      - Segmentierung u. Paging
+4. Dateisysteme 
+  1. Motivation
+  2. Dateimodelle
+      - Dateinamen
+      - Dateistrukturen
+      - Dateiattribute
+      - Operationen auf Dateien
+  3. Speichermedien: Magnetplatten u. SSDs
+  4. Management-Datenstrukturen
+      - i-Nodes
+      - Verzeichnisse
+      - Superblock u. Freilisten
+5. Netzwerkmanagement
+  1. Verteilte Systeme
+  2. Socket-Abstraktion
+6. E/A Systeme
+  1. Hardware-Prinzipien
+      - Geräteschnittstelle
+      - E/A-Adressräume
+      - Memory-Mapped E/A
+  2. Software-Prinzipien
+      - Treiber (Gerätemanager): Funktion u. Struktur
+      - Treiber-Integration ins Betriebssystem
+      - Problemzonen
+7. High End Betriebssysteme
+  1. Nichtfunktionale Eigenschaften von Betriebssystemen
+      - Sicherheit u. SELinux-Ansatz
+      - Robustheit
+  2. Betriebssystem-Architekturen
+      - Makrokerne u. Mikrokerne

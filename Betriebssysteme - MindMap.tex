@@ -1,4 +1,14 @@
 \documentclass[a4pape]{article}
+\usepackage[ngerman]{babel}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{listings}
+\usepackage[compact]{titlesec} %less space for headers
+\usepackage{mdwlist} %less space for lists
 \usepackage[utf8]{inputenc}
 \usepackage{tikz}
 \usepackage{pdflscape}
@@ -6,6 +16,13 @@
 \usetikzlibrary{mindmap}
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
 
+\pdfinfo{
+    /Title (Betriebssysteme - Cheatsheet)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
 % Information boxes
 \newcommand*{\info}[4][16.3]{
   \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
@@ -17,10 +34,367 @@
   };
 }
 
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}    
+% compress space
+\setlength\abovedisplayskip{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\linespread{0.5}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+
 %%%% Predefined Colors: black, blue, brown, cyan, darkgray, gray, green, lightgray, lime, magenta, olive, orange, pink, purple, red, teal, violet, white, yellow.
 
 \pagestyle{empty}
 \begin{document}
+
+
+\raggedright
+\begin{multicols}{3}\scriptsize
+  % multicol parameters
+  % These lengths are set only within the two main columns
+  %\setlength{\columnseprule}{0.25pt}
+  \setlength{\premulticols}{1pt}
+  \setlength{\postmulticols}{1pt}
+  \setlength{\multicolsep}{1pt}
+  \setlength{\columnsep}{2pt}
+
+  \paragraph{Prozesse}
+  \begin{itemize*}
+    \item Betriebssystem-Abstraktionen zur Ausführung von Programmen
+    \item Eigentümer von Ressourcen
+    \item differenzierte Prozessmodelle: definieren konkrete Prozesseigenschaften
+  \end{itemize*}
+
+  \paragraph{Prozessmanagement}
+  \begin{itemize*}
+    \item Komponente eines Betriebssystems, die Prozessmodell dieses Betriebssystems implementiert
+    \item wichtige Aufgaben: Prozesserzeugung u. -beendigung (u. Scheduling)
+    \item wichtigste Datenstrukturen: Prozessdeskriptor, Prozessdeskriptortabelle
+  \end{itemize*}
+
+  \paragraph{Prozessdeskriptor (PCB)}
+  Buchführung über sämtliche zum Management eines Prozesses notwendigen Informationen
+  \begin{itemize*}
+    \item Prozessidentifikation
+    \item Rechtemanagement
+    \item Speichermanagement
+    \item Prozessormanagement
+    \item Kommunikationsmanagement
+  \end{itemize*}
+
+  \paragraph{Prozessdeskriptortabelle}
+  enthält: Prozessdeskriptoren aller momentan existierenden Prozesse
+
+  \paragraph{Threads}
+  \begin{itemize*}
+    \item Betriebssystem-Abstraktionen für sequentielle, nebenläufige Aktivitäten
+    \item sind Gegenstand des Schedulings
+  \end{itemize*}
+
+  \paragraph{Multithread-Prozessmodell}
+  \begin{itemize*}
+    \item vollständige Beschreibung einer ablaufenden Aktivität
+    \item Dazu gehören insbesondere
+    \begin{enumerate*}
+      \item das ablaufende Programm
+      \item zugeordnete Betriebsmittel (Prozessor/Speicher/Kommunikation)
+      \item Rechte
+      \item prozessinterne parallele Aktivitäten (Threads) und deren Bearbeitungszustände
+    \end{enumerate*}
+  \end{itemize*}
+
+  \paragraph{Threaddeskriptor (TCB)}
+  \begin{itemize*}
+    \item ein TCB enthält lediglich:
+    \begin{enumerate*}
+      \item Threadzustand (aktiv, bereit, blockiert, ...)
+      \item Ablaufkontext, falls nicht aktiv (Programmzähler, Stackpointer, Prozessorregister)
+    \end{enumerate*}
+    \item enthält nicht: Beschreibung der Ressourcen (Speicherlayout, Rechte)
+  \end{itemize*}
+
+  \paragraph{Thread-Typen}
+  \begin{itemize*}
+    \item Kernel Level Threads (KLTs): Kenntnis über Threads: hat Betriebssystem, genauer: der Betriebssystem-Kern(el)
+    \item User Level Threads (ULTs): Kenntnis über Threads: existiert nur auf Benutzer-Ebene (user level)
+    \item das Betriebssystem [genauer: der Betriebssystem-Kern(el)] weiß nicht, dass Threads existieren
+  \end{itemize*}
+
+  \paragraph{Scheduling: Grundaufgabe}
+  Entscheidung: Welche Threads erhalten wann u. wie lange einen Prozessor/Prozessorkern zugeteilt?
+
+  \paragraph{Zustandsmodelle}
+  \begin{itemize*}
+    \item Threads können verschiedene Zustände annehmen (Beispiel 3/5-Zustandsmodell)
+    \item bereit, aktiv, blockiert, frisch, beendet
+  \end{itemize*}
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Zustandsmodell.png}
+  }
+
+  \paragraph{Scheduling: Notwendigkeit u. Sinn}
+  \begin{itemize*}
+    \item im Allgemeinen: Anzahl der Aktivitäten >> Anzahl der Prozessoren
+    \item nicht alle können gleichzeitig arbeiten
+    \item eine Auswahl muss getroffen werden
+    \item Auswahlstrategie: Schedulingstrategie, ~algorithmus
+    \item die Betriebssystemkomponente: Scheduler
+  \end{itemize*}
+
+  \paragraph{Scheduling-Strategien}
+  \begin{itemize*}
+    \item abhängig vom Einsatzfeld eines Betriebssystems
+    \begin{itemize*}
+      \item Echtzeitsysteme: Einhaltung von Fristen
+      \item interaktive Systeme: Reaktivität
+    \end{itemize*}
+    \item wichtige Strategien:
+    \begin{itemize*}
+      \item FCFS
+      \item SRTN
+      \item Round Robin (ohne u. mit Prioritäten)
+      \item EDF
+      \item ratenmonotones Scheduling
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Privilegierungsebenen}
+  \begin{itemize*}
+    \item sind typischerweise "kernel mode" und "user mode"
+    \item steuern Rechte ...
+    \begin{itemize*}
+      \item zur Ausführung privilegierter Prozessorinstruktionen
+      \item zur Konfiguration des Arbeitsspeicherlayouts
+      \item zum Zugriff auf Arbeitsspeicherbereiche
+      \item zum Zugriff auf E/A-Geräte
+    \end{itemize*}
+    \item ermöglichen: Durchsetzung von Regeln: "Nur ein im 'kernel mode' ablaufender Prozess hat Zugriff auf ..."
+  \end{itemize*}
+
+  \paragraph{Kommunikation u. Synchronisation}
+  \begin{itemize*}
+    \item Austausch von Daten zwischen Prozessen = Kommunikation (Inter-Prozess-Kommunikation, IPC)
+    \item Abweichende Geschwindigkeiten von Sender und Empfänger: behandelt durch Synchronisation
+  \end{itemize*}
+
+  \paragraph{kritischer Abschnitt und wechselseitiger Ausschluss}
+  \begin{itemize*}
+    \item in einem kritischen Abschnitt darf sich stets nur ein Thread aufhalten
+    \item notwendig: wechselseitiger (gegenseitiger) Ausschluss
+    \item realisiert durch Entry- u. Exit-Code [z.B. die Semaphor-Operationen belegen (P) und freigeben (V)]
+  \end{itemize*}
+
+  \paragraph{Mechanismen zur Synchronisation}
+  \begin{itemize*}
+    \item Semaphore (binäre Semaphore u. mehrwertige Semaphore) (ansehen!)
+    \item (Hoar‘sche) Monitore
+  \end{itemize*}
+
+  \paragraph{Mechanismen zur Kommunikation}
+  \begin{itemize*}
+    \item Shared Memory (gemeinsamer Speicher)
+    \item Botschaften
+    \item Fernaufrufe
+    \item Systemaufrufe
+  \end{itemize*}
+
+  \paragraph{Notwendigkeit des Ereignismanagement}
+  \begin{itemize*}
+    \item in Betriebssystemen laufen sehr viele Aktivitäten parallel ab
+    \item dabei entstehen immer wieder Situationen, in denen auf unterschiedlichste Ereignisse reagiert werden muss, z.B.
+    \begin{itemize*}
+      \item Timerablauf
+      \item Benutzereingaben (Maus, Tastatur)
+      \item Eintreffen von Daten von Netzwerken, Festplatten, ...
+      \item Einlegen/stecken von Datenträgern
+      \item Aufruf von Systemdiensten
+      \item Fehlersituationen
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Umgangsformen mit Ereignissen}
+  \begin{itemize*}
+    \item "busy waiting"
+    \item "periodic testing"
+    \item Unterbrechungen ("Interrupts")
+  \end{itemize*}
+
+  \paragraph{Programmiermodelle zum Umgang mit Interrupts}
+  \begin{itemize*}
+    \item Prozeduren (→ inline Prozeduraufrufmodell)
+    \item IPC-Operationen (→ IPC-Modell)
+    \item Threads (→ pop-up Thread Modell)
+  \end{itemize*}
+
+  \paragraph{Interrupts auf Anwendungsebene}
+  \begin{itemize*}
+    \item notwendig: Event Service Routines (ESRs)
+    \item Beispiel: UNIX/Linux-Signalbehandlung
+  \end{itemize*}
+
+  \paragraph{Virtuelle Prozessadressräume und physischer Adressraum, Abbildungen}
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Adressräume.png}
+  }
+
+  \paragraph{Seitenabbildungstabellen}
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Seitenabbildungstabellen.png}
+  }
+
+  \paragraph{Seitentabelleneinträge}
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Seitentabelleneinträge.png}
+  }
+  \begin{itemize*}
+    \item anwesend:Indikator, ob Seite im Arbeitsspeicher liegt ("present"-Bit)
+    \item benutzt: Indikator, ob auf die Seite zugegriffen wurde ("used/referenced"-Bit)
+    \item verändert: Indikator, ob Seite "schmutzig" ist ("dirty/modified"-Bit)
+    \item Schutz: erlaubte Zugriffsart je Privilegierungsebene ("access control list")
+    \item Caching: Indikator, ob Inhalt der Seite ge"cached" werden darf
+  \end{itemize*}
+
+  \paragraph{Seitenaustauschalgorithmen}
+  \begin{itemize*}
+    \item Optimale Strategie: Auslagerung derjenigen Arbeitsspeicherseite, deren ...
+    \begin{itemize*}
+      \item nächster Gebrauch am weitesten in der Zukunft liegt ("Hellseher")
+      \item Auslagerung nichts kostet (man müsste man wissen, ob eine Seite seit ihrer Einlagerung verändert wurde)
+    \end{itemize*}
+    \item im Folgenden: einige Algorithmen, die sich diesem Optimum annähern:
+    \begin{itemize*}
+      \item First-In, First-Out (FIFO)
+      \item Second-Chance
+      \item Least Recently Used (LRU)
+      \item Working Set / WSClock
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{i-Node}
+  i-Node: Metainformationen über genau eine Datei
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_i-Node.png}
+  }
+
+  \paragraph{Verzeichnis}
+  Verzeichnis = Menge von Paaren (Name, i-Node-Index)
+
+  \paragraph{Superblock}
+  \begin{itemize*}
+    \item Superblock: Einstiegspunkt eines Dateisystems
+    \item enthält: Schlüsselparameter
+    \begin{itemize*}
+      \item Name des Dateisystems
+      \item Typ (NTFS, Ext * , HFS, ...) → Layout der Metadaten
+      \item Größe und Anzahl Sektoren
+      \item Ort und Größe der i-Node-Tabelle
+      \item Ort und Größe der Freiliste
+      \item i-Node-Nummer des Wurzelverzeichnisses
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Hardware-Prinzipien}
+  \begin{itemize*}
+    \item\item Controller-Register
+    \begin{itemize*}
+      \item\item in E/A-Adressräumen
+      \item im Arbeitsspeicher (Memory Mapped E/A)
+      \item Isolation, Robustheit, Sicherheit
+    \end{itemize*}
+    \item Interruptsystem: asynchrone Benachrichtigungen
+  \end{itemize*}
+
+  \paragraph{Software-Prinzipien}
+  Gerätemanager (Treiber)
+  \begin{itemize*}
+    \item\item Auftragsmanagement
+    \item ISRs
+  \end{itemize*}
+
+  \paragraph{Betriebssystem-Architekturen}
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Architekturen.png}
+  }
+
+  \paragraph{Sicherheit}
+  \begin{itemize*}
+    \item\item Schutz des Betriebssystems
+    \item z.B. gegen Angriffe von außen
+  \end{itemize*}
+
+  \paragraph{SELinux-Ansatz}
+  \begin{itemize*}
+    \item\item Sicherheitspolitiken in SELinux
+    \item neue Betriebssystem-Abstraktion
+    \begin{itemize*}
+      \item\item absolute Kontrolle über kritische Funktionen des Betriebssystems
+      \item spezifiziert durch Regelmenge
+      \item implementiert durch die SELinux-Sicherheitsarchitektur
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Robustheit}
+  \begin{itemize*}
+    \item Ziel: Tolerierung unvorhergesehener Fehler und Ausfälle
+    \item Mikrokernarchitekturen: robuster als Makrokernarchitekturen
+    \item Gründe:
+    \begin{itemize*}
+      \item\item Fehlerisolation
+      \item Möglichkeiten zur Fehlerbehebung (z.B. Micro-Reboot)
+    \end{itemize*}
+  \end{itemize*}
+
+
+\end{multicols}
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Überblick
 \begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=black!10,
@@ -184,8 +558,7 @@
           child{node{Individualität}}
           child{node{Portabilität}}
         }
-    }
-  ;
+    };
 \end{tikzpicture}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Scheduling

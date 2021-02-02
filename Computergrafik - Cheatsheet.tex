@@ -250,32 +250,28 @@
     \item Ermittlung: aus Richtung r und Augpunkt eine Gerade, dann schneidet diese Gerade die Projektionsfläche im Fliuchtpunkt für die Richtung r.
   \end{itemize*}
   
+  \newpage
   \section{Modellierung}
   \subsection{Geometrische Modellierung}
   computergestütze Beschreibung der Form geometrischer Objekte
   
   \paragraph{Boundary Representation (B-Rep)}
   \begin{itemize*}
-    \item Beschreibung durch die festlegung begrenzender Oberflächen
+    \item Beschreibung durch die begrenzende Oberflächen
     \item Darstellungsform eines Flächen- oder Volumenmodells
-    \item beschreibt Objekt durch begrenzende Oberflächen
     \item sind schnell verarbeitbar
-    \item Definition eines Ojekts erfolgt über einen vef-Graph (vertex, edge, face)
+    \item Definition des Ojekts über vef-Graph (vertex, edge, face)
           \begin{itemize*}
             \item Knotenliste: beinhaltet Koordinatenpunkt
-            \item Kantenliste: für jede Kante werden zwei Punkte referenziert
-            \item Flächenliste: für jede Fläche wird Reihenfolge von Kanten angegeben
+            \item Kantenliste: pro Kante zwei Punkte referenziert
+            \item Flächenliste: pro Fläche die Reihenfolge der Kanten
           \end{itemize*}
-  \end{itemize*}
-  
-  \subsection{Szenengraph}
-  \begin{itemize*}
     \item Szene: dreidimensionale Beschreibung von Objekten, Lichtquellen und Materialeigenschaften mit virtuellen Betrachter
     \item Szenegraph: hierarchische Gruppierung der Objekte in einer Szene
   \end{itemize*}
   
   \subsection{Rendering}
-  Render-Pipeline: Geometrisches Objekt$\rightarrow$ Transformieren$\rightarrow$ Vertex Shader$\rightarrow$ Raster Konvertierung$\rightarrow$ Fragment Shader$\rightarrow$ Ausgabebild
+  Pipeline: Geometrisches Objekt$\rightarrow$ Transformieren$\rightarrow$ Vertex Shader$\rightarrow$ Raster Konvertierung$\rightarrow$ Fragment Shader$\rightarrow$ Ausgabebild
   
   \paragraph{Vertex Shader}
   \begin{itemize*}
@@ -304,18 +300,18 @@
     \item Umsetzung
           \begin{enumerate*}
             \item $M=T*R*S$ Transformation von Modellraum in Weltkoordinaten (Model)
-            \item $V=T_V^{-1}*R_V^{-1}$ Transformation in Kameraraum, für einfachere Projektion (View)
+            \item $V=T_V^{-1}*R_V^{-1}$ Transformation in Kameraraum (View)
             \item Projektion auf Kamerabildebene und Umrechnung in Bildraum (Projektion)
           \end{enumerate*}
     \item Ergebnis
           \begin{itemize*}
-            \item Model-View-Projektion-Matrix $P*V*M=MVP_{Matrix}$
+            \item MVP-Matrix $P*V*M=MVP_{Matrix}$
             \item Anwendung der MVP ergibt Bildraumprojektion des Modells $p'_m=P*V*M*p_m$
-            \item MVP-Matrix wird nur einmal berechnet
+            \item MVP-Matrix muss nur einmal berechnet werden
           \end{itemize*}
   \end{itemize*}
   
-  \subsection{Effiziente geometrische Algorithmen und Datenstrukturen}
+  \subsection{Effiziente geometrische Datenstrukturen}
   \paragraph{Bintree}
   \begin{itemize*}
     \item effizientes Suchen und Einfügen in eindimensionale Domänen
@@ -335,31 +331,34 @@
   \end{itemize*}
   
   \paragraph{Octree}
-  Jeder Knoten hat 0 oder 8 Kindknoten (8 Unterbereiche). Geometrische Objekte können in diese hierarchische Strukturen einsortiert werden, wodurch die räumliche Suche nach diesen Punkten beschleunigt wird.
-  
-  Bsp Punktsuche: Suche einen Punkt mit Koordinaten (x,y,z) im Octree. Rekursive Suche von der Wurzel. In jedem Schritt wird einer von 8 möglichen Pfaden im Teilbaum ausgewählt $\rightarrow$ Zeitaufwand Tiefe des Baumes $O(log n)$
+  \begin{itemize*}
+    \item Objekte in hierarchische Strukturen einsortiert
+    \item jeder Knoten hat 0 oder 8 Kindknoten (8 Unterbereiche)
+    \item beschleunigte räumliche Suche
+    \item Zeitaufwand Tiefe des Baumes $O(log n)$
+  \end{itemize*}
   
   \paragraph{KD Tree}
   \begin{itemize*}
     \item mehrdimensionaler binärer Baum (k-dimensional)
-    \item unterteilt z.B. abwechselnd in x-,y-, und z-Richtung (deshalb binärer Baum)
-    \item Teilung nicht zwangsläufig mittig (wie bei Octre) $\rightarrow$ an Daten angepasst
+    \item unterteilt z.B. abwechselnd in x-,y-, und z-Richtung
+    \item Teilung nicht zwangsläufig mittig $\rightarrow$ an Daten angepasst
     \item jeder neue Punkt teilt den Bereich in dem er einsortiert wird; pro Hierarchiestufe stets wechsel der Teilungsrichtung
-    \item ein Octree lässt sich auf einen kd-Baum abbilden, beide Baumarten haben daher vergleichbare Eigenschaften
-    \item mit der Median-Cut Strategie: teilt Daten in zwei gleich großen Hälften
+    \item ein Octree lässt sich auf einen kd-Baum abbilden, beide Baumarten haben vergleichbare Eigenschaften
+    \item Median-Cut Strategie: Teilung in zwei gleichgroße Hälften
           \begin{itemize*}
             \item Baum garantiert balanciert und Tiefe minimal
-            \item $O(log n)$ Verhalten garantiert
+            \item $O(\log n)$ Verhalten garantiert
             \item Probleme bei lokalen Häufungen (Cluster)
             \item vollständig balanciert
-            \item unnötige Unterteilung weit weg vom Cluster (Artefakt)
+            \item unnötige Unterteilung weit weg (Artefakt)
           \end{itemize*}
     \item Middlecut-Strategie:
           \begin{itemize*}
             \item nicht balanciert
             \item keine Unterteilung weit weg vom Cluster
           \end{itemize*}
-    \item Praxis: Kompromiss Strategie, Mischung zwischen Median und Mitte.
+    \item Kompromiss Strat.: Mischung zwischen Median und Mitte
   \end{itemize*}
   
   \paragraph{BSP Tree}
@@ -367,36 +366,36 @@
     \item Verallgemeinerung des kd-Baums
     \item Trennebenen nicht nur achsenparallel
     \item Unterteilung in beliebigen Richtungen, adaptiv an Modellflächen angepasst
-    \item Beachte: Trennebenen die an einer Objektebene anliegen können dennoch weiter wegliegende Objekte schneiden.
-    \item BSP-Tree führt bei konvexen Polyedern zu entarteten Bäumen
+    \item Trennebenen die an einer Objektebene anliegen können dennoch weiter wegliegende Objekte schneiden.
+    \item führt bei konvexen Polyedern zu entarteten Bäumen
   \end{itemize*}
   
-  \paragraph*{Hüllkörper Hierarchie}
+  \paragraph{Hüllkörper Hierarchie}
   \begin{description}
     \item[AABB] (Axia-Aligned-Bounding-Box) sehr einfache Abfrage (nur ein Vergleich < in jeder Koordinatenrichtung, wie bei kd-Baum) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte
-    \item[OBB] (Oriented Bounding Boxes) passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren (Rotation bei Animation). Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung (Transformation, Ebenengleichung). D.h. typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe.
-    \item[KDOP] (k-dimensional Discretly Oriented Polytopes) Polyeder mit festen vorgegebenen Richtungen (z.B. 45 Grad). Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
-    \item[BS] (Bounding Spheres) Schnelle 3D Überlappungstest (Abstand der Mittelpunkte < Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln (Bounding Spheres) begrenz werden um besseren Füllgrad zu erreichen. BS sind bis auf die Lage der Kugelmittelpunkte invariant gegenüber Rotation (eignen sich für Kollisionserkennung bewegter Objekte/ Echtzeit-Computer-Animation).
+    \item[OBB] (Oriented Bounding Boxes) passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren (Rotation bei Animation). Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung (Transformation, Ebenengleichung). Typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe.
+    \item[KDOP] (k-dim. Discretly Oriented Polytopes) Polyeder mit festen vorgegebenen Richtungen (z.B. 45 Grad). Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
+    \item[BS] (Bounding Spheres) Schnelle 3D Überlappungstest (Abstand der Mittelpunkte < Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln begrenz werden um besseren Füllgrad zu erreichen. BS sind bis auf die Lage der Kugelmittelpunkte invariant gegenüber Rotation (geeignet für Kollisionserkennung bewegter Objekte/Animation).
     \item[weitere Anwendungsfälle] Kollisionserkennung in Computeranmiation. Reduktion der potenziellen Kollisionspaare durch räumliche Trennung. Beschleunigung des Echtzeitrenderings großer Datenmengen. Reduktion des Aufwands durch Culling (Weglassen)
   \end{description}
   
   \paragraph{Ray Picking mit KD Baum}
   \begin{itemize*}
-    \item Vorverarbeitun/Abspeicherung von Objekten (Dreiecken) im kd-Baum$O(n log n)$
-    \item Strahl/Objektschnitt: (als rekursive Suche im kd-Baum)
-    \item `treeIntersect(p,d)`: Findet Schnittpunkt des Strahls (Punkt p, Richtung d) mit den im Baum gepseicherten Dreiecken und liefert die Beschreibung des nächsten Schnittpunktes bzw t=unendlich, falls kein Schnittpunkt existiert.
+    \item Vorverarbeitun von Objekten (Dreiecken) im kd-Baum $O(n \log n)$
+    \item Strahl/Objektschnitt: als rekursive Suche im kd-Baum
+    \item `treeIntersect(p,d)`: Findet Schnittpunkt des Strahls (Punkt p, Richtung d) mit den im Baum gepseicherten Dreiecken und liefert die Beschreibung des nächsten Schnittpunktes bzw t=unendlich, falls kein Schnittpunkt existiert
     \item `triangleIntersect(node,p,d)`: Findet Schnittpunkt des Strahles (Punkt p, Richtung d) mit einer Menge von Dreiecken in node
     \item `subdivide(node, p, d, tmin, tmax)`: Findet rekursiv den nächstgelegenen Schnittpunkt (kleinstes t) des Strahls (p,d) mit den Dreiecken in oder unterhalb von node im Parameterbereich tmin ...tmax
   \end{itemize*}
   
   \paragraph{Aufwandsabschätzung bzgl Dreiecksanzahl}
   \begin{enumerate*}
-    \item (beinahe) konvexes Objekt (max 2 Schnitte möglich): hat die Komplexität einer räumlichen Punktsuche, also dem Aufwand zur Untersuchung einer Baumzelle (finden + dortige Dreiecke testen) $O(log n)$
-    \item "Polygonnebel" (viele sehr kleine Dreiecke im Such-Volumen)
+    \item (beinahe) konvexes Objekt (max 2 Schnitte): hat die Komplexität einer räumlichen Punktsuche, also dem Aufwand zur Untersuchung einer Baumzelle (finden + dortige Dreiecke testen) $O(\log n)$
+    \item Polygonnebel (viele kleine Dreiecke im Such-Volumen)
           \begin{itemize*}
             \item Annahme: alle Zellen enthalten konstante kleine Anzahl von Dreiecken $\rightarrow$ Aufwand proportional zur Anzahl durchlaufener Baumzellen
             \item Anzahl dieser Zellen ist proportional zur Länge des Strahls durchs Volumen, da der 1. Schnitt sehr wahrscheinlich mitten im Volumen oder gar nicht stattfindet $\rightarrow$ Anzahl ist proportional zur Seitenlänge des Suchvolumens
-            \item bei n Dreiecken im Suchvolumen ist die Anzahl t der zu untersuchenden Zellen also ca $t=O(\sqrt{n})$ $\rightarrow$ Suchaufwand pro Strahl folglich $O(\sqrt{n} log (n))$
+            \item bei n Dreiecken im Suchvolumen ist die Anzahl t der zu untersuchenden Zellen also ca $t=O(\sqrt{n})$ $\rightarrow$ Suchaufwand pro Strahl folglich $O(\sqrt{n} \log (n))$
           \end{itemize*}
   \end{enumerate*}
   
@@ -406,18 +405,17 @@
     \item absoluter Gesamtaufwand zum Raytracing einer Szene ist proportional zur Anzahl der Strahlen
     \item Annahme: 1 Strahl pro Pixel (keine Rekursion), typische Bildgröße sei 1 Mio Pixel, Szene haben mittlere Komplexität (1 Mio Polygone)
     \item rekursives RT (Reflexion, Brechung, Schattenstrahlen etc) entsprechend mehr Strahlen, d.h. weniger Performance
-    \item Parallelisierung einfach möglich (z.B. da Pixel voneinander unabhängig berechenbar) $\rightarrow$ früher CPU-basiert, heute eher GPU
-    \item 2019 mit entsprechender Hardware: rekursives Echtzeit Raytracing möglich
+    \item Parallelisierung einfach möglich $\rightarrow$ früher CPU, heute eher GPU
   \end{itemize*}
   
   \paragraph*{Heurisitk zur Unterteilung}
   \begin{itemize*}
     \item Surface Area Heuristic (SAH):
           \begin{itemize*}
-            \item Annahme: Strahl i, trifft Zelle j mit Wahrscheinlichkeit P(i,j), zudem sei $n_j$ die Anzahl Dreiecke in Zelle j,
-            \item Aufwand für Raytracing pro Zelle proportional zur Baumtiefe ( O(log n) für balancierte Bäume, wird nicht weiter betrachtet) sowie die Anzahl der dortigen Dreiecke $n_j$; beachte $n_j$ wird hier nicht als konstant angenommen $\rightarrow$ Gesamtaufwand für Strahl i sei also $\sum(P(i,j)*n_j)$
+            \item Annahme: Strahl i, trifft Zelle j mit Wahrscheinlichkeit P(i,j), zudem sei $n_j$ die Anzahl Dreiecke in Zelle j
+            \item Aufwand für Raytracing pro Zelle proportional zur Baumtiefe ($O(\log n)$ für balancierte Bäume) sowie die Anzahl der dortigen Dreiecke $n_j$; beachte $n_j$ wird hier nicht als konstant angenommen $\rightarrow$ Gesamtaufwand für Strahl i sei also $\sum(P(i,j)*n_j)$
           \end{itemize*}
-    \item Heuristik: große Zellen mit wenigen Dreiecken, senken Gesamtaufwand
+    \item Heuristik: große Zellen mit wenigen Dreiecken senken Gesamtaufwand
           \begin{itemize*}
             \item Schätzung: P(i,j) ist etwa proportional zur Oberfläche einer Zelle (auf großer Oberfläche treffen mehr Strahlen auf)
             \item die SAH optimiert auf jeder Teilstufe im Baum das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum gilt bei der Unterteilung des Bereichs D in Richtung k: $D_k = D_{k_links} + D_{k_rechts}$
@@ -425,28 +423,31 @@
     \item Bei ungleicher Verteilung der Dreiecke (z.B. Cluster) enthalten dann große Zellen wenige oder keine Dreiecke und Baum ist nicht balanciert $\rightarrow$ implizite Abtrennung des Clusters vom Rest des Baums (vgl Middle-Cut-Strategie)
   \end{itemize*}
   
-  \paragraph*{Behandlung ausgedehnter Objekte}
-  Punkte haben keine Ausdehnung und können an einem eindeutigen Ort im kD-Baum abgelegt sein. Ausgedehnte Objekte (Kreise, Kugeln, Rechtecke, Dreiecke, Hüllquader, etc) können räumlich mehrere Blatt-Zellen überlappen. Ein solches Objekt müsste dann in mehreren Blattzellen einsortiert sein.
+  \paragraph{Behandlung ausgedehnter Objekte}
+  \begin{itemize*}
+    \item Punkte haben keine Ausdehnung und können an einem eindeutigen Ort im kD-Baum abgelegt sein
+    \item Ausgedehnte Objekte können räumlich mehrere Blatt- Zellen überlappen. Ein solches Objekt müsste dann in mehreren Blattzellen einsortiert sein.
+  \end{itemize*}
   \begin{enumerate*}
     \item Auftrennung von Objekten, d.h. Objekte müssen an der Zellgrenze aufgeteilt werden. Einsortierung der Teilobjekte in passende Zellen. Geht gut für Dreiecke
     \item Keine Unterscheidung zwischen Blattknoten und inneren Knoten. In diesem Ansatz werden Objekte soweit oben im Baum einsortiert, dass sie keine Zellgrenze schneiden. Nachteil: auch relativ kleine Objekte müssen in große Zellen einsortiert werden, wenn sie deren Unterteilungsgrenze schneiden
-    \item Loose Octree (überlappende Zellen): die Zellen des Octrees werden so vergrößert, dass sie mit ihren direkten Nachbarn in jeder Richtung um 50\% überlappen. Objekte, die im einfachen Octree aufgrund ihrer Größe Grenzen schneiden würden, können im Loose Octree in den Zwischenknoten gespeichert werden. Ein Objekt mit Durchmesser bis zu $\frac{D}{2^L}$ kann auf der Ebene L abgelegt werden. Eine Suche im Loose Octree muss daher außer der direkt betroffenen Zelle auch die überlappenden direkten Nachbarn berücksichtigen. Dadurch vergrößert sich der Aufwand einer Suche um einen konstantne Faktor. Beachte: Die asymptotosche Komplexität (O-Notation) ist dadurch nicht beeinflusst.
+    \item Loose Octree: die Zellen des Octrees werden so vergrößert, dass sie mit ihren direkten Nachbarn in jeder Richtung um 50\% überlappen. Objekte, die im einfachen Octree aufgrund ihrer Größe Grenzen schneiden würden, können im Loose Octree in den Zwischenknoten gespeichert werden. Ein Objekt mit Durchmesser bis zu $\frac{D}{2^L}$ kann auf der Ebene L abgelegt werden. Eine Suche im Loose Octree muss daher außer der direkt betroffenen Zelle auch die überlappenden direkten Nachbarn berücksichtigen. Dadurch vergrößert sich der Aufwand einer Suche um einen konstantne Faktor. Beachte: Die asymptotosche Komplexität (O-Notation) ist dadurch nicht beeinflusst.
   \end{enumerate*}
   
   \section{Rastergrafik}
-  \subsection{ Rasterkonversion grafischer Objekte}
+  \subsection{Rasterkonversion grafischer Objekte}
   Algorithmus zum Zeichnen einer Strecke: Endpunktkoordinaten sind nach Projektion in die Bildebene passend auf die Fensterkoordinaten skaliert und auf ganzzahlige Werte (Pixelkoordinaten) gerundet.
   
   \subsection{ Midpoint Algorithmus}
   \begin{itemize*}
     \item Grundidee: Effizient durch Verwendung von Ganzzahlen, Vermeiden von Multiplikation/Division sowie Nutzung einer inkrementellen Arbeitsweise
     \item Die Linie geht zwischen den Endpunkten nicht durch ganzzahlige Gitterpunkte. Da nur ganzzahlige Pixel-Koordinaten gesetzt werden können müssten auch zwischenpunkte zuerst genau berechnet werden und dann auf ganzzahlige Pixelwerte gerundet werden. Dies ist unzuverlässig und ineffizient. Zur Herleitung des effizienten Bresenham-Algorithmus führen wir den Mittelpunkt M als Referenzpunkt ein. Ferner seinen der jeweils aktuellen Punkt P, der rechts von im liegende E (east) und der rechts oben liegende NE north-east) benannt.
-    \item die Linie wird als Funktion $y=f(x)$ repräsentiert: $y=\frac{\delta y}{\delta x}*x+B$
-    \item in implizierter Form: $d: F(x,y)=\delta y*x-\delta x*y+B*\delta x = 0$
-    \item für Punkte aud der Linie wird $F(x,y)=0$
+    \item die Linie wird als Funktion repräsentiert: $y=\frac{\delta y}{\delta x}*x+B$
+    \item implizierte Form: $d: F(x,y)=\delta y*x-\delta x*y+B*\delta x = 0$
+    \item für Punkte auf der Linie wird $F(x,y)=0$
     \item für Punkte unterhalb der Linie wird $F(x,y)>0$
     \item für Punkte oberhalb der Linie wird $F(x,y)<0$
-    \item Herleitung mit Einschränkung: Steigung der Linie m ($1 < m < 1$), Mittelpunkt M = Punkt vertikal zwischen zwei möglichen Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
+    \item Herleitung mit Einschränkung: Steigung der Linie m ($-1<m<1$), Mittelpunkt M = Punkt vertikal zwischen zwei möglichen Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
     \item Insgesamt acht verschiedene Fälle:
           \begin{enumerate*}
             \item Oktant($\delta y < \delta x$)
@@ -457,22 +458,17 @@
           \end{enumerate*}
   \end{itemize*}
   
-  \subsection{Anti Aliasing}
+  \paragraph{Anti Aliasing}
   \begin{itemize*}
     \item Treffenstufeneffekt bei gerasterten Linien
-    \item Regelmäßigkeiten werden verstärkt vom Auge wahrgenommen
+    \item Regelmäßigkeit wird verstärkt vom Auge wahrgenommen
     \item Auflösungsvermögen des Auges für Punkte sei e. Strukturen wie Linien (aus vielen Punkten) werden durch Mittelwertbildung (Fitting) vom Auge viel genauer als e lokalisiert. Eine Stufe wird umso eher erkannt, je länger die angrenzenden Segmente sind.
-  \end{itemize*}
-  
-  \paragraph{Grundlagen}
-  \begin{itemize*}
     \item Grundidee des Anti-Aliasing
           \begin{itemize*}
-            \item Original der Linie
             \item Statt der Linie wird ein Rechteck mit der Breite von einem Pixel betrachtet
             \item Graustufen der darunter liegenden Pixelflächen entsprechen dem jeweiligen Überdeckungsgrad
           \end{itemize*}
-    \item Praktische Umsetzung mit vereinfachtem/effizienterem Algorithmus
+    \item Praktische vereinfachte/effiziente Umsetzung
           \begin{itemize*}
             \item Rasterkonvertierung der Linie bei doppelter örtlicher Auflösung (Supersampling)
             \item Replizieren der Linie (vertikal und/oder horizontal) um Linienbreite näherungsweise zu erhalten
@@ -500,32 +496,34 @@
   
   \paragraph{Supersampling + Downsampling}
   \begin{itemize*}
-    \item Graphik zunächst in höherer Auflösung gerendert (z.B. 4-fach) und dann aus den Samples ein Farbwert gemittelt
+    \item Grafik zunächst in höherer Auflösung gerendert (z.B. 4-fach) und dann aus den Samples ein Farbwert gemittelt
     \item Ohne Anti-Aliasing kommt pro Pixel genau eine Sampleposition zum Zuge. Das Pixel wird demnach gefärbt oder nicht gefärbt: Das sind zwei mögliche Stufen.
-    \item Bei vier Subpixeln können minimal 0 und maximal 4 Subpixel im (Makro-)Pixel gesetzt sein, d.h. es sind Intensitäten von 0\%, 25\%0, 50\%, 75\% oder 100\% möglich (nur 5 Abstufungen)
+    \item Bei vier Subpixeln können minimal 0 und maximal 4 Subpixel im (Makro-)Pixel gesetzt sein, d.h. es sind 5 Intensitäten von 0\%, 25\%0, 50\%, 75\% oder 100\% möglich
     \item Es gibt immer eine Abstufung mehr als Subpixel pro Pixel
-    \item Beim idealen Antialiasing entsprechend Flächenbedeckungsgrad gibt es "beliebig" viele Abstufungen
-    \item Formabhängigkeit? Ja, z.B. bei 45° gibt es z.B. nur eine Zwischenstufe, und zwar je nach Phasenlage mit 25\% oder 75\% $\rightarrow$ Kante "pumpt" bei Objektbewegung.
+    \item Beim idealen Antialiasing entsprechenden Flächenbedeckungsgrad gibt es "beliebig" viele Abstufungen
+    \item Formabhängigkeit z.B. bei 45° gibt es nur eine Zwischenstufe und zwar je nach Phasenlage mit 25\% oder 75\% $\rightarrow$ Kante "pumpt" bei Objektbewegung.
   \end{itemize*}
+
   \paragraph{Supersampling + Rotated Grids}
   \begin{itemize*}
     \item Minderung der Formabhängigkeit
-    \item Kleine Winkel zu den Achsen führen zu langen "Stufen" der digitalen Polygonkante
-    \item Bessere Verhältnisse der Grauabstufung ergeben sich für flache Winkel, wenn statt des "ordered grid" ein "rotated grid" für das Supersampling verwendet wird.
-    \item Rotated grids sind dafür bei anderen Winkeln etwas schlechter als das ordered grid. Dies wird aber kaum wahrgenommen, da dort die Treppen der digitalen Geraden kürzer sind.
+    \item Kleine Winkel zu den Achsen führen zu langen Stufen der Polygonkante
+    \item Bessere Verhältnisse der Grauabstufung ergeben sich für flache Winkel, wenn statt des ordered-grid ein rotated-grid für das Supersampling verwendet wird
+    \item Rotated grids sind dafür bei anderen Winkeln etwas schlechter als das ordered grid. Wird kaum wahrgenommen, da die Treppen der digitalen Geraden kürzer sind
     \item Gute Grauabstufung bei sehr flachen Kanten zur Zeilen- oder Spaltenrichtung.
-    \item Optimaler Winkel liegt bei ca. 20°-30° (z.B.$arctan(0.5) \approx 26,6^{\circ}$).
+    \item Optimaler Winkel bei ca. 20-30° z.B. $arctan(0.5) \approx 26,6^{\circ}$
     \item Sehr dünne Linien bleiben auch bei Bewegung zusammenhängend/sichtbar (Vermeidung von "Line Popping")
   \end{itemize*}
+
   \paragraph{Supersampling + Multisampling}
   \begin{itemize*}
-    \item Realisierung der Subpixelberechnung durch einen Superbackbuffer (großem Buffer) oder mehrere Multisamplebuffer (mehrere Buffer)
-    \item Superbackpuffer
+    \item Realisierung der Subpixelberechnung durch
+    \item ein Superbackpuffer (großem Buffer)
           \begin{itemize*}
             \item Nachteil (bei rotated grid): Anpassung der Rasterkonvertierung an verschobene Positionen erforderlich
             \item Vorteil: Verwendung von mehr Texturinformation (Textur wird subpixelgerecht eingetragen)
           \end{itemize*}
-    \item Multisamplebuffer
+    \item mehrere Multisamplebuffer (mehrere Buffer)
           \begin{itemize*}
             \item Mehrfachrendering in normaler Größe mit leicht versetzter Geometrie (Vertexverschiebung pro Sub-Bild)
             \item Vorteil: keine Veränderung im Rendering
@@ -537,7 +535,7 @@
                   \begin{itemize*} 
                     \item Effizienzsteigerung durch Beschränkung auf reine Kantenglättung möglich
                     \item Anzahl der Kantenpixel oft wesentlich kleiner als Anzahl der Flächenpixel
-                    \item Aliasing bei Kanten/Mustern in Texturen schon beim Auslesen der Werte aus der Pixeltextur unterdrückbar
+                    \item Aliasing bei Mustern in Texturen schon beim Auslesen der Werte aus Pixeltextur unterdrückbar
                     \item Kantenpixel bekannt als separate Linien oder Berandung von Polygonen/Dreiecken
                   \end{itemize*}
             \item adaptives Samplen: statt feste Anzahl von Samples kann die Anzahl nach dem Bedarf gesteuert werden
@@ -547,10 +545,10 @@
   \paragraph{Quincunx Verfahren}
   \begin{itemize*}
     \item Überfilterung
-    \item 2x Multisampling mit rotated grid; der Informationszuwachs ist durch die doppelte Anzahl von Samples gekennzeichnet
+    \item 2x Multisampling mit rotated grid; der Informations- zuwachs ist durch die doppelte Anzahl von Samples gekennzeichnet
     \item Information für die Kantenglättung beruht nach wie vor auf 2 Subpixeln
     \item Entspricht einer zusätzlichen Tiefpass-Überfilterung. Durch die Unschärfe sehen Polygonkanten glatter aus.
-    \item Harte Kanten sind gar nicht mehr möglich, dadurch wird auch "Zappeln" an Polygonrändern reduziert
+    \item Harte Kanten sind gar nicht mehr möglich, dadurch wird auch Zappeln an Polygonrändern reduziert
     \item Aber Nachteil: Texturinformation, die nur zu 2 Subpixeln gehört, wird verschmiert!
   \end{itemize*}
   

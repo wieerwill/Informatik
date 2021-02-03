@@ -1416,7 +1416,7 @@ Bei Semi-Entscheidbarkeit erlaubt man also, dass die berechnete Funktion $x'_L$ 
 Bei jeder Eingabe rechnet die Maschine und gibt im Fall $w\in L$ nach endlicher Zeit "Ja" aus. Falls $w \not\in L$ gilt, so terminiert die Maschine nicht. Das heißt, man kann sich nie sicher sein, ob nicht doch irgendwann "Ja" ausgegeben wird, da die Antwortzeit der Maschine nicht beschränkt ist.
 
 Beispiel: Sei G eine Grammatik, dann ist L(G) semi-entscheidbar
-- Um $x'_{L(G)$ zu berechnen, geht die Turing Maschine wie folgt vor
+- Um $x'_{L(G)}$ zu berechnen, geht die Turing Maschine wie folgt vor
 - sei $v_p,v_1,...$ die längenlexikographische Aufzählung von $(V\cup\sum\cup\{\#\})^*$.
 - Teste nacheinander, für jedes n, ob $v_n=w_0\#w_1\#...\#w_k$ mit $w_0=S,w_i\Rightarrow w_{i+1}$ für alle $1\leq i \leq k$ und $w_k=w$
 - Ist dies der Fall, so terminiere mit Ausgabe 1, sonst betrachte $v_{n+1}$.
@@ -1513,10 +1513,10 @@ Wir werden nun $H_0 \leq MPCP$ zeigen, d.h. aus (dem Kode) einer Turing Maschine
 Wir können annehmen, dass die TM M nur anhält, wenn sie sich in Endzustand E und der Kopf sich am Anfang des beschrifteten Bandes befindet.
 $K(M)$ hat folgende Wortpaare:
 - $(x_1,y_1)=(\#,\#\triangleright z_0 \Box\triangleleft)$ ist erstes Wortpaar
-- Kopierpaare $(a,a)$ für $a\in\Roh\cup\{\triangleright,\triangleleft\}$
-- Überführungspaare $(z,z'\in Z,a,b,c\in\Roh)$
-- Löschpaare $(azb,zb)$ und $(zba,zb)$ für alle $z\in E, a,b\in\Roh$ mit $\sigma(z,b)=(zb,N)$
-- Abschlusspaare $(\triangleright za \triangleleft \#,\#)$ für alle $z\in E,a,\in\Roh$ mit $\sigma(z,a)=(z,a,N)$
+- Kopierpaare $(a,a)$ für $a\in\Gamma\cup\{\triangleright,\triangleleft\}$
+- Überführungspaare $(z,z'\in Z,a,b,c\in\Gamma)$
+- Löschpaare $(azb,zb)$ und $(zba,zb)$ für alle $z\in E, a,b\in\Gamma$ mit $\sigma(z,b)=(zb,N)$
+- Abschlusspaare $(\triangleright za \triangleleft \#,\#)$ für alle $z\in E,a,\in\Gamma$ mit $\sigma(z,a)=(z,a,N)$
 
 > Lemma Die Abbildung K , die der Turing-Maschine M das Korrespondenzsystem $K(M)$ zuordnet, ist eine Reduktion von $H_0$ auf $MPCP$, es gilt also $H_0\leq MPCP$.
 
@@ -1541,15 +1541,15 @@ Wort- und Leerheitsproblem haben wir auch für Kellerautomaten gelöst. Wir werd
 
 Zunächst daher eine Konstruktion, die Korrespondenzsysteme mit Kellerautomaten in Beziehung setzt.
 Konstruktion: Sei $K=((x_1,y_1),...,(x_k,y_k))$ Korrespondenzsystem über $\sum$. Setze:
-- $\Roh=\sum\cup\{1,2,...,k,\$\}$
+- $\Gamma=\sum\cup\{1,2,...,k,\$\}$
 - $X_k=\{i_n i_{n-1}... i_1\$ x_{i1} x_{i2} ... x_{in} | n\geq 1, 1,\leq i_1,i_2,...,i_n\leq k\}$
 - $Y_K=\{i_n i_{n-1}... i_1\$ y_{i1} y_{i2} ... y_{in} | n\geq 1, 1,\leq i_1,i_2,...,i_n\leq k\}$
 Daraus enstehen:
 - Behauptung 1: Aus einem Korrespondenzsystem K können deterministische Kellerautomaten (=DPDA) $P_X$ und $P_Y$ berechnet werden mit $L(P_X)=X_K$ und $L(P_Y)=Y_K$
-- Behauptung 2: Aus einem Korrespondenzsystem K kann ein Kellerautomat (=PDA) $P_K$ berechnet werden mit $L(P_K)=\Roh^*\backslash (X_K\cap Y_K)$
+- Behauptung 2: Aus einem Korrespondenzsystem K kann ein Kellerautomat (=PDA) $P_K$ berechnet werden mit $L(P_K)=\Gamma^*\backslash (X_K\cap Y_K)$
 - Behauptung 3: Sei K Korrespondenzsystem. Dann sind äquivalent:
     1. K hat eine Lösung.
-    2. $X_K\cap Y_K \not=\varemtpy$
+    2. $X_K\cap Y_K \not=\varnothing$
     3. $X_K\cap Y_K$ ist unendlich
     4. $X_K\cap Y_K$ ist nicht regulär
 
@@ -1567,4 +1567,227 @@ Beweis: Zeige $\bar{PCP}\leq Reg_{PDA}$
 - Korollar: Die folgenden Probleme sind nicht semi entscheidbar: $Eq_{DFA,PDA}=\{(M,P)| M DFA, P PDA \text{ mit } L(M)=L(P)\}$, $Inkl_{DFA,PDA}=\{(M,P)| M DFA, P PDA \text{ mit } L(M)\subseteq L(P)\}$
 - Bemerkung: Das folgende Problem ist hingegen entscheidbar $Inkl_{PDA,DFA}=\{(P,M)| P PDA, M DFA \text{ mit } L(P)\subseteq L(M)\}$
 - Bemerkung: Für DPDAs sind diese Probleme entscheidbar $Eq_{DFA,DPDA} = \{(M,P)| M DFA, P DPDA \text{ mit } L(M)=L(P)\}$, $Inkl_{DFA,DPDA} =\{(M,P)| M DFA, P DPDA \text{ mit } L(M)\subseteq L(P)\}$
+
+# Komplexitätstheorie
+## Zusammenfassung Berechenbarkeitstheorie
+> Church-Turing These: Die Funktionen, die durch Turingmaschinen bzw. While/Goto-Programme berechnet werden können, sind genau die intuitiv berechenbaren Funktionen.
+
+> Unentscheidbarkeit: Probleme, die nicht durch Turing-Maschinen gelöst werden können, sind damit prinzipiell unlösbar (wenn auch u.U. semi-entscheidbar). Beispiele:
+> - die verschiedenen Versionen des Halteproblems
+> - Posts Korrespondenzproblem
+> - das Schnitt- und verwandte Probleme über kontextfreie Sprachen
+
+## Die zentrale Frage der Komplexitätstheorie
+Welche Funktionen $\N\rightarrow\N$ können von einem effizienten Algorithmus berechnet werden? 
+Gilt das vielleicht für alle berechenbaren Funktionen? 
+vorweggenommene Antwort: nein
+
+Für welche Sprachen L kann das Wortproblem („$w\in L$?“) von einem effizienten Algorithmus gelöst werden?
+Gilt das vielleicht für alle entscheidbaren Sprachen?
+vorweggenommene Antwort: nein
+
+Zunächst: Wie zeigt man diese negativen Resultate? Was heißt überhaupt „die Funktion $f:\N\rightarrow\N$ kann von einem effizienten Algorithmus berechnet werden“ bzw. „das Wortproblem kann von einem effizienten Algorithmus gelöst werden“?
+
+> Intuitiver Effizienzbegriff: Das Wortproblem einer Sprache L ist effizient entscheidbar, wenn es einen Algorithmus gibt, der die Antwort auf die Frage „Gehört das Wort w zu L?“ „mit geringen Ressourcen“ (Zeit, Speicherplatz) bestimmt. „mit geringen Ressourcen“ heißt hier, daß die benötigten Ressourcen nur moderat mit der Eingabelänge $|w|$ wachsen.
+
+## Komplexitätsklassen
+In Algorithmenvorlesungen haben Sie zu analysieren gelernt, welche Ressourcen (Zeit, Platz) ein gegebener Algorithmus benötigt.
+Hier untersuchen wir, welche Ressourcen die Lösung eines gegebenen Problems benötigt. Wir sind insbesondere an Aussagen der Gestalt „Jeder Algorithmus benötigt wenigstens ...“ interessiert. 
+Hierzu werden wir Probleme in Komplexitätsklassen einordnen.
+
+### Deterministische Zeitklassen
+> Definition: Sei $f:\N\rightarrow\N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine M gibt mit:
+> - M berechnet die charakteristische Funktion von L.
+> - Für jede Eingabe $w\in\sum^*$ erreicht M von der Startkonfiguration $z_0 w\Box$ aus nach höchstens $f(|w|)$ Rechenschritten eine akzeptierende Haltekonfiguration (und gibt 0 oder 1 aus, je nachdem ob $w\not\in L$ oder $w\in L$ gilt).
+
+Poly = Menge aller Funktionen $\N\rightarrow\N$, die durch ein Polynom mit Koeffizienten aus N beschrieben sind.
+
+Definition
+$$P = \bigcup_{f\in Poly} TIME(f)$$
+$$EXPTIME = \bigcup_{f\in Poly} TIME(2^f)$$
+$$2EXPTIME = \bigcup_{f\in Poly} TIME(2^{2^{f}})...$$
+offensichtlich gilt $P \subseteq EXPTIME \subseteq 2EXPTIME \subseteq ...$
+
+Kritische Frage: Warum werden diese Klassen nicht mit Mehrband-Turingmaschinen, mit GOTO- oder mit While-Programmen definiert?
+- Mehrband-Turingmaschinen: Wir haben gezeigt, daß sich jede Mehrband-TM M durch eine TM M 0 simulieren läßt. Eine Analyse des Beweises liefert, daß jede Berechnung der Länge n von M durch eine Berechnung der Länge  n 2 von M 0 simuliert wird.
+- Konsequenz: definiert man die Klassen P, EXPTIME usw. mit Mehrband-TM, so erhält man dieselbe Klasse von Problemen.
+
+erweiterte While-Programme: Wir erlauben auch Zuweisungen der Form $x_i:=x_j+x_k$ oder $x_i:=x_j*x_k$.
+- Beispiel: $x_2:=2; LOOP x_1 DO x_2:=x_2*x_2 END$
+- Zeitbedarf dieses Programms:
+  - Dieser Algorithmus führt $x_1$ viele Multiplikationen aus. Wenn die elementaren Anweisungen wie $x_i:= x_j * x_k$ eine Zeiteinheit benötigen, ist der Zeitbedarf also $x_1$ (uniformes Kostenmaß).
+  - Dieser Algorithmus berechnet die Funktion $x_2\rightarrow 2^{2^{x_1}}$. Um dieses Ergebnis niederzuschreiben, werden $2^{x_1}$ Bits (und damit Zeiteinheiten) benötigt. Wenn die elementaren Anweisungen wie $x_i := x_j * x_k \text{ in } \log(x_j + x_k)$ Zeiteinheiten ausgeführt werden, ist der Zeitbedarf $O(2^{x_1})$ (logarithmisches Kostenmaß).
+  - Das logarithmische Kostenmaß ist realistischer, da jedes Bit eines Operanden „angefaßt“ werden muß (sind die behandelten Zahlen aber beschränkt, so unterscheiden sich logarithmisches und uniformes Kostenmaß nur um einen konstanten Faktor).
+  - Unser Beweis, daß die while-berechenbaren Funktionen genau die Turing-berechenbaren sind, verlängert die Berechnungen nur um einen polynomiellen Faktor.
+- Konsequenz: definiert man die Klassen P, EXPTIME usw. mit erweiterten While- oder Goto-Programmen und dem logarithmischen Kostenmaß, so erhält man dieselbe Klasse von Problemen.
+
+#### Einige typische Probleme in P
+##### Erreichbarkeit
+> Definition: REACH ist die Menge der gerichteten Graphen mit zwei ausgezeichneten Knoten s und t, in denen es einen Pfad von s nach t gibt.
+
+> Satz: REACH ist in P. (Beweis: z.B. mit Dijkstras Algorithmus)
+
+##### Euler-Kreise
+> Definition: EC ist die Menge der ungerichteten Graphen, die einen Eulerkreis (d.h. einen Kreis, der jede Kante genau einmal durchläuft) enthalten.
+
+> Satz (Euler 1707-1783, 1736): Ein Graph $(V,E)$ enthält einen Eulerkreis genau dann, wenn er höchstens eine Zusammenhangskomponente mit $>1$ Knoten enthält und jeder Knoten geraden Grad hat (d.h. jeder Knoten hat eine gerade Anzahl von Nachbarn).
+
+Folgerung: EC ist in P, denn die genannten Bedingungen lassen sich in polynomieller Zeit prüfen.
+
+> Die erweiterte Church-Turing These: P umfaßt die Klasse der effizient lösbaren Probleme.
+
+Begründung: Für jedes „effizient lösbare“ Problem gibt es sicher einen Polynomialzeit-Algorithmus. Dieser läßt sich nach der Church-Turing These auf eine Turingmaschine übertragen. Dabei tritt wohl nur eine polynomielle Verlangsamung auf.
+
+### Deterministische Platzklassen
+> Definition: Sei $f:\N\rightarrow\N$ eine monotone Funktion. Die Klasse $SPACE(f )$ besteht aus allen Sprachen L, für die es eine Turingmaschine M gibt mit:
+> - M berechnet die charakteristische Funktion von L.
+> - Für jede Eingabe $w\in\sum^*$ hat jede von der Startkonfiguration $z_0 w\Box$ aus erreichbare Konfiguration höchstens die Länge $f(|w|)$.
+
+Definition
+$$PSPACE = \bigcup_{f\in Poly} SPACE(f)$$
+$$EXPSPACE = \bigcup_{f\in Poly} SPACE(2^f)$$
+$$2EXPSPACE = \bigcup_{f\in Poly} SPACE(2^{2^{f}})...$$
+offensichtlich gilt $PSPACE \subseteq EXPSPACE \subseteq 2EXPSPACE \subseteq ...$
+
+Beobachtung: Es gilt $P\subseteq PSPACE \subseteq EXPTIME \subseteq EXPSPACE \subseteq 2EXPTIME \subseteq ...$
+
+#### Einige typische Probleme in PSPACE: Erfüllbarkeit
+Wir betrachten aussagenlogische Formeln, wie z.B. $(x_1\vee x_2\vee\neg x_3)\wedge(x_1\vee\neg x_2\vee x_3)\wedge(\neg x_1\vee x_2\vee\neg x_3)\wedge(\neg x_1\vee \neg x_2\vee x_3)$ (dies ist eine Formel in konjunktiver Normalform).
+
+Solche Formeln lassen sich z.B. durch Wörter über dem Alphabet $\{a,\vee,\wedge,\neg,),(\}$ kodieren (die atomare Formel $x_i$ wird durch das Wort $a^{i+1}$ kodiert).
+Zur Erinnerung (Grundlagen und diskrete Strukturen): Eine aussagenlogische Formel $\phi$ ist erfüllbar, falls es eine Belegung der atomaren Formeln mit 0, 1 gibt, so daß die gesamte Formel sich zu 1 auswertet.
+> Definition: SAT ist die Menge der erfüllbaren aussagenlogischen Formeln.
+> 
+> Beobachtung: SAT 2 PSPACE
+
+Beweisidee: Sei $\phi$ eine aussagenlogische Formel, in der die atomaren Formeln $x_1,...,x_n$ vorkommen. Algorithmus: teste nacheinander jede der $2^n$ vielen Belegungen der
+atomaren Formeln mit Wahrheitswerten 0 und 1. Platzbedarf:
+- man muß die aktuell untersuchte Belegung hinschreiben (also n Bits)
+- man muß jede Teilformel durch 0 oder 1 ersetzen (also $|\phi|$)
+- insgesamt: Platz $O(|\phi|)$
+
+#### Einige typische Probleme in PSPACE: Hamilton-Kreise
+> Definition: HC ist die Menge der ungerichteten Graphen, die einen Hamiltonkreis (d.h. einen Kreis, der jeden Knoten genau einmal besucht) enthalten.
+
+> Beobachtung: HC 2 PSPACE
+
+Beweisidee: Sei $G=(V,E)$ ein ungerichteter Graph und $n = |V|$.
+Algorithmus: teste nacheinander die $n!$ vielen Bijektionen $\{1,2,...,n\}\rightarrow V$ , ob sie einen Kreis beschreiben.
+Platzbedarf: 
+- man muß die aktuelle Bijektion hinschreiben (also $n * log(n) \leq n^2$ Bits)
+- man muß nacheinander für jedes i testen, ob $f(i), f(i + 1)$ und ob $(f(n),f(1))$ Kanten sind (Platz $O(\log n)$)
+- Damit gesamter Platzbedarf: $\leq cn^2$ für ein geeignetes $c\in\N$.
+
+#### Einige typische Probleme in PSPACE: 3-Färbbarkeit
+> Definition 3C: 3C ist die Menge der ungerichteten Graphen, deren Knoten sich mit drei Farben färben lassen, so daß benachbarte Knoten unterschiedliche Farben haben.
+
+> Beobachtung: $3C \in PSPACE$
+
+Beweisidee: Sei $G=(V,E)$ ein ungerichteter Graph und $n = |V|$. 
+Algorithmus: teste nacheinander die $3^n$ vielen Färbungen $V\rightarrow\{rot, blau, grün\}$.
+Platzbedarf:
+- aktuelle Abbildung (also $O(n)$ Bits)
+- Man muß nacheinander für jede Kante $(i, j)$ testen, ob $f(i) \not = f(j)$ (Platz $O(\log n)$)
+- Damit gesamter Platzbedarf: $\leq cn$ für ein geeignetes $c\in\N$.
+
+#### Zusammenfassung: typische Probleme
+Die Algorithmen hatten die Form: „Teste alle ...“, wobei
+- es exponentiell viele Kandidaten gab und
+- jeder einzelne Kandidat in polynomieller Zeit getestet werden konnte.
+
+nichtdeterministischer „Algorithmus“:
+1. rate einen Kandidaten
+2. teste diesen.
+
+Dieser läuft dann in Polynomialzeit.
+Um diese Beobachtung zu formalisieren, führen wir jetzt nichtdeterministische Turingmaschinen ein.
+
+## Nichtdeterministische Turingmaschinen
+Konfigurationen, Berechnungsschritte, Haltekonfigurationen, akzeptierende Haltekonfigurationen werden analog zu Turingmaschinen definiert.
+> Definition: Sei M NTM. Die von M akzeptierte Sprache ist $L(M) = \{w\in\sum^* | \text{ es gibt akzept. Haltekonf. k mit } z_0 w\Box \vdash_M^* k\}$.
+
+Bemerkung:
+- Gilt $w\in L(M)$, so existieren u.U. trotzdem
+  - nicht akzeptierende Haltekonfigurationen k mit $z_0 w\Box\vdash_M^* k$ und
+  - unendliche Berechnungen von $z_0 w\Box$ aus.
+- NTM akzeptieren Sprachen, berechnen aber keine Funktionen!
+
+### Determinisierbarkeit von NTM
+> Satz: Zu jeder nichtdeterministischen Turingmaschine gibt es eine Turingmaschine, die dieselbe Sprache akzeptiert.
+
+Beweis: Sei $M=(Z,\sum,\Phi,\delta,z_0,\Box,E)$ eine NTM, d.h. $\delta: Z\times\phi \rightarrow P(Z\times \Gamma \times \{L,N,R\})$.
+
+Idee: Wir konstruieren eine TM $M_d$, die bei Eingabe $x\in\sum^*$ systematisch nach einer erfolgreichen Berechnung von M sucht.
+
+Sei $\# \not\in Z \cup \Gamma$ ein neues Symbol.
+
+Eine erfolgreiche Berechnung von M mit Eingabe x ist ein Wort der Form $k_0\#k_1\#...k_{m-1}\#k_m$ mit folgenden Eigenschaften:
+1. $k_0, k_1,..., k_m\in\Gamma^*Z\Gamma^+$ sind Konfigurationen von M,
+2. $k_0 = z_0 x\Box$ ist Initialkonfiguration bei Eingabe von x,
+3. $k_0\vdash_M k_{i+1}$ gilt für alle $0\leq i < m$ und
+4. $k_m \in \Box^*E\Gamma^+$ ist akzeptierende Haltekonfiguration.
+
+Offensichtlich gilt $x\in L(M)$ genau dann, wenn eine erfolgreiche Berechnung von M mit Eingabe x existiert.
+Es gibt eine Turingmaschine $M'$, die bei Eingabe von $x\$ w\in\sum^*\$(Z\cup\Gamma\cup\{\#\})^*$ feststellt, ob w eine erfolgreiche Berechnung von M mit Eingabe x ist:
+Hierzu muss M' lediglich die vier Eigenschaften (1)-(4) überprüfen.
+
+Die zu konstruierende TM $M_d$ geht systematisch der Reihe nach alle Wörter $w\in(Z\cup\Gamma\cup\{\#\})^*$ durch und überprüft jedesmal (mittels $M_0$), ob w eine erfolgreiche Berechnung von M mit Eingabe x ist.
+“Systematisch der Reihe nach” kann hier z.B. mittels einer längenlexikographischen Ordnung realisiert werden.
+Sei zunächst eine beliebige lineare Ordnung auf dem Alphabet $\Omega = Z \cup\Gamma\cup\{\#\}$.
+Die zu $\preceq$ gehörende längenlexikographische Ordnung $\preceq_{leex}$ folgt definiert: Für $u, v \in\Omega^*$ gilt $u\preceq_{llex} v$ genau dann, wenn
+- $|u| < |v|$ oder
+- $|u| = |v|$ und es gibt $x,y,z\in\Omega^*,a,b\in\Omega \text{ mit } u=xay, v=xbz, a\preceq b$
+
+Grobstruktur der Turingmaschine $M_d$:
+1. Initialisiere hinter der Eingabe x auf dem Band ein Wort $w\in (Z\cup\Gamma\cup\{\#\})^*$ mit $\epsilon$
+2. Überprüfe mittels M', ob w eine erfolgreiche Berechnung von M mit Eingabe x ist. Falls ja, gehe in eine akzeptierende Haltekonfiguration über, sonst gehe zu (3)
+3. Inkrementiere w, d.h. überschreibe w mit dem längenlexikographisch nächsten Wort (d.h. w wird durch das kleinste Wort w' mit $w\preceq_{llex} w'$ ersetzt und dieses kleinste Wort existiert!).
+4. Gehe zu (2).
+
+dann gilt:
+- $x\in L(M)$
+- gdw. es erfolgreiche Berechnung von M mit Eingabe x gibt
+- gdw. $M'$ in Schritt (2) irgendwann Erfolg meldet
+- gdw. $M_d$ in eine akzeptierende Haltekonfiguration gerät
+- sonst wird Sprung in (4) unendlich oft ausgeführt, d.h. $M_d$ hält nicht.
+
+Folgerung: Eine Sprache ist genau dann semi-entscheidbar, wenn sie von einer nichtdeterministischen Turingmaschine akzeptiert wird.
+Beweis: L semi-entscheidbar $\leftrightarrow$ L von TM akzeptiert $\leftrightarrow$ L von NTM akzeptiert
+
+### Nichtdeterministische Zeitklassen
+> Definition: Sei $f:\N\rightarrow\N$ eine monotone Funktion. Die Klasse $NTIME(f)$ besteht aus allen Sprachen L, für die es eine nichtdeterministische Turingmaschine M gibt mit:
+> - M akzeptiert L.
+> - Für jede Eingabe $w\in\sum^*$ hält M auf jeden Fall nach $f(|w|)$ vielen Schritten.
+
+Definition
+$$NP = \bigcup_{f\in Poly} NTIME(f)$$
+$$NEXPTIME = \bigcup_{f\in Poly} NTIME(2^f)$$
+$$2NEXPTIME = \bigcup_{f\in Poly} NTIME(2^{2^{f}})...$$
+
+> Lemma: $NP \subseteq PSPACE, NEXPTIME \subseteq EXPSPACE, 2NEXPTIME \subseteq 2EXPSPACE ...$
+
+Beweis: Sei $A\in NP$.
+Dann existieren $f\in Poly$ und f-zeitbeschränkte NTM M, die A akzeptiert.
+Die NTM M benötigt also höchstens den Platz $f(n) + n$. Sei weiter $M_d$ die im Beweis von "Determinisierbarkeit von NTM" konstruierte äquivalente TM. Sie benötigt
+maximal den Platz $f(n)* (f(n) + n)\in Poly$. Also gilt $A\in PSPACE$, d.h. $NP \subseteq PSPACE$.
+Analog kann $NEXPTIME \subseteq EXPSPACE, 2NEXPTIME \subseteq 2EXPSPACE...$ usw. gezeigt werden.
+
+### Nichtdeterministische Platzklassen
+> Definition: Sei $f:\N\rightarrow\N$ eine monotone Funktion. Die Klasse $NSPACE(f)$ besteht aus allen Sprachen L, für die es eine nichtdeterministische Turingmaschine M gibt mit:
+- M akzeptiert L.
+- Für jede Eingabe $w\in\sum^*$ folgt $|k| \leq f(|w|)$ aus $z_0 w\Box\vdash_M^* k$.
+
+> Satz von Kuroda (1964): Sei L eine Sprache. Dann sind äquivalent
+> 1. L ist kontextsensitiv (d.h. vom Typ 1)
+> 2. $L\in NSPACE(n)$
+
+> Satz von Savitch (1970): Für jede super-lineare monotone Funktion $f:\N\rightarrow\N$ gilt $NSPACE (f(n))\subseteq SPACE((f(n))^2)$.
+
+Damit haben wir die folgende Struktur der Komplexitätsklassen:
+1. P
+2. NP
+3. PSPACE = NPSPACE
+4. EXPTIME
+5. NEXPTIME
+6. EXPSPACE = NEXPSPACE
 

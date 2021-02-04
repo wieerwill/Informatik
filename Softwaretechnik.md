@@ -1674,13 +1674,412 @@ Dokumentation des Feinentwurfs
   - Klassenschnittstellen
 
 # Implementierung
+Aufgaben der Implementierung
+- Aus Spezifikationen Programm(code) erzeugen
+- Aufbauend auf Ergebnissen des Feinentwurfs
+  - Algorithmen konzipieren
+  - Datenstrukturen realisieren
+  - Umsetzen in konkreter Programmiersprache
+  - Dokumentation
+  - Untersuchung des Zeit- und Speicherbedarfs
+  - Test und Verifikation
+- „Programmieren im Kleinen“
+
 ## Konventionen und Werkzeuge
+Konventionen beim Programmieren
+- (Coding Rules, -conventions, -standards)
+- Regeln für verständliche Programme
+  - „wie“ sollte Quellcode formal und strukturell gestaltet sein
+  - Bezeichner, Einrückungen, Dokumentation, Dateien, ...
+  - Strukturierung: Block, Methode, Klasse, Package
+- Firmenspezifische Regeln
+  - Festlegung Entwurfsprinzipien (z.B. keine Mehrfachvererbung)
+
+Namenskonventionen
+- Klasse
+  - (mit) Substantiv, „UpperCamelCase“
+  - Beispiele: Account, StandardTemplate
+- Methode
+  - (mit) Verb, Imperativ (Aufforderung), „lowerCamelCase“
+  - Beispiele: checkAvailability(), getDate()
+- Attribut, Variable
+  - (mit) Substantiv, „lowerCamelCase“
+  - Beispiele: anzahlAutos, fensterBreite
+- Konstante
+  - Nur Großbuchstaben, Worte mit "_" zusammengesetzt
+  - Standardpräfixe: "MIN_", "MAX_", "DEFAULT_", ...
+  - Beispiele: NORTH, BLUE, MIN_WIDTH, DEFAULT_SIZE
+
+Formatierungs-Richtlinien
+- Entsprechend Schachtelungstiefe einrücken, aber nicht zu weit
+- Einheitliche Verwendung von Leerzeilen und Leerzeichen
+- Einheitliche Dateistruktur verwenden
+  - Eine .java-Datei pro Klasse
+  - Ein Verzeichnis für jedes package
+- Werkzeuge: source beautifier, oft in IDEs enthalten
+- Editor: syntax highlighting
+- Navigationswerkzeuge
+  - Auf- und Zuklappen, Inhaltsverzeichnis, tagging
+  - doxygen, Eclipse etc.
+
+Änderungsfreundlicher Code
+- Wahl von Variablen, Konstanten und Typen orientiert an der fachlichen Aufgabe, nicht an der Implementierung:
+  - `typedef char name [NAME_LENGTH]`
+  - `typedef char firstName [FIRST_NAME_LENGTH]`
+- Symbolische Konstanten statt literaler Werte verwenden, wenn spätere Änderung denkbar
+- Algorithmen, Formeln, Standardkonzepte in Methoden/Prozeduren kapseln
+- Übersichtlichkeit: Zusammenhängende Einheit nicht größer als Editorfenster (40-60 Zeilen, 70 Zeichen breit)
+- Strukturierte Programmierung (Regeln je nach Schärfe)
+  - Kein goto verwenden (in anderen Sprachen als Java)
+  - switch nur mit break-Anweisung nach jedem Fall
+  - break nur in switch-Anweisungen verwenden
+  - continue nicht verwenden (Effekt ähnlich goto)
+  - return nur am Ende zur Rückgabe des Werts
+- Übersichtliche Ausdrücke
+  - Seiteneffektfreie Ausdrücke, schlecht: y += 12*x++;
+- Variablen möglichst lokal und immer private deklarieren
+- Wiederverwendung "äußerer" Namen vermeiden
+
+Werkzeuge
+- Integrated Development Environments (Eclipse, KDevelop)
+- Compiler, Linker; Build / Make; Versionskontrolle (git, svn)
+
 ## Code-Qualität
+Portierbarer Code
+- Code, den man ohne Änderungen in ein anderes System (Compiler, Betriebssystem, Rechner) übertragen kann
+  - Kein implementierungsabhängiges Verhalten!
+- ANSI C++ Standard ist nicht vollständig definiert
+- Ist das Verhalten nicht festgelegt, unterscheidet der ANSI C++ Standard zwischen:
+  - Implementierungsabhängigem, unspezifiziertem oder undefiniertem Verhalten
+- Code, welcher auf implementierungsabhängigem, unspezifiziertem oder undefiniertem Verhalten basiert, ist
+  - Nicht portabel und somit häufig verboten
+  - Wird unter Umständen ungewollt wegoptimiert
+
+Implementierungsabhängiges Verhalten
+- Compiler übersetzen bestimmte Sprachkonstrukte unterschiedlich, Ergebnis unterscheidet sich 
+- Voraussetzung
+  - Verhalten ist konsistent festgelegt und dokumentiert
+  - Kompilierung von standardkonformem Code ist erfolgreich
+- Beispiel: Speichergröße von Integer-Typen
+  - char kann signed oder unsigned sein: Nicht damit rechnen!
+  - 32 Bit System ist wie erwartet
+  - 16 Bit System: Multiplikation wird mit int durchgeführt -> Überlauf -> undefiniertes Verhalten
+
+- Unspezifiziertes Verhalten
+  - Wie implementierungsabhängiges Verhalten
+  - Compiler muss sich für ein bestimmtes Verhalten entscheiden
+  - Muss nicht dokumentiert sein
+  - Beispiel: Evaluierungsreihenfolge von Funktionsargumenten `tuWas(zuerstDas(),oderDochLieberDas());`
+- Undefiniertes Verhalten
+  - Keinerlei Vorgaben
+  - Compiler muss mögliches Problem nicht melden
+  - Keine Voraussage welches Resultat eintritt
+  - Bereits die Kompilierung kann fehlschlagen
+  - Oder das laufende Programm kann falsche Resultate liefern.
+  - Effekt: „Bei mir läuft es aber!?“
+  - „undefiniertes Verhalten nutzen grenzt an Sabotage!“
+
+Sicherer Code mit const
+- Const Variable – Konstante
+  - Stellt sicher, dass sich der Wert nicht verändert
+- Const Parameter
+  - Übergabeparameter ändert sich nicht innerhalb der Operation
+  - Z.B. bei Übergabe komplexer Daten als Referenz bzw. Zeiger `long calcMeanValue(const image &i){...}`
+- Const Operationen
+  - Sicherstellen, dass Operation das Exemplar nicht ändert
+  - Aufruf der const Operation bei const Variablen möglich
+- Verwende const wenn möglich
+
+
 ## Dokumentation
+- Selbstdokumentierende Programme?
+  - 2001 Int. Obfuscated C Code Contest Winner, Short Program
+
+Integrierte Dokumentation
+- Verständlichkeit, Wartbarkeit – auch für Programmierer!
+- Code selbst sollte möglichst verständlich sein
+- Dokumentation in Programm schreiben und aktualisieren
+- Beschreibung der Bedeutung des Codes!
+- Als Konventionen festschreiben
+- Programmvorspann
+- Kurzbeschreibung Datei / Klasse / Funktion ...
+- Verwaltungsinformationen
+  - Autor, Datum, Version, Projekt, ToDo, FixMe, ...
+  - Zustand: geplant, in Bearbeitung, vorgelegt, akzeptiert
+- Laufende Kommentare im Quellcode
+
+Programmierer-Dokumentation
+- Als eigenes Dokument elektronisch oder gedruckt
+- Einstieg in Programmverständnis (z.B. Bachelor-Arbeit)
+- Konsistenz mit Quelltext? Verweise?
+- Technische Unterstützung: JavaDoc (Java), doxygen (C++)
+- Ergänztes Java-Programm  Dokumentation HTML, PDF,
+  ```js
+  /** @author name Mustermann */
+  /** @param name description */
+  /** @return description */
+  ```
+
+Benutzerdokumentation
+- Benutzer-Handbuch, Online-Dokumentation
+- Unterstützung ohne Support?
+- Vollständige und fehlerfreie Beschreibung der Benutzung
+  - Beispiele, screen shots
+- Arten: Tutorial, Beschreibung, Referenz
+
+Benutzer-Unterstützungssysteme
+- Integrierte Hilfe (Suchfunktion, balloon help / tool tips)
+- Assistenz-System (Zustandsabhängige Anleitung)
+- Tutor-System zum Erlernen
+- Bug-Listen, Mailinglisten, Diskussionsforen
+
 ## Codegenerierung
+Bezug zwischen Modell und Programmcode
+- Vorwärtsmodellierung: Modell - Code
+- Rückwärtsmodellierung: Code - Modell
+  - Außerdem: Modelltransformation, Refaktorisierung
+- Idealfall: Automatische Übersetzung durch SW-Werkzeug (in beiden Richtungen)
+  - „Modellbasierte Entwicklung“
+- Statisch: Beispiel Klassendiagramm - Quelltext der Klassen mit allen Vererbungsbeziehungen, Attributen und Methodensignaturen (Klassen-Stümpfe mit leeren Methodenrümpfen zum Ausfüllen)
+- Dynamisch: Beispiel Zustandsdiagramm - Quelltext der Zustandssteuerung einer Klasse
+
+![Codegenerierung](Assets/Softwaretechnik1_Codegenerierung.png)
+
+Weitere statische Transformationen
+- Abbildung von Assoziationen auf Sammlungen
+- Abbildung von Verträgen auf Ausnahmen
+- Abbildung von Objektmodellen auf Datenbankschemata
+- Abbildung von Entwurfsmustern auf Codefragmente
+
+Optimierung des Entwurfsmodells
+- Grund: nichtfunktionale Eigenschaften
+- Zugriffspfade
+- Klassen in Attribute umwandeln
+- Verzögerung von Berechnungen
+- Zwischenspeicherung aufwändiger Ergebnisse
+
+Codegenerierung aus StateCharts
+- Einfachste Möglichkeit: Switch (Case) Statement
+- Zustände werden durch Datenwerte repräsentiert
+  - Aktueller Zustand: einzelne skalare Variable
+- Jedes Ereignis wird durch Methode implementiert
+- Ausgehend von aktivem Zustand wird bei Eintreffen eines Ereignisses der entsprechende Programmcode ausgeführt
+- Abhängig von Zustandsvariable wird Aktion ausgeführt und der Folgezustand eingestellt
+- Wird in einer Klasse realisiert
+- Sinnvoll für einfache, “flache” Modelle
+  - Sonst Logik für Hierarchie nötig
+
+Anpassung der Generierung
+- Verschiedene Zielsprachen (Java, C++, ...)
+- Model2Text-Transformationen
+  - Verschiedene Generatoren, z.B. Eclipse Modelling Project
+- Generierung aus dem Modellierungswerkzeug
+  - Parametrisierung der Codegenerierung
+  - Generierungsvorlagen
+
+Weitere Werkzeuge
+- Compiler-Compiler: Syntaxbeschreibung wird in lexikalische Analyse (tokenizer) und Syntaxanalyse-Programm transformiert (lex & yacc / flex & bison / antlr)
+- Codegenerierung für grafische Benutzungsoberflächen aus grafischer Beschreibung: GUI toolkits
+- XML-Parser
+  - XSLT, DOM, SAX, ...
+
 ## Implementierung aktiver Objekte
+Realisierung aktiver Entwurfsobjekte
+- Reagieren nicht nur (Methodenaufruf), sondern implementieren eigenes Verhalten
+- Aktive Klassen, z.B. Steuerobjekte
+
+Arten von Programmabarbeitung
+- Sequentiell: es gibt immer genau einen nächsten Schritt, alle Schritte werden nacheinander ausgeführt
+- Parallel: Spezielle Hardware bzw. Mehrkernprozessor, mehrere Befehlsfolgen werden echt parallel bearbeitet
+- Quasi-parallel: Ein Prozessor arbeitet mehrere Befehlsfolgen in freier Einteilung ab
+- Nebenläufig: Oberbegriff für Parallel und Quasi-parallel
+  - concurrent
+
+Vorteile
+- Höhere Geschwindigkeit
+- Kein aktives Warten auf Ereignisse
+- Getrennte Implementierung unabhängiger Aspekte
+
+Ergebnisse eines Programms
+- Ein Programm, dessen Ablauf eindeutig vorherbestimmt ist, nennt man deterministisch (deterministic)
+- Ein Programm, das bei gleichen Eingaben gleiche Ausgaben produziert, heißt determiniert (determined)
+- Programme in üblichen Programmiersprachen sind sequentiell, deterministisch und determiniert
+- Grund: Herkömmliche Programmiersprachen sind durch das von-Neumann-Modell geprägt
+- Determinismus nicht notwendig für Determiniertheit!
+  - Determiniertheit nebenläufiger Programme: Synchronisation
+  - Vermeidung von Schreib/Schreib und Schreib/Lese-Konflikten
+
+Java Threads
+- Verwaltung durch die Java Virtuelle Maschine (JVM)
+- Realisierung der Threads ist je nach Implementierung der JVM unterschiedlich
+  - Abbildung auf Betriebssystem-Threads (z.B. unter Windows weitverbreitet)
+  - Realisierung durch die JVM (z.B. unter Unix und in Java-fähigen Browsern)
+  - Nachteile: Keine Ausnutzung von Multiprozessorsystemen durch die VM; Zuteilungsstrategie für Threads ist in derzeitigen Implementierungen unterschiedlich
+- Threads arbeiten immer im Adressraum der JVM (eigener Prozess) und sind außerhalb dieser nicht sichtbar
+
+Erzeugung eines Threads
+- Unterklasse der Basisklasse „Thread“ bilden `class MyThread extends Thread`
+- Problem: keine Mehrfachvererbung, daher Alternative nötig (Beispiel: Applet):
+  - Schnittstelle „Runnable“ implementieren
+  - `class MyThread implements Runnable`
+- Die vordefinierte Schnittstelle Runnable ist definiert als
+  ```java
+  public interface Runnable
+  { public abstract void run(); }
+  ```
+
+Starten eines Threads
+- Eine Klasse, die Runnable implementiert, muss wie Unterklassen von Thread immer eine run()-Methode definieren
+- Seiteneffekt der Runnable-Schnittstelle
+  - Instanzen der Klasse werden nebenläufig zu den anderen laufenden Threads ausgeführt
+  - Ausführung beginnt mit der Methode run ()
+- Ablauf
+  - Thread-Objekt erzeugen
+  - Thread starten mit t.start()
+  - start() ruft implizit run() auf
+
+Synchronisation von Threads
+- Gezielte Einschränkung der Nebenläufigkeit
+- Gründe
+  - Zugriffsbeschränkung, gegenseitiger Ausschluss
+  - Abhängigkeiten, einseitige Synchronisation
+- Methoden: Semaphore, Monitore, Schlossvariablen, ...
+
+Java: Monitore
+- Zugriffsoperationen werden in Klassen zusammengefasst
+- Gegenseitiger Ausschluss: Spezifikation der betroffenen Zugriffsoperation als synchronized
+
 ## Verifikation und Testen
+Wie erreicht man qualitativ hochwertige Software?
+- Wissen, Erfahrung und Methodenkompetenz der Programmierer
+- Projektstruktur, klare Verantwortlichkeiten
+- Kosten- und Zeitdruck? Änderungen?
+- Programmier- und Testmethoden
+  - pair programming, code reading etc.
+  - Qualitätsverantwortlicher, automatisiertes Testen
+- Technische Unterstützung
+  - Z.B. Versionierung, Dokumentation, Testen, Entwicklungsumgebung
+
+Begriffe
+- Zuverlässigkeit: Maß für Übereinstimmung des Systemverhaltens mit Spezifikation
+- Grund für Unzuverlässigkeit:
+  - Fehler (bug, fault): fehlerhafter Programmcode o.ä.
+    - Der Begriff „Bug“: 
+      - Schon vor Computern als Begriff für Fehler benutzt 
+      - Motte im Relais des Computers Mark II Aiken (1947)
+  - Fehlerhafter Zustand (error): Fehler hat zur Laufzeit zu einem internen fehlerhaften Zustand geführt, der möglicherweise zu einem Ausfall führt
+  - Störfall, Ausfall (failure): Abweichung vom spezifizierten Verhalten, meist mit negativen Folgen
+
+Vergleich System / Systemmodell
+- Anspruch guter Software: System entspricht Systemmodell (Korrektheit)
+- Problem: System nicht vollständig automatisch erzeugbar!
+- Auswege
+  - Fehlervermeidung (Inspektion, pair programming, ...)
+  - Nachweis, dass System dem Modell entspricht - Verifikation
+  - Überprüfen, ob System dem Modell entspricht - Testen
+  - Fehlertoleranz (durch Redundanz)
+
+Verifikation
+- Mathematisch formaler Beweis, dass ein Programm einer Spezifikation genügt
+- Vorteil: wenn anwendbar, dann vollständiger Beweis
+- Problem: für viele (realistisch große) Fälle nicht anwendbar
+  - Zu aufwändig
+  - Umgebung muss ebenfalls verifiziert werden
+  - Auch in der Theorie nicht immer entscheidbar: Halteproblem, Gödelscher Unvollständigkeitssatz
+- Theoretische Informatik: Berechenbarkeitstheorie, formale Semantik; aktives Forschungsgebiet
+  - model checking
+
+Testen
+- Systematischer Versuch, Defekte in der Software zu finden
+- Ingenieurtechnik zur Erhöhung des Vertrauens in Softwaresysteme, aber: unvollständig!
+  - Kann nur die Anwesenheit von Fehlern nachweisen, aber nicht Korrektheit (Abwesenheit von Fehlern)!
+- Aufgabe: Unterschiede zwischen Modell und System finden
+- Destruktiv im Gegensatz zu sonstigen SWE-Aufgaben
+  - Daher sollten nicht (nur) Entwickler selbst testen
+
+Testplanung
+- Testen ist aufwändig, deshalb ist gute Planung nötig!
+- Testplanung sollte bereits mit der Anforderungsanalyse beginnen und im Entwurf verfeinert werden (V-Modell, Test-First-Ansatz)!
+- Typische Bestandteile einer Test-Spezifikation (Testdrehbuch)
+  - Phasenmodell des Testprozesses
+  - Zusammenhang zur Anforderungsspezifikation, z.B. dort festgelegte Qualitätsziele
+  - Zu testende Produkte
+  - Zeitplan für die Tests
+  - Abhängigkeiten der Testphasen
+  - Aufzeichnung der Testergebnisse
+  - Hardware- und Softwareanforderungen
+
+Arten von Tests
+- Komponententest: Fehler in einzelnen Objekten oder Subsystemen, losgelöst vom umgebenden System
+  - Umgebung muss nachgebildet werden
+- Integrationstest: Zusammenspiel von Komponenten
+  - Vollständiges System: Systemtest; Szenarios
+- Strukturtest: innere Zustände, Interaktionen
+- Funktionstest: Anforderungen aus Lastenheft
+- Leistungstest: nichtfunktionale Anforderungen
+- Benutzbarkeitstest: Fehler in der Benutzungsschnittstelle, Verständlichkeit, Akzeptanz bei Anwendern
+  - Prototypen
+- Akzeptanztest, Installationstest: Kunde, Abnahme
+
+Komponententests
+- Überprüft Verhalten einer Systemkomponenten im Vergleich zur Spezifikation
+- Da Tests bereits frühzeitig stattfinden sollten, ist Umgebung meist nicht vollständig implementiert
+  - Teststumpf (stub, dummy) simuliert aufgerufene Komponenten
+  - Testtreiber simuliert aufrufende Komponenten
+- Vorgehensweisen
+  - Bottom-up
+  - Top-down
+  - Sandwich
+  - Schichtenweises Testen
+
+Systematisches Testen
+- Testfall
+  - Beschreibung, Name
+  - Zu testende Komponente, Testgegenstand (Pfad, Aufrufart)
+  - Eingabedaten (Testdaten)
+  - Erwartete Ergebnisse („Orakel“)
+  - Protokoll (erzeugte Ausgaben)
+  - Bewertung des Ergebnisses
+- Weitere Begriffe
+  - Regressionstest: erneute Durchführung eines Tests anhand einer geänderten Version des Testgegenstands
+  - Alphatest: Test eines Prototypen durch Benutzer
+  - Betatest: Test der vollständigen Software durch Benutzer
+
+Funktionaler Test (black box test)
+- Testfallauswahl beruht auf Spezifikation
+- Ohne Wissen über inneren Aufbau
+- E/A-Zusammenhang
+
+Äquivalenzklassen im funktionalen Test
+- Problem: alle Kombinationsmöglichkeiten der Eingangsdaten sind zu umfangreich für vollständigen Test
+- Mögliche Einschränkung: Bildung von Äquivalenzklassen der Eingangsdaten, für die ähnliches Verhalten erwartet wird
+- Basierend auf Anwendungsdomäne
+- Äquivalenzklasse = Teilmenge der möglichen Datenwerte der Eingabeparameter
+- Test je eines Repräsentanten jeder Äquivalenzklasse
+- Finden von Äquivalenzklassen
+  - Zulässige / unzulässige Teilbereiche der Datenwerte
+  - Unterteilung der Bereiche nach erwarteten Ausgabewerten
+
+Grenztests
+- Ergänzung von Äquivalenztests: Spezialfälle
+- Rand der Äquivalenzklasse
+- Außerdem: Sonderfälle, erwartete Problemfälle (technisch)
+
+Strukturtest (white box test, glass box test)
+- Testfallauswahl beruht auf Programmstruktur
+- Wie erreicht man möglichst vollständige Abdeckung?
+- Kontrollflussorientiert
+  - Anweisungsüberdeckung anhand Quellcode
+  - Zweigüberdeckung und
+  - Pfadüberdeckung anhand des Flussgraphen reduzierte Variante: bounded interior Pfadtest
+- Datenflussorientiert
+  - defines / uses-Verfahren: Abarbeitungspfade von Definition zu jeder Verwendung von Variable oder Objekt durchlaufen
+- Zustandsorientiert
+
 ## Testaktivitäten und Werkzeuge
+
+
+
 ## Softwareverteilung
 
 # Vorgehensweise

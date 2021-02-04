@@ -38,6 +38,12 @@ author: Wieerwill
   - [Lageparamter](#lageparamter)
   - [Streuungsparameter](#streuungsparameter)
   - [Skalenniveaus](#skalenniveaus)
+- [Schätzer](#schätzer)
+  - [Schätzfunktionen und Schätzwert für den Mittelwert](#schätzfunktionen-und-schätzwert-für-den-mittelwert)
+  - [Schätzfunktionen und Schätzwert für die Varianz](#schätzfunktionen-und-schätzwert-für-die-varianz)
+  - [Schätzfunktionen und Schätzwert für den Anteilswert](#schätzfunktionen-und-schätzwert-für-den-anteilswert)
+  - [Gütekriterien](#gütekriterien)
+  - [Schätzverfahren](#schätzverfahren)
 
 ---
 # Wahrscheinlichkeiten
@@ -484,3 +490,46 @@ Unter dem Begriff Streuungsparameter werden alle statistischen Maßzahlen zusamm
 | Intervallskala  |   |   | Rangordnung und Abstände sind definiert | Temperatur |
 | Verhältnisskala |   |   | Rangordnung, Abstände und natürlicher Nullpunkt definiert | Gehalt, Gewicht |
 | Absolutskala    | Y | Y | Rangordnung, Abstände, natürlicher Nullpunkt und natürliche Einheiten | Anzahl Fachsemester |
+
+---
+# Schätzer
+Ganz allgemein schätzt man einen beliebigen Parameter, indem man die Daten aus der gesammelten Stichprobe mit einer bestimmten Formel zusammenfasst. Diese Formel nennt man dann Schätzer oder Schätzfunktion – die Formel ist eine Funktion, weil sie die Stichprobe in einen Schätzer transformiert. Als Beispiele können wir die Schätzfunktionen für den Anteilswert p betrachten – der Schätzer wird dann meist $\hat{p}$ („p-Dach“) genannt: 
+$$\hat{p}=\frac{\sum_{i=1}^n x_i}{n}$$
+
+Beispiel Schätzer für Variant $\sigma^2$ in der Grundgesamtheit: $\hat{\sigma}^2=\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2$
+
+## Schätzfunktionen und Schätzwert für den Mittelwert
+Der Erwartungswert $\mu$ wird in der Regel mit dem arithmetischen Mittel der Stichprobe geschätzt: 
+| Schätzfunktion | Schätzwert |
+| -- | -- |
+| $\bar{X}=\frac{1}{n}\sum_{i=1}^n X_i$ | $\hat{\mu}=\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i$ |
+
+Ist die Verteilung symmetrisch, kann auch der Median der Stichprobe als Schätzwert für den Erwartungswert verwendet werden: 
+| Schätzfunktion | Schätzwert |
+| -- | -- |
+| $Z=X_{\lfloor \frac{n+1}{2} \rfloor}$ | $\hat{\mu}=z=x_{\lfloor \frac{n+1}{2} \rfloor}$ |
+
+## Schätzfunktionen und Schätzwert für die Varianz
+| Schätzfunktion | Schätzwert |
+| -- | -- |
+| $S_n^2= \frac{1}{n-1} \sum_{i=1}^n (X_i-\bar{X})^2$ | $\hat{\sigma}^2=s_n^2=\frac{1}{n-1}\sum_{i=1}^n (x_i-\bar{x})^2$ |
+
+## Schätzfunktionen und Schätzwert für den Anteilswert
+| Schätzfunktion | Schätzwert |
+| -- | -- |
+| $\prod=\frac{X}{n}=\frac{1}{n}\sum_{i=1}^n X_i$ | $\pi^2=\frac{1}{n}\sum_{i=1}^n x_i$ |
+
+## Gütekriterien
+Eine erwartungstreue Schätzfunktion ist im Mittel (Erwartungswert) gleich dem wahren Parameter $\gamma$: $E(g_n)=\gamma$.
+
+Verzerrung eines Schätzers $Bias(g_n)=E(g_n)-\gamma = E(g_n - \gamma)$
+
+Mittlerer quadratischer Fehler
+$MSE(g_n)=E[(g_n-\gamma)^2]=(E[g_n-\gamma])^2+E[(g_n-E(g))^2]=(Bias(g_n))^2 + Var(g_n)$
+
+## Schätzverfahren
+- Maximum-Likelihood-Schätzung
+
+- Momentenmethode
+
+- Kleinste-Quadrate-Schätzung

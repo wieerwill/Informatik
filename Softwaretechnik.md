@@ -2077,12 +2077,200 @@ Strukturtest (white box test, glass box test)
 - Zustandsorientiert
 
 ## Testaktivitäten und Werkzeuge
+Wann wird getestet?
+- Während der Implementierung!
+  - Auch wenn Schreiben von Tests scheinbar unproduktiv ist
+  - Tests sind unbeliebt, da Probleme aufgezeigt werden
+  - Aber: spätes Testen erhöht Aufwand!
+- Inkrementell, d.h. für jede überschaubare Änderung
+- Spezielle Vorgehensweise: test first-Ansatz
 
+Wie wird getestet?
+- Geplant, systematisch, möglichst automatisiert, dokumentiert, wiederholbar
 
+Testplanung
+- Iterative Erstellung eines Testplans / Testdrehbuchs
+- Aktivitäten – Festlegen von
+  - Teststrategie (Testumfang, Testabdeckung, Risikoabschätzung)
+  - Testziele und Kriterien für Testbeginn, -ende und -abbruch
+  - Vorgehensweise (Testarten)
+  - Testumgebung (Beschreibung)
+  - Hilfsmittel und Werkzeuge zum Testen
+  - Testspezifikation
+  - Testorganisation (Termine, Rollen, Ressourcen)
+  - Fehlermanagement (Werkzeugunterstützung)
+- Ergebnis: Inhalt des Testplans
+
+Testspezifikation
+- Auswahl der zu testenden Testfälle
+- Definition einzelner Testfälle
+  - Grundlage: Anwendungsfälle, Anforderungen, Fehlermeldungen (Zuordnung notwendig)
+- Aktivitäten
+  - Testfallfindung und Testfalloptimierung
+  - Testfälle beschreiben (was genau ist zu testen)
+  - Randbedingungen finden (Abhängigkeiten zu anderen Testfällen)
+  - Festlegen und Erstellen der Eingabedaten
+  - Festlegungen zum Testablauf und zur Testreihenfolge
+  - Festlegen Soll-Ergebnis
+  - Festlegung der Bedingung(en) für 'Test erfüllt'; ...
+
+Testvorbereitung
+- Tätigkeiten im Vorfeld des Tests
+- Aktivitäten
+  - Vorbereitung der Tests entsprechend Testplan
+  - Bereitstellen der Dokumente (Testspezifikation)
+  - Verfügbar machen von Werkzeugen (Fehlermanagement)
+  - Aufbauen der Testumgebung(en)
+  - Integration der Entwicklungsergebnisse in die Testumgebung (Software installieren, konfigurieren, ...)
+  - Bereitstellung von Testdaten bzw. Eingabedaten in die Testumgebung
+  - Benutzer und Benutzerrechte anlegen
+
+Testdurchführung
+- Durchführung der spezifizierten Tests
+  - Manuell
+  - Automatisiert
+- Aktivitäten
+  - Auswählen der zu testenden Testfälle
+  - Bereitstellen der Testdaten
+  - Starten, Überwachen, Abbrechen, Beenden
+  - Erfassung des Ist-Ergebnisses zur Auswertung
+  - Besondere Vorkommnisse dokumentieren
+  - Umgebungsinformationen für den Testlauf archivieren, ...
+
+Testauswertung
+- Überprüfung der Ergebnisse
+- Vergleich Ist-Ergebnis mit Soll-Ergebnis
+- Entscheidung Testergebnis (ok / Fehler)
+- Bei Fehler:
+  - Klassifizierung (z. B.: Fehlerursache, Fehlerschwere etc.)
+  - Fehler reproduzieren!
+  - Angemessene Fehlerbeschreibung und –erläuterung: Nur ausreichend dokumentierte Fehler sind gültig und können bearbeitet werden!
+  - Fehler im Fehlermanagement eintragen (Bug report)
+  - Testfall bleibt offen
+
+Bugbeschreibung
+- Möglichst genaue Beschreibung des Fehlers
+- Ziel ist die Reproduzierbarkeit des Fehlers
+- Zuordnung zu Projektplan: Meilenstein, Version
+- Fehlerklassifikation
+  - defect: Fehler in einer bestehenden Funktionalität
+  - enhancement / feature: Funktionale Anforderung oder Erweiterung der bestehenden Funktionalität
+  - task: Allgemeine Aufgabe
+- Priorität festlegen
+  - Unterschiedliche Stufen
+  - Festlegung innerhalb eines Unternehmens / Projektes
+- Prioritäten von Fehlern (bugs)
+  
+| Stufe | Bedeutung | Verhalten |
+| -- | -- | -- |
+| blocker | Schwerwiegender Fehler. Führt zur Arbeitsunfähigkeit anderer (Entwicklung, QA, Produktion,...). | Verdrängt alle anderen Aufgaben! Muss sofort gelöst werden, um Arbeitsfähigkeit wieder herzustellen. |
+| critical | Schwerer Fehler. Eine grundlegende Funktionalität des Systems ist nicht gegeben. Fehler muss bis zur nächsten Version behoben werden. System kann nicht verwendet werden. | Alle anderen Fehler (außer blocker) werden später gelöst. Bis zum nächsten Release muss dieser Bug gelöst sein. |
+| major | „normaler“ Fehler. Es tritt ein Fehler innerhalb einer Funktion des Systems auf. Das System kann jedoch weiterhin verwendet werden. | Fehler wird normal eingeplant. |
+| minor | Kleiner Fehler. Fehler behindert nicht weiter die Funktionsfähigkeit des Systems. Einfacher Work-Around vorhanden? | Je nach Aufwand und Zeitplanung erledigen. |
+| trivial | Schönheitsfehler. Fehler stört während des Betrieb des Systems nicht. | Je nach Aufwand „zwischendrin“ erledigen. Alle anderen Bugs bevorzugt lösen. |
+
+Testabschluss
+- Zusammenfassen der Tests
+- Gesamtstatus dokumentieren und kommunizieren
+- Entscheidungen herbeiführen  z.B.: Auslieferung?
+  - Ziele erreicht - nächste Schritte (Auslieferung)
+  - Tests vorzeitig beenden oder unterbrechen
+  - Gründe dokumentieren
+  - Vollständiger Nachtest oder Teiltest möglich?
+- Unterlagen archivieren
+
+Testautomatisierung
+- Automatische Code-Validierung
+  - Statisch: lint (C), Compiler
+  - Dynamisch: run-time checking, memory leaks etc.
+- Beispiel: Test-Framework JUnit
+
+Behebung funktionaler Fehler
+- Log-Ausschriften bzw. Signale
+- Debugger: Vorwärts / Rückwärts
+- Haltepunkte setzen: Bedingte Haltepunkte für Schleifen
+- Darstellung der Variablenbelegung, Werte setzen
+- Analyse des Aufruf-Stacks
+
+Behebung nichtfunktionaler Fehler
+- Geschwindigkeit: profiling z.B. mit Eclipse TPTP
+- Aufrufe, Zeitverbrauch in Methoden usw.
+
+Memory Leaks, JProbe
+- Runtime heap summary: Welche Objekte verbrauchen Speicher?
+- Reference graph: Wer referenziert diese Objekte, so dass sie nicht per garbage collection gelöscht werden?
 
 ## Softwareverteilung
+Softwareverteilung (deployment)
+- Prozess zur Installation von Software auf
+  - Anwender-PC‘s, Servern, Maschinen in Produktion ...
+- Steuerung der Installation der Software
+- Voraussetzungen für die Software schaffen
+  - Schulungen planen und durchführen
+- Softwareverteilung ist ein kritischer Prozess!
+  - Fehler können zu vielen Störungen und Ausfällen führen
+- Ziele
+  - Automatische Installation, Konfiguration und Wartung einer großen Anzahl von Systemen mit geringem Aufwand
+  - Erreichen eines störungsarmen und sicheren Betriebs
+  - Möglichst einheitliche Softwareversionen auf allen Systemen
 
-# Vorgehensweise
+Installationsarten
+- Erstinstallation
+- Software-Update (Software-Aktualisierung)
+  - Aktualisierung der Software, Daten oder Konfiguration
+- Hotfixes und Service Packs
+  - Nur bestimmte Teile der Software werden aktualisiert
+  - Meist nur Fehlerbehebung, keine neuen Features
+- Upgrade
+  - Erweitert eine Software deutlich um neue Funktionen
+- Unbeaufsichtigte (automatische) Installation
+  - Installation erfolgt ohne Benutzereingriff
+  - Periodisch, durch Aufruf des Anwenders, beim Programmstart
+  - Einstellungen in einem Skript festgelegt oder werden als Parameter übergeben
+
+Installationshilfsmittel
+- Installationsprogramm (Installer)
+  - Windows: Windows Installer, InstallShield
+  - Linux: RPM, Port, APT
+  - MAC-OS: Installer, WarpIn
+- Installations-Script
+- Installationsanweisung
+
+Software-Rollout
+- Vorgang des Veröffentlichens und Verteilens von Softwareprodukten auf entsprechende Clients
+- Anzahl der Clients kann weit über 10.000 liegen!
+- Rollout abhängig von verschiedenen Kriterien (Vorherige Installation, Hardwarekonfiguration, Zeit, Kunde)
+- Rollout-Varianten
+  - Zentral / Dezentral
+  - Manuell (Benutzer löst Installation aus)
+  - Automatisiert (ohne Benutzerinteraktion)
+
+Vollständige Verteilung (big bang)
+- Alle Installationen werden mit einem Mal installiert
+- Sehr hohes Risiko
+- Eventuelle Fehler führen zu vielen fehlerhaften Zuständen oder Störfällen - führt zu hohem Druck
+- Eventuelle Fehler müssen schnell gelöst werden (Provisorium)
+- Sehr kurze Einführungsphase
+- Rollback-Mechanismus sehr empfohlen
+
+Rollback
+- Wiederherstellung des Ursprungszustands
+- Technische Realisierung muss ermöglicht werden
+
+Pilotierte Einführung
+- Einführung für wenige ausgewählte Installationen
+- Sehr hohe Sicherheit
+- Festlegung der späteren Rollout-Schritte
+- Benötigt zusätzliche Zeit
+- Geringere Auftrittswahrscheinlichkeit von Fehlern
+
+Schrittweise (iterative) Einführung
+- Einführung erfolgt schrittweise mit einer definierten Anzahl
+- von Installationen (Rampe – ramp-up)
+- Höhere Fehlerwahrscheinlichkeit -> Bessere Reproduzierbarkeit -> schnelleres Finden von Fehlern -> Erfahrungsgewinn
+- Begrenztes Risiko, mittlerer Zeitaufwand
+
+# Vorgehensmodelle
 
 
 # Projektmanagement

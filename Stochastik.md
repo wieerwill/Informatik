@@ -375,17 +375,16 @@ Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable X einen bestimmten Wer
 
 | | Dichtefunktion | Verteilungsfunktion | Erwartungswert | Varianz |
 | -- | -- | -- | -- | -- |
-| Normalverteilung | $f(x)=\frac{1}{\sigma*\sqrt{2\pi}}*e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}$ | $F(x)=\frac{1}{1-\sigma*\sqrt{2\pi}}\int_{-\infty}^{x}e^{-\frac{1}{2}(\frac{u-\mu}{\sigma})^2}du$ |
-| Stetige Gleichverteilung | $f(x)=\begin{cases}0 \text{ für } x<a \\ \frac{1}{b-a} \text{ für } a\leq x \leq b \\ 0 \text{ für } x>b \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x\leq a \\ \frac{x-a}{b-a} \text{ für } a< x < b \\ 1 \text{ für } x\geq b\end{cases}$ |
-| Exponentialverteilung | $f(x)=\begin{cases}0 \text{ f+r } x<0 \\ \frac{1}{\mu}e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | $F(x)=\begin{cases} 0 \text{ für } x<0 \\ 1-e^{-\frac{x}{\mu}} \text{ für } x\geq 0 \end{cases}$ | | - |
-| Binomialverteilung |  | - | | |
-| Geometrische Verteilung | | - | | - |
-| Hypergeometrische Verteilung |  | - | - | - |
-| Poisson-Verteilung |  | - | | |
-| uniforme Verteilung | | | | |
-| empirische Verteilung | | | | |
-| Laplace Verteilung |  | - | - | - |
-| Dirac Maß | | | | |
+| Normalverteilung | $f(x)=\frac{1}{\sigma*\sqrt{2\pi}}*e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}$ | $F(x)=\frac{1}{1-\sigma*\sqrt{2\pi}}\int_{-\infty}^{x}e^{-\frac{1}{2}(\frac{u-\mu}{\sigma})^2}du$ | $E(Y)=\mu$ | $Var(Y)=\sigma^2$
+| Stetige Verteilung | $f(x)=\begin{cases}0 \quad\text{ für } x<a \\ \frac{1}{b-a} \quad\text{ für } a\leq x \leq b \\ 0 \quad\text{ für } x>b \end{cases}$ | $F(x)=\begin{cases} 0 \quad\text{ für } x\leq a \\ \frac{x-a}{b-a} \quad\text{ für } a< x < b \\ 1 \quad\text{ für } x\geq b\end{cases}$ | $E(X)=\frac{a+b}{2}$ | $Var(X)=\frac{1}{12}(b-a)^2$ |
+| Exponentialverteilung | $f(x)=\begin{cases}0 \quad\text{ f+r } x<0 \\ \frac{1}{\mu}e^{-\frac{x}{\mu}} \quad\text{ für } x\geq 0 \end{cases}$ | $F(x)=\begin{cases} 0 \quad\text{ für } x<0 \\ 1-e^{-\frac{x}{\mu}} \quad\text{ für } x\geq 0 \end{cases}$ | $E(X)=\frac{1}{\lambda}$ | - |
+| Binomialverteilung | $f(x)=\binom{n}{x}p^x(1-p)^{n-x}$ | - | $E(X)=np$ | $Var(X)=np(1-p)$ |
+| Geometrische Verteilung | $f(x)=(1-p)^{x-1}*p$ | - | $E(X)=\frac{1}{p}$ bzw. $E(Y)=E(X)-1=\frac{1-p}{p}$ | - |
+| Hypergeometrische Verteilung | $f(x)=\frac{\binom{X}{x}*\binom{W}{w}}{\binom{N}{n}}$ | - | - | - |
+| Poisson-Verteilung | $f(x)=e^{-\lambda}*\frac{\lambda^x}{x!}$ | - | $E(X)=\lambda$ | $Var(X)=\lambda$ |
+| empirische Verteilung | $f(x)=\frac{1}{n}$ | $P=\frac{1}{n} \sum_{i=1}^{n} \sigma_{x_i}$ | $E(X)=\frac{1}{n}_{i=1}^n x_i$ | $Var(X)=\frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2$ |
+| Laplace Verteilung | $f(x)=\frac{1}{2\sigma}e^{-\frac{\| x-\mu \|}{\sigma}}$ | - | - | - |
+| Dirac Maß | - | $F(X)=\begin{cases} 1 \quad\text{ falls } x< b \\0 \quad\text{ falls } b \leq x \end{cases}$ | $E(X)=b$ | $Var(X)=0$ |
 
 | diskret | stetig |
 | -- | -- |

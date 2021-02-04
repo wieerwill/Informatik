@@ -2271,6 +2271,134 @@ Schrittweise (iterative) Einführung
 - Begrenztes Risiko, mittlerer Zeitaufwand
 
 # Vorgehensmodelle
+## Einführung
+Wie läuft Softwareerstellung ab?
+- (oder besser, wie sollte sie ablaufen?)
+- Aufgaben und Phasen siehe vorangegangene Kapitel
+- Wann wird was getan? Abhängigkeiten?
+  - Sequentiell / nebenläufig,
+- Prozessmodelle der Softwareentwicklung
+  - Regelwerke, Erfahrungen, best practices für große Projekte
+  - Aktives Entwicklungsgebiet
+- Erweiterbar zum Software-Lebenszyklus mit Inbetriebnahme, Wartung, Außerdienststellung usw.
+
+Softwareentwicklungsprozess/Vorgehensmodell
+- Methode zur Erstellung von Softwaresystemen
+- Systematisch, rational und schrittweise erfolgender Weg vom Problem zur Lösung
+- Ziel: Softwareentwicklungsprozess übersichtlich, plan- und strukturierbar
+- Zerlegung des Softwareentwicklungsprozesses in überschaubare Einheiten
+- Unternehmensspezifisch, anpassbar, erweiterbar
+  - Eigene Varianten, evtl. projektabhängig
+  - An spezielle Bedürfnisse des Informationsbereichs angepasst
+  - Kein allgemeingültiges Vorgehen
+  - Einsetzbar in verschiedenartigen Projekten
+
+Phasen
+- Überwiegend zeitliche Zerlegung
+- Zeitlich begrenzte Phasen
+- Auch inhaltlich und organisatorisch begrenzte Phasen möglich
+- Teilprozesse / Aktivitäten
+  - Inhaltliche Zerlegung
+  - Satz von Aufgaben
+  - Verteilung der Teilprozesse / Aktivitäten auf verschiedene Phasen
+  - Begleitet von unterstützenden, übergreifenden Aktivitäten
+
+Aufgabe
+- Erzeugt Arbeitsergebnis (Artefakt)
+- Verbraucht Ressourcen (z.B. Arbeitskraft, Zeit, Ausrüstung)
+
+Arbeitsergebnis (oder Artefakt)
+- Dokument, Modell, System, Programmcode Lastenheft, Spezifikation, Glossar, Handbuch usw.
+- Intern zu lieferndes Ergebnis
+
+Teilnehmer und Rollen
+- Verantwortungsbereich eines Teilnehmers (z.B. Kunde, Projektmanager, Entwickler, Architekt)
+- Rolle bearbeitet / enthält Satz von Aufgaben
+
+Unterstützungsprozesse / -Aktivitäten
+- Projektmanagement
+  - Projektplanung, -verfolgung und -steuerung
+  - Risikomanagement
+- Anforderungsmanagement
+  - Im Gegensatz zur Anforderungsaufnahme und -analyse
+- Qualitätsmanagement
+  - Problem Management
+  - Softwaremetriken (Messung von Softwareeigenschaften)
+  - Statische + dynamische Analyse (Bestimmung von Schwachstellen)
+- Konfigurationsmanagement
+  - Versionsverwaltung, Änderungsmanagement
+- Dokumentation
+
+## Sequenzielle Modelle
+- Wasserfallmodell
+  - Abhängigkeiten zwischen Teilergebnissen
+  - Ursprung in System- Hardwareentwicklung
+    - Wurde für die SW-Entwicklung übernommen
+    - Auch heute verbreitetes Vorgehen bei HW-Entwicklung
+  - Sequenzielles Phasenmodell (Abschluss der Phasen)
+  - Stark Dokumentengetrieben (Ergebnisse der Phasen)
+  - Unterteilung in abgeschlossene Phasen:
+    - Analyse
+    - Design/Entwurf
+    - Implementierung
+    - Test & Integration
+    - Einführung, Betrieb & Wartung
+  - Alternativ:
+    - Planung
+    - Definition
+    - Entwurf
+    - Implementierung
+    - Test & Integration
+    - Einsatz und Wartung
+  - Vorteile
+    - Einfach und verständlich, bekannt und verbreitet
+    - Erleichterte Planung und Steuerung
+  - Nachteile
+    - Idealisierte Annahme rein sequentiellen Ablaufs
+    - Starke Abhängigkeiten zwischen Teilergebnissen
+    - Ungeeignet, falls Anforderungen zu Beginn unklar
+    - Unflexibel gegenüber Änderungen
+    - Erst sehr spät greifbare Ergebnisse
+- Erweitertes Wasserfallmodell
+  - Verbesserung für Änderungen und Fehler – Rückschritte
+- Alternative Arten von Phasenmodellen
+  - Sequenziell
+    - Phasen strikt nacheinander, Dokumenten-orientiert
+    - Keine Änderungen abgeschlossener Artefakte
+  - Nebenläufig
+    - Phasen laufen teilweise parallel für bessere Zeitnutzung
+    - Weiterhin keine Änderungen fertiger Dokumente
+  - Inkrementell
+    - Unterteilung des Produkts in Teile
+    - Schnellere Auslieferung von Teilfunktionalität nach vollständiger Aufnahme der Anforderungen
+  - Alternative: Evolutionär
+    - Anforderungen entwickeln sich im Projekt
+    - Ausgelieferte Versionen ergeben neue Anforderungen
+- V-Modell [Boehm]
+  - Explizite Adressierung der Qualitätssicherung
+  - ![VModell](Assets/Softwaretechnik1_VModell.png)
+  - Entwicklung des V-Modells in Deutschland
+    - Leitfaden, in Bundesbehörden ab 1990er verbindlich
+    - Version V-Modell 97 erweitert um Werkzeuganforderungen, Rollen und Submodelle der Beteiligten
+    - Kritik: schlecht skalier- und anpassbar, zu unflexibel,
+    - bürokratisch, nicht an moderner OO-SWEntw. orientiert
+  - V-Modell XT (extreme tailoring)
+    - Aktuelle Version ab 2004/05
+    - Einfache projektspezifische Anpassbarkeit
+    - Assistent www.v-modell-xt.de (kleines Projekt ~40 Dok.!)
+    - Überprüfbarer Projektfortschritt
+    - AG/AN-Sichten und Schnittstellen, Ausschreibungen
+    - Gesamter SW-Lebenszyklus
+
+
+
+## Iterative Modelle
+
+
+## Agile Methoden
+
+
+## Zusammenfassung
 
 
 # Projektmanagement

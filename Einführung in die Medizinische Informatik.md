@@ -79,7 +79,7 @@ Merkmale bioelektrischer Signale:
 - Kostengünstig
 
 Quellen/Ursprung bioelektrischer Signale: Nerven und Muskeln
-| ![Von Quasar Jarosz in der Wikipedia auf Englisch, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=7616130](Assets/640px-Neuron_Hand-tuned.svg.png) | ![Von Action_potential.svg: Original by en:User:Chris 73, updated by en:User:Diberri, converted to SVG by tiZomderivative work: de:Benutzer:Jnns - Action_potential.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10316004](Assets/Aktionspotential.svg)| 
+| ![Von Quasar Jarosz in der Wikipedia auf Englisch, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=7616130](Assets/MedizinischeInformatik_Neuron_Hand-tuned.svg.png) | ![Von Action_potential.svg: Original by en:User:Chris 73, updated by en:User:Diberri, converted to SVG by tiZomderivative work: de:Benutzer:Jnns - Action_potential.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10316004](Assets/MedizinischeInformatik_Aktionspotential.svg)| 
 | -- | -- |
 
 Beide Gewebearten haben spezielle Eigenschaften:
@@ -151,9 +151,9 @@ Die verschiedenen Ryhtmen (Frequenzbänder) können beim EEG immer bestimmten Zu
 
 ![Aufmerksamkeitsbedingte Veränderungen](bilder/516.png)
 ### Positionen zur EEG Ableitung
-| ![Von Brylie Christopher Oxley - https://commons.wikimedia.org/wiki/File:International_10-20_system_for_EEG-MCN.svg, CC0, https://commons.wikimedia.org/w/index.php?curid=86731792](Assets/805px-International_10-20_system_for_EEG-MCN.png) | ![Von Albert Kok in der Wikipedia auf Niederländisch - Übertragen aus nl.wikipedia nach Commons., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=2213404](Assets/10-20.PNG) |
+| ![Von Brylie Christopher Oxley - https://commons.wikimedia.org/wiki/File:International_10-20_system_for_EEG-MCN.svg, CC0, https://commons.wikimedia.org/w/index.php?curid=86731792](Assets/MedizinischeInformatik_International_10-20_system_for_EEG-MCN.png) | ![Von Albert Kok in der Wikipedia auf Niederländisch - Übertragen aus nl.wikipedia nach Commons., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=2213404](Assets/MedizinischeInformatik_10-20.PNG) |
 | :--: | :--: |
-| ![Von Der ursprünglich hochladende Benutzer war MBq in der Wikipedia auf Deutsch - Henry Gray (1825–1861). Anatomy of the Human Body. 1918., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11794362](Assets/Gray_Surface-head.jpg) | |
+| ![Von Der ursprünglich hochladende Benutzer war MBq in der Wikipedia auf Deutsch - Henry Gray (1825–1861). Anatomy of the Human Body. 1918., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11794362](Assets/MedizinischeInformatik_Gray_Surface-head.jpg) | |
 
 ### Diagnostischer Informationsgehalt
 Anwendungsgebiete in Diagnostik und Therapie: Epilepsie, Objektive Perimetrie (objektive Vermessung des Gesichtsfeldes), Neurofeedback, Narkosetiefe, Schlafmedizin (Polysomnographie), Kognitionsforschung (Gedächtnisprozesse), Hirntodbestimmung, Schlaganfall, Tumore, Hirnreifung, Psychiatrische Erkrankungen
@@ -168,7 +168,7 @@ Elektrokardiogramm ist der zeitliche Verlauf der an der Körperoberfläche abgel
   - Ösophagus-EKG => EKG-Ableitung in der Speiseröhre
   - Intrakardiales EKG => EKG-Ableitung am offenen Herzen
 
-|![Von Tvanbr - Eigenes Werk, Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11616158](Assets/1117px-Anatomy_Heart_Latin_Tiesworks.jpg) | ![Von Kalumet - selbst erstellt = Eigenes Werk, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=438152](Assets/ECG_Principle_fast.gif) |
+|![Von Tvanbr - Eigenes Werk, Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=11616158](Assets/MedizinischeInformatik_Anatomy_Heart_Latin_Tiesworks.jpg) | ![Von Kalumet - selbst erstellt = Eigenes Werk, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=438152](Assets/MedizinischeInformatik_ECG_Principle_fast.gif) |
 | -- | -- |
 | Anatomie des Herzens | EKG-Komponenten einer Herzperiode |
 
@@ -206,7 +206,7 @@ Elektrokardiogramm ist der zeitliche Verlauf der an der Körperoberfläche abgel
 - Projektion der Horizontalebene
 - Referenzelektrode: Herzmitte => hochohmige Zusammenschaltung der Extremitätenableitung
 
-nach Wilson: ![Von Jmarchn - modified from Precordial_Leads.svg and Rib_Cage (Jeroen Hut), CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=9426668](Assets/Precordial_Leads_2.svg)
+nach Wilson: ![Von Jmarchn - modified from Precordial_Leads.svg and Rib_Cage (Jeroen Hut), CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=9426668](Assets/MedizinischeInformatik_Precordial_Leads_2.svg)
 
 
 #### Altersabhängigkeit der Herzachse
@@ -358,7 +358,7 @@ Signalpegelanpassung
 - Komperator mit Schwellspannung
 - Überschreitung = Interrupt am Mikrocontroller
 
-![Von Ernstl - Eigenes Werk, CC BY-SA 2.5, https://commons.wikimedia.org/w/index.php?curid=625305](Assets/960px-Defibrillator_Monitor_Closeup.jpg)
+![Von Ernstl - Eigenes Werk, CC BY-SA 2.5, https://commons.wikimedia.org/w/index.php?curid=625305](Assets/MedizinischeInformatik_Defibrillator_Monitor_Closeup.jpg)
 
 # Pulsoximetrie
 - Die Versorgung der Organe mit Sauerstoff ist für den Organismus von entscheidender Bedeutung.

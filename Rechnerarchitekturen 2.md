@@ -295,7 +295,7 @@ Einfache lokale Prädiktoren
 - Änderung der Vorhersage nur, wenn 2 falsche Vorhersagen in Folge
 - 2-Bit Branch-Prediction Buffer: Speicherung der Historie, Befehlsadressen als Zugriffsschlüssel
 
-![Sprungvorhersage](Assets/RA2_Sprungvorhersage.png)
+![Sprungvorhersage; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Sprungvorhersage.png)
 
 Vorhersagequalität für 2-Bit Prädiktor
 - Studie von 1992 für SPEC89 auf IBM Power-Architektur
@@ -414,7 +414,7 @@ Allgemeines Ziel: Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Reg
   - VLIW/EPIC
     - Feste Anzahl von Befehlen ausgegeben, definiert durch Befehlscode (weitgehende Planung der Issue-Phase durch Compiler)
 
-![In Order Pipeline](Assets/RA2_in-order-pipeline.png)
+![In Order Pipeline; Quelle RA2 Vorlesung 2020/21](Assets/RA2_in-order-pipeline.png)
 
 ## Superskalar
 statisch: Details der Befehlsausgabe
@@ -458,7 +458,7 @@ Scoreboarding
     - für FP-Pipeline (Operationen mit mehreren Taktzyklen)
     - und mehrere funktionale Einheiten (hier: 2 x Mult, Div, Add, Int)
 
-![Out Of Order Execution](Assets/RA2_out-of-order-execution.png)
+![Out Of Order Execution; Quelle RA2 Vorlesung 2020/21](Assets/RA2_out-of-order-execution.png)
 
 
 ### Verfahren von Tomasulo
@@ -529,7 +529,7 @@ VLIW (Very Long Instruction Word)-Prozessor
   - Rekompilierung für den Prozessor erforderlich (kein Universalrechner)
   - Größerer Speicherbedarf (Programm), wenn Code nicht parallelisiert werden kann.
 
-![VLIW Dynamisch](Assets/RA2_VLIW-dynamisch.png)
+![VLIW Dynamisch; Quelle RA2 Vorlesung 2020/21](Assets/RA2_VLIW-dynamisch.png)
 
 EPIC = Explicitely Parallel Instruction Computing = IA64
 - Im wesentlichen Prinzip des VLIW-Prozessors
@@ -549,10 +549,10 @@ Bei der IA64-Architektur werden verschiedene Ansätze verfolgt, um die Prozessor
     - Möglichst geringe Wartezeit auf Operanden
     - Schon im Compiler werden entsprechende Ladebefehle vorgezogen.
 
-![VLIW Vergleich](Assets/RA2_VLIW-vergleich.png)
+![VLIW Vergleich; Quelle RA2 Vorlesung 2020/21](Assets/RA2_VLIW-vergleich.png)
 
 ## Simultaneous Multithreading (SMT)
-![SMT](Assets/RA2_Simultaneous-Multithreading.png)
+![SMT; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Simultaneous-Multithreading.png)
 
 - Modellprozessor I (2-fach Superskalar)
 - Modellprozessor II (2-fach Out-of-Order)
@@ -581,7 +581,7 @@ Ansätze zur Effizienzsteigerung durch Mikroparallelität
    CD-ROM/DVD/BlueRay | 100ms | 50 GByte
    Magnetbänder | 100s | 5 TByte
 - Adresspipelining
-    ![Pipelining](Assets/RA2_Adresspipelining.png)
+    ![Pipelining; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Adresspipelining.png)
 - Matrixaufbau eines Speichers
   - Aufteilen der Speicheradresse in Zeilen- und Spaltenadresse
   - Lesezugriff auf Speicher
@@ -622,7 +622,7 @@ Ansätze zur Effizienzsteigerung durch Mikroparallelität
   - Zwischenpuffer und Logik zur Auffrischung
 
 Interleaving
-![Interleaving](Assets/RA2_Interleaving.png)
+![Interleaving; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Interleaving.png)
 
 ## Caches
 - Cache = schneller Speicher, der vor einen größeren, langsamen Speicher geschaltet wird
@@ -634,7 +634,7 @@ Interleaving
 - Organisation von Caches
   - Prüfung anhand der Adresse, ob benötigte Daten im Cache vorhanden sind („Treffer“; cache hit)
   - Falls nicht (cache miss): Zugriff auf den (Haupt-) Speicher, Eintrag in den Cache
-  - Prinzip eines Cache (Hit) ![Cachehit](Assets/RA2_Cachehit.png)
+  - Prinzip eines Cache (Hit) ![Cachehit; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Cachehit.png)
 - Cache-Strategien und Organisationen
   - Wo kann ein Block im Cache abgelegt werden?
     - Platzierung abhängig von der Organisationsform
@@ -659,7 +659,7 @@ Interleaving
       3. Fließbandzugriff auf den Speicher (EDO-RAM, SDRAM)
       4. Breite Speicher, die mehrere Worte parallel übertragen können
 - 2-Wege Cache (Datensicht)
-    ![2 Wege Cache](Assets/RA2_2-wege-cache.png)
+    ![2 Wege Cache; Quelle RA2 Vorlesung 2020/21](Assets/RA2_2-wege-cache.png)
   - 2-fach satz-assoziativer Cache
 - Organisationsformen von Caches
   - Direkt abgebildet (Direct mapping): Für caching von Befehlen besonders sinnvoll, weil bei Befehlen Aliasing sehr unwahrscheinlich ist
@@ -679,7 +679,7 @@ Schreibverfahren: Strategien zum Rückschreiben Cache → (Haupt-) Speicher
 - Copy-Back, conflicting use write back
   - Rückschreiben erfolgt erst, wenn Cache-Zeile bei Miss verdrängt wird
   - Funktioniert auch bei großen Geschwindigkeitsunterschieden zwischen Cache und Speicher. Vorkehrungen erforderlich, damit keine veralteten Werte aus dem Speicher kopiert werden.
-  ![Write Trough vs Write Back](Assets/RA2_cache-write-trough-vs-back.png)
+  ![Write Trough vs Write Back; Quelle RA2 Vorlesung 2020/21](Assets/RA2_cache-write-trough-vs-back.png)
 
 Trefferquote $T=\frac{N_C}{N_G}$ mit $N_G$ Gesamtzahl der Zugriffe auf Speicher und $N_C$ Anzahl der Zugriffe mit Hit auf Cache
 
@@ -712,23 +712,133 @@ Klassifikation nach Flynn
 | ein Befehlsstrom | SISD | SIMD |
 | mehrere Befehlsströme | MISD | MIMD |
 
-![SISD](Assets/RA2_SISD.png)
-![SIMD](Assets/RA2_SIMD.png)
-![MISD](Assets/RA2_MISD.png)
-![MIMD](Assets/RA2_MIMD.png)
+![SISD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SISD.png)
+![SIMD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SIMD.png)
+![MISD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MISD.png)
+![MIMD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MIMD.png)
 
 Speicherstrukturen:
-![Speicherstrukturen](Assets/RA2_Speicherstrukturen.png)
+![Speicherstrukturen; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Speicherstrukturen.png)
 
 Enge und lose Kopplung
-![Enge und lose Kopplung](Assets/RA2_Enge%20und%20lose%20Kopplung.png)
+![Enge und lose Kopplung; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Enge%20und%20lose%20Kopplung.png)
 
 Verbindungsnetzwerke
-![Verbindungsnetzwerke](Assets/RA2_Verbindungsnetzwerke.png)
-![Verbindungsnetzwerke2](Assets/RA2_Verbindungsnetzwerke2.png)
+![Verbindungsnetzwerke; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Verbindungsnetzwerke.png)
+![Verbindungsnetzwerke2; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Verbindungsnetzwerke2.png)
 
+Dual-Core-System mit mehrstufiger Bushierarchie
+![Dual Core System; Quelle RA2 Vorlesung 2020/21](Assets/RA2_DualCoreSystem.png)
 
-# Parallele Architekturen
+Reales Shared Memory System
+![Shared Memory System; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SharedMemorySystem.png)
 
+Cache(daten)-Kohärenz
+- Daten-Kohärenz
+  - Sagt aus, welcher Wert beim Lesen abgeliefert wird
+  - Bezug auf Lesen und Schreiben ein- und derselben Speicherzelle
+- Definition: Ein Speichersystem heißt kohärent, wenn
+  - bei einem Schreiben einer Zelle x durch einen Prozessor, welches von einem Lesen derselben Zelle gefolgt wird, das Lesen immer den geschriebenen Wert abliefert, sofern zwischen beiden Operationen kein Schreiben eines anderen Prozessors erfolgt;
+  - Bei einem Schreiben einer Zelle x durch einen Prozessor P, welches von einem Lesen derselben Zelle durch einen Prozessor P’ gefolgt wird, das Lesen immer den geschriebenen Wert abliefert, sofern zwischen beiden Operationen kein Schreiben eines anderen Prozessors erfolgt und sofern zwischen beiden Operationen hinreichend viel Zeit vergeht;
+  - Schreibvorgänge in die selbe Zelle serialisiert werden, d.h. zwei Schreibvorgänge durch zwei Prozessoren werden durch die übrigen Prozessoren in derselben Reihenfolge gesehen.
+  - Beispiel 1: 
+    - Variable X befindet sich in den Caches von P1, P2 und im Hauptspeicher: kohärente Ausgangssituation
+      ![Cache Kohärenz Beispiel; Quelle RA2 Vorlesung 2020/21](Assets/RA2_CacheKohärenz.png)
+    - P1 schreibt X = 1 in den Cache und in den Hauptspeicher
+    - P2 liest alten Wert aus Cache: inkohärentes Ergebnis
+  - Beispiel 2: 
+    - Variable X befindet sich im Cache von P1 und im Hauptspeicher: kohärente Ausgangssituation
+    - P1 schreibt X = 1 nur in den Cache
+    - P2 liest alten Wert aus Hauptspeicher: inkohärentes Ergebnis
+  - Beispiel 3:
+    - Kohärente Ausgangssituation
+    - Einlesen mittels Direct Memory Access (DMA)
+    - P2 liest alten Wert aus Cache: inkohärentes Ergebnis
+  - Beispiel 4:
+    - Kohärente Ausgangssituation
+    - P1 modifiziert X im Copy-Back Cache
+    - Inkonsistente Daten werden ausgegeben
+- Lösung des I/O-Problems
+  - Zuordnung einer I/O-Einheit zu jedem Prozessor
+    ![Cache I/O Einheit; Quelle RA2 Vorlesung 2020/21](Assets/RA2_CacheIOEinheit.png)
+  - Hardware-Lösung (I/O-Problem): Aufwändig, schlechte Lokalität der Daten
+  - Gemeinsamer Cache für alle Prozessoren: Hoher Hardware-Aufwand, geringe Effizienz
+  - Unterscheidung in cacheable und non-cacheable Daten: Hoher Aufwand (Programmierer, Compiler)
+  - Cache-Kohärenzprotokolle
+    - Snooping-Protokolle
+    - Directory-Protokolle
 
-# Leistungsbewertung
+Snooping-Protokolle
+- Die Caches aller Prozessoren beobachten alle Datenübertragungen von jedem Cache zum Hauptspeicher.
+- Voraussetzung: broadcastfähiges Verbindungsnetzwerk
+- Implementierungen
+  - Write Invalidate: Das Verändern eines Blocks im Speicher führt zur Invalidierung aller Cache-Kopien mit der gleichen Adresse
+  - Write Update / Write Broadcast: Das Verändern eines Blocks im Speicher führt zur Modifikation aller anderen Cache-Blöcke mit der gleichen Adresse
+
+Write-Through Cache - Write Invalidate Protokoll
+- P2 schreibt X = 1
+- Alle anderen Prozessoren invalidieren den Cache-Block
+
+Write-Through Cache - Write Update/Broadcast Protokoll
+- Kohärente Ausgangssituation
+- P2 schreibt X = 1
+- Alle anderen Prozessoren aktualisieren den Cache-Block
+
+Write-Through - Write Invalidate
+![WriteInvalidate; Quelle RA2 Vorlesung 2020/21](Assets/RA2_WriteInvalidate.png)
+
+Copy-Back
+- Problem: Copy-Back Caches führen zur temporären Inkonsistenz
+- Lösung: exklusives Eigentumskonzept durch Zustandsgraph pro Cache-Block
+  - MESI (Modified, Exclusive, Shared, Invalid)
+  - Mischung zwischen Write-Through und Copy-Back
+
+MESI: 
+- Vier Zustände
+  - **(exclusive) Modified**: Cache-Block wurde lokal geändert, die Kopie im Hauptspeicher ist ungültig. Will ein anderer Prozessor dieses Datum im Hauptspeicher lesen, so muss der Cache-Block erst in den Hauptspeicher zurückgeschrieben werden.
+  - **Exclusive (unmodified)**: Dieser Cache ist der einzige, der den Cache-Block enthält, Wert im Hauptspeicher ist gültig. Liest ein anderer Prozessor dieses Datum im Hauptspeicher, so muss die Zeile als shared markiert werden. Wird das Datum im Hauptspeicher verändert, ist der Cache-Block auf invalid zu setzen.
+  - **Shared (unmodified)**: Mehrere Caches (mind. 2) enthalten dieses Datum. Da alle bisher nur gelesen haben, ist das Datum im Hauptspeicher gültig. Schreibzugriffe auf einen shared Cache-Block müssen immer zu einer Bus-Operation führen, damit die Cache-Blocks der anderen Caches auf invalid gesetzt werden können.
+  - **Invalid**: Cache-Block ist noch gar nicht geladen bzw. veraltet/ungültig
+- Prozessoren können auf einen Speicherblock lesend oder schreibend zugreifen. Lese- und Schreiboperationen von Prozessoren lösen Operationen auf dem Bus aus.
+- Bus-Operationen
+  - **Bus Read**: wenn ein Prozessor Wert eines Speicherblocks lesen will
+  - **Bus Read Exclusive**: wenn ein Prozessor Wert eines Speicherblocks überschreiben will
+  - **Flush**: wenn ein Prozessor $P_i$ einen Speicherblock alleinig in seinem Cache hat, ein anderer Prozessor $P_j$ aber lesend oder schreibend auf diesen Block zugreift. Bei einer Flush-Operation legt $P_i$ ebenfalls das Datum des Speicherblocks auf den Bus.
+- Steuersignale
+  - **Invalidate-Signal**: Invalidieren des Blocks in den Caches anderer Prozessoren
+  - **Shared-Signal**: Signalisierung, ob ein zu ladendes Datum bereits als Kopie im Cache vorhanden ist
+  - **Retry-Signal**: Aufforderung von Prozessor $P_i$ an Prozessor $P_j$, das Laden eines Datums vom Hauptspeicher abzubrechen, da der Hauptspeicher noch ein altes, ungültiges Datum besitzt und vorher aktualisiert werden muss. Das Laden durch $P_j$ kann danach wiederholt werden.
+- ![MESI Protokoll; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MESI-Protokoll.png)
+- ![Zustände; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MESI-Zustände.png)
+- ![Bedingungen; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MESI-Bedingungen.png)
+- Bewertung von Snooping-Protokollen
+  - Leichte Implementierbarkeit bei Bus-basierten Shared Memory Systemen
+  - Snooping skaliert bei Bussen jedoch nicht
+    - Bei vielen beteiligten Prozessoren sinkt die effektive Bandbreite des Busses, da überproportional viele Invalidierungsnachrichten per Broadcast über den Bus gehen
+  - Punkt-zu-Punkt Netzwerke sind skalierbar, jedoch ist die Implementierung von Broadcasts hier aufwändig
+    - Für Snooping-Protokolle daher oft ungeeignet
+
+Directory-Protokolle
+- Beobachtung
+  - Nur wenige Prozessoren teilen sich die gleichen Daten in vielen Anwendungen
+  - Kenntnis nur dieser Prozessoren ist nötig
+- Directory-Protokolle
+  - Directory-Protokolle nutzen Lokalitätsinformationen, um die Anzahl an Invalidierungsnachrichten zu minimieren
+  - Nachrichten gehen nur an Prozessoren, die eine Kopie des Cache-Blocks besitzen
+  - Directory-Protokolle skalieren daher auch für Netze ohne Broadcast-Fähigkeit
+- Ansatz: Presence Flag Vector
+  - Im Hauptspeicher abgelegter Bit-Vektor für jeden einzelnen Speicherblock:
+  - 1 Bit pro Prozessor/Cache + Statusbits (dirty, modified)
+- Bewertung von Directory-Protokollen
+  - Problem: Wachstum des Speicherbedarfs linear mit Anzahl der Prozessoren
+  - Beispiel: Speicherblöcke von 64 Bytes Größe
+    - 64 Prozessoren = Overhead 12,69%
+    - 256 Prozessoren = Overhead 50,2%
+    - 1024 Prozessoren = Overhead 200,16%
+
+Multiprozessor-Konfiguration eines Hochleistungssystems
+![Multiprozessor-Konfiguration eines Hochleistungssystems; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MultiprozessorHochleistungssystem.png)
+
+IBM Blue Gene/L
+![Knoten; Quelle RA2 Vorlesung 2020/21](Assets/RA2_BlueGeneKnoten.png)
+![Architektur; Quelle RA2 Vorlesung 2020/21](Assets/RA2_BlueGeneArchitektur.png)

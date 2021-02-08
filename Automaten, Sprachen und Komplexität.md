@@ -1791,3 +1791,137 @@ Damit haben wir die folgende Struktur der Komplexitätsklassen:
 5. NEXPTIME
 6. EXPSPACE = NEXPSPACE
 
+Ziel dieser Vorlesung: Wer SAT „schnell“ lösen kann, der kann alle Probleme in NP (von denen es sehr viele gibt) „schnell“ lösen.
+
+## Typische Probleme, 2. Versuch
+> Satz: SAT 2 NP
+
+Beweis: Sei ' eine aussagenlogische Formel, in der die atomaren Formeln $x_1,...,x_n$ vorkommen. Eine nichtdeterministische Turingmaschine „rät“ nun in einer ersten Phase eine Belegung $B:\{x_1,...,x_n\}\rightarrow\{0, 1\}$:
+- Im ersten Schritt schreibt sie $x_1$ auf das Band und danach nichtdeterministisch 0 oder 1.
+- Im zweiten Schritt schreibt sie $x_2$ auf das Band und danach nichtdeterministisch 0 oder 1.
+- Im dritten Schritt ...
+
+Nach n Schritten steht ein Wort der Form $x_1 b_1 x_2 b_2 ...x_n b_n$ mit $b_1,...,b_n\in\{0, 1\}$ auf dem Band.
+Dieses Wort kodiert die Belegung B mit $B(x_i) = b_i$ für $1\leq i \leq n$.
+In einer zweiten Phase kann die Turingmaschine nun den Wert $B(\phi)$ deterministisch ausrechnen, indem die Formel $\phi$ einmal von links nach rechts durchlaufen, jede atomare Formel $x_i$ durch den Wert $B(x_i ) = b_i$ aus dem in der ersten Phase erzeugten „Belegungswort“ ersetzt, und dann die Formel „ausgerechnet“ wird.
+
+Die Maschine geht in eine akzeptierende Haltekonfiguration, wenn sie bei der Auswertung 1 erhält, sonst geht sie in eine nicht akzeptierende
+Haltekonfiguration. Dies benötigt höchstens $|\phi|^3$ Schritte, die TM hält also auf jeden Fall nach $O(|\phi|^3)$ Schritten.
+Außerdem gibt es genau dann eine akzeptierende Berechnung, wenn $\phi$ erfüllbar ist.
+
+Analog kann man zeigen:
+> Satz: DHC, 3C 2 NP
+
+Beweis: rate in polynomieller Zeit eine Lösung und überprüfe in polynomieller Zeit, daß es sich tatsächlich um eine solche handelt.
+
+## Polynomialzeit-Reduktionen
+Erinnerung: Reduktionen erlauben es, Probleme bzgl. der „Schwere der Lösbarkeit“ zu vergleichen.
+Allerdings sind sie für entscheidbare Probleme nicht sehr aussagekräftig:
+> Fakt: Seien $A, B \subset \sum^*$ entscheidbare Sprachen mit $\varnothing\not= B\not= \sum^*$. Dann gilt $A \leq B$.
+
+Wir werden jetzt Polynomialzeit-Reduktionen betrachten, die einen genaueren Vergleich der „Schwere der Lösbarkeit“ ermöglichen.
+
+Definition
+1. Eine Funktion $f:\sum^*\rightarrow\Gamma^*$ ist polynomial berechenbar, falls eine Turingmaschine M und ein Polynom $p(n)\in Poly$ existieren, so dass für alle $w\in\sum^*$ gilt: Wenn M mit der Eingabe w gestartet wird, hält M nach höchstens $p(|w|)$ vielen Schritten mit der Ausgabe $f(w)$ an.
+2. Eine Sprache $A\subseteq\sum^*$ ist polynomial reduzierbar auf eine Sprache $B\subseteq \Gamma^*$ (kurz $A\subseteq_P B$), falls eine polynomial berechenbare Funktion $f:\sum^*\rightarrow\Gamma^*$ existiert mit $\forall w\in\sum^*:(w\in A\leftrightarrow f(w)\in b)$.
+
+> Lemma: Wenn $A\leq_P B$ und $B\in P$ (bzw. $B\in NP$), dann gilt $A\in P$ (bzw. $A\in NP$).
+
+Beweis: Sei zunächst $A\leq_P B$ und $B\in P$. Dann existieren Polynome $p(n)$ und $q(n)$ sowie Turingmaschinen $M$ und $N$ mit folgenden Eigenschaften:
+- $M$ berechnet aus einer Eingabe $w\in\sum^*$ in Zeit $p(|w|)$ ein Wort $f(w)$, so dass gilt $w\in A\leftrightarrow f(w)\in B$. 
+  Beachte: Da die Maschine $M$ in $p(|w|)$ Schritten nur eine Ausgabe der Länge höchstens $p(|w|)+|w|$ erzeugen kann, gilt $f(w)\leq p(|w|) + |w|$.
+- N akzeptiert die Sprache B in Zeit $q(n)$.
+
+Eine Turingmaschine für die Sprache A arbeitet dann bei einer Eingabe w wie folgt:
+1. Berechne $f(w)$ (Zeitbedarf: $p |w|$).
+2. Simuliere die Maschine N auf $f(w)$ (Zeitbedarf: $q |f(w)|$). Der gesamte Zeitbedarf ist also $p |w| + q |f(w)| \leq p|w| + q(p|w| + |w|)$, was wieder ein Polynom ist.
+Die Aussage für die Klasse NP kann genauso bewiesen werden.
+
+## NP-Vollständigkeit
+> Definition: Eine Sprache B ist NP-hart, falls für alle $A\in NP$ gilt: $A \leq_P B$ (A ist mindestens so schwer wie jedes Problem in NP). Eine Sprache ist NP-vollständig, falls sie zu NP gehört und NP-hart ist.
+
+Intuition:
+- NP-vollständige Sprachen sind die schwierigsten Sprachen in NP.
+- Ist B NP-vollständig, so gilt $NP = \{ \text{A Sprache } | A \leq_P B \}$
+
+Noch wissen wir gar nicht, ob es überhaupt NP-vollständige Probleme gibt.
+
+Zunächst aber noch ein einfaches Resultat:
+> Lemma: Wenn B NP-vollständig ist, dann gilt: $P = NP\leftrightarrow B \in P$.
+
+Beweis:
+- $"\Rightarrow"$: Sei $P = NP$. Da B NP-vollständig ist, folgt $B\in NP = P$.
+- $"\Leftarrow"$: Sei $B\in P$ und sei $A\in NP$ beliebig. Da B NP-vollständig ist, folgt $A\leq_P B \in P$. Also gilt $NP\subseteq P$ und damit $NP = P$.
+
+> Satz (Stephen Cook & Leonid Levin): SAT ist NP-vollständig.
+
+Dieser Satz besagt insbesondere, daß es ein natürliches NP-vollständiges Problem gibt.
+Beweisstrategie: Sei $A\subseteq\sum^*$ in $NP\Rightarrow \exists$ Polynom $p$ und $p(n)$-zeitbeschränkte NTM M, die A akzeptiert o.E. habe jede Berechnung bei Eingabe von w genau die Länge $p(|w|)$. Aus $w\in\sum^*$ konstruieren wir aussagenlogische Formel $\phi_w$ mit $w\in A$
+- gdw. es gibt akzeptierende Berechnung $C_0 \vdash_M C_1 \vdash_M ... \vdash_M C_{p(|w|)}$ bei Eingabe von w 
+- gdw. $\phi_w$ ist erfüllbar, d.h. $\phi_w\in SAT$
+
+da $\phi_w$ polynomial berechnet werden kann, ist Abbildung $w\rightarrow\phi_w$ Polynomialzeitreduktion von A auf SAT, d.h. $A\leq_P SAT$.
+
+Seien $\Gamma= \{a_0, a_1,...,a_l\}$ Bandalphabet, $Z=\{z_0,...,z_k\}$ Menge der Zustände der NTM $M$ und $w=b_1 b_2...b_n\in\sum^*$. Wir verwenden die folgenden atomaren Formeln:
+
+Atomformel | Indizes | intendierte Bedeutung 
+-- | -- | --
+$zust_{t,z}$  | $0 \leq t \leq p(n); z \in Z$ | nach t Schritten befindet sich TM im Zustand z
+$pos_{t,i}$   | $0 \leq t \leq p(n); -p(n) \in i \in p(n)$ | nach t Schritten befindet sich Kopf auf Position i
+$band_{t,i,a}$| $0 \leq t \leq p(n); -p(n) \in i \in p(n); a\in\Gamma$ | nach t Schritten steht in Zelle i der Buchstabe a
+
+Ziel: Formel $\phi_w=\land_{1\leq i\leq 5} \phi_w^i$, so dass für alle Belegungen B gilt: $B(\phi_w)=1 \leftarrow B$ „kodiert“ akzeptierende Berechnung von M bei Eingabe von w .
+
+> Lemma: Aus $n\in\N$ kann eine aussagenlogische Formel $\gamma_n(x_0,...,x_n)$ in Zeit $O(n^3)$ berechnet werden, so dass
+- $|\gamma_n|\in O(n^3)$ und
+- für alle Belegungen B gilt: $B(\gamma_n) = 1$ gdw. $B(x_i) = 1$ für genau ein $i$ mit $0\leq i \leq n$
+  
+Beweis: $\gamma_n = \lor_{0\leq i \leq n} x_i \wedge \land_{0\leq i< j \leq n} \neg(x_i\wedge x_j)$
+- erste Teilformel: wenigstens ein $x_i$ ist wahr
+- zweite Teilformel: es gibt nicht zwei verschiedene atomare Formeln, die wahr sind
+- also: $B(n)=1$ gdw. $B(x_i)=1$ für genau ein $i$
+- $|\gamma_n| \leq c*(n + 1)^2 + d*(n + 1)^3 \in O(n^3)$ für gewisse $c$ und $d$
+
+$\phi_w^1$ ist die folgende Formel: $\land_{0\leq t\leq p(n)} [\gamma_k(zust_{t,z_0}, zust_{t,z_1},... zust_{t,z_k}) \wedge \gamma_{2p(n)}(pos_{t,-p(n)}, pos_{t,-p(n)+1}, ... pos_{t,p(n)}) \wedge \land_{-p(n)\leq i \leq p(n)} \gamma_l(band_{t,i,a_0}, band_{t,i,a_1},... band_{t,i,a_l} )]$
+Sie sagt aus: zu jedem Zeitpunkt $t$ mit $0\leq t \leq p(n)$ gilt:
+- die TM ist in genau einem Zustand (erste Zeile)
+- der Kopf ist an genau einer Position (zweite Zeile)
+- an jeder Position zwischen $p(n)$ und $p(n)$ steht genau ein Symbol aus (letzte Zeile)
+
+$\phi_w^2$ ist die folgende Formel: $zust_{0,z_0} \wedge pos_{0,0} \wedge \land_{0\leq i < n} band_{0,i,b_{i+1}} \wedge \land_{-p(n)\leq i <0 \text{ oder } n\leq i \leq p(n)} band_{0,i,\Box}$.
+Sie sagt aus: zum Zeitpunkt 0 gilt:
+- die TM ist im Initialzustand $z_0$,
+- der Kopf befindet sich auf der Position 0,
+- auf den Positionen $0,1,...,n_1$ steht das Wort $w = b_1 b_2...b_n$ und
+- auf restlichen Positionen zwischen $p(n)$ und $p(n)$ steht 2.
+D.h. die Formel sagt aus, daß TM in Anfangskonfiguration mit Eingabe w startet.
+
+$\phi_w^3$ ist die folgende Formel: $\land[(zust_{t,a} \wedge pos_{t,i} \wedge band_{t,i,a}) \rightarrow \lor(zust_{t+1,z'} \wedge pos_{t+1,i+y} \wedge band_{t+1,i,a'})]$.
+Sie sagt aus: wenn zum Zeitpunkt t die Maschine im Zustand z ist und das Zeichen a auf Position i liest, so existiert eine Anweisung $(z_0, a_0, M)\in (a, z)$, so dass Maschine zum Zeitpunkt $t+1$ im Zustand $z_0$ ist, an Position i das Symbol $a_0$ steht, und der Kopf sich entsprechend bewegt hat.
+
+$\phi_w^4$ ist die folgende Formel: $\land_{(a)}((\neg pos_{t,i} \wedge band_{t,i,a}) \rightarrow band_{t+1,i,a})$ wobei $(a)$ für $0\leq t < t < p(n),\neg p(n)\leq i \leq p(n), a\in\Gamma$ steht. Sie sagt aus: wenn zum Zeitpunkt t der Kopf nicht an Position i steht, so wird dieses Symbol im nächsten Zeitpunkt nicht geändert.
+
+$\phi_w^5$ ist die folgende Formel: $\lor_{(a)}(pos_{p(n),i} \wedge zust_{p(n),z} \wedge band_{p(n),i,a} \wedge \land band_{p(n),j,\Box})$. wobei $(a)$ für $-p(n)\leq i \leq p(n), z\in E, a\in\Gamma$ mit $\delta(z,a)\supseteq\{(z,a,N)\}$ steht. 
+Sie sagt aus, daß sich die TM zum Zeitpunkt $p(n)$ in einer akzeptierenden Haltekonfiguration befindet.
+Damit ist die Konstruktion von $\phi_w = \phi_w^1 \wedge \phi_w^2 \wedge \phi_w^3 \wedge \phi_w^4 \wedge \phi_w^5$ abgeschlossen
+Noch zu zeigen:
+- $w\in A$ gdw. $\phi_w$ erfüllbar
+- Die Abbildung $w\rightarrow \phi_w$ ist polynomial berechenbar.
+
+zu zeigen: $w\in A \rightarrow \phi_w$ erfüllbar
+Sei $w\in A$. Dann existiert akzeptierende Berechnung von M bei Eingabe von w, diese hat die Länge $p(n)$. Da sich Kopf höchstens $p(n)$ viele Schritte bewegen kann, sind in jeder Konfiguration höchstens die Positionen $p(n)$ bis $p(n)$ beschrieben. Mit in der Tabelle weiter oben angegebener Bedeutung der atomaren Formeln wird jede der Teilformeln $\phi_w^i$ wahr, also auch $\phi_w$.
+Sei nun B Belegung der Variablen mit $B(\phi_w) = 1$
+- da $B(\phi_w^1) = 1$, bestimmen die Werte der atomaren Formeln $zust_{t,q}, pos_{t,i}$ und $band_{t,i,a}$ für jeden Zeitpunkt $0\leq t \leq p(n)$ eine Konfiguration $C_t$
+- da $B(\phi_w^2) = 1$, ist $C_0$ die Anfangskonfiguration bei Eingabe von w
+- wegen $B(\phi_w^3 \wedge \phi_w^4) = 1$ gilt $C_t \vdash_M C_{t+1}$ für alle $0\leq i < p(n)$
+- wegen $B(\phi_w^5) = 1$ ist $C_{p(n)}$ akzeptierende Konfiguration, also wird w von M akzeptiert, d.h. $w\in L(M) = A$.
+
+Länge von $\phi_w$: es gibt Konstanten $c_i\leq 1$ mit $|\phi_w^i| \leq c_i*p(|w|)^3$ für alle $i\in\{1,2,3,4,5\}$, also $|\phi_w|\in O(p(|w|)^3)$.
+Aufgrund der einfachen Struktur von $\phi_w$ wird nur Zeit $|\phi_w|$ benötigt, um diese Formel auszurechnen.
+
+Zusammenfassung:
+- Die von uns betrachteten typischen Problem sind in NP.
+- Ein Problem ist NP-vollständig, wenn es zu NP gehört und sich jedes Problem aus NP in polynomieller Zeit darauf reduzieren läßt, es also „eines der schwersten Probleme in NP ist“.
+- Satz von Cook-Levin: SAT is NP-vollständig.
+- Wer also SAT „schnell“ lösen kann, der kann alle Probleme in NP (von denen es sehr viele gibt) „schnell“ lösen.
+

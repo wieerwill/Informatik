@@ -1925,3 +1925,172 @@ Zusammenfassung:
 - Satz von Cook-Levin: SAT is NP-vollständig.
 - Wer also SAT „schnell“ lösen kann, der kann alle Probleme in NP (von denen es sehr viele gibt) „schnell“ lösen.
 
+## Weitere NP-vollständige Probleme
+Nicht nur SAT, sondern auch viele andere Probleme sind NP-vollständig, d.h. für jedes dieser Probleme A gilt:
+  Wer A „schnell“ lösen kann, der kann alle Probleme in NP „schnell“ lösen.
+
+Wir betrachten nun folgende Reduktionen und weisen dadurch nach, dass alle diese Probleme NP-hart sind (sie sind auch in NP und damit NP-vollständig).
+$SAT \leq_P 3-SAT \leq_P 3C$ und $3-SAT \leq_P DHC \leq_P HC \leq_P TSP$
+- 3-SAT: Ist eine aussagenlogische Formel in konjunktiver Normalform mit $\leq 3$ Literalen pro Klausel erfüllbar?
+- 3C: Ist ein ungerichteter Graph drei-färbbar?
+- DHC: Enthält ein gerichteter Graph einen Hamiltonkreis?
+- HC: Enthält ein ungerichteter Graph einen Hamiltonkreis?
+- TSP: Travelling Salesman Problem
+
+### 3-SAT ist NP-vollständig
+Ein Literal ist eine möglicherweise negierte atomare Formel, d.h. eine Formel der Form $x_i$ oder $\neg x_i$. Eine Klausel ist eine Disjunktion von Literalen, z.B. ($x_1 \vee \neg x_2 \vee x_3$).
+> Erfüllbarkeitsproblem 3-SAT
+> - EINGABE: eine aussagenlogische Formel $\phi$ in konjunktiver Normalform mit höchstens drei Literalen pro Klausel.
+> - FRAGE: Hat $\phi$ eine erfüllende Belegung?
+
+> Definition 3-SAT: 3-SAT ist die Menge der erfüllbaren aussagenlogischen Formeln in konjunktiver Normalform mit höchstens drei Literalen pro Klausel.
+
+Beispiel: Die Formel $\phi= (x_1\vee\neg x_2)\wedge (x_1\wedge x_2 \wedge x_3) \wedge\neg x_1 \wedge\neg x_3$ ist in der geforderten Form und hat keine erfüllende Belegung. Das heißt $\phi\not = 3-SAT$.
+
+> Satz: Das Problem 3-SAT ist NP-vollständig.
+
+Beweis: Wie SAT ist auch 3-SAT in NP. Für die NP-Härte reicht es, SAT $\leq_P$ 3-SAT zu zeigen (da SAT nach dem Satz von Cook-Levin NP-hart ist). Wir müssen also in polynomieller Zeit aus einer beliebigen Formel $\phi$ eine Formel $\phi'$ in KNF mit höchstens drei Literalen pro Klausel bestimmen, so dass $\phi$  erfüllbar $\leftrightarrow \phi'$ erfüllbar
+
+Beispiel: $\phi=(x_1 \vee\neg x_2)\vee(x_2 \wedge x_3)$
+1. Schritt: Betrachte die Formel $\phi$ als Baum, dessen innere Knoten mit den Operatoren $\vee, \wedge$ und $\neg$ und dessen Blätter mit atomaren Formeln $x_i$ beschriftet sind.
+2. Schritt: Ordne jedem inneren Knoten eine neue atomare Formeln $y_0, y_1, y_2,...$ zu. Der Wurzel wird $y_0$ zugeordnet.
+3. Schritt: für jeden inneren Knoten bilden wir eine Formel und betrachten deren Konjunktion (zusammen mit der Formel $y_0$):
+   - ist $y_i$ die Beschriftung eines inneren Knotens mit Operator $\neg$ und $u$ die des Kindes, so betrachte Formel $y_\leftrightarrow\neg u$
+   - ist $y_i$ die Beschriftung eines inneren Knotens mit binärem Operator und sind $u, v$ die Beschriftungen der Kinder, so betrachte Formel $y_i\leftrightarrow u\circ v$
+   - In unserem Beispiel ergibt sich: $(y_0\leftrightarrow(y_1\vee y_2))\wedge(y_1\leftrightarrow(x_1\vee y_3))\wedge(y_2\leftrightarrow(x_2\wedge x_3))\wedge(y_3\leftrightarrow\neg x_2)\wedge y_0$. Beachte: die so konstruierte Formel ist erfüllbar gdw. $\phi$ erfüllbar
+4. Schritt: Forme diese Formel in die verlangte konjunktive Normalform mit maximal drei Literalen pro Klausel um: $y\leftrightarrow (u\vee v)\equiv(\neg y\vee u\vee v)\wedge(\neg u\vee y)\wedge(\neg v\vee y)$. Damit erhält man eine Formel $\phi'$, die genau dann erfüllbar ist, wenn $\phi$ erfüllbar ist. Außerdem wurden alle Umformungsschritte mit nur polynomialem Aufwand durchgeführt.
+
+Wir haben gezeigt:
+> Satz: Die Probleme SAT und 3-SAT sind NP-vollständig.
+
+Das heißt, schon Formeln in KNF mit höchstens drei Literalen pro Klausel enthalten „die volle Schwierigkeit des Erfüllbarkeitsproblems“ SAT. Was ist mit noch einfacher aussehenden Formeln?
+- DNF: Das Erfüllbarkeitsproblem ist in P.
+- 2-SAT: Formeln in KNF, die höchstens zwei Literale pro Klausel enthalten?
+
+> Satz: Es ist in Polynomialzeit entscheidbar, ob eine Formel $\phi$ in KNF mit höchstens zwei Literalen pro Klausel erfüllbar ist. 
+Beweisidee: konstruieren gerichteten Graphen G:
+- Für jede atomare Formel $x$ aus $\phi$ gibt es die Knoten $x$ und $\neg x$.
+- Für jede Klausel $\alpha\vee\beta$ in $\phi$ gibt es Kanten $\~\alpha\rightarrow\beta$ und $\~\beta\rightarrow\alpha$, wobei $\~x =\neg x$ und $\~\neg x=x$ gelte.
+
+Dann sind äquivalent:
+1. $\phi$ ist nicht erfüllbar.
+2. es gibt atomare Formel $x$ und Pfad $x\rightarrow^*\neg x \rightarrow^* x$ (d.h., $x$ und $\neg x$ liegen in derselben starken Zusammenhangskomponente).
+
+Dies kann in Polyomialzeit entschieden werden.
+
+Wir haben gezeigt:
+> Satz
+>- Die Erfüllbarkeitsprobleme SAT und 3-SAT sind NP-vollständig.
+>- Das Erfüllbarkeitsproblem 2-SAT ist in P.
+
+Die Grenze zwischen „einfachen“ und „schwierigen“ Formeln liegt also zwischen Formeln in KNF mit höchstens zwei bzw. höchstens drei Literalen pro Klausel.
+
+## 3C ist NP-vollständig
+k-Färbbarkeit von Graphen
+- EINGABE: Ein ungerichteter Graph $G = (V , E )$.
+- FRAGE: Gibt es Zuordnung von k verschiedenen Farben zu Knoten in V, so dass keine zwei benachbarten Knoten $v_1,v_2$ dieselbe Farbe haben?
+
+> Definition kC: kC ist die Menge der ungerichteten Graphen, die sich mit k Farben färben lassen.
+
+Ein Graph ist genau dann 2-färbbar, wenn er bipartit ist. Das Problem 2C ist also in P.
+
+> Satz: Das Problem 3C ist NP-vollständig.
+
+Beweis: $3C\in NP$ ist einfach zu sehen, da eine Färbung geraten und in polynomieller Zeit überprüft werden kann, ob sie die Bedingungen erfüllt. Für die NP-Härte zeigen wir $3-SAT \leq_P 3C$: Wir bestimmen dazu eine Reduktionsfunktion, die einer gegebenen Formel $\phi$ einen gerichteten Graphen G zuordnet, so dass $\phi$ genau dann erfüllbar ist, wenn G drei-färbbar ist.
+Dabei können wir davon ausgehen, dass $\phi$ in konjunktiver Normalform ist und höchstens drei Literale pro Klausel hat.
+
+Sei also $\phi$ Formel in KNF, deren Klauseln genau drei Literale enthalten (ggf. ersetze z.B. $x_1\vee x_2$ durch $x_1\vee x_2\vee x_2$). Der Graph G setzt sich wie folgt zusammen:
+- ein zentrales Dreieck
+- für jede atomare Formel x das folgende Atomformel-Dreieck (das den Knoten z des zentralen Dreiecks enthält)
+- für jede Klausel $\alpha\vee\beta\vee\gamma$ den folgenden Klausel-Teilgraphen (der die Knoten $tt$ des zentralen und $\alpha,\beta$ und $\gamma$ der Atomformel-Dreiecke enthält)
+
+![Dreieckfärbung](Assets/ASK_Dreieckfaerbung1.png)
+
+![Dreieckfärbung](Assets/ASK_Dreieckfaerbung2.png)
+
+![Dreieckfärbung](Assets/ASK_Dreieckfaerbung3.png)
+
+![Dreieckfärbung](Assets/ASK_Dreieckfaerbung4.png)
+
+## DHC ist NP-vollständig
+> DHC - Gerichteter Hamiltonkreis
+> - EINGABE: ein gerichteter Graph $G = (V , E )$ mit Knotenmenge $V$ und Kantenmenge $E\supseteq V\times V$.
+> - FRAGE: Besitzt der Graph G einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, dass jeder Knoten genau einmal besucht wird?
+
+> Definition DHC: DHC ist die Menge der gerichteten Graphen, die einen Hamiltonkreis enthalten.
+
+Beispiele: für Graphen mit und ohne Hamiltonkreis
+![Hamiltonkreise](Assets/ASK_Hamiltonkreise.png)
+
+Man kennt keine Charakterisierung dieser Graphen wie im Satz über die Existenz von Eulerkreisen (obwohl man seit 1857 danach sucht)
+
+> Satz: Das Problem DHC ist NP-vollständig.
+
+Beweis: zunächst gilt $DHC\in NP$, denn man kann einen Hamilton-Kreis raten und in polynomieller Zeit prüfen, ob es sich tatsächlich um einen handelt.
+noch zu zeigen ist NP-Härte, wofür $3-SAT\leq_P DHC$ ausreicht. Wir bestimmen dazu eine Reduktionsfunktion, die einer gegebenen Formel $\phi$ einen gerichteten Graphen G zuordnet, so dass $\phi$ genau dann erfüllbar ist, wenn G einen Hamiltonkreis besitzt.
+Dabei können wir davon ausgehen, dass $\phi$ in konjunktiver Normalform ist und höchstens drei Literale pro Klausel hat.
+
+Sei also $\phi$ Formel in KNF mit Klauseln $c_1,c_2,...,c_M$ und atomaren Formeln $x_1,x_2,...,x_N$.
+Ziel: Berechnung eines gerichteten Graphen G in polynomieller Zeit, der genau dann einen Hamilton-Kreis enthält, wenn $\phi$ erfüllbar ist. Der Graph G enthält
+- für jede Klausel $c_j$ einen Knoten $C_j(1\leq j \leq M)$ und
+- für jede atomare Formel $x_i$ das folgende „Diamantengadget“ $D_i (1\leq i\leq N)$
+  ![Diamantengadget](Assets/ASK_Diamantengadget.png)
+
+Die Diamantengadgets $D_i$ werden „in einem Ring angeordnet“ durch Kanten $(t_i,s_{i+1})$ (für alle $1\leq i < N$) und $(t_N,s_1)$.
+$\rightarrow$ jeder Hamiltonkreis muß die Gadgets in der Reihenfolge $D_1, D_2,...,D_N$ durchlaufen und jedes Gadget von rechts nach links oder umgekehrt
+- Idee: Durchlauf von $D_i$ von links nach rechts kodiert „die atomare Formel $x_i$ wird mit 1 belegt“, Durchlauf von $D_i$ von rechts nach links kodiert „die atomare Formel $x_i$ wird mit 0 belegt“ 
+  - damit: Hamiltonkreise in diesem „Ring“ entsprechen den Belegungen der atomaren Formeln $x_1,...,x_N$
+  - Enthält die Klausel $c_j$ das Literal $x_i$ , so füge Kantenzug $v_{i,j}\rightarrow C_j \rightarrow v_{i,j+1}$ hinzu
+- Idee: Durchlauf von $D_i$ von links nach rechts hieß „atomare Formel $x_i$ mit 1 belegt“, also Klausel $c_j$ wahr - und der ihr zugeordnete Knoten $C_j$ kann im Hamiltonkreis beim Durchlauf von $D_i$ besucht werden
+  - Enthält die Klausel $c_j$ das Literal $\neg x_i$, so füge Kantenzug $v_{i,j+1}\rightarrow C_j\rightarrow v_{i,j}$ hinzu
+- Idee: Durchlauf von $D_i$ von rechts nach links hieß „atomare Formel $x_i$ mit 0 belegt“, also Klausel $c_j$ wahr - und der ihr zugeordnete Knoten $C_j$ kann im Hamiltonkreis beim Durchlauf von $D_i$ besucht werden
+
+Damit gilt für den so definierten Graphen G:
+- G hat Hamilton-Kreis $\leftrightarrow\phi$ ist erfüllbar
+- G kann aus $\phi$ in polynomieller Zeit berechnet werden.
+also: $3-SAT \leq_P DHC$, womit folgt, daß DHC NP-hart und damit NP-vollständig ist.
+
+## HC ist NP-vollständig
+Im nächsten Schritt zeigen wir, dass auch das analoge Problem für ungerichtete Graphen NP-vollständig ist.
+
+> HC - Ungerichteter Hamiltonkreis
+> - EINGABE: ein ungerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\supseteq \binom{V}{2} = \{X\subseteq V | |X|=2\}$.
+> - FRAGE: Besitzt der Graph G einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, dass jeder Knoten genau einmal besucht wird?
+
+> Definition HC: ist die Menge der ungerichteten Graphen, die einen Hamiltonkreis enthalten.
+
+> Satz: Das Problem HC ist NP-vollständig.
+
+- Beweis: $HC\in NP$ ist einfach zu sehen, da ein Hamilton-Kreis geraten und in polynomieller Zeit überprüft werden kann, daß es sich in der Tat um einen Hamilton-Kreis handelt. Für die NP-Härte reicht es, $DHC\leq_P HC$ zu zeigen. Daher müssen wir zu jedem gerichteten Graphen G einen ungerichteten Graphen $G'$ konstruieren, so dass G genau dann einen Hamiltonkreis hat, wenn $G'$ einen Hamiltonkreis hat.
+- Idee: Ersetze einen Knoten mit ein- und ausgehenden Kanten wie folgt
+  ![Hamiltonkreiskanten](Assets/ASK_HamiltonkreisKanten.png)
+
+## TSP ist NP-vollständig
+Wir zeigen nun, daß auch das Travelling-Salesman-Problem NP-vollständig ist.
+
+> TSP - Travelling Salesman
+> - EINGABE: eine $n\times n$-Matrix $M = (M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
+> - FRAGE: Gibt es eine Tour durch alle Städte, die maximal die Länge d hat? Das heißt, gibt es eine Indexfolge $i_1,...,i_m$, so dass gilt:
+>   - $\{i_1,...,i_m\} = \{1,...,n\}$ (jede Stadt kommt vor)
+>   - $M_{i_1,i_2} + M_{i_2,i_3} +...+ M_{i_{m-1},i_m} + M_{i_m,i_1} \leq d$ (die Länge Tour ist höchstens d)
+
+> Satz: Das Problem TSP ist NP-vollständig.
+- Beweis: $TSP\in NP$ ist einfach zu sehen, da eine Indexfolge geraten und in polynomieller Zeit überprüft werden kann, ob sie die Bedingungen erfüllt.
+- Für die NP-Härte zeigen wir $HC\leq_P TSP$: Sei $G=(V,E)$ ein ungerichteter Graph, o.E. $V=\{1,...,n\}$. Wir konstruieren dazu folgende Matrix: $M_{i,j}=\begin{cases} 1\quad\text{ falls } \{i,j\}\in E\\ 2 \quad\text{ falls }\not\in E\end{cases}$
+- Außerdem setzen wir $d=n$.
+
+Zusammenfassung: Wer 3-SAT, 3C, DHC, HC, oder TSP „schnell“ lösen kann, der kann alle Probleme in NP „schnell“ lösen.
+
+## Zusammenfassung
+- Man kann entscheidbare Probleme klassifizieren bezüglich der Ressourcen, die zu ihrer Lösung benötigt werden (Zeit, Platz).
+- Man unterscheidet insbesondere zwischen Problemen, die in Polynomialzeit gelöst werden können (Probleme in P) und Problemen, bei denen in Polynomialzeit überprüft werden kann, ob eine geratene und polynomial große Lösung korrekt ist (Probleme in NP).
+- Die schwersten Probleme in der Komplexitätsklasse NP heißen NP-vollständig. Viele natürliche Problem fallen in diese Klasse. Für sie gibt es keine bekannten polynomialen Algorithmen.
+- Klassifiziert man die entscheidbaren Probleme bzgl. ihres Platzbedarfs, so erhält man Klassen wie PSPACE und EXPSPACE, die ebenfalls natürliche vollständige Probleme enthalten.
+
+> Church-Turing These:  Die Church-Turing These besagt, dass die Funktionen, die durch Turingmaschinen bzw. While-/Goto-Programme berechnet werden können, genau die intuitiv berechenbaren Funktionen sind. 
+
+> Unentscheidbarkeit: Probleme, die nicht durch Turing-Maschinen gelöst werden können, sind damit prinzipiell unlösbar (wenn auch u.U. semi-entscheidbar).
+
+> Erweiterte Church-Turing These: Die erweiterte Church-Turing These besagt, dass die Funktionen, die durch Turingmaschine bzw. While-/Goto-Programme in Polynomialzeit berechnet werden können, genau die intuitiv und effizient berechenbaren Funktionen sind.
+
+> NP und darüber: Probleme, die durch Turing-Maschinen nicht in Polynomialzeit gelöst werden können, sind damit prinzipiell nicht effizient lösbar.

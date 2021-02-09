@@ -1,4 +1,4 @@
-\documentclass[a4pape]{article}
+\documentclass[a4paper]{article}
 \usepackage[ngerman]{babel}
 \usepackage{multicol}
 \usepackage{calc}
@@ -13,7 +13,8 @@
 \usepackage{tikz}
 \usepackage{pdflscape}
 \usepackage{verbatim}
-\usetikzlibrary{mindmap}
+\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees}
+\tikzstyle{every node}=[draw=black,thin,anchor=west, minimum height=2em]
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
 
 \pdfinfo{
@@ -106,9 +107,13 @@
   \setlength{\multicolsep}{1pt}
   \setlength{\columnsep}{2pt}
 
+  \centering{
+    \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Uebersicht.png}
+  }
+
   \paragraph{Prozesse}
   \begin{itemize*}
-    \item Betriebssystem-Abstraktionen zur Ausführung von Programmen
+    \item BS-Abstraktionen zur Ausführung von Programmen
     \item Eigentümer von Ressourcen
     \item differenzierte Prozessmodelle: definieren konkrete Prozesseigenschaften
   \end{itemize*}
@@ -116,11 +121,11 @@
   \paragraph{Prozessmanagement}
   \begin{itemize*}
     \item Komponente eines Betriebssystems, die Prozessmodell dieses Betriebssystems implementiert
-    \item wichtige Aufgaben: Prozesserzeugung u. -beendigung (u. Scheduling)
-    \item wichtigste Datenstrukturen: Prozessdeskriptor, Prozessdeskriptortabelle
+    \item Aufgaben: Prozesserzeugung u. -beendigung (u. Scheduling)
+    \item Datenstrukturen: Prozessdeskriptor, -deskriptortabelle
   \end{itemize*}
 
-  \paragraph{Prozessdeskriptor (PCB)}
+  \paragraph{Prozessdeskriptor}
   Buchführung über sämtliche zum Management eines Prozesses notwendigen Informationen
   \begin{itemize*}
     \item Prozessidentifikation
@@ -134,59 +139,48 @@
   enthält: Prozessdeskriptoren aller momentan existierenden Prozesse
 
   \paragraph{Threads}
-  \begin{itemize*}
-    \item Betriebssystem-Abstraktionen für sequentielle, nebenläufige Aktivitäten
-    \item sind Gegenstand des Schedulings
-  \end{itemize*}
+  BS-Abstraktionen für sequentielle, nebenläufige Aktivitäten; sind Gegenstand des Schedulings
 
   \paragraph{Multithread-Prozessmodell}
-  \begin{itemize*}
-    \item vollständige Beschreibung einer ablaufenden Aktivität
-    \item Dazu gehören insbesondere
-    \begin{enumerate*}
-      \item das ablaufende Programm
-      \item zugeordnete Betriebsmittel (Prozessor/Speicher/Kommunikation)
-      \item Rechte
-      \item prozessinterne parallele Aktivitäten (Threads) und deren Bearbeitungszustände
-    \end{enumerate*}
-  \end{itemize*}
+  vollständige Beschreibung einer ablaufenden Aktivität. Dazu gehören insbesondere
+  \begin{enumerate*}
+    \item das ablaufende Programm
+    \item zugeordnete Betriebsmittel (Prozessor/Speicher/Kommunikation)
+    \item Rechte
+    \item prozessinterne parallele Aktivitäten (Threads) und deren Bearbeitungszustände
+  \end{enumerate*}
 
-  \paragraph{Threaddeskriptor (TCB)}
-  \begin{itemize*}
-    \item ein TCB enthält lediglich:
-    \begin{enumerate*}
-      \item Threadzustand (aktiv, bereit, blockiert, ...)
-      \item Ablaufkontext, falls nicht aktiv (Programmzähler, Stackpointer, Prozessorregister)
-    \end{enumerate*}
-    \item enthält nicht: Beschreibung der Ressourcen (Speicherlayout, Rechte)
-  \end{itemize*}
+  \paragraph{Threaddeskriptor}
+  ein TCB enthält lediglich:
+  \begin{enumerate*}
+    \item Threadzustand (aktiv, bereit, blockiert, ...)
+    \item Ablaufkontext, falls nicht aktiv (Programmzähler, Stackpointer, Prozessorregister)
+  \end{enumerate*}
+  enthält nicht: Beschreibung der Ressourcen (Speicherlayout, Rechte)
 
   \paragraph{Thread-Typen}
   \begin{itemize*}
     \item Kernel Level Threads (KLTs): Kenntnis über Threads: hat Betriebssystem, genauer: der Betriebssystem-Kern(el)
     \item User Level Threads (ULTs): Kenntnis über Threads: existiert nur auf Benutzer-Ebene (user level)
-    \item das Betriebssystem [genauer: der Betriebssystem-Kern(el)] weiß nicht, dass Threads existieren
+    \item der Betriebssystem-Kern(el) weiß nicht, dass Threads existieren
   \end{itemize*}
 
-  \paragraph{Scheduling: Grundaufgabe}
-  Entscheidung: Welche Threads erhalten wann u. wie lange einen Prozessor/Prozessorkern zugeteilt?
+  \paragraph{Scheduling}
+  Entscheidung: Welche Threads erhalten wann und wie lange einen Prozessor/Prozessorkern zugeteilt?
 
   \paragraph{Zustandsmodelle}
-  \begin{itemize*}
-    \item Threads können verschiedene Zustände annehmen (Beispiel 3/5-Zustandsmodell)
-    \item bereit, aktiv, blockiert, frisch, beendet
-  \end{itemize*}
+  Threads können verschiedene Zustände annehmen\\
+  Beispiel 3/5-Zustandsmodell)
   \centering{
     \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Zustandsmodell.png}
   }
 
   \paragraph{Scheduling: Notwendigkeit u. Sinn}
   \begin{itemize*}
-    \item im Allgemeinen: Anzahl der Aktivitäten >> Anzahl der Prozessoren
+    \item allg: Anzahl Aktivitäten $>>$ Anzahl Prozessoren
     \item nicht alle können gleichzeitig arbeiten
     \item eine Auswahl muss getroffen werden
-    \item Auswahlstrategie: Schedulingstrategie, ~algorithmus
-    \item die Betriebssystemkomponente: Scheduler
+    \item Auswahlstrategie: Schedulingstrategie, -Algorithmus
   \end{itemize*}
 
   \paragraph{Scheduling-Strategien}
@@ -198,43 +192,43 @@
     \end{itemize*}
     \item wichtige Strategien:
     \begin{itemize*}
-      \item FCFS
-      \item SRTN
-      \item Round Robin (ohne u. mit Prioritäten)
-      \item EDF
+      \item FCFS (First Come, First Served)
+      \item SRTN (Shortest Remaining Time Next)
+      \item Round Robin (ohne und mit Prioritäten)
+      \item EDF (earliest deadline first)
       \item ratenmonotones Scheduling
     \end{itemize*}
   \end{itemize*}
 
   \paragraph{Privilegierungsebenen}
   \begin{itemize*}
-    \item sind typischerweise "kernel mode" und "user mode"
-    \item steuern Rechte ...
+    \item sind typischerweise 'kernel mode' und 'user mode'
+    \item steuern Rechte
     \begin{itemize*}
       \item zur Ausführung privilegierter Prozessorinstruktionen
       \item zur Konfiguration des Arbeitsspeicherlayouts
       \item zum Zugriff auf Arbeitsspeicherbereiche
       \item zum Zugriff auf E/A-Geräte
     \end{itemize*}
-    \item ermöglichen: Durchsetzung von Regeln: "Nur ein im 'kernel mode' ablaufender Prozess hat Zugriff auf ..."
+    \item Durchsetzung von Regeln: "Nur ein im 'kernel mode' ablaufender Prozess hat Zugriff auf ..."
   \end{itemize*}
 
-  \paragraph{Kommunikation u. Synchronisation}
+  \paragraph{Kommunikation und Synchronisation}
   \begin{itemize*}
     \item Austausch von Daten zwischen Prozessen = Kommunikation (Inter-Prozess-Kommunikation, IPC)
     \item Abweichende Geschwindigkeiten von Sender und Empfänger: behandelt durch Synchronisation
   \end{itemize*}
 
-  \paragraph{kritischer Abschnitt und wechselseitiger Ausschluss}
+  \paragraph{kritischer Abschnitt}
   \begin{itemize*}
-    \item in einem kritischen Abschnitt darf sich stets nur ein Thread aufhalten
+    \item in kritischen Abschnitt darf stets nur ein Thread sein
     \item notwendig: wechselseitiger (gegenseitiger) Ausschluss
-    \item realisiert durch Entry- u. Exit-Code [z.B. die Semaphor-Operationen belegen (P) und freigeben (V)]
+    \item realisiert durch Entry- und Exit-Code z.B. die Semaphor-Operationen belegen (P) und freigeben (V)
   \end{itemize*}
 
   \paragraph{Mechanismen zur Synchronisation}
   \begin{itemize*}
-    \item Semaphore (binäre Semaphore u. mehrwertige Semaphore) (ansehen!)
+    \item binäre Semaphore und mehrwertige Semaphore
     \item (Hoar‘sche) Monitore
   \end{itemize*}
 
@@ -248,13 +242,13 @@
 
   \paragraph{Notwendigkeit des Ereignismanagement}
   \begin{itemize*}
-    \item in Betriebssystemen laufen sehr viele Aktivitäten parallel ab
+    \item in BS laufen sehr viele Aktivitäten parallel ab
     \item dabei entstehen immer wieder Situationen, in denen auf unterschiedlichste Ereignisse reagiert werden muss, z.B.
     \begin{itemize*}
       \item Timerablauf
       \item Benutzereingaben (Maus, Tastatur)
       \item Eintreffen von Daten von Netzwerken, Festplatten, ...
-      \item Einlegen/stecken von Datenträgern
+      \item Einlegen/-stecken von Datenträgern
       \item Aufruf von Systemdiensten
       \item Fehlersituationen
     \end{itemize*}
@@ -262,16 +256,16 @@
 
   \paragraph{Umgangsformen mit Ereignissen}
   \begin{itemize*}
-    \item "busy waiting"
-    \item "periodic testing"
-    \item Unterbrechungen ("Interrupts")
+    \item 'busy waiting'
+    \item 'periodic testing'
+    \item Unterbrechungen ('Interrupts')
   \end{itemize*}
 
-  \paragraph{Programmiermodelle zum Umgang mit Interrupts}
+  \paragraph{Programmiermodelle für Interrupts}
   \begin{itemize*}
-    \item Prozeduren (→ inline Prozeduraufrufmodell)
-    \item IPC-Operationen (→ IPC-Modell)
-    \item Threads (→ pop-up Thread Modell)
+    \item Prozeduren ($\rightarrow$ inline Prozeduraufrufmodell)
+    \item IPC-Operationen ($\rightarrow$ IPC-Modell)
+    \item Threads ($\rightarrow$ pop-up Thread Modell)
   \end{itemize*}
 
   \paragraph{Interrupts auf Anwendungsebene}
@@ -295,21 +289,21 @@
     \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Seitentabelleneinträge.png}
   }
   \begin{itemize*}
-    \item anwesend:Indikator, ob Seite im Arbeitsspeicher liegt ("present"-Bit)
-    \item benutzt: Indikator, ob auf die Seite zugegriffen wurde ("used/referenced"-Bit)
-    \item verändert: Indikator, ob Seite "schmutzig" ist ("dirty/modified"-Bit)
-    \item Schutz: erlaubte Zugriffsart je Privilegierungsebene ("access control list")
-    \item Caching: Indikator, ob Inhalt der Seite ge"cached" werden darf
+    \item anwesend: liegt Seite im Arbeitsspeicher? ('present'-Bit)
+    \item benutzt: wurde auf die Seite zugegriffen? ('used'-Bit)
+    \item verändert: ist Seite 'schmutzig'? ('dirty/modified'-Bit)
+    \item Schutz: erlaubte Zugriffsart je Privilegierungsebene ('access control list')
+    \item Caching: darf Inhalt der Seite gecached werden?
   \end{itemize*}
 
   \paragraph{Seitenaustauschalgorithmen}
   \begin{itemize*}
-    \item Optimale Strategie: Auslagerung derjenigen Arbeitsspeicherseite, deren ...
+    \item Optimal: Auslagern der Arbeitsspeicherseite, deren
     \begin{itemize*}
-      \item nächster Gebrauch am weitesten in der Zukunft liegt ("Hellseher")
-      \item Auslagerung nichts kostet (man müsste man wissen, ob eine Seite seit ihrer Einlagerung verändert wurde)
+      \item nächster Gebrauch am weitesten in der Zukunft liegt
+      \item Auslagerung nichts kostet
     \end{itemize*}
-    \item im Folgenden: einige Algorithmen, die sich diesem Optimum annähern:
+    \item einige Algorithmen, die sich diesem Optimum annähern:
     \begin{itemize*}
       \item First-In, First-Out (FIFO)
       \item Second-Chance
@@ -319,33 +313,29 @@
   \end{itemize*}
 
   \paragraph{i-Node}
-  i-Node: Metainformationen über genau eine Datei
+  Metainformationen über genau eine Datei
   \centering{
     \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_i-Node.png}
   }
 
   \paragraph{Verzeichnis}
-  Verzeichnis = Menge von Paaren (Name, i-Node-Index)
+  = Menge von Paaren (Name, i-Node-Index)
 
-  \paragraph{Superblock}
+  \paragraph{Superblock} = Einstiegspunkt eines Dateisystems. Enthält Schlüsselparameter:
   \begin{itemize*}
-    \item Superblock: Einstiegspunkt eines Dateisystems
-    \item enthält: Schlüsselparameter
-    \begin{itemize*}
-      \item Name des Dateisystems
-      \item Typ (NTFS, Ext * , HFS, ...) → Layout der Metadaten
-      \item Größe und Anzahl Sektoren
-      \item Ort und Größe der i-Node-Tabelle
-      \item Ort und Größe der Freiliste
-      \item i-Node-Nummer des Wurzelverzeichnisses
-    \end{itemize*}
+    \item Name des Dateisystems
+    \item Typ (NTFS, Ext * , HFS, ...) → Layout der Metadaten
+    \item Größe und Anzahl Sektoren
+    \item Ort und Größe der i-Node-Tabelle
+    \item Ort und Größe der Freiliste
+    \item i-Node-Nummer des Wurzelverzeichnisses
   \end{itemize*}
 
   \paragraph{Hardware-Prinzipien}
   \begin{itemize*}
-    \item\item Controller-Register
+    \item Controller-Register
     \begin{itemize*}
-      \item\item in E/A-Adressräumen
+      \item in E/A-Adressräumen
       \item im Arbeitsspeicher (Memory Mapped E/A)
       \item Isolation, Robustheit, Sicherheit
     \end{itemize*}
@@ -355,7 +345,7 @@
   \paragraph{Software-Prinzipien}
   Gerätemanager (Treiber)
   \begin{itemize*}
-    \item\item Auftragsmanagement
+    \item Auftragsmanagement
     \item ISRs
   \end{itemize*}
 
@@ -364,202 +354,241 @@
     \includegraphics[width=\textwidth/4]{Assets/Betriebssysteme_Architekturen.png}
   }
 
-  \paragraph{Sicherheit}
+  \paragraph{SELinux-Ansatz} neue Betriebssystem-Abstraktion
   \begin{itemize*}
-    \item\item Schutz des Betriebssystems
-    \item z.B. gegen Angriffe von außen
+    \item absolute Kontrolle über kritische Funktionen des Betriebssystems
+    \item spezifiziert durch Regelmenge
+    \item implementiert durch die SELinux-Sicherheitsarchitektur
   \end{itemize*}
 
-  \paragraph{SELinux-Ansatz}
+  \paragraph{Robustheit} Tolerierung unvorhergesehener Fehler und Ausfälle
   \begin{itemize*}
-    \item\item Sicherheitspolitiken in SELinux
-    \item neue Betriebssystem-Abstraktion
-    \begin{itemize*}
-      \item\item absolute Kontrolle über kritische Funktionen des Betriebssystems
-      \item spezifiziert durch Regelmenge
-      \item implementiert durch die SELinux-Sicherheitsarchitektur
-    \end{itemize*}
+    \item Mikrokernarchitekturen (Robuster als Makrokern)
+    \item Fehlerisolation
+    \item Möglichkeiten zur Fehlerbehebung (z.B. Micro-Reboot)
   \end{itemize*}
 
-  \paragraph{Robustheit}
+  \paragraph{Funktionale Eigenschaften}
   \begin{itemize*}
-    \item Ziel: Tolerierung unvorhergesehener Fehler und Ausfälle
-    \item Mikrokernarchitekturen: robuster als Makrokernarchitekturen
-    \item Gründe:
+    \item Authentisierung, Verschlüsselung
+    \item Informations-management
+    \item Kommunikations-management
+    \item Ressourcen-management
+  \end{itemize*}
+
+  \paragraph{Nichtfunktionale Eigenschaften}
+  \begin{itemize*}
+    \item     Sicherheit
+    \item Korrektheit
+    \item Echtzeitfähigkeit
+    \item Skalierbarkeit
+    \item Offenheit
+    \item Sparsamkeit
+    \item Verfügbarkeit
+    \item Robustheit
+  \end{itemize*}
+
+  \paragraph{Betriebssysteme}
+  \begin{itemize*}
+    \item     Mainframe
     \begin{itemize*}
-      \item\item Fehlerisolation
-      \item Möglichkeiten zur Fehlerbehebung (z.B. Micro-Reboot)
+      \item performante E/A
+      \item Massen-daten-verarbeitung
     \end{itemize*}
+    \item Server (Web Server, Fileshare)
+    \item Parallelrechner
+    \begin{itemize*}
+      \item parallele Algorithmen, hoher Rechenbedarf
+      \item schnelle IPC
+    \end{itemize*}
+    \item Desktop/Laptop
+    \item Echtzeit
+    \item Eingebettete
   \end{itemize*}
 
 
 \end{multicols}
-\newpage
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Überblick
-\begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=black!10,
-    level 1/.append style={level distance=4cm},
-    level 2/.append style={level distance=3cm, sibling angle=30},
-    every node/.append style={scale=0.8}]
-
-  \node{Betriebssysteme}
-  child [concept color=red!30]{ node {Prozessor-management}
-      child { node {Prozess-erzeugung}}
-      child { node {Prozess-terminierung}}
-      child { node {Threads}}
+\begin{tikzpicture}[
+    topic/.style={
+        minimum height=8mm,
+        text depth = 0pt,
+        text centered,
+        text width=5cm,
+        level distance=1mm,
+        sibling distance=5mm,
+        rounded corners=2pt},
+    subtopic/.style={
+        yshift=1.5cm,
+        text centered,
+        text width=3cm,
+        rounded corners=2pt,
+        fill=gray!10},
+    theme/.style={
+        grow=down,
+        xshift=-0.6cm,
+        text centered,
+        text width=3cm,
+        edge from parent path={(\tikzparentnode.205) |- (\tikzchildnode.west)}},
+    level1/.style ={level distance=1cm},
+    level2/.style ={level distance=2cm},
+    level3/.style ={level distance=3cm},
+    level4/.style ={level distance=4cm},
+    level5/.style ={level distance=5cm},
+    level6/.style ={level distance=6cm},
+    level 1/.style={sibling distance=4cm},
+    level 1/.append style={level distance=3cm},
+  ]
+  % Topic
+  \node[topic]{Betriebssysteme}
+  % Subtopic and Themes
+  child{ node [subtopic] {Prozessor-management}
+      child[theme,level1]{ node {Prozesserzeugung}}
+      child[theme,level2]{ node {Prozess-terminierung}}
+      child[theme,level3]{ node {Threads}}
     }
-  child [concept color=green!30]{ node {Scheduling}
-      child { node {Scheduler-aktivierung}}
-      child { node {Scheduling Strategien}}
+  child{ node [subtopic] {Scheduling}
+      child[theme,level1]{ node {Scheduler-aktivierung}}
+      child[theme,level2]{ node {Scheduling Strategien}}
     }
-  child [concept color=blue!30]{ node {Privilegierungs-ebenen}}
-  child [concept color=yellow!30]{ node {Kommunikation und\\Synchronisation}
-      child { node {Elementare Konzepte}}
-      child { node {wechselseitiger Ausschluss}}
-      child { node {Mechanismen}}
+  child{ node [subtopic] {Privilegierungs-ebenen}}
+  child{ node [subtopic] {Kommunikation \& Synchronisation}
+      child[theme,level1]{ node {Elementare Konzepte}}
+      child[theme,level2]{ node {wechselseitiger Ausschluss}}
+      child[theme,level3]{ node {Mechanismen}}
     }
-  child [concept color=orange!30]{ node {Speicher-management}
-      child { node {Speicher-technologien}}
-      child { node {Speicher-klassen}}
-      child { node {Relokation}}
-      child { node {Swapping}}
-      child { node {Virtueller Speicher}}
-      child { node {Segmentierung}}
+  child{ node [subtopic] {Speicher-management}
+      child[theme,level1]{ node {Speicher-technologien}}
+      child[theme,level2]{ node {Speicher-klassen}}
+      child[theme,level3]{ node {Relokation}}
+      child[theme,level4]{ node {Swapping}}
+      child[theme,level5]{ node {Virtueller Speicher}}
+      child[theme,level6]{ node {Segmentierung}}
     }
-  child [concept color=lime!30]{ node {Dateisystem}
-      child { node {Dateimodelle}}
-      child { node {Dateisysteme}}
-      child { node {Datenstrukturen \& Algorithmen}}
+  child{ node [subtopic] {Dateisystem}
+      child[theme,level1]{ node {Dateimodelle}}
+      child[theme,level2]{ node {Dateisysteme}}
+      child[theme,level3]{ node {Datenstrukturen \& Algorithmen}}
     };
 \end{tikzpicture}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Grundbegriffe
-\begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=black!40,
-    level 1/.append style={level distance=4cm, sibling angle=120},
-    level 2/.append style={level distance=3cm, sibling angle=30},
-    every node/.append style={scale=0.8}]
-  \node{Grundbegriffe}
-  child[concept color=red!30]{node{Funktionale Eigenschaften}
-      child{node{Authentisierung, Verschlüsselung}}
-      child{node{Informations-management}}
-      child{node{Kommunikations-management}}
-      child{node{Ressourcen-management}}
-    }
-  child[concept color=green!30]{node{Nichtfunktionale Eigenschaften}
-      child{node{Sicherheit}}
-      child{node{Korrektheit}}
-      child{node{Echtzeitfähigkeit}}
-      child{node{Skalierbarkeit}}
-      child{node{Offenheit}}
-      child{node{Sparsamkeit}}
-      child{node{Verfügbarkeit}}
-      child{node{Robustheit}}
-    }
-  child[concept color=blue!30]{node{Betriebssysteme}
-      child{ node {Mainframe}
-          child{ node {performante E/A}}
-          child{ node {Massen-daten-verarbeitung}}
-        }
-      child{ node {Server}
-          child{ node {Web Server, Fileshare}}
-        }
-      child{ node {Parallelrechner}
-          child{ node {parallele Algorithmen, hoher Rechenbedarf}}
-          child{ node {schnelle IPC}}
-        }
-      child{ node {Desktop/Laptop}
-          child{ node {Interaktivität \& Responsivität}}
-        }
-      child{ node {Echtzeit}
-          child{ node {Einhaltung zeitlicher Garantien}}
-          child{ node {Fahrzeug-, Anlagensteuerung}}
-        }
-      child{ node {Eingebettete}
-          child{ node {Controller, Kaffeemaschinen,...}}
-        }
-    }
-  ;
-\end{tikzpicture}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prozessormanagement
-\begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=red!40,
-    level 1/.append style={level distance=4cm, sibling angle=90},
-    level 2/.append style={level distance=3cm, sibling angle=35},
-    every node/.append style={scale=0.8}]
-  \node{Prozessor-management}
-  child[concept color=blue!30]  { node {Prozess-erzeugung}
-      child { node {Vorraussetzungen}
-          child { node {Rechte}}
-          child{ node {Ressourcen Verfügbar}}
-          child{ node {Sicherheit}}
-          child{ node{Fariness}}
-          child{node{Robustheit / Überlastungsvermeidung}}
+\begin{tikzpicture}[
+    topic/.style={
+        text centered,
+        text width=5cm,
+        level distance=1mm,
+        sibling distance=5mm,
+        rounded corners=2pt
+        },
+    subtopic/.style={
+        yshift=1.5cm,
+        text centered,
+        text width=3cm,
+        rounded corners=2pt,
+        fill=gray!10
+        },
+    theme/.style={
+        grow=down,
+        xshift=-0.6cm,
+        text centered,
+        text width=3cm,
+        edge from parent path={(\tikzparentnode.205) |- (\tikzchildnode.west)}
+        },
+    description/.style={
+        grow=down,
+        xshift=-0.5cm,
+        right,
+        text centered,
+        edge from parent path={(\tikzparentnode.200) |- (\tikzchildnode.west)}
+      },
+    level1/.style ={level distance=1cm},
+    level2/.style ={level distance=2cm},
+    level3/.style ={level distance=3cm},
+    level4/.style ={level distance=4cm},
+    level5/.style ={level distance=5cm},
+    level6/.style ={level distance=6cm},
+    level7/.style ={level distance=7cm},
+    level8/.style ={level distance=8cm},
+    level9/.style ={level distance=9cm},
+    level 1/.style={sibling distance=5.5cm},
+    level 1/.append style={level distance=2.5cm},
+  ]
+  % Topic
+  \node[topic]{Prozessormanagement}
+  % Subtopic and Themes
+  child{ node [subtopic] {Aufgaben}
+      child[theme, level1]{node{Prozess-identifikation}}
+      child[theme, level2]{node{Scheduling}}
+      child[theme, level3]{node{Ereignis-management}}
+      child[theme, level4]{node{Rechte-management}}
+      child[theme, level5]{node{Speicher-management}}
+      child[theme, level6]{node{Prozessor-management}}
+      child[theme, level7]{node{Kommunikations-management}}
+      child[theme, level8]{node{Virtueller Adressraum}}
+      child[theme, level9]{node{allg Ressourcen Management}}
+    }
+  child{ node [subtopic] {Prozesserzeugung}
+      child[theme,level1]{ node {Vorraussetzungen}
+          child[description,level distance=1cm]{ node {Rechte}}
+          child[description,level distance=2cm]{ node {Ressourcen Verfügbar}}
+          child[description,level distance=3cm]{ node {Sicherheit}}
+          child[description,level distance=4cm]{ node{Fariness}}
+          child[description,level distance=5cm]{node{Robustheit / Überlastvermeidung}}
         }
-      child { node {Namens-vergabe}
-          child{node{eindeutig bzgl allen existierenden}}
-          child{node{nicht eindeutig bzgl allen}}
+      child [theme,level distance=7cm]{ node {Namens-vergabe}
+          child[description,level distance=1cm]{node{eindeutig bzgl allen existierenden}}
+          child[description,level distance=2cm]{node{nicht eindeutig bzgl allen}}
         }
-      child { node {Stammbaum-pflege}
-          child{node{erzeugt Kinder}}
-          child{node{baumartige Hierarchie}}
-          child{node{Verwaiste Prozesse -> Adoption}}
+      child [theme,level distance=10cm]{ node {Stammbaumpflege}
+          child[description,level distance=1cm]{node{erzeugt Kinder}}
+          child[description,level distance=2cm]{node{baumartige Hierarchie}}
+          child[description,level distance=3cm]{node{Verwaiste Prozesse $->$ Adoption}}
         }
-      child { node {Allokation (von Ressourcen)}
-          child{node{Arbeits-speicher}
-              child{node{Größe}}
-              child{node{Zeitpunkt}}
-            }
-          child{node{Prozessorzeit}}
-          child{node{Format}
-              child{node{a.out (ehem UNIX)}}
-              child{node{Mach Object (iOS)}}
-              child{node{Executeable and Link(age/able) (Linux)}}
-            }
+      child [theme,level distance=14cm]{ node {Allokation (von Ressourcen)}
+          child[description,level distance=1cm]{node{Arbeits-speicher Größe}}
+          child[description,level distance=2cm]{node{Zeitpunkt}}
+          child[description,level distance=3cm]{node{Prozessorzeit}}
+          child[description,level distance=4cm]{node{Format}}
         }
     }
-  child[concept color=red!30]  { node {Prozess Management}
-      child{node{Prozess-identifikation}}
-      child{node{Scheduling}}
-      child{node{Ereignis-management}}
-      child{node{Rechte-management}}
-      child{node{Speicher-management}}
-      child{node{Prozessor-management}}
-      child{node{Kommu-nikations-management}}
-      child{node{Virtueller Adressraum}}
-      child{node{allg Ressourcen Management}}
-    }
-  child[concept color=green!30]  { node {Prozess-terminierung}
-      child{node{durch}
-          child{node{Aufgabe erledigt}}
-          child{node{Fehler aufgetreten}}
-          child{node{durch Nutzer geschlossen}}
+  child{ node [subtopic] {Prozessterminierung}
+      child[theme,level distance=1cm]{node{durch}
+          child[description,level distance=1cm]{node{Aufgabe erledigt}}
+          child[description,level distance=2cm]{node{Fehler aufgetreten}}
+          child[description,level distance=3cm]{node{durch Nutzer geschlossen}}
         }
-      child{node{Folgen}
-          child{node{Freigabe der Ressourcen}}
-          child{node{Benachrichtigung der "Parents"}}
-          child{node{Adoption der "Children"}}
+      child[theme,level distance=5cm]{node{Folgen}
+          child[description,level distance=1cm]{node{Freigabe der Ressourcen}}
+          child[description,level distance=2cm]{node{Benachrichtigung der 'Parents'}}
+          child[description,level distance=3cm]{node{Adoption der 'Children'}}
         }
     }
-  child[concept color=yellow!30]  { node {Threads}
-      child{node{sequenziell innerhalb eines Prozesses}}
-      child{node{Kernel Level Thread}
-          child{node{Implementiert im Betriebssystem}}
-          child{node{Betriebssystem hat Kenntnis über Thread}}
-          child{node{Multi-Thread-modell}}
-          child{node{Performance durch Parallelität}}
-          child{node{Nutzung von Mehrkern-architektur}}
+  child{ node [subtopic] {Threads}
+      child[theme,level distance=1cm]{node{sequenziell innerhalb eines Prozesses}}
+      child[theme,level distance=3cm]{node{Kernel Level Thread}
+          child[description,level distance=1cm]{node{Implementiert im Betriebssystem}}
+          child[description,level distance=2cm]{node{Betriebssystem hat Kenntnis über Thread}}
+          child[description,level distance=3cm]{node{Multi-Thread-modell}}
+          child[description,level distance=4cm]{node{Performance durch Parallelität}}
+          child[description,level distance=5cm]{node{Nutzung von Mehrkern-architektur}}
         }
-      child{node{User Level Thread}
-          child{node{Implementiert auf Anwendungsebene}}
-          child{node{Kenntnis nur bei Endbenutzer}}
-          child{node{Single-Thread-Modell}}
-          child{node{Performance durch geringen Overhead}}
-          child{node{management ohne systemaufrufe}}
-          child{node{Individualität}}
-          child{node{Portabilität}}
+      child[theme,level distance=10cm]{node{User Level Thread}
+          child[description,level distance=1cm]{node{Implementiert auf Anwendungsebene}}
+          child[description,level distance=2cm]{node{Kenntnis nur bei Endbenutzer}}
+          child[description,level distance=3cm]{node{Single-Thread-Modell}}
+          child[description,level distance=4cm]{node{Performance durch geringen Overhead}}
+          child[description,level distance=5cm]{node{management ohne systemaufrufe}}
+          child[description,level distance=6cm]{node{Individualität}}
+          child[description,level distance=7cm]{node{Portabilität}}
         }
     };
 \end{tikzpicture}
+
+\end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Scheduling
 \begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=green!40,
@@ -755,52 +784,22 @@
     level 1/.append style={level distance=4cm},
     level 2/.append style={level distance=3cm, sibling angle=30},
     every node/.append style={scale=0.8}]
-  \node{Speichermanagement}
-  child { node {Speichertechnologien }}
-  child { node {Speicherklassen}}
-  child { node {Relokation}}
-  child { node {Swapping}}
-  child { node {Virtueller Speicher}
-      child { node {Virtuelles Speichermanagement}}
-      child { node {Begriffe}}
-      child { node {Abbildung}}
-      child { node {Memory Management Units}}
-      child { node {Seiten-abbildungs-tabellen}}
-      child { node {Seitenaustausch-Algorithmen}
-          child { node {FIFO}}
-          child { node {Second Chance}}
-          child { node {Least Recently Used}}
-          child { node {Working Set}}
-          child { node {WSClock}}
-        }
+  \node{Virtueller Speicher}
+  child { node {Virtuelles Speichermanagement}}
+  child { node {Begriffe}}
+  child { node {Abbildung}}
+  child { node {Memory Management Units}}
+  child { node {Seiten-abbildungs-tabellen}}
+  child { node {Seitenaustausch-Algorithmen}
+      child { node {FIFO}}
+      child { node {Second Chance}}
+      child { node {Least Recently Used}}
+      child { node {Working Set}}
+      child { node {WSClock}}
     }
-  child { node {Segmentierung}}
   ;
 \end{tikzpicture}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dateisystem
-\begin{tikzpicture}[ mindmap, grow cyclic, every node/.style=concept, concept color=lime!40,
-    level 1/.append style={level distance=4cm},
-    level 2/.append style={level distance=3cm, sibling angle=30},
-    every node/.append style={scale=0.8}]
-  \node{Dateisystem}
-  child { node {Dateimodelle}
-      child { node {Abstraktion Datei}}
-      child { node {symbolischer Namen}}
-      child { node {Datei-Attribute}}
-      child { node {Operationen auf Dateien}}
-    }
-  child { node {Dateisysteme}
-      child { node {Speichermedien}}
-      child { node {Management-Datenstrukturen}
-          child { node {Verzeichnisse}}
-          child { node {Freiliste}}
-          child { node {Superblock}}
-        }
-    }
-  child { node {Datenstrukturen u. Algorithmen}}
-  ;
-\end{tikzpicture}
 
 
 \end{document}

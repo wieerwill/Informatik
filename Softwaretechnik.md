@@ -414,8 +414,8 @@ Randbedingungen
   - Vorgaben durch Marketing und Vertrieb
   - Technische Randbedingungen (nichtfunktionale Anforderung)
 
-![Analysebaum von Sommerville](Assets/Softwaretechnik_%20Analyseformen1.png)
-![Analysebaum von Sommerville](Assets/Softwaretechnik_%20Analyseformen2.png)
+![Analysebaum von Sommerville](Assets/Softwaretechnik1_Analyseformen1.png)
+![Analysebaum von Sommerville](Assets/Softwaretechnik1_Analyseformen2.png)
 
 Geforderte (Meta-)Eigenschaften
 - Vollständig: alle Szenarien sind beschrieben
@@ -442,7 +442,7 @@ Geforderte (Meta-)Eigenschaften
   - Beteiligt: Entwickler
   - Ergebnis: funktionale Spezifikation - Produktdefinition, Analysemodell, Pflichtenheft
 
-![Anforderungsentwicklung von Balzert](Assets/Softwaretechnik_Anforderungsentwicklung.png)
+![Anforderungsentwicklung von Balzert](Assets/Softwaretechnik1_Anforderungsentwicklung.png)
 
 | | Anforderungsermittlung | Systemmodellierung |
 | -- | -- | -- |
@@ -604,8 +604,8 @@ Leitfaden für Anwendungsfälle
   - Reihenfolge festlegen
 
 
-![Kano Klassifikation von Balzert](Assets/Softwaretechnik_Kano1.png)
-![Kano Klassifikation von Balzert](Assets/Softwaretechnik_Kano2.png)
+![Kano Klassifikation von Balzert](Assets/Softwaretechnik1_Kano1.png)
+![Kano Klassifikation von Balzert](Assets/Softwaretechnik1_Kano2.png)
 
 ## Objektorientierte Analyse und Systemmodellierung
 - Übersicht
@@ -638,8 +638,8 @@ Leitfaden für Anwendungsfälle
     - Dynamisches Modell (Zustands- und Sequenzdiagramme)
     - Unterscheidung der Objekttypen
 
-![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik_Bruegge1.png)
-![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik_Bruegge2.png)
+![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik1_Bruegge1.png)
+![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik1_Bruegge2.png)
 
 - Heuristik Sprache $\rightarrow$ OO-Modell
 - Objektarten im Systemmodell
@@ -2391,14 +2391,463 @@ Unterstützungsprozesse / -Aktivitäten
     - Gesamter SW-Lebenszyklus
 
 
-
 ## Iterative Modelle
+Iterativer Entwicklungsprozess
+- Spezifikation, Entwurf und Implementierung müssen immer wieder verändert und angepasst werden
+- Häufiges Integrieren, Validieren und Testen
+- "You should use iterative development only on projects that you want to succeed." [Fowler]
 
+Inkrementelle Entwicklung
+- Wenn möglich, sollte es immer einen lauffähigen (unvollständigen) Prototypen geben
+- Neue Funktionen sofort integrieren
+- Neue Versionen gegenüber Anforderungen Validieren
+
+![Spiralmodell](Assets/Softwaretechnik1_Spiralmodell.png)
+Spiralmodell
+- Risikogetrieben: Größte Projektrisiken identifizieren und als erstes bearbeiten (Prototyp?)
+- Spirale = iterativer Zyklus durch dieselben Schritte
+- Ziele jedes Durchlaufs aus alten Ergebnissen ableiten
+- Kosten/Nutzen abwägen
+- Regelmäßige Überprüfung des Prozessmodells
+- Anpassbar
+- Hoher Management-Overhead, große Projekte
+
+Unified Process
+- Vorgehensmodelle zur objektorientierten Softwareentwicklung
+  - Ivar Jacobson, Grady Booch and James Rumbaugh: The Unified Software Development Process, (Rational/IBM), 1999
+- Phasen der Entwicklung
+  - Anfang, Ausarbeitung, Erstellung, Überleitung
+  - Unterteilung in Iterationen
+  - Definition von Meilensteinen
+- Definition von Kernprozessen, die in den Phasen ablaufen
+  - Geschäftsprozessmodellierung, Anforderungsanalyse, Analyse & Design, Implementierung, Test, Auslieferung
+  - In unterschiedlichen Anteilen parallel ablaufend!
+
+Prinzipieller Ablauf des Unified Process
+![Unified Process](Assets/Softwaretechnik1_UnifiedProcess.png)
+- Haupteigenschaften des UP
+  - Inkrementell, iterativ, evolutionär
+  - Anwendungsgetrieben
+  - Architekturzentriert
+  - Risikoorientiert
+  - Ereignisorientiert
+  - Nutzt die UML als Notationssprache
+  - Erweiterbar / Anpassbar
+- Verbreitete Vertreter
+  - Rational Unified Process – RUP (Rational / IBM)
+  - Open Unified Process – OpenUP (Eclipse Foundation)
+  - Object Engineering Process – OEP (oose GmbH)
+- Vorteile
+  - Vorteile der Eigenschaften (iterativ, inkrementell, anpassbar, ...)
+  - Berücksichtigung des Risikos
+  - Passend für objektorientiertes Paradigmas und UML
+  - Tool-Unterstützung
+  - Reaktion auf Änderungen möglich
+  - Industriestandard
+- Nachteile
+  - Hoher Bürokratischer Aufwand -> Tailoring notwendig!
+  - Relativ hohe „Lernkurve“ aller Beteiligten
+  - Keine schnelle Reaktion auf Änderungen
+  - Keine integrierte Qualitätssicherung
 
 ## Agile Methoden
+- Ausgangspunkt
+  - Ziv's Unsicherheitsprinzip des Software Engineering:  "Unsicherheit ist im Software-Entwicklungsprozess und den Produkten inhärent und unvermeidlich." (Ziv, 1996)
+  - Humphrey's Prinzip der Anforderungsunsicherheit: "In einem neuen Software System werden die Anforderungen solange nicht komplett bekannt sein, bis die Anwender damit arbeiten." (Humphrey, 1995)
+  - Wegner's Lemma: "Es ist unmöglich, ein interaktives System komplett zu spezifizieren." (Wegner, 1995)
+- Ziele
+  - geringer bürokratischer Aufwand
+  - Hauptziel ist die Softwareentwicklung
+  - nur wenige Regeln bzw. Verhalten definiert
+  - sehr flexibel gehaltenes Vorgehen
+  - stark Anwendungs- und Ereignisorientiert
+  - iterativ / inkrementell / evolutionär
+  - sehr schnelle Entwicklungsiterationen
+  - meist Architekturzentriert
+  - auch testgetriebenes Vorgehen möglich
+  - Berücksichtigung sozialer Aspekte
+  - Softwareentwicklung: Kreative Arbeit von Kreativen
 
+Das Agile Manifest (2001)
+- Individuen und Interaktionen bedeutender als Prozesse und Tools
+- Funktionierende Software bedeutender als übermäßige Dokumentation
+- Stetige Zusammenarbeit mit dem Kunden bedeutender als Vertragsverhandlung
+- Mut und Offenheit für Änderungen bedeutender als Befolgen eines Plans
+
+Eigenschaften agiler Vorgehensmodelle
+- Team ist für Ergebnis verantwortlich und organisiert sich selbst
+- Kleine Teams 5-8 Personen
+- Definition von Richtlinien, Werten und Prinzipien
+- Beispiele für Werte
+  - Kommunikation (Kommunikation statt Dokumentation)
+  - Einfachheit (KISS „Keep it small and simple“)
+  - Feedback  
+  - Mut
+  - Respekt
+- Beispiele für Prinzipien
+  - Beidseitiger Vorteil
+  - Fehlschläge hinnehmen
+  - Ständige Verbesserungen
+  - Ständige Lauffähigkeit des Codes
+  - Kleine Schritte
+  - Wiederverwendung bestehender / bewährter Lösungen
+- Beispiele für Praktiken
+  - Pair-Programing, Coding Rules
+  - Kollektives Eigentum / Gemeinsamer Codebesitz
+  - Testgetriebene Entwicklung
+  - Ständiges Refactoring
+  - Keine Überstunden
+- Vorteile agiler Methoden
+  - Geringer bürokratischer Aufwand
+  - Besseres Arbeitsklima (Berücksichtigung Sozialer Aspekte)
+  - Ständige Verfügbarkeit einer lauffähigen Version
+  - Mögliche / nötige Einflussnahme des Kunden
+  - „Freie“ Wahl der Prinzipien/Regeln
+  - Vermeidung von Spezialistentum und individuellem Besitz
+- Nachteile
+  - Schwierigeres Projektmanagement
+    - Chaotische Vorgehen
+    - Schwere Planbarkeit des Ergebnisses
+  - Notwendige Beteiligung des Kunden
+  - Ergebnis ist schwer vorherzusagen
+
+### eXtreme Programming (XP)
+- Beck 1999, aus Kritik an „monumentalen Modellen“
+- Evolutionäre Entwicklung in kleinen Schritten
+  - Möglichst einfaches Design
+- Konzentration auf Programmcode als Analyseergebnis, Entwurfsdokument und Dokumentation
+- Weglassen von explizitem Design, ausführlicher Dokumentation und Reviews
+- Code wird permanent lauffähig gehalten (täglich)
+- Schnell und flexibel
+- Erfordert Disziplin der Teilnehmer
+- Rollen: Projektleiter, Kunde (verfügbar), Entwickler
+  - Max. 5-10 Entwickler
+- Kunde bestimmt Anforderung und Prioritäten
+  - planning game; story cards (use cases)
+- Implementierung in kleinen Schritten
+  - pair programming, collective code ownership
+  - Häufige Releases inkl. Integration
+  - Refactoring bei Designänderungen
+  - Programmier-Konventionen
+- Regelmäßiges automatisiertes Testen
+  - test-first Ansatz
+- Morgendliches Meeting im Stehen ohne Diskussionen
+- 40h-Woche
+- XP
+  - Sammlung von 12 "best practices"
+  - Test-getrieben
+  - Flexibel, effizient
+  - Kleine Teams
+  - Erfordert Disziplin der Teilnehmer
+  - ![XP](Assets/Softwaretechnik1_XP.png)
+
+### Scrum
+- [Ken Schwaber, Jeff Sutherland und Mike Beedle]
+- Haupteigenschaften
+  - Iterativ / Inkrementell, Evolutionär
+  - stark Anwendungs- und Ereignisorientiert
+  - schnelle Entwicklungsiterationen
+- Sprint
+  - eine schnelle Iteration: Dauer ca. 30 Tage
+  - Festlegung welche Features umgesetzt werden
+- Product Backlog
+  - Liste der gewünschten Features des Produkts
+  - Vom Produkt-Owner priorisiert / Aufwand vom Team geschätzt
+  - Jeder kann Einträge beisteuern
+- Rollen
+  - Product Owner
+    - Erfasst Bedürfnisse der Kunden und Stakeholder
+    - Pflegt Backlog, definiert, priorisiert Features pro Sprint
+  - Scrum Master
+    - Berät das Team, Überprüft Einhaltung von Werten und Techniken, moderiert die Meetings
+    - Schützt das Team vor äußeren Störungen
+    - Repräsentiert Team gegenüber Management
+  - Scrum Team (ca. 5-9 Personen)
+    - Team organisiert sich und die Aufgaben selbst
+    - Team bedeutet: Zielgerichtet und funktionsübergreifend arbeiten, gemeinsames Ziel verfolgen, selbstloses Handeln, Teamentscheidungen vertreten
+
+Sprint Backlog
+- Für die aktuelle Iteration ausgewählte Aufgaben
+  - Aufgabe nicht länger als 2 Tage Aufwand
+- Team-Mitglieder wählen Tasks aus – keine Zuweisung
+- Restaufwand wird täglich aktualisiert – Burndown Chart
+- Team-Mitglied kann Tasks hinzufügen, löschen, ändern
+- Darstellung an prominenter Stelle
+
+Daily Meeting
+- ca. 15 Minuten
+- Kurze Statusmeldung, Was wurde geschafft? Was ist zu tun? Was behindert den Fortschritt?
+- Weiterführende Diskussionen erst im Anschluss
+
+![Scrum Vorgehen](Assets/Softwaretechnik1_ScrumVorgehen.png)
+
+Sprint Review-Meeting
+- Präsentation des Erreichten (Feature Demo)
+- Product Owner, Kunde usw. geben Feedback
+  - Neue Anforderungen hinzufügen / Neu priorisieren
+  - Qualitätsansprüche ändern
+
+Sprint-Retrospektive
+- Rückkopplungsschleife
+  - Was war gut und was hat nicht funktioniert?
+  - Was kann verbessert werden?
+- Nach jedem Sprint
+- Diskussion der identifizierten Probleme
+- Identifikation von wenigen „Action Items“
+
+Burndown Chart
+- Darstellung der offenen und erledigten Aufwände / Tasks
+- ![Burndown Chart](Assets/Softwaretechnik1_Burndownchart.png)
 
 ## Zusammenfassung
-
+- Software-Entwicklungsmethode
+  - Elemente
+    - Darstellung – Notation und Semantik für Modelle, Diagrammtypen, Dokumentvorlagen (Artefakte)
+    - Vorgehensmodell – Phasen, Arbeitsschritte
+    - Verfahren – Regeln, Anweisungen, Aktivitäten (+Rollen)
+    - Werkzeuge
+  - Industriestandards: RUP + UML
+  - Öffentliche Auftraggeber: V-Modell
+  - Firmenintern: eigene Varianten, evtl. projektabhängig
+  - Weitere Themen
+    - Reifegradbeurteilung CMMI, SPICE, ISO 9000
+- Charakterisierung von Vorgehensmodellen
+  - Sequenziell
+    - Teilprozesse strikt nacheinander
+    - Keine Änderungen abgeschlossener Artefakte
+  - Nebenläufig
+    - Teilprozesse laufen teilweise parallel für bessere Zeitnutzung
+  - Dokumentgetrieben
+    - Erstellung von Dokumenten (Artefakte) im Vordergrund
+    - Festlegung der Dokumente pro Phase
+- Charakterisierung von Vorgehensmodellen
+  - Iterativ
+    - Definition einer sich wiederholenden Abfolge von Teil-Prozessen bzw. Aktivitäten
+    - Schnelles Wiederholen dieser Abfolgen
+  - Inkrementell
+    - Definition und Kontrolle des Fortschritts pro Iteration
+    - Kleine Erweiterungen
+  - Evolutionäres Vorgehen
+    - Schnelle Prototypen
+    - Lauffähiger Prototyp jederzeit vorhanden
+    - Toolunterstützung (Versionierung)
+- Charakterisierung von Vorgehensmodellen
+  - Ereignisorientiert
+    - Schnelle Reaktion auf Anforderungsänderungen
+    - Keine starre Abfolge von Tätigkeiten / Prozessen
+    - Voraussetzung: Prozesse laufen parallel ab
+  - Architekturzentriert
+    - Starke Gewichtung der Architektur
+    - Verwendung von Modellen, Mustern und vorhandenem Wissen
+  - Anwendungsgetrieben
+    - Orientierung an den Anwendungsfällen
+    - Umsetzen, was einem Anwendungsfall zugeordnet werden kann
+    - Anwender steht im Mittelpunkt (User Stories)
+  - Risikoorientiert
+    - Risiko der Entwicklung wird in Planung berücksichtigt
+    - Risiko- / Nutzen-Analyse
+  - Test- / Qualitätsgetrieben
+    - Qualität steht im Vordergrund
+    - Test wird während oder sogar vor der Implementierungs-phase erstellt
+  - Erweiterbar / Anpassbar (tailoring)
+    - Nur Rahmen des Vorgehens festgelegt
+    - Konkretes Vorgehen wird an die Bedürfnisse angepasst
+    - Grundlegende Eigenschaft von Vorgehensmodellen
+- Softwareprojekt im Sommersemester
+  - Auswahl aus 3 Vorgehensmodellen
+    - Klassisches Vorgehen
+    - Unified Process
+    - Agiles Vorgehen
 
 # Projektmanagement
+
+Was ist ein Projekt?
+- Merkmale von Projekten
+  - Zielgerichtetes Vorhaben
+  - Einmaligkeit
+  - Zeitliche, finanzielle und personelle Rahmenbedingungen
+  - Abgrenzung zu anderen Vorhaben
+  - Projektspezifische Organisation
+  - Komplexität (Unterteilung in abhängige Teilaufgaben nötig)
+- Unsicherheit vor allem in den Frühphasen
+- Risiko durch unbekannte Aufgabe
+
+Was ist Projektmanagement?
+- Überbegriff für planende und durchsetzende Aktivitäten zur Vorbereitung und Durchführung eines Projekts
+- Management des Problemlösungsprozesses
+  - Nicht die Lösung selbst, eigene Disziplin
+- Aufgaben
+  - Problemabgrenzung
+  - Zielfestlegung, Ablaufplanung
+  - Planung und Bereitstellung personeller, finanzieller und sachlicher Ressourcen
+  - Führen der Projektgruppe und Koordination der Aktivitäten
+  - Steuerung und Überwachung des Projektablaufes
+  - Zum großen Teil Planungs- und Kommunikationsleistung!
+
+## Projektplanung
+Planung des Projektablaufs
+- Zunächst wieder: Teile und Herrsche!
+- Projektstruktur
+  - Teilung der Projektaufgabe in Arbeitspakete (work packages) und darin enthaltenen Aktivitäten (activities)
+  - Einteilung möglich anhand Produktstruktur, fachlicher Struktur oder Phasenmodell des Entwicklungsprozesses
+- Überblick weiterer Planungsaufgaben
+  - Bestimmen der Abhängigkeiten
+  - Ermitteln der nötigen Ressourcen
+  - Schätzen der Aufwände
+  - Zeitplan aufstellen
+  - Meilensteine definieren
+![Projektstruktur](Assets/Softwaretechnik1_Projektstruktur.png)
+
+Ablaufplanung
+- Abhängigkeiten (Anordnungsbeziehungen) zwischen Vorgängen A und B: 4 Möglichkeiten
+  - Ende-Anfang (Normalfolge)
+    - B kann begonnen werden, sobald A beendet worden ist
+  - Anfang-Anfang (Anfangsfolge)
+    - B kann begonnen werden, sobald A begonnen worden ist
+  - Anfang-Ende (Sprungfolge)
+    - B kann beendet werden, sobald A begonnen worden ist
+  - Ende-Ende (Endfolge)
+    - B kann beendet werden, sobald A beendet worden ist
+- Netzplantechnik
+  - Planungsarten
+    - Vorwärtsplanung (ab Startzeitpunkt)
+    - Rückwärtsplanung (ab gewünschtem Projektende)
+  - Berechnete Daten für Vorgänge
+    - Frühester und spätester Anfangszeitpunkt (FAZ / SAZ)
+    - Frühester und spätester Endzeitpunkt (FEZ / SEZ)
+    - Pufferzeiten, z.B. freier Puffer (Verzögerung ohne Verschiebung des Nachfolgers), Gesamtpuffer (Verzögerung ohne Gefährdung des Projektendes)
+    - Notation unterschiedlich
+  - Allgemein
+    - Kritischer Pfad (Verzögerung vergrößert Projektdauer)
+    - Kritische Vorgänge: Teil des kritischen Pfades
+
+Beispiel:
+- Arbeitspakete laut Pflichtenheft (z.B.: Use Case)
+- Aufgaben festlegen
+- Abhängigkeiten festlegen
+- Vorwärtsrechnung durchführen
+- Rückwärtsrechnung durchführen
+- Kritischer Pfad und Puffer finden
+- ![Projektplanung](Assets/Softwaretechnik1_ProjektplanungBeispiel.png)
+
+Aufwandsschätzung
+- Aus Erfahrungswerten systematisiert
+- Versuch, wichtige Einflussfaktoren zu erfassen
+  - Metriken für Spezifikationen
+  - Komplexität von Teilfunktionen
+  - Menge der Funktionen
+  - Anpassung durch individuelle Faktoren, z.B. abhängig von Erfahrung in der Projektorganisation
+- Methoden
+  - Function Point Analyse
+  - CoCoMo
+
+### Function Point Analyse
+- Ursprung IBM Ende 1970er Jahre
+- Funktionsumfang und Schwierigkeitsgrad von Software
+- Verschiedene Verfahren
+  - für Echtzeit- (Full Function Point Method) und „normale“ Software (Int. Function Point User Group, ISO14143)
+- ![FPA](Assets/Softwaretechnik1_FPA1.png)
+- Jeweils Anzahl x Gewicht
+- Summe aller Werte = Unadjusted Function Points (UFP)
+- Function Points = UFP x EG
+- Einflussgrad EG = 1 + 0.01 x SummeEinflussfaktoren
+- Einflussfaktoren: Einfluss auf Anwendungsentwicklung
+- ![FPA2](Assets/Softwaretechnik1_FPA2.png)
+- Berechnung der Personen-Monate aus Erfahrungen vorangegangener Projekte
+  - Aufwand, der von einer Person in einem Monat unter Idealbedingungen erledigt werden kann
+- Umrechnung mit Tabelle (nichtlinearer Verlauf)
+- ![FPA3](Assets/Softwaretechnik1_FPA3.png)
+
+### CoCoMo II
+- Constructive Cost Model [Boehm2000]
+- Ausgangspunkt: geschätzte Anzahl Zeilen Quellcode
+  - SLOC, source lines of code (zB. aus UFP schätzen)
+- Aufwand Personen-Monate (PM) $PM = A * Size^E \prod_{i=1}^n EM$ mit $E=B+0,01*\sum_{j=1}^5 SF_j$
+- Faktoren $A=2.94$ und $B=0.91$ (anpassbare Koeffizienten)
+- Effort multiplier $EM: n=6..16$, Tabelle nach Boehm
+  - Beispiele: Komplexität, Wiederverwendbarkeit, ...
+  - Werte $0,7 .. 3,0$
+- Scale factor SF: Fünf Einflüsse auf Rentabilität der Softwareentwicklung
+- Notwendige Entwicklungszeit (time to develop) $TDEV = C * PM^F$ mit $F = D + 0,2 * ( E - B )$
+- Faktoren $C=3,67$ und $D=0,28$, anpassbar
+- Ressourcenplanung ![Ressourcenplanung](Assets/Softwaretechnik1_Ressourcenplanung.png)
+- Zeitplanung
+  - Zeitplan aus Abhängigkeiten, Aufwänden und Ressourcen sowie festen Terminen
+  - Darstellung als Gantt-Chart / Balkendiagramm
+
+## Projektdurchführung
+Projektorganisation
+- Teilnehmer: Personen, Rollen, Verantwortung, Teams
+- Linienorganisation:
+  - hierarchisch ![hierarchisch](Assets/Softwaretechnik1_Organisation_hierarchisch.png)
+  - Matrixorganisation ![matrix](Assets/Softwaretechnik1_Organisation_matrix.png)
+  - Reine Projektorganisation: Mitarbeiter werden aus Organisation herausgelöst und Projektleiter unterstellt
+
+Projektmanager - Rolle und Aufgaben
+- Planung, Start, Kontrolle und Beenden des Projekts
+- Schnittstelle zur Umgebung des Projekts
+  - Kunden, Unterauftragnehmer, interne Kontakte, Verträge
+- Team zusammenstellen und steuern
+  - 5-7 Mitglieder gemischter Qualifikation
+  - Team von äußeren Aufgaben abschirmen
+  - Teilaufgaben definieren, vergeben und koordinieren
+  - Fortschritt kontrollieren und Probleme beseitigen
+- Weitere Ressourcen bereitstellen
+- Notwendige Planänderungen erkennen und reagieren
+- Wichtiger Dienstleister für den Projekterfolg
+
+Projektstart
+- Nach Abschluss der Planungsphase
+- Festlegung von ...
+  - Arbeitsstil und interne Organisation
+  - Aufgabenverteilung und Themen-Verantwortung
+  - Erste Aufgaben, Verantwortliche und Termine
+  - Einigung über Meilensteine und Termine
+  - Art und Termine der Projekttreffen
+  - Informationen und Kommunikationswege
+  - Technische Infrastruktur (Versionskontrollsystem, Entwicklungsumgebung, Dokumentverwaltung, Rechnerzugang, verwendete PM-Software usw.)
+- Starttreffen des Projekts (kick-off meeting)
+
+Meetings / Projekttreffen
+- Regelmäßige Abstimmung der Projektteilnehmer
+  - Außerdem zu wichtigen Meilensteinen
+- Inhalt und Ablauf: geplant (Tagesordnung), Moderator
+  - Protokoll des letzten Treffens korrekt?
+  - Aktueller Stand
+  - Bericht über individuelle Aufgaben
+  - Planung des nächsten Termins
+- Protokoll
+  - Datum, Zeit, Ort, Teilnehmer, Moderator
+  - Bezeichnung
+  - Tagesordnung mit einzelnen Punkten
+  - Kurz und knapp, neutral bei Diskussionen!
+
+Fortschrittskontrolle
+- Meilensteine
+  - Klar definiertes Zwischenresultat zur Beurteilung des Projektfortschritts
+  - Beispiele: Feinentwurfsdokument fertiggestellt und an Auftraggeber übergeben oder Paket XYZ implementiert und fertig getestet
+- Besprechung in Projekttreffen
+  - Besprechung des Status jedes Meilensteins / jeder Aufgabe
+  - Welche Aufgaben sind bereits erledigt?
+  - Welche Probleme sind aufgetreten / gelöst?
+  - Verbleibender Aufwand – Terminverschiebung nötig?
+  - Planung der nächsten Schritte (Aufgabe, Verantwortlicher, Termin)
+
+Meilenstein-Trendanalyse
+- Technik zur Fortschrittskontrolle
+- Überwachung des Projektfortschritts zur Erkennung von Terminverzögerungen
+- Bei Verzögerungen:
+  - Ressourcen erhöhen
+  - Termine verschieben
+  - Funktionen reduzieren
+
+Wie viel Planung?
+- Planung ist wichtig, aber nicht übertreiben!
+- Aufwand und Detaillierungsgrad der Planung an Projektgröße und „echten“ Aufwand anpassen
+- Pläne müssen sich ändern können!
+  - Projekte sind einmalig und daher unvorhersehbar
+- Adaptiv planen: nächste Aufgaben genau, spätere grob
+- Einsatz von Projektmanagement-Software
+- Projektende
+  - Abschlusstreffen
+  - Bewertung von Ergebnis und Organisation - was kann in Zukunft besser gemacht werden?

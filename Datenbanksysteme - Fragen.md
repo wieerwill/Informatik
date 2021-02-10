@@ -816,3 +816,386 @@ Wählen Sie eine oder mehrere Antworten:
 - [ ] Eine Gruppierung γ ohne Attribute ist nicht erlaubt.
 - [ ] Der Ausdruck π_{Matrikelnummer, besteNote} (σ_{Fächeranzahl>2} (γ_{MIN(Note)←besteNote, COUNT(Fach)←Fächeranzahl, Matrikelnummer} (Prüfungen))) liefert als Ergebnis das Tupel ('40000', 1.0) zurück.
 
+# Anfragekalkülen
+Welche der folgenden Aussagen über Kalküle sind richtig?
+- [ ] Anfragen im Kalkül sind im Gegensatz zu SQL-Anfragen prinzipiell sicher.
+- [x] Der Ausdruck {x | x ∈ STUDENT ∧ x.Matrikelnummer = '12345'} gehört zum Tupelkalkül.
+- [x] Zu jedem Ausdruck im Tupelkalkül kann ein Ausdruck im Bereichskalkül gefunden werden, ebenso umgekehrt (Bereichskalkül ins Tupelkalkül).
+- [x] Zu jedem Ausdruck in der Relationenalgebra lässt sich ein adäquater Ausdruck im Tupelkalkül oder Bereichskalkül finden.
+- [x] Ein Kalkülausdruck formuliert eine Datenbankanfrage theoretisch.
+- [ ] Der Ausdruck {x | x ∈ STUDENT ∧ x.Matrikelnummer = '12345'} gehört zum Bereichskalkül.
+- [x] Der Ausdruck {y | STUDENT(x, y, z) ∧ x = '12345'} gehört zum Tupelkalkül.
+- [ ] Der Ausdruck {y | STUDENT(x, y, z) ∧ x = '12345'} gehört zum Bereichskalkül.
+
+Welche der folgenden Aussagen über Sicherheit in Kalkülen sind korrekt?
+- [ ] Eine Anfrage ist sicher, wenn der Datenbankzustand nicht unbefugt manipuliert werden kann.
+- [x] Es gibt sichere Anfragen, die nicht syntaktisch sichere Anfragen sind.
+- [ ] Eine Anfrage ist sicher, wenn der geänderte Datenbankzustand nicht von Fremden eingesehen werden kann.
+- [ ] Es gibt syntaktisch sichere Anfragen, die nicht sichere Anfragen sind.
+- [ ] Die Anfrage {x, y | y = 10 ∧ x < 0 ∧ x < 10} ist sicher (Regeln der Arithmetik).
+- [x] Eine Anfrage ist sicher, wenn sie für jeden beliebigen Datenbankzustand ein endliches Ergebnis liefert.
+
+Gegeben ist folgendes Relationenschema:
+```sql
+   STUDENT ( Matrikelnummer, Vorname, Nachname, Semester )
+   PRUEFUNG ( Matrikelnummer, Fach, Datum, Note )
+```
+Hierzu kommt folgender Ausdruck der Relationenalgebra:
+   $\sigma_{Datum=14.12.2017} (PRUEFUNG) \bowtie (\pi_{Matrikelnummer, Nachname} (STUDENT))$
+Welcher der folgenden Ausdrücke im Tupelkalkül liefert ein äquivalentes Ergebnis?
+- [ ] { s.Matrikelnummer, s.Nachname | s ∈ STUDENT ∧ p ∈ PRUEFUNG ∧ s.Matrikelnummer = p.Matrikelnummer ∧ p.Datum = '14.12.2017' }
+- [ ] { m, n | STUDENT(m, _ , n , s) ∧ PRUEFUNG(m, _ , d , _ ) ∧ d = '14.12.2017' }
+- [ ] { s.Matrikelnummer, s.Nachname | s ∈ STUDENT ∧ p ∈ PRUEFUNG ∧ p.Datum = '14.12.2017' }
+- [ ] { s.Matrikelnummer, s.Nachname | s ∈ STUDENT ∧ p ∈ PRUEFUNG }
+- [ ] { s.Matrikelnummer, s.Nachname, p.Fach, p.Datum, p.Note | s ∈ STUDENT ∧ p ∈ PRUEFUNG ∧ s.Matrikelnummer = p.Matrikelnummer ∧ p.Datum = '14.12.2017' ∧ ¬s.Vorname ∧ ¬s.Semester }
+- [x] { s.Matrikelnummer, s.Nachname, p.Fach, p.Datum, p.Note | s ∈ STUDENT ∧ p ∈ PRUEFUNG ∧ s.Matrikelnummer = p.Matrikelnummer ∧ p.Datum = '14.12.2017' }
+
+# Bereichskalkül
+Gegeben ist folgendes Relationenschema:
+```sql
+   STUDENT ( Matrikelnummer, Vorname, Nachname, Semester )
+   PRUEFUNG ( Matrikelnummer, Fach, Datum, Note )
+```
+Hierzu kommt folgender Ausdruck im Bereichskalkül: $\{ v, n | STUDENT ( m, v, _ , s ) \wedge PRUEFUNG ( m, _ , d , n ) \wedge s > 3 \}$
+Welche der folgenden Aussagen sind richtig?
+- [ ] Statt dem Ausdruck "s > 3" könnte die Bedingung auch direkt in STUDENT eingesetzt werden, d.h. $STUDENT ( m, v, _ , >3 )$.
+- [ ] Es entsteht das Kreuzprodukt zwischen STUDENT und PRUEFUNG, da eine Verbundbedingung fehlt.
+- [x] Ausgegeben werden Vornamen und Noten von Studenten, die mindestens im vierten Semester sind.
+- [ ] Im Tupelkalkül würde dasselbe Ergebnis durch ${x.Vorname, y.Note | x ∈ STUDENT ∧ y ∈ PRUEFUNG ∧ x.Semester > 3}$ ausgedrückt.
+- [x] Statt "d" kann hier auch ein Unterstrich "_" verwendet werden, da "d" nirgends im Kalkül verwendet wird.
+- [x] In der Relationenalgebra würde dasselbe Ergebnis durch $\pi_{Vorname,Note}(\sigma_{Semester>3}(Student \bowtie Pruefung))$ ausgedrückt.
+- [x] Die Variablennamen (z.B. "m") können frei gewählt werden, sofern keine Zusammenhänge verloren gehen.
+
+Gegeben ist wieder folgendes Relationenschema:
+```sql
+   STUDENT ( Matrikelnummer, Vorname, Nachname, Semester )
+   PRUEFUNG ( Matrikelnummer, Fach, Datum, Note )
+```
+Dazu gesucht werden die Vor- und Nachnamen von Studenten, die in der Prüfung zum Fach "Datenbanksysteme" besser als 2.0 abgeschnitten haben.
+Welche der folgenden Ausdrücke im Bereichskalkül ermitteln dieses Ergebnis?
+- [x] $\{x, y | STUDENT ( a, x, y, _ ) ∧ PRUEFUNG ( b, f, _, z ) ∧ z < 2.0 ∧ f = "Datenbanksysteme" ∧ a=b\}$
+- [x] $\{Vorname, Nachname | STUDENT ( Matrikelnummer, Vorname, Nachname, Semester ) ∧ PRUEFUNG ( Matrikelnummer, Fach, Datum, Note ) ∧ Note < 2.0 ∧ Fach = "Datenbanksysteme"\}$
+- [x] $\{x, y | STUDENT ( m, x, y, _ ) ∧ PRUEFUNG ( m, "Datenbanksysteme", _, z ) ∧ z < 2.0\}$
+- [x] $\{x, y | STUDENT ( a, x, y, b ) ∧ PRUEFUNG ( a, f, c, z ) ∧ z < 2.0 ∧ f = "Datenbanksysteme"\}$
+- [ ] $\{x, y | STUDENT ( a, x, y, _ ) ∧ PRUEFUNG ( b, f, _, < 2.0 ) ∧ f = "Datenbanksysteme" ∧ a=b\}$
+- [ ] $\{x, y | STUDENT ( _ , x, y, _ ) ∧ PRUEFUNG ( _ , "Datenbanksysteme", _, z ) ∧ z < 2.0\}$
+- [x] $\{x, y | STUDENT ( m, x, y, _ ) ∧ PRUEFUNG ( m, f, _, z ) ∧ z < 2.0 ∧ f = "Datenbanksysteme"\}$
+
+Gegeben ist noch einmal folgendes Relationenschema:
+```sql
+   STUDENT ( Matrikelnummer, Vorname, Nachname, Semester )
+   PRUEFUNG ( Matrikelnummer, Fach, Datum, Note )
+```
+Hierzu kommt folgender Ausdruck der Relationenalgebra:
+- [ ] $\sigma_{Datum=14.12.2017} (PRUEFUNG) \bowtie (\pi_{Matrikelnummer, Nachname} (STUDENT))$
+- [ ] Welcher der folgenden Ausdrücke im Bereichskalkül liefert ein äquivalentes Ergebnis?
+- [ ] $\{ m, n, f, d | STUDENT(m, _ , n , s) ∧ PRUEFUNG(x, f , d , n ) ∧ d = '14.12.2017' ∧ m = x \}$
+- [ ] $\{ m, n, f, d | STUDENT(m, _ , n , s) ∧ PRUEFUNG(m, f , d , n ) ∧ d = '14.12.2017' \}$
+- [x] $\{ m, n, f, d, o | STUDENT(m, _ , n , s) ∧ PRUEFUNG(m, f , d , o ) ∧ d = '14.12.2017' \}$
+- [ ] $\{ m, n | STUDENT(m, _ , _ , s) ∧ PRUEFUNG(m, _ , d , n ) ∧ d = '14.12.2017' \}$
+- [ ] $\{ m, n | STUDENT(m, _ , n , s) ∧ PRUEFUNG(m, _ , d , _ ) ∧ d = '14.12.2017' \}$
+
+# Transaktionen, Integrität und Trigger
+## Kontrollfragen zu Grundbegriffen
+Welche der folgenden Aussagen sind richtig?
+- [x] Die Typintegrität sowie Schlüssel und Fremdschlüssel stellen Integritätsbedingungen im Relationenmodell dar.
+- [x] Integritätsbedingungen können bestimmte Datenbankänderungen erlauben oder verbieten.
+- [ ] Integritätsbedingungen beziehen sich ausschließlich auf Datenbankzustände (Ist-Stand und Wird-Zu-Stand).
+- [ ] Integritätsbedingungen gibt es nicht im Relationenmodell, nur in SQL.
+- [x] Integritätsbedingungen sichern die Korrektheit der Datenbank.
+
+## Transaktionsbegriff
+Welche der folgenden Aussagen über Transaktionen sind richtig?
+- [x] Bei einer Transaktion wird der vorliegende Datenbankzustand in einen anderen (evtl. gleichen) Datenbankzustand überführt.
+- [x] Für jede Transaktion auf der Datenbank gilt das ACID-Prinzip.
+- [ ] Datenbank-Konsistenz zu Beginn einer Transaktion kann nicht garantiert werden, lediglich nach Ende einer Transaktion.
+- [ ] Das ACID-Prinzip betrifft nur bestimmte Transaktionen (z.B. schreibende Transaktionen).
+- [ ] Eine Transaktion überführt die Datenbank immer in einen veränderten Datenbankzustand.
+- [x] Eine Transaktion kann als eine Folge von Operationen gesehen werden.
+- [x] Konsistenz der Datenbank herrscht sowohl vor Beginn als auch nach Ende jedweder Transaktion.
+- [ ] Eine Transaktion ist äquivalent zu einer Operation auf der Datenbank.
+
+Welche der nachfolgenden Forderungen gehören zum ACID-Prinzip?
+- [ ] Kausalität
+- [x] Dauerhaftigkeit
+- [x] Isolation
+- [x] Atomarität
+- [ ] Inversivität
+- [ ] Abhängigkeit
+- [x] Konsistenz
+- [x] Integritätserhaltung
+- [ ] Distributivität
+- [ ] Reversivität
+- [x] Persistenz
+- [ ] Plausibilität
+
+Welche Probleme entstehen bei Mehrbenutzerbetrieb der Datenbank?
+- [ ] Dirty Harry (Illegales Lesen)
+- [x] Dirty Read (Abhängigkeiten von nicht freigegebenen Daten)
+- [x] Phantom-Problem
+- [ ] Ghost Transaction (Geist-Problem)
+- [x] Nonrepeatable Read (Inkonsistentes Lesen)
+- [ ] Overload (Überladung)
+- [x] Lost Update (Verlorengegangenes Ändern)
+- [ ] Dropped Operation (Verlorene Änderung)
+
+Was beschreibt der Begriff der Serialisierbarkeit bei Transaktionen?
+- [ ] Seriell ausgeführte Transaktionen sind serialisierbar genau dann wenn ACID-Prinzipien eingehalten werden.
+- [ ] Eine verschränkte Ausführung von Transaktionen heißt serialisierbar, wenn die Verschränkung sicher ist.
+- [ ] Eine verschränkte Ausführung von Transaktionen ist genau dann serialisierbar, wenn deren Datenzugriffe parallel ausgeführt werden können.
+- [x] Mehrere Transaktionen sind serialisierbar, wenn ihre verschränkte Ausführung denselben Effekt wie ihre serielle Ausführung hat.
+- [ ] Mehrere Transaktionen sind serialisierbar, wenn ihre Operationen disjunkt sind.
+
+## Integritätsbedingungen in SQL
+Welche der folgenden Aussagen sind korrekt?
+- [ ] Mit Check-Klauseln lassen sich Überprüfungszeitpunkte für Bedingungen festlegen.
+- [x] Mit Create Domain können Wertebereiche für Attribute definiert werden.
+- [x] Mit Check-Klauseln lassen sich attributspezifische Bedingungen realisieren, z.B. "Alter > 1900".
+- [x] Mit Assertions können Bedingungen festgelegt werden, die zu jeder Zeit für die Datenbank gelten müssen.
+- [ ] Assertions überprüfen Fremdschlüsselbedingungen nach Datenbankänderungen.
+
+## Trigger
+Welche der folgenden Aussagen beschreiben Trigger?
+- [x] Trigger lösen beim Eintreten von bestimmten Ereignissen automatisch aus.
+- [ ] Trigger können nur bei Insert-Operationen eingesetzt werden.
+- [x] Trigger der Datenbank bestehen aus Anweisungen bzw. Prozeduren.
+- [x] Trigger erzwingen Integritätsbedingungen.
+- [ ] Trigger wirken einmalig nach jeder ausgeführten Änderung, z.B. nach dem abgeschlossenen Einfügen von fünf neuen Tupeln.
+
+Was lässt sich beim Einsatz von Triggern angeben?
+- [x] Trigger können vor oder nach einer Änderung auslösen.
+- [ ] Trigger können Primärschlüssel oder Fremdschlüssel als zusätzliche Integritätssicherung angeben.
+- [x] Trigger können für Anweisungen entweder die alten Tupel vor der Änderung oder die neuen Tupel nach der Änderung referenzieren.
+- [ ] Trigger können zeitlichen oder räumlichen Bezug haben.
+- [x] Trigger können einmal nach jeder gesamten Änderung oder auch für jede Einzeländerung auslösen, d.h. pro Tupel.
+
+# Sichten und Zugriffskontrolle
+## Sichtenkonzept
+Welche Vorteile bietet die Verwendung von Sichten in einer Datenbank?
+- [ ] Sichten ermöglichen eine physische Datenunabhängigkeit, beispielsweise eine Änderung der Indexstruktur, was keine Auswirkungen auf das Datenbankschema hat.
+- [x] Sichten erlauben die Kategorisierung von Nutzern (z.B. Verwaltung, Einkauf, Fertigung,...), wodurch bestimmte Nutzer nicht alle Daten sehen müssen.
+- [x] Durch Sichten können (aus Gründen der Zugriffskontrolle) Daten ausgeblendet werden.
+- [ ] Sichten erleichtern Änderungen der Datenbank, da diese nur Ausschnitte der Daten enthalten und somit nicht der ganze Datenbestand geändert werden muss.
+- [x] Sichten ermöglichen eine logische Datenunabhängigkeit, beispielsweise um ein Attribut in der Datenbankstruktur zu ändern, was der Anwender nicht mitbekommen soll.
+- [x] Sichten können Anwendern erlauben, einfachere Anfragen an die Datenbank zu stellen.
+- [ ] Sichten erlauben eine automatische Anfragetransformation, beispielsweise Aggregatfunktionen zu schachteln (z.B. maximaler Durchschnittspreis).
+
+Gegeben ist folgende Relation: `Pruefung ( Matrikelnummer , Fach , Pruefer , Datum , Note )`
+Nun wird über folgendes SQL-Konstrukt eine Sicht definiert:
+```sql
+   CREATE VIEW Sichtbeispiel AS
+      SELECT Fach, AVG(Note)
+      FROM Pruefung
+      GROUP BY Fach
+```
+Welche der folgenden Behauptungen werden durch diese Sicht umgesetzt?
+- [ ] Die Sicht Sichtbeispiel hätte auch durch folgendes SQL-Konstrukt erstellt werden können:
+   ```sql
+   CREATE TABLE Sichtbeispiel (
+      Fach VARCHAR(255),
+      Durchschnitt DOUBLE
+   );
+   INSERT INTO Sichtbeispiel (Fach, Durchschnitt)
+      SELECT Fach, AVG(Note)
+      FROM Pruefung
+      GROUP BY Fach
+   ```
+- [x] Mit dieser Sicht wurden individuelle Studenten und Prüfer anonymisiert (Datenschutz).
+- [x] Nutzer dieser Sicht würden nicht merken, wenn z.B. das Attribut Pruefer aus der Tabelle Pruefung entfernt würde (logische Datenunabhängigkeit).
+- [ ] Die Sicht veraltet und muss aktualisiert werden, wenn in der Tabelle Pruefung ein weiteres Tupel eingefügt wird.
+- [x] Diese Sicht erlaubt Nutzern eine kürzere SQL-Anfrage zur Durchschnittsnote eines Fachs zu stellen.
+
+## Änderungen auf Sichten
+Änderungen auf Sichten sind ein sehr wichtiges Problemfeld. Welche Kriterien lassen sich an diese Änderungen stellen?
+- [x] Der Nutzer einer Sicht sieht die vollzogene Änderung (die auf der darunterliegenden Basisdatenbank ausgeführt wird) direkt in seiner Sicht.
+- [ ] Änderungen sollen so schnell wie möglich an der Basisdatenbank unter der Sicht vollzogen werden.
+- [x] Änderungen sollen so wenig wie möglich an der Basisdatenbank unter der Sicht verändern.
+- [ ] Änderungen durch Sichten dürfen die Basisdatenbank auf keinen Fall verändern (Konsistenzproblem).
+- [ ] Änderungen über Sichten führen prinzipiell zu Konsistenzproblemen, die geeignet behandelt werden müssen.
+- [x] Änderungen auf einer aus Datenschutzgründen erstellten Sicht dürfen ausgeblendete Teile der Basisdatenbank (z.B. Name-Attribut) nicht betreffen.
+- [x] Wird eine Änderung über eine Sicht ausgeführt, darf somit keine Integritätsbedingung (z.B. Attribut NOT NULL) der Basisdatenbank verletzt werden.
+
+Was beschreibt eine Projektionssicht?
+- [x] Eine Projektionssicht verwendet nur einen Teil aller Attribute einer Relation.
+- [ ] Eine Projektionssicht enthält neue Tupel, welche in der ursprünglichen Relation nicht enthalten sind.
+- [ ] Eine Projektionssicht verwendet immer Attribute mehrerer Relationen.
+- [ ] Eine Projektionssicht enthält (meist) nur einen Teil der Tupel einer Relation.
+- [ ] Eine Projektionssicht enthält alle Tupel der Relation, allerdings werden die Attributbezeichnungen verändert.
+
+Was beschreibt eine Selektionssicht?
+- [x] Eine Selektionssicht enthält (meist) nur einen Teil der Tupel einer Relation.
+- [ ] Eine Selektionssicht verwendet nur einen Teil aller Attribute einer Relation.
+- [ ] Eine Selektionssicht enthält neue Tupel, welche in der ursprünglichen Relation nicht enthalten sind.
+- [ ] Eine Selektionssicht verwendet immer Attribute mehrerer Relationen.
+- [ ] Eine Selektionssicht enthält alle Tupel der Relation, allerdings werden die Attributbezeichnungen verändert.
+
+Was beschreibt eine Verbundsicht?
+- [x] Eine Verbundsicht verwendet immer Attribute mehrerer Relationen.
+- [ ] Eine Verbundsicht enthält neue Tupel, welche in der ursprünglichen Relation nicht enthalten sind.
+- [ ] Eine Verbundsicht verwendet nur einen Teil aller Attribute einer Relation.
+- [ ] Eine Verbundsicht enthält alle Tupel der Relation, allerdings werden die Attributbezeichnungen verändert.
+- [ ] Eine Verbundsicht enthält (meist) nur einen Teil der Tupel einer Relation.
+
+Was beschreibt eine Aggregationssicht?
+- [ ] Eine Aggregationssicht verwendet immer Attribute mehrerer Relationen.
+- [ ] Eine Aggregationssicht enthält (meist) nur einen Teil der Tupel einer Relation.
+- [ ] Eine Aggregationssicht enthält alle Tupel der Relation, allerdings werden die Attributbezeichnungen verändert.
+- [ ] Eine Aggregationssicht verwendet nur einen Teil aller Attribute einer Relation.
+- [x] Eine Aggregationssicht enthält neue Tupel, welche in der ursprünglichen Relation nicht enthalten sind.
+
+Gegeben ist folgendes Relationenschema: `Student ( Matrikelnummer , Name , Adresse , Semester )` mit der Zusatzbedingung, dass der Name des Studenten nicht NULL sein darf. Nun wird eine Sicht darauf erzeugt:
+```sql
+   CREATE VIEW Beispielsicht AS
+   SELECT Matrikelnummer, Semester, Maximum
+   FROM Student, (
+      SELECT MAX(Semester) AS Maximum
+      FROM Student )
+   WHERE Matrikelnummer BETWEEN 40000 AND 50000
+```
+Welche der folgenden Operationen auf dieser Sicht führen prinzipiell zu keinen Problemen?
+- [ ] 
+   ```sql
+      UPDATE Beispielsicht
+      SET Maximum = 5
+      WHERE Matrikelnummer = 45678
+   ```
+- [x] `SELECT DISTINCT Maximum FROM Beispielsicht`
+- [ ] `SELECT Name FROM Beispielsicht`
+- [x] 
+   ```sql
+   UPDATE Beispielsicht
+   SET Semester = 4
+   WHERE Matrikelnummer = 45678
+   ```
+- [ ] `INSERT INTO Beispielsicht VALUES (53212, 1, 7)`
+- [ ] `INSERT INTO Beispielsicht VALUES (41234, 4, NULL)`
+- [ ] `DELETE FROM Beispielsicht WHERE Matrikelnummer < 40000`
+- [x] `DELETE FROM Beispielsicht WHERE Semester = 1`
+
+## Rechtevergabe
+Welche der folgenden Aussagen im Zusammenhang mit Rechten und Datenbanknutzung sind korrekt?
+- [ ] Die Rechte des Datenbankadministrators sind uneingeschränkt.
+- [ ] Einmal erworbene Rechte verbleiben für immer beim Nutzer.
+- [ ] Für die Vergabe von Rechten an Nutzer ist nur der Datenbankadministrator (DBA) zuständig, d.h. Rechte kann man nur vom DBA erhalten.
+- [x] Erworbene Rechte können nur unter besonderen Umständen an andere Nutzer weitergegeben werden.
+- [ ] Erworbene Rechte können jederzeit an andere, bedürftige Nutzer weitergegeben werden.
+- [x] Rechte können in der Datenbank "wandern", d.h. über unübersichtliche Weitergabe-Optionen bei unberechtigten Nutzern ankommen.
+- [ ] Die Vergabe von Rechten ist nur im Zusammenhang mit Sichten ein sinnvolles Konzept, da so der Schutz von sensiblen Daten realisiert werden kann.
+
+## Privacy
+Welche der folgenden Aussagen im Zusammenhang mit dem Schutz der Privatsphäre sind korrekt?
+- [ ] Die k-Anonymität ist ein Verfahren zur Anonymisierung von jeweils k Tupeln in Detaildatensammlungen, wobei k möglichst groß zu wählen ist.
+- [x] Ein Problem bei statistischen Datensammlungen ist das Erspähen von Einzeldaten durch eine Menge geschickt kombinierter Anfragen.
+- [x] Daten zur Privatsphäre dürfen nur in besonders definierten Ausnahmefällen von dafür Befugten eingesehen werden.
+- [ ] Probleme mit dem Schutz der Privatsphäre in großen Datensammlungen sind durch eine Vielzahl von Strategien und Verfahren leicht zu beherrschen.
+
+Es existiere eine Relation Professoren mit den Attributen Rang, Gehalt und weiteren.
+Nehmen wir an, Sie haben die Erlaubnis, im SELECT-Teil einer Anfrage ausschließlich die Operationen $SUM( )$ und $COUNT( )$ zu verwenden.
+Sie möchten nun das Gehalt eines bestimmten Professors herausfinden, von dem Sie wissen, dass sein Rang „W3“ ist und er den höchsten Verdienst aller W3-Professoren hat.
+Wird Ihnen das mit den folgenden Anfragen und etwas Ausdauer gelingen?
+```sql
+SELECT  COUNT(*)  AS  AnzProfW3,  SUM(Gehalt)  AS  SumGehW3 FROM  Professoren WHERE  Rang = ‘W3’
+
+SELECT  COUNT(*)  AS  AnzProf,  SUM(Gehalt)  AS  SumGeh FROM  Professoren WHERE  Rang = ‘W3’
+      AND  Gehalt < Faktor * ( SELECT  SUM(Gehalt) / COUNT(*) FROM  Professoren WHERE  Rang = ‘W3’ )
+```
+Die zweite Anfrage wird wiederholt gestellt und dabei der Wert der „Variablen“ Faktor variiert.
+- [ ] Nein, die Rechte sind ausreichend eingeschränkt.
+- [x] Ja, man kann es schaffen.
+
+(Um das gesuchte Gehalt zu bestimmen, muss man den Faktor nur schrittweise erhöhen - und zwar so lange, bis AnzProf = AnzProfW3 - 1 ist. Die Differenz von SumGehW3 und SumGeh ist dann der gesuchte Betrag.)
+
+# NoSQL
+## Motivation und Datenmodelle
+Was sind Gründe für die Verwendung einer NoSQL Datenbank?
+- [x] Flexibilität in der Form der Daten, z.B. der genutzten Attribute von Tupeln
+- [ ] Konsistenzerhaltung (ACID-Prinzip)
+- [ ] Mehr mögliche Integritätsbedingungen (Trigger, Schlüssel,...)
+- [x] Reduzierte Komplexität (Integritätsbedingungen, Tabellenformate, ...)
+- [x] Bessere Skalierung bei großen Datenmengen
+- [x] Wegen spezieller Anwendungen (Graph-Datenbanken, Data Mining, ...)
+- [ ] Datenschutz (Sichten können ausgehebelt werden)
+- [ ] Geschwindigkeit bei wenig Daten (wenige Tabellen und Nutzer)
+
+## KV-Stores und Wide Column Stores
+Welche der folgenden Aussagen über KV-Stores sind richtig?
+- [ ] Daten in einem KV-Store lassen sich nur schwer anfragen, da keine Schlüssel wie in relationalen DBS definiert sind.
+- [ ] KV-Stores sind besonders gut für Tripel geeignet, d.h. dreiwertigen Daten.
+- [x] In einem KV-Store gespeicherte Tupel sind deutlich flexibler hinsichtlich ihrer genutzten Attribute, verglichen mit einer relationalen DB.
+- [x] "KV"-Store steht für eine "Key, Value" Datenbank und erlaubt das Speichern von Daten unter einem zugehörigen Schlüssel.
+- [ ] Anfragen an KV-Stores sind grundsätzlich komplexer verglichen mit SQL-Anfragen.
+
+Welche der folgenden Aussagen über Wide Column Stores sind korrekt?
+- [x] In Wide Column Stores werden Daten durch Listen verwaltet.
+- [x] Wide Column Stores können problemlos Tupel mit neuen Attributen hinzufügen.
+- [ ] Tupel in Wide Column Stores ersetzen (wie in relationalen DBS auch) fehlende Attributwerte durch NULL-Werte.
+- [x] Wide Column Stores gehören zu den KV-Stores.
+- [ ] Wide Column Stores sind besonders gut für strukturierte Tupel geeignet, die alle hinsichtlich ihrer Attribute gleich sind.
+- [ ] Wide Column Stores können effizient eingesetzt werden, wenn Tupel viele Attribute besitzen die nicht NULL sind.
+
+## Document Stores
+Welche der folgenden Aussagen trifft auf Document Stores zu?
+- [ ] Document Stores enthalten unstrukturierte Dokumente, z.B. ausgefüllte Formulare.
+- [x] Document Stores sind besonders gut für die Speicherung von schemafreien Daten geeignet, d.h. Daten mit unterschiedlichen Spalten-Attributen.
+- [x] Document Stores können verschachtelte Daten (Hierarchien) verwalten.
+- [x] Document Stores sind eine Form von KV-Stores.
+- [ ] Anfragen an Document Stores sind durch die Form der Dokumente komplexer als reguläre SQL Anfragen.
+
+## Graph Stores
+Welche der nachfolgenden Aussagen über Graph Stores sind richtig?
+- [x] Graph Stores erlauben die effiziente Ausführung graphbasierter Algorithmen wie z.B. der Breitensuche oder der Ermittlung des kürzesten Pfades.
+- [x] Graph Stores sind besonders gut geeignet, um Beziehungen zwischen Objekten darzustellen.
+- [ ] Anfragen an Graph Stores können SQL benutzen.
+- [ ] Daten in Graph Stores lassen sich nicht in relationalen DBS speichern.
+
+# Anwendungsprogrammierung mit Datenbanken
+## Programmiersprachenanbindung
+Welche der folgenden Aussagen sind richtig?
+- [x] Ein Cursor-Konzept erlaubt die Verwendung eines Iterators innerhalb eines Anwendungsprogrammes, um über das Anfrageergebnis der Datenbank zu "laufen".
+- [x] In der Programmiersprachenanbindung geht es um die Verknüpfung von Programmiersprachen (Anwendungen) mit Datenbanken.
+- [ ] Durch das Cursor-Konzept kann die Datenbank direkt auf das Anwendungsprogramm zugreifen.
+- [ ] Drei Varianten zur Kopplung zwischen Anwendung und Datenbank existieren: (1) Enge Kopplung (Anwendung ist Datenbank), (2) nahe Kopplung (Anwendung greift auf Datenbank zu) und (3) lose Kopplung (Anwendung benötigt keine Datenbank).
+- [ ] Unter Programmiersprachenanbindung versteht man in diesem Kontext die Kombination von Umgangssprache und SQL.
+- [x] Es gibt drei Varianten der Kopplung zwischen Anwendung und Datenbank: (1) Die Einbettung der Datenbank in die Anwendung, (2) eine Schnittstelle zwischen beiden, und (3) eine Weiterentwicklung der Sprache der Datenbank.
+
+## JDBC
+Welche der folgenden Antworten sind richtig?
+- [ ] JDBC unterstützt Anfragen, allerdings keine Transaktionssemantik (BEGIN, COMMIT, ABORT,...).
+- [ ] JDBC ist eine Java-Datenbank.
+- [ ] Fehler in JDBC lassen sich nicht abfangen, die Datenbank kann durch JDBC Befehle jedoch keinen inkonsistenten Zustand erreichen.
+- [x] JDBC ist eine Java-Schnittstelle zu einer Datenbank.
+- [ ] In JDBC werden drei Phasen durchlaufen: (1) Funktionen der Datenbank übermitteln, (2) Ergebnisse zusammenfassen und (3) Resultat der Anwendung zurückgeben.
+- [ ] JDBC erlaubt ausschließlich lesenden Zugriff auf die Datenbank (SELECT).
+- [x] Ein typischer Ablauf in JDBC besteht darin, (1) sich mit der Datenbank zu verbinden, (2) eine SQL-Anfrage zu senden und (3) Anfrageergebnisse zu verarbeiten.
+
+## SQLJ
+Welche der folgenden Antworten sind korrekt?
+- [x] Im Gegensatz zu JDBC erlaubt SQLJ direkt bei der Eingabe die Überprüfung der SQL-Anfrage auf Tippfehler.
+- [x] SQLJ ermöglicht SQL-Anfragen direkt in Java zu schreiben.
+- [ ] Anfragen in SQLJ können keine Nullwerte erfassen.
+- [ ] JDBC nutzt SQLJ um Anfragen an die Datenbank zu übermitteln.
+- [ ] Der SQL-Teil von SQLJ ist strikt von Java (z.B. Datentypen wie Strings, Integer,...) getrennt.
+
+## LINQ
+Welche der folgenden Aussagen ist richtig?
+- [x] In LINQ wird eine Datenbanksprache wie z.B. SQL in eine Programmiersprache (z.B. C#) eingebettet.
+- [ ] LINQ ist eine Schnittstelle zwischen der Datenbank und einer Programmiersprache, wie JDBC.
+- [ ] LINQ stellt eine Spracherweiterung einer Datenbanksprache dar.
+
+## Objekt-relationalem Mapping
+Welche der folgenden Aussagen sind richtig?
+- [x] Im Objekt-relationalen Mapping werden Relationen (Tabellen) in Klassen umgewandelt.
+- [x] Hibernate: Werte von Attributen eines Tupels können mittels "set" und "get" Methoden manipuliert werden.
+- [x] Hibernate: Anfragen benötigen keine SELECT Klausel, da die Ergebnisse Objekte darstellen.
+- [ ] Hibernate: Anfragen benötigen keine FROM Klausel, da nur auf Objekten gearbeitet wird.
+- [x] Hibernate: Basiert auf Java und stellt eine Verbindung zwischen Java-Objekten und Tupeln einer Datenbank her.
+- [ ] Unter Objekt-relationalem Mapping versteht man die logische Überführung von Datenbankobjekten in Datenformate (Integer, Strings,...) der Programmiersprache.
+
+## prozeduralen SQL-Erweiterungen
+Welche der folgenden Aussagen sind korrekt?
+- [x] SQL/PSM ist eine Sprachenerweiterung der Datenbank.
+- [x] PSM speichert Prozeduren und Funktionen.
+- [ ] SQL/PSM kann als eine Einbettung der Datenbank in eine Programmiersprache verstanden werden.
+- [x] SQL/PSM unterstützt Schleifen, bedingte Verzweigungen (if) und Exception-Handling.
+- [ ] SQL/PSM stellt eine Schnittstelle zwischen der Programmsprache und der Datenbank dar.
+- [ ] SQL/PSM unterstützt kein Cursor-Konzept.

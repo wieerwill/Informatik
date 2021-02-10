@@ -1881,3 +1881,440 @@ Zusammenfassung
 - Nicht-Standard bzw. proprietäre Schnittstellen
 
 # Anwendungsprogrammierung
+Lernziele:
+- Wissen zu Konzepten und Schnittstellen zum Zugriff auf SQL-Datenbanken aus Programmiersprachen heraus
+- Verständnis prozeduraler Schnittstellen am Beispiel von JDBC
+- Kenntnisse zu Embedded SQL und prozeduralen SQL-Erweiterungen
+- Grundverständnis objektrelationaler Abbildungen
+
+## Programmiersprachenanbindung
+Kopplungsarten:
+- prozedurale oder CALL-Schnittstellen (call level interface)
+  - Beispiele: SQL/CLI, ODBC, JDBC, ...
+- Einbettung einer DB-Sprache in Programmiersprachen
+  - statische Einbettung: Vorübersetzer-Prinzip ⇝ SQL-Anweisungen zur Übersetzungszeit festgelegt
+  - Beispiele: Embedded SQL, SQLJ
+  - dynamische Einbettung ⇝ Konstruktion von SQL-Anweisungen zur Laufzeit
+- Spracherweiterungen und neue Sprachentwicklungen
+  - Beispiele: SQL/PSM, PL/SQL, Transact-SQL, PL/pgSQL
+- Cursor-Konzept
+  - Cursor: Iterator über Liste von Tupeln (Anfrageergebnis)
+
+## JDBC
+- Datenbankzugriffsschnittstelle für Java
+- abstrakte, datenbankneutrale Schnittstelle
+- vergleichbar mit ODBC
+- Low-Level-API: direkte Nutzung von SQL
+- Java-Package java.sql
+  - DriverManager: Einstiegspunkt, Laden von Treibern
+  - Connection: Datenbankverbindung
+  - Statement: Ausführung von Anweisungen über eine Verbindung
+  - ResultSet: verwaltet Ergebnisse einer Anfrage, Zugriff auf einzelne Spalten
+
+![JDBC Struktur](Assets/Datenbanksysteme_JDBC_Struktur.png)
+
+![JDBC Treiber](Assets/Datenbanksysteme_JDBC_Treiberkonzept.png)
+
+### Ablauf
+1. Aufbau einer Verbindung zur Datenbank
+    - Angabe der Verbindungsinformationen
+    - Auswahl und Laden des Treibers
+2. Senden einer SQL-Anweisung
+    - Definition der Anweisung
+    - Belegung von Parametern
+3. Verarbeiten der Anfrageergebnisse
+    - Navigation über Ergebnisrelation
+    - Zugriff auf Spalten
+
+### Verbindungsaufbau
+1. Treiber laden `Class.forName("com.company.DBDriver");`
+2. Verbindung herstellen
+    ```java
+    String url = "jdbc:subprotocol:datasource";
+    Connection con = DriverManager.getConnection
+      (url, "scott", "tiger");
+    ```
+
+JDBC-URL spezifiziert
+- Datenquelle/Datenbank
+- Verbindungsmechanismus (Protokoll, Server und Port)
+
+### Anfrageausführung
+1. Anweisungsobjekt (Statement) erzeugen `Statement stmt = con.createStatement();`
+2. Anweisung ausführen
+    ```java
+    String query = "select Name, Jahrgang from WEINE";
+    ResultSet rSet = stmt.executeQuery(query);
+    ```
+
+Klasse java.sql.Statement
+- Ausführung von Anfragen (SELECT) mit executeQuery
+- Ausführung von Änderungsanweisungen (DELETE, INSERT, UPDATE) mit executeUpdate
+
+### Ergebnisverarbeitung
+1. Navigation über Ergebnismenge (Cursor-Prinzip)
+    ```java
+    while (rSet.next()) {
+      // Verarbeitung der einzelnen Tupel
+      ...
+    }
+    ```
+2. Zugriff auf Spaltenwerte über getType-Methoden
+    - über Spaltenindex `String wName = rSet.getString(1);`
+    - über Spaltenname `String wName = rSet.getString("Name");`
+
+### Fehlerbehandlung
+- Fehlerbehandlung mittels Exception-Mechanismus
+- SQLException für alle SQL- und DBMS-Fehler
+```java
+try {
+  // Aufruf von JDBC-Methoden
+  ...
+} catch (SQLException exc) {
+  System.out.println("SQLException: " +
+    exc.getMessage());
+}
+```
+
+### Änderungsoperationen
+- DDL- und DML-Operationen mittels executeUpdate
+- liefert Anzahl der betroffenen Zeilen (für DML-Operationen)
+```java
+Statement stmt = con.createStatement();
+int rows = stmt.executeUpdate(
+  "update WEINE set Preis = Preis * 1.1 " +
+  "where Jahrgang < 2000");
+```
+
+### Transaktionssteuerung
+- Methoden von Connection
+  - commit ()
+  - rollback ()
+- Auto-Commit-Modus
+  - implizites Commit nach jeder Anweisung
+  - Transaktion besteht nur aus einer Anweisung
+  - Umschalten mittels setAutoCommit (boolean)
+
+## SQLJ
+### Embedded SQL für Java
+- Einbettung von SQL-Anweisungen in Java-Quelltext
+- Vorübersetzung des erweiterten Quelltextes in echten Java-Code durch Translator sqlj
+- Überprüfung der SQL-Anweisungen
+  - korrekte Syntax
+  - Übereinstimmung der Anweisungen mit DB-Schema
+  - Typkompatibilität der für Datenaustausch genutzten Variablen
+- Nutzung von JDBC-Treibern
+![SQLJ Prinzip](Assets/Datenbanksysteme_SQLJ_Prinzip.png)
+
+Anweisungen
+- Kennzeichnung durch #sql Deklarationen
+- Klassendefinitionen für Iteratoren
+- SQL-Anweisungen: Anfragen, DML- und DDL-Anweisungen `#sql { SQL-Operation };`
+- Beispiel: `#sql { insert into ERZEUGER (Weingut, Region) values ( 'Wairau Hills', 'Marlborough') };`
+
+Host-Variablen
+- Variablen einer Host-Sprache (hier Java), die in SQL-Anweisungen auftreten können
+- Verwendung: Austausch von Daten zwischen Host-Sprache und SQL
+- Kennzeichnung durch ":variable"
+- Beispiel:
+  ```java
+  String name;
+  int weinID = 4711;
+  #sql { select Name into :name
+    from WEINE where WeinID = :weinID };
+  System.out.println("Wein = " + name);
+  ```
+- Nullwerte: Indikatorvariable `":variable:indvar"`
+
+### Iteratoren
+1. Deklaration des Iterators `#sql public iterator WeinIter(String Name, String Weingut, int Jahrgang);`
+2. Definition des Iteratorobjektes `WeinIter iter;`
+3. Ausführung der Anweisung `#sql iter = { select Name, Weingut, Jahrgang from WEINE };`
+4. Navigation
+    ```java
+    while (iter.next()) {
+      System.out.println(iter.Name() + " " iter.Weingut());
+    }
+    ```
+
+Dynamic SQL: SQL-Statements als zur Laufzeit konstruierte Strings
+```java
+exec sql begin declare section;
+    AnfrageString char(256) varying;
+exec sql end declare section;
+exec sql declare AnfrageObjekt statement;
+AnfrageString = 'delete from WEINE where WeinID = 4711';
+...
+exec sql prepare AnfrageObjekt from :AnfrageString;
+exec sql execute AnfrageObjekt;
+```
+
+## LINQ
+Language Integrated Query (LINQ)
+- Einbettung einer DB-Sprache (SQL) in eine Programmiersprache (C#)
+- spezielle Klassenmethoden
+    ```java
+    IEnumerable<string> res = weine
+    .Where(w => w.Farbe == "Rot")
+    .Select(w => new { w.Name });
+    ```
+- eigene Sprachkonstrukte (ab C# 3.0)
+    ```java
+    IEnumerable<op> res = from w in weine
+    where w.Farbe == "Rot"
+    select new { w.Name };
+    ```
+
+## Objekt-relationales Mapping
+- Einsatz von
+  - relationalen Backends (SQL-DBMS)
+  - objektrelationalen Anwendungen, Applikationsservern, Middleware, ...
+- Implementierung von „Geschäftslogik“ in Form von Objekten (Kunde, Bestellung, Vorgang, ...)
+  - z.B. als Java Bean, CORBA-Objekt
+- erfordert: Abbildung Klasse ↔ Relation
+- Aspekte:
+  - konzeptionelle Abbildung
+  - Laufzeitunterstützung
+- Technologien/Produkte: JDO, Hibernate, ADO.NET Entity Framework...
+
+![ORM Prinzip](Assets/Datenbanksysteme_ORM_Prinzip.png)
+
+Klassen und Tabellen
+- OO: Klasse definiert Eigenschaften von Objekten (Intension) + umfasst Menge aller Objekte (Extension)
+- RM: Relation umfasst alle Tupel, Relationenschema beschreibt Struktur
+- naheliegend: Klasse = Tabelle
+- aber: Normalisierung zerlegt Relationen!
+  - 1 Klasse = 1 Tabelle
+  - 1 Klasse = n Tabellen
+  - n Klassen = 1 Tabelle
+- Beispiel ![Klassen und Tabellen Beispiel](Assets/Datenbanksysteme_Tabellenbeispiel.png)
+
+Beziehungen
+- eingebetteter Fremdschlüssel in der Relation der Klasse, d.h. der Identifikator des assoziierten Objektes wird als Fremdschlüssel in zusätzlichen Spalten gespeichert
+- Fremdschlüsseltabellen: die Beziehungsinstanz wird als Tupel mit den Schlüsseln der beteiligten Objekte repräsentiert
+- Abbildung der in Beziehung stehenden Klassen auf eine einzelne Tabelle: Verletzung der Normalformen
+- konkrete Abbildung
+  - 1:1-Beziehungen: eingebettete Fremdschlüssel
+  - 1:n-Beziehungen: eingebettete Fremdschlüssel oder Fremdschlüsseltabellen
+  - Beziehungen mit Attributen: Fremdschlüsseltabellen
+  - m:n-Beziehungen: Fremdschlüsseltabellen
+  - Drei- und mehrstellige Beziehungen: Fremdschlüsseltabellen
+- ![Beziehungen](Assets/Datenbanksysteme_Beziehungen.png)
+
+Hibernate
+- Java-Framework für objekt-relationales Mapping
+- Idee: Abbildung von Java-Objekten auf Tupel einer relationalen Datenbank
+- Prinzip: Java-Klasse + Abbildungsvorschrift ⇝ SQL-Tabelle
+- keine expliziten SQL-Anweisungen nötig!
+- Unterstützung der Navigation über Beziehungen (automatisches Nachladen der referenzierten Objekte)
+- Anfragen über eigene Sprache (HQL bzw. QBC/QBE)
+- Beispiel
+  ```java
+  public class Wein {
+    private int id;
+    private String name;
+    private String farbe;
+    private int jahr;
+    private String weingut;
+
+    public void setName(String n) { name = n; }
+    public String getName() { return name; }
+    public void setFarbe(String f) { farbe = f; }
+    public String getFarbe() { return farbe; }
+    public void setJahr(int j) { jahr = j; }
+    public int getJahr() { return jahr; }
+    ...
+  }
+  ```
+- Deklaration der Abbildung in einer XML-Mapping-Datei
+- Abbildungsvorschrift wird zur Systemlaufzeit interpretiert
+  ```xml
+    <hibernate-mapping>
+    <class name="Wein" table="WEINE">
+    <id name="id">
+    <generator class="native" />
+    </id>
+    <property name="name" />
+    <property name="farbe" />
+    <property name="jahr" column="jahrgang"/>
+    <property name="weingut" />
+    </class>
+    </hibernate-mapping>
+  ```
+
+Objekterzeugung
+```java
+Transaction tx = null;
+
+Wein wein = new Wein();
+wein.setName("Pinot Noir");
+wein.setFarbe("Rot");
+wein.setJahr(1999);
+wein.setWeingut("Helena");
+
+try {
+  tx = session.beginTransaction();
+  session.save(wein);
+  tx.commit();
+} catch (HibernateException exc) {
+  if (tx != null) tx.rollback();
+}
+```
+
+Anfragen
+- Anfragen über Hibernate-eigene Anfragesprache HQL
+- Formulierung auf dem konzeptuellen Schema (Java-Klassen)
+- Select-Klausel nicht benötigt (Ergebnisse sind immer Objekte)
+- Beispiel
+  ```java
+  Query query = session.createQuery("from Wein where Farbe = 'Rot'");
+  Iterator iter = query.iterate();
+  while (iter.hasNext()) {
+    Wein wein = (Wein) iter.next();
+    ...
+  }
+  ```
+
+## Prozedurale SQL-Erweiterungen: SQL/PSM
+- SQL-Standard für prozedurale Erweiterungen
+- PSM: Persistent Stored Modules
+  - gespeicherte Module aus Prozeduren und Funktionen 
+  - Einzelroutinen
+  - Einbindung externer Routinen (implementiert in C, Java, ...)
+  - syntaktische Konstrukte für Schleifen, Bedingungen etc.
+  - Basis für Methodenimplementierung für objektrelationale Konzepte
+
+Vorteile gespeicherter Prozeduren
+- bewährtes Strukturierungsmittel
+- Angabe der Funktionen und Prozeduren erfolgt in der Datenbanksprache selbst; daher nur vom DBMS abhängig
+- Optimierung durch DBMS möglich
+- Ausführung der Prozeduren erfolgt vollständig unter Kontrolle des DBMS
+- zentrale Kontrolle der Prozeduren ermöglicht eine redundanzfreie Darstellung relevanter Aspekte der Anwendungsfunktionalität
+- Konzepte und Mechanismen der Rechtevergabe des DBMS können auf Prozeduren erweitert werden
+- Prozeduren können in der Integritätssicherung verwendet werden (etwa als Aktionsteil von Triggern)
+
+Variablendeklaration
+- Variablen vor Gebrauch deklarieren
+- Angabe von Bezeichner und Datentyp
+- optional mit Initialwert
+```java
+declare Preis float;
+declare Name varchar(50);
+declare Menge int default 0;
+```
+
+### Ablaufkontrolle
+- Zuweisung `set var = 42;`
+- Bedingte Verzweigungen
+  ```java
+  if Bedingung then Anweisungen
+    [ else Anweisungen ] end if;
+  ```
+- Schleifen
+  ```java
+  loop Anweisungen end loop;
+  while Bedingung do
+    Anweisungen end while;
+  repeat Anweisungen
+    until Bedingung end repeat;
+  ```
+- Schleifen mit Cursor
+  ```java
+  for SchleifenVariable as CursorName cursor for
+    CursorDeklaration
+  do
+    Anweisungen
+  end for;
+  ```
+
+Ablaufkontrolle Beispiel:
+```java
+declare wliste varchar(500) default ' ';
+declare pos integer default 0;
+
+for w as WeinCurs cursor for
+  select Name from WEINE where Weingut = 'Helena'
+do
+  if pos > 0 then
+    set wliste = wliste || ',' || w.Name;
+  else
+    set wliste = w.Name;
+  end if;
+  set pos = pos + 1;
+end for;
+```
+
+### Ausnahmebehandlung
+- Auslösen einer Ausnahme (Condition) `signal ConditionName;`
+- Deklarieren von Ausnahmen
+  ```java
+  declare fehlendes_weingut condition;
+  declare ungueltige_region
+    condition for sqlstate value '40123';
+  ```
+- Ausnahmebehandlung
+  ```java
+  begin
+    declare exit handler for ConditionName
+    begin
+      -- Anweisungen zur Ausnahmebehandlung
+    end
+      -- Anweisungen, die Ausnahmen auslösen können
+  end
+  ```
+
+### Funktionen
+- Funktionsdefinition
+  ```java
+  create function geschmack (rz int)
+    returns varchar(20)
+  begin
+    return case
+      when rz <= 9 then 'Trocken'
+      when rz > 9 and rz <= 18 then 'Halbtrocken'
+      when rz > 18 and rz <= 45 then 'Lieblich'
+      else 'Süß'
+    end
+  end
+  ```
+- Aufruf innerhalb einer Anfrage
+  ```java
+  select Name, Weingut, geschmack(Restzucker) from WEINE
+  where Farbe = 'Rot' and geschmack(Restzucker) = 'Trocken'
+  ```
+- Nutzung außerhalb von Anfragen `set wein_geschmack = geschmack (12);`
+
+### Prozeduren
+- Prozedurdefinition
+```java
+create procedure weinliste (in erz varchar(30),
+  out wliste varchar(500))
+begin
+  declare pos integer default 0;
+  for w as WeinCurs cursor for
+    select Name from WEINE where Weingut = erz
+  do
+    -- siehe Beispiel von Folie 12-40
+  end for;
+end; end;
+```
+
+Nutzung über call-Anweisung
+```java
+declare wliste varchar(500);
+call weinliste ('Helena', wliste);
+```
+
+Zugriffscharakteristik
+- Eigenschaften von Prozeduren, die Anfrageausführung und -optimierung beeinflussen
+  - **deterministic**: Routine liefert für gleiche Parameter gleiche Ergebnisse
+  - **no sql**: Routine enthält keine SQL-Anweisungen
+  - **contains sql**:Routine enthält SQL-Anweisungen (Standard für SQL-Routinen)
+  - **reads sql data**: Routine führt SQL-Anfragen (select-Anweisungen) aus
+  - **modifies sql data**: Routine, die DML-Anweisungen (insert, update, delete) enthält
+
+## Zusammenfassung
+- Verbindung zwischen SQL und imperativen Sprachen
+- Call-Level-Schnittstelle vs. Embedded SQL
+- objektrelationales Mapping
+- SQL/PSM: imperative Erweiterungen von SQL → Implementierung von Funktionen und Prozeduren

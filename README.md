@@ -8,7 +8,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Mind Map](Automaten,%20Sprachen%20und%20Komplexität%20-%20MindMap.pdf) (work in progress)
 - [Betriebssysteme](Betriebssysteme.md)
   - [Flashcards/Karteikarten](Betriebssysteme%20-%20Flashcards.pdf)
-  - [Mind Map](Betriebssysteme%20-%20MindMap.pdf) (work in progress)
+  - [Cheatsheet](Betriebssysteme%20-%20Cheatsheet.pdf)
   - [Fragenkatalog](Betriebssysteme%20-%20Fragen.md) (work in progress)
 - [Computergrafik](Computergrafik.md)
   - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf) (work in progress)
@@ -29,7 +29,8 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [MindMap](Softwaretechnik%20-%20MindMap.pdf) (work in progress)
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf) (work in progress)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
-- [Stochastik](Stochastik.md) (work in progress)
+- [Stochastik](Stochastik.md)
+  - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
 

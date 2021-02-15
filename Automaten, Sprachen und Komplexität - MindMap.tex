@@ -1,48 +1,333 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{listings}
+\usepackage[compact]{titlesec} %less space for headers
+\usepackage{mdwlist} %less space for lists
 \usepackage[utf8]{inputenc}
 \usepackage{tikz}
-\usetikzlibrary{mindmap}
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees}
+\tikzstyle{every node}=[draw=black,thin,anchor=west, minimum height=2em]
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
 
+\pdfinfo{
+    /Title (Automaten, Sprachen \& Komplexität - Cheatsheet)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+% Information boxes
+\newcommand*{\info}[4][16.3]{
+  \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
+  \list{$\bullet$}{\topsep=0pt\itemsep=0pt\parsep=0pt
+    \parskip=0pt\labelwidth=8pt\leftmargin=8pt
+    \itemindent=0pt\labelsep=2pt}
+    #4
+  \endlist
+  };
+}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}    
+% compress space
+\setlength\abovedisplayskip{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\linespread{0.5}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+
+%Tikz global setting
+\tikzset{
+    topic/.style={
+                text centered,
+                text width=5cm,
+                level distance=1mm,
+                sibling distance=5mm,
+                rounded corners=2pt
+            },
+        subtopic/.style={
+                yshift=1.5cm,
+                text centered,
+                text width=3cm,
+                rounded corners=2pt,
+                fill=gray!10
+            },
+        theme/.style={
+                grow=down,
+                xshift=-0.6cm,
+                text centered,
+                text width=3cm,
+                edge from parent path={(\tikzparentnode.205) |- (\tikzchildnode.west)}
+            },
+        description/.style={
+                grow=down,
+                xshift=-0.5cm,
+                right,
+                text centered,
+                edge from parent path={(\tikzparentnode.200) |- (\tikzchildnode.west)}
+            },
+        level1/.style ={level distance=1cm},
+        level2/.style ={level distance=2cm},
+        level3/.style ={level distance=3cm},
+        level4/.style ={level distance=4cm},
+        level5/.style ={level distance=5cm},
+        level6/.style ={level distance=6cm},
+        level7/.style ={level distance=7cm},
+        level8/.style ={level distance=8cm},
+        level9/.style ={level distance=9cm},
+        level 1/.style={sibling distance=5.5cm},
+        level 1/.append style={level distance=2.5cm},
+}
+
+% Turn off header and footer
 \pagestyle{empty}
 \begin{document}
 
-\begin{tikzpicture}[mindmap, grow cyclic, every node/.style=concept, concept color=orange!40,
-    level 1/.append style={level distance=5cm,sibling angle=90},
-    level 2/.append style={level distance=3cm,sibling angle=45}]
-
-\node{Sprache}
-    child [concept color=blue!30] { node {Chomsky Hierachie}
-        child { node {Typ 0: Allgemein}}
-        child { node {Typ 1: Kontextsensitiv}}
-        child { node {Typ 2: Kontextfrei}}
-        child { node {Typ 3: Regulär}}
-    }
-    child [concept color=yellow!30] { node {Wort}
-        child { node { y Präfix von w, wenn es $z\in\sum^*$ gibt mit $yz=w$}}
-        child { node { y Infix/Faktor von w, wenn es $x,z\in\sum^*$ gibt mit $xyz = w$}}
-        child { node { y Suffix von w, wenn es $x\in\sum^*$ gibt mit $xy=w$}}
-    }
-    child [concept color=teal!40] { node {Beamer Series}
-    }
-    child [concept color=purple!50] { node {TikZ Series}
-    };
+\begin{tikzpicture}
+    \node[topic]{Automaten, Sprachen \& Komplexität}
+    child{node [subtopic]{Sprache}
+            child [theme, level1] { node {Chomsky Hierachie}
+                    child[description, level distance=1cm] { node {Typ 0: Allgemein \\ jede Grammatik ist vom Typ 0}}
+                    child[description, level distance=2cm] { node {Typ 1: Kontextsensitiv \\ wenn es Wörter $u,v,w\in(V\cup\sum)^*,|v|>0$ und ein Nichtterminal $A\in V$ gibt mit $l=uAw$ und $r=uvw$}}
+                    child[description, level distance=3cm] { node {Typ 2: Kontextfrei \\ wenn $l\in V$ und $r\in (V\cup \sum)^*$ gilt}}
+                    child[description, level distance=4cm] { node {Typ 3: Regulär \\ wenn $l\in V$ und $r\in \sum V\cup {\epsilon}$ gilt}}
+                }
+        }
+    child{node [subtopic]{Wort}
+            child[description, level distance=1cm] { node { y Präfix von w, wenn es $z\in\sum^*$ gibt mit $yz=w$}}
+            child[description, level distance=2cm] { node { y Infix/Faktor von w, wenn es $x,z\in\sum^*$ gibt mit $xyz = w$}}
+            child[description, level distance=3cm] { node { y Suffix von w, wenn es $x\in\sum^*$ gibt mit $xy=w$}}
+        }
+    child{node [subtopic]{Grammatik}
+            child[theme, level distance=1cm] { node {Symbole}
+                    child[description, level distance=1cm] { node {Nicht-Terminale (oder Variablen), aus denen noch weitere Wortbestandteile abgeleitet werden sollen}}
+                    child[description, level distance=2cm] { node {Terminale (die "eigentlichen" Symbole)}}
+                }
+            child[theme, level distance=4cm]{ node {4-Tupel $G=(V,\sum, P, S)$}
+                    child[description, level distance=1cm] { node {V ist eine endliche Menge von Nicht-Terminalen oder Variablen}}
+                    child[description, level distance=2cm] { node {$\sum$ ist ein Alphabet (Menge der Terminale)}}
+                    child[description, level distance=3cm] { node {$P$ ist eine endliche Menge von Regeln oder Produktionen}}
+                    child[description, level distance=4cm] { node {$S\in V$ ist das Startsymbol oder das Axiom}}
+                }
+            child[theme, level distance=8cm]{ node {Konventionen}
+                    child[description, level distance=1cm] { node {Variablen sind Großbuchstaben (Elemente aus V)}}
+                    child[description, level distance=2cm] { node {Terminale sind Kleinbuchstaben (Elemente aus $\sum$)}}
+                }
+        };
 \end{tikzpicture}
 
-\begin{tikzpicture}[mindmap, grow cyclic, every node/.style=concept, concept color=orange!40,
-    level 1/.append style={level distance=5cm,sibling angle=90},
-    level 2/.append style={level distance=3cm,sibling angle=45}]
-\node{Grammatiken}
-    child [concept color=blue!30] { node {Symbole}
-        child { node {Nicht-Terminale (oder Variablen), aus denen noch weitere Wortbestandteile abgeleitet werden sollen}}
-        child { node {Terminale (die "eigentlichen" Symbole)}}
+\begin{tikzpicture}[
+        subtopic/.style={
+                yshift=1.5cm,
+                text centered,
+                text width=3cm,
+                rounded corners=2pt,
+                fill=gray!10
+            },
+        level 1/.style={sibling distance=5.5cm},
+        level 1/.append style={level distance=2.5cm},
+    ]
+    % Topic
+    \node[topic]{Automaten, Sprachen \& Komplexität}
+    child{node [subtopic] {intuitiv berechenbar}
+            child[theme, level distance=1cm]{node{$\mu$ rekurisv}}
+            child[theme, level distance=2cm]{node{while berechnenbar}}
+            child[theme, level distance=3cm]{node{Turing berechenbar}}
+            child[theme, level distance=4cm]{node{goto berechnenbar}}
+        };
+\end{tikzpicture}
+
+Definition: Sei L eine Sprache. Dann ist $L*=\bigcup_{n\geq 0} L^n$ der Kleene-Abschluss oder die Kleene-Iteration von L. Weiter ist $L+ = \bigcup_{n\geq 0} L^n$
+
+
+\begin{tikzpicture}
+    \node[topic]{Rechtslineare Sprachen}
+    child{node [subtopic] {endliche Automaten (Maschinen)}
+    child[theme, level distance=1cm]{node{deterministischer endlicher Automat M}
+    child[description, level distance=1cm]{node{5-Tupel $M=(Z, \sum, z_0, \delta, E)$}}
+    child[description, level distance=1cm]{node{$Z$ eine endliche Menge von Zuständen}}
+    child[description, level distance=1cm]{node{$\sum$ das Eingabealphabet (mit $Z\cap\sum = \emptyset$)}}
+    child[description, level distance=1cm]{node{$z_0\in Z$ der Startzustand}}
+    child[description, level distance=1cm]{node{$\delta: Z \times \sum \rightarrow Z$ die Übergangsfunktion}}
+    child[description, level distance=1cm]{node{$E\subseteq Z$ die Menge der Endzustände}}
+    child[description, level distance=1cm]{node{kurz: DFA (deterministic finite automaton)}}
+    child[description, level distance=1cm]{node{von einem DFA akzeptierte Sprache ist: $L(M)={w\in\sum^* | \hat{\delta}(z_0,w)\in E}$}}
+    child[description, level distance=1cm]{node{Eine Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA mit $L(M)=L$ gibt}}
+    %Jede reguläre Sprache ist rechtslinear
     }
-    child [concept color=yellow!30] { node {4-Tupel $G=(V,\sum, P, S)$}
-        child { node {V ist eine endliche Menge von Nicht-Terminalen oder Variablen (Bsp $V=\{S,B,C\}$)}}
-        child { node {$\sum$ ist ein Alphabet (Menge der Terminale) mit $V\cap \sum= \varnothing$, d.h. kein Zeichen ist gleichzeitig Terminal und Nicht-Terminal (Bsp $\sum=\{a,b,c\}$)}}
-        child { node {$P\subseteq (V\cup \sum)^+ \times (v\cup\sum)^*$ ist eine endliche Menge von Regeln oder Produktionen (Produktionsmenge) (Bsp $P=\{(S,aSBC), (S,aBC), (cC,cc), (aB,ab)\}$)}}
-        child { node {$S\in V$ ist das Startsymbol/ die Startvariable oder das Axiom}}
+    child[theme, level distance=1cm]{node{nicht-deterministischer endlicher Automat M}
+            %Jede von einem NFA akzeptierte Sprache ist regulär
+            child[description, level distance=1cm]{node{kurz NFA}}
+        }
+    %Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1 \cup L_2$ regulär.
+    %Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1 \cap L_2$ regulär.
+    %Satz: Wenn $L_1$ und $L_2$ reguläre Sprachen sind, dann ist auch $L_1L_2$ regulär
+    %Satz: Wenn L eine reguläre Sprache ist, dann ist auch $L^+/L^*$ regulär
     }
+    child{description, level distance}{node{Reguläre Ausdrücke
+                    % Definition: Die Menge $Reg(\sum)$ der **regulären Ausdrücke über dem Alphabet $\sum$** ist die kleinste Menge mit folgenden Eigenschaften:
+                    % - $\varnothing \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+                    % - Wenn $\alpha, \beta \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+                    %- für $\alpha * \beta$ schreibt man oft $\alpha\beta$
+                    % für $\alpha + \beta$ schreibt man auch $\alpha|\beta$
+
+                    %Für einen regulären Ausdruck $\alpha \in Reg(\sum)$ ist die Sprache $L(\alpha)\subseteq \sum^*$ induktiv definiert
+
+                    %zu jedem regulären Ausdruck $\gamma$ gibt es einen NFA M mit $L(\gamma)=L(M)$
+                    %zu jedem DFA M gibt es einen regulären Ausdruck $\gamma$ mit $L(M)=L(\gamma)$
+                }}
+    %- Rechtslineare Grammatiken
+    %    - Verbindung zur Chomsky Hierarchie
+    %    - erzeugen Sprachen
+    %    - nicht geeignet, um zu entscheiden, ob ein gegebenes Wort zur Sprache gehört
+    %- NFA
+    %    - erlauben kleine Kompakte Darstellung
+    %    - intuitive graphische Notation
+    %    - nicht geeignet, um zu entscheiden, ob ein gegebenes Wort zur Sprache gehört
+    %- DFA
+    %    - für effiziente Beantwortung der Frage, ob ein Wort zur Sprache gehört
+    %    - sind uU exponentiell größer als NFA
+    %- Reguläre Ausdrücke
+    %    - erlauben kompakte Darstellung in Textform
+    child{node [subtopic] {Nicht-Reguläre Sprachen}
+            % Für jedes Alphabet $\sum$ existiert eine Sprache L über $\sum$, die von keiner Grammatik G erzeugt wird.
+            child[theme, level distance=2cm]{node{ Pumping Lemma}
+                    %Wenn L eine reguläre Sprache ist, dann gibt es $n\leq 1$ derart, dass für alle $x\in L$ mit $|x|\geq n$ gilt: es gibt Wörter $u,v,w \in \sum^*$ mit:
+                    %1. $x=uvw$
+                    %2. $|uv|\leq n$
+                    %3. $|v|\geq 1$
+                    %4. $uv^i w\in L$ für alle $i\geq 0$
+
+                    %Dieses Lemma spricht nicht über Automaten, sondern nur über die Eigenschaften der Sprache. Es ist geeignet, Aussagen über Nicht-Regularität zu machen. Dabei ist es aber nur eine notwendige Bedingung. Es kann nicht genutzt werden, um die Regularität einer Sprache L zu zeigen.
+                }
+            child[theme, level distance=3cm]{node{ Myhill-Nerode Äquivalenz}
+            %Für eine Sprache $L\subseteq \sum^*$ definieren wir eine binäre Relation $R_L \subseteq \sum^* \times \sum^*$ wie folgt: Für alle $x,y\in \sum^*$ setze $(x,y)\in R_L$ genau dann, wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt. Wir schreiben hierfür auch $x R_L y$.
+            % Definition: Für eine Sprache L und ein Wort $x\in \sum^*$ ist $[x]_L=\{y\in\sum^* | x R_L y \}$ die Äquivalenzklasse von x. Ist L klar, so schreiben wir einfacher $[x]$.
+            %Satz von Myhill-Nerode: Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$ (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat)
+            }
+        }
+    child{node [subtopic] {Minimalautomat}
+        %Ein DFA M heißt reduziert, wenn es für jeden Zustand $z \in Z$ ein Wort $x_z\in \sum^*$ gibt mit $\hat{\sigma}(l, x_z)=z$
+    }
+    child{node [subtopic] {Entscheidbarkeit}
+            child[theme, level distance=1cm]{node{Wortproblem}}
+            child[theme, level distance=1cm]{node{Leerheitsproblem}}
+            child[theme, level distance=1cm]{node{Endlichkeitsproblem}}
+            child[theme, level distance=1cm]{node{Schnittproblem}}
+            child[theme, level distance=1cm]{node{Inklusionsproblem}}
+            child[theme, level distance=1cm]{node{Äquivalenzproblem}}
+        };
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \node[topic]{Kontextfreie Sprachen}
+    child{node [subtopic] { Ableitungsbäume}}
+    child{node [subtopic] {Linksableitung}}
+    child{node [subtopic] {Chomsky Normalform}}
+    child{node [subtopic] {Der Cocke-Younger-Kasami- oder CYK-Algorithmus}}
+    child{node [subtopic] {Kellerautomaten}}
+    child{node [subtopic] {die Greibach-Normalform}}
+    child{node [subtopic] {PDAs mit Endzuständen}}
+    child{node [subtopic] {Deterministisch kontextfreie Sprachen}}
+    child{node [subtopic] {das Pumping Lemma für kontextfreie Sprachen}}
+    child{node [subtopic] {das Lemma von Ogden (William Ogden)}}
     ;
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \node[topic]{Berechenbarkeit}
+    child{node [subtopic] {Loop-Berechenbarkeit}}
+    child{node [subtopic] {While Programme}
+            child[theme, level distance=1cm]{node{Gödels Vermutung}}
+        }
+    child{node [subtopic] {GoTo Programme}
+            child[theme, level distance=1cm]{node{Kleenesche Normalform}}
+        }
+    child{node [subtopic] {Turing Berechenbarkeit}}
+    ;
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \node[topic]{Entscheidbarkeit}
+    child{node [subtopic] {Halteproble}}
+    child{node [subtopic] {Reduktion}}
+    child{node [subtopic] {Rechnen mit Kodierungen}}
+    child{node [subtopic] {Satz von Rice}}
+    child{node [subtopic] {Semi Entscheidbarkeit}}
+    child{node [subtopic] {Universelle Turing Maschine}}
+    child{node [subtopic] {Totale berechenbare Funktionen}}
+    child{node [subtopic] {Einige unentscheidbare Probleme}}
+    ;
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \node[topic]{Komplexitätstheorie}
+    child{node [subtopic] {Berechenbarkeitstheorie}}
+    child{node [subtopic] {Frage der Komplexitätstheorie}}
+    child{node [subtopic] {Komplexitätsklassen}
+            child[theme, level distance=1cm]{node{Deterministische Zeitklassen}}
+            child[theme, level distance=1cm]{node{Deterministische Platzklassen}}
+            child[theme, level distance=1cm]{node{Nichtdeterministische Zeitklassen}}
+            child[theme, level distance=1cm]{node{Nichtdeterministische Platzklassen}}
+        }
+    child{node [subtopic] {Polynomialzeit-Reduktionen}}
+    child{node [subtopic] {NP-Vollständigkeit}}
+    child{node [subtopic] {Weitere NP-vollständige Probleme}
+            child[theme, level distance=1cm]{node{3-SAT ist NP-vollständig}}
+            child[theme, level distance=1cm]{node{3C ist NP-vollständig}}
+            child[theme, level distance=1cm]{node{DHC ist NP-vollständig}}
+            child[theme, level distance=1cm]{node{HC ist NP-vollständig}}
+            child[theme, level distance=1cm]{node{TSP ist NP-vollständige}}
+        };
 \end{tikzpicture}
 
 \end{document}

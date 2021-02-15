@@ -4,6 +4,108 @@ date: Wintersemester 20/21
 author: Robert Jeutter
 ---
 
+- [Einführung](#einführung)
+  - [Grundfrage](#grundfrage)
+  - [Probleme (als Abbildung)](#probleme-als-abbildung)
+  - [(beschränkte) Resourcen](#beschränkte-resourcen)
+- [Grundbegriffe](#grundbegriffe)
+  - [Chomsky Hierarchie](#chomsky-hierarchie)
+- [Rechtslineare Sprachen](#rechtslineare-sprachen)
+  - [endliche Automaten (Maschinen)](#endliche-automaten-maschinen)
+  - [Reguläre Ausdrücke](#reguläre-ausdrücke)
+  - [Zusammenfassung](#zusammenfassung)
+  - [Nicht-Reguläre Sprachen](#nicht-reguläre-sprachen)
+    - [Konkrete nicht-reguläre Sprachen](#konkrete-nicht-reguläre-sprachen)
+    - [Pumping Lemma (auswendig lernen!)](#pumping-lemma-auswendig-lernen)
+    - [Myhill-Nerode Äquivalenz](#myhill-nerode-äquivalenz)
+  - [Minimalautomat](#minimalautomat)
+    - [Algorithmus Minimalautomat](#algorithmus-minimalautomat)
+  - [Entscheidbarkeit](#entscheidbarkeit)
+    - [Wortproblem](#wortproblem)
+    - [Leerheitsproblem](#leerheitsproblem)
+    - [Endlichkeitsproblem](#endlichkeitsproblem)
+    - [Schnittproblem](#schnittproblem)
+    - [Inklusionsproblem](#inklusionsproblem)
+    - [Äquivalenzproblem](#äquivalenzproblem)
+    - [Effizientbetrachtung](#effizientbetrachtung)
+    - [Pumping Lemma mit Alphabet aus einem Zeichen](#pumping-lemma-mit-alphabet-aus-einem-zeichen)
+    - [Spielschema oder anderes Schema in Prüfung gefirdert](#spielschema-oder-anderes-schema-in-prüfung-gefirdert)
+    - [Produktbildung von zwei regulären Sprachen. Wenn die erste Sprache als Startzustand da leere Wort enthält, muss man den Startzustand der zweiten Sprache beibehalten?](#produktbildung-von-zwei-regulären-sprachen-wenn-die-erste-sprache-als-startzustand-da-leere-wort-enthält-muss-man-den-startzustand-der-zweiten-sprache-beibehalten)
+- [Kontextfreie Sprachen](#kontextfreie-sprachen)
+  - [Ableitungsbäume](#ableitungsbäume)
+  - [Linksableitung](#linksableitung)
+  - [kontextfreie Sprachen sind kontext-sensitiv](#kontextfreie-sprachen-sind-kontext-sensitiv)
+  - [Chomsky Normalform](#chomsky-normalform)
+  - [Der Cocke-Younger-Kasami- oder CYK-Algorithmus](#der-cocke-younger-kasami--oder-cyk-algorithmus)
+  - [Kellerautomaten](#kellerautomaten)
+  - [die Greibach-Normalform](#die-greibach-normalform)
+  - [Von Grammatiken zu PDAs](#von-grammatiken-zu-pdas)
+  - [Von PDAs zu Grammatiken](#von-pdas-zu-grammatiken)
+  - [PDAs mit Endzuständen](#pdas-mit-endzuständen)
+  - [Deterministisch kontextfreie Sprachen](#deterministisch-kontextfreie-sprachen)
+  - [Abschlusseigenschaften](#abschlusseigenschaften)
+  - [das Pumping Lemma für kontextfreie Sprachen](#das-pumping-lemma-für-kontextfreie-sprachen)
+  - [das Lemma von Ogden (William Ogden)](#das-lemma-von-ogden-william-ogden)
+  - [Entscheidbarkeit](#entscheidbarkeit-1)
+  - [2. dann zeige $W\supseteq W_{|V|}$](#2-dann-zeige-wsupseteq-w_v)
+    - [Unentscheidbarkeit bei kontextfreien Sprachen](#unentscheidbarkeit-bei-kontextfreien-sprachen)
+    - [Entscheidbarkeit bei deterministisch kontextfreien Sprachen](#entscheidbarkeit-bei-deterministisch-kontextfreien-sprachen)
+    - [Unentscheidbarkeit bei deterministisch kontextfreien Sprachen](#unentscheidbarkeit-bei-deterministisch-kontextfreien-sprachen)
+  - [Zusammenfassung kontextfreie Sprachen](#zusammenfassung-kontextfreie-sprachen)
+- [Berechenbarkeit](#berechenbarkeit)
+  - [Loop-Berechenbarkeit](#loop-berechenbarkeit)
+    - [(K+) viele Loop-berechenbare Funktionen](#k-viele-loop-berechenbare-funktionen)
+    - [(A+) viele Abschlusseigenschaften](#a-viele-abschlusseigenschaften)
+  - [Primitiv-rekursive Funktionen](#primitiv-rekursive-funktionen)
+  - [Argument K- gegen die Loop Vermutung](#argument-k--gegen-die-loop-vermutung)
+    - [Ackermann Funktion](#ackermann-funktion)
+  - [While Programme](#while-programme)
+    - [Gödels Vermutung](#gödels-vermutung)
+  - [GoTo Programme](#goto-programme)
+    - [Ein kleiner Ausflug - Kleenesche Normalform](#ein-kleiner-ausflug---kleenesche-normalform)
+  - [Turing Berechenbarkeit](#turing-berechenbarkeit)
+    - [Beispiel einer Turingmaschine (intuitiv)](#beispiel-einer-turingmaschine-intuitiv)
+  - [Beispiel Turingmaschine (formal)](#beispiel-turingmaschine-formal)
+    - [Mehrband Tunringmaschine](#mehrband-tunringmaschine)
+  - [Ausflug: Zählermaschine](#ausflug-zählermaschine)
+- [Entscheidbarkeit](#entscheidbarkeit-2)
+  - [Halteproble](#halteproble)
+  - [Reduktion](#reduktion)
+  - [Rechnen mit Kodierungen](#rechnen-mit-kodierungen)
+  - [Satz von Rice](#satz-von-rice)
+  - [Semi Entscheidbarkeit](#semi-entscheidbarkeit)
+  - [Universelle Turing Maschine](#universelle-turing-maschine)
+  - [Totale berechenbare Funktionen](#totale-berechenbare-funktionen)
+  - [Einige unentscheidbare Probleme](#einige-unentscheidbare-probleme)
+      - [Kontextfreie Sprachen](#kontextfreie-sprachen-1)
+- [Komplexitätstheorie](#komplexitätstheorie)
+  - [Zusammenfassung Berechenbarkeitstheorie](#zusammenfassung-berechenbarkeitstheorie)
+  - [Die zentrale Frage der Komplexitätstheorie](#die-zentrale-frage-der-komplexitätstheorie)
+  - [Komplexitätsklassen](#komplexitätsklassen)
+    - [Deterministische Zeitklassen](#deterministische-zeitklassen)
+      - [Einige typische Probleme in P](#einige-typische-probleme-in-p)
+        - [Erreichbarkeit](#erreichbarkeit)
+        - [Euler-Kreise](#euler-kreise)
+    - [Deterministische Platzklassen](#deterministische-platzklassen)
+      - [Einige typische Probleme in PSPACE: Erfüllbarkeit](#einige-typische-probleme-in-pspace-erfüllbarkeit)
+      - [Einige typische Probleme in PSPACE: Hamilton-Kreise](#einige-typische-probleme-in-pspace-hamilton-kreise)
+      - [Einige typische Probleme in PSPACE: 3-Färbbarkeit](#einige-typische-probleme-in-pspace-3-färbbarkeit)
+      - [Zusammenfassung: typische Probleme](#zusammenfassung-typische-probleme)
+  - [Nichtdeterministische Turingmaschinen](#nichtdeterministische-turingmaschinen)
+    - [Determinisierbarkeit von NTM](#determinisierbarkeit-von-ntm)
+    - [Nichtdeterministische Zeitklassen](#nichtdeterministische-zeitklassen)
+    - [Nichtdeterministische Platzklassen](#nichtdeterministische-platzklassen)
+  - [Typische Probleme, 2. Versuch](#typische-probleme-2-versuch)
+  - [Polynomialzeit-Reduktionen](#polynomialzeit-reduktionen)
+  - [NP-Vollständigkeit](#np-vollständigkeit)
+  - [Weitere NP-vollständige Probleme](#weitere-np-vollständige-probleme)
+    - [3-SAT ist NP-vollständig](#3-sat-ist-np-vollständig)
+    - [3C ist NP-vollständig](#3c-ist-np-vollständig)
+    - [DHC ist NP-vollständig](#dhc-ist-np-vollständig)
+    - [HC ist NP-vollständig](#hc-ist-np-vollständig)
+    - [TSP ist NP-vollständig](#tsp-ist-np-vollständig)
+  - [Zusammenfassung](#zusammenfassung-1)
+
 Literaturempfehlung: Theoretische Informatik - kurz gefasst, Uwe Schöning, Spektrum Akademischer Weg
 
 # Einführung
@@ -139,7 +241,9 @@ Konventionen:
 - für $(l,r)\in P$ schreibt man auch $l\rightarrow r$
 
 > Definition: Sei $G=(V, \sum, P, S)$  eine Grammatik. Eine **Ableitung** ist eine endliche Folge von Wörtern
+>
 > Ein **Wort** $w\in (V\cup\sum)^*$ heißt Satzform, wenn es eine Ableitung gibt, deren letztes Wort w ist.
+>
 > Die **Sprache** $L(G)={w\in \sum^* | S\Rightarrow_G^* w}$ aller Satzformen aus $\sum^*$ heißt von G erzeugte Sprache.
 
 Dabei ist $\Rightarrow_G^*$ der reflexive und transitive Abschluss von $\Rightarrow_G$. D.h. die von G erzeugte Sprache L(G) besteht genau aus den Wörtern, die in beliebig vielen Schritten aus S abgeleitet werden können und nur aus Terminalen besteht.
@@ -154,14 +258,14 @@ Nichtdeterminismus kann verursacht werden durch:
 - manchmal können Ableitungen in einer Sackgasse enden, d.h. obwohl noch nichtterminale in einer Satzformen vorkommen, ist keine Regel mehr anwendbar.
 
 ## Chomsky Hierarchie
-. Typ 0 (Chomsky-0): Jede Grammatik ist vom Typ 0 (Semi-Thue-System)
+- Typ 0 (Chomsky-0): Jede Grammatik ist vom Typ 0 (Semi-Thue-System)
 - Typ 1: Eine Regel heißt kontext-sensitiv, wenn es Wörter $u,v,w\in(V\cup\sum)^*,|v|>0$ und ein Nichtterminal $A\in V$ gibt mit $l=uAw$ und $r=uvw$. Eine Grammatik ist vom Typ 1 (oder kontext-sensitiv) falls
   - alle Regeln aus P kontext-sensitiv sind
   - $(S\rightarrow \epsilon)\in P$ die einzige nicht kontext-sensitive Regel in P ist und S auf keiner rechten Seite einer Regel aus P vorkommt
 - Typ 2: eine Regel $(l\rightarrow r)$ heißt kontext-frei wenn $l\in V$ und $r\in (V\cup \sum)^*$ gilt. Eine Grammatik ist vom Typ 2, falls sie nur kontext-freie Regeln enthält
 - Typ 3: Eine Regl ist rechtslinear, wenn $l\in V$ und $r\in \sum V\cup {\epsilon}$ gilt. Eine Grammatik ist vom Typ 3 wenn sie nur rechtslineare Regeln enthält
 
-> Definition: Eine Sprache heißt vom Typ i (4i\in {0,1,2,3}$) falls es eine Typ-i-Grammatik gibt mit $L(G)=L$. Wir bezeichnen mit $L$, die Klasse der Sprache vom Typ i. 
+> Definition: Eine Sprache heißt vom Typ i ($i\in \{0,1,2,3\}$) falls es eine Typ-i-Grammatik gibt mit $L(G)=L$. Wir bezeichnen mit $L$, die Klasse der Sprache vom Typ i. 
 
 Eine Sprache vom Typ i nennt man auch rekursiv aufzählbar (i=0, RE), kontext-sensitiv (i=1, CS), kontext-frei (i=2, CF) oder rechtslinear (i=3, REG).
 
@@ -435,8 +539,8 @@ Der Index $index(R)$ von R ist die Anzahl der Äquivalenzklassen von R: $index(R
 (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat)
 
 Beweis:
-- "$Rightarrow$": Sei L regulär -> es gibt DFA M mit $L(M)=L$...
-- "$Leftarrow$": sei $index(R_L)< \infty$ -> Definiere einen DFA $M_L=(\{[x_1],...,[x_n]\},\sum,[\epsilon],\sigma,\{[w]|w\in L\})$
+- "$\Rightarrow$": Sei L regulär -> es gibt DFA M mit $L(M)=L$...
+- "$\Leftarrow$": sei $index(R_L)< \infty$ -> Definiere einen DFA $M_L=(\{[x_1],...,[x_n]\},\sum,[\epsilon],\sigma,\{[w]|w\in L\})$
   
 
 ## Minimalautomat
@@ -457,7 +561,8 @@ Wenn in einem DFA M aus Startzustand X und Y dieselben Sprachen akzeptiert werde
 
 > Definition: Sei M ein DFA. Dann ist $M'=(Z_{\equiv},\sum, [z_0],\sigma', E')$ mit
 > - $\sigma'([z],a)=[\sigma (z,a)]$ für $z\in Z$ und $a\in \sum$ und
-> - $E'=\{[z]|z\in E\}
+> - $E'=\{[z]|z\in E\}$
+> 
 > der Quotient von M bzgl $\equiv$
 (es wird nicht mehr jeder einzelne Fall betrachtet sondern "ganze Gruppen"; Bsp Sitz->Reihe)
 
@@ -1985,7 +2090,7 @@ Wir haben gezeigt:
 
 Die Grenze zwischen „einfachen“ und „schwierigen“ Formeln liegt also zwischen Formeln in KNF mit höchstens zwei bzw. höchstens drei Literalen pro Klausel.
 
-## 3C ist NP-vollständig
+### 3C ist NP-vollständig
 k-Färbbarkeit von Graphen
 - EINGABE: Ein ungerichteter Graph $G = (V , E )$.
 - FRAGE: Gibt es Zuordnung von k verschiedenen Farben zu Knoten in V, so dass keine zwei benachbarten Knoten $v_1,v_2$ dieselbe Farbe haben?
@@ -2012,7 +2117,7 @@ Sei also $\phi$ Formel in KNF, deren Klauseln genau drei Literale enthalten (ggf
 
 ![Dreieckfärbung](Assets/ASK_Dreieckfaerbung4.png)
 
-## DHC ist NP-vollständig
+### DHC ist NP-vollständig
 > DHC - Gerichteter Hamiltonkreis
 > - EINGABE: ein gerichteter Graph $G = (V , E )$ mit Knotenmenge $V$ und Kantenmenge $E\supseteq V\times V$.
 > - FRAGE: Besitzt der Graph G einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, dass jeder Knoten genau einmal besucht wird?
@@ -2050,7 +2155,7 @@ Damit gilt für den so definierten Graphen G:
 - G kann aus $\phi$ in polynomieller Zeit berechnet werden.
 also: $3-SAT \leq_P DHC$, womit folgt, daß DHC NP-hart und damit NP-vollständig ist.
 
-## HC ist NP-vollständig
+### HC ist NP-vollständig
 Im nächsten Schritt zeigen wir, dass auch das analoge Problem für ungerichtete Graphen NP-vollständig ist.
 
 > HC - Ungerichteter Hamiltonkreis
@@ -2065,7 +2170,7 @@ Im nächsten Schritt zeigen wir, dass auch das analoge Problem für ungerichtete
 - Idee: Ersetze einen Knoten mit ein- und ausgehenden Kanten wie folgt
   ![Hamiltonkreiskanten](Assets/ASK_HamiltonkreisKanten.png)
 
-## TSP ist NP-vollständig
+### TSP ist NP-vollständig
 Wir zeigen nun, daß auch das Travelling-Salesman-Problem NP-vollständig ist.
 
 > TSP - Travelling Salesman

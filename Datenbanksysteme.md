@@ -32,8 +32,6 @@ Datenbank (DB): strukturierter, von DBMS verwalteter Datenbestand
 
 Datenbanksystem (DBS) = DBMS + DB
 
-
-
 ## Architekturen
 die neun Codd'schen Regeln
 1. Integration: einheitliche, nichtredundante Datenverwaltung

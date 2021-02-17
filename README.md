@@ -14,6 +14,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf) (work in progress)
 - [Datenbanksysteme](Datenbanksysteme.md)
   - [Fragenkatalog](Datenbanksysteme%20-%20Fragen.md)
+  - [Cheatsheet](Datenbanksysteme%20-%20Cheatsheet.pdf) (work in progress)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)

@@ -501,7 +501,7 @@ Um zu zeigen, dass eine konkrete Sprache L regulär ist, kann man
 - zeigen, dass $L=L_1 \cap L_2$ ist und $L_1$ und $L_2$ regulär sind, oder
 - ...
 
-### Pumping Lemma (auswendig lernen!)
+### Pumping Lemma
 Wenn L eine reguläre Sprache ist, dann gibt es $n\leq 1$ derart, dass für alle $x\in L$ mit $|x|\geq n$ gilt: es gibt Wörter $u,v,w \in \sum^*$ mit:
 1. $x=uvw$
 2. $|uv|\leq n$
@@ -604,7 +604,7 @@ Ausgabe: Menge der Paare erkennungsäquivalenter Zustände
 Fragestellungen/Probleme für reguläre Sprachen
 
 ### Wortproblem
-Gilt $w\in L$ für eine gegebene reguläre Sprache L und $w\in\sum^*$
+Gilt $w\in L$ für eine gegebene reguläre Sprache L und $w\in\sum^*$?
 
 Eingabe: DFA M und $w\in\sum^*$
 
@@ -1225,7 +1225,7 @@ Loop berechenbare Funktionen können sehr schnell wachsen, die Ackermann Funktio
 
 Konstruktion: Für $f:\N\rightarrow\N$ sei $F(f)=g:\N\rightarrow\N$ definiert durch $$g(y)=\begin{cases} f(1)\quad\text{falls } y=0\\ f(g(y-1)) \quad\text{falls } y>0\end{cases}$$ Also ist $F:\N^{\N}\rightarrow\N^{\N}$ Funktion, die numerische Funktionen auf numerische Funktionen abbildet. Wir definieren nun ein Folge von Funktionen $ack_x:\N\rightarrow\N$ für $x\in\N$:
 - $ack_0:\N\rightarrow\N:y\rightarrow y+1$
-- $ack_{x+1}=F(ack_x), d.h.
+- $ack_{x+1}=F(ack_x)$, d.h.
   - $ack_{x+1}(y) = \begin{cases} ack_x(1) \quad\text{falls } y=0\\ ack_x(ack_{x+1}(y-1)) \quad\text{falls } y>0 \end{cases}$
 
 > Definition: Die Funktion $ack:\N^2\rightarrow\N$ mit $ack(x,y,)=ack_x(y)$ heißt Ackermann Funktion
@@ -1344,7 +1344,7 @@ Idee:
 - Dann wieder nach links laufen und jede 1 durch 0 ersetzen, solange bis eine 0 oder ein Leerzeichen auftaucht.
 - Dieses Zeichen dann durch 1 ersetzen, bis zum Zahlanfang laufen und in einen Endzustand übergehen.
 
-> Definition: Eine Turingmaschine (TM) ist ein 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$, weobei
+> Definition: Eine Turingmaschine (TM) ist ein 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$, wobei
 > - $\sum$ das Eingabealphabet
 > - $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
 > - $z_0\in Z$ der Startzustand,

@@ -18,7 +18,7 @@
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{flashcard}[Einführung]{Welches Spektrum decken sie ab?}
+\begin{flashcard}[Einführung]{Welches Spektrum decken Betriebssysteme ab?}
     \begin{itemize}
         \item viele Gemeinsamkeiten (Architekturprinzipien, Programmierparadigmen)
         \item Voller individueller Strategien mit teils konfligierenden Zielen (Performanz <->Robustheit, Echtzeitfähigkeit <->Effizienz)
@@ -32,7 +32,7 @@
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{flashcard}[Einführung]{Welche funktionalen und nichtfunktionalen Eigenschaften spielen dabei eine Rolle?}
+\begin{flashcard}[Einführung]{Welche funktionalen und nichtfunktionalen Eigenschaften spielen bei Betriebssystemen eine Rolle?}
     Funktional: Authentisierung, Verschlüsselung, Informationsmanagement, Kommunikationsmanagement
 
     Nichtfunktional: Echtzeitfähigkeit, Robustheit, Sicherheit, Korrektheit, Performanz, Sparsamkeit, Skalierbarkeit, Verfügbarkeit, Offenheit
@@ -40,17 +40,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Prozesszustände und Zustandsmodelle]{Warum existieren Prozesszustände? Gehen Sie speziell auf die Prozesszustände "bereit" und "blockiert" ein.}
-    ?
+    Ein Rechner kann nicht unendlich viele Prozesse gleichzeitig laufen lassen und muss diese planen. Die Prozesszustände helfen zu unterscheiden, welche Prozesse gerade tätig sind, welche warten und welche beendet sind.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Prozesszustände und Zustandsmodelle]{Welches sind die in praktisch jedem Betriebssystem implementierten (grundlegenden) Prozesszustände?}
-    ?
+    Grundlegende Zustände: (frisch,) bereit, aktiv, blockiert (, beendet) 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Prozesszustände und Zustandsmodelle]{Nennen Sie Gründe für die Einführung weiterer Prozesszustände. Welche weiteren Prozesszustände sind Ihnen bekannt?}
-    ?
+    Prozesse können ausgelagert (besitzt temp. keinen Arbeitsspeicher) oder temporär stillgelegt werden (benötigen keinen Prozessor) z.B. bereit/suspendiert oder blockiert/suspendiert 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -60,12 +60,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Prozesszustände und Zustandsmodelle]{Charakterisieren Sie das 3/5- und das 7-Zustandsmodell.}
-    ?
+    das 3/5 Modell ist Grundlegend zur Übersicht über Zustände (frisch, bereit, aktiv, blockiert, beendet) und das 7er Modell erweitert das 3/5 Modell um bereit/suspendiert und blockiert/suspendiert.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Prozesszustände und Zustandsmodelle]{Welchen Zusammenhang gibt es zwischen Prozesszuständen, Zustandsmodellen und der Automatentheorie?}
-    ?
+    Prozesszustände in Zustandsmodellen können, wie bei Automaten, nur bestimmte Pfade gehen bzw zu einem anderen Zustand wechseln. z.B. frisch nur zu bereit; aktiv entweder beendet oder blockiert 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -75,12 +75,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Scheduler]{Besitzt jedes Betriebssystem einen Scheduler?}
-    ?
+    Nein, nicht zwingend notwendig, z.B. bei Eingebetteten System die nur einen Prozess/Programm ablaufen lassen
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Scheduler]{Charakterisieren Sie die Arbeitsweise eines Schedulers.}
-    ?
+    Scheduler prüfen neue Threads, Abarbeitung und Freiwerden; greifen in die abarbeitungsreihenfolge ein. Versuchen eine geringe Last mit hohem Nutzen zu bringen
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,12 +103,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Scheduling-Strategie und Scheduling-Algorithmus]{Was ist der Unterschied zwischen Scheduling-Strategie und Scheduling-Algorithmus?}
-    ?
+    Der Algorithmus beschreibt Bearbeitungsreihenfolge und wie mit Threads umgegangen wird, die Strategie beschreibt Ziele und Muster
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Kontextwechsel]{Was bedeutet es, einen Kontextwechsel auszuführen? Was muss dabei alles getan werden?}
-    ?
+    Wechsel zwischen Stackkontext, Prozessorregister und floating point Units und evtl. Speicherlayout. Kopieren der Kontexte. Starke Auswirkungen auf Performanz \& Reaktivität. 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -122,17 +122,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Last und Lastmuster]{Was ist unter "Last" in einem Computer-System zu verstehen?}
-    ?
+    Die Last kann darin bestehen, dass Funktionen sehr schnell hintereinander ausgeführt werden, oder dass parallele Aktivitäten von virtuellen Benutzern (Multiuser, vUser) ausgeführt werden.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Last und Lastmuster]{Welche charakteristischen Lastmuster könnten dabei vorliegen?}
-    ?
+    Einhaltung von Fristen oder Minimierung der Thread/Prozesswechsel
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Last und Lastmuster]{Welcher mögliche Zusammenhang existiert zwischen verschiedenen Lastmustern und verschiedenen Schedulingstrategien?}
-    ?
+    Die Stategie kann wesentlich auf die Last auswirken, da Reaktivität und einhaltung von Fristen durch die Stategie bestimmt werden.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -190,7 +190,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Privilegierungsebenen]{Wie wirkt sich die Ausführung einer Aktivität in einer bestimmten Privilegierungsebene auf deren Arbeitsweise aus?}
-    ?
+    Kann zT bevorzugt oder schneller abgearbeitet werden wenn Schedulingstrategie dies vorsieht (RR mit Prioritäten)
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -201,7 +201,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Synchronisation \&Kommunikation]{Warum darf sich in einem kritischen Abschnitt immer nur 1 Thread aufhalten?}
-    ?
+    z.B. Dirty Read/Write; es wird mit veränderten oder veralteten Werten gerechnet/gespeichert. 
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -216,12 +216,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Synchronisation \&Kommunikation]{Welchen Zusammenhang gibt es zwischen nutzbare Ressource zu kritischen Abschnitten?}
-    ?
+    für kritische Abschnitte müssen genügend Ressourcen verfügbar sein um zu Kommunizieren/Synchronisieren
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Synchronisation \& Kommunikation]{Welcher Zusammenhang existiert zwischen "exkluviv nutzbarer Ressource", "kritischer Abschnitt" und "race conditions"?}
-    ?
+    Es gibt Ressourcen, die als ganzes oder bzgl. einzelner Operationen nur exklusiv, d.h. zu einem Zeitpunkt nur durch einen einzigen Thread nutzbar sind. Die Race conditions werden durch solche exklusiven Ressourcen beschränkt.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -236,7 +236,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Semaphor]{Wozu wird ein Semaphor verwendet?}
-    ?
+    einhaltung von Zugriffsregeln auf kritische Abschnitte; erstellung von Wartelisten und Überprüfung der berechtigung
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -246,12 +246,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Monitor (Hoar‘scher)]{Wozu wird dieser verwendet?}
-    ?
+    implizite/automatische Synchronisation kritischer Operationen durch Datenabstraktion
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Monitor (Hoar‘scher)]{Welche Vorteile bieten Monitore gegenüber Semaphoren? }
-    ?
+    beiten Vollständigkeit, Symmetrie und Softwarequalität. Müssen zudem nicht explizit gesetzt werden.
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -261,12 +261,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Monitor (Hoar‘scher)]{Wo ist Atomarität bei Semaphoren notwendig?}
-    ?
+    während Ausschluss paralleler Ausführung $rightarrow$ TestAndSetLock ("TSL") im Instruktionssatz eines Prozessors
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{flashcard}[Monitor (Hoar‘scher)]{Wie kann Atomarität durch Maschinenbefehle unterstützt werden?}
-    ?
+    atomares Vergleichen oder Tauschen unterstützen
 \end{flashcard}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

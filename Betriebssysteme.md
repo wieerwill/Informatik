@@ -718,8 +718,7 @@ V(semaphore s) {
 
 Unterstützung durch Hardware: die TSL-Operation
 - Atomarität
-- Ausschluss paralleler Ausführung
-→ TestAndSetLock („TSL“) im Instruktionssatz eines Prozessors
+- Ausschluss paralleler Ausführung → TestAndSetLock („TSL“) im Instruktionssatz eines Prozessors
 ```cpp
 atomicBegin(s):
 TSL s.state, callingThread.Id // try to get lock

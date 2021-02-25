@@ -14,7 +14,7 @@
 \usepackage{tikz}
 \usepackage{pdflscape}
 \usepackage{verbatim}
-\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees}
+\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees, er}
 \tikzstyle{every node}=[draw=black,thin,anchor=west, minimum height=2em]
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
 
@@ -964,4 +964,69 @@ call weinliste ("Helena", wliste);
     \end{description*}
 
 \end{multicols}
+
+\newpage
+
+\begin{centering}
+    \section{Klausurvorbereitung}
+\end{centering}
+
+\begin{multicols*}{2}
+    \section{Entity-Relationship-Diagramm}
+    \includegraphics[width=\textwidth/5]{Assets/DB_ERD_01.png}
+    \includegraphics[width=\textwidth/5]{Assets/DB_ERD_02.png}
+
+    \section{relationale Algebra}
+    \scriptsize{
+        $\sigma_{\{Datum=14.12.2017\}} (PRUEFUNG) \bowtie (\pi_{\{Matrikel, Name\}} (STUDENT))$
+    }
+
+    \section{Bereichskalkül}
+    Bereichskalkül: $KUNDE(x,y,z)$ vs. Tupelkalkül: $KUNDE(k)$
+
+    Ein Ausdruck hat die Form:$\{x1, x2, ... | \phi(x1, x2, ...)\}$
+    \vspace{3mm}
+
+    Beispiel: Kunden mit Bestellung
+
+    $KUNDE(kdnr, kname, adresse, ort)$ und $AUFTRAG(auftragsnr, kdnr, warennr, menge)$
+
+    Kunden mit Bestellung: $\{x,y,z| KUNDE(x,y,z,\_) \wedge AUFTRAG(\_,x,\_,\_)\}$
+
+    \section{SQL Anfrage}
+    \begin{lstlisting}[
+        language=SQL,
+        showspaces=false
+     ]
+     SELECT Matrikel, Name FROM Student WHERE Matrikel>2010;
+    \end{lstlisting}
+
+    \section{Integrität}
+    \begin{description}
+        \item[Nutzerdefinierte Domäne] eines Attributs, d.h. bestimmte Werte
+        \item[Primärschlüssel PRIMARY KEY] nicht null, existiert und ist unique
+        \item[Fremdschlüssel FOREIGN KEY] wie primary key aus anderer tabelle
+        \item[CHECK-Bedingungen] werte vor insert prüfen
+        \item[ASSERTIONs] 
+        \item[Trigger]
+    \end{description}
+
+    \section{CLOSURE-Algorithmus / RAP-Regeln}
+    \begin{tabular}{c|c|l}
+        R & Reflexivität & $\{\} \Rightarrow X\rightarrow X$ \\
+        A & Akkumulation & $\{X\rightarrow YZ, Z\rightarrow AW\}\Rightarrow X\rightarrow YZA$\\
+        P & Projektivität & $\{X\rightarrow YZ\}\Rightarrow X\rightarrow Y$
+    \end{tabular}
+
+    \section{Normalformen}
+    \begin{description*}
+        \item[1.NF] Wertebereiche der Merkmale sind atomar (es gibt keine zusammengesetzten Werte).
+        \item[2.NF] 1. NF + Nichtschlüsselmerkmale sind von allen Schlüsselmerkmalen voll funktional abhängig.
+        \item[3.NF] 2. NF + kein Nichtschlüsselmerkmal ist von irgendeinem Schlüssel transitiv abhängig.
+        \item[Boyce Codd] 3.NF + entgernen funktionaler Abhängigkeiten 
+        \item[4.NF] BC + Abhängigkeiten von mehrwertigen Attributmengen trivial und Attributmenge der Schlüsselkandidat
+    \end{description*}
+
+\end{multicols*}
+
 \end{document}

@@ -86,7 +86,7 @@
 
 \begin{document}
 \begin{myboxii}[Disclaimer]
-    Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Betriebssysteme}! Für die Richtigkeit der Lösungen wird keine Gewähr gegeben.
+    Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Betriebssysteme}! Für die Richtigkeit der Lösungen wird keine Gewähr gegeben. Anlagen sind im Ordner \textit{Assets/Betriebssysteme\_uebung/} zu finden.
 \end{myboxii}
 
 
@@ -508,7 +508,7 @@ Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, al
 
 Zwei Prozesse definieren (0,4,4,10) und (2,5,5,8) (Arrival,Burst,Priority,Deadline). Mit RR können die Deadlines nicht eingehalten werden.
 \begin{center}
-    \includegraphics[width=0.8\linewidth]{Assets/Betriebssystem_uebung/u3_a1.png}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssysteme_uebung/u3_a1.png}
 \end{center}
 
 %##########################################
@@ -606,7 +606,7 @@ Siehe auch Linux Manpages
     \end{itemize}
 \end{description*}
 \begin{center}
-    \includegraphics[width=0.8\linewidth]{Assets/Betriebssystem_uebung/u4_a1.png}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssysteme_uebung/u4_a1.png}
 \end{center}
 %##########################################
 \subsection{Aufgabe 1: Das Problem des schlafenden Barbiers}
@@ -662,7 +662,7 @@ Idee: Es gibt vier Ressourcen um die sich die Kunden und der Barbier streiten. D
         }
     }
     \end{lstlisting}
-    
+
 
 %##########################################
 \subsection{Aufgabe 2: Das Achterbahnproblem}
@@ -678,8 +678,8 @@ Idee: Es gibt vier Ressourcen um die sich die Kunden und der Barbier streiten. D
 \vspace{10mm}
 
 \begin{itemize}
-	\item Autos: warten auf Passagiere (bis voll)
-	\item Passagiere: warten auf Start/Ende
+    \item Autos: warten auf Passagiere (bis voll)
+    \item Passagiere: warten auf Start/Ende
 \end{itemize}
 
 \begin{lstlisting}
@@ -787,9 +787,9 @@ Prozess Car()
 \vspace{10mm}
 
 \begin{itemize}
-	\item Lieferant: wartet auf Wartungsauftrag
-	\item Kunden: wartet auf Kaffee
-	\item Maschine: Portionen = 0? Wartet auf Wartung : warten auf Bestellung \& Bezahlung
+    \item Lieferant: wartet auf Wartungsauftrag
+    \item Kunden: wartet auf Kaffee
+    \item Maschine: Portionen = 0? Wartet auf Wartung : warten auf Bestellung \& Bezahlung
 \end{itemize}
 
 \begin{lstlisting}
@@ -911,26 +911,76 @@ ServiceMan{
     Prinzipiell stehen dafür nachrichtenbasierte und speicherbasierte Kommunikationsmechanismen zur Verfügung. Für welche der existierenden Mechanismen würden sie sich entscheiden, um einerseits Kontrollinformationen und andererseits Mediendatenströme auszutauschen? Begründen Sie Ihre Antwort.\\
     Hinweis: Klären Sie zuerst, was die prinzipiellen Vor- und Nachteile dieser beiden Kommunikationsvarianten sind. Betrachten Sie anschließend die Kommunikationsmuster und Anforderungen der beiden Klassen (Kontroll- und Multimediadaten), bevor Sie eine Empfehlung geben.
 }
+\begin{itemize}
+    \item \textbf{Message Passing vs. Shared Memory} Shared Memory hat die wünschenswerte Eigenschaft, dass die gesamte Kommunikation über implizites Laden und Speichern in einem globalen Adressraum erfolgt.
+          Eine weitere grundlegende Eigenschaft von Shared Memory ist, dass Synchronisation und Kommunikation getrennt sind. Zusätzlich zu den Lade- und Speicheroperationen müssen spezielle Synchronisationsoperationen (Mechanismen) verwendet werden, um zu erkennen, wann Daten produziert und/oder konsumiert wurden.
+          Im Gegensatz dazu wird beim Message Passing ein explizites Kommunikationsmodell verwendet. Explizite Nachrichten werden zwischen den Prozessen ausgetauscht.
+          Synchronisation und Kommunikation sind im Message Passing vereint. Die Erzeugung von entfernten, asynchronen Ereignissen ist ein integraler Bestandteil des Message-Passing-Kommunikationsmodells.
+          Es ist jedoch wichtig, darauf hinzuweisen, dass Shared-Memory- und Message-Passing-Kommunikationsmodelle universell sind, d.h., es ist möglich, das eine zu verwenden, um das andere zu simulieren.
+          Es ist jedoch zu beobachten, dass es einfacher ist, Shared Memory mit Message Passing zu simulieren als umgekehrt.
+          Das liegt im Wesentlichen an der asynchronen Ereignissemantik von Message Passing im Vergleich zur Polling-Semantik des Shared Memory.
+          Das Shared-Memory-Kommunikationsmodell ermöglicht es dem Programmierer, sich auf die mit der Parallelität verbundenen Probleme zu konzentrieren, indem er von den Details der Interprozessorkommunikation entlastet wird.
+          In diesem Sinne stellt das Shared-Memory-Kommunikationsmodell eine geradlinige Erweiterung des Uniprozessor-Programmierparadigmas dar. Darüber hinaus ist die Shared-Memory-Semantik unabhängig vom physikalischen Speicherort und daher offen für die dynamische Optimierung, die das zugrunde liegende Betriebssystem bietet.
+          Auf der anderen Seite ist das Shared-Memory-Kommunikationsmodell im Wesentlichen eine Polling-Schnittstelle. Dies ist ein Nachteil, was die Synchronisation betrifft.
+          Die Nachrichtenweitergabe kann als ein interruptgesteuertes Kommunikationsmodell charakterisiert werden. Bei der Nachrichtenübermittlung enthalten die Nachrichten sowohl Daten als auch Synchronisation in einer einzigen Einheit. Als solches eignet sich das Message-Passing-Kommunikationsmodell für Betriebssystemaktivitäten, bei denen die Kommunikationsmuster im Voraus explizit bekannt sind, z. B. E/A, Interprozessor-Interrupts und Task- und Datenmigration.
+          Auf der anderen Seite leidet das Message Passing unter der Notwendigkeit von Marshaling-Kosten, d. h. den Kosten für das Assemblieren und Disassemblieren der Nachricht.
+          Eine natürliche Schlussfolgerung aus der obigen Diskussion ist, dass sich Shared-Memory- und Message-Passing-Kommunikationsmodelle jeweils für bestimmte Anwendungsdomänen eignen. Shared Memory bietet sich für Anwendungsentwickler an, während Message Passing sich für Betriebssystementwickler anbietet.
+          Es ist daher naheliegend, die Kombination von Shared Memory und Message Passing in Mehrzweck-Multiprozessorsystemen in Betracht zu ziehen. Dies war die Hauptantriebskraft hinter Systemen wie dem Stanford FLexible Architecture for SHared memory (FLASH) System. Dabei handelt es sich um ein Multiprozessorsystem, das die Unterstützung für Shared Memory und Message Passing effizient integriert und dabei sowohl den Hardware- als auch den Software-Overhead minimiert.
+    \item \textbf{Nachrichtenbasiert}:  + kein Blockieren bei asynchroner Variante, einfache, einheitliche Nutzung (Architekturunabhängig), keine Synchronisation nötig, - ggf. kopieren der Daten (ineffizient und redundant), Blockieren bei der synchronen Variante, ~ unidirektional (geht nur in eine Richtung)
+    \item \textbf{Speicherbasiert}: + Ideal für große Dateien, da annähernd Verzögerungsfrei, nicht blockierend (im allgemeinen), kann bidirektional verwendet werden - Synchronisation notwenig, gemeinsamer Speicher, also nicht für verteilte Systeme geeignet, aufwändiger bei korrekter Implementierung
+    \item Idee: Verwenden von Speicherbasierterkommunikation für die großen Video \& Audiodateien, da man diese nur schwer \& insbesondere langsam per Nachrichten verschicken kann. Verwendung von Messaepassing für Kontroolldatenströme
+\end{itemize}
 
 \vspace{10mm}
 \paragraph{Frage 2: Synchronisation durch Semaphore}
 \textit{Bei asynchroner nachrichtenbasierter Kommunikation kommen stets Warteschlangen zum Einsatz, um unterschiedliche Geschwindigkeiten der Sender- und Empfängerprozesse auszugleichen. Der Zugriff auf diese Warteschlangen muss aus verschiedenen Gründen durch Synchronisationsmechanismen (z. B. Semaphore) geregelt werden. Was sind diese Gründe und weshalb sind insgesamt drei Semaphore pro Warteschlange notwendig?}
 
+Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf leere Schlange, und Zugriffskontrolle.
+
 \vspace{10mm}
 \paragraph{Frage 3: Synchronisationsvarianten bei nachrichtenbasierter Kommunikation}
 \textit{Welche Nachteile asynchroner Kommunikation treten beim Einsatz synchroner Varianten der Sende- und Empfangsoperationen nicht auf? Warum ist es trotzdem manchmal sinnvoll oder unumgänglich, die asynchronen Varianten einzusetzen? Nennen Sie mindestens drei Beispiele realer Applikationen, in denen asynchron kommuniziert wird.}
+\begin{itemize}
+        \item Pufferspeicher: Größe?
+        \item eventuell Synchronisation notwendig. (z.B. für Datenströme), eventuell extra Techniken zur Benachrichtigung oder Synchronisation
+    \item Trotzdem notwenig wenn:
+          \begin{itemize}
+              \item Hoher Grad an Parallelität notwendig
+              \item Ereignisse sporadisch oder unvorhersehbar (hier synchrones Warten ineffizient)
+              \item Auf Ereignisse zeitnah reagiert werden muss (z.B. in Echtzeitsystemen)
+          \end{itemize}
+    \item Es wird beispielsweise in E-Mails, Whatsapp, SMS asynchron kommuniziert
+\end{itemize}
 
 \vspace{10mm}
 \paragraph{Frage 4: Management asynchroner Ereignisse}
-\textit{Welche Alternativen haben die Entwickler von Betriebssystemen, um mit asynchron auftretenden
-    Ereignissen (Mausbewegungen, Einstecken von USB-Geräten etc.) umzugehen? Welche Technik
-    erlaubt es auch einem Benutzerprozess, auf asynchrone Ereignisse zu reagieren, ohne direkten
-    Hardwarezugriff zu haben?}
+\textit{Welche Alternativen haben die Entwickler von Betriebssystemen, um mit asynchron auftretenden Ereignissen (Mausbewegungen, Einstecken von USB-Geräten etc.) umzugehen? Welche Technik erlaubt es auch einem Benutzerprozess, auf asynchrone Ereignisse zu reagieren, ohne direkten Hardwarezugriff zu haben?}
+	\begin{itemize}
+		\item Busy Waiting (Warte in Endlosschleife / sehr ineffizient)
+		\item Polling (Wahl der Zykluszeit)
+		\item Interrupts (HW-Signal, Behandlung über Routine aus IVT)
+		\begin{itemize}
+			\item inline-Prozeduraufruf
+			\item IPC über Botschaften
+			\item pop-up threads
+		\end{itemize}
+		\item Hierzu gibt es die Möglichkeit, dass der Prozessor alle Eingabe-Geräte zyklisch abfragt (Polling). Was bei der Vielzahl an Komponenten in einem Computer bedeuten würde, dass der Prozessor mit nichts anderem mehr beschäftigt wäre.
+		\item Eine Alternative ist die sogenannten Unterbrechungsanforderung (to interrupt, unterbrechen), die dann eintritt, wenn Daten von außen anstehen. Dazu wurde die Möglichkeit geschaffen den Hauptprozessor auf definierte Weise bei der laufenden Arbeit zu unterbrechen.
+		\item Auf Anwendungsebene: Registrieren von eigenen Signalhandlern
+	\end{itemize}
 
 %##########################################
 \subsection{Aufgabe 1: Nachrichtenwarteschlangen (Message Queues)}
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Message Queues. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert (z. B. Synchronisation durch Blockierungen, durch die Ankunft von Daten usw.)?}
 \vspace{10mm}
+\begin{itemize}
+    \item Hier werden Nachrichten von einem Prozess in eine Nachrichtenschlange (Message Queue) geschickt, welche typischerweise nach dem FIFO Prinzip arbeitet. Jede Messagequeue ist durch einen eindeutigen Bezeichner gekennzeichnet, unidirektional und mit festgelegtem Format. 
+    \item MessageType: Unterscheidung innerhalb der Warteschlange möglich. 
+    \item send blockiert, wenn die Queue voll ist. 
+    \item receive blockiert, wenn keine Nachricht mit dem spezifizierten Type in der Queue ist.
+    \item Es gibt auch eine nichtblockierende Variante. (IPC-NOWAIT)
+    \item Das Einsatzgebiet der Warteschlangen ist typischerweise die Datenübergabe zwischen asynchronen Prozessen in verteilten Systemen.
+\end{itemize}
 
 \textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a1-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.}
 \vspace{10mm}
@@ -939,6 +989,19 @@ ServiceMan{
 \subsection{Aufgabe 2: Gemeinsamer Speicher (Shared Memory)}
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Shared Memory. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
 \vspace{10mm}
+\begin{itemize}
+    \item Shared Memory ist eine durch das Betriebssystem bereitgestellte Möglichkeit, bei welcher mehrere Prozesse gemeinsam auf einen gemeinsamen Speicher zugreifen können. Um dies zu erreichen muss zuerst ein gemeinsamer Datenspeicher angelegt werden. Nachdem dies geschehen ist, muss der Datenspeicher den Prozessen bekanntgemacht werden (einfügen in deren Adressraum), welche darauf zugreifen sollen dürfen. 
+    \item Wichtig hierbei: Shared Memory ist eine der schnellsten, wenn nicht die schnellste Art der Interprozesskommunikation, da das Kopieren/Versenden zwischen Clients/Server, bzw. verschiedenen Prozessen entfällt. 
+    \item Da man allerdings gemeinsam auf Speicher zugreift, ist eine Synchronisation, meist durch Semaphore oder Monitore unumgänglich. 
+    \item shmat() fügt das durch shmid identifizierte Speichersegment an den Adressraum des aufrufenden Prozesses an. Die Anfügeadresse wird durch shmaddr spezifiziert. 
+    \item Weiterhin gibt es Einschränkungen bezüglich der Rechte im shmflg Bitmaskargument: 
+    \begin{itemize}
+        \item $SHM\_EXEC$: erlaubt eine Ausführung der Segmentinhalte
+        \item $SHM\_RDONLY$: Fall gesetzt, so ist das Segment nur für den Lesezugriff angehängt, ist es nicht gesetzt, so ist Lesen und Schreiben erlaubt. 
+        \item $SHM\_REMAP$. Dieses Flag spezifiziert, dass das Mapping des Segments alle bisherigen Mappings im Bereich von shmaddr und den folgenden dateigrößelangen Segment ersetzt. 
+    \end{itemize}
+\item Ist shmat() erfolgreich, so wird $shm\_atime$ auf die jetzige Zeit gesetzt, $shm\_lpid$ auf die ProzessID des aufrufenden Prozess gesetzt und $shm\_nattch$ wird um 1 erhöht.
+\end{itemize}
 
 \textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a2-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.\\
     Hinweis: An den verwendeten Semaphoroperationen sind keine Änderungen notwendig.}
@@ -948,7 +1011,18 @@ ServiceMan{
 \subsection{Aufgabe 3: Benannte Pipes (Named Pipes, FIFOs)}
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Pipes und Named Pipes. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
 \vspace{10mm}
-
+\begin{itemize}
+    \item Pipes stellen einen unidirektionalen Kommunikationskanal zwischen zwei Prozessen dar. Ein Pipe hat ein Lese- und ein Schreibende, wobei man am Leseende diejenigen Daten lesen kann, welche zuvor auf das Schreibende geschrieben wurden. 
+    \item Wenn ein Prozess von einer leeren Pipe lesen will, so blockiert read() bis Daten vorhanden sind. Wenn ein Prozess versucht auf eine volle Pipe zu schreiben, dann wird write() solange blockieren, bis wieder genügend Platz auf der Pipe frei ist. 
+    \item Die über Pipes ablaufende Kommunikation ist nachrichtenfrei und bytestromorientiert. 
+    \item Eine Pipe hat eine begrenzte Kapazität
+    \item POSIX besagt, dass write() von weniger als $PIPE\_BUF$ Bytes atomar sein muss, bei mehr als $Pipe\_BUF$ Bytes kann es auch nichtatomar sein. 
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u5_a5.png}
+    \end{center}
+    \item Named Pipes / FIFO sind einer Pipe sehr ähnlich, mit dem kleinen Unterschied, dass darauf als Teil des Dateisystems zugegriffen wird. Wenn Prozesse jetzt Daten über FIFO austauschen, dann behandelt der Kernel alle Daten intern ohne sie in das Dateisystem zu schreiben. Somit dienen die FIFO Dateien im Filesystem nur als Referenzpunkt und Namen und geben Prozessen Informationen darüber, an welcher Stelle Prozesse auf die Pipe zugreifen können. Dies bedeutet aber auch, dass hier im Gegensatz zu unbenannten Pipes Prozesse miteinander kommunizieren können, die nicht miteinander verwandt sind.
+    \item Der Kernel verwaltet genau ein Pipe-Objekt für jede FIFO-Spezialdatei, die von mindestens einem Prozess geöffnet wird.  Das FIFO muss an beiden Enden (lesend und schreibend) geöffnet werden, bevor Daten übergeben werden können.  Normalerweise wird auch das Öffnen der FIFO-Blöcke bis zum anderen Ende geöffnet.
+\end{itemize}
 
 \textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a3-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.}
 \vspace{10mm}

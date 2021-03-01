@@ -431,7 +431,7 @@ Geben Sie ein Verfahren an, welches das Universalitätsproblem löst. Begründen
 
 \textit{(c) $L_c = \{a^l ba^m ba^n | l = m \text{ oder } l = n\}$ }
 
-\textit{(d) $L_d = \{r \in\{a, b, \lambda,\varnothing, +, ·, * , (, )}^* | \text{ r ist ein regulärer Ausdruck über }\sum\}$ }
+\textit{(d) $L_d = \{r \in\{a, b, \lambda,\varnothing, +, ·, * , (, )\}^* | \text{ r ist ein regulärer Ausdruck über }\sum\}$ }
 
 \textit{(e) $L_e = \{r \in L_d | \epsilon\in L(r)\}$ }
 
@@ -504,7 +504,7 @@ Bearbeiten Sie die folgenden Teilaufgaben:}
 %##########################################
 \subsection{Aufgabe 2}
 \textit{Betrachten Sie die kontextfreie Grammatik G mit Startsymbol S und den nachstehenden Produktionen:\\
-$S\rightarrow Z | (S + S) | (S ∗ S)$, $Z\rightarrow Q | PY$, $Y\rightarrow Q | YY | epsilon$, 
+$S\rightarrow Z | (S + S) | (S * S)$, $Z\rightarrow Q | PY$, $Y\rightarrow Q | YY | epsilon$, 
 $Q\rightarrow 0 | P$, $P\rightarrow 1$\\
 Bearbeiten Sie folgende Teilaufgaben:}
 
@@ -562,15 +562,41 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 07}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{Die Syntax von Programmiersprachen wird in der Regel in der Erweiterten Backus-Naur-Form 1 (kurz: EBNF) angegeben. Wir wollen in dieser Aufgabe exemplarisch zeigen, dass solche Programmiersprachen kontextfrei sind. Betrachten Sie also die folgende (funktionale) Programmiersprache:
+$<Nicht-Null> ::= '1' | '2' | . . . |'9'$\\
+$<Zahl> ::= '0' | <Nicht-Null> { '0' | <Nicht-Null> }$\\
+$<Variable> ::= 'x' <Zahl>$\\
+$<Wert> ::= <Variable> | [ '-' ] <Zahl>$\\
+$<Verzweigung> ::= 'if' <Wert> '=' <Wert> 'then' <Programm> [ 'else' <Programm> ]$\\
+$<Programm> ::= <Wert> | '(' <Programm> ( '+' | '·' | '-' | ':' ) <Programm> ')' | <Verzweigung>$\\
+Geben Sie eine kontextfreie Grammatik an, die alle möglichen Werte von $<Programm>$ erzeugt.}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{Wir betrachten arithmetische Ausdrücke in Präfixnotation über den Konstanten 0,1,2 und mit den Operatoren + (Addition) und * (Multiplikation). Bei der Präfixnotation stehen der Operator vor den Operanden und es gibt keine Klammern. Die Notation ist dennoch eindeutig, so entspricht zum Beispiel $+21$ dem Ausdruck $(2 + 1)$ und $·2++210$ entspricht $(2 · ((2 + 1) + 0))$.}
+
+\textit{(a) Geben Sie eine Regelmenge P an, sodass $G = (\{S, M_0 , M_1 , M_2 \}, \{0, 1, 2, +, *\}, P, S)$ eine kontextfreie Grammatik ist, wobei von S alle arithmetischen Ausdrücke in Präfixnotation erzeugt werden und von $M_i$ alle, die modolu 3 zu i ausgewertet werden.}
+
+\textit{(b) Geben Sie einen Kellerautomaten an, der genau die arithmetischen Ausdrücke in Postfixnotation akzeptiert, die modulo 3 zu 0 ausgewertet werden.}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{Sei $1\leq k \in\mathbb{N}$. Ein k-PDA $M = (Z ,\sum, \Gamma, \delta, z_0 , \#)$ ist ein PDA mit der Eigenschaft, dass der Keller höchstens $k$ Elemente aufnehmen kann. Eine Konfiguration ist also ein Tripel $c\in Z \times\sum^*\times\Gamma^k$ und die Konfigurationsüberführung ist wie folgt definiert: Zunächst wird die Transition wie in den klassischen PDAs ausgeführt und im Falle eines Kellerüberlaufs wird anschließend der Inhalt auf die obersten $k$ Symbole gekürzt. Zeigen Sie, dass die von einem k-PDA M akzeptierte Sprache $L(M)$ regulär ist.}
 
+%##########################################
+\subsection{Aufgabe 4}
+\textit{Wir betrachten arithmetische Ausdrücke in Postfixnotation über den Konstanten 0,1,2 und mit den Operatoren + (Addition) und * (Multiplikation). Diese Ausdrücke werden von der Grammatik $G = (\{S\}, \{0, 1, 2, +, *\}, P, S)$ erzeugt, wobei P gegeben ist durch: $S \vdash 0 | 1 | 2 | SS+ | SS*$\\
+Hierbei werden zuerst die Operanden und dann der Operator notiert. Zum Beispiel entspricht $12+$ dem Ausdruck $(1+2)$ und $012++2*$ entspricht $((0+(1+2))*2)$. Geben Sie einen Kellerautomaten an, der genau die arithmetischen Ausdrücke in Postfixnotation akzeptiert, die modulo 3 zu 0 ausgewertet werden.
+Hinweis: Es gibt so einen Kellerautomaten mit Kelleralphabet $\Gamma = \{\#, 0, 1, 2\}$.}
 
+%##########################################
+\subsection{Aufgabe 5}
+\textit{Sei $\sum = \{a, b\}$. Entscheiden Sie für jede der folgenden Sprachen, ob sie kontextfrei oder nicht kontextfrei ist. Beweisen Sie Ihre Aussagen.}
+
+\textit{(a) $L_a = \{a^n ba^n ba^n | n\in\mathbb{N}\}$}
+
+\textit{(b) $L_b = \sum^*\backslash L_a$ }
 
 
 \newpage
@@ -578,13 +604,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 08}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -594,13 +623,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 09}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -610,13 +642,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 10}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -626,13 +661,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 11}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -642,13 +680,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 12}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -658,13 +699,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 13}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 
@@ -674,13 +718,16 @@ $A_1\rightarrow 0 | A_2 A_2$, $A_2 \rightarrow 1 | A_1 A_1$}
 \section{Übung 14}
 %##########################################
 \subsection{Aufgabe 1}
+\textit{}
 
 %##########################################
 \subsection{Aufgabe 2}
+\textit{}
 
 
 %##########################################
 \subsection{Aufgabe 3}
+\textit{}
 
 
 

@@ -650,23 +650,23 @@ Geben Sie eine kontextfreie Grammatik an, die alle möglichen Werte von $<Progra
 %##########################################
 \subsection{Aufgabe 1}
 \textit{Beweisen Sie das doppelte Pumping-Lemma für reguläre Sprachen, das wie folgt lautet: Wenn L eine reguläre Sprache ist, dann gibt es $n\geq 1$ derart, dass für alle $z\in L$ mit $|z|\geq n$ gilt: Es gibt Wörter $u, v, w, x, y \in\sum^*$ mit
-\begin{itemize}
-    \item (i) $z = uvwxy$
-    \item (ii) $|uvwx | \leq n$
-    \item (iii) $|v|, |x | \geq 1$
-    \item (iv) $uv^i wx^j y\in L$ für alle $i, j\in\mathbb{N}$.
-\end{itemize}
-Hinweis: Orientieren Sie sich am Beweis des Pumping-Lemmas für reguläre Sprachen aus der Vorlesung.}
+    \begin{itemize}
+        \item (i) $z = uvwxy$
+        \item (ii) $|uvwx | \leq n$
+        \item (iii) $|v|, |x | \geq 1$
+        \item (iv) $uv^i wx^j y\in L$ für alle $i, j\in\mathbb{N}$.
+    \end{itemize}
+    Hinweis: Orientieren Sie sich am Beweis des Pumping-Lemmas für reguläre Sprachen aus der Vorlesung.}
 
 
 %##########################################
 \subsection{Aufgabe 2}
 \textit{Wir betrachten das vereinfachte doppelte Pumping-Lemma für kontextfreie Sprachen (welches nicht gilt): Wenn L eine kontextfreie Sprache ist, dann gibt es $n\geq 1$ derart, dass für alle $z\in L$ mit $|z|\geq n$ gilt: Es gibt Wörter $q, r, s, t, u, v, w, x, y \in\sum^*$ mit
-\begin{itemize}
-    \item (i) $z = qrstuvwxy$
-    \item (ii) $|rt |, |vx | \geq 1$
-    \item (iii) $qr^i st^i uv^j wx^j y \in L$ für alle $i, j\in\mathbb{N}$.
-\end{itemize}
+    \begin{itemize}
+        \item (i) $z = qrstuvwxy$
+        \item (ii) $|rt |, |vx | \geq 1$
+        \item (iii) $qr^i st^i uv^j wx^j y \in L$ für alle $i, j\in\mathbb{N}$.
+    \end{itemize}
 }
 
 \textit{(a) Zeigen Sie, dass die Sprache $\{a^n b^n | n\in\mathbb{N}\}$ ein Gegenbeispiel für das Lemma ist.}
@@ -713,19 +713,56 @@ Hinweis: Orientieren Sie sich am Beweis des Pumping-Lemmas für reguläre Sprach
 \section{Übung 10}
 %##########################################
 \subsection{Aufgabe 1}
-\textit{}
+\textit{Geben Sie für folgende Funktionen je eine primitiv rekursive Definition und ein Loop-Programm an:}
+
+\textit{(a) $f:\mathbb{N}\rightarrow\mathbb{N}, n \rightarrow 2^n$}
+
+\textit{(b) $f:\mathbb{N}\rightarrow\mathbb{N}, n \rightarrow n!$ }
 
 %##########################################
 \subsection{Aufgabe 2}
-\textit{}
+\textit{Sei $a(k,n) := ack(k, n) mod 2$, d.h., $a(k, n)$ ist die Parität des Wertes $ack(k, n)$. Zeigen oder widerlegen Sie, dass die Funktion $a$ Loop-berechenbar ist.}
 
 
 %##########################################
 \subsection{Aufgabe 3}
-\textit{}
+\textit{Sei $(f_k)_{k\in\mathbb{N}}$ eine Folge von Loop-berechenbaren Funktionen $f_k:\mathbb{N}\rightarrow\mathbb{N}$, so dass jedes $f_k$ durch ein Loop-Programm mit k Loop-Schleifen berechnet werden kann, nicht aber durch ein Programm mit $k-1$ Loop-Schleifen. Zeigen oder widerlegen Sie: Die Funktion $g$ mit $g(k, n) = f_k(n)$ ist Loop-berechenbar.}
 
+%##########################################
+\subsection{Aufgabe 4}
+\textit{Jedes Jahr, kurz vor Heiligabend, startet der Weihnachtsmann auf seinem Keller-Rechner ein Loop-Programm, welches die optimale Route für das Verteilen der Geschenke berechnet. Dieses Jahr geschieht jedoch eine Katastrophe. Schon bei der Eingabe gerät eine Zuckerstange in das Getriebe, wodurch der unendliche Kellerspeicher in sich zusammen fällt. „Oh nein, das war der letzte Rechner mit Kellerspeicher! Woher soll ich denn jetzt wissen, wo ich lang fliegen soll?”, fragt Rudolf. „Ich weiß auch nicht weiter”, sagt der Weihnachtsmann, „Wir haben zwar noch andere Rechner auf denen Loop-Programme laufen, aber der Kellerspeicher ist nötig um den Geschenkstapel auf dem Schlitten zu simulieren.” „Könnten wir nicht den Stack in einem Loop-Programm simulieren?” schlägt ein Wichtel vor. „Das könnte funktionieren. . . ”, sagt der Weihnachtsmann.\\
+    Helfen Sie dem Weihnachtsmann, indem Sie zeigen, dass jede Funktion, die durch ein Loop-Programm mit Stack berechnet wird, auch durch ein Loop-Programm ohne Stack berechnet werden kann. Erklärung: Loop-Programme mit Stack verfügen über alle Befehle, die Loop-Programme besitzen. Zusätzlich besitzen sie einen Stack auf den mit dem Befehl $push(x_i)$ der Wert von $x_i$ gelegt werden kann und von dem mit dem Befehl $x_i = pop$ der oberste Wert ausgelesen werden kann, welcher dann gleichzeitig vom Stack entfernt wird. Falls der Stack leer ist gibt $pop$ den Wert $0$ zurück.\\
+    Zeigen Sie, dass für jedes Loop-Programm mit Stack, das eine Funktion berechnet, ein Loop-Programm (ohne Stack) existiert, welches die gleiche Funktion berechnet.}
 
+%##########################################
+\subsection{Aufgabe 5}
+\textit{Welche Funktion berechnet die folgende Turingmaschine M? $M = (\{z_0, z_1, z_2, z_3, z_e\}, \{0, 1\}, \{0, 1,\Box\}, \delta, z_0 , \Box, \{z_e\})$
+\begin{tabular}{c|ccc}
+        $\delta$ & 0              & 1              & $\Box$            \\\hline
+        $z_0$    & $(z_0 , 0, R)$ & $(z_1 , 1, R)$ & $(z_3 , 0, L)$    \\
+        $z_1$    & $(z_1 , 0, R)$ & $(z_1 , 1, R)$ & $(z_2 , \Box, L)$ \\
+        $z_2$    & $(z_2 , 1, L)$ & $(z_3 , 0, L)$ & $(z_e , 0, N)$   \\
+        $z_3$    & $(z_3 , 0, L)$ & $(z_3 , 1, L)$ & $(z_e , \Box, R)$ \\
+        $z_e$    & $(z_e , 0, N)$ & $(z_e , 1, N)$ & $(z_e ,\Box, N)$
+    \end{tabular}
+}
 
+%##########################################
+\subsection{Aufgabe 6}
+\textit{Geben Sie formal je eine Turingmaschine über dem Alphabet $\sum = \{0, 1\}$ an, die als Eingabe ein Wort $w\in\sum^+$ erhält und}
+
+\textit{(a) den Wert $\lceil w/2 \rceil$ berechnet, wobei $w$ als Binärzahl mit dem höchstwertigsten Bit links betrachtet wird.}
+
+\textit{(b) 1 ausgibt, falls $w$ ein Palindrom ist, und 0 sonst.}
+
+%##########################################
+\subsection{Aufgabe 7}
+\textit{Geben Sie für jede der folgenden Sprachen je einen PDA an, der die Sprache akzeptiert.}
+\textit{(a) $L_1 = \{a^n b^{3n} | n\in\mathbb{N}\}$}
+
+\textit{(b) $L_2 = \{a^n b^m | n \leq m \leq 2n\}$ }
+
+\textit{(c) $L_3 = \{w\in\{a, b\}^* | 2*|w|_a = 3*|w|_b\}$ }
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

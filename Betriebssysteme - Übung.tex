@@ -78,6 +78,12 @@
  },
 }
 
+\lstset{
+	literate={ö}{{\"o}}1
+	{ä}{{\"a}}1
+	{ü}{{\"u}}1
+}
+
 \begin{document}
 \begin{myboxii}[Disclaimer]
     Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Betriebssysteme}! Für die Richtigkeit der Lösungen wird keine Gewähr gegeben.
@@ -337,12 +343,30 @@ Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, al
 \section{Übung 3}
 %##########################################
 \subsection{Repetitorium}
-\begin{description*}
-    \item[Durch welche Ereignisse wechselt ein Thread vom Zustand aktiv in den Zustand blockiert? Durch welche in den Zustand suspendiert?]
-    \item[Welche Auswirkung hat im Round-Robin-Schedulingalgorithmus die Veränderung der Größe der Zeitscheibe?]
-    \item[Round-Robin-Scheduler verwalten normalerweise eine oder mehrere Listen von Prozessen, wobei jeder lauffähige Prozess genau einmal aufgeführt wird. Was würde passieren, wenn ein Prozess 2x in einer Liste stehen würde? Aus welchen Gründen könnte man so etwas erlauben?]
-    \item[Welche Form des Schedulings – preemptiv oder nicht preemptiv – führt aus grundsätzlichen Überlegungen zu robusteren Systemen?]
-\end{description*}
+\begin{itemize*}
+    \item \textbf{Durch welche Ereignisse wechselt ein Thread vom Zustand aktiv in den Zustand blockiert? Durch welche in den Zustand suspendiert?}
+    \begin{itemize}
+        \item Der Zustandswechsel geschieht beispielsweise dadurch, dass ein aktiver Prozess auf E/A Operationen oder Timer warten muss, aufgrund dessen wird er dann in den Zustand blockiert geschickt, weiterhin kann es an einem Mangel an Betriebsmitteln liegen.
+        \item Ein Prozess wechselt in den Zustand suspendiert/ready, wenn es initial rechenbereit war, allerdings aus dem Hauptspeicher geswapped wurde und auf einem externen Speicher ausgelagert ("swapping") wurde. Der Prozess wird wieder aktiv, wenn er aus dem externen Speicher zurück in den Hauptspeicher geswappt wird.
+        \item Ein Prozess wechselt in den Zustand suspendiert/blockiert. Vom Konzpet ähnlich dem des Suspendiert/ready, mit dem Unterschied, dass der Prozess eine E/A Operation ausführte oder darauf wartete und ein Mangel an Hauptspeicher für die Auslagerung sorgte. Sobald allerdings die E/A Operation abgeschlossen ist, kann er in den Zustand suspendiert/bereit wechseln.
+        \item Der Nutzer kann selbst suspenderieren, allerdings geschieht es typischerweise eher durch das OS selbst. (z.b. durch Überlastungssituation)
+    \end{itemize}
+    \item \textbf{Welche Auswirkung hat im Round-Robin-Schedulingalgorithmus die Veränderung der Größe der Zeitscheibe?}
+    \begin{itemize}
+        \item Sollte eine große Zeitscheibe eingesetzt werden, so gibt es wenige Threadwechsel, dadurch einen geringen Schedulingoverhead, allerdings ist die Reaktivität eher schlecht, zudem entstehen bei nicht-preemptiver Implementierung viele Abschnitte mit Leerlaufsituationen.
+        \item Sollte eine kleine Zeitscheibe verwendet werden so hat man zwar einen sehr großen Overhead durch ständige Threadwechsel, allerdings eine sehr hohe Reaktivität.
+        \item In der Praxis sind typische Zeitscheiben zwischen 20-50ms lang.
+    \end{itemize}
+    \item \textbf{Round-Robin-Scheduler verwalten normalerweise eine oder mehrere Listen von Prozessen, wobei jeder lauffähige Prozess genau einmal aufgeführt wird. Was würde passieren, wenn ein Prozess 2x in einer Liste stehen würde? Aus welchen Gründen könnte man so etwas erlauben?}
+    \begin{itemize}
+        \item Wenn ein Prozess häufiger in der Liste stehen würde, so würde dieser anteilig gesehen häufiger zur Ausführung zugelassen werden, was also einer Erhöhung der Priorität gleich kommen würde, allerdings kommt er dadurch nicht unbedingt schneller zur Ausführung. Falls er n-mal in der Liste ist, dann bekommt er die n-fache Rechenzeit pro Listendurchlauf.
+        \item Unterschied zu mehreren Listen: Prozess mit hoher Prioriität rechnet solange, bis Prozess mit gleicher oder größerer Priorität existiert oder er terminiert.
+        \item Die Gründe dies zu erlauben sind offensichtlich. Die Einführung längerer Zeitscheiben für Prozesse höherer Priorität würden dazu führen, dass die Reaktivität anderer Threads verringert würde und es würde es dem Betriebssystem erschweren, bei einem Interrupt wieder einzuspringen. Die Aufrechterhaltung separater Listen für die Priorisierung von Prozessen würde einen viel komplexeren Scheduler erfordern, der im Bezug auf die Zyklen teurer würde, bzw. höhere Kosten verursachen würde, dies lässt sich durch die mehrfache Einfügung eines Prozesses aber umgehen.
+              Ein Problem könnte maximal beim Löschen von Threads auftrete, da ein Prozess nun häufiger in der Queue sein kann, müsste man alle Vorkommnisse finden und löschen, was eine Kostensteigerung des Löschens zur Folge hat.
+    \end{itemize}
+    \item \textbf{Welche Form des Schedulings – preemptiv oder nicht preemptiv – führt aus grundsätzlichen Überlegungen zu robusteren Systemen?} Ein preemptives System kann einem Prozess Ressourcen wegnehmen und später wieder erneut zuweisen, um zwischenzeitlich andere Prozesse rechnen zu lassen. Da somit Fehlerquellen wie Endlosrekursionen verhindert oder gestoppt werden können. Somit sind preemptive Systeme als robuster zu bewerten.
+\end{itemize*}
+
 %##########################################
 \subsection{Aufgabe 1: EDF}
 \textit{Die Scheduling-Strategie Earliest Deadline First (EDF) kommt dann zum Einsatz, wenn die Abarbeitung eines Prozesses bis zu einem definierten Zeitpunkt (Frist, Deadline) erfolgen muss. Wir wollen uns in dieser Aufgabe auf statische Deadlines beschränken, auch wenn diese in bestimmten, realen Anwendungen während der Abarbeitung von Prozessen (dynamisch) neu bestimmt werden können.
@@ -351,11 +375,141 @@ Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, al
 \textit{a) Implementieren Sie EDF. Sie finden dazu eine Musterklasse im Projekt unter Simulation → Source Packages → frm.pssav.sim → PreemptiveEDFScheduler.java.}
 \vspace{10mm}
 
+\begin{lstlisting}
+    package frm.pssav.sim;
+    
+    import frm.pssav.sim.OperatingSystem.ProcessControlBlock;
+    import java.util.Comparator;
+    import java.util.concurrent.PriorityBlockingQueue;
+    
+    /**
+     * Scheduler using the preemptive earliest deadline first algorithm
+     */
+    public class PreemptiveEDFScheduler extends Scheduler {
+        
+        PreemptiveEDFScheduler(OperatingSystem os, int queueCapacity) {
+            super(os, new PriorityBlockingQueue<Integer>(
+                    queueCapacity, new PreemptiveEDFQueueComparator(os)));
+        }
+    
+        /**
+         * Methode zur Implementierung des präemptiven Teils des 
+         * Scheduling-Algorithmus.
+         */
+        @Override
+        void doSchedule(int[] arrivals) {
+            for (int pid : arrivals) {
+                queue(pid);
+            }
+    
+            if (isProcessTerminated()) {
+                contextSwitch();
+            }
+            else {
+                if (!isProcessRunning()) {
+                    contextSwitch();
+                }
+                else {
+                    /* @student
+                     * Diese Methode wird immer dann aufgerufen, wenn dem
+                     * Scheduler ein neuer Prozess bekannt wird. Sie können
+                     * hier also den präemptiven Teil ihres Algorithmus
+                     * implementieren. 
+                     * Mittels getOS().getProcess([PID]) gelangen Sie an den
+                     * PCB des Prozesses mit dem Identifier PID. Ein kurzer Blick
+                     * in die Klasse ProcessControlBlock in "OperatingSystem.java"
+                     * gibt Ihnen Aufschluss darüber, wie Sie auf die Daten des 
+                     * PCB zugreifen können. Mit getRunningPID() bekommen Sie 
+                     * die ID des gerade laufenden Prozesses. getReadyQueue()
+                     * liefert Ihnen die Schlange der wartenden Prozesse.
+                     * Mittels contextSwitch() befehlen Sie dem Scheduler den
+                     * Prozess am Kopf der Schlange anstatt des aktuellen zu
+                     * rechnen. Dabei wird der aktuelle aber nicht automatisch wieder
+                     * in die Schlange eingereiht!
+                     * PS: Die Warteschlange enthält die PIDs der Prozesse.
+                     */
+                    if (getReadyQueue().isEmpty()) return;
+                    
+                    int runningPID = getRunningPID();
+                    int headPID = getReadyQueue().peek();
+                    ProcessControlBlock runningPCB = getOS().getProcess(runningPID);
+                    ProcessControlBlock headPCB = getOS().getProcess(headPID); 
+                    
+                    if(runningPCB.getDeadline() > headPCB.getDeadline())
+                    {
+                        contextSwitch(); 
+                        getReadyQueue().add(runningPID); 
+                    }
+                    else 
+                    {
+                        // change nothing
+                    }
+                }
+            }
+        }
+    
+        @Override
+        Comparator<Integer> getComparator(OperatingSystem os) {
+            return new PreemptiveEDFQueueComparator(os);
+        }
+    
+        /**
+         * Verlgeichsmethode für die Priority-Queue.
+         */
+        public static class PreemptiveEDFQueueComparator implements
+                Comparator<Integer> {
+    
+            private OperatingSystem os;
+    
+            public PreemptiveEDFQueueComparator(OperatingSystem os) {
+                this.os = os;
+            }
+    
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                ProcessControlBlock p1 = os.getProcess(o1);
+                ProcessControlBlock p2 = os.getProcess(o2);
+                /* @student
+                 * Diese Methode wird genutzt, um die Schlange der wartenden
+                 * Prozesse zu sortieren. Sie müssen hier also definieren, welche
+                 * Prozesse zunächst wichtiger als andere sind. Geben Sie -1 für
+                 * "o1 ist wichtiger als o2", 0 für "o1 ist genauso wichtig wie o2"
+                 * und 1 für "o1 ist weniger wichtig als o2" zurück.
+                 * Welche Methoden Ihnen für die Datenabfrage aus dem PCB zur
+                 * Verfügung stehen, erfahren Sie mit einem Blick in die Klasse
+                 * ProcessControlBlock in der Datei "OperatingSystem.java".
+                 */
+                /*
+                Hier kann ich p1.getDeadline() oder eventuell p1.getPriority() verwenden. 
+                */
+                if(p1.getDeadline() > p2.getDeadline())
+                {
+                    return 1; 
+                }
+                else if(p1.getDeadline() < p2.getDeadline())
+                {
+                    return -1; 
+                }
+                else if(p1.getDeadline() == p2.getDeadline())
+                {
+                    return 0; 
+                }
+                
+                return 0;
+            }
+        }
+    }
+    
+    \end{lstlisting}
 
 \textit{b) Vergleichen Sie nun den einfachen Round-Robin-Algorithmus (eine Warteschlange) mit EDF. Überlegen Sie sich zwei Szenarien: Im ersten sollen beide Algorithmen die gesetzten Fristen einhalten. Im zweiten sollte ersichtlich werden, in welchen Fällen Round Robin gegenüber EDF versagt.
     Benutzen Sie ausreichend viele Prozesse, so dass die Simulation lange genug läuft, damit ihre Kommilitonen genügend Zeit haben, sich der dargestellten Probleme bewusst zu werden.}
 \vspace{10mm}
 
+Zwei Prozesse definieren (0,4,4,10) und (2,5,5,8) (Arrival,Burst,Priority,Deadline). Mit RR können die Deadlines nicht eingehalten werden.
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssystem_uebung/u3_a1.png}
+\end{center}
 
 %##########################################
 \subsection{Aufgabe 2: Round Robin mit Prioritäten}
@@ -363,6 +517,7 @@ Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, al
 \vspace{10mm}
 \textit{a) Implementieren Sie Round Robin mit Prioritäten. Sie finden dazu bereits eine Implementierung der Strategie ohne Berücksichtigung von Prioritäten unter Simulation → Source Packages → frm.pssav.sim → RoundRobinScheduler.java, die Sie entsprechend anpassen müssen.}
 \vspace{10mm}
+(siehe Netbeans)
 
 \textit{b) Von welchen Faktoren ist die Länge einer Zeitscheibe in der Praxis abhängig? Von welchen die Priorität? Welcher Unterschied ergibt sich daraus für das Setzen dieser beiden Parameter?}
 \vspace{10mm}
@@ -376,12 +531,32 @@ Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, al
 \vspace{10mm}
 \textit{a) Recherchieren Sie für das Betriebssystem Linux die für das Scheduling von Prozessen verantwortlichen funktionalen Komponenten (Scheduling-Subsystem) und ermitteln Sie, welche Schedulingstrategien Linux unterstützt.}
 \vspace{10mm}
+\begin{itemize}
+    \item Linux verwendet seit Kernelversion 2.6.23 CFS (Completely Fair Scheduler)
+    \item Es gibt verschiedene Schedulingstrategien wie:
+          \begin{itemize}
+              \item SCHED\_FIFO: First in First out Scheduling
+              \item SCHED\_RR: Round-Robin Scheduling
+              \item SCHED\_DEADLINE: Sporadic task model deadline scheduling
+              \item SCHED\_OTHER: Default Linux time-sharing scheduling
+              \item SCHED\_BATCH: Scheduling batch processes
+              \item SCHED\_IDLE: Scheduling very low priority jobs
+          \end{itemize}
+    \item Der Scheduler selbst ist eine Kernelkomponente welche entscheidet, welcher ausführbare Thread als nächster auf der CPU ausgeführt werden wird. Die von Linux verwendete Schedulingklasse basiert auf der POSIX Expansion für Echtzeitcomputersysteme.
+\end{itemize}
 
 \textit{Damit das Betriebssystem sinnvoll mit diesen unterschiedlichen Prozessen umgehen kann, müssen Prozesse selbst ihre Lastmerkmale dem Betriebssystem mitteilen (neben der Beobachtung und Klassifizierung der Prozesse durch das Betriebssystem selbst). Eine sehr einfache Möglichkeit, das Scheduling von Prozessen zu beeinflussen, besteht in der Vergabe unterschiedlicher (Basis-)Prioritäten, auf deren Grundlage die dynamische Änderung durch das Betriebssystem vorgenommen wird. Für jeden regulären Prozess steht hierzu der Systemaufruf $nice$ zur Verfügung; ein Nutzer kann die Priorität seiner Prozesse mithilfe der Ausführung
     der Kommandos $nice$ oder $renice$ verschlechtern (der Name deshalb, weil er damit "nett" zu anderen Prozessen ist).}
 \vspace{10mm}
 \textit{b) Starten Sie zwei gleichartige rechenzeitintensive Prozesse (ggf. hierfür ein einfaches Programm schreiben), die lange genug rechnen. Demonstrieren und erläutern Sie deren Verhalten, wenn einerseits beide die gleiche Priorität haben und andererseits ein Prozess seine Priorität verringert hat. Überlegen Sie sich geeignete Demonstrationsmöglichkeiten.}
 \vspace{10mm}
+
+\begin{itemize}
+	\item Verwendete taskset 0x1 ./simpleproc um die selben Prozessorcores zu verwenden
+	\item über top fand ich die Prozessorauslastung in Prozent heraus
+	\item Darüber hinaus zeigte sich bei meinen Programmen mit verschiedenen Prioritäten allerdiungs nicht wirklich ein Unterschied. Einzig für Prozess wie den NTP Deamon oder ASLA/Pulseaudio würde es Sinn machen, denn wenn man beispielsweise der musikausgebenden Anwendung sehr viel Priorität wegnimmt und beispielsweise einem unbedeutenden Programm hinzufügen würde, so würde man hören, dass die Musik lückenhaft wird, bzw. das Programm unresponsiv wird. 
+\end{itemize}
+Siehe auch Linux Manpages
 
 \textit{
     Hinweise:

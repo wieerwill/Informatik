@@ -3,16 +3,11 @@
 \usepackage[ngerman]{babel}
 \usepackage{listings}
 \usepackage{float}
-\usepackage{graphicx}
-\usepackage{color}
-\usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{tabularx}
 \usepackage{geometry}
 \usepackage{color,graphicx,overpic}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{tabularx}
-\usepackage{listings}
 \usepackage[many]{tcolorbox}
 \usepackage{multicol}
 \usepackage{mdwlist} %less space for lists
@@ -22,11 +17,11 @@
 \newtheorem{beweis}{Beweis}
 
 \pdfinfo{
-    /Title (Betriebssysteme - Übung)
-    /Creator (TeX)
-    /Producer (pdfTeX 1.40.0)
-    /Author (Robert Jeutter)
-    /Subject ()
+  /Title (Betriebssysteme - Übung)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Studenten TU Ilmenau)
+  /Subject ()
 }
 
 % Don't print section numbers
@@ -37,50 +32,50 @@
 
 
 \newtcolorbox{myboxii}[1][]{
-  breakable,
-  freelance,
-  title=#1,
-  colback=white,
-  colbacktitle=white,
-  coltitle=black,
-  fonttitle=\bfseries,
-  bottomrule=0pt,
-  boxrule=0pt,
-  colframe=white,
-  overlay unbroken and first={
-  \draw[red!75!black,line width=3pt]
-    ([xshift=5pt]frame.north west) -- 
-    (frame.north west) -- 
-    (frame.south west);
-  \draw[red!75!black,line width=3pt]
-    ([xshift=-5pt]frame.north east) -- 
-    (frame.north east) -- 
-    (frame.south east);
-  },
-  overlay unbroken app={
-  \draw[red!75!black,line width=3pt,line cap=rect]
-    (frame.south west) -- 
-    ([xshift=5pt]frame.south west);
-  \draw[red!75!black,line width=3pt,line cap=rect]
-    (frame.south east) -- 
-    ([xshift=-5pt]frame.south east);
-  },
-  overlay middle and last={
-  \draw[red!75!black,line width=3pt]
-    (frame.north west) -- 
-    (frame.south west);
-  \draw[red!75!black,line width=3pt]
-    (frame.north east) -- 
-    (frame.south east);
-  },
-  overlay last app={
-  \draw[red!75!black,line width=3pt,line cap=rect]
-    (frame.south west) --
-    ([xshift=5pt]frame.south west);
-  \draw[red!75!black,line width=3pt,line cap=rect]
-    (frame.south east) --
-    ([xshift=-5pt]frame.south east);
-  },
+ breakable,
+ freelance,
+ title=#1,
+ colback=white,
+ colbacktitle=white,
+ coltitle=black,
+ fonttitle=\bfseries,
+ bottomrule=0pt,
+ boxrule=0pt,
+ colframe=white,
+ overlay unbroken and first={
+ \draw[red!75!black,line width=3pt]
+  ([xshift=5pt]frame.north west) -- 
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  ([xshift=-5pt]frame.north east) -- 
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay unbroken app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) -- 
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) -- 
+  ([xshift=-5pt]frame.south east);
+ },
+ overlay middle and last={
+ \draw[red!75!black,line width=3pt]
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay last app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) --
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) --
+  ([xshift=-5pt]frame.south east);
+ },
 }
 
 \begin{document}
@@ -168,32 +163,78 @@ Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
 %##########################################
 \subsection{Repetitorium}
 \begin{itemize*}
-    \item \textbf{Welcher Zusammenhang besteht zwischen den Konzepten Nebenläufigkeit und Parallelität? Wann können Aktivitäten auf einem System nur pseudoparallel ausgeführt werden?} Nebenläufig: kausal unabhängig; Parallel: zeitlich überlappend; Aufgaben können nur parallel ausgeführt werden wenn diese Nebenläufig sind
-    \item \textbf{Wozu dienen Prozessmodelle? Aus welchen Bausteinen setzt sich ein Prozessmodell zusammen? Welche finden sich typischerweise in Prozessdeskriptoren wieder?} 
-    \item \textbf{Aus welchem Grund wurde das Thread-Konzept entwickelt? Welche zwei eigentlich unabhängigen Konzepte sind im Modell des ursprünglichen (Schwergewichts-)Prozesses vereint?} Prozesse von einem Ressoircenmanagement und Parallelität; Threads laufen im Ressourcenkontext über Prozesse
-    \item \textbf{Wozu dienen Prozess- bzw. Threadzustände? Welche elementaren Zustände finden sich in jedem Prozessmodell?} Elementare Zustände: bereit, aktiv, blockiert, (frisch, beendet); ermöglichen Scheduling
-    \item \textbf{Warum benötigt jeder Thread einen eigenen Stack?} 
-    \item \textbf{Worin besteht der Unterschied zwischen Kernel- und User-Level-Threads? Welche Vor- und Nachteile besitzt die jeweilige Form? Wo befinden sich die PCB- und TCB-Datenstrukturen?} 
+    \item \textbf{Welcher Zusammenhang besteht zwischen den Konzepten Nebenläufigkeit und Parallelität? Wann können Aktivitäten auf einem System nur pseudoparallel ausgeführt werden?} Nebenläufigkeit ist die Voraussetzung für Parallelität. Nebenläufigkeit beschreibt wiederum den Umstand, dass zwischen zwei Aktivitäten keine kausalen Abhängigkeiten bestehen. Parallel, wenn zwei oder mehr Aktivitäten zeitgleich/ zeitlich überlappend ausgeführt werden können. Das wiederum bedeutet, dass man Aufgaben, bei welchen die Teillösungen immer aufeinander aufbauen nicht parallelisieren kann. Allerdings ist die gleichzeitige Berechnung von unabhängigen Lösungen kein Problem und somit kann sich auch ein enormer Geschwindigkeitszuwachs bieten. Aktivitäten können nur dann echt parallel ausgeführt werden, wenn auch mehrere unabhängige Prozessorcores dafür zur Verfügung stehen, das bedeutet, sobald nicht mehrere Prozessoren verfügbar sind, kann die Parallelität nur durch zeitliches Switching simuliert werden. Pseudoparallel weiter bei Abhängikeit (z.b. Synchronisation)
+    \item \textbf{Wozu dienen Prozessmodelle? Aus welchen Bausteinen setzt sich ein Prozessmodell zusammen? Welche finden sich typischerweise in Prozessdeskriptoren wieder?} Da wir einem Computer nicht einfach mehrere Aufgaben ohne Kontext und ähnliches vorwerfen können und das Rechnen darauf beginnen können, müssen wir etwas neues Einführen. Hier wählen wir Prozesse. Prozesse sind eine Betriebssystemabstraktion zur vollständigen Beschreibung einer sequentiell ablaufenden Aktivität. Im weiteren Verlauf ist es nun so, dass parallele Aufgaben durch parallele Prozesse beschrieben/repräsentiert werden. \\
+    Ein Prozessmodell definiert nun Prozesse und die konkreten Prozesseigenschaften: zum Beispiel: Semantik der Operationen auf Prozessen, also die Auswirkungen von Erzeugen, Beenden, Anhalten, Fortsetzen, sowie auch die nichtfunktionalen Eigenschaften von Prozessen, wie beispielsweise die Echtzeiteigenschaften, Safetyeigenschaften, Securityeigenschaften.\\
+    Ein Prozessdeskriptor oder PCB „Process Control Block“ beinhaltet Informationen zur Identifikation, Größe, Position, Zugriffsberechtigungen und Verwendung eines Segments und erlaubt somit erst das parallele Rechnen.\\
+    Aufbau des Prozessmodells/ Process Control Block: Identifikationsbereicht + Schedulinginformation + Programmkontext (Instruction Pointer + Stackpointer + PSR) + Ereignismanagement + Accounting + Rechte + Ressourcen
+    \item \textbf{Aus welchem Grund wurde das Thread-Konzept entwickelt? Welche zwei eigentlich unabhängigen Konzepte sind im Modell des ursprünglichen (Schwergewichts-)Prozesses vereint?} Das Thread-Modell wurde für die Parallelisierung nebenläufiger Aktivitäten erschaffen, da sich zeigte, dass ein neuer Prozess pro nebenläufiger Aufgabe eher unpraktisch ist. Die Hauptprobleme oder die wichtigsten negativen Aspekte zeigten sich bei dem hohen Managementaufwand, den hohen Kosten für die Isolation und die hohen Kosten für die Kommunikation der Prozesse untereinander. \\
+    Im ursprünglichen schwergewichtigen Prozessen war das Konzept des Ressourcenmanagements und das Management der Parallelität vereint.
+    \item \textbf{Wozu dienen Prozess- bzw. Threadzustände? Welche elementaren Zustände finden sich in jedem Prozessmodell?} Thread und Prozesszustände erlauben es mehrere Threads (pesudo)parallel auszuführen, bzw. erlauben das Scheduling, indem man per Zustand bestimmt, was ein Thread gerade macht. Hier gibt es als unterschiedliche Zustände „frisch“, „aktiv“, „blockiert“, „beendet“, „bereit“.
+    \item \textbf{Warum benötigt jeder Thread einen eigenen Stack?} Da jeder Thread seine eigene Ausführungssequenz / seinen eigenen Code haben kann, muss er einen eigenen Stack (LIFO Speicher) haben, auf den er den Inhalt seines Programmzählers schieben/einfügen kann (wenn z.B. Funktionsaufrufe und Rückgaben stattfinden).
+    \item \textbf{Worin besteht der Unterschied zwischen Kernel- und User-Level-Threads? Welche Vor- und Nachteile besitzt die jeweilige Form? Wo befinden sich die PCB- und TCB-Datenstrukturen?} Kernel-Level-Threads werden direkt durch das OS verwaltet und das Thread Management geschieht direkt durch den Kernel. Dadurch, dass sowohl die Kontextinformation als auch die Prozessthreads alle durch den Kernel gemenaged werden, kann man sagen, dass Kernel-level-threads typischerweise eher langsamer als User-Level-Threads sind und ihre Performanz durch Parallelität erreichen. (Multithreadingbetriebssystem)\\
+    \begin{itemize*}
+        \item Vorteile: Effiziente Nutzung von Multicore-Architekturen. Mehrere Threads des selben Prozess können auf verschiedenen Prozessoren geschedult werden. Ein blockierender Systemaufruf in einem Thread blockiert nicht auch gleichzeitig alle anderen Threads des gleichen Prozess.
+        \item Nachteile: Da der Kernel sowohl Threads als auch Prozesse verwalten und planen muss, benötigt er einen vollständigen Thread-Kontrollblock (TCB) für jeden Thread, um Informationen über Threads zu erhalten. Dies führt zu einem erheblichen Overhead und erhöht die Komplexität des Kernels. Die Threads auf Kernel-Ebene sind langsam und ineffizient. Beispielsweise sind die Thread-Operationen hundertmal langsamer als die Threads auf Benutzerebene.
+        \item User Level Threads werden durch Nutzer implementiert und der Kernel selbst hat kein Wissen über die Existenz dieser Threads und behandelt diese, als wären sie Single-Thread Prozesse. Userlevelthreads sind kleiner und schneller als kernel level threads. Sie werden durch einen Programmzähler (PC), Stapel, Register und einen kleinen Prozess-Steuerblock dargestellt. Außerdem gibt es keine Kernel-Beteiligung an der Synchronisation für Threads auf Benutzerebene.
+        \item ULT: Thread-Implementierung in Anwendung (OS kennt keine Threads)\\
+        Vorteile:\\
+        Threads auf Benutzerebene sind einfacher und schneller zu erstellen als Threads auf Kernel-Ebene. Sie lassen sich auch leichter verwalten.
+        Threads auf Benutzerebene können auf jedem Betriebssystem ausgeführt werden.
+        In Threads auf Benutzerebene sind keine Kernelmodus-Privilegien zum Threadwechsel erforderlich.
+        Thread-Management ohne Systemaufrufe
+        anwendungsindividuelle Thread-Schedulingstrategien möglich (für Spezialanwendungen sinnvoll)\\
+        Nachteile: \\
+        Multithread-Anwendungen in Threads auf Benutzerebene können Multiprocessing nicht zu ihrem Vorteil nutzen.
+        Der gesamte Prozess wird blockiert, wenn ein Thread auf Benutzerebene blockierende Operationen durchführt.\\
+        Beim Kernel-level-Thread befinden sich sowohl der PCB als auch TCB im Kernelspace. Beim User-level-Thread befinden sich PCB im Kernelspace und der TCB im Userlevel.
+    \end{itemize*}
 \end{itemize*}
 %##########################################
 \subsection{Aufgabe 1: Prozesserzeugung in Linux-Systemen}
 \textit{In Betriebssystemen der Unix/Linux-Familie werden neue Prozesse durch den fork-Systemaufruf erzeugt. Dabei entsteht sukzessive eine Abstammungshierarchie, in der ein Prozess, der ein fork() (erfolgreich) ausführt, zum Elternprozess ("parent") des von ihm erzeugten Kind-Prozesses ("child") wird. Die bei Unix/Linux-Systemen benutzte Technik funktioniert wie folgt: Durch fork wird eine nahezu exakte Kopie des Elternprozesses zum Zeitpunkt des fork()-Aufrufs erzeugt, bei der der neue Kindprozess eine Vielzahl der Eigenschaften des Elternprozesses erbt. Falls der Kindprozess ein anderes als das vom Elternprozess vererbte Programm ausführen soll, kann das Kind unmittelbar nach fork einen Systemaufruf der exec[ute]-Familie verwenden, der das durch den aufrufenden Prozess ausgeführte Programm austauscht.}
 \vspace{10mm}
-\textit{a) Informieren Sie sich über $fork$ und $exec*$ und finden Sie Antworten auf die folgenden Fragen. Wie unterscheiden sich Eltern- und Kindprozess unmittelbar nach dem fork()-Aufruf? Woran können sich Eltern- und Kindprozess unmittelbar nach einem fork()-Aufruf selbst erkennen ("Wer bin ich?")? Finden Sie mindestens 3 Möglichkeiten. Welche unterschiedlichen Werte kann der Funktionsaufruf fork() zurückgeben, und was bedeuten sie?}
-\vspace{10mm}
+\textit{a) Informieren Sie sich über $fork$ und $exec*$ und finden Sie Antworten auf die folgenden Fragen. Wie unterscheiden sich Eltern- und Kindprozess unmittelbar nach dem fork()-Aufruf?}
+
+Unterscheidung: getrennte Speicherbereiche, unterschiedliche PIDs, Programmierung gleich
+Direkt nach dem fork Aufruf unterscheiden sich Vater und Kindprozess durch:
 \begin{itemize*}
-    \item Unterscheidung: getrennte Speicherbereiche, unterschiedliche PIDs, Programmierung gleich
-    \item Selbsterkkennung: $getpid()$, $getppid()$, $system()$-calls, Rückgabewert von $fork()$
-    \item Rückgabewert von $fork()$: 
-    \begin{itemize*}
-        \item PID des Kindes von Parent
-        \item 0 im Kindprozess
-        \item -1 Fehler (errno gesetzt)
-    \end{itemize*}
+    \item Das Kind hat seine eigene und einzigartige PID, also ProzessID
+    \item Die ProzessID des Vaterprozesses des Kindes ist die selbe wie die ProzessID des Vaters.
+    \item Das Kind erbt keine Speichersperren/Memorylocks der Eltern
+    \item Prozessressourcenauslastung und CPU-Zeitzähler werden im Kind auf 0 gesetzt
+    \item Der Satz ausstehender Signale ist ursprünglich leer
+    \item Das Kind erbt keine Semaphoranpassungen des Elternteils
+    \item Das Kind erbt keine prozessbezogenen Datensatzsperren von seinem Elterneteil
+    \item Das Kind erbt keine Zeitgeber von seinem Elterneteil
+    \item Das Kind erbt keine austehenden E/A Operationen oder Kontexte
+\end{itemize*}
+Weiterhin gibt es einige Linux-Spezifische Prozessattribute welche sich verändern, hierzu zählen insbesondere:
+\begin{itemize}
+    \item Das Kind erbt keine Verzeichnisänderungsbenachrichtigungen von seinem Elternteil
+    \item Speicherzuordnungen, die mit dem $madvise(2)$ MADV\_DONTFORK-Flag markiert wurden, werden nicht über einen $Fork()$ vererbt.
+\end{itemize}
+
+\textit{Woran können sich Eltern- und Kindprozess unmittelbar nach einem fork()-Aufruf selbst erkennen ("Wer bin ich?")? Finden Sie mindestens 3 Möglichkeiten. }
+
+Selbsterkkennung: $getpid()$, $getppid()$, $system()$-calls, Rückgabewert von $fork()$
+
+\textit{Welche unterschiedlichen Werte kann der Funktionsaufruf fork() zurückgeben, und was bedeuten sie?}
+\vspace{10mm}
+
+Bei Erfolg wird im Elternprozess der PID des Kindprozesses >0 zurückgegeben, im Kindprozess wird 0 zurückgegeben. Bei einem Fehlschlag wird -1 im Elternprozess zurückgegeben, es wird kein Kindprozess erstellt und errno wird entsprechend gesetzt.
+
+Rückgabewert von $fork()$:
+\begin{itemize*}
+    \item PID des Kindes von Parent
+    \item 0 im Kindprozess
+    \item -1 Fehler (errno gesetzt)
 \end{itemize*}
 
 \textit{b) Demonstrieren Sie mit dem einfachen C-Programm p1 (in der Anlage), dass nach der Ausführung von fork() tatsächlich zwei Prozesse existieren.}
 \vspace{10mm}
+$cc -o p1 p1.c$ // Kompiliert das Programm
+Dann in selbem Directory ./p1, dies startet das Programm
 
 
 \textit{c) Führen Sie Programm p2 aus. Dieses enthält einen execl-Systemaufruf, mit dem ein Programm p4 ausgeführt werden soll. Das Programm p4 muss dabei ein (mit dem C-Compiler) übersetztes, ausführbares Programm im gleichen Verzeichnis sein. Sie können dazu das vorgegebene Programm p4 verwenden, das lediglich einen Ausdruck erzeugt.}
@@ -202,6 +243,18 @@ Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
 
 \textit{d) Wie viele Prozesse werden durch das Programm p3 erzeugt? Warum? Was passiert, wenn execl() nicht erfolgreich ausgeführt werden kann, weil z. B. das Programm p4 nicht gefunden wird? Führen Sie zur Kontrolle p3 aus, während das Programm p4 einmal existiert und ein weiteres Mal, während dieses nicht existiert.}
 \vspace{10mm}
+Es werden insgesamt 4 Prozesse durch die Ausführung von p3 erzeugt.
+
+Erklärung:
+Es werden, falls es sich um einen Kindprozess handelt, fork() also = 0 ist, dessen PID und die des Elternknotens ausgegeben.
+Weiterhin wird, falls es sich um einen Kindknoten handelt, das Kindprozessimage durch execl durch das Prozessimage p4 ersetzt.
+
+Sollte es sich allerdings nicht um einen Kindknoten handeln, dann wird die PID des Elternprozess ausgegeben.
+
+Dann wird unabhängig von der bisherigen Auswahl ein Fork erstellt, „PID terminating“ ausgegeben und wait(NULL) aufgerufen. wait(NULL) blockiert den Elternprozess, bis eines seiner Kinder beendet ist. Wenn der Kindprozess beendet wird, bevor der Elternprozess wait(NULL) erreicht, wird der Kindprozess zu einem Zombie-Prozess, solange bis der Elternprozess auf ihn wartet und ihn aus dem Speicher freigibt.
+
+Im Fall, dass p4 nicht vorhanden ist, wird zuerst der Elternprozess ausgegeben. Dann wird ein Fork erstellt und Terminating ausgegeben. Der Elternprozess verfällt in den Wartemodus. Daraufhin wird p3 wieder aufgerufen, da es sich nun um einen Fork handelt, wird Ausgegeben, dass ein Kind erstellt wurde und es wird versucht dieses Kindimage durch das p4 image zu ersetzen. Dies funktioniert allerdings nicht, also wird von execl -1 zurückgegeben.
+
 
 
 %##########################################
@@ -210,19 +263,48 @@ Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
 \vspace{10mm}
 \textit{a) Welche Prozesszustände sind in Linux-Betriebssystemen definiert, und wie erkennt man diese an den Ausgaben von ps?}
 \vspace{10mm}
+Man erkennt die Zustände an dem STAT Wert.
 
+Mit ps lassen sich Daten über die Prozesse in der Prozeßtabelle anzeigen. Die Prozeßtabelle wird mit einer Titelzeile ausgegeben. Die Spalten haben folgende Bedeutung:
+\begin{tabular}{c|c}
+    PID     & Die Process-ID des Prozesses                                                                                                                                                                                                                                                                                                                                               \\
+    PPID    & Die Parent Process ID des Prozesses                                                                                                                                                                                                                                                                                                                                        \\
+    UID     & Die User ID des Users, dem der Prozeß gehört                                                                                                                                                                                                                                                                                                                               \\
+    USER    & Der Username des Users, dem der Prozeß gehört                                                                                                                                                                                                                                                                                                                              \\
+    PRI     & Die Priorität des Prozesses. Höhere Werte bedeuten höhere Priorität.                                                                                                                                                                                                                                                                                                       \\
+    NI      & Der Nice-Wert des Prozesses. Höhere Werte bedeuten geringere Priorität.                                                                                                                                                                                                                                                                                                    \\
+    SIZE    & Die Größe des Codes plus Daten plus Stack KiloByte                                                                                                                                                                                                                                                                                                                         \\
+    TSIZE   & Die Größe des Codes in KiloByte. ELF Proz werden nicht korrekt dargestellt                                                                                                                                                                                                                                                                                                 \\
+    DSIZE   & Die Größe der Daten und Stack in Kilobyte Prozesse werden nicht korrekt dargestellt                                                                                                                                                                                                                                                                                        \\
+    TRS     & Text Resident Size - Die Größe des resident Code-Blocks in KiloByte                                                                                                                                                                                                                                                                                                        \\
+    SWAP    & Größe des ausgelagerten Bereichs des Tasks                                                                                                                                                                                                                                                                                                                                 \\
+    D       & Größe der als Dirty markierten Speicherseiten                                                                                                                                                                                                                                                                                                                              \\
+    LIB     & Größe der Library-Speicherseiten - Funktion nicht bei ELF-Prozessen.                                                                                                                                                                                                                                                                                                       \\
+    RSS     & Die Größe des physikalische Speichers, den das Programm benutzt. Für ELF-Format werden hier auch die Libraries mitgezählt, bei a.out Format nicht.                                                                                                                                                                                                                         \\
+    SHARE   & Die Größe der benutzten Shared-Libraries des Prozesses.                                                                                                                                                                                                                                                                                                                    \\
+    STAT    & Der Status des Prozesses. Das kann entweder ein S für schlafend, D für ununterbrechbar schlafend (dead), R für laufend (running) oder T für angehalten (traced). Dieser Angabe kann noch ein < für einen negativen Nice-Wert, ein N für einen positiven Nice-Wert oder ein W für einen ausgelagerten Prozeß folgen. (Das W funktioniert nicht richtig für Kernel-Prozesse) \\
+    WCHAN   & Die Kernelfunktion, die der Task gerade nutzt.                                                                                                                                                                                                                                                                                                                             \\
+    TIME    & Die gesamte CPU-Zeit, die der Prozeß verbraucht hat, seit er gestartet wurde.                                                                                                                                                                                                                                                                                              \\
+    \%CPU   & Die CPU-Zeit, die der Prozeß seit dem letzten Bildschirm-Update verbraucht hat, dargestellt als Prozentsatz der gesamten CPU-Zeit.                                                                                                                                                                                                                                         \\
+    \%MEM   & Der Anteil des Speichers, den der Task nutzt.                                                                                                                                                                                                                                                                                                                              \\
+    COMMAND & Das Kommando, mit dem der Prozeß gestartet wurde.                                                                                                                                                                                                                                                                                                                          \\
+    TTY     & Die Terminalleitung des Prozesses.                                                                                                                                                                                                                                                                                                                                         \\
+\end{tabular}
 
 \textit{b) Starten Sie das Programm p5, in dem der durch $fork()$ erzeugte Kindprozess in einer Endlosschleife läuft (Zweck?). Welche Prozesszustände haben Eltern- und Kindprozess? Beobachten Sie, welche Komponenten der Prozessdeskriptoren sich in Abhängigkeit von der Zeit ändern und interpretieren Sie dies.}
 \vspace{10mm}
+Das einzige was sich an Programm p5 zeigt, ist dass sich die Rechenzeit erhöht, sonst werden keine Prozesse mehr geforkt. Der Parentprozess ist in Zustand S+, d.h. er läuft zwar im Vordergrund, ist allerdings im unterbrechbaren Schlaf und wartet darauf, dass ein Event fertiggestellt wird. Der Kindprozess ist im Zustand R+, was bedeutet, dass er gerade ausgeführt wird und im Vordergrund läuft.
+
+Im Lauf der Zeit verändert sich vor allem die Laufzeit des Programms, also die CPU Zeit
 
 
 \textit{c) Wenn ein Prozess auf ein sogenanntes Ereignis warten muss, beispielsweise eine Eingabe, dann ändert sich dessen Zustand. Starten Sie Programm p6, welches mittels $getchar()$ auf eine Eingabe vom Standardeingabegerät (ohne weitere Maßnahmen ist dies die Tastatur) wartet, und untersuchen Sie die Zustandsinformationen des wartenden Prozesses.}
 \vspace{10mm}
-
+Der Prozess p6 selbst ist im S+ State, was bedeutet, dass er im aufweckbaren Zustand ist und auf die Eingabe wartet. Die CPU Zeit ändert sich nicht, was bedeutet, dass keine Zeit verbraucht wird.
 
 \textit{d) Mit dem Systemaufruf $sleep()$ kann sich ein Prozess selbst "schlafen legen". Starten Sie p7 und untersuchen Sie, welchen Zustand der hierdurch erzeugte Prozess nach dem Aufruf von $sleep()$ einnimmt.}
 \vspace{10mm}
-
+Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, also fällt die CPU Auslastung für den Prozess auf 0, weiterhin wird der Zustand für die Zeit von sleep(time) auf S+ gesetzt, nach Ablauf der Zeit wird es sich wieder auf R+ (also runnable) wechseln. CPU Zeit wird währenddessen natürlich auch nicht verbraucht.
 
 %##########################################
 \subsection{Aufgabe 3: Dateiformate ausführbarer Programme}
@@ -230,24 +312,25 @@ Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
 \vspace{10mm}
 \textit{a) Im Mittelpunkt Ihrer Recherchen über ELF sollte stehen, welche Informationen das Betriebssystem zur Erzeugung eines Prozesses benötigt und wo und wie diese in ELF zu finden sind. Berücksichtigen Sie ebenfalls die Metainformationen, die sich im ELF-Header befinden. Finden Sie Antworten auf die folgenden Fragen.
     \begin{itemize}
-        \item Wie findet man (bzw. das Betriebssystem) die erste auszuführende Instruktion innerhalb des Text-Segments?
-        \item Auf welche Weise bekommen bereits im Quellprogramm (z. B. C-Programm) initialisierte Variablen ihre Anfangswerte vor dem Start der Ausführung eines Programmes?
-        \item Woran erkennt man, um welchen Typ einer in ELF dargestellten Datei es sich handelt? Für welche Dateitypen ist ELF prinzipiell vorgesehen?
-        \item Unterscheiden sich ELF-Dateien für 32-Bit- und 64-Bit-Prozessorarchitekturen?
-        \item Woran ist das gegebenenfalls erkennbar?
-        \item Welchen Zweck haben die so genannten Sektionen (sections) bzw. die program headers?
-        \item Welche Bedeutung hat eine Symboltabelle als Teil einer in ELF dargestellten Datei?
+        \item \textbf{Wie findet man (bzw. das Betriebssystem) die erste auszuführende Instruktion innerhalb des Text-Segments?} Erste Instruktion $e\_entry$ gibt die virtuelle Adresse an, an welcher der Prozess zuerst beginnt.
+        \item \textbf{Auf welche Weise bekommen bereits im Quellprogramm (z. B. C-Programm) initialisierte Variablen ihre Anfangswerte vor dem Start der Ausführung eines Programmes?} Die Initialisierung mit Anfangswerten findet durch Einträge im Programmimage statt. Hier gibt es die Sections .data und .data1, welche beide jeweils Informationen zur Inititalisierung beinhalten.
+        \item \textbf{Woran erkennt man, um welchen Typ einer in ELF dargestellten Datei es sich handelt? Für welche Dateitypen ist ELF prinzipiell vorgesehen?} Man erkennt dies an dem Eintrag in $e\_type$ im ELF Header (NoFileType, Relocatable, Executable, Shared Object, CoreFile, ProcessorSpecific)
+        \item \textbf{Unterscheiden sich ELF-Dateien für 32-Bit- und 64-Bit-Prozessorarchitekturen? Woran ist das gegebenenfalls erkennbar?} $e\_ident/EI$-CLASS identifiziert die Kapazität oder die Dateiklasse. Falls der Wert auf 1 ist, so handelt es sich um 32 Bit Objekte, falls der Wert auf 2 gesetzt ist um 64 Bit Werte
+        \item \textbf{Welchen Zweck haben die so genannten Sektionen (sections) bzw. die program headers?} Die Headertabelle einer Objektdatei ermöglicht es, alle Abschnitte der Datei zu finden. Die Headertabelle ist ein Array von $Elf32\_Shdr$-Strukturen. Ein Tabellenindex der Headertabelle ist ein Subskript in diesem Array. Das $e\_shoff$-Mitglied des ELF-Headers gibt den Byte-Offset vom Anfang der Datei in die Sectionheadertable; $e\_shnum$ gibt an, wie viele Einträge die Sektionskopftabelle enthält; $e\_shentsize$ gibt die Größe jedes Eintrags in Bytes an. Die Programmkopftabelle einer ausführbaren oder gemeinsam genutzten Objektdatei ist eine Anordnung von Strukturen, die jeweils ein Segment oder andere Informationen beschreiben, die das System benötigt, um das Programm für die Ausführung vorzubereiten. Ein Objektdateisegment enthält einen oder mehrere Abschnitte. Programm-Header sind nur für ausführbare und gemeinsam genutzte Objektdateien von Bedeutung. Eine Datei-Spezifikation bestimmt seine eigene Programm-Header-Größe mit der $e\_phentsize$ des ELF-Headers und $e\_phnum$-Mitglieder. Der ELF-Programmheader wird durch den Typ $Elf32\_Phdr$ oder $Elf64\_Phdr$ je nach Architektur gegeben.
+        \item \textbf{Welche Bedeutung hat eine Symboltabelle als Teil einer in ELF dargestellten Datei?} Die Symboltabelle einer Objektdatei enthält Informationen, die benötigt werden, um die symbolischen Definitionen und Verweise eines Programms zu lokalisieren und zu verschieben. Ein Symboltabellenindex ist ein Subskript in diesem Array. Index 0 bezeichnet sowohl den ersten Eintrag in der Tabelle als auch den undefinierten Symbolindex.
     \end{itemize}}
 \vspace{10mm}
 
-
-\textit{b) Untersuchen Sie experimentell Binärdateien hinsichtlich ihrer ELF-Metainformationen. Hierzu können Sie die Werkzeuge readelf 9 und objdump 10 verwenden, um zu ermitteln, welche konkreten Informationen eine Datei im ELF-Format enthalten kann. Als Beispiele sollen mindestens die folgenden ELF-Binärdateien dienen:
+\textit{b) Untersuchen Sie experimentell Binärdateien hinsichtlich ihrer ELF-Metainformationen. Hierzu können Sie die Werkzeuge readelf und objdump verwenden, um zu ermitteln, welche konkreten Informationen eine Datei im ELF-Format enthalten kann. Als Beispiele sollen mindestens die folgenden ELF-Binärdateien dienen:
     \begin{itemize}
         \item das ls-Utility, zu finden im Verzeichnis /bin,
         \item die Executable zum Programm p1.c (siehe Anlage zu Aufgabe 1),
         \item eine dynamisch ladbare Bibliothek aus dem Verzeichnis /lib oder /usr/lib.
     \end{itemize}}
 \vspace{10mm}
+\begin{lstlisting}
+    readelf -a p1
+\end{lstlisting}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -350,7 +433,7 @@ Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
 \subsection{Aufgabe 3: Der Kaffeeautomat}
 \textit{Ein Kaffeeautomat, seine Kunden und ein Lieferant, der den Automaten regelmäßig mit Kaffee und Kaffeebechern auffüllt, sollen sich mittels Semaphoren synchronisieren. Synchronisieren Sie das Verhalten dieser Aktivitäten so, dass folgendes Verhalten realisiert wird.
     \begin{itemize*}
-        \item Der Automat kann entweder einen Kunden bedienen oder durch den Lieferanten nachgefüllt     werden. Beide Vorgänge sind nicht gleichzeitig möglich!
+        \item Der Automat kann entweder einen Kunden bedienen oder durch den Lieferanten nachgefüllt   werden. Beide Vorgänge sind nicht gleichzeitig möglich!
         \item Ein Kunde muss nach Aufforderung durch den Automaten eine 1-Euro-Münze als Bezahlung einwerfen, erst danach bekommt er seinen Kaffee. (Um eine ungeeignete Betriebsweise auszuschließen, soll angenommen werden, dass sich nur Kunden anmelden, die eine 1-Euro-Münze parat haben – und nach Aufforderung natürlich auch einwerfen!)
         \item Der Lieferant bekommt durch den Automaten mitgeteilt, dass dieser für den Auffüllvorgang bereit ist.
         \item Ein einmal gestarteter Vorgang (Bedienen bzw. Auffüllen) kann nicht mehr unterbrochen werden. Eine neue Anmeldung (durch den nächsten Kunden oder den Lieferanten) wird erst nach Abschluss dieses Vorgangs akzeptiert.

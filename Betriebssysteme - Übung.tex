@@ -552,9 +552,9 @@ Zwei Prozesse definieren (0,4,4,10) und (2,5,5,8) (Arrival,Burst,Priority,Deadli
 \vspace{10mm}
 
 \begin{itemize}
-	\item Verwendete taskset 0x1 ./simpleproc um die selben Prozessorcores zu verwenden
-	\item über top fand ich die Prozessorauslastung in Prozent heraus
-	\item Darüber hinaus zeigte sich bei meinen Programmen mit verschiedenen Prioritäten allerdiungs nicht wirklich ein Unterschied. Einzig für Prozess wie den NTP Deamon oder ASLA/Pulseaudio würde es Sinn machen, denn wenn man beispielsweise der musikausgebenden Anwendung sehr viel Priorität wegnimmt und beispielsweise einem unbedeutenden Programm hinzufügen würde, so würde man hören, dass die Musik lückenhaft wird, bzw. das Programm unresponsiv wird. 
+    \item Verwendete taskset 0x1 ./simpleproc um die selben Prozessorcores zu verwenden
+    \item über top fand ich die Prozessorauslastung in Prozent heraus
+    \item Darüber hinaus zeigte sich bei meinen Programmen mit verschiedenen Prioritäten allerdiungs nicht wirklich ein Unterschied. Einzig für Prozess wie den NTP Deamon oder ASLA/Pulseaudio würde es Sinn machen, denn wenn man beispielsweise der musikausgebenden Anwendung sehr viel Priorität wegnimmt und beispielsweise einem unbedeutenden Programm hinzufügen würde, so würde man hören, dass die Musik lückenhaft wird, bzw. das Programm unresponsiv wird.
 \end{itemize}
 Siehe auch Linux Manpages
 
@@ -572,11 +572,42 @@ Siehe auch Linux Manpages
 %##########################################
 \subsection{Repetitorium}
 \begin{description*}
-    \item[Welche prinzipiellen Probleme entstehen, wenn parallel ablaufende Threads auf einen gemeinsamen Speicherbereich zugreifen? Welche beiden konkreten Synchronisationsprobleme bestehen beim Erzeuger/Verbraucher-Problem?]
-    \item[In der Vorlesung haben wir binäre Semaphore kennen gelernt, die innerhalb eines kritischen Abschnitts strengen wechselseitigen Ausschluss garantieren. Eine allgemeinere Form der Semaphore lässt eine gewisse feste Anzahl von Aktivitäten in einen kritischen Abschnitt hinein, bevor die Sperrwirkung eintritt. Wie können derartige Semaphore implementiert werden?]
-    \item[Wie viele Semaphore braucht man mindestens zur Lösung des allgemeinen Erzeuger/Verbraucher-Problems?]
-    \item[Wir haben Bedingungsvariable im Kontext Hoare’scher Monitore kennen gelernt. Ist ein derartiges Synchronisationsmodell (Warten auf Erfüllung einer Bedingung) nicht auch außerhalb und losgelöst vom Monitormodell nützlich? Falls ja, worauf müsste man in einem solchen Fall achten?]
+    \item \textbf{Welche prinzipiellen Probleme entstehen, wenn parallel ablaufende Threads auf einen gemeinsamen Speicherbereich zugreifen? Welche beiden konkreten Synchronisationsprobleme bestehen beim Erzeuger/Verbraucher-Problem?}
+    \begin{itemize}
+        \item Es entstehen verschiedene Probleme bei Verwendung eines gemeinsamen Speicherbereichs durch verschiedene Threads, hierzu zählen:
+              \begin{itemize}
+                  \item Zugriff auf Arbeitsspeicher ist bestenfalls wortweise atomar (4/8 Byte). Garantiet beim parallelen Lesen und Schreiben kein Ergebnis.
+                  \item Das Grundproblem ist, dass zwei Threads gleichzeitig versuchen können Operationen auf dem Speicher auszuführen, wenn jetzt beide versuchen etwas zu speichern und zeitgleich ihre Daten schicken, ohne vorher in ausreichendem Maße zu prüfen, ob es zu diesem Zeitpunkt möglich ist, laufen sie in Gefahr entweder zeitglich zu schreiben (produziert Müll). Weiterhin können sie, falls der gemeinsame Speicher zur Synchronisation eingesetzt wird, durch Schedulingalgorithmen so beeinflusst werden, dass vorherige Tests auf Schreiberlaubnis nicht mehr gültig sind, auch hier würde sich ein Problem ergeben. Lösungsansätze müssen den folgenden Regeln genügen:
+                  \item Korrektheit: D.h. im kritischen Lese/Schreib Abschnitt befinden sich zu jedem Zeitpunkt höchstens ein Thread
+                  \item Lebendigkeit: Der Thread soll irgendwann die Möglichkeit haben, zur Ausführung zu kommen.
+                  \item Verhungerungsfreiheit: Es gibt keinen Thread, der für immer vor einem kritischen Abschnitt wartet.
+              \end{itemize}
+        \item Beim Erzeuger-Verbraucher-Problem zeigen sich zwei Synchronisationsprobleme:
+              \begin{enumerate}
+                  \item unterschiedliche Geschwindigkeiten von Erzeuger und Verbraucher führen zu leeren Puffern oder Pufferüberläufen, somit müssen hier die relativen Geschwindigkeiten synchronisiert werden. (Lösung über Zählsemaphoren)
+                  \item gleichzeitiges Lesen und Schreiben auf dem selben Pufferelement führt eventuell zu Inkonsistenzen, somit haben wir hier den Fall eines kritischen Abschnitts und müssen diesen durch Synchronisation, z.b. durch wechselseitigen Ausschluss, schützen.
+              \end{enumerate}
+    \end{itemize}
+    \item \textbf{In der Vorlesung haben wir binäre Semaphore kennen gelernt, die innerhalb eines kritischen Abschnitts strengen wechselseitigen Ausschluss garantieren. Eine allgemeinere Form der Semaphore lässt eine gewisse feste Anzahl von Aktivitäten in einen kritischen Abschnitt hinein, bevor die Sperrwirkung eintritt. Wie können derartige Semaphore implementiert werden?}
+    \begin{itemize}
+        \item Ersetze Zustandsvaribale durch Zähler. (initialisiert mit maximaler Threadanzahl)
+        \item P: Dekrementiert den Zähler, blockiert wenn Zähler = 0;
+        \item V: Inkrementiert den Zähler (setzt wartenden Thread fort)
+        \item Derartige Semaphore können mit mehreren gleichartigen Pufferelementen realisiert werden. Weiterhin könnte man eine Warteschlange verwenden um die wartenden Prozesse zu verwalten. Bei Eintritt eines Prozess in den kritischen Abschnitt würde eine Zählvariable hochgezählt, welche bei Verlassen des kritischen Abschnitts wieder dekrementiert würde. Ist der Wert der Zählvariable gleich der maximal erlaubten Anzahl an laufenden Prozessen im kritischen Abschnitt, so werden neu anfragende Prozesse vorerst in die Warteschlange geschickt.
+    \end{itemize}
+    \item \textbf{Wie viele Semaphore braucht man mindestens zur Lösung des allgemeinen Erzeuger/Verbraucher-Problems?}
+    \begin{itemize}
+        \item Einen binären Semaphor für den wechselseitigen Ausschluss. Zwei Zählsemaphore (je für Anzahl leerer Pufferelemente und belegter Pufferelemente)
+        \item Man benötigt mindestens 3 Semaphore um das Problem ausreichend gut lösen zu können. Hierzu zählen ein Semaphor A, welcher vor modifizierenden Zugriffen auf die Datenstruktur schützen soll. Wenn ein Prozess P1 gerade die Datenstruktur verändert, so zeigt er dies durch die P-Operation an. Wenn nun allerdings ein anderer Prozess P2 die Datenstrukur modifizieren, so wird dieser P2 solange blokiert, bis P1 die V-Operation aufruft. Semaphor B stellt sicher, dass Elemente zum Lesen verfügbar sind, wenn ein Verbraucher die Leseoperation ausfühhren möchte. Falls der Puffer leer ist, wird die P-Operation den aufrufenden Prozess blockieren, und ihn erst dann freigeben, wenn ein Erzeuger die V-Operation aufruft. Ist die Warteschlange gefüllt, so darf bei P-Operation eingetreten werden. Ein dritter Semaphor C, überwacht den Schreibezustand und blockiert Erzeuger, welche die P-OP aufrufen, wenn die Schlange schon voll ist. Ist sie nicht voll darf der Erzeuger weiter produzieren. Ein blockierter Prozess wird durch V-OP von einem Verbraucher wieder aufgeweckt.
+    \end{itemize}
+    \item \textbf{Wir haben Bedingungsvariable im Kontext Hoare’scher Monitore kennen gelernt. Ist ein derartiges Synchronisationsmodell (Warten auf Erfüllung einer Bedingung) nicht auch außerhalb und losgelöst vom Monitormodell nützlich? Falls ja, worauf müsste man in einem solchen Fall achten?}
+    \begin{itemize}
+        \item Klar, immer dann, wenn zustandslos ausreicht. Monitore garantieren wechselseitigen Ausschluss, losgelößt müssen wir das auch noch berücksichtigen. Somit: Bedingungsvariablen meist zusammen mit Locks/Mutex benutzt.
+    \end{itemize}
 \end{description*}
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssystem_uebung/u4_a1.png}
+\end{center}
 %##########################################
 \subsection{Aufgabe 1: Das Problem des schlafenden Barbiers}
 \textit{In einem Friseurladen gibt es einen Friseur, einen Frisierstuhl (an dem der Friseur arbeitet) und n Stühle für wartende Kunden. Entwickeln Sie einen Algorithmus, der unter den nachfolgenden Annahmen Friseur und Kunden so synchronisiert, dass jeder wartende Kunde (irgendwann) bedient wird.}
@@ -589,7 +620,49 @@ Siehe auch Linux Manpages
     \item Wenn der Friseur mit dem Bedienen eines Kunden fertig ist, verlässt dieser Kunde den Friseurladen und einer der wartenden Kunden (falls vorhanden) belegt den Frisierstuhl und wird bedient (sonst gilt Bedingung 2).
 \end{itemize*}
 \vspace{10mm}
+Idee: Es gibt vier Ressourcen um die sich die Kunden und der Barbier streiten. Dazu zählen: Der Friseurstuhl, der Barbier selbst, die Kunden selbst und das Wartezimmer. Es werden daher vier Semaphore verwendet. Der Warteraum sollte auf einen mehrwertigen Semaphoren gesetzt werden, ebenso wie der Barbier und die Kunden. Für Rasur-fertig reicht eine Einwertige.
 
+\begin{lstlisting}
+    Semaphor Barbier = 0
+    Semaphor Haarschnitt = 0 // benötigt man nicht zwingend
+    CountSemaphor Kunden = 0
+    Semaphor SitzZugriff = frei
+    int Sitze = N //Wartezimmer
+    
+    Barbier()
+    {
+        while(true)
+        {
+            DOWN(Kunden);
+            P(SitzZugriff);
+            freieSitze++; 
+            V(Barbier);
+            V(SitzZugriff);
+            Haarschnitt();
+            V(Haarschnitt);
+        }
+    }
+    
+    Kunde()
+    {
+        P(Sitzzugriff) // bei if-clause muss in allen Zweigen wieder freigegeben werden
+        if(freieSitze > 0)
+        {
+            freieSitze--;
+            UP(Kunden);
+            V(SitzZugriff)
+            P(Barbier);
+            SchneideHaare(); 
+            P(Haarschnitt);	
+        }
+        else 
+        {
+            gehe(); 
+            V(SitzZugriff);
+        }
+    }
+    \end{lstlisting}
+    
 
 %##########################################
 \subsection{Aufgabe 2: Das Achterbahnproblem}
@@ -603,6 +676,100 @@ Siehe auch Linux Manpages
     Passagiere und Wagen sollen durch Aktivitäten simuliert werden, die synchronisiert werden müssen. Für eine der möglichen Lösungen könnten die folgenden Hinweise hilfreich sein: Bei der Ankunft eines Wagens sollte dieser eine Prozedur $Einsteigen()$ aufrufen, danach sollten $c$ Passagiere ihrerseits eine Prozedur $In_Wagen_Einsteigen()$ aufrufen. Nach beendeter Fahrt sollte ein anhaltender Wagen eine Prozedur $Aussteigen()$ aufrufen, und die sich im Wagen befindenden $c$ Passagiere sollten daraufhin eine Prozedur $Wagen_Verlassen()$ aufrufen.
 }
 \vspace{10mm}
+
+\begin{itemize}
+	\item Autos: warten auf Passagiere (bis voll)
+	\item Passagiere: warten auf Start/Ende
+\end{itemize}
+
+\begin{lstlisting}
+CountSem belegt = 0; 
+CountSem frei = 0; 
+Sem Start = 0; 
+Sem Ende = 0; 
+
+Auto()
+{
+	while(true)
+	{
+		for(j in 1...m)
+		{
+			for(i in 1...c)
+			{
+				DOWN(belegt)
+			}
+			for(i in 1...c)
+			{
+				UP(start)
+			}
+			Fahre()
+			for(i in 1...c)
+			{
+				UP(Ende)
+			}
+			for(i in 1...c)
+			{
+				UP(frei)
+			}
+		}
+	}
+}
+
+
+Passagier()
+{
+	while(true)
+	{
+		UP(belegt)
+		DOWN(Start)
+		DOWN(ENDE)
+		DOWN(frei)
+	}
+}
+ 
+\end{lstlisting}
+\begin{lstlisting}
+
+int count = 0; 
+semaphore queue = c; 
+semaphore boarding = 0; 
+semaphore riding = 0; 
+semaphore unloading = 0; 
+semaphore check-in = 1; 
+
+Prozess Take-Ride()
+{
+	down(Queue);
+	down(Check-In);
+	if(++count == Maximum)
+	{
+		up(Boarding);
+	}
+	up(Check-In);
+	down(Riding);
+	up(Unloading);	
+}
+
+Prozess Car()
+{
+	int i,j; 
+	for(i = 0; i < NumberOfRides;i++)
+	{
+		for(j = 1; j <= Maximum; j++)
+		{
+			up(Queue);
+		}
+	down(Boarding); // Jetzt sind alle Passagiere in einem Wagen.
+	count = 0; //Passagiere sind in einem Auto
+	for(j = 1; j <= Maximum, j++)	// ab hier ausladen
+	{
+		up(Riding);
+		down(Unloading);
+	}
+	}
+}
+\end{lstlisting}
+
 
 %##########################################
 \subsection{Aufgabe 3: Der Kaffeeautomat}
@@ -619,6 +786,120 @@ Siehe auch Linux Manpages
 }
 \vspace{10mm}
 
+\begin{itemize}
+	\item Lieferant: wartet auf Wartungsauftrag
+	\item Kunden: wartet auf Kaffee
+	\item Maschine: Portionen = 0? Wartet auf Wartung : warten auf Bestellung \& Bezahlung
+\end{itemize}
+
+\begin{lstlisting}
+Semaphor Wartungsauftrag = 0
+int Portionen = N 
+Semaphor PortionenZugriff  = 0
+Semaphor Kaffee = 0
+Semaphor Wartung = 0 
+Semaphor Bestellung = 0
+Semaphor Bezahlung = 0
+
+Lieferant()
+{
+	while(true)
+	{
+		P(Wartungsaufwand)
+		P(PortionenZugriff)
+		Portionen = N; 
+		V(Portionenzugriff)
+		V(Wartung)
+	}
+}
+
+Kunde()
+{
+	P(PortionenZugriff)
+	if(Portionen > 0)
+	{
+		V(Bestellung)
+		V(PortionenZugriff)
+		V(Bezahlung)
+		P(Kaffee)
+	}
+	else 
+	{
+		gehe()
+		V(PortionenZugriff)
+		
+	}
+}
+
+Kaffeemaschine()
+{
+	while(true)
+	{
+		P(Portionenzugriff)
+		if(Portionen > 0)
+		{
+			V(Portionenzugriff)
+			P(Bestellung)
+			P(Bezahlung)
+			MacheKaffee()
+			V(Kaffee)
+		}	
+		else 
+		{
+			V(PortionenZUgriff)
+			V(Wartungsauftrag)
+			P(Wartung)	
+		}	
+	}
+
+}
+
+\end{lstlisting}
+\begin{lstlisting}
+int Portions = n // Anzahl verfuegbarer Portionen
+semaphore maintenanceDone = 0; 
+semaphore doMaintenance = 0; 
+semaphore request = 0; 
+semaphore pay = 0; 
+semaphore coffee = 0; 
+
+Machine {
+	while(true)
+	{
+	if(Portions > 0)
+		up(request);
+		down(pay);
+		makeCoffee(); 
+		Portions = Portions -1; 
+		up(coffee);
+	}
+	else // Der Automat benoetigt einen Service
+	{
+		up(doMaintenance);
+		down(MaintenanceDone);	
+	}
+	}
+
+}
+
+Customer{
+	while(true)
+	{
+		down(request);
+		up(pay);
+		down(coffee);
+	}
+}
+
+ServiceMan{
+	while(true)
+	{
+		down(doMaintenance)
+		Portions = N; //nachfuellen
+		up(maintenanceDone)
+	}
+}
+\end{lstlisting}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -941,8 +941,8 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 \paragraph{Frage 3: Synchronisationsvarianten bei nachrichtenbasierter Kommunikation}
 \textit{Welche Nachteile asynchroner Kommunikation treten beim Einsatz synchroner Varianten der Sende- und Empfangsoperationen nicht auf? Warum ist es trotzdem manchmal sinnvoll oder unumgänglich, die asynchronen Varianten einzusetzen? Nennen Sie mindestens drei Beispiele realer Applikationen, in denen asynchron kommuniziert wird.}
 \begin{itemize}
-        \item Pufferspeicher: Größe?
-        \item eventuell Synchronisation notwendig. (z.B. für Datenströme), eventuell extra Techniken zur Benachrichtigung oder Synchronisation
+    \item Pufferspeicher: Größe?
+    \item eventuell Synchronisation notwendig. (z.B. für Datenströme), eventuell extra Techniken zur Benachrichtigung oder Synchronisation
     \item Trotzdem notwenig wenn:
           \begin{itemize}
               \item Hoher Grad an Parallelität notwendig
@@ -955,28 +955,28 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 \vspace{10mm}
 \paragraph{Frage 4: Management asynchroner Ereignisse}
 \textit{Welche Alternativen haben die Entwickler von Betriebssystemen, um mit asynchron auftretenden Ereignissen (Mausbewegungen, Einstecken von USB-Geräten etc.) umzugehen? Welche Technik erlaubt es auch einem Benutzerprozess, auf asynchrone Ereignisse zu reagieren, ohne direkten Hardwarezugriff zu haben?}
-	\begin{itemize}
-		\item Busy Waiting (Warte in Endlosschleife / sehr ineffizient)
-		\item Polling (Wahl der Zykluszeit)
-		\item Interrupts (HW-Signal, Behandlung über Routine aus IVT)
-		\begin{itemize}
-			\item inline-Prozeduraufruf
-			\item IPC über Botschaften
-			\item pop-up threads
-		\end{itemize}
-		\item Hierzu gibt es die Möglichkeit, dass der Prozessor alle Eingabe-Geräte zyklisch abfragt (Polling). Was bei der Vielzahl an Komponenten in einem Computer bedeuten würde, dass der Prozessor mit nichts anderem mehr beschäftigt wäre.
-		\item Eine Alternative ist die sogenannten Unterbrechungsanforderung (to interrupt, unterbrechen), die dann eintritt, wenn Daten von außen anstehen. Dazu wurde die Möglichkeit geschaffen den Hauptprozessor auf definierte Weise bei der laufenden Arbeit zu unterbrechen.
-		\item Auf Anwendungsebene: Registrieren von eigenen Signalhandlern
-	\end{itemize}
+\begin{itemize}
+    \item Busy Waiting (Warte in Endlosschleife / sehr ineffizient)
+    \item Polling (Wahl der Zykluszeit)
+    \item Interrupts (HW-Signal, Behandlung über Routine aus IVT)
+          \begin{itemize}
+              \item inline-Prozeduraufruf
+              \item IPC über Botschaften
+              \item pop-up threads
+          \end{itemize}
+    \item Hierzu gibt es die Möglichkeit, dass der Prozessor alle Eingabe-Geräte zyklisch abfragt (Polling). Was bei der Vielzahl an Komponenten in einem Computer bedeuten würde, dass der Prozessor mit nichts anderem mehr beschäftigt wäre.
+    \item Eine Alternative ist die sogenannten Unterbrechungsanforderung (to interrupt, unterbrechen), die dann eintritt, wenn Daten von außen anstehen. Dazu wurde die Möglichkeit geschaffen den Hauptprozessor auf definierte Weise bei der laufenden Arbeit zu unterbrechen.
+    \item Auf Anwendungsebene: Registrieren von eigenen Signalhandlern
+\end{itemize}
 
 %##########################################
 \subsection{Aufgabe 1: Nachrichtenwarteschlangen (Message Queues)}
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Message Queues. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert (z. B. Synchronisation durch Blockierungen, durch die Ankunft von Daten usw.)?}
 \vspace{10mm}
 \begin{itemize}
-    \item Hier werden Nachrichten von einem Prozess in eine Nachrichtenschlange (Message Queue) geschickt, welche typischerweise nach dem FIFO Prinzip arbeitet. Jede Messagequeue ist durch einen eindeutigen Bezeichner gekennzeichnet, unidirektional und mit festgelegtem Format. 
-    \item MessageType: Unterscheidung innerhalb der Warteschlange möglich. 
-    \item send blockiert, wenn die Queue voll ist. 
+    \item Hier werden Nachrichten von einem Prozess in eine Nachrichtenschlange (Message Queue) geschickt, welche typischerweise nach dem FIFO Prinzip arbeitet. Jede Messagequeue ist durch einen eindeutigen Bezeichner gekennzeichnet, unidirektional und mit festgelegtem Format.
+    \item MessageType: Unterscheidung innerhalb der Warteschlange möglich.
+    \item send blockiert, wenn die Queue voll ist.
     \item receive blockiert, wenn keine Nachricht mit dem spezifizierten Type in der Queue ist.
     \item Es gibt auch eine nichtblockierende Variante. (IPC-NOWAIT)
     \item Das Einsatzgebiet der Warteschlangen ist typischerweise die Datenübergabe zwischen asynchronen Prozessen in verteilten Systemen.
@@ -990,17 +990,17 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Shared Memory. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
 \vspace{10mm}
 \begin{itemize}
-    \item Shared Memory ist eine durch das Betriebssystem bereitgestellte Möglichkeit, bei welcher mehrere Prozesse gemeinsam auf einen gemeinsamen Speicher zugreifen können. Um dies zu erreichen muss zuerst ein gemeinsamer Datenspeicher angelegt werden. Nachdem dies geschehen ist, muss der Datenspeicher den Prozessen bekanntgemacht werden (einfügen in deren Adressraum), welche darauf zugreifen sollen dürfen. 
-    \item Wichtig hierbei: Shared Memory ist eine der schnellsten, wenn nicht die schnellste Art der Interprozesskommunikation, da das Kopieren/Versenden zwischen Clients/Server, bzw. verschiedenen Prozessen entfällt. 
-    \item Da man allerdings gemeinsam auf Speicher zugreift, ist eine Synchronisation, meist durch Semaphore oder Monitore unumgänglich. 
-    \item shmat() fügt das durch shmid identifizierte Speichersegment an den Adressraum des aufrufenden Prozesses an. Die Anfügeadresse wird durch shmaddr spezifiziert. 
-    \item Weiterhin gibt es Einschränkungen bezüglich der Rechte im shmflg Bitmaskargument: 
-    \begin{itemize}
-        \item $SHM\_EXEC$: erlaubt eine Ausführung der Segmentinhalte
-        \item $SHM\_RDONLY$: Fall gesetzt, so ist das Segment nur für den Lesezugriff angehängt, ist es nicht gesetzt, so ist Lesen und Schreiben erlaubt. 
-        \item $SHM\_REMAP$. Dieses Flag spezifiziert, dass das Mapping des Segments alle bisherigen Mappings im Bereich von shmaddr und den folgenden dateigrößelangen Segment ersetzt. 
-    \end{itemize}
-\item Ist shmat() erfolgreich, so wird $shm\_atime$ auf die jetzige Zeit gesetzt, $shm\_lpid$ auf die ProzessID des aufrufenden Prozess gesetzt und $shm\_nattch$ wird um 1 erhöht.
+    \item Shared Memory ist eine durch das Betriebssystem bereitgestellte Möglichkeit, bei welcher mehrere Prozesse gemeinsam auf einen gemeinsamen Speicher zugreifen können. Um dies zu erreichen muss zuerst ein gemeinsamer Datenspeicher angelegt werden. Nachdem dies geschehen ist, muss der Datenspeicher den Prozessen bekanntgemacht werden (einfügen in deren Adressraum), welche darauf zugreifen sollen dürfen.
+    \item Wichtig hierbei: Shared Memory ist eine der schnellsten, wenn nicht die schnellste Art der Interprozesskommunikation, da das Kopieren/Versenden zwischen Clients/Server, bzw. verschiedenen Prozessen entfällt.
+    \item Da man allerdings gemeinsam auf Speicher zugreift, ist eine Synchronisation, meist durch Semaphore oder Monitore unumgänglich.
+    \item shmat() fügt das durch shmid identifizierte Speichersegment an den Adressraum des aufrufenden Prozesses an. Die Anfügeadresse wird durch shmaddr spezifiziert.
+    \item Weiterhin gibt es Einschränkungen bezüglich der Rechte im shmflg Bitmaskargument:
+          \begin{itemize}
+              \item $SHM\_EXEC$: erlaubt eine Ausführung der Segmentinhalte
+              \item $SHM\_RDONLY$: Fall gesetzt, so ist das Segment nur für den Lesezugriff angehängt, ist es nicht gesetzt, so ist Lesen und Schreiben erlaubt.
+              \item $SHM\_REMAP$. Dieses Flag spezifiziert, dass das Mapping des Segments alle bisherigen Mappings im Bereich von shmaddr und den folgenden dateigrößelangen Segment ersetzt.
+          \end{itemize}
+    \item Ist shmat() erfolgreich, so wird $shm\_atime$ auf die jetzige Zeit gesetzt, $shm\_lpid$ auf die ProzessID des aufrufenden Prozess gesetzt und $shm\_nattch$ wird um 1 erhöht.
 \end{itemize}
 
 \textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a2-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.\\
@@ -1012,14 +1012,14 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 \textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Pipes und Named Pipes. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
 \vspace{10mm}
 \begin{itemize}
-    \item Pipes stellen einen unidirektionalen Kommunikationskanal zwischen zwei Prozessen dar. Ein Pipe hat ein Lese- und ein Schreibende, wobei man am Leseende diejenigen Daten lesen kann, welche zuvor auf das Schreibende geschrieben wurden. 
-    \item Wenn ein Prozess von einer leeren Pipe lesen will, so blockiert read() bis Daten vorhanden sind. Wenn ein Prozess versucht auf eine volle Pipe zu schreiben, dann wird write() solange blockieren, bis wieder genügend Platz auf der Pipe frei ist. 
-    \item Die über Pipes ablaufende Kommunikation ist nachrichtenfrei und bytestromorientiert. 
+    \item Pipes stellen einen unidirektionalen Kommunikationskanal zwischen zwei Prozessen dar. Ein Pipe hat ein Lese- und ein Schreibende, wobei man am Leseende diejenigen Daten lesen kann, welche zuvor auf das Schreibende geschrieben wurden.
+    \item Wenn ein Prozess von einer leeren Pipe lesen will, so blockiert read() bis Daten vorhanden sind. Wenn ein Prozess versucht auf eine volle Pipe zu schreiben, dann wird write() solange blockieren, bis wieder genügend Platz auf der Pipe frei ist.
+    \item Die über Pipes ablaufende Kommunikation ist nachrichtenfrei und bytestromorientiert.
     \item Eine Pipe hat eine begrenzte Kapazität
-    \item POSIX besagt, dass write() von weniger als $PIPE\_BUF$ Bytes atomar sein muss, bei mehr als $Pipe\_BUF$ Bytes kann es auch nichtatomar sein. 
-    \begin{center}
-        \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u5_a5.png}
-    \end{center}
+    \item POSIX besagt, dass write() von weniger als $PIPE\_BUF$ Bytes atomar sein muss, bei mehr als $Pipe\_BUF$ Bytes kann es auch nichtatomar sein.
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u5_a5.png}
+          \end{center}
     \item Named Pipes / FIFO sind einer Pipe sehr ähnlich, mit dem kleinen Unterschied, dass darauf als Teil des Dateisystems zugegriffen wird. Wenn Prozesse jetzt Daten über FIFO austauschen, dann behandelt der Kernel alle Daten intern ohne sie in das Dateisystem zu schreiben. Somit dienen die FIFO Dateien im Filesystem nur als Referenzpunkt und Namen und geben Prozessen Informationen darüber, an welcher Stelle Prozesse auf die Pipe zugreifen können. Dies bedeutet aber auch, dass hier im Gegensatz zu unbenannten Pipes Prozesse miteinander kommunizieren können, die nicht miteinander verwandt sind.
     \item Der Kernel verwaltet genau ein Pipe-Objekt für jede FIFO-Spezialdatei, die von mindestens einem Prozess geöffnet wird.  Das FIFO muss an beiden Enden (lesend und schreibend) geöffnet werden, bevor Daten übergeben werden können.  Normalerweise wird auch das Öffnen der FIFO-Blöcke bis zum anderen Ende geöffnet.
 \end{itemize}
@@ -1034,39 +1034,153 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 %##########################################
 \subsection{Repetitorium}
 \begin{description*}
-    \item[Wodurch sind die Mehrkosten eines Systemaufrufs im Vergleich zu einem regulären Prozeduraufruf bedingt?]
-    \item[Für die Behandlung asynchroner Unterbrechungen (Interrupts) gibt es mehrere Modelle, u.a. auch das Modell des erzwungenen Prozeduraufrufs und das Pop-up-Thread-Modell. Worin bestehen die Unterschiede bei diesen beiden Modellen?]
-    \item[Vor welchem fehlerhaften Verhalten von Anwendungsprozessen schützen private virtuelle Adressräume? Auf welche Weise üben Adressräume ihre Schutzfunktion aus? Aus welchen Gründen kann es sinnvoll sein, zwei oder mehreren Prozessen gleichzeitig Zugriff auf einen gemeinsamen Speicherbereich zu geben?]
-    \item[Warum ist es nur schwer möglich, schon während der Übersetzung eines Programms dafür zu sorgen, dass es bei der Ausführung keine Speicherzugriffssünden begeht?]
-    \item[Warum ist eine optimale Pagingstrategie im Allgemeinen nicht erreichbar? Unter welcher speziellen Voraussetzung geht dies dennoch?]
-    \item[Wie viele Seitentabellen gibt es in einem anlaufenden Betriebssystem mit virtueller Speicherverwaltung? Benötigt ein E/A-Adressraum eine eigene Seitentabelle?]
-    \item[Was ist die Arbeitsmenge (Working Set) eines Prozesses? Wozu dient sie? Zu welchen Zeitpunkten bzw. unter welchen Voraussetzungen stimmt sie mit der Menge der für einen Prozess eingelagerten Seiten (Resident Set) überein?]
-    \item[Welche Aufgaben hat eine MMU? Wozu dient ein TLB (Translation Look-aside Buffer)? Wann wird er von wem wozu benutzt?]
-    \item[Seitentabellen können je nach Adressraumgröße sehr groß werden. Mit diesem Problem gehen mehrstufige Seitentabellen um. Gegeben sei die Aufteilung einer virtuellen 32-Bit-Adresse für ein zweistufiges Abbildungsverfahren (P i als Seitentabellenindex i. Stufe).]
+    \item \textbf{Wodurch sind die Mehrkosten eines Systemaufrufs im Vergleich zu einem regulären Prozeduraufruf bedingt?}
+    \begin{itemize}
+        \item Systemaufruf: Aufruf einer BS-Funktion über eine Schnittstelle z.b. libc
+        \item: Kosten Systemaufruf:
+        \item Die Mehrkosten für einen Systemaufruf gegenüber einem regulären Prozeduraufruf sind bedingt durch:
+              \begin{itemize}
+                  \item Kosten der Standardisierung bei der Parameterübergabe (Datenstruktur auf dem Stack), da separate Adress und Namensräume
+                  \item Isolationskosten und Privilegienwechsel (von User zu Kernel zu User) (leichtgewichtiger als Prozesswechsel, per Softwareinterrupt, z.b. TRAP)
+              \end{itemize}
+        \item Heute liegen die Mehrkosten ungefähr im Bereich von 2.
+        \item Die Kosten für einen Systemaufruf ergeben sich aus Systemaufruf = Prozeduraufruf + (Standardisierungskosten + Isolationskosten)
+    \end{itemize}
+    \item \textbf{Für die Behandlung asynchroner Unterbrechungen (Interrupts) gibt es mehrere Modelle, u.a. auch das Modell des erzwungenen Prozeduraufrufs und das Pop-up-Thread-Modell. Worin bestehen die Unterschiede bei diesen beiden Modellen?}
+    \begin{itemize}
+        \item erzwungener Prozeduraufruf: kein Threadwechsel sondern:
+              \begin{itemize}
+                  \item Unterbrechung des momentan ablaufenden Threads
+                  \item Sicherung des Ablaufkontexts
+                  \item Versetzen des Threads in Ablaufkontext der Unterbrechungsbehandlung
+                  \item Ausführung der Handlerprozedur
+                  \item Restauration des Threads
+              \end{itemize}
+        \item Pop-up-Threadmodell
+              \begin{itemize}
+                  \item 2-stufiges Konzept
+                  \item 1.Stufe
+                        \begin{itemize}
+                            \item Unterbrechung des momentan aktiven Threads
+                            \item Erzeugen des Threads
+                            \item Fortsetzung des unterbrochenen Threads
+                        \end{itemize}
+                  \item Stufe 2:
+                        \begin{itemize}
+                            \item Thread wird irgendwann vom Scheduler aktiviert.
+                        \end{itemize}
+                  \item Dieses Modell eignet sich besonders für Echtzeitsysteme, da es hier eine zeitliche Kalkulierbarkeit und Kürze der primären Interruptbehandlung gibt.
+              \end{itemize}
+    \end{itemize}
+    \item \textbf{Vor welchem fehlerhaften Verhalten von Anwendungsprozessen schützen private virtuelle Adressräume? Auf welche Weise üben Adressräume ihre Schutzfunktion aus? Aus welchen Gründen kann es sinnvoll sein, zwei oder mehreren Prozessen gleichzeitig Zugriff auf einen gemeinsamen Speicherbereich zu geben?}
+    \begin{itemize}
+        \item Idee von privaten virtuellen Adressräumen: Jeder Prozess erhält seinen eigenen isolierten, privaten, sehr großen Arbeitsspeicher. Abbildung der virtuellen Speicheradressen auf physische Speicheradressen. Somit ist kein Zugriff mehr auf den Arbeitspeicher anderer Prozesse mehr möglich. Eine Relokation ist nicht mehr nötig.
+        \item Die privaten virtuellen Adressräume schützen folglich vor:
+              \begin{itemize}
+                  \item Der Störung von Programmen untereinander, da Programme im Fehlerfall nicht mehr auf Speicherbereiche anderer Programme zugreifen können.
+                  \item Der Störung des Betriebssystems durch fehlerhafte Programme.
+              \end{itemize}
+        \item Ein gleichzeitiger Zugriff auf einen Speicherbereich für mehrere Prozesse ist vor allem zur Kommunikation und Synchronisation vorteilhaft. Angenommen wir haben eine sehr große Videodatei, dann wollen wir diese nicht zwischen zwei Prozessen des selben Rechners hin und herschieben (Kopierproblem) sondern eventuell nacheinander oder zeitgleich daran arbeiten ohne sie kopieren zu müssen.
+    \end{itemize}
+    \item \textbf{Warum ist es nur schwer möglich, schon während der Übersetzung eines Programms dafür zu sorgen, dass es bei der Ausführung keine Speicherzugriffssünden begeht?}
+    \begin{itemize}
+        \item Problem: reguläre Programmiersprachen lassen Zugriff auf beliebige Arbeitsspeicheradressen zu(Zeigeroprationen), Adressen sind eventuell zur Compilezeit noch gar nicht bekannt, weil sie erst berechnet werden. Selbst bei stark typisierten Sprachen sind Compliate noch manipulierbar.
+              Abhilfe: Verlässliche Compiler, Laufzeitüberwachung, interpretierte Sprachen.
+    \end{itemize}
+    \item \textbf{Warum ist eine optimale Pagingstrategie im Allgemeinen nicht erreichbar? Unter welcher speziellen Voraussetzung geht dies dennoch?}
+    \begin{itemize}
+        \item Problem virtueller Adressverwaltung: Anzahl virtueller Seiten >> Anzahl physischer Seiten
+        \item Das Paging beschreibt die Unterteilung des virtuellen Adressraums in gleich große Stücke. Wenn nun nicht der ganze virtuelle Adressraum nicht in den Arbeitsspeicher passt, dann werden einzelne Seiten auf den Hauptspeicher ausgelagert (gepaget).
+        \item Die optimale Pagingstrategie wäre die Auslagerung derjenigen Seite, deren:
+              \begin{itemize}
+                  \item nächster Gebrauch am weitesten in der Zukunft liegt
+                  \item deren Auslagerung nichts kostet
+              \end{itemize}
+        \item Eine optimale Pagingstrategie ist unter der Vorraussetzung, dass ... gilt möglich.
+    \end{itemize}
+    \item \textbf{Wie viele Seitentabellen gibt es in einem anlaufenden Betriebssystem mit virtueller Speicherverwaltung? Benötigt ein E/A-Adressraum eine eigene Seitentabelle?}
+    \begin{itemize}
+        \item Seitentabelle: Tabelle mit Eintrag für jede virtuelle Adresse mit evtl. physischen Adresse, weitere Informationen wie used-bit, dirty-bit, …
+        \item Eine Seitentabelle pro virtuellem Adressraum, (= 1 pro Prozess)
+        \item E/A-Adressräume: benötigen keine Seitentabelle, da nicht virtualisiert
+    \end{itemize}
+    \item \textbf{Was ist die Arbeitsmenge (Working Set) eines Prozesses? Wozu dient sie? Zu welchen Zeitpunkten bzw. unter welchen Voraussetzungen stimmt sie mit der Menge der für einen Prozess eingelagerten Seiten (Resident Set) überein?}
+    \begin{itemize}
+        \item Arbeitsmenge der Seiten, die in einem Zeitintervall (t-x,t) referenziert wurden.
+        \item In der Regel ist die Menge der eingelagerten Seite eine Annäherung an der Working set ist, außer wenn ausreichend physischer Speicher vorhanden ist.
+        \item Arbeitsspeicherzugriffsmuster von Prozessen besitzen "hot spots", also Bereiche in denen fast alle Zugriffe stattfinden. Diese bewegen sich nur langsam durch den virtuellen Adressraum
+        \item Die zu den Hotspots eines Prozesses gehörenden Seiten nennt man seine Arbeitsmenge (das Working Set)
+        \item Die Arbeitsmenge eines Prozesses beschreibt diejenigen Seiten, welche als unwahrscheinlichstes ausgelagert werden sollen, da auf diesen Seiten die meiste Zeit verbracht und die Hauptarbeit stattfindet.
+        \item Wann gilt: Resident Set = Working Set?
+              \begin{itemize}
+                  \item Beim Programmstart, bevor Seiten ausgelagert werden können.
+                  \item Dann, wenn viel Arbeitsspeicher vorhanden ist und noch überhaupt nicht ausgelagert werden muss.
+              \end{itemize}
+    \end{itemize}
+    \item \textbf{Welche Aufgaben hat eine MMU? Wozu dient ein TLB (Translation Look-aside Buffer)? Wann wird er von wem wozu benutzt?}
+    \begin{itemize}
+        \item MMU -  Memory management Unit: (Hardware):
+        \item Eine MMU (Memory Management Unit) verwaltet den Zugriff auf den Arbeitsspeichers eines PC. Sie sorgt für die Abbildung der virtuellen Adressen jedes einzelnen Prozesses in physische Adressen des externen Speichers. Dies widerum erlaubt das Auslagern von zur Zeit nicht benötigten Seiten, das Konzept von shared Memory, die Isolation von Prozessen untereinander. Weiterhin regelt die MMU auch Speicherschutzaufgaben in horizontaler und vertikaler Ebene
+        \item Ein TLB (Translation look aside Buffer) ist ein schneller Cache-Speicher für Seitentabelleneinträge welche in der MMU lokalisiert ist. Die Funktionsweise beruht darauf, dass die n zuvor ermittelten physischen Adressmappings im TLB zwischengespeichert werden, sodass erneute Zugriffe auf die selben Bereiche nicht mehr aufwändig neu berechnet werden müssen.
+        \item Genutzt wird dieser dann, wenn ein Programm einen Speicherzugriff vornimmt um zu sehen, ob das Adressmapping dort bereits berechnet ist.
+    \end{itemize}
+    \item \textbf{Seitentabellen können je nach Adressraumgröße sehr groß werden. Mit diesem Problem gehen mehrstufige Seitentabellen um. Gegeben sei die Aufteilung einer virtuellen 32-Bit-Adresse für ein zweistufiges Abbildungsverfahren (P i als Seitentabellenindex i. Stufe).}
     \begin{itemize*}
-        \item Wie groß ist die Seitentabelle? Wie groß ist die Seitenrahmen- bzw. Kachelgröße?
-        \item Um welchen Faktor reduziert sich die Größe der Seitentabelle, die ständig im Hauptspeicher zu halten ist, bei einem zweistufigen Seitentabellenverfahren gegenüber einer einstufigen Seitentabelle?
-        \item Welche Größe haben die Seitentabellen bei einstufigen bzw. zweistufigen Verfahren bei einer Eintragsbreite von jeweils 4 Byte?
+        \item \textbf{Wie groß ist die Seitentabelle? Wie groß ist die Seitenrahmen- bzw. Kachelgröße?} Seitengröße $2^{12}$ = 4KiB, Seitentabelle: maximal $2^{10}$ Einträge in erster Stufe und $2^{10}$ Einträge in der zweiten Stufe. 2. Stufe kann vollkommen unbesetzt sein.
+        \item \textbf{Um welchen Faktor reduziert sich die Größe der Seitentabelle, die ständig im Hauptspeicher zu halten ist, bei einem zweistufigen Seitentabellenverfahren gegenüber einer einstufigen Seitentabelle?} Sie verkleinert sich um Faktor $2^{10}$ (Nur erste Stufe wird im Speicher gehalten)
+        \item \textbf{Welche Größe haben die Seitentabellen bei einstufigen bzw. zweistufigen Verfahren bei einer Eintragsbreite von jeweils 4 Byte?} $2^{20} * 4 Byte = 4 MiB$ bei Einstufig
     \end{itemize*}
-    \item[Bei einer Seitengröße von 8 KiByte und einem virtuellen Adressraum der Größe $2^{64}$: Wie groß wäre eine einstufige, nicht invertierte Seitentabelle eines Prozesses, wenn jeder Seiteneintrag in der Tabelle 32 Bit (= $2^2$ Byte) groß ist?]
+    \item \textbf{Bei einer Seitengröße von 8 KiByte und einem virtuellen Adressraum der Größe $2^{64}$: Wie groß wäre eine einstufige, nicht invertierte Seitentabelle eines Prozesses, wenn jeder Seiteneintrag in der Tabelle 32 Bit (= $2^2$ Byte) groß ist?}
+    \begin{itemize}
+        \item Seitengröße = 8 Kbyte = $2^{13}$ Byte
+        \item virtueller Adressraum = $2^{64}$
+        \item Jeder Seiteneintrag = 32 Bit = $2^2$ Byte
+        \item Ein virtueller Adressraum hat 64-13 = 51 Seiten
+        \item Somit haben wir insgesamt $2^{51} * 2^2$ Byte = $2^53$ Byte = 8 Pebibyte als Größe der Seitentabelle eines Prozesses
+    \end{itemize}
 \end{description*}
+
 %##########################################
 \subsection{Aufgabe 1: Systemaufrufe}
 \textit{Dienstleistungen des Betriebssystems (z. B. Erzeugen von Prozessen, Threads oder Dateien) werden unter Zwischenschaltung von Stellvertreterprozeduren aufgerufen (z. B. für Programme in der Sprache C finden diese sich bei Linux-Systemen meist in der C-Standardbibliothek libc), die dann über einen aufwändigeren als den Prozedurmechanismus den tatsächlichen Sprung ins Betriebssystem implementieren.}
 \vspace{10mm}
 \textit{a) Warum kann man aus einem Anwendungsprogramm nicht direkt eine im Betriebssystem implementierte Prozedur aufrufen? Erläutern Sie die gängige alternative Verfahrensweise. Welche prinzipiellen Bestandteile enthalten die genannten Stellvertreterprozeduren?}
 \vspace{10mm}
-
+\begin{itemize}
+    \item Unterschiedliche Namensräume (d.h. Syscall im Anwendungsprozess nicht bekannt)
+    \item Gängige Alternative: libc Funktion push festgelegte Parameter auf den Stack + Identifier für den Syscall, Interrupt auslösen, Interruptbehandlung ruft richtige Methode auf (switch auf Identifier) und parameter übergeben.
+    \item Eine Stellvertreterprozedur (Stub) ist ein Anknüpfungspunkt um Softwarekomponenten einfach anzusprechen, welche sonst nur über komplexe Protokolle ansprechbar wären.
+\end{itemize}
 
 \textit{b) In der Anlage zur Aufgabe finden Sie das Programm $syscall.c;$ dort ist beispielhaft ein Systemaufruf manuell implementiert. Warum enthält das Unterprogramm Assemblerbefehle? Erweitern Sie nach obigem Muster Ihren "eigenen" $exit()$-Systemaufruf $my\_exit()$, indem Sie das begonnene Fragment ergänzen. Demonstrieren Sie dessen korrekte Funktionsweise.\\
     Hinweis: Mit dem Systemaufruf $wait()$ kann man den Terminierungsstatus von Kindprozessen überprüfen. Um das Programm zu kompilieren, auszuführen und seinen Rückgabewert anzuzeigen, können Sie alternativ das beigefügte Shell-Skript $run.sh$ benutzen.
 }
 \vspace{10mm}
+\begin{itemize}
+    \item Systemaufrufe sind im Grunde ein User-Space-Programm, das bestimmte Unterprogramme im Kernel aufruft, wobei ein in den Prozessor eingebauter und vom Kernel eingerichteter Mechanismus verwendet wird, der es dem aufgerufenen Unterprogramm erlaubt, eine höhere Privilegstufe als der reguläre User-Space-Programmcode zu haben.
+          \begin{itemize*}
+              \item Assembler-Anweisungen sind im Grunde eine menschenfreundliche Darstellung von tatsächlichen Bytes des Maschinencodes. Und der Maschinencode wird weder interpretiert noch kompiliert, sondern im Prozessor implementiert, entweder mit dem Mikrocode des Prozessors oder direkt auf der Hardware-Ebene, unter Verwendung großer Gruppen von Logikgattern.
+              \item Ein einzelner Systemaufruf in Assemblersprache besteht normalerweise aus mehreren Zeilen Code. Zuerst werden die Parameter für den Systemaufruf in entsprechende Prozessorregister und/oder auf den Stack geladen, und dann wird eine spezielle Anweisung wie int 0x80 oder syscall verwendet, um den Systemaufruf tatsächlich durchzuführen.
+              \item In der 32-Bit-x86-Architektur wird der int 0x80 als Systemaufruf-Befehl verwendet. Der Kernel hat eine Tabelle mit Software-Interrupt-Handler-Routinen für den Prozessor vorbereitet. Diese Tabelle ist für normalen User-Space-Code nicht direkt zugänglich, aber mit dem int-Befehl kann der User-Space-Code eine der Routinen auslösen, auf die in der Tabelle verwiesen wird. int 0x80 weist den Prozessor einfach an, in den Kernel-Modus zu wechseln und in die Routine zu springen, deren Adresse in Slot Nr.128 dieser Tabelle steht. Diese Routine ist die Systemaufrufschnittstelle von Linux für die 32-Bit-x86-Architektur: Sie prüft die angegebenen Parameter, identifiziert, welcher Prozess den Aufruf getätigt hat, und springt dann zu der entsprechenden Unterroutine.
+              \item In der 64-Bit-Version der x86-Architektur gibt es eine dedizierte syscall-Anweisung für den gleichen Zweck. Eigentlich hat die 32-Bit-x86-Architektur diese auch, aber entweder gab es sie noch nicht, als die 32-Bit-Linux-Systemaufrufkonvention von Linus Torvalds entworfen wurde, oder die Anweisung hatte in einigen Prozessormodellen einen Hardwarefehler, so dass sie nicht verwendet wurde. Da aber alle 64-Bit-x86-Prozessoren die syscall-Anweisung haben und sie definitiv funktioniert, wird sie verwendet.
+          \end{itemize*}
+\end{itemize}
+\begin{lstlisting}
+exitnum = __NR_exit;
+asm("mov $60, %rax"); // verwende den exitnum / 60 Syscall
+asm("mov my_exit_status, %rdi"); //status = myexitstatus oder 0 
+asm("syscall");
+\end{lstlisting}
 
 \textit{c) Vor der Einführung des Maschinenbefehls $syscall$ in modernen 64-Bit-Architekturen musste zum Auslösen eines Systemaufrufs durch ein Anwendungsprogramm ein spezieller Interrupt (trap) ausgelöst werden. Recherchieren Sie, welche Vorteile die Verwendung von $syscall$ gegenüber dieser konventionellen Verfahrensweise hat. Auch heute noch wird aus Gründen der Abwärtskompatibilität und zur Unterstützung spezieller Prozessorarchitekturen der $trap$-Mechanismus durch den Linux-Kernel unterstützt. Schaffen Sie es, Ihre $my\_exit()$-Implementierung mittels Ersetzen der $syscall$ Instruktion durch einen Trap-Interrupt ($int \$ 0x80$) entsprechend zu portieren?\\
     Beachten Sie, dass dabei Systemaufruf-Nummern für 32-Bit-Hardwarearchitekturen und andere Register zu verwenden sind.
 }
 \vspace{10mm}
+Unterscheidung zwischen Traps und Systemcalls
+\begin{itemize}
+    \item Ein Trap ist eine Exception welches durch das Aufrufen einer Kernelsubroutine in den Kernelmode wechselt. Es stellt also einen Kontrolltransfer an das BS da.
+    \item Ein SYSCALL ist synchron und geplant.
+\end{itemize}
 
 
 \textit{Tipp zur gesamten Aufgabenstellung: Unter Linux können Sie mit $strace <Programm>$ u.a. die Systemaufrufe eines Programms verfolgen.}
@@ -1086,12 +1200,51 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 \textit{a) Recherchieren Sie, welche Signale der für Unix-Systeme etablierte POSIX-Standard vorsieht und wie diese einem Prozess zugestellt werden. Demonstrieren Sie in der Übung, wie man auf der Kommandozeile einem beliebigen Prozess ein Signal (z. B. SIGHUP oder SIGKILL) senden kann.
     Informationen hierzu finden Sie wie immer in den Linux-Manpages oder im Handbuch zur C-Standardbibliothek libc.}
 \vspace{10mm}
+\begin{itemize}
+    \item Jedes Signal hat eine Signaldisposition welche besagt, wie sich der Prozess bei Zustellen des Signals verhält:
+          \begin{itemize}
+              \item Term = Terminierung
+              \item IGN = Ignorieren des Signals
+              \item CORE = Terminieren und dumpen des Kerns
+              \item STOP = Stoppen des Prozess
+              \item CONT = Fortsetzen des Prozess, wenn dieser gerade eben pausiert ist
+          \end{itemize}
+    \item Ein Prozess kann die Disposition eines Signals mit sigaction(2) oder signal(2) ändern.  (Letzteres ist weniger portabel, wenn ein Signal-Handler eingerichtet wird; siehe signal(2) für Details). Mit Hilfe dieser Systemaufrufe kann ein Prozess eines der folgenden Verhaltensweisen bei der Übergabe des Signals wählen: die Standardaktion ausführen, das Signal ignorieren oder das Signal mit einem Signalhandler abfangen, einer vom Programmierer definierten Funktion, die automatisch aufgerufen wird, wenn das Signal geliefert wird.
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u6_a2.png}
+          \end{center}
+    \item Folgende Systemaufrufe erlauben es dem Aufrufer Signale zu senden:
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u6_a21.png}
+          \end{center}
+          Die  folgenden  Systemaufrufe setzen die Ausführung des aufrufenden Prozesses oder Threads aus, bis ein Signal abgefangen wird  (oder  ein  nicht  abgefangenes  Signal  den  Prozess
+          beendet):
+    \item pause(2) setzt die Ausführung aus, bis irgendein Signal abgefangen wird.
+    \item sigsuspend(2)   ändert  zeitweise  die  Signalmaske (siehe unten) und setzt die Ausführung aus, bis eines der nicht maskierten Signale abgefangen wird. Synchrone Signalannahme
+    \item Anstatt ein Signal asynchron mit einem Signal-Handler abzufangen,  kann  ein  Signal  auch synchron  akzeptiert  werden.  Das  heißt,  die  Ausführung wird blockiert, bis das Signal gesendet wird. Dann liefert der Kernel Informationen über das Signal an  den  Aufrufenden. Es gibt zwei allgemeine Möglichkeiten, das zu tun:
+    \item sigwaitinfo(2), sigtimedwait(2) und sigwait(3) setzen die Ausführung aus, bis ein Signal
+          gesendet wird, dass zu einer  festgelegen  Gruppe  von  Signalen  gehört.  Jeder  dieser
+          Aufrufe gibt Informationen über das empfangene Signal zurück.
+    \item signalfd(2) gibt einen Dateideskriptor zurück. Mit ihm können Informationen über Signale
+          gelesen werden, die dem Aufrufenden übermittelt werden. Jeder  Aufruf  von  read(2)  aus
+          dieser  Datei  wird  blockiert,  bis eines der Signale aus der im Aufruf von signalfd(2)
+          festgelegten  Menge  an  den  aufrufenden  Prozess  gesendet  wird.  Der   von   read(2)
+          zurückgegebene Puffer enthält eine Struktur, die das Signal beschreibt.
+    \item Ausführung über beispielsweise: killall [-9] firefox
+\end{itemize}
 
 \textit{In der Anlage zu dieser Aufgabe stellen wir Ihnen den Quellcode eines kleinen Dämon-Prozesses zur Verfügung. Zur besseren Demonstration haben wir darauf verzichtet, ihn als Hintergrundprozess zu initialisieren; er läuft daher wie ein Nutzerprozess und kann so seine Ausgaben auf der Kommandozeile sichtbar machen.}
 \vspace{10mm}
 
 \textit{b) Starten Sie den mitgelieferten Dämon und demonstrieren Sie, wie dieser auf verschiedene Signale reagiert. Erklären Sie das Verhalten mithilfe Ihrer Recherche aus Teilaufgabe a).}
 \vspace{10mm}
+\begin{itemize}
+    \item kill -KILL/SIGKILL/9 PID tötet den Thread (SIGKILL)
+    \item killall -SIGKILL / KILL / 9 BEZEICHNER tötet den Thread ebenfalls (SIGKILL)
+    \item STRG+C resultiert in einem Interrupt der Dialogstation
+    \item BUCHSTABE gibt den Buchstaben wieder aus.
+    \item kill PID sendet hingegen nur SIGTERM/ 15
+\end{itemize}
 
 \textit{c) Erweitern Sie den Dämon nun um die Fähigkeit, seine Konfigurationsdateien neu zu laden, wann immer er das Signal SIGHUP empfängt. Sie können dazu als Reaktion auf das Signal die bereits vorhandene Funktion $load_config()$ aufrufen.}
 \vspace{10mm}
@@ -1102,21 +1255,38 @@ Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf le
 
 %##########################################
 \subsection{Aufgabe 3: Virtuelle Speicherverwaltung von Linux-Systemen}
-\textit{Stellen Sie das virtuelle Speichermanagement von Linux-Systemen vor. Gehen Sie dabei insbesondere auf die Struktur der Seitentabellen und die Seitengröße ein.
-    Virtuelle Speicherverwaltung bietet auch eine elegante Möglichkeit zur dynamischen Speicherverwaltung, d. h. je nach Bedarf den von einem Prozess belegten Speicherplatz zu vergrößern bzw. wieder zu verkleinern.
+\textit{Stellen Sie das virtuelle Speichermanagement von Linux-Systemen vor. Gehen Sie dabei insbesondere auf die Struktur der Seitentabellen und die Seitengröße ein.\\
+    Virtuelle Speicherverwaltung bietet auch eine elegante Möglichkeit zur dynamischen Speicherverwaltung, d. h. je nach Bedarf den von einem Prozess belegten Speicherplatz zu vergrößern bzw. wieder zu verkleinern.\\
     Die Motivation zur Integration dieser Technik in den Linux-Kernel war die Einführung dynamischer Objekte in Programmiersprachen, die z. B. mittels new() während des Programmablaufs bei Bedarf neue Variablen, insbesondere große Arrays, erzeugen und auch wieder löschen können. Zum Ansprechen der entsprechenden Implementierungen in Linux, werden auf Nutzerebene die Funktionen malloc() ("memory allocation") und free() (Wiederfreigeben von Speicher) bereitgestellt. Beide Funktionen sind über Eintrittspunkte in die C-Standard-Bibliothek implementiert. Freier Speicher wird dabei vom Heap besorgt.}
 \vspace{10mm}
 
 \textit{a) Erklären Sie diesen Begriff im Linux-Kontext. Stellen Sie dann die beiden obigen Funktionen vor und demonstrieren Sie ihre Benutzung.}
 \vspace{10mm}
+\begin{itemize}
+    \item Stack: LIFO Speicher mit lokalen Variablen
+    \item Heap: dynamische Allokationen, langsamer als Stack, Speicherallokation mit malloc möglich.
+    \item Der Heap ist das Segment des Speichers, das vor der Kompilierung nicht auf eine konstante Größe festgelegt wird und vom Programmierer dynamisch gesteuert werden kann. Stellen Sie sich den Heap als einen "freien Pool" von Speicher vor, den Sie beim Ausführen Ihrer Anwendung verwenden können. Die Größe des Heaps für eine Anwendung wird durch die physikalischen Beschränkungen Ihres RAM (Random Access Memory) bestimmt und ist im Allgemeinen viel größer als der Stack.\\
+          Wir verwenden Speicher aus dem Heap, wenn wir nicht wissen, wie viel Platz eine Datenstruktur in unserem Programm einnehmen wird, wenn wir mehr Speicher zuweisen müssen, als auf dem Stack verfügbar ist, oder wenn wir Variablen erstellen müssen, die für die Dauer unserer Anwendung gelten. In der Programmiersprache C können wir das tun, indem wir malloc, realloc, calloc und/oder free verwenden.
+    \item Die Funktion malloc() allokiert Größenbytes und gibt einen Zeiger auf den allokierten Speicher zurück.  Der Speicher wird nicht initialisiert.  Wenn size gleich 0 ist, gibt malloc() entweder NULL oder einen eindeutigen Zeigerwert zurück, der später erfolgreich an free() übergeben werden kann. \\
+          Die Funktion free() gibt den Speicherplatz frei, auf den ptr zeigt und der durch einen vorherigen Aufruf von malloc() zurückgegeben worden sein muss,
+          calloc(), oder realloc() zurückgegeben worden sein.  Andernfalls, oder wenn free(ptr) bereits aufgerufen wurde, tritt undefiniertes Verhalten auf.  Wenn ptr NULL ist, wird keine Operation durchgeführt.
+\end{itemize}
 
 \textit{Im Linux-Kern benutzen $malloc()$ und $free()$ den Systemaufruf $brk()$ ("break"), der ebenso freien Speicher requiriert, aber für die Verwendung als Programmierschnittstelle nicht empfohlen wird. Dieser ändert den so genannten Programm-"break".}
 \vspace{10mm}
 \textit{b) Was bedeutet dies? Wie kann man dessen aktuellen Wert sowie dessen Maximalwert feststellen?}
 \vspace{10mm}
+\begin{itemize}
+	\item Der "Program break" definiert das Ende des Datensegments eines Prozesses. Er stellt somit den ersten Ort nach dem uninitialisierten Datensegment dar.
+	\item Mittels getrlimit() ist ein Auslesen des Limits möglich.
+	\item Mittels sbrk(0) ist ein Ende der uninitialisierten Daten auslesbar.
+\end{itemize}
 
 \textit{c) Wodurch unterscheiden sich die Funktionen $malloc()/free()$ und $brk()$?}
 \vspace{10mm}
+\begin{itemize}
+	\item brk() sollte in unserem Fall von Anwendungsprogrammen vermieden werden, da es nicht portabel ist und weniger komfortabel, sowie unsicher ist. Deshalb wird heute mmap() verwendet.
+\end{itemize}
 
 
 \end{document}

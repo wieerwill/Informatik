@@ -27,7 +27,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Praktikum A2](Rechnerarchitekturen%201%20-%20Praktikum%20A2.pdf)
 - [Rechnerarchitekturen 2](Rechnerarchitekturen%202.md)
 - [Softwaretechnik](Softwaretechnik.md)
-  - [MindMap](Softwaretechnik%20-%20MindMap.pdf) (work in progress)
+  - [Zusammenfassung](Softwaretechnik%20-%20Cheatsheet.pdf) (work in progress)
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf) (work in progress)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
 - [Stochastik](Stochastik.md)

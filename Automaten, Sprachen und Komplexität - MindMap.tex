@@ -330,59 +330,7 @@
         };
 \end{tikzpicture}
 
-\begin{tikzpicture}[
-        topic/.style={
-                text centered,
-                text width=6cm,
-                level distance=1mm,
-                sibling distance=5mm,
-                rounded corners=2pt
-            },
-        subtopic/.style={
-                yshift=1.5cm,
-                text centered,
-                text width=3.5cm,
-                rounded corners=2pt,
-                fill=gray!10
-            },
-        theme/.style={
-                grow=down,
-                xshift=-1.6cm,
-                text centered,
-                text width=4cm,
-                edge from parent path={(\tikzparentnode.192) |- (\tikzchildnode.west)}
-            },
-        description/.style={
-                grow=down,
-                xshift=-2cm,
-                text width=3.5cm,
-                right,
-                text centered,
-                edge from parent path={(\tikzparentnode.189) |- (\tikzchildnode.west)}
-            },
-        level 1/.style={sibling distance=4.5cm},
-        level 1/.append style={level distance=2.5cm},
-    ]
-    \node[topic]{Komplexitätstheorie}
-    child{node [subtopic] {Berechenbarkeitstheorie}}
-    child{node [subtopic] {Frage der Komplexitätstheorie}}
-    child{node [subtopic] {Komplexitätsklassen}
-            child[theme, level distance=1cm]{node{Deterministische Zeitklassen}}
-            child[theme, level distance=2cm]{node{Deterministische Platzklassen}}
-            child[theme, level distance=3cm]{node{Nichtdeterministische Zeitklassen}}
-            child[theme, level distance=4cm]{node{Nichtdeterministische Platzklassen}}
-        }
-    child{node [subtopic] {Polynomialzeit-Reduktionen}}
-    child{node [subtopic] {NP-Vollständigkeit}}
-    child{node [subtopic] {Weitere NP-vollständige Probleme}
-            child[theme, level distance=1cm]{node{3-SAT ist NP-vollständig}}
-            child[theme, level distance=2cm]{node{3C ist NP-vollständig}}
-            child[theme, level distance=3cm]{node{DHC ist NP-vollständig}}
-            child[theme, level distance=4cm]{node{HC ist NP-vollständig}}
-            child[theme, level distance=5cm]{node{TSP ist NP-vollständige}}
-        };
-\end{tikzpicture}
-
+\newpage
 \begin{multicols*}{3}
     \paragraph{deterministischer endlicher Automat M}
     \begin{itemize*}
@@ -396,7 +344,7 @@
     \end{itemize*}
 
     \section{Turingmaschine}
-    Definition: Eine Turingmaschine (TM) ist ein 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$, wobei
+    Definition: Eine Turingmaschine (TM) ist ein 7-Tupel $$M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$$, wobei
     \begin{itemize*}
         \item $\sum$ das Eingabealphabet
         \item $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
@@ -408,17 +356,59 @@
 
 
     \section{Linksableitung}
+    Eine Ableitung $S=w_0\Rightarrow w_1\Rightarrow ...\Rightarrow w_r = w\in\sum^*$ heißt Linksableitung, wenn in jedem Schritt das am weitesten links stehende Nichtterminal ersetzt wird (Analog Rechtsableitung).
+
     \section{CYK-Algorithmus}
+    Gehört ein gegebenes Wort zu $L(G)$?
+    \begin{center}
+        \includegraphics[width=\textwidth/4]{Assets/ASK_cyk-Algorithmus.png}
+    \end{center}
+    Von oben nach unten, von links unten nach rechts oben
+
     \section{Kellerautomaten}
+    Um ein Automatenmodell für Kontextfreie Sprachen zu erhalten führt man einen Keller-(Pushdown)-Speicher ein, auf dem sich eine beliebig lange Sequenz von Zeichen befinden darf. Beim Einlesen eines neuen Zeichens wird das oberste Zeichen des Kellers gelesen und durch eine (evtl. leere) Sequenz von Zeichen ersetzt. An anderen Stellen kann der Keller nicht gelesen/geändert werden
+
     \section{die Greibach-Normalform}
+    Eine kontextfreie Grammatik G ist in Greibach Normalform falls alle Produktionen aus P folgende Form haben: $A\rightarrow aB_1B_2...B_k$, mit $k\in \mathbb{N}, A,B_1,...,B_k\in V$ und $a\in \sum$. Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein Alphabetsymbol entsteht.
+
     \section{das Lemma von Ogden (William Ogden)}
+    Wenn L eine kontextfreie Sprache ist, dann gibt es $n\geq 1$ derart, dass für alle $z\in L$, in denen $n$ Positionen markiert sind, gilt: es gibt Wörter $u,v,w,x,y\in\sum^*$ mit
+    \begin{enumerate*}
+        \item $z=uvwxy$
+        \item v oder x enthält wenigstens eine der Markierungen oder
+        \item $uv^i wx^i y \in L$ für alle $i\geq 0$
+    \end{enumerate*}
+
     \section{Halteproblem}
+    allgemein: Das Halteproblem ist die Menge aller Paare $(M,x)$,wobei $M$ eine TM ist und $x\in\{0,1\}^*$, sodass $M$ bei Eingabe von $x$ hält.
+
     \section{Reduktion}
+    Seien $A\subseteq\sum^*,B\subseteq\Phi^*$. Eine Reduktion von A auf B ist eine totale und berechenbare Funktion $f:\sum^*\rightarrow\Phi^*$, so dass für alle $w\in\sum^*$ gilt: $w\in A\leftrightarrow f(x)\in B$. A heißt auf B reduzierbar (in Zeichen $A\leq B$), falls es eine Reduktion von A auf B gibt.
+
     \section{Satz von Rice}
+    Sei $R$ die Klasse aller Turing-berechenbaren Funktionen $\{0,1\}^*\rightarrow\{0,1\}^*$, $\Omega$ die nirgendwo definierte Funktion und sei $S\subseteq \mathbb{R}$ mit $\Omega\in S$ und $\not = \mathbb{R}$. Dann ist die Sprache $C(S)=\{w\in L_{TM} | \phi_w\in S\}$ unentscheidbar.
+
     \section{Semi Entscheidbarkeit}
+    Auch wenn das Halteproblem bei leerer Eingabe $H_0$ unentscheidbar ist, so kann doch nach endlicher Zeit festgestellt werden, daß die Maschine $M_w$ bei leerer Eingabe anhält - $H_0$ ist also "halb-" oder "semi-entscheidbar".
+
+    Eine Sprache $L\subseteq \sum^*$ heißt semi-entscheidbar, falls die "halbe" charakteristische Funktion von L, d.h. die partielle Funktion $X'_L:\sum^*\rightarrow \{1\}$ mit $x'_L=\begin{cases} 1 \quad\text{ falls } w\in L\\ undef. \quad\text{ falls } w\not\in L \end{cases}$ berechenbar ist.
+
     \section{Universelle Turing Maschine}
+    eine Turing-Maschine, die jede Turing-Maschine simulieren kann, wenn deren Kodierung gegeben ist.
+    Buchstaben des Bandalphabets als Wörter über $\{0, 1, 2\}$ mit $\Box = 2$ kodiert. Ab jetzt nehmen wir an, daß wir immer dieses Bandalphabet haben.
+
+    Eine Turing Maschine U heißt universelle Turing Maschine, wenn sie die folgende partielle Funktion berechnet. $\{0,1\}^*\rightarrow\{0,1\}^*$
+    $$y\rightarrow\begin{cases} \phi_w(x) \quad\text{ falls } y=w000x,w\in L_{TM},x\in\{0,1\}^* \\ undef. \quad\text{ sonst}\end{cases}$$
+
     \section{Totale berechenbare Funktionen}
-    \section{Einige unentscheidbare Probleme}
+    Gesucht ist $C\subseteq TOT \subseteq L_{TM}$, so dass $\{ \phi_w | w\in C \} = \{\phi_w | w \in TOT\}$ die Menge der totalen berechenbaren Funktionen ist.
+    \begin{itemize*}
+        \item $TOT$ ist nicht einmal semi-entscheidbar
+        \item indirekt nehmen wir an, dass C semi-entscheidbar ist
+        \item dann existiert eine totale berechenbare Funktion $f:\{0,1\}^*\rightarrow\{0,1\}^*$ mit Bild C
+      \item neue Funktion $g:\{0,1\}^*\rightarrow\{0,1\}^*:w\vdash 1\phi_{f(w)}(w)$
+    \end{itemize*}
+
 
 \end{multicols*}
 

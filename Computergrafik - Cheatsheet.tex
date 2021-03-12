@@ -70,15 +70,10 @@
 \titlespacing{\subsection}{0pt}{*0}{*0}
 \titlespacing{\subsubsection}{0pt}{*0}{*0}
 
-%My Environments
-\newtheorem{example}[section]{Example}
-% -----------------------------------------------------------------------
-
 \begin{document}
 \raggedright
 \scriptsize
 \begin{multicols}{3}
-  
   
   % multicol parameters
   % These lengths are set only within the two main columns
@@ -103,7 +98,7 @@
   \end{itemize*}
   
   \subsection{2D Transformation}
-  \begin{description}
+  \begin{description*}
     \item[Translation] um den Vektor $\vec{t}$
     \item[Skalierung] Stauchung oder Streckung
     \item[Spiegelung]
@@ -115,12 +110,12 @@
     \item[Scherung] $S=\begin{pmatrix} 1 & S_x \\ S_y & 1 \end{pmatrix}$
     \item[Rotation mit Polarkoordinaten] $P'=(r,\phi+\theta)$; $\binom{x'}{y'}=\begin{pmatrix} cos(\theta) & -sin(\theta) \\ sin(\theta) & cos(\theta)\end{pmatrix}*\binom{x}{y}$
     \item[Koordinatentransformation] $$P' =T*P = \begin{pmatrix} x_x & x_y\\ y_x & y_y \end{pmatrix} * \binom{P_x}{P_y}$$
-  \end{description}
+  \end{description*}
   
   \paragraph{Homogene Vektorräume}
   kartesischer Vektor $(\frac{x}{w},\frac{y}{w})$ oft $w=1$ gewählt (1=Punkt, 0=Richtung)
   
-  \begin{description}
+  \begin{description*}
     \item[Skalierung, Projektion, Spiegelung] $\begin{pmatrix} F_x & 0 & 0 \\ 0 & F_y & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} F_x*x \\ F_y*y \\ 1 \end{pmatrix}$
           
           $F_x,F_y>0$, uniform bei $F_X=F_y$
@@ -133,15 +128,15 @@
           
     \item[Scherung] $\begin{pmatrix} 1 & a & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ w \end{pmatrix} = \begin{pmatrix} x+a*y \\ y \\ w \end{pmatrix}$
     \item[Rotation] $R_\theta *P= \begin{pmatrix}cos(\theta) & -sin(\theta) & 0 \\ sin(\theta) & cos(\theta) & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix}x & y & 1 \end{pmatrix} = \begin{pmatrix} x cos(\theta) - y sind(\theta)\\ x sin(\theta)+y cos(\theta)\\ 1 \end{pmatrix}$
-  \end{description}
+  \end{description*}
   
   \paragraph{Invertierung}
-  \begin{description}
+  \begin{description*}
     \item[Transformation]  $T_{\Delta x, \Delta y}^{-1} = T_{-\Delta x, -\Delta y}$
     \item[Skalierung] $S_{F_x, F_y}^{-1}=S_{\frac{1}{F_x},\frac{1}{F_y}}=\begin{pmatrix} \frac{1}{F_x} &0&0\\ 0&\frac{1}{F_y}&0\\ 0&0&1 \end{pmatrix}$
     \item[Rotation] $R_{-\theta} = \begin{pmatrix} cos(\theta) & sin(\theta) & 0 \\ -sin(\theta) & cos(\theta) & 0 \\ 0 & 0 & 1 \end{pmatrix} = R_{\theta}^{T}$
     \item[Verknüpfungen] $(A*B*C)^{-1}=C^{-1}*B^{-1}*A^{-1}$
-  \end{description}
+  \end{description*}
   
   \paragraph{Affine Abbildung}
   $$\begin{pmatrix}a_1 & b_1 & c_1\\a_2 &b_2 & c_2\\ 0&0&1\end{pmatrix}*\begin{pmatrix} x_1\\y_1\\1\end{pmatrix}= \begin{pmatrix}x_1'\\y_1'\\1 \end{pmatrix}$$
@@ -202,7 +197,7 @@
   \begin{itemize*}
     \item Lage des Augpunktes E (in Weltkoordinaten)
     \item Blickrichtung D
-    \item Oben-Vektor U ("view up vector", senkrecht zu D)
+    \item Oben-Vektor U ('view up vector', senkrecht zu D)
   \end{itemize*}
   
   \subsection{Projektion}
@@ -257,7 +252,6 @@
   \begin{itemize*}
     \item Beschreibung durch die begrenzende Oberflächen
     \item Darstellungsform eines Flächen- oder Volumenmodells
-    \item sind schnell verarbeitbar
     \item Definition des Ojekts über vef-Graph (vertex, edge, face)
     \begin{itemize*}
       \item Knotenliste: beinhaltet Koordinatenpunkt
@@ -268,23 +262,20 @@
     \item Szenegraph: Gruppierung der Objekte in einer Szene
   \end{itemize*}
   
-  \subsection{Rendering}
-  Pipeline: Geometrisches Objekt$\rightarrow$ Transformieren$\rightarrow$ Vertex Shader$\rightarrow$ Raster Konvertierung$\rightarrow$ Fragment Shader$\rightarrow$ Ausgabebild
-  
   \paragraph{Vertex Shader}
   \begin{itemize*}
     \item verarbeitet alle Eckpunkte (Vertices) mit Shader
     \item ermöglicht eine Beeinflussung der Objektform
     \item Transformation der 3D Position auf 2D Koordinaten
-    \item Input: Vertices relevanter Objekte der Szene; gewünschte Transformation
-    \item Output: auf Bildschirm projizierte 2D Koordinaten und zugehörige Tiefeninformationen
+    \item Input: Vertices relevanter Objekte und gewünschte Transformation
+    \item Output: projizierte 2D Koordinaten mit Tiefeninformationen
   \end{itemize*}
   
   \paragraph{Model View Projection}
   \begin{itemize*}
     \item Gegeben
     \begin{itemize*}
-      \item Modell als Vertices mit kartesischen 3D Koordinaten und definierten Dreiecken
+      \item Modell als Vertices mit kartesischen 3D Koordinaten
       \item betrachtende Kamera (3D Position, Ausrichtung)
     \end{itemize*}
     \item Umsetzung
@@ -296,15 +287,13 @@
     \item Ergebnis
     \begin{itemize*}
       \item MVP-Matrix $P*V*M=MVP_{Matrix}$
-      \item Anwendung der MVP ergibt Bildraumprojektion des Modells $p'_m=P*V*M*p_m$
-      \item MVP-Matrix muss nur einmal berechnet werden
+      \item Bildraumprojektion des Modells $p'_m=P*V*M*p_m$
     \end{itemize*}
   \end{itemize*}
   
   \subsection{Effiziente geometrische Datenstrukturen}
   \paragraph{Bintree}
   \begin{itemize*}
-    \item Suchen und Einfügen in eindimensionale Domänen
     \item logarithmische Komplexität pro Zugriff möglich
     \item Gefahr: lineare Komplexität, wenn nicht balanciert
     \item typisch Teilung in Mitte (bisektion)
@@ -316,7 +305,6 @@
   \begin{itemize*}
     \item eine Fläche wird in vier gleichgroße Quadranten unterteilt
     \item Fläche wird unterteilt bis homogenität
-    \item Bsp: Objekte in hierarischische Struktur sortieren
     \item Komprimierung, da nur strukturierte Bereiche unterteilt
   \end{itemize*}
   
@@ -331,10 +319,8 @@
   \paragraph{KD Tree}
   \begin{itemize*}
     \item mehrdimensionaler binärer Baum (k-dimensional)
-    \item unterteilt z.B. abwechselnd in x-,y-, und z-Richtung
     \item Teilung nicht zwangsläufig mittig $\rightarrow$ an Daten angepasst
-    \item jeder neue Punkt teilt den Bereich in dem er einsortiert wird; pro Hierarchiestufe stets wechsel der Teilungsrichtung
-    \item ein Octree lässt sich auf einen kd-Baum abbilden, beide Baumarten haben vergleichbare Eigenschaften
+    \item pro Hierarchiestufe stets wechsel der Teilungsrichtung
     \item Median-Cut Strategie: Teilung in zwei gleichgroße Hälften
     \begin{itemize*}
       \item Baum garantiert balanciert und Tiefe minimal
@@ -347,69 +333,62 @@
       \item nicht balanciert
       \item keine Unterteilung weit weg vom Cluster
     \end{itemize*}
-    \item Kompromiss Strat.: Mischung zwischen Median und Mitte
   \end{itemize*}
   
   \paragraph{BSP Tree}
   \begin{itemize*}
     \item Verallgemeinerung des kd-Baums
     \item Trennebenen nicht nur achsenparallel
-    \item Unterteilung in beliebigen Richtungen, adaptiv an Modellflächen angepasst
-    \item Trennebenen die an einer Objektebene anliegen können dennoch weiter weg liegende Objekte schneiden.
+    \item Unterteilung adaptiv an Modellflächen angepasst
+    \item Trennebenen können weiter weg liegende Objekte schneiden
     \item führt bei konvexen Polyedern zu entarteten Bäumen
   \end{itemize*}
   
   \paragraph{Hüllkörper Hierarchie}
-  \begin{description}
-    \item[AABB] (Axia-Aligned-Bounding-Box) sehr einfache Abfrage (nur ein Vergleich $<$ in jeder Koordinatenrichtung, wie bei kd-Baum) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte
-    \item[OBB] (Oriented Bounding Boxes) passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren (Rotation bei Animation). Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung (Transformation, Ebenengleichung). Typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe.
-    \item[KDOP] (k-dim. Discretly Oriented Polytopes) Polyeder mit festen vorgegebenen Richtungen (z.B. 45 Grad). Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
-    \item[BS] (Bounding Spheres) Schnelle 3D Überlappungstest (Abstand der Mittelpunkte $<$ Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln begrenz werden um besseren Füllgrad zu erreichen. BS sind bis auf die Lage der Kugelmittelpunkte invariant gegenüber Rotation (geeignet für Kollisionserkennung bewegter Objekte).
+  \begin{description*}
+    \item[AABB] (Axia-Aligned-Bounding-Box) sehr einfache Abfrage (nur ein Vergleich $<$ pro Koordinatenrichtung) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte
+    \item[OBB] (Oriented Bounding Boxes) passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren. Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung. Typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe.
+    \item[KDOP] (k-dim. Discretly Oriented Polytopes) Polyeder mit festen vorgegebenen Richtungen. Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
+    \item[BS] (Bounding Spheres) Schnelle 3D Überlappungstest (Abstand der Mittelpunkte $<$ Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln begrenzt werden um besseren Füllgrad zu erreichen. BS sind, bis auf die Lage der Kugelmittelpunkte, invariant gegenüber Rotation (geeignet für Kollisionserkennung bewegter Objekte).
     \item[weitere Anwendungsfälle] Kollisionserkennung in Computeranmiation. Reduktion der potenziellen Kollisionspaare durch räumliche Trennung. Beschleunigung des Echtzeitrenderings großer Datenmengen. Reduktion des Aufwands durch Culling (Weglassen)
-  \end{description}
+  \end{description*}
   
   \paragraph{Ray Picking mit KD Baum}
   \begin{itemize*}
     \item Vorverarbeitung von Objekten im kd-Baum $O(n \log n)$
     \item Strahl/Objektschnitt: als rekursive Suche im kd-Baum
-    \item $treeIntersect(Punkt,Richtung)$: Findet Schnittpunkt des Strahls mit den im Baum gespeicherten Dreiecken und liefert Beschreibung des nächsten Schnittpunktes bzw. t=unendlich, falls kein Schnittpunkt existiert
-    \item $triangleIntersect(node,Punkt,Richtung)$: Findet Schnittpunkt des Strahles mit Menge von Dreiecken in node
-    \item $subdivide(node, p, d, t_{min}, t_{max})$: Findet rekursiv den nächstgelegenen Schnittpunkt (kleinstes t) des Strahls (p,d) mit den Dreiecken in oder unterhalb von node im Parameterbereich $t_{min} ...t_{max}$
+    \item $treeIntersect$: Findet Schnittpunkt des Strahls mit den im Baum gespeicherten Dreiecken
+    \item $triangleIntersect$: Findet Schnittpunkt des Strahles mit Menge von Dreiecken in node
+    \item $subdivide$: Findet rekursiv den nächstgelegenen Schnittpunkt (kleinstes t) des Strahls im Parameterbereich 
   \end{itemize*}
   
   \paragraph{Aufwandsabschätzung bzgl Dreiecksanzahl}
-  \begin{enumerate*}
-    \item (beinahe) konvexes Objekt (max. 2 Schnitte): hat die Komplexität einer räumlichen Punktsuche, also dem Aufwand zur Untersuchung einer Baumzelle (finden + dortige Dreiecke testen) $O(\log n)$
-    \item Polygonnebel (viele kleine Dreiecke im Such-Volumen)
-    \begin{itemize*}
-      \item Annahme: alle Zellen enthalten konstante kleine Anzahl von Dreiecken $\rightarrow$ Aufwand proportional zur Anzahl durchlaufener Baumzellen
-      \item Anzahl dieser Zellen ist proportional zur Länge des Strahls durchs Volumen, da der 1. Schnitt sehr wahrscheinlich mitten im Volumen oder gar nicht stattfindet $\rightarrow$ Anzahl ist proportional zur Seitenlänge des Suchvolumens
-      \item bei n Dreiecken im Suchvolumen ist die Anzahl t der zu untersuchenden Zellen also ca $t=O(\sqrt{n})$ $\rightarrow$ Suchaufwand pro Strahl folglich $O(\sqrt{n} \log (n))$
-    \end{itemize*}
-  \end{enumerate*}
+  \begin{itemize*}
+    \item konvexes Objekt: Komplexität einer räumlichen Punktsuche, also zur Untersuchung einer Baumzelle $O(\log n)$
+    \item Polygonnebel: viele kleine Dreiecke im Such-Volumen
+    \item alle Zellen enthalten konstante kleine Anzahl von Dreiecken $\rightarrow$ Aufwand proportional zur Anzahl durchlaufener Baumzellen
+    \item Anzahl dieser Zellen ist proportional zur Länge des Strahls durchs Volumen, da der 1. Schnitt sehr wahrscheinlich mitten im Volumen oder gar nicht stattfindet $\rightarrow$ Anzahl ist proportional zur Seitenlänge des Suchvolumens
+    \item bei n Dreiecken im Suchvolumen ist die Anzahl t der zu untersuchenden Zellen also ca $t=O(\sqrt{n})$ $\rightarrow$ Suchaufwand pro Strahl folglich $O(\sqrt{n} \log (n))$
+  \end{itemize*}
   
   \paragraph{Aufwandsabschätzung in fps}
   \begin{itemize*}
-    \item Effektiver Zeitauwand für Raytracing (RT)
     \item absoluter Gesamtaufwand zum Raytracing einer Szene ist proportional zur Anzahl der Strahlen
-    \item Annahme: 1 Strahl pro Pixel (keine Rekursion), typische Bildgröße sei 1 Mio Pixel, Szene haben mittlere Komplexität (1 Mio Polygone)
     \item rekursives RT (Reflexion, Brechung, Schattenstrahlen etc) entsprechend mehr Strahlen, d.h. weniger Performance
-    \item Parallelisierung einfach möglich $\rightarrow$ früher CPU, heute eher GPU
+    \item Parallelisierung einfach möglich $\rightarrow$ früher CPU, heute GPU
   \end{itemize*}
   
   \paragraph*{Heurisitk zur Unterteilung}
   \begin{itemize*}
     \item Surface Area Heuristic (SAH):
     \begin{itemize*}
-      \item Strahl $i$, trifft Zelle $j$ mit Wahrscheinlichkeit $P(i,j)$, zudem sei $n_j$ die Anzahl Dreiecke in Zelle $j$
-      \item Aufwand für Raytracing pro Zelle proportional zur Baumtiefe ($O(\log n)$ für balancierte Bäume) sowie Anzahl der dortigen Dreiecke $n_j$; $n_j$ wird nicht als konstant angenommen $\rightarrow$ Gesamtaufwand für Strahl $i$ sei also $\sum(P(i,j)*n_j)$
+      \item Strahl $i$ trifft Zelle $j$ mit Wahrscheinlichkeit $P(i,j)$, zudem sei $n_j$ die Anzahl Dreiecke in Zelle $j$
+      \item Aufwand für Raytracing pro Zelle proportional zur Baumtiefe und Anzahl der dortigen Dreiecke $n_j$;$\rightarrow$ Gesamtaufwand für Strahl $i$ sei  $\sum(P(i,j)*n_j)$
     \end{itemize*}
-    \item Heuristik: große Zellen mit wenigen Dreiecken senken Gesamtaufwand
-    \begin{itemize*}
-      \item Schätzung: $P(i,j)$ ist proportional zur Oberfläche einer Zelle (auf großer Oberfläche treffen mehr Strahlen auf)
-      \item die SAH optimiert auf jeder Teilstufe im Baum das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum gilt bei der Unterteilung des Bereichs D in Richtung k: $D_k = D_{k_{links}} + D_{k_{rechts}}$
-    \end{itemize*}
-    \item Bei ungleicher Verteilung der Dreiecke enthalten dann große Zellen wenige oder keine Dreiecke und Baum ist nicht balanciert $\rightarrow$ implizite Abtrennung des Clusters vom Rest des Baums (vgl. Middle-Cut-Strategie)
+    \item große Zellen mit wenigen Dreiecken senken Gesamtaufwand
+      \item $P(i,j)$ ist proportional zur Oberfläche einer Zelle
+      \item SAH optimiert das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum in Richtung k: $D_k = D_{k_{links}} + D_{k_{rechts}}$
+    \item bei ungleicher Verteilung der Dreiecke enthalten große Zellen wenige oder keine Dreiecke und Baum ist nicht balanciert $\rightarrow$ implizite Abtrennung des Clusters vom Rest des Baums (vgl. Middle-Cut-Strategie)
   \end{itemize*}
   
   \paragraph{Behandlung ausgedehnter Objekte}
@@ -423,20 +402,19 @@
     \item Loose Octree: die Zellen des Octrees werden so vergrößert, dass sie mit ihren direkten Nachbarn in jeder Richtung um 50\% überlappen. Objekte, die im einfachen Octree aufgrund ihrer Größe Grenzen schneiden würden, können im Loose Octree in den Zwischenknoten gespeichert werden. Ein Objekt mit Durchmesser bis zu $\frac{D}{2^L}$ kann auf der Ebene L abgelegt werden. Eine Suche im Loose Octree muss daher außer der direkt betroffenen Zelle auch die überlappenden direkten Nachbarn berücksichtigen. Dadurch vergrößert sich der Aufwand einer Suche um einen konstantne Faktor. Beachte: Die asymptotosche Komplexität (O-Notation) ist dadurch nicht beeinflusst.
   \end{enumerate*}
   
+  \newpage
   \section{Rastergrafik}
-  \subsection{Rasterkonversion grafischer Objekte}
-  Algorithmus zum Zeichnen einer Strecke: Endpunktkoordinaten sind nach Projektion in die Bildebene passend auf die Fensterkoordinaten skaliert und auf ganzzahlige Werte (Pixelkoordinaten) gerundet.
   
   \subsection{ Midpoint Algorithmus}
   \begin{itemize*}
-    \item Grundidee: Effizient durch Verwendung von Ganzzahlen, Vermeiden von Multiplikation/Division sowie Nutzung einer inkrementellen Arbeitsweise
-    \item Die Linie geht zwischen den Endpunkten nicht durch ganzzahlige Gitterpunkte. Da nur ganzzahlige Pixel-Koordinaten gesetzt werden können müssten auch zwischenpunkte zuerst genau berechnet werden und dann auf ganzzahlige Pixelwerte gerundet werden. Dies ist unzuverlässig und ineffizient. Zur Herleitung des effizienten Bresenham-Algorithmus führen wir den Mittelpunkt M als Referenzpunkt ein. Ferner seinen der jeweils aktuellen Punkt P, der rechts von im liegende E (east) und der rechts oben liegende NE (north-east) benannt.
+    \item Effizient durch Ganzzahlen, Vermeiden von $*,/$, Nutzung inkrementeller Arbeitsweise
+    \item Bresenham-Algorithmus: Mittelpunkt M; jeweils aktuellen Punkt P, der rechts von im liegende E (east) und der rechts oben liegende NE (north-east) benannt.
     \item die Linie wird als Funktion repräsentiert: $y=\frac{\delta y}{\delta x}*x+B$
     \item implizierte Form: $d: F(x,y)=\delta y*x-\delta x*y+B*\delta x = 0$
     \item für Punkte auf der Linie wird $F(x,y)=0$
     \item für Punkte unterhalb der Linie wird $F(x,y)>0$
     \item für Punkte oberhalb der Linie wird $F(x,y)<0$
-    \item Herleitung mit Einschränkung: Steigung der Linie m ($-1<m<1$), Mittelpunkt M = Punkt vertikal zwischen zwei möglichen Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
+    \item Herleitung: Steigung der Linie m ($-1<m<1$), Punkt vertikal zwischen zwei Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
     \item Insgesamt acht verschiedene Fälle:
     \begin{enumerate*}
       \item Oktant($\delta y < \delta x$)
@@ -450,12 +428,10 @@
   \paragraph{Anti Aliasing}
   \begin{itemize*}
     \item Treppenstufeneffekt bei gerasterten Linien
-    \item Regelmäßigkeit wird verstärkt vom Auge wahrgenommen
     \item Auflösungsvermögen des Auges für Punkte sei e. Strukturen wie Linien werden durch Mittelwertbildung (Fitting) vom Auge viel genauer als e lokalisiert. Eine Stufe wird umso eher erkannt, je länger die angrenzenden Segmente sind.
-    \item Grundidee des Anti-Aliasing
     \begin{itemize*}
-      \item Statt der Linie wird ein Rechteck mit der Breite von einem Pixel betrachtet
-      \item Graustufen der darunter liegenden Pixelflächen entsprechen dem jeweiligen Überdeckungsgrad
+      \item Statt Linie wird Rechteck mit Breite eines Pixels betrachtet
+      \item Graustufen darunter liegender Pixelflächen entsprechen jew. Überdeckungsgrad
     \end{itemize*}
     \item Praktische vereinfachte/effiziente Umsetzung
     \begin{itemize*}
@@ -463,33 +439,25 @@
       \item Replizieren der Linie (vertikal und/oder horizontal) um Linienbreite näherungsweise zu erhalten
       \item Bestimmmung des Überdeckungsgrades pro Pixel in der ursprünglichen Auflösung (Downsampling)
       \item Bestimmung des Farbwertes entsprechend des Überdeckungsgrades
+      \item Problem: Ausgabe von Linien/Polygonen auf Rastergeräten muss auf vorgegebenem Raster erfolgen
     \end{itemize*}
-    \item Problem:
-    \begin{itemize*}
-      \item Ausgabe von Linien/Polygonen auf Rastergeräten muss auf vorgegebenem Raster erfolgen
-      \item Farbvariation ist möglich, muss effizient erfolgen
-    \end{itemize*}
-    \item Ohne Antialiasing:
-    \begin{itemize*}
-      \item es erfolgt ein einfacher Test über die Pixelkoordinate
-      \item verwendet Farbe in der Pixelmitte
-    \end{itemize*}
-    \item Ideales Antialiasing: Hat wegen der beliebig komplexen Geometrie allgemein einen sehr/zu hohen Aufwand!
+    \item Ideales Antialiasing: wegen beliebig komplexen Geometrie allgemein sehr hoher Aufwand
     \item Ansatz für eine 'reale Lösung'
     \begin{itemize*}
-      \item ideale Berechnung von Farbwerten nach dem Überdeckungsgrad ist praktisch irrelevant
-      \item Gesucht werden Ansätze mit gut abschätzbarem/konstanten Aufwand
-      \item beruht auf der Verwendung von mehreren Samples pro Pixel, d.h. Berechnung dieser n Samples statt nur einem (typisch: n-facher Aufwand)
+      \item ideale Berechnung von Farbwerten irrelevant
+      \item Ansätze mit gut abschätzbarem/konstanten Aufwand
+      \item Verwendung mehrerer Samples pro Pixel
     \end{itemize*}
+    \item A.A. erhöht empfundene räumlich Auflösung
   \end{itemize*}
   
   \paragraph{Supersampling + Downsampling}
   \begin{itemize*}
-    \item Grafik zunächst in höherer Auflösung gerendert (z.B. 4-fach) und dann aus den Samples ein Farbwert gemittelt
-    \item Ohne Anti-Aliasing kommt pro Pixel genau eine Sampleposition zum Zuge. Das Pixel wird demnach gefärbt oder nicht gefärbt: Das sind zwei mögliche Stufen.
-    \item Bei vier Subpixeln können minimal 0 und maximal 4 Subpixel im (Makro-)Pixel gesetzt sein, d.h. es sind 5 Intensitäten von 0\%, 25\%0, 50\%, 75\% oder 100\% möglich
+    \item Grafik in höherer Auflösung gerendert (z.B. 4-fach) und aus Samples ein Farbwert gemittelt
+    \item Ohne A.A. pro Pixel eine Sampleposition$\Rightarrow$ gefärbt o. nicht
     \item Es gibt immer eine Abstufung mehr als Subpixel pro Pixel
-    \item bei Formabhängigkeit gibt es nur eine Zwischenstufe je nach Phasenlage $\rightarrow$ Kante "pumpt" bei Objektbewegung.
+    \item Bei vier Subpixeln können 0-4 Subpixel im Pixel gesetzt sein, d.h. 5 Intensitäten von 0\%, 25\%, 50\%, 75\% oder 100\%
+    \item bei Formabhängigkeit gibt es nur eine Zwischenstufe nach Phasenlage $\rightarrow$ Kante 'pumpt' bei Objektbewegung.
   \end{itemize*}
   
   \paragraph{Supersampling + Rotated Grids}
@@ -497,15 +465,14 @@
     \item minderung der Formabhängigkeit
     \item kleine Winkel führen zu langen Stufen der Polygonkante
     \item bessere Verhältnisse der Grauabstufung für flache Winkel, wenn ordered-grid statt rotated-grid verwendet wird
-    \item Rotated grids sind bei anderen Winkeln etwas schlechter als das ordered grid. Wird kaum wahrgenommen
-    \item gute Grauabstufung bei sehr flachen Kanten zur Zeilen- oder Spaltenrichtung
+    \item Rotated grids bei anderen Winkeln etwas schlechter als ordered grid
+    \item gute Grauabstufung bei sehr flachen Kanten
     \item optimaler Winkel bei ca. 20-30° z.B. $arctan(0.5) \approx 26,6^{\circ}$
-    \item sehr dünne Linien bleiben auch bei Bewegung zusammenhängend/sichtbar (Vermeidung von "Line Popping")
+    \item sehr dünne Linien bleiben auch bei Bewegung zusammenhängend (Vermeidung von 'Line Popping')
   \end{itemize*}
   
   \paragraph{Supersampling + Multisampling}
   \begin{itemize*}
-    \item Realisierung der Subpixelberechnung durch
     \item ein Superbackpuffer (großem Buffer)
     \begin{itemize*}
       \item Nachteil (bei rotated grid): Anpassung der Rasterkonvertierung an verschobene Positionen
@@ -520,34 +487,29 @@
     \item Gezielter Ressourceneinsatz durch Kantenglättung
     \begin{itemize*} 
       \item Effizienzsteigerung durch Beschränkung auf reine Kantenglättung möglich
-      \item Anzahl der Kantenpixel oft wesentlich kleiner als Anzahl der Flächenpixel
       \item Aliasing bei Mustern in Texturen schon beim Auslesen der Werte aus Pixeltextur unterdrückbar
       \item Kantenpixel bekannt als separate Linien oder Berandung von Polygonen/Dreiecken
     \end{itemize*}
-    \item adaptives Samplen: statt feste Anzahl von Samples kann die Anzahl nach dem Bedarf gesteuert werden
+    \item adaptives Samplen: statt feste Anzahl nach dem Bedarf
   \end{itemize*}
   
   \paragraph{Quincunx Verfahren}
   \begin{itemize*}
-    \item Überfilterung
-    \item 2x Multisampling mit rotated grid; Informations- zuwachs ist durch doppelte Anzahl von Samples gekennzeichnet
-    \item Information für die Kantenglättung beruht auf 2 Subpixeln
-    \item Entspricht einer zusätzlichen Tiefpass-Überfilterung. Durch die Unschärfe sehen Polygonkanten glatter aus.
-    \item Harte Kanten sind gar nicht mehr möglich, dadurch wird auch 'Zappeln' an Polygonrändern reduziert
-    \item Nachteil: Texturinformation, die nur zu 2 Subpixeln gehört, wird verschmiert
+    \item 2x Multisampling mit rotated grid; Informationszuwachs durch doppelte Anzahl von Samples
+    \item Information für Kantenglättung beruht auf 2 Subpixeln
+    \item Entspricht zusätzlicher Tiefpass-Überfilterung. Durch Unschärfe sehen Polygonkanten glatter aus.
+    \item Harte Kanten nicht mehr möglich; Rand 'Zappeln' reduziert
+    \item Aber: Texturinformation, von 2$>$Subpixeln, verschmiert
   \end{itemize*}
   
   \paragraph{Pseudozufälliges Supersampling}
   \begin{itemize*}
-    \item Kombinationen und pseudozufälliges Supersampling
-    \begin{itemize*}
-      \item Kombination von Supersampling, Multisampling und Quincunx möglich; Gewinn hält sich in Grenzflächen
-      \item Bei Überwindung der Grenzen für Füllrate und Bandbreite überwiegen die Vorteile des Supersamplings.
-      \item Ordered grid und rotated grid weisen bei bestimmten Strukturklassen Vor- und Nachteile auf. Die verbleibenden Artefakte wiederholen sich bei großen Flächen so, dass derartige Muster vom Menschen oft als störend empfunden werden
-      \item pseudozufällige Auswahl von Abtastmustern für das Supersampling
+      \item Kombination: Supersampling, Multisampling und Quincunx
+      \item bei Überwindung der Grenzen für Füllrate und Bandbreite überwiegen Vorteile des Supersamplings
+      \item Ordered/rotated grid weisen nach Strukturklassen Vor-/Nachteile auf. Verbleibende Artefakte wiederholen sich bei großen Flächen - oft als störend empfunden
+      \item pszufällige Auswahl von Abtastmustern für Supersampling
       \item nachträgliche Abminderung regelmäßiger Strukturen durch vorsichtiges Verrauschen (Rauschfilter)
       \item entfernungsabhängiges Antialiasing
-    \end{itemize*}
     \item pseudozufällig
     \begin{itemize*}
       \item Samples können nur an n vordefinierten Positionen stattfinden (Sample-Positionsmuster)
@@ -557,67 +519,60 @@
   \end{itemize*}
   
   \paragraph{Downsampling}
-  Beim Anti-Aliasing zur Glättung von Polygonkanten kommt für das Downsampling die Mittelwertbildung in Frage (lineare Filterung (2x - AA), bilineare Filterung (4x - AA)), gleichgültig ob ordered oder rotated grid. Beim pseudozufälligen Supersampling ist entsprechend der "frei gewählten" Positionen der "Subpixel" zu modifizieren (z.B. Gewichte nach Abstand der Abfragepositionen zur Makropixelposition).
+  Mittelwertbildung: lineare Filterung (2x - AA), bilineare Filterung (4x - AA). Gleichgültig ob ordered/rotated grid. 
+  Beim pseudozufälligen Supersampling ist entsprechend der 'frei gewählten' Positionen der 'Subpixel' zu modifizieren (z.B. Gewichtenach Abstand der Abfragepositionen zur Makropixelposition)
   
-  \subsection{ Polygonfüllalgorithmus}
+  \subsection{Polygonfüllalgorithmus}
   \begin{itemize*}
     \item Ansatz
     \begin{itemize*}
       \item finde die Pixel innerhalb des Polygons
       \item weise ihnen Farbe zu
       \item dabei zeilenweises Vorgehen pro Rasterlinie
-      \item für jede Polygonkante: schneide die Polygonkante mit der aktuellen Bildzeile ($\rightarrow x_s$ )
+      \item schneide die Polygonkante mit der aktuellen Bildzeile
       \item füge Schnittpunkt $x_s$ in eine Liste ein
       \item sortiere Schnittpunkte der Bildzeile in x-Richtung
       \item Paritätsregel: fülle die Pixel jeweils nur zwischen ungeraden und nächstem geraden Schnittpunkt
     \end{itemize*}
-    \item Schnittpunkte in floating point zu berechnen und zu runden ist ineffizient. Ähnlich wie beim Bresenham-Algorithmus, inkrementeller Ansatz mit Ganzzahl-Arithmetik
-    \item Allgemeine Sicht auf die Füll-/Auswahlstrategie: Ein Pixel wird mit der Farbe des Polygons gefüllt, das sich rechts von ihm befindet. Sollte dort eine Kante sein, so wird die Farbe des oberen Polygons verwendet.
-    \item Grundsätzlich könnten beliebige Richtungen als Referenzrichtung zur Farbbestimmung gewählt werden. Dann müssten die zuvor besprochenen Regeln oder der gesamte Algorithmus entsprechend angepasst werden.
-    \item Effiziente Ermittlung der Schnittpunkte von Polygonkante und Rasterzeile:
+    \item Allgemeine Sicht auf die Strategie: Ein Pixel wird mit der Farbe des Polygons gefüllt, das sich rechts von ihm befindet. Sollte dort eine Kante sein, so wird die Farbe des oberen Polygons verwendet.
+    \item Effiziente Ermittlung der Schnittpunkte
     \begin{itemize*}
       \item Polygonkanten von unten nach oben bearbeitet
-      \item horizontale Polygonkanten müssen nicht bearbeitet werden $\rightarrow$ $m\not=0$
+      \item horizontale Polygonkanten nicht bearbeiten $\rightarrow m\not=0$
       \item $d_y = y_1 - y_0$ ist stets positiv (auch nie 0)
       \item $d_x = x_1 - x_0$ kann positiv und negativ sein
       \item damit können 4 Bereiche unterschieden werden
       \item Berechnung von x bzw y: 
       \begin{itemize*}
         \item $y=y_0+m(x-x_0)= y_0+\frac{y_1-y_0}{x_1-x_0}(x-x_0)$,
-        \item$x=x_0+\frac{1}{m}(y-y_0)= x_0+\frac{x_1-x_0}{y_1-y_0}(y-y_0)$
+        \item $x=x_0+\frac{1}{m}(y-y_0)= x_0+\frac{x_1-x_0}{y_1-y_0}(y-y_0)$
       \end{itemize*}
-      \item x-/y-Werte noch nicht ganzzahlig, aber können als rationale Zahlen explizit mit Zähler und Nenner repräsentiert werden
-      \item Die Rundung (nächstes x oder y erreicht?) kann inkrementell ermittelt werden
-      \item Die Rundungsregel für Bruchwerte hängt davon ab, ob es eine linke oder rechte Kante ist. Links wird z.B. aufgerundet (Pixel ist auf oder rechts v. der Kante)
+      \item x-/y-Werte noch nicht ganzzahlig
+      \item Die Rundung kann inkrementell ermittelt werden
+      \item Die Rundungsregel für Bruchwerte hängt davon ab, ob es eine linke oder rechte Kante ist. Links wird z.B. aufgerundet
     \end{itemize*}
-    \item Edge-Tabelle:
+    \item Edge-Tabelle
     \begin{itemize*}
-      \item  Verkettete Liste/Array für nicht-horizontalen Kanten
-      \item  Sortierung nach der Scan-Line, wo die Kanten beginnen (unteres Ende, $y_0$ ).
-      \item  Innerhalb der Scan-Line wieder Liste (nach $x_0$ sortiert). Je nach Implementierung werden z.B. $x_0 , y_1$ , sowie Zähler und Nenner gespeichert.
+      \item Verkettete Liste/Array für nicht-horizontalen Kanten
+      \item Sortierung nach Scan-Line, wo Kanten beginnen
+      \item In Scan-Line wieder Liste mit z.B. $x_0, y_1$, Zähler
     \end{itemize*}
-    \item Active-Edge-Tabelle:
+    \item Active-Edge-Tabelle
     \begin{itemize*}
-      \item  speichert alle Kanten, die gegenwärtige Scan-Linie schneiden
-      \item  Liste hat die gleiche Struktur wie eine Zeile der ET
-      \item  Kanten gelöscht, wenn oberes Ende der Kante erreicht ist
+      \item speichert Kanten die gegenwärtige Scan-Linie schneiden
+      \item Liste hat die gleiche Struktur wie eine Zeile der ET
+      \item Kanten gelöscht wenn oberes Ende der Kante erreicht
     \end{itemize*}
-    \item Bemerkung zu Scan Convert Polygon: Es existiert immer eine gerade Anzahl Kanten. Bei konvexen Polygonen sind immer null oder zwei Kanten in der AET. Die Sortierung ist dadurch trivial bzw. entfällt bei konvexen Polygonen. Bei vielen Grafikbibliotheken beschränkt man sich auf konvexe Polygone. Nichtkonvexe Polygone müssen daher vorher in konvexe Komponenten zerlegt werden. Dafür ist das Füllen dieser Polygone danach effizienter. Dieser Teil entspricht einem Schleifendurchlauf der Prozedur EdgeScan. Die Unterscheidung zwischen linker und rechter Kante wird beim Auffüllen der Pixel gemacht.
+    \item Scan Convert Polygon: Es existiert immer eine gerade Anzahl Kanten. Viele Grafikbibliotheken beschränkt auf konvexe Polygone. Nichtkonvexe Polygone müssen vorher in konvexe Komponenten zerlegt werden.
     \item Bemerkungen zur Effizienz
     \begin{itemize*}
-      \item Ein Polygon belegt meist mehr Pixel als es Eckpunkte/Kanten besitzt. Deshalb sind effiziente per-Pixel-Operationen wichtig. Der Rechenaufwand sollte vermieden werden (fallende Priorität) für:
-      \item  pro Pixel (sehr häufig auszuführen)
-      \item  pro Rasterzeile
-      \item  pro Kante (möglichst viel vorberechnen, um pro Rasterzeile/Pixel Rechenzeit zu sparen)
+      \item Polygon belegt meist mehr Pixel als es Eckpunkte/Kanten besitzt. Deshalb sind effiziente per-Pixel-Operationen wichtig. Der Rechenaufwand sollte vermieden werden (fallende Priorität) für: pro Pixel (sehr häufig auszuführen), pro Rasterzeile, pro Kante (möglichst viel vorberechnen)
     \end{itemize*}
-    \item Erweiterungen des inkrementellen Ansatzes für effiziente Berechnungen in der 3D-Grafik, z.B.:
-    \item Füllen des Z-Buffers (Tiefenwertberechnung)
-    \item lineare Interpolation beim Gouraud Shading (Farbwertberechnungen)
   \end{itemize*}
   
   \paragraph{Füllmuster}
   \begin{itemize*}
-    \item Füllen eines Polygons mit Pattern statt konstanten Farbwert
+    \item Füllen eines Polygons mit Pattern statt Farbwert
     \item benutze dazu BITMAPs
     \item 2-dimensionales Array
     \item besteht aus M Spalten und N Zeilen
@@ -627,58 +582,51 @@
   \paragraph{Dithering}
   \begin{itemize*}
     \item Ersetzen 'genauer' Farbwerte durch grobe Quantisierung
-    \item gegeben sei Tabelle von im Output zulässigen Farben
     \item Durchlaufen aller Pixel beginnend links oben
     \item pro Pixel P die beste Ersetzung in Tabelle finden \& setzen
-    \item verursachten Fehler $\delta$ jeweils nach Schema auf unbearbeitete Nachbarpixel in der  Repräsentation verteilen
-    \item bei kleinen Bildern mit hoher Auflösung ist Dithering kaum wahrnehmbar
+    \item verursachte Fehler $\delta$ nach Schema auf unbearbeitete Nachbarpixel verteilen
+    \item bei kleinen Bildern mit hoher Auflösung kaum erkennbar
+    \item erhöht Farbauflösung $\rightarrow$ Verringert räumlichen Auflösung
+    \item komplementär zu A.A.
   \end{itemize*}
   
-  \paragraph{Dithering vs. Anti-Aliasing}
-  \begin{itemize*}
-    \item komplementär zueinander
-    \item A.A. erhöht empfundene räumlich Auflösung durch Anwendung von Zwischenwerten in der Grau-/Farbabstufung
-    \item Dithering erhöht Farbauflösung (verringert empfundene Farbquantisierung) durch Verteilen des Quantisierungsfehlers auf mehrere Pixel $\rightarrow$ Verringerung der räumlichen Auflösung
-  \end{itemize*}
-  
+  \newpage
   \section{Farbräume}
-  \subsection{ Farbwahrnehmung - Phänonmenologie}
+
+  \subsection{Farbwahrnehmung - Phänonmenologie}
   \begin{itemize*}
     \item Hell- und Farbempfinden als Sinneseindruck beschrieben
     \item Tageslicht als weiß/grau mit unterschiedlichen Helligkeiten aber farblos empfunden
     \item Abwesenheit von Licht wird als schwarz empfunden
     \item Regenbogen bunt mit verschiedenen Farbtönen empfunden
   \end{itemize*}
-  \begin{description}
-    \item[Farbton (Hue)]
+  \begin{description*}
+    \item[Farbton] (Hue)
           \begin{itemize*}
             \item Farbpalette aus abstufung grober Farbtöne 
             \item direkt nebeneinanderliegende Farben im Farbspektrum werden als ähnlich empfunden
             \item Farbwerte lassen sich ordnen
             \item als bunt empfunden (voll gesättigte Farben im Gegensatz zu Grautönen)
           \end{itemize*}
-    \item[Farbsättigung (Saturation)]
+    \item[Farbsättigung] (Saturation)
           \begin{itemize*}
-            \item  Stufen zwischen Bunt und Grau
+            \item Stufen zwischen Bunt und Grau
             \item Pastelltöne sind weniger bunt aber nicht farblos
             \item Grauton (keine Farbwerte unterscheidbar)
             \item jedem Farbton können Abstufungen bis Grau zugeordnet werden
           \end{itemize*}
-    \item[Helligkeitsstufen (Lightness)]
+    \item[Helligkeitsstufen] (Lightness/Brightness/Value/Intensity)
           \begin{itemize*}
             \item unterschiedliche Helligkeitsabstufungen bis Schwarz
             \item im Schwarzen sind keine Farbtöne mehr unterscheidbar
           \end{itemize*}
-  \end{description}
+  \end{description*}
   
   \subsection{Modell der Farben}
   \paragraph{HSL Farbraum (bzw HSB, HSV, HSI)}
   \begin{itemize*}
-    \item Farbton: Hue
-    \item Sättigung: Saturation
-    \item Helligkeit: Lightness/Brightness/Value/Intensity
     \item Dimension des Farbtons wiederholt sich periodisch
-    \item darstellung als Winkelkoordinate eines Polarkoordinaten-Systems in der HS-Ebene oder dreidimensional als Zylinderkoordinaten HSL darstellt.
+    \item Darstellung als Winkelkoordinate eines Polarkoordinaten-Systems in der HS-Ebene oder dreidimensional als Zylinderkoordinaten HSL darstellt.
     \item Darstellungsformen nicht fest vorgeschrieben. Eine Darstellung als (Doppel)-Kegel oder sechseitige (Doppel-) Pyramide ist ebenso möglich
     \item Der HSL Farbraum entspricht grob unserer Farbwahrnehmung. Daher geeignet zur intuitiven und qualitativen Einstellung von Farben in Illustrationsgrafiken
     \item Relative Skala 0-255
@@ -739,10 +687,10 @@
   
   Aus dem rechten Teil der Gleichung folgt mit $b=1-r-g$, dass sich die Buntheit allein durch r und g darstellen lässt (entspricht $R^2$).  
   
-  \paragraph{CIE System}
+  \section{CIE System}
   Um eine Relation zwischen der menschlichen Farbwahrnehmung und den physikalischen Ursachen des Farbreizes herzustellen, wurde das CIE-Normvalenzsystem definiert. Es stellt die Gesammtheit der wahrnehmbaren Farben dar.
   
-  \paragraph{Farbkörperunterschiede}
+  \section{Farbkörperunterschiede}
   Es finden sich Unterschiede welche Farbbereiche nach dem CIE Normalvalenzsystem von den jeweiligen Systemen dargestellt werden können:
   \begin{itemize*}
     \item menschliche Farbwahrnehmung ca. 2-6 Mio Farben
@@ -750,61 +698,62 @@
     \item Druckprozess deutlich weniger Farben. Es werden einzelne Farbschichten auf Papier gedruckt und das resultierende Bild wird über subtraktive Farbmischung bestimmt
   \end{itemize*}
   
-  \paragraph{Subtraktive Farbmischung}
+  \section{Subtraktive Farbmischung}
   Je nachdem welche Farbe ein Material hat, werden entsprechende Farbanteile absorbiert oder reflektiert. Eine gelbe Oberfläche sieht gelb aus, da sie das Blau aus weißem Licht absorbiert, aber Rot und Grün reflektiert.
   
   Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.
   
+  \newpage
   \section{Licht \& Reflexion}
-  \subsection{Strahlung}
   \begin{description*}
     \item[Licht] Teil der elektromagnetischen Strahlung
     \item[Photon] Elementarteilchen der elektromagnetischen Wechselwirkung
     \item[Radiometrie] Messung elektromagnetischer Strahlung
-    \item[Photometrie] Messverfahren im Wellenlängenbereich des sichtbaren Lichtes
+    \item[Photometrie] Messverfahren im Wellenlängenbereich
     \item[Strahlungsäquivalent] $K =\frac{\phi_v}{\phi_e}$]
     \item[Lumen] 1 Lumen ist der Lichtstrom einer 1,464 mW starken 555-nm-Lichtquelle mit 100\% Lichtausbeute
   \end{description*}
   
   In der Radiometrie wird sich mit objektiven Messgrößen beschäftigt, in der Photometrie fließt spektrale Empfindlichkeit des menschlichen Auges mit ein.
   
-  \paragraph{Radiometrie (energetisch $_e$) }
-  \begin{description}
+  \paragraph{Radiometrie (energetisch $e$) }
+  \begin{description*}
     \item[Strahlungsenergie $Q$] durch Strahlung übertragene Energie $[J]$
     \item[Strahlungsleistung $\phi$] transportierte Strahlungsenergie in einer bestimmten Zeit $\phi = \frac{Q}{t} [W]$
     \item[Strahlstärke/Intensität $I$] Strahlungsleistung die in eine Raumrichtung mit Raumwinkel $\Omega$ emittiert wird $I=\frac{\phi}{\Omega}=\frac{W}{sr}$
     \item[Bestrahlungsstärke/Irradiance $E$] Strahlungsleistung durch die bestrahlte Fläche $A_i$ bzw. Strahlstärke die auf die Empfängerfläche trifft $E=\frac{W}{m^2}=\frac{\Phi}{A_i}$
     \item[Strahldichte/Radiance $L$] Strahlstärke von Sendefläche $A_r$ in eine bestimmte Richtung $L = \frac{I}{A'_r}=\frac{I}{\cos(\phi_r)*A_r} = \frac{\phi}{\cos(\phi_r)*A_r*\Omega}$; $\phi_r$ ist Winkel zwischen Normalen n und Abstrahlrichtung
-  \end{description}
+  \end{description*}
   
-  \paragraph{Photometrie (visuell $_v$ )}
-  \begin{description}
+  \paragraph{Photometrie (visuell $v$ )}
+  \begin{description*}
     \item[Lichtmenge $Q$] Strahlungsleistung bewertet mit der spektralen Empfindlichkeitsfunktion des menschlichen Auges für das Hellempfinden $lm*s$
     \item[Lichtstrom (luminous flux) $\phi$] $[Lumen]$
     \item[Lichtstärke (luminous intensity) $I$] $[Candela]$
     \item[Beleuchtungsstärke $E$] $I_{in}\cos(\phi) [Lux]$
     \item[Leuchtdichte/Luminanz $L$] $[\frac{cd}{m^2}]$
-  \end{description}
+  \end{description*}
   
   $$A=2\pi r^2; \Omega=\frac{A}{r^2}=2\pi ; I_e=\frac{\phi_e}{\Omega}= \frac{W}{sr}$$
   
   \paragraph{Raumwinkel}
-  Der Steradiant ist eine Maßeinheit für den Raumwinkel, der von der Mitte M einer Kugel mit Radius r aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt. $\Omega=\frac{Flaeche}{Radius^2}=\frac{A}{r^2}sr$
-  Eine komplette Kugeloberfläche beträgt allg. $A_k = 4\pi r^2$, entspricht also einem Raumwinkel $\Omega$ von $\frac{A_k}{r^2}= 4\pi r\approx 12,5sr$. Ein Steradiant $=1sr$ entspricht einem Öffnungswinkel $\alpha$ von ca. $65,54^{\circ}$
+  Der Steradiant ist eine Maßeinheit für den Raumwinkel, der von der Mitte M einer Kugel mit Radius r aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt. $\Omega=\frac{Flaeche}{Radius^2}=\frac{A}{r^2}sr$.
+  Eine komplette Kugeloberfläche beträgt $A_k = 4\pi r^2$, entspricht einem Raumwinkel $\Omega$ von $\frac{A_k}{r^2}= 4\pi r\approx 12,5sr$. Ein Steradiant $=1sr$ entspricht einem Öffnungswinkel $\alpha$ von ca. $65,54^{\circ}$
   
   \paragraph{Räumliche Ausbreitung}
-  Energieübertragung zwischen zwei Flächen:
+  Flächen Energieübertragung
   \begin{itemize*}
     \item der Abstand zwischen den beiden Flächen beträgt r
     \item die Flächen stehen nicht notwendigerweise senkrecht zur Ausbreitungsrichtung des Lichts
-    \item abstrahlende und empfangende Fläche jeweils in Ausbreitungsrichtung. Die projizierten Flächen sind $A'_r$ und $A'_i$.
-    \item betrachten Punktlichtquellen von der abstrahlenden Fläche $A_r$ , welche ihre Strahlungsleistung in den Raumwinkel $\Omega$ abgeben
+    \item abstrahlende und empfangende Fläche jeweils in Ausbreitungsrichtung mit projizierten Flächen $A'_r$ und $A'_i$.
+    \item Punktlichtquellen von der abstrahlenden Fläche $A_r$, welche ihre Strahlungsleistung in den Raumwinkel $\Omega$ abgeben
     \item $\Omega$ ist somit die in Abstrahlrichtung reduzierte Fläche $A'_i$ , projiziert auf die Einheitskugel: $\Omega=\frac{A'_i}{r^2}$
     \item Die übertragene Energie nimmt quadratisch zu r ab
   \end{itemize*}
   
   \subsection{Reflexion}
-  Nach Auftreffen auf einer opaken Oberfläche wird Strahlung spektral unterschiedlich stark und geometrisch auf unterschiedliche Weise reflektiert. Es können Fälle der Reflexion unterschieden werden:
+  Nach Auftreffen auf einer opaken Oberfläche wird Strahlung spektral unterschiedlich stark und geometrisch auf unterschiedliche Weise reflektiert. 
+  Fälle der Reflexion:
   \begin{itemize*}
     \item ideal spiegelnde Reflexion (Einfallswinkel = Ausfallswinkel)
     \item ideal diffuse Reflexion
@@ -817,7 +766,7 @@
   In Richtung Betrachter reflektierte Strahlstärke $I_{out}$ Aufgrund von Interferenz phasengleicher Lichtstrahlen $\rightarrow$ Projektion auf Normalenrichtung $\frac{I_{out}}{E_{refl}}=\cos(\phi)$
   \begin{itemize*}
     \item Senkrecht zur Oberfläche: Maximale Kohärenz (Addition)
-    \item Parallel zur Oberfläche: n Keine Kohärenz (Auslöschung)
+    \item Parallel zur Oberfläche: Keine Kohärenz (Auslöschung)
   \end{itemize*}
   
   $$\frac{A_r}{A'_r}=\frac{1}{\cos(\phi)} \rightarrow L=\frac{I_{out}}{\cos(\phi)}=I_{refl}$$
@@ -826,12 +775,12 @@
   \paragraph{Spekuläre Reflexion}
   (gestreut spiegelnd)
   \begin{itemize*}
-    \item Speckles bzw. Facetten sind einzeln jeweils "ideal"
-    \item spiegelnd: $\text{Einfallswinkel} \phi = \neg Ausfallswinkel = -\phi$
-    \item Ausrichtung der Microfacetten weichen von Gesamtflächennormalen ab
+    \item Speckles bzw. Facetten sind einzeln jeweils 'ideal'
+    \item spiegelnd: $\text{Einfallswinkel } \phi = \neg \text{Ausfallswinkel} = -\phi$
+    \item Microfacettenausrichtung weichen von Gesamtflächennormalen ab
     \item dadurch Streuung des Lichts (Keule) um den Winkel $\theta$ der idealen Spiegelung herum
     \item Je größer der Winkel $\theta$ zwischen idealer Spiegelrichtung und Richtung zum Betrachter, desto schwächer ist die Reflexion
-    \item Modellierung meist per $\cos^k(\theta)$ (Phong-Beleuchtungsmodell)
+    \item Modellierung meist per $\cos^k(\theta)$ (Phong-Modell)
   \end{itemize*}
   
   Gestreute Spiegelung im Phong Modell mit $L=I*k_s*\cos^k(\theta)$
@@ -840,7 +789,7 @@
     \item matte Fläche: kleiner Exponent k; große Streuung $\epsilon$
   \end{itemize*}
   
-  Für Energieerhaltung wird zusätzlicher Normierungsfaktor benötigt:
+  Für Energieerhaltung zusätzlicher Normierungsfaktor benötigt:
   \begin{itemize*}
     \item physikalisch nicht korrekt:  $L=I*k_s*\cos^k(\theta)$
     \item gebräuchliche Normierung $L=I*k_s*\frac{k+2}{2\pi}*cos^k(\theta)$
@@ -850,24 +799,24 @@
   ideal diffus remittierende weiße Flächen $(\beta(\lambda) = 1)$:
   \begin{itemize*}
     \item von Quellen in Fläche $dA$ eingetragene Leistung führt zu Bestrahlungsstärke $E_{\lambda}$
-    \item Bei vollständiger Reflexion $\beta(\lambda) = 1$ ist $E_{\lambda} = R_{\lambda}$
+    \item bei vollständiger Reflexion $\beta(\lambda) = 1$ ist $E_{\lambda} = R_{\lambda}$
     \item zugehörige Strahlungsfluss $d\phi = R_{\lambda} * dA = E_{\lambda} * dA$ wird bei ideal diffusen streuenden Oberflächen gleichmäßig über den Halbraum verteilt, wobei die Strahldichte (Lambertsches Gesetz) konstant ist.
   \end{itemize*}
   
   \subsection{BRDF: Bidirektionale Reflexionsverteilung}
   \begin{itemize*}
-    \item eine Funktion für das Reflexionsverhalten von Oberflächen eines Materials unter beliebigen Einfallswinkeln
+    \item Funktion für das Reflexionsverhalten von Oberflächen eines Materials unter beliebigen Einfallswinkeln
     \item nach gewählter Genauigkeit sehr komplex
     \item $f_r(\omega_i, \omega_r)=\frac{dL_r(\omega_r)}{dE_i(\omega_i)}=\frac{dL_r(\omega_r)}{L_i(\omega_i)\cos(\theta_i)d\omega_i}$
     \item BRDF beschreibt wie gegebene Oberfläche Licht reflektiert.
     \item $p(\lambda)=\frac{L_r}{E_i}=[\frac{1}{sr}]$
-    \item Die BRDF ist 5-dimensionale skalare Funktion: $p(\lambda, \phi_e, \theta_e, \phi_i, \theta_i)$
+    \item BRDF ist 5-dim skalare Funktion: $p(\lambda, \phi_e, \theta_e, \phi_i, \theta_i)$
     \item Reziprozität: $\rho(\lambda)$ ändert sich nicht, wenn Einfalls- und Ausfallsrichtung vertauscht werden
-    \item $\rho(\lambda)$ kann anisotrop sein, d.h. der Anteil des reflektierten Lichtes ändert sich, wenn bei gleicher Einfalls- undAusfallsrichtung die Fläche um die Normale gedreht wird
-    \item Superposition gilt, d.h. mehrere Quellen überlagern sich linear.
+    \item $\rho(\lambda)$ kann anisotrop sein, d.h. der Anteil des reflektierten Lichtes ändert sich, wenn bei gleicher Einfalls- und Ausfallsrichtung die Fläche um die Normale gedreht wird
+    \item Superposition gilt $\Rightarrow$ mehrere Quellen überlagern sich linear
   \end{itemize*}
   
-  Für Menge Q von Lichtquellen die gesamte reflektierte Strahlstärke: $L_r=p_a*E_a+\sum_{1\leq j \leq Q} E_j * (k_d*p_d + k_s*p_s)$ mit $k_d+k_s=1$
+  Für Menge Q von Lichtquellen gesamte reflektierte Strahlstärke: $L_r=p_a*E_a+\sum_{1\leq j \leq Q} E_j * (k_d*p_d + k_s*p_s)$ mit $k_d+k_s=1$
   
   \paragraph{Rendering-Equation}
   Für ambiente und gerichtete Lichtquellen aus der Hemisphäre: 
@@ -877,35 +826,33 @@
   \begin{description*}
     \item[Ambiente Strahlung]
     \begin{itemize*}
-      \item keine eigentliche Quelle zuordenbar
-      \item stark vereinfachtes Modell für die Streuung der Atmosphäre
+      \item stark vereinfachtes Modell für Streuung der Atmosphäre
       \item Strahlung kommt von allen Seiten
       \item keine Abhängigkeit von Winkeln und Entfernungen
-      \item Beschreibung nur indirekt durch konstante Bestrahlungsstärke
+      \item Beschreibung indirekt durch konst. Bestrahlstärke
       \item $E=\frac{\Phi}{A}=E_a$
     \end{itemize*}
     \item[Parallele Strahlung]
     \begin{itemize*}
       \item Strahlung ist gerichtet und parallel
-      \item kein Ort für derartige Quellen
-      \item Wichtig sind Richtung und Strahlungsleistung, bezogen auf die senkrecht zur Ausbreitungsrichtung stehende Fläche $R=E_q=\frac{\Phi}{A_q}$
+      \item Richtung und Strahlungsleistung auf senkrecht zur Ausbreitungsrichtung stehende Fläche $R=E_q=\frac{\Phi}{A_q}$
       \item für Schattierungsrechnung lässt sich Bestrahlungsstärke der Oberfläche berechnen: $E=\frac{\Phi}{A}=\frac{E_q*A_q}{A}=E_q*\cos(\phi) = E_q*V_I^T*n$
     \end{itemize*}
     \item[Ideale Punktlichtquelle]
     \begin{itemize*}
-      \item für Punktquelle ist Ort bekannt und Strahlstärke in alle Richtungen konstant $I=\frac{\Phi}{\Omega}=konstant$
-      \item Bestrahlungsstärke eines physikalischen vorliegenden, beliebig orientierten Flächenelementes A ergibt sich zu $E=\frac{\Phi}{A}=\frac{I*\Omega}{A}, \Omega=\frac{A}{r^2}*\cos(\phi)*\omega_r \rightarrow E=\frac{I}{r^2}*\cos(\phi)*\omega_r$
-      \item zum Ausgleich der Adaptionsfähigkeit des menschlichen Auges wird in der Computergrafik oft der folgende Ansatz verwendet $E=\frac{I}{c_1+c_2*|r|+c_3*r^2}*\cos(\phi)*\omega_r$
+      \item Ort bekannt und Strahlstärke in alle Richtungen konstant $I=\frac{\Phi}{\Omega}=konstant$
+      \item Bestrahlungsstärke eines physikalischen vorliegenden, beliebig orientierten Flächenelementes A: $E=\frac{\Phi}{A}=\frac{I*\Omega}{A}, \Omega=\frac{A}{r^2}*\cos(\phi)*\omega_r \rightarrow E=\frac{I}{r^2}*\cos(\phi)*\omega_r$
+      \item für Adaptionsfähigkeit des Auges oft $E=\frac{I}{c_1+c_2*|r|+c_3*r^2}*\cos(\phi)*\omega_r$
     \end{itemize*}
-    \item[Remittierende Flächen] Zur Berechnung von reflektierenden Fläche weitergegebenen Strahldichte L sind die weiter oben berechneten Bestrahlungsstärken E für unterschiedlichen Quellen mit dem Faktor $\frac{\beta(\lambda)}{\pi\omega_r}$ zu bewerten
+    \item[Remittierende Flächen] von reflektierenden Fläche weitergegebenen Strahldichte L sind Bestrahlungsstärken E für unterschiedlichen Quellen mit Faktor $\frac{\beta(\lambda)}{\pi\omega_r}$ bewerten
   \end{description*}
   
   \begin{tabular}{l | c | l}
-    Quelle           & Ref. & Spektale Strahldichte $L(\lambda)$                                                 \\\hline
-    ambient          & diffus    & $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\beta(\lambda)$                         \\
-    gerichtet        & diffus    & $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\cos(\phi)*\beta(\lambda)$              \\
-    punktförmig      & diffus    & $L(\lambda) = \frac{I(\lambda)}{\pi r^2 }*\cos(\phi)*\beta(\lambda)$               \\
-    gerichtet diffus & diffus    & $L(\lambda)=\frac{I(\lambda)}{\pi r^2 }* \cos^m(\theta)*\cos(\phi)*\beta(\lambda)$ \\
+    Quelle           & Ref.   & Spektale Strahldichte $L(\lambda)$                                                 \\\hline
+    ambient          & diffus & $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\beta(\lambda)$                         \\
+    gerichtet        & diffus & $L(\lambda)=\frac{E(\lambda)}{\pi\omega_r}*\cos(\phi)*\beta(\lambda)$              \\
+    punktförmig      & diffus & $L(\lambda) = \frac{I(\lambda)}{\pi r^2 }*\cos(\phi)*\beta(\lambda)$               \\
+    gerichtet diffus & diffus & $L(\lambda)=\frac{I(\lambda)}{\pi r^2 }* \cos^m(\theta)*\cos(\phi)*\beta(\lambda)$ \\
   \end{tabular}
   
   \subsection{Beleuchtungsmodelle}
@@ -917,33 +864,34 @@
   \paragraph{Phong-Modell}
   \begin{itemize*}
     \item lokales Beleuchtungsmodell
-    \item eignet sich zur Darstellung von glatten, plastikähnlichen Oberflächen
+    \item zur Darstellung von glatten, plastikähnlichen Oberflächen
     \item widerspricht dem Energieerhaltungssatz
     \item Allgemein: $L=I_{out}=I_{ambient}+I_{diffus}+I_{specular}$
     \item Ambiente: $I_{ambient}=I_a * k_a$
-    \item Diffus: $I_{diffus}=I_{in}*k_d*\cos(\phi)$ 
-    \item Spiegelnd: $I_{specular}=I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n({\theta})$ 
+    \item Diffus: $I_{diffus}=I_{in}*k_d*\cos(\phi)$
+    \item Spiegelnd: $I_{specular}=I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n({\theta})$
     \begin{itemize*}
       \item $I$ Lichtstärke/Intensität der Lichtquelle
       \item $k_a$ Materialkonstante
       \item $k_{d/s}$ empirischem Reflexionsfaktor
-      \item $\phi$ Winkel zwischen Oberflächennormale und Richtung des einfallenden Lichtstrahls
-      \item $\theta$ Winkel zwischen idealer Reflexionsrichtung des Lichtstrahls und Blickrichtung
+      \item $\phi$ Winkel: Oberflächennormale - Richtung Lichtstrahl
+      \item $\theta$ Winkel: ideale Reflexionsrichtung - Blickrichtung
       \item $n$ konstante Exponent zur Beschreibung der Oberflächenbeschaffenheit
     \end{itemize*}
     \item $\frac{n+2}{2\pi}$ Normalisierungsfaktor zur Helligkeitsregulierung
-    \item Vollständig: $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
+    \item $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
   \end{itemize*}
   
   \paragraph{Cook-Torrance}
   \begin{itemize*}
-    \item Streuung des Lichts (Keule) um den Winkel der idealen Spiegelung herum
+    \item Lichtstreuung um Winkel der idealen Spiegelung
     \item Berücksichtigt auch die gegenseitigen Abschattung
-    \item Vollständig physikbasiertes Modell, keine willkürlichen Reflexionskonstanten, spekulare Reflexion
+    \item Vollständig physikbasiertes Modell, spekulare Reflexion
     \item Aufwendige Berechnung
     \item Beckmann-Verteilung: $l_{spec}=\frac{exp(-\frac{tan^2(\alpha)}{m^2})}{\pi m^2 cos^4 (\alpha)}$ mit $\alpha=arccos(N*H)$
   \end{itemize*}
   
+  \newpage
   \section{Schattierungsverfahren}
   \subsection{ Direkte Schattierung}
   Bisher:
@@ -978,7 +926,7 @@
   
   Auswirkungen
   \begin{itemize*}
-    \item "flaches" Aussehen und Helligkeitssprünge an den Kanten, das ist:
+    \item 'flaches' Aussehen und Helligkeitssprünge an den Kanten, das ist:
     \item schlecht für Fotorealismus,
     \item gut für abstraktere technische Darstellungen und
     \item u.U. wichtig für realistische Darstellung kantiger Körper (insbes. wenn pro Eckpunkt nur eine Normale modelliert ist).
@@ -995,8 +943,8 @@
     \item beseitigt damit die Diskontinuitäten des Flat-Shadings,
     \item meist gleiche Normalen pro Vertex, d.h. pro Dreieck wirken oft 3 verschiedene Richtungsvektoren statt nur eine Normale (Dreiecksmitte) wie beim Flat-Shading und
     \item lineare Interpolation der Schattierung (Intensitäten) im Inneren des Dreiecks aus den 3 Farbwerten der Eckpunkte.
-    \item Es werden "Normalenvektoren" $n_i$ für jeden Eckpunkt $P_i$ des Polygons ermittelt bzw. ausgelesen.
-    \item Die Herleitung der "Normalenvektoren" $n_i$ ist aus der Originaloberfläche (z.B. Zylinder, Kegel, Bèzier-Fläche) oder Nachbarpolygonen möglich.
+    \item Es werden 'Normalenvektoren' $n_i$ für jeden Eckpunkt $P_i$ des Polygons ermittelt bzw. ausgelesen.
+    \item Die Herleitung der 'Normalenvektoren' $n_i$ ist aus der Originaloberfläche (z.B. Zylinder, Kegel, Bèzier-Fläche) oder Nachbarpolygonen möglich.
     \item Für jeden Eckpunkt: Berechnung der Beleuchtungsintensität $I_i$ (z. B. nach dem Phong-Beleuchtungsmodell).
     \item Normalen $n_i$ der Eckpunkte werden entweder direkt aus den Flächen (z.B. Regelgeometrien, bei Kugel z.B. Richtung des Radiusvektors) oder aus den Flächennormalen der benachbarten Polygone durch flächengewichtete Mittelung berechnet.
     \item Die Schattierungsrechnung (RGB-Werte) erfolgt für die Eckpunkte und liefert die reflektierte Leuchtdichte $I_i$ . Zur Erinnerung, das Phong-Beleuchtungsmodell:
@@ -1032,9 +980,9 @@
   \begin{itemize*}
     \item Bei Sprüngen in der Helligkeitsänderung (c0-Stetigkeit, c1-Unstetigkeit, typisch für Approximation durch ebene Polygone beim Gouraud-Shading, z.B. Zylinder) stört dieser Effekt u. U. erheblich.
     \item Gleiche Information benachbarter Rezeptoren wirkt bei der weiteren visuellen Verarbeitung lateral hemmend auf die lokale Lichtempfindung.
-    \item Modellhaft entstehen neben dem eigentlichen Helleindruck auch "Signale", die dem Helligkeitsgradienten (erste Ableitung) und dem Laplacefilter-Output (Laplacian of Gaussian / LoG, zweite Ableitung) entsprechen.
+    \item Modellhaft entstehen neben dem eigentlichen Helleindruck auch 'Signale', die dem Helligkeitsgradienten (erste Ableitung) und dem Laplacefilter-Output (Laplacian of Gaussian / LoG, zweite Ableitung) entsprechen.
     \item Die Empfindung wird insgesamt nicht nur durch die Lichtintensität selbst, sondern auch durch die Überlagerung mit ihrer ersten und zweiten räumlichen Ableitung bestimmt.
-    \item Das führt zu einer Verstärkung von Konturen an "Sprungkanten" (c0-Unstetigkeiten, Intensitätssprünge). In der dunklen Fläche zeigt sich eine dunklere, in den hellen Flächen eine hellere Kantenlinie. Dort, wo Konturen vorhanden sind, ist das vorteilhaft (evolutionäre Entwicklung der menschlichen visuellen Wahrnehmung), obwohl Täuschungen damit verbunden sind (photometrischer Eindruck).
+    \item Das führt zu einer Verstärkung von Konturen an 'Sprungkanten' (c0-Unstetigkeiten, Intensitätssprünge). In der dunklen Fläche zeigt sich eine dunklere, in den hellen Flächen eine hellere Kantenlinie. Dort, wo Konturen vorhanden sind, ist das vorteilhaft (evolutionäre Entwicklung der menschlichen visuellen Wahrnehmung), obwohl Täuschungen damit verbunden sind (photometrischer Eindruck).
     \item zunächst Kanten: Liegen eine helle und eine dunkle Fläche nebeneinander, beobachtet man einen dunklen Streifen auf der dunkleren Seite und einen hellen Streifen auf der helleren Seite (Kontrastverstärkung).
     \item Bei einer Abfolge von Flächen unterschiedlicher Graufärbung, die in sich keine Farbgraduierung haben, beobachten wir entlang der Grenzen machsche Streifen (nach Ernst Mach 1865). Dabei handelt es sich um helle und dunkle Streifen, die den Kontrast zwischen den Flächen verstärken. [Quelle: Wikipedia]
   \end{itemize*}
@@ -1101,7 +1049,7 @@
     \item Ähnliche Vorgehensweise wird auch für das Schattieren von semi-transparenten Flächen notwendig (s. später)!
   \end{itemize*}
   
-  Als Sortierverfahren für Echtzeitsysteme eignet sich z.B. "Insertion-Sort":
+  Als Sortierverfahren für Echtzeitsysteme eignet sich z.B. 'Insertion-Sort':
   \begin{itemize*}
     \item Begründung: Von Bild zu Bild ändert sich die Tiefenwerte (und damit die Reihenfolge) der Polygone relativ wenig. Damit sind die Polygone beim nächsten Bild bereits mehr oder weniger vorsortiert (nur wenige Polygone) müssen neu einsortiert werden. Die Komplexität von Insertion-Sort wird bei bereits sortierten Listen linear (O-Notation / best case).
     \item Folglich tritt beim Painters-Algorithmus der best case sehr häufig ein (außer beim ersten Bild, wo man vom average case ausgehen kann- hier wird die Komplexität quadratisch).
@@ -1109,7 +1057,7 @@
   
   \paragraph{Z-Buffer-Verfahren}
   \begin{itemize*}
-    \item Einer der einfachsten "visible surface"-Algorithmen (CATMULL 1974)
+    \item Einer der einfachsten 'visible surface'-Algorithmen (CATMULL 1974)
     \item Probleme des Painters-Algorithmus werden überwunden durch zusätzliche Berechnung des z-Wertes für jeden Punkt jedes Polygons und Speicherung des zur Projektionsebene nächstliegenden Farb- und Z-Wertes.
     \item Dazu ist ein zusätzlicher Speicher (z-Buffer) für jedes Pixel notwendig.
     \item Es sind weder Vorsortieren von Objekten noch Polygonzerlegung erforderlich (wenn alle Objekte opak sind).
@@ -1156,7 +1104,7 @@
     \item Achtung: Eine lineare Interpolation der z-Werte im Bildraum (links) ist nicht wirklich korrekt! (höchstens als Näherung, OK für kleine nahe Flächen)
     \item $\frac{1}{z}$ kann exakt linear in x- \& y-Richtung interpoliert werden (Abbildung rechts).
     \item Da $z_1$ abnimmt, wenn z zunimmt, muss aber der z-Test invertiert werden!
-    \item positive Auswirkung: Tiefeninfos naher Obj. werden mit höherer z-Genauigkeit gespeichert als weiter von der Kamera entfernte. Statistisch gesehen gibt es damit weniger "z-Fighting“-Effekte (z.B. bei Bewegungen willkürliche Farbwechsel zwischen den Farben von Objekten mit nahezu der selben Tiefeninfo im z-Buffer).
+    \item positive Auswirkung: Tiefeninfos naher Obj. werden mit höherer z-Genauigkeit gespeichert als weiter von der Kamera entfernte. Statistisch gesehen gibt es damit weniger 'z-Fighting“-Effekte (z.B. bei Bewegungen willkürliche Farbwechsel zwischen den Farben von Objekten mit nahezu der selben Tiefeninfo im z-Buffer).
   \end{itemize*}
   
   %![Z-Buffer-Beispiel; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Z-buffer-verfahren.png)
@@ -1193,18 +1141,19 @@
     \item Erläuterung zum Transparenz-Problem:
     \item Die Formel für $\alpha$-Blending berücksichtigt nur die Überlagerung des aktuellen Objektes mit dem davor existierenden Bildschirminhalt. Wird ein dazwischenliegendes Objekt nachträglich gezeichnet, dann kann die Farbe nicht korrekt bestimmt werden. Dies passiert aber beim Z-Buffering, da die Zeichenreihenfolge der Polygone beliebig ist.
     \item **Im Beispiel**
-    \item Die opake grüne Kreisscheibe liegt zwischen dem hinteren Objekt (blau) und dem transparenten vorderen Objekt (rot), wird aber als letztes gerendert. $\rightarrow$ Grün kann Blau nicht mehr verdecken, denn Blau wurde zuvor schon mit Rot verrechnet (ist nun mit "vorderer" z-Koordinate im Z-Buffer hinterlegt). Dort, wo die grüne Kreisscheibe hinter dem transparenten Rot (bzw. dem nun Rot-Blau) liegt wird ein nicht korrekter Blauanteil gezeigt. Auch der weiße Hintergrund kann hinter dem transparenten Rot (insgesamt ein transparentes Rosa) nicht mehr vom Grün verdeckt werden!
+    \item Die opake grüne Kreisscheibe liegt zwischen dem hinteren Objekt (blau) und dem transparenten vorderen Objekt (rot), wird aber als letztes gerendert. $\rightarrow$ Grün kann Blau nicht mehr verdecken, denn Blau wurde zuvor schon mit Rot verrechnet (ist nun mit 'vorderer' z-Koordinate im Z-Buffer hinterlegt). Dort, wo die grüne Kreisscheibe hinter dem transparenten Rot (bzw. dem nun Rot-Blau) liegt wird ein nicht korrekter Blauanteil gezeigt. Auch der weiße Hintergrund kann hinter dem transparenten Rot (insgesamt ein transparentes Rosa) nicht mehr vom Grün verdeckt werden!
     \item algorithmische Lösung des Problems:
     \item Zuerst: Darstellung aller opaken Objekte ($\alpha$ = 1) nach dem Z-Buffering (reihenfolgeunabhängig)
     \item Dann Sortieren aller semitransparenten Polygone nach der Tiefe und Zeichnen nach dem Painters-Algorithmus unter Berücksichtigung des Z-Buffers mittels Alpha-Blending!
     \item Restfehler: sich zyklisch überlappende oder sich durchdringende semi-transparente Flächen $\rightarrow$ exakte Behandlung durch die vorn beschriebenen Maßnahmen (Unterteilung der Polygone notwendig!)
   \end{itemize*}
   
+  \newpage
   \section{Globale Beleuchtung}
   \begin{itemize*}
     \item BRDF: physikbasiertes, lokales Reflektionsmodell (Lichtquelle auf Material) $\rightarrow$ Funktion von Einfalls-, Betrachterwinkel, Wellenlänge (bzw. -breiche)
     \item Rendergleichung (Kajiya) = BRDF, Integral über alle Lichtquellen (bzw. Hemisphäre)
-    \item Approximation durch lokales Phong-Beleuchtungsmodell $\rightarrow$ für "einfache" Materialien und Lichtquellen "korrekt genug"
+    \item Approximation durch lokales Phong-Beleuchtungsmodell $\rightarrow$ für 'einfache' Materialien und Lichtquellen 'korrekt genug'
     \item direkte (lokale) Schattierungsverfahren (Flat-, Gouraud- und Phong-Shading)
     \item Was noch fehlt: Interreflektionen zwischen Objekten...
     \item globale Beleuchtung, d.h. jede Fläche kann als Lichtquelle dienen
@@ -1262,7 +1211,7 @@
   **Monte Carlo Ray-Tracing**:
   \begin{itemize*}
     \item Reflexion ist selten ideal spekular, meist entsteht ein Bündel von Strahlen
-    \item Ansatz: Verfolgung mehrerer "zufälliger" Sekundärstrahlen, deren Beitrag zum Farbwert des Pixel statistisch gewichtet wird.
+    \item Ansatz: Verfolgung mehrerer 'zufälliger' Sekundärstrahlen, deren Beitrag zum Farbwert des Pixel statistisch gewichtet wird.
     \item Je gestreuter die Reflexion, um so mehr Sekundärstrahlen sind nötig. Sehr breite Remissionskeulen oder gar diffuse Interreflexionen sind wegen des Aufwandes nicht (bzw. nur schwer) behandelbar.
   \end{itemize*}
   
@@ -1416,13 +1365,14 @@
     \item verschiedene Verfahren können kombiniert werden um die globale Beleuchtungsphänomene effizienter zu berechnen. - z. B. Radiosity + Ray Tracing: Indirekte diffuse Beleuchtung + Spiegelung und Schatten, etc.
   \end{itemize*}
   
+  \newpage
   \section{Texture Mapping}
   \subsection{ Bildbasiertes Rendering}
   \paragraph{Überblick}
   \begin{itemize*}
     \item typische Anwendung: Applizieren von 2D-Rasterbildern auf 3D-Modellen
     \item Beispiele: Hausfassade, Holz-, Marmor-, Steintexturen, Tapeten, Stoffe etc.
-    \item 3D-Objekte mit relativ einfachen Polygonen modelliert. - Details als Texturen, (d.h. als Raster-Bilder) - gelegentlich "Impostor" genannt.
+    \item 3D-Objekte mit relativ einfachen Polygonen modelliert. - Details als Texturen, (d.h. als Raster-Bilder) - gelegentlich 'Impostor' genannt.
     \item Texture-Mapping als Erweiterung des einfachen Pattern-Filling (siehe. Polygonfüllalgorithmus)
     \item als Verallgemeinerung auch Image-based Rendering genannt
     \item Verwendung unterschiedlicher 3D-Transformationen und Beleuchtungsarten
@@ -1431,8 +1381,8 @@
   
   Erzeugung von Texturen:
   \begin{itemize*}
-    \item "reale" Texturen aus realen rasterisierten/digitalen Fotografien (aus Pixeln = "Picture-Elementen" werden Texel = "Texturelemente") vs.
-    \item "berechnete" Texturen $\rightarrow$ synthetische Computergrafik-Bilder:
+    \item 'reale' Texturen aus realen rasterisierten/digitalen Fotografien (aus Pixeln = 'Picture-Elementen' werden Texel = 'Texturelemente') vs.
+    \item 'berechnete' Texturen $\rightarrow$ synthetische Computergrafik-Bilder:
     \item vorberechnete reguläre Texturen (basieren auf Texeln) vs.
     \item nach Bedarf erzeugte statistische bzw. prozedurale Texturen (Absamplen von mathematischen Beschreibungen, ggf. beliebig genau)
   \end{itemize*}
@@ -1440,7 +1390,7 @@
   Anwendung von Texturen - Grundprinzipien:
   \begin{itemize*}
     \item Transformation des Texturraums in den Bildraum der Darstellung: Verwendung unterschiedlicher geometrischer Transformationen (je nach Anwendungszweck)
-    \item Resampling: transformiertes Texturraster wird aufs Bildraster "gerundet"
+    \item Resampling: transformiertes Texturraster wird aufs Bildraster 'gerundet'
     \item Filtern: Verhindern/Abmildern von resampling-basierten Aliasing-Effekten
     \item Beleuchtung: RGB-Werte der Textur dienen als Materialattribute bei der Beleuchtungsrechnung
   \end{itemize*}
@@ -1627,7 +1577,7 @@
   
   High-dynamic Range Imaging (HDRI) Env-Maps:
   \begin{itemize*}
-    \item enthalten "gesamte Dynamik" des Lichts (als Floating Point Farbwerte)
+    \item enthalten 'gesamte Dynamik' des Lichts (als Floating Point Farbwerte)
     \item Wesentlich realistischere Bilder!
     \item Tone Mapping: berechnete HDRI-Bilder werden anschließend auf die Dynamik des Monitors reduziert
     \item Refraktion / Brechung mit Environment Maps:
@@ -1640,7 +1590,7 @@
   \subsection{ Mip-Mapping}
   Was? aus Originaltextur Bildung einer Menge jeweils kleinerer Texturen (halbe Kantenlänge)
   
-  Wozu? Vermeidung/Abmilderung von Aliasing-Effekten durch "Vorfilterung" und Anwendung der passend aufgelösten Textur(-en) (1 Pixel $\approx$ 1 Texel) per bilinearer Filterung oder trilinearer Filterung
+  Wozu? Vermeidung/Abmilderung von Aliasing-Effekten durch 'Vorfilterung' und Anwendung der passend aufgelösten Textur(-en) (1 Pixel $\approx$ 1 Texel) per bilinearer Filterung oder trilinearer Filterung
   
   \paragraph{Sampling-Artefakte}
   Aliasing-Effekte durch Koordinatentransformation:
@@ -1662,7 +1612,7 @@
   Beispiel perspektivische Verkürzung der Schachbretttextur:
   \begin{itemize*}
     \item in Realität eigentlich starke Verkleinerung der Textur bei größerer Entfernung!
-    \item $\rightarrow$ Moiré Muster - Originaltextur ist an diesen entfernten Stellen im Bild zur Laufzeit nicht mehr erkennbar (Unterabtastung, aus mehreren Texeln, welche "hinter einem Pixel liegen“, wird nur einer ausgwählt)
+    \item $\rightarrow$ Moiré Muster - Originaltextur ist an diesen entfernten Stellen im Bild zur Laufzeit nicht mehr erkennbar (Unterabtastung, aus mehreren Texeln, welche 'hinter einem Pixel liegen“, wird nur einer ausgwählt)
     \item Treppenstufen im Nahbereich resultieren aus Überabtastung (mehrere Pixel teilen selben Texel)
     \item Lösung: Textur muss vorher passend durch Tiefpassfilter in der Auflösung reduziert werden $\rightarrow$ Aufbau und Anwendung einer Mip-Map
     \item Ziel der Mip-Map: stets 1 Texel pro Pixel bereitstellen
@@ -1722,7 +1672,7 @@
   \paragraph{Anti-Aliasing}
   Anti-Aliasing durch trilineare Filterung:
   \begin{itemize*}
-    \item Durch die perspektivische Verkürzung wird eine weiter hinten liegende Textur verkleinert und im Vordergrund vergrößert. Bei einer Skalierung kleiner als 1 überspringt die gerundete inverse Texturtransformation Pixel in der Textur (minification). Die im Bildraum gesampelten Texturpixel werden somit "willkürlich" ausgewählt. Dadurch können Treppenstufen und Moiré-Muster entstehen (Aliasing-Effekt: linkes Bild). Durch Mip-Mapping werden an diesen Stellen geringer aufgelöste (gefilterte) Texturen verwendet (Rechtes Bild: Mit Mip-Mapping und tri-linearer Filterung wird ein Anti- Aliasing-Effekt erreicht)
+    \item Durch die perspektivische Verkürzung wird eine weiter hinten liegende Textur verkleinert und im Vordergrund vergrößert. Bei einer Skalierung kleiner als 1 überspringt die gerundete inverse Texturtransformation Pixel in der Textur (minification). Die im Bildraum gesampelten Texturpixel werden somit 'willkürlich' ausgewählt. Dadurch können Treppenstufen und Moiré-Muster entstehen (Aliasing-Effekt: linkes Bild). Durch Mip-Mapping werden an diesen Stellen geringer aufgelöste (gefilterte) Texturen verwendet (Rechtes Bild: Mit Mip-Mapping und tri-linearer Filterung wird ein Anti- Aliasing-Effekt erreicht)
     \item Vergrößerte Darstellung: Trilinearen Filterung = lineare Filterung zwischen den zwei aufeinander-folgenden (am besten passenden) Mip-Map-Stufen + bilineare Filterung in jeder der beiden Stufen. $\rightarrow$ Kantenglättung, Tiefpassfilter (Mittelwert / hier Grauwerte)
   \end{itemize*}
   
@@ -1764,7 +1714,7 @@
     \item Normal-Map: Normalen Vektor x/y/z als RGB-Wert kodiert
     \item Polygon: als Schnitt mit Normalenrichtung
     \item Anwendung der Normal-Map auf Polygonfläche: Die Normale der N-Map modifiziert die Flächennormale (räumliche Drehung). Bei der Beleuchtungsberechnung wird für jedes Pixel die modifizierte Normale verwendet.
-    \item Ein "Offset" wird nicht berücksichtigt! $\rightarrow$ Als Konturen nicht erkennbar!
+    \item Ein 'Offset' wird nicht berücksichtigt! $\rightarrow$ Als Konturen nicht erkennbar!
   \end{itemize*}
   
   \paragraph{Parallax-Map}
@@ -1855,7 +1805,7 @@
     \item Texturinhalt als Material, Beleuchtung, Geometrie interpretiert
   \end{itemize*}
   
-  
+  \newpage
   \section{Grafik Pipeline}
   \begin{itemize*}
     \item algorithmisches Konzept, sowie Realisierung der Grafikkartenhardware ist vergleichbar mit Fließband
@@ -1969,6 +1919,7 @@
   %\subsection{Hardware-Architektur
   %![GPU Architektur](Assets/Computergrafik_GPU_Hardware.png)
   
+  \newpage
   \section{Bildverarbeitung}
   \subsection{Operationen auf dem Bildraster}
   Problem der Vorwärtstransformation:
@@ -2098,7 +2049,7 @@
     \item z.B. Skalarprodukte zwischen zwei Bildern (Linearkombination lineare Unabhängigkeit)
     \item Basistransformation: Ganze Bilder (als Vektoren) dienen als Basis eines transformierten Bildraumes.
     \item Die neuen Basisvektoren müssen linear unanhängig sein und idealerweise orthonormal zueinander stehen.
-    \item Eine Basistransformation entspricht einer "Drehung" des Vektorraumes um den Nullpunkt.
+    \item Eine Basistransformation entspricht einer 'Drehung' des Vektorraumes um den Nullpunkt.
   \end{itemize*}
   
   \paragraph{Transformation}

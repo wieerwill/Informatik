@@ -1463,7 +1463,7 @@
     \item Abbildung Texturpixels auf mehrere Bildpixel (Überabtastung - Magnification)
     \item Filteroperationen zur Interpolation der Bildpixel-Färbung notwendig
     \item Ansonsten Verletzung des Abtasttheorems/Nyquistfrequenz
-  \end{itemize*}  
+  \end{itemize*}
   
   \paragraph{Aufbau}
   \begin{itemize*}
@@ -1471,18 +1471,18 @@
     \item im Bild oft Unter- oder Überabtastung und Aliasing
     \item Vorberechnung derselben Textur für versch. Entfernungen
     \begin{itemize*}
-    \item Stufe 1: volle Auflösung
-    \item Stufe 2: halbe Auflösung in jeder Richtung $(1/2)$
-    \item Stufe k: Auflösung $(1/2)^k$
-    \item Stufe n: niedrigste Auflösung (je 1 Pixel für RGB)
+      \item Stufe 1: volle Auflösung
+      \item Stufe 2: halbe Auflösung in jeder Richtung $(1/2)$
+      \item Stufe k: Auflösung $(1/2)^k$
+      \item Stufe n: niedrigste Auflösung (je 1 Pixel für RGB)
     \end{itemize*}
     \item Speicherbedarf:
     \item (hypothetische) Annahme: Anordnung im Array (getrennt f. RGB) $\rightarrow$ Alle niedrigen Auflösungen verbrauchen zusammen nur ein Viertel des Speicherplatzes
     \item Mip:\textit{multum in parvo} = viel (Info) auf wenig (Speicher)
     \item niedrige Auflösungsstufen werden durch Filterung aus den höheren berechnet
     \begin{itemize*}
-    \item einfach: z.B. Mittelwert aus 4 Pixeln (Box-Filter)
-    \item aufwendiger: z.B.: Gaußfilter
+      \item einfach: z.B. Mittelwert aus 4 Pixeln (Box-Filter)
+      \item aufwendiger: z.B.: Gaußfilter
     \end{itemize*}
     \item Filter-Operationen können bei Initialisierung der Textur vorausberechnet werden
     \item nur ein Drittel zusätzlicher Speicherplatzbedarf
@@ -1501,7 +1501,7 @@
     \item passende Auflösungsstufe k Skalierung berechnet aus der Entfernung zum Betrachter und der perspektivischen Verkürzung: $d/z = (1/2)^k \rightarrow k = log_2(z)-log_2(d)$
     \item Transformation der Pixel zwischen Textur- Eckkoordinaten der gewählten Auflösung auf Polygon im Bildraum
     \item Vermeidung von Aliasing-Effekten durch Trilineare Filterung: Mip-Map-Stufe wird linear gewichtet zwischen zwei Mip-Map-Stufen interpoliert: z. B. wenn $k = 2.3 \rightarrow 30\% Anteil_{k=3}$ und $70\% Anteil_{k=2}$
-  \end{itemize*}  
+  \end{itemize*}
   
   \paragraph{Anti-Aliasing}
   durch trilineare Filterung
@@ -1522,7 +1522,7 @@
     \item Verschiedene Auflösungsstufen in x- und y-Richtung erzeugt
     \item Vierfacher Speicherbedarf gegenüber höchster Auflösung
   \end{itemize*}
-
+  
   \paragraph{Bump-Map}
   \begin{itemize*}
     \item Reliefartige Texturen: Herkömmliche Texturen von Nahem erscheinen flach
@@ -1559,15 +1559,15 @@
   \end{itemize*}
   
   \subsection{Shadow Mapping}
-    \begin{itemize*} 
-      \item Erzeugen der Shadow Map
-      \item Darstellung (mit z-Werten) aus Sicht der Lichtquelle
-      \item Kamera Koordinaten in Lichtquelle zentriert (Matrix L)
-      \item z-Puffer als Textur speichern
-      \item Kamera Ansicht: View Matrix V (mit z-Puffer)
-      \item Um Schatten zu erzeugen benötigen wir Shader mit Lookup
-      \item 4x4-Matrix: $M = V^{-1}*L$
-    \end{itemize*}
+  \begin{itemize*} 
+    \item Erzeugen der Shadow Map
+    \item Darstellung (mit z-Werten) aus Sicht der Lichtquelle
+    \item Kamera Koordinaten in Lichtquelle zentriert (Matrix L)
+    \item z-Puffer als Textur speichern
+    \item Kamera Ansicht: View Matrix V (mit z-Puffer)
+    \item Um Schatten zu erzeugen benötigen wir Shader mit Lookup
+    \item 4x4-Matrix: $M = V^{-1}*L$
+  \end{itemize*}
   %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_ShadowMap.png)
   
   Shadow map look-up:
@@ -1590,7 +1590,7 @@
   \end{itemize*}
   \begin{description*}
     \item[Uniform Shadow-Map] Probleme: zu niedrige Auflösung der Shadow Map im Nahbereich, Großteil der Shadow Map ist irrelevant für Kameraansicht
-  \item[Perspektive Shadow-Map] adaptive schiefsymtetrische Projektion; nicht uniforme perspektive Shadow Map
+    \item[Perspektive Shadow-Map] adaptive schiefsymtetrische Projektion; nicht uniforme perspektive Shadow Map
   \end{description*}
   
   \subsection{Zusammenfassung}
@@ -1615,98 +1615,107 @@
   \end{itemize*}
   
   \subsection{Bestandteile}
-  Programm API -> Treiber -> Vertex-Verarbeitung -> Primitivenbehandlung -> Rasterisierung \& Interpolation -> Fragment Verarbeitung -> Rasteroperation -> Bildspeicher
+  \begin{enumerate*}
+    \item Programm API 
+    \item Treiber 
+    \item Vertex-Verarbeitung 
+    \item Primitivenbehandlung 
+    \item Rasterisierung \& Interpolation 
+    \item Fragment Verarbeitung 
+    \item Rasteroperation 
+    \item Bildspeicher
+  \end{enumerate*}
   
-  \subsection{Allgemeines}
+  \subsection{Allgemein}
   \begin{itemize*}
     \item Anwendungsprogramm:
     \begin{itemize*}
       \item läuft auf der CPU,
       \item definiert Daten und Befehlsabfolge,
-      \item greift dazu über das Grafik-API (Application Programming Interface, z. B. OpenGL, Direct3D) auf die Grafikkarte zu
+      \item greift dazu über das Grafik-API (z.B. OpenGL, Direct3D) auf die Grafikkarte zu
     \end{itemize*}
-    \item Treiber: übersetzt die Grafikbefehle des Programms in die Maschinensprache der speziellen Grafikhardware (Graphics Processing Unit / GPU, z.B. von nVidia, AMD oder Intel)
+    \item Treiber: übersetzt die Grafikbefehle des Programms in die Maschinensprache der speziellen Grafikhardware (Graphics Processing Unit)
     \item Befehle und Daten werden über den Bus (z.B. PCI-Express) von der CPU auf die GPU übertragen
     \item OpenGL-Pipeline: Abarbeitung der Grafikbefehle auf der GPU
     \item Ausgabe des Bildspeichers auf dem Monitor
     \item Treiber schickt Daten/Befehle an die GPU (z. B. via PCIe -Bus)
-    \item Funktionsausführung auf der GPU ist dann abhängig vom aktuellen Zustand (OpenGL State Machine bzw. den gewählten Shadern):z.B. vorher definierter Primitivtyp (hier GL Polygon), Transformation, Lichtquellen, Interpolationsart (z.B. Gouraud Shading vs. Flat Shading)
+    \item Funktionsausführung auf der GPU ist dann abhängig vom aktuellen Zustand
   \end{itemize*}
   
-  Abarbeitungsreihenfolge auf der GPU:
+  \paragraph{Abarbeitungsreihenfolge auf der GPU}
   \begin{itemize*}
-    \item Empfangen der Vertices in einer geordneten Sequenz.
-    \item Vertexverarbeitung via Vertex Shader. Jeder Input-Vertex im Datenstrom wird in einen Output-Vertex transformiert und beleuchtet.
+    \item Empfangen der Vertices in einer geordneten Sequenz
+    \item Vertexverarbeitung via Vertex Shader. Jeder Input-Vertex im Datenstrom wird in einen Output-Vertex transformiert und beleuchtet
     \item Primitive culling (Verwerfen wenn nicht sichtbar) und clipping (Abschneiden der Polygone am Rand)
     \item Rasterkonvertierung (Polygon Filling) und Interpolation der Attributwerte (x-Koordinate, 1/z, R, G, B, Texturkoordinaten u/v, ...)
-    \item Die Daten jedes Fragmentes (Pixel/Subpixel) wird mit einem Fragment Shader verarbeitet. Zu jedem Fragment gehört eine Anzahl Attribute.
+    \item Die Daten jedes Fragmentes (Pixel/Subpixel) wird mit einem Fragment Shader verarbeitet. Zu jedem Fragment gehört eine Anzahl Attribute
     \item Per-Sample Operationen: Blending (Alpha-Blending bei Transparenz), Tiefen- und Stencil- Operationen ...
   \end{itemize*}
   
-  
   \subsection{Vertex-Verarbeitung}
-  \begin{itemize*}
-    \item Transformationen: Modell-Transformation, Kamera-Transformation (Model View Matrix) → Matrixmultiplikationen → Skalarprodukt
-    \item Beleuchtung (Lighting): Lichtquellen, diffuses \& spekuläres Material: (Gouraud Shading) Lambert, Phong-Modell → Skalarprodukt
-    \item Skalarprodukte (Gleitkomma-Multiplikationen und Additionen) werden durch viele parallele Prozessoren auf der GPU effizient verarbeitet.
-  \end{itemize*}
+  \begin{description*}
+    \item[Transformationen] Modell-Transformation, Kamera-Transformation (Model View Matrix) $\rightarrow$ Matrixmultiplikationen $\rightarrow$ Skalarprodukt
+    \item[Beleuchtung] Lichtquellen, diffuses \& spekuläres Material: Lambert, Phong-Modell $\rightarrow$ Skalarprodukt
+    \item[Skalarprodukte] (Gleitkomma-Multiplikationen und Additionen) werden durch viele parallele Prozessoren auf der GPU effizient verarbeitet
+  \end{description*}
   
   %\subsection{Primitive & Primitivenbehandlung}
   %![Primitive; Quelle Computergrafik Vorlesung 2020/21](Assets/Computergrafik-Renderpipeline-primitive.png)
   
   \subsection{Rasterkonvertierung}
   \begin{itemize*}
-    \item Edge Tables bereits erzeugt (Polygonsetup in Primitivenbeh.)
-    \item Rasterkonvertierung/Interpolation entspricht der Scan-Line-Konvertierung (s. Polygonfüllalgoritmus), generiert Pixel (Fragments)
-    \item Interpolation der x-Werte der Kanten (siehe left edge scan /bzw. right edge scan)
-    \item pro Scan Line: inkrementiere x-Wert (left edge, right edge) (OpenGL behandelt nur konvexe Polygone/Dreiecke – d. h. immer 2 Kanten pro Bildzeile!)
-    \item lineare Interpolation weiterer Attribute:
+    \item Edge Tables bereits erzeugt (Polygonsetup)
+    \item Rasterkonvertierung/Interpolation entspricht der Scan- Line-Konvertierung, generiert Pixel (Fragments)
+    \item Interpolation der x-Werte der Kanten (left/right edge scan)
+    \item pro Scan Line: inkrementiere x-Wert (left/right edge)
+    \item lineare Interpolation weiterer Attribute
     \begin{itemize*}
-      \item z (1/z)-Werte,
+      \item $z (1/z)$-Werte,
       \item RGB-Werte (Gouraud Shading),
       \item Texturkoordinaten u/v (affines Texturmapping),
       \item Normalen (Phong Shading)
     \end{itemize*}
     \item sehr wenige Ganzzahloperationen pro Pixel/Bildzeile
-    \item Ausnahmen: z. B. perspektivische Texture Maps (FP-Division!)
+    \item Ausnahme z.B. perspektivische TM (FP-Division)
   \end{itemize*}
   
-  
   \subsection{Fragment-Verarbeitung}
-  Weiterverarbeitung auf Basis der interpolierten Attribute im Fragment Shader
-  
-  Beispiel Phong-Shading: Berechnung des Phong-Beleuchtungsmodells auf Basis der vorher linear interpolierten Fragmentnormalen, -position und Materialdaten sowie der Daten der Lichtquellen und Kameraposition
+  \begin{itemize*}
+    \item Weiterverarbeitung auf Basis der interpolierten Attribute im Fragment Shader
+    \item Beispiel Phong-Shading: Berechnung des Phong-Beleuchtungsmodells auf Basis der vorher linear interpolierten Fragmentnormalen, -position und Materialdaten sowie der Daten der Lichtquellen und Kameraposition
+  \end{itemize*}
   
   \subsection{Rasteroperationen}
   \begin{itemize*}
     \item Abschließende Auswahl/Zusammenfassung der berechneten Fragmentdaten (pro Pixel)
-    \item Beispiel: nicht transparente Objekte, Übernahme der Farbwerte mit z-Position, welche am dichtesten an der Kamera ist (z-Buffer)
-    \item Beispiel: transparente Objekte (z.B. Glashaus), lineares Blending zwischen schon existierenden Farbwerten und neuesten entsprechend der Transparenz
+    \item Beispiel: nicht transparente Objekte, Übernahme der Farbwerte mit z-Position, welche am dichtesten an der Kamera ist
+    \item Beispiel: transparente Objekte, lineares Blending zwischen schon existierenden Farbwerten und neuesten entsprechend der Transparenz
   \end{itemize*}
   
   \subsection{Performance}
   Einfaches Modell zur Bestimmung der Rechenzeit T:
-  $T = a * \text{Anzahl Vertices} + b * \text{Anzahl Bildpixel}$ (a = Aufwand pro Vertex, b = Aufwand pro Pixel)
+  $$T = a * \text{Anzahl Vertices} + b * \text{Anzahl Bildpixel}$$
+  (a = Aufwand pro Vertex, b = Aufwand pro Pixel)
   
   \begin{itemize*}
     \item Grafikkarten geben ihre Performance an in:
     \begin{itemize*}
-      \item  Anzahl Polygone / Sekunde (Polygone mit kleiner Pixelanzahl)
+      \item Anzahl Polygone / Sekunde (Polygone mit kleiner Pixelanzahl)
       \item Anzahl verarbeitete Pixel / Sekunde
-      \item  z.B. ca. 100 Millionen Polygone/sec à 10 Pixel / Polygon (mit Texturen, tri-lineare Filterung, etc. mehrere Milliarden Pixel / s (Gouraud Shader) (Angaben: nVidia Geforce 6800 - Jahr 2005)
     \end{itemize*}
-    \item Problem der Grafik-Pipeline: Flaschenhals! - Langsamste Operation hält Pipeline auf (bestimmt Durchsatz) → Zwei extreme Situationen:
+    \item Problem der Grafik-Pipeline: Langsamste Operation hält Pipeline auf (bestimmt Durchsatz) 
+    \item $\rightarrow$ Zwei extreme Situationen:
+    \begin{description*}
+      \item[Vertex-limited] viele Vertices, kleine Polygone (wenige Pixel), einfache lineare Interpolation der Vertex-Attribute pro Fragment (kleines b )
+      \item[Fill rate limited] anspruchsvolle Fragment-Shader (großes b), weniger dafür große Polygone (viele Pixel)
+    \end{description*}
+    \item Außerdem: Grafikspeicher-Zugriffe sind teuer (Latenz und Bandbreite beachten) z.B. Auslesen gerenderter Bilder aus dem Grafikspeicher
+    \item Eine für die Grafikkarte angegebene Performance ist nur unter unrealistisch günstigen Bedingungen zu erreichen.
     \begin{itemize*}
-      \item  Vertex-limited: viele Vertices, kleine Polygone (wenige Pixel), einfache lineare Interpolation der Vertex-Attribute pro Fragment (kleines b )
-      \item  Fill rate limited: anspruchsvolle Fragment-Shader (großes b), weniger dafür große Polygone (viele Pixel)
-    \end{itemize*}
-    \item Außerdem: Grafikspeicher-Zugriffe sind teuer (Latenz und Bandbreite beachten!) z.B. Auslesen gerenderter Bilder aus dem Grafikspeicher
-    \item Eine für die Grafikkarte angegebene Performance (z. B. 100 Mio Polygone/sec bei G-Force 6800) ist nur unter unrealistisch günstigen Bedingungen zu erreichen.
-    \begin{itemize*}
-      \item  d. h. z.B. nicht 100 Mio. unterschiedliche Polygone mit 1 fps (wegen Speicherbandbreite für Vertexzugriffe)
-      \item  auch nicht 10.000 Polygone mit 10.000 fps (da Framebuffer-Reset teuer)
-      \item  Herstellerangaben gelten nur unter optimalen Bedingungen (z. B. 10 Pixel / projiziertem Polygon)!
-      \item  realistisch (verschieden große Polygone) → ca. 1 Mio Polygone mit 10 fps (10 Mio Polygone/s) = 10\% der Peak Performance!
+      \item  wegen Speicherbandbreite für Vertexzugriffe
+      \item  da Framebuffer-Reset teuer
+      \item  Herstellerangaben nur für optimalen Bedingungen
+      \item  realistisch $\rightarrow\approx 10\%$ der Peak Performance!
     \end{itemize*}
   \end{itemize*}
   
@@ -1750,7 +1759,7 @@
     \item inverse Transformation, d.h. indirekte Methode
     \item da jedes Pixel im Zielbild B an der Position (k, l) Ausgangspunkt der Rechnung ist, bleibt keines unbelegt
     \item keine Löcher mehr!
-    \item Problem: Auch das Quellbild A ist nur an ganzzahligen Rasterpunkten i,j gegeben. Wie ermittelt man A(x,y) aus den Pixeln A(i,j) im Umfeld von x,y? Wie groß muss das Umfeld sein? → Resamplingproblem (Wiederabtastung)
+    \item Problem: Auch das Quellbild A ist nur an ganzzahligen Rasterpunkten i,j gegeben. Wie ermittelt man A(x,y) aus den Pixeln A(i,j) im Umfeld von x,y? Wie groß muss das Umfeld sein? $\rightarrow$ Resamplingproblem (Wiederabtastung)
   \end{itemize*}
   
   Lösungsansatz: Rückwärtstransformation der Pixelkoordinaten
@@ -1784,7 +1793,7 @@
     \begin{itemize*}
       \item auch hier entstehen zwar keine Lücken im Zielbild beim Transformieren zusammenhängender Bilder
       \item aber beim Sampeln im Originalbild entstehen Aliasing-Artefakte:
-      \item z.B. Auslassen jedes zweiten Pixels im Originalbild → Zielbild wird uniform weiß (oder schwarz)
+      \item z.B. Auslassen jedes zweiten Pixels im Originalbild $\rightarrow$ Zielbild wird uniform weiß (oder schwarz)
     \end{itemize*}
     \item exakte Lösung wäre nur bei doppelter Auflösung möglich
     \item jedoch Auflösung im Zielbild begrenzt, gute Näherung muss gefunden werden
@@ -1839,7 +1848,7 @@
     \item Wir stellen uns bewusst das Bild aus Punkten zusammengesetzt vor, d.h.
     \begin{itemize*}
       \item wir können von $M * N$ Basisbildern der Dimension $M * N$ ausgehen, in denen jeweils nur ein Pixel den Wert 1 (weiß) besitzt (alle anderen Pixel Schwarz = 0)
-      \item diese Basisbilder sind damit alle orthonormal → Wichtungsfaktoren durch inneres Produkt!
+      \item diese Basisbilder sind damit alle orthonormal $\rightarrow$ Wichtungsfaktoren durch inneres Produkt!
       \item sie ergeben in der grauwertgewichteten Summe das diskrete Bild F
     \end{itemize*}
   \end{itemize*}
@@ -1885,7 +1894,7 @@
       \item Rechts unten: Anteil der höchsten Frequenz
     \end{itemize*}
     \item Der Cosinus Raum bildet ein Orthonormalsystem
-    \item ein Pixelbild im Ursprungsraum lässt sich zusammensetzen als gewichtete Addition von Bildern mit unterschiedlichen Frequenzen → Spektralzerlegung
+    \item ein Pixelbild im Ursprungsraum lässt sich zusammensetzen als gewichtete Addition von Bildern mit unterschiedlichen Frequenzen $\rightarrow$ Spektralzerlegung
     \item Ähnlich funktioniert die Fouriertransformation (Sinus und Cosinustransformation)
   \end{itemize*}
   
@@ -1929,7 +1938,7 @@
     \item Rekonstruktion eines Signals mittels Interpolation durch Erzeugen weiterer Samples zwischen den gemessenen Samples mittels eines Interpolationsalgorithmus (Supersampling)
     \item z.B. durch polynomiale Interpolation (mehrere Nachbarsamples)
     \item Dennoch entsteht ein etwas gestörtes Signal (hier nicht harmonische Verzerrung / Modulation)
-    \item → Aliasing-Effekt, allerdings in abgemildertem Umfang
+    \item $\rightarrow$ Aliasing-Effekt, allerdings in abgemildertem Umfang
   \end{itemize*}
   
   Bei der eingangs vorgeschlagenen Rückwärtstransformation (vom Zielbild zurück ins Originalbild) ist die Samplingrate durch das Zielbild bestimmt (d.h. ein Sample pro Pixel im Zielbild). 
@@ -1956,7 +1965,7 @@
     \item Danach Sampling des gefilterten Originalbildes durch inverse Transformation jedes Pixels im Zielbild
   \end{itemize*}
   
-  → Die höchsten Frequenzen des Originalbildes können aufgrund der zu geringen Auflösung im Zielbild ohnehin nicht dargestellt werden. Dieser Ansatz findet die beste Lösung unter den gegebenen Umständen. 
+  $\rightarrow$ Die höchsten Frequenzen des Originalbildes können aufgrund der zu geringen Auflösung im Zielbild ohnehin nicht dargestellt werden. Dieser Ansatz findet die beste Lösung unter den gegebenen Umständen. 
   
   Achtung! Reihenfolge ist wichtig: Wenn man zuerst sampelt und dann das Zielbild filtert, lässt sich u.U. die Originalinformation (wenn dort Frequenzen oberhalb der Nyquistfrequenz enthalten sind) nicht mehr rekonstruieren!
   
@@ -1974,7 +1983,7 @@
     \item Inverse Transformation der Koordination vom Zielbild + Sampling im Originalbild
     \item Bei einer Vergrößerung findet hierbei eine Überabtastung statt (d. h. das Signal im Originalbild liegt unter der halben Nyquistfrequenz der Samplingrate des Zielbildes)
     \item Zur genauen Rekonstruktion von Zwischenwerten kann man interpolieren, d.h. ein gewichtetes Mittel zwischen Werten der benachbarten Pixel im Originalbild berechnen
-    \item Dadurch werden die scharfen (aber ungenau positionierten Flächengrenzen) zwar unscharf... Aber die wahrgenommene Genauigkeit nimmt zu → Antialiasing
+    \item Dadurch werden die scharfen (aber ungenau positionierten Flächengrenzen) zwar unscharf... Aber die wahrgenommene Genauigkeit nimmt zu $\rightarrow$ Antialiasing
     \item Zur Gewichtung können ebenfalls Filterfunktionen im Ortsraum verwendet werden – Cut-off-Frequenz = Nyquistfrequenz im Originalbild (z. B. lineare Interpolation oder Nearest Neighbor, Sinc Funktion, etc.)
   \end{itemize*}
   
@@ -1999,8 +2008,8 @@
   \begin{itemize*}
     \item $m=(-1,1), n=(-1,1)$
     \item $H=\frac{1}{9} \begin{pmatrix} 1&1&1\\ 1&1&1 \\ 1&1&1 \end{pmatrix}$
-    \item einfache Mittelwertbildung der Nachbarpixel → unscharfes Bild und hochfrequente Artefakte
-    \item Faltungsoperatoren zur Tiefpassfilterung → Beispiel Rauschunterdrückung
+    \item einfache Mittelwertbildung der Nachbarpixel $\rightarrow$ unscharfes Bild und hochfrequente Artefakte
+    \item Faltungsoperatoren zur Tiefpassfilterung $\rightarrow$ Beispiel Rauschunterdrückung
   \end{itemize*}
   
   Beispiel Filterfern: 5x5 Binominalfilter
@@ -2021,7 +2030,7 @@
   \begin{itemize*}
     \item Box-Filter
     \begin{itemize*}
-      \item Alle Abtastwerte innerhalb eines um das Pixel gelegte Quadrat (meist mit der Kantenlänge von einem Pixelabstand) haben die gleiche Gewichtung: → Mittelwertbildung
+      \item Alle Abtastwerte innerhalb eines um das Pixel gelegte Quadrat (meist mit der Kantenlänge von einem Pixelabstand) haben die gleiche Gewichtung: $\rightarrow$ Mittelwertbildung
       \item Das Box-Filter liefert im Allgemeinen schlechte Ergebnisse, da seine Fourier-Transformierte eine Sinc-Funktion ist, die den gewünschten Frequenzbereich nur schlecht isoliert
     \end{itemize*}
     
@@ -2066,7 +2075,7 @@
     \item Filter zur Hoch- bzw. Bandpassfilterung:
     \item Anwendung: z.B. Kantenextraktion
     \item Sobelgradient: $H_{xS} =\begin{pmatrix} 1&0&-1\\ 2&0&-2\\ 1&0&-1\end{pmatrix}, H_{yS}=\begin{pmatrix} 1&2&1\\ 0&0&0\\ -1&-2&-1 \end{pmatrix}$
-    \item Differenzbildung (Ableitung) → hohe Frequenzen werden verstärkt!
+    \item Differenzbildung (Ableitung) $\rightarrow$ hohe Frequenzen werden verstärkt!
     \item im Gegensatz dazu sind Tiefpassfilter Integralfilter = gewichtete Summe der Nachbarpixel
   \end{itemize*}
   

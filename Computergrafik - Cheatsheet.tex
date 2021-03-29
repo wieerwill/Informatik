@@ -102,11 +102,11 @@
     \item[Translation] um den Vektor $\vec{t}$
     \item[Skalierung] Stauchung oder Streckung
     \item[Spiegelung]
-          \begin{itemize*}
-            \item an x-Achse $S=\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
-            \item an y-Achse $S=\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$
-            \item am Ursprung $S=\begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix}$
-          \end{itemize*}
+    \begin{itemize*}
+      \item an x-Achse $S=\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
+      \item an y-Achse $S=\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$
+      \item am Ursprung $S=\begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix}$
+    \end{itemize*}
     \item[Scherung] $S=\begin{pmatrix} 1 & S_x \\ S_y & 1 \end{pmatrix}$
     \item[Rotation mit Polarkoordinaten] $P'=(r,\phi+\theta)$; $\binom{x'}{y'}=\begin{pmatrix} cos(\theta) & -sin(\theta) \\ sin(\theta) & cos(\theta)\end{pmatrix}*\binom{x}{y}$
     \item[Koordinatentransformation] $$P' =T*P = \begin{pmatrix} x_x & x_y\\ y_x & y_y \end{pmatrix} * \binom{P_x}{P_y}$$
@@ -117,15 +117,15 @@
   
   \begin{description*}
     \item[Skalierung, Projektion, Spiegelung] $\begin{pmatrix} F_x & 0 & 0 \\ 0 & F_y & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} F_x*x \\ F_y*y \\ 1 \end{pmatrix}$
-          
-          $F_x,F_y>0$, uniform bei $F_X=F_y$
-          
-          $F_x=0$/$F_y=0$:Projektion auf y/x-Achse 
-          
-          $F_x=-1$/$F_y=-1$ Spiegelung an y/x-Achse
-          
-          $F_x=F_y=-1$Spiegelung am Ursprung
-          
+    
+    $F_x,F_y>0$, uniform bei $F_X=F_y$
+    
+    $F_x=0$/$F_y=0$:Projektion auf y/x-Achse 
+    
+    $F_x=-1$/$F_y=-1$ Spiegelung an y/x-Achse
+    
+    $F_x=F_y=-1$Spiegelung am Ursprung
+    
     \item[Scherung] $\begin{pmatrix} 1 & a & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ w \end{pmatrix} = \begin{pmatrix} x+a*y \\ y \\ w \end{pmatrix}$
     \item[Rotation] $R_\theta *P= \begin{pmatrix}cos(\theta) & -sin(\theta) & 0 \\ sin(\theta) & cos(\theta) & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix}x & y & 1 \end{pmatrix} = \begin{pmatrix} x cos(\theta) - y sind(\theta)\\ x sin(\theta)+y cos(\theta)\\ 1 \end{pmatrix}$
   \end{description*}
@@ -245,7 +245,9 @@
     \item Ermittlung: aus Richtung r und Augpunkt eine Gerade, dann schneidet diese Gerade die Projektionsfläche im Fliuchtpunkt für die Richtung r.
   \end{itemize*}
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Modellierung}
   
   \paragraph{Boundary Representation (B-Rep)}
@@ -386,8 +388,8 @@
       \item Aufwand für Raytracing pro Zelle proportional zur Baumtiefe und Anzahl der dortigen Dreiecke $n_j$;$\rightarrow$ Gesamtaufwand für Strahl $i$ sei  $\sum(P(i,j)*n_j)$
     \end{itemize*}
     \item große Zellen mit wenigen Dreiecken senken Gesamtaufwand
-      \item $P(i,j)$ ist proportional zur Oberfläche einer Zelle
-      \item SAH optimiert das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum in Richtung k: $D_k = D_{k_{links}} + D_{k_{rechts}}$
+    \item $P(i,j)$ ist proportional zur Oberfläche einer Zelle
+    \item SAH optimiert das Produkt der Zellgröße mal Anzahl Dreiecke im Teilbaum. Für den kD-Baum in Richtung k: $D_k = D_{k_{links}} + D_{k_{rechts}}$
     \item bei ungleicher Verteilung der Dreiecke enthalten große Zellen wenige oder keine Dreiecke und Baum ist nicht balanciert $\rightarrow$ implizite Abtrennung des Clusters vom Rest des Baums (vgl. Middle-Cut-Strategie)
   \end{itemize*}
   
@@ -402,7 +404,9 @@
     \item Loose Octree: die Zellen des Octrees werden so vergrößert, dass sie mit ihren direkten Nachbarn in jeder Richtung um 50\% überlappen. Objekte, die im einfachen Octree aufgrund ihrer Größe Grenzen schneiden würden, können im Loose Octree in den Zwischenknoten gespeichert werden. Ein Objekt mit Durchmesser bis zu $\frac{D}{2^L}$ kann auf der Ebene L abgelegt werden. Eine Suche im Loose Octree muss daher außer der direkt betroffenen Zelle auch die überlappenden direkten Nachbarn berücksichtigen. Dadurch vergrößert sich der Aufwand einer Suche um einen konstantne Faktor. Beachte: Die asymptotosche Komplexität (O-Notation) ist dadurch nicht beeinflusst.
   \end{enumerate*}
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Rastergrafik}
   
   \subsection{ Midpoint Algorithmus}
@@ -504,12 +508,12 @@
   
   \paragraph{Pseudozufälliges Supersampling}
   \begin{itemize*}
-      \item Kombination: Supersampling, Multisampling und Quincunx
-      \item bei Überwindung der Grenzen für Füllrate und Bandbreite überwiegen Vorteile des Supersamplings
-      \item Ordered/rotated grid weisen nach Strukturklassen Vor-/Nachteile auf. Verbleibende Artefakte wiederholen sich bei großen Flächen - oft als störend empfunden
-      \item pszufällige Auswahl von Abtastmustern für Supersampling
-      \item nachträgliche Abminderung regelmäßiger Strukturen durch vorsichtiges Verrauschen (Rauschfilter)
-      \item entfernungsabhängiges Antialiasing
+    \item Kombination: Supersampling, Multisampling und Quincunx
+    \item bei Überwindung der Grenzen für Füllrate und Bandbreite überwiegen Vorteile des Supersamplings
+    \item Ordered/rotated grid weisen nach Strukturklassen Vor-/Nachteile auf. Verbleibende Artefakte wiederholen sich bei großen Flächen - oft als störend empfunden
+    \item pszufällige Auswahl von Abtastmustern für Supersampling
+    \item nachträgliche Abminderung regelmäßiger Strukturen durch vorsichtiges Verrauschen (Rauschfilter)
+    \item entfernungsabhängiges Antialiasing
     \item pseudozufällig
     \begin{itemize*}
       \item Samples können nur an n vordefinierten Positionen stattfinden (Sample-Positionsmuster)
@@ -590,9 +594,11 @@
     \item komplementär zu A.A.
   \end{itemize*}
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Farbräume}
-
+  
   \subsection{Farbwahrnehmung - Phänonmenologie}
   \begin{itemize*}
     \item Hell- und Farbempfinden als Sinneseindruck beschrieben
@@ -602,24 +608,24 @@
   \end{itemize*}
   \begin{description*}
     \item[Farbton] (Hue)
-          \begin{itemize*}
-            \item Farbpalette aus abstufung grober Farbtöne 
-            \item direkt nebeneinanderliegende Farben im Farbspektrum werden als ähnlich empfunden
-            \item Farbwerte lassen sich ordnen
-            \item als bunt empfunden (voll gesättigte Farben im Gegensatz zu Grautönen)
-          \end{itemize*}
+    \begin{itemize*}
+      \item Farbpalette aus abstufung grober Farbtöne 
+      \item direkt nebeneinanderliegende Farben im Farbspektrum werden als ähnlich empfunden
+      \item Farbwerte lassen sich ordnen
+      \item als bunt empfunden (voll gesättigte Farben im Gegensatz zu Grautönen)
+    \end{itemize*}
     \item[Farbsättigung] (Saturation)
-          \begin{itemize*}
-            \item Stufen zwischen Bunt und Grau
-            \item Pastelltöne sind weniger bunt aber nicht farblos
-            \item Grauton (keine Farbwerte unterscheidbar)
-            \item jedem Farbton können Abstufungen bis Grau zugeordnet werden
-          \end{itemize*}
+    \begin{itemize*}
+      \item Stufen zwischen Bunt und Grau
+      \item Pastelltöne sind weniger bunt aber nicht farblos
+      \item Grauton (keine Farbwerte unterscheidbar)
+      \item jedem Farbton können Abstufungen bis Grau zugeordnet werden
+    \end{itemize*}
     \item[Helligkeitsstufen] (Lightness/Brightness/Value/Intensity)
-          \begin{itemize*}
-            \item unterschiedliche Helligkeitsabstufungen bis Schwarz
-            \item im Schwarzen sind keine Farbtöne mehr unterscheidbar
-          \end{itemize*}
+    \begin{itemize*}
+      \item unterschiedliche Helligkeitsabstufungen bis Schwarz
+      \item im Schwarzen sind keine Farbtöne mehr unterscheidbar
+    \end{itemize*}
   \end{description*}
   
   \subsection{Modell der Farben}
@@ -703,7 +709,9 @@
   
   Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Licht \& Reflexion}
   \begin{description*}
     \item[Licht] Teil der elektromagnetischen Strahlung
@@ -714,15 +722,13 @@
     \item[Lumen] 1 Lumen ist der Lichtstrom einer 1,464 mW starken 555-nm-Lichtquelle mit 100\% Lichtausbeute
   \end{description*}
   
-  In der Radiometrie wird sich mit objektiven Messgrößen beschäftigt, in der Photometrie fließt spektrale Empfindlichkeit des menschlichen Auges mit ein.
-  
   \paragraph{Radiometrie (energetisch $e$) }
   \begin{description*}
     \item[Strahlungsenergie $Q$] durch Strahlung übertragene Energie $[J]$
     \item[Strahlungsleistung $\phi$] transportierte Strahlungsenergie in einer bestimmten Zeit $\phi = \frac{Q}{t} [W]$
     \item[Strahlstärke/Intensität $I$] Strahlungsleistung die in eine Raumrichtung mit Raumwinkel $\Omega$ emittiert wird $I=\frac{\phi}{\Omega}=\frac{W}{sr}$
     \item[Bestrahlungsstärke/Irradiance $E$] Strahlungsleistung durch die bestrahlte Fläche $A_i$ bzw. Strahlstärke die auf die Empfängerfläche trifft $E=\frac{W}{m^2}=\frac{\Phi}{A_i}$
-    \item[Strahldichte/Radiance $L$] Strahlstärke von Sendefläche $A_r$ in eine bestimmte Richtung $L = \frac{I}{A'_r}=\frac{I}{\cos(\phi_r)*A_r} = \frac{\phi}{\cos(\phi_r)*A_r*\Omega}$; $\phi_r$ ist Winkel zwischen Normalen n und Abstrahlrichtung
+    \item[Strahldichte/Radiance $L$] Strahlstärke von Sendefläche $A_r$ in eine bestimmte Richtung $L = \frac{I}{A'_r} = \frac{\phi}{\cos(\phi_r)*A_r*\Omega}$; $\phi_r$ ist Winkel zwischen Normalen n und Abstrahlrichtung
   \end{description*}
   
   \paragraph{Photometrie (visuell $v$ )}
@@ -734,11 +740,9 @@
     \item[Leuchtdichte/Luminanz $L$] $[\frac{cd}{m^2}]$
   \end{description*}
   
-  $$A=2\pi r^2; \Omega=\frac{A}{r^2}=2\pi ; I_e=\frac{\phi_e}{\Omega}= \frac{W}{sr}$$
-  
   \paragraph{Raumwinkel}
-  Der Steradiant ist eine Maßeinheit für den Raumwinkel, der von der Mitte M einer Kugel mit Radius r aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt. $\Omega=\frac{Flaeche}{Radius^2}=\frac{A}{r^2}sr$.
-  Eine komplette Kugeloberfläche beträgt $A_k = 4\pi r^2$, entspricht einem Raumwinkel $\Omega$ von $\frac{A_k}{r^2}= 4\pi r\approx 12,5sr$. Ein Steradiant $=1sr$ entspricht einem Öffnungswinkel $\alpha$ von ca. $65,54^{\circ}$
+  Steradiant ist Maßeinheit für Raumwinkel, der von der Mitte einer Kugel mit Radius aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt $\Omega=\frac{A}{r^2}sr$.
+  Komplette Kugeloberfläche beträgt $A_k = 4\pi r^2$, entspricht einem Raumwinkel $\Omega$ von $A_k\backslash r^2= 4\pi r$. Ein Steradiant $=1sr$ entspricht einem Öffnungswinkel $\alpha$ von $\approx 65,54^{\circ}$
   
   \paragraph{Räumliche Ausbreitung}
   Flächen Energieübertragung
@@ -747,11 +751,11 @@
     \item die Flächen stehen nicht notwendigerweise senkrecht zur Ausbreitungsrichtung des Lichts
     \item abstrahlende und empfangende Fläche jeweils in Ausbreitungsrichtung mit projizierten Flächen $A'_r$ und $A'_i$.
     \item Punktlichtquellen von der abstrahlenden Fläche $A_r$, welche ihre Strahlungsleistung in den Raumwinkel $\Omega$ abgeben
-    \item $\Omega$ ist somit die in Abstrahlrichtung reduzierte Fläche $A'_i$ , projiziert auf die Einheitskugel: $\Omega=\frac{A'_i}{r^2}$
+    \item $\Omega$ ist somit die in Abstrahlrichtung reduzierte Fläche $A'_i$ , projiziert auf die Einheitskugel: $\Omega=A'_i \backslash r^2$
     \item Die übertragene Energie nimmt quadratisch zu r ab
   \end{itemize*}
   
-  \subsection{Reflexion}
+  \paragraph{Reflexion}
   Nach Auftreffen auf einer opaken Oberfläche wird Strahlung spektral unterschiedlich stark und geometrisch auf unterschiedliche Weise reflektiert. 
   Fälle der Reflexion:
   \begin{itemize*}
@@ -880,6 +884,7 @@
     \end{itemize*}
     \item $\frac{n+2}{2\pi}$ Normalisierungsfaktor zur Helligkeitsregulierung
     \item $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
+    \item $\cos(\phi)=V^T_I*n_i$, $cos^n(\theta)=(V^T_r * V_e)^n$
   \end{itemize*}
   
   \paragraph{Cook-Torrance}
@@ -891,138 +896,111 @@
     \item Beckmann-Verteilung: $l_{spec}=\frac{exp(-\frac{tan^2(\alpha)}{m^2})}{\pi m^2 cos^4 (\alpha)}$ mit $\alpha=arccos(N*H)$
   \end{itemize*}
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Schattierungsverfahren}
   \subsection{ Direkte Schattierung}
-  Bisher:
   \begin{itemize*}
-    \item Zerlegung gekrümmter Flächen in Polygone (meist Drei- oder Vierecke)
-    \item Positionen der (Eck-)Punkte und Normalen im 3D sowie der Punkte im 2D-Bild sind bekannt (per Matrixmultiplikation für Transformationen und Projektion)
-    \item Pixelpositionen für Polygone/Dreiecke im Bild per Scanline-Algorithmus
-    \item lokale Beleuchtungsmodelle für 3D-Punkte (z.B. per Phong-Beleuchtungsmodell)
+    \item Zerlegung gekrümmter Flächen in Polygone
+    \item Positionen der (Eck-)Punkte und Normalen im 3D sowie der Punkte im 2D-Bild sind bekannt
+    \item Pixelpositionen für Polygone im Bild per Scanline-Alg.
+    \item lokale Beleuchtungsmodelle für 3D-Punkte
   \end{itemize*}
-  
-  Jetzt: Wie kommt Farbe (effizient) in die Pixel? Wie oft muss lokales Beleuchtungsmodell bei n Pixeln im Dreieck angewendet werden?
-  
-  \begin{tabular}{c | c | c}
-    Verfahren       & Anz. & Idee                                                                                        \\\hline
-    Flat-Shading    & 1    & eine Berechnung, dann gleiche Farbe für alle Pixel des Dreiecks/Polygons verwenden          \\
-    Gouraud-Shading & 3    & pro Eckpunkt eine Farbe berechnen, dann lineare Interpolation (pro Dreieck) für jedes Pixel \\
-    Phong-Shading   & n    & eine Berechnung pro Pixel, davor aber jeweils lineare Interpolation der Normalen pro Pixel  \\
-  \end{tabular}
-  
-  $\rightarrow$ Phong-Beleuchtungsmodell in jedem der obigen Shading-Verfahren nutzbar
-  
-  $\rightarrow$ hier nur direkte Schattierung (nur lokal, wo sind die Lichtquellen), d.h. nicht global (wie bei Radiosity \& Raytracing)
   
   \paragraph{Flat-Shading}
-  Arbeitsweise des Flat-Shadings
+  Arbeitsweise
   \begin{itemize*}
+    \item eine Berechnung, gleiche Farbe für alle Pixel des Polygons 
     \item stets nur 1 Farbwert pro (ebener) Fläche,
-    \item Stelle der Berechnung frei wählbar (möglichst repräsentativ),
-    \item repräsentativ wäre z.B.: Punkt (Ort mit Normale) in der Mitte der Fläche
-    \item $\rightarrow$ trivial für Drei- und Vierecke? $\rightarrow$ für Dreiecke und konvexe Vierecke!
+    \item Stelle der Berechnung frei wählbar (mögl. repräsentativ),
+    \item z.B. Punkt (Ort mit Normale) in der Mitte der Fläche
   \end{itemize*}
-  
   Auswirkungen
   \begin{itemize*}
-    \item 'flaches' Aussehen und Helligkeitssprünge an den Kanten, das ist:
-    \item schlecht für Fotorealismus,
-    \item gut für abstraktere technische Darstellungen und
-    \item u.U. wichtig für realistische Darstellung kantiger Körper (insbes. wenn pro Eckpunkt nur eine Normale modelliert ist).
+    \item 'flaches' Aussehen und Helligkeitssprünge an Kanten
+    \item gut für abstraktere technische Darstellungen
+    \item wichtig für realistische Darstellung kantiger Körper
     \item schneller als die anderen Verfahren,
-    \item u.U. genauso gut wie z.B. Phong-Shading, wenn z.B.:
-    \item das Objekt sehr fein modelliert wurde oder
-    \item sehr weit entfernt ist
-    \item $\rightarrow$ d.h. nur ca. 1 Pixel pro Polygon/Dreieck gerendert wird (n==1)
+    \item d.h. nur ca. 1 Pixel pro Polygon gerendert wird ($n==1$)
   \end{itemize*}
   
   \paragraph{Gouraud-Shading}
+  [H. Gouraud 1971]
   \begin{itemize*}
-    \item Gouraud-Shading [H. Gouraud 1971] schattiert Dreiecke (bzw. aus Dreiecken zusammengesetzte Polygone) kontinuierlich,
-    \item beseitigt damit die Diskontinuitäten des Flat-Shadings,
-    \item meist gleiche Normalen pro Vertex, d.h. pro Dreieck wirken oft 3 verschiedene Richtungsvektoren statt nur eine Normale (Dreiecksmitte) wie beim Flat-Shading und
-    \item lineare Interpolation der Schattierung (Intensitäten) im Inneren des Dreiecks aus den 3 Farbwerten der Eckpunkte.
-    \item Es werden 'Normalenvektoren' $n_i$ für jeden Eckpunkt $P_i$ des Polygons ermittelt bzw. ausgelesen.
-    \item Die Herleitung der 'Normalenvektoren' $n_i$ ist aus der Originaloberfläche (z.B. Zylinder, Kegel, Bèzier-Fläche) oder Nachbarpolygonen möglich.
-    \item Für jeden Eckpunkt: Berechnung der Beleuchtungsintensität $I_i$ (z. B. nach dem Phong-Beleuchtungsmodell).
-    \item Normalen $n_i$ der Eckpunkte werden entweder direkt aus den Flächen (z.B. Regelgeometrien, bei Kugel z.B. Richtung des Radiusvektors) oder aus den Flächennormalen der benachbarten Polygone durch flächengewichtete Mittelung berechnet.
-    \item Die Schattierungsrechnung (RGB-Werte) erfolgt für die Eckpunkte und liefert die reflektierte Leuchtdichte $I_i$ . Zur Erinnerung, das Phong-Beleuchtungsmodell:
-    \item $I_{out}=I_a*k_a+I_{in}*k_d*\cos(\phi)+I_{in}*k_s*\frac{n+2}{2\pi}*\cos^n(\theta)$
-    \item $\cos(\phi)=V^T_I*n_i$, $cos^n(\theta)=(V^T_r * V_e)^n$
-    \item Nach Anwendung des Beleuchtungsmodells an den Eckpunkten (auch Vertex-Shading genannt)
-    \item Bei der Rasterkonvertierung wird zwischen den Eckwerte $I_i$ linear interpoliert und damit die Intensität jedes Pixels der Rasterlinie berechnet (Intensität I steht hier für die Leuchtdichte oder für Farbwerte usw.)
-    \item Die Interpolation erfolgt nach dem gleichen arithmetischen Muster wie die Interpolation der x-Werte beim Polygonfüllalgorithmus, bzw. der $1/z$-Werte im z-Buffer-Verfahren (d. h. inkrementell, mit Ganzzahlarithmetik).
-    \item Für farbige Oberflächen werden die Leuchtdichten an den Polygonecken durch RGB-Werte beschrieben und ebenso zwischen den Ecken linear interpoliert.
-    \item Resultat: Kontinuierlich schattierte dreidimensionale Oberflächen
+    \item pro Eckpunkt eine Farbe berechnen, dann lineare Interpolation (pro Dreieck) für jedes Pixel
+    \item schattiert Dreiecke kontinuierlich,
+    \item beseitigt die Diskontinuitäten des Flat-Shadings,
+    \item meist gleiche Normalen pro Vertex (pro Dreieck wirken 3 verschiedene Richtungsvektoren)
+    \item lineare Interpolation der Schattierung (Intensitäten) im Inneren des Dreiecks aus den 3 Farbwerten der Eckpunkte
+    \item Normalenvektoren $n_i$ für jeden Eckpunkt $P_i$ des Polygons
+    \item Herleitung der 'Normalenvektoren' $n_i$ aus der Originaloberfläche oder Nachbarpolygonen
+    \item jeder Eckpunkt: Berechnung der Beleuchtungsintensität $I_i$
+    \item Normalen $n_i$ der Eckpunkte direkt aus Flächen oder aus Flächennormalen benachbarter Polygone durch flächengewichtete Mittelung
+    \item Die Schattierungsrechnung erfolgt für Eckpunkte und liefert reflektierte Leuchtdichte $I_i$
+    \item Bei der Rasterkonvertierung wird zwischen Eckwerte $I_i$ linear interpoliert und damit die Intensität jedes Pixels der Rasterlinie berechnet
+    \item Interpolation erfolgt nach gleichen arithmetischen Muster wie Interpolation der x-Werte beim Polygonfüllalgorithmus
+    \item Für farbige Oberflächen werden die Leuchtdichten an Polygonecken durch RGB-Werte beschrieben und zwischen den Ecken linear interpoliert
+    \item Resultat: Kontinuierlich schattierte 3-dim Oberflächen
   \end{itemize*}
-  
   %![Gourad Shading; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Gourad-Shading.png)
   
-  Artefakte des Gouraud-Shading, bedingt durch die lineare Interpolation:
-  \begin{itemize*}
-    \item Fehlen von gut ausgeprägten Glanzlichtern (verwischt oder verschwunden)
-    \item Mach-Band-Effekt: ((helle) Bänder) Kontrastverstärkung durch das Auge an den Übergängen zwischen Polygonen
-    \item Diese Artefakte werden im Folgenden genauer untersucht.
-  \end{itemize*}
+  Artefakte des Gouraud-Shading, durch lineare Interpolation:
   
   \paragraph{Fehlende Glanzlichter}
-  Auf Grund der linearen Interpolation von Intensitäten können Glanzlichter, die auf spekulare Reflexion zurückzuführen sind, verloren gehen oder abgeschwächt/verschmiert werden. Das wird umso kritischer, je spitzer die spekulare Reflexion ist (großes n im $\cos^n$- Term).
-  
+  Auf Grund der linearen Interpolation von Intensitäten können Glanzlichter, die auf spekulare Reflexion zurückzuführen sind, verloren gehen oder abgeschwächt/verschmiert werden. Das wird umso kritischer, je spitzer die spekulare Reflexion ist (großes n im $\cos^n$- Term).\\
   Feinere Unterteilung der Oberfläche verbessert Resultat
-  
   %![fehlende Glanzlichter; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Gourad_Glanzlichter.png)
   
   \paragraph{Mach-Band-Effekt}
-  Die lineare Interpolation der Leuchtdichte zwischen den Polygonkanten entlang der Rasterlinie führt zu einem Verlauf, der durch plötzliche Änderungen im Anstieg der Intensität gekennzeichnet ist (nicht stetig differenzierbar).
+  (Ernst Mach, 1865)
   
-  Der Mach-Band-Effekt: physiologisches Phänomen (Ernst Mach, 1865)
+  Die lineare Interpolation der Leuchtdichte zwischen den Polygonkanten entlang der Rasterlinie führt zu einem Verlauf, der durch plötzliche Änderungen im Anstieg der Intensität gekennzeichnet ist.
   \begin{itemize*}
-    \item Bei Sprüngen in der Helligkeitsänderung (c0-Stetigkeit, c1-Unstetigkeit, typisch für Approximation durch ebene Polygone beim Gouraud-Shading, z.B. Zylinder) stört dieser Effekt u. U. erheblich.
-    \item Gleiche Information benachbarter Rezeptoren wirkt bei der weiteren visuellen Verarbeitung lateral hemmend auf die lokale Lichtempfindung.
-    \item Modellhaft entstehen neben dem eigentlichen Helleindruck auch 'Signale', die dem Helligkeitsgradienten (erste Ableitung) und dem Laplacefilter-Output (Laplacian of Gaussian / LoG, zweite Ableitung) entsprechen.
-    \item Die Empfindung wird insgesamt nicht nur durch die Lichtintensität selbst, sondern auch durch die Überlagerung mit ihrer ersten und zweiten räumlichen Ableitung bestimmt.
-    \item Das führt zu einer Verstärkung von Konturen an 'Sprungkanten' (c0-Unstetigkeiten, Intensitätssprünge). In der dunklen Fläche zeigt sich eine dunklere, in den hellen Flächen eine hellere Kantenlinie. Dort, wo Konturen vorhanden sind, ist das vorteilhaft (evolutionäre Entwicklung der menschlichen visuellen Wahrnehmung), obwohl Täuschungen damit verbunden sind (photometrischer Eindruck).
-    \item zunächst Kanten: Liegen eine helle und eine dunkle Fläche nebeneinander, beobachtet man einen dunklen Streifen auf der dunkleren Seite und einen hellen Streifen auf der helleren Seite (Kontrastverstärkung).
-    \item Bei einer Abfolge von Flächen unterschiedlicher Graufärbung, die in sich keine Farbgraduierung haben, beobachten wir entlang der Grenzen machsche Streifen (nach Ernst Mach 1865). Dabei handelt es sich um helle und dunkle Streifen, die den Kontrast zwischen den Flächen verstärken. [Quelle: Wikipedia]
+    \item Kontrastverstärkung durch Auge an den Übergängen zwischen Polygonen (helle Bänder)
+    \item Bei Sprüngen in der Helligkeitsänderung stört dieser Effekt
+    \item Gleiche Information benachbarter Rezeptoren wirkt bei weiterer visueller Verarbeitung lateral hemmend auf lokale Lichtempfindung.
+    \item Modellhaft entstehen neben eigentlichen Helleindruck auch Signale, die Helligkeitsgradienten und Laplacefilter-Output entsprechen
+    \item Empfindung wird insgesamt nicht nur durch Lichtintensität, sondern auch durch Überlagerung mit ihrer ersten und zweiten räumlichen Ableitung bestimmt
+    \item führt zu einer Verstärkung von Konturen an 'Sprungkanten'
+    \item Liegen eine helle und dunkle Fläche nebeneinander, beobachtet man einen dunklen Streifen auf der dunkleren Seite und einen hellen Streifen auf der helleren Seite (Kontrastverstärkung)
+    \item Bei Abfolge von Flächen unterschiedlicher Graufärbung sind entlang der Grenzen machsche Streifen
   \end{itemize*}
   
   \paragraph{Phong-Shading}
-  Phong-Shading [Phong 1975]:
+  (Phong 1975)
   \begin{itemize*}
-    \item Lineare Interpolation der Normalenvektoren zwischen den Polygonecken anstelle von Interpolation der Intensitätswerte (bei Grafikkarten/-software als Pixelshader bekannt).
-    \item Exakte Berechnung der $\cos^n$-Funktion im Phong-Beleuchtungsmodell für jedes Pixel : Glanzlichter werden erhalten!
+    \item Lineare Interpolation der Normalenvektoren zwischen Polygonecken anstelle von Interpolation der Intensität
+    \item Exakte Berechnung der $\cos^n$-Funktion im Modell für jedes Pixel : Glanzlichter werden erhalten!
     \item Keine Diskontinuität der ersten Ableitung: Mach-Band-Effekt wird vermieden!
+    \item eine Berechnung pro Pixel, davor aber jeweils lineare Interpolation der Normalen pro Pixel
   \end{itemize*}
   
   
-  \subsection{ 3D-Rendering}
-  Soll nur ein konvexes Objekt gerendert werden, dann ist die Entscheidung, welche Flächen zu zeichnen sind, einfach anhand der jeweiligen Normalen möglich.\\
-  Annahme: mehrere konvexe Objekte oder auch konkave Objekte sollen gerendert werden. Verdeckungen sind also möglich!
+  \subsection{3D-Rendering}
+  mehrere konvexe Objekte oder konkave Objekte sollen gerendert werden. Verdeckungen sind möglich!
   \begin{itemize*}
-    \item Korrekte Behandlung von Verdeckungen bedarf spezieller Ansätze/Datenstrukturen (Lösung des Reihenfolgeproblems).
-    \item Rein opake Szenen sind typischerweise wesentlich leichter zu implementieren als (teilweise) transparente (zusätzlich ein Berechnungsproblem).
-    \item Zeichenreihenfolge ist teilweise wichtig (z.B. von hinten nach vorn),
-    \item Algorithmen/Ansätze unterscheiden sich auch in der Granularität/Genauigkeit was auf einmal gezeichnet/sortiert wird:
-    \item Objekte (ganze Objekte nach z-Position sortieren, dann jeweils zeichnen...)
-    \item allg. (d.h. ggfs. überlappende) Polygone: Painters-Algorithmus,
-    \item überlappungsfreie Dreiecke/Polygone: Depth-Sort-Algorithmus,
-    \item Pixel: Z-Buffer-Verfahren (oft auch in Verbindung mit Obj.-Sort.)
-    \item Beliebte Testszene sind sich zyklisch überlappende Dreicke, z.B.
+    \item Korrekte Behandlung von Verdeckungen bedarf spezieller Ansätze/Datenstrukturen (Reihenfolgeproblems)
+    \item Rein opake Szenen sind typischerweise wesentlich leichter zu implementieren als transparente (Berechnungsproblem)
+    \item Zeichenreihenfolge ist teilweise wichtig
+    \item Ansätze unterscheiden sich auch in der Granularität und Genauigkeit was auf einmal gezeichnet/sortiert wird
+    \item ganze Objekte nach z-Position sortieren, dann jew. zeichnen
+    \item allg. (ggfs. überlappende) Polygone: Painters-Algorithmus,
+    \item überlappungsfreie Polygone: Depth-Sort-Algorithmus,
+    \item Pixel: Z-Buffer-Verfahren (in Verbindung mit Obj.-Sort.)
+    \item Beliebte Testszene sind sich zyklisch überlappende Dreicke
   \end{itemize*}
   
   \paragraph{Painter’s-Algorithmus}
   \begin{itemize*}
-    \item Gegeben sei eine 3D-Szene, bestehend aus grauen Polygonen mit diffus reflektierender Oberfläche, sowie eine gerichtete Lichtquelle.
-    \item Für jedes Polygon wird die reflektierte Strahldichte L auf Basis des eingestrahlten Lichts (Richtung \& Stärke) und der Flächennormale berechnet:
+    \item Gegeben sei 3D-Szene aus grauen Polygonen mit diffus reflektierender Oberfläche und gerichtete Lichtquelle
+    \item Für jedes Polygon wird reflektierte Strahldichte L auf Basis des eingestrahlten Lichts und Flächennormale berechnet:
     \item $I_{out} = L = I_{in}* k_d * \cos(\phi)$
-    \item Die Polygone werden mittels perspektivischer Kameratransformation (4 x 4 Matrix) in das Kamera-Koordinatensystem (Bildraum) transformiert und nach absteigendem z-Wert (Distanz des Polygonschwerpunkts zum Betrachter) sortiert.
-    \item Die sortierten Polygone werden der Reihe nach (entfernte zuerst) mit dem 2D-Polygonfüllalgorithmus in das Pixelraster der x/y-Bildebene konvertiert.
-    \item Die Pixel für jedes Polygon werden per Overwrite-Modus mit dem Farbwert L (nach obiger Berechnung) im Bildspeicher gespeichert.
-    \item Die Verdeckungsprobleme lösen sich durch die Reihenfolge quasi automatisch.
+    \item Polygone durch perspektivischer Kameratransformation in Bildraum transformiert und nach absteigendem z-Wert (Distanz Polygonschwerpunkts) sortiert
+    \item sortierte Polygone (entfernte zuerst) mit Polygonfüllalgo. in Pixelraster der x/y Bildebene konvertiert
+    \item Pixel für jedes Polygon per Overwrite-Modus mit Farbwert L im Bildspeicher gespeichert
+    \item Verdeckungsprobleme lösen sich durch Reihenfolge selbst
   \end{itemize*}
-  
-  Gleichnis: Der Algorithmus arbeitet wie ein Maler, der zuerst den Hintergrund und dann Schritt für Schritt das jeweils weiter vorn liegende Objekt (oder Polygon bzw. Dreieck) zeichnet - und dabei die dahinterliegenden verdeckt. ABER, potentielle Probleme des Painter’s-Algorithmus: selbst bei Dreiecken sind trotzdem falsche Verdeckungen möglich!
   
   \paragraph{Depth-Sort-Algorithmus}
   \begin{itemize*}
@@ -1031,373 +1009,278 @@
     \item Die sichtbaren Teilpolygone können nun ausgegeben werden:
     \item Zeichnen der nicht überlappenden Teilpolygone
     \item Von den sich vollständig überlappenden Teilpolygonen wird nur das vordere gezeichnet.
+    %![Depth Sorth Algorithmus; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Depth-Sort-Algorithmus.png)
+    \item Teilpolygone sollten möglichst nicht größer sein als Tiefenunterschied, damit sie in jeder Situation eindeutig sortiert werden
   \end{itemize*}
   
-  %![Depth Sorth Algorithmus; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Depth-Sort-Algorithmus.png)
-  
+  Anwendungsbereiche des Painter's/Depth-Sort Algorithmus:
   \begin{itemize*}
-    \item Eine einfache, nicht blickwinkelabhängige Unterteilung tut es in diesem Falle auch!
-    \item Die Teilpolygone sollten dabei möglichst nicht größer sein als der Tiefenunterschied, damit sie in jeder Situation eindeutig sortiert werden können!
-    \item Die 6 Teilpolygone können mittels Painter‘s Algorithmus korrekt sortiert und dargestellt werden
+    \item Einfache kleine Szenen/Objekte, unterschiedlicher z-Werte
+    \item keine Hardware-Unterstützung für 3D-Rendering angeboten
   \end{itemize*}
   
-  Anwendungsbereiche des Painter's Algorithmus / Depth-Sort Algorithmus:
+  \paragraph{Z-Buffer-Verfahren} (CATMULL 1974)
   \begin{itemize*}
-    \item Einfache Szenen, kleine Objekte, die sich in den z-Werten hinreichend unterscheiden.
-    \item Dort, wo keine Hardware-Unterstützung für 3D-Rendering angeboten wird (begrenzter Speicher, keine Z-Buffer Unterstützung).
-    \item Viele 2D-Grafiksystem bieten bereits Polygonfüllverfahren an.
-    \item Ähnliche Vorgehensweise wird auch für das Schattieren von semi-transparenten Flächen notwendig (s. später)!
-  \end{itemize*}
-  
-  Als Sortierverfahren für Echtzeitsysteme eignet sich z.B. 'Insertion-Sort':
-  \begin{itemize*}
-    \item Begründung: Von Bild zu Bild ändert sich die Tiefenwerte (und damit die Reihenfolge) der Polygone relativ wenig. Damit sind die Polygone beim nächsten Bild bereits mehr oder weniger vorsortiert (nur wenige Polygone) müssen neu einsortiert werden. Die Komplexität von Insertion-Sort wird bei bereits sortierten Listen linear (O-Notation / best case).
-    \item Folglich tritt beim Painters-Algorithmus der best case sehr häufig ein (außer beim ersten Bild, wo man vom average case ausgehen kann- hier wird die Komplexität quadratisch).
-  \end{itemize*}
-  
-  \paragraph{Z-Buffer-Verfahren}
-  \begin{itemize*}
-    \item Einer der einfachsten 'visible surface'-Algorithmen (CATMULL 1974)
-    \item Probleme des Painters-Algorithmus werden überwunden durch zusätzliche Berechnung des z-Wertes für jeden Punkt jedes Polygons und Speicherung des zur Projektionsebene nächstliegenden Farb- und Z-Wertes.
-    \item Dazu ist ein zusätzlicher Speicher (z-Buffer) für jedes Pixel notwendig.
-    \item Es sind weder Vorsortieren von Objekten noch Polygonzerlegung erforderlich (wenn alle Objekte opak sind).
-  \end{itemize*}
-  
-  Initialisierung: Für alle Pixel
-  \begin{itemize*}
-    \item Setze Farbe auf Hintergrundfarbe (z.B. Weiß)
-    \item Setze alle Z -Werte auf $\infty$ (max. ganzzahliger Wert)
-    \item Setze Z min auf Wert der Near-Plane
-  \end{itemize*}
-  
-  Für alle Polygone (im 3D-Kamerakoordinatensystem)
-  \begin{itemize*}
-    \item Rasterumwandlung in der Projektionsebene ($x_p/y_p$ Koordinaten) durch modifizierten 2D-Polygonfüllalgorithmus. Modifiziert heißt: zusätzliche Berechnung des z-Wertes für jedes Pixel
-    \item Anwendung einer Write Pixel ZB-Prozedur:
-    \item Wenn der z-Wert des aktuellen Pixels (im abzuarbeitenden Polygon) kleiner als der bereits abgespeicherte z-Wert ($z_p$) an dieser Position ist, wird im z-Buffer bei $x_p , y_p$ die Farbe sowie $z_p$ ) überschrieben (mit den neuen Werten).
-    \item Sonst: alte Werte im Speicher bleiben erhalten
-    \item Die näher an der Kamera liegen Pixel überschreiben somit die weiter weg liegenden.
-    \item Pixelgenaue Sichtbarkeitsbestimmung und -behandlung der Polygone
-  \end{itemize*}
-  
-  Berechnen der z-Werte durch lineare Interpolation:
-  \begin{itemize*}
-    \item Die Tiefenwerte sind auch nach der Ansichten-Transformation (View-Transformation) zunächst nur für die Eckpunkte gegeben.
-    \item Zunächst erfolgt die lineare Interpolation der z-Werte entlang der Polygonkanten $P_i P_j$ für die y-Position der gerade aktuellen Scanline
-    \item Danach wird mit dem Füllen der Bildzeile (z.B. durch einen konventionellen Polygonfüll-Algorithmus) die Interpolation der z-Werte entsprechend der x-Position in der Scanline (Bildzeile) fortgesetzt (pixelgenaues Befüllen des z-Buffers).
-  \end{itemize*}
-  
-  Berechnung der z-Werte eines Pixels x/y:
-  \begin{itemize*}
-    \item Die y-Koordinate reicht zur Interpolation von $z_A$ und $z_B$ (Strahlensatz).
-    \item Pixel-z-Wert $z_p$ wird äquivalent ermittelt, allerdings die Interpolationskoordinate jetzt x (y = const für die Rasterlinie)
-    \item Die Werte $z_A, z_B, x_A, x_B$, in $z_p$ werden gleichzeitig mit den $x_A$-Werten (Schnitte) von einer Rasterlinie zur nächsten inkrementiert (s. Polygonfüllalgorithmus)
-    \item Die Brüche bleiben in allen Ausdrücken rational.
-    \item Die Ausdrücke für die z-Werte haben identische Form wie die der x-Werte beim Polygonfüllalgorithmus.
-  \end{itemize*}
-  
-  Immer Ganzzahlarithmetik! (ähnlich wie x-Werte im Polygonfüllagorithmus)
-  
-  Beispiel: Mögliche Berechnungen eines Tiefenwertes der Pixel
-  \begin{itemize*}
-    \item Als Beispiel dient hier eine Tischplatte (Rechteck, Größe 3m x 1m) in der Perspektive
-    \item Achtung: Eine lineare Interpolation der z-Werte im Bildraum (links) ist nicht wirklich korrekt! (höchstens als Näherung, OK für kleine nahe Flächen)
-    \item $\frac{1}{z}$ kann exakt linear in x- \& y-Richtung interpoliert werden (Abbildung rechts).
-    \item Da $z_1$ abnimmt, wenn z zunimmt, muss aber der z-Test invertiert werden!
-    \item positive Auswirkung: Tiefeninfos naher Obj. werden mit höherer z-Genauigkeit gespeichert als weiter von der Kamera entfernte. Statistisch gesehen gibt es damit weniger 'z-Fighting“-Effekte (z.B. bei Bewegungen willkürliche Farbwechsel zwischen den Farben von Objekten mit nahezu der selben Tiefeninfo im z-Buffer).
-  \end{itemize*}
-  
-  %![Z-Buffer-Beispiel; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Z-buffer-verfahren.png)
-  
-  \begin{itemize*}
-    \item Das Ergebnis des Z-Buffer-Verfahrens ist vergleichbar mit dem Painters-Algorithmus.
-    \item Es ist jedoch bei opaken Objekten keine vorgängige Sortierung der Polygone nötig. Sie können in beliebiger Reihenfolge gezeichnet werden.
-    \item Die Interpolation der 1/z-Werte erfolgt im Polygonfüll-Algorithmus durch wenige Ganzzahl-Operationen (wie bei den x-Werten)
-    \item Das Verfahren ist pixelgenau: Es werden auch zyklisch sich überlappende (und sogar räumlich sich durchdringende) Polygone korrekt dargestellt.
-    \item Kaum Mehraufwand gegenüber dem 2D-Polygonfüllalgorithmus!
-    \item Mögliches Problem: Korrekte Berücksichtigung von Transparenzen!
+    \item Einer der einfachsten 'visible surface'-Algorithmen 
+    \item Probleme des Painters-Algorithmus werden überwunden
+    \item Berechnung des z-Wertes für jeden Punkt jedes Polygons und Speicherung des zur Projektionsebene nächstliegenden Farb- und Z-Wertes
+    \item zusätzlicher Speicher (z-Buffer) für jedes Pixel notwendig
+    \item weder Vorsortieren noch Polygonzerlegung erforderlich
+    \item Initialisierung: Für alle Pixel
+    \begin{itemize*}
+      \item Setze Farbe auf Hintergrundfarbe
+      \item Setze alle Z -Werte auf $\infty$ (max. Wert)
+      \item Setze Z min auf Wert der Near-Plane
+    \end{itemize*}
+    \item Für alle Polygone (im 3D-Kamerakoordinatensystem)
+    \begin{itemize*}
+      \item Rasterumwandlung in der Projektionsebene durch modifizierten 2D-Polygonfüllalgorithmus
+      \item zusätzliche Berechnung des z-Wertes für jedes Pixel
+      \item Write Pixel Prozedur: z-Wert des aktuellen Pixels kleiner als bereits abgespeicherte z-Wert $\Rightarrow$ z-Buffer Farbe sowie $z_p$ überschrieben
+      \item näher an Kamera liegende Pixel überschreiben weiter weg liegende
+      \item Pixelgenaue Sichtbarkeitsbestimmung und -behandlung der Polygone
+    \end{itemize*}
+    \item Berechnen der z-Werte durch lineare Interpolation
+    \begin{itemize*}
+      \item Tiefenwerte auch nach Ansichten-Transformation nur für die Eckpunkte gegeben
+      \item Zunächst lineare Interpolation der z-Werte entlang der Polygonkanten $P_i P_j$ für y-Position der Scanline
+      \item Danach Füllen der Bildzeile der Interpolation der z-Werte entsprechend
+    \end{itemize*}
+    \item Berechnung der z-Werte eines Pixels x/y
+    \begin{itemize*}
+      \item Die y-Koordinate reicht zur Interpolation von $z_A,z_B$
+      \item Pixel-z-Wert $z_p$ wird äquivalent ermittelt
+      \item $z_A, z_B, x_A, x_B$, in $z_p$ werden gleichzeitig mit $x_A$- Werten von einer Rasterlinie zur nächsten inkrement.
+      \item Brüche bleiben in allen Ausdrücken rational
+      \item Ausdrücke für die z-Werte haben identische Form wie die der x-Werte beim Polygonfüllalgorithmus
+    \end{itemize*}
+    %![Z-Buffer-Beispiel; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Z-buffer-verfahren.png)
+    \item Z-Buffer-Ergebnis ist vergleichbar mit Painters-Algorithmus
+    \item bei opaken Objekten keine vorgängige Sortierung der Polygone nötig
+    \item pixelgenau: überlappende Polygone korrekt dargestellt
+    \item Kaum Mehraufwand gegenüber Polygonfüllalgorithmus
+    \item Problem: Korrekte Berücksichtigung von Transparenzen
   \end{itemize*}
   
   \paragraph{Transparenz}
-  Alpha-Blending-Verfahren: 
+  Alpha-Blending-Verfahren:
   \begin{itemize*}
     \item Annahme: Verwendung eines Z-Buffers
-    \item Mit dem Alpha-Blending-Verfahren kann die transparente Überlagerung zweier Objekte im Bildspeicher wie folgt gelöst werden
-    \item $C_f$ Farbe des Objekts im Vordergrund (kleinster z-Wert),
-    \item $\alpha$ Opazität der Vordergrundfarbe, Wert zwischen 0 und 1 (bzw. 100%),
-    \item $C_b$ Hintergrundfarbe (die im Bildspeicher für das entsprechende Pixel zuletzt eingetragene Farbe)
-    \item Die resultierende Farbe C ergibt sich zu: $C=\alpha*C_f+(1-\alpha)*C_b$
-    \item Für Alpha-Blending wird der Bildspeicher (mit z-Buffer) um den Opazitätswert $\alpha$ erweitert:
-    \item Speicherbedarf pro Pixel typischerweise mindestens 48 Bit: R + G + B + Z + $\alpha$.
-    \item Bei einer Auflösung des Bildschirms von 1.000.000 Pixel benötigen wir ca. 6MB Speicher.
-    \item z-Wert und $\alpha$-Wert des Vordergrund Objektes werden nach dem Alpha-Blending in den Bildspeicher übernommen!
+    \item Mit dem Alpha-Blending-Verfahren kann die transparente Überlagerung zweier Objekte im Bildspeicher gelöst werden
+    \item $C_f$ Farbe des Objekts im Vordergrund (kleinster z-Wert)
+    \item $\alpha$ Opazität der Vordergrundfarbe, Wert $(0,1)$
+    \item $C_b$ Hintergrundfarbe (letzte Farbe im Bildspeicher)
+    \item resultierende Farbe C: $C=\alpha*C_f+(1-\alpha)*C_b$
+    \item Bildspeicher um  Opazitätswert $\alpha$ erweitert
+    \item Speicherbedarf pro Pixel typ. min. 48 Bit: RGBZ + $\alpha$
+    %![Transparenz Probleme](Assets/Computergrafik_Transparenz-Fehler.png)
+    \item Reines Z-Buffering ignoriert alle Objektepixel, die weiter entfernt sind als vorn liegende Objektpixel
+    \item Bei Berücksichtigung von $\alpha$-Werten ist die Renderreihenfolge für korrekte Ergebnisse aber sehr wichtig
+    \item Transparenz-Problem: Objekt nachträglich gezeichnet, kann die Farbe nicht korrekt bestimmt werden
+    \item Zuerst: Darstellung aller opaken Objekte nach dem Z-Buffering (reihenfolgeunabhängig)
+    \item Dann Sortieren aller semitransparenten Polygone nach der Tiefe und Zeichnen
+    \item Restfehler: sich zyklisch überlappende oder sich durchdringende semi-transparente Flächen $\rightarrow$ exakte Behandlung durch die vorn beschriebenen Maßnahmen
   \end{itemize*}
   
-  %![Transparenz Probleme](Assets/Computergrafik_Transparenz-Fehler.png)
-  
-  \begin{itemize*}
-    \item Reines Z-Buffering (ohne $\alpha$) ignoriert alle Objektepixel, die weiter entfernt sind als vorn liegende Objektpixel (siehe rechts, hier ist die Reihenfolge egal).
-    \item Bei Berücksichtigung von $\alpha$-Werten (Transparenzen) ist die Renderreihenfolge für korrekte Ergebnisse aber sehr wichtig! (siehe Mitte bzw. links)
-    \item Erläuterung zum Transparenz-Problem:
-    \item Die Formel für $\alpha$-Blending berücksichtigt nur die Überlagerung des aktuellen Objektes mit dem davor existierenden Bildschirminhalt. Wird ein dazwischenliegendes Objekt nachträglich gezeichnet, dann kann die Farbe nicht korrekt bestimmt werden. Dies passiert aber beim Z-Buffering, da die Zeichenreihenfolge der Polygone beliebig ist.
-    \item **Im Beispiel**
-    \item Die opake grüne Kreisscheibe liegt zwischen dem hinteren Objekt (blau) und dem transparenten vorderen Objekt (rot), wird aber als letztes gerendert. $\rightarrow$ Grün kann Blau nicht mehr verdecken, denn Blau wurde zuvor schon mit Rot verrechnet (ist nun mit 'vorderer' z-Koordinate im Z-Buffer hinterlegt). Dort, wo die grüne Kreisscheibe hinter dem transparenten Rot (bzw. dem nun Rot-Blau) liegt wird ein nicht korrekter Blauanteil gezeigt. Auch der weiße Hintergrund kann hinter dem transparenten Rot (insgesamt ein transparentes Rosa) nicht mehr vom Grün verdeckt werden!
-    \item algorithmische Lösung des Problems:
-    \item Zuerst: Darstellung aller opaken Objekte ($\alpha$ = 1) nach dem Z-Buffering (reihenfolgeunabhängig)
-    \item Dann Sortieren aller semitransparenten Polygone nach der Tiefe und Zeichnen nach dem Painters-Algorithmus unter Berücksichtigung des Z-Buffers mittels Alpha-Blending!
-    \item Restfehler: sich zyklisch überlappende oder sich durchdringende semi-transparente Flächen $\rightarrow$ exakte Behandlung durch die vorn beschriebenen Maßnahmen (Unterteilung der Polygone notwendig!)
-  \end{itemize*}
-  
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Globale Beleuchtung}
+  \paragraph{Ray-Tracing}
+  Strahlenverfolgung, nicht rekursiv
   \begin{itemize*}
-    \item BRDF: physikbasiertes, lokales Reflektionsmodell (Lichtquelle auf Material) $\rightarrow$ Funktion von Einfalls-, Betrachterwinkel, Wellenlänge (bzw. -breiche)
-    \item Rendergleichung (Kajiya) = BRDF, Integral über alle Lichtquellen (bzw. Hemisphäre)
-    \item Approximation durch lokales Phong-Beleuchtungsmodell $\rightarrow$ für 'einfache' Materialien und Lichtquellen 'korrekt genug'
-    \item direkte (lokale) Schattierungsverfahren (Flat-, Gouraud- und Phong-Shading)
-    \item Was noch fehlt: Interreflektionen zwischen Objekten...
-    \item globale Beleuchtung, d.h. jede Fläche kann als Lichtquelle dienen
-  \end{itemize*}
-  
-  \subsection{ Ray-Tracing}
-  einfaches Ray-Tracing: Strahlenverfolgung, nicht rekursiv
-  \begin{itemize*}
-    \item Strahlen vom Augpunkt (Ursprung des Kamerakoordinatensystems) durch jedes Pixel des Rasters senden $\rightarrow$ keine Löcher
-    \item Schnittpunktberechnung mit allen Objekten $\rightarrow$ Schnittpunkt mit dem größtem z-Wert stammt vom sichtbaren Objekt
-    \item Strahlverfolgung (Anwendung des BRDF-Reziprozitätsprinzips) und Aufsummierung der (Lichtquellen-)Anteile aufgrund von material- und geometrieabhängigen Parametern (ggf. neben Relflektion auch Brechung) $\rightarrow$ Ergebnis: Helligkeits-/Farbwert pro Pixel
+    \item Strahlen vom Augpunkt (Kamera Ursprung) durch jedes Pixel des Rasters senden
+    \item Schnittpunktberechnung $\rightarrow$ Schnittpunkt mit dem größtem z-Wert stammt vom sichtbaren Objekt
+    \item Strahlverfolgung und Aufsummierung der Anteile aufgrund von material- und geometrieabhängigen Parametern $\rightarrow$ Helligkeits-/Farbwert pro Pixel
     \item Bestimmung der diffusen und spekularen Lichtreflexion nach dem Phong-Beleuchtungsmodell
-    \item Bis hier nur einfache, lokale Beleuchtung (keine Spiegelung, Schatten, indirekte Beleuchtung)! $\rightarrow$ Vorzüge des RT kommen erst bei rekursivem Raytracing zum Tragen!
+    \item nur einfache, lokale Beleuchtung
   \end{itemize*}
-  
   
   \paragraph{Rekursiver Ansatz}
+  Reflexion, Schatten
   \begin{itemize*}
-    \item Berechnung von Sekundärstrahlen am Auftreffpunkt (Reflexions- und Schattenfühler)
-    \item Annäherung der Interreflektionen (mehrfache Reflexion zwischen den Objekten) durch ideale Spiegelung, d.h. Spiegelung des primären Strahls an $\bar{n}$ im Auftreffpunkt und Erzeugung des sekundären Strahls
-    \item beim Auftreffen des Strahls auf ein weiteres Objekt B Berechnung der diffusen und spekularen Reflexion der jeweiligen Lichtquelle (Schattenfühler, Phong-Modell) sowie Erzeugung eines weiteren Strahls durch ideale Spiegelung
-    \item Addition der Sekundärstrahlen an Objekt B zum Farbwert des Pixel am Objekt A (Anteil bei jeder weiteren Rekursion meistens fallend, da reflektierter Anteil bei jeder Reflexion abgeschwächt wird) $\rightarrow$ Rekursion kann abgebrochen werden, wenn Beitrag vernachlässigbar!
+    \item Berechnung von Sekundärstrahlen am Auftreffpunkt
+    \item Annäherung der Interreflektionen durch ideale Spiegelung
+    \item beim Auftreffen des Strahls auf weiteres Objekt Berechnung der diffusen und spekularen Reflexion der jeweiligen Lichtquelle sowie Erzeugung eines weiteren Strahls durch ideale Spiegelung
+    \item Addition der Sekundärstrahlen an Objekt B zum Farbwert des Pixel am Objekt A $\rightarrow$ Rekursion kann abgebrochen werden, wenn Beitrag vernachlässigbar!
+    \item Anzahl der Operationen wächst zusätzlich, d.h. Multiplikation des Aufwandes mit der Anzahl der Reflexionen und Refraktionen und Lichtquellen
   \end{itemize*}
-  
   
   \paragraph{Brechungseffekte}
-  Transparenz unter Berücksichtigung der Brechung beim Ray-Tracing: Richtung des gebrochenen Strahls berechnet sich aus dem Einfallswinkel zum Normalenvektor sowie den material- und wellenlängenabhängen Brechungsindices.
-  $$\eta_{e\lambda}*sin(\theta_e) = \eta_{t\lambda}*sin(\theta_t)$$
-  Beispiel Luft-Glas: $\eta_{\text{Luft, rot}}*\sin(\theta_{\text{Luft}})=\eta_{\text{Glas,rot}}*sin(\theta_{\text{Glas}}) \Rightarrow 1.0*\sin(30^\circ)=1.5*sin(\theta_{\text{Glas}})\rightarrow \theta_{\text{Glas}} \approx \arcsin(\frac{\sin(30^\circ)}{1.5})\approx 20^\circ$
-  
+  Richtung des gebrochenen Strahls berechnet sich aus Einfallswinkel zum Normalenvektor sowie den material- und wellenlängenabhängen Brechungsindices. $\eta_{e\lambda}*sin(\theta_e) = \eta_{t\lambda}*sin(\theta_t)$
   %![Brechungseffekt; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Brechungseffekt.png)
-  Die Farbe im betrachteten Punkt wird nicht durch die Farbe von Hintergrundobjekt B1 (wie im Fall nichtbrechender Transparenz) sondern durch die Farbe von B2 beeinflusst!
   
-  Berechnung des Einheitsvektors $\vec{V}_t(\vec{V}_e,n,\theta_t)$ in Richtung der Brechung:
+  Berechnung des Einheitsvektors $\vec{V}_t(\vec{V}_e,n,\theta_t)$ in Richtung Brechung
   \begin{itemize*}
-    \item An Grenzflächen mit unterschiedlichen Brechungsindizes tritt neben der Transparenz ($\vec{V}_t$) auch Reflexion (Komponente mit der Richtung $\vec{V}_r$) auf.
-    \item $\vec{M}$ ist ein Einheitsvektor (Länge=1) mit der Richtung von $\vec{n}*\cos(\theta_e)-\vec{V}_e$ und
+    \item An Grenzflächen mit unterschiedlichen Brechungsindizes tritt neben Transparenz ($\vec{V}_t$) auch Reflexion ($\vec{V}_r$) auf
+    \item $\vec{M}$ ist ein Einheitsvektor mit der Richtung von $\vec{n}*\cos(\theta_e)-\vec{V}_e$
     \item es gilt: $\vec{M}*sin(\theta_e)=\vec{n}*\cos(\theta_e)-\vec{V}_e \rightarrow \vec{M}=\frac{\vec{n}*\cos(\theta_e)-\vec{V}_e}{\sin(\theta_e)}$
-    \item Effekte an transparentem Material:
-    \item Simulation brechungsbedingter Verzerrungen wird so möglich (z.B. bei optischen Linsen, Wasser).
-    \item Transparentes und reflektierendes Material erzeugt 2 weiter zu verfolgende Sekundärstrahlen.
+    \item Simulation brechungsbedingter Verzerrungen wird so möglich
+    \item Transparentes/reflektierendes Material erzeugt 2 weiter zu verfolgende Sekundärstrahlen
   \end{itemize*}
   
-  
-  
   \paragraph{Erweiterungen}
-  Unzulänglichkeiten des einfachen rekursiven Ansatzes:
+  Unzulänglichkeiten des einfachen Ansatzes
   \begin{itemize*}
     \item Reale Objekte sind eher diffus spekular, d.h. ein ganzes Set von Sekundärstrahlen wäre zu verfolgen.
     \item Die ideale Spiegelung zur Erzeugung von Sekundärstrahlen ist eine sehr starke Vereinfachung
-    \item Aus der Umkehrbarkeit von Licht- und Beleuchtungsrichtung ließe sich eine Menge von Sekundarstrahlen aus dem Phong-Modell $(\cos^n(\theta)$-Term) ermitteln.
-    \item Aus Aufwandsgründen (rein theoretisch wären unendlich viele Sekundärstrahlen zu berücksichtigen) muss vereinfacht werden, z.B. Monte-Carlo-Ray-Tracing
+    \item Aus Umkehrbarkeit von Licht- und Beleuchtungsrichtung ließe sich Menge von Sekundarstrahlen ermitteln
+    \item muss aus Aufwandsgründen vereinfacht werden
   \end{itemize*}
   
-  **Monte Carlo Ray-Tracing**:
+  \paragraph{Monte Carlo Ray-Tracing}
   \begin{itemize*}
     \item Reflexion ist selten ideal spekular, meist entsteht ein Bündel von Strahlen
-    \item Ansatz: Verfolgung mehrerer 'zufälliger' Sekundärstrahlen, deren Beitrag zum Farbwert des Pixel statistisch gewichtet wird.
-    \item Je gestreuter die Reflexion, um so mehr Sekundärstrahlen sind nötig. Sehr breite Remissionskeulen oder gar diffuse Interreflexionen sind wegen des Aufwandes nicht (bzw. nur schwer) behandelbar.
+    \item Verfolgung mehrerer zufälliger Sekundärstrahlen, deren Beitrag zum Farbwert des Pixel statistisch gewichtet
+    \item Je gestreuter Reflexion, um so mehr Sekundärstrahlen nötig
+    \item Breite Remissionskeulen oder diffuse Interreflexionen sind wegen des Aufwandes nicht behandelbar
+    \item Weiteres Anwachsen der Anzahl an erforderlichen Operationen durch zusätzliche Verfolgung sehr vieler Sekundärstrahlen
   \end{itemize*}
   
   Beleuchtungsphänomen Kaustik:
   \begin{itemize*}
-    \item Das Licht der Lichtquelle werde zuerst spekular, dann diffus reflektiert. Beispiel: Lichtstrahlen, die von Wasserwellen reflektiert auf eine diffuse Wand auftreffen.
-    \item Vom Auge bzw. Pixel ausgehendes Ray Tracing versagt wegen des vorzeitigen Abbruchs der Rekursion am diffus remittierenden Objekt.
-    \item Inverses Ray Tracing [Watt/Watt 1992] : Man erzeugt einen von der Lichtquelle ausgehenden Strahl und reflektiert diesen an glänzenden Oberflächen. Auch Photon Mapping kann hier helfen.
-    \item Die reflektierten Lichtstrahlen wirken als zusätzliche Lichtquellen, die dann zu diffusen Reflexionen führen können.
+    \item Das Licht der Lichtquelle werde zuerst spekular, dann diffus reflektiert
+    \item Vom Auge ausgehendes Ray Tracing versagt wegen des vorzeitigen Abbruchs der Rekursion am diffus remittierenden Objekt.
+    \item Inverses Ray Tracing [Watt/Watt 1992]: Man erzeugt einen von der Lichtquelle ausgehenden Strahl und reflektiert diesen an glänzenden Oberflächen
+    \item Die reflektierten Lichtstrahlen wirken als zusätzliche Lichtquellen, die dann zu diffusen Reflexionen führen
+    \item Exponentielle Komplexität wenn alle Objekte gleichzeitig transparent und reflektierend sind.
   \end{itemize*}
   
-  Optimierungsmöglichkeiten (einfache Hüllgeometrien, Raumzerlegung, ...):
+  Optimierungsmöglichkeiten
   \begin{itemize*}
-    \item Berechnung von achsenparallelen Hüllquadern (Bounding Boxes) oder Hüllkugeln (Bounding Spheres) um Objekte aus mehreren Polygonen.
+    \item Berechnung von achsenparallelen Bounding Boxes oder Bounding Spheres um Objekte
     \item Zunächst Test, ob der Strahl die Hülle schneidet und falls ja
-    \item $\rightarrow$ Schnittpunktberechnung von Strahl mit allen Polygonen in der Hülle
-    \item $\rightarrow$ zunächst Berechnung des Schnittpunktes mit der jeweiligen Polygonebene
+    \item $\rightarrow$ Schnittpunktberechnung von Strahl mit allen Polygonen
+    \item $\rightarrow$ Berechnung des Schnittpunktes mit jew. Polygonebene
     \item $\rightarrow$ danach effizienter Punkt-im-Polygon-Test
-    \item Effiziente Zugriffsstruktur auf die Hüllquader: Bäume für rekursive Zerlegungen des 3D-Raumes (Octrees), Binary-Space-Partition-Trees
-    \item Verwendung von direktem, hardware-unterstützten Rendering (z.B. Gouraud- oder Phong-Shading) anstelle von einfachem, nichtrekursivem Ray-Tracing, nur bei Bedarf Erzeugung von Sekundärstrahlen.
+    \item Effiziente Zugriffsstruktur auf die Hüllquader: Bäume für rekursive Zerlegungen
+    \item Verwendung von direktem, hardware-unterstützten Rendering
     \item Verwendung von Hardware mit RTX-Unterstützung
   \end{itemize*}
   
   \paragraph{Zusammenfassung}
-  Anwendung:
   \begin{itemize*}
-    \item Erzeugung realistischerer Bilder als bei lokalem Shading, da indirekte (spekuläre) Beleuchtungsphänomene physikalisch (geometr. und radiometr.) viel genauer als bei direkter Schattierung berechnet werden können.
-    \item Ray-Tracing ist aufgrund der hohen Komplexität für interaktive Anwendungen (oft noch) wenig geeignet (hardware- und szenenabhängig), mögliche Lösung: Vorberechnung der Bildsequenzen im Stapel-Betrieb (batch mode)
-    \item Fotorealistisches Visualisieren (Designstudien usw.)
-    \item Computeranimation in Filmen
-    \item Interaktive Programme (CAD, Spiele) verwenden noch eher direktes Rendering mit Texturen (shadow map, environment map) um Schatten, Spiegeleffekte oder Brechung zu simulieren.
-    \item Aufwendige Teiloperation: Geometrischer Schnitt im Raum:
-    \item für jedes Pixel: Berechnung des Schnittes eines Strahles mit potentiell allen Objekten der Szene (einfaches Ray-Tracing, ohne Rekursion)
-    \item z.B. Bildschirm mit 1.000 x 1.000 Pixeln und 1.000 Objekten
-    \item **Rekursives Ray-Tracing** für den ideal spiegelnden Fall: Anzahl der Operationen wächst zusätzlich, d.h. Multiplikation des Aufwandes mit der Anzahl der Reflexionen und Refraktionen und Lichtquellen (Schattenfühler) $\rightarrow$ für ca. 4 Rekursionsstufen bei 2 Lichtquellen haben wir etwa $4*(2 + 1) = 12$ Millionen Strahlen, was schon bei 1.000 Objekten 12 Milliarden Schnittoperationen bedeutet.
-    \item **Monte-Carlo-Ray-Tracing** für die Approximation diffuser Anteile: Weiteres Anwachsen der Anzahl an erforderlichen Operationen durch zusätzliche Verfolgung sehr vieler Sekundärstrahlen (durchschnittlich 10 pro Reflexion) $\rightarrow$ Mehrere 100 Millionen bis Milliarden Strahlen (bzw. Billionen Schnittoperationen)
-    \item Durch **effiziente räumliche Suchstrukturen** kann die Anzahl der tatsächlich auszuführenden Schnittoperationen wesentlich reduziert werden. Die Anzahl der Schnitte steigt nicht mehr linear (sondern etwa logarithmisch) mit der Anzahl der Objekte (siehe räumliche Datenstrukturen). Damit ist auch bei großen Szenen nur noch die Anzahl der Strahlen wesentlich $\rightarrow$ je nach Bildauflösung und Verfahren, mehrere Millionen bis Milliarden Strahlen!
-    \item Eigenschaften des Ray-Tracing-Verfahrens:
-    \item Implementierung ist konzeptionell einfach + einfach parallelisierbar.
-    \item Hohe Komplexität durch Vielzahl der Strahlen, deshalb meistens Beschränkung auf wenige Rekursionen.
-    \item Exponentielle Komplexität bei Monte-Carlo-Ray-Tracing bzw. wenn alle Objekte gleichzeitig transparent (Brechung) und reflektierend sind.
-    \item Resultat:
-    \item RT ist sehr gut geeignet, wenn die spiegelnde Reflexion zwischen Objekten (und/oder die Brechung bei transparenten Objekten) frei von Streuung ist.
-    \item Die diffuse Reflexion zwischen Objekten wird beim Ray-Tracing durch ambiente Terme berücksichtigt. Eine bessere Beschreibung dieser Zusammenhänge ist mit Modellen der Thermodynamik möglich.
-    \item Weitere Ansätze:
-    \item Cone-Tracing - statt eines Strahles wird ein Kegel verwendet, der die Lichtverteilung annähert [Watt/Watt 1992].
-    \item Radiosity (siehe Abschnitt weiter unten)
-    \item Photon Mapping (nächster Abschnitt)
+    \item Erzeugung realistischerer Bilder, da indirekte Beleuchtungsphänomene physikalisch viel genauer
+    \item Ray-Tracing ist aufgrund der hohen Komplexität für interaktive Anwendungen oft wenig geeignet
+    \item Interaktive Programme (CAD, Spiele) verwenden noch eher direktes Rendering mit Texturen
+    \item effiziente räumliche Suchstrukturen können die Anzahl auszuführender Schnittoperationen reduzieren
+    \item Implementierung ist konzeptionell einfach + einfach parallelisierbar
+    \item RT ist sehr gut geeignet, wenn die spiegelnde Reflexion zwischen Objekten frei von Streuung ist
+    \item Cone-Tracing - statt eines Strahles wird ein Kegel verwendet, der die Lichtverteilung annähert
   \end{itemize*}
   
-  \subsection{ Photon Mapping}
-  \begin{itemize*}
-    \item Verfahren von Henrik Wann Jensen 1995 veröffentlicht
-    \item angelehnt an Teichencharakter des Lichts
-    \item 2-stufiges Verfahren
-    \item Quelle: Vorlesung von Zack Waters, Worcester Polytechnic Inst.
-  \end{itemize*}
-  
+  \paragraph{Photon Mapping} [Henrik Jensen 1995]
   %![Photonmapping; Quelle Vorlesung Computergrafik 2020](Assets/Computergrafik_Photonmapping.png)
   
-  \begin{enumerate*}
-    \item Phase: Erzeugung der Photon Map
-    \item Photonenverteilung in der Szene: Von der Lichtquelle ausgestrahlte Photonen werden zufällig in der Szene gestreut. Wenn ein Photon eine Oberfläche trifft, kann ein Teil der Energie absorbiert, reflektiert oder gebrochen werden.
-    \item Speichern der Photonen in der Photon Map Daten enthalten also u.a. Position und Richtung beim Auftreffen sowie Energie für die Farbkanäle R,G,B
-    \begin{itemize*}
-      \item Photon wird in 3D-Suchstruktur (kd-Baum) gespeichert (Irradiance cache)
-      \item Reflektionskoeffizienten als Maß für Reflektionswahrscheinlichkeit (analog Transmissionswahrscheinlichkeit)
-      \item dafür: Energie bleibt nach Reflexion unverändert. Neue Richtung wird statistisch auf Basis der BRDF gewählt.
-    \end{itemize*}
-    \item  Phase: Aufsammeln der Photonen aus Betrachtersicht (gathering)
-    \begin{itemize*}
-      \item Verwende Ray-Tracing um für den Primärstrahl von der Kamera durch einen Pixel den Schnittpunkt x mit der Szene zu bestimmen. Basierend auf den Informationen aus der Photon Map werden für x folgende Schritte ausgeführt:
-      \begin{enumerate*}
-        \item Sammle die nächsten N Photonen um x herum auf durch Nächste-Nachbar-Suche in der Photon Map (N = konst., z. B. 10)
-        \item S sei die (kleinste) Kugel, welche die N Photonen enthält.
-        \item Für alle Photonen: dividiere die Summe der Energie der gesammelten Photonen durch die Fläche von S ($\rightarrow$ Irradiance) und multipliziere mit der  BRDF angewendet auf das Photon.
-        \item Dies ergibt die reflektierte Strahldichte, welche von der Oberfläche (an der Stelle x) in Richtung des Beobachters abgestrahlt wird.
-      \end{enumerate*}
-    \end{itemize*}
-  \end{enumerate*}
-  
-  \subsection{ Radiosity}
-  Grundprinzip des Radiosity-Verfahrens:
+  1. Phase: Erzeugung der Photon Map
   \begin{itemize*}
-    \item Ansatz: Erhaltung der Lichtenergie in einer geschlossenen Umgebung
-    \item Die Energierate, die eine Oberfläche verlässt, wird Radiosity (spezifische Ausstrahlung) genannt.
-    \item Die gesamte Energie, die von einer Oberfläche (Patch, Polygon) emittiert oder reflektiert wird, ergibt sich aus Reflexionen oder Absorptionen anderer Oberflächen (Patches, Polygone).
-    \item Es erfolgt keine getrennte Behandlung von Lichtquellen und beleuchteten Flächen, d.h. alle Lichtquellen werden als emittierende Flächen modelliert.
-    \item Da nur diffuse Strahler (Lambertstrahler) betrachtet werden, herrscht Unabhängigkeit der Strahldichte vom Blickwinkel vor.
-    \item Die Lichtinteraktionen werden im 3D-Objektraum (ohne Berücksichtigung der Kamera) berechnet.
-    \item Danach lassen sich beliebig viele Ansichten schnell ermitteln (Ansichtstransformation, perspektivische Projektion, Verdeckungsproblematik, Interpolation).
+    \item Von Lichtquelle ausgestrahlte Photonen werden zufällig in Szene gestreut. Photon Energie kann absorbiert, reflektiert oder gebrochen werden.
+    \item Speichern der Photonen in der Photon Map, also Position, Richtung beim Auftreffen und Energie für Farbkanäle RGB
+    \item Photon wird in Suchstruktur gespeichert (Irradiance cache)
+    \item Reflektionskoeffizienten als Maß für Reflektionswahrscheinlichkeit (analog Transmissionswahrsch.)
+    \item Energie bleibt nach Reflexion unverändert. Neue Richtung wird statistisch auf Basis der BRDF gewählt
   \end{itemize*}
   
-  Die gesamte von Patch $A_s$ stammende Strahldichte an der Stelle von $dA_r$ ist: $L_r=\beta_r(\lambda)*\int_{A_s}\frac{L_s}{\pi * r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s$ (s=Sender, r=Reveiver)
+  2. Phase: Aufsammeln der Photonen (gathering)
+  \begin{itemize*}
+    \item Ray-Tracing um für Primärstrahl von der Kamera durch einen Pixel den Schnittpunkt x mit der Szene zu bestimmen
+    \item Sammle die nächsten N Photonen um x herum auf durch Nächste-Nachbar-Suche in der Photon Map (N = konst.)
+    \item S sei die (kleinste) Kugel, welche die N Photonen enthält
+    \item Für alle Photonen: dividiere die Summe der Energie der gesammelten Photonen durch die Fläche von S ($\rightarrow$ Irradiance) und multipliziere mit der  BRDF angewendet auf das Photon.
+    \item Dies ergibt die reflektierte Strahldichte, welche von der Oberfläche (an der Stelle x) in Richtung des Beobachters abgestrahlt wird.
+  \end{itemize*}
+  
+  \subsection{ Radiosity}
+  \begin{itemize*}
+    \item Ans: Erhaltung der Lichtenergie in geschlossener Umgebung
+    \item Radiosity: Energierate, die eine Oberfläche verlässt %(spezifische Ausstrahlung)
+    \item gesamte Energie, die von Oberfläche emittiert oder reflektiert wird, ergibt sich aus Reflexionen oder Absorptionen anderer Oberflächen
+    \item Es erfolgt keine getrennte Behandlung von Lichtquellen und beleuchteten Flächen
+    \item nur diffuse Strahler $rightarrow$ Unabhängigkeit der Strahldichte vom Blickwinkel
+    \item Lichtinteraktionen im 3D-Objektraum berechnet
+    \item Danach viele Ansichten schnell ermittelt %(Ansichtstransformation, perspektivische Projektion, Verdeckungsproblematik, Interpolation).
+  \end{itemize*}
+  
+  Strahldichte an $dA_r$ (s=Sender, r=Reveiver): $L_r=\beta_r(\lambda)*\int_{A_s}\frac{L_s}{\pi * r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s$
   %![Radiosity; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Radiosity.png)
   
-  Für das Polygon $A_r$ ist die mittlere Strahldichte zu ermitteln!
-  $$L_r=\beta_r(\lambda)*\frac{1}{A_r}*\int_{A_r}\int_{A_s}\frac{L_s}{\pi*r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s*dA_r$$
-  Die Geometrieanteile aus dieser Gleichung werden als Formfaktoren bezeichnet (+Sichtbarkeitsfaktor $H_{sr}$).
+  mittlere Strahldichte: $L_r=\beta_r(\lambda)*\frac{1}{A_r}*\int_{A_r}\int_{A_s}\frac{L_s}{\pi*r^2}*\cos(\theta_s)*\cos(\theta_r)*dA_s*dA_r$
+  
+  Sichtbarkeitsfaktor $H_{sr}$
   $$F_{sr}=\frac{1}{A_R}\int_{A_r}\int_{A_s}\frac{\cos(\theta_s)*\cos(\theta_r)}{\pi*r^2}*H_{sr}*dA_s*dA_r, H_{sr}=\begin{cases}1\rightarrow A_s \text{ sichtbar}\\ 0\rightarrow A_s \text{ unsichtbar}\end{cases}$$
-  Für Flächen, die klein im Verhältnis zu ihrem Abstand sind, ergibt sich eine Vereinfachung des Formfaktors. In diesem Fall können die Winkel $\theta_s,\theta_r$ und Radius r über den zu integrierenden Flächen als konstant (Mittelwerte) angenommen werden.
+  
+  Für im Verhältnis zum Abstand kleinen Flächen können $\theta_s,\theta_r$ und Radius r konstant angenommen werden.
   $$F_{sr}=A_S \frac{\cos(\theta_s)*cos(\theta_r)}{\pi*r^2}*H_{sr}$$
   
-  Bei dicht benachbarten Flächen gelten die obigen, vereinfachenden Annahmen u.U. nicht mehr. Es müsste exakt gerechnet oder in diesen Bereichen feiner untergliedert werden. 
-  Wird statt $\beta \lambda \beta$ vereinfachend ein konstanter Remissionsfaktor R (R diff im monochromatischen Fall oder $R_{diff R}, R_{diffG}, R_{diffB}$ für die drei typischen Farbkanäle) eingeführt, so ergibt sich zwischen der Strahldichte $L_r$ der bestrahlten Fläche und der Strahldichte $L_s$ der bestrahlenden Fläche der folgende Zusammenhang: $L_r=R_r*F_sr*L_s$
+  Jedes Patch wird nun als opaker Lambertscher Emitter und Reflektor betrachtet.
   
-  Jedes Patch wird nun als opaker Lambertscher (d.h. ideal diffuser) Emitter und Reflektor betrachtet (d.h. alle Lichtquellen werden genauso wie einfache remittierende Flächen behandelt, allerdings mit emittierendem Strahldichte-Term $L_{emr}$). $L_r=L_{emr}+R_r*\sum_S F_{sr}*L_s$
+  emittierende Strahldichte: $L_r=L_{emr}+R_r*\sum_S F_{sr}*L_s$
   
   Es ergibt sich schließlich als Gleichungssystem:
   $$ \begin{pmatrix} 1-R_1F_{11} & -R_1F_{12} &...& -R_1F_{1n}\\ 1-R_2F_{21} & -R_2F_{22} &...& -R_2F_{2n}\\ \vdots & \vdots & \ddots & \vdots \\ 1-R_nF_{n1} & -R_nF_{n2} &...& -R_nF_{nn} \end{pmatrix} * \begin{pmatrix} L_1\\L_2\\\vdots\\L_n \end{pmatrix} = \begin{pmatrix} L_{em1}\\L_{em2}\\\vdots\\L_{emn} \end{pmatrix}$$
-  Das Gleichungssystem ist für jedes Wellenlängenband, das im Beleuchtungsmodell betrachtet wird, zu lösen ($R_r, R_{rR}, R_{rG}, R_{rB}, L_{emr}$ sind im Allgemeinen wellenlängenabhängig).
+  ($R_r, R_{rR}, R_{rG}, R_{rB}, L_{emr}$ sind allg. wellenlängenabhängig)
   
   \paragraph{Adaptives Refinement}
   Adaptives Radiosity-Verfahren:
   \begin{itemize*}
-    \item vereinfachte Formfaktor-Berechnung ist ungenau bei eng beieinander liegenden Flächenstücken (z. B. in der Nähe von Raumecken), oder bei kontrastreichen Übergängen)
-    \item deshalb adaptive Unterteilung solcher Flächen in feinere Polygone
+    \item vereinfachte Formfaktor-Berechnung ist ungenau bei eng beieinander liegenden Flächenstücken
+    \item adaptive Unterteilung solcher Flächen in feinere Polygone
+    \item Notwendigkeit durch erste Berechnung geschätzt
   \end{itemize*}
-  
-  Im adaptiven Radiosity-Verfahren werden deshalb große Flächen (insbesondere dort wo Flächen relativ hell sind im Vergleich zur Nachbarfläche $\rightarrow$ kontrastreiche Übergänge) unterteilt. Die Notwendigkeit wird durch erste Berechnung mit grober Unterteilung geschätzt.
   
   \paragraph{Progressive Refinement}
   \begin{itemize*}
-    \item das Radiosity-Verfahren ist sehr aufwendig (Bestimmung aller Formfaktoren, Anwendung des Gauß-Seidel-Verfahrens zum Lösen des Gleichungssystems)
-    \item jedoch viel weniger Samples als Monte-Carlo-Raytracing (1 mal pro Kachel-Paar mal Anzahl Interationen)!
-    \item beim progressive Refinement ist die inkrementelle Approximation des Ergebnisses des exakten Algorithmus durch ein vereinfachtes Verfahren wünschenswert
-    \item ein entsprechender Algorithmus, der die Patches einzeln behandelt, stammt von Cohen, Chen, Wallace und Greenberg
+    \item das Radiosity-Verfahren ist sehr aufwendig
+    \item viel weniger Samples als Monte-Carlo-Raytracin
+    \item inkrementelle Approximation des Ergebnisses des exakten Algorithmus
     \item akkumuliert mehr Energie in jedem Schritt, verletzt Gleichgewicht der Strahlung $\rightarrow$ Korrektur notwendig:
     $L_r^{k+1}=L_{emr} + R_r*\sum_s F_{sr}* L_s^k$
   \end{itemize*}
-  
   
   \paragraph{Radiosity Eigenschaften}
   \begin{itemize*}
     \item ausschließlich Berücksichtigung der diffusen Reflexion
     \item blickwinkelunabhängig, direkt im 3D-Raum arbeitend
-    \item realistische Schattenbilder, insbesondere Halbschatten (viele, bzw. flächig ausgedehnte Lichtquellen)
-    \item sehr rechenintensiv, deshalb meist Vorausberechnung einer Szene in 3D
-    \item $\rightarrow$ Beleuchtungsphänomene wie z.B. indirektes Licht (besonders augenfällig in Innenräumen, Museen, Kirchen, Theaterbühnen usw.) sind mit Radiosity sehr gut/realistisch darstellbar.
-    \item $\rightarrow$ die Kombination von Radiosity und Ray Tracing (und ggfs. anderen Verfahren/Filtern etc) ermöglicht computergenerierte Szenen mit sehr hohem Grad an Realismus.
+    \item realistische Schattenbilder, insbesondere Halbschatten
+    \item sehr rechenintensiv, deshalb meist Vorausberechnung
+    \item $\rightarrow$ Beleuchtungsphänomene wie z.B. indirektes Licht sehr gut/realistisch darstellbar
+    \item $\rightarrow$ Kombination von Radiosity und Ray Tracing ermöglicht Szenen mit sehr hohem Grad an Realismus
   \end{itemize*}
   
-  \subsection{ Zusammenfassung}
-  \begin{itemize*}
-    \item BRDF für physikbasierte, lokale Berechnung der Reflexion von Lichtquellen als Funktion von Einfallswinkel und Betrachterwinkel (evtl. wellenlängenabhängig, oder einfach durch RGB)
-    \item Rendergleichung (Kajiya) = BRDF, Integral über alle Lichtquellen (bzw. Hemisphäre)
-    \item für indirekte Beleuchtung / Global Illumination: (verschiedene algorithmische Verfahren unter Verwendung der lokalen Beleuchtung (BRDF)
-    \item (rekursives) Raytracing (einfache Spiegelung, Brechung, Schatten)
-    \item Monte Carlo RT, (gestreute Spiegelung, diffuse Reflexion), Backward Ray Tracing (Kaustik), Photon Mapping $\rightarrow$ jedoch extrem rechenaufwendig!)
-    \item Radiosity (indirekte diffuse Reflexion - sichtunabhängige Voraus-berechnung in 3D für statische Szenen)
-    \item verschiedene Verfahren können kombiniert werden um die globale Beleuchtungsphänomene effizienter zu berechnen. - z. B. Radiosity + Ray Tracing: Indirekte diffuse Beleuchtung + Spiegelung und Schatten, etc.
-  \end{itemize*}
-  
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Texture Mapping}
-  \subsection{ Bildbasiertes Rendering}
-  \paragraph{Überblick}
+  \subsection{Bildbasiertes Rendering}
   \begin{itemize*}
-    \item typische Anwendung: Applizieren von 2D-Rasterbildern auf 3D-Modellen
-    \item Beispiele: Hausfassade, Holz-, Marmor-, Steintexturen, Tapeten, Stoffe etc.
-    \item 3D-Objekte mit relativ einfachen Polygonen modelliert. - Details als Texturen, (d.h. als Raster-Bilder) - gelegentlich 'Impostor' genannt.
-    \item Texture-Mapping als Erweiterung des einfachen Pattern-Filling (siehe. Polygonfüllalgorithmus)
+    \item typisch: Applizieren von 2D-Rasterbildern auf 3D-Modellen
+    \item 3D-Objekte mit relativ einfachen Polygonen modelliert
+    \item Details als Texturen - 'Impostor' genannt.
+    \item Texture-Mapping als Erweiterung des einfachen Pattern-Filling
     \item als Verallgemeinerung auch Image-based Rendering genannt
     \item Verwendung unterschiedlicher 3D-Transformationen und Beleuchtungsarten
-    \item Spezielle Effekte! (Reflexionen, Schatten, ..)
   \end{itemize*}
   
   Erzeugung von Texturen:
   \begin{itemize*}
-    \item 'reale' Texturen aus realen rasterisierten/digitalen Fotografien (aus Pixeln = 'Picture-Elementen' werden Texel = 'Texturelemente') vs.
-    \item 'berechnete' Texturen $\rightarrow$ synthetische Computergrafik-Bilder:
-    \item vorberechnete reguläre Texturen (basieren auf Texeln) vs.
-    \item nach Bedarf erzeugte statistische bzw. prozedurale Texturen (Absamplen von mathematischen Beschreibungen, ggf. beliebig genau)
+    \item 'reale' Texturen aus realen rasterisierten/digitalen Fotografien (Pixel werden Texel)
+    \item 'berechnete' Texturen $\rightarrow$ synthetische Computergrafik-Bilder
+    \item vorberechnete reguläre Texturen (basieren auf Texeln) 
+    \item nach Bedarf erzeugte statistische bzw. prozedurale Texturen
   \end{itemize*}
   
   Anwendung von Texturen - Grundprinzipien:
   \begin{itemize*}
-    \item Transformation des Texturraums in den Bildraum der Darstellung: Verwendung unterschiedlicher geometrischer Transformationen (je nach Anwendungszweck)
-    \item Resampling: transformiertes Texturraster wird aufs Bildraster 'gerundet'
+    \item Texturraum in den Bildraum der Darstellung
+    \item Verwendung untersch. geometrischer Transformationen
+    \item Resampling: transformiertes Texturraster wird auf Bildraster gerundet
     \item Filtern: Verhindern/Abmildern von resampling-basierten Aliasing-Effekten
     \item Beleuchtung: RGB-Werte der Textur dienen als Materialattribute bei der Beleuchtungsrechnung
   \end{itemize*}
   
-  Unterschiedliche Arten des Texturmappings (Transformationsfunktion):
+  Unterschiedliche Arten des Texturmappings
   \begin{itemize*}
-    \item Parametrisches Mapping: Ein Rasterbild wird auf ein 3D-Polygon aufgebracht, indem man den Eckpunkten (x,y,z) des Polygons 2D-Texturkoordinaten (u,v) explizit zuordnet.
+    \item Parametrisches Mapping: Rasterbild wird auf 3D-Polygon gebracht, indem man den Eckpunkten des Polygons 2D-Texturkoordinaten explizit zuordnet
     \item affines Texturmapping: direkte affine Abbildung der Textur auf projizierte Polygone im Bildraum
     \item perspektivisches Texturmapping: Zwischenabbildung der Textur in den 3D-Objektraum und perspektivische Projektion in den Bildraum
     \item Projektives Texturmapping: Verwendung unterschiedlicher Projektionsarten (parallel, perspektivisch, eben, zylindrisch, sphärisch)
@@ -1805,7 +1688,9 @@
     \item Texturinhalt als Material, Beleuchtung, Geometrie interpretiert
   \end{itemize*}
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Grafik Pipeline}
   \begin{itemize*}
     \item algorithmisches Konzept, sowie Realisierung der Grafikkartenhardware ist vergleichbar mit Fließband
@@ -1919,7 +1804,9 @@
   %\subsection{Hardware-Architektur
   %![GPU Architektur](Assets/Computergrafik_GPU_Hardware.png)
   
-  \newpage
+\end{multicols}
+\newpage
+\begin{multicols}{3}
   \section{Bildverarbeitung}
   \subsection{Operationen auf dem Bildraster}
   Problem der Vorwärtstransformation:

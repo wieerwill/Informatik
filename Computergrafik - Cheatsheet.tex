@@ -1256,15 +1256,14 @@
     \item typisch: Applizieren von 2D-Rasterbildern auf 3D-Modellen
     \item 3D-Objekte mit relativ einfachen Polygonen modelliert
     \item Details als Texturen - 'Impostor' genannt.
-    \item Texture-Mapping als Erweiterung des einfachen Pattern-Filling
+    \item Texture-Mapping als Erweiterung des Pattern-Filling
     \item als Verallgemeinerung auch Image-based Rendering genannt
-    \item Verwendung unterschiedlicher 3D-Transformationen und Beleuchtungsarten
   \end{itemize*}
   
   Erzeugung von Texturen:
   \begin{itemize*}
     \item 'reale' Texturen aus realen rasterisierten/digitalen Fotografien (Pixel werden Texel)
-    \item 'berechnete' Texturen $\rightarrow$ synthetische Computergrafik-Bilder
+    \item 'berechnete' Texturen $\rightarrow$ synthetische Computergrafik
     \item vorberechnete reguläre Texturen (basieren auf Texeln) 
     \item nach Bedarf erzeugte statistische bzw. prozedurale Texturen
   \end{itemize*}
@@ -1279,14 +1278,13 @@
   \end{itemize*}
   
   Unterschiedliche Arten des Texturmappings
-  \begin{itemize*}
-    \item Parametrisches Mapping: Rasterbild wird auf 3D-Polygon gebracht, indem man den Eckpunkten des Polygons 2D-Texturkoordinaten explizit zuordnet
-    \item affines Texturmapping: direkte affine Abbildung der Textur auf projizierte Polygone im Bildraum
-    \item perspektivisches Texturmapping: Zwischenabbildung der Textur in den 3D-Objektraum und perspektivische Projektion in den Bildraum
-    \item Projektives Texturmapping: Verwendung unterschiedlicher Projektionsarten (parallel, perspektivisch, eben, zylindrisch, sphärisch)
-    \item Environment-Mapping: Spiegelung der Textur an der Oberfläche (bzw. Refraktion) mit entsprechender Verzerrung
-    \item Transformation abhängig von Kameraposition!
-  \end{itemize*}
+  \begin{description*}
+    \item[Parametrisch] auf 3D-Polygon, indem den Eckpunkten des Polygons 2D-Texturkoordinaten explizit zuordnet werden
+    \item[Affin] direkte affine Abbildung der Textur auf projizierte Polygone im Bildraum
+    \item[Perspektivisch] Zwischenabbildung der Textur in 3D- Objektraum und perspektivische Projektion in Bildraum
+    \item[Projektives] Verwendung unterschiedlicher Projektionsarten (parallel, perspektivisch, eben, zylindrisch, sphärisch)
+    \item[Environment] Spiegelung der Textur an der Oberfläche (bzw. Refraktion) mit entsprechender Verzerrung
+  \end{description*}
   
   \paragraph{Affines Texturemapping}
   Durch Zuordnung von 3 Punkten im Bildraster zu den entsprechenden 3 Punkten im Texturraster erhält man ein Gleichungssystem mit 6 Gleichungen und 6 Unbekannten $(a_u , b_u , c_u , a_v , b_v , c_v )$:
@@ -1301,350 +1299,275 @@
   Für jedes Pixel(x,y) finde die Texturkoordinaten(u,v), d.h.:
   \begin{itemize*}
     \item Rückwärtstransformation vom Ziel zum Original $\rightarrow$ keine Löcher im Bild!
-    \item ABER: Texturkoordinaten können übersprungen oder wiederholt werden!
+    \item Texturkoordinate kann übersprungen oder wiederholt sein
     \item Störsignale (Aliasing) $\rightarrow$ Filterung notwendig!
   \end{itemize*}
   
   Affines Mapping der Vertices x,y auf u,v $\rightarrow$ lineare Interpolation der u/v-Texturkoordinaten zwischen den Vertices für jedes Pixel (ähnlich wie RGB- bzw. Z-Werte im Polygonfüllalgorithmus, durch Ganzzahlarithmetik)
-  
   %![Affines Texturmapping; Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Affines-Texturmapping.png)
   
   Problem: Durch affine 2D-Abbildungen können nur Transformationen wie Rotation, Skalierung, Translation, Scherung in der Bild-Ebene abgebildet werden, aber keine Perspektive! $\rightarrow$ Abbildungsfehler zwischen den Eckpunkten! (kleine Dreiecke $\rightarrow$ kleiner Fehler!)
   
-  \paragraph{Perspektivisches Texture-Mapping}
-  Beispiel: affine 3D-Abbildung der Textur per 4x4-Matrix auf 3D-Modell: 
-  Texturraum $\rightarrow$ Objektraum: Rotation, Translation, Skalierung (...) dann Objektraum $\rightarrow$ Bildraum: Projektion (selbe wie bei Geometrieprojektion)
-  
-  %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Perskeptivisches-Texture-Mapping.png)
-  
-  entspricht affinem Textur-Mapping mit einem zusätzlichen Zwischenschritt, der Bestimmung der Objektraumkoordinaten:
+  \subsection{Perspektivisches Texture-Mapping}
+  entspricht affinem Textur-Mapping mit Zwischenschritt
   \begin{itemize*}
-    \item Matrix $M_{to}$: Koordinatentransformation vom Texturraum in den 3D- Objektraum (affine Abb.: 3D-Translation, -Rotation, -Skalierung)
-    \item Matrix $M_{oi}$ : Koordinatentransformation vom Objektraum in den Bildraum (Kameratransformation, perspektivische Abbildung)
+    \item Matrix $M_{to}$: Koordinatentransformation vom Texturraum in den 3D-Objektraum (Translation, Rotation, Skalierung)
+    \item Matrix $M_{oi}$ : Koordinatentransformation vom Objektraum in den Bildraum (Kameratransformation)
     \item Matrix $M_{ti}$: gesamte Koordinatentransformation vom Texturraum direkt in den Bildraum: $M_{ti} = M_{to}*M_{oi}$
     \item Matrix $M_{ti}^{-1}$: Inverse Koordinatentransformation vom Bildraum zurück in den Texturraum
   \end{itemize*}
   
-  $\rightarrow$ 4x4-Matrix für homogene Koordinaten. Perspektivische Abbildung im Bildraum durch Division durch z, für jedes Pixel (wesentlich aufwendiger als lineare Interpolation)
+  $\rightarrow$ 4x4-Matrix für homogene Koordinaten.
   
-  Vergleich: Perspektivisches / Affines Texture Mapping:
+  Vergleich: Perspektivisches / Affines Texture Mapping
   \begin{itemize*}
-    \item perspektivisches Textur-Mapping liefert auch bei perspektivischer Ansicht geometrisch korrekte Bilder
-    \item etwas höherer Berechnungsaufwand pro Polygon, da für jedes Polygon zwei Transformationsmatrizen und eine inverse 4x4-Matrix bestimmt werden müssen
-    \item wesentlich höherer Berechnungsaufwand pro Pixel: Matrixmultiplikation plus (floating-point) Division!
-    \item bei affinem Textur-Mapping können hingegen einfach die Texturkoordinaten (u/v) zwischen den Polygonecken linear interpoliert werden:
-    \item ähnlich wie bei anderen Attributen (z. B. x-Koordinate (s. Edge-Scan), r/g/b-Werte (s. Gouraud-Shading), Tiefenwerte (1/z) funktioniert dies inkrementell und mit Ganzzahlarithmetik (als Teil des Polygonfüllalgorithmus)
-    \item je kleiner die Polygone im Bild, desto kleiner der Fehler beim affinen Texturemapping (Ansatz: feinere Unterteilung der Polygone in kleinere Dreiecke $\rightarrow$ dafür jedoch mehr Polygone!)
+    \item perspektivische Ansicht geometrisch korrekter Bilder
+    \item pers. höherer Berechnungsaufwand pro Polygon/Pixel
+    \item affines Mapping kann u/v zwischen Polygonecken linear interpolieren
   \end{itemize*}
   
   \paragraph{Textur-Mapping mit Polygon-Schattierung}
-  Eingliederung in die Render Pipeline
   \begin{itemize*}
     \item Bestimmung der zum Polygon gehörenden sichtbaren Pixel im Bildraum (Polygonfüllalgorithmus)
     \item Ermittlung der zur jeder Pixelkoordinate gehörenden Texturkoordinate mit Hilfe der inversen Transformationsmatrix $M_{ti}^{-1}$
-    \item Ermittlung der Farbe des zu setzenden Pixels aus dem Texturraster (und gegebenenfalls weitere Schattierung aus der Beleuchtungsrechnung)
-    \item Beleuchtungsrechnung, z.B.: Multiplikation der Helligkeit einer beleuchteten diffusen weißen Oberfläche mit den r/g/b-Werten der Textur (Lambert Modell)
+    \item Ermittlung der Farbe des zu setzenden Pixels aus dem Texturraster (und ggf Beleuchtung)
+    \item Beleuchtungsrechnung: Multiplikation der Helligkeit einer beleuchteten diffusen weißen Oberfläche mit den rgb-Werten der Textur (Lambert Modell)
   \end{itemize*}
   
   \paragraph{Weitere Texturarten}
-  \begin{itemize*}
-    \item Texturen mit Transparenz: RGBA-Wert zu jedem Pixel gespeichert, d.h. beim Rendern wird Alpha Blending mit der Hintergrundfarbe angewendet
-    \item Video Texture: zeitlich veränderliche Textur, d.h. dynamische Veränderungen wie z.B. Feuer, Rauch (mit Alpha-Blending über Hintergrund / Billboard) oder Fernseher in der Wohnung mit Programm“ (ohne Alpha-Blending)
-    \item Solid Textures:
-    \item Textur als 3D-Array (u/v/w-Koordinaten, bzw. Voxel) $\rightarrow$ gespeicherte RGB(A)-Werte pro Voxel
-    \item Abbildung über affine 3D-Transformation xyz auf uvw
-    \item beim Rendern entweder auf Vertices angewendet und dann für Pixel linear interpoliert oder für jedes Pixel einzeln angewendet (Pixelshader)
-    \item Anwendungsbsp.: Schnitt durch Material (z.B. Massivholz, Marmor) oder Volume Rendering (Überlagerung von Schichten) mit Alpha Blending, z.B. Computertomoraphie (CT-Daten)
-    \item ggfs. auch Videotextur als Spezialfall einer Solid Texture: Zeit als 3. Dim.
-  \end{itemize*}
+  \begin{description*}
+    \item[Texturen mit Transparenz] RGBA-Wert zu jedem Pixel gespeichert, d.h. Rendern mit Alpha Blending
+    \item[Video Texture] zeitlich veränderliche Textur, d.h. dynamische Veränderungen
+    \item[Solid Textures] Textur als 3D-Array $\rightarrow$ RGB(A)-Werte pro Voxel
+    \begin{itemize*} 
+      \item Abbildung über affine 3D-Transf. xyz auf uvw
+      \item beim Rendern entweder auf Vertices und für Pixel linear interpoliert oder für jedes Pixel einzeln angewendet (Pixelshader)
+    \end{itemize*}
+  \end{description*}
   
-  %\paragraph{Projektives Textur-Mapping
+  \paragraph{Projektives Textur-Mapping}
   Berechnung der Texturkoordinaten aus der aktuellen Position der einzelnen Polygone (Analogie: Projektion eines Diapositivs auf ein räumliches Objekt)
-  
-  Beispiel: Parallelprojektion mit fixer Position des Projektors zum Objekt
   \begin{itemize*}
-    \item 2D-Textur (Bsp. Gitter aus Millimeterskalen)
     \item Parallelprojektion der Textur auf einen Zylinder mit abgeschrägten Endflächen
-    \item Projektion ist relativ zum Objekt definiert, d.h. die Textur bewegt sich mit dem Körper, sofern man diesen bewegt
-    \item markierte Bereiche (1 bzw. 2) haben auf Zylinder stets identische Positionen
+    \item Projektion ist relativ zum Objekt definiert, Textur bewegt sich mit dem Körper
+    \item markierte Bereiche haben auf Zylinder stets identische Positionen
     \item keine explizite Zuordnung von uv-Koordinaten zu Polygoneckpunkten notwendig, weniger Modellieraufwand!
   \end{itemize*}
+  \begin{description*}  
+    \item[projektives Textur-Mapping (Parallel-/Zentralprojektion)]
+    \begin{itemize*}
+      \item Darstellung geometrischer Eigenschaften
+      \item einfache Darstellung von Parameterlinien 
+      \item Simulation eines Lichtkegels (Leuchtdichteverteilung)
+    \end{itemize*}
+    \item[Zylindrisches Textur-Mapping]
+    \begin{itemize*}
+      \item radiale Projektion der Textur-Koordinaten auf Zylinderoberfläche
+      \item visueller Effekt für zylinderähnliche Objekte ähnlich zu parametrischem Textur-Mapping
+    \end{itemize*}
+    \item[Sphärisches Textur-Mapping]
+    \begin{itemize*}
+      \item Zentralprojektion der Textur-Koordinaten auf eine Kugeloberfläche
+      \item Vorteil des projektiven Texturmappings: Eine explizite Zuordnung der 3D-Punkte zu Texturkoordinaten mit stetiger Fortsetzung der Parametrisierung an den Polygongrenzen entfällt $\rightarrow$ weniger Modellieraufwand!
+    \end{itemize*}
+  \end{description*}
   
-  Anwendungsbeispiele für projektives Textur-Mapping (Parallel- oder Zentralprojektion):
+  \subsection{Environment Mapping}
+  Spezialfall des projektiven Textur-Mapping
   \begin{itemize*}
-    \item Darstellung geometrischer Eigenschaften (geometrische Details, parallel, fixe Position des Projektors zum Objekt, senkrecht zur Fläche)
-    \item einfache Darstellung von Parameterlinien (sofern die Textur senkrecht auf die Projektionsebene projiziert wird, parallel, fixiert bezgl. Objekt)
-    \item Simulation eines Lichtkegels (Repräsentation der Leuchtdichteverteilung der Lichtquelle (Lichtfeld) als Rasterbild in einer Textur, zentral, fix in Weltkoordinaten)
-  \end{itemize*}
-  
-  Zylindrisches Textur-Mapping:
-  \begin{itemize*}
-    \item radiale Projektion der Textur-Koordinaten auf eine Zylinderoberfläche
-    \item visueller Effekt für zylinderähnliche Objekte ähnlich zu parametrischem Textur-Mapping, z.B. Etikett auf Flasche, Dose, etc.
-  \end{itemize*}
-  
-  Sphärisches Textur-Mapping:
-  \begin{itemize*}
-    \item Zentralprojektion der Textur-Koordinaten auf eine Kugeloberfläche
-    \item Vorteil des projektiven Texturmappings: Eine explizite Zuordnung der 3D-Punkte zu Texturkoordinaten mit stetiger Fortsetzung der Parametrisierung an den Polygongrenzen entfällt $\rightarrow$ weniger Modellieraufwand!
-  \end{itemize*}
-  
-  \paragraph{Environment Mapping}
-  Spezialfall des projektiven Textur-Mapping:
-  \begin{itemize*}
-    \item Simulation der Reflexion der Umgebung an einer reflektierenden Fläche
+    \item Simulation der Reflexion der Umgebung an reflektierenden Flächen
     \item Darstellung abhängig von der Position des Betrachters sowie von den Normalen der reflektierenden Fläche
-    \item Textur entspricht der Lichtquelle für die Beleuchtung durch die Umgebung (Environment Map): Sphere Map bzw. Cube Map
-  \end{itemize*}
-  
-  Mapping der Textur auf die spiegelnde Oberfläche:
-  \begin{itemize*}
-    \item Aussenden eines Strahls vom Auge auf einen Punkt der spiegelnden Oberfläche
-    \item Ermittlung der Reflexionsrichtung entsprechend dem Einfallswinkel des Strahl zur Flächennormale
-    \item damit Bestimmung des zu reflektierenden Punktes in der Umgebung, d. h. des entsprechenden Textur-Pixels aus der Environment Map
-  \end{itemize*}
-  
-  Grundannahme beim Environment Mapping:
-  \begin{itemize*}
+    \item Textur entspricht der Lichtquelle für die Beleuchtung durch die Umgebung: Sphere Map bzw. Cube Map
     \item relativ große Entfernung der reflektierten Objekte von der spiegelnden Fläche
   \end{itemize*}
   
-  Erzeugung einer Cube Map-Textur:
+  Mapping der Textur auf die spiegelnde Oberfläche
   \begin{itemize*}
-    \item Aufteilung der Environment Map in sechs Bereiche, die den sechs Flächen eines Würfels um die spiegelnde Fläche herum entsprechen
-    \item Rendern der Umgebung sechs mal mit einem Kamera-Sichtfeld von jeweils 90 Grad aus dem Mittelpunkt des Würfels
-    \item Alternativ: Digitale Aufnahme und Einpassen der sechs Flächen mittels Image Warping in die jeweiligen Zonen der Environment Map
-    \item Strahlverfolgung: Sehstrahl wird an den Eckpunkten des Objekts (entsprechend den Normalen) gespiegelt und dreidimensional mit den 6 Wänden der Cube Map geschnitten.
-    \item Daraus ergibt sich eine Zuordnung von Objektkoordinaten (x/y/z) und Texturkoordinaten (u/v).
-    \item Die Transformation kann wie beim perspektivischen Texturmapping berechnet werden und beim Rasterisieren für die dazwischen liegenden Pixel angewendet werden.
-    \item Effekt ähnlich wie bei Raytracing, jedoch geometrisch angenähert (gespiegelte Objekte sind nur als 2D-Raster-Bild repräsentiert)
-    \item keine aufwändigen Strahl-Objektschnitte (wie beim Raytracing) notwendig (Sehstrahl wird von den dargestellten Dreiecksecken zurückgerechnet!)
-    \item Näherung wird ungenau, wenn das spiegelnde Objekt weit weg ist von der Kameraposition, welche für die Generierung der Cube-Map verwendet wurde
+    \item Aussenden eines Strahls vom Auge auf einen Punkt der spiegelnden Oberfläche
+    \item Ermittlung der Reflexionsrichtung entsprechend dem Einfallswinkel des Strahl zur Flächennormale
+    \item damit Bestimmung des zu reflektierenden Punktes in der Umgebung (Textur-Pixels aus der Environment Map)
+  \end{itemize*}
+  
+  Erzeugung einer Cube Map-Textur
+  \begin{itemize*}
+    \item Aufteilung der Environment Map in sechs Bereiche, die sechs Flächen eines Würfels um spiegelnde Fläche entsprechen
+    \item Rendern der Umgebung sechs mal mit einem Kamera- Sichtfeld von jeweils 90 Grad aus dem Mittelpunkt des Würfels
+    \item Alternativ: Digitale Aufnahme und Einpassen der sechs Flächen mittels Image Warping in die jeweiligen Zonen
+    \item Strahlverfolgung: Sehstrahl wird an den Eckpunkten des Objekts gespiegelt und dreidimensional mit den 6 Wänden der Cube Map geschnitten
+    \item Zuordnung von Objektkoordinaten (x/y/z) zu Texturkoordinaten (u/v)
+    \item Transformation kann wie beim perspektivischen Texturmapping berechnet werden und beim Rasterisieren für die dazwischen liegenden Pixel angewendet werden
+    \item Effekt ähnlich wie bei Raytracing, jedoch geometrisch angenähert
+    \item keine aufwändigen Strahl-Objektschnitte notwendig
+    \item Näherung ungenau, wenn spiegelndes Objekt weit weg von Kamera
     \item nur Einfachreflexion
-    \item Cube Maps können dynamisch (durch Offline-Rendering in Texturbuffer) generiert werden. Dadurch auch bewegte gespiegelte Objekte in Echtzeit darstellbar
-    \item Beachte: gespiegeltes Dreieck kann auf zwei oder mehrere Wände der Cube Map fallen. Dies kann durch mehrfaches Mapping und Clipping gelöst werden.
+    \item kann dynamisch generiert werden. Bewegte gespiegelte Objekte in Echtzeit darstellbar
+    \item gespiegeltes Dreieck kann auf mehrere Wände der Cube Map fallen. Kann durch mehrfaches Mapping und Clipping gelöst werden
   \end{itemize*}
   
   Environment Mapping [Haeberli/Segal 1993] für Kugel und Torus: 
   \begin{itemize*}
-    \item Unterschiedliche Ausrichtung der Objektoberfläche sorgt für korrekte Verzerrung der spiegelnden Objekte. Die Darstellung der spiegelnden Objekte (Geometrie und Material) steht beim Environment-Mapping im Vordergrund und nicht die korrekte geom. Darstellung gespiegelter Objekte!
-    \item Alle Raumrichtungen werden auf der Kugeloberfläche abgebildet. Je nach Aufnahmegeometrie mehr oder weniger großer blinder Fleck“ hinter der Kugel.
+    \item Unterschiedliche Ausrichtung der Objektoberfläche sorgt für korrekte Verzerrung der spiegelnden Objekte. Die Darstellung der spiegelnden Objekte steht beim Environment-Mapping im Vordergrund und nicht die korrekte geom. Darstellung gespiegelter Objekte
+    \item Alle Raumrichtungen werden auf der Kugeloberfläche abgebildet. Je nach Aufnahmegeometrie mehr oder weniger großer blinder Fleck hinter der Kugel
   \end{itemize*}
-  
   %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Environment-Map-Kugel.png)
   
-  Erstellung einer Spherical-Environment-Map-Textur:
+  Erstellung einer Spherical-Environment-Map-Textur
   \begin{itemize*}
     \item spiegelnde Kugel in der Mitte einer Szene
-    \item Fotografie der Kugel mit einer Kamera sehr großer (unendlicher) Brennweite aus großem (unendlichem) Abstand (parallele Projektionsstrahlen)
+    \item Fotografie der Kugel mit einer Kamera sehr großer Brennweite aus großem Abstand
     \item Entstehung einer kreisförmigen Region in der Textur-Map mit den Tangenten jeweils an den Außenkanten
     \item Texturwerte außerhalb des Kreises werden nicht benötigt
-    \item Wahl der Blickrichtung(-en) wichtig für spätere Anwendung!
+    \item Wahl der Blickrichtungen wichtig für Anwendung
   \end{itemize*}
   
-  Anwendung einer Spherical Environment Map:
+  Anwendung einer Spherical Environment Map
   \begin{itemize*}
-    \item Zur Bestimmung der Texturkoordinate eines dargestellten Punktes wird zuerst die Normale n an diesem Punkt bestimmt.
-    \item Die Normale n wird auf die x/y- Ebene projiziert. Die Koordinaten des projizierten Normalenvektors entsprechen den Texturkoordinaten in der Sphere Map, welche die an dieser Stelle reflektierte Umgebung zeigt.
-    \item Merke: Die Reflexion ist nicht von der Lage des reflektierenden Punktes abhängig (nur von der Normalenrichtung).
+    \item Zur Bestimmung der Texturkoordinate eines dargestellten Punktes wird zuerst die Normale n an diesem Punkt bestimmt
+    \item Normale n wird auf die x/y- Ebene projiziert. Projizierter Normalenvektor entspricht Texturkoordinaten in Sphere Map, welche die an dieser Stelle reflektierte Umgebung zeigt
+    \item Reflexion nicht von der Lage des reflektierenden Punktes abhängig (nur von Normalenrichtung)
   \end{itemize*}
   
-  Environment Map in latitude-/longitude-Koordinaten:
+  Environment Map in latitude-/longitude-Koordinaten
   \begin{itemize*}
-    \item Spiegelung wird aus Richtung des gespiegelten Strahls in Winkelkoordinaten (lat/long) berechnet
-    \item entweder pro Pixel (Pixel-Shader) oder pro Vertex mit anschließender (linearer) Interpolation pro Pixel
+    \item Spiegelung wird aus Richtung des gespiegelten Strahls in Winkelkoordinaten berechnet
+    \item entweder pro Pixel oder pro Vertex mit anschließender Interpolation pro Pixel
     \item keine Berücksichtigung der Position des spiegelnden Objekts
-    \item korrekt nur für unendlich entfernte gespiegelte Objekte $\rightarrow$ geeignet zur Spiegelung weit entfernter Objekte (Landschaften, große Räume auf relativ kleinen Objekten)
+    \item korrekt nur für unendlich entfernte gespiegelte Objekte $\rightarrow$ geeignet zur Spiegelung weit entfernter Objekte
   \end{itemize*}
   
   
-  High-dynamic Range Imaging (HDRI) Env-Maps:
+  High-Dynamic Range Imaging (HDRI) Environment-Maps
   \begin{itemize*}
-    \item enthalten 'gesamte Dynamik' des Lichts (als Floating Point Farbwerte)
-    \item Wesentlich realistischere Bilder!
+    \item enthalten 'gesamte Dynamik' des Lichts (Floating Point)
+    \item Wesentlich realistischere Bilder
     \item Tone Mapping: berechnete HDRI-Bilder werden anschließend auf die Dynamik des Monitors reduziert
-    \item Refraktion / Brechung mit Environment Maps:
-    \item wie Spiegelung, jedoch Sekundärstrahl aus Sehstrahl über Brechungsindex und Oberflächennormale, statt gespiegelt
-    \item Beispiel: Glas als Polygonflächen mit Rückseite + Normalen (2-fache Brechung!) + Spiegelung als Multi-Pass (Überlagerung zweier Effekte)
-    \item kann im Zusammenhang mit Cube-Maps, Spherical oder Lat/Long Environment Maps angewendet werden
+    \item Refraktion/Brechung: wie Spiegelung, jedoch Sekundärstrahl aus Sehstrahl über Brechungsindex und Oberflächennormale, statt gespiegelt
   \end{itemize*}
   
-  
-  \subsection{ Mip-Mapping}
-  Was? aus Originaltextur Bildung einer Menge jeweils kleinerer Texturen (halbe Kantenlänge)
-  
-  Wozu? Vermeidung/Abmilderung von Aliasing-Effekten durch 'Vorfilterung' und Anwendung der passend aufgelösten Textur(-en) (1 Pixel $\approx$ 1 Texel) per bilinearer Filterung oder trilinearer Filterung
+  \subsection{Mip-Mapping}
+  Aus Originaltextur Bildung einer Menge jeweils kleinerer Texturen (halbe Kantenlänge).  
+  Vermeidung/Abmilderung von Aliasing- Effekten durch Vorfilterung und Anwendung der passend aufgelösten Textur(-en) per bilinearer/trilinearer Filterung
   
   \paragraph{Sampling-Artefakte}
-  Aliasing-Effekte durch Koordinatentransformation:
+  Aliasing-Effekte
   \begin{itemize*}
-    \item Pixel der Textur und Pixel des dargestellten Bildes weisen (aufgrund der Bildtransformation) im Allgemeinen unterschiedliche Rastergrößen auf.
-    \item simpler Ansatz: Berechnung der transformierten Texturkoordinaten als Floating-Point-Werte und Rundung auf ganze Zahlen
-    \item bei inverser Transformation vom Zielbild zurück zur Textur dann keine Lücken im Bild, aber die Pixel der Textur können ausgelassen oder mehrfach verwendet werden (Bildpixel werden genau einmal angewendet)
+    \item Pixel der Textur und Bildes weisen unterschiedliche Rastergrößen auf
+    \item Berechnung der transformierten Texturkoordinaten als Floating-Point-Werte und Rundung auf ganze Zahlen
+    \item bei inverser Transformation vom Zielbild zurück zur Textur keine Lücken im Bild, aber die Pixel der Textur können ausgelassen oder mehrfach verwendet werden
     \item durch das Resampling der Textur auf das resultierende Bildraster entstehen oft Aliasing-Artefakte
   \end{itemize*}
   
-  Zwei wesentlich unterschiedliche Situationen:
+  Zwei unterschiedliche Situationen
   \begin{itemize*}
-    \item Abbildung mehrerer Texturpixel auf ein Bildpixel (Unterabtastung) oder
-    \item Abbildung eines Texturpixels auf mehrere Bildpixel ( Überabtastung)
-    \item Filteroperationen zur Interpolation der Bildpixel-Färbung in jedem Fall notwendig, insbesondere bei der Unterabtastung wird ein vorheriges Tiefpassfiltern und Resampling notwendig!
-    \item Ansonsten Verletzung des Abtasttheorems / Nyquistfrequenz!
-  \end{itemize*}
-  
-  Beispiel perspektivische Verkürzung der Schachbretttextur:
-  \begin{itemize*}
-    \item in Realität eigentlich starke Verkleinerung der Textur bei größerer Entfernung!
-    \item $\rightarrow$ Moiré Muster - Originaltextur ist an diesen entfernten Stellen im Bild zur Laufzeit nicht mehr erkennbar (Unterabtastung, aus mehreren Texeln, welche 'hinter einem Pixel liegen“, wird nur einer ausgwählt)
-    \item Treppenstufen im Nahbereich resultieren aus Überabtastung (mehrere Pixel teilen selben Texel)
-    \item Lösung: Textur muss vorher passend durch Tiefpassfilter in der Auflösung reduziert werden $\rightarrow$ Aufbau und Anwendung einer Mip-Map
-    \item Ziel der Mip-Map: stets 1 Texel pro Pixel bereitstellen
-  \end{itemize*}
-  
+    \item Abbildung mehrerer Texturpixel auf Bildpixel (Unterabtastung - Minification)
+    \item Abbildung Texturpixels auf mehrere Bildpixel (Überabtastung - Magnification)
+    \item Filteroperationen zur Interpolation der Bildpixel-Färbung notwendig
+    \item Ansonsten Verletzung des Abtasttheorems/Nyquistfrequenz
+  \end{itemize*}  
   
   \paragraph{Aufbau}
   \begin{itemize*}
-    \item In 3D-Szenen können Körper mit der selben Textur vom Betrachter unterschiedlich weit weg sein. $\rightarrow$ im Bild oft Unterabtastung (Minification) oder Überabtastung (Magnification) und entsprechende Aliasing-Effekte durchs Resampling!
-    \item Ansatz: Vorberechnung derselben Textur für verschiedene Entfernungen
+    \item In 3D-Szenen oft Körper mit selber Textur vom Betrachter unterschiedlich weit weg 
+    \item im Bild oft Unter- oder Überabtastung und Aliasing
+    \item Vorberechnung derselben Textur für versch. Entfernungen
+    \begin{itemize*}
     \item Stufe 1: volle Auflösung
     \item Stufe 2: halbe Auflösung in jeder Richtung $(1/2)$
-    \item ...
     \item Stufe k: Auflösung $(1/2)^k$
-    \item Stufe n: niedrigste Auflösung (je 1 Pixel für z.B. R, G und B)
+    \item Stufe n: niedrigste Auflösung (je 1 Pixel für RGB)
+    \end{itemize*}
     \item Speicherbedarf:
     \item (hypothetische) Annahme: Anordnung im Array (getrennt f. RGB) $\rightarrow$ Alle niedrigen Auflösungen verbrauchen zusammen nur ein Viertel des Speicherplatzes
-    \item Mip steht für lat. multum in parvo = viel (Information) auf wenig (Speicherplatz)
-    \item niedrige Auflösungsstufen werden durch Filterung aus den höheren berechnet:
-    \item einfach: z.B. Mittelwert aus 4 Pixeln (Box-Filter) oder
-    \item aufwendiger: z.B.: Gaußfilter (siehe Kap. Bildverarb.)
-  \end{itemize*}
-  
-  \paragraph{Anwendung}
-  \begin{itemize*}
-    \item Beispiel: OpenGL-Filteroperationen im Bildraum (zur Laufzeit ausgeführt):
-    \item GL\_NEAREST: Annahme des Wertes des nächstliegenden Textur-Pixels
-    \item GL\_LINEAR: bilineare Interpolation: gewichteter linearer Durchschnitt aus einem 2x2-Feld der am nächsten liegenden Texturpixel
-    \item Genauere Interpolationsverfahren (z.B. bikubisch) gelten als zu aufwendig für Echtzeitanwendung
-    \item Beispiel für stark vergrößerte Textur:
-    \item Aus der Nähe betrachtet, wird das Texturraster auf dem Bildraster entsprechend skaliert (vergrößert).
-    \item durch Runden der Texturkoordinaten (d.h. ohne Filterung)
-    \item mit bilinearem Filter gewichtete Texturfarbwerte proportional zum Abstand vom gerundeten Koordinatenwert
-  \end{itemize*}
-  
-  \paragraph{Zusammenfassung}
-  Aufbau der Mip-Map (als Vorverarbeitungsschritt beim Rendering):
-  \begin{itemize*}
-    \item Speicherung der Originaltextur
-    \item rekursive Speicherung der geringer aufgelösten Texturen (je 1/2 Kantenlänge) bis hinunter zu einem einzelnen Pixel
-  \end{itemize*}
-  
-  Vorteile:
-  \begin{itemize*}
+    \item Mip:\textit{multum in parvo} = viel (Info) auf wenig (Speicher)
+    \item niedrige Auflösungsstufen werden durch Filterung aus den höheren berechnet
+    \begin{itemize*}
+    \item einfach: z.B. Mittelwert aus 4 Pixeln (Box-Filter)
+    \item aufwendiger: z.B.: Gaußfilter
+    \end{itemize*}
     \item Filter-Operationen können bei Initialisierung der Textur vorausberechnet werden
     \item nur ein Drittel zusätzlicher Speicherplatzbedarf
   \end{itemize*}
   
+  \paragraph{Anwendung}
+  \begin{itemize*}
+    \item OpenGL-Filteroperationen im Bildraum (zur Laufzeit)
+    \item GL\_NEAREST: Annahme nächstliegender Textur-Pixels
+    \item GL\_LINEAR: bilineare Interpolation aus nahem 2x2-Feld
+    \item Genauere Interpolationsverfahren (z.B. bikubisch) gelten als zu aufwendig für Echtzeitanwendung
+  \end{itemize*}
+  
   Darstellung mit Mip-Map Texturen (zur Laufzeit)
   \begin{itemize*}
-    \item Auswahl der passenden Auflösungsstufe k Skalierung berechnet aus der Entfernung zum Betrachter und der perspektivischen Verkürzung (siehe Kameratransf.): $d/z = (1/2)^k \rightarrow k = log_2(z)-log_2(d)$
-    \item Transformation der Pixel zwischen den Textur-Eckkoordinaten der gewählten Auflösung auf das Polygon im Bildraum
-    \item typ. Verwendung der linearen Filter zur Vermeidung von Aliasing-Effekten durch Trilineare Filterung: zusätzlich zu bilinearem Filteren in einer Mip-Map-Stufe wird linear gewichtet zwischen zwei Mip-Map-Stufen (auf-, bzw. abgerundete Werte von k) interpoliert: z. B. wenn $k = 2.3 \rightarrow 30\% Anteil_{k=3}$ und $70\% Anteil_{k=2}$
-  \end{itemize*}
-  
+    \item passende Auflösungsstufe k Skalierung berechnet aus der Entfernung zum Betrachter und der perspektivischen Verkürzung: $d/z = (1/2)^k \rightarrow k = log_2(z)-log_2(d)$
+    \item Transformation der Pixel zwischen Textur- Eckkoordinaten der gewählten Auflösung auf Polygon im Bildraum
+    \item Vermeidung von Aliasing-Effekten durch Trilineare Filterung: Mip-Map-Stufe wird linear gewichtet zwischen zwei Mip-Map-Stufen interpoliert: z. B. wenn $k = 2.3 \rightarrow 30\% Anteil_{k=3}$ und $70\% Anteil_{k=2}$
+  \end{itemize*}  
   
   \paragraph{Anti-Aliasing}
-  Anti-Aliasing durch trilineare Filterung:
+  durch trilineare Filterung
   \begin{itemize*}
-    \item Durch die perspektivische Verkürzung wird eine weiter hinten liegende Textur verkleinert und im Vordergrund vergrößert. Bei einer Skalierung kleiner als 1 überspringt die gerundete inverse Texturtransformation Pixel in der Textur (minification). Die im Bildraum gesampelten Texturpixel werden somit 'willkürlich' ausgewählt. Dadurch können Treppenstufen und Moiré-Muster entstehen (Aliasing-Effekt: linkes Bild). Durch Mip-Mapping werden an diesen Stellen geringer aufgelöste (gefilterte) Texturen verwendet (Rechtes Bild: Mit Mip-Mapping und tri-linearer Filterung wird ein Anti- Aliasing-Effekt erreicht)
-    \item Vergrößerte Darstellung: Trilinearen Filterung = lineare Filterung zwischen den zwei aufeinander-folgenden (am besten passenden) Mip-Map-Stufen + bilineare Filterung in jeder der beiden Stufen. $\rightarrow$ Kantenglättung, Tiefpassfilter (Mittelwert / hier Grauwerte)
+    \item Durch perspektivische Verkürzung wird weiter hinten liegende Textur verkleinert und im Vordergrund vergrößert
+    \item Bei einer Skalierung kleiner als 1 überspringt die gerundete inverse Texturtransformation Pixel in der Textur (minification). Die im Bildraum gesampelten Texturpixel werden somit 'willkürlich' ausgewählt. Dadurch können Treppenstufen und Moiré-Muster entstehen. Durch Mip-Mapping werden an diesen Stellen geringer aufgelöste (gefilterte) Texturen verwendet
+    \item Vergrößerte Darstellung: Trilinearen Filterung = lineare Filterung zwischen den zwei aufeinander-folgenden Mip-Map-Stufen + bilineare Filterung in jeder der beiden Stufen $\rightarrow$ Kantenglättung, Tiefpassfilter
   \end{itemize*}
-  
   %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Mapping-Anti-Alising.png)
   
   \paragraph{Rip-Maps}
-  Anisotrope Filterung: 
+  Anisotrope Filterung
   \begin{itemize*}
-    \item z.B. bei flacher Aufsicht ist die Verkleinerung in y-Richtung viel stärker als in x-Richtung!
-    \item Ohne spezielle Maßnahmen für diesen Fall müsste jeweils die Mip-Map-Stufe mit der kleinsten Auflösung verwendet werden, sonst treten wieder Aliasing-Artefakte auf!
-    \item $\rightarrow$ Dies führt zur unscharfen Texturabbildung.
-    \item Abhilfe: Anisotrope Mip-Maps (= Rip-Maps, Rectangular Mip-Maps)
+    \item z.B. bei flacher Aufsicht ist Verkleinerung in y-Richtung viel stärker als in x-Richtung
+    \item Ohne spezielle Maßnahmen müsste jeweils Mip-Map-Stufe mit kleinsten Auflösung verwendet werden
+    \item $\rightarrow$ führt zur unscharfen Texturabbildung.
+    \item Abhilfe: Anisotrope Mip-Maps (=Rectangular Mip-Map)
+    \item Verschiedene Auflösungsstufen in x- und y-Richtung erzeugt
+    \item Vierfacher Speicherbedarf gegenüber höchster Auflösung
   \end{itemize*}
-  
-  Anisotropic Mip-Map (Rip-Map):
-  \begin{itemize*}
-    \item Verschiedene Auflösungsstufen in x- und y-Richtung werden erzeugt, sodass für jede Situation die richtige Auflösung gefunden werden kann ohne beim Resampling das Abtast-theorem zu verletzen.
-    \item Aber: Vierfacher Speicherbedarf gegenüber höchster Auflösung
-  \end{itemize*}
-  
-  \subsection{ Weitere Texturarten}
+
   \paragraph{Bump-Map}
   \begin{itemize*}
-    \item Reliefartige Texturen: Herkömmliche Texturen sehen aus der Distanz zwar akzeptabel aus, von Nahem betrachtet erscheinen sie flach.
-    \item Grund: keine korrekte 3D-Beleuchtung, Abschattung, keine Verdeckung, etc.
+    \item Reliefartige Texturen: Herkömmliche Texturen von Nahem erscheinen flach
     \item Idee: Verwendung zusätzlicher Texturen, welche Tiefeinformationen beinhalten
+    \item Offset zur Polygonebene in Richtung der Normale als Grauwert der Textur kodiert
+    \item Anwendung des Offsets auf Polygonfläche: Normale wird als Gradient der Bumpmap berechnet. Beleuchtung wird daraus wie bei der Normalmap pro Pixel berechnet
+    \item Offset nicht berücksichtigt $\rightarrow$ Als Konturen nicht erkennbar
   \end{itemize*}
-  \begin{itemize*}
-    \item Bump Map: Offset zur Polygonebene in Richtung der Normale als Grauwert“ der Textur kodiert
-    \item Polygon: als Schnitt mit Normalenrichtung
-    \item Anwendung des Offsets auf Polygonfläche (Drehung): Die Normale wird als Gradient der Bumpmap berechnet. Die Beleuchtung wird daraus wie bei der Normalmap pro Pixel berechnet.
-    \item Ein Offset“ wird nicht berücksichtigt! $\rightarrow$ Als Konturen nicht erkennbar!
-  \end{itemize*}
-  
   %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_Bumpmap.png)
   
   \paragraph{Normal-Map}
   \begin{itemize*}
-    \item Normal-Map: Normalen Vektor x/y/z als RGB-Wert kodiert
+    \item Normalen Vektor x/y/z als RGB-Wert kodiert
     \item Polygon: als Schnitt mit Normalenrichtung
-    \item Anwendung der Normal-Map auf Polygonfläche: Die Normale der N-Map modifiziert die Flächennormale (räumliche Drehung). Bei der Beleuchtungsberechnung wird für jedes Pixel die modifizierte Normale verwendet.
-    \item Ein 'Offset' wird nicht berücksichtigt! $\rightarrow$ Als Konturen nicht erkennbar!
+    \item Anwendung der Normal-Map auf Polygonfläche: Normale der N-Map modifiziert die Flächennormale. Bei der Beleuchtungsberechnung wird für jedes Pixel die modifizierte Normale verwendet
+    \item Offset nicht berücksichtigt $\rightarrow$ Als Konturen nicht erkennbar
   \end{itemize*}
   
   \paragraph{Parallax-Map}
+  Tomomichi Kaneko 2001
   \begin{itemize*}
-    \item Parallax Map Tomomichi Kaneko et al. 2001
     \item Ausgangsdaten: Bump Map
-    \item Die u/v-Koordinaten der angezeigten Textur werden Entsprechend der Blickrichtung beim Look-up um $\delta u = h * \tan(\phi)$ verschoben. Die daraus resultierende Verzerrung verstärkt den 3D-Effekt, allerding ohne korrekte Berücksichtigung der Verdeckung
-    \item Anwendung des Offsets auf Polygonfläche (Drehung): Anwendung der Bump Map des Offests auf Polygonfläche (räuml. Drehung der Modellkoord.) Die Normale wird als Gradient der Bumpmap berechnet. Die Beleuchtung wird daraus wie bei der Normalmap pro Pixel berechnet.
+    \item Die u/v-Koordinaten der angezeigten Textur werden Entsprechend der Blickrichtung beim Look-up um $\delta u = h * \tan(\phi)$ verschoben
+    \item Anwendung des Offsets auf Polygonfläche: Anwendung der Bump Map des Offests auf Polygonfläche. Normale wird als Gradient der Bumpmap berechnet. Beleuchtung wird daraus wie bei Normalmap pro Pixel berechnet.
   \end{itemize*}
   
   \paragraph{Displacement-Map}
   \begin{itemize*}
-    \item Ausgang: Wiederum Bump Map, jedoch Bestimmen des korrekten Schnitts eines Sehstrahls mit der Bump Map durch iterative Suche des Schnittpunktes
+    \item Ausgang: Bump Map, korrekter Schnitt eines Sehstrahls mit Bump Map durch iterative Suche des Schnittpunktes
     \item Finde $u_0$ , sodass $u-u' = h(u') * \tan(\phi)$ mittels Bisektion entlang dem Sehstrahl
-    \item Bei Mehrdeutigkeit: Finde $u_0$ am weitesten weg von $u$ $\rightarrow$ korrekte Verdeckung
-    \item Silhouetten: Auch u/v-Koordinaten außerhalb der Polygongrenzen müssen berücksichtigt werden!
+    \item Bei Mehrdeutigkeit: Finde $u_0$ am weitesten weg von $u$
+    \item Silhouetten: Auch u/v-Koordinaten außerhalb der Polygongrenzen müssen berücksichtigt werden
     \item aufwendige Shader Programme nötig
   \end{itemize*}
   
-  \paragraph{Zusammenfassung}
-  \begin{itemize*}
-    \item DECAL (Abziehbild) RGBA-Werte ohne Berücksichtigung der Beleuchtung (emmisiv, evtl. mit Alpha Wert (A) für transparente Anteile)
-    \item DIFFUSE: RGB-Werte werden als diffuser Farbanteil mit Beleuchtung verrechnet
-    \item Graustufen: Helligkeitsweit wird mit dem diffusen Materialfarben mutlipliziert.
-    \item Specular Map: Wie bei Diffuse Texture Map, jedoch für spekulären Anteil
-    \item Normal Map: Normalisierte Normalenrichtung (als 2farbiges Rasterbild). Dient zur Modulierung der Flächennormalen und wird bei der Beleuchtung berücksichtigt. Farbwerte kommen aus der Materialkonstante des Polygons, oder aus der Diffuse Map (bzw. Specular Map). Ergibt aus der Ferne eine dreidimensionalen (reliefartige) Struktur.
-    \item Bump Map: Statt der Normalen wird eine Erhöhung (in Richtung der Normalen) kodiert (grauwertiges Rasterbild). Die Normalenrichtung wird daraus als Gradient (Differenz zweier benachbarter Pixel) bei der Darstellung abgeleitet. Danach Beleuchtung wie Normal Map.
-    \item Parallax Map: zusätzlich Pixelverschiebung als Funktion der Höhe und Kamerarichtung
-  \end{itemize*}
-  
-  \subsection{ Shadow Mapping}
-  \begin{enumerate*}
-    \item Durchgang:
+  \subsection{Shadow Mapping}
     \begin{itemize*} 
       \item Erzeugen der Shadow Map
       \item Darstellung (mit z-Werten) aus Sicht der Lichtquelle
-      \item Kamera Koordinaten in der Lichtquelle zentriert (Matrix L)
+      \item Kamera Koordinaten in Lichtquelle zentriert (Matrix L)
       \item z-Puffer als Textur speichern
-    \end{itemize*}
-    \item Durchgang:
-    \begin{itemize*}
-      \item Kamera Ansicht: View Matrix: V (ebenfalls mit z-Puffer)
-      \item $\rightarrow$ Um den Schatten zu erzeugen benötigen wir Shader mit Lookup in der Shadow Map-Textur:
+      \item Kamera Ansicht: View Matrix V (mit z-Puffer)
+      \item Um Schatten zu erzeugen benötigen wir Shader mit Lookup
       \item 4x4-Matrix: $M = V^{-1}*L$
     \end{itemize*}
-  \end{enumerate*}
-  
   %![Quelle Computergrafik Vorlesung 2020](Assets/Computergrafik_ShadowMap.png)
   
   Shadow map look-up:
@@ -1665,22 +1588,14 @@
     \item Lösung: kleiner Offset im Schattentest: $IF (p'_z <= z_s + Offset...)$
     \item durch das Offset wird sichergestellt, dass keine falschen Schatten entstehen
   \end{itemize*}
+  \begin{description*}
+    \item[Uniform Shadow-Map] Probleme: zu niedrige Auflösung der Shadow Map im Nahbereich, Großteil der Shadow Map ist irrelevant für Kameraansicht
+  \item[Perspektive Shadow-Map] adaptive schiefsymtetrische Projektion; nicht uniforme perspektive Shadow Map
+  \end{description*}
   
-  Uniform Shadow-Map
+  \subsection{Zusammenfassung}
   \begin{itemize*}
-    \item Probleme: zu niedrige Auflösung der Shadow Map im Nahbereich, Großteil der Shadow Map ist irrelevant für Kameraansicht
-  \end{itemize*}
-  
-  Perspektive Shadow-Map
-  \begin{itemize*}
-    \item adaptive schiefsymtetrische Projektion; nicht uniforme perspektive Shadow Map
-  \end{itemize*}
-  
-  \subsection{ Zusammenfassung}
-  \begin{itemize*}
-    \item Transformation des Texturraums in den Bildraum der Darstellung:
-    \item Verwendung unterschiedlicher geometrische Transformationen (z. B affin, perspektivisch, Env. Maps, etc.)
-    \item Anwendung immer als inverse Transformation!
+    \item Anwendung immer als inverse Transformation
     \item Resampling + Rekonstruktion: Das transformierte Texturraster wird nach der Transformation durch das Bildraster neu abgetastet.
     \item Filter: Verhindern bzw. Abmildern von Aliasing-Effekten, verursacht durch Resampling.
     \item Lösung: Tiefpass-Filter vor der Transformation: Mipmapping, Anisotrope Filter.

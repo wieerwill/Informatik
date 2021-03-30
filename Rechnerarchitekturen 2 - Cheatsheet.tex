@@ -110,29 +110,29 @@
   \setlength{\postmulticols}{1pt}
   \setlength{\multicolsep}{1pt}
   \setlength{\columnsep}{2pt}
+
   
-  \paragraph{CISC}
+  \section{Prozessorarchitekturen}  
+  \paragraph{CISC} complex instruction set computer
   \begin{itemize*}
-    \item Complex Instruction Set Computing
     \item Einfache und komplexe Befehle
     \item Heterogener Befehlssatz
-    \item Verschiedene Taktzahl pro Befehl
+    \item verschiedene Taktzahl pro Befehl
     \item Viele Befehlscode-Formate mit unterschiedlicher Länge
     \item Mikroprogrammwerk                             
     \item Vermischung von Verarbeitungs \& Speicherbefehlen
     \item schwierig, unter CPI = 2 zu kommen
   \end{itemize*}
   
-  \paragraph{RISC}
+  \paragraph{RISC} reduced instruction set computer
   \begin{itemize*}
-    \item Reduced Instruction Set Computing
     \item wenige, einfache Befehle
-    \item Orthogonaler Befehlssatz   
-    \item Meist 1 Takt pro Befehl
-    \item Wenige Befehlscode-Formate mit einheitlicher Länge 
+    \item orthogonaler Befehlssatz   
+    \item meist 1 Takt pro Befehl
+    \item wenige Befehlscode-Formate mit einheitlicher Länge 
     \item Direktverdrahtung
     \item Trennung von Verarbeitungs \& Speicherbefehlen  
-    \item Hohe Ausführungsgeschwindigkeit $(CPI \leq 1)$
+    \item hohe Ausführungsgeschwindigkeit $(CPI \leq 1)$
   \end{itemize*}
   
   \paragraph{MIPS}
@@ -415,16 +415,24 @@
     \item oder „Verbreiterung“ der Ausgabe-Logik (issue logic) zur Behandlung mehrerer Operationen parallel
   \end{itemize*}
   
-  \paragraph{ VLIW - Very Long Instruction Word}
+  \paragraph{VLIW} Very Long Instruction Word
   \begin{itemize*}
+    \item Befehlszuordnung und Konfliktvermeidung durch Compiler
+    \item Compiler muss Zeitbedarf der Speicherzugriffe in Befehlsplanung einbeziehen
+    \item Befehlsstrom mit Tupel von Befehlen
+    \item nicht un-flexibel bei Reaktion auf Laufzeitereignisse
+    \item VLIW hat festes Befehlsformat; höhere Codedichte
+    \item Forwarding Hardware - nach dem EX werden Daten in Pufferregister gespeichert und können vom nächsten Befehl schon genutzt werden
+    \item WB erfolgt erst darauf
+    \item Datenabhängigkeitsproblem wird verringert
+    \item MUX nutzt eher Pufferdaten als Registerdaten
     \item verschiedene parallele Ausführungseinheiten
     \item Verteilung von Maschinencode direkt vom Befehlswort im Speicher vorgegeben
     \item für jede Ausführungseinheit dezidierte Anweisungen
-    \item keine Abhängigkeiten, geringere Komplexität in Hardware
     \item Meist für stark parallelisierbare Aufgaben verwendet
     \item Vorteile:
     \begin{itemize*}
-      \item Die parallele Architektur des Prozessors kann schon während der der Programmerstellung zur Optimierung genutzt werden
+      \item parallele Architektur des Prozessors kann während der Programmerstellung zur Optimierung genutzt werden
       \item Keine aufwendige Prozessorhardware zur Befehlsverteilung erforderlich
       \item Ausführungszeiten sind im wesentlichen bekannt
     \end{itemize*}
@@ -435,8 +443,7 @@
       \item Rekompilierung für den Prozessor erforderlich
       \item Größerer Speicherbedarf, wenn Code nicht parallelisiert werden kann
     \end{itemize*}
-  \end{itemize*}
-  
+  \end{itemize*}  
   % !{VLIW Dynamisch; Quelle RA2 Vorlesung 2020/21](Assets/RA2_VLIW-dynamisch.png)
   
   EPIC = Explicitely Parallel Instruction Computing = IA64
@@ -494,19 +501,37 @@
       Magnetbänder      & 100 s  & 5 TB
     \end{tabular}
   \end{center}
+
   
-  Adresspipelining
+  \section{Speicherarchitekturen}
+  \paragraph{Adresspipelining}
   \begin{itemize*}
-    % !{Pipelining; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Adresspipelining.png)
-    \item Matrixaufbau eines Speichers
-    \item Aufteilen der Speicheradresse in Zeilen- und Spaltenadresse
+    \item Aufteilen des Speicherzugriffs in mehrere Phasen
+    \item parallele gestaffelte Abarbeitung dieser Phasen für mehrere Speicherzugriffe
+    \item Adresse auslesen/dekodieren; Daten mit Prozessor
   \end{itemize*}
+  % !{Pipelining; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Adresspipelining.png)
   Lesezugriff auf Speicher
   \begin{itemize*}
+    \item Matrixaufbau eines Speichers
+    \item Aufteilen der Speicheradresse in Zeilen- und Spaltenadresse
     \item Dekodierung der Zeilenadresse bestimmt Select-Leitung
     \item Komplette Zeile wird in den Zeilenpuffer geschrieben
-    \item Durch Dekodierung der Spaltenadresse wird das gewünscht Datenwort ausgewählt
-    \item Blocktransfer (Burst): Auslesen des kompletten Zeilenpuffers durch automatisches Inkrementieren der Spaltenadresse
+    \item Dekodierung der Spaltenadresse bestimmt Datenwort
+  \end{itemize*}
+  
+  \subsection{Speicher Interlacing}
+  \begin{itemize*}
+    \item Speicheraufteilung in mehrere physische Bände
+    \item Adressen nicht kontinuierlich in den Bänden, sondern wechseln von Band zu Band
+    \item nahezu gleichzeitiges Benutzen der Daten möglich (Daten-/Adressbus verhindern Parallelität)
+  \end{itemize*}
+  
+  \paragraph{Burst Mode} Blocktransfer
+  \begin{itemize*}
+    \item Auslesen des kompletten Zeilenpuffers durch automatisches Inkrementieren der Spaltenadresse
+    \item Prozessor gibt eine Adresse, Speicher liefert n Datenworte (Adr, Adr+1,..., Adr+n-1)
+    \item falls folgende Datenworte genutzt werden, war für n Datenworte nur 1 Speicherzugriff (Zeit) nötig
   \end{itemize*}
   
   \subsection{Typischer DRAM-Speicher}
@@ -530,20 +555,31 @@
   
   %Interleaving
   % !{Interleaving; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Interleaving.png)
-  
-  \subsection{Caches}
+
+  \subsection{Cache Speicher}
   \begin{itemize*}
-    \item Cache = schneller Speicher, der vor einen größeren, langsamen Speicher geschaltet wird
+    \item kleiner, schneller Prozessornaher Speicher
+    \item CPU weiß nicht dass Cache zwischengeschaltet ist
+    \item es wird immer zuerst im Cache nachgeschaut, zum Adressvergleich (kostet Zeit)
     \item 90\% der Zeit verbringt ein Programm in 10\% des Codes
     \item Puffer zwischen Hauptspeicher und Prozessor
-    \item Prüfung anhand der Adresse, ob benötigte Daten im Cache vorhanden sind („Treffer“; cache hit)
+    \item Cache besteht aus Cache Tabelle
+    \begin{description*}
+      \item[voll assoziativ] Adressvergl. der kompletten Adresse
+      \item jede beliebige Adressfolge im Cache möglich
+      \item kann zu langsamen Adressvergleich führen
+      \item[direct-mapped] Adressvergleich nur über Teiladresse - eine Tabelle im Cache
+      \item[mehr-wege-assoziativ] mehrere Adressvergleiche parallel
+    \end{description*}
+    \item Schreibstategien
+    \begin{description*}
+      \item[Write Back] Cache sammelt Schreibvorgänge und aktualisiert nur im Cache. Nach einer entsprechenden Anweisung werden Daten in den hauptspeicher kopiert (aktualisiert)
+      \item[Write Trough] Daten werden sowohl im Cache als auch im Hauptspeicher aktualisiert
+    \end{description*}
+    \item Speicherverwaltung mit memory management günstiger vor dem Cache
+    \item Prüfung anhand der Adresse, ob benötigte Daten im Cache vorhanden sind (Treffer: cache hit)
     \item Falls nicht (cache miss): Zugriff auf den (Haupt-) Speicher, Eintrag in den Cache
     %\item Prinzip eines Cache (Hit) !{Cachehit; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Cachehit.png)
-    \item Organisations: direkt, mengenassoziativ, vollassoziativ
-    \item Welcher Speicherblock sollte bei einem Fehlzugriff ersetzt werden?
-    \item Ersetzungsstrategie: Zufällig, FIFO, LRU
-    \item Was passiert beim Schreiben von Daten in den Cache?
-    \item Schreibstrategie: write-back, write-through
     \item Such-Einheit im Cache: Cache-Zeile (cache line)
     \item Blockgröße ist Anzahl der Worte, die im Fall eines cache misses aus Speicher nachgeladen werden
     \item Verbindung Speicher $\leftrightarrow$ Cache ist so entworfen, dass Speicher durch zusätzliches Lesen nicht langsamer wird
@@ -555,17 +591,14 @@
       \item Breite Speicher, die mehrere Worte parallel übertragen können
     \end{itemize*}
     %\item 2-Wege Cache (Datensicht) !{2 Wege Cache; Quelle RA2 Vorlesung 2020/21](Assets/RA2_2-wege-cache.png)
-    \item Direkt abgebildet (Direct mapping): Für caching von Befehlen besonders sinnvoll, weil bei Befehlen Aliasing sehr unwahrscheinlich ist
-    \item Satz-assoziativ abgebildet (Set-associative mapping): Sehr häufige Organisationsform, mit Set-Größe = 2/4/8
-    \item Vollassoziativ abgebildet (Associative mapping): Wegen der Größe moderner Caches kommt diese Organisationsform kaum in Frage
     \item Ersetzungs-Strategien
-    \begin{itemize*}
-      \item Zufallsverfahren: Hier wird der zu ersetzende Block innerhalb des Satzes zufällig ausgewählt.
-      \item FIFO-Verfahren: Beim FIFO-Verfahren (engl. First In, First Out) wird der älteste Block ersetzt, auch wenn auf diesem gerade erst noch zugegriffen wurde
-      \item LRU-Verfahren (least recently used ) Block ersetzt, auf den am längsten nicht mehr zugegriffen wurde
-      \item LFU-Verfahren (least frequently used ) am seltensten gelesene Block ersetzt
-      \item CLOCK-Verfahren: alle Platzierungen im Kreis auf einem Ziffernblatt angeordnet. Ein Zeiger wird im Uhrzeigersinn weiterbewegt und zeigt den zu ersetzenden Eintrag an.
-    \end{itemize*}
+    \begin{description*}
+      \item[Zufall] zu ersetzende Block zufällig ausgewählt
+      \item[FIFO] älteste Block ersetzt
+      \item[LRU] (least recently used ) Block ersetzt, auf den am längsten nicht mehr zugegriffen wurde
+      \item[LFU] (least frequently used ) am seltensten gelesene Block ersetzt
+      \item[CLOCK] alle Platzierungen im Kreis auf einem Ziffernblatt angeordnet. Ein Zeiger wird im Uhrzeigersinn weiterbewegt und zeigt den zu ersetzenden Eintrag an
+    \end{description*}
   \end{itemize*}
   
   Strategien zum Rückschreiben $\rightarrow$ (Haupt-) Speicher
@@ -581,24 +614,80 @@
   
   Trefferquote $T=\frac{N_C}{N_G}$ mit $N_G$ Gesamtzahl der Zugriffe auf Speicher und $N_C$ Anzahl der Zugriffe mit Hit auf Cache
   
-  \subsection{ Digital-Signal-Prozessoren}
-  Entwickelt für hohe Leistung, u.a. sich wiederholende, numerisch intensive Aufgaben.
-  In einem Befehlszyklus kann man ausführen:
+  \section{Spezialrechner}
+  \subsection{Einchiprechner}
   \begin{itemize*}
-    \item eine oder mehrere MAC-Operationen
-    \item ein oder mehrere Speicherzugriffe
-    \item spezielle Unterstützung für effiziente Schleifen
-  \end{itemize*}
-  Die Hardware enthält:
-  \begin{itemize*}
-    \item Eine oder mehrere MAC-Einheiten
-    \item On-Chip- und Off-Chip-Speicher mit mehreren Ports
-    \item Mehrere On-Chip-Busse
-    \item Adressgenerierungseinheit, die auf DSP-Anwendungen zugeschnittene Adressierungsmodi unterstützt
+    \item geringer Stromverbrauch, Wärme
+    \item relativ geringer Befehlsdurchsatz
+    \item einfacher Befehlssatz
+    \item komplexer Rechner auf einem Chip (Ram/Rom intern)
+    \item an Problem angepasst
+    \item so Leistungsfähig wie nötig
+    \item Anwendung: einfache Steuer-/Regelungsaufgaben
   \end{itemize*}
   
-  \section{ Multiprozessorarchitekturen}
-  Klassifikation nach Flynn
+  \subsection{Digital-Signal-Prozessoren}
+  \begin{itemize*}
+    \item hohe Leistung, u.a. sich wiederholende, numerisch intensive Aufgaben
+    \item pro Befehlszyklus kann man ausführen
+    \begin{itemize*}
+      \item mehrere ALU Funktionen (+Shifter)
+      \item eine/mehrere MAC-Operationen
+      \item ein/mehrere Speicherzugriffe
+      \item spezielle Unterstützung effiziente Schleifen
+    \end{itemize*}
+    \item Die Hardware enthält
+    \begin{itemize*}
+      \item Eine oder mehrere MAC-Einheiten
+      \item On-Chip- und Off-Chip-Speicher mit mehreren Ports
+      \item Mehrere On-Chip-Busse
+      \item Adressgenerierungseinheit
+      \item größerer ROM, RAM (mit Stack), Cache
+      \item externes Interface für Speicher und E/A
+      \item DMA-Coprozessor
+      \item mehrere universelle parallele E/A-Ports
+      \item AD-Wandler meist nicht on-chip
+    \end{itemize*}
+    \item DSP's benutzung häufig VLIW
+    \item Anwendung: Signal-/Bildverarbeitung
+  \end{itemize*}
+  
+  \subsection{Pipeline Prozessoren}
+  \begin{itemize*}
+    \item Aufteilung eines Befehls in Teilbefehle
+    \item parallele Abarbeitung verschiedener Teilbefehle von unerschiedlichen Befehlen möglich
+    \item Probleme
+    \begin{itemize*}
+      \item bedingte Sprünge (unvorhergesehen)
+      \item LSG: Pipeline um 2 Schritte verzögern
+      \item LSG: Sprungzielspekulation
+      \item Datenabhängigkeit
+      \item LSG: Pipeline um 2 Schritte verzögern
+      \item LSG: Out-of-Order Prinzip nutzen
+      \item LSG: Forwarding Hardware
+    \end{itemize*}
+    \item Superpipelining - noch mehr Befehlsaufteilung
+  \end{itemize*}
+
+  
+  \subsection{Skalare Prozessoren}
+  \begin{itemize*}
+    \item Mikroarchitektur
+    \item Befehlszuordnung und Konfliktvermeidung geschieht durch Hardware
+    \item Speicherzugriffe automatisch von Load/Store Einheit
+    \item ein Befehlsstrom mit einfachem Befehl an Ausführungseinheit
+    \item bessere Reaktion auf Laufzeitereignisse
+    \item Spekulation möglich
+    \item Superskalar ($\geq 2$ EX Einheiten)
+    \begin{itemize*}
+      \item Befehle in Befehlsfenster gespeichert
+      \item Zuordnungseinheit wählt Befehl aus, die parallel verarbeitet werden können
+    \end{itemize*}
+  \end{itemize*}
+  
+  
+  \section{Multiprozessorarchitekturen}
+  Klassifikation nach Flynn (Instruction/Data)
   \begin{center}
     \begin{tabular}{ c | c | c}
                        & Ein Datenstrom & mehrere Datenströme \\\hline
@@ -625,7 +714,39 @@
   
   %Reales Shared Memory System
   % !{Shared Memory System; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SharedMemorySystem.png)
+
+  \subsection{Kopplung}
+  \begin{description*}
+    \item[enge Kopplung] (shared memory)
+    \begin{itemize*}
+      \item parallelzugriff in Datenbreite des Prozessors
+      \item schneller Datenaustausch (Proz-Speicher-Zugriffszeit)
+      \item neu lokal benachbarte Rechner
+      \item aus Sicht des Prozessors gemeinsamer Speicher
+      \item Arbites - Zuteiler für Busanforderungen
+    \end{itemize*}
+    \item[lose Kopplung] (distributed memory)
+    \begin{itemize*}
+      \item meist seriell 1 bit breit
+      \item langsamer da über Kommunikations-schnittstelle
+      \item auch global verteilte Rechner
+      \item verschiedene Speicher dem Prozessor bewusst
+    \end{itemize*}
+    \item[Kopplung] verändern
+    \begin{itemize*}
+      \item Wartezeit auf Speicher
+      \item Kommunikationsaufwand
+      \item Kommunikationsfähigkeit
+      \item optimale Prozessor-/Speicher-/Kommunikationspfad anzahl $<\infty$
+    \end{itemize*}    
+  \end{description*}
   
+  \subsection{Out-of-Order Architektur}
+  \begin{itemize*}
+    \item statt Pipeline bei Datenabhängigen Befehlen um 2 Schritte verzögern, datenunabhängige Befehle einschieben
+    \item möglichst ständige Auslastung aller EX Einheiten
+  \end{itemize*}
+
   Cache(daten)-Kohärenz
   \begin{itemize*}
     \item Kohärenz: welcher Wert wird beim Lesen abgeliefert
@@ -695,188 +816,7 @@
     \item Directory-Protokolle skalieren daher auch für Netze ohne Broadcast-Fähigkeit
     \item Presence Flag Vector: Im Hauptspeicher abgelegter Bit-Vektor für jeden einzelnen Speicherblock (1 Bit pro Prozessor/Cache + Statusbits (dirty, modified))
     \item Problem: Wachstum des Speicherbedarfs linear mit Anzahl der Prozessoren
-  \end{itemize*}
-  
-  \newpage
-  \section{Spezialrechner}
-  \subsection{Einchiprechner}
-  \begin{itemize*}
-    \item geringer Stromverbrauch, Wärme
-    \item relativ geringer Befehlsdurchsatz
-    \item einfacher Befehlssatz
-    \item komplexer Rechner auf einem Chip (Ram/Rom intern)
-    \item an Problem angepasst
-    \item so Leistungsfähig wie nötig
-    \item Anwendung: einfache Steuer-/Regelungsaufgaben
-  \end{itemize*}
-  
-  \subsection{Digitale Signalprozessorren}
-  \begin{itemize*}
-    \item mehrere ALU Funktionen (+Shifter)
-    \item größerer ROM, RAM (mit Stack), Cache
-    \item externes Interface für Speicher und E/A
-    \item DMA-Coprozessor
-    \item mehrere universelle parallele E/A-Ports
-    \item AD-Wandler meist nicht on-chip
-    \item DSP's benutzung häufig VLIW
-    \item Anwendung: Signal-/Bildverarbeitung
-  \end{itemize*}
-  
-  \section{Prozessorarchitekturen}
-  \subsection{CISC - complex instruction set Computer}
-  \begin{itemize*}
-    \item einfache und komplexe Befehle
-    \item heterogener Befehlssatz
-    \item verschiedene Taktanzahl pro Befehl
-    \item viele Befehlscodeformate mit unterschiedlicher Länge
-    \item Mikroprogrammwerk - Makrobefehl durch Mikrobefehlsfolge
-    \item vermischung von Verarbeitungs- und Speicherbefehlen
-  \end{itemize*}
-  
-  \subsection{RISC - reduced instruction set computer}
-  \begin{itemize*}
-    \item nur einfache Befehle
-    \item ortohonaler Befehlssatz
-    \item meist 1 Takt pro Befehl
-    \item wenige Befehlscodeformate mit einheitlicher Länge
-    \item Direktverdrahtung
-    \item Trennung von Verarbeitungs- und Speicherbefehlen
-  \end{itemize*}
-  
-  \subsection{Pipeline Prozessoren}
-  \begin{itemize*}
-    \item Aufteilung eines Befehls in Teilbefehle
-    \item parallele Abarbeitung verschiedener Teilbefehle von unerschiedlichen Befehlen möglich
-    \item Probleme
-    \begin{itemize*}
-      \item bedingte Sprünge (unvorhergesehen)
-      \item LSG: Pipeline um 2 Schritte verzögern
-      \item LSG: Sprungzielspekulation
-      \item Datenabhängigkeit
-      \item LSG: Pipeline um 2 Schritte verzögern
-      \item LSG: Out-of-Order Prinzip nutzen
-      \item LSG: Forwarding Hardware
-    \end{itemize*}
-    \item Superpipelining - noch mehr Befehlsaufteilung
-  \end{itemize*}
-  
-  \subsection{Out-of-Order Architektur}
-  \begin{itemize*}
-    \item statt Pipeline bei Datenabhängigen Befehlen um 2 Schritte verzögern, datenunabhängige Befehle einschieben
-    \item möglichst ständige Auslastung aller EX Einheiten
-  \end{itemize*}
-  
-  \subsection{Skalare Prozessoren}
-  \begin{itemize*}
-    \item Mikroarchitektur
-    \item Befehlszuordnung und Konfliktvermeidung geschieht durch Hardware
-    \item Speicherzugriffe automatisch von Load/Store Einheit
-    \item ein Befehlsstrom mit einfachem Befehl an Ausführungseinheit
-    \item bessere Reaktion auf Laufzeitereignisse
-    \item Spekulation möglich
-    \item Superskalar ($\geq 2$ EX Einheiten)
-    \begin{itemize*}
-      \item Befehle in Befehlsfenster gespeichert
-      \item Zuordnungseinheit wählt Befehl aus, die parallel verarbeitet werden können
-    \end{itemize*}
-  \end{itemize*}
-  
-  \subsection{VLIW Architektur (very long instruction word)}
-  \begin{itemize*}
-    \item Befehlszuordnung und Konfliktvermeidung geschieht durch Compiler
-    \item Compiler muss Zeitbedarf der Speicherzugriffe in Befehlsplanung einbeziehen
-    \item Befehlsstrom mit Tupel von Befehlen
-    \item nicht un-flexibel bei Reaktion auf Laufzeitereignisse
-    \item VLIW hat festes Befehlsformat; höhere Codedichte
-    \item Vorteilhaft bei gut parallelisierbarem Code
-    \item Forwarding Hardware - nach dem EX werden Daten in Pufferregister gespeichert und können vom nächsten Befehl schon genutzt werden
-    \item WB erfolgt erst darauf
-    \item Datenabhängigkeitsproblem wird verringert
-    \item MUX nutzt eher Pufferdaten als Registerdaten
-  \end{itemize*}
-  
-  \section{Speicherarchitekturen}
-  \subsection{Adresspipelining}
-  \begin{itemize*}
-    \item Aufteilen des Speicherzugriffs in mehrere Phasen
-    \item parallele gestaffelte Abarbeitung dieser Phasen für mehrere Speicherzugriffe
-    \item Adresse auslesen/dekodieren; Daten mit Prozessor
-  \end{itemize*}
-  
-  \subsection{Speicher Interlacing}
-  \begin{itemize*}
-    \item Speicheraufteilung in mehrere physische Bände
-    \item Adressen nicht kontinuierlich in den Bänden, sondern wechseln von Band zu Band
-    \item nahezu gleichzeitiges Benutzen der Daten möglich (Daten-/Adressbus verhindern Parallelität)
-  \end{itemize*}
-  
-  \subsection{Burst Mode}
-  \begin{itemize*}
-    \item Prozessor gibt eine Adresse, Speicher liefert n Datenworte (Adr, Adr+1,..., Adr+n-1)
-    \item falls folgende Datenworte genutzt werden, war für n Datenworte nur 1 Speicherzugriff (Zeit) nötig
-  \end{itemize*}
-  
-  \subsection{Cache Speicher}
-  \begin{itemize*}
-    \item kleinder, schneller Prozessornaher Speicher
-    \item CPU weiß nciht dass Cache zwischengeschaltet ist
-    \item es wird immer zuerst im Cache nachgeschaut, zum Adressvergleich (kostet Zeit)
-    \item Cache besteht aus Cache Tabelle
-    \begin{itemize*}
-      \item voll assoziativ - Adressvergl. der kompletten Adresse
-      \item jede beliebige Adressfolge im Cache möglich
-      \item kann zu langsamen Adressvergleich führen
-      \item direct-mapped Adressvergleich nur über Teiladresse - eine Tabelle im Cache
-      \item mehr-wege-assoziativ Cache - mehrere Adressvergleiche parallel
-    \end{itemize*}
-    \item Schreibstategien (bei prozessor WB)
-    \begin{itemize*}
-      \item Write Trough Daten werden sowohl im Cache als auch im Hauptspeicher aktualisiert
-      \item Write Back: Cache sammelt Schreibvorgänge und aktualisiert nur im Cache. Nach einer entsprechenden Anweisung werden Daten in den hauptspeicher kopiert (aktualisiert)
-    \end{itemize*}
-    \item (über) Schreibstategien
-    \begin{itemize*}
-      \item nach Anlaufphase ist Cache immer vollständig gefüllt
-      \item für neue Einträge Ersetzungsstrategien benötigt FIFO, least recetly used - durch Zusatzhardware
-    \end{itemize*}
-    \item Speicherverwaltung mit memory management günstiger vor dem Cache
-  \end{itemize*}
-  
-  \section{Parallele Rechnerarchitekturen}
-  \subsection{Flynn}
-  \begin{description*}
-    \item[SISD] Single Instruction Single Data
-    \item[SIMD] Single Instruction Multiple Data
-    \item[MIMD] Multiple Instruction Multiple Data
-    \item[MISD] Multiple Instruction Single Data
-  \end{description*}
-  
-  \subsection{MIMD Kopplung}
-  \begin{description*}
-    \item[enge K.] (shared memory)
-    \begin{itemize*}
-      \item parallelzugriff in Datenbreite des Prozessors
-      \item schneller Datenaustausch (Proz-Speicher-Zugriffszeit)
-      \item neu lokal benachbarte Rechner
-      \item aus Sicht des Prozessors gemeinsamer Speicher
-      \item Arbites - Zuteiler für Busanforderungen
-    \end{itemize*}
-    \item[lose K.] (distributed memory)
-    \begin{itemize*}
-      \item meist seriell 1 bit breit
-      \item langsamer da über Kommunikations-schnittstelle
-      \item auch global verteilte Rechner
-      \item verschiedene Speicher dem Prozessor bewusst
-    \end{itemize*}
-    \item[Kopplung] verändern
-    \begin{itemize*}
-      \item Wartezeit auf Speicher
-      \item Kommunikationsaufwand
-      \item Kommunikationsfähigkeit
-      \item optimale Prozessor-/Speicher-/Kommunikationspfad anzahl $<\infty$
-    \end{itemize*}    
-  \end{description*}
-  
+  \end{itemize*}  
   
 \end{multicols}
 \end{document}

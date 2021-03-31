@@ -141,11 +141,11 @@
     \item 32-bit Architektur/64-bit Erweiterung
   \end{itemize*}
   
-  \includegraphics[width=\textwidth/4]{Assets/RA2_Operanden.png}
-  
-  \includegraphics[width=\textwidth/4]{Assets/RA2_pipelineCPU.png}
-  
-  \includegraphics[width=\textwidth/4]{Assets/RA2_mehrzyklenCPU.png}
+  \begin{center}
+    \includegraphics[width=\textwidth/7]{Assets/RA2_Operanden.png}
+    \includegraphics[width=\textwidth/7]{Assets/RA2_pipelineCPU.png}
+    \includegraphics[width=\textwidth/4]{Assets/RA2_mehrzyklenCPU.png}
+  \end{center}
   
   Aufgaben der einzelnen Phasen
   \begin{description*}
@@ -161,22 +161,22 @@
     \item resource hazards: Ressourcenabhängigkeiten
     \item data hazards: Datenabhängigkeiten
     \begin{description*}
-      \item[Antidatenabhängig] Befehl j beschreibt Speicherzelle, die von i noch gelesen werden: WAR
-      \item[Ausgabeabhängig] Befehle i und j beschreiben die selbe Speicherzelle: WAW (write after write)
-      \item[Datenabhängigkeit] Operation hängt von vorhergehender Operation ab: RAW
+      \item[Antidatenabhängig] WAR (write after read)
+      \item[Ausgabeabhängig] WAW (write after write)
+      \item[Datenabhängigkeit] RAW (read after write)
     \end{description*}
     \item control hazards: Kontrollabhängigkeiten
     \begin{itemize*}
-      \item Gleichheit der Register wird in instruction decode-Stufe geprüft
-      \item Sprungziel wird in separatem Adressaddierer in instruction decode-Stufe berechnet
+      \item Gleichheit der Register in ID-Stufe prüfen
+      \item Sprungziel in separatem Adressaddierer in ID berechnet
     \end{itemize*}
   \end{itemize*}
   
   \subsection{Sprungvorhersage}
   \paragraph{Einfache lokale Prädiktoren}
   \begin{itemize*}
-    \item Vorhersage, ob bedingter Sprung genommen wird oder nicht
-    \item Prädiktion allein anhand der Historie des betrachteten, aktuellen Sprungs
+    \item Vorhersage: bedingter Sprung genommen oder nicht
+    \item Prädiktion anhand der Historie des betrachteten Sprungs
     \item Historie eines Sprungs wird mit 1 bis n Bits gepuffert
   \end{itemize*}
   
@@ -189,20 +189,20 @@
     \item Prädiktion: Sprung verhält sich wie beim letzten Mal
     \item Nachfolgebefehle ab vorhergesagter Adresse holen
     \item Falls Prädiktion fehlerhaft: Prädiktionsbit invertieren
-    \item Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet
+    \item Sprünge, gleicher Adressen im Indexteil, werden selber Zelle im branch prediction buffer zugeordnet
     \item Einfachste Art von Puffer
     \item Hat eine bestimmte Kapazität
     \item Kann nicht für alle Sprünge Einträge enthalten
-    \item Reduziert branch penalty nur, wenn branch delay länger als Berechnung der Zieladresse mit branch prediction buffer dauert
+    \item Reduziert branch penalty, wenn branch delay $>$ Berechnung der Zieladresse mit branch p. buffer
     \item Prädiktion kann fehlerhaft sein
     \item Prädiktion kann von anderem Sprungbefehl stammen
   \end{itemize*}
   
   \paragraph{Einführung von Tag Bits}
   \begin{itemize*}
+    \item Sprünge, gleicher Adressen im Indexteil, in selber Zelle
     \item Tag: gültiger Eintrag, falls Tag-Bits gleich sind
-    \item Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet. Überprüfung mittels tags, ob es der richtige Eintrag ist.
-    \item Allgemein: Fehlerrate von 1-Bit Prädiktor ist für Sprünge in Schleifenkonstrukten doppelt so hoch wie die Anzahl ausgeführter Sprünge
+    \item Fehlerrate 1-Bit-P in Schleifenkonstrukten doppelt so hoch wie Anzahl ausgeführter Sprünge
   \end{itemize*}
   
   \paragraph{2 Bit Vorhersagen}
@@ -217,15 +217,15 @@
     \item Verwendet n-Bit Zähler
     \item Sättigungsarithmetik (kein wrap around bei Überlauf)
     \item Kann Werte zwischen $0$ und $2^{n-1}$ annehmen
-    \item Wenn Zähler größer als Hälfte des Maximums $(2^{n-1})$: Vorhersagen, dass Sprung ausgeführt wird; ansonsten vorhersagen, dass Sprung nicht genommen wird
-    \item Zähler wird bei ausgeführtem Sprung inkrementiert und bei nicht ausgeführtem dekrementiert
+    \item Wenn Zähler größer als Hälfte des Maximums $(2^{n-1})$: Vorhersagen, dass Sprung ausgeführt wird
+    \item Zähler bei ausgeführtem Sprung inkrementiert und bei nicht ausgeführtem dekrementiert
     \item Praxis: 2-Bit Prädiktor ähnlich gut wie n-Bit Prädiktor
   \end{itemize*}
   
   \paragraph{Korrelierende Prädikatoren}
   \begin{itemize*}
     \item Betrachtet nur Verhalten eines Sprungs; rein lokal
-    \item Verbesserung durch Betrachtung des Verhaltens anderer Sprünge
+    \item Verbesserung durch Betrachtung anderer Sprünge
     \item erhält so korrelierenden/zweistufigen Prädiktor
     \item Prinzip: Aufgrund globaler Information wird einer von mehreren lokalen Prädiktoren ausgewählt
     \item Beziehen zur Vorhersage des Verhaltens Kontext-Information mit ein
@@ -254,8 +254,11 @@
     \item Vorhersagepuffer adressiert via Konkatenation von unteren Adressbits der Sprungbefehlsadresse
   \end{itemize*}
   
-  \paragraph{High Performance Befehlsdekodierung}
+  \begin{center}
+    \includegraphics[width=\textwidth/7]{Assets/RA2_Vorhersagen.png}
+  \end{center}
   
+  \paragraph{High Performance Befehlsdekodierung}
   reine Vorhersage eines Sprungs i.d.R. nicht ausreichend
   \begin{itemize*}
     \item Befehlsstrom mit großer Bandbreite erforderlich
@@ -478,15 +481,7 @@
     \item Häufig benötigte Speicherinhalte in kleinen Speichern
   \end{itemize*}
   \begin{center}
-    \begin{tabular}{c | c | c}
-      Ebene             & Latenz & Kapazität \\\hline
-      Register          & 100 ps & 1 KB      \\
-      Cache             & 1 ns   & 12 MB     \\
-      Hauptspeicher/RAM & 10 ns  & 8 GB      \\
-      Festplatte        & 10 ms  & 1 TB      \\
-      CD-ROM/DVD        & 100 ms & 50 GB     \\
-      Magnetbänder      & 100 s  & 5 TB
-    \end{tabular}
+    \includegraphics[width=\textwidth/4]{Assets/RA2_Speicherhierarchie.png}
   \end{center}
   
   \section{Speicherarchitekturen}
@@ -555,7 +550,7 @@
     \end{description*}
     \item Schreibstategien
     \begin{description*}
-      \item[Write Back] Cache sammelt Schreibvorgänge und aktualisiert nur im Cache. Nach einer entsprechenden Anweisung werden Daten in den hauptspeicher kopiert (aktualisiert)
+      \item[Write Back] Cache sammelt Schreibvorgänge und aktualisiert Speicher nach Anweisung
       \item[Copy Back] Rückschreiben erfolgt erst, wenn Cache-Zeile bei Miss verdrängt wird
       \item[Write Through] Daten werden sowohl im Cache als auch im Hauptspeicher aktualisiert
       % !{Write Trough vs Write Back; Quelle RA2 Vorlesung 2020/21](Assets/RA2_cache-write-trough-vs-back.png)
@@ -627,13 +622,14 @@
   \subsection{Pipeline Prozessoren}
   \begin{itemize*}
     \item Aufteilung eines Befehls in Teilbefehle
-    \item parallele Abarbeitung verschiedener Teilbefehle von unerschiedlichen Befehlen möglich
-    \item Probleme
+    \item parallele Abarbeitung verschiedener Teilbefehle
+    \item Problem: bedingte Sprünge (unvorhergesehen)
     \begin{itemize*}
-      \item bedingte Sprünge (unvorhergesehen)
       \item LSG: Pipeline um 2 Schritte verzögern
       \item LSG: Sprungzielspekulation
-      \item Datenabhängigkeit
+    \end{itemize*}
+      \item Problem: Datenabhängigkeit
+      \begin{itemize*}
       \item LSG: Pipeline um 2 Schritte verzögern
       \item LSG: Out-of-Order Prinzip nutzen
       \item LSG: Forwarding Hardware
@@ -646,7 +642,7 @@
     \item Mikroarchitektur
     \item Befehlszuordnung und Konfliktvermeidung geschieht durch Hardware
     \item Speicherzugriffe automatisch von Load/Store Einheit
-    \item ein Befehlsstrom mit einfachem Befehl an Ausführungseinheit
+    \item Befehlsstrom mit einfachem Befehl an EX-Einheit
     \item bessere Reaktion auf Laufzeitereignisse
     \item Spekulation möglich
     \item Superskalar ($\geq 2$ EX Einheiten)
@@ -656,8 +652,8 @@
     \end{itemize*}
   \end{itemize*}
   
-  \section{Multiprozessorarchitekturen}
-  Klassifikation nach Flynn (Instruction/Data)
+  \paragraph{Multiprozessorarchitekturen}
+  nach Flynn
   \begin{center}
     \begin{tabular}{ c | c | c}
                        & Ein Datenstrom & mehrere Datenströme \\\hline
@@ -665,16 +661,13 @@
       mehrere Bs       & MISD           & MIMD 
     \end{tabular}
   \end{center}
-  
-  % !{SISD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SISD.png)
-  % !{SIMD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SIMD.png)
-  % !{MISD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MISD.png)
-  % !{MIMD; Quelle RA2 Vorlesung 2020/21](Assets/RA2_MIMD.png)
-  
-  % Speicherstrukturen: !{Speicherstrukturen; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Speicherstrukturen.png)
-  
-  %Enge und lose Kopplung !{Enge und lose Kopplung; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Enge%20und%20lose%20Kopplung.png)
-  
+  \begin{center}
+    \includegraphics[width=\textwidth/13]{Assets/RA2_SISD.png}
+    \includegraphics[width=\textwidth/13]{Assets/RA2_SIMD.png}
+    \includegraphics[width=\textwidth/13]{Assets/RA2_MISD.png}
+    \includegraphics[width=\textwidth/13]{Assets/RA2_MIMD.png}
+  \end{center}
+    
   %Verbindungsnetzwerke
   % !{Verbindungsnetzwerke; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Verbindungsnetzwerke.png)
   % !{Verbindungsnetzwerke2; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Verbindungsnetzwerke2.png)
@@ -690,7 +683,7 @@
     \item[enge Kopplung] (shared memory)
     \begin{itemize*}
       \item parallelzugriff in Datenbreite des Prozessors
-      \item schneller Datenaustausch (Proz-Speicher-Zugriffszeit)
+      \item schneller Datenaustausch 
       \item neu lokal benachbarte Rechner
       \item aus Sicht des Prozessors gemeinsamer Speicher
       \item Arbites - Zuteiler für Busanforderungen
@@ -707,8 +700,21 @@
       \item Wartezeit auf Speicher
       \item Kommunikationsaufwand
       \item Kommunikationsfähigkeit
-      \item optimale Prozessor-/Speicher-/Kommunikationspfad anzahl $<\infty$
     \end{itemize*}
+  \end{description*}
+  \begin{center}
+    \includegraphics[width=\textwidth/7]{Assets/RA2_Enge und lose Kopplung.png}
+    \includegraphics[width=\textwidth/7]{Assets/RA2_Speicherstrukturen.png}
+  \end{center}
+  
+  \paragraph{Verbindungsnetzwerke}
+  \begin{description*}
+    \item[Linie] $KL_{max}=n-1$
+    \item[Ring] $KL_{max}=\frac{n}{2}$
+    \item[Torus 2D] $KL_{max}=\sqrt{n}-1$
+    \item[Torus 3D] $KL_{max}=\frac{3}{2}\sqrt[3]{n}-1$
+    \item[Hypercube] $iD=i$
+    \item[Gitter] $iD=i*\sqrt[i]{n}-1$
   \end{description*}
   
   \subsection{Out-of-Order Architektur}
@@ -735,11 +741,13 @@
   
   \paragraph{Snooping-Protokolle}
   \begin{itemize*}
-    \item Die Caches aller Prozessoren beobachten alle Datenübertragungen von jedem Cache zum Hauptspeicher.
+    \item Caches aller Prozessoren beobachten alle Daten- übertragungen von jedem Cache zum Hauptspeicher
     \item Voraussetzung: broadcastfähiges Verbindungsnetzwerk
-    \item Write Invalidate: Das Verändern eines Blocks im Speicher führt zur Invalidierung aller Cache-Kopien mit der gleichen Adresse
-    \item Write Update / Write Broadcast: Das Verändern eines Blocks im Speicher führt zur Modifikation aller anderen Cache-Blöcke mit der gleichen Adresse
   \end{itemize*}
+  \begin{description*}
+    \item[Write Invalidate] Verändern eines Blocks im Speicher führt zur Invalidierung aller Cache-Kopien mit der gleichen Adresse
+    \item[Write Update/Broadcast] Verändern eines Blocks im Speicher führt zur Modifikation aller anderen Cache-Blöcke mit der gleichen Adresse
+  \end{description*}
   
   \paragraph{Copy-Back}
   \begin{itemize*}
@@ -749,20 +757,25 @@
     \item Mischung zwischen Write-Through und Copy-Back
   \end{itemize*}
   
+  \vfill
   \paragraph{MESI}
-  \begin{description*}
-    \item[Modified] Cache-Block wurde lokal geändert, die Kopie im Hauptspeicher ist ungültig. Will ein anderer Prozessor im Hauptspeicher lesen, so muss der Cache-Block erst in den Hauptspeicher zurückgeschrieben werden
-    \item[Exclusive] (unmodified): Dieser Cache ist der einzige, der den Cache-Block enthält, Wert im Hauptspeicher ist gültig. Liest ein anderer Prozessor im Hauptspeicher, so muss die Zeile als shared markiert werden. Wird das Datum im Hauptspeicher verändert, ist der Cache-Block auf invalid zu setzen
-    \item[Shared] (unmodified): Mehrere Caches enthalten Daten. Da alle bisher nur gelesen haben, sind Daten im Hauptspeicher gültig. Schreibzugriffe auf einen shared Cache-Block müssen immer zu einer Bus-Operation führen, damit die Cache-Blocks der anderen Caches auf invalid gesetzt werden können
-    \item[Invalid] Cache-Block ist nicht geladen bzw. veraltet/ungültig
-  \end{description*}
+  \begin{center}
+    \includegraphics[width=\textwidth/4]{Assets/RA2_MESI-Zustände.png}
+    \includegraphics[width=\textwidth/4]{Assets/RA2_MESI-Bedingungen.png}
+  \end{center}
+  %\begin{description*}
+  %  \item[Modified] Cache-Block wurde lokal geändert, die Kopie im Hauptspeicher ist ungültig. Will ein anderer Prozessor im Hauptspeicher lesen, so muss der Cache-Block erst in den Hauptspeicher zurückgeschrieben werden
+  %  \item[Exclusive] (unmodified): Dieser Cache ist der einzige, der den Cache-Block enthält, Wert im Hauptspeicher ist gültig. Liest ein anderer Prozessor im Hauptspeicher, so muss die Zeile als shared markiert werden. Wird das Datum im Hauptspeicher verändert, ist der Cache-Block auf invalid zu setzen
+  %  \item[Shared] (unmodified): Mehrere Caches enthalten Daten. Da alle bisher nur gelesen haben, sind Daten im Hauptspeicher gültig. Schreibzugriffe auf einen shared Cache-Block müssen immer zu einer Bus-Operation führen, damit die Cache-Blocks der anderen Caches auf invalid gesetzt werden können
+  %  \item[Invalid] Cache-Block ist nicht geladen bzw. veraltet/ungültig
+  %\end{description*}
   
   \paragraph{Bus-Operationen}
-  \begin{itemize*}
-    \item Bus Read: wenn ein Prozessor Wert eines Speicherblocks lesen will
-    \item Bus Read Exclusive: wenn ein Prozessor Wert eines Speicherblocks überschreiben will
-    \item Flush: wenn ein Prozessor $P_i$ einen Speicherblock alleinig in seinem Cache hat, ein anderer Prozessor $P_j$ aber lesend oder schreibend auf diesen Block zugreift. Bei einer Flush-Operation legt $P_i$ ebenfalls das Datum des Speicherblocks auf den Bus.
-  \end{itemize*}
+  \begin{description*}
+    \item[Bus Read] Prozessor liest Wert eines Speicherblocks
+    \item[Bus Read Exclusive] Prozessor überschreibt Wert eines Speicherblocks
+    \item[Flush] Prozessor $P_i$ hat Speicherblock alleinig in seinem Cache, ein anderer Prozessor $P_j$ aber lesend oder schreibend auf diesen Block zugreift
+  \end{description*}
   
   \paragraph{Steuersignale}
   \begin{itemize*}

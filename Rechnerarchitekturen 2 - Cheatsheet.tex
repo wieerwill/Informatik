@@ -110,9 +110,9 @@
   \setlength{\postmulticols}{1pt}
   \setlength{\multicolsep}{1pt}
   \setlength{\columnsep}{2pt}
-
   
-  \section{Prozessorarchitekturen}  
+  
+  \section{Prozessorarchitekturen}
   \paragraph{CISC} complex instruction set computer
   \begin{itemize*}
     \item Einfache und komplexe Befehle
@@ -149,38 +149,38 @@
   
   Aufgaben der einzelnen Phasen
   \begin{description*}
-    \item[Befehlsholphase] Lesen des aktuellen Befehls; separater Speicher, zur Vermeidung von Konflikten mit Datenzugriffen
+    \item[Befehlsholphase] Lesen des aktuellen Befehls; separater zur Vermeidung von Konflikten mit Datenzugriffen
     \item[Dekodier \& Register-Lese-Phase] Lesen der Register möglich wegen fester Plätze für Nr. im Befehlswort
-    \item[Ausführungs \& Adressberechnungsphase] Berechnung arithmetischer Funktion bzw. Adresse für Speicherzugriff
+    \item[Ausführungs \& Adressberechnungsphase] Berechnung arithmetischer Funktion o. Adresse für Speicherzugriff
     \item[Speicherzugriffsphase] Wird nur bei Lade \& Speicherbefehlen benötigt
     \item[Abspeicherungsphase] Speichern in Register, bei Speicherbefehlen nicht benötigt
   \end{description*}
   
   \paragraph*{Hazards}
   \begin{itemize*}
-    \item resource hazards
+    \item resource hazards: Ressourcenabhängigkeiten
     \item data hazards: Datenabhängigkeiten
     \begin{description*}
-      \item[Antidatenabhängig] falls Befehl j eine Speicherzelle beschreibt, die von i noch gelesen werden müsste. WAR (write after read)
-      \item[Ausgabeabhängig] falls Befehle i und j die selbe Speicherzelle beschreiben. WAW (w.a.w.)
-      \item[Datenabhängigkeit] Operation hängt von der vorhergehenden Operation ab. RAW (r.a.w.)
+      \item[Antidatenabhängig] Befehl j beschreibt Speicherzelle, die von i noch gelesen werden: WAR
+      \item[Ausgabeabhängig] Befehle i und j beschreiben die selbe Speicherzelle: WAW (write after write)
+      \item[Datenabhängigkeit] Operation hängt von vorhergehender Operation ab: RAW
     \end{description*}
     \item control hazards: Kontrollabhängigkeiten
     \begin{itemize*}
-      \item Gleichheit der Register wird schon in der instruction decode-Stufe geprüft
-      \item Sprungziel wird in separatem Adressaddierer bereits in instruction decode-Stufe berechnet
+      \item Gleichheit der Register wird in instruction decode-Stufe geprüft
+      \item Sprungziel wird in separatem Adressaddierer in instruction decode-Stufe berechnet
     \end{itemize*}
   \end{itemize*}
   
-  \subsection{ Sprungvorhersage}
+  \subsection{Sprungvorhersage}
   \paragraph{Einfache lokale Prädiktoren}
   \begin{itemize*}
     \item Vorhersage, ob bedingter Sprung genommen wird oder nicht
     \item Prädiktion allein anhand der Historie des betrachteten, aktuellen Sprungs
-    \item Historie eines Sprungs wird mit 1, 2 oder n Bits gepuffert
+    \item Historie eines Sprungs wird mit 1 bis n Bits gepuffert
   \end{itemize*}
   
-  \paragraph{ Einfache Sprungvorhersage (1 Bit)}
+  \paragraph{Einfache Sprungvorhersage (1 Bit)}
   \begin{itemize*}
     \item Branch prediction buffer oder branch history table
     \item Kleiner Speicher, der mit (Teil der) Adresse des Sprungbefehls indiziert wird
@@ -190,32 +190,29 @@
     \item Nachfolgebefehle ab vorhergesagter Adresse holen
     \item Falls Prädiktion fehlerhaft: Prädiktionsbit invertieren
     \item Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet
-    \item Einfachste Art von Puffer (keine Tags, keine Überprüfung, ob Adresse im Puffer)
-    \item Entspricht sehr einfachem Cache
+    \item Einfachste Art von Puffer
     \item Hat eine bestimmte Kapazität
     \item Kann nicht für alle Sprünge Einträge enthalten
     \item Reduziert branch penalty nur, wenn branch delay länger als Berechnung der Zieladresse mit branch prediction buffer dauert
     \item Prädiktion kann fehlerhaft sein
-    \item Prädiktion kann von anderem Sprungbefehl stammen (mit gleichen Bits im Indexteil der Adressen)
+    \item Prädiktion kann von anderem Sprungbefehl stammen
   \end{itemize*}
   
-  \paragraph{ Einführung von Tag Bits}
+  \paragraph{Einführung von Tag Bits}
   \begin{itemize*}
-    \item wenn Sprung fast immer ausgeführt (taken) wird, entstehen 2 Fehler anstatt 1
     \item Tag: gültiger Eintrag, falls Tag-Bits gleich sind
     \item Alle Sprünge, deren Adressen im Indexteil übereinstimmen, werden derselben Zelle im branch prediction buffer zugeordnet. Überprüfung mittels tags, ob es der richtige Eintrag ist.
     \item Allgemein: Fehlerrate von 1-Bit Prädiktor ist für Sprünge in Schleifenkonstrukten doppelt so hoch wie die Anzahl ausgeführter Sprünge
   \end{itemize*}
   
-  \paragraph{ 2 Bit Vorhersagen}
+  \paragraph{2 Bit Vorhersagen}
   \begin{itemize*}
     \item Änderung der Vorhersage nur, wenn 2 falsche Vorhersagen in Folge
     \item 2-Bit Branch-Prediction Buffer: Speicherung der Historie, Befehlsadressen als Zugriffsschlüssel
   \end{itemize*}
-  
   % !{Sprungvorhersage; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Sprungvorhersage.png)
   
-  \paragraph{ n-Bit Prädikator}
+  \paragraph{n-Bit Prädikator}
   \begin{itemize*}
     \item Verwendet n-Bit Zähler
     \item Sättigungsarithmetik (kein wrap around bei Überlauf)
@@ -225,116 +222,112 @@
     \item Praxis: 2-Bit Prädiktor ähnlich gut wie n-Bit Prädiktor
   \end{itemize*}
   
-  \paragraph{ Korrelierende Prädikatoren}
+  \paragraph{Korrelierende Prädikatoren}
   \begin{itemize*}
-    \item Betrachtet nur Verhalten eines Sprungs, um dessen Verhalten vorherzusagen
-    \item Arbeitet rein lokal
+    \item Betrachtet nur Verhalten eines Sprungs; rein lokal
     \item Verbesserung durch Betrachtung des Verhaltens anderer Sprünge
     \item erhält so korrelierenden/zweistufigen Prädiktor
     \item Prinzip: Aufgrund globaler Information wird einer von mehreren lokalen Prädiktoren ausgewählt
-    \item Beziehen zur Vorhersage des Verhaltens Kontext-Information mit ein, d.h. die Historie anderer Sprungbefehle
+    \item Beziehen zur Vorhersage des Verhaltens Kontext-Information mit ein
     \item Prädiktor benutzt globale Kontext-Bits, um einen von mehreren lokalen Prädiktoren auszuwählen
     \item Betrachten wiederholte Ausführung des Codefragments
   \end{itemize*}
   
-  Zweistufiger Prädiktor
+  \paragraph{Zweistufiger Prädiktor}
   \begin{itemize*}
     \item Es existieren 2 lokale Prädiktoren, beide je 1-Bit
     \item Kontext: Letzter Sprung wurde (nicht) ausgeführt
     \item Anhand des Kontexts wird lokaler Prädiktor für die Vorhersage des aktuell betrachteten Sprungs ausgewählt
-    \item Letzter Sprung ist i.a. nicht gleich aktuellem, vorherzusagendem Sprung
+    \item Letzter Sprung ist i.a. nicht gleich aktuellem Sprung
     \item Notation des Prädiktorstatus:$<X>/<Y>$ mit
     \item $<X>$: Vorhersage, falls letzter Sprung not taken
     \item $<Y>$: Vorhersage, falls letzter Sprung taken
     \item $<X>\vee<Y>$ Vorhersagen: entweder T oder NT
   \end{itemize*}
   
-  (m,n)-Prädiktor
+  \paragraph{(m,n)-Prädiktor}
   \begin{itemize*}
-    \item Betrachtet als Kontext das Verhalten der letzten m Sprünge, um aus $2^m$ vielen lokalen Prädiktoren einen n-Bit Prädiktor auszuwählen
+    \item Betrachtet das Verhalten der letzten m Sprünge, um aus $2^m$ vielen lokalen Prädiktoren einen n-Bit Prädiktor auszuwählen
     \item Höhere Vorhersagegenauigkeit
     \item Erfordert kaum Hardwareaufwand
-    \item Sprunggeschichte kann in m-Bit Schieberegister gespeichert werden (1 Bit gleich 1 wenn Sprung taken)
+    \item Sprunggeschichte in m-Bit Schieberegister gespeichert
     \item Vorhersagepuffer adressiert via Konkatenation von unteren Adressbits der Sprungbefehlsadresse
-    \item m Bit globaler Sprunggeschichte
   \end{itemize*}
   
-  \paragraph{ High Performance Befehlsdekodierung}
+  \paragraph{High Performance Befehlsdekodierung}
+  
   reine Vorhersage eines Sprungs i.d.R. nicht ausreichend
   \begin{itemize*}
-    \item Insbesondere: Falls mehrere Befehle pro Takt auszugeben sind
     \item Befehlsstrom mit großer Bandbreite erforderlich
-    \item Kontrollflussabhängigkeiten dürfen nicht „wahrnehmbar“ sein 
+    \item Kontrollflussabhängigkeiten dürfen nicht wahrnehmbar sein 
     \item Pufferung von Sprungzielen und nicht nur Vorhersage des Sprungverhaltens (branch target buffer)
     \item Integrierte Einheit für das Holen der Befehle
     \item Vorhersage von Rücksprungadressen (bei Prozeduraufruf)
   \end{itemize*}
   
-  \paragraph{ Branch Target Buffer}
+  \paragraph{Branch Target Buffer}
   5-stufige Pipeline, Auswertung von Sprungbedingungen in EX
   \begin{itemize*}
     \item Branch delay von 2 Takten
-    \item Mit Sprungvorhersage (branch prediction buffer)
-    \item Zugriff erfolgt in ID (Adresse des Sprungbefehls schon in IF bekannt; aber evtl. angesprungenes Ziel erst nach Befehlsdecodierung)
+    \item mit Sprungvorhersage (branch prediction buffer)
+    \item Zugriff erfolgt in ID (Adresse des Sprungbefehls in IF bekannt)
     \item Nächste vorhergesagte Instruktion kann erst nach ID geholt werden
     \item Branch delay = 1, falls Prädiktion korrekt
-    \item Mit Pufferung des Sprungziels (branch target buffer)
-    \item Zugriff auf branch target buffer erfolgt in IF. Verhalten wie „echter“ Cache,adressiert mit Sprungbefehlsadresse
+    \item Mit Pufferung des Sprungziels
+    \item Zugriff auf branch target buffer erfolgt in IF
+    \item Verhalten wie „echter“ Cache, adressiert mit Sprungbefehlsadresse
     \item Liefert vorhergesagte Adresse als Ergebnis
     \item Keine Verzögerung, falls Prädiktion korrekt
     \item Zusätzliche Speicherung auch des Sprungziels
-    \item Bei geschickter Organisation kann das Fließband immer gefüllt bleiben; die Sprünge kosten dann effektiv keine Zeit; $CPI <1$ möglich.
+    \item bei geschickter Organisation bleibt das Fließband immer gefüllt
+    \item Sprünge kosten dann effektiv keine Zeit; $CPI <1$ mögl.
   \end{itemize*}
-  
   Eigenschaften
   \begin{itemize*}
-    \item Verzögerung durch Sprung kann vollständig vermieden werden, da bereits in IF Entscheidung über nächsten Befehlszähler (PC) getroffen wird.
-    \item Da Entscheidung allein auf Basis des PC getroffen wird, muss überprüft werden, ob Adresse im Puffer
+    \item Verzögerung durch Sprung vollständig vermieden, da bereits in IF Entscheidung über nächsten Befehlszähler getroffen
+    \item Entscheidung allein auf Basis des PC getroffen wird, muss überprüft werden ob Adresse im Puffer
     \item Speicherung nur für Sprünge notwendig, die als ausgeführt vorhergesagt werden
-    \item Entsteht ursprüngliche Sprung-Verzögerung plus Aufwand zur Aktualisierung des Vorhersagepuffers
+    \item entsteht ursprüngliche Sprung-Verzögerung plus Aufwand zur Aktualisierung des Vorhersagepuffers
   \end{itemize*}
   
-  \paragraph{ Integrierte Befehls-Hol-Einheit (IF Unit)}
+  \paragraph{Integrierte Befehls-Hol-Einheit (IF Unit)}
   Insbesondere mit Blick auf multiple-issue Prozessoren eigene (autonome) funktionale Einheit für Befehlsholphase
   \begin{itemize*}
-    \item Führt Befehlscodes in Pipeline ein
-    \item Integrierte Funktionalitäten
+    \item führt Befehlscodes in Pipeline ein
     \item Sprungvorhersage wird Teil der Befehlsholphase
-    \item Instruction Pre-fetch: Insbes. um mehrere Befehle pro Takt liefern (und später ausgeben) zu können, läuft Befehlsholen weiterer Dekodierung voraus (= pre-fetch)
+    \item Instruction Pre-fetch: Insbes. um mehrere Befehle pro Takt liefern zu können, läuft Befehlsholen weiterer Dekodierung voraus
     \item Zugriff auf Befehlsspeicher: Bei mehreren Befehlen pro Takt mehrere Zugriffe erforderlich (bei Cache auf ggfs. mehrere cache lines). Werden hier koordiniert/geplant
     \item Befehlspuffer: Befehle können hier (lokal im Prozessor!) von Issue-Stufe nach Bedarf abgerufen werden
   \end{itemize*}
   
-  \paragraph{ Vorhersage von Rücksprungadressen}
-  Allgemeines Ziel: Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Register)
+  \paragraph{Vorhersage von Rücksprungadressen}
+  Vorhersage indirekter Sprünge (d.h. bzgl. Basisadresse in Register)
   \begin{itemize*}
     \item Hauptverwendung: Rückkehr aus Prozeduraufrufen
-    \item MIPS: Prozeduraufruf per jal proc, Rückkehr per jr \$31
+    \item MIPS: Prozeduraufruf per $jal$, Rückkehr per $jr$
     \item Vorhersage mit branch target buffer schlecht, da Aufruf aus unterschiedlichen Codeteilen heraus möglich
     \item Methode: (Stack-) Speicher für Rücksprungadressen
-    \item Push bei Prozeduraufruf (call), und
+    \item Push bei Prozeduraufruf (call)
     \item Pop bei Rücksprung (return)
     \item Vorhersagequalität „perfekt“, wenn Stack-Puffer größer als maximale Aufruftiefe
   \end{itemize*}
   
-  \section{ Multiple-Issue-Architekturen}
-  \subsection{ Mehrere Ausführungseinheiten}
+  \section{Multiple-Issue-Architekturen}
+  \paragraph{Mehrere Ausführungseinheiten}
   \begin{itemize*}
-    \item Weitere Leistungssteigerung: $CPI < 1$
+    \item Weitere Leistungssteigerung $CPI < 1$
     \item Mehrere Befehle pro Takt ausgeben
-    \item Zwei Grundtypen von multiple-issue Prozessoren:
+    \item Zwei Grundtypen von multiple-issue Prozessoren
     \begin{itemize*}
-      \item Superskalar: variable Anzahl von Befehlen pro Takt
-      \item VLIW/EPIC: Feste Anzahl von Befehlen ausgegeben, definiert durch Befehlscode (weitgehende Planung der Issue-Phase durch Compiler)
+      \item Superskalar: var. Anzahl von Befehlen pro Takt
+      \item VLIW/EPIC: Feste Anzahl von Befehlen ausgegeben, definiert durch Befehlscode (Planung der Issue-Phase durch Compiler)
     \end{itemize*}
   \end{itemize*}
-  
   % !{In Order Pipeline; Quelle RA2 Vorlesung 2020/21](Assets/RA2_in-order-pipeline.png)
   
-  \subsection{ Superskalar}
-  statisch: Details der Befehlsausgabe
+  \subsection{Superskalar}
   \begin{itemize*}
-    \item In IF werden 1-n Befehle von Instruction Fetch Unit geholt (ggfs. Max. von n nicht immer möglich)
+    \item IF holt 1-n Befehle von Instruction Fetch Unit
     \item Befehlsgruppe, die potentiell ausgegeben werden kann = issue packet
     \item Konflikte bzgl. Befehlen im issue packet werden in Issue-Stufe in Programmreihenfolge geprüft
     \item Befehl ggfs. nicht ausgegeben (und alle weiteren)
@@ -343,38 +336,37 @@
     \item Parallele Ausgabe von Befehlen limitierender Faktor superskalarer Prozessoren
   \end{itemize*}
   
-  MIPS mit statischem Scheduling
+  \paragraph{MIPS mit statischem Scheduling}
   \begin{itemize*}
     \item Annahme: 2 Befehle pro Takt können ausgegeben werden (1x ALU, Load/Store plus 1x FP)
     \item Einfacher als 2 beliebige Befehle (wegen „Entflechtung“)
-    \item 2 Befehlsworte holen (64-Bit Zugriff, komplexer als bei nur 1 Befehl)
+    \item 2 Befehlsworte holen (64-Bit Zugriff, komplexer als 1 B.)
     \item Prüfen, ob 0/1/2 Befehle ausgegeben werden können
-    \item Befehl(e) ausgeben an korrespondierende funktionale Einheiten
+    \item Befehle ausgeben an korrespondierende funk. Einheiten
     \item Prüfen auf Konflikte durch Entflechtung vereinfacht
-    \item Integer und FP-Operationen nahezu unabhängig (verschiedene Registersätze)
-    \item Abhängigkeiten nur bei Speichertransfers möglich (von Integer-ALU für FP ausgeführt) \item Einschränkung des issue 
-    \item Leistungssteigerung nur bei geeignetem Anteil von FP-Operationen sowie geeigneter Verflechtung durch Compiler
+    \item Integer und FP-Operationen nahezu unabhängig
+    \item Abhängigkeiten nur bei Speichertransfers möglich (von Integer-ALU für FP ausgeführt)
+    \item Leistungssteigerung nur bei geeignetem Anteil von FP-Operationen und Verflechtung durch Compiler
   \end{itemize*}
   
-  \subsection{Dynamisches Scheduling - in-order-execution}
+  \paragraph{Dynamisches Scheduling} in-order-execution
   \begin{itemize*}
-    \item Jeder Befehl, der aus der Instruction fetch-Einheit kommt, durchläuft das Scoreboard (Scoreboarding)
+    \item Jeder Befehl, der aus der Instruction fetch-Einheit kommt, durchläuft Scoreboard
     \item Wenn für Befehl alle Daten/Operanden bekannt sind und Ausführungseinheit frei ist, wird Befehl gestartet
     \item Alle Ausführungseinheiten melden abgeschlossene Berechnungen dem Scoreboard
-    \item Scoreboard erteilt Befehlen die Berechtigung zum Abspeichern von Ergebnissen, sofern Speichereinheit frei ist und Antidaten- und Ausgabeabhängigkeiten berücksichtigt sind und prüft, ob dadurch neue Befehle ausführbereit werd
+    \item Scoreboard erteilt Befehlen die Berechtigung zum Abspeichern von Ergebnissen und prüft, ob dadurch neue Befehle ausführbereit werd
     \item Zentrale Datenstruktur: Scoreboard (für Befehlsstatus)
     \item load/store-Architektur
     \item mehrere funktionale Einheiten
-    \item Scoreboarding für MIPS nur sinnvoll wenn
+    \item Scoreboarding für MIPS nur sinnvoll wenn:
     \item für FP-Pipeline (Operationen mit mehreren Taktzyklen)
-    \item und mehrere funktionale Einheiten (zB: 2xMult, Div, Add, Int)
+    \item mehrere funktionale Einheiten (zB: 2xMult, Div, Add, Int)
   \end{itemize*}
-  
   % !{Out Of Order Execution; Quelle RA2 Vorlesung 2020/21](Assets/RA2_out-of-order-execution.png)
   
-  \paragraph{ Verfahren von Tomasulo}
+  \paragraph{Verfahren von Tomasulo}
   \begin{itemize*}
-    \item erlaubt auch bei Ausgabe- und Antidatenabhängigkeiten, die Reihenfolge zu vertauschen
+    \item erlaubt bei Ausgabe-/Antidatenabhängigkeiten Reihenfolge zu vertauschen
     \item Umbenennung der Register
     \item verschiedenen Benutzungen eines Registers werden verschiedene Speicherzellen zugeordnet
     \item Jeder funktionalen Einheit wird eine Reservation Station zugeordnet
@@ -383,16 +375,16 @@
     \item Am Ende der Bearbeitung wird das Ergebnis von allen Einheiten übernommen, die das Ergebnis benötigen
     \item Verteilen der Daten erfolgt vor der Abspeicherung im Registerspeicher
     \item Aus den tag bits geht hervor, aus welcher Einheit der Operand kommen muss
-    \item Registeradressen werden dynamisch auf größere Anzahl von Plätzen in den Reservation Stations abgebildet, d.h. Register effektiv umbenannt
+    \item Registeradressen werden dynamisch auf größere Anzahl von Plätzen in den Reservation Stations abgebildet
     \item Performance-Beschränkungen wegen weniger Register werden so umgangen
   \end{itemize*}
   
-  \paragraph{ Register Renaming}
+  \paragraph{Register Renaming}
   \begin{itemize*}
     \item Verwendung temporärer Register für (logisch) neue möglicherweise interferierende Belegung
-    \item Alle Namenskonflikte durch Umbenennung auflösbar (Voraussetzung: genügend temporäre Register)
+    \item Alle Namenskonflikte durch Umbenennung auflösbar
     \item Wichtige Hardwarestruktur: Reservation Stations
-    \item Zugeordnet zu funktionalen Einheiten (i.d.R. pro Einheit)
+    \item Zugeordnet zu funktionalen Einheiten (pro Einheit)
     \item Puffern Operanden für Befehle (sobald verfügbar)
     \item Müssen nicht aus Registern gelesen werden
     \item Ausstehende Operanden verweisen auf Reservation Station, die Eingabe bereitstellen
@@ -402,16 +394,15 @@
     \item Informationen in Reservation Stations bei den funktionalen Einheiten bestimmen, wann Ausführung eines Befehls möglich ist
     \item Ergebnisse werden direkt zu den funktionalen Einheiten (in jeweiliger Reservation Station) weitergereicht
     \item Erweiterte Form des Forwarding
-    \item Realisiert implizit Register Renaming
-    \item durch gemeinsamen Ergebnisbus (common data bus)
+    \item Realisiert implizit Register Renaming durch gemeinsamen Ergebnisbus (common data bus)
   \end{itemize*}
   
-  \subsection{ Multiple-Issue mit dynamischem Scheduling}
+  \subsection{Multiple-Issue mit dynamischem Scheduling}
   \begin{itemize*}
     \item Nachteil von statischem Scheduling: Latenzzeiten werden ca. mit Länge des issue packets skaliert
     \item Längere Verzögerung für Load/Stores bzw. Branches
-    \item Lösung: Erweiterung des Tomasulo-Algorithmus auf Multiple-Issue durch
-    \item Sequentielles Ausgeben mehrerer Befehle an Reservation Stations innerhalb eines Taktes,
+    \item Lösung: Erweiterung des Tomasulo-Algorithmus auf Multiple-Issue
+    \item Sequentielles Ausgeben mehrerer Befehle an Reservation Stations innerhalb eines Taktes
     \item oder „Verbreiterung“ der Ausgabe-Logik (issue logic) zur Behandlung mehrerer Operationen parallel
   \end{itemize*}
   
@@ -420,16 +411,16 @@
     \item Befehlszuordnung und Konfliktvermeidung durch Compiler
     \item Compiler muss Zeitbedarf der Speicherzugriffe in Befehlsplanung einbeziehen
     \item Befehlsstrom mit Tupel von Befehlen
-    \item nicht un-flexibel bei Reaktion auf Laufzeitereignisse
+    \item flexibel bei Reaktion auf Laufzeitereignisse
     \item VLIW hat festes Befehlsformat; höhere Codedichte
-    \item Forwarding Hardware - nach dem EX werden Daten in Pufferregister gespeichert und können vom nächsten Befehl schon genutzt werden
+    \item Forwarding Hardware - nach EX können Daten vom nächsten Befehl genutzt werden
     \item WB erfolgt erst darauf
     \item Datenabhängigkeitsproblem wird verringert
     \item MUX nutzt eher Pufferdaten als Registerdaten
     \item verschiedene parallele Ausführungseinheiten
     \item Verteilung von Maschinencode direkt vom Befehlswort im Speicher vorgegeben
     \item für jede Ausführungseinheit dezidierte Anweisungen
-    \item Meist für stark parallelisierbare Aufgaben verwendet
+    \item meist für stark parallelisierbare Aufgaben verwendet
     \item Vorteile:
     \begin{itemize*}
       \item parallele Architektur des Prozessors kann während der Programmerstellung zur Optimierung genutzt werden
@@ -443,36 +434,34 @@
       \item Rekompilierung für den Prozessor erforderlich
       \item Größerer Speicherbedarf, wenn Code nicht parallelisiert werden kann
     \end{itemize*}
-  \end{itemize*}  
+  \end{itemize*}
   % !{VLIW Dynamisch; Quelle RA2 Vorlesung 2020/21](Assets/RA2_VLIW-dynamisch.png)
   
-  EPIC = Explicitely Parallel Instruction Computing = IA64
+  \paragraph{EPIC} Explicitely Parallel Instruction Computing = IA64
   \begin{itemize*}
-    \item Im wesentlichen Prinzip des VLIW-Prozessors
-    \item Umsortieren der Befehle und Auflösung der Abhängigkeiten werden durch den Compiler durchgeführt
+    \item im wesentlichen Prinzip des VLIW-Prozessors
+    \item Umsortieren der Befehle und Auflösung der Abhängigkeiten wird durch Compiler durchgeführt
     \item Hauptnachteil: Neukompilierung erforderlich
     \item Keine statische Aufteilung auf Funktionseinheiten
     \item Effizienteres Befehlswort
     \item Keine Verwendung von zwangsweise NOPs
   \end{itemize*}
-  
-  Bei der IA64-Architektur werden verschiedene Ansätze verfolgt, um die Prozessorlogik zu vereinfachen.
+  verschiedene Ansätze, um die Prozessorlogik zu vereinfachen
   \begin{enumerate*}
     \item Bedingte Befehlsverarbeitung
     \begin{itemize*}
-      \item Ein Befehl wird abhängig von einem Statusbit ausgeführt
-      \item Dadurch kann die Sprungvorhersage bei einfachen if-then-else Zweigen entfallen
-      \item Die then und else Befehle sind parallel, wobei jeweils nur einer ausgeführt wird
+      \item Befehl abhängig von Statusbit ausgeführt
+      \item Sprungvorhersage kann bei einfachen if-then-else Zweigen entfallen
+      \item then/else Befehle parallel, nur einer ausgeführt
     \end{itemize*}
     \item Statische Sprungvorhersage (Compiler)
-    \item Die Optimierung (Finden paralleler Befehle) wird im wesentlichen dem Compiler überlassen.
+    \item Die Optimierung wird dem Compiler überlassen
     \item Spekulatives Laden von Operanden
     \begin{itemize*}
       \item Möglichst geringe Wartezeit auf Operanden
-      \item Schon im Compiler werden entsprechende Ladebefehle vorgezogen.
+      \item Schon im Compiler werden entsprechende Ladebefehle vorgezogen
     \end{itemize*}
   \end{enumerate*}
-  
   % !{VLIW Vergleich; Quelle RA2 Vorlesung 2020/21](Assets/RA2_VLIW-vergleich.png)
   
   \subsection{Simultaneous Multithreading (SMT)}
@@ -486,10 +475,8 @@
   \begin{itemize*}
     \item Große Speicher sind langsam
     \item Anwendung verhalten sich üblicherweise lokal
-    \item Häufig benötigte Speicherinhalte in kleinen Speichern, seltener benötigte Inhalte in großen Speichern ablegen
-    \item Bis zu sechs Ebenen unterscheidbar
+    \item Häufig benötigte Speicherinhalte in kleinen Speichern
   \end{itemize*}
-  
   \begin{center}
     \begin{tabular}{c | c | c}
       Ebene             & Latenz & Kapazität \\\hline
@@ -501,7 +488,6 @@
       Magnetbänder      & 100 s  & 5 TB
     \end{tabular}
   \end{center}
-
   
   \section{Speicherarchitekturen}
   \paragraph{Adresspipelining}
@@ -514,7 +500,7 @@
   Lesezugriff auf Speicher
   \begin{itemize*}
     \item Matrixaufbau eines Speichers
-    \item Aufteilen der Speicheradresse in Zeilen- und Spaltenadresse
+    \item Aufteilen der Speicheradresse in Zeilen- und Spalten
     \item Dekodierung der Zeilenadresse bestimmt Select-Leitung
     \item Komplette Zeile wird in den Zeilenpuffer geschrieben
     \item Dekodierung der Spaltenadresse bestimmt Datenwort
@@ -544,75 +530,61 @@
     \item CAS (Column Address Strobe): Bei fallenden Flanke auf CAS ist anliegende Adresse Spaltenadresse
     \item Zeilenadressdecoder liefert Select-Leitung für eine Zeile
     \item Komplette Zeile wird in einen Zwischenpuffer übernommen und zurückgeschrieben
-    \item DRAM-Eigenschaften: Weniger Platzbedarf
     \item Nur 1 Transistor und 1 Kondensator pro Speicherzelle, statt 6 Transistoren bei SRAM
     \item Integrationsdichte Faktor 4 höher als bei SRAMs
-    \item Aber: Langsamerer Zugriff, Insbes. Lesezugriff wegen Zwischenspeicherung und Auffrischung
-    \item Auf DRAM-Zeile kann während Auffrischung nicht zugegriffen werden
-    \item Hoher Energieverbrauch sowohl bei Aktivität als auch bei Inaktivität
-    \item Ausgleich des Ladungsverlusts durch periodische Auffrischung
+    \item Weniger Platzbedarf aber Langsamerer Zugriff wegen Zwischenspeicherung und Auffrischung
+    \item während Auffrischung kann nicht zugegriffen werden
+    \item Hoher Energieverbrauch bei Aktivität/Inaktivität
+    \item Ladungsverlust Ausgleich durch periodische Auffrischung
   \end{itemize*}
-  
   %Interleaving
   % !{Interleaving; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Interleaving.png)
-
+  
   \subsection{Cache Speicher}
   \begin{itemize*}
-    \item kleiner, schneller Prozessornaher Speicher
-    \item CPU weiß nicht dass Cache zwischengeschaltet ist
-    \item es wird immer zuerst im Cache nachgeschaut, zum Adressvergleich (kostet Zeit)
-    \item 90\% der Zeit verbringt ein Programm in 10\% des Codes
+    \item kleiner, schneller prozessornaher Speicher
     \item Puffer zwischen Hauptspeicher und Prozessor
+    \item CPU weiß nicht dass Cache zwischengeschaltet ist
+    \item es wird immer zuerst im Cache nachgeschaut (kostet Zeit)
+    \item 90\% der Zeit verbringt ein Programm in 10\% des Codes
     \item Cache besteht aus Cache Tabelle
     \begin{description*}
       \item[voll assoziativ] Adressvergl. der kompletten Adresse
-      \item jede beliebige Adressfolge im Cache möglich
-      \item kann zu langsamen Adressvergleich führen
-      \item[direct-mapped] Adressvergleich nur über Teiladresse - eine Tabelle im Cache
-      \item[mehr-wege-assoziativ] mehrere Adressvergleiche parallel
+      \item[direct-mapped] Adressvergleich nur über Teiladresse
+      \item[mehr-wege-assoziativ] mehrere Adressverg. parallel
     \end{description*}
     \item Schreibstategien
     \begin{description*}
       \item[Write Back] Cache sammelt Schreibvorgänge und aktualisiert nur im Cache. Nach einer entsprechenden Anweisung werden Daten in den hauptspeicher kopiert (aktualisiert)
-      \item[Write Trough] Daten werden sowohl im Cache als auch im Hauptspeicher aktualisiert
+      \item[Copy Back] Rückschreiben erfolgt erst, wenn Cache-Zeile bei Miss verdrängt wird
+      \item[Write Through] Daten werden sowohl im Cache als auch im Hauptspeicher aktualisiert
+      % !{Write Trough vs Write Back; Quelle RA2 Vorlesung 2020/21](Assets/RA2_cache-write-trough-vs-back.png)
     \end{description*}
     \item Speicherverwaltung mit memory management günstiger vor dem Cache
-    \item Prüfung anhand der Adresse, ob benötigte Daten im Cache vorhanden sind (Treffer: cache hit)
-    \item Falls nicht (cache miss): Zugriff auf den (Haupt-) Speicher, Eintrag in den Cache
+    \item cache hit: benötigte Daten im Cache vorhanden
+    \item cache miss: Zugriff auf den (Haupt-) Speicher
     %\item Prinzip eines Cache (Hit) !{Cachehit; Quelle RA2 Vorlesung 2020/21](Assets/RA2_Cachehit.png)
     \item Such-Einheit im Cache: Cache-Zeile (cache line)
     \item Blockgröße ist Anzahl der Worte, die im Fall eines cache misses aus Speicher nachgeladen werden
     \item Verbindung Speicher $\leftrightarrow$ Cache ist so entworfen, dass Speicher durch zusätzliches Lesen nicht langsamer wird
     \item Methoden dazu:
     \begin{itemize*}
-      \item Schnelles Lesen aufeinanderfolgender Speicherzellen (Burst-Modus der Speicher)
+      \item Schnelles Lesen aufeinanderfolgender Speicherzellen (Burst Mode)
       \item Interleaving (mehrere Speicher ICs mit überlappenden Zugriffen)
-      \item Fließbandzugriff auf den Speicher (EDO-RAM, SDRAM)
-      \item Breite Speicher, die mehrere Worte parallel übertragen können
+      \item Fließbandzugriff auf den Speicher (SDRAM)
+      \item Breite Speicher übertragen mehrere Worte parallel
     \end{itemize*}
     %\item 2-Wege Cache (Datensicht) !{2 Wege Cache; Quelle RA2 Vorlesung 2020/21](Assets/RA2_2-wege-cache.png)
     \item Ersetzungs-Strategien
     \begin{description*}
       \item[Zufall] zu ersetzende Block zufällig ausgewählt
       \item[FIFO] älteste Block ersetzt
-      \item[LRU] (least recently used ) Block ersetzt, auf den am längsten nicht mehr zugegriffen wurde
-      \item[LFU] (least frequently used ) am seltensten gelesene Block ersetzt
-      \item[CLOCK] alle Platzierungen im Kreis auf einem Ziffernblatt angeordnet. Ein Zeiger wird im Uhrzeigersinn weiterbewegt und zeigt den zu ersetzenden Eintrag an
+      \item[LRU](least recently used) längsten nicht zugegriffen
+      \item[LFU](least frequently used) am seltensten gelesene
+      \item[CLOCK] Zeiger im Uhrzeigersinn zeigt Eintrag
     \end{description*}
+    \item Trefferquote $T=\frac{N_{Cache Zugriffe}}{N_{Cache Hit}}$
   \end{itemize*}
-  
-  Strategien zum Rückschreiben $\rightarrow$ (Haupt-) Speicher
-  \begin{itemize*}
-    \item Write-Through (Durchschreiben):
-    \item Jeder Schreibvorgang in den Cache führt zu einer unmittelbaren Aktualisierung des Speichers
-    \item  Speicher wird Engpass, es sei denn, der Anteil an Schreiboperationen ist klein oder der Speicher ist nur wenig langsamer als der Cache.
-    \item Copy-Back, conflicting-use-write-back:
-    \item Rückschreiben erfolgt erst, wenn Cache-Zeile bei Miss verdrängt wird
-    \item Funktioniert auch bei großen Geschwindigkeitsunterschieden zwischen Cache und Speicher. Vorkehrungen erforderlich, damit keine veralteten Werte aus dem Speicher kopiert werden.
-  \end{itemize*}
-  % !{Write Trough vs Write Back; Quelle RA2 Vorlesung 2020/21](Assets/RA2_cache-write-trough-vs-back.png)
-  
-  Trefferquote $T=\frac{N_C}{N_G}$ mit $N_G$ Gesamtzahl der Zugriffe auf Speicher und $N_C$ Anzahl der Zugriffe mit Hit auf Cache
   
   \section{Spezialrechner}
   \subsection{Einchiprechner}
@@ -668,7 +640,6 @@
     \end{itemize*}
     \item Superpipelining - noch mehr Befehlsaufteilung
   \end{itemize*}
-
   
   \subsection{Skalare Prozessoren}
   \begin{itemize*}
@@ -684,7 +655,6 @@
       \item Zuordnungseinheit wählt Befehl aus, die parallel verarbeitet werden können
     \end{itemize*}
   \end{itemize*}
-  
   
   \section{Multiprozessorarchitekturen}
   Klassifikation nach Flynn (Instruction/Data)
@@ -714,7 +684,7 @@
   
   %Reales Shared Memory System
   % !{Shared Memory System; Quelle RA2 Vorlesung 2020/21](Assets/RA2_SharedMemorySystem.png)
-
+  
   \subsection{Kopplung}
   \begin{description*}
     \item[enge Kopplung] (shared memory)
@@ -738,7 +708,7 @@
       \item Kommunikationsaufwand
       \item Kommunikationsfähigkeit
       \item optimale Prozessor-/Speicher-/Kommunikationspfad anzahl $<\infty$
-    \end{itemize*}    
+    \end{itemize*}
   \end{description*}
   
   \subsection{Out-of-Order Architektur}
@@ -746,8 +716,8 @@
     \item statt Pipeline bei Datenabhängigen Befehlen um 2 Schritte verzögern, datenunabhängige Befehle einschieben
     \item möglichst ständige Auslastung aller EX Einheiten
   \end{itemize*}
-
-  Cache(daten)-Kohärenz
+  
+  \paragraph{Cache(daten)-Kohärenz}
   \begin{itemize*}
     \item Kohärenz: welcher Wert wird beim Lesen abgeliefert
     \item Bezug auf Lesen und Schreiben ein- und derselben Speicherzelle
@@ -763,7 +733,7 @@
     \item Unterscheidung in cacheable/non-cacheable Daten: Hoher Aufwand
   \end{itemize*}
   
-  Snooping-Protokolle
+  \paragraph{Snooping-Protokolle}
   \begin{itemize*}
     \item Die Caches aller Prozessoren beobachten alle Datenübertragungen von jedem Cache zum Hauptspeicher.
     \item Voraussetzung: broadcastfähiges Verbindungsnetzwerk
@@ -771,7 +741,7 @@
     \item Write Update / Write Broadcast: Das Verändern eines Blocks im Speicher führt zur Modifikation aller anderen Cache-Blöcke mit der gleichen Adresse
   \end{itemize*}
   
-  Copy-Back
+  \paragraph{Copy-Back}
   \begin{itemize*}
     \item Copy-Back Caches führen zur temp. Inkonsistenz
     \item Lösung: exklusives Eigentumskonzept durch Zustandsgraph pro Cache-Block
@@ -780,25 +750,27 @@
   \end{itemize*}
   
   \paragraph{MESI}
-  Vier Zustände
-  \begin{itemize*}
-    \item (exclusive) Modified: Cache-Block wurde lokal geändert, die Kopie im Hauptspeicher ist ungültig. Will ein anderer Prozessor dieses Datum im Hauptspeicher lesen, so muss der Cache-Block erst in den Hauptspeicher zurückgeschrieben werden.
-    \item Exclusive (unmodified): Dieser Cache ist der einzige, der den Cache-Block enthält, Wert im Hauptspeicher ist gültig. Liest ein anderer Prozessor dieses Datum im Hauptspeicher, so muss die Zeile als shared markiert werden. Wird das Datum im Hauptspeicher verändert, ist der Cache-Block auf invalid zu setzen.
-    \item Shared (unmodified): Mehrere Caches (mind. 2) enthalten dieses Datum. Da alle bisher nur gelesen haben, ist das Datum im Hauptspeicher gültig. Schreibzugriffe auf einen shared Cache-Block müssen immer zu einer Bus-Operation führen, damit die Cache-Blocks der anderen Caches auf invalid gesetzt werden können.
-    \item Invalid: Cache-Block ist noch gar nicht geladen bzw. veraltet/ungültig
-  \end{itemize*}
-  Bus-Operationen
+  \begin{description*}
+    \item[Modified] Cache-Block wurde lokal geändert, die Kopie im Hauptspeicher ist ungültig. Will ein anderer Prozessor im Hauptspeicher lesen, so muss der Cache-Block erst in den Hauptspeicher zurückgeschrieben werden
+    \item[Exclusive] (unmodified): Dieser Cache ist der einzige, der den Cache-Block enthält, Wert im Hauptspeicher ist gültig. Liest ein anderer Prozessor im Hauptspeicher, so muss die Zeile als shared markiert werden. Wird das Datum im Hauptspeicher verändert, ist der Cache-Block auf invalid zu setzen
+    \item[Shared] (unmodified): Mehrere Caches enthalten Daten. Da alle bisher nur gelesen haben, sind Daten im Hauptspeicher gültig. Schreibzugriffe auf einen shared Cache-Block müssen immer zu einer Bus-Operation führen, damit die Cache-Blocks der anderen Caches auf invalid gesetzt werden können
+    \item[Invalid] Cache-Block ist nicht geladen bzw. veraltet/ungültig
+  \end{description*}
+  
+  \paragraph{Bus-Operationen}
   \begin{itemize*}
     \item Bus Read: wenn ein Prozessor Wert eines Speicherblocks lesen will
     \item Bus Read Exclusive: wenn ein Prozessor Wert eines Speicherblocks überschreiben will
     \item Flush: wenn ein Prozessor $P_i$ einen Speicherblock alleinig in seinem Cache hat, ein anderer Prozessor $P_j$ aber lesend oder schreibend auf diesen Block zugreift. Bei einer Flush-Operation legt $P_i$ ebenfalls das Datum des Speicherblocks auf den Bus.
   \end{itemize*}
-  Steuersignale
+  
+  \paragraph{Steuersignale}
   \begin{itemize*}
     \item Invalidate-Signal: Invalidieren des Blocks in den Caches anderer Prozessoren
     \item Shared-Signal: Signalisierung, ob ein zu ladendes Datum bereits als Kopie im Cache vorhanden ist
     \item Retry-Signal: Aufforderung von Prozessor $P_i$ an Prozessor $P_j$, das Laden eines Datums vom Hauptspeicher abzubrechen, da der Hauptspeicher noch ein altes, ungültiges Datum besitzt und vorher aktualisiert werden muss. Das Laden durch $P_j$ kann danach wiederholt werden.
   \end{itemize*}
+  
   Bewertung von Snooping-Protokollen
   \begin{itemize*}
     \item Leichte Implementierbarkeit bei Bus-basierten Shared Memory Systemen
@@ -808,7 +780,7 @@
     \item Für Snooping-Protokolle daher oft ungeeignet
   \end{itemize*}
   
-  Directory-Protokolle
+  \paragraph{Directory-Protokolle}
   \begin{itemize*}
     \item Nur wenige Prozessoren teilen sich die gleichen Daten in vielen Anwendungen
     \item Directory-Protokolle nutzen Lokalitätsinformationen, um die Anzahl an Invalidierungsnachrichten zu minimieren
@@ -816,7 +788,7 @@
     \item Directory-Protokolle skalieren daher auch für Netze ohne Broadcast-Fähigkeit
     \item Presence Flag Vector: Im Hauptspeicher abgelegter Bit-Vektor für jeden einzelnen Speicherblock (1 Bit pro Prozessor/Cache + Statusbits (dirty, modified))
     \item Problem: Wachstum des Speicherbedarfs linear mit Anzahl der Prozessoren
-  \end{itemize*}  
+  \end{itemize*}
   
 \end{multicols}
 \end{document}

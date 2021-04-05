@@ -44,6 +44,13 @@ Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder, G
 Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Kein Inhalte oder Teile dieses Repositories dürfen kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 
+## Recht auf Kopie deiner Prüfungsleistung
+Die TU Ilmenau ist sich ja selbst nicht sehr sicher wie sie damit umgeht und, wie so oft, verbietet es erstmal ganz. Nach bereits erfolgreichen Teilschritten hoffen wir bald wieder vollständig Einblick in unsere eigenen Leistungen nehmen zu können und tatsächlich aus unseren Fehlern lernen zu können. Falls du eine Kopie deiner Prüfung mit Aufgaben und Bemerkungen einholen willst, nutze gerne unsere Vorlage.
+
+! Hinweis: Wir sind keine Juristen oder ähnliche Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
+
+Hier gehts zum: [Antrag auf Kopie einer Prüfung](Antrag%20auf%20Kopie%20einer%20Prüfung.pdf)
+
 ## Mitmachen
 Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet haben. Vorraussetzung für diese Aktionen ist es, ein Github-Konto zu besitzen.
 - Erstelle ein 'issue'. Gehe davor die offene 'issues' durch (oder überlege dir welches Fach/Seminar noch fehlt)

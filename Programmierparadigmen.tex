@@ -3737,7 +3737,7 @@ Maße zur Leistungsbewertung -Maße für den Laufzeitengewinn durch Parallelisie
   \item s = serieller Anteil
   \item p+s = 1
   \item Maximaler Speedup
-   \begin{gather}
+  \begin{gather}
     Speedup_{max} = {T_1 \over T_n} \\
     = {{s+p}\over{s+{p \over n}}} \\
     = {1 \over {s+{p \over n}}}
@@ -5215,12 +5215,12 @@ Eigene Klasse muss \textbf{Runnable} implementieren
 
 
 \paragraph{Threads: Wichtige Methoden}
-  \begin{itemize*}
-    \item void start(): initiiert Ausführung des Threads durch Aufruf der Methode run
-    \item void run(): die eigentliche Arbeitsmethode
-    \item static void sleep(int millis): hält die Ausführung des aktuellen Threads für 'millis' Millisekunden an; Keinen Einfluss auf andere Threads!
-    \item void join(): blockiert den aufrufenden Thread so lange, bis der aufgerufene Thread beendet ist
-  \end{itemize*}
+\begin{itemize*}
+  \item void start(): initiiert Ausführung des Threads durch Aufruf der Methode run
+  \item void run(): die eigentliche Arbeitsmethode
+  \item static void sleep(int millis): hält die Ausführung des aktuellen Threads für 'millis' Millisekunden an; Keinen Einfluss auf andere Threads!
+  \item void join(): blockiert den aufrufenden Thread so lange, bis der aufgerufene Thread beendet ist
+\end{itemize*}
 
 \begin{itemize*}
   \item \textbf{void start()}
@@ -5430,134 +5430,6 @@ Starten der Verarbeitung:
 \end{itemize*}
 
 \section{Verteilte Programmierung}
-\subsection{Grundlagen}
-\begin{itemize*}
-  \item mehrere Rechner
-  \item Prozesse auf verschiedenen Rechnern
-  \item Kommunikation über Knotengrenzen hinweg
-  \item Behandlung von Knoten- oder Netzwerkausfällen
-\end{itemize*}
-
-\begin{itemize*}
-  \item viele verschiedene Systeme (Knoten) zur Verfügung
-  \begin{itemize*}
-    \item PC, Server, virtuelle Maschine
-    \item Lastverteilung, Spezialisierung auf bestimmte Probleme, ...
-  \end{itemize*}
-  \item Knoten sind über Netwerke verbunden
-  \begin{itemize*}
-    \item LAN (Wohnräume, Büros, Uni-Campus): bis zu 10 GBit/s
-    \item Metropolitan Area Network (MAN; dichtbesiedelte Regionen, Behördennetze): bis zu 10 GBit/s
-    \item Wide Area Network (WAN; weltweite Vernetzung): hohe Kapazitäten zwischen ISPs
-  \end{itemize*}
-\end{itemize*}
-
-Wofür werden verteilte Systeme eingesetzt?
-\begin{itemize*}
-  \item Gemeinsame Nutzung von Ressourcen
-  \begin{itemize*}
-    \item Cloud-Umgebungen
-    \item verteilte (Datenbank)-Systeme
-  \end{itemize*}
-  \item Teilaufgaben in großen Anwendungen
-  \begin{itemize*}
-    \item parallele Ausführung
-    \item getrennte Teilaufgaben (Micro-Services)
-  \end{itemize*}
-  \item Informationsaustausch
-  \begin{itemize*}
-    \item E-Mail, Messenger
-    \item verteilte Algorithmen
-  \end{itemize*}
-\end{itemize*}
-
-Software-Architekturen
-\begin{itemize*}
-  \item Früher: Hardware, Betriebssystem, Anwendung
-  \begin{itemize*}
-    \item Virtualisierung von Prozessor, Speicher, E/A Systemen
-    \item Interprozesskommunikation (IPC)
-  \end{itemize*}
-  \item Middlewaresysteme: HW, OS, Middleware, Anwendung
-  \begin{itemize*}
-    \item verteilte Dienste
-    \item Programmierparadigmen: RPC, Client/Server, ...
-  \end{itemize*}
-  \item Heute: Virtualisierung
-  \begin{itemize*}
-    \item VM Hypervisor: verstecken Hardware vor Betriebssystem
-    \item Docker: eine Anwendung pro Container
-  \end{itemize*}
-\end{itemize*}
-
-
-Herausforderungen:
-\begin{itemize*}
-  \item viele verschiedene Computer/Server
-  \begin{itemize*}
-    \item verschiedene Betriebssysteme
-    \item unterschiedliche Leistungsfähigkeit
-  \end{itemize*}
-  \item Systemkomponenten müssen miteinander kommunizieren
-  \item verteilte Algorithmen: Nachrichten senden, empfangen, bestätigen, Synchronisation
-  \item Knotenausfälle behandeln
-\end{itemize*}
-$\Rightarrow$ brauchen Modelle zur Beschreibung der Kommunikation
-
-Anforderungen an den Betrieb eines (großen) verteilten Systems
-\begin{itemize*}
-  \item (Last-)Skalierbarkeit (Scale-out)
-  \begin{itemize*}
-    \item viele kleine Server - statt eines großen
-    \item neue Server nach Bedarf hinzufügen
-  \end{itemize*}
-  \item Funktionssicherheit (Safety) / IT-Sicherheit (Security)
-  \item Fehlertoleranz / Verfügbarkeit
-  \begin{itemize*}
-    \item Ausfälle von einzelnen Knoten kompensieren
-    \item Redundante Verarbeitung
-  \end{itemize*}
-  \item Offenheit / Interoperabilität
-  \begin{itemize*}
-    \item neue Knoten und Systeme einfach integrieren
-  \end{itemize*}
-  \item Transparenz
-  \begin{itemize*}
-    \item verstecke die vielen Server vor Anwendern
-  \end{itemize*}
-\end{itemize*}
-
-
-\subsection{Grundlagen verteilter Programmierung in Java und Erlang}
-\paragraph{Sockets}
-\begin{itemize*}
-  \item Verteilte Programmierung: Wir müssen einen entfernten Computer ansprechen
-  \item benötigen: Adresse $\rightarrow$ IP-Adresse
-  \item da mehrere Dienste auf demselben Computer laufen lauscht jeder Dienst auf einem Port (Nummer)
-  \begin{itemize*}
-    \item Wichtige Ports: 80 WWW, 20 (FTP), 25 (SMTP)
-  \end{itemize*}
-  \item Socket beschreibt einen Endpunkt, d.h. Adresse \& Port in einem TCP (oder UDP) Netzwerk
-  \item Server-Socket wartet auf Verbindungen
-  \item Client initiiert Verbindung, ebenfalls über einen (Client-)Socket
-\end{itemize*}
-
-Socket in dem package ''java.net.Socket''
-\begin{itemize*}
-  \item einen ServerSocket auf Port 4242 erstellen
-  \begin{lstlisting} 
-      ServerSocket serverSocket = new ServerSocket(4242); 
-    \end{lstlisting}
-  \item Warte blockierend auf Verbindungen
-  \begin{lstlisting} 
-      Socket client = serverSocket.accept(); 
-    \end{lstlisting}
-  \item Client Socket ertellen und zum Server verbinden
-  \begin{lstlisting} 
-      Socket client = new Socket("localhost", 4242); 
-    \end{lstlisting}
-  \item Sockets in ähnlicher Form in C/C++
-\end{itemize*}
 
 \paragraph{Aktormodell}
 \begin{itemize*}
@@ -5629,139 +5501,6 @@ Das Alternating Bit Protokoll - Übersicht
   \item bei Erhalt eines unerwarteten Ack: aktuelle Nachricht erneut senden
 \end{itemize*}
 
-\subsection{Kommunikationsmodelle \& Implementierungen}
-das Verhalten der Teilnehmer ist in Kommunikationsmodellen beschrieben
-
-Es gibt viele verschiedene Modelle, z.B. für Botschaftenbasierte Modelle
-\begin{itemize*}
-  \item Auftragsorientierte Modelle
-  \item Funktionsaufrufbasierte Modelle
-  \item Blackboards (Tuple Spaces)
-  \item Ereignisbasierte Modelle
-  \item (Strombasierte Modelle)
-  \item (Wissenbasierte Modelle)
-\end{itemize*}
-
-Kommunikationspartner sind für uns:
-\begin{itemize*}
-  \item Threads/Prozesse innerhalb der verteilten Anwendung
-  \item Komponenten verteilter Systeme (Browser $\leftrightarrow$ Web-Server, DB Client $\leftrightarrow$ DB-Server)
-\end{itemize*}
-
-Modellbestandteile
-\begin{itemize*}
-  \item Rollenmodell
-  \begin{itemize*}
-    \item gemeinsames Handlungsmuster festlegen
-    \item z.B.: Anrufer/Angerufener, Client/Server, Quelle/Senke
-  \end{itemize*}
-  \item Datenmodell
-  \begin{itemize*}
-    \item einheitliche Interpretation der ausgetauschten Daten
-    \item z.B.: Dateiformate (XML/JSON), Kodierungen (MPEG4/H.264)
-  \end{itemize*}
-  \item Fehlersemantiken
-  \begin{itemize*}
-    \item Einvernehmen über Wirkung von Ausfällen
-    \item Eigenschaften von Kommunikationsoperationen müssen bei Ausfällen garantiert werden
-  \end{itemize*}
-  \item Terminierungssemantik
-  \begin{itemize*}
-    \item Einvernehmen über Ende der Kommunikation
-    \item Garantien über Ende von Kommunikationsoperationen (auch bei Ausfällen)
-  \end{itemize*}
-\end{itemize*}
-
-Kommunikationsarten
-\begin{itemize*}
-  \item Wann ist eine Kommunikationsoperation abgeschlossen?
-  \item entspricht Terminierungssemantik
-  \item zwei grundlegende Arten:
-  \begin{itemize*}
-    \item synchron:
-    \begin{itemize*}
-      \item blockierend
-      \item Teilnehmer wartet bis Gegenseite bereit
-      \item kann lange dauern, Sender kann nicht weiter arbeiten
-      \item Senden: Botschaftenankunft garantiert, einfache Implementierung synchroner Aktivitäten
-      \item Empfangen: Botschaftenankunft einfach und präzise feststellbar
-    \end{itemize*}
-    \item asynchron:
-    \begin{itemize*}
-      \item nicht-blockierend
-      \item Teilnehmer wartet nicht auf Gegenseite (”fire and forget”)
-      \item unklar ob Botschaft angekommen
-      \item Senden: einfache Implementierung von Nebenläufigkeit
-      \item Empfangen: unklar wann Botschaft ankommt, einfache Implementierung von Nebenläufigkeit
-    \end{itemize*}
-    \item für Senden und Empfangen
-  \end{itemize*}
-\end{itemize*}
-
-
-Fehlerbehandlung
-\begin{itemize*}
-  \item unverlässliches vs. verlässliches Senden
-  \begin{itemize*}
-    \item "Brief vs. Einschreiben”
-  \end{itemize*}
-  \item verlässliche Kommunikation erfordert
-  \begin{itemize*}
-    \item Quittierung (Acknowledgements) $\rightarrow$ mehr Daten senden
-    \item Timeouts $\rightarrow$ Zeitverwaltung, langes Warten
-  \end{itemize*}
-  \item vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
-  \begin{itemize*}
-    \item Kommunikations-/Netzwerkfehler: $\rightarrow$ Nachricht/Antwort gar nicht oder verzögert zugestellt
-    \item Serverausfall: Nachricht empfangen? Operation ausgeführt?
-    \item Clientausfall: Aufruf gültig? Bestätigung erhalten?
-  \end{itemize*}
-\end{itemize*}
-
-Fehlerbehandlung in Erlang
-\begin{itemize*}
-  \item Timeout beim Warten auf Nachrichten
-  \item Wenn keine passende Nachricht innerhalb Time msecs. empfangen wird, dann Rückgabewert des after-Ausdrucks
-\end{itemize*}
-\begin{lstlisting}[
-        language=erlang,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
-receive
-    {ok, Resp} $\rightarrow$ Resp;
-    {notfound} $\rightarrow$ notfound;
-    after Time $\rightarrow$ timeout
-end
-\end{lstlisting}
-
-Überwachung von Erlang Prozessen
-\begin{itemize*}
-  \item Linking von Prozessen: link(Pid).
-  \item M überwacht S; S bricht durch Fehler ab
-  \item M wartet auf EXIT Nachricht von S $\rightarrow$ asynchroner Handler nötig
-\end{itemize*}
-
-Umgang mit Fehlern (Timeouts, Ausfälle):
-\begin{itemize*}
-  \item Maybe:
-  \begin{itemize*}
-    \item keine Wiederholung
-    \item keine Ausführungsgarantie
-  \end{itemize*}
-  \item At-least-once:
-  \begin{itemize*}
-    \item wiederholte Ausführung, aber keine Erkennung von Nachrichtduplikaten
-    \item nur für idempotente Operationen (Lesen)
-  \end{itemize*}
-  \item At-most-once:
-  \begin{itemize*}
-    \item garantiert, dass mehrfache Aufrufe nur zu einziger Ausführung führen
-    \item z.B. durch Sequenznummern (erfordert Protokollierung zur Duplikateliminierung)
-    \item für nicht-idempotente Operationen (schreibend, z.B. Einfügen, Löschen)
-  \end{itemize*}
-\end{itemize*}
-
 \subsection{Grundlagen}
 \subsubsection{Lernziele}
 \begin{itemize*}
@@ -5776,18 +5515,25 @@ Umgang mit Fehlern (Timeouts, Ausfälle):
     \item Bewertung und Vergleich verschiedener Plattformen
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Einordnung}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-001}
 \end{center}
+\begin{itemize*}
+  \item mehrere Rechner
+  \item Prozesse auf verschiedenen Rechnern
+  \item Kommunikation über Knotengrenzen hinweg
+  \item Behandlung von Knoten- oder Netzwerkausfällen
+\end{itemize*}
+
 \subsubsection{Ziele}
 \begin{itemize*}
   \item Bisher:
   \begin{itemize*}
     \item eine Maschine
     \item Prozesse kommunizieren nur innerhalb dieser Maschine (shared Memory vs. Message Passing)
-    
   \end{itemize*}
   \item Jetzt:
   \begin{itemize*}
@@ -5800,6 +5546,7 @@ Umgang mit Fehlern (Timeouts, Ausfälle):
     \item Behandlung von Knoten- oder Netzwerkausfällen
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Motivation}
 \begin{itemize*}
   \item viele verschiedene Systeme (Knoten) zur Verfügung
@@ -5814,19 +5561,18 @@ Umgang mit Fehlern (Timeouts, Ausfälle):
     \item WAN(Wide Area Network, weltweite Vernetzung): hohe Kapazitäten zwischen den ISPs
   \end{itemize*}
 \end{itemize*}
+
 Wofür werden verteilte Systeme eingesetzt? 
 \begin{itemize*}
   \item Gemeinsame Nutzung von Ressourcen
   \begin{itemize*}
     \item Cloud-Umgebungen
     \item verteilte Datenbanksysteme
-    
   \end{itemize*}
   \item Teilaufgaben in großen Anwendungen
   \begin{itemize*}
     \item parallele Ausführung
     \item getrennte Teilaufgaben (Micro-Services)
-    
   \end{itemize*}
   \item Informationsaustausch
   \begin{itemize*}
@@ -5834,13 +5580,13 @@ Wofür werden verteilte Systeme eingesetzt?
     \item verteilte Algorithmen
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Architekturen}
-\color{orange} Software-Architekturen \color{black}
+
+\subsubsection{Software Architekturen}
 \begin{enumerate*}
   \item Früher: Hardware, Betriebssystem, Anwendung
   \begin{itemize*}
     \item Virtualisierung von Prozessor, Speicher, E/A Systemen
-    \item Interprozesskommunikation
+    \item Interprozesskommunikation (IPC)
   \end{itemize*}
   \item Middlewaresysteme: Hardware, OS, Middleware, Anwendung
   \begin{itemize*}
@@ -5854,8 +5600,8 @@ Wofür werden verteilte Systeme eingesetzt?
     \item Docker: eine Anwendung pro Container
   \end{itemize*}
 \end{enumerate*}
+
 \subsubsection{Herausforderungen}
-\color{orange} Herausforderungen: \color{black}
 \begin{itemize*}
   \item viele verschiedene Computer/Server
   \begin{itemize*}
@@ -5867,6 +5613,7 @@ Wofür werden verteilte Systeme eingesetzt?
   \item Knotenausfälle behandeln
 \end{itemize*}
 \color{orange} $\Rightarrow$ brauchen Modelle zur Beschreibung der Kommunikation \color{black}
+
 \subsubsection{Anforderungen}
 \color{orange} Anforderungen an Kommunikationsmodelle in … \color{black}
 \newline
@@ -5919,6 +5666,7 @@ Wofür werden verteilte Systeme eingesetzt?
     \item verstecke die vielen Server vor den Nutzern
   \end{itemize*}
 \end{itemize*}
+
 \subsection{Grundlagen verteilter Programmierung in Java und Erlang}
 \subsubsection{Sockets}
 \begin{itemize*}
@@ -5932,21 +5680,26 @@ Wofür werden verteilte Systeme eingesetzt?
   \item \textbf{Server-Socket} wartet auf Verbindungen
   \item \textbf{Client} initiiert Verbindung, ebenfalls über einen (Client-Socket)
 \end{itemize*}
+
 \subsubsection{Sockets in Java}
-Socket in dem package java.net.Socket einen \textbf{ServerSocket} auf Port 4242 erstellen 
-\begin{center}
-  ServerSocket serverSocket = new ServerSocket(4242); 
-\end{center}
-Warte \color{orange}blockierend \color{black} auf Verbindungen
-\begin{center}
-  Socket client = serverSocket.accept(); 
-\end{center}
-Client Socket erstellen und zum Server verbinden
-\begin{center}
-  Socket client = new Socket("localhost",4242); 
-\end{center}
-Sockets in ähnlicher Form in C++
-\subsubsection{Sockets in Java - Beispiel}
+Socket in dem package ''java.net.Socket''
+\begin{itemize*}
+  \item einen \textbf{ServerSocket} auf Port 4242 erstellen 
+  \begin{center}
+    ServerSocket serverSocket = new ServerSocket(4242); 
+  \end{center}
+  \item Warte \color{orange}blockierend \color{black} auf Verbindungen
+  \begin{center}
+    Socket client = serverSocket.accept(); 
+  \end{center}
+  \item Client Socket erstellen und zum Server verbinden
+  \begin{center}
+    Socket client = new Socket("localhost",4242); 
+  \end{center}
+  \item Sockets in ähnlicher Form in C++
+\end{itemize*}
+
+\paragraph{Sockets in Java - Beispiel}
 Echo Server (Serverseite)
 \begin{center}
   \centering
@@ -5958,6 +5711,7 @@ Echo Server (Clientseite)
   \centering
   \includegraphics[width=0.8\linewidth]{Assets/Programmierparadigmen-005}
 \end{center}
+
 \subsection{Aktormodell in Erlang}
 \begin{itemize*}
   \item formales Modell für Nebenläufigkeit und Verteilung
@@ -5973,6 +5727,7 @@ Echo Server (Clientseite)
     \end{itemize*}
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Übersicht}
 \begin{center}
   \centering
@@ -5994,6 +5749,7 @@ Echo Server (Clientseite)
   \end{itemize*}
   \item kein globaler Zustand
 \end{itemize*}
+
 \subsubsection{Kommunikation zwischen Erlangknoten}
 Erlangknoten starten (sname = short name)
 \begin{center}
@@ -6100,6 +5856,7 @@ drei Prozesse mit \textbf{initialize(ErrorRate, NumberOfMessages, ReceiverPid, S
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0021}
 \end{center}
+
 \subsection{Kommunikationsmodelle \& Implementierungen}
 \subsubsection{Kommunikationsmodelle}
 Frage: Wie sollen Knoten miteinander kommunizieren? 
@@ -6111,6 +5868,7 @@ Frage: Wie sollen Knoten miteinander kommunizieren?
   \item Muss ein Teilnehmer auf eine Nachricht antworten?
 \end{itemize*}
 $\Rightarrow$ das Verhalten der Teilnehmer ist in \color{orange} Kommunikationsmodellen \color{black} beschrieben
+
 \subsubsection{Arten von Kommunikationsmodellen}
 Es gibt viele verschiedene Modelle, z.B. für \color{orange} Botschaftenbasierte Modelle \color{black}
 \begin{itemize*}
@@ -6126,6 +5884,7 @@ Kommunikationspartner sind für uns:
   \item Threads/Prozesse innerhalb verteilter Anwendungen
   \item Komponenten verteilter Systeme (Browser $\Leftrightarrow$ Webserver, DB Client $\Leftrightarrow$ DB-Server)
 \end{itemize*}
+
 \subsubsection{Modellbestandteile}
 \begin{itemize*}
   \item \color{orange} Rollenmodell: \color{black}
@@ -6149,6 +5908,7 @@ Kommunikationspartner sind für uns:
     \item Garantien über das Ende von Kommunikationsoperationen (auch bei Ausfällen)
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Kommunikationsarten}
 \begin{itemize*}
   \item Wann ist eine Kommunikationsoperation abgeschlossen?
@@ -6159,16 +5919,23 @@ Kommunikationspartner sind für uns:
     \begin{itemize*}
       \item blockierend
       \item Teilnehmer wartet bis die Gegenseite bereit ist
+      \item kann lange dauern, Sender kann nicht weiter arbeiten
+      \item Senden: Botschaftenankunft garantiert, einfache Implementierung synchroner Aktivitäten
+      \item Empfangen: Botschaftenankunft einfach und präzise feststellbar
     \end{itemize*}
     \item \color{orange} asynchron \color{black}
     \begin{itemize*}
       \item nicht-blockierend
-      \item Der Teilnehmer wartet nicht auf die Gegenseite
+      \item Der Teilnehmer wartet nicht auf die Gegenseite (”fire and forget”)
+      \item unklar ob Botschaft angekommen
+      \item Senden: einfache Implementierung von Nebenläufigkeit
+      \item Empfangen: unklar wann Botschaft ankommt, einfache Implementierung von Nebenläufigkeit
     \end{itemize*}
     \item gilt sowohl für das Senden als auch das Empfangen
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Kommunikationsarten: Senden}
+
+\paragraph{Kommunikationsarten: Senden}
 \color{orange} synchrones Senden: \color{black} Der Sender wartet bis der Empfänger die Botschaft annimmt
 \begin{center}
   \centering
@@ -6179,7 +5946,8 @@ Kommunikationspartner sind für uns:
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0025}
 \end{center}
-\subsubsection{Synchrones vs. asynchrones Senden}
+
+\paragraph{Synchrones vs. asynchrones Senden}
 \begin{itemize*}
   \item synchrones Senden
   \begin{itemize*}
@@ -6192,7 +5960,8 @@ Kommunikationspartner sind für uns:
     \item einfache Implementierung von Nebenläufigkeit
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Kommunikationsarten: Empfangen}
+
+\paragraph{Kommunikationsarten: Empfangen}
 \color{orange} synchrones Empfangen: \color{black} Der Empfänger wartet bis die Botschaft eintrifft
 \begin{center}
   \centering
@@ -6203,7 +5972,8 @@ Kommunikationspartner sind für uns:
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0027}
 \end{center}
-\subsubsection{Synchrones vs. asynchrones Empfangen}
+
+\paragraph{Synchrones vs. asynchrones Empfangen}
 \begin{itemize*}
   \item synchrones Empfangen:
   \begin{itemize*}
@@ -6221,7 +5991,8 @@ Kommunikationspartner sind für uns:
     \end{itemize*}
     \item einfache Implementierung von Nebenläufigkeit
   \end{itemize*}
-\end{itemize*} 
+\end{itemize*}
+
 \subsubsection{Fehlerbehandlung}
 \begin{itemize*}
   \item unverlässliches vs. verlässliches Senden
@@ -6232,6 +6003,12 @@ Kommunikationspartner sind für uns:
   \begin{itemize*}
     \item Quittierungen (Acknowledgements) $\rightarrow$ mehr Daten senden
     \item Timeouts $\rightarrow$ Zeitverwaltung, langes Warten
+  \end{itemize*}
+  \item vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
+  \begin{itemize*}
+    \item Kommunikations-/Netzwerkfehler: $\rightarrow$ Nachricht/Antwort gar nicht oder verzögert zugestellt
+    \item Serverausfall: Nachricht empfangen? Operation ausgeführt?
+    \item Clientausfall: Aufruf gültig? Bestätigung erhalten?
   \end{itemize*}
 \end{itemize*}
 \begin{center}
@@ -6255,16 +6032,46 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
     \item Bei wiederholter Ausführung: wirklich neue Buchung?
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Fehlerbehandlung in Erlang}
+
+\paragraph{Fehlerbehandlung in Erlang}
 \begin{itemize*}
   \item Timeout beim Warten auf Nachrichten
-  \begin{itemize*}
-    \item Wenn keine passende Nachricht innerhalb \textbf{Time} msecs empfangen wird, dann wird der Rückgabewert des \textbf{after}-Ausdrucks verwendet.
-  \end{itemize*}
+  \item Wenn keine passende Nachricht innerhalb \textbf{Time} msecs empfangen wird, dann wird der Rückgabewert des \textbf{after}-Ausdrucks verwendet.
 \end{itemize*}
+\begin{lstlisting}[
+        language=erlang,
+        showspaces=false,
+        basicstyle=\ttfamily
+     ]
+receive
+    {ok, Resp} $\rightarrow$ Resp;
+    {notfound} $\rightarrow$ notfound;
+    after Time $\rightarrow$ timeout
+end
+\end{lstlisting}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-030}
+  
+  Umgang mit Fehlern (Timeouts, Ausfälle):
+  \begin{itemize*}
+    \item Maybe:
+    \begin{itemize*}
+      \item keine Wiederholung
+      \item keine Ausführungsgarantie
+    \end{itemize*}
+    \item At-least-once:
+    \begin{itemize*}
+      \item wiederholte Ausführung, aber keine Erkennung von Nachrichtduplikaten
+      \item nur für idempotente Operationen (Lesen)
+    \end{itemize*}
+    \item At-most-once:
+    \begin{itemize*}
+      \item garantiert, dass mehrfache Aufrufe nur zu einziger Ausführung führen
+      \item z.B. durch Sequenznummern (erfordert Protokollierung zur Duplikateliminierung)
+      \item für nicht-idempotente Operationen (schreibend, z.B. Einfügen, Löschen)
+    \end{itemize*}
+  \end{itemize*}
   
 \end{center}
 \subsubsection{Überwachung von Erlang-Prozessen}
@@ -6275,9 +6082,9 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
     \centering
     \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-031}
   \end{center}
-  
   \item M wartet auf EXIT Nachricht von S $\rightarrow$ asynchroner Handler nötig
 \end{itemize*}
+
 \subsubsection{on\_exit-Handler}
 \begin{center}
   \centering
@@ -6293,7 +6100,8 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
   \end{itemize*}
   \item auch über Erlang-Knotengrenzen hinweg!
 \end{itemize*}
-\subsubsection{Anwendung des on\_exit-Handlers}
+
+\paragraph{Anwendung des on\_exit-Handlers}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-033}
@@ -6305,6 +6113,7 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
   \item \textbf{on\_exit}-Handler definieren
   \item Fehler verursachen (Nachricht ist keine Liste)
 \end{itemize*}
+
 \subsubsection{Fehlersemantiken}
 Umgang mit Fehlern (Timeouts, Ausfälle)
 \begin{itemize*}
@@ -6325,6 +6134,7 @@ Umgang mit Fehlern (Timeouts, Ausfälle)
     \item für nicht-idempotente Operationen (schreibend, z.B. Einfügen, Löschen)
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Auftragsorientierte Modelle}
 \begin{itemize*}
   \item klassische Modell serviceorientierten Systemdesigns
@@ -6344,7 +6154,8 @@ Typische Anwendungsszenarien
   \item \textbf{E-Mail}: Mailserver verwalten Postfächer, leiten Mails weiter, Outlook/Thunderbird/…senden/lesen von Emails
   \item Namensdienste (DNS), Fileserver, Zeitserver (NTP)
 \end{itemize*}
-\subsubsection{Auftragsorientierte Modelle: Modellsicht}
+
+\paragraph{Auftragsorientierte Modelle: Modellsicht}
 \begin{itemize*}
   \item Rollenmodell: Clients erteilen Aufträge an Server
   \item Datenmodell: Notschaften mit vereinbarter Struktur (Protokoll)
@@ -6365,7 +6176,8 @@ Typische Anwendungsszenarien
     \item es existieren aber auch asynchrone Aufträge
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Auftragsorientierte Modelle: Implementierung}
+
+\paragraph{Auftragsorientierte Modelle: Implementierung}
 \begin{itemize*}
   \item Implementierung aufbauend auf send/receive
 \end{itemize*}
@@ -6373,19 +6185,22 @@ Typische Anwendungsszenarien
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-035}
 \end{center} \ \linebreak
-\subsubsection{Ein Fileserver in Java - Server}
+
+\paragraph{Ein Fileserver in Java}
+Server
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-036}
 \end{center}
-\subsubsection{Erläuterungen zum Server}
+Erläuterungen zum Server
 \begin{itemize*}
   \item Zeile 1 \& 2: Serversocket erstellen, lauscht auf Port 4242, wartet blockierend bis sich ein Client verbindet
   \item Zeile 6: lies eine Zeile vom Client
   \item Zeile 7: unser Nachrichtenformat: \textbf{Operation $<$Leerzeichen$>$ Dateipfad}
   \item Zeile 8ff: unterscheide Operationen und führe Aktionen aus; antworte dem Client entsprechend
 \end{itemize*}
-\subsubsection{Ein Fileserver in Java - Client}
+
+Client
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-037}
@@ -6396,7 +6211,8 @@ Typische Anwendungsszenarien
   \item Zeile 4: sende Befehl als String an den Server
   \item Zeile 6ff: lese alle Antwortzeilen vom Server; Ausgabe auf dem Bildschirm
 \end{itemize*}
-\subsubsection{Auftragsorientierte Modelle}
+
+\paragraph{Auftragsorientierte Modelle}
 \begin{itemize*}
   \item Können benutzt werden, um einfache Protokolle zu implementieren
   \item Binär oder ASCII
@@ -6413,6 +6229,7 @@ Typische Anwendungsszenarien
     \item[$\Rightarrow$] Implementierung eines Webservices
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Webservices - Allgemein}
 \begin{itemize*}
   \item WebService: Dienst, der über das Internet/WWW von Clients angesprochen werden kann
@@ -6424,6 +6241,7 @@ Typische Anwendungsszenarien
   \end{itemize*}
   \item Heute \textbf{REST}
 \end{itemize*}
+
 \subsubsection{REST}
 \begin{itemize*}
   \item Die Grundidee von REST:
@@ -6441,7 +6259,8 @@ Typische Anwendungsszenarien
     \item Unabhängigkeit von verwendeter Programmiersprache in Client und Server durch HTTP und Textformate
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Anforderungen an Ressourcen}
+
+\paragraph{Anforderungen an Ressourcen}
 Anforderungen an Ressourcen nach Fielding: 
 \begin{enumerate*}
   \item Adressierbarkeit: jede Ressource muss über URI adressierbar sein (Achtung: URI != URL, Identifier vs. Locator)
@@ -6452,7 +6271,8 @@ Anforderungen an Ressourcen nach Fielding:
   \item Einheitliche Schnittstelle: über HTTP Standardmethoden auf Ressourcen zugreifen
   \item Entkopplung von Ressource und Repräsentation: Ressourcen können in verschiedenen Formaten angeboten werden (JSON, XML,…)
 \end{enumerate*}
-\subsubsection{HTTP Methoden für REST}
+
+\paragraph{HTTP Methoden für REST}
 \begin{itemize*}
   \item selbe URL mit verschiedenen Methoden aufrufbar
   \item Methode bestimmt ausgeführte Aktion auf dem Server
@@ -6467,7 +6287,8 @@ Anforderungen an Ressourcen nach Fielding:
   \item[PUT:] neue Ressource erstellen, oder existierende bearbeiten
   \item[DELETE:] zum Löschen von Ressourcen
 \end{itemize*}
-\subsubsection{REST - Beispiel}
+
+\paragraph{REST - Beispiel}
 Spotify API
 \begin{itemize*}
   \item \textbf{Authorization}-Header benötigt
@@ -6477,7 +6298,8 @@ Spotify API
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-038}
 \end{center}
-\subsubsection{Implementierung von RESTful Webservices}
+
+\paragraph{Implementierung von RESTful Webservices}
 \begin{itemize*}
   \item manuelle Implementierung recht aufwändig
   \begin{itemize*}
@@ -6509,7 +6331,8 @@ Spotify API
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-039}
 \end{center}
-\subsubsection{Restful Webservice - Erläuterungen}
+
+\paragraph{Restful Webservice - Erläuterungen}
 \begin{itemize*}
   \item Zeile 1: dieser Dienst ist über den Pfad files erreichbar,
   z.B. http://localhost/files
@@ -6525,7 +6348,8 @@ Spotify API
   \item Zeile 8: das infos Objekt vom Typ FileInfo wird
   automatisch als JSON repräsentiert
 \end{itemize*}
-\subsubsection{Aufruf von REST-Services}
+
+\paragraph{Aufruf von REST-Services}
 https://reques.in kostenloser Dienst zum Testen von REST-Clients
 \begin{itemize*}
   \item Variante 1: telnet reques.in 80 …
@@ -6537,13 +6361,15 @@ https://reques.in kostenloser Dienst zum Testen von REST-Clients
   \end{center}
   \item Variante 3: Aufruf in einem Programm
 \end{itemize*}
-\subsubsection{HTTP GET Aufrufe in Java}
+
+\paragraph{HTTP GET Aufrufe in Java}
 In Java ab Version 11 eingebauter HTTP Client
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-041}
 \end{center}
-\subsubsection{HTTP POST in Java}
+
+\paragraph{HTTP POST in Java}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-042}
@@ -6554,7 +6380,8 @@ Antwort:
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-043}
 \end{center}
 Eigentlich: JSON Ergebnis mit geeigneten Frameworks parsen und weiterverarbeiten
-\subsubsection{Zusammenfassung}
+
+\paragraph{Zusammenfassung}
 \begin{itemize*}
   \item Auftragsorientierte Modelle nach dem Client-Server Prinzip
   \item WebServices bieten Dienste über das WWW an
@@ -6565,6 +6392,7 @@ Eigentlich: JSON Ergebnis mit geeigneten Frameworks parsen und weiterverarbeiten
     \item unabhängig von Programmiersprachen
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Funktionsaufrufbasierte Protokolle}
 \begin{itemize*}
   \item Grundidee: Adaption von anwendungsnahen und unkomplizierten Kommunikationsparadigmen an Eigenschaften verteilter Systeme
@@ -6576,7 +6404,8 @@ Eigentlich: JSON Ergebnis mit geeigneten Frameworks parsen und weiterverarbeiten
   \end{itemize*}
   \item Erlang und Java haben die Konzepte nativ implementiert, in C++ nur über zusätzliche Bibliotheken
 \end{itemize*}
-\subsubsection{Eigenschaften von Prozedurfernaufrufen}
+
+\paragraph{Eigenschaften von Prozedurfernaufrufen}
 Aufruf und Ausführung in unterschiedlichen Umgebungen/Kontexten
 \begin{itemize*}
   \item Programmiersprachen
@@ -6589,7 +6418,9 @@ Woher kennt der Aufrufer die Signatur der Prozedur auf dem Server? $\Rightarrow$
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-044}
 \end{center}
-\subsubsection{RPC: Stubs}
+
+\subsubsection{Remote Procedure Calls (RPC)}
+\paragraph{Stubs}
 Ein Stub hat verschiedene Aufgaben: 
 \begin{itemize*}
   \item wandelt lokalen Prozeduraufruf in Netzwerkfunktion um
@@ -6602,7 +6433,8 @@ Der Server-Stub/Skeleton
   \item wartet auf Anfragen  von Clients
   \item übernimmt sonst gleiche Aufgaben wie Client-Stub
 \end{itemize*}
-\subsubsection{RPC in Erlang}
+
+\paragraph{RPC in Erlang}
 \begin{itemize*}
   \item Vordefiniertes Erlang-Modul für RPC
   \begin{center}
@@ -6620,6 +6452,7 @@ Der Server-Stub/Skeleton
   \item andere Möglichkeit: eigene Funktionen über \textbf{register} anmelden (siehe Alternating Bit Protokoll)
   \item mit \textbf{whereis} PID von registrierten Erlang-Prozessen finden
 \end{itemize*}
+
 \subsubsection{RMI: Javas RPC Variante}
 \begin{itemize*}
   \item seit Java 5 nativ in die Sprache eingebaut - keine explizite Generierung von Stubs notwendig
@@ -6633,12 +6466,14 @@ Der Server-Stub/Skeleton
     \item abgeleitet von \textbf{java.rmi.Remote}
   \end{itemize*}
 \end{itemize*}
-\subsubsection{RMI - Schnittstelle für entfernte Objekte}
+
+\paragraph{RMI - Schnittstelle für entfernte Objekte}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-047}
 \end{center}
-\subsubsection{RMI: Server}
+
+\paragraph{RMI: Server}
 Server-Objekt muss: 
 \begin{itemize*}
   \item Remote-Schnittstelle implementieren
@@ -6650,12 +6485,14 @@ Server-Objekt anlegen:
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-048}
 \end{center}
-\subsubsection{RMI: Serverobjekt registrieren}
+
+\paragraph{RMI: Serverobjekt registrieren}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-049}
 \end{center}
-\subsubsection{RMI - Client}
+
+\paragraph{RMI - Client}
 \begin{itemize*}
   \item über Namensdienst Server-Objekt finden
   \item Stub erzeugen (erfolgt automatisch von JVM)
@@ -6665,12 +6502,14 @@ Server-Objekt anlegen:
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-050}
 \end{center}
-\subsubsection{RMI - Ablauf}
+
+\paragraph{RMI - Ablauf}
 \begin{center}
   \centering
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-051}
 \end{center}
-\subsubsection{Interoperabilität von RPC}
+
+\paragraph{Interoperabilität von RPC}
 Problem von Erlang, Java RMI, etc.: 
 \begin{itemize*}
   \item an Programmiersprache gebunden $\rightarrow$ verschiedene Systeme können nicht miteinander verbunden werden
@@ -6685,7 +6524,8 @@ Lösungsansätze:
   \end{itemize*}
   \item \textbf{gRPC}: Code-Generierung für Server, Stubs und ausgetauschte Daten
 \end{itemize*}
-\subsubsection{gRPC}
+
+\paragraph{gRPC}
 \begin{itemize*}
   \item initiiert von Google im Jahr 2015
   \item plattformunabhängige Beschreibung von Daten und Diensten
@@ -6699,13 +6539,15 @@ Lösungsansätze:
   \centering
   \includegraphics[width=0.45\linewidth]{Assets/Programmierparadigmen-053}
 \end{center}
-\subsubsection{gRPC: Dienstbeschreibung}
+
+\paragraph{gRPC: Dienstbeschreibung}
 fileservice.proto
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-054}
 \end{center}
-\subsubsection{gRPC: Dienstbeschreibung - Erläuterungen}
+
+\paragraph{gRPC: Dienstbeschreibung - Erläuterungen}
 \begin{itemize*}
   \item Datenklasse \textbf{FileInfo} mit drei Attributen, Zahlen geben Reihenfolge bei Serialisierung an
   \item \textbf{Request:} Service darf nur eine Eingabe- und Ausgabe-Message haben
@@ -6714,7 +6556,8 @@ fileservice.proto
   \end{itemize*}
   \item \textbf{FileService:} Klasse die unseren Dienst darstellt; enthält eine Methode \textbf{GetDetail} die von Clients aufgerufen werden kann
 \end{itemize*}
-\subsubsection{gRPC: Dienstbeschreibung}
+
+\paragraph{gRPC: Dienstbeschreibung}
 \begin{itemize*}
   \item *.proto Dateien werden mittels protoc Compiler in die Zielsprache übersetzt
   \begin{center}
@@ -6724,21 +6567,25 @@ fileservice.proto
   \item erzuegt C++ Dateien für messages sowie Service-Klassen (FileService)
   \item Klasse \textbf{FileService} enthält generierten Stub und  Methoden für den Server zum überschreiben
 \end{itemize*}
-\subsubsection{gRPC: Server erzeugen}
+
+\paragraph{gRPC: Server erzeugen}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-056}
 \end{center}
-\subsubsection{gRPC: Server starten}
+
+\paragraph{gRPC: Server starten}
 \begin{center}
   \centering
   \includegraphics[width=0.65\linewidth]{Assets/Programmierparadigmen-057}
 \end{center}
-\subsubsection{gRPC: Client}
+
+\paragraph{gRPC: Client}
 \begin{center}
   \centering
   \includegraphics[width=0.65\linewidth]{Assets/Programmierparadigmen-058}
 \end{center}
+
 \subsubsection{Zusammenfassung}
 \begin{itemize*}
   \item Funktionsaufrufbasierte Modelle:
@@ -6748,6 +6595,7 @@ fileservice.proto
   \item Java RMI
   \item gRPC für Interoperabilität verschiedener Plattformen/Sprachen
 \end{itemize*}
+
 \subsection{Weitere Kommunikationsmodelle und Cloud-Computing}
 \subsubsection{Blackboards}
 \begin{itemize*}
@@ -6763,7 +6611,8 @@ fileservice.proto
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-059}
 \end{center}
-\subsubsection{Blackboards: Modell-Sicht}
+
+\paragraph{Blackboards: Modell-Sicht}
 \begin{itemize*}
   \item Rollenmodell:
   \begin{itemize*}
@@ -6786,7 +6635,8 @@ fileservice.proto
     \item Kommunikationsoperationen i.d.R asynchron
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Blackboards: Vor- und Nachteile}
+
+\paragraph{Blackboards: Vor- und Nachteile}
 \begin{itemize*}
   \item Vorteile
   \begin{itemize*}
@@ -6805,6 +6655,7 @@ fileservice.proto
     \item erschwerte Testbarkeit durch Asynchronität, Nichtdeterminismus
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Ereignisbasierte Modelle}
 \begin{itemize*}
   \item Asynchronität von Blackboards nicht immer hilfreich
@@ -6823,7 +6674,8 @@ fileservice.proto
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-060}
 \end{center}
-\subsubsection{Ereignisbasierte Modelle: Modell-Sicht}
+
+\paragraph{Ereignisbasierte Modelle: Modell-Sicht}
 \begin{itemize*}
   \item Rollenmodell:
   \begin{itemize*}
@@ -6844,7 +6696,8 @@ fileservice.proto
     \item Melden unverlässlich, da Abonnenten ausgefallen sein können, daher asynchron
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Ereignisbasierte Modelle: Vor- und Nachteile}
+
+\paragraph{Ereignisbasierte Modelle: Vor- und Nachteile}
 \begin{itemize*}
   \item Vorteile:
   \begin{itemize*}
@@ -6863,6 +6716,7 @@ fileservice.proto
     \item RabbitMQ, Apache Kafka, Apache ActiveMQ
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Beispiel: RabbitMQ}
 RabbitMQ
 \begin{itemize*}
@@ -6877,7 +6731,8 @@ RabbitMQ
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-061}
 \end{center}
-\subsubsection{RabbitMQ Publish}
+
+\paragraph{RabbitMQ Publish}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-062}
@@ -6891,7 +6746,8 @@ RabbitMQ
     \item \textbf{null} hier für eventuelle weitere Einstellungen
   \end{itemize*}
 \end{itemize*}
-\subsubsection{RabbitMQ Subscribe}
+
+\paragraph{RabbitMQ Subscribe}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-063}
@@ -6906,8 +6762,8 @@ RabbitMQ
     \item zweite anonyme Funktion für Handling von Abbrüchen
   \end{itemize*}
 \end{itemize*}
+
 \subsection{Cloud Computing}
-\subsubsection{Cloud Computing}
 \begin{itemize*}
   \item Verteilte Systeme benötigen oftmals viele Knoten
   \item Administration der Systeme erfordert viel Aufwand
@@ -6916,7 +6772,8 @@ RabbitMQ
   \item Grundidee: einmal eingerichtete Hardware, durch Virtualisierung mehreren Kunden zugänglich machen
   \item Zugriff über das Internet
 \end{itemize*}
-\subsubsection{Cloud Computing: Arten und Ziele}
+
+\subsubsection{Arten und Ziele}
 \noindent Arten von Clouds
 \begin{itemize*}
   \item Public Cloud: für jeden zugängliche Ressourcen
@@ -6933,7 +6790,8 @@ Ziele
     \item keine Anschaffungs-, geringere Administrationskosten
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Cloud Computing: Geschätsmodell}
+
+\subsubsection{Geschätsmodell}
 Cloud Computing als Geschäftsmodell: 
 \begin{itemize*}
   \item Cloudprovider stellen Ressourcen bereit:
@@ -6953,11 +6811,13 @@ Cloud Computing als Geschäftsmodell:
     \item Bezahlung nur für genutzte Zeit ("pay-as-you-go")
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Cloud Computing: Architekturen}
+
+\subsubsection{Architekturen}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-064}
 \end{center}
+
 \subsubsection{Amazon AWS Produkte}
 \begin{center}
   \centering
@@ -6965,6 +6825,7 @@ Cloud Computing als Geschäftsmodell:
 \end{center}
 
 Hinweis: Bei AWS, Google, Azure viele Dienste auch (dauerhaft) kostenlos nutzbar!
+
 \subsubsection{Microservices}
 \begin{itemize*}
   \item typische Anwendung hat verschiedene Komponenten (Suche, Buchungen/Warenkorb, Bezahlsystem, Bewertungssystem)
@@ -7009,6 +6870,7 @@ Aufgaben des Entwicklers
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-067}
 \end{center}
 AWS Lambda Designer: HTTP Trigger, auszuführende Funktion und Nachfolgefunktion.
+
 \subsubsection{Vergleich Microservice vs. Serverless}
 Micorservice: 
 \begin{itemize*}
@@ -7027,6 +6889,7 @@ Serverless
   \item kurze Lebenszeit; oft begrenzt durch den Anbieter
 \end{itemize*}
 Mittlerweile auch Serverless Microservice: Microservice nicht immer ausführen, sondern nach Trigger
+
 \subsubsection{AWS Lambda: Java Beispiel}
 \begin{center}
   \centering
@@ -7036,6 +6899,7 @@ Mittlerweile auch Serverless Microservice: Microservice nicht immer ausführen, 
   \item \textbf{RequestHandler} als Einstiegspunkt für Lambda-Funktionen
   \item \textbf{handleRequest} wird von der Lambda-Umgebung aufgerufen
 \end{itemize*}
+
 \subsubsection{Spring Functions}
 \begin{itemize*}
   \item neben AWS viele weitere Functions-Angebote
@@ -7046,13 +6910,15 @@ Mittlerweile auch Serverless Microservice: Microservice nicht immer ausführen, 
     \item Spring Cloud Functions
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Spring Cloud Function: Projekt anlegen}
+
+\paragraph{Spring Cloud Function: Projekt anlegen}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-069}
 \end{center}
 Projekt generieren, herunterladen und entpacken
-\subsubsection{Spring Cloud Functions: Beispiel}
+
+\paragraph{Spring Cloud Functions: Beispiel}
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-070}
@@ -7071,7 +6937,8 @@ Projekt generieren, herunterladen und entpacken
     \item Ergebnis vom Typ \textbf{FileInfo}
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Aufruf der Spring Cloud Funktion}
+
+\paragraph{Aufruf der Spring Cloud Funktion}
 \begin{enumerate*}
   \item Projekt kompilieren \newline ./mvnw clean install
   \item Starten \newline
@@ -7081,6 +6948,7 @@ Projekt generieren, herunterladen und entpacken
   \newline Antwort
   \newline \{"name":"myfile.txt","size":1234\}
 \end{enumerate*}
+
 \subsubsection{Zusammenfassung}
 \begin{itemize*}
   \item Cloud-Angebote auf verschiedenen Ebenen (IaaS, PaaS, SaaS)

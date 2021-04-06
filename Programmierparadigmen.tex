@@ -429,15 +429,16 @@ An sinnvollen Stellen im Programmcode testen, ob Annahmen/Zusicherungen (Asserti
 
 Aber: Ausführungsgeschwindigkeit niedriger
 \begin{itemize*}
-\item Zeitverlust stark abhängig von Programm/Programmiersprache
-\item Verbreitetes Vorgehen:
-\begin{itemize*}
-  \item Aktivieren der Tests in UnitTests und Debug-Versionen
-  \item Deaktivieren in Releases
+  \item Zeitverlust stark abhängig von Programm/Programmiersprache
+  \item Verbreitetes Vorgehen:
+  \begin{itemize*}
+    \item Aktivieren der Tests in UnitTests und Debug-Versionen
+    \item Deaktivieren in Releases
+  \end{itemize*}
+  \item Wann Assertion hinzufügen? "Eigentlich"-Regel: beim Gedanken "eigentlich müsste hier ... gelten" hinzufügen
+  \item Aktivierung der Tests über Start mit java -ea
+  \item Benötigt spezielle "if"-Bedingung: assert
 \end{itemize*}
-\item Wann Assertion hinzufügen? "Eigentlich"-Regel: beim Gedanken "eigentlich müsste hier ... gelten" hinzufügen
-\item Aktivierung der Tests über Start mit java -ea
-\item Benötigt spezielle "if"-Bedingung: assert
 \begin{lstlisting}[
         language=java,
         showspaces=false,
@@ -2670,7 +2671,7 @@ fakultaet:fak(5).
 
 \paragraph{Elemente von Erlang}
 \begin{itemize*}
-  \item Kommentare: werden mit % eingeleitet und erstrecken sich bis Zeilenende
+  \item Kommentare: werden mit \% eingeleitet und erstrecken sich bis Zeilenende
   \item Ganzzahlen (Integer): 10, -234, \$A, \$Char, 16\#AB10F
   \item Gleitkommazahlen (Floats): 17.368, -56.34, 12.34E-10
   \item Atoms (Atoms): abcdf, start\_with\_lower\_case, 'Blanks are quoted' \#Konstanten mit eigenem Namen als Wert
@@ -2747,6 +2748,23 @@ fakultaet:fak(5).
 \end{itemize*}
 
 
+\subsubsection{Kalküle}
+Kalküle sind
+\begin{itemize*}
+  \item Minimalistische Programmiersprachen zur Beschreibung von Berechnungen,
+  \item mathematische Objekte, über die Beweise geführt werden können.
+\end{itemize*}
+In dieser Vorlesung: 
+\begin{itemize*}
+  \item $\lambda$-Kalkül (Church, Landin) für sequentielle (funktionale/imperative Sprachen)
+\end{itemize*}
+Beispiele weiterer Kalküle: 
+\begin{itemize*}
+  \item CSP (Hoare) Communicating Sequential Processes - für nebenläufige Programme mit Nachrichtenaustausch
+  \item $\pi$-Kalkül (Milner) für nebenläufige, mobile Programme
+\end{itemize*}
+
+
 \subsection{Lambda Kalkül}
 Kalküle sind minimalistische Programmiersprachen zur Beschreibung von Berechnungen, mathematische Objekte, über die Beweise geführt werden können
 Hier: $\lambda$-Kalkül (Church, Landin) für sequentielle (funktionale /imperative Sprachen)
@@ -2780,66 +2798,7 @@ Ein Lambda-Term ohne freie Variablen heißt Kombinator
   \item Fixpunkt-Kombinator: $Y \equiv \lambda f.(\lambda x. f (x x)) (\lambda x. f (x x))$
 \end{itemize*}
 
-\subsection{Äquivalenz}
-$\alpha$-Äquivalenz: $t_1$ und $t_2$ heißen $\alpha$-äquivalent $(t_1 t_2)$, wenn $t_1$ in $t_2$ durch konsistente Umbenennung der $\lambda$-gebundenen Variablen überführt werden kann.
-
-$\eta $-Äquivalenz: Terme $\lambda x. f\ x$ und $f$ heißen $\eta $-äquivalent $(\lambda x. f x = f )$ falls $x$ nicht freie Variable von f ist
-
-\subsection{Ausführung von $\lambda$ Termen}
-\begin{itemize*}
-  \item Redex: Ein $\lambda $-Term der Form $(\lambda x. t_1 ) t_2$ heißt Redex.
-  \item $\beta$ -Reduktion: $\beta$ -Reduktion entspricht der Ausführung der Funktionsanwendung auf einem Redex: $(\lambda x. t_1 ) t_2 \Rightarrow t_1 [x \rightarrow t_2 ]$
-  \item Substitution: $t_1 [x \rightarrow t_2 ]$ erhält man aus dem Term $t_1$ , wenn man alle freien Vorkommen von $x$ durch $t_2$ ersetzt.
-  \item Normalform: Ein Term, der nicht weiter reduziert werden kann, heißt in Normalform.
-\end{itemize*}
-
-Beispiel: $(\lambda x.x)y \Rightarrow x[x \rightarrow y] = y$
-
-\subsection{Kodierung boolscher Werte}
-Church Booleans
-\begin{itemize*}
-  \item True      wird zu: $C_{true} = \lambda t.\lambda f.t$
-  \item False     wird zu: $C_{false} = \lambda t.\lambda f.f$
-  \item If-then-else wird zu: $If = \lambda a.a$
-\end{itemize*}
-
-Bsp:
-\begin{lstlisting}
-    if True then x else y
-\end{lstlisting}
-ergibt: $(\lambda a.a)(\lambda t- \lambda f.t) x y = (\lambda t.\lambda f.t) xy = (\lambda f.x)y \Rightarrow x$
-
-\subsection{Kodierung natürlicher Zahlen}
-Eine natürliche Zahl drückt aus, wie oft etwas geschehen soll.
-$c_0 = \lambda s.\lambda z.z$; $c_1=\lambda s.\lambda z.sz$; $c_2=\lambda s.\lambda z.s(sz)$;...;$c_n=\lambda s.\lambda z.s^n z$
-
-Arithmetische Operationen
-Addition:   $plus = \lambda m. \lambda n. \lambda s. \lambda z. m s (n s z)$
-Multiplikation: $times = \lambda m. \lambda n. \lambda s. n (m s) = \lambda m. \lambda n. \lambda s. \lambda z. n (m s) z$
-Exponentiation: $exp = \lambda m. \lambda n. n m = \lambda m. \lambda n. \lambda s. \lambda z. n m s z$
-Vorgänger:  $pred = \lambda n.\lambda s.\lambda x. n (\lambda y.\lambda z. z (y s))(K x)$
-Subtraktion: $sub = \lambda n.\lambda m. m pred n$
-Nullvergleich: $isZero = \lambda n. n (\lambda x. C false ) C true$
-
-
-\subsection{Einführung}
-\subsubsection{Kalküle}
-Kalküle sind
-\begin{itemize*}
-  \item Minimalistische Programmiersprachen zur Beschreibung von Berechnungen,
-  \item mathematische Objekte, über die Beweise geführt werden können.
-\end{itemize*}
-In dieser Vorlesung: 
-\begin{itemize*}
-  \item $\lambda$-Kalkül (Church, Landin) für sequentielle (funktionale/imperative Sprachen)
-\end{itemize*}
-Beispiele weiterer Kalküle: 
-\begin{itemize*}
-  \item CSP (Hoare) Communicating Sequential Processes - für nebenläufige Programme mit Nachrichtenaustausch
-  \item $\pi$-Kalkül (Milner) für nebenläufige, mobile Programme
-\end{itemize*}
-
-\subsubsection{Das untypisierte Lambdakalkül}
+\paragraph{Das untypisierte Lambdakalkül}
 \begin{itemize*}
   \item Turing-mächtiges Modell funktionaler Programme
   \item Auch: Beschreibung sequentieller imperativer Konstrukte
@@ -2861,22 +2820,6 @@ Beispiele weiterer Kalküle:
   \item Um Klammern zu sparen verwendet man oft eine alternative Notation: $\lambda$x.M
   \item Bei mehreren zu bindenden Variablen: $\lambda$xyz.M = ($\lambda$x($\lambda$y($\lambda$zM)))
 \end{itemize*}
-
-\subsubsection{Strukturelle Induktion}
-\begin{itemize*}
-  \item Aufgrund des "rekursiven" Aufbaus der Definition der Klasse $\Lambda$ der Lamda-Terme, können Aussagen über Lambda-Terme mittels \color{blue} "struktureller Induktion" \color{black} geführt werden:
-  \begin{itemize*}
-    \item Hierbei folgt der Induktionsbeweis der Struktur der Lambda-Terme, wie er in der Definition vorgegeben wird
-  \end{itemize*}
-  \item Beispiel: Jeder Term in $\Lambda$ ist wohl geklammert
-  \begin{itemize*}
-    \item \color{blue}{Induktionsanfang:} \color{black} trivial, da jede Variable ein wohlgeklammerter Lambda-Term ist.
-    \item \color{blue} Induktionsannahme: \color{black} M,N sind wohlgeklammerte Lambda-Terme
-    \item \color{blue} Induktionsschritt: \color{black} dann sind auch die Terme (MN) und ($\lambda$xM) wolgeklammert.
-  \end{itemize*}
-\end{itemize*}
-
-\subsubsection{Das untypisierte $\lambda$-Kalkül}
 
 \subitem\colorbox{lightgray}{
   \begin{minipage}[h]{0.9\linewidth}
@@ -2911,6 +2854,21 @@ Abstraktion ist rechtsassoziativ:
 \begin{center}
   $\lambda$.x$\lambda$.y.fxy = ($\lambda$x.($\lambda$.fxy))
 \end{center}
+
+\subsubsection{Strukturelle Induktion}
+\begin{itemize*}
+  \item Aufgrund des "rekursiven" Aufbaus der Definition der Klasse $\Lambda$ der Lamda-Terme, können Aussagen über Lambda-Terme mittels \color{blue} "struktureller Induktion" \color{black} geführt werden:
+  \begin{itemize*}
+    \item Hierbei folgt der Induktionsbeweis der Struktur der Lambda-Terme, wie er in der Definition vorgegeben wird
+  \end{itemize*}
+  \item Beispiel: Jeder Term in $\Lambda$ ist wohl geklammert
+  \begin{itemize*}
+    \item \color{blue}{Induktionsanfang:} \color{black} trivial, da jede Variable ein wohlgeklammerter Lambda-Term ist.
+    \item \color{blue} Induktionsannahme: \color{black} M,N sind wohlgeklammerte Lambda-Terme
+    \item \color{blue} Induktionsschritt: \color{black} dann sind auch die Terme (MN) und ($\lambda$xM) wolgeklammert.
+  \end{itemize*}
+\end{itemize*}
+
 
 \subsubsection{Variablenbindung bei Abstraktion}
 
@@ -2950,9 +2908,51 @@ Innere Abstraktionen können äußere Variablen verdecken: \ \\
     \item Fixpunkt-Kombinator: \enspace\enspace Y $\equiv$ $\lambda$f.($\lambda$x.f(x x)) ($\lambda$x.f(x x))
   \end{itemize*}
 \end{itemize*}
-\subsection{Rechenregeln}
-\subsubsection{$\alpha$-Äquivalenz}
 
+
+\subsubsection{Ausführung von $\lambda$ Termen}
+\begin{itemize*}
+  \item Redex: Ein $\lambda $-Term der Form $(\lambda x. t_1 ) t_2$ heißt Redex.
+  \item $\beta$ -Reduktion: $\beta$ -Reduktion entspricht der Ausführung der Funktionsanwendung auf einem Redex: $(\lambda x. t_1 ) t_2 \Rightarrow t_1 [x \rightarrow t_2 ]$
+  \item Substitution: $t_1 [x \rightarrow t_2 ]$ erhält man aus dem Term $t_1$ , wenn man alle freien Vorkommen von $x$ durch $t_2$ ersetzt.
+  \item Normalform: Ein Term, der nicht weiter reduziert werden kann, heißt in Normalform.
+\end{itemize*}
+
+Beispiel: $(\lambda x.x)y \Rightarrow x[x \rightarrow y] = y$
+
+
+\colorbox{lightgray}{ \begin{minipage}[h]{1.0\linewidth}
+    \begin{tabular}{|p{4cm}|p{7cm}|}
+      Redex             & Ein $\lambda$-Term der Form ($\lambda$x.$t_1$)$t_2$ heißt Redex.                                                      \\[\normalbaselineskip]
+      $\beta$-Reduktion & $\beta$-Reduktion entspricht der Ausführung der Funktionanwendung auf einem Redex:                                    \\[\normalbaselineskip]
+                        & ($\lambda$x.$t_1$)$t_2$ $\Rightarrow$ $t_1$[x $\rightarrow$ $t_2$]                                                    \\[\normalbaselineskip]
+      Substitution      & $t_1$[x $\rightarrow$ $t_2$] erhält man aus dem Term $t_1$, wenn man alle freien Vorkommen von x durch $t_2$ ersetzt. \\[\normalbaselineskip]
+      Normalform        & Ein Term, der nicht weiter reduziert werden kann, heißt in Normalform	 
+    \end{tabular}
+  \end{minipage}
+}
+
+Beispiele:   
+\begin{center}
+  ($\lambda$x.x)y $\Rightarrow$ x[x $\rightarrow$ y] = y \\[\normalbaselineskip]
+  ($\lambda$x.x($\lambda$x.x))(yz) $\Rightarrow$ (x($\lambda$x.x))[x $\rightarrow$ (yz)] = ((yz)($\lambda$x.x)
+\end{center}
+
+
+\subsubsection{Braucht man primitive Operationen?}
+Nicht unbedingt - Kodierung mit Funktionen höherer Ordnung \\
+Beispiel: let \\
+\hspace*{14.5mm}let x = $t_1$ in $t_2$ wird zu ($\lambda x. t_2 )t_1$
+\\
+Beispiel: let x = g y in f x berechnet f(g y)\\
+\hspace*{14.5mm} ($\lambda$x.fx)(g y) $\Rightarrow$ f(g y)
+
+\subsection{Äquivalenz}
+$\alpha$-Äquivalenz: $t_1$ und $t_2$ heißen $\alpha$-äquivalent $(t_1 t_2)$, wenn $t_1$ in $t_2$ durch konsistente Umbenennung der $\lambda$-gebundenen Variablen überführt werden kann.
+
+$\eta $-Äquivalenz: Terme $\lambda x. f\ x$ und $f$ heißen $\eta $-äquivalent $(\lambda x. f x = f )$ falls $x$ nicht freie Variable von f ist
+
+\paragraph{$\alpha$-Äquivalenz}
 Namen gebundener Variablen
 \begin{itemize*}
   \item dienen letztlich nur der Dokumentation
@@ -2976,8 +2976,7 @@ aber
 \begin{center} $\lambda$x.$\lambda$z.f($\lambda$y.zy)x $\stackrel{\alpha}{\neq}$ $\lambda$x.$\lambda$z.g($\lambda$y.zy)x\\ $\lambda$z.$\lambda$z.f($\lambda$y.zy)z $\stackrel{\alpha}{\neq}$ $\lambda$x.$\lambda$z.f($\lambda$y.zy)x
 \end{center}
 
-\subsubsection{$\eta$-Äquivalenz}
-
+\paragraph{$\eta$-Äquivalenz}
 Extensionalitäts-Prinzip: 
 \begin{itemize*}
   \item Zwei Funktionen sind gleich, falls Ergebnis gleich für alle Argumente
@@ -2997,78 +2996,19 @@ aber
 \begin{center}  $\lambda$x.f x x $\stackrel{\eta}{\neq}$ f x
 \end{center}
 
-\subsubsection{Ausführung von $\lambda$-Termen}
+\subsection{Kodierung boolscher Werte}
+Church Booleans
+\begin{itemize*}
+  \item True      wird zu: $C_{true} = \lambda t.\lambda f.t$
+  \item False     wird zu: $C_{false} = \lambda t.\lambda f.f$
+  \item If-then-else wird zu: $If = \lambda a.a$
+\end{itemize*}
 
-\colorbox{lightgray}{ \begin{minipage}[h]{1.0\linewidth}
-    \begin{tabular}{|p{4cm}|p{7cm}|}
-      Redex             & Ein $\lambda$-Term der Form ($\lambda$x.$t_1$)$t_2$ heißt Redex.                                                      \\[\normalbaselineskip]
-      $\beta$-Reduktion & $\beta$-Reduktion entspricht der Ausführung der Funktionanwendung auf einem Redex:                                    \\[\normalbaselineskip]
-                        & ($\lambda$x.$t_1$)$t_2$ $\Rightarrow$ $t_1$[x $\rightarrow$ $t_2$]                                                    \\[\normalbaselineskip]
-      Substitution      & $t_1$[x $\rightarrow$ $t_2$] erhält man aus dem Term $t_1$, wenn man alle freien Vorkommen von x durch $t_2$ ersetzt. \\[\normalbaselineskip]
-      Normalform        & Ein Term, der nicht weiter reduziert werden kann, heißt in Normalform	 
-    \end{tabular}
-  \end{minipage}
-}
-
-Beispiele:   
-\begin{center}
-  ($\lambda$x.x)y $\Rightarrow$ x[x $\rightarrow$ y] = y \\[\normalbaselineskip]
-  ($\lambda$x.x($\lambda$x.x))(yz) $\Rightarrow$ (x($\lambda$x.x))[x $\rightarrow$ (yz)] = ((yz)($\lambda$x.x)
-\end{center}
-
-\subsubsection{Auswertungsstrategien (1)}
-
-Wenn es in einem Term mehrere Redexe gibt, welchen reduziert man dann?
-
-\begin{center}
-  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
-  \ ($\lambda$\color{blue}x.x\color{black})\color{red}(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z)) \color{black}\\
-  ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z)\color{black})\\
-  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black})\\
-  
-\end{center}
-
-\subsubsection{Anwendungsstrategien (2)}
-
-\begin{center}
-  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
-\end{center}
-
-Volle $\beta$-Reduktion: Jeder Redex kann jederzeit reduziert werden 
-
-\begin{center}
-  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black}))\\
-  $\Rightarrow$ ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.z)\color{black})\\
-  $\Rightarrow$($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.z)\color{black}) \\
-  $\Rightarrow$ ($\lambda$z.z)\color{black} $\nRightarrow$
-\end{center}
-
-\subsubsection{Anwendungsstrategien (3)}
-
-\begin{center}
-  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
-\end{center}
-
-Volle $\beta$-Reduktion: Jeder Redex kann jederzeit reduziert werden \newline Normalreihenfolge: Immer der linkeste äußerste Redex wird reduziert
-
-\begin{center}
-  ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z))\color{black}\\
-  $\Rightarrow$ ($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z)\color{black}\\
-  $\Rightarrow$$\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black} \\
-  $\Rightarrow$ ($\lambda$z.z)\color{black}) $\nRightarrow$
-\end{center}
-
-\subsection{Werte und Primitive}
-\subsubsection{Braucht man primitive Operationen?}
-
-Nicht unbedingt - Kodierung mit Funktionen höherer Ordnung: \\
-Beispiel: let \\
-\hspace*{14.5mm}let x = $t_1$ in $t_2$ wird zu ($\lambda x. t_2 )t_1$
-\\
-Beispiel: let x = g y in f x berechnet f(g y)\\
-\hspace*{14.5mm} ($\lambda$x.fx)(g y) $\Rightarrow$ f(g y)
-
-\subsection{Kodierung boolescher Werte}
+Bsp:
+\begin{lstlisting}
+    if True then x else y
+\end{lstlisting}
+ergibt: $(\lambda a.a)(\lambda t- \lambda f.t) x y = (\lambda t.\lambda f.t) xy = (\lambda f.x)y \Rightarrow x$
 
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-003.png}
@@ -3094,7 +3034,18 @@ Beispiel: let x = g y in f x berechnet f(g y)\\
   \item $b_1 \Rightarrow b_2$ entspricht:
   \subitem if $b_1$ then $b_2$ else True
 \end{itemize*}
-\subsubsection{Kodierung natürlicher Zahlen}
+
+\subsection{Kodierung natürlicher Zahlen}
+Eine natürliche Zahl drückt aus, wie oft etwas geschehen soll.
+$c_0 = \lambda s.\lambda z.z$; $c_1=\lambda s.\lambda z.sz$; $c_2=\lambda s.\lambda z.s(sz)$;...;$c_n=\lambda s.\lambda z.s^n z$
+
+Arithmetische Operationen
+Addition:   $plus = \lambda m. \lambda n. \lambda s. \lambda z. m s (n s z)$
+Multiplikation: $times = \lambda m. \lambda n. \lambda s. n (m s) = \lambda m. \lambda n. \lambda s. \lambda z. n (m s) z$
+Exponentiation: $exp = \lambda m. \lambda n. n m = \lambda m. \lambda n. \lambda s. \lambda z. n m s z$
+Vorgänger:  $pred = \lambda n.\lambda s.\lambda x. n (\lambda y.\lambda z. z (y s))(K x)$
+Subtraktion: $sub = \lambda n.\lambda m. m pred n$
+Nullvergleich: $isZero = \lambda n. n (\lambda x. C false ) C true$
 
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-004}
@@ -3105,8 +3056,7 @@ succ($c_2$) = ($\lambda$\color{blue}n\color{black}.$\lambda$s.$\lambda$z.s (\col
 \subitem $\Rightarrow$ $\lambda$s.$\lambda$z.s(($\lambda$\color{blue}z\color{black}.s (s \color{blue}z\color{black}))\color{red}z\color{black})
 \subitem $\Rightarrow$ $\lambda$s.$\lambda$z.s(s(s z)) = $c_3$
 
-\subsubsection{Rechnen mit Church - Zahlen (1)}
-
+\subsection{Rechnen mit Church - Zahlen }
 
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-005}
@@ -3116,15 +3066,11 @@ succ($c_2$) = ($\lambda$\color{blue}n\color{black}.$\lambda$s.$\lambda$z.s (\col
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-006}
 \end{center}
 
-
-\subsubsection{Rechnen mit Church - Zahlen (2)}
 Idee zu exp: 
 
 \subitem exp $c_m c_n \Rightarrow c_n c_m \Rightarrow (\lambda.\color{blue}s\color{black}.\lambda z.s^n z)\color{red}(\lambda s. \lambda z.s^m z)$ \color{black}
 \subsubitem $\Rightarrow \lambda z.(\lambda s. \lambda z.s^m z)^n z$
 \subitem (per Induktion über n) $\stackrel{\alpha \beta \eta}{\Rightarrow}$ $\lambda s.\lambda z. \lambda z.{s^m}^n z = {c_m}^n$
-
-\subsubsection{Rechnen mit Church - Zahlen (3)}
 
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-007}
@@ -3135,9 +3081,45 @@ Idee zu exp:
 \subsubitem $\Rightarrow (\lambda \color{blue} z.z \color{black}) \color{red} C_{true} \Rightarrow C_{true}$
 (Bemerkung: I und K sind die Identitätsfunktion bzw. das Konstanten-Funktional)
 
-\subsubsection{Rechnen mit Church - Zahlen (4)}
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-008}
+\end{center}
+
+
+\subsection{Auswertungsstrategien}
+Wenn es in einem Term mehrere Redexe gibt, welchen reduziert man dann?
+
+\begin{center}
+  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
+  \ ($\lambda$\color{blue}x.x\color{black})\color{red}(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z)) \color{black}\\
+  ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z)\color{black})\\
+  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black})\\
+\end{center}
+
+\begin{center}
+  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
+\end{center}
+
+Volle $\beta$-Reduktion: Jeder Redex kann jederzeit reduziert werden 
+
+\begin{center}
+  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black}))\\
+  $\Rightarrow$ ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.z)\color{black})\\
+  $\Rightarrow$($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.z)\color{black}) \\
+  $\Rightarrow$ ($\lambda$z.z)\color{black} $\nRightarrow$
+\end{center}
+
+\begin{center}
+  ($\lambda$x.x)(($\lambda$x.x)($\lambda$z.($\lambda$x.x)z))\\
+\end{center}
+
+Volle $\beta$-Reduktion: Jeder Redex kann jederzeit reduziert werden \newline Normalreihenfolge: Immer der linkeste äußerste Redex wird reduziert
+
+\begin{center}
+  ($\lambda$x.x)(($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z))\color{black}\\
+  $\Rightarrow$ ($\lambda$\color{blue}x.x\color{black})\color{red}($\lambda$z.($\lambda$x.x)z)\color{black}\\
+  $\Rightarrow$$\lambda$z.($\lambda$\color{blue}x.x\color{black})\color{red}z\color{black} \\
+  $\Rightarrow$ ($\lambda$z.z)\color{black}) $\nRightarrow$
 \end{center}
 
 \subsection{Fixpunktsatz und Rekursion}
@@ -3285,8 +3267,7 @@ d.h. \space\space\space Yf ist Fixpunkt von f
   \includegraphics[width=1.0\linewidth]{Assets/Programmierparadigmen-002}
 \end{center}
 
-\subsection{Ausdrucksfähigkeit des Lambdakalküls}
-\subsubsection{Ausdrucksstärke des Lambdakalküls}
+\subsection{Ausdrucksstärke des Lambdakalküls}
 \begin{itemize*}
   \item Im Folgenden wollen wir zeigen, dass der Lambda-Kalkül genau die rekursiven Funktionen beschreibt
   \item Eine numerische Funktion ist eine Abbildung f: $\mathbb{N}^k \rightarrow \mathbb{N}$ mit k$ \in \mathbb{N} \cap \{0\}$
@@ -3307,7 +3288,6 @@ d.h. \space\space\space Yf ist Fixpunkt von f
   \item Eine numerische Funktion ist Lambda-definierbar, wenn es einen Kombinator M gibt, sodass M $\overline{n_k}$ = f($\overline{n_k}$)
 \end{itemize*}
 
-\subsubsection{Ausdrucksstärke des Lambdakalküls (2)}
 \begin{itemize*}
   \item Im folgenden sei C eine Klasse von numerischen Funktionen, und es gelte $g,h,h_1,h_2,…,h_m \in C$
   \item Wir definieren nun die folgenden Eigenschaften:
@@ -3322,7 +3302,7 @@ d.h. \space\space\space Yf ist Fixpunkt von f
     \item C ist \color{blue} abgeschlossen unter unbeschränkter Minimalisierung \color{black}, wenn für jede Funktion f, die über f($\overline{n_k}$) = $\mu$m[g($\overline{n_k}$,m)= 0] definiert ist (wobei für alle $\overline{n_k}$ ein m existiere, sodass g($\overline{n_k}$,m) = 0 ist), gilt $f \in C$
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Ausdrucksstärke des Lambda-Kalküls (3)}
+
 \colorbox{lightgray}{\begin{minipage}[h]{1.0\linewidth}
     Definition: \\
     Die Klasse der rekursiven Funktionen ist die kleinste Klasse numerischer Funktionen, die alle oben genannten Anfangsfunktionen enthält und abgeschlossen ist unter Komposition, primitiver Rekursion und unbeschränkter Minimalisierung
@@ -3337,7 +3317,7 @@ d.h. \space\space\space Yf ist Fixpunkt von f
     \item Z = $\lambda fx.x$ (siehe $c_0$ bei Churchzahlen)
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Ausdrucksstärke des Lambda-Kalküls (4)}
+
 \begin{itemize*}
   \item  \color{blue} Lemma 2: Die Lambda-definierbaren Funktionen sind abgeschlossen unter primitiver Rekursion \color{black}
   \item Beweis: Sei f definiert über
@@ -3352,7 +3332,7 @@ d.h. \space\space\space Yf ist Fixpunkt von f
     $M \equiv Y (\lambda f\:x\: \overline{y_k}.if(isZero \: x)(G\:\overline{y_k})(H(f(pred\: x)\overline{y_k})(pred \: x)\overline{y_k}))$
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Ausdrucksstärke des Lambda-Kalküls (5)}
+
 \begin{itemize*}
   \item \color{blue} Lemma 3: Die Lambda-definierbaren Funktionen sind abgeschlossen unter unbeschränkter Minimalisierung \color{black}
   \item Beweis:
@@ -3365,8 +3345,6 @@ d.h. \space\space\space Yf ist Fixpunkt von f
     $M \equiv \lambda \overline{x_k}.N \: \overline{x_k} \: c_0$
   \end{itemize*}
 \end{itemize*}
-
-\subsubsection{Ausdrucksstärke des Lambda-Kalküls (6)}
 
 \begin{center}
   \includegraphics[width=1.0\linewidth]{Assets/Programmierparadigmen-004.png}
@@ -3608,9 +3586,22 @@ Wenn t eine Normalform hat, dann findet Normalreihenfolgenauswertung diese.
   \item Verständnis grundlegender Architekturen und Modelle
   \item Praktische Erfahrungen mit Erlang, Java und C++
 \end{itemize*}
+
+\subsubsection{Grundbegriffe}
+\begin{itemize*}
+  \item Prozess := Programm in Ausführung; Ausführungsumgebung für ein Programm; hat eigenen Adressraum; Prozessor kann immer nur einen Prozess ausführen
+  \item Thread ("Faden") := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms; "leichtgewichtig" im Vergleich zu Betriebssystemprozess; Threads eines Prozesses teilen sich Adressraum; Thread kann von CPU oder Core ausgeführt werden
+  \item Shared Memory := Kommunikation (über Variablen im) gemeinsamen Speicher; Prozess kann direkt auf Speicher eines anderen Prozesses zugreifen; erfordert explizite Synchronisation, z.B. über kritische Abschnitte
+  \item Message Passing := Prozesse mit getrennten Adressräumen; Zugriff nur auf eigenen Speicher; Kommunikation durch explizites Senden/Empfangen von Nachrichten; implizite Synchronisation durch Nachrichten
+  \item Parallelisierungsarten
+  \begin{itemize*}
+    \item Instruktionsparallelität: parallele Ausführung mehrerer Operationen durch eine CPU-Instruktion; explizit: Vektorinstruktionen, SIMD; implizit: Pipelining von Instruktionen
+    \item Taskparallelität: Ausnutzung inhärenter Parallelität durch simultane Ausführung unabhängiger Aufgaben
+    \item Datenparallelität: Gemeinsame Operation auf homogener Datenmenge; Zerlegung eines Datensatzes in kleinere Abschnitte
+  \end{itemize*}
+\end{itemize*}
+
 \subsubsection{The free launch is over}
-
-
 Taktfrequenz wächst nur noch langsam
 \begin{itemize*}
   \item Physikalische Gründe: Wärmeentwicklung, Energiebedarf, Kriechströme,…
@@ -3643,12 +3634,12 @@ Auswege
 \end{itemize*}
 
 \subsubsection{Einordnung}
-
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0014}
 \end{center}
 
 \subsubsection{Architekturen}
+SIMD, SMP, NUMA, Cluster, Grid
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0015}
 \end{center}
@@ -3657,11 +3648,11 @@ Auswege
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0016}
 \end{center}
-
 \begin{itemize*}
   \item Zugriff über Bus auf gemeinsamen Speicher
   \item jeder Prozessor mit eigenen Caches
 \end{itemize*}
+
 \subsubsection{Multicore-Systeme}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0017}
@@ -3672,13 +3663,16 @@ Auswege
 \end{itemize*}
 
 \subsubsection{Symmetrisch vs. Nicht-symmetrisch}
+%| SMP (Symmetric Multi Processing) | NUMA (Non-Uniform Memory-Access) |
+%| -\item | -\item |
+%| Speicherbandbreite begrenzt und von allen Prozessoren gemeinsam genutzt | jedem Prozessor sind Teile des Speichers zugeordnet |
+%| Skalierbarkeit begrenzt | lokaler Zugriff ist schneller als entfernter |
+%| Single Socket-Lösung | Mehr-Socket-Board |
 
 SMP \newline Symmetric Multi Processing \newline
-
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0018}
 \end{center}
-
 \begin{itemize*}
   \item Speicherbandbreite begrenzt und von allen Prozessoren gemeinsam genutzt
   \item Skalierbarkeit begrenzt
@@ -3686,7 +3680,6 @@ SMP \newline Symmetric Multi Processing \newline
 \end{itemize*}
 NUMA \newline
 Non-Uniform Memory Access \newline
-
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0019}
 \end{center}
@@ -3697,7 +3690,6 @@ Non-Uniform Memory Access \newline
 \end{itemize*}
 
 \subsubsection{CPU vs. GPU}
-
 \begin{itemize*}
   \item GPU = Graphics Processing Units
   \item Hochparallele Prozessorarchitekturen (nicht nur) für Grafikrendering
@@ -3705,9 +3697,8 @@ Non-Uniform Memory Access \newline
 \begin{center}
   \includegraphics[width=0.95\linewidth]{Assets/Programmierparadigmen-0020}
 \end{center}
+
 \subsubsection{Flynn's Architekturklassifikation}
-
-
 \begin{center}
   \includegraphics[width=0.95\linewidth]{Assets/Programmierparadigmen-0021}
 \end{center}
@@ -3729,25 +3720,33 @@ Non-Uniform Memory Access \newline
     \end{displaymath}
   \end{center}
 \end{itemize*}
-\subsubsection{Amdahlsches Gesetz}
 
+Maße zur Leistungsbewertung -Maße für den Laufzeitengewinn durch Parallelisierung
+\begin{itemize*}
+  \item $T_n=$ Laufzeit des Programms mit n Prozessoren/Kernen
+  \item Speedup:= $\frac{T_1}{T_n}$
+  \item Effizienz:= $\frac{Speedup}{n}$
+\end{itemize*}
+
+
+\subsubsection{Amdahlsches Gesetz}
 \begin{itemize*}
   \item[] Berücksichtigung parallelisierbarer und serieller Anteile im Programmablauf
-  \item n Prozessoren \newline
-  p = paralleler Anteil
-  \newline s = serieller Anteil \newline
-  p+s = 1
+  \item n Prozessoren
+  \item p = paralleler Anteil
+  \item s = serieller Anteil
+  \item p+s = 1
   \item Maximaler Speedup
-  \newline \begin{gather}
+   \begin{gather}
     Speedup_{max} = {T_1 \over T_n} \\
     = {{s+p}\over{s+{p \over n}}} \\
     = {1 \over {s+{p \over n}}}
   \end{gather}
+  $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
 \end{itemize*}
 \begin{center}
   \includegraphics[width=0.35\linewidth]{Assets/Programmierparadigmen-0022}
 \end{center}
-
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0023}
 \end{center}
@@ -3854,6 +3853,7 @@ Beispiel: Addition zweier Vektoren
   \end{itemize*}
   \item außerdem: Fehlersuche, Optimierung
 \end{itemize*}
+
 \subsubsection{Zusammenfassung}
 \begin{itemize*}
   \item Parallele Verarbeitung als wichtiges Paradigma moderner Software
@@ -3871,56 +3871,7 @@ Beispiel: Addition zweier Vektoren
   \item im Weiteren: konkrete Methoden und Techniken in Erlang und C++
 \end{itemize*}
 
-\subsection{Grundlagen}
-\paragraph{Architekturen}
-SIMD, SMP, NUMA, Cluster, Grid
-
-Multiprozessorsysteme:
-\begin{itemize*}
-  \item Zugriff über Bus auf gemeinsamen Speicher
-  \item jeder Prozessor mit eigenen Caches
-\end{itemize*}
-
-Multicore-Systeme:
-\begin{itemize*}
-  \item mehrere Prozessorkerne auf einem Chip
-  \item Kerne typischerweise mit eigenen L1/L2-Caches und gemeinsamen L3-Cache
-\end{itemize*}
-
-Symetrisch vs. Nicht-symetrisch
-%| SMP (Symmetric Multi Processing) | NUMA (Non-Uniform Memory-Access) |
-%| -\item | -\item |
-%| Speicherbandbreite begrenzt und von allen Prozessoren gemeinsam genutzt | jedem Prozessor sind Teile des Speichers zugeordnet |
-%| Skalierbarkeit begrenzt | lokaler Zugriff ist schneller als entfernter |
-%| Single Socket-Lösung | Mehr-Socket-Board |
-
-Maße zur Leistungsbewertung
--Maße für den Laufzeitengewinn durch Parallelisierung
-\begin{itemize*}
-  \item $T_n=$ Laufzeit des Programms mit n Prozessoren/Kernen
-  \item Speedup:= $\frac{T_1}{T_n}$
-  \item Effizienz:= $\frac{Speedup}{n}$
-\end{itemize*}
-
-Amdahlsches Gesetz
-$n$ Prozessoren, $p$ parallele Anteile, $s$ serielle Anteile, $p+s=1$
-Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
-
-\paragraph{Grundbegriffe}
-\begin{itemize*}
-  \item Prozess := Programm in Ausführung; Ausführungsumgebung für ein Programm; hat eigenen Adressraum; Prozessor kann immer nur einen Prozess ausführen
-  \item Thread ("Faden") := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms; "leichtgewichtig" im Vergleich zu Betriebssystemprozess; Threads eines Prozesses teilen sich Adressraum; Thread kann von CPU oder Core ausgeführt werden
-  \item Shared Memory := Kommunikation (über Variablen im) gemeinsamen Speicher; Prozess kann direkt auf Speicher eines anderen Prozesses zugreifen; erfordert explizite Synchronisation, z.B. über kritische Abschnitte
-  \item Message Passing := Prozesse mit getrennten Adressräumen; Zugriff nur auf eigenen Speicher; Kommunikation durch explizites Senden/Empfangen von Nachrichten; implizite Synchronisation durch Nachrichten
-  \item Parallelisierungsarten
-  \begin{itemize*}
-    \item Instruktionsparallelität: parallele Ausführung mehrerer Operationen durch eine CPU-Instruktion; explizit: Vektorinstruktionen, SIMD; implizit: Pipelining von Instruktionen
-    \item Taskparallelität: Ausnutzung inhärenter Parallelität durch simultane Ausführung unabhängiger Aufgaben
-    \item Datenparallelität: Gemeinsame Operation auf homogener Datenmenge; Zerlegung eines Datensatzes in kleinere Abschnitte
-  \end{itemize*}
-\end{itemize*}
-
-\subsection{Parallele Programmierung in Erlang - Teil 1}
+\subsection{Parallele Programmierung in Erlang}
 \subsubsection{Unterstützung paralleler Programmierung in Erlang}
 \begin{itemize*}
   \item Leichtgewichtige Prozesse und Message Passing
@@ -3945,14 +3896,19 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
     \item kein Zugriff auf gemeinsame Daten, daher "Prozess"
   \end{itemize*}
   \item jede Erlang-Funktion kann einen Prozess bilden
-  \item Funktion spawn erzeugt einen Prozess, der die Funktion Fun ausführt \newline
-  \color{blue} Pid \color{black} = \color{green} spawn\color{black}(\color{green} fun \color{blue} Fun\color{black}/0)
+  \item Funktion spawn erzeugt einen Prozess, der die Funktion Fun ausführt 
+  \begin{lstlisting}
+    Pid = spawn(fun Fun/0)
+  \end{lstlisting}
   \item Resultat = Prozessidentifikation Pid, mittels der man dem Prozess Nachrichten schicken kann.
   \item über self() kann man die eigene Pid ermitteln
   \item Übergabe von Arghumenten an den Prozess bei der Erzeugung
-  \newline \color{blue} Pid \color{black} = \color{green} spawn\color{black} (\color{green} fun\color{black} () $\rightarrow$ any\_func(Arg1, Arg2, …)\color{green} end\color{black})
+  \begin{lstlisting}
+      Pid = spawn(fun() -> any_func(Arg1, Arg2, ...) end)
+    \end{lstlisting}
 \end{itemize*}
-\subsubsection{Prozesse in Erlang: Beispiele}
+
+\paragraph{Beispiele}
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-029}
 \end{center}
@@ -3971,36 +3927,47 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
     \item sollte nicht größer als Anzahl der Kerne/Prozessoren sein
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Scheduler in Erlang}
 
+\subsubsection{Scheduler in Erlang}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-031}
 \end{center}
+
 \subsubsection{Message Passing in Erlang: Senden einer Nachricht}
-\
-\begin{itemize*}
-  \item[1.] \color{blue} Pid ! Message \color{black}
-  
-\end{itemize*}
+
+\begin{lstlisting}
+  Pid ! Message
+\end{lstlisting}
+
 \begin{itemize*}
   \item an Prozess Pid wird die Nachricht Message gesendet
   \item der Prozess muss eine Empfangsoperation ausführen. damit ihn die Nachricht erreichen kann
-  
-\end{itemize*}
-
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-032}
-\end{center}
-\begin{itemize*}
+  \begin{center}
+    \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-032}
+  \end{center}
   \item trifft eine Nachricht ein, wird versucht, diese mit einem Pattern und ggf. vorhandenen Guard zu "matchen"
   \item erstes zutreffendes Pattern (inkl. Guard) bestimmt, welcher Ausdruck ausgewertet wird
   \item trifft kein Pattern zu, wird die Nachricht für spätere Verwendung aufgehoben und Prozess wartet auf die nächste Nachricht ($\rightarrow$ "selective receive")
 \end{itemize*}
+
+\begin{lstlisting}[
+        language=erlang,
+        showspaces=false,
+        basicstyle=\ttfamily
+     ]
+receive
+    Pattern1 [when Guard1] $\rightarrow$ Expressions1;
+    Pattern2 [when Guard2] $\rightarrow$ Expressions2;
+    ...
+end
+\end{lstlisting}
+
 \subsubsection{Ein einfacher Echo-Server}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-033}
 \end{center}
-\subsubsection{Echo-Server: Erklärungen}
+
+\paragraph{Erklärungen}
 \begin{itemize*}
   \item Funktion loop() realisiert einen (nur bedingt nützlichen) Echo-Dienst, der jede empfangene Nachricht unverändert an den Absender zurückschickt, bis er nach Empfang von stop endet
   \item Funktion run()
@@ -4013,7 +3980,7 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
   \end{itemize*}
   \item Aufruf in der Funktion loop() erfolgt endrekursiv, daher wird kein wachsender Aufrufstapel angelegt (Hinweis: grundsätzlich zu beachten, da sonst der Speicherbedarf stetig wächst)
 \end{itemize*}
-\subsection{Parallele Programmierung in Erlang - Teil 2}
+
 \subsubsection{Ansätze zur Parallelisierung}
 \begin{itemize*}
   \item[] Beispiel: Berechnung einer (zufällig generierten) Liste von Fibonaccizahlen
@@ -4038,7 +4005,7 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-035}
 \end{center}
 
-\subsubsection{pmap: Hilfsfunktionen}
+\paragraph{pmap: Hilfsfunktionen}
 \color{orange} Eigentliche Verarbeitungsfunktion ausführen \color{black}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-034}
@@ -4057,11 +4024,13 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
   \item Zeile 5: Warten bis Paar (Pid, Ergebniswert) eintrifft
   \item Zeile 7: Tail ist leer $\rightarrow$ alle Ergebnisse eingetroffen
 \end{itemize*}
-\subsubsection{Parallele Berechnung der Fibonacci-Zahlen}
+
+\paragraph{Parallele Berechnung der Fibonacci-Zahlen}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-038}
 \end{center}
-\subsubsection{Diskussion}
+
+\paragraph{Diskussion}
 \begin{itemize*}
   \item Passende Abstraktion wählen
   \begin{itemize*}
@@ -4078,7 +4047,8 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
     \item Berechnung vs. Daten/Ergebnisse senden
   \end{itemize*}
 \end{itemize*}
-\subsubsection{pmap: Alternative Implementierung}
+
+\paragraph{pmap: Alternative Implementierung}
 \begin{itemize*}
   \item ohne Berücksichtigung der Ordnung der Ergebnismenge
   \item Zählen für die bereits eingetroffenen Ergebnisse
@@ -4086,14 +4056,16 @@ Maximaler Speedup: $Speedup_{max}=\frac{T_1}{T_n}=\frac{1}{s+\frac{p}{n}}$
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-039}
 \end{center}
-\subsubsection{Diskussion: Speedup}
+
+\subsubsection{Speedup}
 Bestimmung des Speedups erfordert
 \begin{itemize*}
   \item Zeitmessung
   \item Kontrolle der genutzten Prozessoren/Cores
 \end{itemize*}
 \color{orange} Welchen Einfluss hat die Zahl der erzeugten Prozesse. \color{black}
-\subsubsection{Speedup: Zeitmessung}
+
+\paragraph{Speedup: Zeitmessung}
 Nutzung der Funktion timer:tc/3
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-040}
@@ -4102,7 +4074,8 @@ Für bessere Aussagekraft: mehrfache Ausführung
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-041}
 \end{center}
-\subsubsection{Bestimmung: Speedup}
+
+\paragraph{Bestimmung: Speedup}
 ch4\_6:benchmark(ch4\_4, run, 1000).
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-042}
@@ -4112,11 +4085,13 @@ ch4\_6:benchmark(ch4\_4, run, 1000).
   \item Aufwand für Berechnung einer Fibonaccizahl ist nicht konstant
   \item Zufallszahlen als Eingabe
 \end{itemize*}
-\subsubsection{Diskussion: Speedup}
+
+\paragraph{Diskussion: Speedup}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-043}
 \end{center}
-\subsubsection{Datenparallelität: Das MapReduce-Paradigma}
+
+\subsubsection{Datenparallelität: Das Map-Reduce-Paradigma}
 \begin{itemize*}
   \item Parallelisierungsmuster inspiriert von Konzepten funktionaler Programmiersprachen (map,reduce/fold)
   \item Basis von Big-Data-plattformen wie Hadoop, Spark,…
@@ -4124,43 +4099,46 @@ ch4\_6:benchmark(ch4\_4, run, 1000).
   \begin{itemize*}
     \item map(F, Seq) ? wende Funktion F (als Argument übergeben) auf alle Elemente einer Folge Seq an,
     \begin{itemize*}
+      \item Funktion F kann unabhängig (=parallel) auf jedes Element angewendet werden
+      \item Partitionieren und Verteilen der Elemente der Folge
       \item z.B. multipliziere jedes Element mit 2
     \end{itemize*}
     \item reduce(F, Seq) = wende eine Funktion F schrittweise auf die Elemente einer Folge Seq an und produziere einen einzelnen Wert,
     \begin{itemize*}
-      \item z.B. die Summer aller Elemente einer Folge
+      \item prinzipiell ähnlich zu map(F, Seq), d.h. Funktion F kann auf Paare unabhängig angewendet werden
+      \item z.B. die Summe aller Elemente der Folge
     \end{itemize*}
   \end{itemize*}
 \end{itemize*}
 
-\subsubsection{map in Erlang}
+\paragraph{map in Erlang}
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-044}
 \end{center}
-\subsubsection{reduce in Erlang}
+
+\paragraph{reduce in Erlang}
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-045}
 \end{center}
-\subsubsection{Parallelisierung von map und reduce}
-\color{orange} map
-\color{black} \begin{itemize*}
+
+\paragraph{Parallelisierung von map und reduce}
+\color{orange} map \color{black}
+\begin{itemize*}
   \item Funktion F kann unabhängig (=parallel) auf jedes Element angewendet werden
   \item Partitionieren und Verteilen der Elemente der Folge
   \item siehe pmap
-  
 \end{itemize*}
 \color{orange} reduce \color{black}
 \begin{itemize*}
   \item prinzipiell ähnlich, d.h. Funktion F kann auf Paare unabhängig angewandt werden
 \end{itemize*}
-\subsubsection{Parallelisierung von reduce}
+
+\paragraph{Parallelisierung von reduce}
 \begin{center}
   \includegraphics[width=0.5\linewidth]{Assets/Programmierparadigmen-046}
 \end{center}
 
-\subsection{Parallele Programmierung in Erlang - Teil 3}
 \subsubsection{Taskparallelität: Sortieren}
-
 \color{orange} Quicksort in Erlang \color{black}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-047}
@@ -4177,12 +4155,14 @@ Idee:
   \item rekursive Zerlegung…
 \end{itemize*}
 
-\subsubsection{Parallel Quicksort: Version 1}
+\subsubsection{Parallel Quicksort}
+\paragraph{Version 1}
 Quicksort in Erlang
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-048}
 \end{center}
-\subsubsection{Erläuterungen}
+
+Erläuterungen
 \begin{itemize*}
   \item Zeile 4: Erzeugen eines neuen Prozesses zur Sortierung der "oberen" Hälfte
   \item Zeile 6-7: Wie bisher
@@ -4193,7 +4173,7 @@ Zeitmessung:
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-049}
 \end{center}
 
-\subsubsection{Bewertung}
+Bewertung
 \begin{itemize*}
   \item parallele Version 1 ist langsamer!
   \item mögliche Erklärung: Prozess-Start ist aufwändiger als Sortieren kleiner Teilfolgen
@@ -4208,10 +4188,11 @@ Zeitmessung:
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-050}
 \end{center}
 
-\subsubsection{Parallel Quicksort: Version 2}
+\paragraph{Version 2}
 \begin{center}
   \includegraphics[width=0.9\linewidth]{Assets/Programmierparadigmen-051}
 \end{center}
+
 \subsubsection{Fazit}
 \begin{itemize*}
   \item \color{orange} leichtgewichtige Prozesse \color{black} als Baustein der Parallelisierung in Erlang
@@ -4221,92 +4202,6 @@ Zeitmessung:
   \item hoher Abstraktionsgrad, aber auch wenig Einflussmöglichkeiten
 \end{itemize*}
 
-
-\subsection{in Erlang}
-\begin{itemize*}
-  \item Leichtgewichtige Prozesse und Message Passing
-  \item SMP-Support
-  \item Ziele für effiziente Parallelisierung:
-  \begin{itemize*}
-    \item Problem in viele Prozesse zerlegen (aber nicht zu viele ...)
-    \item Seiteneffekte vermeiden (würde Synchronisation erfordern ...)
-    \item Sequentiellen Flaschenhals vermeiden (Zugriff auf gemeinsame Ressourcen: IO, Registrierung von Prozessen, ...)
-    \item Small Messages, Big Computation!
-  \end{itemize*}
-\end{itemize*}
-
-\paragraph{Prozesse in Erlang}
-\begin{itemize*}
-  \item Erlang VM = Betriebssystemprozess
-  \item Erlang-Prozess = Thread innerhalb der Erlang VM $\rightarrow$ kein Zugriff auf gemeinsame Daten, daher "Prozess"
-  \item jede Erlang-Funktion kann Prozess bilden
-  \item Funktion spawn erzeugt einen Prozess, der die Funktion Fun ausführt:
-  \begin{lstlisting}
-            Pid = spawn(fun Fun/0)
-          \end{lstlisting}
-  \item Resultat = Prozessidentifikation Pid, mittels der man dem Prozess Nachrichten schicken kann
-  \item über self() kann man die eigene Pid ermitteln
-  \item Übergabe von Argumenten an den Prozess bei der Erzeugung:
-  \begin{lstlisting}
-      Pid = spawn(fun() -> any_func(Arg1, Arg2, ...) end)
-    \end{lstlisting}
-\end{itemize*}
-
-\paragraph{Message Passing in Erlang: Senden einer Nachricht}
-\begin{lstlisting}
-  Pid ! Message
-\end{lstlisting}
-\begin{itemize*}
-  \item an Prozess Pid wird die Nachricht Message gesendet
-  \item der Prozess muss eine Empfangsoperation ausführen, damit ihn die Nachricht erreichen kann
-  \item trifft eine Nachricht ein, wird versucht, diese mit einem Pattern und ggf. vorhandenen Guard zu "matchen"
-  \item erstes zutreffendes Pattern (inkl. Guard) bestimmt, welcher Ausdruck ausgewertet wird
-  \item trifft kein Pattern zu, wird die Nachricht für spätere Verwendung aufgehoben und Prozess wartet auf die nächste Nachricht ($\rightarrow$ "selective receive")
-\end{itemize*}
-
-\begin{lstlisting}[
-        language=erlang,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
-receive
-    Pattern1 [when Guard1] $\rightarrow$ Expressions1;
-    Pattern2 [when Guard2] $\rightarrow$ Expressions2;
-    ...
-end
-\end{lstlisting}
-
-\paragraph{Datenparallelität: Das MapReduce-Paradigma}
-\begin{itemize*}
-  \item Parallelisierungsmuster inspiriert von Konzepten funktionaler Programmiersprachen ( map , reduce / fold )
-  \item Basis von Big-Data-Plattformen wie Hadoop, Spark, ...
-  \item Grundidee:
-  \begin{itemize*}
-    \item map(F, Seq) = wende Funktion F (als Argument übergeben) auf alle Elemente einer Folge Seq an,
-    \begin{itemize*}
-      \item Funktion F kann unabhängig (=parallel) auf jedes Element angewendet werden
-      \item Partitionieren und Verteilen der Elemente der Folge
-      \item z.B. multipliziere jedes Element mit 2
-    \end{itemize*}
-    \item reduce(F, Seq) = wende eine Funktion F schrittweise auf die Element einer Folge Seq an und produziere einen einzelnen Wert,
-    \begin{itemize*}
-      \item prinzipiell ähnlich zu map(F, Seq), d.h. Funktion F kann auf Paare unabhängig angewendet werden
-      \item z.B. die Summe aller Elemente der Folge
-    \end{itemize*}
-  \end{itemize*}
-\end{itemize*}
-
-\paragraph{Fazit}
-\begin{itemize*}
-  \item leichtgewichtige Prozesse als Baustein der Parallelisierung in Erlang
-  \item Prozesskommunikation ausschließlich über Message Passing
-  \item funktionaler Charakter (u.a. Vermeidung von Seiteneffekten) vereinfacht Parallelisierung deutlich
-  \item Daten- und Taskparallelität möglich
-  \item hoher Abstraktionsgrad, aber auch wenig Einflussmöglichkeiten
-\end{itemize*}
-
-
-
 \subsection{Parallele Programmierung in C++}
 \subsubsection{Threads in C++}
 \color{orange} Thread (Faden) \color{black} = leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms 
@@ -4315,503 +4210,65 @@ end
   \item in C++: Instanzen der Klasse std::thread
   \item führen eine (initiale) Funktion aus
 \end{itemize*}
+\begin{lstlisting}[
+      language=C++,
+      showspaces=false,
+      basicstyle=\ttfamily
+   ]
+\#include <thread>
+\#include <iostream>
+
+void say_hello() {
+std::cout << "Hello Concurrent C++\n";
+}
+
+int main() {
+std::thread t(say_hello);
+t.join();
+}
+\end{lstlisting}
+
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-052}
 \end{center}
-\subsubsection{Alternative Erzeugung von Threads}
+
+\paragraph{Alternative Erzeugung von Threads}
 \color{orange} über Lambda-Ausdruck \color{black}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-053}
-\end{center}
-
+\end{center}\begin{lstlisting}[
+  language=C++,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
+std::thread t([]() { do_something(); });
+\end{lstlisting}
 
 \color{orange} mit Instanzen einer Klasse \color{black} - erfordert Überladen von operator()
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-054}
-\end{center}
-\subsubsection{Parameterübergabe bei Threaderzeugung}
+\end{center}\begin{lstlisting}[
+  language=C++,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
+struct my_task {
+void operator()() const { do_something(); }
+};
+
+my_task tsk;
+std::thread t1(tsk); // mit Objekt
+std::thread t2{ my_task() }; // über Konstruktor
+\end{lstlisting}
+
+\paragraph{Parameterübergabe bei Threaderzeugung}
 \begin{itemize*}
   \item über zusätzliche Argumente des thread-Konstruktors
   \item Vorsicht bei Übergabe von Referenzen, wenn Elternthread vor dem erzeugten Thread beendet wird
-  
 \end{itemize*}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-056}
 \end{center}
-\subsubsection{Warten auf Threads}
-\begin{itemize*}
-  \item t.join() wartet auf Beendigung des Threads t
-  \item blockiert aktuellen Thread
-  \item ohne join() keine Garantie, dass t zur Ausführung kommt
-  \item Freigabe der Ressourcen des Threads
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-057}
-\end{center}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-058}
-\end{center}
-\subsubsection{Hintergrundthreads}
-\begin{itemize*}
-  \item Threads können auch im Hintergrund laufen, ohne, dass auf Ende gewartet werden muss
-  \item "abkoppeln" durch detach()
-  \item Thread läuft danach unter Kontrolle des C++-Laufzeitsystems, join nicht mehr möglich
-\end{itemize*}
-\subsubsection{Threadidentifikation}
-\begin{itemize*}
-  \item Threadidentifikator vom Typ std::thread::id
-  \item Ermittlung über Methode get\_id()
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-059}
-\end{center}
-\subsubsection{Berechnung von Fibonacci-Zahlen in C++}
-\begin{itemize*}
-  \item rekursive und nichtrekursive Variante möglich
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-060}
-\end{center}
-\subsubsection{Parallele Berechnung von Fibonacci-Zahlen}
-\begin{itemize*}
-  \item einfachste Lösung (ähnlich zu Erlang): pro Zahl ein Thread
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-061}
-\end{center}
-\subsubsection{Erläuterungen}
-\begin{itemize*}
-  \item Zeile 1: Feld der Threads
-  \item Zeile 2: Feld für Ergebniswerte
-  \item Zeile 5: Zufallszahl erzeugen
-  \item Zeilen 6-7 Thread zur Berechnung der Fibonacci-Zahl erzeugen und Ergebnis im Feld speichern
-  \item Zeile 10-11: Warten auf Beendigung der Threads (std::mem\_fn = Wrapper für Zeiger auf Member-Funktion)
-  \item \color{orange} aber: \color{black}
-  \begin{itemize*}
-    \item Zugriff auf gemeinsame Ressource (results)!
-    \item Anzahl Fibonaccizahlen = Anzahl Threads
-  \end{itemize*}
-\end{itemize*}
-\subsubsection{parallel-for in C++}
-\begin{itemize*}
-  \item Unterstützung durch Higher-Level-APIs und Frameworks
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-062}
-\end{center}
-\subsubsection{Kontrolle der Anzahl der Threads}
-\begin{itemize*}
-  \item Erzeugung von Threads ist mit Kosten verbunden
-  \item begrenzte Anzahl von Hardwarethreads (Anzahl Cores, Hyperthreading)
-  \item Ermittlung der Anzahl der unterstützten Hardwarethreads
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-063}
-\end{center}
-\begin{itemize*}
-  \item Nutzung für Implementierung von Threadpools, Task Libraries, …
-\end{itemize*}
-\subsubsection{Probleme nebenläufiger Ausführung}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-064}
-\end{center}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-065}
-\end{center}
-Ausgabe:
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-066}
-\end{center}
-\color{orange} Race Conditions \color{black}(Wettlaufsituationen) := Ergebnis nebenläufiger Ausführung auf gemeinsamen Zustand (hier: Ausgabekanal) hängt vom zeitlichen Verhalten der Einzeloperationen ab
-\subsubsection{Wechselseitiger Ausschluss}
-\begin{itemize*}
-  \item \color{orange} kritischer Abschnitt\color{black}: Programmabschnitt in einem Thread, in dem auf eine gemeinsame Ressource (Speicher etc.) zugegriffen wird und der nicht parallel (oder zeitlich verzahnt) zu einem anderen Thread ausgeführt werden darf
-  \item Lösung durch \color{orange} wechselseitigen Ausschluss \color{black} (engl. mutual exclusion = mutex)
-\end{itemize*}
-\subsubsection{Mutex in C++}
-\begin{itemize*}
-  \item Instanz der Klasse std::mutex
-  \item Methoden zum Sperren (lock) und Freigeben (unlock)
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-067}
-\end{center}
-\subsubsection{Mutex-Varianten}
-\begin{itemize*}
-  \item mutex: Standard-Mutex für exklusiven Zugriff
-  \item timed\_mutex: Mutex mit Timeout für Warten (try\_lock\_for())
-  \item recursive\_mutex:rekursives Mutex - erlaubt mehrfaches Sperren durch einen Thread, z.B. für rekursive Aufrufe
-  \item recursive\_timed\_mutex: rekursives Mutex mit Timeout
-  \item shared\_mutex: Mutex, das gemeinsamen Zugriff (lock\_shared()) mehrerer Threads oder exklusiven Zugriff (lock()) ermöglicht
-  \item shared\_timed\_mutex: Mutex mit Timeout und gemeinsamen Zugriff
-\end{itemize*}
-\subsubsection{Lock Guards}
-\begin{itemize*}
-  \item Vereinfachung der Nutzung von Mutexen durch RAII ("Ressourcenbelegung ist Initialisierung")
-  \item Konstruktor = lock
-  \item Destruktor = unlock
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-068}
-\end{center}
-\subsubsection{Lock Gurads und Locks}
-\begin{itemize*}
-  \item std::unique\_lock erweiterte Variante von lock\_guards, vermeidet aber sofortiges Sperren
-  \item std::lock erlaubt gleichzeitiges deadlock-freies Sperren von 2 Mutexen
-  \item Sperrstrategien: u.a.
-  \begin{itemize*}
-    \item std::try\_to\_lock versucht Sperre ohne Blockierung zu setzen
-    \item std::adopt\_lock versucht nicht, ein zweites Mal zu sperren, wenn bereits durch den aktuellen Thread gesperrt
-  \end{itemize*}
-\end{itemize*}
-\subsubsection{Atomare Datentypen}
-\begin{itemize*}
-  \item std::atomic\_flag = sperrfreier, atomarer Datentyp:
-  \begin{itemize*}
-    \item clear() setzt den Wert auf false
-    \item test\_and\_set() setzt den Wert atomar auf true und liefert den vorherigen Wert
-  \end{itemize*}
-  \item std::atomic<bool> = mächtigere Variante, erlaubt explizites Setzen
-  \begin{itemize*}
-    \item operator= atomare Wertzuweisung
-    \item load() liefert den aktuellen Wert
-    \item read-modify-write-Operation (siehe später)
-  \end{itemize*}
-  \item std::atomic<T> = generische Variante für weitere Datentypen
-\end{itemize*}
-\subsubsection{Synchronisation über atomare Variable}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-069}
-\end{center}
-\subsubsection{Erläuterungen}
-\begin{itemize*}
-  \item Zeile 1: gemeinsam genutzte Liste - erfordert synchronisierten Zugriff
-  \item Zeile 2: atomare boolsche Variable ready
-  \item Zeile 4/12: Konsument/Produzent-Threads
-  \item Zeile 5: atomares prüfen der ready-Variablen
-  \item Zeile 6-7 kurz warten und neu versuchen
-  \item Zeile 8-9/13 Zugriff auf gemeinsame Liste
-  \item Zeile 14: atomares Setzen der Variablen ready
-\end{itemize*}
-\subsubsection{Taskparallelität: Die 5 speisenden Philosophen}
-\begin{itemize*}
-  \item fünf Philosophen teilen sich eine Schüssel Sphagetti
-  \item fünf Gabeln, je eine zwischen zwei Philosophen
-  \item Philosoph kann nur mit zwei benachbarten Gabeln essen
-  \item Gabeln werden nur nach dem Essen zurückgelegt
-  \item Philosoph durchläuft Zyklus von Zuständen: denken $\rightarrow$ hungrig $\rightarrow$ essen $\rightarrow$ denken $\rightarrow$ etc.
-\end{itemize*}
-\subsubsection{Das Problem mit den Philosophen}
-\begin{itemize*}
-  \item Jeder greift die linke Gabel
-  \item und wartet auf die rechte Gabel
-  \item … und wartet …
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.3\linewidth]{Assets/Programmierparadigmen-070}
-\end{center}
-\color{orange} \textbf{Verklemmung!} \color{black}
-\subsubsection{Lösungsidee}
-\begin{itemize*}
-  \item immer beide Gabeln aufnehmen, dh. wenn nur eine Gabel verfügbar ist: liegen lassen und warten
-  \item synchronisierter Zugriff auf Gablen, dh. in einem kritischen Abschnitt unter gegenseitige Ausschluss
-  \item Wecken von wartenden Philosophen
-\end{itemize*}
-\subsubsection{Verklemmungsfreies Sperren}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-071}
-\end{center}
-Alternative Lösung
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-072}
-\end{center}
-\subsubsection{Gabeln und Spaghetti-Teller}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-073}
-\end{center}
-\subsubsection{Die Philosophen-Klasse}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-074}
-\end{center}
-\subsubsection{Die Philosophen-Klasse: Hilfsmethoden}
-Textausgabe erfordert synchronisierten Zugriff auf cout über globalen Mutex
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-075}
-\end{center} \ \\
-Hilfsmethode für zufällige Wartezeit in Millisekunden
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-076}
-\end{center}\clearpage
-\subsubsection{Die Philosophen-Klasse: Essen}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-077}
-\end{center}
-\subsubsection{Die Philosophen-Klasse: Denken}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-078}
-\end{center}
-\subsubsection{Das Leben eines Philosophen}
-\begin{itemize*}
-  \item Zur Erinnerung: überladener ()-Operator eines Objekts definiert auszuführende Funktion eines Threads
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-079}
-\end{center}
-\subsubsection{Das Dinner: Initialisierung}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-080}
-\end{center}
-\subsubsection{Das Dinner beginnt}
-\begin{itemize*}
-  \item Beginn (und Ende) des Dinners über atomare Variable signalisieren
-  \item Philosophen-Threads arbeiten ihre operator()()-Methode ab
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-081}
-\end{center}
-\subsubsection{Fazit}
-\begin{itemize*}
-  \item Philosophenproblem: klassisches Problem der Informatik zur Demonstration von Nebenläufigkeit und Verklemmung
-  \item von Edsger W. Dijkstra formuliert
-  \item betrachte C++ Lösung illustriert
-  \begin{itemize*}
-    \item Nebenläufigkeit durch Threads
-    \item Synchronisation über Mutexe
-    \item verklemmungsfreies Sperren
-  \end{itemize*}
-  \item moderene C++ Sprachversion vereinfacht Programmierung gegenüber Low-Level-API auf Betriebssystemebene (z.B. pthreads)
-\end{itemize*}
-\subsubsection{Weitere Möglichkeiten der Thread-Interaktion}
-\begin{itemize*}
-  \item bisher:
-  \begin{itemize*}
-    \item Mutexe und Locks
-    \item atomare Variablen
-  \end{itemize*}
-  \item typischer Anwendungsfall: Warten auf Ereignis / Setzen eines Flags
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-082}
-\end{center}
-\subsubsection{Bedingungsvariablen}
-\begin{itemize*}
-  \item Thread wartet, bis Bedingung erfüllt ist
-  \item Erfüllung der Bedingung wird durch anderen Thread angezeigt (notify) $\rightarrowtail$ "Aufwecken" des wartenden Threads
-  \item notwendig: synchronisierter Zugriff über Mutex
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-083}
-\end{center}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-084}
-\end{center}
-\subsubsection{Thread-sichere Datenstrukturen}
-\color{orange} Thread-Sicherheit:= \color{black} eine Komponente kann gleichzeitig von verschiedenen Programmbereichen Threads mehrfach ausgeführt werden, ohne dass diese sich gegenseitig behindern \newline \newline
-verschiedene Varianten: 
-\begin{itemize*}
-  \item Standard-Datenstruktur + über Mutexe/Sperren synchronisierte Zugriffe
-  \item Integration der Sperren in die Datenstruktur
-  \item Sperr-freie Datenstrukturen: nicht blockierend, Vermeidung von Sperren, z.B. durch Compare/Exchange-Operationen
-\end{itemize*}
-\subsubsection{Anforderungen}
-\begin{itemize*}
-  \item mehrere Threads können gleichzeitig auf die Datenstruktur zugreifen
-  \item kein Thread sieht (Zwischen-)Zustand, bei dem Invarianten der Datenstruktur durch einen anderen Thread (kurzzeitig) verletzt ist
-  \item Vermeidung von Wettlaufsituationen
-  \item Vermeidung von Verklemmungen
-  \item korrekte Behandlung von Ausnahmen (Fehlern)
-\end{itemize*}
-\subsubsection{Thread-sichere Queue}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-085}
-\end{center}
-\begin{itemize*}
-  \item Zeilen 1,2,6: Kapselung der std::queue-Klasse
-  \item Zeile 4: Mutex für exklusiven Zugriff
-  \item Zeile 5: Bedingungsvariable für Warten
-\end{itemize*}
-\subsubsection{Thread-sichere Queue: Methode push}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-086}
-\end{center}
-\begin{itemize*}
-  \item Zeile 2: Lock Guard sichert exklusiven Zugriff
-  \item Zeile 3: Element an die Queue anhängen
-  \item Zeile 4: Aufwecken von eventuell wartenden Threads
-\end{itemize*}
-\subsubsection{Thread-sichere Queue: Methode waiting\_pop}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-087}
-\end{center}
-\begin{itemize*}
-  \item Zeile 2: Lock Guard sichert exklusiven Zugriff
-  \item Zeile 3: Warten bis Queue nicht mehr leer ist
-  \item Zeilen 4,5: erstes Element aus der Queue entnehmen
-\end{itemize*}
-\subsubsection{async, future und promise}
-\begin{itemize*}
-  \item std::future - Resultat einer asynchronen Berechnung, d.h. einer Berechnung die erst noch stattfindet
-  \item std::async() - asynchrones Starten eines Tasks
-  \begin{center}
-    \centering
-    \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-088}
-  \end{center}
-  \item std::promise - erlaubt Wert zu setzen, wenn der aktuelle Thread beendet ist, of in Kombination mit std::future eingesetzt
-  \item future = Ergbenisobjekt, promise = Ergebnisproduzent
-\end{itemize*}
-\subsubsection{Future}
-\begin{itemize*}
-  \item Methoden zum
-  \begin{itemize*}
-    \item Warten auf das Ende des Tasks (wait(), wait\_for())
-    \item Ergebnis lesen (get())
-  \end{itemize*}
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-089}
-\end{center}
-\subsubsection{Beispiel}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-090}
-\end{center}
-\subsubsection{Deklarative Parallelisierung mit OpenMP}
-\begin{itemize*}
-  \item Programmierschnittstelle für Parallelisierung in C/C++/Fortran
-  \item Programmiersprachenerweiterung durch Direktiven
-  \item in C/C++: \#pragma omp …
-  \item zusätzliche Bibliotheksfunktionen: \#include <omp.h>
-  \item aktuelle Version 5.0
-  \item Unterstützung in gcc und clang
-  \begin{itemize*}
-    \item vollständig 4.5, partiell 5.0
-    \item Nutzung über Compilerflag - fopenmp
-  \end{itemize*}
-  \item beschränkt auf Architekturen mit gemeinsamen Speicher
-\end{itemize*}
-\subsubsection{Programmiermodell}
-\begin{itemize*}
-  \item Master-Thread und mehrere Worker-Threads (Anzahl typischerweise durch OpenMP-Laufzeitsystem bestimmt)
-  \item über parallel-Direktive kann Arbeit in einem Programmabschnitt auf Worker-Threads aufgeteilt werden
-  \item Ende des parallelen Abschnitts $\rightarrowtail$ implizite Synchronisation
-  \item Fortsetzung des Master-Threads
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.2\linewidth]{Assets/Programmierparadigmen-091}
-\end{center}
-\subsubsection{Hello World! mit OpenMP}
-\begin{itemize*}
-  \item der dem pragma folgende Block wird parallel von allen Threads ausgeführt
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-092}
-\end{center}
-\subsubsection{Schleifenparallelisierung}
-\begin{itemize*}
-  \item parallele Ausführung einer Schleife: jedem Thread wird ein Teil der Iterationen zugewiesen
-  \item für for-Schleifgen mit eingeschränkter Syntax (ganzzahlige Schleifenvariablen, Operatoren auf Schleifenvariablen) und für STL-Iteratoren
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-093}
-\end{center}
-\subsubsection{Beeinflussung der Thread-Anzahl}
-maximale Anzahl
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-094}
-\end{center}
-
-
-\noindent
-bedingte Parallelisierung
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-095}
-\end{center}
-\subsubsection{Aufteilung des Iterationsbereichs}
-\begin{itemize*}
-  \item Iterationsbereich kann auf verschiedene Weise auf Threads aufgeteilt werden
-  \item Beeinflussung durch schedule-Direktive
-  \begin{itemize*}
-    \item schedule(auto): Default - implementierungsspezifisch
-    \item schedule(static,n): statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
-    \item schedule(dynamic, n): dynamische Verteilung nach Bedarf
-    \item schedule(guided, n): Verteilung nach Bedarf und proportional zur Restarbeit
-    \item …
-  \end{itemize*}
-\end{itemize*}
-\subsubsection{Geschachtelte Schleifen}
-\begin{itemize*}
-  \item Parallelisierung mit \textbf{parallel for} beeinflusst nur äußere Schleife
-  \item collapse(n) gibt an, dass n Schleifen in einem gemeinsamen Iterationsbereich zusammengefasst, und auf die Threads verteilt werden sollen
-  \item Beispiel: Matrizenmultiplikation
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-096}
-\end{center}
-\subsubsection{Synchronisation}
-\begin{itemize*}
-  \item Direktiven für parallele Ausführung
-  \begin{itemize*}
-    \item \textbf{\#pragma omp single/master} Abschnitt wird nur durch einen/den Master-Thread ausgeführt
-    \item \textbf{\#pragma omp critical} kritischer Abschnitt
-    \item \textbf{\#pragma omp barrier} Warten auf alle Worker-Threads
-    \item \textbf{\#pragma omp atomic} kritischer Abschnitt - ZUgriff auf gemeinsame Variable (z.B. Zähler)
-  \end{itemize*}
-  \item Speicherklauseln für Variablen
-  \begin{itemize*}
-    \item \textbf{shared} für alle Threads sichtbar/änderbar
-    \item \textbf{private} jeder Thread hat eigene Kopie der Daten, wird nicht außerhalb initialisiert
-    \item \textbf{reduction} private Daten, die am Ende des Abschnitts zu globalem Wert zusammengefasst werden
-    \item \textbf{firstprivate/lastprivate} privat - initialisiert mit letztem Wert vor dem Abschnitt / Wert des letzten Threads der Iteration wird zurückgegeben
-  \end{itemize*}
-\end{itemize*}
-\subsubsection{Parallele Abschnitte}
-\begin{itemize*}
-  \item Zuweisung von Programmabschnitten zu Threads $\rightarrowtail$ statische Parallelität
-  \item geeignet z.B. für rekursive Aufrufe
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-097}
-\end{center}
-
-\subsubsection{Task-Programmierung mit OpenMP}
-\begin{itemize*}
-  \item seit OpenMP 3.0 Unterstützung von Tasks, die
-  \begin{itemize*}
-    \item reihum Threads zugewiesen werden
-    \item an beliebiger Stelle definiert werden können
-    \item von beliebigem Thread definiert werden kann
-  \end{itemize*}
-\end{itemize*}
-\begin{center}
-  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-098}
-\end{center}
-\subsubsection{Fazit}
-\begin{itemize*}
-  \item C++ bietet weitreichende und mächtige Konzepte zur Parallelisierung
-  \begin{itemize*}
-    \item von Basiskontrolle wie Threads und Synchronisationsprimitiven (u.a. Mutexe)
-    \item …über höherwertige Abstraktionen wie async, Features und Promises
-    \item bis hin zu deklarativen Ansätzen wie OpenMP
-  \end{itemize*}
-  \item alle Formen von Parallelität (Instruktions-, Daten-, und Taskparallelität) möglich
-  \item aber anspruchsvolle Programmierung
-  \item erleichtert durch zusätzliche Bibliotheken und Frameworks wie Parallel STL, TBB, …
-\end{itemize*}
-
-
-\subsection{in C++}
-Thread ("Faden") := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms
-\begin{itemize*}
-  \item Threads teilen sich den Adressraum des ihres Prozesses
-  \item in C++: Instanzen der Klasse std::thread
-  \item führen eine (initiale) Funktion aus
-\end{itemize*}
-
-
-Parameter-Übergabe bei Thread-Erzeugung
-\begin{itemize*}
-  \item über zusätzliche Argumente des thread -Konstruktors
-  \item Vorsicht bei Übergabe von Referenzen, wenn Eltern-Thread vor dem erzeugten Thread beendet wird
-\end{itemize*}
 \begin{lstlisting}[
         language=C++,
         showspaces=false,
@@ -4826,13 +4283,19 @@ std::thread t(fun, 2, "Hello");
 t.join();
 \end{lstlisting}
 
-Warten auf Threads
+\paragraph{Warten auf Threads}
 \begin{itemize*}
   \item t.join() wartet auf Beendigung des Threads t
   \item blockiert aktuellen Thread
   \item ohne join() keine Garantie, dass t zur Ausführung kommt
   \item Freigabe der Ressourcen des Threads
 \end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-057}
+\end{center}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-058}
+\end{center}
 \begin{lstlisting}[
         language=C++,
         showspaces=false,
@@ -4842,32 +4305,100 @@ std::thread t([]() { do_something(); });
 t.join();
 \end{lstlisting}
 
-Hintergrund-Threads
+\paragraph{Hintergrundthreads}
 \begin{itemize*}
-  \item Threads können auch im Hintergrund laufen, ohne dass auf Ende gewartet werden muss
+  \item Threads können auch im Hintergrund laufen, ohne, dass auf Ende gewartet werden muss
   \item "abkoppeln" durch detach()
   \item Thread läuft danach unter Kontrolle des C++-Laufzeitsystems, join nicht mehr möglich
 \end{itemize*}
 
-Thread-Identifikation
+\paragraph{Threadidentifikation}
 \begin{itemize*}
-  \item Thread-Identifikator vom Typ std::thread::id
+  \item Threadidentifikator vom Typ std::thread::id
   \item Ermittlung über Methode get\_id()
 \end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-059}
+\end{center}
+\begin{lstlisting}[
+      language=C++,
+      showspaces=false,
+      basicstyle=\ttfamily
+   ]
+void fun() {
+std::cout << "Hello from "
+          << std::this_thread::get_id()
+          << std::endl;
+}
+std::thread t(fun);
+t.join();
+\end{lstlisting}
 
-Kontrolle der Anzahl der Threads
+\paragraph{Beispiel: Berechnung von Fibonacci-Zahlen in C++}
 \begin{itemize*}
-  \item Erzeugung von Threads ist mit Kosten verbunden
-  \item begrenzte Anzahl von Hardware-Threads (Anzahl Cores, Hyperthreading)
-  \item Ermittlung der Anzahl der unterstützen Hardwarethreads
-  \begin{lstlisting}
-            std::thread::hardware_concurrency()
-          \end{lstlisting}
-  \item Nutzung für Implementierung von Threadpools, Task Libraries, ...
+  \item rekursive und nichtrekursive Variante möglich
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-060}
+\end{center}
+
+Parallele Berechnung von Fibonacci-Zahlen
+\begin{itemize*}
+  \item einfachste Lösung (ähnlich zu Erlang): pro Zahl ein Thread
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-061}
+\end{center}
+
+Erläuterungen
+\begin{itemize*}
+  \item Zeile 1: Feld der Threads
+  \item Zeile 2: Feld für Ergebniswerte
+  \item Zeile 5: Zufallszahl erzeugen
+  \item Zeilen 6-7 Thread zur Berechnung der Fibonacci-Zahl erzeugen und Ergebnis im Feld speichern
+  \item Zeile 10-11: Warten auf Beendigung der Threads (std::mem\_fn = Wrapper für Zeiger auf Member-Funktion)
+  \item \color{orange} aber: \color{black}
+  \begin{itemize*}
+    \item Zugriff auf gemeinsame Ressource (results)!
+    \item Anzahl Fibonaccizahlen = Anzahl Threads
+  \end{itemize*}
 \end{itemize*}
 
+\paragraph{parallel-for in C++}
+\begin{itemize*}
+  \item Unterstützung durch Higher-Level-APIs und Frameworks
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-062}
+\end{center}
 
-Probleme nebenläufiger Ausführung
+\paragraph{Kontrolle der Anzahl der Threads}
+\begin{itemize*}
+  \item Erzeugung von Threads ist mit Kosten verbunden
+  \item begrenzte Anzahl von Hardwarethreads (Anzahl Cores, Hyperthreading)
+  \item Ermittlung der Anzahl der unterstützten Hardwarethreads
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-063}
+\end{center}
+\begin{itemize*}
+  \item Nutzung für Implementierung von Threadpools, Task Libraries, …
+\end{itemize*}
+
+\subsubsection{Probleme nebenläufiger Ausführung}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-064}
+\end{center}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-065}
+\end{center}
+Ausgabe:
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-066}
+\end{center}
+\color{orange} Race Conditions \color{black}(Wettlaufsituationen) := Ergebnis nebenläufiger Ausführung auf gemeinsamen Zustand (hier: Ausgabekanal) hängt vom zeitlichen Verhalten der Einzeloperationen ab
+
+
 \begin{itemize*}
   \item Race Conditions (Wettlaufsituation) := Ergebnis nebenläufiger Ausführung auf gemeinsamen Zustand (hier: Ausgabekanal) hängt vom zeitlichen Verhalten der Einzeloperationen ab
   \item kritischer Abschnitt: Programmabschnitt in einem Thread, in dem auf eine gemeinsame Ressource (Speicher etc.) zugegriffen wird und der nicht parallel (oder zeitlich verzahnt) zu einem anderen Thread ausgeführt werden darf
@@ -4895,7 +4426,8 @@ Probleme nebenläufiger Ausführung
       \item std::adopt\_lock versucht nicht, ein zweites Mal zu sperren, wenn bereits durch den aktuellen Thread gesperrt
     \end{itemize*}
   \end{itemize*}
-  \begin{lstlisting}[
+\end{itemize*}
+\begin{lstlisting}[
 language=C++,
 showspaces=false,
 basicstyle=\ttfamily
@@ -4913,46 +4445,235 @@ std::lock_guard<std::mutex> guard(my_mtx);
 return data.front();
 }
 \end{lstlisting}
-  
-  \item Atomare Datentypen
+
+
+\subsubsection{Wechselseitiger Ausschluss}
+\begin{itemize*}
+  \item \color{orange} kritischer Abschnitt\color{black}: Programmabschnitt in einem Thread, in dem auf eine gemeinsame Ressource (Speicher etc.) zugegriffen wird und der nicht parallel (oder zeitlich verzahnt) zu einem anderen Thread ausgeführt werden darf
+  \item Lösung durch \color{orange} wechselseitigen Ausschluss \color{black} (engl. mutual exclusion = mutex)
+\end{itemize*}
+
+\paragraph{Mutex in C++}
+\begin{itemize*}
+  \item Instanz der Klasse std::mutex
+  \item Methoden zum Sperren (lock) und Freigeben (unlock)
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-067}
+\end{center}
+
+\paragraph{Mutex-Varianten}
+\begin{itemize*}
+  \item mutex: Standard-Mutex für exklusiven Zugriff
+  \item timed\_mutex: Mutex mit Timeout für Warten (try\_lock\_for())
+  \item recursive\_mutex:rekursives Mutex - erlaubt mehrfaches Sperren durch einen Thread, z.B. für rekursive Aufrufe
+  \item recursive\_timed\_mutex: rekursives Mutex mit Timeout
+  \item shared\_mutex: Mutex, das gemeinsamen Zugriff (lock\_shared()) mehrerer Threads oder exklusiven Zugriff (lock()) ermöglicht
+  \item shared\_timed\_mutex: Mutex mit Timeout und gemeinsamen Zugriff
+\end{itemize*}
+
+\paragraph{Lock Guards}
+\begin{itemize*}
+  \item Vereinfachung der Nutzung von Mutexen durch RAII ("Ressourcenbelegung ist Initialisierung")
+  \item Konstruktor = lock
+  \item Destruktor = unlock
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-068}
+\end{center}
+
+\paragraph{Lock Gurads und Locks}
+\begin{itemize*}
+  \item std::unique\_lock erweiterte Variante von lock\_guards, vermeidet aber sofortiges Sperren
+  \item std::lock erlaubt gleichzeitiges deadlock-freies Sperren von 2 Mutexen
+  \item Sperrstrategien: u.a.
   \begin{itemize*}
-    \item std::atomic\_flag = sperrfreier, atomarer Datentyp:
-    \begin{itemize*}
-      \item clear() setzt den Wert auf false
-      \item test\_and\_set() setzt den Wert atomar auf true und liefert den vorherigen Wert
-    \end{itemize*}
-    \item std::atomic<bool> = mächtigere Variante, erlaubt explizites Setzen
-    \begin{itemize*}
-      \item operator= atomare Wertzuweisung
-      \item load() liefert den aktuellen Wert
-      \item read-modify-write-Operation (siehe später)
-    \end{itemize*}
-    \item std::atomic<T> = generische Variante für weitere Datentypen
+    \item std::try\_to\_lock versucht Sperre ohne Blockierung zu setzen
+    \item std::adopt\_lock versucht nicht, ein zweites Mal zu sperren, wenn bereits durch den aktuellen Thread gesperrt
   \end{itemize*}
 \end{itemize*}
 
+\paragraph{Atomare Datentypen}
+\begin{itemize*}
+  \item std::atomic\_flag = sperrfreier, atomarer Datentyp:
+  \begin{itemize*}
+    \item clear() setzt den Wert auf false
+    \item test\_and\_set() setzt den Wert atomar auf true und liefert den vorherigen Wert
+  \end{itemize*}
+  \item std::atomic<bool> = mächtigere Variante, erlaubt explizites Setzen
+  \begin{itemize*}
+    \item operator= atomare Wertzuweisung
+    \item load() liefert den aktuellen Wert
+    \item read-modify-write-Operation (siehe später)
+  \end{itemize*}
+  \item std::atomic<T> = generische Variante für weitere Datentypen
+\end{itemize*}
+
+
+\paragraph{Synchronisation über atomare Variable}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-069}
+\end{center}
+Erläuterungen
+\begin{itemize*}
+  \item Zeile 1: gemeinsam genutzte Liste - erfordert synchronisierten Zugriff
+  \item Zeile 2: atomare boolsche Variable ready
+  \item Zeile 4/12: Konsument/Produzent-Threads
+  \item Zeile 5: atomares prüfen der ready-Variablen
+  \item Zeile 6-7 kurz warten und neu versuchen
+  \item Zeile 8-9/13 Zugriff auf gemeinsame Liste
+  \item Zeile 14: atomares Setzen der Variablen ready
+\end{itemize*}
+
+\subsubsection{Taskparallelität: Die 5 speisenden Philosophen}
+\begin{itemize*}
+  \item fünf Philosophen teilen sich eine Schüssel Sphagetti
+  \item fünf Gabeln, je eine zwischen zwei Philosophen
+  \item Philosoph kann nur mit zwei benachbarten Gabeln essen
+  \item Gabeln werden nur nach dem Essen zurückgelegt
+  \item Philosoph durchläuft Zyklus von Zuständen: denken $\rightarrow$ hungrig $\rightarrow$ essen $\rightarrow$ denken $\rightarrow$ etc.
+\end{itemize*}
+
+\paragraph{Das Problem mit den Philosophen}
+\begin{itemize*}
+  \item Jeder greift die linke Gabel
+  \item und wartet auf die rechte Gabel
+  \item … und wartet …
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.3\linewidth]{Assets/Programmierparadigmen-070}
+\end{center}
+\color{orange} \textbf{Verklemmung!} \color{black}
+
+\paragraph{Lösungsidee}
+\begin{itemize*}
+  \item immer beide Gabeln aufnehmen, dh. wenn nur eine Gabel verfügbar ist: liegen lassen und warten
+  \item synchronisierter Zugriff auf Gablen, dh. in einem kritischen Abschnitt unter gegenseitige Ausschluss
+  \item Wecken von wartenden Philosophen
+\end{itemize*}
+
 \paragraph{Verklemmungsfreies Sperren}
+
 \begin{lstlisting}[
-        language=C++,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
+  language=C++,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
 std::lock(mtx1, mtx2);
 std::lock_guard<std::mutex> lk1(mtx1, std::adopt_lock);
 std::lock_guard<std::mutex> lk2(mtx2, std::adopt_lock);
 \end{lstlisting}
 Führt zu Verklemmung; Alternative Lösung
 \begin{lstlisting}[
-        language=C++,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
+  language=C++,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
 std::unique_lock<std::mutex> lk1(mtx1, std::defer_lock);
 std::unique_lock<std::mutex> lk2(mtx2, std::defer_lock);
 std::lock(lk1, lk2);
 \end{lstlisting}
 
-\paragraph{Thread-sichere Datenstrukturen}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-071}
+\end{center}
+Alternative Lösung
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-072}
+\end{center}
+
+\paragraph{Gabeln und Spaghetti-Teller}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-073}
+\end{center}
+
+\paragraph{Die Philosophen-Klasse}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-074}
+\end{center}
+
+\paragraph{Die Philosophen-Klasse: Hilfsmethoden}
+Textausgabe erfordert synchronisierten Zugriff auf cout über globalen Mutex
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-075}
+\end{center} \ \\
+Hilfsmethode für zufällige Wartezeit in Millisekunden
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-076}
+\end{center}
+
+\paragraph{Die Philosophen-Klasse: Essen}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-077}
+\end{center}
+
+\paragraph{Die Philosophen-Klasse: Denken}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-078}
+\end{center}
+
+\paragraph{Das Leben eines Philosophen}
+\begin{itemize*}
+  \item Zur Erinnerung: überladener ()-Operator eines Objekts definiert auszuführende Funktion eines Threads
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-079}
+\end{center}
+
+\paragraph{Das Dinner: Initialisierung}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-080}
+\end{center}
+
+\paragraph{Das Dinner beginnt}
+\begin{itemize*}
+  \item Beginn (und Ende) des Dinners über atomare Variable signalisieren
+  \item Philosophen-Threads arbeiten ihre operator()()-Methode ab
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-081}
+\end{center}
+
+\paragraph{Fazit}
+\begin{itemize*}
+  \item Philosophenproblem: klassisches Problem der Informatik zur Demonstration von Nebenläufigkeit und Verklemmung
+  \item von Edsger W. Dijkstra formuliert
+  \item betrachte C++ Lösung illustriert
+  \begin{itemize*}
+    \item Nebenläufigkeit durch Threads
+    \item Synchronisation über Mutexe
+    \item verklemmungsfreies Sperren
+  \end{itemize*}
+  \item moderene C++ Sprachversion vereinfacht Programmierung gegenüber Low-Level-API auf Betriebssystemebene (z.B. pthreads)
+\end{itemize*}
+
+\subsubsection{Weitere Möglichkeiten der Thread-Interaktion}
+\begin{itemize*}
+  \item bisher:
+  \begin{itemize*}
+    \item Mutexe und Locks
+    \item atomare Variablen
+  \end{itemize*}
+  \item typischer Anwendungsfall: Warten auf Ereignis / Setzen eines Flags
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-082}
+\end{center}
+
+\subsubsection{Bedingungsvariablen}
+\begin{itemize*}
+  \item Thread wartet, bis Bedingung erfüllt ist
+  \item Erfüllung der Bedingung wird durch anderen Thread angezeigt (notify) $\rightarrowtail$ "Aufwecken" des wartenden Threads
+  \item notwendig: synchronisierter Zugriff über Mutex
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-083}
+\end{center}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-084}
+\end{center}
+
+\subsubsection{Thread-sichere Datenstrukturen}
 \begin{itemize*}
   \item Thread-Sicherheit := eine Komponente kann gleichzeitig von verschiedenen Programmbereichen (Threads) mehrfach ausgeführt werden, ohne dass diese sich gegenseitig behindern
   \item verschiedene Varianten:
@@ -4984,7 +4705,101 @@ std::lock(lk1, lk2);
 \end{itemize*}
 
 
+\subsubsection{Anforderungen}
+\begin{itemize*}
+  \item mehrere Threads können gleichzeitig auf die Datenstruktur zugreifen
+  \item kein Thread sieht (Zwischen-)Zustand, bei dem Invarianten der Datenstruktur durch einen anderen Thread (kurzzeitig) verletzt ist
+  \item Vermeidung von Wettlaufsituationen
+  \item Vermeidung von Verklemmungen
+  \item korrekte Behandlung von Ausnahmen (Fehlern)
+\end{itemize*}
+
+\subsubsection{Thread-sichere Queue}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-085}
+\end{center}
+\begin{itemize*}
+  \item Zeilen 1,2,6: Kapselung der std::queue-Klasse
+  \item Zeile 4: Mutex für exklusiven Zugriff
+  \item Zeile 5: Bedingungsvariable für Warten
+\end{itemize*}
+
+\paragraph{Thread-sichere Queue: Methode push}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-086}
+\end{center}
+\begin{itemize*}
+  \item Zeile 2: Lock Guard sichert exklusiven Zugriff
+  \item Zeile 3: Element an die Queue anhängen
+  \item Zeile 4: Aufwecken von eventuell wartenden Threads
+\end{itemize*}
+
+\paragraph{Thread-sichere Queue: Methode waiting\_pop}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-087}
+\end{center}
+\begin{itemize*}
+  \item Zeile 2: Lock Guard sichert exklusiven Zugriff
+  \item Zeile 3: Warten bis Queue nicht mehr leer ist
+  \item Zeilen 4,5: erstes Element aus der Queue entnehmen
+\end{itemize*}
+
+\subsubsection{async, future und promise}
+\begin{itemize*}
+  \item std::future - Resultat einer asynchronen Berechnung, d.h. einer Berechnung die erst noch stattfindet
+  \item std::async() - asynchrones Starten eines Tasks
+  \begin{center}
+    \centering
+    \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-088}
+  \end{center}
+  \item std::promise - erlaubt Wert zu setzen, wenn der aktuelle Thread beendet ist, of in Kombination mit std::future eingesetzt
+  \item future = Ergbenisobjekt, promise = Ergebnisproduzent
+\end{itemize*}
+
+\paragraph{Future}
+\begin{itemize*}
+  \item Methoden zum
+  \begin{itemize*}
+    \item Warten auf das Ende des Tasks (wait(), wait\_for())
+    \item Ergebnis lesen (get())
+  \end{itemize*}
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-089}
+\end{center}
+
+\paragraph{Beispiel}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-090}
+\end{center}
+
+\subsubsection{Deklarative Parallelisierung mit OpenMP}
+\begin{itemize*}
+  \item Programmierschnittstelle für Parallelisierung in C/C++/Fortran
+  \item Programmiersprachenerweiterung durch Direktiven
+  \item in C/C++: \#pragma omp …
+  \item zusätzliche Bibliotheksfunktionen: \#include <omp.h>
+  \item aktuelle Version 5.0
+  \item Unterstützung in gcc und clang
+  \begin{itemize*}
+    \item vollständig 4.5, partiell 5.0
+    \item Nutzung über Compilerflag - fopenmp
+  \end{itemize*}
+  \item beschränkt auf Architekturen mit gemeinsamen Speicher
+\end{itemize*}
+
 \subsubsection{Programmiermodell}
+\begin{itemize*}
+  \item Master-Thread und mehrere Worker-Threads (Anzahl typischerweise durch OpenMP-Laufzeitsystem bestimmt)
+  \item über parallel-Direktive kann Arbeit in einem Programmabschnitt auf Worker-Threads aufgeteilt werden
+  \item Ende des parallelen Abschnitts $\rightarrowtail$ implizite Synchronisation
+  \item Fortsetzung des Master-Threads
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.2\linewidth]{Assets/Programmierparadigmen-091}
+\end{center}
+
+
 \begin{itemize*}
   \item Master-Thread und mehrere Worker-Threads (Anzahl typischerweise durch OpenMP-Laufzeitsystem bestimmt)
   \item über parallel -Direktive kann Arbeit in einem Programmabschnitt auf Worker-Threads aufgeteilt werden
@@ -5091,130 +4906,108 @@ std::lock(lk1, lk2);
     \end{lstlisting}
 \end{itemize*}
 
-
-\subsection{Parallele Programmierung in C++}
-\paragraph{Threads}
-Thread ("Faden") := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms
+\subsubsection{Hello World! mit OpenMP}
 \begin{itemize*}
-  \item Threads teilen sich den Adressraum des ihres Prozesses
-  \item in C++: Instanzen der Klasse std::thread
-  \item führen eine (initiale) Funktion aus
+  \item der dem pragma folgende Block wird parallel von allen Threads ausgeführt
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-092}
+\end{center}
+
+\subsubsection{Schleifenparallelisierung}
+\begin{itemize*}
+  \item parallele Ausführung einer Schleife: jedem Thread wird ein Teil der Iterationen zugewiesen
+  \item für for-Schleifgen mit eingeschränkter Syntax (ganzzahlige Schleifenvariablen, Operatoren auf Schleifenvariablen) und für STL-Iteratoren
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-093}
+\end{center}
+\subsubsection{Beeinflussung der Thread-Anzahl}
+maximale Anzahl
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-094}
+\end{center}
+\noindent
+bedingte Parallelisierung
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-095}
+\end{center}
+
+\subsubsection{Aufteilung des Iterationsbereichs}
+\begin{itemize*}
+  \item Iterationsbereich kann auf verschiedene Weise auf Threads aufgeteilt werden
+  \item Beeinflussung durch schedule-Direktive
+  \begin{itemize*}
+    \item schedule(auto): Default - implementierungsspezifisch
+    \item schedule(static,n): statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
+    \item schedule(dynamic, n): dynamische Verteilung nach Bedarf
+    \item schedule(guided, n): Verteilung nach Bedarf und proportional zur Restarbeit
+    \item …
+  \end{itemize*}
 \end{itemize*}
 
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-\#include <thread>
-\#include <iostream>
-
-void say_hello() {
-std::cout << "Hello Concurrent C++\n";
-}
-
-int main() {
-std::thread t(say_hello);
-t.join();
-}
-\end{lstlisting}
-
-Alternative Erzeugung von Threads über Lamda Ausdruck: 
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-std::thread t([]() { do_something(); });
-\end{lstlisting}
-
-oder mit Instanz einer Klasse - erfordert Überladen von operator()
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-struct my_task {
-void operator()() const { do_something(); }
-};
-
-my_task tsk;
-std::thread t1(tsk); // mit Objekt
-std::thread t2{ my_task() }; // über Konstruktor
-\end{lstlisting}
-
-
-Parameter-Übergabe bei Thread-Erzeugung über zusätzliche Argumente des thread-Konstruktors. Vorsicht bei Übergabe von Referenzen, wenn
-Eltern-Thread vor dem erzeugten Thread beendet wird.
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-void fun(int n, const std::string\& s) {
-for (auto i = 0; i < n; i++)
-  std::cout << s << " ";
-std::cout << std::endl;
-}
-std::thread t(fun, 2, "Hello");
-t.join();
-\end{lstlisting}
-
-
-Warten auf Threads
+\subsubsection{Geschachtelte Schleifen}
 \begin{itemize*}
-  \item t.join() wartet auf Beendigung des Threads t
-  \item blockiert aktuellen Thread
-  \item ohne join() keine Garantie, dass t zur Ausführung kommt
-  \item Freigabe der Ressourcen des Threads
+  \item Parallelisierung mit \textbf{parallel for} beeinflusst nur äußere Schleife
+  \item collapse(n) gibt an, dass n Schleifen in einem gemeinsamen Iterationsbereich zusammengefasst, und auf die Threads verteilt werden sollen
+  \item Beispiel: Matrizenmultiplikation
 \end{itemize*}
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-std::thread t([]() { do_something(); });
-t.join();
-\end{lstlisting}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-096}
+\end{center}
 
-
-Hintergrund Threads
+\subsubsection{Synchronisation}
 \begin{itemize*}
-  \item Threads können auch im Hintergrund laufen, ohne dass auf Ende gewartet werden muss
-  \item "abkoppeln" durch detach()
-  \item Thread läuft danach unter Kontrolle des C++-Laufzeitsystems, join nicht mehr möglich
+  \item Direktiven für parallele Ausführung
+  \begin{itemize*}
+    \item \textbf{\#pragma omp single/master} Abschnitt wird nur durch einen/den Master-Thread ausgeführt
+    \item \textbf{\#pragma omp critical} kritischer Abschnitt
+    \item \textbf{\#pragma omp barrier} Warten auf alle Worker-Threads
+    \item \textbf{\#pragma omp atomic} kritischer Abschnitt - ZUgriff auf gemeinsame Variable (z.B. Zähler)
+  \end{itemize*}
+  \item Speicherklauseln für Variablen
+  \begin{itemize*}
+    \item \textbf{shared} für alle Threads sichtbar/änderbar
+    \item \textbf{private} jeder Thread hat eigene Kopie der Daten, wird nicht außerhalb initialisiert
+    \item \textbf{reduction} private Daten, die am Ende des Abschnitts zu globalem Wert zusammengefasst werden
+    \item \textbf{firstprivate/lastprivate} privat - initialisiert mit letztem Wert vor dem Abschnitt / Wert des letzten Threads der Iteration wird zurückgegeben
+  \end{itemize*}
 \end{itemize*}
 
-Thread-Identifikation
+\subsubsection{Parallele Abschnitte}
 \begin{itemize*}
-  \item Thread-Identifikator vom Typ `std::thread::id`
-  \item Ermittlung über Methode get\_id()
+  \item Zuweisung von Programmabschnitten zu Threads $\rightarrowtail$ statische Parallelität
+  \item geeignet z.B. für rekursive Aufrufe
 \end{itemize*}
-\begin{lstlisting}[
-      language=C++,
-      showspaces=false,
-      basicstyle=\ttfamily
-   ]
-void fun() {
-std::cout << "Hello from "
-          << std::this_thread::get_id()
-          << std::endl;
-}
-std::thread t(fun);
-t.join();
-\end{lstlisting}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-097}
+\end{center}
 
+\subsubsection{Task-Programmierung mit OpenMP}
+\begin{itemize*}
+  \item seit OpenMP 3.0 Unterstützung von Tasks, die
+  \begin{itemize*}
+    \item reihum Threads zugewiesen werden
+    \item an beliebiger Stelle definiert werden können
+    \item von beliebigem Thread definiert werden kann
+  \end{itemize*}
+\end{itemize*}
+\begin{center}
+  \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-098}
+\end{center}
 
-
-\paragraph{Datenparallele Verarbeitung}
-\paragraph{Kommunikation zwischen Threads}
-\paragraph{Taskparallelität}
-
-
-
-
-
-
+\subsubsection{Fazit}
+\begin{itemize*}
+  \item C++ bietet weitreichende und mächtige Konzepte zur Parallelisierung
+  \begin{itemize*}
+    \item von Basiskontrolle wie Threads und Synchronisationsprimitiven (u.a. Mutexe)
+    \item …über höherwertige Abstraktionen wie async, Features und Promises
+    \item bis hin zu deklarativen Ansätzen wie OpenMP
+  \end{itemize*}
+  \item alle Formen von Parallelität (Instruktions-, Daten-, und Taskparallelität) möglich
+  \item aber anspruchsvolle Programmierung
+  \item erleichtert durch zusätzliche Bibliotheken und Frameworks wie Parallel STL, TBB, …
+\end{itemize*}
 \begin{lstlisting}[
 language=java,
 showspaces=false,
@@ -5320,9 +5113,7 @@ countdown(Start) ->
 %% This is a different function because it has a different number of parameters.
 countdown() ->
   countdown(10).
-
 \end{lstlisting}
-\hfill
 
 
 \subsection{Parallele Programmierung in Java}
@@ -5333,10 +5124,12 @@ Unterstützung durch
   \item spezielle High-Level-Klassen im Package
   \newline \textbf{java.util.concurrent}
 \end{itemize*}
+
 \subsubsection{Threads in Java}
 \begin{itemize*}
   \item Repräsentiert durch Klasse \textbf{java.lang.Thread}
   \item Implementierung eines eigenen Kontrollflusses
+  \item Eigene Klasse muss Runnable implementieren
   \begin{itemize*}
     \item Implementierung des Interface \textbf{java.lang.Runnable}
     \begin{itemize*}
@@ -5350,7 +5143,8 @@ Unterstützung durch
     \end{itemize*}
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Threads: Runnable-Schnittstelle}
+
+\paragraph{Threads: Runnable-Schnittstelle}
 Eigene Klasse muss \textbf{Runnable} implementieren
 \begin{itemize*}
   \item Methode \textbf{public void run()} - wird beim Start des Threads aufgerufen
@@ -5358,7 +5152,30 @@ Eigene Klasse muss \textbf{Runnable} implementieren
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-099}
 \end{center}
-\subsubsection{Thread-Erzeugung}
+\begin{lstlisting}[
+  language=java,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
+  public class Heartbeat implements Runnable {
+      int pulse;
+      public Heartbeat(int p) { pulse = p * 1000; }
+      public void run() {
+          while(true) {
+              try { Thread.sleep(pulse); }
+              catch(InterruptedException e) {}
+              System.out.println("poch");
+          }
+      }
+  }
+
+  public static void main(String[] args) {
+      Thread t = new Thread(new Heartbeat(2)); //Thread Objekt mit runnable erzeugen
+      t.start(); //methode start() aufrufen $\rightarrow$ ruft run() auf
+  }
+\end{lstlisting}
+
+\paragraph{Thread-Erzeugung}
 \begin{itemize*}
   \item Thread-Objekt mit Runnable-Objekt erzeugen
   \item Methode \textbf{start()} aufrufen
@@ -5369,7 +5186,8 @@ Eigene Klasse muss \textbf{Runnable} implementieren
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-100}
 \end{center}
-\subsubsection{Threads: Subklasse von Thread}
+
+\paragraph{Subklasse von Thread}
 \begin{itemize*}
   \item Klasse muss von Thread abgeleitet werden
   \item Methode run() muss überschrieben werden
@@ -5377,7 +5195,7 @@ Eigene Klasse muss \textbf{Runnable} implementieren
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-101}
 \end{center}
-\subsubsection{Thread-Erzeugung}
+
 \begin{itemize*}
   \item Objekt der eigenen Thread-Klasse erzeugen
   \item Methode \textbf{start()} aufrufen
@@ -5394,7 +5212,16 @@ Eigene Klasse muss \textbf{Runnable} implementieren
     \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-103}
   \end{center}
 \end{itemize*}
-\subsubsection{Threads: Wichtige Methoden}
+
+
+\paragraph{Threads: Wichtige Methoden}
+  \begin{itemize*}
+    \item void start(): initiiert Ausführung des Threads durch Aufruf der Methode run
+    \item void run(): die eigentliche Arbeitsmethode
+    \item static void sleep(int millis): hält die Ausführung des aktuellen Threads für 'millis' Millisekunden an; Keinen Einfluss auf andere Threads!
+    \item void join(): blockiert den aufrufenden Thread so lange, bis der aufgerufene Thread beendet ist
+  \end{itemize*}
+
 \begin{itemize*}
   \item \textbf{void start()}
   \begin{itemize*}
@@ -5414,6 +5241,7 @@ Eigene Klasse muss \textbf{Runnable} implementieren
     \item blockiert den aufrufenden Thread so lange, bis der aufgerufene Thread beendet ist
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Parallele Berechnung von Fibonacci-Zahlen}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-104}
@@ -5422,6 +5250,7 @@ Thread-Erzeugung und Ausführung
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-105}
 \end{center}
+
 \subsubsection{Wechselseitiger Ausschluss in Java}
 Schlüsselwort \textbf{synchronized}
 \begin{itemize*}
@@ -5443,6 +5272,25 @@ Schlüsselwort \textbf{synchronized}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-106}
 \end{center}
+\begin{itemize*}
+  \item Schlüsselwort synchronized
+  \begin{itemize*}
+    \item Implementierung von sogenannten Monitoren bzw. locks (exklusiven Sperren); nur ein Thread darf den kritischen Abschnitt betreten; alle anderen Threads, die darauf zugreifen wollen, müssen auf Freigabe warten
+    \item für Methoden:
+    \begin{lstlisting}
+      public synchronized void doSomething()
+  \end{lstlisting}
+    \begin{itemize*}
+      \item nur ein Thread darf diese Methode auf einem Objekt zur gleichen Zeit ausführen
+    \end{itemize*}
+    \item für Anweisungen: synchronized(anObject) { ... }
+    \begin{itemize*}
+      \item nur ein Thread darf den Block betreten
+      \item Sperre wird durch das Objekt anObject verwaltet (jedem Java-Objekt ist ein Sperre zugeordnet)
+    \end{itemize*}
+  \end{itemize*}
+\end{itemize*}
+
 \subsubsection{wait \& notify}
 \begin{itemize*}
   \item Signalisierung zwischen Threads in Java
@@ -5452,6 +5300,16 @@ Schlüsselwort \textbf{synchronized}
   \item \textbf{notifyAll()}: weckt alle an diesem Objekt wartenden Threads auf
   \item \textbf{wait() \& notify()} dürfen nur in einem \textbf{synchronized}-Block aufgerufen werden
 \end{itemize*}
+
+\begin{itemize*}
+  \item Signalisierung zwischen Threads in Java
+  \item Basismethoden der Klasse java.lang.Object
+  \item wait() : der aktive Thread wartet an diesem Objekt, Sperren werden ggf. freigegeben!
+  \item notify() : weckt an diesem Objekt wartenden Thread auf
+  \item notifyAll() : weckt alle an diesem Objekt wartenden Threads auf
+  \item wait() \& notify() dürfen nur in einem synchronized -Block aufgerufen werden
+\end{itemize*}
+
 \subsubsection{Java: High-Level-Klassen}
 \begin{itemize*}
   \item Paket \textbf{java.util.concurrent} seit Java Version 1.5
@@ -5463,6 +5321,7 @@ Schlüsselwort \textbf{synchronized}
     \item \textbf{ForkJoinPool \& RecursiveAction}: rekursives Aufteilen eines großen Problems
   \end{itemize*}
 \end{itemize*}
+
 \subsubsection{Tasks und Futures in Java}
 \begin{itemize*}
   \item Task = logische Ausführungseinheit
@@ -5471,6 +5330,20 @@ Schlüsselwort \textbf{synchronized}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-107}
 \end{center}
+\begin{lstlisting}[
+  language=java,
+  showspaces=false,
+  basicstyle=\ttfamily
+]
+Runnable task = () $\rightarrow$ {
+  String me = Thread.currentThread().getName();
+  System.out.println("Hallo " + me);
+};
+task.run();
+Thread thread = new Thread(task);
+thread.start();
+\end{lstlisting}
+
 \subsubsection{Future \& ExecutorService}
 \begin{itemize*}
   \item \textbf{ExecutorService} stellt Methoden zum Starten/Beenden/Steuern von parallelen Aufgaben bereit
@@ -5489,21 +5362,36 @@ Schlüsselwort \textbf{synchronized}
     \item \textbf{T get()}
   \end{itemize*}
 \end{itemize*}
-\subsubsection{Future \& ExecutorService: Beispiel}
+
+\paragraph{Future \& ExecutorService: Beispiel}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-108}
 \end{center}
+
 \subsubsection{RecursiveAction \& Fork/Join}
 \begin{itemize*}
   \item Rekursives Zerlegen eines großen Problems in kleinere Probleme
   \item Solange bis Problem klein genug um direkt ausgeführt werden zu können
   \item Task erstellt zwei oder mehr Teiltasks von sich selbst $\rightarrowtail$ Datenparallelität
+  \item ForkJoinPool zum Ausführen $\rightarrow$ implementiert Executor Interface
   \item \textbf{ForkJoinPool} zum Ausführen
   \begin{itemize*}
     \item implementiert \textbf{Executor} Interface
   \end{itemize*}
+  \item Fazit
+  \begin{itemize*}
+    \item Parallelprogrammierung in Java sehr ähnlich zu C++
+    \item Konzepte: Threads, kritische Abschnitte über synchronized
+    \item mächtige Abstraktionen in java.util.concurrent
+    \begin{itemize*}
+      \item Tasks und Futures, Executor und ThreadPool
+      \item thread-sichere Datenstrukturen
+      \item Synchronisation: Barrieren, Semaphoren, ...
+    \end{itemize*}
+  \end{itemize*}
 \end{itemize*}
-\subsubsection{Fork/Join: Beispiel}
+
+\paragraph{Beispiel}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-109}
 \end{center}
@@ -5516,6 +5404,7 @@ Starten der Verarbeitung:
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-110}
 \end{center}
+
 \subsubsection{Fazit}
 \begin{itemize*}
   \item Parallelprogrammierung in Java sehr ähnlich zu C++
@@ -5525,146 +5414,6 @@ Starten der Verarbeitung:
     \item Tasks und Futures, Executor und Threadpool
     \item thread-sichere Datenstrukturen
     \item Synchronisation: Barrieren, Semaphoren,…
-  \end{itemize*}
-\end{itemize*}
-
-
-\subsection{Parallele Programmierung in Java}
-\begin{itemize*}
-  \item Unterstützung durch:
-  \begin{itemize*}
-    \item Thread-Konzept
-    \item eingebaute Mechanismen zur Synchronisation nebenläufiger Prozesse
-    \item spezielle High-Level-Klassen im Package 'java.util.concurrent'
-  \end{itemize*}
-  \item Threads in Java
-  \begin{itemize*}
-    \item Repräsentiert durch Klasse java.lang.Thread
-    \item Implementierung eines eigenen Kontrollflusses
-    \item Eigene Klasse muss Runnable implementieren
-  \end{itemize*}
-  \begin{lstlisting}[
-        language=java,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
-        public class Heartbeat implements Runnable {
-            int pulse;
-            public Heartbeat(int p) { pulse = p * 1000; }
-            public void run() {
-                while(true) {
-                    try { Thread.sleep(pulse); }
-                    catch(InterruptedException e) {}
-                    System.out.println("poch");
-                }
-            }
-        }
-
-        public static void main(String[] args) {
-            Thread t = new Thread(new Heartbeat(2)); //Thread Objekt mit runnable erzeugen
-            t.start(); //methode start() aufrufen $\rightarrow$ ruft run() auf
-        }
-    \end{lstlisting}
-  \item Threads: Wichtige Methoden
-  \begin{itemize*}
-    \item void start(): initiiert Ausführung des Threads durch Aufruf der Methode run
-    \item void run(): die eigentliche Arbeitsmethode
-    \item static void sleep(int millis): hält die Ausführung des aktuellen Threads für 'millis' Millisekunden an; Keinen Einfluss auf andere Threads!
-    \item void join(): blockiert den aufrufenden Thread so lange, bis der aufgerufene Thread beendet ist
-  \end{itemize*}
-  \item Wechselseitiger Ausschluss in Java
-  \begin{itemize*}
-    \item Schlüsselwort synchronized
-    \begin{itemize*}
-      \item Implementierung von sogenannten Monitoren bzw. locks (exklusiven Sperren); nur ein Thread darf den kritischen Abschnitt betreten; alle anderen Threads, die darauf zugreifen wollen, müssen auf Freigabe warten
-      \item für Methoden:
-      \begin{lstlisting}
-        public synchronized void doSomething()
-    \end{lstlisting}
-      \begin{itemize*}
-        \item nur ein Thread darf diese Methode auf einem Objekt zur gleichen Zeit ausführen
-      \end{itemize*}
-      \item für Anweisungen: synchronized(anObject) { ... }
-      \begin{itemize*}
-        \item nur ein Thread darf den Block betreten
-        \item Sperre wird durch das Objekt anObject verwaltet (jedem Java-Objekt ist ein Sperre zugeordnet)
-      \end{itemize*}
-    \end{itemize*}
-    \item wait \& notify
-    \begin{itemize*}
-      \item  Signalisierung zwischen Threads in Java
-      \item Basismethoden der Klasse java.lang.Object
-      \item wait() : der aktive Thread wartet an diesem Objekt, Sperren werden ggf. freigegeben!
-      \item notify() : weckt an diesem Objekt wartenden Thread auf
-      \item notifyAll() : weckt alle an diesem Objekt wartenden Threads auf
-      \item wait() \& notify() dürfen nur in einem synchronized -Block aufgerufen werden
-    \end{itemize*}
-    \item Java: High-Level-Klassen
-    \begin{itemize*}
-      \item Paket java.util.concurrent seit Java Version 1.5
-      \item Abstraktionsschicht versteckt Details über Thread-Erzeugung
-      \item Übernimmt Erstellung und Überwachung von parallelen Tasks, u.a.
-      \begin{itemize*}
-        \item ExecutorService zum Erzeugen asynchroner Tasks
-        \item Future: Referenz auf diesen Task bzw. dessen Ergebnis
-        \item ForkJoinPool \& RecursiveAction: rekursives
-        \item Aufteilen eines großen Problems
-      \end{itemize*}
-    \end{itemize*}
-    \item Tasks und Futures in Java
-    \begin{itemize*}
-      \item Task = logische Ausführungseinheit
-      \item Thread = Mechanismus zur asynchronen/parallelen Ausführung von Tasks
-      \begin{lstlisting}[
-        language=java,
-        showspaces=false,
-        basicstyle=\ttfamily
-     ]
-    Runnable task = () $\rightarrow$ {
-        String me = Thread.currentThread().getName();
-        System.out.println("Hallo " + me);
-    };
-    task.run();
-    Thread thread = new Thread(task);
-    thread.start();
-    \end{lstlisting}
-    \end{itemize*}
-    \item Future \& ExecutorService
-    \begin{itemize*}
-      \item ExecutorService stellt Methoden zum Starten/Beenden/Steuern von parallelen Aufgaben bereit
-      \item implementiert Executor -Interface
-      \begin{itemize*}
-        \item definiert Methode void execute(Runnable r)
-      \end{itemize*}
-      \item  Starten einerAufgabe mit submit
-      \begin{itemize*}
-        \item Future<T> submit(Callable c)
-        \item Future<?> submit(Runnable r)
-      \end{itemize*}
-      \item Zugriff auf das Ergebnis mit get
-      \begin{itemize*}
-        \item T get(long timeout, TimeUnit unit)
-        \item T get()
-      \end{itemize*}
-    \end{itemize*}
-    \item RecursiveAction \& Fork/Join
-    \begin{itemize*}
-      \item Rekursives Zerlegen eines großen Problems in kleinere Probleme
-      \item Solange bis Problem klein genug um direkt ausgeführt werden zu können
-      \item Task erstellt zwei oder mehr Teiltasks von sich selbst $\rightarrow$ Datenparallelität
-      \item ForkJoinPool zum Ausführen $\rightarrow$ implementiert Executor Interface
-    \end{itemize*}
-    \item Fazit
-    \begin{itemize*}
-      \item Parallelprogrammierung in Java sehr ähnlich zu C++
-      \item Konzepte: Threads, kritische Abschnitte über synchronized
-      \item mächtige Abstraktionen in java.util.concurrent
-      \begin{itemize*}
-        \item Tasks und Futures, Executor und ThreadPool
-        \item thread-sichere Datenstrukturen
-        \item Synchronisation: Barrieren, Semaphoren, ...
-      \end{itemize*}
-    \end{itemize*}
   \end{itemize*}
 \end{itemize*}
 
@@ -6134,7 +5883,7 @@ Wofür werden verteilte Systeme eingesetzt?
 \begin{minipage}[h]{0.4\linewidth}
   \includegraphics[width=1.0\linewidth]{Assets/Programmierparadigmen-002}
 \end{minipage}
-\clearpage
+
 …verteilten Verkehrsmanagementsystemen\newline \newline
 \begin{minipage}[h]{0.5\linewidth}
   \begin{itemize*}
@@ -6273,7 +6022,7 @@ Liste der verbundenen Knoten
     \color{blue} erlang:\color{OliveGreen}set\_cookie(node(), \color{blue}Cookie)\color{black}
     \item Option: erl - setcookie Cookie
   \end{itemize*}
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{Verbindungsaufbau zwischen Erlangknoten}
 Verbindungsaufbau mittels \color{blue} net\_adm:\color{black}ping Funktion
 \begin{center}
@@ -6285,7 +6034,7 @@ Starten eines Prozesses auf einem entfernten Host
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-012}
-\end{center}\clearpage
+\end{center}
 \subsection{Alternating Bit Protokoll}
 \subsubsection{Übersicht}
 \begin{itemize*}
@@ -6350,7 +6099,7 @@ drei Prozesse mit \textbf{initialize(ErrorRate, NumberOfMessages, ReceiverPid, S
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0021}
-\end{center}\clearpage
+\end{center}
 \subsection{Kommunikationsmodelle \& Implementierungen}
 \subsubsection{Kommunikationsmodelle}
 Frage: Wie sollen Knoten miteinander kommunizieren? 
@@ -6424,7 +6173,7 @@ Kommunikationspartner sind für uns:
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0024}
-\end{center}\clearpage
+\end{center}
 \noindent \color{orange} asynchrones Senden: \color{black} Der Sender wartet nicht bis der Empfänger die Botschaft annimmt ("fire and forget" Prinzip)
 \begin{center}
   \centering
@@ -6448,7 +6197,7 @@ Kommunikationspartner sind für uns:
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-0026}
-\end{center}\clearpage
+\end{center}
 \color{orange} asynchrones Empfangen: \color{black} Der Empfänger macht weiter, falls keine Nachricht eingetroffen ist
 \begin{center}
   \centering
@@ -6472,7 +6221,7 @@ Kommunikationspartner sind für uns:
     \end{itemize*}
     \item einfache Implementierung von Nebenläufigkeit
   \end{itemize*}
-\end{itemize*}\clearpage 
+\end{itemize*} 
 \subsubsection{Fehlerbehandlung}
 \begin{itemize*}
   \item unverlässliches vs. verlässliches Senden
@@ -6543,7 +6292,7 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
     \item Neustart des Prozesses
   \end{itemize*}
   \item auch über Erlang-Knotengrenzen hinweg!
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{Anwendung des on\_exit-Handlers}
 \begin{center}
   \centering
@@ -6575,7 +6324,7 @@ Umgang mit Fehlern (Timeouts, Ausfälle)
     \item z.B. durch Sequenznummern (erfordert Protokollierung zur Duplikatelliminierung)
     \item für nicht-idempotente Operationen (schreibend, z.B. Einfügen, Löschen)
   \end{itemize*}
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{Auftragsorientierte Modelle}
 \begin{itemize*}
   \item klassische Modell serviceorientierten Systemdesigns
@@ -6615,7 +6364,7 @@ Typische Anwendungsszenarien
     \item Auftragserteilung in der Regel synchron
     \item es existieren aber auch asynchrone Aufträge
   \end{itemize*}
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{Auftragsorientierte Modelle: Implementierung}
 \begin{itemize*}
   \item Implementierung aufbauend auf send/receive
@@ -6787,7 +6536,7 @@ https://reques.in kostenloser Dienst zum Testen von REST-Clients
     \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-040}
   \end{center}
   \item Variante 3: Aufruf in einem Programm
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{HTTP GET Aufrufe in Java}
 In Java ab Version 11 eingebauter HTTP Client
 \begin{center}
@@ -6888,7 +6637,7 @@ Der Server-Stub/Skeleton
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-047}
-\end{center}\clearpage
+\end{center}
 \subsubsection{RMI: Server}
 Server-Objekt muss: 
 \begin{itemize*}
@@ -6905,7 +6654,7 @@ Server-Objekt anlegen:
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-049}
-\end{center}\clearpage
+\end{center}
 \subsubsection{RMI - Client}
 \begin{itemize*}
   \item über Namensdienst Server-Objekt finden
@@ -6955,7 +6704,7 @@ fileservice.proto
 \begin{center}
   \centering
   \includegraphics[width=0.7\linewidth]{Assets/Programmierparadigmen-054}
-\end{center}\clearpage
+\end{center}
 \subsubsection{gRPC: Dienstbeschreibung - Erläuterungen}
 \begin{itemize*}
   \item Datenklasse \textbf{FileInfo} mit drei Attributen, Zahlen geben Reihenfolge bei Serialisierung an
@@ -7203,7 +6952,7 @@ Cloud Computing als Geschäftsmodell:
   \begin{itemize*}
     \item Bezahlung nur für genutzte Zeit ("pay-as-you-go")
   \end{itemize*}
-\end{itemize*}\clearpage
+\end{itemize*}
 \subsubsection{Cloud Computing: Architekturen}
 \begin{center}
   \centering

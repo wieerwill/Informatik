@@ -22,7 +22,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - [Programmierparadigmen](Programmierparadigmen.md)
-  - [LaTex Version](Programmierparadigmen.pdf)
+  - [LaTex Version](Programmierparadigmen.pdf) (work in progress)
 - [Rechnerarchitekturen 1](Rechnerarchitekturen%201.md)
   - [Praktikum A1](Rechnerarchitekturen%201%20-%20Praktikum%20A1.pdf)
   - [Praktikum A2](Rechnerarchitekturen%201%20-%20Praktikum%20A2.pdf)

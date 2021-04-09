@@ -231,11 +231,11 @@ Einführen von Mechanismen zur Handhabung von komplexeren Code
 
 \subsubsection{Richtiges Abstraktionsniveau bei Unit Testing}
 \begin{itemize*}
-  \item Um die Tests auszuführen, müssen jeweils entsprechende Hauptprogramme generiert werden ("Test Suites")
+  \item Um die Tests auszuführen, müssen jeweils entsprechende Hauptprogramme generiert werden ('Test Suites')
   \item Hauptschwierigkeiten von Unit-Tests:
   \begin{itemize*}
     \item Richtiges Abstraktionsniveau
-    \item "Herauslösen" von zu testendem Code aus Umgebung
+    \item 'Herauslösen' von zu testendem Code aus Umgebung
   \end{itemize*}
   \item Zwei wesentliche Möglichkeiten:
   \begin{itemize*}
@@ -285,10 +285,10 @@ class MultiTest {
   \item Unterschiedliche Gründe
   \begin{itemize*}
     \item Testen (um Fehler zu injizieren!)
-    \item Fehlersuche ("Debugging")
+    \item Fehlersuche ('Debugging')
     \item Nachladen von Plugins zur Modularisierung von Programmen
     \item Serialisierung/Deserialisierung von Code
-    \item "Patchen" zur Laufzeit
+    \item 'Patchen' zur Laufzeit
     \item Erkunden der Ablaufumgebung (z.B. OS-/Shared-Library Version)
   \end{itemize*}
   \item Benötigt die Fähigkeit, im Programm Codestruktur zu analysieren und ggf. zu verändern:
@@ -333,7 +333,6 @@ public static void main(String[] args) {
 }
 \end{lstlisting}
 
-
 \subsubsection{Annotationen}
 \begin{itemize*}
   \item Annotationen erlauben Anmerkungen an Klassen \& Methoden
@@ -342,11 +341,11 @@ public static void main(String[] args) {
   \item Aber auch eigene; u.a. durch Reflections abrufbar
   \item Häufig genutzt, wenn zusätzlicher Code geladen wird (Java EE)
   \item Oder um Unit-Tests zu markieren...
-\end{itemize*}
-Nachteile:
+\item Nachteile:
 \begin{itemize*}
   \item Geringe Geschwindigkeit weil Zugriff über Programmcode erfolgt
   \item Kapselung kann umgangen werden
+\end{itemize*}
 \end{itemize*}
 
 \begin{lstlisting}[language=java]
@@ -354,6 +353,7 @@ class MultiTest {
 @org.junit.jupiter.api.Test
 void mul() {
   ...
+}
 \end{lstlisting}
 
 \subsubsection{Reflektionen über Reflections}
@@ -390,14 +390,14 @@ void mul() {
   \end{itemize*}
 \end{itemize*}
 
-\begin{lstlisting}[      language=java   ]
+\begin{lstlisting}[language=java]
 class Stack {
-public void push(Object o) {
+  public void push(Object o) {
+    ...
+    if(empty() == true) // es sollte ein Objekt da sein
+      System.exit(-1);
+  }
   ...
-  if(empty() == true) // es sollte ein Objekt da sein
-    System.exit(-1);
-}
-...
 }
 \end{lstlisting}
 
@@ -409,9 +409,14 @@ Aber: Ausführungsgeschwindigkeit niedriger
     \item Aktivieren der Tests in UnitTests und Debug-Versionen
     \item Deaktivieren in Releases
   \end{itemize*}
-  \item Wann Assertion hinzufügen? "Eigentlich"-Regel: beim Gedanken "eigentlich müsste hier ... gelten" hinzufügen
+  \item Woran erkennt man beim Programmieren bzw. (erneutem) Lesen von Code, dass man eine Assertion hinzufügen sollte?
+  \item Eine einfache Heuristik - Die 'Eigentlich'-Regel:
+  \begin{itemize*}
+    \item Wenn einem beim Lesen von Programmcode ein Gedanke der Art 'Eigentlich müsste an dieser Stelle XY gelten' durch den Kopf geht,
+    \item dann sofort eine entsprechende Assertion formulieren!
+  \end{itemize*}
   \item Aktivierung der Tests über Start mit java -ea
-  \item Benötigt spezielle "if"-Bedingung: assert
+  \item Benötigt spezielle 'if'-Bedingung: assert
 \end{itemize*}
 \begin{lstlisting}[language=java]
 class Stack {
@@ -421,16 +426,6 @@ class Stack {
     }
 }
 \end{lstlisting}
-
-\subsubsection{Welche braucht man?}
-\begin{itemize*}
-  \item Woran erkennt man beim Programmieren bzw. (erneutem) Lesen von Code, dass man eine Assertion hinzufügen sollte?
-  \item Eine einfache Heuristik - Die "Eigentlich"-Regel:
-  \begin{itemize*}
-    \item Wenn einem beim Lesen von Programmcode ein Gedanke der Art "Eigentlich müsste an dieser Stelle XY gelten" durch den Kopf geht,
-    \item dann sofort eine entsprechende Assertion formulieren!
-  \end{itemize*}
-\end{itemize*}
 
 \subsubsection{Spezielle Assertions: Pre- \& Postconditions}
 \begin{itemize*}
@@ -489,7 +484,7 @@ public void push(Object o) {
   \item Wie wird mit Fehlern umgegangen?
   \item gut für Code-Komplexität: Fehlerprüfungen an zentralerer Stelle
   \begin{itemize*}
-    \item Abbrechen und Programm-Stack "abbauen" bis (zentralere) Fehlerbehandlung greift
+    \item Abbrechen und Programm-Stack 'abbauen' bis (zentralere) Fehlerbehandlung greift
     \item Dabei Fehler sinnvoll gruppieren
   \end{itemize*}
   \item Java (und viele mehr): try/catch/throw-Konstrukt
@@ -528,7 +523,7 @@ void dangerousFunction() throws IOException {
 }
 \end{lstlisting}
 
-Die Deklaration mit "throws IOException" lässt beim build mögliche Fehler durch IOExceptions dieser Funktion zu, diese müssen durch die aufrufende Methode abgefangen werden.
+Die Deklaration mit 'throws IOException' lässt beim build mögliche Fehler durch IOExceptions dieser Funktion zu, diese müssen durch die aufrufende Methode abgefangen werden.
 Aufrufe ohne try-catch-Block schlagen fehl!
 Sollte man checked oder unchecked Exceptions verwenden?
 \begin{itemize*}
@@ -583,7 +578,7 @@ String min(String a, String b) { // lexikographisch
 \subsubsection{Grenzen von Typsubstitution}
 Kann ein Objekt einer Oberklasse (eines Typs) durch ein Objekt seiner Unterklasse (Subtyps) ersetzt werden?
 
-Möglicher Ausweg: Klassenhierarchie mit zentraler Basisklasse
+Möglicher Ausweg 1: Klassenhierarchie mit zentraler Basisklasse
 \begin{lstlisting}[language=java]
 void sort(Object[] feld) { ... }            //z.B. java.lang.Object
 void sort(java.util.Vector feld) { ... }    //alternativ (nutzt intern Object)
@@ -611,7 +606,7 @@ long min(long a, long b) {
 
 Kreis-Ellipse-Problem: Modellierung von Vererbungsbeziehungen
 \begin{itemize*}
-  \item "Ist ein Kreis eine Ellipse?" "Oder eine Ellipse ein Kreis?"
+  \item 'Ist ein Kreis eine Ellipse?' 'Oder eine Ellipse ein Kreis?'
   \item Annahme: Kreis := Ellipse mit Höhe = Breite
 \end{itemize*}
 \begin{lstlisting}[language=java]
@@ -623,7 +618,7 @@ c.skaliereY(.5);        //is das noch ein Kreis?
 evtl. Reihenfolge in der Klassenhierarchie tauschen (nutzung von Radius)? Was bedeutet das für Ellipse?
 Verwandte Probleme: Rechteck-Quadrat, Set-Bag
 
-\subsubsection{Ko- und Kontravarianz}
+\subsection{Ko- und Kontravarianz}
 Geg.: Ordnung von Datentypen von spezifisch $\rightarrow$ allgemeiner
 
 \begin{itemize*}
@@ -657,7 +652,7 @@ class Student {
 }
 \end{lstlisting}
 
-Wie überschreibt man in einer Unterklasse Girl oder Boy die Methode "setRoomMate" in elternfreundlicher Weise? Von Eltern sicher gewollt - Kovarianz:
+Wie überschreibt man in einer Unterklasse Girl oder Boy die Methode 'setRoomMate' in elternfreundlicher Weise? Von Eltern sicher gewollt - Kovarianz:
 \begin{lstlisting}[language=java]
 class Boy extends Student {
   void setRoomMate(Boy b) { ... }
@@ -722,7 +717,7 @@ String s = GMethod.<String>thisOrThat("Java", "C++");
 Integer i = GMethod.<Integer>thisOrThat(new Integer(42), new Integer(23));
 \end{lstlisting}
 
-\subsubsection{Generics in Java (Typsicherheit)}
+\subsection{Generics in Java (Typsicherheit)}
 Motivation: Parametrisierung von Kollektionen mit Typen
 \begin{lstlisting}[language=java]
 LinkedList<String> liste = new LinkedList<String>();
@@ -757,7 +752,7 @@ class GMethod {
 
 \begin{itemize*}
   \item T = Typparameter (oder auch Typvariable) wird wie Typ verwendet, stellt jedoch nur einen Platzhalter dar
-  \item wird bei Instanziierung (Parametrisierung) durch konkreten Typ "ersetzt"
+  \item wird bei Instanziierung (Parametrisierung) durch konkreten Typ 'ersetzt'
   \item nur Referenzdatentypen (Klassennamen), keine primitiven Datentypen
   Anwendung:
   \item explizite Angabe des Typparameters
@@ -772,7 +767,7 @@ Integer i = GMethod.thisOrThat(new Integer(42), new Integer(23));
   \end{lstlisting}
 \end{itemize*}
 
-\subsubsection{Eingrenzung von Typparametern}
+\subsection{Eingrenzung von Typparametern}
 Festlegung einer Mindestfunktionalität der einzusetzenden Klasse, z.B. durch Angabe einer Basisklasse
 \begin{itemize*}
   \item Instanziierung von T muss von Comparable abgeleitet werden (hier ein Interface, dass wiederum generisch ist, daher Comparable<T>)
@@ -840,8 +835,8 @@ GArray<String> anArray = new GArray<String>();
 GArray<Object> anotherArray = (GArray<Object>) anArray;
 \end{lstlisting}
 
-\subsubsection{Wildcards}
-Wildcard "?" als Typparameter und abstrakter Supertyp für alle Instanziierungen
+\subsection{Wildcards}
+Wildcard '?' als Typparameter und abstrakter Supertyp für alle Instanziierungen
 \begin{lstlisting}[language=java]
 GArray<?> aRef;
 aRef = new GArray<String>();
@@ -868,31 +863,31 @@ static void pF(GArray<Float> ia) {
 }
 \end{lstlisting}
 
-Beschränkte Wildcards 
+\subsubsection{Beschränkte Wildcards}
 \begin{itemize*}
-  \item nach "unten" in der Klassenhierarchie $\rightarrow$ Kovarianz
+  \item nach 'unten' in der Klassenhierarchie $\rightarrow$ Kovarianz
   \begin{lstlisting}[language=java] 
-? extends Supertyp 
-\end{lstlisting}
+  ? extends Supertyp 
+  \end{lstlisting}
   \item Anwendungsbeispiel: Sortieren eines generischen Feldes erfordert Unterstützung der Comparable-Schnittstelle
   \begin{lstlisting}[language=java]
-void sortArray(GArray<? extends Comparable> array) {
-  ...
-}
-\end{lstlisting}
-  \item nach "oben" in der Klassenhierarchie $\rightarrow$ Kontravarianz
+  void sortArray(GArray<? extends Comparable> array) {
+    ...
+  }
+  \end{lstlisting}
+  \item nach 'oben' in der Klassenhierarchie $\rightarrow$ Kontravarianz
   \begin{lstlisting}[language=java]
-? super Subtyp
+  ? super Subtyp
   \end{lstlisting}
   \item Anwendungsbeispiel: Feld mit ganzen Zahlen und Objekten
   \begin{lstlisting}[language=java]
-GArray<? super Integer> array;
-// Zuweisungskompatibel zu ...
-array = new GArray<Number>();
-array = new GArray<Object>();
-array = new GArray<Integer>();
-// aber nur erlaubt:
-Object obj = array.get(0);
+  GArray<? super Integer> array;
+  // Zuweisungskompatibel zu ...
+  array = new GArray<Number>();
+  array = new GArray<Object>();
+  array = new GArray<Integer>();
+  // aber nur erlaubt:
+  Object obj = array.get(0);
   \end{lstlisting}
 \end{itemize*}
 
@@ -918,7 +913,7 @@ PECS = Producer extends, Consumer super $\rightarrow$ Producer liest nur sachen,
   \end{itemize*}
 \end{itemize*}
 
-"C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off." [Bjarne Stroustrup]
+'C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.' [Bjarne Stroustrup]
 
 Wichtige Makrobefehle:
 \begin{lstlisting}[language=C++]
@@ -966,10 +961,10 @@ Foo::~Foo() {
   \item Reine Implementierung auch im Header möglich, aber Trennung von Implementierung und Deklaration erlaubt schnelleres Kompilieren
   \item Trennung nicht immer möglich (später mehr Details), aber im Allgemeinen zu bevorzugen
   \item Der scope-Operator :: wird zum Zugriff auf namespaces und zur Beschreibung der Klassenzugehörigkeit von Methoden verwendet
-  \item Initialisierung von Variablen vor Funktionsrumpf etwas "merkwürdig" zu lesen, aber erlaubt schnelle Implementierungen...
+  \item Initialisierung von Variablen vor Funktionsrumpf etwas 'merkwürdig' zu lesen, aber erlaubt schnelle Implementierungen...
   \begin{itemize*}
-    \item Syntax: nach Konstruktor : dann jeweils Variable(Wert)
-    \item Variablen durch , getrennt
+    \item Syntax: nach Konstruktor, dann jeweils Variable(Wert)
+    \item Variablen durch ',' getrennt
     \item Wichtig: Reihenfolge der Variablen wie in Deklaration der Klasse!
   \end{itemize*}
   \item Schlüsselworte private, protected und public vergleichbar zu Java, werden aber vor ganze Blöcke geschrieben
@@ -1002,11 +997,11 @@ Foo::~Foo() {
     \item Parametertypen (oder const-Markierung) müssen sich unterscheiden!
     \item Nur Veränderung des Rückgabewertes nicht ausreichend
     \begin{lstlisting}[language=C++]
-  class Foo {
-    public:
-      void doMagic(int i);
-      void doMagic(std::string s);
-  };
+    class Foo {
+      public:
+        void doMagic(int i);
+        void doMagic(std::string s);
+    };
     \end{lstlisting}
   \end{itemize*}
 \end{itemize*}
@@ -1054,7 +1049,7 @@ playMinesweeper();
 Eine (oft hässliche) Eigenschaft des \#include-Befehls: kein Überprüfen ob eine Datei vorher bereits eingebunden wurde. Problematisches Beispiel:
 \begin{lstlisting}[language=C++]
 #include "Bar.hpp" //in "Bar.hpp" ist "Foo.hpp" bereits inkludiert worden
-#include "Foo.hpp" //Fehler weil kallse Foo bereits deklariert wurde
+#include "Foo.hpp" //Fehler weil klasse Foo bereits deklariert wurde
 \end{lstlisting}
 
 Common Practice: Include-Guards um alle Header-Dateien
@@ -1083,7 +1078,7 @@ Common Practice: Include-Guards um alle Header-Dateien
 \paragraph{Eigenschaften des Stack-Speichers}
 
 \begin{itemize*}
-  \item Variablen/Objekte haben klare Lebensdauer $\rightarrow$ Werden immer gelöscht wenn Funktion verlassen wird  $\rightarrow$ Man kann Speicher nicht "aufheben"
+  \item Variablen/Objekte haben klare Lebensdauer $\rightarrow$ Werden immer gelöscht wenn Funktion verlassen wird  $\rightarrow$ Man kann Speicher nicht 'aufheben'
   \item In der Regel sehr schnell, weil im Prozessor-Cache
   \item In der Größe begrenzt, z.B. 8MB bei aktuellen Linux-Systemen
   \item Für flexiblere Speicherung brauchen wir anders organisierten Speicher...
@@ -1147,19 +1142,19 @@ Beispiele
   \item Zeiger können durch \& auf beliebige Variablen ermittelt werden
   \begin{lstlisting}[language=C++]
     int i = 0;
-    int* j = \&i; // \&-Operator erzeugt Zeiger; j darf nicht gelöscht werden
+    int* j = &i; // &-Operator erzeugt Zeiger; j darf nicht gelöscht werden
     \end{lstlisting}
   \item Zeiger können durch * dereferenziert werden
   \begin{lstlisting}[language=C++]
     int i = 0;
-    int* j = \&i; // \&-Operator erzeugt Zeiger
+    int* j = &i; // &-Operator erzeugt Zeiger
     *j = 1; // Zugriff auf Variableninhalt
     \end{lstlisting}
   \item Zugriff auf Methoden/Member Variablen
   \begin{lstlisting}[language=C++]
     std::string* s = new std::string("wiz");
     (*s).push_back('?'); // manuelles Derefenzieren
-    s$\rightarrow$push_back('?'); // $\rightarrow$ Operator
+    s->push_back('?'); // -> Operator
     delete s;
     \end{lstlisting}
   \item C++ übergibt alles als Kopie
@@ -1177,7 +1172,7 @@ Beispiele
     void set(std::string* s) { *s = "foo"; }
     int main() {
     std::string s = "bar";
-    set(\&s);
+    set(&s);
     std::cout << s; // gibt foo aus
     return 0;
     }
@@ -1186,7 +1181,7 @@ Beispiele
   \begin{lstlisting}[language=C++]
     std::string* magicStr() {
     std::string s("wiz!");
-    return \&s; // gibt Speicher auf Stack weiter; Tun Sie das nie!
+    return &s; // gibt Speicher auf Stack weiter; Tun Sie das nie!
     }
     int main() {
     std::string* s = magicStr();
@@ -1213,7 +1208,7 @@ Warum wirken sich Speicherfehler so unvorhersehbar aus?
   \item Markiert durch Suffix \&
   \item Beispiel:
   \begin{lstlisting}[language=C++]
-void set(std::string\& s) { s = "foo"; }
+void set(std::string& s) { s = "foo"; }
   int main() {
   std::string s = "bar";
   set(s);
@@ -1250,13 +1245,13 @@ void set(std::string\& s) { s = "foo"; }
   \end{lstlisting}
   \item Konvertierung von Zeigern zu Referenzen mit $*$-Operator:
   \begin{lstlisting}[language=C++]
-  std::string\& s = *magicStr(); // Konvertieren in Referenz; Delete nicht mehr möglich
-  std::string s2 = *magicStr(); // Konvertieren in Referenz \& Kopie! Delete nicht direkt möglich
+  std::string& s = *magicStr(); // Konvertieren in Referenz; Delete nicht mehr möglich
+  std::string s2 = *magicStr(); // Konvertieren in Referenz & Kopie! Delete nicht direkt möglich
   \end{lstlisting}
   \item Konvertierung von Referenzen zu Zeigern mit $\&$-Operator:
   \begin{lstlisting}[language=C++]
     std::string s("bla");
-    std::string* sStar = \&s; // Konvertieren in Zeiger
+    std::string* sStar = &s; // Konvertieren in Zeiger
   \end{lstlisting}
 \end{itemize*}
 
@@ -1265,8 +1260,8 @@ void set(std::string\& s) { s = "foo"; }
   \begin{itemize*}
     \item Niemals Speicher doppelt löschen - Niemals Löschen vergessen!
     \item Häufige Praxis: Zeiger auf NULL setzen nach dem Löschen (Aber: gibt es danach wirklich keinen anderen Zeiger mehr?)
-    \item Nur Speicher löschen, der mit "new" allokiert wurde
-    \item Speicher der mit "new" allokiert wurde in jedem möglichen Programmablauf löschen (selbst wenn Exceptions auftreten)...
+    \item Nur Speicher löschen, der mit 'new' allokiert wurde
+    \item Speicher der mit 'new' allokiert wurde in jedem möglichen Programmablauf löschen (selbst wenn Exceptions auftreten)...
     \item Nie über Feldgrenzen hinweg lesen/schreiben (auch negative Indizes!)
     \item Programme ausgiebig testen (dabei Address Sanitizer aktivieren!)
     \item Statische Code Analyse nutzen: z.B. http://cppcheck.sourceforge.net
@@ -1276,13 +1271,13 @@ void set(std::string\& s) { s = "foo"; }
   \begin{itemize*}
     \item Speicher (oder Ressourcen im Allgemeinen) wird nur im Konstruktor einer Klasse reserviert
     \item Destruktor gibt Speicher frei
-    \item Sicheres (Exceptions!), nachvollziehbares Konstrukt
+    \item sicheres (Exceptions!), nachvollziehbares Konstrukt
     \item Beispiel: (Funktioniert leider noch nicht immer)
     \begin{lstlisting}[language=C++]
     class MagicString {
       std::string* s;
       public:
-        MagicString() : s(new std::string("wiz!")) {}
+        MagicString() { s(new std::string("wiz!")) }
         std::string* magicStr() { return s; }
         ~MagicString() { delete s; }
     };
@@ -1309,7 +1304,7 @@ void set(std::string\& s) { s = "foo"; }
 \end{itemize*}
 
 \begin{itemize*}
-  \item Unterschied zu Java: Methoden "liegen" bei C++ statisch im Speicher
+  \item Unterschied zu Java: Methoden 'liegen' bei C++ statisch im Speicher
   \begin{itemize*}
     \item D.h. $f.magic();$ ruft statisch magic-Methode in Klasse Foo auf, weil f eine Referenz vom Typ Foo ist
     \item Vermeidet Mehrfachimplementierungen, realisiert aber keine einheitliche Schnittstelle!
@@ -1329,18 +1324,18 @@ void set(std::string\& s) { s = "foo"; }
       public:
         int magic() const override { return 42; }
     };
-    int r(const Foo\& f) { return f.magic(); }
+    int r(const Foo& f) { return f.magic(); }
     int main() {
-      return r(FooBar()); // yeah gibt 42 zurück!
+      return r(FooBar()); // gibt 42 zurück!
     }
     \end{lstlisting}
-    \item virtual-Markierung genügt in Oberklasse, alle abgeleiteten Methoden ebenfalls "virtuell"
+    \item virtual-Markierung genügt in Oberklasse, alle abgeleiteten Methoden ebenfalls 'virtuell'
     \item override-Markierung optional, aber hätte vor fehlendem virtual gewarnt!
   \end{itemize*}
 \end{itemize*}
 
 Definierte Programmierschnittstellen durch Überschreiben von Methoden/abstrakte Methoden; Vermeiden von Dopplung interner Daten.
-Unterschied zu Java: Methoden "liegen" bei C++ statisch im Speicher
+Unterschied zu Java: Methoden 'liegen' bei C++ statisch im Speicher
 
 \begin{lstlisting}[language=C++]
 class Stromfresser {
@@ -1358,7 +1353,7 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-Mit virtual: "Mjam", ohne virtual: "Mjam Mjam"
+Mit virtual: 'Mjam', ohne virtual: 'Mjam Mjam'
 
 \paragraph{Mehrfachvererbung}
 
@@ -1415,7 +1410,7 @@ class Geraet {
     Automatisierungsmodul* _a;
     Geraet(Automatisierungsmodul* a, Saeuberungsmodul* s): _a(a), _s(s) {}
   public:
-    void steuere() { _a$\rightarrow$steuere(); }
+    void steuere() { _a->steuere(); }
   };
 }
 \end{lstlisting}
@@ -1443,13 +1438,13 @@ class MagicString {
     std::string* s;
 public:
     MagicString() : s(new std::string("wiz!")) {}
-    MagicString(const MagicString\& m) : s(new std::string(*m.s)) {}
+    MagicString(const MagicString& m) : s(new std::string(*m.s)) {}
     std::string* magicStr() { return s; }
     // Neu: = operator erlaubt Zuweisungen
-    MagicString\& operator=(const MagicString\& other) {
-        if(this != \&other) {
+    MagicString& operator=(const MagicString& other) {
+        if(this != &other) {
             // ACHTUNG beide Werte werden dereferenziert...
-            // ruft operator= in std::string auf $\rightarrow$ String wird kopiert
+            // ruft operator= in std::string auf -> String wird kopiert
             *s = *other.s;
         }
         return *this;
@@ -1467,7 +1462,7 @@ public:
 \end{itemize*}
 
 \begin{lstlisting}[language=C++]
-template<typename T> // typename keyword $\rightarrow$ deklariert T als Typ
+template<typename T> // typename keyword -> deklariert T als Typ
 T max(T a, T b) {
   return (a > b ? a : b);
 }
@@ -1533,7 +1528,7 @@ int l = max(j, i); // automat. Typinferenz durch Parametertypen
   for(std::vector<int>::iterator i = v.begin(); i != v.end(); ++i) {
     std::cout << *i << std::endl;
   }
-  // auto erlaubt Typinferenz $\rightarrow$ Code lesbarer, aber fehleranfälliger
+  // auto erlaubt Typinferenz -> Code lesbarer, aber fehleranfälliger
   for(auto i = v.begin(); i != v.end(); ++i) {
     std::cout << *i << std::endl;
   }
@@ -1589,7 +1584,7 @@ stringP hello() { // gibt kopie der referenz zurück
 int main() {
   stringP x = hello();
   stringP y(x); // Erstellen einer weiteren Referenz
-  std::cout << y$\rightarrow$length();
+  std::cout << y->length();
   return 0; // Original-String wird gelöscht wenn letzte Ref. weg
 }
 
@@ -1600,8 +1595,8 @@ public:
   // neue Referenz auf Objekt erzeugen
   shared_ptr(T* t) : p(t), r(new int) { *r = 1; }
   // Referenz durch andere Referenz erzeugen
-  shared_ptr(const shared_ptr<T>\& sp) : p(sp.p), r(sp.r) { ++(*r); }
-  T* operator$\rightarrow$() const { // benutzen wie einen richtigen Zeiger
+  shared_ptr(const shared_ptr<T>& sp) : p(sp.p), r(sp.r) { ++(*r); }
+  T* operator->() const { // benutzen wie einen richtigen Zeiger
     return p;
   }
   ~shared_ptr() {
@@ -1621,8 +1616,8 @@ public:
     // neue Referenz auf Objekt erzeugen
     shared_ptr(T* t) : p(t), r(new int) { *r = 1; }
     // Referenz durch andere Referenz erzeugen
-    shared_ptr(const shared_ptr<T>\& sp) : p(sp.p), r(sp.r) { ++(*r); }
-    T* operator$\rightarrow$() const { // benutzen wie einen richtigen Zeiger
+    shared_ptr(const shared_ptr<T>& sp) : p(sp.p), r(sp.r) { ++(*r); }
+    T* operator->() const { // benutzen wie einen richtigen Zeiger
         return p;
     }
     ~shared_ptr() {
@@ -1658,7 +1653,7 @@ public:
   \end{itemize*}
   \item Primitive Datentypen:
   \begin{itemize*}
-    \item Wie in Java einfache Datentypen, die "Zahlen" enthalten
+    \item Wie in Java einfache Datentypen, die 'Zahlen' enthalten
     \item char, short, int, long sind auf 64-bit Maschinen 8 bit, 16 bit, 32 bit und 64 bit breit (char braucht in Java 16 Bit!)
     \item long ist auf 32 bit Maschinen 32 Bit breit, long long [sic!] ist immer 64 Bit
     \item bool speichert Boolsche Werte (Breite hängt vom Compiler ab!)
@@ -1762,7 +1757,7 @@ Kategorien der funktionalen Sprachen
       \item Synonyme: Lazy evaluation, call by need
       \item Funktionsargumente werden unausgewertet an die Funktion übergeben
       \item Erst wenn die Funktion (in ihrem Körper) die Argumente benötigt, werden die eingesetzten Argumentausdrücke berechnet, und dann nur einmal.
-      \item Realisiert "Sharing" (im Unterschied zur Normalform-Reduktion - dort werden gleiche Ausdrücke immer wieder erneut berechnet).
+      \item Realisiert 'Sharing' (im Unterschied zur Normalform-Reduktion - dort werden gleiche Ausdrücke immer wieder erneut berechnet).
     \end{itemize*}
   \end{itemize*}
   \item Typisierung:
@@ -1813,12 +1808,12 @@ Ein applikativer Algorithmus ist eine Menge von Funktionsdefinitionen. Die erste
   \item Anschließend können Anfragen im Interpreter gestellt werden
 \end{itemize*}
 
-Modul "fakultaet.erl":
+Modul 'fakultaet.erl':
 \begin{lstlisting}[language=erlang]
 -module(fakultaet).
 -export([fak/1]).
-fak(0) $\rightarrow$ 1;
-fak(N) when N > 0 $\rightarrow$ (N) * fak(N-1).
+fak(0) -> 1;
+fak(N) when N > 0 -> (N) * fak(N-1).
 \end{lstlisting}
 
 Laden in Interpreter mittels: $c(fakultaet)$
@@ -1865,8 +1860,8 @@ Atome (Atoms):
 \begin{itemize*}
   \item abcef
   \item start\_with\_a\_lower\_case\_letter
-  \item "Blanks can be quoted"
-  \item \"Anything inside quotes"
+  \item 'Blanks can be quoted'
+  \item 'Anything inside quotes'
   \item Erläuterungen:
   \begin{itemize*}
     \item Atome sind Konstanten, die Ihren eigenen Namen als Wert haben
@@ -1886,7 +1881,7 @@ Tupel (Tuples):
   \item \{\}
   \item Erläuterungen:
   \begin{itemize*}
-    \item Können eine feste Anzahl von "Dingen" speichern
+    \item Können eine feste Anzahl von 'Dingen' speichern
     \item Tupel beliebiger Größe sind zulässig
     \item Kommentare werden in Erlang mit \% eingeleitet und erstrecken sich dann bis zum Zeilenende
   \end{itemize*}
@@ -1898,7 +1893,7 @@ Listen:
   \item $[123, def, abc]$
   \item $[\{person, 'Joe', 'Armstrong'\}, \{person, 'Robert', 'Virding'\}, \{person, 'Mike', 'Williams'\}]$
   \item \"abcdefgh\" wird zu $[97,98,99,100,101,102,103,104]$
-  \item " " wird zu $[ ]$
+  \item ' ' wird zu $[ ]$
   \item Erläuterungen:
   \begin{itemize*}
     \item Listen können eine variable Anzahl von Dingen speichern
@@ -1915,11 +1910,11 @@ Variablen:
   \item Erläuterungen:
   \begin{itemize*}
     \item Fangen grundsätzlich mit einem Großbuchstaben an
-    \item Keine "Funny Characters"
+    \item Keine 'Funny Characters'
     \item Variablen werden zu Speicherung von Werten von Datenstrukturen verwendet
     \item Variablen können nur einmal gebunden werden!
     \item Der Wert einer Variablen kann also nicht mehr verändert werden, nachdem er einmal gesetzt wurde: $N = N + 1$ VERBOTEN!
-    \item Einzige Ausnahmen: Die anonyme Variable "\_" (kein Lesen möglich) und das Löschen einer Variable im Interpreter mit $f(N)$.
+    \item Einzige Ausnahmen: Die anonyme Variable '\_' (kein Lesen möglich) und das Löschen einer Variable im Interpreter mit $f(N)$.
   \end{itemize*}
 \end{itemize*}
 
@@ -1939,7 +1934,7 @@ Pattern Matching:
   \item $A = 10$ erfolgreich, bindet A zu 10
   \item ${B, C, D} = {10, foo, bar}$ erfolgreich, bindet B zu 10, C zu foo and D zu bar
   \item ${A, A, B} = {abc, abc, foo}$ erfolgreich, bindet A zu abc, B zu foo
-  \item ${A, A, B} = {abc, def, 123}$ schlägt fehl ("fails")
+  \item ${A, A, B} = {abc, def, 123}$ schlägt fehl ('fails')
   \item $[A,B,C] = [1,2,3]$ erfolgreich, bindet A zu 1, B zu 2, C zu 3
   \item $[A,B,C,D] = [1,2,3]$ schlägt fehl
   \item $[A,B|C] = [1,2,3,4,5,6,7]$ erfolgreich bindet A zu 1, B zu 2, C zu [3,4,5,6,7]
@@ -1949,8 +1944,8 @@ Pattern Matching:
   \item ${A,_, [B|_],{B}} = {abc,23,[22,x],{22}}$ erfolgreich, bindet A zu abc, B zu 22
   \item Erläuterungen:
   \begin{itemize*}
-    \item "Pattern Matching", zu Deutsch "Mustervergleich", spielt eine zentrale Rolle bei der Auswahl der "richtigen" Anweisungsfolge für einen konkreten Funktionsaufruf und dem Binden der Variablen für die Funktionsparameter (siehe spätere Erklärungen)
-    \item Beachte die Verwendung von "\_", der anonymen ("don't care") Variable (diese Variable kann beliebig oft gebunden, jedoch nie ausgelesen werden, da ihr Inhalt keine Rolle spielt).
+    \item 'Pattern Matching', zu Deutsch 'Mustervergleich', spielt eine zentrale Rolle bei der Auswahl der 'richtigen' Anweisungsfolge für einen konkreten Funktionsaufruf und dem Binden der Variablen für die Funktionsparameter (siehe spätere Erklärungen)
+    \item Beachte die Verwendung von '\_', der anonymen ('don't care') Variable (diese Variable kann beliebig oft gebunden, jedoch nie ausgelesen werden, da ihr Inhalt keine Rolle spielt).
     \item Im letzten Beispiel wird die Variable B nur einmal an den Wert 22 gebunden (das klappt, da der letzte Wert genau {22} ist)
   \end{itemize*}
 \end{itemize*}
@@ -1974,8 +1969,8 @@ Modul-Deklaration:
 \begin{lstlisting}[language=erlang]
   -module(demo).
   -export([double/1]).
-  double(X) $\rightarrow$ times(X, 2).
-  times(X, N) $\rightarrow$ X * N.
+  double(X) -> times(X, 2).
+  times(X, N) -> X * N.
 \end{lstlisting}
 \begin{itemize*}
   \item Erläuterungen:
@@ -2005,12 +2000,12 @@ Eingebaute Funktionen (Built In Functions, BIFs)
 
 Definition von Funktionen:
 \begin{lstlisting}[language=erlang]
-func(Pattern1, Pattern2, ...) $\rightarrow$
+func(Pattern1, Pattern2, ...) ->
   ... ; % Vor dem ; steht der Rumpf
-func(Pattern1, Pattern2, ...) $\rightarrow$
+func(Pattern1, Pattern2, ...) ->
   ... ; % Das ; kündigt weitere Alternativen an
   ... % Beliebig viele Alternativen möglich
-func(Pattern1, Pattern2, ...) $\rightarrow$
+func(Pattern1, Pattern2, ...) ->
   ... . % Am Ende muss ein Punkt stehen!
 \end{lstlisting}
 Erläuterungen:
@@ -2047,11 +2042,11 @@ Was passiert wenn wir $mathstuff:factorial()$ mit einem negativen Argument aufru
   \end{itemize*}
   \item Zweite Reaktion: Ergänze factorial() um zusätzliche Bedingung:
   \begin{itemize*}
-    \item "Beschütze" die Funktion vor Endlosrekursion durch Ergänzung eines sogenannten Wächters (Guards) bei dem entsprechenden Fallmuster  (Pattern)
+    \item 'Beschütze' die Funktion vor Endlosrekursion durch Ergänzung eines sogenannten Wächters (Guards) bei dem entsprechenden Fallmuster  (Pattern)
     \item Erläuterungen:
     \begin{itemize*}
       \item Der Guard wird durch das Atom when und eine Bedingung vor dem Pfeil $\rightarrow$ formuliert
-      \item Vollständig "beschützte" Klauseln können in beliebiger Reihenfolge angeordnet werden
+      \item Vollständig 'beschützte' Klauseln können in beliebiger Reihenfolge angeordnet werden
       \item Achtung: Ohne Guard führt diese Reihenfolge zu Endlosschleifen
     \end{itemize*}
     \item Beispiele für Guards:
@@ -2072,7 +2067,7 @@ Was passiert wenn wir $mathstuff:factorial()$ mit einem negativen Argument aufru
   \end{itemize*}
 \end{itemize*}
 
-Traversieren ("Ablaufen") von Listen:
+Traversieren ('Ablaufen') von Listen:
 \begin{lstlisting}[language=erlang]
 average(X) -> sum(X) / len(X).
 sum([H|T]) -> H + sum(T); % summiert alle Werte auf
@@ -2101,12 +2096,12 @@ Listen und Akkumulatoren:
 \begin{itemize*}
   \item Interessant sind an diesem Beispiel:
   \item Die Liste wird nur einmal traversiert
-  \item Der Speicheraufwand bei der Ausführung ist konstant, da die Funktion "endrekursiv" ist (nach Rekursion steht Ergebnis fest)
+  \item Der Speicheraufwand bei der Ausführung ist konstant, da die Funktion 'endrekursiv' ist (nach Rekursion steht Ergebnis fest)
   \item Die Variablen Length und Sum spielen die Rolle von Akkumulatoren
   \item Bemerkung: average([]) ist nicht definiert, da man nicht den Durchschnitt von 0 Werten berechnen kann (führt zu Laufzeitfehler)
 \end{itemize*}
 
-"Identisch" benannte Funktionen mit unterschiedlicher Parameterzahl:
+'Identisch' benannte Funktionen mit unterschiedlicher Parameterzahl:
 \begin{lstlisting}
   sum(L) -> sum(L, 0).
   sum([], N) -> N;
@@ -2157,7 +2152,7 @@ Anonyme Funktionen:
 \end{lstlisting}
 \begin{itemize*}
   \item Erläuterung:
-  \item Mittels "fun" können anonyme Funktionen deklariert werden
+  \item Mittels 'fun' können anonyme Funktionen deklariert werden
   \item Diese können auch einer Variablen (im obigen Beispiel Double) zugewiesen werden
   \item Interessant wird diese Art der Funktionsdefinition, da anonyme Funktionen auch als Parameter übergeben bzw. als Ergebniswert zurückgegeben werden können
   \item Die Funktionen, die anonyme Funktionen als Parameter akzeptieren bzw. als Ergebnis zurückgeben nennt man Funktionen höherer Ordnung
@@ -2173,8 +2168,8 @@ Modul fakultaet.erl:
 \begin{lstlisting}[language=erlang]
 -module(fakultaet).
 -export([fak/1]).
-fak(0) $\rightarrow$ 1;
-fak(N) when N > 0 $\rightarrow$ (N) * fak(N-1).
+fak(0) -> 1;
+fak(N) when N > 0 -> (N) * fak(N-1).
 \end{lstlisting}
 Laden in den Interpreter mittels:
 \begin{lstlisting}[language=erlang] 
@@ -2284,7 +2279,7 @@ $$\lambda.x\lambda.y.fxy = (\lambda x.( \lambda.fxy))$$
 
 \subsubsection{Strukturelle Induktion}
 \begin{itemize*}
-  \item Aufgrund des "rekursiven" Aufbaus der Definition der Klasse $\Lambda$ der Lamda-Terme, können Aussagen über Lambda-Terme mittels \color{blue} "struktureller Induktion" \color{black} geführt werden:
+  \item Aufgrund des 'rekursiven' Aufbaus der Definition der Klasse $\Lambda$ der Lamda-Terme, können Aussagen über Lambda-Terme mittels \color{blue} 'struktureller Induktion' \color{black} geführt werden:
   \begin{itemize*}
     \item Hierbei folgt der Induktionsbeweis der Struktur der Lambda-Terme, wie er in der Definition vorgegeben wird
   \end{itemize*}
@@ -2347,8 +2342,8 @@ $$(\lambda x.\lambda y.\lambda z.f( \lambda x.z+x)(y x)) (\lambda y.y+x)$$
 
 Beispiele:   
 \begin{center}
-  ($\lambda$x.x)y $\Rightarrow$ x[x $\rightarrow$ y] = y \\[\normalbaselineskip]
-  ($\lambda$x.x($\lambda$x.x))(yz) $\Rightarrow$ (x($\lambda$x.x))[x $\rightarrow$ (yz)] = ((yz)($\lambda$x.x)
+  $$(\lambda x.x)y \Rightarrow x[x \rightarrow y] = y$$
+  $$(\lambda x.x(\lambda x.x))(yz) \Rightarrow (x(\lambda x.x))[x \rightarrow (yz)] = ((yz)(\lambda x.x)$$
 \end{center}
 
 \subsubsection{Braucht man primitive Operationen?}
@@ -2465,7 +2460,17 @@ succ($c_2$) = ($\lambda$\color{blue}n\color{black}.$\lambda s.\lambda z.s$ (\col
 
 \subsection{Rechnen mit Church - Zahlen }
 \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-diamant-eigenschaft}
-\includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-01.png}
+\begin{lstlisting}[language=erlang]
+Runnable task = () -> {
+  String me = Thread.currentThread().getName();
+  System.out.println("Hallo " + me);
+}
+
+task.run();
+
+Thread thread = new Thread(task);
+thread.start();
+\end{lstlisting}
 
 Idee zu exp: \\
 \subitem exp $c_m c_n \Rightarrow c_n c_m \Rightarrow (\lambda.\color{blue}s\color{black}.\lambda z.s^n z)\color{red}(\lambda s. \lambda z.s^m z)$ \color{black}
@@ -2733,8 +2738,8 @@ d.h. \space\space\space Yf ist Fixpunkt von f
   \item Bei unserer initialen Betrachtung der Auswertungsstrategien haben wir die volle $\beta$-Rekursion und die Normalreihenfolge kennengelernt
   \item Nun wollen wir unsere Betrachtungen hierzu noch einmal vertiefen und definieren zunächst:
   \begin{itemize*}
-    \item Ein Redex wird als \color{blue} "äußerst" (outermost) \color{black} bezeichnet, wenn er nicht Teil eines anderen Redex ist.
-    \item Ein Redex wird als \color{blue} "innerst" (innermost) \color{black} bezeichnet, wenn er keinen eigenständigen Redex beinhaltet
+    \item Ein Redex wird als \color{blue} 'äußerst' (outermost) \color{black} bezeichnet, wenn er nicht Teil eines anderen Redex ist.
+    \item Ein Redex wird als \color{blue} 'innerst' (innermost) \color{black} bezeichnet, wenn er keinen eigenständigen Redex beinhaltet
   \end{itemize*}
   \item Mit diesen Begriffen können im folgenden die gebräuchlichsten Auswertungsstrategien formuliert werden
   \begin{itemize*}
@@ -2755,7 +2760,7 @@ d.h. \space\space\space Yf ist Fixpunkt von f
       Ein Transitiosnsystem $(D,\rightarrow*)$ heißt genau dann konfluent, wenn für alle $t,t_1,t_2 \in D$ gilt: wenn  $ t \rightarrow* t_1$ und $t \rightarrow* t_2$, dann gibt es ein $t' \in D$ mit $t_1 \rightarrow* t'$ und $t_2 \rightarrow* t'$
     \end{minipage}}
   \item Wenn der Lambda-Kalkül konfluent ist, kann hieraus gefolgert werden, dass unterschiedliche Reduktionsreihenfolgen, die zu einer nicht mehr weiter zu reduzierenden Form führen, somit auf den gleichen Term führen müssen.
-  \item Achtung: hieraus kann nicht gefolgert werden, dass alle Reduktionsreihenfolgen auf den gleichen Term führen, da dies ja nur für "terminierende" Reduktionsreihenfolgen gilt!
+  \item Achtung: hieraus kann nicht gefolgert werden, dass alle Reduktionsreihenfolgen auf den gleichen Term führen, da dies ja nur für 'terminierende' Reduktionsreihenfolgen gilt!
 \end{itemize*}
 
 \subsubsection{Church-Rosser-Eigenschaft}
@@ -2768,7 +2773,7 @@ Der untypisierte $\lambda$-Kalkül ist konfluent: Wenn $t \stackrel{*}{\Rightarr
   \includegraphics[width=0.25\linewidth]{Assets/Programmierparadigmen-diamant-beispiel}
 \end{center}
 
-Beweisidee: Definiere $\stackrel{\rightarrow}{\rightarrow}$ als "parallele" $\beta$-Reduktion.
+Beweisidee: Definiere $\stackrel{\rightarrow}{\rightarrow}$ als 'parallele' $\beta$-Reduktion.
 \begin{itemize*}
   \item Es gilt: $\Rightarrow \subseteq \stackrel{\rightarrow}{\rightarrow} \subseteq \stackrel{*}{\Rightarrow}$
   \item Zeige Diamant Eigenschaft für $\stackrel{\rightarrow}{\rightarrow}$
@@ -2799,7 +2804,7 @@ Bei terminierenden $\beta$-Reduktionen ist irrelevant, welchen Redex man zuerst 
   \item Hierbei ist es insbesondere von Interesse, wie Parameter gehandhabt werden, deren Werte undefiniert sind (z.B. 1/0)\newline
   \colorbox{lightgray}{
     \begin{minipage}[h]{1.0\linewidth}
-      Wir definieren zunächst den zentralen begriff "strikt": \newline Eine n-stellige Funktion heißt strikt im k-ten Argument $(1<=k<=n)$, wenn gilt: $f(x_1,x_2,...,x_{k-1},\bot,x_{k+1},...,x_n)=\bot$
+      Wir definieren zunächst den zentralen begriff 'strikt': \newline Eine n-stellige Funktion heißt strikt im k-ten Argument $(1<=k<=n)$, wenn gilt: $f(x_1,x_2,...,x_{k-1},\bot,x_{k+1},...,x_n)=\bot$
     \end{minipage}}
   \item Ein undefiniertes Argument führt hier zu einem undefinierten Resultat
   \item Grundsätzlich kann man die Auswertungsstrategien von Programmiersprachen in strikte und nicht-strikte Strategien einteilen; sehr gebräuchlich sind dabei insbesondere:
@@ -2816,14 +2821,33 @@ Bei terminierenden $\beta$-Reduktionen ist irrelevant, welchen Redex man zuerst 
   \item Allerdings wird bei der Definition einer Funktion der resultierende Wert erst dann berechnet, wenn die Funktion ausgewertet wird
   \begin{itemize*}
     \item Das erlaubt über den Umweg zusätzlicher Funktionsdefinitionen auch die Realisierung einer nicht-strikten Auswertungsstrategie - ermöglicht Nachbildung der sogenannten Lazy-Evaluation
-    \item hierbei wird ein nicht-strikt zu evaluierendes Argument als Resultat einer anonymen nullstelligen Funktion (ohne Parameter) "verpackt"
+    \item hierbei wird ein nicht-strikt zu evaluierendes Argument als Resultat einer anonymen nullstelligen Funktion (ohne Parameter) 'verpackt'
     \item Im Rumpf der eigentlichen Funktion wird diese Funktion dann ausgewertet (= aufgerufen), wenn feststeht, dass dieses Argument für die Berechnung des Ergebnisses benötigt wird
     \item Andere funktionale Sprachen wie Haskell oder Gofer verwenden Call by Name und realisieren damit grundsätzlich Lazy-Evaluation
   \end{itemize*}
-  \begin{center}
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-66}
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-67}
-  \end{center}
+
+  \begin{lstlisting}[language=erlang]
+    -module(lazy).
+    -export([test1/3, test2/3]).
+    test1(P, A, B) -> % A and B are arbitrary values
+      if
+        P==true   -> A;
+        P==false  -> B
+     end.
+    test2(P, A, B) -> % A and B have to be functions
+      if
+        P==true   -> A();
+        P==false  -> B()
+     end.
+  \end{lstlisting}
+
+  \begin{lstlisting}
+  > lazy:test1(true, 3, 4/0).
+  ** exception error: bad argument in an arithmetic expression in operator '/'/2 called as 4 / 0
+  > lazy:test2(true, fun() -> 3 end, fun() -> 4/0 end).
+  3
+  \end{lstlisting}
+  
   \item Erläuterungen:
   \begin{itemize*}
     \item Im zweiten Beispiel wird der Rückgabewert der übergebenen Funktionne nur ausgewertet, wenn sie im Rumpf der auszuführenden Funktion aufgerufen werden
@@ -2934,7 +2958,7 @@ Wenn t eine Normalform hat, dann findet Normalreihenfolgenauswertung diese.
     \item Forschund zu Typsystemen für Programmiersprachen
     \item Repräsentation von Logik-Termen im Lambda-Kalkül führte zu Theorembeweisen für Logiken höherer Stufen
   \end{itemize*}
-  \item Manche Puristen vertreten gelegentlich die Ansicht, dass funktionale Programmiersprachen nicht viel mehr sind, als "Lambda-Kalkül mit etwas syntaktischem Zucker"
+  \item Manche Puristen vertreten gelegentlich die Ansicht, dass funktionale Programmiersprachen nicht viel mehr sind, als 'Lambda-Kalkül mit etwas syntaktischem Zucker'
 \end{itemize*}
 
 \subsection{Zusammenfassung}
@@ -2960,7 +2984,7 @@ Wenn t eine Normalform hat, dann findet Normalreihenfolgenauswertung diese.
 \subsubsection{Grundbegriffe}
 \begin{itemize*}
   \item Prozess := Programm in Ausführung; Ausführungsumgebung für ein Programm; hat eigenen Adressraum; Prozessor kann immer nur einen Prozess ausführen
-  \item Thread ("Faden") := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms; "leichtgewichtig" im Vergleich zu Betriebssystemprozess; Threads eines Prozesses teilen sich Adressraum; Thread kann von CPU oder Core ausgeführt werden
+  \item Thread ('Faden') := leichtgewichtige Ausführungseinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms; 'leichtgewichtig' im Vergleich zu Betriebssystemprozess; Threads eines Prozesses teilen sich Adressraum; Thread kann von CPU oder Core ausgeführt werden
   \item Shared Memory := Kommunikation (über Variablen im) gemeinsamen Speicher; Prozess kann direkt auf Speicher eines anderen Prozesses zugreifen; erfordert explizite Synchronisation, z.B. über kritische Abschnitte
   \item Message Passing := Prozesse mit getrennten Adressräumen; Zugriff nur auf eigenen Speicher; Kommunikation durch explizites Senden/Empfangen von Nachrichten; implizite Synchronisation durch Nachrichten
   \item Parallelisierungsarten
@@ -3104,7 +3128,7 @@ Prozess := Programm in Ausführung; Ausführungsumgebung für ein Programm
   \item hat eigenen Adressraum
   \item Prozessor kann immer nur einen Prozess ausführen
 \end{itemize*}
-Thread ("Faden") := leichtgewichtige Ausführungsreinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms
+Thread ('Faden') := leichtgewichtige Ausführungsreinheit oder Kontrollfluss (Folge von Anweisungen) innerhalb eines sich in Ausführung befindlichen Programms
 \begin{itemize*}
   \item leichtgewichtig im Vergleich zu Betriebssystemprozess
   \item Threads eines Prozesses teilen sich den Adressraum
@@ -3239,7 +3263,7 @@ Instruktionsparallelität:
   \item Erlang VM = Betriebssystemprozess
   \item Erlang-Prozess = Thread innerhalb der Erlang VM
   \begin{itemize*}
-    \item kein Zugriff auf gemeinsame Daten, daher "Prozess"
+    \item kein Zugriff auf gemeinsame Daten, daher 'Prozess'
   \end{itemize*}
   \item jede Erlang-Funktion kann einen Prozess bilden
   \item Funktion spawn erzeugt einen Prozess, der die Funktion Fun ausführt 
@@ -3250,7 +3274,7 @@ Instruktionsparallelität:
   \item über self() kann man die eigene Pid ermitteln
   \item Übergabe von Arghumenten an den Prozess bei der Erzeugung
   \begin{lstlisting}
-    Pid = spawn(fun() $\rightarrow$ any_func(Arg1, Arg2, ...) end)
+    Pid = spawn(fun() -> any_func(Arg1, Arg2, ...) end)
     \end{lstlisting}
 \end{itemize*}
 
@@ -3295,16 +3319,30 @@ Instruktionsparallelität:
         ...
     end
     \end{lstlisting}
-  \item trifft eine Nachricht ein, wird versucht, diese mit einem Pattern und ggf. vorhandenen Guard zu "matchen"
+  \item trifft eine Nachricht ein, wird versucht, diese mit einem Pattern und ggf. vorhandenen Guard zu 'matchen'
   \item erstes zutreffendes Pattern (inkl. Guard) bestimmt, welcher Ausdruck ausgewertet wird
   \item trifft kein Pattern zu, wird die Nachricht für spätere Verwendung aufgehoben und Prozess wartet auf die nächste Nachricht ($\rightarrow$ selective receive)
 \end{itemize*}
 
 
 \subsubsection{Ein einfacher Echo-Server}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-02}
-\end{center}
+\begin{lstlisting}[language=erlang]
+-module(ch4_2).
+-export([run/0]).
+
+run() -> Pid2 = spawn(fun loop/0),
+  Pid2 ! {self(), hellp},
+  receive
+    {Pid2, Msg} -> io:format("P1 ~w~n", [Msg])
+  end,
+  Pid2 ! stop.
+
+loop() ->
+  receive
+    {From, Msg} -> From ! {self(), Msg}, loop();
+    stop -> true
+  end.
+\end{lstlisting}
 
 Erklärungen
 \begin{itemize*}
@@ -3325,9 +3363,18 @@ Erklärungen
   \item Beispiel: Berechnung einer (zufällig generierten) Liste von Fibonaccizahlen
   \item Sequentielle Lösung über lists:map/2
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-03}
-\end{center}
+\begin{lstlisting}[language=erlang]
+% Berechnung der Fibonacci Zahl für F
+fibo(0) -> 0;
+fibo(1) -> 1;
+fibo(F) when F > 0 -> fibo(F-1) + fibo(F-2).
+
+% Liste von Num Fibonacci Zahlen
+run(Num) ->
+  Seq = list:seq(1, Num), %Zufallszahlen erzeugen
+  Data = lists:map(fun(_) -> random:uniform(20) end, Seq),
+  lists:map(fun fibo/1, Data)
+\end{lstlisting}
 
 \subsubsection{pmap: Parallele Funktionen höherer Ordnung}
 \begin{itemize*}
@@ -3335,35 +3382,52 @@ Erklärungen
   \item für jedes Listenelement einen Prozess erzeugen
   \item Ergebnisse einsammeln
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-04}
-\end{center}
+\begin{lstlisting}[language=erlang]
+pmap(F, L) ->
+  S = self(), % Berechnung der Fibonacci Zahl für F
+  Pids = lists:map(fun(I) ->
+      % Prozess erzeugen
+      spawn(fun() -> do_fun(S, F, I) end)
+    end, L), % Ergebnisse einsammeln
+    gather(Pids).
+\end{lstlisting}
 
 \paragraph{pmap: Hilfsfunktionen}
 
 \color{orange} Eigentliche Verarbeitungsfunktion ausführen \color{black}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-05}
-\end{center}
+\begin{lstlisting}[language=erlang]
+do_fun(Parent, F, I) ->
+  % Parent ist der Elternprozess
+  Parent ! { self(), (catch F(I))}.
+\end{lstlisting}
 \begin{itemize*}
   \item Funktion F aufrufen, catch sorgt für korrekte Behandlung von Fehlern in F
   \item Ergebnis zusammen mit eigener Pid (self()) an Elternprozess senden
 \end{itemize*}
 
 \color{orange} Einsammeln der Ergebnisse \color{black}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-06}
-\end{center}
+\begin{lstlisting}[language=erlang]
+gather([Pid | T]) ->
+  receive
+  % Ordnung der Ergebnisse entspricht Ordnung der Argumente
+    { Pid, Ret } -> [Ret | gather(T)]
+  end;
+gather([]) -> [].
+\end{lstlisting}
 \begin{itemize*}
   \item Zeile 5: Warten bis Paar (Pid, Ergebniswert) eintrifft
   \item Zeile 7: Tail ist leer $\rightarrow$ alle Ergebnisse eingetroffen
 \end{itemize*}
 
 \paragraph{Parallele Berechnung der Fibonacci-Zahlen}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-07}
-\end{center}
+\begin{lstlisting}[language=erlang]
+%Liste von Num Fibonacci Zahlen
+run(Num) ->
+  Seq = lists:seq(1, Num), % Zufallszahlen erzeugen
+  Data = lists:map(fun(_) -> random:uniform(20) end, Seq),
+  % Berechnung parallel ausführen
+  pmap(fun fibo/1, Data).
+\end{lstlisting}
 
 \paragraph{Diskussion}
 
@@ -3390,9 +3454,17 @@ Erklärungen
   \item ohne Berücksichtigung der Ordnung der Ergebnismenge
   \item Zählen für die bereits eingetroffenen Ergebnisse
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-08}
-\end{center}
+\begin{lstlisting}[language=erlang]
+  pmap(F, L) ->
+    ...
+    gather2(length(L), Ref, []).
+  
+  gather2(N, Ref, L) ->
+    receive
+      {Ref, Ret} -> gather2(N-1, Ref, [Ret | L ])
+    end;
+  gather2(0,_, L) -> L.
+\end{lstlisting}
 
 \subsubsection{Speedup}
 Bestimmung des Speedups erfordert
@@ -3405,13 +3477,18 @@ Bestimmung des Speedups erfordert
 \paragraph{Speedup: Zeitmessung}
 
 Nutzung der Funktion timer:tc/3
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-09}
-\end{center}
+\begin{lstlisting}
+> timer:tc(ch4_4, run, [30]).
+{7900,[233,1,987,610,377,8,144,89,89,3]}
+\end{lstlisting}
 Für bessere Aussagekraft: mehrfache Ausführung
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-10}
-\end{center}
+\begin{lstlisting}[language=erlang]
+benchmark(M, Fun, D) ->
+  % 100 Funktionsaufrufe
+  Runs = [timer:tc(M, Fun, [D]) || _ <- lists:seq(1, 100)],
+  % Durchschnitt der Laufzeiten in Millisekunden berechnen
+  lists:sum([T || {T, _ } <- Runs]) / (1000 * length(Runs)).
+\end{lstlisting}
 
 \paragraph{Bestimmung: Speedup}
 
@@ -3484,9 +3561,12 @@ ch4\_6:benchmark(ch4\_4, run, 1000).
 
 \subsubsection{Taskparallelität: Sortieren}
 \color{orange} Quicksort in Erlang \color{black}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-11}
-\end{center}
+\begin{lstlisting}[language=erlang]
+qsort([]) -> [];
+qsort([H|T]) -> qsort([Y || Y <- T, Y < H]) ++
+    [H] ++
+    qsort([Y || Y <- T, Y >= H]).
+\end{lstlisting}
 
 \begin{itemize*}
   \item typische funktionale Notation von Quicksort mit List Comprehensions
@@ -3503,20 +3583,32 @@ Idee:
 \paragraph{Version 1}
 
 Quicksort in Erlang
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-12}
-\end{center}
+\begin{lstlisting}[language=erlang]
+qsort2([]) -> [];
+qsort2([H|T]) ->
+  Parent = self(),
+  spawn(fun() ->
+    Parent ! qsort2([X || X <- T, X >= H]) end),
+  qsort2([Y || Y <- T, Y < H]) ++
+      [H] ++
+      receive T2 -> T2 end.
+\end{lstlisting}
 
 Erläuterungen
 \begin{itemize*}
-  \item Zeile 4: Erzeugen eines neuen Prozesses zur Sortierung der "oberen" Hälfte
+  \item Zeile 4: Erzeugen eines neuen Prozesses zur Sortierung der 'oberen' Hälfte
   \item Zeile 6-7: Wie bisher
   \item Zeile 8: Warten auf Empfang der sortierten anderen Hälfte
 \end{itemize*}
 Zeitmessung:
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-13}
-\end{center}
+\begin{lstlisting}
+> L = ch4_6:rand_list(100000).
+...
+> ch4_6:benchmark(ch4_10, qsort, L).
+131.90963
+> ch4_6:benchmark(ch4_10, qsort2, L).
+293.59211
+\end{lstlisting}
 
 Bewertung
 \begin{itemize*}
@@ -3529,15 +3621,30 @@ Bewertung
     \item einfache Idee: Anzahl der parallelen Zerlegung begrenzen
   \end{itemize*}
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-14}
-\end{center}
+\begin{lstlisting}[language=erlang]
+qsort3(L) -> qsort3(4, L). % 4 Rekursionsstufen parallel
+
+qsort3(0, L) -> qsort(L); % Umschalten
+\end{lstlisting}
 
 \paragraph{Version 2}
+\begin{lstlisting}[language=erlang]
+qsort3(L) -> qsort3(6, L).
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-15}
-\end{center}
+qsort3(0, L) -> qsort(L);
+qsort3(_, []) -> [];
+qsort3(N, [H|T]) ->
+  Parent = self(), spawn_link(fun() ->
+    Parent ! qsort3(N-1, [Y || Y <- T, Y >= H])
+  end),
+qsort3(N-1, [Y || Y <- T, Y < H]) ++
+    [H] ++
+    receive T2 -> T2 end.  
+\end{lstlisting}
+\begin{lstlisting}
+> ch4_6:benchmark(ch4_10, qsort3, L).
+87.54315
+\end{lstlisting}
 
 \subsubsection{Fazit}
 \begin{itemize*}
@@ -3595,7 +3702,7 @@ Bewertung
   \item Vorsicht bei Übergabe von Referenzen, wenn Elternthread vor dem erzeugten Thread beendet wird
 \end{itemize*}
 \begin{lstlisting}[language=C++]
-  void fun(int n, const std::string\& s) {
+  void fun(int n, const std::string& s) {
       for (auto i = 0; i < n; i++)
           std::cout << s << " ";
       std::cout << std::endl;
@@ -3615,16 +3722,26 @@ Bewertung
 \begin{lstlisting}[language=C++]
   std::thread t([]() { do_something(); });
   t.join();
-  \end{lstlisting}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-16}
-\end{center}
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+// Erscheint die Ausgabe?
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+int main() {
+  std::thread t([]() {
+    std::this_thread::sleep_for( std::chrono::seconds(1) );
+    std::cout << "Hello\n";
+  });
+}
+\end{lstlisting}
 
 \paragraph{Hintergrundthreads}
 
 \begin{itemize*}
   \item Threads können auch im Hintergrund laufen, ohne, dass auf Ende gewartet werden muss
-  \item "abkoppeln" durch detach()
+  \item 'abkoppeln' durch detach()
   \item Thread läuft danach unter Kontrolle des C++-Laufzeitsystems, join nicht mehr möglich
 \end{itemize*}
 
@@ -3645,21 +3762,40 @@ Bewertung
   \end{lstlisting}
 
 \paragraph{Beispiel: Berechnung von Fibonacci-Zahlen in C++}
-
 \begin{itemize*}
   \item rekursive und nichtrekursive Variante möglich
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-17}
-\end{center}
+\begin{lstlisting}[language=C++]
+unsigned int fibonacci(unsigned int n) {
+  if(n == 0)
+    return 0;
+
+  unsigned int f0 = 0, f1 = 1, f2;
+  for(auto i=1u; i<n; i++){
+    f2 = f0 + f1;
+    f0 = f1;
+    f1 = f2;
+  }
+  return f1;
+}
+\end{lstlisting}
 
 Parallele Berechnung von Fibonacci-Zahlen
 \begin{itemize*}
   \item einfachste Lösung (ähnlich zu Erlang): pro Zahl ein Thread
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-18}
-\end{center}
+\begin{lstlisting}[language=C++]
+std::vector<std::thread> threads;
+unsigned int results[20];
+
+for (auto i = 0u; i<20; i++){
+  auto f = rand() % 30;
+  threads-push_back(std::thread([&](){
+    results[i] = fibonacci(f);
+  }));
+}
+std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+\end{lstlisting}
 
 Erläuterungen
 \begin{itemize*}
@@ -3680,9 +3816,17 @@ Erläuterungen
 \begin{itemize*}
   \item Unterstützung durch Higher-Level-APIs und Frameworks
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-19}
-\end{center}
+\begin{lstlisting}[language=C++]
+// OpenMP
+#pragma omp parallel for
+  for(auto i=0u; i<n; i++){...}
+
+// Parallele Algorithmen in C++17
+std::for_each(std::execution::par_unseq, vec.begin(), vec.end(), [](auto&& item) {...});
+
+// Intel TBB
+tbb::parallel_for(tbb::blocked_range<int>(0, vec.size()), [&](tbb::blocked_range<int> r){...});
+\end{lstlisting}
 
 \paragraph{Kontrolle der Anzahl der Threads}
 
@@ -3691,24 +3835,38 @@ Erläuterungen
   \item begrenzte Anzahl von Hardwarethreads (Anzahl Cores, Hyperthreading)
   \item Ermittlung der Anzahl der unterstützten Hardwarethreads
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-20}
-\end{center}
+\begin{lstlisting}[language=C++]
+std::thread::hardware_concurrency()
+\end{lstlisting}
 \begin{itemize*}
   \item Nutzung für Implementierung von Threadpools, Task Libraries, ...
 \end{itemize*}
 
 \subsubsection{Probleme nebenläufiger Ausführung}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-21}
-\end{center}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-22}
-\end{center}
+\begin{lstlisting}[language=C++]
+struct jawsmith {
+  std::string msg;
+  
+  jawsmith(const std::string& m) : msg(m) {}
+  void operator()() const {
+    for(;;){
+      std::this_thread::sleep_for( std::chrono::seconds(1) );
+      for(auto& c: msg) {
+        std::cout << c << std::flush;
+      }
+    }
+  }
+}
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+std::thread t1 { jawsmith("DASISTEINELANGENACHRICHT)};
+std::thread t2 { jawsmith("dieistaberauchnichtkurz)};
+\end{lstlisting}
 Ausgabe:
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-23}
-\end{center}
+\begin{lstlisting}[language=C++]
+dDieistaberauchnichtkASISTEINELANGENACHurzRICHT...
+\end{lstlisting}
+
 \color{orange} Race Conditions \color{black}(Wettlaufsituationen) := Ergebnis nebenläufiger Ausführung auf gemeinsamen Zustand (hier: Ausgabekanal) hängt vom zeitlichen Verhalten der Einzeloperationen ab
 
 
@@ -3728,7 +3886,7 @@ Ausgabe:
   \end{itemize*}
   \item Lock Guards
   \begin{itemize*}
-    \item Vereinfachung der Nutzung von Mutexen durch RAII ("Ressourcenbelegung ist Initialisierung")
+    \item Vereinfachung der Nutzung von Mutexen durch RAII ('Ressourcenbelegung ist Initialisierung')
     \item Konstruktor = lock
     \item Destruktor = unlock
     \item std::unique\_lock erweiterte Variante von lock\_guard, vermeidet aber sofortiges Sperren
@@ -3771,7 +3929,7 @@ Ausgabe:
 \paragraph{Lock Guards}
 
 \begin{itemize*}
-  \item Vereinfachung der Nutzung von Mutexen durch RAII ("Ressourcenbelegung ist Initialisierung")
+  \item Vereinfachung der Nutzung von Mutexen durch RAII ('Ressourcenbelegung ist Initialisierung')
   \item Konstruktor = lock
   \item Destruktor = unlock
 \end{itemize*}
@@ -3823,9 +3981,26 @@ Ausgabe:
 
 \paragraph{Synchronisation über atomare Variable}
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-24}
-\end{center}
+\begin{lstlisting}[language=C++]
+std::list<std::string> shared_space;
+std::atomic<bool> ready{false};
+
+void consume() {
+  while (!ready.load())
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  std::cout << shared_space.front() << std::endl;
+  shared_space.pop_front();
+}
+
+void produce() {
+  shared_space.push_back("Hallo!");
+  ready = true;
+}
+
+std::thread t1(consumer);
+std::thread t2(producer);
+...
+\end{lstlisting}
 Erläuterungen
 \begin{itemize*}
   \item Zeile 1: gemeinsam genutzte Liste - erfordert synchronisierten Zugriff
@@ -3881,55 +4056,116 @@ Führt zu Verklemmung; Alternative Lösung
   \end{lstlisting}
 
 \paragraph{Gabeln und Spaghetti-Teller}
+\begin{lstlisting}[language=C++]
+// Gabel = Mutex
+struct fork {
+  std::mutex mtx;
+};
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-25}
-\end{center}
+// 1 Teller mit 5 Gabeln
+struct spaghetti_plate {
+  // Benachrichtigung der Philosophen
+  std::atomic<bool> ready{false}
+  std::array<fork, 5> forks;
+}
+\end{lstlisting}
 
 \paragraph{Die Philosophen-Klasse}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-26}
-\end{center}
+\begin{lstlisting}[language=C++]
+class philosopher {
+  private:
+    int id;
+    spaghetti_plate& plate;
+    fork& left_fork;
+    fork& right_fork;
+  public:
+    philosopher(int n, spaghetti:plate& p):
+      id(n), plate(p), 
+      left_fork(p.forks[n]), // 1. Gabel
+      right_fork(p.forks[(n+1)%5]) // 2. Gabel
+      {}
+    ... 
+}
+\end{lstlisting}
 
 \paragraph{Die Philosophen-Klasse: Hilfsmethoden}
 
 Textausgabe erfordert synchronisierten Zugriff auf cout über globalen Mutex
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-27}
-\end{center}
+\begin{lstlisting}[language=C++]
+void say(const std::string& txt) {
+  std::lock_guard<std::mutex> lock(out_mtx);
+  std::cout << "Philosopher #" << id << txt << std::endl;
+}
+\end{lstlisting}
 
 Hilfsmethode für zufällige Wartezeit in Millisekunden
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-28}
-\end{center}
+\begin{lstlisting}[language=C++]
+std::chrono::milliseconds wait() {
+  return std::chrono::milliseconds(rand() % 500 + 100);
+}
+\end{lstlisting}
 
 \paragraph{Die Philosophen-Klasse: Essen}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-29}
-\end{center}
+\begin{lstlisting}[language=C++]
+void eating(){
+  //Versuche, die Gabeln (verklemmungsfrei) aufzunehmen
+  std::lock(left_fork.mtx, right_fork.mtx);
+  std::lock_guard<std::mutex>
+    left_lock(left_fork.mtx, std::adopt_lock);
+  std::lock_guard<std::mutex>
+    right_lock(right_fork.mtx, std::adopt_lock);
+  
+  // Essen simulieren
+  say(" started eating.");
+  std::this_thread::sleep_for(wait());
+  say(" finished eating.");
+}
+\end{lstlisting}
 
 \paragraph{Die Philosophen-Klasse: Denken}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-30}
-\end{center}
+\begin{lstlisting}[language=C++]
+void thinking() {
+  say(" is thinking.");
+  // Wenn Philosophen denken ...
+  std::this_thread::sleep_for(wait());
+}
+\end{lstlisting}
 
 \paragraph{Das Leben eines Philosophen}
 
 \begin{itemize*}
   \item Zur Erinnerung: überladener ()-Operator eines Objekts definiert auszuführende Funktion eines Threads
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-31}
-\end{center}
+\begin{lstlisting}[language=C++]
+void operator()(){
+  // Warten bis der Teller bereit ist
+  while(!plate.ready);
+  do{
+    //solange der Teller bereit ist
+    thinking();
+    eating();
+  } while (plate.ready);
+}
+\end{lstlisting}
 
 \paragraph{Das Dinner: Initialisierung}
+\begin{lstlisting}[language=C++]
+// der Teller
+spaghetti_plate plate;
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-32}
-\end{center}
+// die 5 Philosophen
+std::array<philosopher, 5> philosophers {{
+  {0, plate}, {1, plate},
+  {2, plate}, {3, plate},
+  {4, plate}
+}};
+
+// Thread pro Philosoph erzeugen
+std::array<std::thread, 5> threads;
+for (auto i=0u; i<threads.size(); i++){
+  threads[i] = std::thread(philosophers[i]);
+}
+\end{lstlisting}
 
 \paragraph{Das Dinner beginnt}
 
@@ -3937,9 +4173,17 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
   \item Beginn (und Ende) des Dinners über atomare Variable signalisieren
   \item Philosophen-Threads arbeiten ihre operator()()-Methode ab
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-33}
-\end{center}
+\begin{lstlisting}[language=C++]
+// das Essen beginnt und dauert 5 Sekunden
+std::cout << "Starting dinner ..." << std::endl;
+plate.ready = true;
+std::this_thread::sleep_for(std::chrono::seconds(5));
+// Abräumen
+plate.ready = false;
+// Warten auf Beendigung der Threads
+std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+std::cout << "Dinner finished" << std::endl;
+\end{lstlisting}
 
 \paragraph{Fazit}
 
@@ -3964,22 +4208,53 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
   \end{itemize*}
   \item typischer Anwendungsfall: Warten auf Ereignis / Setzen eines Flags
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-34}
-\end{center}
+\begin{lstlisting}[language=C++]
+bool ready;
+std::mutex mtx;
+
+//Warten ...
+std::unique_lock<std::mutex> l(mtx);
+while(!flag){
+  l.unlock();
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  l.lock();
+}
+\end{lstlisting}
 
 \subsubsection{Bedingungsvariablen}
 \begin{itemize*}
   \item Thread wartet, bis Bedingung erfüllt ist
-  \item Erfüllung der Bedingung wird durch anderen Thread angezeigt (notify) $\rightarrowtail$ "Aufwecken" des wartenden Threads
+  \item Erfüllung der Bedingung wird durch anderen Thread angezeigt (notify) $\rightarrowtail$ 'Aufwecken' des wartenden Threads
   \item notwendig: synchronisierter Zugriff über Mutex
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-35}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-36}
-\end{center}
+\begin{lstlisting}[language=C++]
+std::list<std::string> shared_space;
+std::mutex mtx;
+std::condition_variable cond;
+
+void consume(){
+  while(true){
+    std::unique_lock<std::mutex> l(mtx);
+    cond.wait(l, [&] {
+      return !shared_space.empty();
+    });
+    auto data = shared_space.front();
+    shared_space.pop_front();
+    l.unlock();
+    // data verarbeiten
+  }
+}
+\end{lstlisting}
 
 \subsubsection{Thread-sichere Datenstrukturen}
+\begin{lstlisting}[language=C++]
+void produce() {
+  // data erzeugen
+  std::lock_guard lg(mtx);
+  shared_space.push_back(data);
+  cond.notify_one();
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Thread-Sicherheit := eine Komponente kann gleichzeitig von verschiedenen Programmbereichen (Threads) mehrfach ausgeführt werden, ohne dass diese sich gegenseitig behindern
   \item verschiedene Varianten:
@@ -3997,7 +4272,7 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
     // Fortsetzung der Berechnung ...
     result.wait();
     std::cout << result.get() << std::endl;
-    \end{lstlisting}
+  \end{lstlisting}
   \item std::promise - erlaubt Wert zu setzen, wenn der aktuelle Thread beendet ist; oft in Kombination mit std::future eingesetzt
   \item future = Ergebnisobjekt, promise = Ergebnisproduzent
   \begin{itemize*}
@@ -4016,9 +4291,18 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
 \end{itemize*}
 
 \subsubsection{Thread-sichere Queue}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-37}
-\end{center}
+\begin{lstlisting}[language=C++]
+template <typename T>
+class ts_queue {
+  private:
+    mutable std::mutex mtx;
+    std::condition_variable cond;
+    std::queue<T> the_queue;
+  public:
+    ts_queue() {}
+    ...
+};
+\end{lstlisting}
 \begin{itemize*}
   \item Zeilen 1,2,6: Kapselung der std::queue-Klasse
   \item Zeile 4: Mutex für exklusiven Zugriff
@@ -4026,10 +4310,13 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
 \end{itemize*}
 
 \paragraph{Thread-sichere Queue: Methode push}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-38}
-\end{center}
+\begin{lstlisting}[language=C++]
+void push(T val){
+  std::lock_guard<std::mutex> l(mtx);
+  the_queue.push(std::move(val));
+  cond.notify_one();
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Zeile 2: Lock Guard sichert exklusiven Zugriff
   \item Zeile 3: Element an die Queue anhängen
@@ -4037,10 +4324,14 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
 \end{itemize*}
 
 \paragraph{Thread-sichere Queue: Methode waiting\_pop}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-39}
-\end{center}
+\begin{lstlisting}[language=C++]
+void waiting_pop(T& val){
+  std::lock_guard<std::mutex> l(mtx);
+  cond.wait(l, [this] {return !the_queue.empty(); });
+  val = std::move(the_queue.front());
+  the_queue.pop();
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Zeile 2: Lock Guard sichert exklusiven Zugriff
   \item Zeile 3: Warten bis Queue nicht mehr leer ist
@@ -4051,10 +4342,13 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
 \begin{itemize*}
   \item std::future - Resultat einer asynchronen Berechnung, d.h. einer Berechnung die erst noch stattfindet
   \item std::async() - asynchrones Starten eines Tasks
-  \begin{center}
-    \centering
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-40}
-  \end{center}
+  \begin{lstlisting}[language=C++]
+  int long_calculation() {...}
+  std::future<int> result = std::async(long_calculation);
+  //Fortsetzung der Berechnung ...
+  result.wait();
+  std::cout << result.get() << std::endl;
+  \end{lstlisting}
   \item std::promise - erlaubt Wert zu setzen, wenn der aktuelle Thread beendet ist, of in Kombination mit std::future eingesetzt
   \item future = Ergbenisobjekt, promise = Ergebnisproduzent
 \end{itemize*}
@@ -4072,10 +4366,24 @@ Hilfsmethode für zufällige Wartezeit in Millisekunden
   \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-future-task}
 \end{center}
 
-Beispiel  
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-41}
-\end{center}
+Beispiel
+\begin{lstlisting}[language=C++]
+// Promise für einen String Wert
+std::promise<std::string> promise;
+//zugehöriges Future Objekt
+auto res = promise.get_future();
+
+//Produtenten Thread
+auto producer = std::thread([&]{
+  promise.set_value("Hello World");
+});
+//Konsumenten Thread
+auto consumer = std::thread([&]{
+  std::cout << res.get() << "\n";
+});
+producer.join();
+consumer.join();
+\end{lstlisting}
 
 \subsubsection{Deklarative Parallelisierung mit OpenMP}
 \begin{itemize*}
@@ -4103,7 +4411,6 @@ Beispiel
   \includegraphics[width=0.2\linewidth]{Assets/Programmierparadigmen-master-worker-thread}
 \end{center}
 
-
 \begin{itemize*}
   \item Master-Thread und mehrere Worker-Threads (Anzahl typischerweise durch OpenMP-Laufzeitsystem bestimmt)
   \item über parallel -Direktive kann Arbeit in einem Programmabschnitt auf Worker-Threads aufgeteilt werden
@@ -4125,15 +4432,15 @@ Beispiel
     \end{lstlisting}
   \item Schleifenparallelisierung: jedem Thread wird ein Teil der Iteration zugewiesen (beeinflusst nur äußere Schleife)
   \begin{lstlisting}[language=C++]
-    ...
-    #pragma omp parallel for
-      for (int i = 0; i < 20; i++) {...
-    \end{lstlisting}
+  ...
+  #pragma omp parallel for
+    for (int i = 0; i < 20; i++) {...
+  \end{lstlisting}
   \begin{itemize*}
     \item collapse(n) gibt an, dass n Schleifen in einem gemeinsamen Iterationsbereich zusammengefasst und auf die Threads verteilt werden sollen
     \begin{lstlisting}
-      #pragma omp parallel for collapse(3)
-      \end{lstlisting}
+    #pragma omp parallel for collapse(3)
+    \end{lstlisting}
   \end{itemize*}
   \item Beeinflussung der Thread Anzahl
   \begin{itemize*}
@@ -4147,19 +4454,19 @@ Beispiel
     \end{lstlisting}
   \end{itemize*}
   \item Aufteilung des Iterationsbereichs; Beeinflussung durch schedule -Direktive
-  \begin{itemize*}
-    \item schedule(auto): Default - implementierungsspezifisch
-    \item schedule(static, n): statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
-    \item schedule(dynamic, n): dynamische Verteilung nach Bedarf
-    \item schedule(guided, n): Verteilung nach Bedarf und proportional zur Restarbeit
-  \end{itemize*}
+  \begin{description*}
+    \item[schedule(auto)] Default - implementierungsspezifisch
+    \item[schedule(static, n)] statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
+    \item[schedule(dynamic, n)] dynamische Verteilung nach Bedarf
+    \item[schedule(guided, n)] Verteilung nach Bedarf und proportional zur Restarbeit
+  \end{description*}
   \item Direktiven für parallele Ausführung
-  \begin{itemize*}
-    \item '\#pragma omp single/master' Abschnitt wird nur durch einen/den Master-Thread ausgeführt
-    \item '\#pragma omp critical' kritischer Abschnitt
-    \item '\#pragma omp barrier' Warten auf alle Worker-Threads
-    \item '\#pragma omp atomic' kritischer Abschnitt, Zugriff auf gemeinsame Variable (z.B. Zähler)
-  \end{itemize*}
+  \begin{description*}
+    \item[\#pragma omp single/master] Abschnitt wird nur durch einen/den Master-Thread ausgeführt
+    \item[\#pragma omp critical] kritischer Abschnitt
+    \item[\#pragma omp barrier] Warten auf alle Worker-Threads
+    \item[\#pragma omp atomic] kritischer Abschnitt, Zugriff auf gemeinsame Variable (z.B. Zähler)
+  \end{description*}
   \item Speicherklauseln für Variablen
   \begin{itemize*}
     \item 'shared' für alle Threads sichtbar/änderbar
@@ -4198,41 +4505,66 @@ Beispiel
 \begin{itemize*}
   \item der dem pragma folgende Block wird parallel von allen Threads ausgeführt
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-42}
-\end{center}
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <omp.h>
+
+int main() {
+  #pragma omp parallel
+  {
+    std::cout << "Hello World from thread #"
+              << omp_get_thread_num() << " of "
+              << omp_get_num_threads() << "\n";
+  }
+  std::cout << "Finished!\n";
+  return 0;
+}
+\end{lstlisting}
 
 \subsubsection{Schleifenparallelisierung}
 \begin{itemize*}
   \item parallele Ausführung einer Schleife: jedem Thread wird ein Teil der Iterationen zugewiesen
   \item für for-Schleifgen mit eingeschränkter Syntax (ganzzahlige Schleifenvariablen, Operatoren auf Schleifenvariablen) und für STL-Iteratoren
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-43}
-\end{center}
+\begin{lstlisting}[language=C++]
+unsigned int results[20];
+#pragma omp parallel for
+for (int i = 0; i < 20; i++){
+  auto f = rand() % 30;
+  results[i] = fibonacci(f);
+}
+\end{lstlisting}
 
 \subsubsection{Beeinflussung der Thread-Anzahl}
 maximale Anzahl
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-44}
-\end{center}
-\noindent
+\begin{lstlisting}[language=C++]
+  unsigned int results[20];
+  #pragma omp parallel for num_threads(8)
+  for (int i = 0; i < 20; i++){
+    results[i] = fibonacci(rand() % 30);
+  }
+\end{lstlisting}
+
 bedingte Parallelisierung
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-45}
-\end{center}
+\begin{lstlisting}[language=C++]
+  unsigned int results[20];
+  #pragma omp parallel for if(i > 50)
+  for (int i = 0; i < 20; i++){
+    results[i] = fibonacci(rand() % 30);
+  }
+\end{lstlisting}
 
 \subsubsection{Aufteilung des Iterationsbereichs}
 \begin{itemize*}
   \item Iterationsbereich kann auf verschiedene Weise auf Threads aufgeteilt werden
   \item Beeinflussung durch schedule-Direktive
-  \begin{itemize*}
-    \item schedule(auto): Default - implementierungsspezifisch
-    \item schedule(static,n): statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
-    \item schedule(dynamic, n): dynamische Verteilung nach Bedarf
-    \item schedule(guided, n): Verteilung nach Bedarf und proportional zur Restarbeit
-    \item ...
-  \end{itemize*}
+  \begin{description*}
+    \item[schedule(auto)] Default - implementierungsspezifisch
+    \item[schedule(static,n)] statische Round-Robin-Verteilung - Bereiche der Größe n (Angabe von n ist optional)
+    \item[schedule(dynamic, n)] dynamische Verteilung nach Bedarf
+    \item[schedule(guided, n)] Verteilung nach Bedarf und proportional zur Restarbeit
+    \item[...]
+  \end{description*}
 \end{itemize*}
 
 \subsubsection{Geschachtelte Schleifen}
@@ -4240,27 +4572,31 @@ bedingte Parallelisierung
   \item Parallelisierung mit \textbf{parallel for} beeinflusst nur äußere Schleife
   \item collapse(n) gibt an, dass n Schleifen in einem gemeinsamen Iterationsbereich zusammengefasst, und auf die Threads verteilt werden sollen
   \item Beispiel: Matrizenmultiplikation
+  \begin{lstlisting}[language=C++]
+    #pragma omp parallel for collapse(3)
+    for (int row = 0; row < m; row++)
+      for(int col = 0; col < n; col++)
+        for(int inner = 0; inner < k; inner++)
+          prod[row][col] += A[row][inner] * B[inner][col];
+  \end{lstlisting}
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-46}
-\end{center}
 
 \subsubsection{Synchronisation}
 \begin{itemize*}
   \item Direktiven für parallele Ausführung
-  \begin{itemize*}
-    \item \textbf{\#pragma omp single/master} Abschnitt wird nur durch einen/den Master-Thread ausgeführt
-    \item \textbf{\#pragma omp critical} kritischer Abschnitt
-    \item \textbf{\#pragma omp barrier} Warten auf alle Worker-Threads
-    \item \textbf{\#pragma omp atomic} kritischer Abschnitt - ZUgriff auf gemeinsame Variable (z.B. Zähler)
-  \end{itemize*}
+  \begin{description*}
+    \item[\#pragma omp single/master] Abschnitt wird nur durch einen/den Master-Thread ausgeführt
+    \item[\#pragma omp critical] kritischer Abschnitt
+    \item[\#pragma omp barrier] Warten auf alle Worker-Threads
+    \item[\#pragma omp atomic] kritischer Abschnitt - ZUgriff auf gemeinsame Variable (z.B. Zähler)
+  \end{description*}
   \item Speicherklauseln für Variablen
-  \begin{itemize*}
-    \item \textbf{shared} für alle Threads sichtbar/änderbar
-    \item \textbf{private} jeder Thread hat eigene Kopie der Daten, wird nicht außerhalb initialisiert
-    \item \textbf{reduction} private Daten, die am Ende des Abschnitts zu globalem Wert zusammengefasst werden
-    \item \textbf{firstprivate/lastprivate} privat - initialisiert mit letztem Wert vor dem Abschnitt / Wert des letzten Threads der Iteration wird zurückgegeben
-  \end{itemize*}
+  \begin{description*}
+    \item[shared] für alle Threads sichtbar/änderbar
+    \item[private] jeder Thread hat eigene Kopie der Daten, wird nicht außerhalb initialisiert
+    \item[reduction] private Daten, die am Ende des Abschnitts zu globalem Wert zusammengefasst werden
+    \item[firstprivate/lastprivate] privat - initialisiert mit letztem Wert vor dem Abschnitt / Wert des letzten Threads der Iteration wird zurückgegeben
+  \end{description*}
 \end{itemize*}
 
 \subsubsection{Parallele Abschnitte}
@@ -4268,9 +4604,20 @@ bedingte Parallelisierung
   \item Zuweisung von Programmabschnitten zu Threads $\rightarrowtail$ statische Parallelität
   \item geeignet z.B. für rekursive Aufrufe
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-47}
-\end{center}
+\begin{lstlisting}[language=C++]
+void qsort(int data[], int left, int right) {
+  if( left < right) {
+    int p = partition(data, left, right);
+    #pragma omp parallel sections
+    {
+      #pragma omp section
+      qsort(data, left, p -1);
+      #pragma omp section
+      qsort(data, p+1, right);
+    }
+  }
+}
+\end{lstlisting}
 
 \subsubsection{Task-Programmierung mit OpenMP}
 \begin{itemize*}
@@ -4281,9 +4628,18 @@ bedingte Parallelisierung
     \item von beliebigem Thread definiert werden kann
   \end{itemize*}
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-48}
-\end{center}
+\begin{lstlisting}[language=C++]
+unsigned int fibonacci(unsigned int f){
+  if( f<2 ) return n;
+  unsigned int f1, f2;
+  #pragma omp task shared(f1)
+  f1 = fib(f-1);
+  #pragma omp task shared(f2)
+  f2 = fib(f-2);
+  #pragma opm taskwait
+  return f1 + f2;
+}
+\end{lstlisting}
 
 \subsubsection{Fazit}
 \begin{itemize*}
@@ -4317,7 +4673,7 @@ public class Hello {
 
   public static void main(String[] args) {
       Thread t = new Thread(new Heartbeat(2)); //Thread Objekt mit runnable erzeugen
-      t.start(); //methode start() aufrufen $\rightarrow$ ruft run() auf
+      t.start(); //methode start() aufrufen -> ruft run() auf
   }
 }
 \end{lstlisting}
@@ -4368,26 +4724,26 @@ int main(int argc, char* argv[]){
 %% Variables begin with an upper-case letter
 
 %% Start defining a function with the most specific case first
-countdown(0) $\rightarrow$  
+countdown(0) ->  
   io:format("Zero!~n");  % function clauses end with a semicolon
 
 %% Another clause of the same function, with a guard expression
-countdown(Bogus) when Bogus < 0 $\rightarrow$
+countdown(Bogus) when Bogus < 0 ->
   io:format("Bad value: ~B~n", [Bogus]), % normal lines end with a comma
   error;  % return value (io:format returns 'ok')
   
 %% Last clause matches any single parameter
-countdown(Start) $\rightarrow$
+countdown(Start) ->
   %% case and if statements return values!
   Type = case Start rem 2 of
-      1 $\rightarrow$ "odd";  % case and if clauses end with semicolons
-      0 $\rightarrow$ "even"  % except the last one
+      1 -> "odd";  % case and if clauses end with semicolons
+      0 -> "even"  % except the last one
   end,  % end with comma, like a normal line
   io:format("~B is ~s~n", [Start, Type]), 
   countdown(Start - 1).  % When the function is all done, end with a period
 
 %% This is a different function because it has a different number of parameters.
-countdown() $\rightarrow$
+countdown() ->
   countdown(10).
 \end{lstlisting}
 
@@ -4426,18 +4782,18 @@ Eigene Klasse muss \textbf{Runnable} implementieren
   \item Methode \textbf{public void run()} - wird beim Start des Threads aufgerufen
 \end{itemize*}
 \begin{lstlisting}[language=java]
-  public class Heartbeat implements Runnable {
-      int pulse;
-      public Heartbeat(int p) { pulse = p * 1000; }
-      public void run() {
-          while(true) {
-              try { Thread.sleep(pulse); }
-              catch(InterruptedException e) {}
-              System.out.println("poch");
-          }
-      }
-  }
-  \end{lstlisting}
+public class Heartbeat implements Runnable {
+    int pulse;
+    public Heartbeat(int p) { pulse = p * 1000; }
+    public void run() {
+        while(true) {
+            try { Thread.sleep(pulse); }
+            catch(InterruptedException e) {}
+            System.out.println("poch");
+        }
+    }
+}
+\end{lstlisting}
 
 \paragraph{Thread-Erzeugung}
 
@@ -4449,11 +4805,11 @@ Eigene Klasse muss \textbf{Runnable} implementieren
   \end{itemize*}
 \end{itemize*}
 \begin{lstlisting}[language=java]
-  public static void main(String[] args) {
-      Thread t = new Thread(new Heartbeat(2)); //Thread Objekt mit runnable erzeugen
-      t.start(); //methode start() aufrufen $\rightarrow$ ruft run() auf
-  }
-  \end{lstlisting}
+public static void main(String[] args) {
+    Thread t = new Thread(new Heartbeat(2)); //Thread Objekt mit runnable erzeugen
+    t.start(); //methode start() aufrufen -> ruft run() auf
+}
+\end{lstlisting}
 
 \paragraph{Subklasse von Thread}
 
@@ -4461,9 +4817,21 @@ Eigene Klasse muss \textbf{Runnable} implementieren
   \item Klasse muss von Thread abgeleitet werden
   \item Methode run() muss überschrieben werden
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-49}
-\end{center}
+\begin{lstlisting}[language=java]
+public class Heartbeat2 implements Runnable {
+    int pulse = 1000;
+    public Heartbeat2() {}
+    public void setPulse(int p){ pulse = p*1000; }
+
+    public void run() {
+      while(true) {
+        try { Thread.sleep(pulse); }
+        catch( InterruptedException e) {}
+        System.out.println("poch");
+      }
+    }
+}
+\end{lstlisting}
 
 \begin{itemize*}
   \item Objekt der eigenen Thread-Klasse erzeugen
@@ -4471,15 +4839,17 @@ Eigene Klasse muss \textbf{Runnable} implementieren
   \begin{itemize*}
     \item Ruft \textbf{run()} auf
   \end{itemize*}
-  \begin{center}
-    \centering
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-50}
-  \end{center}
+  \begin{lstlisting}[language=java]
+  public static voud main(String[] args) {
+    Heartbeat2 t = new Heartbeat2(2);
+    t.start();
+  }
+  \end{lstlisting}
   \item Spätere Beeinflussung durch andere Threads möglich
-  \begin{center}
-    \centering
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-51}
-  \end{center}
+  \begin{lstlisting}[language=java]
+  ...
+  t.setPulse(2);
+  \end{lstlisting}
 \end{itemize*}
 
 
@@ -4493,13 +4863,31 @@ Eigene Klasse muss \textbf{Runnable} implementieren
 \end{description*}
 
 \subsubsection{Parallele Berechnung von Fibonacci-Zahlen}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-52}
-\end{center}
+\begin{lstlisting}[language=java]
+public class Fibonacci implements Runnable {
+  int fi;
+  public Fibonacci(int f) {fi = f; }
+  int fibo(int f){
+    if( f<2 ) return 1;
+    else return fibo(f-1) + fibo(f-2);
+  }
+  public void run() {
+    int res = fibo(fi);
+    System.out.println("Fibonacci(" + fi + ") = " + res);
+  }
+}
+\end{lstlisting}
+
 Thread-Erzeugung und Ausführung
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-53}
-\end{center}
+\begin{lstlisting}[language=java]
+public static voud main(String[] args) {
+  Thread[] threads = new Thread[10];
+  for(int i=0; i<10; i++){
+    threads[i] = new Thread(new Fibonacci(40 + i));
+    threads[i].start();
+  }
+}
+\end{lstlisting}
 
 \subsubsection{Wechselseitiger Ausschluss in Java}
 Schlüsselwort \textbf{synchronized}
@@ -4556,11 +4944,11 @@ Schlüsselwort \textbf{synchronized}
   \item Paket \textbf{java.util.concurrent} seit Java Version 1.5
   \item Abstraktionsschicht versteckt Details über Thread-Erzeugung
   \item Übernimmt Erstellung und Überwachung von parallelen Tasks, u.a.
-  \begin{itemize*}
-    \item \textbf{ExecutorService} zum erzeugen asynchroner Tasks
-    \item \textbf{Future}: Referenz auf diesen Task bzw. dessen Ergebnis
-    \item \textbf{ForkJoinPool \& RecursiveAction}: rekursives Aufteilen eines großen Problems
-  \end{itemize*}
+  \begin{description*}
+    \item[ExecutorService] zum erzeugen asynchroner Tasks
+    \item[Future] Referenz auf diesen Task bzw. dessen Ergebnis
+    \item[ForkJoinPool \& RecursiveAction] rekursives Aufteilen eines großen Problems
+  \end{description*}
 \end{itemize*}
 
 \subsubsection{Tasks und Futures in Java}
@@ -4599,10 +4987,26 @@ thread.start();
 \end{itemize*}
 
 \paragraph{Future \& ExecutorService: Beispiel}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-54}
-\end{center}
+\begin{lstlisting}[language=java]
+class App {
+  ExecutorService exevutor = Executors.newFixedThreadPool(4);
+  void search(final String w) throws InterruptedException {
+    Future<String> future = 
+      executor.submit(new Callable<String>() {
+        public String call(){
+          return searcher.search(target);
+        }
+      });
+    displayOtherThings(); // do other things
+    try {
+      displayText(future.get()); //get is blocking
+    } catch (ExecutionException ex) {
+      cleanup();
+      return;
+    }
+  }
+}
+\end{lstlisting}
 
 \subsubsection{RecursiveAction \& Fork/Join}
 \begin{itemize*}
@@ -4624,19 +5028,39 @@ thread.start();
 \end{itemize*}
 
 \paragraph{Beispiel}
+\begin{lstlisting}[language=java]
+class MyTask extends RecursiveAction {
+  String[] source; int start, length;
+  public MyTask(String[] src, int s, int l) {
+    source = src; start = s; length = l;
+  }
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-55}
-\end{center}
+  void computeDirectly() {...}
+
+  @Override
+  void compute() {
+    if(length < THRESHOLD) computeDirectly();
+    else {
+      int split = length / 2;
+      invokeAll(new MyTask(source, start, split), new MyTask(source, start+split, length-split))
+    }
+  }
+}
+\end{lstlisting}
+
 Starten der Verarbeitung: 
 \begin{enumerate*}
   \item (große) Gesamtaufgabe erstellen
   \item ForkJoinPool erstellen
   \item Aufgabe vom Pool ausführen lassen
 \end{enumerate*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-56}
-\end{center}
+\begin{lstlisting}[language=java]
+String[] src = ...
+
+MyTask t = new MyTask(src, 0, src.length);
+ForkJoinPool pool = new ForkJoinPool();
+pool.invoke(t);
+\end{lstlisting}
 
 \subsection{Zusammenfassung}
 \begin{itemize*}
@@ -5007,19 +5431,117 @@ Wir implementieren eine Variante, bei welcher:
 drei Prozesse mit \textbf{initialize(ErrorRate, NumberOfMessages, ReceiverPid, SenderPid, ChannelPid)} initialisieren und starten
 \begin{itemize*}
   \item Sender hat vier Zustandsfunktionen; Startet mit senderReady0(List): Liste mit Zahlen 1,...,NumberOfMessages
-  \item Kanal: Nachricht "verlieren", wenn Zufallszahl $\ngeq$ ErrorRate
+  \item Kanal: Nachricht 'verlieren', wenn Zufallszahl $\ngeq$ ErrorRate
   \item Empfänger hat zwei Zustandsfunktionen; zu Beginn wird receiverWait0 gestartet
   \item initialize wartet auf eine ready-Nachricht; sendet danach stop-Nachrichten an alle
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-57}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-58}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-59}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-60}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-61}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-62}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-63}
-\end{center}
+\begin{lstlisting}[language=erlang]
+-module(altbit).
+-export([initialize/5]).
+-import(rand, [seed/3, uniform/0]).
+
+for(Max, Max, F) -> [F(Max)]; % for convemience
+for(I, Max, F) -> [F(I)|for(I+1, Max, F)]
+\end{lstlisting}
+
+\begin{lstlisting}[language=erlang]
+initialize(ErrorRate, NumberOfMessages, R, S, C) ->
+  rand:seed({23, 13, 97}), %initialised RND
+  SendList = for(1, NumberOfMessages, fun(I) -> I end),
+  register(initializer, seld()), % others may send us 'ready'
+  Receiver = spawn(R, fun() -> receiverWait0() end),
+  register(receiver, Receiver),
+  Channel = spawn(C, fun() -> channelIdle(ErrorRate) end),
+  register(channel, Channel),
+  Sender = spawn(S, fun() -> senderReady0(SendList) end),
+  register(sender, Sender),
+  io:format("Started ABP with ~.10B Messages and Error Rate ~f~n", [NumberOfMessages, ErrorRate]),
+  receive % wait for Signal that all Messages went ok
+    ready -> io:format("All ~.10B Messages sent.~n", [NumberOfMessages])
+  end, % Now clean up everything
+  Sender ! stop, Receiver ! stop, Channel ! stop,
+  unregister(initializer)
+\end{lstlisting}
+
+\begin{lstlisting}[language=erlang]
+senderReady0([]) -> initializer ! ready;
+senderReady0([M|MS]) ->
+  channel ! {receiver, {seq0, M}},
+  io:format("Sender: sends Message ~.10B. ~n",[M]),
+  senderProcess0([M|MS]).
+\end{lstlisting}
+
+\begin{lstlisting}[language=erlang]
+senderProcess0([]) -> initializer!ready; %to be safe
+senderProcess0([M|MS]) ->
+  receive
+    ack0 -> io:format("Sender: received expected Ack for Message ~.10B. ~n", [M]);
+    ack1 -> io:format("Sender: received unexpected Ack; Send Again Message ~.10B.~n", [M]),
+      channel ! {receiver, {seq0, M}},
+      senderProcess0([M|MS]);
+    stop -> true
+    after 1000 -> io:format("Sender: Timeout! Repeat Message ~.10B. ~n", [M]),
+      channel ! {receiver, {seq0, M}},
+      senderProcess0([M|MS])
+  end.
+\end{lstlisting}
+
+\begin{lstlisting}[language=erlang]
+cannelIdle(ErrorRate) ->
+  RN = uniform(), % for determining if msg to be dropped
+  receive
+    {receiver, {Seq, M}} when RN =< ErrorRate -> %drop
+      io:format("Channel: drops Message ~.10B. ~n", [M]),
+      channelIdle(ErrorRate);
+    {receiver, {Seq, M}} when RN > ErrorRate -> % deliver
+      receiver!{Seq, M},
+      channelIdle(ErrorRate);
+    {sender, M} when RN =< ErrorRate -> %drop
+      io:format("Channel: drops ~w ~n", [M]),
+      channelIdle(ErrorRate);
+    {sender, M} when RN > ErrorRate -> %deliver
+      sender ! M,
+      channelIdle(ErrorRate);
+      stop -> true
+  end.
+\end{lstlisting}
+
+\begin{lstlisting}[language=erlang]
+receiverWait0() ->
+  receive
+    {seq0, M} ->
+      io:format("Receiver: received and delivers Message ~.10B. ~n",[M]),
+      channel ! {sender, ack0},
+      receiverWait1();
+    {seq1, M} ->
+      io:format("Receiver: ignores unexpected Message ~.10B. ~n", [M]),
+      channel ! [sender, ack1],
+      receiverWait0();
+    stop -> true
+  end.  
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+> altbit:initialize(0.45, 3, 'receiver@pc1', 'channel@pc2', 'sender@pc3').
+Started ABP with 3 Messages and Error-Rate 0.450000
+Sender: sends Message 1.
+Channel: drops Message 1.
+Sender: Timeout! Send Again Message 1.
+Channel: drops Message 1.
+Sender: Timeout! Send Again Message 1.
+Receiver: received and delivers Message 1.
+Sender: received expected Ack for Message 1.
+Sender: sends Message 2.
+Receiver: received and delivers Message 2.
+Channel: drops ack1
+Sender: Timeout! Send Again Message 2.
+Receiver: ignores unexpected Message 2.
+Sender: received expected Ack for Message 2.
+Sender: sends Message 3.
+Receiver: received and delivers Message 3.
+Sender: received expected Ack for Message 3.
+All 3 Messages successfully transmitted.
+\end{lstlisting}
 
 \subsection{Kommunikationsmodelle \& Implementierungen}
 \subsubsection{Kommunikationsmodelle}
@@ -5105,7 +5627,7 @@ Kommunikationspartner sind für uns:
 \begin{center}
   \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-synchrones-senden}
 \end{center}
-\noindent \color{orange} asynchrones Senden: \color{black} Der Sender wartet nicht bis der Empfänger die Botschaft annimmt ("fire and forget" Prinzip)
+\noindent \color{orange} asynchrones Senden: \color{black} Der Sender wartet nicht bis der Empfänger die Botschaft annimmt ('fire and forget' Prinzip)
 \begin{center}
   \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-asynchrones-senden}
 \end{center}
@@ -5160,7 +5682,7 @@ Kommunikationspartner sind für uns:
 \begin{itemize*}
   \item unverlässliches vs. verlässliches Senden
   \begin{itemize*}
-    \item "Brief vs. Einschreiben"
+    \item 'Brief vs. Einschreiben'
   \end{itemize*}
   \item verlässliche Kommunikation erfordert
   \begin{itemize*}
@@ -5199,9 +5721,9 @@ vielfältige Fehlermöglichkeiten in verteilten Anwendungen:
 \end{itemize*}
 \begin{lstlisting}[language=erlang]
   receive
-      {ok, Resp} $\rightarrow$ Resp;
-      {notfound} $\rightarrow$ notfound;
-      after Time $\rightarrow$ timeout
+      {ok, Resp} -> Resp;
+      {notfound} -> notfound;
+      after Time -> timeout
   end
   \end{lstlisting}
 
@@ -5237,9 +5759,17 @@ Umgang mit Fehlern (Timeouts, Ausfälle):
 \end{itemize*}
 
 \subsubsection{on\_exit-Handler}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-64}
-\end{center}
+\begin{lstlisting}[language=erlang]
+on_exit(Pid, Fun) ->
+  spawn(fun() ->
+    process_flag(trap_exit, true),
+    link(Pid),
+    receive
+      {"EXIT", Pid, Why } -> Fun(Why)
+    end
+  end).
+\end{lstlisting}
+
 \begin{itemize*}
   \item überwacht den Prozess \textbf{Pid} auf Abbruch
   \item Anwendungsspezifische Reaktionen möglich
@@ -5251,10 +5781,12 @@ Umgang mit Fehlern (Timeouts, Ausfälle):
 \end{itemize*}
 
 \paragraph{Anwendung des on\_exit-Handlers}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-65}
-\end{center}
+\begin{lstlisting}[language=erlang]
+F = fun() -> receive X -> list_to_atom(X) end end.
+Pid = spawn(F).
+on_exit(Pid, fun(Why) -> io:format("~p died with ~p~n", [Pid, Why]) end).
+Pid ! ping.
+\end{lstlisting}
 
 \begin{itemize*}
   \item Funktion anlegen (Liste in Atom konvertieren)
@@ -5297,7 +5829,7 @@ Typische Anwendungsszenarien
 \begin{description*}
   \item[DB-Server] verwalten Datenbestände, verarbeiten SQL Anfragen
   \begin{itemize*}
-    \item Clients: "Gib mir alle Personen, die älter als 18 Jahre alt sind"
+    \item Clients: 'Gib mir alle Personen, die älter als 18 Jahre alt sind'
   \end{itemize*}
   \item[Web] Webserver stellt HTML Dokumente bereit, Browser ruft URLs für Dokumente auf
   \item[E-Mail] Mailserver verwalten Postfächer, leiten Mails weiter, Outlook/Thunderbird/...senden/lesen von Emails
@@ -5310,9 +5842,17 @@ Typische Anwendungsszenarien
   \item Rollenmodell: Clients erteilen Aufträge an Server
   \item Datenmodell: Notschaften mit vereinbarter Struktur (Protokoll)
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-68}
-\end{center}
+\begin{lstlisting}
+POST /axis2/services/TimeWS HTTP/1.1
+Content-Type: application/soap+xml; charset=UTF-8;
+action="urn:getTimeOfDay"
+
+<?xml version='1.0' encoding='UTF-8'?>
+<soapenv:Envelope xmlns:soapenv="...">
+  <soapenv:Body/>
+</soapenv:Envelope>
+\end{lstlisting}
+
 \begin{itemize*}
   \item Fehlersemantiken: Was ist der Grund, wenn ich keine Antwort erhalte?
   \begin{itemize*}
@@ -5338,9 +5878,25 @@ Typische Anwendungsszenarien
 \paragraph{Ein Fileserver in Java}
 
 Server
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-69}
-\end{center}
+\begin{lstlisting}[language=java]
+try(ServerSocker ss = new ServerSocket(4242)){
+  Socket s = ss.accept(); //warte auf Clients
+  // ...
+
+  String line = null;
+  if((line = socketReader.readLine()) != null) {
+    String command = lines.split(" "); //trenne beim Leerzeichen
+    String operation = command[0]; String path = command[1];
+    switch(operation.trim().toUpperCase()) {
+      case "GET":
+        String content = readFile(path);
+        socketWriter.write(content); break;
+      case "DELETE":
+        boolean ok = deleteFile(path);
+        socketWriter.write(String.valueOf(ok)); break;
+      // ...
+    } /*switch*/ } /*if*/ } /*try*/
+\end{lstlisting}
 Erläuterungen zum Server
 \begin{itemize*}
   \item Zeile 1 \& 2: Serversocket erstellen, lauscht auf Port 4242, wartet blockierend bis sich ein Client verbindet
@@ -5350,9 +5906,18 @@ Erläuterungen zum Server
 \end{itemize*}
 
 Client
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-70}
-\end{center}
+\begin{lstlisting}[language=java]
+try(Socket socket = new Socker("localhost", 4242)){
+  String command = args[0] + " " + args[1];
+
+  socketWriter.write(command);
+
+  String response;
+  while((response = socketReader.readLine()) != null) {
+    System.out.println(response);
+  }
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Zeile 1: erstelle Clientsocket, d.h. Verbindungsaufbau zum Server auf localhost auf Port 4242
   \item Zeile 2: lese Befehl und Dateipfad
@@ -5479,9 +6044,18 @@ Spotify API
     \item Klasse muss als Servlet in einem Applicationserver ausgeführt werden
   \end{itemize*}
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-71}
-\end{center}
+\begin{lstlisting}
+@Path("/files")
+public class FileServer {
+  @GET
+  @Path("/{fname}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public FileInfo getDetails(@PathParams("fname") String file) {
+    FileInfo infos = getFileInfos(file);
+    return infos;
+  }
+}
+\end{lstlisting}
 
 \paragraph{Restful Webservice - Erläuterungen}
 
@@ -5508,29 +6082,50 @@ https://reques.in kostenloser Dienst zum Testen von REST-Clients
   \item Variante 1: telnet reques.in 80 ...
   \item Variante 2: Auf der Kommandozeile \newline
   \$ curl https://reqres.in/api/users/1
-  \begin{center}
-    \centering
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-72}
-  \end{center}
+  \begin{lstlisting}[language=java]
+  {"data":{
+    "id":1, "email":"abc.def@xyz.de",
+    "first_name": "ABC", "last_name":"DEF", ...
+  }}
+  \end{lstlisting}
   \item Variante 3: Aufruf in einem Programm
 \end{itemize*}
 
 \paragraph{HTTP GET Aufrufe in Java}
 
 In Java ab Version 11 eingebauter HTTP Client
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-73}
-\end{center}
+\begin{lstlisting}[language=java]
+HttpClient httpCliet = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder()
+  .GET()
+  .uri(URI.create("https://reqres.in/api/users/1"))
+  .build();
+
+HttpResponse<String> response = httpClient.send(
+  request, HttpResponse.BodyHandlers.ofString()
+);
+
+System.out.println(response.body());
+\end{lstlisting}
 
 \paragraph{HTTP POST in Java}
+\begin{lstlisting}[language=java]
+String data ="{ \"name\":\"morpheus\",\"job\":\"leader\"}";
+HttpRequest postRequest = HttpRequest.newBuilder()
+  .uri(URI.create("https://reqres.in/api/users"))
+  .POST(HttpRequest.BodyPublishers.ofString(data))
+  .header("Content-Type", "application/json").build();
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-74}
-\end{center}
-Antwort: 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-75}
-\end{center}
+HttpResponse<String> postResp = httpClient.send(
+  postRequest, HttpResponse.BodyHandlers.ofString()
+);
+System.out.println(postResp.body());
+\end{lstlisting}
+Antwort:
+\begin{lstlisting}[language=java]
+{"name":"morpheus", "job":"leader", "id":"703", "createdAt":"2020-06-24T12:09:22.148Z"}
+\end{lstlisting}
 Eigentlich: JSON Ergebnis mit geeigneten Frameworks parsen und weiterverarbeiten
 
 \paragraph{Zusammenfassung}
@@ -5592,16 +6187,20 @@ Der Server-Stub/Skeleton
 
 \begin{itemize*}
   \item Vordefiniertes Erlang-Modul für RPC
-  \begin{center}
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-76}
-  \end{center}
+  \begin{lstlisting}[language=erlang]
+  rpc:call(Node, Module, Func, Args)
+  rpc:call(Node, Module, Func, Args, Timeout)
+  \end{lstlisting}
   \item führt \textbf{Module:Func(Args)} auf \textbf{Node} aus
   \begin{itemize*}
     \item weitere Funktionen für asynchrone Aufrufe, Aufrufe von mehreren Servern
   \end{itemize*}
-  \begin{center}
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-77}
-  \end{center}
+  \begin{lstlisting}[language=bash]
+  (node2@localhost)1> node().
+  node2@localhost
+  (node2@localhost)2> rpc:call(node1@localhost, erlang, node, []).
+  node1@localhost
+  \end{lstlisting}
   \item andere Möglichkeit: eigene Funktionen über \textbf{register} anmelden (siehe Alternating Bit Protokoll)
   \item mit \textbf{whereis} PID von registrierten Erlang-Prozessen finden
 \end{itemize*}
@@ -5622,9 +6221,20 @@ Der Server-Stub/Skeleton
 
 \paragraph{RMI - Schnittstelle für entfernte Objekte}
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-78}
-\end{center}
+\begin{lstlisting}[language=java]
+package fileserver;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface FileService extends Remote {
+  FileInfo getFileInfos(String filename) throws RemoteException;
+}
+
+class FileInfo implements java.io.Serializeable {
+  String name; long size; String owner;
+}
+\end{lstlisting}
 
 \paragraph{RMI: Server}
 
@@ -5635,15 +6245,30 @@ Server-Objekt muss:
   \item im Namensverzeichnis registriert werden
 \end{itemize*}
 Server-Objekt anlegen: 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-79}
-\end{center}
+\begin{lstlisting}[language=java]
+package fileserver;
+public class FileServer implements FileService {
+  @Override
+  public FileInfo getFileInfos(String fileName) throws RemoteException {
+    return ...
+  }
+}
+\end{lstlisting}
 
 \paragraph{RMI: Serverobjekt registrieren}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-80}
-\end{center}
+\begin{lstlisting}[language=java]
+public static void main(String args[]){
+  try {
+    //Server Objekt erzeugen
+    FileServer srv = new FileServer();
+    // ...exportieren
+    FileService stub = (FileService) UnicastRemoteObject.exportObject(srv, 0);
+    // ...und registrieren
+    Registry registry = LocateRegistry.getRegistry();
+    registry.bind("MyFileServer", stub);
+  } catch (Exception e) {...}
+}
+\end{lstlisting}
 
 \paragraph{RMI - Client}
 
@@ -5652,15 +6277,27 @@ Server-Objekt anlegen:
   \item Stub erzeugen (erfolgt automatisch von JVM)
   \item Methode auf dem Server-Objekt aufrufen
 \end{itemize*}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-81}
-\end{center}
+\begin{lstlisting}[language=java]
+String host = args[0];
+Registry registry = LocateRegistry.getRegistry(host);
+FileService stub = (FileService) registry.lookup("MyFileServer");
+FileInfo infos = stub.getFileInfos("myfile.txt");
+System.out.println("Details: " + infos.toString());
+\end{lstlisting}
 
 \paragraph{RMI - Ablauf}
-
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-82}
-\end{center}
+Starten des Namensdienstes
+\begin{lstlisting}[language=bash]
+> rmiregistry &
+\end{lstlisting}
+Starten des Servers
+\begin{lstlisting}[language=bash]
+> java -Djava.rmi.server.codebase=file:classDir/fileserver.FileServer &
+\end{lstlisting}
+Starten des Clients
+\begin{lstlisting}[language=bash]
+> java -Djava.rmi.server.codebase=file:classDir/fileserver.Client hostname
+\end{lstlisting}
 
 \paragraph{Interoperabilität von RPC}
 
@@ -5673,7 +6310,9 @@ Lösungsansätze:
   \item \textbf{XML-RPC, JSON-RPC}: kodiere alle zum Aufruf nötigen Informationen als XML bzw. JSON
   \begin{itemize*}
     \item HTTP zur Übertragung
-    \item \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-83}
+    \begin{lstlisting}
+    {"jsonrpc": ".0", "method": "getFileInfos", "params": ["myfile.txt"], "id": 1}
+    \end{lstlisting}
     \item \textbf{id} für die Zuordnung von Antworten zu Anfragen
   \end{itemize*}
   \item \textbf{gRPC}: Code-Generierung für Server, Stubs und ausgetauschte Daten
@@ -5697,9 +6336,21 @@ Lösungsansätze:
 \paragraph{gRPC: Dienstbeschreibung}
 
 fileservice.proto
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-84}
-\end{center}
+\begin{lstlisting}[language=java]
+message FileInfo {
+  string name = 1;
+  uint64 size = 2;
+  string owner = 3;
+}
+
+message Request {
+  string fname = 1;
+}
+
+service FileService {
+  rpc GetDetail(Request) returns (FileInfo);
+}
+\end{lstlisting}
 
 \paragraph{gRPC: Dienstbeschreibung - Erläuterungen}
 
@@ -5716,30 +6367,72 @@ fileservice.proto
 
 \begin{itemize*}
   \item *.proto Dateien werden mittels protoc Compiler in die Zielsprache übersetzt
-  \begin{center}
-    \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-85}
-  \end{center}
+  \begin{lstlisting}[language=bash]
+  > protoc -I ../protos --grpc_out=. --plugin=protoc-gen-grpc=grpc_cpp_plugin ../protos/fileservice.proto
+  > protoc -I ../protos --cpp_out=. ../protos/fileservice.proto
+  \end{lstlisting}
   \item erzuegt C++ Dateien für messages sowie Service-Klassen (FileService)
   \item Klasse \textbf{FileService} enthält generierten Stub und  Methoden für den Server zum überschreiben
 \end{itemize*}
 
 \paragraph{gRPC: Server erzeugen}
+\begin{lstlisting}[language=C++]
+class FileServiceImpl final: public FileService::Service {
+  Status GetDetail(ServerContext* context, const Request* req, FileInfo* result) override {
+    // Werte bestimmen ...
+    string fName = req->fname();
+    string owner = getOwner(fName); //dummy
+    uint64 size = getFileSize(fName); //dummy
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-86}
-\end{center}
+    //... und im Ergebnis-Object setzten
+    result->set_owner(owner);
+    result->set_size(size);
+    result->set_name(fName);
+    return Status::OK;
+  }
+}
+\end{lstlisting}
 
 \paragraph{gRPC: Server starten}
+\begin{lstlisting}[language=C++]
+void RunServer(){
+  std::string server_adress("0.0.0.0:50041");
+  //Instanz unseres Dienstes anlegen
+  FileServiceImpl service();
 
-\begin{center}
-  \includegraphics[width=0.65\linewidth]{Assets/Programmierparadigmen-code-snippet-87}
-\end{center}
+  ServerBuilder builder;
+  //lausche auf gegebenem Port
+  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+  //unseren Dienst registrieren
+  builder.RegisterService(&service);
+  //starte RPC Server
+  std::unique_ptr<Server> server(builder.BuildAndStart());
+  server->Wait();
+}
+\end{lstlisting}
 
 \paragraph{gRPC: Client}
+\begin{lstlisting}[language=C++]
+class FileServiceClient {
+  private:
+    std::unique_ptr<FileService::Stub> stub_;
+  public:
+    FileServiceClient(): stub_(FileService::NewStub(
+      grpc::CreateChannel("localhost:50051",
+      grpc::InsecureChannelCredentials()))) {}
+    
+    void GetFileInfo(const string& file) {
+      ClientContext context; FileInfo* info;
+      Request r; r.set_fname(file);
 
-\begin{center}
-  \includegraphics[width=0.65\linewidth]{Assets/Programmierparadigmen-code-snippet-88}
-\end{center}
+      Status status = stub_->GetDetail(&context, r, info);
+      if (!status.ok()){
+        std::cout << "GetDetail rpc failed." << std::endl;
+        return false;
+      } else { /* do something with info */ }
+    } /* GetFileInfo */
+} /* class */
+\end{lstlisting}
 
 \subsubsection{Zusammenfassung}
 \begin{itemize*}
@@ -5889,25 +6582,50 @@ RabbitMQ
 \end{center}
 
 \paragraph{RabbitMQ Publish}
+\begin{lstlisting}[language=java]
+import com.rabbitmq.client.*;
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-89}
-\end{center}
+public class RMQTest {
+  private static final String EXCHANGE_NAME = "rqm_test";
+
+  public static void main(String[] args) throws Exception {
+    ConnectionFactory factory = new ConnectionFactory();
+    factory.setHost("localhost");
+    try (Connection connection = factory.newConnection();
+      Channel channel = connection.createChannel()) {
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+        channel.basicPublish(EXCHANGE_NAME, "uni.ilm.dbis", null, "Hallo Welt".getBytes("UTF-8"));
+      }
+  }
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Zeilen 7,8: \textbf{ConnectionFactory} zum Handling von Verbindungen, im Beispiel nur auf dem lokalen Host
   \item Zeilen 9,10: erstelle neue Verbindungen und einen Channel
   \item Zeile 11: Nachrichten sollen anhand des Topics zugestellt werden
-  \item Zeile 13: veröffentliche eine Nachricht: sende an den Exchange "rmq\_test" eine Nachricht mit dem Topic \textbf{uni.ilm.dbis} und dem Inhalt "Hallo Welt".
+  \item Zeile 13: veröffentliche eine Nachricht: sende an den Exchange 'rmq\_test' eine Nachricht mit dem Topic \textbf{uni.ilm.dbis} und dem Inhalt 'Hallo Welt'.
   \begin{itemize*}
     \item \textbf{null} hier für eventuelle weitere Einstellungen
   \end{itemize*}
 \end{itemize*}
 
 \paragraph{RabbitMQ Subscribe}
+\begin{lstlisting}[language=C++]
+//wie zuvor Channel erstellen
+channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+String queueName = channel.queueDeclare().getQueue();
+channel.queueBind(queueName, EXCHANGE_NAME, "*.ilm.*");
+channel.queueBund(queueName, EXCHANGE_NAME, "sport.#");
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-90}
-\end{center}
+DeliverCallback callback = (consumerTag, delivery) -> {
+  String message = new String(delivery.getBody(), "UTF-8");
+  String key = delivery.getEnvelope().getRoutingKey();
+  System.out.println("Topic = " + key);
+  System.out.println("Nachricht: " + message);
+};
+
+channel.basicConsume(queueName, true, callback, consumerTag -> {});
+\end{lstlisting}
 \begin{itemize*}
   \item Zeilen 1\&2: Connection und Channel erstellen, siehe vorherige Bilder
   \item Zeilen 4-6: Queue erzeugen und auf Topics registrieren
@@ -5964,7 +6682,7 @@ Cloud Computing als Geschäftsmodell:
   \end{itemize*}
   \item Kunden starten dynamisch Instanzen der Maschinen/Software
   \begin{itemize*}
-    \item Bezahlung nur für genutzte Zeit ("pay-as-you-go")
+    \item Bezahlung nur für genutzte Zeit ('pay-as-you-go')
   \end{itemize*}
 \end{itemize*}
 
@@ -6044,9 +6762,18 @@ Serverless
 Mittlerweile auch Serverless Microservice: Microservice nicht immer ausführen, sondern nach Trigger
 
 \subsubsection{AWS Lambda: Java Beispiel}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-91}
-\end{center}
+\begin{lstlisting}[language=java]
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+public class HandlerUserDetails implements RequestHandler<String, UserInfo> {
+  Gson gson = new GsonBuilder.setPrettyPrinting().create();
+  @Override
+  public UserInfo handleRequest(String ev, Context ctx) {
+    // ev is JSON string, contains query parameters
+    String username = ...; //get from ev
+    Userinfo info = getUserInfo(username);
+    return info;
+  } /* method */ } /* class */
+\end{lstlisting}
 \begin{description*}
 \item[RequestHandler] als Einstiegspunkt für Lambda-Funktionen
 \item[handleRequest] wird von der Lambda-Umgebung aufgerufen
@@ -6071,10 +6798,22 @@ Mittlerweile auch Serverless Microservice: Microservice nicht immer ausführen, 
 Projekt generieren, herunterladen und entpacken
 
 \paragraph{Spring Cloud Functions: Beispiel}
+\begin{lstlisting}[language=java]
+@SpringBootApplication
+public class FileInfoApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(FileInfoApplication.class, args);
+  }
 
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{Assets/Programmierparadigmen-code-snippet-92}
-\end{center}
+  @Bean
+  public Function<String, FileInfo> info() {
+    return name -> {
+      FileInfo i = getFileInfo(name); //dummy
+      return i;
+    }
+  }
+}
+\end{lstlisting}
 \begin{itemize*}
   \item Zeile 1: für Spring Boot, diese Klasse enthält Definitionen für Dienste
   \item Zeilen 3-5: Ausführen der Klasse als Spring Applikation

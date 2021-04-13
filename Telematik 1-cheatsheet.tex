@@ -92,7 +92,7 @@
     \end{tabular}
     
     \section{Multiplexing}
-    Optionen für die Auswahl des nächsten Hops bei großen Netzwerken:
+    Auswahl des nächsten Hops bei großen Netzwerken
     \begin{description*}
         \item[Fluten] Sende das Paket an alle Nachbarn
         \item[Hot Potato Routing] Sende an einen zufälligen Nachbarn
@@ -101,43 +101,51 @@
     
     \section{Serviceprimitive}
     \begin{description*}
-        \item[Request (Req)] Anfrage an ein Layer einen Service auzuführen
-        \item[Indication (Ind)] Ein Layer zeigt seinem Nutzer, dass etwas passiert ist (asynchrone Benachrichtigung)
-        \item[Response (Res)] Ein Nutzer von höherem Layer beantwortet eine Indication
+        \item[Request (Req)] Anfrage an Layer eines Service auzuführen
+        \item[Indication (Ind)] Layer zeigt seinem Nutzer, dass etwas passiert ist (asynchrone Benachrichtigung)
+        \item[Response (Res)] Nutzer von höherem Layer beantwortet Indication
         \item[Confirmation (Conf)] Der ursprüngliche Dienstaufrufer wird über die Beendigung des Servicerequests informiert
     \end{description*}
     
     \section{Korrektheitsanforderung}
     \begin{description*}
         \item[Completeness] Alle gesendeten Nachrichten werden irgendwann zugestellt
-        \item[Correctness] Alle Daten die ankommen, sind auch genau die, die losgeschickt wurden (unverändert, ohne Bitfehler)
+        \item[Correctness] Alle Daten die ankommen, sind auch genau die, die losgeschickt wurden (unverändert, keine Bitfehler)
         \item[Reihenfolgegetreu] Nachrichten und Bytesequenzen kommen in der korrekten Reihenfolge an
         \item[Verlässlich] Sicher, Verfügbar, …
         \item[Bestätigt] Erhalt von Daten wird dem Sender bestätigt
     \end{description*}
     
     \section{Verbindungsorientiert}
-    Verbindungsorientierte Dienste müssen Primitive Bereitstellen um Verbindungen handhaben zu können:
+    Verbindungsorientierte Dienste müssen Primitive bereitstellen um Verbindungen handhaben zu können
     \begin{description*}
         \item[CONNECT] Einrichtung der Verbindung
         \item[LISTEN] Warten auf Verbindungsanfragen
-        \item[INCOMING\_CONN] Anzeige eingehender Connectionrequests
+        \item[INCOMING\_CONN] Anzeige eingehender Con.Requests
         \item[ACCEPT] Annahme einer Verbindung
         \item[DISCONNECT] Terminierung einer Verbindung
     \end{description*}
     
     \section{Layering}
-    \begin{tabular}{ p{3.5cm} | p{3.5cm} }
-        Vorteile                                 & Nachteile                                         \\\hline
-        Komplexität verwalten \& beherrschen     & Funktionen vl redundant                           \\
-        Änderung der Implementierung transparent & selbe Information für verschiedene Layer nötig    \\
-        Ideales Netzwerk                         & Layer n benötigt eventuell Einblick in Layern n+x \\
-    \end{tabular}
+    \begin{description*}
+        \item[Vorteile]
+        \begin{itemize*}
+            \item Komplexität verwalten \& beherrschen
+            \item Änderung der Implementierung transparent
+            \item Ideales Netzwerk
+        \end{itemize*}
+        \item[Nachteile]
+        \begin{itemize*}
+            \item Funktionen vl redundant
+            \item selbe Information für verschiedene Layer nötig
+            \item Layer n benötigt eventuell Einblick in Layern $n+x$
+        \end{itemize*}
+    \end{description*}
     
     \section{Informationsgehalt nach Shannon}
-    $I(x)=-Id(P(x)) = ld(\frac{1}{P(x)})$
-    Anforderungen an eine Funktion für den Informationsgehalt eines Zeichens
+    Anforderungen an Funktion für Informationsgehalt eines Zeichens
     \begin{itemize*}
+        \item $I(x)=-Id(P(x)) = ld(\frac{1}{P(x)})$
         \item $I(x)$ reziprok zu $P(x)$
         \item $(P(x)=1) \Rightarrow (I(x)=0)$
         \item $I(x,y) = I(x) + I(y)$
@@ -164,31 +172,31 @@
     \end{description*}
     
     \section{Medium Access Control (MAC)}
-    \subsection{Annahmen für die dynamische Kanalzuweisung}
-    \begin{itemize*}
-        \item Stationsmodell
+    \subsection{Annahmen für dynamische Kanalzuweisung}
+    \begin{description*}
+        \item[Einkanalannahme] Nur ein Kanal für alle Stationen und für alle Nachrichten
+        \item[Kollisionsannahme] Nur je ein Frame zeitgleich fehlerfrei übertragbar
+        \item[Stationsmodell]
         \begin{itemize*}
             \item N unabhängige Stationen
             \item Mögliches Lastmodell: Wahrscheinlichkeit des Generierens eines Pakets im Intervall t ist x*T, mit x konstant
         \end{itemize*}
-        \item Einkanalannahme: Nur ein Kanal für alle Stationen und für alle Nachrichten
-        \item Kollisionsannahme: Nur je ein Frame zeitgleich fehlerfrei übertragbar
-        \item Zeitmodell
+        \item[Zeitmodell]
         \begin{itemize*}
             \item Kontinuierlich: Übertragungen können jederzeit stattfinden
             \item Geslottet: Zeit ist in Slots eingeteilt, Übertragung kann nur an Slotgrenzen beginnen
         \end{itemize*}
-        \item Carrier Sensing (CSMA)
+        \item[Carrier Sensing (CSMA)]
         \begin{itemize*}
-            \item Stationen können (oder auch nicht) erkennen, ob der Kanal frei oder in Benutzung ist
+            \item Stationen können (oder nicht) erkennen, ob der Kanal frei oder in Benutzung ist
             \item Falls Kanal als belegt angesehen, so wird nichts übertragen
         \end{itemize*}
-    \end{itemize*}
+    \end{description*}
     
-    \subsection{Carrier Sensing}
+    \subsection{Carrier Sensing CSMA}
     \begin{description*}
-        \item[] Höre bevor du redest, und sende nichts, wenn das Medium gerade belegt ist
-        \item[1-Persistent CSMA] Falls belegt, so warte bis frei und sende dann -> Probleme entstehen, wenn mehrere nach der jetzigen Nachricht senden wollen
+        \item[] Höre bevor du redest, sende nichts, wenn Medium belegt
+        \item[1-Persistent CSMA] Falls belegt, so warte bis frei und sende dann $\rightarrow$ Probleme entstehen, wenn mehrere nach der jetzigen Nachricht senden wollen
         \item[Non-Persistent CSMA] Wenn Kanal frei so übertrage, wenn Kanal belegt, so warte eine zufällige Zeit vor dem nächsten Freiheitstest
         \item[P-Persistent CSMA] Kombiniert bisherige Ideen + geslottete Zeit, Warte ständig auf freiwerden des Kanals übertrage aber nicht sofort
     \end{description*}
@@ -199,43 +207,42 @@
     \subsection{Bit-Map-Protokoll}
     Stationen melden Sendewunsch während eines Reservierungsslots an
     \begin{itemize*}
-        \item Verhalten bei geringer Last: Wenn kaum ein Paket versendet werden soll, so wiederholt das Medium die Contentionslots -> Wartezeit
+        \item Verhalten bei geringer Last: Wenn kaum ein Paket versendet werden soll, so wiederholt das Medium die Contentionslots $\rightarrow$ Wartezeit
         \item Verhalten bei großer Last: Hoher und stabiler Durchsatz mit vernachlässigbarem Overhead
         \item Bit-Map ist ein Carrier Sense Protokoll
     \end{itemize*}
     
     \subsection{Limited Contention Protokoll}
-    \begin{itemize*}
-        \item Idee 1:
+    \begin{description*}
+        \item[Idee 1]
         \begin{itemize*}
             \item Anpassen der Stationsanzahl per Contentionslot
-            \item Contentionslots sind gut für den Durchsatz, bei geringer Last können wir es uns aber nicht leisten, auf die Antworten zu warten -> Stationen müssen sich dynamisch einen Slot teilen
+            \item Contentionslots sind gut für den Durchsatz, bei geringer Last können wir es uns aber nicht leisten, auf die Antworten zu warten $\rightarrow$ Stationen müssen sich dynamisch einen Slot teilen
         \end{itemize*}
-        \item Idee 2: Adaptives Baumprotokoll := Verwende verschiedene Auflösungslevel für die Wettbewerbsslots
-    \end{itemize*}
+        \item[Idee 2] Adaptives Baumprotokoll := Verwende verschiedene Auflösungslevel für die Wettbewerbsslots
+    \end{description*}
     
     \subsection{Ethernetversionen}
     \begin{description*}
         \item[Switched Ethernet] mehrere Stationen über ein Kabel
         \item[Fast Ethernet] wie Switched nur mit 10ns Bitzeit
         \item[Gigabit Ethernet] jedes Kabel hat genau zwei Maschinen angehängt
+        \item[ mit Switch]
         \begin{itemize*}
-            \item mit Switch
-            \begin{itemize*}
-                \item Keine geteilten Kollisionsdomönen, benötigen kein CSMA-CD
-                \item Fullduplexoperation auf jedem Link
-            \end{itemize*}
-            \item mit Hub
-            \begin{itemize*}
-                \item Kollisionen, Halbduples, CSMA-CD
-                \item Maximale Kabellänge 25 Meter
-            \end{itemize*}
+            \item Keine geteilten Kollisionsdomänen, benötigen kein CSMA-CD
+            \item Fullduplexoperation auf jedem Link
+        \end{itemize*}
+        \item[ mit Hub]
+        \begin{itemize*}
+            \item Kollisionen, Halbduples, CSMA-CD
+            \item Maximale Kabellänge 25 Meter
         \end{itemize*}
     \end{description*}
     
-    \section{Kodierung}
-    \subsection{Quellenkodierung}
-    Die Quellenkodierung ordnet jedem Zeichen einen binären Code zu. Dabei sollen Kodierung und Dekodierung möglichst einfach und der mittlere Kodierungsaufwand möglichst klein sein. Das heißt die Quellenkodierung versucht möglichst alle Redundanzen zu vermeiden.
+    \section{Quellenkodierung}
+    ordnet jedem Zeichen einen binären Code zu. 
+    Kodierung/Dekodierung möglichst einfach und mittlerer Kodierungsaufwand möglichst klein. 
+    Versucht möglichst alle Redundanzen zu vermeiden.
     
     \begin{tabular}{ l | l | p{5cm} }
         Code     & Stellen  & Bemerkung                                      \\\hline
@@ -244,8 +251,8 @@
         \begin{itemize*}
             \item Sortieren von groß nach klein
             \item Teilen in ähnlich große Partition
-            \item Vordere Gruppe erhält 0 als Codierungsziffer
-            \item Hintere Gruppe erhält 1 als Codierungsziffer
+            \item Vordere Gruppe erhält 0
+            \item Hintere Gruppe erhält 1
         \end{itemize*}                                       \\
         Huffmann & variabel & 
         \begin{itemize*}
@@ -257,10 +264,16 @@
     \subsection{Kanalcodierung}
     Die Kanalcodierung fügt Redundanz ein, um Übertragungfehler detektieren zu können.\\
     Dies kann man durch das Anhängen eines Paritätsbits erreichen.
-    Eine weitere Möglichkeit der Fehlererkennung ist der Cyclic Redundancy Check. Hierbei werden die Daten als Binärzahl aufgefasst. Die Zahl wird um $n$ Nullen erweitert und durch eine festgelegte Zahl der Länge $n + 1$ dividiert. Die Division wird ohne Brücksichtigung des Übertrages durchgeführt, also modulo 2. Der Rest, der bei der Division entsteht, wird anschließend auf die Binärzahl aufaddiert. Wird die berechnete Zahl fehlerfrei übertragen, entsteht bei einer Division durch die Prüfzahl kein Rest. Erhält der Empfänger bei der Division einen Rest, weiß er, daß die Daten fehlerhaft übertragen worden sind.
+    Eine weitere Möglichkeit der Fehlererkennung ist der Cyclic Redundancy Check. 
+    Hierbei werden die Daten als Binärzahl aufgefasst. 
+    Die Zahl wird um $n$ Nullen erweitert und durch eine festgelegte Zahl der Länge $n + 1$ dividiert. Die Division wird ohne Brücksichtigung des Übertrages durchgeführt, also modulo 2. 
+    Der Rest, der bei der Division entsteht, wird anschließend auf die Binärzahl aufaddiert. 
+    Wird die berechnete Zahl fehlerfrei übertragen, entsteht bei einer Division durch die Prüfzahl kein Rest. 
+    Erhält der Empfänger bei der Division einen Rest, weiß er, dass die Daten fehlerhaft übertragen worden sind.
     
     \subsection{Leitungskodierung}
-    Die Leitungkodierung bildet das Codealphabet auf physikalische Signale ab. Der binäre Datenstrom, der von Quellenkodierung und Kanalkodierung erzeugt wird, muß also durch verschiedene analoge Signalmuster dargestellt werden.
+    Die Leitungkodierung bildet das Codealphabet auf physikalische Signale ab. 
+    Der binäre Datenstrom, der von Quellenkodierung und Kanalkodierung erzeugt wird, muss also durch verschiedene analoge Signalmuster dargestellt werden.
     
     \subsection{Digital-Analog-Wandlung}
     Zur Digital-Analog-Wandlung können die folgenden Modulationsverfahren genutzt werden
@@ -271,16 +284,40 @@
     \end{itemize*}
     
     \subsection{Digitale Signalcodes}
-    Ein digitaler Signalcode heißt selbsttaktend, wenn aus dem Datensignal der Übertragungstakt gewonnen werden kann. Dies hat den Vorteil, daß man keine weitere Leitung zur Übertragung des Taktes braucht, um Sender und Empfänger synchron zu halten. Ein Code heißt gleichstromfrei, wenn die Summe der Impulse Null ergibt.
+    Ein digitaler Signalcode heißt selbsttaktend, wenn aus dem Datensignal der Übertragungstakt gewonnen werden kann. Dies hat den Vorteil, dass man keine weitere Leitung zur Übertragung des Taktes braucht, um Sender und Empfänger synchron zu halten. Ein Code heißt gleichstromfrei, wenn die Summe der Impulse Null ergibt.
     
-    \begin{tabular}{ p{3cm} | c | c | c }
-                                                                            & gleich-stromfrei & selbst-taktend & verpolungs-sicher \\\hline
-        \textbf{NRZ} none return to zero \begin{itemize*} \item 1 positiver Pegel \item 0 neutrale Pegel \end{itemize*}     & nein             & nein           & nein              \\
-        \textbf{RZ} Return to Zero \begin{itemize*} \item 1 in Folge eines positiven und neutralen Impulses \item 0 nach zwei Neutralen \end{itemize*}           & nein             & nein           & nein              \\
-        \textbf{Biphase-L} Manchestercode \begin{itemize*} \item 1 in Folge negativ und positiv Impuls \item 0 in Folge positiv, negativ \end{itemize*}    & ja               & ja             & nein              \\
-        \textbf{Differential} -Manchstercode \begin{itemize*} \item 0 durch Pegelwechsel am Anfang \item 1 durch Fehlen eines Pegelwechsels \item in Mitte des Bitzeitintervall stets Pegelwechsel \end{itemize*} & ja               & ja             & ja                \\
-        \textbf{AMI} AMI-Code \begin{itemize*} \item Ternärcode \item 0 bei neutralem Pegel \item 1 alternierend durch negativen/positiven Pegel \end{itemize*}                & ja               & nein           & ja
-    \end{tabular}
+    \begin{description*}
+        \item[NRZ] none return to zero
+        \begin{itemize*}
+            \item 1 bei positiver Pegel 
+            \item 0 bei neutrale Pegel
+        \end{itemize*}
+        \item[RZ] Return to Zero
+        \begin{itemize*} 
+            \item 1 in Folge eines positiven und neutralen Impulses 
+            \item 0 nach zwei Neutralen 
+        \end{itemize*}
+        \item[Biphase-L] Manchestercode
+        \begin{itemize*} 
+            \item 1 in Folge negativ und positiv Impuls 
+            \item 0 in Folge positiv, negativ 
+            \item gleichstromfrei, selbsttaktend
+        \end{itemize*}
+        \item[Differential] Manchestercode
+        \begin{itemize*} 
+            \item 0 durch Pegelwechsel am Anfang 
+            \item 1 durch Fehlen eines Pegelwechsels 
+            \item in Mitte des Bitzeitintervall stets Pegelwechsel 
+            \item gleichstromfrei, selbsttaktend, verpolungssicher
+        \end{itemize*}
+        \item[AMI]
+        \begin{itemize*} 
+            \item Ternärcode 
+            \item 0 bei neutralem Pegel 
+            \item 1 alternierend durch negativen/positiven Pegel 
+            \item gleichstromfrei, verpolungssicher
+        \end{itemize*}
+    \end{description*}
     
     \subsection{Scrambler}
     Scrambler erhöhen die Anzahl der Pegelwechsel in einem nicht selbstaktendem Code, damit trotzdem ausreichend Synchroninformation im Datenstrom enthalten ist. Dies wird durch Division durch ein Binärpolynom erreicht. Das Ergebnis der Division wird übertragen.
@@ -310,8 +347,8 @@
         \item Rahmennummerierung benötigt
     \end{itemize*}
     
-    \subsection{ARQ Verfahren}
-    Mit ARQ (Automatic Repeat reQuest) bezeichnet man Verfahren, die mit einer Kombination von Fehlererkennung, Zeitgebern, Bestätigung und Übertragungswiederholungen arbeiten.
+    \subsection{Automatic Repeat reQuest Verfahren}
+    Mit ARQ bezeichnet man Verfahren, die mit einer Kombination von Fehlererkennung, Zeitgebern, Bestätigung und Übertragungswiederholungen arbeiten.
     
     \subsection{Go-Back-N}
     \begin{itemize*}
@@ -332,7 +369,7 @@
     Bei CSMA/CD (Carrier Sense Multiple Access / Collision Detection) hört der Sender bevor er sendet den Kanal ab. Falls der Kanal frei ist, beginnt er zu senden. Nun horcht er, ob es Kollisionen gibt. Dies tut er eine im Standard festgelegte Zeit lang. In dieser Zeit erreicht das Signal jeden am Kanal angeschlossenen Sender, sofern das Netz Standardgerecht verlegt ist. Stellt der Sender eine Kollision fest zum Beispiel in Form überlagerter Signale, zieht er sich vom Kanal zurück und versucht später wieder den Sendevorgang zu wiederholen. Gab es aber keine Überlagerung kann er ohne zu horchen weitersenden, da kein anderer Sender mit dem Sendevorgang beginnt, wenn der Kanal belegt ist.
     
     \subsection{Token Verfahren}
-    In einem logischen Ring wird ein Token im Kreis durchgereicht, der der den Token hat darf senden. Er wandelt den Freitoken in den Header eines Datenpaketes um und sendet nun fortlaufend Daten. Der Empfänger nimmt die Daten nicht vom Ring, sondern schickt sie mit gesetztem Bestätigungsbit weiter. So erhält der Sender gleich noch eine Bestätigung.
+    In einem logischen Ring wird ein Token im Kreis durchgereicht. Der der den Token hat darf senden. Er wandelt den Freitoken in den Header eines Datenpaketes um und sendet nun fortlaufend Daten. Der Empfänger nimmt die Daten nicht vom Ring, sondern schickt sie mit gesetztem Bestätigungsbit weiter. So erhält der Sender gleich noch eine Bestätigung.
     
     \subsection{DQDB-Zellen-Verfahren}
     Auf zwei entgengengesetzten Bussen werden von den Endsystemen laufend Zellen gesendet. Möchte eine Station in eine Richtung senden, setzt sie in einem Fenster der entgegengesetzten Richtung das Busy-Bit. Alle Stationen, an denen dieses Paket vorbeiläuft, erhöhen ihren Warteschlagencounter. Wenn sie nun auch senden wollen, wissen sie mittels dieses Counters an welcher Stelle der Warteschlange sie stehen. Wenn auf der gefragten Leitung nun eine leere Zelle vorbeiläuft, senken alle Stationen in der Warteschlange ihre Position um eins und die erste Station beginnt zu senden.
@@ -341,14 +378,12 @@
     Techniken, die es ermöglichen mehrere Verbindungen auf einem Kanal zu halten
     \begin{description*}
         \item[Raummultiplex] räumlichen Zuweisung von Kanälen an Regionen. Unter Beachtung eines Mindestabstandes kann ein Kanal doppelt genutzt werden
-        \item[Raummultiplex] Vermittlung der Ortsanschlüsse an Regionalleitungen
         \item[Zeitmultiplex] Aufteilung eines Kanals auf mehrere Teilnehmer mittels einer synchronen oder asynchronen Zeitscheibentechnik (konstante oder wechselnde Zeitabstände)
         \item[Frequenzmultiplex] Aufteilung eines Kanals auf mehrere Teilnehmer mittels Zuweisung verschiedener Frequenzbänder an verschiedene Teilnehmer
         \item[Codemultiplex] Aufteilung eines Kanals auf mehrere Teilnehmer mittels Zuweisung verschiedener Kodierungen an verschiedene Teilnehmer
     \end{description*}
     
     \section{Wartezeiten}
-    \subsection{Systemdefinition}
     \begin{description*}
         \item[Wartesystem] Aufträge werden in eine endlose Warteschlange eingereiht.
         \item[Verlustsystem] Aufträge, die nicht direkt bearbeitet werden können, gehen verloren.
@@ -356,50 +391,46 @@
     \end{description*}
     
     \subsection{Verteilung der Ankunftsabstände}
-    $TA$... Abstand der ankommenden Aufträge
-    $F_{TA}$ ist exponentialverteilt.
-    $F_{TA} (t) = 1 - e^{-\lambda t} = P (TA = \delta t)$
+    $TA$... Abstand der ankommenden Aufträge\\
+    $F_{TA}$ ist exponentialverteilt: $F_{TA} (t) = 1 - e^{-\lambda t} = P (TA = \delta t)$\\
     Dichtefunktion: $f_{TA} = \lambda e^{\lambda t}$
     
     \subsection{Verteilung der Anzahl der Ankünfte}
-    K . . . Anzahl der Ankünfte in einem Zeitintervall T
+    $K$... Anzahl der Ankünfte in einem Zeitintervall T
     $P (K = k) = \frac{\lambda^k * T^k}{k!} e^{\lambda T}$
     
     \subsection{Little’sches Gesetz}
-    $TA$ mittlere Verweilzeit eines Auftrages. Die Verweilzeit eines Auftrages setzt sich aus Wartezeit und Bearbeitungszeit des Auftrages zusammen.
-    $N$ Anzahl der Aufträge im System
-    $\lambda$ Ankunftsrate der Aufträge
-    $N = \lambda · T \leftrightarrow T = \frac{N}{\lambda}$
+    $TA$ mittlere Verweilzeit eines Auftrages. Die Verweilzeit eines Auftrages setzt sich aus Wartezeit und Bearbeitungszeit des Auftrages zusammen.\\
+    $N$ Anzahl der Aufträge; $\lambda$ Ankunftsrate der Aufträge
+    $N = \lambda * T \leftrightarrow T = \frac{N}{\lambda}$
     
-    Das Gesetz von Little ist unabhängig von der Wahl der Bedienstrategie und sogar von der Größe des
+    Das Gesetz ist unabhängig von der Wahl der Bedienstrategie und sogar von der Größe des
     Warteschlangennetzes.
-    
-    
     
     \section{Internetworking}
     \subsection{Pfaderkennung - Selbstlernen}
     \begin{itemize*}
-        \item Jeder Switch hat eine Switchtabelle
+        \item jeder Switch hat eine Switchtabelle
         \item Eintrag: (MAC-Adresse, Interface, Zeitstempel)
-        \item Beim Empfang eines Frames lernt der Switch den Ort des Senders kennen (Rückwärtslernen)
+        \item beim Empfang eines Frames lernt der Switch den Ort des Senders kennen (Rückwärtslernen)
     \end{itemize*}
     
     \subsection{Weiterleiten}
     \begin{itemize*}
-        \item Falls Ziel bekannt so prüfe, ob es in das selbe Segment gehört aus dem es kommt -> verwerfen,
+        \item falls Ziel bekannt so prüfe, ob es in das selbe Segment gehört aus dem es kommt $\rightarrow$ verwerfen,
         \item sonst leite es passend weiter
         \item andernfalls flute das Netzwerk damit
     \end{itemize*}
     
     \subsection{Rückwärtslernen in Bridges - Bootstrapping}
     \begin{itemize*}
-        \item Flute, falls nicht bekannt wohin gesendet werden muss, oder
-        \item verwerfe, wenn bekannt, dass es nicht nötig ist, oder
+        \item Flute, falls nicht bekannt wohin gesendet werden muss
+        \item verwerfe wenn bekannt, dass es nicht nötig ist, oder
         \item leite spezifisch weiter, wenn das Ziel bekannt ist
     \end{itemize*}
     
     \subsection{Gateways}
-    Wenn selbst Router nicht ausreichend, dann sind Higher-Layer-Verbindungen notwendig; Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
+    Wenn selbst Router nicht ausreichend, dann sind Higher-Layer-Verbindungen notwendig. Arbeit auf dem Transportlevel und oberhalb, zum Beispiel für Transcodierung
     
     \subsection{Verbindung einzelner LANs}
     \begin{itemize*}
@@ -412,59 +443,59 @@
     \section{Netzwerklayer}
     \subsection{Durchsuchen der Routingtabelle}
     \begin{itemize*}
-        \item Suche nach übereinstimmender Hostadresse (Flag H gesetzt)
+        \item Suche nach übereinstimmender Hostadresse (Flag H)
         \item Suche dann nach passender Netzwerkadresse
         \item Drittens, Suche nach einem Defaulteintrag
     \end{itemize*}
     
     \subsection{Switching Fabric}
-    \begin{itemize*}
-        \item Switching mittels Speicher
+    \begin{description*}
+        \item[Switching mittels Speicher]
         \begin{itemize*}
             \item Herkömmliche Rechner mit Switching unter direkter CPU-Kontrolle
             \item Kopieren der Pakete in den Systemspeicher
             \item Geschwindigekeit limitiert durch die Speicherbandbreite
         \end{itemize*}
-        \item Switching mittels BUS
+        \item[Switching mittels BUS]
         \begin{itemize*}
             \item Übertragung von Datagrammen intern über einen Bus
             \item Switchinggeschwindikeit limitiert durch die Busbandbreite
             \item typ. 1Gbps Bus, ausreichend für Heim und Businessrouter
         \end{itemize*}
-        \item Switching mittels Verbindungsnetzwerk (Crossbar)
+        \item[Switching mittels Verbindungsnetzwerk (Crossbar)]
         \begin{itemize*}
             \item Überwinden der Bandbreitenbeschränkungen von Busen
             \item Design: Fragmentierung von Datagrammen in Zellen fester Größe, wobei nun die Zellen durch das Fabric geswitcht werden
             \item Bis zu 1.28 Tbps Switchinggeschwindigkeit
         \end{itemize*}
-    \end{itemize*}
+    \end{description*}
     
     \subsection{IP Paketformat}
-    \begin{itemize*}
-        \item Version: Versionsnummer des eingesetzten IP
-        \item IHL: IP Header Length in 32 Bit Worten
-        \item Typ des Dienstes: Infos zur Priorisierung
-        \item Totale Länge: Die gesamtlänge in Bytes inklusive Header
-        \item Identifier: Wenn Fragmentierung auftritt, bekommt jedes zugehörige Paket den selben Identifier
-        \item Flags: DF (don't fragment), MF (more fragments, alle außer das letzte Paket haben dies gesetzt)
-        \item Fragment Offset: Position des Fragments im ursprünglichen Paket
-        \item TTL: Zähler für die Hopanzahl, wird an jedem Router dekrementiert, sobald gleich 0 -> verwerfen
-        \item Protokoll: Spezifiziert verwendetes Protokoll
-        \item Headerchecksum: Erlaubt Verifizierung der Inhalte im IP Header
-        \item Quell und Zieladressen: identifizieren der Quelle und des Ziels
-        \item Optionen: bis 40 Byte, zur Erweiterung verwendet
-    \end{itemize*}
+    \begin{description*}
+        \item[Version] Versionsnummer des eingesetzten IP
+        \item[IHL] IP Header Length in 32 Bit Worten
+        \item[Typ] des Dienstes: Infos zur Priorisierung
+        \item[Totale Länge] Die gesamtlänge in Bytes inklusive Header
+        \item[Identifier] Wenn Fragmentierung auftritt, bekommt jedes zugehörige Paket den selben Identifier
+        \item[Flags] DF (don't fragment), MF (more fragments, alle außer das letzte Paket haben dies gesetzt)
+        \item[Fragment Offset] Position des Fragments im ursprünglichen Paket
+        \item[TTL] Zähler für die Hopanzahl, wird an jedem Router dekrementiert, sobald gleich 0 $\rightarrow$ verwerfen
+        \item[Protokoll] Spezifiziert verwendetes Protokoll
+        \item[Headerchecksum] Erlaubt Verifizierung der Inhalte im IP Header
+        \item[Quell und Zieladressen] identifizieren der Quelle und des Ziels
+        \item[Optionen] bis 40 Byte, zur Erweiterung verwendet
+    \end{description*}
     
     \subsection{Klassen von IP-Adressen}
-    \begin{itemize*}
-        \item Class A: rießige Organisationen, bis 16 Mil. Hosts
-        \item Class B: große Organisationen, bis 65 Tausend Hosts
-        \item Class C: kleine Organisationen, bis 255 Hosts
-        \item Class D: Multicast, keine Netzwerk/Host Hierarchie
-        \item Class E: reserviert
-        \item Loopback: 127.xxx.xxx.xxx ist zum Testen reserviert, hierauf versendete Pakete werden als eingehende behandelt
-        \item Broadcast: alles 1en
-    \end{itemize*}
+    \begin{description*}
+        \item[Class A] rießige Organisationen, bis 16 Mil. Hosts
+        \item[Class B] große Organisationen, bis 65 Tausend Hosts
+        \item[Class C] kleine Organisationen, bis 255 Hosts
+        \item[Class D] Multicast, keine Netzwerk/Host Hierarchie
+        \item[Class E] reserviert
+        \item[Loopback] 127.xxx.xxx.xxx ist zum Testen reserviert, hierauf versendete Pakete werden als eingehende behandelt
+        \item[Broadcast] alles 1en
+    \end{description*}
     
     \subsection{IP-Adressierung}
     \begin{itemize*}
@@ -476,19 +507,17 @@
     \begin{itemize*}
         \item Überwinden der Klassengrenzen durch Supernetting
         \item ISPs können nun Class C Blocks zu einem großen Block zusammenfassen
-        \item "Longest match routing" auf maskierten Adressen
-        \item Beispiel: Alle in Europa vergebenen Adressen teilen sich einen gemeinsamen Prefix -> Nur ein Eintrag für alle Verbindungen nach Europa in den meisten amerikanischen Routern
+        \item 'Longest match routing' auf maskierten Adressen
+        \item Beispiel: Alle in Europa vergebenen Adressen teilen sich einen gemeinsamen Prefix $\rightarrow$ nur ein Eintrag für alle Verbindungen nach Europa in den meisten amerikanischen Routern
     \end{itemize*}
     
     \subsection{NAT - Network Address Translation}
     \begin{itemize*}
         \item Lokale Netzwerke haben nur eine der Außenwelt bekannte IP-Adresse, somit hat nicht jedes Gerät eine vom ISP bereitgestellte Adresse
-        \begin{itemize*}
-            \item Möglichkeit intern Adressen zu vergeben ohne die Außenwelt informieren zu müssen
-            \item Wechsel des ISPs möglich, ohne intern Adressen zu verändern
-            \item Geräte im Netzwerk nicht von außen ansprechbar (Sicherheitsfaktor)
-        \end{itemize*}
-        \item 16 Bit Portnummernfeld -> 60 000 simultane Verbindung mit nur einer einzigen LAN-Side Adresse
+        \item Möglichkeit intern Adressen zu vergeben ohne die Außenwelt informieren zu müssen
+        \item Wechsel des ISPs möglich, ohne intern Adressen zu verändern
+        \item Geräte im Netzwerk nicht von außen ansprechbar (Sicherheitsfaktor)
+        \item 16 Bit Portnummernfeld $\rightarrow$ 60'000 simultane Verbindung mit nur einer einzigen LAN-Side Adresse
     \end{itemize*}
     
     \subsection{ICMP: Internet Control Message Protocol}
@@ -500,49 +529,47 @@
     
     \subsection{IPv6}
     \begin{itemize*}
-        \item Header mit 40 Byte Größe (also 20 Byte mehr als bei IPv4 mit 32 Bit Adressen)
+        \item Header mit 40 Byte Größe (20 Byte mehr als bei IPv4 mit 32 Bit Adressen)
         \item Fragmentierung ist nicht mehr erlaubt
         \item Headerformat hilft bei schneller Verarbeitung und Weiterleitung
-        \item Checksummen -> komplett entfernt
-        \item Optionen -> Erlaubt, aber außerhalb des Headers
-        \item ICMPv6 -> Zusätzliche Nachrichtentypen + Multicastgruppenmanagementfunktionen
+        \item Checksummen $\rightarrow$ komplett entfernt
+        \item Optionen $\rightarrow$ Erlaubt, aber außerhalb des Headers
+        \item ICMPv6 $\rightarrow$ Zusätzliche Nachrichtentypen + Multicastgruppenmanagementfunktionen
     \end{itemize*}
     
     \subsubsection{IPv6 Header}
-    \begin{itemize*}
-        \item Priority: Signalisiert die Priotität der Datagramme im Fluss
-        \item Flow Label: Identifiziert Datagramme im selben Fluss
-        \item Next Header: Identifiziert das Layer der höheren Schicht für Daten
-    \end{itemize*}
+    \begin{description*}
+        \item[Priority] Signalisiert die Priotität der Datagramme im Fluss
+        \item[Flow Label] Identifiziert Datagramme im selben Fluss
+        \item[Next Header] Identifiziert Layer der höheren Schicht für Daten
+    \end{description*}
     
     \subsection{Routing Algorithmen}
     \begin{itemize*}
         \item Ein Router führt einen Routingalgorithmus aus, um zu entscheiden, an welchem Ausgang ein eingehendes Paket weiter übertragen werden sollte.
-        \begin{itemize*}
-            \item Verbindungsorientiert: nur beim Verbindungsaufbau
-            \item Verbindungslos: entweder für jedes Paket oder periodisch ausgeführt
-        \end{itemize*}
-        \item Oftmals unter Verwendung von Metriken -> Zuweisung eines Kostenfaktors an jeden Link, bspw. Anzahl an Hops, Kosten eines Links,…
-        \item Zwei grundlegende Typen existieren:
-        \item \begin{itemize*}
-            \item Nichtadaptive Routingalgorithmen: Nehmen keine Rücksicht auf aktuellen Netzwerkzustand (z.B. Fluten)
-            \item Adaptive Routingalgorithmen: Berücksichtigen aktuellen Netzwerkzustand (z.B. Distanzvekotrrouting, Link State Routing)
-        \end{itemize*}
-    \end{itemize*}
-    \begin{description*}
-        \item[Fluten] jedes eingehende Paket wird auf jede ausgehende Linie geschickt, außer auf die Herkunftslinie
-        \item[Zufallsrouting] Jedes ankommende Paket wird auf einen zufälligen Ausgang geschickt, außer auf den Quellausgang -> es bahnt sich seinen Weg sozusagen durch den Router
-        \item[Adaptive Routingalgorithmen] \
         \begin{description*}
-            \item[Zentralisiertes adaptives Routing] Anpassen an die vorherrschende Verkehrslast; Ein Routingkontrollcenter muss ins Netzwerk eingebaut sein, welches periodisch den Linkstatus der Router erhält und kürzeste Routen berechnet und diese an die Router sendet
-            \item[Isoliertes adaptives Routing] benötigt keinen Informationsaustausch zwischen Routern; Routingentscheidungen werden nur anhand der Informationen des lokalen Routers getroffen, wie bei Hotpotato oder Rückwärtslernen
-            \item[Verteiltes adaptives Routing] Router tauschen periodisch Infos aus und aktualisieren Weiterleitungstabellen; Finde einen guten Pfad durch das Netzwerk, welcher einen von der Quelle zum Ziel führt; Graphabstraktion für Routingalgorithmen mit Linkkosten und Pfadkosten
+            \item[Verbindungsorientiert] nur beim Verbindungsaufbau
+            \item[Verbindungslos] entweder für jedes Paket oder periodisch ausgeführt
         \end{description*}
+        \item Oftmals unter Verwendung von Metriken $\rightarrow$ Zuweisung eines Kostenfaktors an jeden Link, bspw. Anzahl an Hops, Kosten eines Links,…
+    \end{itemize*}
+    \paragraph{Nichtadaptive Routingalgorithmen}
+    \begin{description*}
+        \item[] keine Rücksicht auf aktuellen Netzwerkzustand
+        \item[Fluten] jedes eingehende Paket wird auf jede ausgehende Linie geschickt, außer auf die Herkunftslinie
+        \item[Zufallsrouting] Jedes ankommende Paket wird auf einen zufälligen Ausgang geschickt, außer auf den Quellausgang $\rightarrow$ es bahnt sich seinen Weg sozusagen durch den Router
+    \end{description*}
+    \paragraph{Adaptive Routingalgorithmen}
+    \begin{description*}
+        \item[] Berücksichtigen den aktuellen Netzwerkzustand
+        \item[Zentralisiertes adaptives Routing] Anpassen an die vorherrschende Verkehrslast; Ein Routingkontrollcenter muss ins Netzwerk eingebaut sein, welches periodisch den Linkstatus der Router erhält und kürzeste Routen berechnet und diese an die Router sendet
+        \item[Isoliertes adaptives Routing] benötigt keinen Informationsaustausch zwischen Routern; Routingentscheidungen werden nur anhand der Informationen des lokalen Routers getroffen, wie bei Hotpotato oder Rückwärtslernen
+        \item[Verteiltes adaptives Routing] Router tauschen periodisch Infos aus und aktualisieren Weiterleitungstabellen; Finde einen guten Pfad durch das Netzwerk, welcher einen von der Quelle zum Ziel führt; Graphabstraktion für Routingalgorithmen mit Linkkosten und Pfadkosten
     \end{description*}
     
     \subsection{Distanzvektorrouting Algorithmen}
     \begin{description*}
-        \item[Iterativ] Läuft bis keine Knoten mehr Informationen austauschen. Selbstterminierend -> kein Stoppsignal
+        \item[Iterativ] Läuft bis keine Knoten mehr Informationen austauschen. Selbstterminierend $\rightarrow$ kein Stoppsignal
         \item[Asynchron] Knoten müssen Informationen nicht getaktet austauschen
         \item[Verteilt] Jeder Knoten kommuniziert nur mit seinem direkten Nachbarn
         \item[Distanztabellendatenstruktur] Jeder Knoten hat seine eigene Spalte für jedes mögliche Ziel und Zeile für jeden direkt angeschlossenen Nachbarknoten
@@ -550,21 +577,21 @@
     
     \subsubsection{Vergleich zwischen Link-State und Distanzvektoralgorithmen}
     \begin{itemize*}
-        \item Nachrichtenkomplexität:
-        \begin{itemize*}
-            \item LS: mit N Knoten und E Links werden $O(n-e)$ Nachrichten versandt
-            \item DV: Austausch nur zwischen Nachbarn
-        \end{itemize*}
+        \item Nachrichtenkomplexität
+        \begin{description*}
+            \item[LS] mit N Knoten und E Links werden $O(n-e)$ Nachrichten versandt
+            \item[DV] Austausch nur zwischen Nachbarn
+        \end{description*}
         \item Konvergenzgeschwindigkeit
-        \begin{itemize*}
-            \item LS: $O(n^2)$ Algorithmus benötigt $O(N-E)$ Nachrichten (teils mit Oszillation)
-            \item DV: Konvergenzzeit variiert (Routingschleifen, Count to Infinity Problem, Oszillation)
-        \end{itemize*}
-        \item Robustheit: (im Falle eines Routerausfalls)
-        \begin{itemize*}
-            \item LS: Ein Knoten kann falsche Linkkosten ausgeben; Jeder Knoten berechnet nur seine eigene Tabelle
-            \item DV: DV Knoten kann falsche Gewichte ausgeben; Jede Tabelle wird nun noch von anderen Routern verwendet -> Fehler breiten sich über das ganze Netzwerk aus
-        \end{itemize*}
+        \begin{description*}
+            \item[LS] $O(n^2)$ Algorithmus benötigt $O(N-E)$ Nachrichten (teils mit Oszillation)
+            \item[DV] Konvergenzzeit variiert (Routingschleifen, Count to Infinity Problem, Oszillation)
+        \end{description*}
+        \item Robustheit (im Falle eines Routerausfalls)
+        \begin{description*}
+            \item[LS] Ein Knoten kann falsche Linkkosten ausgeben; Jeder Knoten berechnet nur seine eigene Tabelle
+            \item[DV] DV Knoten kann falsche Gewichte ausgeben; Jede Tabelle wird nun noch von anderen Routern verwendet $\rightarrow$ Fehler breiten sich über das ganze Netzwerk aus
+        \end{description*}
     \end{itemize*}
     
     \subsection{Routing im Internet - Autonome Systeme}
@@ -574,7 +601,7 @@
         \item[Multihomed AS] große Unternehmen (mehrere Links, ohne Transitverkehr)
         \item[Transit AS] Netzbetreiber
     \end{description*}
-    Zwei Level Routing:
+    Zwei Level Routing
     \begin{description*}
         \item[Intra-AS] Administrator verantwortlich für die Auswahl (RIP, OSPF, IGRP)
         \item[Inter-AS] Einheitlicher Standard (BGP)
@@ -585,7 +612,7 @@
         \item Policy:
         \begin{itemize*}
             \item Inter AS: Admin möchte Kontrolle über sein Netz haben
-            \item Intra AS: ein einziger Admin, also keine Policyentscheidungen nötig
+            \item Intra AS: ein einziger Admin, keine Policyentscheidungen nötig
         \end{itemize*}
         \item Skalierbarkeit: Hierarchisches Routing spart Tabellenplatz und sorgt für weniger Updateverkehr
         \item Performance:
@@ -595,15 +622,12 @@
         \end{itemize*}
     \end{itemize*}
     
-    
     \section{Transport Layer}
     \subsection{Multiplexing und Demultiplexing}
     Hosts verwenden IP-Adressen und Portnummern um Segmente an korrekte Sockets zuzustellen
     \begin{description*}
         \item[Multiplexing auf Sendeseite] Sammeln von Daten an mehreren Sockets, verpacken der Daten mit Header zum Demultiplexing
         \item[Demultiplexing auf Empfangsseite] Zustellen empfangener Segmente an den korrekten Socket
-    \end{description*}
-    \begin{description*}
         \item[Verbindungslos (UDP)] Erstelle Sockets mit Portnummern; Sockets werden übber Zweiertupel aus Ziel IP und Ziel Port identifiziert
         \item[Verbindungsorientiert (TCP)] TCP Sockets werden durch ein Vierertupel aus Quell-IP, Quellport, ZielIP und Zielport identifiziert
     \end{description*}
@@ -616,7 +640,7 @@
         \item T-Connect.Response(Antwortadresse)
         \item T-Connect.Confirmation(Antwortadresse)
     \end{itemize*}
-    CR (Connection Request) oder CC (Connection Confirm) TPDU
+    CR (Connection Request) oder CC (Con. Confirm) TPDU
     
     \subsection{Drei Wege Handshake}
     \begin{itemize*}
@@ -626,29 +650,28 @@
         \item Muss durch die Gegenseite kopiert werden, und erlaubt den Verbindungsaufbau nur dann, wenn die korrekte Nummer bereit gestellt wird. Verwende Sequenznummern deshalb möglichst nicht schnell hintereinander erneut.
     \end{itemize*}
     
-    \subsection{Verbindunsabbau}
+    \subsection{Verbindungsabbau}
     \begin{description*}
         \item[implizit] Abbau der Netzwerklayerverbindung
         \item[explizit] Verbindungsfreigabe mit Disconnect-TPDUs
     \end{description*}
-    Kann den Verlust von nicht bestätigten Daten nach sich ziehen, TCP verhindert dies, indem alle gesendeten PDUs vor Beenden der Verbindung bestätigt werden müssen
-    
+    Kann den Verlust von nicht bestätigten Daten nach sich ziehen. TCP verhindert dies, indem alle gesendeten PDUs vor Beenden der Verbindung bestätigt werden müssen.
     
     \section{Flusskontrolle}
     \subsection{Pufferallokation}
     \begin{itemize*}
         \item Flusskontrolle abhängig von der Puffermöglichkeit
-        \item Um ausstehdene Pakete zu unterstützen müssen diese entweder sofort und in korrekter Reihenfolge beim Empfänger ankommen, oder es muss genügend Puffer vorhanden sein
+        \item Um ausstehdene Pakete zu unterstützen müssen diese entweder sofort und in korrekter Reihenfolge beim Empfänger ankommen oder es muss genügend Puffer vorhanden sein
         \item Empfänger verlangsamt den Sender oder Anforderung von Pufferspeicher durch den Sender
         \item Mitteilung des Empfängers an den Sender, dass nur noch so viel Puffer verfügbar ist (bei Sliding Window einfach das Sendefenster anpassen)
     \end{itemize*}
     
     \subsection{Continue und Stop}
-    Einfachste Lösung: Sende Stopnachrichten wenn der Empfänger nicht schritthalten kann und Continue, sobald wieder Ressourcen vorhanden sind. \
+    Einfachste Lösung: Sende Stopnachrichten wenn der Empfänger nicht schritthalten kann und Continue, sobald wieder Ressourcen vorhanden sind. \\
     Beispiel: XON/XOFF: funktioniert aber nur bei Fullduplexverbindungen.
     
     \subsection{Implizite Flusskontrolle}
-    Idee: Halte ACKs oder NACKs zurück, um den Sender zu verlangsamen, somit werden Fehlerkontrollmechanismen nun zur Flusskontrolle missbraucht werden.\
+    Idee: Halte ACKs oder NACKs zurück, um den Sender zu verlangsamen, somit werden Fehlerkontrollmechanismen nun zur Flusskontrolle missbraucht werden.\\
     Nachteil: Senderseitig keine Unterscheidung mehr möglich, ob Pakete verloren gingen, oder er verlangsamt werden soll, was in unnötigen Wiederholungsübertragungen resultiert.
     
     \subsection{Kreditbasierte Flusskontrolle}
@@ -662,33 +685,33 @@
     \end{itemize*}
     
     \section{Staukontrolle}
-    Jedes Netzwerk kann nur eine gewisse Anzahl an Traffic pro Zeit transportieren, wenn nun mehr Traffic von den Quellen ausgeht, als das Netzwerk als nominelle Kapazität hat, so kommt es zu Staukollapsen und verlorenen Paketen. Immer $\lambda$-in = $\lambda$-out (goodput)\
+    Jedes Netzwerk kann nur eine gewisse Anzahl an Traffic pro Zeit transportieren, wenn nun mehr Traffic von den Quellen ausgeht, als das Netzwerk als nominelle Kapazität hat, so kommt es zu Staukollapsen und verlorenen Paketen. Immer $\lambda-in = \lambda-out$ (goodput)\\
     Staukontrolle ist essentiell, um Schneeballeffekte zu vermeiden: Sobald ein Netzwerk einmal überladen ist, wird es Pakete verlieren. Nach Erkennung von Paketverlusten durch ein zuverlässiges Transportprotokoll, werden Pakete erneut übertragen, was die Last abermals erhöht
     \begin{itemize*}
-        \item Die Senderate jeder Quelle muss an die aktuelle Kapazität des Netzwerks angepasst werden
-        \item Staukontrolle ist ein globales Problem, da dies abhängig von allen Routern, Weiterleitungsdisziplinen, Lastinjektionenund so weiter ist.
-        \item Flusskontrolle wiederum ist ein lokales Problem: Die Quelle darf das Ziel nicht überlasten, also sind nur Ziel und Quelle involviert
+        \item Senderate jeder Quelle muss an die aktuelle Kapazität des Netzwerks angepasst werden
+        \item Staukontrolle globales Problem, da abhängig von allen Routern, Weiterleitungsdisziplinen, Lastinjektionen usw ist.
+        \item Flusskontrolle lokales Problem: die Quelle darf das Ziel nicht überlasten; nur Ziel und Quelle involviert
     \end{itemize*}
     
     \subsection{Design/Aktions Optionen}
     \begin{description*}
         \item[Open Loop] Designe das System von Beginn an so, dass es korrekt funktioniert und man keine Korrekturen zur Laufzeit vornehmen muss
         \item[Closed Loop] Verwende Feedback, um zu erlauben, dass sich der Sender an die Situation anpasst
-        \item[Explizited Feedback] Die Stelle, an welcher der Stau auftritt informiert den Sender
+        \item[Explizited Feedback] die Stelle, an welcher der Stau auftritt informiert den Sender
         \item[Implizites Feedback] der Sender extrahiert aus dem Netzwerkverhalten Informationen darüber, wie er sich verhalten sollte
     \end{description*}
     \begin{itemize*}
-        \item Erhöhen der Kapzität -> teuer, kurzfristig nicht umsetzbar
-        \item Reservierungen und Zugriffskontrolle - erlaube also keinen zusätzlichen Verkehr wenn das Netzwerk stark ausgelastet ist -> nur für schaltkreisbasierende Netzwerke verfügbar
-        \item Reduzierung der Last in kleiner Granularität -> Bringe einzelne Quellen dazu ihre Last zu reduzieren, sodass nichts terminiert werden muss (benötigt Feedback vom Netz: closed loop)
-        \item Verwerfen von Paketen -> Pufferplatz ist voll und alte Pakete werden verworfen. Für Medieninhalte sind neue wichtiger als alte Pakete
+        \item Erhöhen der Kapzität $\rightarrow$ teuer, kurzfristig nicht umsetzbar
+        \item Reservierungen und Zugriffskontrolle - erlaube keinen zusätzlichen Verkehr wenn das Netzwerk stark ausgelastet ist $\rightarrow$ nur für schaltkreisbasierende Netzwerke verfügbar
+        \item Reduzierung der Last in kleiner Granularität $\rightarrow$ Bringe einzelne Quellen dazu ihre Last zu reduzieren, sodass nichts terminiert werden muss (benötigt Feedback vom Netz: closed loop)
+        \item Verwerfen von Paketen $\rightarrow$ Pufferplatz ist voll und alte Pakete werden verworfen. Für Medieninhalte sind neue wichtiger als alte Pakete
     \end{itemize*}
     
     \subsection{Choke Pakete}
-    Sobald ein Stau der Router einen Stau erkannt hat -> Sende Chokepakete. Chokepakete sagen dem Ziel, dass es seine Senderate verringern soll
+    Sobald der Router einen Stau erkannt hat $\rightarrow$ sende Chokepakete. Chokepakete sagen dem Ziel, dass es seine Senderate verringern soll
     
     \subsection{Warnungsbits}
-    Sobald ein Router feststellt, dass er von Stau betroffen ist, setzt er ein Warnbit in allen Paketen die er verschickt -> Da das Ziel das Warnungsbit in sein ACK Paket aufnimmt, erfährt die Quelle vom Stau und kann ihre Sendeleistung minimieren.
+    Sobald ein Router feststellt, dass er von Stau betroffen ist, setzt er ein Warnbit in allen Paketen die er verschickt $\rightarrow$ da das Ziel das Warnungsbit in sein ACK Paket aufnimmt, erfährt die Quelle vom Stau und kann ihre Sendeleistung minimieren.
     
     \subsection{Random Early Detection}
     nutze verworfene Pakete als implizites Feedback, bereits bevor die Warteschlange voll ist, wirf also vorzeitig Pakete weg um Feedback zu geben. 
@@ -697,8 +720,8 @@
     \section{TCP}
     \subsection{Drei Wege Handshake}
     \begin{itemize*}
-        \item Client sendet ein TCP SYN (SYN = 1, ACK = 0) an den Server -> spezifiziert initiale, nie benutzte Sequenznummer
-        \item Server erhält das SYN Paket und antwortet mit einem SYNACK (SYN = 1, ACK = 1) -> Server alloziert Puffer und spezifikation der initialen Sequenznummer des Servers
+        \item Client sendet TCP SYN (SYN = 1, ACK = 0) an Server $\rightarrow$ spezifiziert initiale, nie benutzte Sequenznummer
+        \item Server erhält SYN Paket und antwortet mit SYNACK (SYN = 1, ACK = 1) $\rightarrow$ Server alloziert Puffer und Spezifikation der initialen Sequenznummer des Servers
         \item Der Client erhält das SYNACK und antwortet hierauf mit einem ACK (SYN = 0, ACK = 1), hier können nun erstmals Daten enthalten sein
     \end{itemize*}
     Terminieren einer Verbindung
@@ -710,19 +733,19 @@
     \end{itemize*}
     
     \subsection{Sende- und Empfangspuffer}
-    \begin{itemize*}
-        \item Sender: Puffer um Fehlerkontrolle bereit zu stellen
-        \item Empfänger: Zwischenspeichern von noch nicht abgerufenen, oder nicht reihenfolgegetreu angekommenen Paketen
-    \end{itemize*}
+    \begin{description*}
+        \item[Sender] Puffer um Fehlerkontrolle bereit zu stellen
+        \item[Empfänger] Zwischenspeichern von noch nicht abgerufenen oder nicht reihenfolgegetreu angekommenen Paketen
+    \end{description*}
+    
     \subsection{Flusskontrolle: Angebotenes Fenster}
     Der Empfänger kann seine Empfangpufferkapazitäten verkünden 
     
-    \subsection{Nagles Algorithmus - Selbsttaktung und Fenster}
+    \subsection{Nagles Algor. - Selbsttaktung und Fenster}
     \begin{itemize*}
-        \item TCP Selbsttaktung: Ankunft eines ACKs ist ein Zeichen dafür, dass neue Daten auf das Netzwerk geschickt werden können
-        \item falls sowohl angebotene Daten und das angebotene Fenster >= MSS -> Sende ein volles Segment
-        \item falls unbestätigte Daten auf dem Weg sind, so puffere neue Daten bis das MSS voll ist,
-        \item andernfalls schicke die Daten sofort
+        \item TCP Selbsttaktung: Ankunft eines ACKs ist Zeichen, dass neue Daten auf das Netzwerk geschickt werden können
+        \item falls sowohl angebotene Daten und das angebotene Fenster $>= MSS \rightarrow$ sende ein volles Segment
+        \item falls unbestätigte Daten auf dem Weg sind, so puffere neue Daten bis das MSS voll ist, andernfalls schicke die Daten sofort
     \end{itemize*}
     
     \subsection{Staukontrolle}
@@ -733,38 +756,36 @@
     
     \subsection{AIMD - Sägezahnmuster der Last}
     \begin{itemize*}
-        \item TCP verwendet AIMD, also additive increase, multiplicative decrease Taktik
-        \item Es wird also kontinuierich auf zusätzliche Bandbreite geprüft und durch die Erhöhung der Bandbreitengrenze wird das Netzwerk regelmäßig die multiplikative Verringerung ausführen -> Sägezahnmuster
+        \item TCP verwendet AIMD, also \textit{additive increase, multiplicative decrease} Taktik
+        \item es wird kontinuierich auf zusätzliche Bandbreite geprüft und durch Erhöhung der Bandbreitengrenze wird das Netzwerk regelmäßig die multiplikative Verringerung ausführen $\rightarrow$ Sägezahnmuster
     \end{itemize*}
-    
     
     \section{Application Layer}
     \subsection{HTTP Statuscodes}
-    \begin{itemize*}
-        \item 200 OK - Anfrage okay, das angefragte Objekt folgt
-        \item 301 Moved Permanently - das angefragte Objekt wurde verschoben, der neue Pfad folgt
-        \item 400 Bad Request - Anfrage wurde nicht verstanden
-        \item 404 Not Found - angefordertes Objekt konnte auf dem Server nicht gefunden werden
-        \item 505 HTTP Version not supported
-    \end{itemize*}
+    \begin{description*}
+        \item[200] OK: Anfrage okay, das angefragte Objekt folgt
+        \item[301] Moved Permanently: das angefragte Objekt wurde verschoben, der neue Pfad folgt
+        \item[400] Bad Request: Anfrage wurde nicht verstanden
+        \item[404] Not Found: angefordertes Objekt konnte auf dem Server nicht gefunden werden
+        \item[505] HTTP Version not supported
+    \end{description*}
     
     \subsection{Cookies}
     \begin{itemize*}
-        \item Cookieheaderzeile in der Antwort
-        \item Cookieheaderzeile in der Anfrage
-        \item Die Cookiedatei wird auf dem Rechner des Hosts gespeichert und vom Browser verwaltet
+        \item Cookieheaderzeile in der Antwort/Anfrage
+        \item Cookiedatei wird auf dem Rechner des Hosts gespeichert und vom Browser verwaltet
         \item Speichern der Cookieinformationen in einer Backenddatenbank der Webseite
     \end{itemize*}
     
     \subsection{Webcaches (Proxyserver)}
     Bedienen der Clientanfrage ohne den urpsrünglichen Webserver dabei zu involvieren
     \begin{itemize*}
-        \item Der Nutzer stellt den Browser so ein, dass dieser über einen Cache auf das Netz zugreift
+        \item Nutzer stellt den Browser so ein, dass dieser über einen Cache auf das Netz zugreift
         \item Alle Anfragen des Browsers gehen zuerst an den Cache, hat er das angefragte Material, so wird er dieses an den Client schicken, oder andernfalls beim Webserver besorgen und dem Client dann weiterleiten
-        \item Der Cache agiert sowohl als Client als auch als Server
+        \item Cache agiert als Client und Server
         \item Reduzieren von Antwortzeiten für Clientanfragen
         \item Reduzieren von Verkehr auf dem Zugangslink des ISPs
-        \item Ein Internet voller Caches erlaubt es armen Anbietern effektiv Inhalte zu übertragen
+        \item Internet voller Caches erlaubt es armen Anbietern effektiv Inhalte zu übertragen
     \end{itemize*}
     
     \subsection{Webserver}
@@ -776,38 +797,40 @@
         \item Antworten auf Anfragen
         \item Bereitmachen und Annehmen von Anfragen
     \end{itemize*}
-    \begin{enumerate*}
-        \item Prozessmodell
-        \begin{itemize*}
-            \item Einem Prozess werden alle benötigten Schritte zugewiesen, welche benötigt werden, um eine Anfrage zu bearbeiten
-            \item Wenn die Bearbeitung abgeschlossen ist, so ist der Prozess wieder in der Lage neue Verbindungen zu akzeptieren
-            \item Typischerweise werden mehrere Prozesse benötigt
-            \item Ein Prozess blockiert, beispielsweise read(), dann entscheidet das OS, welcher Prozess als nächstes ausgeführt werden darf
-            \item Die Parallelität wird durch die Anzahl an Prozessen limitiert
-            \item Vorteile: Synchronisation dem Prozessmodell inhärent; Absicherung zwischen Prozessen
-            \item Nachteile: Langsam; Schwere Ausführbarkeit von Operationen, welche auf globalen Informationen beruhen
-        \end{itemize*}
-        \item Threadmodell
-        \begin{itemize*}
-            \item Verwende Threads anstelle von Prozessen
-            \item Vorteile: Schneller als Prozesse; Teilen standardmäßig aktiv
-            \item Nachteile: Benötigt OS Unterstützung; Kann per Prozess Limitierungen überlasten; Beschränkte Kontrolle über Schedulingentscheidungen
-        \end{itemize*}
-        \item In-Kernel Modell
-        \begin{itemize*}
-            \item möglich: ganzer Server im Kernel
-            \item Meist: nur statische Dateien werden vom Kernel bedient, andere Anfragen gehen an den regulären User-Space-Server
-            \item Dedizierter Kernelthread für HTTP Anfragen
-            \item Vorteile: Vermeidet das Kopieren von und in den Userspace; Sehr schnell, solange es eng in den Kernel integriert ist
-            \item Nachteile: Bugs können das OS, also die ganze Maschine crashen; Schwer zu debuggen und zu Erweitern; Inhärent OS-spezifisch
-        \end{itemize*}
-        \item Eventbasiertes Modell
-        \begin{itemize*}
-            \item Verwenden eines einzelnen Webserverprozesses um mehrere Anfragen zu behandeln
-            \item Vorteile: Sehr schnell, kein Kontextwechsel; Inhärentes Teilen ohne Locks; Komplette Kontrolle über die Schedulingentscheidungen; Kein komplexer OS-Support benötigt
-            \item Nachteile: Per-Prozess Begrenzungen; Nicht jedes OS mit voll asynchroner E/A, so können beim Lesen immernoch Blockierungen entstehen; Flash verwendet immerhin Hilfsprozesse um dies zu verhindern
-        \end{itemize*}
-    \end{enumerate*}
+    
+    \subsubsection{Prozessmodell}
+    \begin{itemize*}
+        \item Prozess werden alle benötigten Schritte zugewiesen, um eine Anfrage zu bearbeiten
+        \item Wenn Bearbeitung abgeschlossen, so ist Prozess wieder in der Lage neue Verbindungen zu akzeptieren
+        \item Typischerweise werden mehrere Prozesse benötigt
+        \item falls ein Prozess blockiert, entscheidet das OS, welcher Prozess als nächstes ausgeführt werden darf
+        \item Parallelität limitiert durch die Anzahl an Prozessen
+        \item Vorteile: Synchronisation dem Prozessmodell inhärent; Absicherung zwischen Prozessen
+        \item Nachteile: Langsam; Schwere Ausführbarkeit von Operationen, welche auf globalen Informationen beruhen
+    \end{itemize*}
+    
+    \subsubsection{Threadmodell}
+    \begin{itemize*}
+        \item Verwende Threads anstelle von Prozessen
+        \item Vorteile: Schneller als Prozesse; Teilen aktiv
+        \item Nachteile: Benötigt OS Unterstützung; Kann per Prozess Limitierungen überlasten; Beschränkte Kontrolle über Schedulingentscheidungen
+    \end{itemize*}
+    
+    \subsubsection{In-Kernel Modell}
+    \begin{itemize*}
+        \item ganzer Server im Kernel möglich
+        \item meist nur statische Dateien vom Kernel bedient, andere Anfragen an regulären User-Space-Server
+        \item Dedizierter Kernelthread für HTTP Anfragen
+        \item Vorteile: Vermeidet Kopieren von und in den Userspace; Sehr schnell, solange eng in den Kernel integriert
+        \item Nachteile: Bugs können OS crashen; Schwer zu debuggen/erweitern; Inhärent OS-spezifisch
+    \end{itemize*}
+    
+    \subsubsection{Eventbasiertes Modell}
+    \begin{itemize*}
+        \item Verwenden eines einzelnen Webserverprozesses um mehrere Anfragen zu behandeln
+        \item Vorteile: Sehr schnell, kein Kontextwechsel; Inhärentes Teilen ohne Locks; Komplette Kontrolle über die Schedulingentscheidungen; Kein komplexer OS-Support benötigt
+        \item Nachteile: Per-Prozess Begrenzungen; Nicht jedes OS mit voll asynchroner E/A, so können beim Lesen immernoch Blockierungen entstehen; Flash verwendet immerhin Hilfsprozesse um dies zu verhindern
+    \end{itemize*}
     
     \subsection{Mailzugriffsprotokolle}
     \begin{description*}
@@ -876,27 +899,41 @@
     
     
     \subsection{Pakete}
-    \subsubsection{DHCP}
-    DHCP Discover an Broadcast (255.255.255.255), Server sendet DHCP Offer zurück mit Payload, DHCP Request (gleich wie Discover)\\
+    \subsubsection{\centering DHCP}
+    DHCP Discover an Broadcast (255.255.255.255), 
+    Server sendet DHCP Offer zurück mit Payload, 
+    DHCP Request (gleich wie Discover)\\
+
+    \begin{description*}
+        \item[DHCP] Discover/Offer/Request/ACK
+        \item[UDP/TCP] SrcPort \& DstPort
+        \item[IP] SrcIP \& DstIP
+        \item[MAC] SrcAddr \& DestAddr
+        \item[Payload] (optional)
+    \end{description*}
+
+    \subsubsection{\centering ARP}
+    ARP-Request/Response:
+    \begin{description*}
+        \item[ARP] ARP-Request/Response
+        \item[MAC] SrcAddr XYZ
+        \item[DestAddr] XYZ
+        \item[Payload] XXXXX
+    \end{description*}  
     
-    DHCP: Discover/Offer/Request/ACK\\
-    UDP/TCP: SrcPort \& DstPort\\
-    IP: SrcIP \& DstIP\\
-    MAC: SrcAddr \& DestAddr\\
-    Payload: (optional)
-    
-    \subsubsection{ARP}
-    ARP-Request/Response:\
-    ARP: ARP-Request    Payload: XXXX\\
-    MAC: SrcAddr XXXX   DestAddr XXX
-    
-    \subsubsection{DNS}
-    (A-Records bilden URL auf IP ab)\\
-    DNS: DNS Query "A random.org"/ DNS Response "A random.org 123.45.67.890"\\
-    UDP/TCP: SrcPort \& DstPort\\
-    IP: SrcIP \& DstIP\\
-    MAC: SrcAddr \& DestAddr
-    
+    \subsubsection{\centering DNS}
+    (A-Records bilden URL auf IP ab)
+    \begin{description*}
+        \item[DNS]
+        \begin{itemize*}
+            \item DNS Query 'A random.org'
+            \item DNS Response 'A random.org 123.45.67.890'
+        \end{itemize*}
+        \item[UDP/TCP] SrcPort \& DstPort
+        \item[IP] SrcIP \& DstIP
+        \item[MAC] SrcAddr \& DestAddr
+    \end{description*}
+
     \section{Ports}
     \begin{tabular}{l| l}
         UDP DHCP     & 67/68   \\
@@ -910,7 +947,76 @@
         Non-privileg & $>$1023 \\
     \end{tabular}
     
+    \section{TCP/IP}
+    nicht existentes Modell, sehr nützliches Protokoll
+    \begin{description*}
+        \item[Internetlayer] Packetswitching, Adressierung, Routing und Forwarding. Insbesondere für hierarchische Netze
+        \item[Transportlayer]
+        \begin{itemize*}
+            \item zuverlässiger Bytestrom: TCP (Transport Control Protokoll)
+            \item unzuverlässiges Datagramm: UDP (User Datagramm Protokoll)
+        \end{itemize*}
+    \end{description*}
+    
+    \subsection{UDP}
+    \begin{itemize*}
+        \item minimalistisch
+        \item Best Effort Dienst: Segmente können verloren gehen, nicht reihenfolgegetreu
+        \item Verbindungslos: Kein Handshaking und unabhängige Behandlung der Pakete
+        \item oftmals für das Streamen von Multimediainhalten
+        \item Überprüfung durch Checksummen
+    \end{itemize*}
+    \subsection{TCP}
+    \begin{itemize*}
+        \item Punkt-zu-Punkt: Ein Sender, ein Empfänger
+        \item Zuverlässiger, reihenfolgegetreuer Bytestrom
+        \item Pipelined: Staukontrolle und Flusskontrolle
+        \item Sende und Empfangspuffer
+        \item Vollduplex Daten: Bidirektionaler Datenfluss
+        \item Zuverlässsiger Datenverkehr benötigt eine Behandlung von Timeouts (RTT)
+    \end{itemize*}
+    
+    \hfill
+    \subsection{Schicht 2: HDLC (High Level Data Link Control)}
+    3 verschiedene Stationstypen/Sendemodi:
+    \begin{itemize*}
+        \item Primary Station (sendet Kommandos)
+        \item Secondary Station (sendet Antworten)
+        \item Combined Station (sendet beides)
+    \end{itemize*}
+    Bei HDLC wird zur Unterscheidung des Endflags von den Übertragungsdaten Bitstopfen eingesetzt.
+    Damit bezeichnet man den Vorgang, dass bei fünf aufeinanderfolgenden Einsen, stets eine Null eingefügt wird.
+    Somit kann der Trailer, der 6 aufeinanderfolgende Einsen enthält, eindeutig unterschieden werden.
+    
+    
+    \section{ISO/OSI - sehr nützliches Modell, keine existierenden Protokolle}
+    Ein Protokoll arbeitet genau auf einer Schicht und beschreibt Syntax und Semantik der auszutauschenden Anwendungsinformation. Desweiteren enthalten Protokolle Festlegungen bezüglich Antwortzeiten, Ablauffolgen und Dateneinheiten.
+    
+    Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hinzu und erstellt eine neue Dateneinheit und schickt diese an das Layer darunter
+    
+    \begin{description*}
+        \item[Abstrakte Sicht] Beschreibt den Aufbau eines Schichtenmodell im Allgemeinen
+        \item[Funktionielle Sicht] Beschreibt die Funktionen der sieben Schichten
+        \item[Protokoll Sicht] Beschreibt die Protokolle der einzelnen Schichten
+        \item[Dienst Sicht] Beschreibt die Dienste einer Schicht gegenüber einer höherliegenden Schicht    
+    \end{description*}
+    
+    \subsection{Schichtkommunikation}
+    Eine Schicht $(N)$ bietet der darüberliegenden Schicht $(N +1)$ an Dienstzugangspunkten (SAP - Service Access Point) Dienste an. Auf diese Dienste wird mit Hilfe von Dienstelementen (Service Primitives) zugegriffen. Man unterscheidet die vier folgenden Dienstelementetypen:
+    \begin{itemize*}
+        \item Request (Anforderung)
+        \item Indication (Anzeige)
+        \item Response (Antwort)
+        \item Confirm (Bestätigung)
+    \end{itemize*}
+    Möchte eine Instanz einer Schicht $(N+1)$ in einem System A eine Verbindung zu einem System B aufbauen, muss sie bei der Schicht $(N)$ im eigenen System den Dienst anfordern (Request). 
+    Für Schicht $(N+1)$ transparent baut Schicht $(N)$ aus System A eine Verbindung zu Schicht $(N)$ aus System B auf. Dabei benutzt sie gegebenenfalls Dienste der darunterliegenden Schichten. 
+    Schicht $(N )$ in System B signalisiert nun (Indication) Schicht $(N+1)$ in System B das ein Dienst angefragt wurde. 
+    Schicht $(N +1)$ in System B antwortet Schicht $(N)$ in System B (Response), wenn der Dienst akzeptiert wurde. 
+    Wiederum transparent für die darüberliegenden Schichten gibt Schicht $(N)$ aus System B an Schicht $(N )$ zurück das der Dienst akzeptiert wurde. Schicht $(N)$ aus System A kann nun Schicht $(N+1)$ aus System A den Dienst bestätigen (Confirm).
+    
     \newpage
+    
     \section{Begriffe}
     \begin{description*}
         % Übertragungsarten
@@ -951,15 +1057,15 @@
         \item[Weiterleiten] Bewege Pakete vom Routereingang auf den entsprechenden Ausgang
         \item[Routing] Berechnen der Route, die die Pakete von Quelle bis zum Ziel gegangen sind
         \item[DHCP] Dynamic Host Configuration Protocol. beziehe die Adresse dynamisch von einem Server
-        \item[ARP] Adress Resolution Protocol Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat -> Antwort des Nodes mit der MAC-Adresse -> Zustellung möglich
+        \item[ARP] Adress Resolution Protocol Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat $\rightarrow$ Antwort des Nodes mit der MAC-Adresse $\rightarrow$ Zustellung möglich
         \item[Hot Potato Routing] Wenn ein Paket ankommt, so leite es auf schnellste Art und Weise an den Ausgang mit der kleinsten Ausgangswarteschlange, ganz egal wohin dieser Ausgang dann führt
-        \item[Rückwärtslernen (Routing)] Paketheader enthalten wichtige Infos, wie Quelle, Ziel, Hopzähler -> Netzwerkknoten lernen etwas über die Netzwerktopologie während sie Pakete behandeln
+        \item[Rückwärtslernen (Routing)] Paketheader enthalten wichtige Infos, wie Quelle, Ziel, Hopzähler $\rightarrow$ Netzwerkknoten lernen etwas über die Netzwerktopologie während sie Pakete behandeln
         \item[RIP] Routing Information Protocol. Distanzvektoralgorithmus mit Hops als Metrik. Falls nach 180s kein Advertisement empfangen wurde, so deklariere den Nachbarn als tot
         \item[BGP] Border Gateway Protocol. Routerpaare tauschen Routinginformationen über semipermanente TCP Verbindungen aus
         \item[OSPF] Open Shortes Paths First. annocieren nun keine Wege sondern Linkzustände mit je einem Eintrag pro Nachbarknoten
         \item[Poisoned Reverse] Wenn Z durch Y routet um zu X zu gelangen: Z sagt Y, dass seine eigene Distanz zu X unendlich ist (somit routet Y nicht über X nach Z)
         \item[Link State Routing] Berechnung des kleinsten Kostenpfades von einem Knoten S zu allen andern Knoten V erzielt durch den Link-State-Broadcast
-        \item[Gateway Router] Spezielle Router innerhalb des AS, führen das Intra-AS Routingprotokoll mit allen anderen Routern im AS aus. Zusätzlich verantwortlich für das Routing an exteren Ziele -> Inter-AS Routingprotokolle mit anderen Gatewayroutern
+        \item[Gateway Router] Spezielle Router innerhalb des AS, führen das Intra-AS Routingprotokoll mit allen anderen Routern im AS aus. Zusätzlich verantwortlich für das Routing an exteren Ziele $\rightarrow$ Inter-AS Routingprotokolle mit anderen Gatewayroutern
         \item[Unicast] Ein Sender, ein Empfänger
         \item[Multicast] Ein Sender, eine Gruppe von Empfänger
         \item[Broadcast] Ein Sender, alle Teilnehmer eines Netzes
@@ -987,7 +1093,7 @@
         \item[Authorative DNS Server] DNS Server einer Organisation, stellen den authorativen Hostnamen für das IP Mapping der Organisationsserver
         \item[Lokal DNS Server] Jeder ISP hat einen eigenen; Wenn ein Host eine DNS Anfrage stellt, so wird die Frage zuerst zum lokalen DNS Server gesendet (fungiert also als ein Proxy)
         \item[Ressource Records (RR)] in DNS Datenbank; Format: (name, value, type, ttl)
-        \item[P2P Filesharing] Ein Peer ist sowohl ein Webclient als auch ein transienter Webserver; Alle Peers sind Server -> Hoch Skalierbar; Dateiübertragung ist dezentralisiert, die Lokalisierung findet allerdings zentral statt.
+        \item[P2P Filesharing] Ein Peer ist sowohl ein Webclient als auch ein transienter Webserver; Alle Peers sind Server $\rightarrow$ Hoch Skalierbar; Dateiübertragung ist dezentralisiert, die Lokalisierung findet allerdings zentral statt.
         \item[Socket] Ein lokal auf dem Host laufendes, von einer Anwendung erstelltes, OS-kontrolliertes Interface, durch welches ein Anwendungsprozess sowohl Nachrichten vom und zu anderen Anwendungsprozessen Senden, als auch Empfangen kann.
         \item[Bedrohnung] Eine Bedrohung in einem Kommunikationsnetzwerk ist jedes mögliche Ereignis oder eine Sequenz von Aktionen, welche zu einer Verletzung einer oder mehrerer Sicherheitsziele führen
         \item[Kryptologie] Wissenschaft, die sich mit Kommunikation in sicherer und geheimer Art befasst
@@ -1013,70 +1119,50 @@
     
 \end{multicols}
 
-
 \section{Formeln}
 \begin{multicols}{2}
-    Bitzeit  $t_{Bit}=\frac{1}{Bitrate}$
-    
-    Bitlänge  $l_{Bit}=v_s * t_{Bit}$
-    
-    Ausbreitungsverzögerung   $d_{prop} = \frac{dist}{v_s}$
-    
-    Übertragungszeit  $d_{trans} = \frac{L}{R} = [\frac{bit}{s}]$
-    
-    Ende-zu-Ende-Verzögerung  $d_{e2e} = d_{prop} + d_{trans}$
-    
-    Leitungsverm. Übertragung  $t_L = \frac{L_{Nachricht}}{R}$
-    
-    Nachrichtenver. Übertragung  $t_N = (k + 1)\frac{L_{Nachricht}}{R}$
-    
-    Paketver. Übertragung  $t_{P} = (k + \frac{Laenge_{Nachricht}}{Laenge_{Pakete}})*\frac{L_{Packet}}{R} = (1+ \frac{k}{n})* \frac{L_{Nachricht}}{R}$
-    
-    Kanalkap. Nyquist  $R_{max} = 2* H * log_2n$
-    
-    Kanalkap. Shannon  $R_{max} = H* log_2(1+\frac{P_signalleistung}{P_rauschleistung})$ mit $r=10*log_{10}*{\frac{P_s}{P_n}}$
-    
-    Bandwirth Delay 
-    
-    Link Last 
-    
-    LAN last 
-    
-    Fehlerfrei Send and Wait  $S = \frac{1}{(1+2a)}$ wobei $a = \frac{T_{prop}}{T_{trans}}$
-    
-    Fehlerhaft Send and Wait  $S = \frac{1-P}{1+2a}$
-    
-    Fehlerfreies Sliding Window  $S = {1, falls W >= 2a+1, W/(2a+1) sonst}$
-    
-    Selective Reject  $S = {1-P, falls W >= 2a+1, (W(1-P))/(2a+1) sonst}$
-    
-    Go-Back-N  $S = {\frac{1-P}{1+2aP}, falls W >= 2a+1, \frac{W(1-P)}{(2a+1)(1-P+WP)} sonst}$
-    
-    Effizienz  $\frac{T_{packet} }{ T_{packet} + d + T_{ack} + d}$
-    
-    efficiency  $\frac{1}{ (1+ 5 * \frac{t_{prop}}{t_{trans}}}$
-    
-    Round Trip Time  $EstimatedRTT = (1-a) * EstimatedRTT + a * SampleRTT$
-    
-    ~ TCP Durchsatz  $ 0,75 * \frac{W}{RTT}$
-    
-    
+    \begin{description}
+        \item[Bitzeit] $t_{Bit}=\frac{1}{Bitrate}$
+        \item[Bitlänge] $l_{Bit}=v_s * t_{Bit}$
+        \item[Ausbreitungsverzögerung]  $d_{prop} = \frac{dist}{v_s}$
+        \item[Übertragungszeit] $d_{trans} = \frac{L}{R} = [\frac{bit}{s}]$
+        \item[Ende-zu-Ende-Verzögerung] $d_{e2e} = d_{prop} + d_{trans}$
+        \item[Leitungsverm. Übertragung] $t_L = \frac{L_{Nachricht}}{R}$
+        \item[Nachrichtenver. Übertragung] $t_N = (k + 1)\frac{L_{Nachricht}}{R}$
+        \item[Paketver. Übertragung] $t_{P} = (k + \frac{Laenge_{Nachricht}}{Laenge_{Pakete}})*\frac{L_{Packet}}{R} = (1+ \frac{k}{n})* \frac{L_{Nachricht}}{R}$
+        \item[Kanalkap. Nyquist] $R_{max} = 2* H * log_2n$
+        \item[Kanalkap. Shannon] $R_{max} = H*log_2(1+\frac{P_signalleistung}{P_rauschleistung})$ mit $r=10*log_{10}*{\frac{P_s}{P_n}}$
+        \item[Bandwirth Delay]
+        \item[Link Last]
+        \item[LAN last]
+        \item[Fehlerfrei Send and Wait] $S = \frac{1}{(1+2a)}$ wobei $a = \frac{T_{prop}}{T_{trans}}$
+        \item[Fehlerhaft Send and Wait] $S = \frac{1-P}{1+2a}$
+        \item[Fehlerfreies Sliding Window] $S = {1, falls W >= 2a+1, W/(2a+1) sonst}$
+        \item[Selective Reject] $S = {1-P, falls W >= 2a+1, (W(1-P))/(2a+1) sonst}$
+        \item[Go-Back-N] $S = {\frac{1-P}{1+2aP}, falls W >= 2a+1, \frac{W(1-P)}{(2a+1)(1-P+WP)} sonst}$
+        \item[Effizienz] $\frac{T_{packet} }{ T_{packet} + d + T_{ack} + d}$
+        \item[efficiency] $\frac{1}{ (1+ 5 * \frac{t_{prop}}{t_{trans}}}$
+        \item[Round Trip Time] $EstimatedRTT = (1-a) * EstimatedRTT + a * SampleRTT$
+        \item[~ TCP Durchsatz] $ 0,75 * \frac{W}{RTT}$
+    \end{description}
 \end{multicols}
-\newpage
 
-\section{ISO/OSI - sehr nützliches Modell, keine existierenden Protokolle}
-Ein Protokoll arbeitet genau auf einer Schicht und beschreibt Syntax und Semantik der auszutauschenden Anwendungsinformation. Desweiteren enthalten Protokolle Festlegungen bezüglich Antwortzeiten, Ablauffolgen und Dateneinheiten.
+\section{Konkrete Netzwerke und Protokolle}
+\subsection{Hardwareschicht}
+\begin{tabular}{l | l | l | l | l | l | l}
+    Realisierung        & 10Base2/5 Ethernet & bis 1GBit Ethernet & Token-Bus             & Token-Ring            & DQDB                       & FDDI                             \\\hline
+    Protokoll           & CSMA/CD            & CSMA/CD            & Token-Bus             & Token-Ring            & Distributed Queue Dual Bus & Fiber Distributed Data Interface \\
+    IEEE                & 802.3              & 802.3              & 802.4                 & 802.5                 & 802.6                      & -                                \\\hline
+    physische Topologie & Bus                & Bus                & Bus/Baum              & Ring/Stern            & Bus/Ring                   & Ring+ Ersatz                     \\
+    logische Topologie  & Bus                & Stern              & Ring                  & Ring                  & Bus                        & Ring                             \\\hline
+    Leitungskodierung   & Biphase-L          & unterschiedlich    &                       & Differential          &                            & 4B/5B, NRZI                      \\
+    Bitrate             & 10 Mbit/s          & 10-1000 Mbit/s     & 1,5/10 Mbit/s         & 1-1000 Mbit/s         & 44,736 Mbit/s              & x                                \\
+    Baudrate            & 20 MBaud           & 20-2000 MBaud      &                       &                       &                            & $1,25*x$                         \\\hline
+    Kanalzugriff        & CSMA/CD            & CSMA/CD            & Token                 & Token                 & DQDB-Zellen                & Token                            \\
+    Anwendungsgebiet    & LAN                & LAN                & Zeitkritische Systeme & Zeitkritische Systeme & MAN                        & MAN                              \\
+\end{tabular}
 
-Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hinzu und erstellt eine neue Dateneinheit und schickt diese an das Layer darunter
-
-\begin{description*}
-    \item[Abstrakte Sicht] Beschreibt den Aufbau eines Schichtenmodell im Allgemeinen
-    \item[Funktionielle Sicht] Beschreibt die Funktionen der sieben Schichten
-    \item[Protokoll Sicht] Beschreibt die Protokolle der einzelnen Schichten
-    \item[Dienst Sicht] Beschreibt die Dienste einer Schicht gegenüber einer höherliegenden Schicht    
-\end{description*}
-
-\subsection{Layer}
+\section{ISO/OSI Layer}
 \begin{tabular}{ l | l | l | p{6cm} | p{10cm} }
        & \textbf{Layer} & \textbf{Dateneinheit}                  & \textbf{Aufgaben}                                 & \textbf{Typische Spezifizierungsaufgaben in dieser Schicht} \\\hline
     PH & Physisch       & bit                                    & \begin{itemize*}
@@ -1093,30 +1179,30 @@ Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hi
         \item Zeitliche Synchronisation (Non-Return to Zero Level oder Manchstercodierung)
         \item Breitband- vs Basisbandübertragung (Amplituden-/Phasen-/Frequenzmodulation ) %Bsp: QPSK, 16-QAM
         %\item Digital vs Analog
-    \end{itemize*}                              \\\hline
+    \end{itemize*}                             \\\hline
     L  & Link           & Datenrahmen                            & \begin{itemize*}
         \item Senden und Empfangen von Datenrahmen
         \item dazu Generierung und Erkennung von Rahmenbegrenzern
         \item Bearbeitung von Bestätigungsrahmen
         \item Flussregelung
         \item Fehlererkennung
-    \end{itemize*}                    & \begin{itemize*}
+    \end{itemize*}                   & \begin{itemize*}
         \item Festlegung der Rahmenbegrenzer
         \item Festlegung des Fehlerbehandlungsverfahrens
         \item Festlegung der Möglichkeiten der Flussteuerung
-        %\item Unterstützt Übertragung von service data units (SDU) größer als "word" unter Systemen, welche über einen einzigen physischen Pfad verbunden sind.
+        %\item Unterstützt Übertragung von service data units (SDU) größer als 'word' unter Systemen, welche über einen einzigen physischen Pfad verbunden sind.
         %\item Essentielle Funktion ist block synchronization
         \item Im Fall von Halb-duplex oder multipoint links muss der Zugriff auf das Medium kontrolliert werden und Peersysteme müssen addressiert werden.
         \item Framing durch Charakterzählen, Flagbitmuster/Bitstuffing oder Codeverletzung
         \item Fehlererkennung \& -kontrolle (vorwärts/rückwärts) mit Redundanz (Parität), Hemmingdistanz, Cyclic Redundancy Check (CRC)
         \item Send and Wait (Sliding Window) , Go-Back-N, Selective Reject
         %\item Verbindungsaufbau \& Flusskontrolle 
-    \end{itemize*}                              \\\hline
+    \end{itemize*}                             \\\hline
     N  & Network        & Datagramm, Paket                       & \begin{itemize*}
         \item Routing des Datenverkehrs
         \item Absicherung von Verbindungsqualitäten
         \item optional: Abrechnungsfunktion
-    \end{itemize*}                    & 
+    \end{itemize*}                   & 
     \begin{itemize*}
         %\item Erschafft eine logischen Kommunikation zwischen offenen Systemen, welche verbunden sind mit verschiedenen Subnetworks
         %\item Diese Netzwerkebene unterstützt Routing, also müssen sich N-Service Benutzer nicht um den Pfad kümmern
@@ -1129,7 +1215,7 @@ Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hi
         \item Senden im Broadcast und Multicast Modus
         \item optional: Aufteilen der Transportverbindung auf mehrere Netzverbindungen
         \item optional: Multiplexen mehrerer Transportverbindungen auf einer Netzverbindung
-    \end{itemize*}                    & 
+    \end{itemize*}                   & 
     \begin{itemize*}
         %\item logische Kommunikation zwischen zwei Prozessen/Nutzern, unabhängig von der Netzwerkstruktur
         %\item Verschiedene Klassen von Protokollen mit verschiedenen Funktionalitäten sind festgelegt (connectionoriented/connectionless; reliable/unreliable)
@@ -1170,64 +1256,5 @@ Jedes Layer nimmt Daten vom darüberliegenden Layer, fügt eine Headereinheit hi
     \end{itemize*}
     \\
 \end{tabular}
-
-\subsection{Schichtkommunikation}
-Eine Schicht $(N)$ bietet der darüberliegenden Schicht $(N +1)$ an Dienstzugangspunkten (SAP - Service Access Point) Dienste an. Auf diese Dienste wird mit Hilfe von Dienstelementen (Service Primitives) zugegriffen. Man unterscheidet die vier folgenden Dienstelementetypen:
-\begin{itemize*}
-    \item Request (Anforderung)
-    \item Indication (Anzeige)
-    \item Response (Antwort)
-    \item Confirm (Bestätigung)
-\end{itemize*}
-Möchte eine Instanz einer Schicht $(N+1)$ in einem System A eine Verbindung zu einem System B aufbauen, muß sie bei der Schicht $(N)$ im eigenen System den Dienst anfordern (Request). 
-Für Schicht $(N+1)$ transparent baut Schicht $(N)$ aus System A eine Verbindung zu Schicht $(N)$ aus System B auf. Dabei benutzt sie gegebenenfalls Dienste der darunterliegenden Schichten. 
-Schicht $(N )$ in System B signalisiert nun (Indication) Schicht $(N+1)$ in System B das ein Dienst angefragt wurde. 
-Schicht $(N +1)$ in System B antwortet Schicht $(N)$ in System B (Response), wenn der Dienst akzeptiert wurde. 
-Wiederum transparent für die darüberliegenden Schichten gibt Schicht $(N)$ aus System B an Schicht $(N )$ zurück das der Dienst akzeptiert wurde. Schicht $(N)$ aus System A kann nun Schicht $(N+1)$ aus System A den Dienst bestätigen (Confirm).
-
-\section{TCP/IP - nicht existentes Modell, sehr nützliches Protokoll}
-\begin{tabular}{l | l}
-    Internetlayer  & Packetswitching, Adressierung, Routing und Forwarding. Insbesondere für hierarchische Netze \\
-    \hline
-    Transportlayer & zuverlässiger Bytestrom: TCP (Transport Control Protokoll)                                  \\
-                   & unzuverlässiges Datagramm: UDP (User Datagramm Protokoll)                                   \\
-\end{tabular}
-
-\section{UDP vs TCP}
-\begin{tabular}{l | l}
-    UDP                                                                         & TCP                                                                     \\ \hline
-    minimalistisch                                                              & Punkt-zu-Punkt: Ein Sender, ein Empfänger                               \\
-    Best Effort Dienst: Segmente können verloren gehen, nicht reihenfolgegetreu & Zuverlässiger, reihenfolgegetreuer Bytestrom                            \\
-    Verbindungslos: Kein Handshaking und unabhängige Behandlung der Pakete      & Pipelined: Staukontrolle und Flusskontrolle                             \\
-    oftmals für das Streamen von Multimediainhalten                             & Sende und Empfangspuffer                                                \\
-    Überprüfung durch Checksummen                                               & Vollduplex Daten: Bidirektionaler Datenfluss                            \\
-                                                                                & Zuverlässsiger Datenverkehr benötigt eine Behandlung von Timeouts (RTT) \\
-\end{tabular}
-
-\section{Konkrete Netzwerke und Protokolle}
-\subsection{Hardwareschicht}
-\begin{tabular}{l | l | l | l | l | l | l}
-    Realisierung        & 10Base2/5 Ethernet & bis 1GBit Ethernet & Token-Bus             & Token-Ring            & DQDB                       & FDDI                             \\
-    Protokoll           & CSMA/CD            & CSMA/CD            & Token-Bus             & Token-Ring            & Distributed Queue Dual Bus & Fiber Distributed Data Interface \\
-    IEEE                & 802.3              & 802.3              & 802.4                 & 802.5                 & 802.6                      & -                                \\
-    physische Topologie & Bus                & Bus                & Bus/Baum              & Ring/Stern            & Bus/Ring                   & Ring+ Ersatz                     \\
-    logische Topologie  & Bus                & Stern              & Ring                  & Ring                  & Bus                        & Ring                             \\
-    Leitungskodierung   & Biphase-L          & unterschiedlich    &                       & Differential          &                            & 4B/5B, NRZI                      \\
-    Bitrate             & 10 Mbit/s          & 10-1000 Mbit/s     & 1,5/10 Mbit/s         & 1-1000 Mbit/s         & 44,736 Mbit/s              & x                                \\
-    Baudrate            & 20 MBaud           & 20-2000 MBaud      &                       &                       &                            & $1,25*x$                         \\
-    Kanalzugriff        & CSMA/CD            & CSMA/CD            & Token                 & Token                 & DQDB-Zellen                & Token                            \\
-    Anwendungsgebiet    & LAN                & LAN                & Zeitkritische Systeme & Zeitkritische Systeme & MAN                        & MAN                              \\
-\end{tabular}
-
-\subsection{Schicht 2: HDLC (High Level Data Link Control)}
-3 verschiedene Stationstypen/Sendemodi:
-\begin{itemize*}
-    \item Primary Station (sendet Kommandos)
-    \item Secondary Station (sendet Antworten)
-    \item Combined Station (sendet beides)
-\end{itemize*}
-Bei HDLC wird zur Unterscheidung des Endflags von den Übertragungsdaten Bitstopfen eingesetzt.
-Damit bezeichnet man den Vorgang, daß bei fünf aufeinanderfolgenden Einsen, stets eine Null eingefügt wird.
-Somit kann der Trailer, der 6 aufeinanderfolgende Einsen enthält, eindeutig unterschieden werden.
 
 \end{document}

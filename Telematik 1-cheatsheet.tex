@@ -244,29 +244,27 @@
     Kodierung/Dekodierung möglichst einfach und mittlerer Kodierungsaufwand möglichst klein. 
     Versucht möglichst alle Redundanzen zu vermeiden.
     
-    \begin{tabular}{ l | l | p{5cm} }
+    \begin{tabular}{ l | l | p{5.5cm} }
         Code     & Stellen  & Bemerkung                                      \\\hline
         Block    & fest     & keine Berücksichtigung der Informationsgehalte \\
-        Fano     & variabel & 
-        \begin{itemize*}
+        Fano     & variabel & \begin{itemize*}
             \item Sortieren von groß nach klein
             \item Teilen in ähnlich große Partition
             \item Vordere Gruppe erhält 0
             \item Hintere Gruppe erhält 1
         \end{itemize*}                                       \\
-        Huffmann & variabel & 
-        \begin{itemize*}
+        Huffmann & variabel & \begin{itemize*}
             \item Zusammenfassen der beiden kleinsten Auftrittswahrscheinlichkeiten
             \item Die kleinere Auftrittswahrscheinlichkeit erhält eine 1 als Codierungsziffer
         \end{itemize*}
     \end{tabular}
     
     \subsection{Kanalcodierung}
-    Die Kanalcodierung fügt Redundanz ein, um Übertragungfehler detektieren zu können.\\
-    Dies kann man durch das Anhängen eines Paritätsbits erreichen.
-    Eine weitere Möglichkeit der Fehlererkennung ist der Cyclic Redundancy Check. 
+    Kanalcodierung fügt Redundanz ein, um Übertragungfehler zu detektieren.\\
+    Dies kann man durch das Anhängen eines Paritätsbits erreichen oder Cyclic Redundancy Check. 
     Hierbei werden die Daten als Binärzahl aufgefasst. 
-    Die Zahl wird um $n$ Nullen erweitert und durch eine festgelegte Zahl der Länge $n + 1$ dividiert. Die Division wird ohne Brücksichtigung des Übertrages durchgeführt, also modulo 2. 
+    Die Zahl wird um $n$ Nullen erweitert und durch eine festgelegte Zahl der Länge $n + 1$ dividiert. 
+    Die Division wird ohne Brücksichtigung des Übertrages durchgeführt, also modulo 2. 
     Der Rest, der bei der Division entsteht, wird anschließend auf die Binärzahl aufaddiert. 
     Wird die berechnete Zahl fehlerfrei übertragen, entsteht bei einer Division durch die Prüfzahl kein Rest. 
     Erhält der Empfänger bei der Division einen Rest, weiß er, dass die Daten fehlerhaft übertragen worden sind.
@@ -366,7 +364,7 @@
     
     \section{Kollisionsbehandlung}
     \subsection{CSMA/CD}
-    Bei CSMA/CD (Carrier Sense Multiple Access / Collision Detection) hört der Sender bevor er sendet den Kanal ab. Falls der Kanal frei ist, beginnt er zu senden. Nun horcht er, ob es Kollisionen gibt. Dies tut er eine im Standard festgelegte Zeit lang. In dieser Zeit erreicht das Signal jeden am Kanal angeschlossenen Sender, sofern das Netz Standardgerecht verlegt ist. Stellt der Sender eine Kollision fest zum Beispiel in Form überlagerter Signale, zieht er sich vom Kanal zurück und versucht später wieder den Sendevorgang zu wiederholen. Gab es aber keine Überlagerung kann er ohne zu horchen weitersenden, da kein anderer Sender mit dem Sendevorgang beginnt, wenn der Kanal belegt ist.
+    Falls der Kanal frei ist, beginnt er zu senden. Nun horcht er (eine festgelegte Zeit lang), ob es Kollisionen gibt. In dieser Zeit erreicht das Signal jeden am Kanal angeschlossenen Sender, sofern das Netz Standardgerecht verlegt ist. Stellt der Sender eine Kollision fest z.B. in Form überlagerter Signale, zieht er sich vom Kanal zurück und versucht später wieder den Sendevorgang zu wiederholen. Gab es aber keine Überlagerung kann er ohne zu horchen weitersenden, da kein anderer Sender mit dem Sendevorgang beginnt, wenn der Kanal belegt ist.
     
     \subsection{Token Verfahren}
     In einem logischen Ring wird ein Token im Kreis durchgereicht. Der der den Token hat darf senden. Er wandelt den Freitoken in den Header eines Datenpaketes um und sendet nun fortlaufend Daten. Der Empfänger nimmt die Daten nicht vom Ring, sondern schickt sie mit gesetztem Bestätigungsbit weiter. So erhält der Sender gleich noch eine Bestätigung.
@@ -1019,102 +1017,97 @@
     
     \section{Begriffe}
     \begin{description*}
-        % Übertragungsarten
-        \item[Simplex] Übertragung in eine Richtung
-        \item[Half Duplex] Übertragung abwechselnd in beide Richtungen (Time Division Duplex)
-        \item[Full Duplex] Übertragung gleichzeitig in beide Richtung (Frequency/Time Division Duplex)
-        % Adressierungsarten
-        \item[Point-to-Point] an eine bekannte Adresse
-        \item[Multicast] an eine Gruppe bekannter Adressen
-        \item[Broadcast] an alle
-        % ...    
-        \item[Circuit Switching] einfach; einmal aufgesetzt verbleiben die Ressourcen beim Nutzer; Circuit muss hergestellt werden, bevor kommuniziert werden kann
-        \item[Packet Switching] Aufteilen von Daten in kleinere Pakete die nach und nach gesendet werden; Problem: Informationen zu Sender/Empfänger und Start/Endzeitpunkt eines Pakets müssen mit übermittelt werden; Wird deshalb 'Store and Forward' Netzwerk genannt
-        \item[Broadcast Medium] Nur ein Sender zu jeder Zeit; Zugriffskontrolle (MUX o. Absprache)
+        \item[ARP] Adress Resolution Protocol Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat $\rightarrow$ Antwort des Nodes mit der MAC-Adresse $\rightarrow$ Zustellung möglich
+        \item[Assymmetrische Kryptographie] verwendet zwei Schlüssel für Ver- und Entschlüsselung
+        \item[Authorative DNS Server] DNS Server einer Organisation, stellen den authorativen Hostnamen für das IP Mapping der Organisationsserver
         \item[Baudrate] bezeichnet die Schrittrate $\frac{1}{\delta t}$ mit der sich das Signal ändern kann. Pro Schritt kann eine Informationsmenge $ld(n)$ übertragen werden, wobei n die Anzahl der
         Quantisierungsstufen des Signals ist. %beschreibt die Anzahl der Symbole welche innerhalb einer Zeiteinheit übertragen werden; Symbolrate * Informationsgehalt je Symbol
+        \item[Bastion Host] Ein Computer, welcher besonders gesichert werden muss, da er anfälliger für Angriffe ist, als andere Computer im Subnetz
+        \item[Bedrohnung] Eine Bedrohung in einem Kommunikationsnetzwerk ist jedes mögliche Ereignis oder eine Sequenz von Aktionen, welche zu einer Verletzung einer oder mehrerer Sicherheitsziele führen
         \item[Bitrate] bezeichnet die übertragene Information in bit pro Schritt $[bit/s]$
-        \item[Protokoll] Protokolle sind Regelsätze, welche beschreiben wie zwei oder mehr entfernte Teile (peers oder protocol entities) eines Layers kooperieren, um den Dienst des gegebenen Layers zu implementieren. Ein Protokoll ist die Implementierung eines Services
-        \item[Signale] sind die physische Repräsentation von Daten in der Form einer charakteristischen Variation in Zeit oder Ausbreitung…
-        \item[Delay d] = distance / speed v
-        \item[Strict Layering] Jedes Layer verwendet nur den Service des darunter liegenden Layers
-        \item[Hammingdistanz] Anzahl an Stellen an denen sich zwei Frames x und y in binärer Darstellung unterscheiden lösbar mittels (x XOR y).
-        \item[Fehlerkontrolle vorwärts] Sender sendet redundante Infos so, dass der Empfänger selbst ausbessern kann
-        \item[Fehlerkontrolle rückwärts] Sender sendet redundante Infos so, dass der Empfänger fehlerhafte Pakete wahrscheinlich erkennt und Pakete in dem Fall nochmal verschickt werden können
-        \item[Burst Traffic]
-        \item[Broadcastkanal] Völllig dezentralisiert und so einfach wie möglich mit Rate b/s
-        \item[Statisches Multiplexing] einzelne Ressource statisch gemultiplext durch feste Sendezeiten und mehrere Frequenzbänder
-        \item[Polling] Masterknoten läd Slaveknoten zum Übertragen in Reihenfolge ein
-        \item[Tokenweitergabe] Kontrolltoken wird von einem zum anderen Knoten übertragen
-        \item[Hub] Eingehende Bits werden an alle Ausgänge mit selber Rate und ohne Puffern verteilt; Kein CSMA-CD am Hub; Alle verbundenen Kabel formen eine Kollisionsdomäne
-        \item[Switch] nicht nur eine einfache elektrische Verbindung für sternförmige Topologie; Switches enthalten Puffer, welche direkt ankommende Pakete zwischenspeichern, bevor sie diese weiterleiten
-        \item[Repeater] Physical Layer Gerät, verbindet zwei Kabel und verstärkt die ankommenden Signale und leitet dieses weiter; Versteht den Inhalt der Pakete nicht und interessiert sich nicht dafür
-        \item[Bridge] Jedes mit einer Bridge verbundene Netzwerk ist eine eigene Kollisionsdomäne und auch verschiedene LAN-Typen können miteinander verbunden werden
-        \item[Effizienz] Definiert als die Rate der Zeit, in welcher der Sender neue Informationen sendet (für den fehlerfreien Kanal)
-        \item[Bustoplogie] Alle Geräte sind an einem Kabel angebunden und sind in einer Kollisionsdomäne
-        \item[Sterntopologie] einfachere automatische Verwaltung und Wartung bei fehlerhaften Adaptern
-        \item[Spannbaum] Gegeben sei ein Graph G=(V,E), ein Spannbaum T = (V,E-T) ist ein Subgrap von V, wobei E-T ein Teil von E ist, welcher ein Spannbaum, der verbunden und azyklisch ist.
-        \item[Weiterleiten] Bewege Pakete vom Routereingang auf den entsprechenden Ausgang
-        \item[Routing] Berechnen der Route, die die Pakete von Quelle bis zum Ziel gegangen sind
-        \item[DHCP] Dynamic Host Configuration Protocol. beziehe die Adresse dynamisch von einem Server
-        \item[ARP] Adress Resolution Protocol Broadcast auf das LAN, mit der Frage, welcher Node IP X.X.X.X hat $\rightarrow$ Antwort des Nodes mit der MAC-Adresse $\rightarrow$ Zustellung möglich
-        \item[Hot Potato Routing] Wenn ein Paket ankommt, so leite es auf schnellste Art und Weise an den Ausgang mit der kleinsten Ausgangswarteschlange, ganz egal wohin dieser Ausgang dann führt
-        \item[Rückwärtslernen (Routing)] Paketheader enthalten wichtige Infos, wie Quelle, Ziel, Hopzähler $\rightarrow$ Netzwerkknoten lernen etwas über die Netzwerktopologie während sie Pakete behandeln
-        \item[RIP] Routing Information Protocol. Distanzvektoralgorithmus mit Hops als Metrik. Falls nach 180s kein Advertisement empfangen wurde, so deklariere den Nachbarn als tot
         \item[BGP] Border Gateway Protocol. Routerpaare tauschen Routinginformationen über semipermanente TCP Verbindungen aus
-        \item[OSPF] Open Shortes Paths First. annocieren nun keine Wege sondern Linkzustände mit je einem Eintrag pro Nachbarknoten
-        \item[Poisoned Reverse] Wenn Z durch Y routet um zu X zu gelangen: Z sagt Y, dass seine eigene Distanz zu X unendlich ist (somit routet Y nicht über X nach Z)
-        \item[Link State Routing] Berechnung des kleinsten Kostenpfades von einem Knoten S zu allen andern Knoten V erzielt durch den Link-State-Broadcast
-        \item[Gateway Router] Spezielle Router innerhalb des AS, führen das Intra-AS Routingprotokoll mit allen anderen Routern im AS aus. Zusätzlich verantwortlich für das Routing an exteren Ziele $\rightarrow$ Inter-AS Routingprotokolle mit anderen Gatewayroutern
-        \item[Unicast] Ein Sender, ein Empfänger
-        \item[Multicast] Ein Sender, eine Gruppe von Empfänger
-        \item[Broadcast] Ein Sender, alle Teilnehmer eines Netzes
-        \item[TCP] Zuverlässige, in-Order Zustellung, Stau- \& Flusskontrolle, Verbindungsaufbau
-        \item[UDP] Unzuverlässige, ungeordente Zustellung, Einfache Erweiterung des best Effort IP Ansatzes
-        \item[RTT] Round Trip Time: Benötigte Zeit um ein kleines Paket so zu senden, dass es vom Client zum Server und zurück geschickt wird.
+        \item[Bridge] Jedes mit einer Bridge verbundene Netzwerk ist eine eigene Kollisionsdomäne und auch verschiedene LAN-Typen können miteinander verbunden werden
+        \item[Broadcast] ein Sender, alle Teilnehmer eines Netzes; Adressierung an alle
+        \item[Broadcastkanal] Völllig dezentralisiert und so einfach wie möglich mit Rate b/s
+        \item[Broadcast Medium] Nur ein Sender zu jeder Zeit; Zugriffskontrolle (MUX o. Absprache)
+        \item[Burst Traffic]
+        \item[Bustoplogie] Alle Geräte sind an einem Kabel angebunden und sind in einer Kollisionsdomäne
+        \item[Cipher] Methode eine Nachricht so zu transformieren, dass die Bedeutung nicht mehr erkannt werden kann
+        \item[Client] Kommunizieren zeitweise mit Server; Können dynamische IP-Adressen haben; Kommunizieren nie direkt miteinander
         \item[CSMA] Carrier Sense Multiple Access
         \item[CSMA/CD] + Collision Detection
         \item[CSMA/CA] + Collision Avoidance
-        \item[HTTP] Hyper Text Transfer Protocol; Das Anwendungsnachrichtenprotokoll des Webs
-        \item[Nichtpersistentes HTTP] höchstens ein Objekt wird über die TCP Verbindung verschickt
-        \item[Persistentes HTTP ] Mehrere Objekte können über eine TCP Verbindung zwischen Client und Server ausgetauscht werden
-        \item[Server] ständig eingeschaltet und mit permanenter IP-Adresse; Serverfarmen zur Skalierung
-        \item[Client] Kommunizieren zeitweise mit Server; Können dynamische IP-Adressen haben; Kommunizieren nie direkt miteinander
-        \item[Peer to Peer] Ohne ständig eingeschalteten Server. Beliebige Endsysteme kommunizieren direkt miteinander, sind dabei zeitweise verbunden und haben wechselnde IP Adressen.
-        \item[POST Methode] Webseiten beinhalten oft Formulareingaben, die Eingabe wird dann im Entity Body an den Server geschickt
-        \item[URL Methode] Verwendet die GET Methode; Die Eingaben werden im URL Feld der Requestline hochgeladen
+        \item[Circuit Switching] einfach; einmal aufgesetzt verbleiben die Ressourcen beim Nutzer; Circuit muss hergestellt werden, bevor kommuniziert werden kann
+        \item[Delay d] = distance / speed v
+        \item[DHCP] Dynamic Host Configuration Protocol. beziehe die Adresse dynamisch von einem Server
+        \item[Dual Homed Host] Ein Computer mit > 2 NetzwerkinterfacesProxies leiten genehmigte Clientanfragen an die Server, und die Antworten auch wieder an den Client weiter
+        \item[Effizienz] Definiert als die Rate der Zeit, in welcher der Sender neue Informationen sendet (für den fehlerfreien Kanal)
+        \item[Fehlerkontrolle vorwärts] Sender sendet redundante Infos so, dass der Empfänger selbst ausbessern kann
+        \item[Fehlerkontrolle rückwärts] Sender sendet redundante Infos so, dass der Empfänger fehlerhafte Pakete wahrscheinlich erkennt und Pakete in dem Fall nochmal verschickt werden können
+        \item[Firewall] Eine oder eine Menge an Komponenten, welche den Zugriff zwischen einem geschützten Netzwerk und dem Internet oder zwischen einer Menge an Netzwerken beschränkt
         \item[FTP] File-Transfer-Protokoll: Dateitransferprotokoll, Übertrage Daten von und zum Server
-        \item[Mail Useragent] Erlaubt das Schreiben, Lesen und Bearbeiten von Nachrichten; Ein- und ausgehende Nachrichten werden auf einem Server gespeichert
-        \item[Mailserver] Die Mailbox beinhaltet eingehende Nachrichten, die Nachrichtenschlange die ausgehenden Nachrichten
-        \item[SMTP] Mailübertragungsprotokoll: Verwendet TCP um Nachrichten zuverlässig vom Client zum Server zu übertragen, verwendet Port 25; Direkte Übertragung vom Sender zum Empfänger
+        \item[Full Duplex] Übertragung gleichzeitig in beide Richtung (Frequency/Time Division Duplex)
+        \item[Gateway Router] Spezielle Router innerhalb des AS, führen das Intra-AS Routingprotokoll mit allen anderen Routern im AS aus. Zusätzlich verantwortlich für das Routing an exteren Ziele $\rightarrow$ Inter-AS Routingprotokolle mit anderen Gatewayroutern
+        \item[Half Duplex] Übertragung abwechselnd in beide Richtungen (Time Division Duplex)
+        \item[Hammingdistanz] Anzahl an Stellen an denen sich zwei Frames x und y in binärer Darstellung unterscheiden lösbar mittels (x XOR y)
+        \item[Hot Potato Routing] Wenn ein Paket ankommt, so leite es auf schnellste Art und Weise an den Ausgang mit der kleinsten Ausgangswarteschlange, ganz egal wohin dieser Ausgang dann führt
+        \item[HTTP] Hyper Text Transfer Protocol; Das Anwendungsnachrichtenprotokoll des Webs
+        \item[Hub] Eingehende Bits werden an alle Ausgänge mit selber Rate und ohne Puffern verteilt; Kein CSMA-CD am Hub; Alle verbundenen Kabel formen eine Kollisionsdomäne
         \item[IMAP] Internet Message Access Control
-        \item[MIME] Multimedia Mail Extensions: Zusätzliche Zeilen im Nachrichtenheader deklarieren den MIME Inhaltstyp
-        \item[TLP Server] Top Level Domain Server: Verantwortlich für .com, .org, .net, .edu und die Landesdomains
-        \item[Authorative DNS Server] DNS Server einer Organisation, stellen den authorativen Hostnamen für das IP Mapping der Organisationsserver
-        \item[Lokal DNS Server] Jeder ISP hat einen eigenen; Wenn ein Host eine DNS Anfrage stellt, so wird die Frage zuerst zum lokalen DNS Server gesendet (fungiert also als ein Proxy)
-        \item[Ressource Records (RR)] in DNS Datenbank; Format: (name, value, type, ttl)
-        \item[P2P Filesharing] Ein Peer ist sowohl ein Webclient als auch ein transienter Webserver; Alle Peers sind Server $\rightarrow$ Hoch Skalierbar; Dateiübertragung ist dezentralisiert, die Lokalisierung findet allerdings zentral statt.
-        \item[Socket] Ein lokal auf dem Host laufendes, von einer Anwendung erstelltes, OS-kontrolliertes Interface, durch welches ein Anwendungsprozess sowohl Nachrichten vom und zu anderen Anwendungsprozessen Senden, als auch Empfangen kann.
-        \item[Bedrohnung] Eine Bedrohung in einem Kommunikationsnetzwerk ist jedes mögliche Ereignis oder eine Sequenz von Aktionen, welche zu einer Verletzung einer oder mehrerer Sicherheitsziele führen
+        \item[IPSec Authentication Header (AH)] Im Tunnelmodus stellt der Payload nochmals ein ganzes IP Paket dar; Wichtig: AH funktioniert nur in NAT freien Umgebungen
+        \item[IPSec Encapsulating Security Protocol (ESP)] Dem ESP Header folgt direkt ein IP Header oder ein AH-Header; Das next-header Feld vom vorhergehenden Header indiziert 50 für ESP
         \item[Kryptologie] Wissenschaft, die sich mit Kommunikation in sicherer und geheimer Art befasst
         \item[Kryptographie] (graphein = schreiben): Die Lehre der Prinzipien und Techniken, durch welche Informationen in Ciphertext verpackt und später durch legitimierte Nutzer, wieder durch einen geheimen Schlüssel entschlüsselt werden können
         \item[Kryptoanalyse] (analyein = etwas lösen): Die Wissenschaft und Kunst Informationen von Ciphern wiederherzustellen und dies ohne das Wissen über den Schlüssel zu schaffen
-        \item[Cipher] Methode eine Nachricht so zu transformieren, dass die Bedeutung nicht mehr erkannt werden kann
-        \item[Verschlüsseln von Daten] Transformiert Plaintext in Ciphertext um die Inhalte zu verschleiern
-        \item[Signieren von Daten] Berechnet einen Checkwert oder eine digitale Signatur zu einem gegebenen Plaintext oder Ciphertext, sodass dieser durch alle oder einige Instanzen mit Zugriff verifiziert werden kann
-        \item[Symmetrische Kryptographie] verwendet einen Schlüssel für Ver- und Entschlüsselung oder Signieren und Überprüfen
-        \item[Assymmetrische Kryptographie] verwendet zwei Schlüssel für Ver- und Entschlüsselung
-        \item[IPSec Authentication Header (AH)] Im Tunnelmodus stellt der Payload nochmals ein ganzes IP Paket dar; Wichtig: AH funktioniert nur in NAT freien Umgebungen
-        \item[IPSec Encapsulating Security Protocol (ESP)] Dem ESP Header folgt direkt ein IP Header oder ein AH-Header; Das next-header Feld vom vorhergehenden Header indiziert 50 für ESP
-        \item[Firewall] Eine oder eine Menge an Komponenten, welche den Zugriff zwischen einem geschützten Netzwerk und dem Internet oder zwischen einer Menge an Netzwerken beschränkt
-        \item[Paketfiltern/Screening] Die Aktion, welche ein Gerät ausführt, um selektiv den Fluss an Daten in und aus einem Netzwerk zu kontrollieren. Paketfiltern ist eine wichtige Technik um Zugriffskontrolle auf dem Subnetzwerklevel für paketorientierte Netzwerke zu implementieren
-        \item[Bastion Host] Ein Computer, welcher besonders gesichert werden muss, da er anfälliger für Angriffe ist, als andere Computer im Subnetz
-        \item[Dual Homed Host] Ein Computer mit > 2 Netzwerkinterfaces
-        \item[Proxy] ein Programm, welches sich im Auftrag interner Clients mit externen Servern beschäftigt. Proxies leiten genehmigte Clientanfragen an die Server, und die Antworten auch wieder an den Client weiter
-        \item[Network Address Translation (NAT)] eine Prozedur, durch welche ein Router die Daten in Paketen ändert um die Netzwerkadressen zu modifizieren; Dies erlaubt es die interne Netzwerkstruktur zu verschleiern
-        \item[Perimeternetzwerk] Ein Subnetz, welches zwischen einem externen und einem internen Netzwerk hinzugefügt wird, um eine weitere Sicherheitseben bereitzustellen; Ein Synonym hierfür ist DMZ (De Militarized Zone)
-        \item[QPSK] Quadrature Phase Shift Keying; Phasenverschiebung für Multiplexing
+        \item[Link State Routing] Berechnung des kleinsten Kostenpfades von einem Knoten S zu allen andern Knoten V erzielt durch den Link-State-Broadcast
+        \item[Lokal DNS Server] Jeder ISP hat einen eigenen; Wenn ein Host eine DNS Anfrage stellt, so wird die Frage zuerst zum lokalen DNS Server gesendet (fungiert also als ein Proxy)
         \item[Medium Access Control (MAC)] Verteilter Algorithmus, der bestimmt, wie Knoten auf ein geteiltes Medium zugreifen
+        \item[Mail Useragent] Erlaubt das Schreiben, Lesen und Bearbeiten von Nachrichten; Ein- und ausgehende Nachrichten werden auf einem Server gespeichert
+        \item[Mailserver] Die Mailbox beinhaltet eingehende Nachrichten, die Nachrichtenschlange die ausgehenden Nachrichten
+        \item[Multicast] Ein Sender, eine Gruppe von Empfänger; Adressierung an eine Gruppe bekannter Adressen
+        \item[MIME] Multimedia Mail Extensions: Zusätzliche Zeilen im Nachrichtenheader deklarieren den MIME Inhaltstyp
+        \item[Network Address Translation (NAT)] eine Prozedur, durch welche ein Router die Daten in Paketen ändert um die Netzwerkadressen zu modifizieren; Dies erlaubt es die interne Netzwerkstruktur zu verschleiern
+        \item[Nichtpersistentes HTTP] höchstens ein Objekt wird über die TCP Verbindung verschickt
+        \item[OSPF] Open Shortes Paths First. annocieren nun keine Wege sondern Linkzustände mit je einem Eintrag pro Nachbarknoten
+        \item[Packet Switching] Aufteilen von Daten in kleinere Pakete die nach und nach gesendet werden; Problem: Informationen zu Sender/Empfänger und Start/Endzeitpunkt eines Pakets müssen mit übermittelt werden; Wird deshalb 'Store and Forward' Netzwerk genannt
+        \item[Paketfiltern/Screening] Die Aktion, welche ein Gerät ausführt, um selektiv den Fluss an Daten in und aus einem Netzwerk zu kontrollieren. Paketfiltern ist eine wichtige Technik um Zugriffskontrolle auf dem Subnetzwerklevel für paketorientierte Netzwerke zu implementieren
+        \item[Peer to Peer] Ohne ständig eingeschalteten Server. Beliebige Endsysteme kommunizieren direkt miteinander, sind dabei zeitweise verbunden und haben wechselnde IP Adressen
+        \item[P2P Filesharing] Ein Peer ist sowohl ein Webclient als auch ein transienter Webserver; Alle Peers sind Server $\rightarrow$ Hoch Skalierbar; Dateiübertragung ist dezentralisiert, die Lokalisierung findet allerdings zentral statt.
+        \item[Perimeternetzwerk] Ein Subnetz, welches zwischen einem externen und einem internen Netzwerk hinzugefügt wird, um eine weitere Sicherheitseben bereitzustellen; Ein Synonym hierfür ist DMZ (De Militarized Zone)
+        \item[Persistentes HTTP ] Mehrere Objekte können über eine TCP Verbindung zwischen Client und Server ausgetauscht werden
+        \item[Point-to-Point] Adressierung an eine bekannte Adresse
+        \item[Poisoned Reverse] Wenn Z durch Y routet um zu X zu gelangen: Z sagt Y, dass seine eigene Distanz zu X unendlich ist (somit routet Y nicht über X nach Z)
+        \item[Polling] Masterknoten läd Slaveknoten zum Übertragen in Reihenfolge ein
+        \item[POST Methode] Webseiten beinhalten oft Formulareingaben, die Eingabe wird dann im Entity Body an den Server geschickt
+        \item[Protokoll] Protokolle sind Regelsätze, welche beschreiben wie zwei oder mehr entfernte Teile (peers oder protocol entities) eines Layers kooperieren, um den Dienst des gegebenen Layers zu implementieren. Ein Protokoll ist die Implementierung eines Services
+        \item[Proxy] ein Programm, welches sich im Auftrag interner Clients mit externen Servern beschäftigt
+        \item[QPSK] Quadrature Phase Shift Keying; Phasenverschiebung für Multiplexing
+        \item[Repeater] Physical Layer Gerät, verbindet zwei Kabel und verstärkt die ankommenden Signale und leitet dieses weiter; Versteht den Inhalt der Pakete nicht und interessiert sich nicht dafür
+        \item[Ressource Records (RR)] in DNS Datenbank; Format: (name, value, type, ttl)
+        \item[RIP] Routing Information Protocol. Distanzvektoralgorithmus mit Hops als Metrik. Falls nach 180s kein Advertisement empfangen wurde, so deklariere den Nachbarn als tot
+        \item[Routing] Berechnen der Route, die die Pakete von Quelle bis zum Ziel gegangen sind
+        \item[RTT] Round Trip Time: Benötigte Zeit um ein kleines Paket so zu senden, dass es vom Client zum Server und zurück geschickt wird
+        \item[Rückwärtslernen (Routing)] Paketheader enthalten wichtige Infos, wie Quelle, Ziel, Hopzähler $\rightarrow$ Netzwerkknoten lernen etwas über die Netzwerktopologie während sie Pakete behandeln
+        \item[Server] ständig eingeschaltet und mit permanenter IP-Adresse; Serverfarmen zur Skalierung
+        \item[Simplex] Übertragung in eine Richtung
+        \item[Signale] sind die physische Repräsentation von Daten in der Form einer charakteristischen Variation in Zeit oder Ausbreitung…
+        \item[Signieren von Daten] Berechnet einen Checkwert oder eine digitale Signatur zu einem gegebenen Plaintext oder Ciphertext, sodass dieser durch alle oder einige Instanzen mit Zugriff verifiziert werden kann
+        \item[SMTP] Mailübertragungsprotokoll: Verwendet TCP um Nachrichten zuverlässig vom Client zum Server zu übertragen, verwendet Port 25; Direkte Übertragung vom Sender zum Empfänger
+        \item[Socket] Ein lokal auf dem Host laufendes, von einer Anwendung erstelltes, OS-kontrolliertes Interface, durch welches ein Anwendungsprozess sowohl Nachrichten vom und zu anderen Anwendungsprozessen Senden, als auch Empfangen kann
+        \item[Statisches Multiplexing] einzelne Ressource statisch gemultiplext durch feste Sendezeiten und mehrere Frequenzbänder
+        \item[Sterntopologie] einfachere automatische Verwaltung und Wartung bei fehlerhaften Adaptern
+        \item[Strict Layering] Jedes Layer verwendet nur den Service des darunter liegenden Layers
+        \item[Spannbaum] Gegeben sei ein Graph G=(V,E), ein Spannbaum T = (V,E-T) ist ein Subgrap von V, wobei E-T ein Teil von E ist, welcher ein Spannbaum, der verbunden und azyklisch ist
+        \item[Switch] nicht nur eine einfache elektrische Verbindung für sternförmige Topologie; Switches enthalten Puffer, welche direkt ankommende Pakete zwischenspeichern, bevor sie diese weiterleiten
+        \item[Symmetrische Kryptographie] verwendet einen Schlüssel für Ver- und Entschlüsselung oder Signieren und Überprüfen
+        \item[TCP] Zuverlässige, in-Order Zustellung, Stau- \& Flusskontrolle, Verbindungsaufbau
+        \item[TLP Server] Top Level Domain Server: Verantwortlich für .com, .org, .net, .edu und die Landesdomains
+        \item[Tokenweitergabe] Kontrolltoken wird von einem zum anderen Knoten übertragen
+        \item[UDP] Unzuverlässige, ungeordente Zustellung, Einfache Erweiterung des best Effort IP Ansatzes
+        \item[Unicast] Ein Sender, ein Empfänger
+        \item[URL Methode] Verwendet die GET Methode; Die Eingaben werden im URL Feld der Requestline hochgeladen
+        \item[Verschlüsseln von Daten] Transformiert Plaintext in Ciphertext um die Inhalte zu verschleiern
+        \item[Weiterleiten] Bewege Pakete vom Routereingang auf den entsprechenden Ausgang
     \end{description*}
     
 \end{multicols}
@@ -1132,9 +1125,6 @@
         \item[Paketver. Übertragung] $t_{P} = (k + \frac{Laenge_{Nachricht}}{Laenge_{Pakete}})*\frac{L_{Packet}}{R} = (1+ \frac{k}{n})* \frac{L_{Nachricht}}{R}$
         \item[Kanalkap. Nyquist] $R_{max} = 2* H * log_2n$
         \item[Kanalkap. Shannon] $R_{max} = H*log_2(1+\frac{P_signalleistung}{P_rauschleistung})$ mit $r=10*log_{10}*{\frac{P_s}{P_n}}$
-        \item[Bandwirth Delay]
-        \item[Link Last]
-        \item[LAN last]
         \item[Fehlerfrei Send and Wait] $S = \frac{1}{(1+2a)}$ wobei $a = \frac{T_{prop}}{T_{trans}}$
         \item[Fehlerhaft Send and Wait] $S = \frac{1-P}{1+2a}$
         \item[Fehlerfreies Sliding Window] $S = {1, falls W >= 2a+1, W/(2a+1) sonst}$

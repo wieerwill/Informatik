@@ -1,39 +1,22 @@
 \documentclass[a4paper]{article}
 \usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{ifthen}
 \usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{color,graphicx,overpic}
-\usepackage{listings}
 \usepackage[compact]{titlesec} %less space for headers
 \usepackage{mdwlist} %less space for lists
-\usepackage[utf8]{inputenc}
-\usepackage{tikz}
-\usepackage{pdflscape}
-\usepackage{verbatim}
-\usepackage{multirow}
-\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees}
-\tikzstyle{every node}=[draw=black,thin,anchor=west, minimum height=2em]
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
 
 \pdfinfo{
-    /Title (Betriebssysteme - Cheatsheet)
+    /Title (Stochastik - Cheatsheet)
     /Creator (TeX)
     /Producer (pdfTeX 1.40.0)
     /Author (Robert Jeutter)
     /Subject ()
-}
-% Information boxes
-\newcommand*{\info}[4][16.3]{
-  \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
-  \list{$\bullet$}{\topsep=0pt\itemsep=0pt\parsep=0pt
-    \parskip=0pt\labelwidth=8pt\leftmargin=8pt
-    \itemindent=0pt\labelsep=2pt}
-    #4
-  \endlist
-  };
 }
 
 % This sets page margins to .5 inch if using letter paper, and to 1cm
@@ -62,10 +45,6 @@
                                 {\normalfont\small\bfseries}}
 \makeatother
 
-% Define BibTeX command
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-
 % Don't print section numbers
 \setcounter{secnumdepth}{0}
 
@@ -83,13 +62,10 @@
 \titlespacing{\subsection}{0pt}{*0}{*0}
 \titlespacing{\subsubsection}{0pt}{*0}{*0}
 
-%My Environments
-\newtheorem{example}[section]{Example}
-
 % Turn off header and footer
 \pagestyle{empty}
-\begin{document}
 
+\begin{document}
 \raggedright
 \begin{multicols}{3}\scriptsize
   % multicol parameters
@@ -102,7 +78,7 @@
 
   \subsection{Wahrscheinlichkeitsraum $(\Omega , P)$}
   \begin{itemize*}
-    \item Ergebnis-/Grundraum $\Omega$, Menge aller möglichen Elementarereignisse
+    \item Ergebnis-/Grundraum $\Omega$, Menge aller Elementarereignisse
     \item Ergebnis/Ausgang $\omega \in \Omega$
     \item Ereignis $A \subseteq \Omega$
     \item Ereignisraum, die Menge aller Ereignisse, $P(\Omega)$
@@ -112,11 +88,12 @@
 
   \subsection{Ereignisalgebra}
   \begin{itemize*}
-    \item Vereinigung: $A=\{1,2\}, B=\{2,3\}, A\cup B=\{1,2,3\}$
-    \item Durchschnitt: $A=\{1,2\}, B=\{2,3\}, A\wedge B=\{2\}$
-    \item Gegenereignis: $A=\{1,2\}, \Omega=\{1,2,3,4,5,6\}, \bar{A}=\{3,4,5,6\}$
-    \item Differenz $A=\{1,2\}, B=\{2,3\}, A\backslash B=\{1\}$
-    \item Symmetrische Differenz $A=\{1,2\}, B=\{2,3\}, A\cup B=\{1,3\}$
+    \item mit $A=\{1,2\}, B=\{2,3\}$
+    \item Vereinigung: $A\cup B=\{1,2,3\}$
+    \item Durchschnitt: $A\wedge B=\{2\}$
+    \item Gegenereignis: $\Omega=\{1,2,3,4\}, \bar{A}=\{3,4\}$
+    \item Differenz $A\backslash B=\{1\}$
+    \item Symmetrische Differenz $A\cup B=\{1,3\}$
     \item disjunkte (unvereinbar) Ereignisse $A\cap B = \varnothing$
   \end{itemize*}
 
@@ -140,23 +117,25 @@
 
   \subsection{Vierfeldertafel}
   Alle vier Felder zusammen entsprechen dem Ergebnisraum $\Omega$
+  \begin{center}
+    \begin{tabular}{c | c c | c}
+      $\Omega$  & $B$             & $\bar{B}$            &   \\\hline
+      $A$       & $A\cap B$       & $A\cap \bar{B}$      &   \\
+      $\bar{A}$ & $\bar{A}\cap B$ & $\bar{A}\cap\bar{B}$ &   \\\hline
+                &                 &                      & 1 \\
+    \end{tabular}
+  \end{center}
 
-  \begin{tabular}{c | c c}
-    $\Omega$  & $B$             & $\bar{B}$            \\\hline
-    $A$       & $A\cap B$       & $A\cap \bar{B}$      \\
-    $\bar{A}$ & $\bar{A}\cap B$ & $\bar{A}\cap\bar{B}$
-  \end{tabular}
-
-  \subsection{ Absolute Häufigkeit}
+  \subsection{Absolute Häufigkeit}
   wie oft das Ereignis E innerhalb eines Zufallsexperiments, welches n-mal ausgeführt wird, aufgetreten ist.
   Die Summe der absoluten Häufigkeiten ergibt n. Bsp $H_{20}(Kopf)=8$
 
-  \subsection{ Relative Häufigkeit}
+  \subsection{Relative Häufigkeit}
   Tritt ein Ereignis $E$ bei $n$ Versuchen $k$-mal ein, so heißt die Zahl $h_n(E)=\frac{k}{n}=\frac{H_n(E)}{n}$,
   Bsp: $h_{20}(Kopf)=\frac{8}{20}=0,4$
 
   \begin{itemize*}
-    \item die Relative Häufigkeit nimmt Werte zwischen 0 und 1 an
+    \item die relative Häufigkeit nimmt Werte zwischen 0 und 1 an
     \item die relative Häufigkeit des sicheren Ereignisses ist 1 $h_n(\Omega)=1$
     \item die relative Häufigkeit des unmöglichen Ereignisses ist 0
     \item $h_n(\bar{E})=1-h_n(E)$
@@ -164,70 +143,63 @@
     \item $H_n(E)=h_n(E)*n$
   \end{itemize*}
 
-  \paragraph{Baumdiagramm}
+  \subsection{Baumdiagramm}
   \begin{enumerate*}
     \item (UND) Die Wahrscheinlichkeit eines Elementarereignisses ist gleich dem Produkt der Wahrscheinlichkeiten des zugehörigen Pfades. Bsp: $P(\{SS\})=\frac{1}{2}*\frac{1}{2}$
     \item (ODER) Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen. Bsp: $P(\{SW, WS\})=\frac{1}{2}*\frac{1}{3} + \frac{1}{3}*\frac{1}{2}$
   \end{enumerate*}
 
   \subsection{Kombinatorik}
-  \begin{tabular}{l | c c c}
-    Kombinatorik         &                                            & Menge   & Reihenfolge \\\hline
-    Permutation ohne Wdh & $n!$                                       & n aus n & beachtet    \\
-    Permutation mit Wdh  & $\frac{n!}{k!}$,$\frac{n!}{k_1!*k_2!*...}$ & n aus n & beachtet    \\
-    Variation ohne Wdh   & $\frac{n!}{(n-k)!}$                        & k aus n & beachtet    \\
-    Variation mit Wdh    & $n^k$                                      & k aus n & beachtet    \\
-    Kombination ohne Wdh & $\binom{n}{k}$                             & k aus n & nein        \\
-    Kombination mit Wdh  & $\binom{n+k-1}{k}$                         & k aus n & nein
+  \begin{tabular}{l | c c c c}
+    Kombinatorik & Wdh  &                                            & Menge   & Reihenfolge \\\hline
+    Permutation  & ohne & $n!$                                       & n aus n & beachtet    \\
+    Permutation  & mit  & $\frac{n!}{k!}$,$\frac{n!}{k_1!*k_2!*...}$ & n aus n & beachtet    \\
+    Variation    & ohne & $\frac{n!}{(n-k)!}$                        & k aus n & beachtet    \\
+    Variation    & mit  & $n^k$                                      & k aus n & beachtet    \\
+    Kombination  & ohne & $\binom{n}{k}$                             & k aus n & nein        \\
+    Kombination  & mit  & $\binom{n+k-1}{k}$                         & k aus n & nein
   \end{tabular}
 
-  \subsection{ Laplace Expriment}
-  alle Elementarereignisse gleiche Wahrscheinlichkeit $P(E)=\frac{|E|}{|\Omega|}$
-
-  $\Omega$ endlich; $P(\omega)=\frac{1}{\Omega} \rightarrow$ Laplace-Verteilung/diskrete Gleichverteilung $P(A)=\sum_{\omega \in A} P(\omega)=\frac{*A}{*\Omega}=\frac{\text{Anzahl günstige Ausgänge}}{\text{Anzahl alle Ausgänge}}$
-
-  Satz von de Moivre-Laplace: Für eine binomialverteilte Zufallsgröße X gilt $P(a\leq X \leq b)= \int_{a-0,5}^{b+0,5} \varphi_{\mu_i \delta} (x) dx_i$ wobei $\mu = n*p$ und $\delta\sqrt{n*p*(1-p)}$ ist.
+  \subsection{Laplace Expriment}
+  alle Elementarereignisse gleiche Wahrscheinlichkeit $P(E)=\frac{|E|}{|\Omega|}$ \newline
+  $\Omega$ endlich; $P(\omega)=\frac{1}{\Omega} \rightarrow$ Laplace-Verteilung/diskrete Gleichverteilung 
+  $$P(A)=\sum_{\omega \in A} P(\omega)=\frac{*A}{*\Omega}=\frac{\text{Anzahl günstige Ausgänge}}{\text{Anzahl alle Ausgänge}}$$
+  Satz von de Moivre-Laplace: Für eine binomialverteilte Zufallsgröße X gilt $P(a\leq X \leq b)= \int_{a-0,5}^{b+0,5} \varphi_{\mu_i \delta} (x) dx_i$ wobei $\mu = n*p$ und $\delta = \sqrt{n*p*(1-p)}$ ist.
 
   \subsection{Stochastische Unabhängigkeit}
-  Zwei Ereignisse A und B sind stochastisch unabhängig, wenn das Eintreten des einen Ereignisses das Eintreten des anderen Ereignisses nicht beeinflusst. Bsp:
+  Ereignisse sind stochastisch unabhängig, wenn das Eintreten eines Ereignisses das Eintreten des anderen Ereignisses nicht beeinflusst. Bsp:
   \begin{itemize*}
     \item Ziehen mit Zurücklegen (unabhängig)
     \item Ziehen ohne Zurücklegen (abhängig)
   \end{itemize*}
-  also wenn gilt: $P(A \cap B)=P(A)*P(B)$.
+  also unabhängig, wenn gilt: $P(A \cap B)=P(A)*P(B)$.
 
-  Bei stochastischer Unabhängigkeit zweier Ereignisse ist die Wahrscheinlichkeit eines Feldes in der Vierfeldertafel gleich dem Produkt der Wahrscheinlichkeiten der zugehörigen Zeile und der zugehörigen Spalte.
+  Bei stochastischer Unabhängigkeit zweier Ereignisse ist die Wahrscheinlichkeit eines Feldes in der Vierfeldertafel gleich dem Produkt der Wahrscheinlichkeiten der zugehörigen Zeile und zugehörigen Spalte.
+
+  \subsection{Multiplikationssatz}
+  Die Wahrscheinlichkeit eines Elementarereignisses ist gleich dem Produkt der Wahrscheinlichkeiten des zugehörigen Pfades.
+  Bsp: $P(A\cap B)= P(B)*P_B(A)$
 
   \subsection{Bedingte Wahrscheinlichkeiten}
   $P_B(A)=P(A|B)=\frac{P(A \cap B)}{P(B)}$ ist die Wahrscheinlichkeit von A unter der Bedingung B.
 
-  die totale Wahrscheinlichkeit: $P(A)=\sum_{i=1}^n P(A|B_i)P(B_i)$
+  \subsection{Totale Wahrscheinlichkeit}
+  Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen. 
+  Bsp: $P(A)=\sum_{i=1}^n P(A|B_i)P(B_i)$ $P(A) = P(A\cap B) + P(A\cap \bar{B}) = P(B)*P_B(A)+P(\bar{B})*P_{\bar{B}}(A)$
 
-  \paragraph{Multiplikationssatz}
-  Die Wahrscheinlichkeit eines Elementarereignisses ist gleich dem Produkt der Wahrscheinlichkeiten des zugehörigen Pfades.
-  Bsp: $P(A\cap B)= P(B)*P_B(A)$
+  \subsection{Satz von Bayes} 
+  Umkehren von Schlussfolgerungen $P_B(A)=\frac{P(A)*P_A(B)}{P(B)}$
 
-  \paragraph{Totale Wahrscheinlichkeit}
-  Die Wahrscheinlichkeit eines Ereignisses ist gleich der Summe der Wahrscheinlichkeiten aller Pfade, die zu diesem Ereignis führen.
-  Bsp: $P(A) = P(A\cap B) + P(A\cap \bar{B}) = P(B)*P_B(A)+P(\bar{B})*P_{\bar{B}}(A)$
-
-  \paragraph{Satz von Bayes} Umkehren von Schlussfolgerungen
-  $$P_B(A)=\frac{P(A)*P_A(B)}{P(B)}$$
-
-  \paragraph{Diskrete Zufallsvariable}
-  , wenn sie nur endlich viele oder abzählbar unendlich viele Werte annimmt.
-  Diskrete Zufallsvariablen entstehen meist durch einen Zählvorgang.
-
+  \subsection{Diskrete Zufallsvariable}
+  wenn sie nur endlich viele oder abzählbar unendlich viele Werte annimmt; meist durch einen Zählvorgang.
   \begin{itemize*}
     \item Erwartungswert :$\mu_x =E(X)=\sum_i x_i*P(X=x_i)$\\
     \item Varianz: $\omega^2_X = Var(X) = \sum_i(x_i-\mu_X)^2 *P(X=x_i)$\\
     \item Standardabweichung: $\omega_X = \sqrt{Var(x)}$
   \end{itemize*}
 
-  \paragraph{Stetige Zufallsvariable}
-  , wenn sie überabzählbar unendlich viele Werte annimmt.
-  Stetige Zufallsvariablen entstehen meist durch einen Messvorgang.
-
+  \subsection{Stetige Zufallsvariable}
+  wenn sie überabzählbar unendlich viele Werte annimmt; meist durch einen Messvorgang.
   \begin{itemize*}
     \item Erwartungswert: $\mu_X= E(X)=\int_{-\infty}^{\infty} x*f(x)dx$\\
     \item Varianz: $\omega_X^2 =Var(X) = \int_{-\infty}^{\infty} (x-\mu_X)^2 *f(x)dx$\\
@@ -236,7 +208,6 @@
 
   \subsection{Wahrscheinlichkeitsverteilung}
   Eine Wahrscheinlichkeitsverteilung gibt an, wie sich die Wahrscheinlichkeiten auf die möglichen Werte einer Zufallsvariablen verteilen.
-
   Eine Wahrscheinlichkeitsverteilung lässt sich entweder
   \begin{itemize*}
     \item durch die Verteilungsfunktion oder
@@ -245,31 +216,31 @@
   \end{itemize*}
   vollständig beschreiben.
 
-  \paragraph{Wahrscheinlichkeitsfunktion}
+  \subsection{Wahrscheinlichkeitsfunktion}
   Eine Funktion f, die jedem x einer Zufallsvariablen X genau ein p aus [0;1] zuordnet, heißt Wahrscheinlichkeitsfunktion. Kurz: $f:x\rightarrow p$
 
-  $$f(x)=P(X=x)= \begin{cases} p_i \text{für } x=x_i (i=1,2,...,n) \\ 0 \text{sonst} \end{cases}$$
+  $$f(x)=P(X=x)= \begin{cases} p_i \quad\text{für } x=x_i (i=1,2,...,n) \\ 0 \quad\text{ sonst} \end{cases}$$
   Für die Summe der Wahrscheinlichkeiten gilt $\sum_{i=1}^n p_i=1$
 
-  \paragraph{Dichtefunktion}
-  Die Dichtefunktion ist ein Hilfsmittel zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung. Eigenschaften der Dichtefunktion
+  \subsection{Dichtefunktion}
+  zur Beschreibung einer stetigen Wahrscheinlichkeitsverteilung
   \begin{itemize*}
-    \item Die Dichtefunktion kann nur positive Werte annehmen. $f(x) \geq 0$
-    \item Die Fläche unter der Dichtefunktion hat den Inhalt 1.
+    \item kann nur positive Werte annehmen. $f(x) \geq 0$
+    \item Fläche unter der Dichtefunktion hat den Inhalt 1
   \end{itemize*}
   Die Verteilungsfunktion ergibt sich durch Integration der Dichtefunktion:
-  $$F(X)=P(X\leq x)=\int_{-\infty}^x f(u)du$$
+  $F(X)=P(X\leq x)=\int_{-\infty}^x f(u)du$
 
-  \paragraph{Verteilungsfunktion}
+  \subsection{Verteilungsfunktion}
   Eine Funktion F, die jedem x einer Zufallsvariablen X genau eine Wahrscheinlichkeit $P(X\leq x)$ zuordnet, heißt Verteilungsfunktion: $F:x \rightarrow P(X\leq x$). $P(X\leq x)$ gibt die Wahrscheinlichkeit dafür an, dass die Zufallsvariable X höchstens den Wert x annimmt.
   \begin{itemize*}
-    \item Die Verteilungsfunktion F ist eine Treppenfunktion
+    \item die Verteilungsfunktion F ist eine Treppenfunktion
     \item $F(x)$ ist monoton steigend
     \item $F(x)$ ist rechtssteitig stetig
     \item $lim_{x\rightarrow -\infty} F(x)=0$ und $lim_{x\rightarrow +\infty} F(x) =1$
   \end{itemize*}
 
-  \paragraph{Diskrete Verteilungsfunktionen}
+  \subsection{Diskrete Verteilungsfunktionen}
   \begin{itemize*}
     \item $P(X\leq a)=F(a)$
     \item $P(X<a)= F(a)-P(X=a)$
@@ -281,7 +252,7 @@
     \item $P(a\leq X < b)=F(b)-F(a)+P(X=a)-P(X=b)$
   \end{itemize*}
 
-  \paragraph{Stetige Verteilungsfunktion}
+  \subsection{Stetige Verteilungsfunktion}
   \begin{itemize*}
     \item $P(X=x)=0$
     \item $P(X\leq a)=F(a)$
@@ -298,28 +269,27 @@
 
   \subsection{Erwartungswert}
   zentrale Lage einer Verteilung
-  \begin{itemize}
-    \item diskrete: $\mu_x = E(X)=\sum_i x_i*P(X=x_i)$
+  \begin{itemize*}
+    \item diskret: $\mu_x = E(X)=\sum_i x_i*P(X=x_i)$
     \item stetig: $\mu_x=E(X)=\int_{-\infty}^{\infty} x*f(x) dx$
-  \end{itemize}
+  \end{itemize*}
 
   \subsection{Varianz}
   erwartete quadratische Abweichung vom Erwartungswert.
-  \begin{itemize}
-    \item diskrete: $\delta_x^2 = Var(X) = \sum_i (x_i-\mu_x)^2*P(X=x_i)$
+  \begin{itemize*}
+    \item diskret: $\delta_x^2 = Var(X) = \sum_i (x_i-\mu_x)^2*P(X=x_i)$
     \item stetig: $\delta_x^2 = Var(X)= \int_{-\infty}^{\infty} (x-\mu x)^2*f(x) dx$
-  \end{itemize}
+  \end{itemize*}
   Verschiebungssatz: $Var(X)=E(X^2)-(E(X))^2$
 
-  \subsection{ Standardabweichung}
-  erwartete Abweichung vom Erwartungswert.
-  $$\delta_x = \sqrt{Var(X)}$$
+  \subsection{Standardabweichung}
+  erwartete Abweichung vom Erwartungswert $\delta_x = \sqrt{Var(X)}$
 
   \section{Deskriptive Statistik}
   Die Menge aller Elemente, auf die ein Untersuchungsziel in der Statistik gerichtet ist, heißt Grundgesamtheit. Eine Datenerhebung der Grundgesamtheit nennt man Vollerhebung, wohingegen man eine Datenerhebung einer Stichprobe als Stichprobenerhebung bezeichnet. Die in einer Stichprobe beobachteten Werte heißen Stichprobenwerte oder Beobachtungswerte.
 
   \subsection{Merkmale}
-  Merkmale sind jene Eigenschaften, die bei einer Datenerhebung untersucht werden.
+  Eigenschaften, die bei einer Datenerhebung untersucht werden
   \begin{itemize*}
     \item Qualitative Merkmale lassen sich artmäßig erfassen
     \begin{itemize*}
@@ -333,18 +303,18 @@
     \end{itemize*}
   \end{itemize*}
 
-  \paragraph{Lageparamter}
-  Unter dem Begriff Lageparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Lage einer Verteilung machen.
-  \begin{itemize*}
+  \subsection{Lageparamter}
+  alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Lage einer Verteilung machen
+  \begin{itemize}
     \item Arithmetisches Mittel $x=\frac{x_1+x_2+\dots+x_n}{n}=\frac{1}{n}*\sum_{i=1}^n x_i$
     \item Geometrisches Mittel $\bar{x}_{geom} = \sqrt[n]{x_1*x_2*\dots*x_n}$
     \item Harmonisches Mittel $\bar{x}_{harm} = \frac{n}{\frac{1}{x_1}+\dots+\frac{1}{x_n}}$
     \item Median: Wert, welcher größer oder gleich 50\% aller Werte ist
     \item Modus: $\bar{x}_d=$ Häufigster Beobachtungswert
-  \end{itemize*}
+  \end{itemize}
 
-  \paragraph{Streuungsparameter}
-  Unter dem Begriff Streuungsparameter werden alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Verteilung von einzelnen Werten um den Mittelwert machen.
+  \subsection{Streuungsparameter}
+  alle statistischen Maßzahlen zusammengefasst, die eine Aussage über die Verteilung von einzelnen Werten um den Mittelwert machen
   \begin{itemize*}
     \item Spannweite: $R=x_{max}-x_{min}$
     \item Interquartilsabstand: $IQR=Q_{0,75}-Q_{0,25}$
@@ -354,12 +324,12 @@
   \end{itemize*}
 
   \section{Schätzer}
-  Zusammenfassung gesammelter Stichprobe mit einer bestimmten Formel. 
+  Zusammenfassung gesammelter Stichprobe mit einer bestimmten Formel.
   Als Beispiele können wir die Schätzfunktionen für den Anteilswert p betrachten - der Schätzer wird dann meist $\hat{p}$ („p-Dach“) genannt: $\hat{p}=\frac{\sum_{i=1}^n x_i}{n}$
 
   Beispiel Schätzer für Variant $\sigma^2$ in der Grundgesamtheit: $\hat{\sigma}^2=\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2$
 
-  \paragraph{ Schätzfunktionen für den Mittelwert}
+  \subsection{Schätzfunktionen für den Mittelwert}
   Der Erwartungswert $\mu$ wird in der Regel mit dem arithmetischen Mittel der Stichprobe geschätzt:
   \begin{itemize*}
     \item Schätzfunktion $\bar{X}=\frac{1}{n}\sum_{i=1}^n X_i$
@@ -367,24 +337,24 @@
   \end{itemize*}
   Ist die Verteilung symmetrisch, kann auch der Median der Stichprobe als Schätzwert für den Erwartungswert verwendet werden.
 
-  \paragraph{ Schätzfunktionen für die Varianz}
+  \subsection{Schätzfunktionen für die Varianz}
   \begin{itemize*}
     \item Schätzfunktion $S_n^2= \frac{1}{n-1} \sum_{i=1}^n (X_i-\bar{X})^2$
     \item Schätzwert $\hat{\sigma}^2=s_n^2=\frac{1}{n-1}\sum_{i=1}^n (x_i-\bar{x})^2$
   \end{itemize*}
 
-  \paragraph{ Schätzfunktionen für den Anteilswert}
+  \subsection{Schätzfunktionen für den Anteilswert}
   \begin{itemize*}
     \item Schätzfunktion $\prod=\frac{X}{n}=\frac{1}{n}\sum_{i=1}^n X_i$
     \item Schätzwert $\pi^2=\frac{1}{n}\sum_{i=1}^n x_i$
   \end{itemize*}
 
-  \paragraph{ Gütekriterien}
+  \subsection{Gütekriterien}
   Eine erwartungstreue Schätzfunktion ist im Mittel gleich dem wahren Parameter $\gamma$: $E(g_n)=\gamma$.
 
   Verzerrung eines Schätzers $Bias(g_n)=E(g_n)-\gamma = E(g_n - \gamma)$
 
-  Mittlerer quad. Fehler $MSE(g_n)=E[(g_n-\gamma)^2]=(Bias(g_n))^2 + Var(g_n)$
+  Mittl. quad. Fehler $MSE(g_n)=E[(g_n-\gamma)^2]=(Bias(g_n))^2 + Var(g_n)$
 
 \end{multicols}
 
@@ -403,11 +373,11 @@
 \end{tabular}
 
 
-\subsection{ Skalenniveaus}
+\subsection{Skalenniveaus}
 \begin{tabular}{r c c l l}
   Skalen          & diskret & qualitiativ &                                                                       & für                     \\\hline
-  Nominalskala    &         &Y& Klassifikation, Kategorien                                            & Geschlecht, Studiengang \\
-  Ordinalskala    &         &Y& Rangordnung ist definiert                                             & Schulnoten              \\
+  Nominalskala    &         & Y           & Klassifikation, Kategorien                                            & Geschlecht, Studiengang \\
+  Ordinalskala    &         & Y           & Rangordnung ist definiert                                             & Schulnoten              \\
   Intervallskala  &         &             & Rangordnung und Abstände sind definiert                               & Temperatur              \\
   Verhältnisskala &         &             & Rangordnung, Abstände und natürlicher Nullpunkt definiert             & Gehalt, Gewicht         \\
   Absolutskala    & Y       & Y           & Rangordnung, Abstände, natürlicher Nullpunkt und natürliche Einheiten & Anzahl Fachsemester

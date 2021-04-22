@@ -55,7 +55,6 @@
 % Don't print section numbers
 \setcounter{secnumdepth}{0}
 
-
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt plus 0.5ex}    
 % compress space
@@ -83,19 +82,25 @@
   \setlength{\multicolsep}{1pt}
   \setlength{\columnsep}{2pt}
   
-  \section{Mathematik}
-  \begin{itemize*}
-    \item Vektor $\vec{x}=(x_1,x_2,...,x_n)$
-    \item Multiplikation $\alpha * \vec{x} = (\alpha *x_1, \alpha *x_2,...)$
-    \item Addition $\vec{x}+\vec{r}=(x_1+r_1, x_2+r_2,...)$
-    \item Linearkombination $\vec{o} = (\alpha * \vec{p})+(\beta *\vec{q})+(\gamma * \vec{r})$
-    \item Länge: $\vec{p}=(x,y,z): |\vec{p}|=\sqrt{x^2+y^2+z^2}$
-    \item Skalarprodukt $\vec{x}*\vec{r}=\sum_{i=0}^{n-1} x_i*r_i$
-    \item Winkel $\vec{a}*\vec{b}=|\vec{a}|*|\vec{b}|*cos(\phi)$ mit $cos(\phi)=\frac{\vec{a}*\vec{b}}{|\vec{a}|*|\vec{b}|}$
-    \item Vektorprodukt $\vec{a}\times\vec{b} = \begin{pmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end{pmatrix}$
-    \item Ebenen $p=\vec{q}+\alpha*\vec{r}+\beta * \vec{s}$
-    \item Dreieck $\vec{A}+\alpha*(B-A)+\beta*(C-A)$
-  \end{itemize*}
+  \section{Mathematik Grundlagen}
+  \begin{description*}
+    \item[Vektor] $\vec{x}=(x_1,x_2,...,x_n)$
+    \begin{description*}
+      \item[Ortsvektor] $(x,y,z,1)^T$
+      \item[Richtungsvektor] $(x,y,z,0)^T$
+    \end{description*}
+    \item[Multiplikation] $\alpha * \vec{x} = (\alpha *x_1, \alpha *x_2,...)$
+    \item[Addition] $\vec{x}+\vec{r}=(x_1+r_1, x_2+r_2,...)$
+    \item[Linearkombination] $\vec{o} = (\alpha * \vec{p})+(\beta *\vec{q})+(\gamma * \vec{r})$
+    \item[Länge] $\vec{p}=(x,y,z): |\vec{p}|=\sqrt{x^2+y^2+z^2}$
+    \item[Skalarprodukt] $\vec{x}*\vec{r}=\sum_{i=0}^{n-1} x_i*r_i$
+    \item[Winkel] $\vec{a}*\vec{b}=|\vec{a}|*|\vec{b}|*cos(\phi)$ mit $cos(\phi)=\frac{\vec{a}*\vec{b}}{|\vec{a}|*|\vec{b}|}$
+    \item[Vektorprodukt] $\vec{a}\times\vec{b} = \begin{pmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end{pmatrix}$
+    \item[Ebenen] $p=\vec{q}+\alpha*\vec{r}+\beta * \vec{s}$
+    \item[Dreieck] $\vec{A}+\alpha*(B-A)+\beta*(C-A)$
+    \item[Strahlensatz] $y'_P = \frac{y_P*z_e}{z_P}$
+    \item[Kugeloberfläche] $A_k = 4\pi r^2$
+  \end{description*}
   
   \subsection{2D Transformation}
   \begin{description*}
@@ -109,8 +114,11 @@
     \end{itemize*}
     \item[Scherung] $S=\begin{pmatrix} 1 & S_x \\ S_y & 1 \end{pmatrix}$
     \item[Rotation mit Polarkoordinaten] $P'=(r,\phi+\theta)$; $\binom{x'}{y'}=\begin{pmatrix} cos(\theta) & -sin(\theta) \\ sin(\theta) & cos(\theta)\end{pmatrix}*\binom{x}{y}$
-    \item[Koordinatentransformation] $$P' =T*P = \begin{pmatrix} x_x & x_y\\ y_x & y_y \end{pmatrix} * \binom{P_x}{P_y}$$
+    \item[Koordinatentransformation] $P\rightarrow P'$ \newline $P' =T*P = \begin{pmatrix} x_x & x_y\\ y_x & y_y \end{pmatrix} * \binom{P_x}{P_y}$
   \end{description*}
+  
+  Kartesische Koordinaten bezeichnen die Koordinaten direkt\\
+  Homogene Koordinaten besitzen ein zusätzliches Gewicht w
   
   \paragraph{Homogene Vektorräume}
   kartesischer Vektor $(\frac{x}{w},\frac{y}{w})$ oft $w=1$ gewählt (1=Punkt, 0=Richtung)
@@ -118,12 +126,9 @@
   \begin{description*}
     \item[Skalierung, Projektion, Spiegelung] $\begin{pmatrix} F_x & 0 & 0 \\ 0 & F_y & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} F_x*x \\ F_y*y \\ 1 \end{pmatrix}$
     
-    $F_x,F_y>0$, uniform bei $F_X=F_y$
-    
-    $F_x=0$/$F_y=0$:Projektion auf y/x-Achse 
-    
-    $F_x=-1$/$F_y=-1$ Spiegelung an y/x-Achse
-    
+    $F_x,F_y>0$, uniform bei $F_X=F_y$\newline    
+    $F_x=0$/$F_y=0$:Projektion auf y/x-Achse\newline    
+    $F_x=-1$/$F_y=-1$ Spiegelung an y/x-Achse\newline    
     $F_x=F_y=-1$Spiegelung am Ursprung
     
     \item[Scherung] $\begin{pmatrix} 1 & a & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} * \begin{pmatrix} x \\ y \\ w \end{pmatrix} = \begin{pmatrix} x+a*y \\ y \\ w \end{pmatrix}$
@@ -145,7 +150,7 @@
     \item paralleles bleibt bei affinen Abbildungen stets parallel
   \end{itemize*}
   
-  \subsection{ Homogene Transformation in 3D}
+  \subsection{Homogene Transformation in 3D}
   $(a,b,c,d)$ wobei $(a,b,c)=(nx,ny,nz)$ und $d$ der Abstand der Ebene zum Ursprung
   \begin{itemize*}
     \item Ebene definiert durch 3 Punkte
@@ -169,13 +174,6 @@
         0   & 0   & F_z & 0 \\
         0   & 0   & 0   & 1
       \end{pmatrix}$$
-    \item Rotation um z-Achse
-    $$\begin{pmatrix}
-        cos(\theta) & -sin(\theta) & 0 & 0 \\
-        sin(\theta) & \cos(\theta) & 0 & 0 \\ 
-        0           & 0            & 1 & 0 \\
-        0           & 0            & 0 & 1
-      \end{pmatrix}$$
     \item Rotation um die x-Achse
     $$\begin{pmatrix}
         1 & 0           & 0            & 0 \\
@@ -190,6 +188,17 @@
         -sin(\theta) & 0 & cos(\theta) & 0 \\
         0            & 0 & 0           & 1
       \end{pmatrix}$$
+    \item Rotation um z-Achse
+    $$\begin{pmatrix}
+        cos(\theta) & -sin(\theta) & 0 & 0 \\
+        sin(\theta) & \cos(\theta) & 0 & 0 \\ 
+        0           & 0            & 1 & 0 \\
+        0           & 0            & 0 & 1
+      \end{pmatrix}$$
+    \item Berechnung
+    $$\begin{pmatrix} a& b& c& 0\\ d& e& f& 0\\ g& h& i& 0\\ 0& 0& 0& 1\end{pmatrix}
+      * \begin{pmatrix} x \\ y \\ z \\ 0 \end{pmatrix}
+      = \begin{pmatrix} ax+bx+cz \\ dx+ey+fz \\ gx+hy+iz \end{pmatrix}$$
   \end{itemize*}
   
   \paragraph{Kameratransformation}
@@ -198,6 +207,12 @@
     \item Lage des Augpunktes E (in Weltkoordinaten)
     \item Blickrichtung D
     \item Oben-Vektor U ('view up vector', senkrecht zu D)
+  \end{itemize*}
+  Transformation durch
+  \begin{itemize*}
+    \item Ursprung in Augpunkt
+    \item negative z-Achse in Blickrichtung
+    \item y-Achse nach oben
   \end{itemize*}
   
   \subsection{Projektion}
@@ -233,11 +248,13 @@
       \item perspektivische Verkürzung
       \item parallele Linien des Objekts fluchten oft in einen Fluchtpunkt
     \end{itemize*}
+    \item Strahlensatz: $\frac{y_p}{d}=\frac{y}{z}\Rightarrow y_p=\frac{d*y}{z}$
   \end{itemize*}
   $$\begin{pmatrix} d&0&0&0\\ 0&d&0&0 \\ 0&0&0&1 \\ 0&0&1&0 \end{pmatrix} * \begin{pmatrix}x\\y\\z\\1\end{pmatrix} = \begin{pmatrix} d*x\\ d*y\\ 1 \\ z \end{pmatrix} \rightarrow \begin{pmatrix} \frac{d*x}{z} \\ \frac{d*y}{z} \\ \frac{1}{z} \end{pmatrix}$$
   
   \paragraph{Fluchtpunkte}
   \begin{itemize*}
+    \item Wird aus einer Richtung r und dem Augpunkt eine Gerade definiert, dann schneidet diese Gerade die Projektionsfläche im Fluchtpunkt für die Richtung r
     \item hat ein Modell parallele Kanten oder parallele Striche in Texturen, dann ergibt sich für jede solche Richtung r in der Abbildung ein Fluchtpunkt, auf den diese parallelen Kanten/Striche hinzu zu laufen scheinen
     \item es gibt jedoch Ausnahmen, bei denen Paralleles in der Abbildung Parallel bleibt (z.B. horizontale Kanten bei Schwellen)
     \item Da es beliebig viele Richtungen geben kann, sind auch beliebig viele Fluchtpunkte in einem Bild möglich
@@ -302,6 +319,10 @@
     \item Bereiche mit homogenem Inhalt werden nicht unterteilt
     \item Komprimierungseffekt
   \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.3 \linewidth]{Assets/Computergrafik_Bintrees}
+    \includegraphics[width=.5 \linewidth]{Assets/Computergrafik_Quadtree}
+  \end{center}
   
   \paragraph{Quadtree}
   \begin{itemize*}
@@ -335,7 +356,11 @@
       \item nicht balanciert
       \item keine Unterteilung weit weg vom Cluster
     \end{itemize*}
+    \item ein Octree lässt sich auf kd-Baum abbilden, beide Baumarten haben daher vergleichbare Eigenschaften
   \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.5 \linewidth]{Assets/Computergrafik_KD-tree}
+  \end{center}
   
   \paragraph{BSP Tree}
   \begin{itemize*}
@@ -348,7 +373,7 @@
   
   \paragraph{Hüllkörper Hierarchie}
   \begin{description*}
-    \item[AABB] (Axia-Aligned-Bounding-Box) sehr einfache Abfrage (nur ein Vergleich $<$ pro Koordinatenrichtung) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte
+    \item[AABB] (Axis-Aligned-Bounding-Box) sehr einfache Abfrage (nur ein Vergleich $<$ pro Koordinatenrichtung) einfach zu erstellen (min, max), dafür nicht optimale Packungsdichte bei schräger Lage der Objekte
     \item[OBB] (Oriented Bounding Boxes) passen sich besser der räumlichen Ausrichtungen an, lassen sich auch leicht transformieren. Jedoch schwieriger zu erstellen (Wahl der Richtung), komplexere Überlappungsberechnung. Typischerweise weniger tief, weniger räumliche Abfragen dafür wesentlich mehr Berechnungsaufwand pro Rekursionsstufe.
     \item[KDOP] (k-dim. Discretly Oriented Polytopes) Polyeder mit festen vorgegebenen Richtungen. Eigenschaften zwischen AABB und OBB. Bessere Raumausnützung als AABB, weniger Transformationene als OBB.
     \item[BS] (Bounding Spheres) Schnelle 3D Überlappungstest (Abstand der Mittelpunkte $<$ Summe der Radien). Langgezogene Objekte können mit mehreren Hüllkugeln begrenzt werden um besseren Füllgrad zu erreichen. BS sind, bis auf die Lage der Kugelmittelpunkte, invariant gegenüber Rotation (geeignet für Kollisionserkennung bewegter Objekte).
@@ -411,25 +436,24 @@
   
   \subsection{ Midpoint Algorithmus}
   \begin{itemize*}
-    \item Effizient durch Ganzzahlen, Vermeiden von $*,/$, Nutzung inkrementeller Arbeitsweise
+    \item Effizient durch Ganzzahlen, Vermeiden von $*,/$, \item Nutzung inkrementeller Arbeitsweise
     \item Bresenham-Algorithmus: Mittelpunkt M; jeweils aktuellen Punkt P, der rechts von im liegende E (east) und der rechts oben liegende NE (north-east) benannt.
     \item die Linie wird als Funktion repräsentiert: $y=\frac{\delta y}{\delta x}*x+B$
     \item implizierte Form: $d: F(x,y)=\delta y*x-\delta x*y+B*\delta x = 0$
     \item für Punkte auf der Linie wird $F(x,y)=0$
     \item für Punkte unterhalb der Linie wird $F(x,y)>0$
     \item für Punkte oberhalb der Linie wird $F(x,y)<0$
-    \item Herleitung: Steigung der Linie m ($-1<m<1$), Punkt vertikal zwischen zwei Pixeln E und NE. Ausgehend von bereits gesetzten Pixel P auf der Linie für den nächsten Mittelpunkt M. Für gefundenen Mittelpunkt, berechne die Distanzfunktion d. Daraus Kriterium zur Wahl des nächsten Pixels: Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E.
-    \item Insgesamt acht verschiedene Fälle:
-    \begin{enumerate*}
-      \item Oktant($\delta y < \delta x$)
-      \item Oktant($\delta y > \delta x$)
-      \item Oktant($\frac{\delta y}{\delta x}<  0$)
-      \item Oktant($\frac{\delta y}{\delta x}< -1$)
-      \item - 8. Oktant($\delta x < 0$)
-    \end{enumerate*}
+    \item Herleitung: Steigung der Linie m ($-1<m<1$), Punkt vertikal zwischen zwei Pixeln E und NE. Falls $F(x_p + 1, y_p+\frac{1}{2})>0$ wird das nächste Pixel NE, andernfalls E
+    \item Insgesamt acht verschiedene Fälle nach Oktanten
   \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.2\linewidth]{Assets/Computergrafik_Midpoint}
+  \end{center}
   
   \paragraph{Anti Aliasing}
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Computergrafik_Antialiasing}
+  \end{center}
   \begin{itemize*}
     \item Treppenstufeneffekt bei gerasterten Linien
     \item Auflösungsvermögen des Auges für Punkte sei e. Strukturen wie Linien werden durch Mittelwertbildung (Fitting) vom Auge viel genauer als e lokalisiert. Eine Stufe wird umso eher erkannt, je länger die angrenzenden Segmente sind.
@@ -443,7 +467,6 @@
       \item Replizieren der Linie (vertikal und/oder horizontal) um Linienbreite näherungsweise zu erhalten
       \item Bestimmmung des Überdeckungsgrades pro Pixel in der ursprünglichen Auflösung (Downsampling)
       \item Bestimmung des Farbwertes entsprechend des Überdeckungsgrades
-      \item Problem: Ausgabe von Linien/Polygonen auf Rastergeräten muss auf vorgegebenem Raster erfolgen
     \end{itemize*}
     \item Ideales Antialiasing: wegen beliebig komplexen Geometrie allgemein sehr hoher Aufwand
     \item Ansatz für eine 'reale Lösung'
@@ -462,6 +485,7 @@
     \item Es gibt immer eine Abstufung mehr als Subpixel pro Pixel
     \item Bei vier Subpixeln können 0-4 Subpixel im Pixel gesetzt sein, d.h. 5 Intensitäten von 0\%, 25\%, 50\%, 75\% oder 100\%
     \item bei Formabhängigkeit gibt es nur eine Zwischenstufe nach Phasenlage $\rightarrow$ Kante 'pumpt' bei Objektbewegung.
+    \item $Pixelfarbe= g*Linienfarbe+(1-g)*Hintergrundfarbe$
   \end{itemize*}
   
   \paragraph{Supersampling + Rotated Grids}
@@ -524,7 +548,7 @@
   
   \paragraph{Downsampling}
   Mittelwertbildung: lineare Filterung (2x - AA), bilineare Filterung (4x - AA). Gleichgültig ob ordered/rotated grid. 
-  Beim pseudozufälligen Supersampling ist entsprechend der 'frei gewählten' Positionen der 'Subpixel' zu modifizieren (z.B. Gewichtenach Abstand der Abfragepositionen zur Makropixelposition)
+  Beim pseudozufälligen Supersampling ist entsprechend der 'frei gewählten' Positionen der 'Subpixel' zu modifizieren (z.B. Gewichte nach Abstand der Abfragepositionen zur Makropixelposition)
   
   \subsection{Polygonfüllalgorithmus}
   \begin{itemize*}
@@ -568,10 +592,7 @@
       \item Kanten gelöscht wenn oberes Ende der Kante erreicht
     \end{itemize*}
     \item Scan Convert Polygon: Es existiert immer eine gerade Anzahl Kanten. Viele Grafikbibliotheken beschränkt auf konvexe Polygone. Nichtkonvexe Polygone müssen vorher in konvexe Komponenten zerlegt werden.
-    \item Bemerkungen zur Effizienz
-    \begin{itemize*}
-      \item Polygon belegt meist mehr Pixel als es Eckpunkte/Kanten besitzt. Deshalb sind effiziente per-Pixel-Operationen wichtig. Der Rechenaufwand sollte vermieden werden (fallende Priorität) für: pro Pixel (sehr häufig auszuführen), pro Rasterzeile, pro Kante (möglichst viel vorberechnen)
-    \end{itemize*}
+    \item Bemerkungen zur Effizienz: Polygon belegt meist mehr Pixel als es Eckpunkte/Kanten besitzt. Deshalb sind effiziente per-Pixel-Operationen wichtig. Der Rechenaufwand sollte vermieden werden (fallende Priorität) für: pro Pixel (sehr häufig auszuführen), pro Rasterzeile, pro Kante (möglichst viel vorberechnen)
   \end{itemize*}
   
   \paragraph{Füllmuster}
@@ -583,7 +604,7 @@
     \item $BITMAP = ARRAY [0... (M-1), 0...(N-1)]$
   \end{itemize*}
   
-  \paragraph{Dithering}
+  \paragraph{Dithering - Floyd-Steinberg-Algorithmus}
   \begin{itemize*}
     \item Ersetzen 'genauer' Farbwerte durch grobe Quantisierung
     \item Durchlaufen aller Pixel beginnend links oben
@@ -606,13 +627,17 @@
     \item Abwesenheit von Licht wird als schwarz empfunden
     \item Regenbogen bunt mit verschiedenen Farbtönen empfunden
   \end{itemize*}
+  
   \begin{description*}
     \item[Farbton] (Hue)
     \begin{itemize*}
-      \item Farbpalette aus abstufung grober Farbtöne 
-      \item direkt nebeneinanderliegende Farben im Farbspektrum werden als ähnlich empfunden
+      \item Farbpalette aus Abstufung grober Farbtöne 
+      \item direkt nebeneinander liegende Farben im Farbspektrum werden als ähnlich empfunden
       \item Farbwerte lassen sich ordnen
       \item als bunt empfunden (voll gesättigte Farben im Gegensatz zu Grautönen)
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Farbton}
+      \end{center}
     \end{itemize*}
     \item[Farbsättigung] (Saturation)
     \begin{itemize*}
@@ -620,15 +645,24 @@
       \item Pastelltöne sind weniger bunt aber nicht farblos
       \item Grauton (keine Farbwerte unterscheidbar)
       \item jedem Farbton können Abstufungen bis Grau zugeordnet werden
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Farbsättigung}
+      \end{center}
     \end{itemize*}
     \item[Helligkeitsstufen] (Lightness/Brightness/Value/Intensity)
     \begin{itemize*}
       \item unterschiedliche Helligkeitsabstufungen bis Schwarz
       \item im Schwarzen sind keine Farbtöne mehr unterscheidbar
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Helligkeitsstufen}
+      \end{center}
     \end{itemize*}
   \end{description*}
   
   \subsection{Modell der Farben}
+  \paragraph{DIN 5033}
+  Farbe ist die Empfindung eines dem Auge strukturlos erscheinenden Teils eines Gesichtsfeldes, durch die sich dieser Teil bei einäugiger Beobachtung mit unbewegtem Auge von einem gleichzeitig gesehenem, ebenfalls strukturlos angrenzendem Bezirk allein unterscheidet.
+  
   \paragraph{HSL Farbraum (bzw HSB, HSV, HSI)}
   \begin{itemize*}
     \item Dimension des Farbtons wiederholt sich periodisch
@@ -665,8 +699,7 @@
     \item Äußere Farbmischung: hinzufügen von Grundfarben zu bestehender Mischung
   \end{itemize*}
   
-  Farberzeugung durch Mischung:
-  $$1,9r + 0,6g = 0,38R(\lambda)+0,12R(\lambda)+0,3G(\lambda)=0,5R(\lambda)+0,3G(\lambda) = y$$
+  Farberzeugung durch Mischung: $$y=1,9r + 0,6g =0,5R(\lambda)+0,3G(\lambda)$$
   
   Idee:
   \begin{itemize*}
@@ -693,10 +726,13 @@
   
   Aus dem rechten Teil der Gleichung folgt mit $b=1-r-g$, dass sich die Buntheit allein durch r und g darstellen lässt (entspricht $R^2$).  
   
-  \section{CIE System}
-  Um eine Relation zwischen der menschlichen Farbwahrnehmung und den physikalischen Ursachen des Farbreizes herzustellen, wurde das CIE-Normvalenzsystem definiert. Es stellt die Gesammtheit der wahrnehmbaren Farben dar.
+  \subsection{CIE System}
+  \begin{minipage}[b]{0.25\textwidth}
+    Um eine Relation zwischen der menschlichen Farbwahrnehmung und den physikalischen Ursachen des Farbreizes herzustellen, wurde das CIE-Normvalenzsystem definiert. Es stellt die Gesammtheit der wahrnehmbaren Farben dar.
+  \end{minipage}
+  \includegraphics[width=0.15\linewidth]{Assets/Computergrafik_CIE}
   
-  \section{Farbkörperunterschiede}
+  \subsubsection{Farbkörperunterschiede}
   Es finden sich Unterschiede welche Farbbereiche nach dem CIE Normalvalenzsystem von den jeweiligen Systemen dargestellt werden können:
   \begin{itemize*}
     \item menschliche Farbwahrnehmung ca. 2-6 Mio Farben
@@ -704,10 +740,23 @@
     \item Druckprozess deutlich weniger Farben. Es werden einzelne Farbschichten auf Papier gedruckt und das resultierende Bild wird über subtraktive Farbmischung bestimmt
   \end{itemize*}
   
-  \section{Subtraktive Farbmischung}
+  \subsubsection{Subtraktive Farbmischung}
   Je nachdem welche Farbe ein Material hat, werden entsprechende Farbanteile absorbiert oder reflektiert. Eine gelbe Oberfläche sieht gelb aus, da sie das Blau aus weißem Licht absorbiert, aber Rot und Grün reflektiert.
   
   Achtung: Dies gilt nur für die Bestrahlung mit weißem Licht. Wird beispielsweise ein gelbes Blatt mit blauem Licht bestrahlt, dann wirkt es schwarz, da das blaue Licht vom gelben Blatt absorbiert wird.
+  
+  \subsubsection{Umwandlung}
+  Von einem Farbort im XYZ-System $F_P=(X Y Z)^T$ in das equivalente CIE Diagramm $F'_P=(X' Y')^T$ durch $$F'_P=\begin{pmatrix}X' \\ Y'\end{pmatrix} = \begin{pmatrix} \frac{X}{X+Y+Z} \\ \frac{Y}{X+Y+Z}\end{pmatrix}$$
+  
+  \begin{tabular}{l | c | c}
+    Farbraum               & gerätespezifisch & gleichabständig \\\hline
+    RGB                    & ja               & nein            \\
+    CMY                    & ja               & nein            \\
+    HSI                    & ja               & nein            \\
+    HLS                    & ja               & nein            \\
+    XYZ (CIE)              & nein             & nein            \\
+    $L*a*b*$ ($CIE_{Lab}$) & nein             & ja              \\
+  \end{tabular}
   
 \end{multicols}
 \newpage
@@ -718,31 +767,42 @@
     \item[Photon] Elementarteilchen der elektromagnetischen Wechselwirkung
     \item[Radiometrie] Messung elektromagnetischer Strahlung
     \item[Photometrie] Messverfahren im Wellenlängenbereich
-    \item[Strahlungsäquivalent] $K =\frac{\phi_v}{\phi_e}$]
+    \item[Strahlungsäquivalent] $K =\frac{\phi_v}{\phi_e}$
     \item[Lumen] 1 Lumen ist der Lichtstrom einer 1,464 mW starken 555-nm-Lichtquelle mit 100\% Lichtausbeute
+    \item[Raumwinkel] $\Omega = \frac{Flaeche}{Radius}= \frac{A}{r^2} [sr]$
   \end{description*}
   
-  \paragraph{Radiometrie (energetisch $e$) }
+  \subsection{Radiometrie (energetisch "$_e$")}
   \begin{description*}
-    \item[Strahlungsenergie $Q$] durch Strahlung übertragene Energie $[J]$
-    \item[Strahlungsleistung $\phi$] transportierte Strahlungsenergie in einer bestimmten Zeit $\phi = \frac{Q}{t} [W]$
-    \item[Strahlstärke/Intensität $I$] Strahlungsleistung die in eine Raumrichtung mit Raumwinkel $\Omega$ emittiert wird $I=\frac{\phi}{\Omega}=\frac{W}{sr}$
-    \item[Bestrahlungsstärke/Irradiance $E$] Strahlungsleistung durch die bestrahlte Fläche $A_i$ bzw. Strahlstärke die auf die Empfängerfläche trifft $E=\frac{W}{m^2}=\frac{\Phi}{A_i}$
-    \item[Strahldichte/Radiance $L$] Strahlstärke von Sendefläche $A_r$ in eine bestimmte Richtung $L = \frac{I}{A'_r} = \frac{\phi}{\cos(\phi_r)*A_r*\Omega}$; $\phi_r$ ist Winkel zwischen Normalen n und Abstrahlrichtung
+    \item[Q] Strahlungsenergie $Q = \#Photonen * Photonenenergie [J]$
+    \item[$\Phi$] Strahlungsleistung $\Phi = \frac{Q}{t} [W]$
+    \item[I] Strahlstärke $I = \frac{\Phi}{\Omega} [\frac{w}{sr}]$
+    \item[E] Bestrahlungsstärke $E = \frac{\Phi}{A_i} [\frac{W}{m^2}]$
+    \item[L] Strahldichte $L = \frac{I}{A'_r} = \frac{\Phi}{cos(\phi * A_r * \Omega)}$
   \end{description*}
   
-  \paragraph{Photometrie (visuell $v$ )}
+  \subsection{Photometrie (visuell "$_v$")}
   \begin{description*}
-    \item[Lichtmenge $Q$] Strahlungsleistung bewertet mit der spektralen Empfindlichkeitsfunktion des menschlichen Auges für das Hellempfinden $lm*s$
-    \item[Lichtstrom (luminous flux) $\phi$] $[Lumen]$
-    \item[Lichtstärke (luminous intensity) $I$] $[Candela]$
-    \item[Beleuchtungsstärke $E$] $I_{in}\cos(\phi) [Lux]$
-    \item[Leuchtdichte/Luminanz $L$] $[\frac{cd}{m^2}]$
+    \item[Q] Lichtmenge $lm * s$
+    \item[$\Phi$] Lichtstrom $[Lumen]$
+    \item[I] Lichtstärke $[Candela]$ cd   
+    \item[E] Beleuchtungsstärke $\frac{lm}{m^2}=I_{in}\cos(\Phi) [Lux]$
+    \item[L] Leuchtdichte $\frac{cd}{m^2}$
   \end{description*}
   
-  \paragraph{Raumwinkel}
-  Steradiant ist Maßeinheit für Raumwinkel, der von der Mitte einer Kugel mit Radius aus gesehen eine Fläche von $r^2$ auf der Kugeloberfläche einnimmt $\Omega=\frac{A}{r^2}sr$.
-  Komplette Kugeloberfläche beträgt $A_k = 4\pi r^2$, entspricht einem Raumwinkel $\Omega$ von $A_k\backslash r^2= 4\pi r$. Ein Steradiant $=1sr$ entspricht einem Öffnungswinkel $\alpha$ von $\approx 65,54^{\circ}$
+  \subsection{Lichtquellen}
+  \begin{description}
+    \item[Ambient] Licht strahlt gleichmäßig aus jeder beliebigen Richtung
+    \item[Parallel] Licht strahlt in gleichmäßigen, parallelen Strahlen aus einer festgelegtenRichtung
+    \item[Punkt] Licht  wird  gleichmäßig  in  alle  Richtungen  abgestrahlt
+    \item[Spot] Licht wird in den Halbraum abgestrahlt, wobei das meiste Licht in eineVorzugsrichtung abgegeben wird
+  \end{description}
+  \begin{center}
+    \includegraphics[width=0.15\linewidth]{Assets/Computergrafik_ambientes-licht}
+    \includegraphics[width=0.15\linewidth]{Assets/Computergrafik_paralleles-licht}
+    \includegraphics[width=0.15\linewidth]{Assets/Computergrafik_punkt-licht}
+    \includegraphics[width=0.15\linewidth]{Assets/Computergrafik_spot-licht}
+  \end{center}
   
   \paragraph{Räumliche Ausbreitung}
   Flächen Energieübertragung
@@ -759,15 +819,19 @@
   Nach Auftreffen auf einer opaken Oberfläche wird Strahlung spektral unterschiedlich stark und geometrisch auf unterschiedliche Weise reflektiert. 
   Fälle der Reflexion:
   \begin{itemize*}
-    \item ideal spiegelnde Reflexion (Einfallswinkel = Ausfallswinkel)
-    \item ideal diffuse Reflexion
-    \item spekulär (diffus und gerichtete Reflexion)
-    \item gemischt: ideal diffus, gerichtet diffus und ideal spiegelnd
+    \item spekulär (spiegelnde) Reflexion (Einfallsw.=Ausfallswinkel)
+    \item Diffuse Reflexion
+    \item Diffus-gerichtete Reflexion
   \end{itemize*}
+  \begin{center}
+    \includegraphics[width=0.3\linewidth]{Assets/Computergrafik_spekuläre-reflexion}
+    \includegraphics[width=0.3\linewidth]{Assets/Computergrafik_diffuse-reflexion}
+    \includegraphics[width=0.3\linewidth]{Assets/Computergrafik_diffus-gerichtete-reflexion}
+  \end{center}
   
   \paragraph{Diffuse Reflexion}
   Eingestrahlte Strahlstärke verteilt sich durch Projektion auf größere Fläche. Die Bestrahlungsstärke ist dadurch proportional zum Vergrößerungsfaktor der Fläche abgeschwächt.
-  In Richtung Betrachter reflektierte Strahlstärke $I_{out}$ Aufgrund von Interferenz phasengleicher Lichtstrahlen $\rightarrow$ Projektion auf Normalenrichtung $\frac{I_{out}}{E_{refl}}=\cos(\phi)$
+  In Richtung Betrachter reflektierte Strahlstärke $I_{out}$ Aufgrund von Interferenz phasengleicher Lichtstrahlen $\rightarrow$ Projektion auf Normalenrichtung $I_{out}= E_{refl} * \cos(\phi)$
   \begin{itemize*}
     \item Senkrecht zur Oberfläche: Maximale Kohärenz (Addition)
     \item Parallel zur Oberfläche: Keine Kohärenz (Auslöschung)
@@ -976,7 +1040,6 @@
     \item eine Berechnung pro Pixel, davor aber jeweils lineare Interpolation der Normalen pro Pixel
   \end{itemize*}
   
-  
   \subsection{3D-Rendering}
   mehrere konvexe Objekte oder konkave Objekte sollen gerendert werden. Verdeckungen sind möglich!
   \begin{itemize*}
@@ -1137,7 +1200,7 @@
     \item Weiteres Anwachsen der Anzahl an erforderlichen Operationen durch zusätzliche Verfolgung sehr vieler Sekundärstrahlen
   \end{itemize*}
   
-  Beleuchtungsphänomen Kaustik:
+  \paragraph{Beleuchtungsphänomen Kaustik}
   \begin{itemize*}
     \item Das Licht der Lichtquelle werde zuerst spekular, dann diffus reflektiert
     \item Vom Auge ausgehendes Ray Tracing versagt wegen des vorzeitigen Abbruchs der Rekursion am diffus remittierenden Objekt.
@@ -1146,7 +1209,7 @@
     \item Exponentielle Komplexität wenn alle Objekte gleichzeitig transparent und reflektierend sind.
   \end{itemize*}
   
-  Optimierungsmöglichkeiten
+  \paragraph{Optimierungsmöglichkeiten}
   \begin{itemize*}
     \item Berechnung von achsenparallelen Bounding Boxes oder Bounding Spheres um Objekte
     \item Zunächst Test, ob der Strahl die Hülle schneidet und falls ja
@@ -1607,6 +1670,9 @@
 \newpage
 \begin{multicols}{3}
   \section{Grafik Pipeline}
+  \begin{center}
+    \includegraphics[width=.9\linewidth]{Assets/Computergrafik_Grafik-Pipeline}
+  \end{center}
   \begin{itemize*}
     \item algorithmisches Konzept, sowie Realisierung der Grafikkartenhardware ist vergleichbar mit Fließband
     \item spezialisierte Arbeitsstationen (Spezialprozessoren)
@@ -1724,9 +1790,14 @@
     \item unter realitischem Durchsatz: Begrenzung durch Bildspeicher
     \item über realisitschem Durchsatz: Begrenzung durch Geometriespeicher
   \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.9\linewidth]{Assets/Computergrafik_GPU-Performance}
+  \end{center}
   
-  %\subsection{Hardware-Architektur
-  %![GPU Architektur](Assets/Computergrafik_GPU_Hardware.png)
+  \paragraph{Hardware-Architektur}
+  \begin{center}
+    \includegraphics[width=.9\linewidth]{Assets/Computergrafik_GPU_Hardware}
+  \end{center}
   
 \end{multicols}
 \newpage
@@ -1890,7 +1961,7 @@
     \item Aliasing bei Bildern entsteht u.a. wenn das Bild in Bezug auf das Abtastraster zu hohe Frequenzen enthält
     \item die höchste zulässige Frequenz wird als Nyquistfrequenz bezeichnet
     \begin{itemize*}
-      \item gleich der halben Abtastfrequenz $K_{x,Nyqu}=\frac{1}{2*\delta x}, x = Pixelabstand$
+      \item gleich der halben Abtastfrequenz $K_{x,Nyqu}=\frac{1}{2*\delta x}$, $x = Pixelabstand$
       %\item zum besseren Verständnis des Grundproblems noch mal drei Beispiele nebeneinander:
       %![Beispiel](Assets/Computergrafik_Antialiasing_Nyquist.png)
       \item Nachträgliches Filtern kann Aliasing nicht beseitigen
@@ -1953,6 +2024,9 @@
   $$G(x,y)=\sum_{m=-size}^{size} \sum_{n=-size}^{size} F(x+m, y+n) * H(m,n)$$
   mit Ausgabebild $G(x,y)$, Eingabebild $F(x+m,y+n)$ und Filterkern $H(m,n)$
   
+  Beispiel Filterkern: 5x5 Binominalfilter
+  $$H_{5x5}=\frac{1}{256} * \begin{pmatrix} 1\\4\\6\\4\\1\end{pmatrix}\begin{pmatrix}1&4&6&4&1\end{pmatrix}=\frac{1}{256}\begin{pmatrix}1&4&6&4&1\\ 4&16&24&16&4\\ 6&24&36&24&6\\ 4&16&24&16&4\\ 1&4&6&4&1\end{pmatrix}$$
+  
   Interpolatiponsansatz 1 / Methode 1: Exakte Interpolation
   \begin{itemize*}
     \item Hinreichend bandbegrenzte Bilder lassen sich theoretisch exakt interpolieren: Multiplikation des Quellbild-spektrum mit Rechtecktiefpass im Frequenzbereich
@@ -1968,23 +2042,40 @@
       \item besonders bei Kanten starke Ringing-Artefakte 
       \item zur Berechnung des Farbwerts eines Pixels alle Abtastwerte des Bildes herangezogen
       \item einfaches Abschneiden der Sinc-Funktion (Lanczos-Filter) führt zu schlechten Ergebnissen
+      \item Ortsraum \& Frequenzraum:
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Sinc-filter1}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Sinc-filter2}
+      \end{center}
     \end{itemize*}
     \item[Box-Filter]
     \begin{itemize*}
       \item Alle Abtastwerte innerhalb eines um das Pixel gelegte Quadrat haben die gleiche Gewichtung $\rightarrow$ Mittelwertbildung
       \item allgemein schlechte Ergebnisse, da Fourier-Transformierte eine Sinc-Funktion, die gewünschten Frequenzbereich schlecht isoliert
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Box-filter1}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Box-filter2}
+      \end{center}
     \end{itemize*}
     \item[Kegel-Filter]
     \begin{itemize*}
       \item Gewichtung fällt mit zunehmender Distanz zum Pixel linear ab
       \item etwas bessere Ergebnisse als das Box-Filter
       \item Artefakte sind vorhanden, aber sehr abgeschwächt
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Kegel-filter1}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Kegel-filter2}
+      \end{center}
     \end{itemize*}
     \item[Gauß-Filter]
     \begin{itemize*}
       \item Fouriertransformierte einer Gauß-Funktion ist Gauß-Funktion
       \item Filter führt zu Unschärfe
       \item Aliasing-Effekte sehr gut unterdrückt
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Gauss-filter1}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Gauss-filter2}
+      \end{center}
     \end{itemize*}
     \item[Mitchell-Netravali-Filter]
     \begin{itemize*}
@@ -1993,6 +2084,10 @@
       \item untersuchen aus Rekonstruktionsfiltern resultierenden Artefakte
       \item Bei geeigneter Parameterwahl liefern die Filter einen guten Kompromiss zwischen Unschärfe, Anisotropie und Ringing.
       \item werden auch als bikubische Filter bezeichnet
+      \begin{center}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Mitchell-Netravali-Filter1}
+        \includegraphics[width=.4\linewidth]{Assets/Computergrafik_Mitchell-Netravali-Filter2}
+      \end{center}
     \end{itemize*}
     \item[Nearest Neighbour]
     \begin{itemize*}
@@ -2010,7 +2105,11 @@
       \item außermittige Interpolation führt zu frequenzabhängigen örtlichen Verschiebungen
     \end{itemize*}
     \item[Sobelgradient] $$H_{xS} =\begin{pmatrix} 1&0&-1\\ 2&0&-2\\ 1&0&-1\end{pmatrix}, H_{yS}=\begin{pmatrix} 1&2&1\\ 0&0&0\\ -1&-2&-1 \end{pmatrix}$$
-    \item[Differenzbildung] (Ableitung) $\rightarrow$ hohe Frequenzen werden verstärkt
+    \begin{itemize*}
+      \item z.B. Kantenextraktion
+      \item Differenzbildung (Ableitung) → hohe Frequenzen werden verstärkt!
+      \item im Gegensatz dazu sind Tiefpassfilter Integralfilter = gewichtete Summe der Nachbarpixel
+    \end{itemize*} 
   \end{description*}
   
   

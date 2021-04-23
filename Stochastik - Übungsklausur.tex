@@ -4,6 +4,9 @@
 \usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
 \usepackage{color,graphicx,overpic}
 \usepackage{hyperref}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\usepgfplotslibrary{statistics}
 % Turn off header and footer
 \pagestyle{empty}
 % Don't print section numbers
@@ -56,7 +59,7 @@ Sie haben zwei Tetraeder zur Verfügung, deren Flächen jeweils mit den Augenzah
 \paragraph{a)} Geben Sie mit Hilfe Bernoulliverteilter Zufallsvariablen $Z_1,Z_2,...$ eine Zufallsvariable $X$ an, welche Binom $(n,p)$-verteilt ist. Welche Voraussetzungen müssen $Z_1,Z_2,...$ erfüllen? Was modelliert Binom $(n,p)$ anschaulich? \textbf{(3 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
-    Eine Binominalverteilung mit Parametern n,p gilt bei $P(n,p,k)=\binom{n}{k}*p^k*(1-p)^{n-k}$ mit $k=Z_1,Z_2,...)$. Die Zufallsvariablen $Z_1,Z_2,...$ müssen dafür Ganzzahlig und Positiv sein.\\
+    Eine Binominalverteilung mit Parametern n,p gilt bei $P(n,p,k)=\binom{n}{k}*p^k*(1-p)^{n-k}$ mit $k=Z_1,Z_2,...)$. Die Zufallsvariablen $Z_1,Z_2,...$ müssen dafür Ganzzahlig und Positiv sein. \\
     Ein anschauliches Binom ist das ($n$-) mehrmalige Werfen einer Münze, mit Ergebnis Erfolg ($p=0,5$) (Wappen) oder Misserfolg (Zahl).
     \\\hline
 \end{tabular}
@@ -76,7 +79,7 @@ Sie haben zwei Tetraeder zur Verfügung, deren Flächen jeweils mit den Augenzah
 \begin{tabular}{| p{17cm} |}
     \hline
     $MSE(T,\upsilon)=E_{\upsilon}((T-g(\upsilon))^2) = Var_{\upsilon}(T)+(B_T(\upsilon))^2$
-    
+
     Da die Zufallsvariablen bernoulliverteilt sind, ist die Verzerrung $B_T=0$ und die Varianz 1: $MSE(\hat{p})=\frac{1}{n}$
 
     \\\hline
@@ -102,7 +105,7 @@ Sie haben zwei Tetraeder zur Verfügung, deren Flächen jeweils mit den Augenzah
 \begin{tabular}{| p{17cm} |}
     \hline
     geometrische Verteilung: $f(x)=(1-p)^{x-1}*p$
-    
+
     $m_1=\hat{m}_1: \hat{\mu}=\frac{1}{n} \sum_{i=1}^{n} x_i$ und $m_2=\hat{m_2}:\hat{\sigma}^2+\hat{\mu}^2 =\frac{1}{n} \sum_{i=1}^{n}$
 
     $\hat{p} = \hat{\sigma}^2=\frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2$
@@ -142,7 +145,7 @@ Für die weitere Rechnung dürfen Sie ohne Nachweis benutzen, dass eine Zufallsv
 \begin{tabular}{| p{17cm} |}
     \hline
     $$E(\bar{X}_n) = \frac{1}{\bar{X}} ;\quad
-    Var(\bar{X}_n) = \frac{1}{\bar{X}^2} $$
+        Var(\bar{X}_n) = \frac{1}{\bar{X}^2} $$
     \\\hline
 \end{tabular}
 
@@ -158,7 +161,7 @@ Gegeben sei eine Zufallsvariable $X\sim Unif(-0.5,0.5)$.
 \paragraph{a)} Geben Sie die Wahrscheinlichkeitsdichte und die Verteilungsfunktion von $X$ an. \textbf{(2 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
-    Wahrscheinlichkeitsdichte $$f(x)=\frac{1}{b-a} = \frac{1}{-0,5 - 0,5} = -1$$\\
+    Wahrscheinlichkeitsdichte $$f(x)=\frac{1}{b-a} = \frac{1}{-0,5 - 0,5} = -1$$ \\
     Verteilungsfunktion $$F(x)=\frac{x-a}{b-a} = -x+0,5$$
     \\\hline
 \end{tabular}
@@ -179,31 +182,33 @@ Berechnungen im Rahmen von Bankgeschäften ergeben oft Ergebnisse mit gebrochene
 \begin{tabular}{| p{17cm} |}
     \hline
     $1000 Cent / 106 \approx 9,4 Cent \rightarrow \pm 4,7 Cent$
-    
+
     $\mu= 0$
-    
+
     $\sigma= \sqrt{\frac{1}{12}} = 0,289$
 
     $k = 4,7 Cent / \sigma = \frac{4,7}{0,289} = 16,26$
-    
+
     $P(|X-\mu|)\geq k*\sigma) \leq \frac{1}{k^2} \Rightarrow P(|X|\geq 16,26*0,289)\leq \frac{1}{16,26^2} = P(|X|\geq 4,7) \leq 0.061$
 
-    \dots
+    \dots ?
     \\\hline
 \end{tabular}
 
 \paragraph{d)} Mit welcher Wahrscheinlichkeit verliert die Bank mindestens einen Euro (100 Cent)? Nutzen Sie den zentralen Grenzwertsatz, um diese Wahrscheinlichkeit geeignet zu approximieren. Runden Sie Ihr Ergebnis mit Hilfe der unten angegebenen Tabelle auf volle 10\%. \textbf{(3 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
+    Grenzwertsatz $$lim_{n\rightarrow \infty} P(\sqrt{n} * \frac{\bar{X}_n -\mu}{\sigma}\leq x)=\phi (x)$$
+
     \\\hline
 \end{tabular}
 
 Quantile der Standardnormalverteilung\\
 \begin{center}
-\begin{tabular}{c | c | c | c | c | c | c | c | c | c}
-    $\alpha$     & 10\%    & 20\%    & 30\%    & 40\%    & 50\% & 60\%   & 70\%   & 80\%   & 90\%   \\\hline
-    $q_{\alpha}$ & $-1,28$ & $-0,84$ & $-0,52$ & $-0,25$ & $0$  & $0,25$ & $0,52$ & $0,84$ & $1,28$
-\end{tabular}
+    \begin{tabular}{c | c | c | c | c | c | c | c | c | c}
+        $\alpha$     & 10\%    & 20\%    & 30\%    & 40\%    & 50\% & 60\%   & 70\%   & 80\%   & 90\%   \\\hline
+        $q_{\alpha}$ & $-1,28$ & $-0,84$ & $-0,52$ & $-0,25$ & $0$  & $0,25$ & $0,52$ & $0,84$ & $1,28$
+    \end{tabular}
 \end{center}
 
 \section{Aufgabe 6: Normalverteilung}
@@ -251,14 +256,14 @@ Gegeben seien die unabhängigen Zufallsvariablen $X_1,X_2,...,X_n$ mit den Verte
     \\\hline
 \end{tabular}
 
-Gegeben sei $f:R\rightarrow R$ mit $f(x) =a*\sin(x)·1_{(0,\pi)}(x)$, wobei a ein reeller Parameter ist.
+Gegeben sei $f:R\rightarrow R$ mit $f(x) =a*\sin(x)*1_{(0,\pi)}(x)$, wobei a ein reeller Parameter ist.
 \paragraph{b)} Bestimmen Sie a so, dass f eine Wahrscheinlichkeitsdichte ist. \textbf{(1 Punkt)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
     \\\hline
 \end{tabular}
 
-Sei nunXeine Zufallsvariable, die die Wahrscheinlichkeitsdichtefbesitzt.
+Sei nun X eine Zufallsvariable, die die Wahrscheinlichkeitsdichte f besitzt.
 \paragraph{c)} Berechnen Sie $P(X >\frac{\pi}{2})$. \textbf{(2 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
@@ -279,32 +284,93 @@ Sei nunXeine Zufallsvariable, die die Wahrscheinlichkeitsdichtefbesitzt.
 
 \section{Aufgabe 8: Deskriptive Statistik}
 Aus einer Charge von Fäden werden 5 Stück entnommen, um sie auf Reißfestigkeit zu testen. Notiert werden die erreichten Dehnungslängen $L_i,i= 1,...,5$ in cm zum Zeitpunkt des Reißens. Die Ergebnisse lauten:
-\begin{tabular}{c | c | c | c | c}
-    $L_1$ & $L_2$ & $L_3$ & $L_4$ & $L_5$ \\
-    4     & 11    & 1     & 6     & 3
-\end{tabular}
+\begin{center}
+    \begin{tabular}{c | c | c | c | c}
+        $L_1$ & $L_2$ & $L_3$ & $L_4$ & $L_5$ \\\hline
+        4     & 11    & 1     & 6     & 3
+    \end{tabular}
+\end{center}
 
 \paragraph{a)} Befinden sich diese Daten auf einer Verhältnisskala? \textbf{(1 Punkt)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
+    Die Daten befinden sich auf der Ordinal-Skala, da diese benannt und in einer natürlichen Ordnung existieren.
     \\\hline
 \end{tabular}
 
 \paragraph{b)} Skizzieren Sie die empirische Verteilungsfunktion zu diesem Datensatz. \textbf{(1 Punkt)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
+    $$F(x_i)=\sum_{j=1}^i \frac{n_j}{n}$$
+    Bsp für 6: $$F(6) = \sum_{j=1}^6 \frac{n_j}{n} = \frac{1}{5}+ \frac{3}{5}+ \frac{4}{5}+ \frac{6}{5} = 2,8$$
+    
+    \vspace{.5cm}
+    \begin{tikzpicture}[
+        dot/.style = {
+                draw,
+                fill = white,
+                circle,
+                inner sep = 0pt,
+                minimum size = 4pt
+            }
+    ]
+    \draw[thick,->] (0,0) -- (13,0) node[anchor=south west] {X};
+    \draw[thick,->] (0,0) -- (0,6) node[anchor=south west] {Y};
+    \foreach \x in {0,1,2,3,4,5,6,7,8,9,10,11,12}
+    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+    \foreach \y in {0,1,2,3,4,5}
+    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+
+        \draw[gray, thick] (1,1) -- (3,1);
+        \draw[gray, thick] (3,2) -- (4,2);
+        \draw[gray, thick] (4,3) -- (6,3);
+        \draw[gray, thick] (6,4) -- (11,4);
+        \draw[gray, thick] (11,5) -- (12,5);
+        \node at (1,1) [circle,fill=black] {};
+        \node at (3,2) [circle,fill=black] {};
+        \node at (4,3) [circle,fill=black] {};
+        \node at (6,4) [circle,fill=black] {};
+        \node at (11,5) [circle,fill=black] {};
+        
+      \end{tikzpicture} 
+
     \\\hline
 \end{tabular}
 
 \paragraph{c)} Bestimmen Sie den Mittelwert, den Median, die Quartile und den Interquartilsabstand der Daten. Wie erklärt sich der Unterschied zwischen Median und Mittelwert? \textbf{(4 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
+    Mittelwert: $$x_{mit}=\frac{1}{n} \sum_{i=1}^n x_i = 5$$
+
+    Median: $x_{med} \geq 50\% \text{ aller Werte } \Rightarrow x_{med}= 4$
+
+    Quartile: $$Q_{0,75} = 1,75*x_{mit} = 8,75;\quad Q_{0,25} = 0,25*x_{mit}= 1,25$$
+    
+    Interquartilsabstand: $IQS=Q_{0,75} - Q_{0,25} = 8,75 - 1,25 =  7,5$
     \\\hline
 \end{tabular}
 
 \paragraph{d)} Skizzieren Sie einen Boxplot zu diesem Datensatz. \textbf{(3 Punkte)}\\
 \begin{tabular}{| p{17cm} |}
     \hline
+    \vspace{.5cm}
+    \begin{tikzpicture}
+        \begin{axis}
+          [
+          ytick={1,2,3},
+          yticklabels={Index 0, Index 1, Index 2},
+          ]
+          \addplot+[
+          boxplot prepared={
+            median=4,
+            upper quartile=8.75,
+            lower quartile=1.25,
+            upper whisker=11,
+            lower whisker=1
+          },
+          ] coordinates {};
+        \end{axis}
+      \end{tikzpicture}
     \\\hline
 \end{tabular}
 

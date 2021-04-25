@@ -1,6 +1,7 @@
-# Informatik
+# Informatik - TU Ilmenau
 Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
+
 
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md)
@@ -11,7 +12,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Cheatsheet](Betriebssysteme%20-%20Cheatsheet.pdf)
   - [Fragenkatalog](Betriebssysteme%20-%20Fragen.md)
 - [Computergrafik](Computergrafik.md)
-  - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf) (work in progress)
+  - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf)
 - [Datenbanksysteme](Datenbanksysteme.md)
   - [Fragenkatalog](Datenbanksysteme%20-%20Fragen.md)
   - [Cheatsheet](Datenbanksysteme%20-%20Cheatsheet.pdf)
@@ -35,6 +36,8 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
+
+der Modulplan 2013 für Bachelor Informatik: [Modulplan](Modultafel%20-%20Bachelor%20Informatik%202013.html) (am besten im Browser ansehen)
 
 Lernen ist viel Arbeit und bereitet dir Schwierigkeiten? Lies unsere [Hilfe](richtig%20lernen.md)
 

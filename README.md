@@ -2,7 +2,6 @@
 Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
 
-
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md)
   - [Flashcards - Karteikarten für Definitionen](Automaten,%20Sprachen%20und%20Komplexität%20-%20Flashcards.pdf)
@@ -13,6 +12,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Fragenkatalog](Betriebssysteme%20-%20Fragen.md)
 - [Computergrafik](Computergrafik.md)
   - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf)
+- [Datenbank Implementierungstechniken](Datenbank%20Implementierungstechniken.md) (work in progress)
 - [Datenbanksysteme](Datenbanksysteme.md)
   - [Fragenkatalog](Datenbanksysteme%20-%20Fragen.md)
   - [Cheatsheet](Datenbanksysteme%20-%20Cheatsheet.pdf)
@@ -20,6 +20,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)
+- [Logik und Logikprogrammierung](Logik%20und%20Logikprogrammierung.md) (work in progress)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - [Programmierparadigmen](Programmierparadigmen.md)
@@ -28,12 +29,16 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Praktikum A1](Rechnerarchitekturen%201%20-%20Praktikum%20A1.pdf)
   - [Praktikum A2](Rechnerarchitekturen%201%20-%20Praktikum%20A2.pdf)
 - [Rechnerarchitekturen 2](Rechnerarchitekturen%202.md)
+- [Schaltsysteme](Schaltsysteme.md)
+- [Softwareprojekt 2021](Softwareprojekt%202021.md) (work in progress)
 - [Softwaretechnik](Softwaretechnik.md)
   - [Zusammenfassung](Softwaretechnik%20-%20Cheatsheet.pdf)
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
+- [Softwaretechnik 2](Softwaretechnik%202.md) (work in progress)
 - [Stochastik](Stochastik.md)
   - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
+- [Systemsicherheit](Systemsicherheit.md) (work in progress)
 - [Telematik 1](Telematik%201.md)
   - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
 

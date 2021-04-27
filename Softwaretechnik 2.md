@@ -212,7 +212,7 @@ Evolve to continuously obtain feedback and improve | Responding to change over f
 Balance competing priorities to maximize stakeholder value | Customer collaboration over contract negotiation
 Focus on articulating the architecture | Working software over comprehensive documentation
 
-Governance Model – Balancing Agility and Discipline
+Governance Model - Balancing Agility and Discipline
 - OpenUP incorporates a three-tiered governance model to plan, execute, and monitor progress.
 - These tiers correspond to personal, team and stakeholder concerns and each operates at a different time scale and level of detail.
 
@@ -244,7 +244,7 @@ Micro-Increments
 - Work items reference requirements and process tasks as needed to provide
     required inputs to complete the micro-increment.
 
-### OpenUP Lifecycle – Inception Phase
+### OpenUP Lifecycle - Inception Phase
 - The primary purpose of the Inception Phase is to understand the scope of the problem and feasibility of a solution.
 - At the Lifecycle Objectives Milestone, progress towards meeting these objectives are assessed and a decision to proceed with the same scope, change the scope, or terminate the project is made.
 - More specifically, the objectives and associated process activities are:
@@ -256,7 +256,7 @@ Micro-Increments
 | Determine at least one possible solution | Agree on Technical Approach |
 | Understand the cost, schedule, and risks associated with the project | Initiate Project, Plan and Manage Iteration |
 
-### OpenUP Lifecycle – Elaboration Phase
+### OpenUP Lifecycle - Elaboration Phase
 - The primary purpose of the Elaboration Phase is to validate the solution architecture (feasibility and trade-offs).
 - At the Lifecycle Architecture Milestone, progress towards meeting these objectives are assessed and a decision to proceed with the same scope, change the scope, or terminate the project is made.
 - More specifically, the objectives and associated process activities are:
@@ -267,7 +267,7 @@ Get a more detailed understanding of the requirements | Identify and Refine Requ
 Design, implement, validate, and baseline an architecture | Develop the Architecture, Develop Solution Increment, Test Solution
 Mitigate essential risks, and produce accurate schedule and cost estimates | Plan and Manage Iteration, Ongoing Tasks
 
-### OpenUP Lifecycle – Construction Phase
+### OpenUP Lifecycle - Construction Phase
 - The primary purpose of the Construction Phase is to develop and verify the solution incrementally.
 - At the Initial Operational Capability Milestone, progress towards meeting these objectives is assessed and a decision to deploy the solution to the operation environment is made.
 - More specifically, the objectives and associated process activities are:
@@ -277,7 +277,7 @@ Mitigate essential risks, and produce accurate schedule and cost estimates | Pla
 Iteratively develop a complete product that is ready to transition to the user community | Identify and Refine Requirements; Develop Solution Increment; Test Solution | 
 Minimize development costs and achieve some degree of parallelism | Plan and Manage Iteration Ongoing Tasks
 
-### OpenUP Lifecycle – Transition Phase
+### OpenUP Lifecycle - Transition Phase
 - The primary purpose of the Transition Phase is to deploy the solution to the operational environment and validate it.
 - At the Product Release Milestone, progress towards meeting these objectives are assessed and a decision to make the product generally available is made.
 - More specifically, the objectives and associated process activities are:
@@ -430,7 +430,7 @@ Definition ([Bere 2009] → [DoD 1991]): "Requirements engineering involves all 
 ![](Assets/Softwaretechnik2-Requriements-Engineering-2.png)
 
 ## Definition: Requirement
-What is a requirement? "requirement", IEEE 610.12 – 1990, p62
+What is a requirement? "requirement", IEEE 610.12 - 1990, p62
 1. A condition or capability needed by a user to solve a problem or achieve an objective.
 2.  A condition or capability that must be met or possessed by a system or system component to satisfy a contract, standard, specification, or other formally imposed documents.
 3.  A documented representation of a condition or capability as in (1) or (2).
@@ -679,7 +679,7 @@ Example: "What is the best car brand for me?"
 
 
 ### Goal Question Metric
-1. Robert E. Park, Wolfhart B Goethert, William A. Florac,"Goal-Driven Software Measurement – A Guidebook", SEI Bericht, CMZ/SEI-96-HB-002, 1996.
+1. Robert E. Park, Wolfhart B Goethert, William A. Florac,"Goal-Driven Software Measurement - A Guidebook", SEI Bericht, CMZ/SEI-96-HB-002, 1996.
 2. Danilo Assmann, Ralf Kalmar, Dr Teade Punter, "Handbuch, Messen und Bewerten von WebApplikationen mit der Goal/Question/Metric Methode", IESE-Report Nr. 087.02/D ver. 1.2, 2002
 
 Motivation
@@ -1958,3 +1958,481 @@ expr: expr '+' expr { $$ = $1 + $3; }
     | NUMBER
 ;
 ```
+
+
+# Software Maintenance
+## Motivation
+- Software won‘t wear out!
+    - It gets old when it is changed by developers -> Architectural Decay
+
+Product Life Cycle: months ... many years
+
+Background 
+- Why?
+    - Maintenance: Fix broken software (-> bugs)
+    - Evolution
+        - Extend existing software (-> new features/functions)
+        - Develop (bad ->)good software
+        - Long Living Software (changes in HW/SW)
+        - Re-develop software
+- When? Product Strategy, Business Rules
+- Goals? Changeability, Maintainability, Comprehension
+
+## Reengineering
+![SEI 1998](Assets/Softwaretechnik2-Reengineering.png)
+
+Terms
+- Reverse Engineering
+    - Reconstruct the plan / the requirements of the ready made software
+- Reengineering
+    - Change a Software System to enhance its Quality (at a higher abstraction level than -> Refactoring)
+- Forward Engineering
+    - Opposite of -> Reverse Engineering. Standard development cycle, e. g., OpenUP, SCRUM, V-Model,...
+
+System Analysis
+- How does the current system look like?
+- What do we want to change
+- Which rules do we want to follow and which rules are broken?
+
+- Running Software System
+    - Observation of the externally visible behavior + reaction
+    - Use Cases
+    - Requirements
+- Code
+    - Disassembling / decompilation (not allowed by law!)
+        - Only for scientific work! OpenRCE (Rerverse Code Engineering, http://www.openrce.org)
+    - Counterpart: Obfuscation
+        - Transformation (-5...+5)
+        - Re-Order Code
+        - Change Variable Names
+        - Add branches (if (true) ...), each instruction as subroutine ...
+        - NOPs
+        - Encryption (of code)
+    - Obfuscator vermeiden
+- Design & Requirements
+    - Design by observation (marginal)
+    - Requriements by observation (as above)
+    - Manual tasks
+        - Interview former / current employees
+        - Interview users of the system
+        - Deep Search of Documents
+        - -> Assess ~~the Feasibility of the Project~~ Reverse-Engineering might become Re-Development
+
+
+## Code Smells
+### Code - Hard to read 
+- Rules/Hints for Good Code - Naming
+    - Names want to tell their intention
+        - `int x; // average speed ->int averageSpeed;`
+        - ```cpp
+        void strcpy(char *a, char *b) -> 
+        strcpy(char *destination, char *source)
+        strcpy(char *to, char *from)
+        ```
+        - Be careful with e.g., btevhdl -> buttonEventHandler
+        - Don‘t ...: String noOfWayPoints;
+        - Where (in different types of lists) to add() / insert(), or how to sort()?
+    - Names that tell the intention
+        - List (alphabetically) of (global) variables in the code documentation
+    - Character similarities (-> the font question ...)
+        - "Ohhh Zero" O0
+        - "Ihh One" I1, I1
+        - "smallEL.. largeiI" lI
+- Rules/Hints for Good Code - Functions
+    - Functions have a single, simple and clear behavior
+    - Don‘t duplicate code (code redundancy)
+    - Agree, enforce and live a project wide coding style
+    - Hard to follow call graphs if using function pointers
+        - Specifically document such occurences
+    - Don‘t use switch to access different class types
+        - -> use Polymorphism instead
+        - switch(typeof(object)) or switch(object.type)
+    - Reduce the number of arguments of a function/method
+        - ->use objects for more than three arguments
+- Rules/Hints for Good Code - Comments
+    - Don‘t forget the Copyright Notice
+    - Comments do not only repeat the function name ...
+    - Keep comments in sync with the code (-> Review)
+    - Use exception handling
+- Rules/Hints for Good Code - Global ...
+    - Exchange hand written parsers with -> DSL technology
+    - Start with non-threaded code, improve towards threads/parallelism
+    - Carefully select global variables (-> Singletons)
+
+## Metrics
+### The Law of Demeter
+- Proposed by Karl J. Lieberherrs research group in 1987
+    - Northeastern University, College of Computer and Information Science, Boston, Massachusetts (http://www.ccs.neu.edu/home/lieber/)
+    - Style rule for the development of a good system design
+- Law of Demeter (http://en.wikipedia.org/wiki/Law_of_Demeter)
+    - Method M of Object O
+        1. may only invoke methods of O
+        2. use parameters of M
+        3. use/call methods of any object created in M
+        4. may invoke methods of O‘s direct component objects
+        5. may access a global variable accessible by O, in the scope of M
+
+
+
+@ Design Level
+- Overall Architecture
+- Use -> static / dynamic analyses to asses
+    - Cohesion : A class strongly focussing on a single goal has a high cohesion.
+    - Coupling : A component which highly depends (by method calls) on another component is strongly coupled.
+    - ... of the architectural components
+- Goal: low coupling and STRONG COHESION
+
+Calculate Cohesion
+- *L*ack of *CO*hesion in *M*ethods for a class C
+    $$LCOM=1-\frac{1}{M*F} \sum_{i=1}^F count(f_i \leftarrow m)$$
+    - M = Number of Methods in C
+    - F = number of fields in C (or attributes)
+    - fi = field i in the set (i=1...F) of the fields in a given class C
+    - count(fk <- m) = how many methods m use field fk
+    $$LCOM_{HS} = \frac{1}{M-1}(M-\frac{1}{F} \sum_{i=1}^F count(f_i\leftarrow m))$$
+    - HS = Henderson-Sellers
+- $LCOM_{HS}=1$ ![](Assets/Softwaretechnik2-LCOM-1.png)
+- $M\rightarrow \infty, LCOM_{HS}\rightarrow 1$ ![](Assets/Softwaretechnik2-LCOM-2.png)
+- $F\rightarrow \infty, LCOM_{HS}\rightarrow 1$ ![](Assets/Softwaretechnik2-LCOM-3.png)
+- $M, F\rightarrow \infty, LCOM_{HS}\rightarrow 1$ ![](Assets/Softwaretechnik2-LCOM-4.png)
+
+
+Cohesion
+- As used in the Eclipse Metrics Plugin
+    $$LCOM *= \frac{\frac{\sum_{A=1}^n m(A)}{n} -m}{(1-m)}$$
+    - $m(A)$ is the number of methods accessing an attribute A
+    - $n$ is the number of attributes
+    - $m$ is the number of methods m
+    - ($LCOM >> 1$ is alarming), small values ($<1$) are better.
+    - Hint: The class could be split into a number of (sub)classes.
+- ![](Assets/Softwaretechnik2-highly-coupled.png)
+    - Changes in A cause the need to check B, C, D, E, F
+    - The interface of A might be hard to reuse in future/other projects
+    - Coupling : A component which highly depends (by method calls) on another component is strongly coupled.
+- Afferent Coupling = #Classes outside a package that depend on classes inside the package.
+- Efferent Coupling = #Classes inside a package that depend on classes outside the package.
+
+
+Design Level
+- "Tell, don‘t ask!"
+    - Bad: car.getSteeringWheel().getAngle()
+    - Better: car.getDirectionOfTravel()
+- Start with reference architectures and refine ...
+    - Layers, pipes and filters, plug-in, client / server, MVC
+- Use design patterns, (or at least) their concepts
+- A class / component interface should hide most of the complexity underneath (-> Facade Pattern)
+- 30-Rule, [Rooc 2004], p35
+    - Methods <= 30LLOC
+    - #Methods per Class < 30
+    - #Classes per Package < 30
+    - #Packages per Subsystem < 30
+    - System < 30 subsystems
+    - #Layers 3 ... 10
+
+- Usage / Inheritance Relations
+    - Inheritance hierarchy < 10
+- In and between Packages
+    - Keep a small hierarchy (<5)
+- In and between Subsystems
+    - Keep APIs small
+- In and between Layers
+    - Use layers at all!
+    - Calls should follow the layer structure
+- Don‘t use/allow cycles
+
+### What is the simplest design?
+By Kent Beck, [Beck 2000], page 109
+1. The system (code and tests together) must communicate everything you want to communicate.
+2. The system must contain no duplicate code.
+3. The system should have the fewest possible classes.
+4. The system should have the fewest possible methods.
+
+Requirements Level
+- Sometimes hard to find but easy to change at very low costs!
+    - Inconsistencies
+    - Redundancy
+    - Contradictions
+    - Misspellings
+    - Wording (domain specific)
+    - Constraints (missing ~)
+    - Missing requirements vs. "goldplating"
+    - ...
+
+## Refactoring
+### Refactoring Overview
+- Software changes (beautifying) without changing the behavior!
+- "Refactoring (noun): a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior." [Fowl 1999, Martin Fowler, "Refactoring - Improving the Design of Existing Code", Addison Wesley, 1999, page 53.]
+- (Highly) dependant on the tool support (-> IDE)
+    - Reduced errors while refactoring
+
+![http://www.eclipse.org/org/usagedata/](Assets/Softwaretechnik2-eclipse-refactoring.png)
+
+### Refactoring Howto
+1. Set up the test cases for your code
+2. Review the test cases
+3. Identify the _smells_
+4. Refactor the code - Stepwise!!
+5. Execute all test cases
+6. Fix errors
+    - Go back to 6. unless the test result is green
+7. Go to 4. and continue refactoring
+
+### Composing Methods
+#### Extract Method 
+```cpp
+void printMainScreen() {
+    System. out.println("Main Screen");
+    // print details
+    System. out.println("Speed");
+    System. out.println("curr Temp");
+}
+```
+zu
+```cpp
+void printMainScreen () {
+    System. out.println("Main Screen");
+    printMainScreenDetails();
+}
+private void printMainScreenDetails() {
+    System. out.println("Speed");
+    System. out.println("curr Temp");
+}
+```
+#### Inline Method 
+```cpp
+int getRating(){
+    return(hasMoreThanFiveDeliveries())?2:1;
+}
+boolean hasMoreThanFiveDeliveries(){
+    return(noOfDeliveries>5);
+}
+```
+zu
+```cpp
+int getRating(){
+    return(noOfDeliveries>5)?2:1;
+}
+```
+
+#### Remove Assignments to Parameters
+```cpp
+int discount(int inputVal, in quantity, in yearToDate){
+    if(inputVal>50) inputVal -= 2;
+    ...
+```
+zu
+```cpp
+int discount(int inputVal, in quantity, in yearToDate){
+    int result = inputVal;
+    if(inputVal>50) result -= 2;
+    ...
+```
+
+#### Moving Features between Objects
+```cpp
+public class SmallCycle{
+    DataModel myDM = new DataModel();
+    int localValue;
+    public void calcHeight() { myDM.height = 45; localValue = 100; }
+    public void calcSurface() { myDM.surface = 452; calcHeight(); }
+    ...
+```
+zu
+```cpp
+public class SmallCycle {
+...
+    public void calcSurface(){
+    myDM.surface = 452;
+    myDM.calcHeight( this);
+    }
+...
+
+public class DataModel {
+    public int height;
+    public int surface;
+    public void calcHeight(SmallCycle smallCycle){
+        height = 45;
+        smallCycle.localValue = 100;
+    }
+```
+
+#### Extract Class
+```cpp
+public class BigCycle {
+...
+    String owner;
+    String ownerBirthday;
+    public BigCycle(){
+        owner = "Harry";
+    }
+```
+zu
+```cpp
+public class BigCycle {
+    ...
+    Owner localOwner = new Owner();
+    public BigCycle(){
+        localOwner.setName("Harry");
+    }
+}
+...
+public class Owner{
+    private String name;
+    private String birthday;
+    ...
+    public void setName(String name){
+        this.name = name;
+    }
+    ...
+}
+```
+
+### Organizing Data
+Replace Magic Number with Symbolic Constant
+```cpp
+double getLengthPerTireTick(int tiresize){
+    return ((tiresize*25.4)/2)*2*3.141
+}
+```
+zu
+```cpp
+... return ((tiresize*MMPERINCH)/2)*2*Math.PI
+static final double MMPERINCH = 25.4
+```
+
+#### Simplifying Conditional Expressions
+- Decompose Conditional
+- Consolidate Conditional Expression
+    ```cpp
+    double disabilityAmount(){
+        if(_seniority <2) return 0;
+        if(_monthsDisabled >12) return 0;
+        if(_isPartTime) return 0;
+        //compute disability amount
+    }
+    double disabilityAmount(){
+        if(isNotEligableForDisability()) return 0;
+        //compute the disability amount
+    }
+    ```
+- Consolidate Duplicate Conditional Fragments
+    ```cpp
+    if(isSpecialDeal()){
+        total = price * 0.95;
+        send();
+    }
+    else {
+        total = price * 0.98;
+        send()
+    }
+    ```
+    zu
+    ```cpp
+    if(isSpecialDeal())
+        total = price * 0.95;
+    else
+        total = price * 0.98;
+    send();
+    ```
+- Replace Nested Conditional with Guard Clauses
+    ```cpp
+    double getPayAmount(){
+        double result;
+        if(_isDead) result = deadAmount();
+        else {
+            if(_isSeperated) result = seperatedAmount();
+            else {
+                if(_isRetired) result = retiredAmount();
+                else result = normalPayAmount();
+            }
+        }
+        return result;
+    }
+    ```
+    zu
+    ```cpp
+    double getPayAmount(){
+        if(_isDead) return deadAmount();
+        if(_isSeperated) return separatedAmount();
+        if(_isRetired) return retiredAmount();
+        return normalPayAmount();
+    }
+    ```
+- Replace Conditional with Polymorphism
+    ```cpp
+    double getSpeed(){
+        switch(type){
+            case EUROPEAN:
+                return getBaseSpeed();
+            case AFRICAN:
+                return getBaseSpeed() - getLoadFactor() * _numberOfCoconuts;
+            case NORWEGIAN_BLUE:
+                return (_isNailed) ? 0 : getBaseSpeed(_voltage);
+        }
+    }
+    ```
+
+### Making Method Calls Simpler
+- Rename Method
+- Separate Query from Modifier
+
+### Dealing with Generalization
+- Pull Up Field
+- Push Down / Pull Up
+
+### Other Refactorings
+- Change Method Signature
+- Extract Local Variable
+- Extract Local Variable to Field
+- Convert Anonymous Class to Nested
+- Move Type to new File
+- Extract Superclass
+- Extract Interface
+
+## Long Living Software
+Mars Rover Software Coding Guidelines
+![](Assets/Softwaretechnik2-mars-rover-software.png)
+
+[Moodle](A. Brown and G. Wilson, The Architecture of Open Source Applications, Volume II , lulu.com, 2012.)
+![](Assets/Softwaretechnik2-moodle.png)
+- Core: Web-Server (e. g., Apache) hosting the PHP-code
+    - Server: /var/www/moodle/category.php
+    - Client: https://moodle2.tu-ilmenau.de/course/category.php?id=92
+- Connects to a database (e. g., MySQL)
+- _moodledata_ folder (outside the web root)
+- Extensible: moodle Plug-In API (according to plugin types)
+    - = a folder <plugin-type>/<plugin-name>
+- Documentation @ https://moodle.org/
+
+### Compiler Compiler 
+(e. g., flex/bison)
+- Lexer, Yet Another Compiler Compiler
+- First compiler-compiler 1960 by Tony Brooker
+- YACC initially developed 1970 by Stephen C. Johnson (AT&T Corporation) for Unix
+- **L**ook-**A**head **L**eft to right **R**ightmost derivation - Parser
+    ![http://en.wikipedia.org](Assets/Softwaretechnik2-LALR-Parser-1.png)
+    ![http://en.wikipedia.org](Assets/Softwaretechnik2-LALR-Parser-2.png)
+- ![](Assets/Softwaretechnik2-Lexer.png)
+
+
+### Long Living Systems
+How to build long living system in the first place?
+- Very broad/extensive requirements engineering phase
+- Capture (the needed) Variabilities, (e. g.: Future Workshop)
+    - Product Lines
+- Clear and Understood SW(/HW)-Architecture
+    - Remove the _smells (periodically)_ , -> Reviews, Refactoring
+    - Standard Architectures, Design Patterns, COTS
+- Prepare all documents and the development environment for "newcomers" and "strangers"
+- Good Estimation of ...
+    - ... the efforts over time
+    - ... the efforts for changes
+    - ... the limits of the architecture
+    - ... the expected SW END OF LIFE + reengineering costs
+- ... never touch a running system
+
+Key Attributes of Long Living Systems
+1. Keep your system focussed on what it is(was) supposed to do.
+2. Take your time to design your APIs with pride and keep them stable. (-> if at all, only extensions are feasible!)
+3. Design the core architecture with well defined extension mechanisms to tailor the application to user needs. (-> Plug-Ins, DSL, DLLs)
+4. Take maintenance serious , in terms of the needed/planned effort and the trageted/desired quality.

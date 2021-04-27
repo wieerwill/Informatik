@@ -3,6 +3,167 @@
 - Systemkompetenz: Die Studierenden können die vorgestellten Methoden und Werkzeuge in Projekten unterschiedlicher Domänen an-wenden.
 - Sozialkompetenz: Die Studierenden kennen die Bedeutung und den Einfluss der erlernten Methoden und Werkzeuge innerhalb einen Firma. Sie können daher Ihr jeweiliges Vorgehen und dieErgebnisse auf die Erfordernisse eines Projektes in einer Organisation abstimmen.
 
+- [Motivation](#motivation)
+  - [Software Development Challenges](#software-development-challenges)
+- [Software Development Processes](#software-development-processes)
+  - [Motivation](#motivation-1)
+  - [Software Processes](#software-processes)
+    - [Arten von Entwicklungsprozessen](#arten-von-entwicklungsprozessen)
+    - [Certification of Project Managers](#certification-of-project-managers)
+      - [PMP Example Question 1 (taken from the PMP website)](#pmp-example-question-1-taken-from-the-pmp-website)
+      - [PMP Example Question 2 (taken from the PMP website)](#pmp-example-question-2-taken-from-the-pmp-website)
+      - [PMP Example Questions 3 (taken from the PMP website)](#pmp-example-questions-3-taken-from-the-pmp-website)
+  - [OpenUP](#openup)
+    - [Core Principles](#core-principles)
+    - [Collaboration: Some key practices](#collaboration-some-key-practices)
+    - [Evolve: Some key practices](#evolve-some-key-practices)
+    - [Balance: Some key practices](#balance-some-key-practices)
+    - [Focus: Some key practices](#focus-some-key-practices)
+    - [OpenUP is Agile and Unified](#openup-is-agile-and-unified)
+    - [OpenUP Project Lifecycle](#openup-project-lifecycle)
+    - [OpenUP Iteration Lifecycle](#openup-iteration-lifecycle)
+    - [OpenUP Lifecycle - Inception Phase](#openup-lifecycle---inception-phase)
+    - [OpenUP Lifecycle - Elaboration Phase](#openup-lifecycle---elaboration-phase)
+    - [OpenUP Lifecycle - Construction Phase](#openup-lifecycle---construction-phase)
+    - [OpenUP Lifecycle - Transition Phase](#openup-lifecycle---transition-phase)
+    - [OpenUP Disciplines](#openup-disciplines)
+    - [Example: OpenUp](#example-openup)
+    - [The four Phases of OpenUP](#the-four-phases-of-openup)
+  - [SCRUM](#scrum)
+    - [Product Backlog](#product-backlog)
+    - [Sprint Backlog](#sprint-backlog)
+    - [Daily Scrum](#daily-scrum)
+    - [Where do changes come from?](#where-do-changes-come-from)
+  - [Example: Change Control Process](#example-change-control-process)
+    - [Impact Analysis Questionaire](#impact-analysis-questionaire)
+  - [Metamodelle](#metamodelle)
+    - [What is Model Driven Development?](#what-is-model-driven-development)
+    - [Meta-meta model ...](#meta-meta-model-)
+- [Requirements Engineering](#requirements-engineering)
+  - [Definition: Requirements Engineering](#definition-requirements-engineering)
+  - [Definition: Requirement](#definition-requirement)
+  - [Requirement Types](#requirement-types)
+    - [Different Requirement Types](#different-requirement-types)
+  - [Struktur einer Anforderung](#struktur-einer-anforderung)
+    - [Anforderungsschablonen](#anforderungsschablonen)
+  - [Anforderungserhebung / Elicitation Techniques](#anforderungserhebung--elicitation-techniques)
+    - [Stakeholder Model](#stakeholder-model)
+    - [Elicitation Techniques](#elicitation-techniques)
+    - [Web-Search](#web-search)
+    - [Patentrecherche](#patentrecherche)
+    - [Interviews](#interviews)
+      - [MindMaps](#mindmaps)
+      - [Questionaire: ... ilities](#questionaire--ilities)
+      - [SEI Risk Taxonomy](#sei-risk-taxonomy)
+    - [Repertory Grid](#repertory-grid)
+      - [Repertory Grid: How to](#repertory-grid-how-to)
+      - [Repertory Grid: Analysis](#repertory-grid-analysis)
+    - [Goal Question Metric](#goal-question-metric)
+    - [Requirements Document Structure](#requirements-document-structure)
+- [Software Estimation](#software-estimation)
+  - [A Little Estimation Game [McCo 2006]](#a-little-estimation-game-mcco-2006)
+      - [Ten Key Characteristics of Software Executives](#ten-key-characteristics-of-software-executives)
+    - [Estimation Improvement with the Capability Maturity Model](#estimation-improvement-with-the-capability-maturity-model)
+  - [Accuracy and Precision](#accuracy-and-precision)
+  - [Productivity Rates](#productivity-rates)
+  - [Randbedingungen, Fallstricke](#randbedingungen-fallstricke)
+        - [Over- / Underestimation](#over---underestimation)
+        - [Project Outcomes by Project Size](#project-outcomes-by-project-size)
+        - [Communication Paths](#communication-paths)
+        - [Communication Paths cont.](#communication-paths-cont)
+    - [The Cone of Uncertainty](#the-cone-of-uncertainty)
+        - [Accuracy vs. Project Length](#accuracy-vs-project-length)
+    - [Commonly Missing Activities](#commonly-missing-activities)
+    - [Einflussgröße: Personal](#einflussgröße-personal)
+    - [Einflussgröße: Programmiersprache](#einflussgröße-programmiersprache)
+  - [Estimation Techniques](#estimation-techniques)
+    - [Zählen](#zählen)
+    - [Historische Daten](#historische-daten)
+    - [Expert Judgement](#expert-judgement)
+    - [Proxy-Based Estimates](#proxy-based-estimates)
+    - [Function Points 1/7](#function-points-17)
+        - [Conversion of FP to LOC](#conversion-of-fp-to-loc)
+        - [Examples of Productivity](#examples-of-productivity)
+    - [Checklist for individual estimates](#checklist-for-individual-estimates)
+- [Testen](#testen)
+  - [Motivation](#motivation-2)
+  - [Definition: Error](#definition-error)
+  - [Testprozess](#testprozess)
+  - [W-Model](#w-model)
+    - [Develop Requirements Test Cases](#develop-requirements-test-cases)
+    - [Plan System Test](#plan-system-test)
+    - [Plan Integration Test](#plan-integration-test)
+    - [Plan Unit Test](#plan-unit-test)
+    - [Test Implementation](#test-implementation)
+        - [MISRA](#misra)
+    - [Unit Testing](#unit-testing)
+        - [Check for Memory Leaks](#check-for-memory-leaks)
+        - [Invalid Pointers](#invalid-pointers)
+        - [Use Of Uninitialized Variables](#use-of-uninitialized-variables)
+        - [Unit Testing](#unit-testing-1)
+    - [Integration Testing](#integration-testing)
+        - [Time Measurement](#time-measurement)
+    - [System Testing](#system-testing)
+    - [System Testing](#system-testing-1)
+        - [Statistical Testing](#statistical-testing)
+    - [Acceptance Testing](#acceptance-testing)
+  - [Beispiel: Testen eines Softstarters](#beispiel-testen-eines-softstarters)
+        - [Development of Embedded Systems](#development-of-embedded-systems)
+        - [Conclusion](#conclusion)
+- [Software Product Lines](#software-product-lines)
+  - [Beispiel: Cycling Computers ...](#beispiel-cycling-computers-)
+  - [History of Terms](#history-of-terms)
+  - [Currently available Software Product Lines](#currently-available-software-product-lines)
+  - [Product Line Development Cycle](#product-line-development-cycle)
+  - [The Concept of Variability](#the-concept-of-variability)
+  - [Modeling of Product Lines using Features](#modeling-of-product-lines-using-features)
+    - [Features](#features)
+        - [Feature Modeling: Example](#feature-modeling-example)
+        - [Example Tool: PureVariants](#example-tool-purevariants)
+        - [Example online-tool:](#example-online-tool)
+  - [Handling Variability](#handling-variability)
+    - [Design Time](#design-time)
+        - [Factory Pattern](#factory-pattern)
+        - [Factory Method](#factory-method)
+        - [Abstract Factory Pattern](#abstract-factory-pattern)
+        - [Decorator](#decorator)
+    - [Compile Time](#compile-time)
+      - [Variabiliy at Compile Time](#variabiliy-at-compile-time)
+    - [Startup Time](#startup-time)
+    - [Runtime](#runtime)
+  - [Aspect-Oriented Programming](#aspect-oriented-programming)
+    - [AOP / AspectJ](#aop--aspectj)
+    - [Example: _Authentication_](#example-authentication)
+  - [Domain Specific Languages](#domain-specific-languages)
+    - [Types of DSLs](#types-of-dsls)
+    - [Example: Test Case Generation](#example-test-case-generation)
+    - [Scanner](#scanner)
+- [Software Maintenance](#software-maintenance)
+  - [Motivation](#motivation-3)
+  - [Reengineering](#reengineering)
+  - [Code Smells](#code-smells)
+    - [Code - Hard to read](#code---hard-to-read)
+  - [Metrics](#metrics)
+    - [The Law of Demeter](#the-law-of-demeter)
+    - [What is the simplest design?](#what-is-the-simplest-design)
+  - [Refactoring](#refactoring)
+    - [Refactoring Overview](#refactoring-overview)
+    - [Refactoring Howto](#refactoring-howto)
+    - [Composing Methods](#composing-methods)
+      - [Extract Method](#extract-method)
+      - [Inline Method](#inline-method)
+      - [Remove Assignments to Parameters](#remove-assignments-to-parameters)
+      - [Moving Features between Objects](#moving-features-between-objects)
+      - [Extract Class](#extract-class)
+    - [Organizing Data](#organizing-data)
+      - [Simplifying Conditional Expressions](#simplifying-conditional-expressions)
+    - [Making Method Calls Simpler](#making-method-calls-simpler)
+    - [Dealing with Generalization](#dealing-with-generalization)
+    - [Other Refactorings](#other-refactorings)
+  - [Long Living Software](#long-living-software)
+    - [Compiler Compiler](#compiler-compiler)
+    - [Long Living Systems](#long-living-systems)
+
 # Motivation
 ## Software Development Challenges
 - Introduction of New Technologies
@@ -14,44 +175,6 @@
 Automatisierung
 - basiert auf Logik
 - Deterministisch
-
-
-
-# Software Development Processes
-## Motivation
-Softwareentwicklungsrozesse erzeugen folgende Artefakte
-•Dokumente, die jeweils einer bestimmten Struktur entsprechen!
-•Requirements Dokument
-•Architekturdokument (Bauplan)
-•Projektplan
-•Risiken
-•Quellcode, der der Architektur entsprechen muss
-•... der das System implementiert
-•... der Testfälle
-•... des Installationsprogramms
-•... der Wartungssoftware (Extra Entwicklungsprojekt)
-•Testfälle
-
-
-### Arten von Entwicklungsprozessen
-### "Project Manager" Zertifizierung (Certification of Project Managers)
-## OpenUP
-## SCRUM
-## Example: Change Control
-## Metamodelle
-
-# Requirements Engineering
-
-# Software Estimation
-
-# Testen
-
-# Software Product Lines
-
-# Software Maintenance
-
-
-
 
 # Software Development Processes
 ## Motivation

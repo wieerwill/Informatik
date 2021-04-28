@@ -75,3 +75,9 @@ Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vor
 
 ## Lizenz
 Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt ihr [hier](LICENSE) nachlesen.
+
+
+## Hinweis für Dozenten
+Wir freuen uns immer helfen zu können. Für Fragen und Hinweise können Sie uns jederzeit kontaktieren. Sollten Sie ein Problem mit Persönlichkeits- oder Urheberrechten finden geben Sie uns bitte umgehend bescheid (per Email oder Issue), wir nehmen jeden Hinweis ernst.
+
+Grundlage für dieses Repository ist das Teilen öffentlich bekannten Wissens und aufbereiten der Vorlesunginhalte die wir Studenten besuchen. Wir haben uns bewusst für ein öffentliches Repository entschieden um Missbrauch und Verjähung vorzubeugen; leider gibt es immer noch "geheime" Dropbox Ordner mit teils veraltetem oder falschem Inhalt.

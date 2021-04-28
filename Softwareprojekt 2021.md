@@ -12,7 +12,7 @@
 | 7   | Remote AR                                                                            | Virtual Worlds and Digital Games Group        |
 | 8   | Optimierte Visualisierung von Entwicklungskomponenten                                | System- und Software-Engineering CARIAD SE    |
 | 9   | REST-API für Metamodelldatenbanken                                                   | System- und Software-Engineering              |
-| 10  | ? to be defined??                                                                    | Softwarearchitekturen und Produktlinien       |
+| 10  | Küchenplaner                                                                         | Softwarearchitekturen und Produktlinien       |
 | 11  | Smart City Ilmenau                                                                   | Datenbanken und Informationssysteme           |
 | 12  | Android-App zur 3D-Kopfvermessung für die Biomedizintechnik                          | Biomedizinische Technik                       |
 | 13  | E-AVR – Emulator für die ATmega µC-Familie zur Einbettung in verteilte Lernszenarien | Fachgebiet Integrierte Kommunikationssysteme  |
@@ -174,10 +174,44 @@ Anschließend sollten manuelle Anpassungen des Nutzers möglich sein, um zusätz
 ### Kommunikation:
 WebEx, Discord, E-Mail
 
-## 7.  Remote AR
-?
+## 7. Remote AR
+### Beschreibung:
+Mobile Geräte wie Tablets und Smartphones sind seit einigen Jahren in der Lage, komplexe Augmented-Reality-Anwendungen auszuführen. Aufgrund dessen hat in den letzten Jahren immer mehr an Bedeutung gewonnen. Allerdings gibt es nach wie vor Probleme im Bereich der AR, für die aktuelle Mobilgerät unter Umständen keine ausreichenden Ressourcen enthalten. Ebenso kann auch das Testen und Debuggen von AR-Mobilanwendungen umständlich sein.
+Seit einigen Jahren bieten Firmen wie Youtube oder Netflix die Möglichkeit, Videoinhalte in hoher Qualität und mit relativ geringer Verzögerung zu übertragen. Selbst für interaktive Anwendungen wie Spiele, wo eine niedrige Latenz einen hohen Stellenwert hat, existieren mittlerweile Streamingdienste wie Google Stadia und auch Steam bietet mit Remote Play die Möglichkeit, Spiele auf entfernten Rechnern auszuführen.
+Das Ziel des Projekts besteht darin, eine ähnliche Streamingmöglichkeit auch für den Einsatz in Augmented-Reality-Anwendungen zu ermöglichen. Hierzu sollen relevante Informationen des Mobilgeräts wie z.B. Kamera- und Sensordaten sowie Trackingdaten an einen Server-PC gesendet werden. Der Server wiederum soll entsprechend AR-Inhalte visualisieren, die dann auf dem Mobilgerät dargestellt werden können.
 
-## 8.  Optimierte Visualisierung von Entwicklungskomponenten
+### Aufgabe:
+Es sollen eine Bibliothek und Testanwendungen entstehen, mit denen das beschriebene AR-Streaming umgesetzt und getestet werden kann. Bei den Daten handelt es sich um solche, die durch AR-Toolkits bereitgestellt werden, d.h. sie müssen nicht eigens erzeugt werden. Konkret handelt es sich um folgende Daten:
+
+App -> Server:
+- Trackinginformation (Kamerapose, AR Anchors)
+- Kamerabild
+- Nutzereingaben
+- Beleuchtungsdaten (Ambientes Licht, Environment Maps)
+- Ebenen
+- Tiefenbild
+- 3D-Objekte
+
+Server -> App:
+- Gerenderte Bilder
+- Beleuchtungsdaten (Environment Maps)
+- 3D-Objekte
+
+Es handelt sich also um Bilddaten (Farbe, Tiefe, Environment Maps) und ansonsten um einfache Vektoren und Matrizen. Für 3D-Objekte können fertige Dateiformate genutzt werden.
+Tracking- und Kameradaten sind grundsätzlich relevant für eine Echtzeitanwendung und haben daher besonders hohe Priorität. Bei den restlichen Daten ist es auch möglich, dass diese seltener übertragen werden bzw. länger dafür Zeit haben. Da dies aber von der Anwendung abhängt, soll zusätzlich die Möglichkeit bestehen, Prioritäten zu bestimmen bzw. überhaupt auszuwählen, welche Daten aktuell gestreamt werden und welche Qualität diese besitzen sollen.
+Die Bibliothek soll jeweils einen Modus für die Server-Seite und einen für eigentliche App besitzen. Dementsprechend sollen für beide Seiten Anwendungen entstehen, von denen die Bibliothek eingebunden wird, um diese zu testen.
+
+### Entwicklung:
+- Unity mit Visual Studio wird empfohlen, Unreal Engine oder native Entwicklung mit Xcode oder Android Studio ist auch möglich
+- In Abhängigkeit der gewählten Umgebung: C# (Unity), C++ (Unreal), Swift (Xcode), Java oder Kotlin (Android)
+- Freie Wahl der Sprache für die Server-Anwendung
+- Gitlab
+
+### Kommunikation:
+- Webex, Discord, Mail
+- Gitlab TU Ilmenau
+
+## 8. Optimierte Visualisierung von Entwicklungskomponenten
 ### Szenario
 Die steigende Anzahl an Funktionen in modernen Fahrzeugen und die zunehmende Komplexität der verbauten Systeme erfordern immer detailliertere und umfangreichere Beschreibung der Funktionalität der einzusetzenden Steuergeräte einzeln und im Verbund. Dazu ist eine Vielzahl an Dokumentation zu erstellen und vorzuhalten, bspw. zu den verwendeten Kommunikationsprotokollen und Bussystemen, den einzelnen Softwarefunktionen, Prozessschritten, oder auch Tests und Reports.
 
@@ -195,16 +229,92 @@ Da zur Zeit ja Präsenztermine zur Abstimmung leider nicht möglich sind, ist de
 - Slack
 
 ## 9.  REST-API für Metamodelldatenbanken
-?
+### Motivation:
+Bei Stand-der-Technik Entwicklungsprojekten von komplexen vernetzten Systemen kommen Computermodelle jeglicher Art zur Anwendung. Modelle dienen als Kommunikationsmittel im frühen Entwurfsprozess, als disziplinübergreifender Wissensspeicher in großen und sehr großen Vorhaben sowie als Analyse- und Experimentierplattform z.B. für Performanceanalysen, Trade-Off Studien, automatisierten Optimierungen der Systemarchitektur oder gar der Bewertung des Risikos einer Cyber-Attacke.
+Die modellgetriebene Softwareentwicklung (MDE) hat darüber hinaus den Anspruch, Modelle zur automatisierten Erstellung von Artefakten wie z.B. Quellcode, diverse Konfigurationsdaten für die umgesetzten Systemkomponenten zu erstellen oder sogar einen digitalen Zwilling des entwickelten Systems zu erzeugen.
+Eine Modellierungssprache, die sich in der Domäne der System- und Softwareentwicklung als ein de facto Standard etabliert hat, ist die Unified Modeling Language (UML) der Object Management Group (OMG). 
+Das Forschungsprojekt MDE4CPP (Model-driven Engineering for C++) des Fachgebiets System- und Software-Engineering der Technische Universität Ilmenau ist eine Implementierung des modellgetriebenen Entwicklungsmethodik für die Programmiersprache C++ (C++14). Es beinhaltet unter anderem folgende Komponenten: 
+- Implementierungen fundamentaler Meta- und Metametamodelle (UML, Ecore), 
+- Quellcodegeneratoren zur Erzeugung von C++ Quellcode aus Modellen basierend auf Ecore sowie UML, 
+- Diverse Editoren zur graphischen Erstellung von Modellen, und 
+- Eine Ausführungsumgebungen für UML-Modelle gemäß entsprechender Industriestandards der OMG (fUML, PSCS und PSSM).
+Um die im C++-Quellcode bzw. als ausführbares Programm vorliegenden Modelle mit anderen Softwarewerkzeugen zu verbinden und das hinterlegte Systemwissen nutzbar zu machen oder zu ergänzen existiert derzeit noch keine technische Umsetzung in MDE4CPP. 
+Das REST-Paradigma unterstützt die Idee eines einheitlichen Konzepts zur Realisierung einer sogenannten Maschine-Maschine-Kommunikation. REST-API steht für „Representational State Transfer - Application Programming Interface“. Hiermit ist es möglich, Informationen und Aufgaben auf verschiedene Server zu verteilen und mit Hilfe eines HTTP-Requests (Hyper Text Transfer Protocol) anzufordern. Der HTTP-Request setzt sich aus dem Endpoint und den entsprechenden Parametern der Anfrage zusammen. Eine REST-API ist somit eine Programmierschnittstelle, die HTTP-Anfragen nutzt, um mittels PUT, GET, POST und DELETE auf Daten zuzugreifen.
+Beim Entwurf einer solchen API geht es darum, Transaktionen aufzuschlüsseln und anhand dieser eine Reihe kleiner Module zu erstellen, Modularität sollte von Anfang an berücksichtigt werden. REST-APIs profitieren von der durch RFC 2616 definierten HTTP-Anfragemethode, wobei PUT verwendet wird, um den Zustand eines Objektes, einer Datei oder eines Blocks zu ändern oder auf den aktuellen Stand zu bringen. Erstellen einer Ressource erfolgt durch POST, Abrufen durch GET und Löschen mit DELETE.
 
-## 10. ? to be defined?? 
-?
+Ziel des Softwareprojekts ist die Konzeption, die technische Realisierung sowie die Nachweiserbringung der Funktionsfähigkeit einer REST-Schnittstelle für das MDE4CPP-Framework. Dies umfasst unter anderem die folgenden Aufgaben:
+- Einarbeitung in die Konzepte von MDE4CPP und REST
+- Stand-der-Technik Analyse von REST/RESTful-Schnittstellen in C++
+- Erarbeitung des Konzepts (Architektur, Datenaustauschformat(e), Programmabläufe)
+- Konzeption und Umsetzung der einzelnen REST-Module und weiteren notwendigen Funktionalitäten (Server-Komponente)
+- Konzeption und Umsetzung einer (grafischen) Anwendung (Client-Komponente)
+- Erstellung eines Beispielmodells in UML zur Demonstration der umgesetzten Funktionen
+
+### Entwicklung:
+- Programmierung in C++ und weiteren Programmiersprachen notwendig (insbesondereClient-Anwendung)
+- Entwicklung mit: Eclipse Modeling Framework, Acceleo (Quellcodegenerierung), Sirius (graphische Modell-Editoren), UML-Designer
+- Modellierungssprachen: UML
+- Programmier-Frameworks: MDE4CPP, noch zu definierende REST-Bibliothek für C++ (C++14)
+- Versionskontrolle: Git, GitHub
+- Vorgehen: wahlweise; iterativ empfohlen
+
+### Kommunikation:
+- WebEx, Email, Slack
+
+
+## 10. Küchenplaner
+### Beschreibung:
+Es geht um die Erstellung (es gibt aber schon Vorarbeiten) eines Web-basierten Planungs- und Verwaltungssystems, dass in einer Küche/Restaurant Verwendung finden soll. Lagerhaltung, Menüplanung und die Zeitpläne für die Mitarbeiter sollen durch dieses Werkzeug unterstützt werden.
+
+### Entwicklung:
+- Spring
+- Java
+- verwendete Tools (Versionierung, Bugtracker, Projektmanagement, Kommunikation, können von der Gruppe gewählt werden)
+
+# Kommunikation:
+WebEx, Slack, ...
 
 ## 11. Smart City Ilmenau
-?
+### Beschreibung:
+Ilmenau wird smart! 
+Durch SmartCity Dienste kann das Leben in einer Stadt verbessert oder zumindest angenehmer und komfortabler gestaltet werden. Aus diesem Grund strebt auch die Stadt Ilmenau die Umsetzung von solchen Diensten an. Die Basis von Smart-City-Diensten sind Sensoren, die in der Stadt und ihren Gemeinden angebracht werden sollen. Um Dienste auf Basis der Sensorwerte anbieten zu können, müssen diese Werte an einer zentralen Stelle gesammelt und Entwicklern als offene Daten zur Verfügung gestellt werden.
+
+Das Ziel dieses Softwareprojekts ist der Aufbau eines OpenData Hubs zum Sammeln und Bereitstellen der Sensordaten, sodass Nutzer die vorhandenen Daten suchen und visualisieren können.
+
+Projektpartner:
+- Stadt Ilmenau
+- Thüringer Zentrum für Lernende Systeme und Robotik (TZLR)
+- IMMS GmbH
+
+### Entwicklung:
+- DKAN
+- Datenbanken (InfluxDB, PostgreSQL)
+- Datenstromsysteme wie Kinesis, Spark Streaming, ...
+- Programmiersprachen: Java, Go, HTML, Javascript, CSS, ...
+- Sonstiges: Git, evtl. Amazon Web Services (Cloud)
+
+### Kommunikation:
+WebEx & Slack
 
 ## 12. Android-App zur 3D-Kopfvermessung für die Biomedizintechnik
-?
+### Beschreibung:
+In diesem Projekt soll eine App entwickelt werden, mit welcher man die die Position von EEG-Elektroden auf einem Kopf bestimmen kann. Dies ist wichtig, weil Menschen sehr unterschiedliche Kopfformen und -größen haben und die EEG-Hauben bei unterschiedlichen Patienten und Probanden sehr unterschiedlich gut sitzen. Am Institut für biomedizinische Technik entwickeln wir EEG-Hauben. Wir wollen die Forscher dabei unterstützen bessere Hauben zu entwickeln und die weltweiten Anwender dabei unterstützen passende Hauben zu finden.
+
+Bausteine
+- App-Gerüst / UI
+- Benutzerführung durch den Bildaufnahme-Prozess
+- 3D-Daten-Berechnung (Photogrammetrie)
+- 3D-Visualisierung
+- Datenhaltung und Export
+
+### Entwicklung:
+- Programmiersprache / IDE: bevorzugt C# mit Xamarin
+- verwendete Tools: Github oder Gitlab
+- gewünschtes Vorgehen: flexibel
+
+### Kommunikation:
+WebEx, WebEx Teams, Slack und Notion; offen für andere Tools
+
 
 ## 13. E-AVR – Emulator für die ATmega µC-Familie zur Einbettung in verteilte Lernszenarien
 ### Beschreibung:

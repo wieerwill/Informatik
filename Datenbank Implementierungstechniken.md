@@ -608,3 +608,376 @@ Suchen einer Seite
     - _unsortierte und sortierte Tabelle_ : alle Seiten im Puffer vermerkt
     - _verkettete Liste_ : schnelleres sortiertes Einfügen möglich
     - _Hashtabelle_ : bei geschickt gewählter Hashfunktion günstigster Such- und Änderungsaufwand
+
+
+Speicherzuteilung im Puffer
+- bei mehreren parallel anstehenden Transaktionen
+    - Lokale Strategien: Jeder Transaktion bestimmte disjunkte Pufferteile verfügbar machen (Größe statisch vor Ablauf der Transaktionen oder dynamisch zur Programmlaufzeit entscheiden)
+    - Globale Strategien: Zugriffsverhalten aller Transaktionen insgesamt bestimmt Speicherzuteilung (gemeinsam von mehreren Transaktionen referenzierte Seiten können so besser berücksichtigt werden)
+    - Seitentypbezogene Strategien: Partition des Puffers: Pufferrahmen für Datenseiten, Zugriffspfadseiten, Data-Dictionary-Seiten, usw. - eigene Ersetzungstrategien für die jeweiligen Teile möglich
+
+## Seitenersetzungsstrategien
+- Speichersystem fordert Seite $E_2$ an, die nicht im Puffer vorhanden ist
+- Sämtliche Pufferrahmen sind belegt
+- vor dem Laden von _E_ 2 Pufferrahmen freimachen
+- nach den unten beschriebenen Strategien Seite aussuchen
+- Ist Seite in der Zwischenzeit im Puffer verändert worden, so wird sie nun auf Platte zurückgeschrieben
+- Ist Seite seit Einlagerung in den Puffer nur gelesen worden, so kann sie überschrieben werden (verdrängt)
+
+![](Assets/DBimpl-Seitenersetzung.png)
+
+Seitenersetzung in DBMS
+- Fixieren von Seiten (Pin oder Fix):
+    - Fixieren von Seiten im Puffer verhindert das Verdrängen
+    - speziell für Seiten, die in Kürze wieder benötigt werden
+- Freigeben von Seiten (Unpin oder Unfix):
+    - Freigeben zum Verdrängen
+    - speziell für Seiten, die nicht mehr benötigt werden
+- Zurückschreiben einer Seite:
+    - Auslösen des Zurückschreibens für geänderte Seiten bei Transaktionsende
+
+Seitenersetzung: Verfahren
+- grundsätzliches Vorgehen beim Laden einer Seite:
+    - Demand-paging-Verfahren: genau eine Seite im Puffer durch angeforderte Seite ersetzen
+    - Prepaging-Verfahren: neben der angeforderten Seite auch weitere Seiten in den Puffer einlesen, die eventuell in der Zukunft benötigt werden (z.B. bei BLOBs sinnvoll)
+- Ersetzen einer Seite im Puffer:
+    - optimale Strategie: Welche Seite hat maximale Distanz zu ihrem nächsten Gebrauch? (nicht realisierbar, zukünftiges Referenzverhalten nicht vorhersehbar) -> Realisierbare Verfahren besitzen keine Kenntnisse über das zukünftige Referenzverhalten
+    - Zufallsstrategie: jeder Seite gleiche Wiederbenutzungswahrscheinlichkeit zuordnen
+
+![](Assets/DBimpl-Seitenersetzung-2.png)
+
+Fehlseitenrate
+$$F=1-p(\frac{1-F_{kalt}}{p_{DB}}) * 100%$$
+- $p$: Puffergröße
+- $p_{DB}$: Puffergröße, die gesamte Datenbank umfasst
+- $F_{kalt}$: Fehlseitenrate beim Kaltstart (d.h. leerer Puffer) -> Verhältnis von Anzahl der in den Puffer geladenen Seiten zur Anzahl der Referenzierungen
+
+- Gute, realisierbare Verfahren sollen vergangenes Referenzverhalten auf Seiten nutzen, um Erwartungswerte für Wiederbenutzung schätzen zu können
+       - besser als Zufallsstrategie
+       - Annäherung an optimale Strategie
+
+
+Merkmale gängiger Strategien
+- Alter der Seite im Puffer:
+    - Alter einer Seite nach Einlagerung (die globale Strategie (G))
+    - Alter einer Seite nach dem letztem Referenzzeitpunkt (die Strategie des jüngsten Verhaltens (J))
+    - Alter einer Seite wird nicht berücksichtigt (-)
+- Anzahl der Referenzen auf Seite im Puffer:
+    - Anzahl aller Referenzen auf eine Seite (die globale Strategie (G))
+    - Anzahl nur der letzten Referenzen auf eine Seite (die Strategie des jüngsten Verhaltens (J))
+    - Anzahl der Referenzen wird nicht berücksichtigt (-)
+
+
+Gängige Strategien
+![](Assets/DBimpl-seitenwechsel-strategie.png)
+
+Klassifikation gängiger Strategien
+| Verfahren  | Prinzip | Alter | Anzahl |
+| --- | --- | --- |
+FIFO | älteste Seite ersetzt | G  |-
+LFU (least fre-quently used) | Seite mit geringster Häufigkeit ersetzen | - | G
+LRU (least recently used) | Seite ersetzen, die am längsten nicht referenziert wurde (System R) | J | J
+DGCLOCK (dyn. generalized clock) | Protokollierung der Ersetzungshäufigkeiten wichtiger Seiten | G | JG
+LRD (least reference density) | Ersetzung der Seite mit geringster Referenzdichte | JG | G
+
+Beispiel
+- Folge von Seitenanforderungen #1, #2 ...
+- Puffer der Größe 6
+    ![](Assets/DBimpl-beispiel-seitenwechsel.png)
+- Ablauf mit
+    - FIFO ...
+    - LFU ...
+
+### LRU: Least Recently Used
+- Idee: Seite im Puffer ersetzen, die am längsten nicht mehr referenziert wurde
+- Implementierung:
+    - Liste oder Stack von Seiten
+    - Puffer-Hit bewegt Seite zur MRU-Position (Most Recently Used)
+    - Seite am Ende wird verdrängt
+    ![](Assets/DBimpl-seitenersetzung-lru.png)
+- Varianten:
+    - durch Interpretation der Pin-Operation: Least Recently Referenced bzw. Least Recently Unfixed
+    - durch Berücksichtigung der letzten $k$ Referenzierungen (d.h. auch Häufigkeit): LRU-K
+
+LRU: Probleme
+- Lock Contention in Multitasking-Umgebungen
+    - Zugriff auf LRU-Liste/Stack und Bewegung der Seite erfordert exklusiven Zugriff auf Datenstruktur
+    - aufwendige Operation
+- berücksichtigt nur Alter jedoch nicht Häufigkeit
+    - oft gelesene Seiten mit langen Pausen zwischen den Zugriffen werden nicht adäquat berücksichtigt
+- "Zerstörung" des Puffers durch Scan-Operator
+    - Seiten werden nur einmalig gelesen, verdrängen jedoch andere (ältere) Seiten
+
+
+Lock Contention bei der Pufferverwaltung
+![](Assets/DBimpl-lock-contention.png)
+- Sperren = Latches: leichtgewichtige (wenige CPU-Instruktionen) Objekte für kurzzeitige Sperren
+
+Approximierende Verfahren
+- Idee:
+    - Vereinfachung der benötigten Datenstruktur durch Approximation
+    - Effektivität (Trefferrate) vs. Skalierbarkeit (Anzahl der Threads)
+- CLOCK: Approximation der Historie durch Bit-Schieberegister der Länge _k_
+       - $k= 0$: FIFO
+       - $k\rightarrow\infty$: LRU
+       - typisch: $k = 1$
+
+### CLOCK
+- Seite mit Benutzt-Bit; bei Referenzierung auf "1" setzen
+- bei Seitenfehler:
+    - zyklische Suche
+    - Seite mit "0" verdrängen
+    - sonst Setzen auf "0"
+    ![](Assets/DBimpl-seitenersetzung-clock.png)
+
+### GCLOCK
+- Verbesserung: Benutzt-Bit durch Referenzzähler _RC_ ersetzen; Dekrementierung bei Suche
+- weitere Verbesserungen:
+    - Initialisierung des Referenzzählers
+    - Inkrementierung des Zählers
+    - seitentypspezifische Maßnahmen (für Typ _i_ : Seitengewicht $E_i$ bei Erstreferenzierung, $W_i$ bei weiterer Referenzierung)
+    - Altern
+- Varianten: Seite _j_ von Typ _i_
+    - $GCLOCK(V1): RC_j := E_i ; RC_j := RC_j + W_i$
+    - $GCLOCK(V2): RC_j := E_i ; RC_j := W_i$ (speziell für $W_i\geq E_i$)
+
+### DGCLOCK
+- weitere Verbesserung: globaler Zähler $GC$ und Normierung der aktuellen Referenzzähler $RC$
+    1. Initialisierung: $RC_j := GC$
+    2. Referenzierung von Seite $j : GC := GC + 1 ; RC_j := RC_j + GC$
+    3. bei Überschreiten $GC > MIN : \forall j : RC_j := RC_j / C$
+
+### ARC
+- Adaptive Replacement Cache: neues Verfahren, das Nachteile von LRU vermeidet
+- Prinzip:
+    - Puffergröße _c_
+    - Pufferverzeichnis für 2 _c_ Seiten: _c_ Pufferseiten + _c_ History-Seiten
+    - Liste _L_ 1 : "recency" = kurzfristiger Nutzen-> Seiten, die kürzlich einmal gelesen wurden
+    - Liste _L_ 2 : "frequency" = langfristiger Nutzen -> Seiten, die kürzlich mehrmals gelesen wurden
+- Ausgangspunkt: einfache Verdrängungsstrategie DBL(2 _c_ )
+    - Ersetze die LRU-Seite in $L_1$, wenn $|L_1| = c$ , sonst ersetze LRU-Seite in $L_2$
+    - Ziel: Größenausgleich zwischen $L_1$ und $L_2$
+    - Zugriff Seite $p$: wenn Treffer -> $p$ wird MRU in $L_2$ , sonst in $L_1$
+
+Von DBL(2c) zu ARC
+![](Assets/DBimpl-DBL-to-arc.png)
+- Parameter $p$ mit $0\leq p \leq c$
+    - $T_1$ enthält $p$ Seiten, $T_2$ enthält $c-p$ Seiten
+- Wahl von $p$?
+
+ARC: Algorithmus
+- Seitenanforderungen: $x_1,x_2 ,..., x_t ,...$
+- $p = 0, T_1 , B_1 , T_2 ,B_2$ sind initial leer
+    - Fall 1: $x_t \in T_1 \cup T_2$ /* Puffer-Hit */
+        - Bewege $x_t$ zu MRU von $T_2$
+    - Fall 2: $x_t \in B_1$
+        - Anpassung: $p = min\{ p +\delta_1,c\}$ mit $\delta_1 = \begin{cases} 1\quad\text{ wenn } |B_1|\geq |B_2| \\ \frac{|B_2|}{|B_1|} \quad\text{ sonst}\end{cases}$
+        - $REPLACE(x_t,p)$
+        - Bewege $x_t$ von $B_1$ zu MRU von $T_2$
+    - Fall 3: $x_t \in B_2$
+      - Anpassung: $p = max\{ p - \delta_2, 0 \}$ mit $\delta_2 = \begin{cases} 1\quad\text{ wenn } |B_2|\geq |B_1| \\ \frac{|B_1|}{|B_2|} \quad\text{ sonst}\end{cases}$
+      - $REPLACE(x_t,p)$
+      - Bewege $x_t$ von $B_2$ zu MRU von $T_2$
+    - Fall 4: $x_t \not\in T_1 \cup B_1 \cup T_2 \cup B_2$
+      - 4.A: $|L_1| = c$
+        - Wenn $|T_1|<c$, lösche LRU in $B_1$, $REPLACE(x_t,p)$
+        - sonst /* $B_1 = \varnothing$ */ lösche LRU in $T_1$
+      - 4.B: $|L_1|<c$
+        - Wenn $|L_1|+|L_2|\geq c$ , lösche LRU in $B_2$, $REPLACE(x_t,p)$
+      - Bewege $x_t$ zu MRU in $T_1$
+
+ARC: $REPLACE(x_t, p)$
+
+    if $|T_1|>p$ oder ($x_t\in B_2$ und $|T_1|=p$)
+        Lösche LRU-Seite in $T_1$ und bewege sie zu MRU in $B_1$
+    else
+        Lösche LRU-Seite in $T_2$ und bewege sie zu MRU in $B_2$
+    endif
+
+ARC: Beispiel
+1. erstmalige Anforderung der Seiten $#1$ und $#2$: Aufnahme in
+    ![](Assets/DBimpl-arc-bsp-1.png)
+2. nächsten Referenzierung von $#1$: Übernahme in $T_2$-Liste
+    ![](Assets/DBimpl-arc-bsp-2.png)
+3. Seitenanforderungen $#3$, $#4$, $#1$; mit $#2$ wird diese in $T_2$ bewegt; Platz für Seite $#5$:
+    ![](Assets/DBimpl-arc-bsp-3.png)
+4. Beantwortung der Seitenanforderungen $#1$ und $#2$ aus $T_2$
+5. neu angeforderten Seiten $#5$ und $#6$ in $T_1$
+    ![](Assets/DBimpl-arc-bsp-4.png)
+6. Seitenanforderung $#7$: Verdrängen von $#4$ aus $T_1$ in $B_1$
+    ![](Assets/DBimpl-arc-bsp-5.png)
+
+ARC: Eigenschaften
+- kontinuierliche Anpassung von Parameter $p$
+    - Lernraten $\delta_1$ und $\delta_2$
+    - "Investieren in Liste mit dem meisten Profit"
+- Berücksichtigung von Alter und Häufigkeit
+    - durch zwei Listen $L_1$ und $L_2$
+- Scan-Resistenz
+    - einmalig gelesene Seiten nur in $L_1$, niemals in $L_2$
+- Vermeidung von Lock Contention durch approximierende Varianten (CAR, CART, ...)
+
+## Fazit
+- Pufferverwaltungsstrategie mit großem Einfluss auf Performance
+- in kommerziellen Systemen meist LRU mit Variationen
+- besondere Behandlung von Full-Table-Scans
+- weiterer Einflussfaktor: Puffergröße
+- Indikator: Trefferrate (engl. _hit ratio_ )
+    $$hit\_ratio = \frac{\text{Anz. log. Zugriffe} - \text{Anz. phys. Zugriffe}}{\text{Anz. log. Zugriffe}}$$
+- 5-Minuten-Regel (Gray, Putzolu 1997):
+    Daten, die in den nächsten 5 Min. wieder referenziert werden, sollten im Hauptspeicher gehalten werden
+
+# Indexierung von Daten
+## Klassifikation der Speichertechniken
+Einordnung in 5-Schichten-Architektur
+- **Speichersystem** fordert über Systempufferschnittstelle Seiten an
+- interpretiert diese als interne Datensätze
+- interne Realisierung der logischen Datensätze mit Hilfe von Zeigern, speziellen Indexeinträgen und weiteren Hilfsstrukturen
+- Zugriffssystem abstrahiert von der konkreten Realisierung
+
+Klassifikation der Speichertechniken
+- Kriterien für Zugriffsstrukturen oder Zugriffsverfahren:
+    - organisiert interne Relation selbst (Dateiorganisationsform) oder zusätzliche Zugriffsmöglichkeit auf bestehende interne Relation (Zugriffspfad)
+    - Art der Zuordnung von gegebenen Attributwerten zu Datensatz-Adressen: Schlüsselvergleich = Zuordnung von Schlüsselwert zu Adresse über Hilfsstruktur; Schlüsseltransformation = Berechnung der Adresse aus Schlüsselwert (z.B. über Hashfunktion)
+    - Arten von Anfragen, die durch Dateiorganisationsformen und Zugriffspfade effizient unterstützt werden können
+![](Assets/DBimpl-speichertechniken-klassifikation.png)
+
+Dünn- vs. dichtbesetzter Index
+- dünnbesetzter Index: nicht für jeden Zugriffsattributwert _K_ ein Eintrag in Indexdatei sondern z.B. nur für _Seitenanführer_ einer sortierten Relation
+- dichtbesetzter Index: für jeden Datensatz der internen Relation ein Eintrag in Indexdatei
+
+Geclusterter vs. nicht-geclusterter Index
+- geclusterter Index: in der gleichen Form sortiert wie interne Relation
+- nicht-geclusterter Index: anders organisiert als interne Relation
+- Primärindex oft dünnbesetzt und geclustert
+- jeder dünnbesetzte Index ist auch geclusterter Index, aber nicht umgekehrt
+- Sekundärindex kann nur dichtbesetzter, nicht-geclusterter Index sein (auch: invertierte Datei)
+![](Assets/Dbimpl-cluster-vs-nicht-cluster.png)
+
+Statische vs. dynamische Struktur
+- statische Zugriffsstruktur: optimal nur bei bestimmter (fester) Anzahl von verwaltenden Datensätzen
+- dynamische Zugriffsstruktur: unabhängig von der Anzahl der Datensätze optimal
+       - dynamische Adresstransformationsverfahren verändern dynamisch Bildbereich der Transformation
+       - dynamische Indexverfahren verändern dynamisch Anzahl der Indexstufen => in DBS üblich
+
+Klassifikation
+![](Assets/DBimpl-zugriff-klassifikation.png)
+
+
+## Statische Verfahren
+- Heap, indexsequenziell, indiziert-nichtsequenziell
+- oft grundlegende Speichertechnik in RDBS
+- direkte Organisationsformen: keine Hilfsstruktur, keine Adressberechnung (Heap, sequenziell)
+- statische Indexverfahren für Primärindex und Sekundärindex
+
+
+Statische Verfahren: Überblick
+![](Assets/DBimpl-statische-verfahren.png)
+
+### Heap
+Organisation
+- völlig unsortiert speichern
+- physische Reihenfolge der Datensätze ist zeitliche Reihenfolge der Aufnahme von Datensätzen
+    | | | | |
+    | --- | --- | --- | --- | ---
+    8832 | Max | Mustermann | ... | 9.1.2003
+    5588 | Beta | Alpha | ... | 7.3.1978
+    4711 | Gamma | Delta | ... | 2.5.1945 
+
+Operationen
+- insert: Zugriff auf letzte Seite der Datei. Genügend freier Platz => Satz anhängen. Sonst nächste freie Seite holen
+- delete: lookup, dann Löschbit auf 0 gesetzt
+- lookup: sequenzielles Durchsuchen der Gesamtdatei, maximaler Aufwand (Heap-Datei meist zusammen mit Sekundärindex eingesetzt; oder für sehr kleine Relationen)
+- Komplexitäten:
+    - Neuaufnahme von Daten $O(1)$
+    - Suchen $O(n)$
+
+### Sequenzielle Speicherung
+- sortiertes Speichern der Datensätze
+    | | | | |
+    | --- | --- | --- | --- | ---
+    4711 | Gamma | Delta | ... | 2.5.1945 
+    5588 | Beta | Alpha | ... | 7.3.1978
+    8832 | Max | Mustermann | ... | 9.1.2003
+
+Sequenzielle Datei: Operationen
+- insert: Seite suchen, Datensatz einsortieren => beim Anlegen oder sequenziellen Füllen einer Datei jede Seite nur bis zu gewissem Grad (etwa 66%) füllen
+- delete: Aufwand bleibt
+- Folgende Dateiorganisationsformen:
+    - schnelleres lookup
+    - mehr Platzbedarf (durch Hilfsstrukturen wie Indexdateien)
+    - mehr Zeitbedarf bei insert und delete
+- klassische Indexform: indexsequenzielle Dateiorganisation
+
+## Indexsequenzielle Dateiorganisation
+- Kombination von sequenzieller Hauptdatei und Indexdatei: indexsequenzielle Dateiorganisationsform
+- Indexdatei kann geclusterter, dünnbesetzter Index sein
+- mindestens zweistufiger Baum
+    - Blattebene ist Hauptdatei (Datensätze)
+    - jede andere Stufe ist Indexdatei
+![](Assets/DBimpl-indexsequentiell.png)
+
+Aufbau der Indexdatei
+- Datensätze in Indexdatei: _(Primärschlüsselwert, Seitennummer)_ zu jeder Seite der Hauptdatei genau ein Index-Datensatz in Indexdatei
+- Problem: "Wurzel" des Baumes bei einem einstufigen Index nicht nur eine Seite
+![](Assets/DBimpl-indexsequentiell-2.png)
+
+
+Mehrstufiger Index
+- Optional: Indexdatei wieder indexsequenziell verwalten
+- Idealerweise: Index höchster Stufe nur noch eine Seite
+![](Assets/DBimpl-indexsequentiell-3.png)
+
+lookup bei indexsequenziellen Dateien
+- lookup-Operation sucht Datensatz zum Zugriffsattributwert _w_
+- Indexdatei sequenziell durchlaufen, dabei $(v_1,s)$ im Index gesucht mit $v_1\leq w$:
+    - $(v_1,s)$ ist letzter Satz der Indexdatei, dann kann Datensatz zu _w_ höchstens auf dieser Seite gespeichert sein (wenn er existiert)
+    - nächster Satz $(v_2,s′)$ im Index hat $v_2 > w$ , also muss Datensatz zu _w_, wenn vorhanden, auf Seite _s_ gespeichert sein
+- $(v_1,s)$ überdeckt Zugriffsattributwert _w_
+
+insert bei indexsequenziellen Dateien
+- insert: zunächst mit lookup Seite finden
+- Falls Platz, Satz sortiert in gefundener Seite speichern; Index anpassen, falls neuer Satz der erste Satz in der Seite
+- Falls kein Platz, neue Seite von Freispeicherverwaltung holen; Sätze der "zu vollen" Seite gleichmäßig auf alte und neue Seite verteilen; für neue Seite Indexeintrag anlegen
+- Alternativ neuen Datensatz auf Überlaufseite zur gefundenen Seite
+
+delete bei indexsequenziellen Dateien
+- delete: zunächst mit lookup Seite finden
+- Satz auf Seite löschen (Löschbit auf 0)
+- erster Satz auf Seite: Index anpassen
+- Falls Seite nach Löschen leer: Index anpassen, Seite an Freispeicherverwaltung zurück
+
+Probleme indexsequenzieller Dateien
+- stark wachsende Dateien: Zahl der linear verketteten Indexseiten wächst; automatische Anpassung der Stufenanzahl nicht vorgesehen
+- stark schrumpfende Dateien: nur zögernde Verringerung der Index- und Hauptdatei-Seiten
+- unausgeglichene Seiten in der Hauptdatei (unnötig hoher Speicherplatzbedarf, zu lange Zugriffszeit)
+
+
+Indiziert-nichtsequenzieller Zugriffspfad
+- zur Unterstützung von Sekundärschlüsseln
+- mehrere Zugriffpfade dieser Form pro Datei möglich
+- einstufig oder mehrstufig: höhere Indexstufen wieder indexsequenziell organisiert
+
+Aufbau der Indexdatei
+- Sekundärindex, dichtbesetzter und nicht-geclusteter Index
+- zu jedem Satz der Hauptdatei Satz $(w,s)$ in der Indexdatei
+- _w_ Sekundärschlüsselwert, _s_ zugeordnete Seite
+    - entweder für ein _w_ mehrere Sätze in die Indexdatei aufnehmen
+    - oder für ein _w_ Liste von Adresse in der Hauptdatei angeben
+![](Assets/Dbimpl-nichtsequentieller-index.png)
+
+Operationen
+- lookup: _w_ kann mehrfach auftreten, Überdeckungstechnik nicht benötigt
+- insert: Anpassen der Indexdateien
+- delete: Indexeintrag entfernen
+
+Probleme statischer Verfahren
+- unzureichende Anpassung an wachsende/schrumpfende Datenmengen
+- schlechte Ausnutzung von Speicher nach Seitensplits
+- Bevorzugung bestimmter Attribute (Schlüssel)
+- daher in den folgenden Kapiteln:
+    - bessere Datenstrukturen zur Schlüsselsuche als zusätzlicher Zugriffspfad = Approximation einer Funktion Schlüssel -> Speicheradresse, z.B. über Baumverfahren
+    - Erweiterung von Hashverfahren um Anpassung des Bildbereichs = dynamische Hashverfahren
+    - Behandlung von zusammengesetzten Schlüsseln = multidimensionale Zugriffsverfahren, z.B. multidimensionale Bäume oder raumfüllende Kurven
+
+# Baumbasierte Indexstrukturen

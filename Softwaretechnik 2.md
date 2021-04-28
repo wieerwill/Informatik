@@ -81,7 +81,7 @@
     - [Historische Daten](#historische-daten)
     - [Expert Judgement](#expert-judgement)
     - [Proxy-Based Estimates](#proxy-based-estimates)
-    - [Function Points 1/7](#function-points-17)
+    - [Function Points](#function-points)
         - [Conversion of FP to LOC](#conversion-of-fp-to-loc)
         - [Examples of Productivity](#examples-of-productivity)
     - [Checklist for individual estimates](#checklist-for-individual-estimates)
@@ -328,12 +328,12 @@ OpenUP is based on a set of mutually supporting core principles:
 
 Core principles mapping to Agile manifesto
 
-| OpenUP/Basic Key principles | Agile manifesto |
-| -- | -- |
-Collaborate to align interests and share understanding | Individuals and interactions over process and tools
-Evolve to continuously obtain feedback and improve | Responding to change over following a plan
-Balance competing priorities to maximize stakeholder value | Customer collaboration over contract negotiation
-Focus on articulating the architecture | Working software over comprehensive documentation
+| OpenUP/Basic Key principles                                | Agile manifesto                                     |
+| ---------------------------------------------------------- | --------------------------------------------------- |
+| Collaborate to align interests and share understanding     | Individuals and interactions over process and tools |
+| Evolve to continuously obtain feedback and improve         | Responding to change over following a plan          |
+| Balance competing priorities to maximize stakeholder value | Customer collaboration over contract negotiation    |
+| Focus on articulating the architecture                     | Working software over comprehensive documentation   |
 
 Governance Model - Balancing Agility and Discipline
 - OpenUP incorporates a three-tiered governance model to plan, execute, and monitor progress.
@@ -372,11 +372,11 @@ Micro-Increments
 - At the Lifecycle Objectives Milestone, progress towards meeting these objectives are assessed and a decision to proceed with the same scope, change the scope, or terminate the project is made.
 - More specifically, the objectives and associated process activities are:
 
-| Phase objectives | Activities that address objectives | 
-| -- | -- | 
-| Define a Vision | Initiate Project |
-| Identify key system functionality | Identify and Refine Requirements |
-| Determine at least one possible solution | Agree on Technical Approach |
+| Phase objectives                                                     | Activities that address objectives          |
+| -------------------------------------------------------------------- | ------------------------------------------- |
+| Define a Vision                                                      | Initiate Project                            |
+| Identify key system functionality                                    | Identify and Refine Requirements            |
+| Determine at least one possible solution                             | Agree on Technical Approach                 |
 | Understand the cost, schedule, and risks associated with the project | Initiate Project, Plan and Manage Iteration |
 
 ### OpenUP Lifecycle - Elaboration Phase
@@ -384,32 +384,32 @@ Micro-Increments
 - At the Lifecycle Architecture Milestone, progress towards meeting these objectives are assessed and a decision to proceed with the same scope, change the scope, or terminate the project is made.
 - More specifically, the objectives and associated process activities are:
 
-Phase objectives | Activities that address objectives
--- | --
-Get a more detailed understanding of the requirements | Identify and Refine Requirements
-Design, implement, validate, and baseline an architecture | Develop the Architecture, Develop Solution Increment, Test Solution
-Mitigate essential risks, and produce accurate schedule and cost estimates | Plan and Manage Iteration, Ongoing Tasks
+| Phase objectives                                                           | Activities that address objectives                                  |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Get a more detailed understanding of the requirements                      | Identify and Refine Requirements                                    |
+| Design, implement, validate, and baseline an architecture                  | Develop the Architecture, Develop Solution Increment, Test Solution |
+| Mitigate essential risks, and produce accurate schedule and cost estimates | Plan and Manage Iteration, Ongoing Tasks                            |
 
 ### OpenUP Lifecycle - Construction Phase
 - The primary purpose of the Construction Phase is to develop and verify the solution incrementally.
 - At the Initial Operational Capability Milestone, progress towards meeting these objectives is assessed and a decision to deploy the solution to the operation environment is made.
 - More specifically, the objectives and associated process activities are:
 
-| Phase objectives | Activities that address objectives |
-| -- | -- |
-Iteratively develop a complete product that is ready to transition to the user community | Identify and Refine Requirements; Develop Solution Increment; Test Solution | 
-Minimize development costs and achieve some degree of parallelism | Plan and Manage Iteration Ongoing Tasks
+| Phase objectives                                                                         | Activities that address objectives                                          |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Iteratively develop a complete product that is ready to transition to the user community | Identify and Refine Requirements; Develop Solution Increment; Test Solution |
+| Minimize development costs and achieve some degree of parallelism                        | Plan and Manage Iteration Ongoing Tasks                                     |
 
 ### OpenUP Lifecycle - Transition Phase
 - The primary purpose of the Transition Phase is to deploy the solution to the operational environment and validate it.
 - At the Product Release Milestone, progress towards meeting these objectives are assessed and a decision to make the product generally available is made.
 - More specifically, the objectives and associated process activities are:
 
-Phase objectives | Activities that address objectives |
-| -- | -- |
-Beta test to validate that user expectations are met | Ongoing Tasks; Develop Solution Increment; Test Solution |
-Achieve stakeholder concurrence that deployment is complete | Plan and Manage Iteration; Test Solution |
-Improve future project performance through lessons learned | Plan and Manage Iteration
+| Phase objectives                                            | Activities that address objectives                       |
+| ----------------------------------------------------------- | -------------------------------------------------------- |
+| Beta test to validate that user expectations are met        | Ongoing Tasks; Develop Solution Increment; Test Solution |
+| Achieve stakeholder concurrence that deployment is complete | Plan and Manage Iteration; Test Solution                 |
+| Improve future project performance through lessons learned  | Plan and Manage Iteration                                |
 
 ### OpenUP Disciplines
 - A discipline is a collection of tasks that are related to a major "area of concern" within the overall project.
@@ -719,16 +719,16 @@ Kano Model
 ### Web-Search
 Example: Literature Search
 
-| Name | Weblink | 
-| --- | ---- |
-Web of Knowledge | http://www.webofknowledge.com/
-IEEE explore | http://ieeexplore.ieee.org
-ACM | http://dl.acm.org/
-Scirus | http://www.scirus.com
-DBLP | http://www.informatik.uni-trier.de/~ley/db/
-Citeseer(X) | http://citeseerx.ist.psu.edu
-Google Scholar | http://scholar.google.de/
-Patentdatenbanken | http://worldwide.espacenet.com/
+| Name              | Weblink                                     |
+| ----------------- | ------------------------------------------- |
+| Web of Knowledge  | http://www.webofknowledge.com/              |
+| IEEE explore      | http://ieeexplore.ieee.org                  |
+| ACM               | http://dl.acm.org/                          |
+| Scirus            | http://www.scirus.com                       |
+| DBLP              | http://www.informatik.uni-trier.de/~ley/db/ |
+| Citeseer(X)       | http://citeseerx.ist.psu.edu                |
+| Google Scholar    | http://scholar.google.de/                   |
+| Patentdatenbanken | http://worldwide.espacenet.com/             |
 
 ### Patentrecherche
 - Viele Informationen sind nur in Patenten verfügbar
@@ -863,32 +863,32 @@ Document Structure
 Please read and observe the following directions carefully:
 "For each question, fill in the upper and lower bounds that, in your opinion, give you a 90% chance of including the correct value. Be careful not to make your ranges either too wide or too narrow. Make them wide enough so that, in your best judgment, the ranges give you a 90% chance of including the correct answer. Please do not research any of the answers-this quiz is intended to assess your estimation skills, not your research skills. You must fill in an answer [or each item; an omitted item will be scored as an incorrect item. Please limit your time on this exercise to 10 minutes."
 
-Low Estimate | High Estimate | Question |
---- | --- | --- |
-|| Surface temperature of the sun
-|| Latitude of Shanghai
-|| Area of the Asian continent
-|| The year of Alexander the Great‘s birth
-|| Total value of U.S. currency in circulation in 2004
-|| Total volume of the Great Lakes
-|| Worldwide box office receipts for the movie _Titanic_
-|| Total length of the coastline of the Pacific Ocean
-|| Number of book titles published in the U.S. since 1976
-|| Heaviest blue whale ever recorded
+| Low Estimate | Question                                               |
+| ------------ | ------------------------------------------------------ |
+|              | Surface temperature of the sun                         |
+|              | Latitude of Shanghai                                   |
+|              | Area of the Asian continent                            |
+|              | The year of Alexander the Great‘s birth                |
+|              | Total value of U.S. currency in circulation in 2004    |
+|              | Total volume of the Great Lakes                        |
+|              | Worldwide box office receipts for the movie _Titanic_  |
+|              | Total length of the coastline of the Pacific Ocean     |
+|              | Number of book titles published in the U.S. since 1976 |
+|              | Heaviest blue whale ever recorded                      |
 
 Results: A Little Estimation Game
-Low Estimate | Question |
---- | --- |
-6000 ºC | Surface temperature of the sun
-31º | North Latitude of Shanghai
-44.390.000 km^2 | Area of the Asian continent
-356 BC | The year of Alexander the Great‘s birth
-$719.9 billion | Total value of U.S. currency in circulation in 2004
-23000 km^3 | Total volume of the Great Lakes
-1,834 x 10^9 $ | Worldwide box office receipts for the movie Titanic
-135663 km | Total length of the coastline of the Pacific Ocean
-22 million | Number of book titles published in the U.S. since 1976
-170 metric tons | Heaviest blue whale ever recorded
+| Low Estimate    | Question                                               |
+| --------------- | ------------------------------------------------------ |
+| 6000 ºC         | Surface temperature of the sun                         |
+| 31º             | North Latitude of Shanghai                             |
+| 44.390.000 km^2 | Area of the Asian continent                            |
+| 356 BC          | The year of Alexander the Great‘s birth                |
+| $719.9 billion  | Total value of U.S. currency in circulation in 2004    |
+| 23000 km^3      | Total volume of the Great Lakes                        |
+| 1,834 x 10^9 $  | Worldwide box office receipts for the movie Titanic    |
+| 135663 km       | Total length of the coastline of the Pacific Ocean     |
+| 22 million      | Number of book titles published in the U.S. since 1976 |
+| 170 metric tons | Heaviest blue whale ever recorded                      |
 
 -> Most people reach a 30% confidence level if they believe it is a 90% confidence level!
 
@@ -925,20 +925,20 @@ Improvement in estimation at the Boeing Company. As with the U.S. Air Force proj
 
 ##### Project Outcomes by Project Size
 | Size in Function Points (and Approximate Lines of Code) | Early | On Time | Late | Failed (Canceled) |
---- | --- | --- | --- | --- |
-10 FP (1,000 LOC) | 11% | 81% | 6% | 2%
-100 FP (10,000 LOC) | 6% | 75% | 12% | 7%
-1,000 FP (100,000 LOC) | 1% | 61% | 18% | 20%
-10,000 FP (1,000,000 LOC) | <1% | 28% | 24% | 48%
-100,000 FP (10,000,000 LOC) | 0% | 14% | 21% | 65%
+| ------------------------------------------------------- | ----- | ------- | ---- | ----------------- |
+| 10 FP (1,000 LOC)                                       | 11%   | 81%     | 6%   | 2%                |
+| 100 FP (10,000 LOC)                                     | 6%    | 75%     | 12%  | 7%                |
+| 1,000 FP (100,000 LOC)                                  | 1%    | 61%     | 18%  | 20%               |
+| 10,000 FP (1,000,000 LOC)                               | <1%   | 28%     | 24%  | 48%               |
+| 100,000 FP (10,000,000 LOC)                             | 0%    | 14%     | 21%  | 65%               |
 
 [McCo 2006], p25, Source: Estimating Software Costs (Jones 1998).
 
 
 ##### Communication Paths
-Paths (P) | 0 | 1 | 3 | 6 | ... | 15
---- | --- | --- | --- | --- | --- | ---
-Nodes (n) | 1 | 2 | 3 | 4 | ... | 6
+| Paths (P) | 0   | 1   | 3   | 6   | ... | 15  |
+| --------- | --- | --- | --- | --- | --- | --- |
+| Nodes (n) | 1   | 2   | 3   | 4   | ... | 6   |
 
 $$P=\sum_{i=1}^{n-1} i=\frac{(n-1)*((n-1)+1)}{2}=\frac{2*(n-1)}{2}$$
 Gaußsche Summenformel: $\sum_{i=1}^n = 1+2+3+...+n=\frac{n(n+1)}{2}$
@@ -1001,38 +1001,38 @@ Source: Adapted from Estimating Software Costs (Jones 1998) and Software Cost Es
 ### Zählen
 Which quantities to count? [McCo 2006, p86..88]
 
-| Quantity to Count | Historical Data Needed to Convert the Count to an Estimate |
-|--- | --- |
-|Marketing requirements | Average effort hours per requirement for development |
-| | Average effort hours per requirement for independent testing|
-| | Average effort hours per requirement for documentation|
-| | Average effort hours per requirement to create engineering requirements from marketing requirements|
-| Features | Average effort hours per feature for development and/or testing|
-| Use cases | Average total effort hours per use case|
-| |Average number of use cases that can be delivered in a particular amount of calendar time |
-| Stories | Average total effort hours per story
-|| Average number of stories that can be delivered in a particular amount of calendar time
-| Engineering Requirements | Average number of engineering requirements that can be formally inspected per hour
-|| Average effort hours per requirement for development/test/documentation
-| Function Points | Average development/test/documentation effort per Function Point
-|| Average lines of code in the target language per Function Point
-| Change requests | Average development/test/documentation effort per change request (depending on variability of the change requests, the data might be decomposed into average effort per small, medium, and large change request)
-| Web pages | Average effort per Web page for user interface work
-|| Average whole-project effort per Web page (less reliable, but can be an interesting data point)
-| Reports | Average effort per report for report work
-| Dialog Boxes | Average effort per dialog for user interface work
-| Database Tables | Average effort per table for database work
-|| Average whole-project effort per table (less reliable, but can be an interesting data point)
-| Classes | Average effort hours per class for development
-|| Average effort hours to formally inspect a class
-|| Average effort hours per class for testing
-| Defects found | Average effort hours per defect to fix
-|| Average effort hours per defect to regression test
-|| Average number of defects that can be corrected in a particular amount of calendar time
-| Configurations settings | Average effort per configuration setting
-| Lines of code already written | Average number of defects per line of code
-|| Average lines of code that can be formally inspected per hour
-|| Average new lines of code from one release to the next
+| Quantity to Count             | Historical Data Needed to Convert the Count to an Estimate                                                                                                                                                       |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Marketing requirements        | Average effort hours per requirement for development                                                                                                                                                             |
+|                               | Average effort hours per requirement for independent testing                                                                                                                                                     |
+|                               | Average effort hours per requirement for documentation                                                                                                                                                           |
+|                               | Average effort hours per requirement to create engineering requirements from marketing requirements                                                                                                              |
+| Features                      | Average effort hours per feature for development and/or testing                                                                                                                                                  |
+| Use cases                     | Average total effort hours per use case                                                                                                                                                                          |
+|                               | Average number of use cases that can be delivered in a particular amount of calendar time                                                                                                                        |
+| Stories                       | Average total effort hours per story                                                                                                                                                                             |
+|                               | Average number of stories that can be delivered in a particular amount of calendar time                                                                                                                          |
+| Engineering Requirements      | Average number of engineering requirements that can be formally inspected per hour                                                                                                                               |
+|                               | Average effort hours per requirement for development/test/documentation                                                                                                                                          |
+| Function Points               | Average development/test/documentation effort per Function Point                                                                                                                                                 |
+|                               | Average lines of code in the target language per Function Point                                                                                                                                                  |
+| Change requests               | Average development/test/documentation effort per change request (depending on variability of the change requests, the data might be decomposed into average effort per small, medium, and large change request) |
+| Web pages                     | Average effort per Web page for user interface work                                                                                                                                                              |
+|                               | Average whole-project effort per Web page (less reliable, but can be an interesting data point)                                                                                                                  |
+| Reports                       | Average effort per report for report work                                                                                                                                                                        |
+| Dialog Boxes                  | Average effort per dialog for user interface work                                                                                                                                                                |
+| Database Tables               | Average effort per table for database work                                                                                                                                                                       |
+|                               | Average whole-project effort per table (less reliable, but can be an interesting data point)                                                                                                                     |
+| Classes                       | Average effort hours per class for development                                                                                                                                                                   |
+|                               | Average effort hours to formally inspect a class                                                                                                                                                                 |
+|                               | Average effort hours per class for testing                                                                                                                                                                       |
+| Defects found                 | Average effort hours per defect to fix                                                                                                                                                                           |
+|                               | Average effort hours per defect to regression test                                                                                                                                                               |
+|                               | Average number of defects that can be corrected in a particular amount of calendar time                                                                                                                          |
+| Configurations settings       | Average effort per configuration setting                                                                                                                                                                         |
+| Lines of code already written | Average number of defects per line of code                                                                                                                                                                       |
+|                               | Average lines of code that can be formally inspected per hour                                                                                                                                                    |
+|                               | Average new lines of code from one release to the next                                                                                                                                                           |
 
 ### Historische Daten
 - The organization‘s historical data
@@ -1068,57 +1068,57 @@ Expert Judgement in Groups [McCo 2006, p151]
 Classify existing components/features ... (small, medium, large) ... and estimate new features by these classes
 [McCo 2006, p138]
 
-| Example | Size | Average Staff Days per Feature | Number of Features | Estimated Effort (Staff Days) | 
-| --- | --- | --- | --- | --- |
-| Temp | Very Small | 48 | 6 | 288 |
-| Speed | Small | 53 | 20 | 1060
-| Daytrip | Medium | 60 | 4 | 240
-| Heartbeat Zone | Large | 66 | 5 | 330
-| Navigation | Very Large | 107 | 3 | 321
-| Total | | - | 38 | 2239
+| Example        | Size       | Average Staff Days per Feature | Number of Features | Estimated Effort (Staff Days) |
+| -------------- | ---------- | ------------------------------ | ------------------ | ----------------------------- |
+| Temp           | Very Small | 48                             | 6                  | 288                           |
+| Speed          | Small      | 53                             | 20                 | 1060                          |
+| Daytrip        | Medium     | 60                             | 4                  | 240                           |
+| Heartbeat Zone | Large      | 66                             | 5                  | 330                           |
+| Navigation     | Very Large | 107                            | 3                  | 321                           |
+| Total          |            | -                              | 38                 | 2239                          |
 
-### Function Points 1/7
+### Function Points
 - Developed by Allan Albrecht, IBM, 1970
 - Assess each functional requirement
 ![Balz 1996](Assets/Softwaretechnik2-Function-Points.png)
 
- Category | Criterion | Simple | Middle | Complex |
- --- | --- | --- | --- | --- |
-Input | Number of different data Elements | 1-5 | 6-10 | >10 |
-| Validate Input | Formal | Formal & logically | Formal & logically & DB-access |
-| Required complexity of the user interface | low | average | high |
-Queries | Number of different keys | 1 | 2 | >2 |
-| Required complexity of the user interface | low | average | high |
-Output | Number of colums | 1-6 | 7-15 | >15 |
-| different data elements | 1-5 | 6-10 | >10 |
-| Change of output groups (e.g. three data items to be printed but in two different groups -> grouped GUI elements) | 1 | 2-3 | >3 |
-| Preparation for printing data elements | none | some | many |
-Database | Number of Keys | 1 | 2 | >2 |
-| Different data elements | 1-20 | 21-40 | >40 |
-| Use existing data? (can be re-used) | yes | - | no |
-| Change of an already implemented data(structure) | no | yes | - |
-Reference Data | Read-only-files: Number of different data elements | 1-5 | 6-10 | >10 |
-| Read-only-files: Number of keys | 1 | 2 | >2 |
-| Tables: Number of different data elements | 1-5 | 6-10 | >10 |
-| Tables: Dimensions | 1 | 2 | 3 |
+ | Category       | Criterion                                                                                                         | Simple | Middle             | Complex                        |
+ | -------------- | ----------------------------------------------------------------------------------------------------------------- | ------ | ------------------ | ------------------------------ |
+ | Input          | Number of different data Elements                                                                                 | 1-5    | 6-10               | >10                            |
+ |                | Validate Input                                                                                                    | Formal | Formal & logically | Formal & logically & DB-access |
+ |                | Required complexity of the user interface                                                                         | low    | average            | high                           |
+ | Queries        | Number of different keys                                                                                          | 1      | 2                  | >2                             |
+ |                | Required complexity of the user interface                                                                         | low    | average            | high                           |
+ | Output         | Number of colums                                                                                                  | 1-6    | 7-15               | >15                            |
+ |                | different data elements                                                                                           | 1-5    | 6-10               | >10                            |
+ |                | Change of output groups (e.g. three data items to be printed but in two different groups -> grouped GUI elements) | 1      | 2-3                | >3                             |
+ |                | Preparation for printing data elements                                                                            | none   | some               | many                           |
+ | Database       | Number of Keys                                                                                                    | 1      | 2                  | >2                             |
+ |                | Different data elements                                                                                           | 1-20   | 21-40              | >40                            |
+ |                | Use existing data? (can be re-used)                                                                               | yes    | -                  | no                             |
+ |                | Change of an already implemented data(structure)                                                                  | no     | yes                | -                              |
+ | Reference Data | Read-only-files: Number of different data elements                                                                | 1-5    | 6-10               | >10                            |
+ |                | Read-only-files: Number of keys                                                                                   | 1      | 2                  | >2                             |
+ |                | Tables: Number of different data elements                                                                         | 1-5    | 6-10               | >10                            |
+ |                | Tables: Dimensions                                                                                                | 1      | 2                  | 3                              |
 
-| Category | Classification | Weight
---- | --- | --- 
-Input | simple | 3
-| middle | 4
-| complex | 6
-Queries | simple | 3
-| middle | 4
-| complex | 6
-Output | simple | 3
-| middle | 5
-| complex | 7
-Database | simple | 3
-| middle | 10
-| complex | 15
-Refernce Data | simple | 3
-| middle | 7
-| complex | 10
+| Category       | Classification | Weight |
+| -------------- | -------------- | ------ |
+| Input          | simple         | 3      |
+|                | middle         | 4      |
+|                | complex        | 6      |
+| Queries        | simple         | 3      |
+|                | middle         | 4      |
+|                | complex        | 6      |
+| Output         | simple         | 3      |
+|                | middle         | 5      |
+|                | complex        | 7      |
+| Database       | simple         | 3      |
+|                | middle         | 10     |
+|                | complex        | 15     |
+| Reference Data | simple         | 3      |
+|                | middle         | 7      |
+|                | complex        | 10     |
 
 ![](Assets/Softwaretechnik2-Function-Points2.png)
 
@@ -1126,18 +1126,18 @@ Refernce Data | simple | 3
 ![McCo 2006](Assets/Softwaretechnik2-FP-to-LOC.png)
 
 ##### Examples of Productivity
-| Product | New Lines of Code Equivalent | Staff Years | Year Built | Approx. Cost in 2006 Dollars | $/LOC | LOC/Staff Year |
---- | --- | --- | --- | --- | --- | --- | 
-IBM Chief Programmer Team Project | 83,000 | 9 | 1968 | 1,400,000* | $17 | 9,200 
-Lincoln Continental | 83,000 | 35 | 1989 | 2,900,000 | $35 | 2,400
-IBM Checkout Scanner | 90,000 | 58 | 1989 | 4,900,000 | $55 | 1,600
-Microsoft Word for Windows 1.0 | 249,000| 55| 1989 | 8,500,000* | $34|  4,500
-NASA SEL Project | 249,000|  24 | 2002|  3,700,000*|  $15 | 10,000
-Lotus 123 v. 3 | 400,000 | 263 | 1989 | 36,000,000 | $90 | 1,500
-Microsoft Excel 3.0 | 649,000 | 50* | 1990|  7,700,000 | $12 | 13,000
-Citibank Teller Machine | 780,000 | 150 | 1989 | 22,000,000 | $28 | 5,200
-Windows NT 3.1 (first version) | 2,880,000 | 2,000* | 1994 | 200,000,000 | $70 | 1,400
-Space Shuttle | 25,600,000 | 22,096 | 1989 | 2,000,000,000 | $77 | 1,200
+| Product                           | New Lines of Code Equivalent | Staff Years | Year Built | Approx. Cost in 2006 Dollars | $/LOC | LOC/Staff Year |
+| --------------------------------- | ---------------------------- | ----------- | ---------- | ---------------------------- | ----- | -------------- |
+| IBM Chief Programmer Team Project | 83,000                       | 9           | 1968       | 1,400,000*                   | $17   | 9,200          |
+| Lincoln Continental               | 83,000                       | 35          | 1989       | 2,900,000                    | $35   | 2,400          |
+| IBM Checkout Scanner              | 90,000                       | 58          | 1989       | 4,900,000                    | $55   | 1,600          |
+| Microsoft Word for Windows 1.0    | 249,000                      | 55          | 1989       | 8,500,000*                   | $34   | 4,500          |
+| NASA SEL Project                  | 249,000                      | 24          | 2002       | 3,700,000*                   | $15   | 10,000         |
+| Lotus 123 v. 3                    | 400,000                      | 263         | 1989       | 36,000,000                   | $90   | 1,500          |
+| Microsoft Excel 3.0               | 649,000                      | 50*         | 1990       | 7,700,000                    | $12   | 13,000         |
+| Citibank Teller Machine           | 780,000                      | 150         | 1989       | 22,000,000                   | $28   | 5,200          |
+| Windows NT 3.1 (first version)    | 2,880,000                    | 2,000*      | 1994       | 200,000,000                  | $70   | 1,400          |
+| Space Shuttle                     | 25,600,000                   | 22,096      | 1989       | 2,000,000,000                | $77   | 1,200          |
 
 *Estimated
 

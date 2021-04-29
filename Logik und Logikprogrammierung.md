@@ -242,3 +242,210 @@ Es gilt also z.B.: $(\alpha\leftrightarrow\beta\vee\lnot\gamma\rightarrow\sigma\
 
 Dennoch: Zu viele Klammern schaden i.A. nicht.
 
+
+## Natürliches Schließen
+Ein (mathematischer) Beweis zeigt, wie die Behauptung aus den Voraussetzungen folgt.  
+Analog zeigt ein "Beweisbaum" (= "Herleitung" = "Deduktion"), wie eine Formel der Aussagenlogik aus Voraussetzungen (ebenfalls Formeln der Aussagenlogik) folgt.  
+Diese "Deduktionen" sind Bäume, deren Knoten mit Formeln beschriftet sind: 
+- an der Wurzel steht die Behauptung (= Konklusion $\varphi$) 
+- an den Blättern stehen Voraussetzungen (= Hypothesen oder Annahmen aus $\Gamma$) 
+- an den inneren Knoten stehen "Teilergebnisse" und "Begründungen" 
+
+![](Assets/Logik-deduktionsbaum.png)
+
+## Konstruktion von Deduktionen
+Aus der Annahme der Aussage $\varphi$ folgt $\varphi$ unmittelbar: eine triviale Deduktion
+
+$\varphi$ mit Hypothesen $\{\varphi\}$ und Konklusion $\varphi$.  
+
+Folgend werden wir 
+- überlegen, wie aus "einfachen mathematischen Beweisen" umfangreichere entstehen können und 
+- parallel dazudefinieren, wie aus einfachen Deduktionen umfangreichere konstruiert werden können. 
+
+### Konjunktion
+#### Konjunktionseinführung in math. Beweisen
+Ein mathematischer Beweis einer Aussage "$\varphi$ und $\psi$" sieht üblicherweise so aus: 
+- "Zunächst zeige ich $\varphi$: ... (hier steckt die eigentliche Arbeit)  
+- Jetzt zeige ich $\psi$: ... (nochmehr eigentliche Arbeit)  
+- Also haben wir "$\varphi$ und $\psi$" gezeigt. qed" 
+
+#### Konjunktionseinführung (ausführlich)
+Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-konjunktionseinführung.png)
+
+Kurzform: $\frac{\varphi\quad\psi}{\varphi\wedge\psi} (\wedge I)$ 
+
+#### Konjunktionselimination (ausführlich)
+Ist D eine Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus $\Gamma$, so ergeben sich die folgenden Deduktionen von $\varphi$ bzw. von $\psi$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-Konjunktionselimination.png)
+
+Kurzform: $\frac{\varphi\wedge\psi}{\varphi} (\wedge E_1) \quad\quad \frac{\varphi\wedge\psi}{\psi} (\wedge E_2)$
+
+#### Beispiel
+Wir zeigen $\varphi\wedge\psi$ unter der Hypothese $\psi\wedge\varphi$:...
+
+![](Assets/Logik-Deduktionsbeispiel.png)
+
+Dies ist eine Deduktion mit Konklusion $\varphi\wedge\psi$ und Hypothese $\psi\wedge\varphi$ (zweimal verwendet).
+
+### Implikation
+#### Implikationseinführung in math. Beweisen
+Ein mathematischer Beweis einer Aussage "Aus $\varphi$ folgt $\psi$" sieht üblicherweise so aus:  
+- "Angenommen, $\varphi$ gilt.
+- Dann ... (hier steckt die eigentliche Arbeit).  
+- Damit gilt $\psi$.  
+- Also haben wir gezeigt, dass $\psi$ aus $\varphi$ folgt. qed"
+
+Die Aussage $\varphi$ ist also eine "temporäre Hypothese". 
+
+#### Implikationseinführung (ausführlich)
+Ist D eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-Implikationseinführung.png)
+
+Kurzform 
+$$[\varphi]$$ 
+$$\vdots$$ 
+$$\frac{\psi}{\varphi\rightarrow\psi} (\rightarrow I)$$
+
+Beispiel: ... Dies ist eine Deduktion von $\varphi\rightarrow\varphi$ ohne Hypothesen. 
+
+#### Implikationselimination in math. Beweisen
+Ein mathematischer Beweis einer Aussage "$\psi$ gilt" über eine Hilfsaussage sieht so aus:
+- "Zunächst zeigen wir, dass $\varphi$ gilt: ...
+- Dann beweisen wir, dass $\psi$ aus $\varphi$ folgt: ...
+- Also haben wir $\psi$ gezeigt. qed"
+
+#### Implikationselimination oder modus ponens (ausführlich)
+Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\psi$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-Implikationselimination.png)
+
+Kurzform: $\frac{\varphi\quad \varphi\rightarrow\psi}{\psi} (\rightarrow E)$
+
+#### Beispiel
+![](Assets/Logik-Implikationseleimination-beispiel.png)
+
+Bemerkung: die Indizes 1, 2 und 3 machen deutlich, welche Hypothese bei welcher Regelanwendung gestrichen wurde. Deduktionen können recht groß werden.
+
+Diese Deduktion hat keine Hypothesen!
+
+
+### Disjunktion
+#### Disjunktionselimination oder Fallunterscheidung in math. Beweisen
+Ein mathematischer Beweis einer Aussage "$\sigma$ gilt" mittels Fallunterscheidung sieht üblicherweise so aus:
+- "Zunächst zeigen wir, dass $\varphi\vee\psi$ gilt: ...
+- Gilt $\varphi$, so gilt $\sigma$, denn ...
+- Gilt $\psi$, so gilt ebenfalls $\sigma$, denn ...
+- Also haben wir gezeigt, dass $\sigma$ gilt. qed"  
+
+Die Aussagen $\varphi$ und $\psi$ sind also wieder "temporäre Hypothesen".
+
+#### Disjunktionselimination oder Fallunterscheidung (ausführlich)
+Ist D eine Deduktion von $\varphi\vee\psi$ mit Hypothesen aus $\Gamma$, ist E eine Deduktion von $\sigma$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$und ist F eine Deduktion von $\sigma$ mit Hypothesen aus $\Gamma\cup\{\psi\}$, so ergibt sich die folgende Deduktion von $\sigma$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-Disjunktionselimination.png)
+
+Disjunktionselimination Kurzform: 
+$$\quad [\psi] \quad[\varphi]$$
+$$\quad \vdots \quad\vdots$$
+$$\frac{\varphi\vee\psi \quad\sigma \quad\sigma}{\sigma} (\vee E)$$
+
+Disjunktionseinführung (Kurzform)
+$$\frac{\varphi}{\varphi\vee\psi} (\vee I_1) \quad \frac{\psi}{\varphi\vee\psi} (\vee I_2)$$
+
+### Negation
+#### Negationseinführung in math. Beweisen
+Ein mathematischer Beweis einer Aussage "$\varphi$ gilt nicht" sieht so aus:  
+- "Angenommen,$\varphi$gilt.  
+- Dann folgt $0=1$, denn .... Mit anderen Worten, dies führt zu einem Widerspruch.
+- Also haben wir gezeigt, dass $\varphi$ nicht gilt. qed"  
+- 
+Die Aussage $\varphi$ ist also wieder eine "temporäre Hypothese". 
+
+#### Negationseinführung (ausführlich)
+Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$:  
+
+![](Assets/Logik-Negationseinführung.png)
+
+Kurzform:
+$$[\varphi]$$
+$$\vdots$$
+$$\frac{\bot}{\lnot\varphi} (\lnot I)$$
+
+#### Negationselimination (ausführlich)
+Ist D eine Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\varphi$ mit Hypothesen aus $\gamma$, so ergibt sich die folgende Deduktion von $\bot$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-Negationselimination.png)
+
+Kurzform: $\frac{\lnot\varphi \quad \varphi}{\bot} (\lnot E)$
+
+### Falsum
+Hat man "$0=1$" bewiesen, so ist man bereit, alles zu glauben: ex falso sequitur quodlibet
+
+ausführlich: Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$: 
+
+![](Assets/Logik-Falsumeinführung.png)
+
+Kurzform: $\frac{\bot}{\varphi} (\bot)$
+
+#### math. Widerspruchsbeweis
+Ein indirekter Beweis einer Aussage "$\varphi$ gilt" sieht üblicherweise so aus:
+- "Angenommen, $\varphi$ gilt nicht, d.h. $\lnot\varphi$ gilt.
+- Dann folgt $0=1$, d.h. ein Widerspruch.  
+- Also haben wir gezeigt, dass $\varphi$ gilt. qed"
+ 
+Die Aussage $\lnot\varphi$ ist also wieder eine "temporäre Hypothese".
+
+#### reductio ad absurdum (ausführlich)
+Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\lnot\varphi\}$, so ergibt sich die folgende Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$:
+
+![](Assets/Logik-reductio-ad-absurdum.png)
+
+Kurzform: 
+$$[\lnot\varphi]$$
+$$\vdots$$
+$$\frac{\bot}{\varphi} (raa)$$
+
+## Regeln des natürlichen Schließens
+> Definition
+> 
+> Für eine Formelmenge $\Gamma$ und eine Formel $\varphi$ schreiben wir $\Gamma\vdash\varphi$ wenn es eine Deduktion gibt mit Hypothesen aus $\Gamma$ und Konklusion $\varphi$. Wir sagen "$\varphi$ ist eine syntaktische Folgerung von $\Gamma$".
+> 
+> Eine Formel $\varphi$ ist ein Theorem, wenn $\varnothing\vdash\varphi$ gilt.
+
+### Bemerkung
+$\Gamma\vdash\varphi$ sagt (zunächst) nichts über den Inhalt der Formeln in $\Gamma\cup\{\varphi\}$ aus, sondern nur über die Tatsache, dass $\varphi$ mithilfe des natürlichen Schließens aus den Formeln aus $\Gamma$ hergeleitet werden kann.
+
+Ebenso sagt "$\varphi$ ist Theorem" nur, dass $\varphi$ abgeleitet werden kann, über "Wahrheit" sagt dieser Begriff (zunächst) nichts aus.
+
+### Satz
+Für alle Formeln $\varphi$ und $\psi$ gilt $\{\lnot(\varphi\vee\psi)\}\vdash\lnot\varphi\wedge\lnot\psi$.
+
+Beweis: Wir geben eine Deduktion an...
+- $\{\lnot\varphi\wedge\lnot\psi\}\vdash\lnot(\varphi\vee\psi)$
+    ![](Assets/Logik-beispiel-1.png)
+- $\{\lnot\varphi\vee\lnot\psi\}\vdash\lnot(\varphi\wedge\psi)$
+    ![](Assets/Logik-beispiel-2.png)
+- $\{\varphi\vee\psi\} \vdash \psi\vee\varphi$
+    ![](Assets/Logik-beispiel-3.png)
+
+### Satz
+Für jede Formel $\varphi$ ist $\lnot\lnot\varphi\rightarrow\varphi$ ein Theorem.
+
+Beweis: Wir geben eine Deduktion mit Konklusion $\lnot\lnot\varphi\rightarrow\varphi$ ohne Hypothesen an...
+
+### Satz
+Für jede Formel $\varphi$ ist $\varphi\vee\lnot\varphi$ ein Theorem.
+
+Beweis: Wir geben eine Deduktion mit Konklusion $\varphi\vee\lnot\varphi$ ohne Hypothesen an...
+
+Bemerkung: Man kann beweisen, dass jede Deduktion der letzten beiden Theoreme die Regel (raa) verwendet, sie also nicht "intuitionistisch" gelten. 
+
+### Satz
+$\{\lnot(\varphi\wedge\psi)\}\vdash\lnot\varphi\vee\lnot\psi$
+
+![](Assets/Logik-beispiel-4.png)
+

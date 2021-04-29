@@ -409,4 +409,24 @@ Neben den Hauptanforderungen dieses Softwareprojekts sind die Studenten geforder
 
 
 ## 17. Real time representation and visualization of distributed software systems 
-?
+### Kontext
+Die REWE digital betreibt für den Online-Lebensmittelhandel mehrere Plattformen, die auf einer komplexen, verteilten Microservice-Architektur basieren. Mit mehr als 40 agilen Teams werden diese Umgebungen kontinuierlich weiterentwickelt. Um eine konsistente Architektur zu gewährleisten, gibt es eine Reihe von Architektur-Guides, die für die Entwicklungsteam Leitplanken vorgeben.
+
+Die Architekten der REWE digital arbeiten aktuell an einem Projekt zur automatischen Erfassung und Visualisierung der Architektur der einzelnen Plattformen. In weiteren Schritten sollen diese Informationen konsolidiert und zu einem Gesamtbild aggregiert werden. Auf diesen Daten soll dann später eine automatische Validierung der Architektur-Guides entstehen. Die Informationen über die aktuell laufenden Services und der Infrastruktur der einzelnen Plattformen werden in einer Graphdatenbank gespeichert. Dazu gibt es in jeder Plattform
+eine Instanz Im Rahmen dieses Softwareprojektes suchen wir eine Lösung, um die Daten jeder Plattform in ein einheitliches Datenmodell zu konvertieren. Diese Daten sollen dann in einer zentralen Service-Instanz zu einem konsistenten Gesamtmodell aggregiert werden.
+
+### Aufgabenstellung
+Aufgabe ist die Formalisierung eines gerichteten Graphen um Änderungen innerhalb dieses Graphen in Echtzeit zwischen verschiedenen Systemen zu synchronisieren. Der Graph beschreibt dabei ein verteiltes System bestehend aus Knoten und Kanten. Die Knoten beschreiben Elemente des verteilten Systems, Beispiele sind Microservices, Datenbanken oder Kafka Topics und deren Eigenschaften. Die Kanten beschreiben Beziehungen zwischen den Elementen und die Eigenschaften der Beziehungen. Beispiele sind das Konsumieren oder Produzieren von Kafka Topics.
+Die Daten werden von einem Microservice aggregiert und in einer Neo4J Datenbank abgespeichert. Dieser Microservice ist auf verschiedenen Rechner-Instanzen installiert und
+in verschiedenen Umgebungen bereitgestellt. Die Daten des Graphen sollen zwischen diesen Microservice Instanzen und einer zentralen Instanz in Echtzeit synchronisiert werden. Jede Instanz liefert dabei immer nur einen Teil der Daten über seine eigene Umgebung. Die zentrale Instanz ist auf diese Daten angewiesen, um ein vollständiges Bild aller Umgebungen zu erhalten. Ziel ist es ein Datenformat zu entwickeln, mit dem Änderungen des Graphen oder von Teilen des Graphen in Echtzeit zwischen den Instanzen ausgetauscht werden können. 
+
+### Entwicklungsumgebung
+Die Implementierung ist relativ frei, obwohl eine Neo4j Datenbank benutzt werden muss. Ein Neo4j Datenbank Dump mit entsprechenden Daten wird zur Verfügung gestellt. Als Programmiersprache empfehlen wir Java oder Kotlin, dies ist aber kein Muss, da die Neo4j Datenbank eine API zur Verfügung stellt und auch andere Sprachen wie zum Beispiel Python möglich wären.
+
+### Vorgehen
+Wir empfehlen für die Gesamtlaufzeit des Softwareprojektes eine agile, iterative und inkrementelle Vorgehensweise. Wie wäre es XP, Scrum oder Kanban zu nutzen? Ihr denkt dies alles ist zu viel für ein Softwareprojekt? Bildet mehrere Gruppen oder fangt mit dem Wesentlichen an. In der Softwareindustrie ist heutzutage der Ansatz “Minimum Viable Product” sehr verbreitet, probiert es aus.
+
+### Art der Kommunikation:
+- eMail 
+- WebEx
+- Weitere selbst gewählte Kommunikationsform

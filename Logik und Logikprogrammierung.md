@@ -488,7 +488,7 @@ Beispiel
 1. Sei $\leq$ übliche Ordnung auf $\mathbb{R}$und $W\subseteq\mathbb{R}$. Dann ist $(W,\leq)$ partiell geordnete Menge.
 2. Sei $X$ eine Menge und $W\subseteq P(X)$. Dann ist $(W,\subseteq)$ partiell geordnete Menge.
 3. Sei $W=P(\sum ∗)$ und $\leq_p$ die Relation „es gibt Polynomialzeitreduktion“ (vgl. „Automaten, Sprachen und Komplexität“). Diese Relation ist reflexiv, transitiv, aber nicht
-antisymmetrisch (denn $3-SAT\leq_p HC$ und $HC\leq_p 3-SAT$).
+antisymmetrisch (denn $3-SAT\leq_p HC$ und $HC\leq_p_3-SAT$).
 
 > Definition: Sei $(W,\leq)$ partiell geordnete Menge, $M\subseteq W$ und $a\in W$.
 - a ist obere Schranke von $M$, wenn $m\leq a$ für alle $m\in M$ gilt.
@@ -843,3 +843,297 @@ Beweis:
   - $\Rightarrow$ Wir erhalten die folgende Deduktion: $\frac{\bot}{\lnot\varphi}$
   - $\Rightarrow$ $\Delta\vdash\lnot\varphi\Rightarrow\lnot\varphi\in\Delta$ (nach Lemma 1)
 
+## Erfüllbare Mengen
+
+> Definition
+> 
+> Sei $\Gamma$ eine Menge von Formeln. $\Gamma$ heißt erfüllbar, wenn es eine passende B-Belegung $B$ gibt mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$.
+
+Bemerkung
+- Die Erfüllbarkeit einer endlichen Menge $\Gamma$ ist entscheidbar:
+    - Berechne Menge $V$ von in $\Gamma$ vorkommenden atomaren Formeln
+    - Probiere alle B-Belegungen $B:V\rightarrow B$ durch
+- Die Erfüllbarkeit einer endlichen Menge $\Gamma$ ist NP-vollständig (Satz von Cook)
+
+> Satz
+> Sei $\Delta$  eine maximal konsistente Menge von Formeln. Dann ist $\Delta$ erfüllbar.
+
+Beweis: Definiere eine B-Belegung $B$ mittels $B(p_i) = \begin{cases} 1_B \quad\text{ falls } p_i\in\Delta \\ 0_B \quad\text{ sonst. } \end{cases}$
+Wir zeigen für alle Formeln $\varphi: B(\varphi) = 1_B \Leftarrow\Rightarrow\varphi\in\Delta$ (*)
+
+Der Beweis erfolgt per Induktion über die Länge von $\varphi$.
+
+1. I.A.: hat $\varphi$ die Länge 1, so ist $\varphi$ atomare Formel. Hier gilt (*) nach Konstruktion von $B$.
+2. I.V.: Gelte (*) für alle Formeln der Länge $<n$.
+3. I.S.: Sei $\varphi$ Formel der Längen$>1$. $\Rightarrow$ Es gibt Formeln $\alpha$ und $\beta$ der Länge$<n$ mit $\varphi\in\{\lnot\alpha,\alpha\wedge\beta,\alpha\vee\beta,\alpha\rightarrow\beta\}$.
+    - Wir zeigen (*) für diese vier Fälle einzeln auf den folgenden Folien.
+    - Zur Erinnerung: $\Delta$ max. konsistent, $\varphi$ Formel
+      - Lemma 1: $\Delta\vdash\varphi\Rightarrow\varphi\in\Delta$
+      - Lemma 2: $\varphi\not\in\Delta\Leftarrow\Rightarrow\lnot\varphi\in\Delta$ 
+
+1. $\varphi =\lnot\alpha$.
+   $B(\varphi) = 1_B \Leftarrow\Rightarrow B(\alpha) = 0_B \Leftarrow\Rightarrow \alpha\not\in\Delta\Leftarrow\Rightarrow \Delta \owns\lnot\alpha =\varphi$
+2. $\varphi =\alpha\wedge\beta$.
+  - $B(\varphi) = 1_B \Rightarrow B(\alpha) =B(\beta) = 1_B \Rightarrow\alpha,\beta\in\Delta\Rightarrow\Delta\vdash\varphi$ denn $\frac{\alpha\quad\beta}{\alpha\wedge\beta}$ ist Deduktion $\Rightarrow\varphi\in\Delta$.
+  - $\varphi$ $\in$ $\Delta$ 
+  $\Rightarrow\Delta\vdash\alpha$ und $\Delta\vdash\beta$ denn $\frac{\varphi}{\alpha}$ und $\frac{\varphi}{\beta}$ sind Deduktionen. $\Rightarrow\alpha,\beta\in\Delta\Rightarrow B(\alpha),B(\beta) = 1_B=\Rightarrow B(\varphi) = 1_B$
+3. $\varphi =\alpha\vee\beta$.
+  - $B(\varphi) = 1_B \Rightarrow B(\alpha) = 1_B$ oder $B(\beta) = 1_B$
+    - angenommen, $B(\alpha) = 1_B \Rightarrow\alpha\in\Delta\Rightarrow\Delta\vdash\varphi$ denn $\frac{\alpha}{\varphi}$ ist Deduktion $\Rightarrow\varphi\in\Delta$
+    - angenommen, $B(\alpha) = 0_B \Rightarrow B(\beta) = 1_B$. weiter analog.
+  - $\varphi\in\Delta$. Dann gilt $\Delta\cup\{\lnot\alpha ,\lnot\beta\}\vdash \bot$ aufgrund der Deduktion
+    ![](Assets/Logik-beispiel-8.png)
+    Da $\Delta$ konsistent ist, folgt $\Delta\not=\Delta\cup\{\lnot\alpha,\lnot\beta\}$ und damit $\lnot\alpha\in\Delta$ oder $\lnot\beta\in\Delta$.
+    $\Rightarrow\alpha\in\Delta$ oder $\beta\in\Delta$ nach Lemma 2
+    $\Rightarrow B(\alpha) = 1_B$ oder $B(\beta) =1_B$
+    $\Rightarrow B(\varphi) = 1_B$.
+4. $\varphi = \alpha\rightarrow\beta$.
+  - $B(\varphi) = 1_B \Rightarrow B(\alpha) = 0_B$ oder $B(\beta) = 1_B \Rightarrow\lnot\alpha\in\Delta$ oder $\beta\in\Delta$
+    Aufgrund nebenstehender Deduktionen gilt in beiden Fällen $\Delta\vdash\alpha\rightarrow\beta\Rightarrow\varphi\in\Delta$
+    ![](Assets/Logik-beispiel-9.png)
+  - $\varphi\in\Delta$.
+    Angenommen, $B(\varphi) = 0_B = \Rightarrow B(\alpha) = 1_B, B(\beta) = 0_B$ 
+    $\Rightarrow\alpha\in\Delta, \beta\not\in\Delta \Rightarrow \lnot\beta\in\Delta$
+    Aufgrund der nebenstehenden Deduktion gilt $\Delta\vdash\bot$, d.h. $\Delta$ ist inkonsistent, im Widerspruch zur Annahme. $\Rightarrow B(\varphi) = 1_B$
+    ![](Assets/Logik-beispiel-10.png)
+
+
+> Lemma
+> 
+> Sei $\Gamma$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Gamma\not\Vdash_B\varphi\Leftarrow\Rightarrow\Gamma\cup\{\lnot \varphi\}$ erfüllbar.
+
+Beweis: $\Gamma\not\Vdash_B\varphi$ 
+$\Leftarrow\Rightarrow$ es gibt passende B-Belegung $B$ mit $inf\{B(\gamma)|\gamma\in\Gamma\} \not\leq_B B(\varphi)$
+$\Leftarrow\Rightarrow$ es gibt passende B-Belegung $B$ mit $inf\{B(\gamma)|\gamma\in\Gamma\}= 1_B$ und $B(\varphi)=0_B$
+$\Leftarrow\Rightarrow$ es gibt passende B-Belegung $B$ mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$ und $B(\lnot\varphi) = 1_B$
+$\Leftarrow\Rightarrow \Gamma\cup\{\lnot\varphi\}$ erfüllbar
+
+> Beobachtung: 
+> Sei $W$ einer der Wahrheitswertebereiche $B, K_3, F, H_R$ und $B_R,\Gamma$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Gamma\Vdash W\varphi\Rightarrow\Gamma\Vdash B\varphi$.
+
+Beweis: Sei $B$ beliebige B-Belegung, die zu jeder Formel in $\Gamma\cup\{\varphi\}$ paßt. definiere W-Belegung $B_W$ durch $B_W(pi) = \begin{cases} 1_W \quad\text{ falls } B(p_i) = 1_B \\ 0_W \quad\text{ sonst} \end{cases}$.
+per Induktion über die Formelgröße kann man für alle Formeln $\psi$, zu denen $B$ paßt, zeigen:
+$B_W(\psi) = \begin{cases} 1_W \quad\text{ falls } B(\psi) = 1_B \\ 0_W \quad\text{ sonst.} \end{cases}$ (*)
+
+Wir unterscheiden zwei Fälle:
+- $inf\{B(\gamma)|\gamma\in\Gamma\}= 1_B \Rightarrow inf\{B_W(\gamma)|\gamma\in\Gamma\} = 1_W$ (wegen (*))
+  $\Rightarrow 1_W = B_W(\varphi)$ (wegen $\Gamma\Vdash_W\varphi$)
+  $\Rightarrow 1_B = B(\varphi)$ (wegen (*))
+  $\Rightarrow inf\{B(\gamma)|\gamma\in\Gamma\} = 1_B \leq B(\varphi)$ und
+- $inf\{B(\gamma)|\gamma\in\Gamma\} \not= 1_B \Rightarrow inf\{B(\gamma)|\gamma\in\Gamma\}= 0_B$
+  $\Rightarrow inf\{B(\gamma)|\gamma\in\Gamma\}= 0_B \leq B(\varphi)$.
+
+Da $B$ beliebig war, gilt $\Gamma\Vdash_B \varphi$.
+
+> Satz (Vollständigkeitssatz)
+> 
+> Sei $\Gamma$ eine Menge von Formeln, $\varphi$ eine Formel und $W$ einer der Wahrheitswertebereiche $B,K_3 , F, B_R$ und $H_R$. Dann gilt $\Gamma\Vdash_W\varphi \Rightarrow \Gamma\vdash\varphi$.
+> Insbesondere ist jede W-Tautologie ein Theorem.
+
+Beweis: indirekt
+- $\Gamma\not\Vdash$
+- $\Gamma\cup\{\lnot\varphi\}$ konsistent
+- $\exists\Delta\supseteq\Gamma\cup\{\lnot\varphi\}$ maximal konsistent
+- $\Rightarrow\Delta$ erfüllbar
+- $\Gamma\cup\{\lnot\varphi\}$ erfüllbar
+- $\Gamma\not\Vdash_B \varphi$  
+- $\Gamma\not\Vdash_W \varphi$ 
+
+## Vollständigkeit und Korrektheit
+> Satz
+> 
+> Seien $\Gamma$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Gamma\vdash\varphi\Leftarrow\Rightarrow\Gamma\Vdash_B \varphi$.
+> Insbesondere ist eine Formel genau dann eine B-Tautologie, wenn sie ein Theorem ist.
+
+Beweis: Folgt unmittelbar aus Korrektheitssatz und Vollständigkeitssatz.
+
+> Bemerkung:
+> - gilt für jede „Boolesche Algebra“, z.B. $B_R$
+> - $\Gamma\vdash\varphi$ ohne ($raa$) $\Leftarrow\Rightarrow\Gamma\Vdash_{H_R} \varphi$ (Tarksi 1938)
+
+
+### Folgerung 1: Entscheidbarkeit
+> Satz: die Menge der Theoreme ist entscheidbar.
+
+Beweis: Sei $\varphi$ Formel und $V$ die Menge der vorkommenden atomaren Formeln. Dann gilt $\varphi$ Theorem
+- $\Leftarrow\Rightarrow\varphi$ B-Tautologie
+- $\Leftarrow\Rightarrow$ für alle Abbildungen $B:V\rightarrow\{0_B, 1_B\}$ gilt $B(\varphi) = 1_B$
+
+Da es nur endlich viele solche Abbildungen gibt und $B(\varphi)$ berechnet werden kann, ist dies eine entscheidbare Aussage.
+
+### Folgerung 2: Äquivalenzen und Theoreme
+> Definition
+> 
+> Zwei Formeln $\alpha$ und $\beta$ heißen äquivalent $(\alpha\equiv\beta)$, wenn für alle passenden B-Belegungen $B$ gilt: $B(\alpha) =B(\beta)$.
+
+> Satz: Es gelten die folgenden Äquivalenzen:
+> 1. $p_1 \vee p_2 \equiv p_2 \vee p_1$
+> 2. $(p_1 \vee p_2 )\vee p_3 \equiv p_1 \vee (p_2 \vee p_3 )$
+> 3. $p_1 \vee (p_2 \wedge p_3 )\equiv (p_1 \vee p_2 )\wedge (p_1 \vee p_3 )$
+> 4. $\lnot(p_1 \vee p_2 )\equiv\lnot p_1 \wedge\lnot p_2$
+> 5. $p_1 \vee p_1 \equiv p_1$
+> 6. $(p_1 \wedge \lnot p_1 )\vee p_2 \equiv p_2$
+> 7. $\lnot\lnot p_1\equiv p_1$
+> 8. $p_1 \wedge\lnot p_1 \equiv\bot$ 
+> 9. $p_1 \vee\lnot p_1 \equiv\lnot\bot$ 
+> 10. $p_1 \rightarrow p_2 \equiv \lnot p_1 \vee p_2$
+
+Beweis: Wir zeigen nur die Äquivalenz (3): 
+Sei $B$ beliebige B-Belegung, die wenigstens auf $\{p_1, p_2, p_3\}$ definiert ist.
+Dazu betrachten wir die Wertetabelle:
+| $B(p_1)$ | $B(p_2)$ | $B(p_3)$ | $B(p_1\vee(p_2\wedge p_3))$ | $B((p_1\vee p_2)\wedge(p_1 \vee p_3 ))$ |
+| --- | --- | --- | --- | --- |
+$0_B$ | $0_B$ | $0_B$ | $0_B$ | $0_B$
+$0_B$ | $0_B$ | $1_B$ | $0_B$ | $0_B$
+$0_B$ | $1_B$ | $0_B$ | $0_B$ | $0_B$
+$0_B$ | $1_B$ | $1_B$ | $1_B$ | $1_B$
+$1_B$ | $0_B$ | $0_B$ | $1_B$ | $1_B$
+$1_B$ | $0_B$ | $1_B$ | $1_B$ | $1_B$
+$1_B$ | $1_B$ | $0_B$ | $1_B$ | $1_B$
+$1_B$ | $1_B$ | $1_B$ | $1_B$ | $1_B$
+
+Die anderen Äquivalenzen werden analog bewiesen.
+
+Aus dieser Liste von Äquivalenzen können weitere hergeleitet werden:
+
+Beispiel: Für alle Formeln $\alpha$ und $\beta$ gilt $\lnot(\alpha\wedge\beta)\equiv\lnot\alpha\vee\lnot\beta$.
+
+Beweis: $\lnot(\alpha\wedge\beta) \equiv \lnot(\lnot\lnot\alpha\wedge\lnot\lnot\beta) \equiv \lnot\lnot(\lnot\alpha\vee\lnot\beta) \equiv \lnot\alpha\vee\lnot\beta$ 
+
+> Bemerkung
+> Mit den üblichen Rechenregeln für Gleichungen können aus dieser Liste alle gültigen Äquivalenzen hergeleitet werden.
+
+#### Zusammenhang zw. Theoremen und Äquivalenzen
+> Satz
+> 
+> Seien $\alpha$ und $\beta$ zwei Formeln. Dann gilt $\alpha\equiv\beta\Leftarrow\Rightarrow(\alpha\leftrightarrow\beta)$ ist Theorem.
+
+Beweis: $\alpha\equiv\beta$
+- $\Leftarrow\Rightarrow$  für alle passenden B-Belegungen $B$ gilt $B(\alpha)=B(\beta)$
+- $\Leftarrow\Rightarrow \{\alpha\}\Vdash_B\beta$ und $\{\beta\}\Vdash_B \alpha$ 
+- $\Leftarrow\Rightarrow \{\alpha\}\vdash\beta$ und $\{\beta\}\vdash\alpha$ (nach Korrektheits- und Vollständigkeitssatz)
+
+es bleibt z.z., dass dies äquivalent zu $\varnothing\vdash(\alpha\leftrightarrow\beta)$ ist.
+- $\Rightarrow$: Wir haben also Deduktionen mit Hypothesen in $\{\alpha\}$ bzw. in $\{\beta\}$ und Konklusionen $\beta$ bzw.$\alpha$. Es ergibt sich eine hypothesenlose Deduktion von $\alpha\leftrightarrow\beta$:
+    ![](Assets/Logik-deduktion-1.png)
+- $\Leftarrow$: Wir haben also eine hypothesenlose Deduktion von $\alpha\leftrightarrow\beta$. Es ergeben sich die folgenden Deduktionen mit Hypothesen $\beta$ bzw. $\alpha$ und Konklusionen $\alpha$ bzw. $\beta$:
+    ![](Assets/Logik-deduktion-2.png)
+
+> Satz
+> 
+> Sei $\alpha$ eine Formel. Dann gilt $\alpha$ ist Theorem $\Leftarrow\Rightarrow\alpha\equiv\lnot\bot$.
+
+Beweis: $\alpha$ ist Theorem
+- $\Leftarrow\Rightarrow\alpha$ ist B-Tautologie (Korrektheits- und Vollständigkeitssatz)
+- $\Leftarrow\Rightarrow$ für alle passenden B-Belegungen $B$ gilt $B(\alpha) = 1_B$
+- $\Leftarrow\Rightarrow$ für alle passenden B-Belegungen $B$ gilt $B(\alpha) =B(\lnot\bot)$
+- $\Leftarrow\Rightarrow\alpha\equiv\lnot\bot$ 
+
+### Folgerung 3: Kompaktheit
+> Satz
+> 
+> Seien $\Gamma$ eine u.U. unendliche Menge von Formeln und $\varphi$ eine Formel mit $\Gamma\Vdash_B\varphi$. Dann existiert $\Gamma′\subseteq\Gamma$ endlich mit $\Gamma′\Vdash_B \varphi$.
+
+Beweis: $\Gamma\Vdash_B\varphi$ 
+- $\Rightarrow\Gamma\vdash\varphi$ (nach dem Vollständigkeitssatz)
+- $\Rightarrow$ es gibt Deduktion von $\varphi$ mit Hypothesen $\gamma_1,...,\gamma_n\in\Gamma$
+- $\Rightarrow\Gamma′=\{\gamma_1,...,\gamma_n\}\subseteq\Gamma$ endlich mit $\Gamma′\vdash\varphi$
+- $\Rightarrow\Gamma′\Vdash_B\varphi$ (nach dem Korrektheitssatz).
+
+> Folgerung (Kompaktheits- oder Endlichkeitssatz)
+> 
+> Sei $\Gamma$ eine u.U. unendliche Menge von Formeln. Dann gilt $\Gamma$ unerfüllbar $\Leftarrow\Rightarrow\exists\Gamma′\subseteq\Gamma$ endlich: $\Gamma′$ unerfüllbar
+
+Beweis: $\Gamma$ unerfüllbar
+- $\Leftarrow\Rightarrow\Gamma\cup\{\lnot\bot\}$ unerfüllbar
+- $\Leftarrow\Rightarrow\Gamma\Vdash_B\bot$
+- $\Leftarrow\Rightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′\Vdash_B\bot$
+- $\Leftarrow\Rightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′\cup\{\lnot\bot\}$ unerfüllbar
+- $\Leftarrow\Rightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′$ unerfüllbar
+
+
+### 1. Anwendung des Kompaktheitsatzes: Färbbarkeit
+> Definition
+> 
+> Ein Graph ist ein Paar $G=(V,E)$ mit einer Menge $V$ und $E\subseteq\binom{V}{2} =\{X\subseteq V:|V|=2 \}$.
+> Für $W\subseteq V$ sei $G\upharpoonright_W= (W,E\cap\binom{W}{2})$ der von $W$ induzierte Teilgraph.
+> Der Graph G ist 3-färbbar, wenn es eine Abbildung $f:V\rightarrow\{1,2,3\}$ mit $f(v)\not=f(w)$ für alle $\{v,w\}\in E$.
+
+Bemerkung: Die 3-Färbbarkeit eines endlichen Graphen ist NP-vollständig
+
+> Satz
+> Sei $G= (N,E)$ ein Graph. Dann sind äquivalent
+> 1. $G$ ist 3-färbbar.
+> 2. Für jede endliche Menge $W\subseteq N$ ist $G\upharpoonright_W$ 3-färbbar.
+
+Beweis:
+- $1.\Rightarrow 2.$ trivial
+- $2.\Rightarrow 1.$ Sei nun, für alle endlichen Menge $W\subseteq N$, der induzierte Teilgraph $G\upharpoonright_W$ 3-färbbar.
+
+Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, daß eine 3-Färbung existiert:
+- atomare Formeln $p_{n,c}$ für $n\in N$ und $c\in\{1,2,3\}$ (Idee: der Knoten n hat die Farbe c)
+- $\Gamma$ enthält die folgenden Formeln:
+  - für alle $n\in N:p_{n, 1} \vee p_{n, 2} \vee p_{n, 3}$ (der Knoten n ist gefärbt)
+  - für alle $n\in N:\bigwedge_{1\leq c< d \leq 3} \lnot(p_{n,c} \wedge p_{n,d})$ (der Knoten n ist nur mit einer Farbe gefärbt)
+  - für alle $\{m,n\}\in E: \bigwedge_{1\leq c\leq 3} \lnot(p_{m,c} \wedge p_{n,c})$ (verbundene Knoten m und n sind verschieden gefärbt)
+
+
+Behauptung: Jede endliche Menge $\Delta\subseteq\Gamma$ ist erfüllbar.
+
+Begründung:
+- Da $\Delta$ endlich ist, existiert endliche Menge $W\subseteq N$, so dass jede atomare Formel in $\Delta$ die Form $p_{n,c}$ für ein $n\in W$ und ein $c\in\{1,2,3\}$ hat.
+- Nach Annahme existiert $f_W:W\rightarrow\{1,2,3\}$ mit $f_W(m) \not=f(n)$ f.a. $\{m,n\}\in E\cap\binom{W}{2}$.
+- Definiere $B:\{p_{n,c}|n\in W, 1 \leq c\leq 3\}\rightarrow\{0,1\}$ durch $B(p_{n,c}) = \begin{cases} 1 \quad\text{ falls } f_W(n) = c \\ 0 \quad\text{ sonst.} \end{cases}$
+- Diese Belegung erfüllt $\Delta$, d.h. $\Delta$ ist erfüllbar, womit die Behauptung gezeigt ist.
+
+Nach dem Kompaktheitssatz ist also $\Gamma$ erfüllbar.
+Sei $B$ erfüllende Belegung. Für $n\in N$ existiert genau ein $c\in\{1,2,3\}$ mit $B(p_{n,c}) =1$. Setze $f(n) =c$. Dann ist $f$ eine gültige Färbung des Graphen $G$.
+
+### 2. Anwendung des Kompaktheitsatzes: Parkettierungen
+Idee: Gegeben ist eine Menge von quadratischen Kacheln mit gefärbten Kanten. Ist es möglich, mit diesen Kacheln die gesamte Ebene zu füllen,so dass aneinanderstoßende Kanten gleichfarbig sind?
+
+Berühmtes Beispiel: Mit diesen 11 Kacheln kann die Ebene gefüllt werden, aber dies ist nicht periodisch möglich.
+![](Assets/Logik-parkettierung-1.png)
+
+> Definition
+> 
+> Ein Kachelsystem besteht aus einer endlichen Menge C von „Farben“ und einer Menge K von Abbildungen $\{N,O,S,W\}\rightarrow C$ von „Kacheln“.
+> Eine Kachelung von $G\subseteq Z\times Z$ ist eine Abbildung $f:G\rightarrow K$ mit
+> - $f(i,j)(N) =f(i,j+ 1 )(S)$ für alle $(i,j),(i,j+ 1 )\in G$
+> - $f(i,j)(O) =f(i+ 1 ,j)(W)$ für alle $(i,j),(i+ 1 ,j)\in G$
+
+> Satz
+> 
+> Sei $K$ ein Kachelsystem. Es existiert genau dann eine Kachelung von $Z\times Z$, wenn für jedes $n\in N$ eine Kachelung von $\{(i,j) :|i|,|j| \leq n\}$ existiert.
+
+Beweis: 
+- $\Rightarrow$: trivial
+- $\Leftarrow$: Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, daß eine Kachelung existiert:
+  atomare Formeln $p_{k,i,j}$ für $k\in K$ und $i,j\in Z$ (Idee: an der Stelle $(i,j)$ liegt die Kachel $k$, d.h. $f(i,j) =k$)
+  Für alle $(i,j)\in Z$ enthält $\Gamma$ die folgenden Formeln:
+  - eine der Kacheln aus $K$ liegt an der Stelle $(i,j):\bigvee_{k\in K} p_{k,i,j}$
+  - es liegen nicht zwei verschiedene Kacheln an der Stelle $(i,j): \bigwedge_{k,k′\in K,k\not=k′} \lnot(p_{k,i,j}\wedge p_{k′,i,j})$
+  - Kacheln an Stellen $(i,j)$ und $(i,j+1)$ „passen übereinander“: $\bigvee_{k,k′\in K,k(N)=k′(S)} (p_{k,i,j}\wedge p_{k′,i,j+1})$
+  - Kacheln an Stellen $(i,j)$ und $(i+1,j)$ „passen nebeneinander“: $\bigvee_{k,k′\in K,k(W)=k′(O)} (p_{k,i,j}\wedge p_{k′,i+1,j})$
+
+Sei nun $\Delta\subseteq\Gamma$ endlich.
+- $\Rightarrow$ es gibt $n\in N$, so daß $\Delta$ nur atomare Formeln der Form $p_{k,i,j}$ mit $|i|,|j|\leq n$ enthält.
+- Voraussetzung $\Rightarrow$ es gibt Kachelung $g:\{(i,j) :|i|,|j| \leq n\}\rightarrow K$ für $k\in K$ und $|i|,|j|\leq n$ definiere $B(p_{k,i,j}) = \begin{cases} 1_B \quad\text{ falls } g(i,j) =k \\ 0_B \quad\text{ sonst} \end{cases}$
+- $\Rightarrow B(\sigma) = 1_B$ für alle $\sigma\in\Delta$ (da $g$ Kachelung)
+- Also haben wir gezeigt, daß jede endliche Teilmenge von $\Gamma$ erfüllbar ist.
+- Kompaktheitssatz $\Rightarrow$ es gibt B-Belegung $B$ mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$
+- $\Rightarrow$ es gibt Abbildung $f:Z\times Z\rightarrow K$ mit $f(i,j) =k \Leftarrow\Rightarrow B(p_{k,i,j}) = 1_B$.
+- Wegen $B\Vdash\Gamma$ ist dies eine Kachelung.
+
+Weitere Anwendungen des Kompaktheitsatzes
+- abz. partielle Ordnungen sind linearisierbar
+- abz. Gleichungssystem über $\mathbb{Z}_2$ lösbar $\Leftarrow\Rightarrow$ jedes endliche Teilsystem lösbar
+- Heiratsproblem
+- Kőnigs Lemma (Übung)
+- ...
+
+Bemerkung: Der Kompaktheitssatz gilt auch, wenn die Menge der atomaren Formeln nicht abzählbar ist. Damit gelten die obigen Aussagen allgemeiner:
+- 3-Färbbarkeit: beliebige Graphen
+- Linearisierbarkeit: beliebige partielle Ordnungen
+- Lösbarkeit: beliebig große Gleichungssysteme über $\mathbb{Z}_2$
+- ...

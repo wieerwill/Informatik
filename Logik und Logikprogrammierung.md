@@ -1055,7 +1055,7 @@ Beweis: $\Gamma$ unerfüllbar
 ### 1. Anwendung des Kompaktheitsatzes: Färbbarkeit
 > Definition
 > 
-> Ein Graph ist ein Paar $G=(V,E)$ mit einer Menge $V$ und $E\subseteq\binom{V}{2} =\{X\subseteq V:|V|=2 \}$.
+> Ein Graph ist ein Paar $G=(V,E)$ mit einer Menge $V$ und $E\subseteq\binom{V}{2} =\{X\subseteq V:|V$\Vdash$ 2 \}$.
 > Für $W\subseteq V$ sei $G\upharpoonright_W= (W,E\cap\binom{W}{2})$ der von $W$ induzierte Teilgraph.
 > Der Graph G ist 3-färbbar, wenn es eine Abbildung $f:V\rightarrow\{1,2,3\}$ mit $f(v)\not=f(w)$ für alle $\{v,w\}\in E$.
 
@@ -1137,3 +1137,173 @@ Bemerkung: Der Kompaktheitssatz gilt auch, wenn die Menge der atomaren Formeln n
 - Linearisierbarkeit: beliebige partielle Ordnungen
 - Lösbarkeit: beliebig große Gleichungssysteme über $\mathbb{Z}_2$
 - ...
+
+
+## Erfüllbarkeit
+> Erfüllbarkeitsproblem
+> 
+> Eingabe: Formel $\Gamma$ 
+> 
+> Frage: existiert eine B-Belegung $B$ mit $B(\Gamma) = 1_B$.
+
+- offensichtlicher Algorithmus: probiere alle Belegungen durch (d.h. stelle Wahrheitswertetabelle auf)$\rightarrow$ exponentielle Zeit
+- „Automaten, Sprachen und Komplexität“: das Problem ist NP-vollständig
+- nächstes Ziel:spezielle Algorithmen für syntaktisch eingeschränkte Formeln $\Gamma$
+- Spätere Verallgemeinerung dieser Algorithmen (letzte Vorlesung des Logik-Teils von „Logik und Logikprogrammierung“) bildet Grundlage der logischen Programmierung.
+
+### Hornformeln (Alfred Horn, 1918–2001)
+> Definition
+> 
+> Eine Hornklausel hat die Form $(\lnot\bot\wedge p_1\wedge p_2\wedge ... \wedge p_n)\rightarrow q$ für $n\geq 0$, atomare Formeln $p_1 ,p_2 ,... ,p_n$ und $q$ atomare Formel oder $q=\bot$.
+> Eine Hornformel ist eine Konjunktion von Hornklauseln.
+
+Schreib- und Sprechweise
+- $\{p_1,p_2 ,... ,p_n\}\rightarrow q$ für Hornklausel $(\lnot\bot\wedge p_1 \wedge p_2 \wedge ...\wedge p_n)\rightarrow q$
+ insbes. $\varnothing\rightarrow q$ für $\lnot\bot\rightarrow q$
+- $\{(M_i\rightarrow q_i)| 1 \leq i\leq n\}$ für Hornformel $\bigwedge_{1 \leq i \leq n} (M_i\rightarrow q_i)$
+
+Bemerkung, in der Literatur auch:
+- $\{\lnot p_1,\lnot p_2 ,... ,\lnot p_n,q\}$ für $\{p_1 ,... ,p_n\}\rightarrow q$ mit $q$ atomare Formel
+- $\{\lnot p_1,\lnot p_2 ,... ,\lnot p_n\}$ für $\{p_1 ,... ,p_n\}\rightarrow\bot$ 
+- $\Box$ für $\varnothing\rightarrow\bot$, die „leere Hornklausel“
+
+### Markierungsalgorithmus
+- Eingabe: eine endliche Menge $\Gamma$ von Hornklauseln.
+1. while es gibt in $\Gamma$ eine Hornklausel $M\rightarrow q$, so daß alle $p\in M$ markiert sind und $q$ unmarkierte atomare Formel ist:
+   do markiere $q$ (in allen Hornklauseln in $\Gamma$)
+2. if $\Gamma$ enthält eine Hornklausel der Form $M\rightarrow\bot$, in der alle $p\in M$ markiert sind
+    then return „unerfüllbar“
+    else return „erfüllbar“
+
+Beweis einer Folgerung: Beispiel
+- Ziel ist es, die folgende Folgerung zu zeigen: $\{(AK\vee BK),(AK\rightarrow BK),(BK\wedge RL\rightarrow\lnot AK),RL\}\Vdash\lnot AK$
+- Lemma: man muß Unerfüllbarkeit der folgenden Menge zeigen: $\{(AK\vee BK),(AK\rightarrow BK),(BK\wedge RL\rightarrow \lnot AK),RL,\lnot\lnot AK\}$
+- Dies ist keine Menge von Hornklauseln!
+- Idee: ersetze $BK$ durch $\lnot BH$ in allen Formeln.
+- Ergebnis:
+  - Aus $AK\vee BK$ wird $\lnot BH\vee AK\equiv BH\rightarrow AK\equiv\{BH\}\rightarrow AK$.
+  - Aus $AK\rightarrow BK$ wird $AK\rightarrow\lnot BH\equiv\lnot AK\vee\lnot BH\equiv AK\wedge BH\rightarrow\bot\equiv\{AK,BH\} \rightarrow\bot$.
+  - Aus $BK\wedge RL\rightarrow\lnot AK$ wird $\lnot BH\wedge RL\rightarrow\lnot AK\equiv BH\vee\lnot RL\vee\lnot AK\equiv RL\wedge AK\rightarrow BH\equiv\{RL,AK\}\rightarrow BH$
+  - $RL\equiv (\varnothing\rightarrow RL)$
+  - $\lnot\lnot AK\equiv (\varnothing\rightarrow AK)$
+- Wir müssen also zeigen, daß die folgende Menge von Hornklauseln unerfüllbar ist:
+    $\{\{BH\}\rightarrow AK,\{AK,BH\}\rightarrow\bot,\{RL,AK\}\rightarrow BH,\varnothing\rightarrow RL,\varnothing\rightarrow AK\}$
+
+Der Markierungsalgorithmus geht wie folgt vor:
+1. Runde: markiere $RL$ aufgrund der Hornklausel $\varnothing\rightarrow RL$
+2. Runde: markiere $AK$ aufgrund der Hornklausel $\varnothing\rightarrow AK$
+3. Runde: markiere $BH$ aufgrund der Hornklausel $\{RL,AK\}\rightarrow BH$
+
+dann sind keine weiteren Markierungen möglich.
+
+In der Hornklausel $\{AK,BH\}\rightarrow\bot$ sind alle atomaren Formeln aus $\{AK,BH\}$ markiert. Also gibt der Algorithmus aus, daß die Menge von Hornklauseln nicht erfüllbar ist.
+
+Nach unserer Herleitung folgern wir, daß das Teil $A$ heil ist.
+
+1. Der Algorithmus terminiert: 
+   in jedem Durchlauf der while-Schleife wird wenigstens eine atomare Formel markiert. Nach endlich vielen Schritten terminiert die Schleife also.
+2. Wenn der Algorithmus eine atomare Formelqmarkiert und wenn $B$ eine B-Belegung ist, die $\Gamma$ erfüllt, dann gilt $B(q) = 1_B$.
+    Beweis: wir zeigen induktiv über $n$: Wenn $q$ in einem der ersten $n$ Schleifendurchläufe markiert wird, dann gilt $B(q) = 1_B$.
+  - I.A. Die Aussage gilt offensichtlich für $n=0$.
+  - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so daß $p_1 ,... ,p_k$ in den ersten $n−1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
+    Da $B$ alle Hornformeln aus $\Gamma$ erfüllt, gilt insbesondere $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow q) = 1_B$ und damit $B(q) = 1_B$.
+3. Wenn der Algorithmus „unerfüllbar“ ausgibt, dann ist $\Gamma$ unerfüllbar.
+    Beweis: indirekt, wir nehmen also an, daß der Algorithmus „unerfüllbar“ ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
+    Sei $\{p_1 ,... ,p_k\}\rightarrow\bot$ die Hornklausel aus $\Gamma$, die die Ausgabe „unerfüllbar“ verursacht (d.h. die atomaren Formeln $p_1 ,... ,p_k$ sind markiert).
+    Nach 2. gilt $B(p_1) =...=B(p_k) = 1_B$, also $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow\bot) = 0_B$ im Widerspruch zur Annahme, daß $B$ alle Hornklauseln aus $\Gamma$ erfüllt.
+    Also kann es keine erfüllende B-Belegung von $\Gamma$ geben.
+4. Wenn der Algorithmus „erfüllbar“ ausgibt, dann erfüllt die folgende B-Belegung alle Formeln aus $\Gamma$:
+    $B(p_i)=\begin{cases} 1_B \quad\text{ der Algorithmus markiert } p_i \\ 0_B \quad\text{ sonst} \end{cases}$
+    Beweis:
+      - Sei $M\rightarrow q$ eine beliebige Hornklausel aus $\Gamma$.
+      - Ist ein $p\in M$ nicht markiert, so gilt $B(\bigwedge_{p\in M} p) = 0_B$ und damit $B(M\rightarrow q) = 1_B$.
+      - Sind alle $p\in M$ markiert, so wird auch $q$ markiert, also $B(q) = 1_B$ und damit $B(M\rightarrow q) = 1_B$.
+      - Gilt $q=\bot$, so existiert unmarkiertes $p\in M$ (da der Algorithmus sonst „unerfüllbar“ ausgegeben hätte), also $B(M\rightarrow\bot) = 1_B$ wie im ersten Fall.
+    Also gilt $B(M\rightarrow q) = 1_B$ für alle Hornklauseln aus $\Gamma$, d.h. $\Gamma$ ist erfüllbar.
+
+> Satz
+> 
+> Sei $\Gamma$ endliche Menge von Hornklauseln. Dann terminiert der Markierungsalgorithmus mit dem korrekten Ergebnis.
+
+Beweis: Die Aussagen 1.-4. beweisen diesen Satz.
+
+Bemerkungen:
+- Mit einer geeigneten Implementierung läuft der Algorithmusin linearer Zeit.
+- Wir haben sogar gezeigt, daß bei Ausgabe von „erfüllbar“ eine erfüllende B-Belegung berechnet werden kann.
+
+### SLD-Resolution
+> Definition
+> 
+> Sei $\Gamma$ eine Menge von Hornklauseln. Eine SLD-Resolution aus $\Gamma$ ist eine Folge $(M_0\rightarrow\bot,M_1\rightarrow\bot,... ,M_m\rightarrow\bot)$ von Hornklauseln mit
+> - $(M_0\rightarrow\bot)\in\Gamma$ 
+> - für alle $0\leq n<m$ existiert $(N\rightarrow q)\in\Gamma$ mit $q\in M_n$ und $M_{n+1} = M_n\backslash\{q\}\cup N$
+
+Beispiel: 
+- $\Gamma =\{\{BH\}\rightarrow AK,\{AK,BH\}\rightarrow\bot,\{RL,AK\}\rightarrow BH,\varnothing\rightarrow RL,\varnothing\rightarrow AK\}$
+- $M_0 =\{AK,BH\}$
+- $M_1 =M_0 \backslash\{BH\}\cup\{RL,AK\}=\{RL,AK\}$
+- $M_2 =M_1 \backslash\{RL\}\cup\varnothing =\{AK\}$
+- $M_3 =M_2 \backslash\{AK\}\cup\varnothing =\varnothing$ 
+
+> Lemma A
+>
+> Sei $\Gamma$ eine (u.U. unendliche) Menge von Hornklauseln und $(M_0\rightarrow\bot, M_1\rightarrow\bot,... , M_m\rightarrow\bot)$ eine SLD-Resolution aus $\Gamma$ mit $M_m=\varnothing$. Dann ist $\Gamma$ nicht erfüllbar.
+
+Beweis: 
+- indirekt: angenommen, es gibt B-Belegung $B$ mit $B(N\rightarrow q) = 1_B$ für alle $(N\rightarrow q)\in\Gamma$.
+- Wir zeigen für alle $0\leq n\leq m$ per Induktion über n: es gibt $p\in M_n$ mit $B(p) = 0_B$ (4)
+- I.A.: $n=0:(M_0 \rightarrow\bot,...)$ SLD-Resolution $\Rightarrow(M_0\rightarrow\bot)\in\Gamma$
+  - $\Rightarrow B(M_0\rightarrow\bot) = 1_B$
+  - $\Rightarrow$ es gibt $p\in M_0$ mit $B(p) = 0_B$
+- I.V.: sei $n<m$ und $p\in M_n$ mit $B(p) = 0_B$
+- I.S.: $(... ,M_n\rightarrow\bot,M_{n+ 1}\rightarrow\bot,...)$ SLD-Resolution $\Rightarrow$ es gibt $(N\rightarrow q)\in\Gamma$ mit $M_{n+1} =M_n\backslash\{q\}\cup N$ und $q\in M_n$. Zwei Fälle werden unterschieden:
+    1. $p\not=q$: dann gilt $p\in M_{n+1}$ mit $B(p) = 0_B$
+    2. $p=q:(N\rightarrow q)\in\Gamma\Rightarrow B(N\rightarrow q) = 1_B$ es gibt $p′\in N\subseteq M_{n+1}$ mit $B(p′)=0_B$
+  in jedem der zwei Fälle gilt also (4) für $n+1$.
+- Damit ist der induktive Beweis von (4) abgeschlossen.
+- Mit $m=n$ haben wir insbesondere "es gibt $p\in M_m$ mit $B(p) = 0_B$" im Widerspruch zu $M_m=\varnothing$. Damit ist der indirekte Beweis abgeschlossen.
+
+> Lemma B
+> 
+> Sei $\Gamma$ eine (u.U. unendliche) unerfüllbare Menge von Hornklauseln. Dann existiert eine SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Gamma$ mit $M_m=\varnothing$.
+
+Beweis: Endlichkeitssatz: es gibt $\Delta\subseteq\Gamma$ endlich und unerfüllbar. Bei Eingabe von$\Delta$ terminiert Markierungsalgorithmus mit „unerfüllbar“
+- $r\geq 0...$ Anzahl der Runden
+- $q_i...$ Atomformel, die in $i$ Runde markiert wird $(1\leq i\leq r)$
+
+Behauptung: Es gibt $m\leq r$ und SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Delta$ mit $M_m=\varnothing$ und $M_n\subseteq\{q_1,q_2,... ,q_{r−n}\}$ f.a. $0\leq n\leq m$. (5)
+
+Beweis der Behauptung: Wir konstruieren die Hornklauseln $M_i\rightarrow\bot$ induktiv:
+- I.A.: Da der Markierungsalgorithmus mit „unerfüllbar“ terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r− 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
+- I.V.: Sei $n\leq r$ und $(M_0\rightarrow\bot,... ,M_n\rightarrow\bot)$ SLD-Resolution, so daß (5) gilt.
+- I.S.: wir betrachten drei Fälle:
+  1. Fall $M_n=\varnothing$: mit $m:=n$ ist Beweis der Beh. abgeschlossen.
+  2. Fall $n=r$: Nach (5) gilt $M_n\subseteq\{q_1,...,q_{r−n}\}=\varnothing$. Mit $m:=n$ ist der Beweis der Beh. abgeschlossen.
+  3. Fall $n<r$ und $M_n \not=\varnothing$. Sei $k$ maximal mit $q_k\in M_n\subseteq\{q_1,q_2,... ,q_{r−n}\}$. Also existiert $(N\rightarrow q_k)\in\Delta$, so daß $N\subseteq\{q_1,... ,q_{k−1}\}$. Setze $M_{n+1}=M_n\backslash\{q_k\}\cup N\subseteq\{q_1,... ,q_{k−1}\}\subseteq\{q_1,...,q_{r−(n+1)}\}$.
+
+Damit ist der induktive Beweis der Beh. abgeschlossen, woraus das Lemma unmittelbar folgt.
+
+> Satz
+> 
+> Sei $\Gamma$ eine (u.U. unendliche) Menge von Hornklauseln. Dann sind äquivalent:
+> 1. $\Gamma$ ist nicht erfüllbar.
+> 2. Es gibt eine SLD-Resolution $(M_0\rightarrow\bot,M_1\rightarrow\bot,... ,M_m\rightarrow\bot)$ aus $\Gamma$ mit $M_m=\varnothing$.
+
+Beweis: Folgt unmittelbar aus Lemmata A und B.
+
+Beispiel: $\Gamma=\{\{a,b\}\rightarrow\bot,\{a\}\rightarrow c, \{b\}\rightarrow c,\{c\}\rightarrow a,\varnothing\rightarrow b$; alle SLD-Resolutionen aus$\Gamma$ kann man durch einen Baum beschreiben:
+![](Assets/Logik-beispiel-11.png)
+
+Die Suche nach einer SLD-Resolution mit $M_m=\varnothing$ kann grundsätzlich auf zwei Arten erfolgen:
+- Breitensuche:
+  - findet SLD-Resolution mit $M_m=\varnothing$ (falls sie existiert), da Baum endlich verzweigend ist (d.h. die Niveaus sind endlich)
+  - hoher Platzbedarf, da ganze Niveaus abgespeichert werden müssen (in einem Binärbaum der Tiefe $n$ kann es Niveaus der Größe $2^n$ geben)
+- Tiefensuche:
+  - geringerer Platzbedarf (in einem Binärbaum der Tiefe $n$ hat jeder Ast die Länge $\leq n$)
+  - findet existierende SLD-Resolution mit $M_m=\varnothing$ nicht immer (siehe Beispiel)
+
+## Zusammenfassung Aussagenlogik
+- Das natürliche Schließen formalisiert die „üblichen“ Argumente in mathematischen Beweisen.
+- Unterschiedliche Wahrheitswertebereiche formalisieren unterschiedliche Vorstellungen von „Wahrheit“.
+- Das natürliche Schließen ist vollständig und korrekt für den Booleschen Wahrheitswertebereich.
+- Der Markierungsalgorithmus und die SLD-Resolution sind praktikable Verfahren, um die Erfüllbarkeit von Hornformeln zu bestimmen.

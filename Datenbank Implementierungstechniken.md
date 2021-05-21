@@ -672,13 +672,13 @@ Gängige Strategien
 ![](Assets/DBimpl-seitenwechsel-strategie.png)
 
 Klassifikation gängiger Strategien
-| Verfahren  | Prinzip | Alter | Anzahl |
-| --- | --- | --- |
-FIFO | älteste Seite ersetzt | G  |-
-LFU (least fre-quently used) | Seite mit geringster Häufigkeit ersetzen | - | G
-LRU (least recently used) | Seite ersetzen, die am längsten nicht referenziert wurde (System R) | J | J
-DGCLOCK (dyn. generalized clock) | Protokollierung der Ersetzungshäufigkeiten wichtiger Seiten | G | JG
-LRD (least reference density) | Ersetzung der Seite mit geringster Referenzdichte | JG | G
+| Verfahren                        | Prinzip                                                             | Alter | Anzahl |
+| -------------------------------- | ------------------------------------------------------------------- | ----- |
+| FIFO                             | älteste Seite ersetzt                                               | G     | -      |
+| LFU (least fre-quently used)     | Seite mit geringster Häufigkeit ersetzen                            | -     | G      |
+| LRU (least recently used)        | Seite ersetzen, die am längsten nicht referenziert wurde (System R) | J     | J      |
+| DGCLOCK (dyn. generalized clock) | Protokollierung der Ersetzungshäufigkeiten wichtiger Seiten         | G     | JG     |
+| LRD (least reference density)    | Ersetzung der Seite mit geringster Referenzdichte                   | JG    | G      |
 
 Beispiel
 - Folge von Seitenanforderungen #1, #2 ...
@@ -878,11 +878,11 @@ Statische Verfahren: Überblick
 Organisation
 - völlig unsortiert speichern
 - physische Reihenfolge der Datensätze ist zeitliche Reihenfolge der Aufnahme von Datensätzen
-    | | | | |
-    | --- | --- | --- | --- | ---
-    8832 | Max | Mustermann | ... | 9.1.2003
-    5588 | Beta | Alpha | ... | 7.3.1978
-    4711 | Gamma | Delta | ... | 2.5.1945 
+    |      |       |            |     |
+    | ---- | ----- | ---------- | --- | -------- |
+    | 8832 | Max   | Mustermann | ... | 9.1.2003 |
+    | 5588 | Beta  | Alpha      | ... | 7.3.1978 |
+    | 4711 | Gamma | Delta      | ... | 2.5.1945 |
 
 Operationen
 - insert: Zugriff auf letzte Seite der Datei. Genügend freier Platz => Satz anhängen. Sonst nächste freie Seite holen
@@ -894,11 +894,11 @@ Operationen
 
 ### Sequenzielle Speicherung
 - sortiertes Speichern der Datensätze
-    | | | | |
-    | --- | --- | --- | --- | ---
-    4711 | Gamma | Delta | ... | 2.5.1945 
-    5588 | Beta | Alpha | ... | 7.3.1978
-    8832 | Max | Mustermann | ... | 9.1.2003
+    |      |       |            |     |
+    | ---- | ----- | ---------- | --- | -------- |
+    | 4711 | Gamma | Delta      | ... | 2.5.1945 |
+    | 5588 | Beta  | Alpha      | ... | 7.3.1978 |
+    | 8832 | Max   | Mustermann | ... | 9.1.2003 |
 
 Sequenzielle Datei: Operationen
 - insert: Seite suchen, Datensatz einsortieren => beim Anlegen oder sequenziellen Füllen einer Datei jede Seite nur bis zu gewissem Grad (etwa 66%) füllen
@@ -981,3 +981,277 @@ Probleme statischer Verfahren
     - Behandlung von zusammengesetzten Schlüsseln = multidimensionale Zugriffsverfahren, z.B. multidimensionale Bäume oder raumfüllende Kurven
 
 # Baumbasierte Indexstrukturen
+## Baumverfahren
+- Stufenanzahl dynamisch verändern
+- wichtigste Baumverfahren: B-Bäume und ihre Varianten
+- B-Baum-Varianten sind noch "allgegenwärtiger" in heutigen Datenbanksystemen als SQL
+- SQL nur in der relationalen und objektrelationalen Datenbanktechnologie verbreitet; B-Bäume überall als Grundtechnik eingesetzt
+
+Baumverfahren: Überblick
+![](Assets/DBimpl-Baumverfahren.png)
+
+## B-Bäume
+- Ausgangspunkt: ausgeglichener, balancierter Suchbaum
+- Ausgeglichen oder balanciert: alle Pfade von der Wurzel zu den Blättern des Baumes gleich lang
+- Hauptspeicher-Implementierungsstruktur: binäre Suchbäume, beispielsweise AVL-Bäume von Adelson-Velskii und Landis
+- Datenbankbereich: Knoten der Suchbäume zugeschnitten auf Seitenstruktur des Datenbanksystems
+- mehrere Zugriffsattributwerte auf einer Seite
+- Mehrwegebäume
+
+Prinzip des B-Baumes
+- B-Baum von Bayer (B für balanciert, breit, buschig, Bayer, NICHT: binär)
+- dynamischer, balancierter Indexbaum, bei dem jeder Indexeintrag auf eine Seite der Hauptdatei zeigt
+- Mehrwegebaum völlig ausgeglichen, wenn
+  1. alle Wege von Wurzel bis zu Blättern gleich lang
+  2. jeder Knoten gleich viele Indexeinträge
+- vollständiges Ausgleichen zu teuer, deshalb B-Baum-Kriterium:
+    Jede Seite außer der Wurzelseite enthält zwischen $m$ und $2m$ Einträge.
+
+Definition B-Baum
+- Ordnung eines B-Baumes ist minimale Anzahl der Einträge auf den Indexseiten außer der Wurzelseite
+- Bsp.: B-Baum der Ordnung 8 fasst auf jeder inneren Indexseite zwischen 8 und 16 Einträgen
+- Def.: Ein Indexbaum ist ein B-Baum der Ordnung $m$ , wenn er die folgenden Eigenschaften erfüllt:
+    1. Jede Seite enthält höchstens $2m$ Elemente.
+    2. Jede Seite, außer der Wurzelseite, enthält mindestens $m$ Elemente. 
+    3. Jede Seite ist entweder eine Blattseite ohne Nachfolger oder hat $i+1$ Nachfolger, falls $i$ die Anzahl ihrer Elemente ist.
+    4. Alle Blattseiten liegen auf der gleichen Stufe.
+
+Eigenschaften des B-Baumes
+- $n$ Datensätze in der Hauptdatei => in $log_m(n)$ Seitenzugriffen von der Wurzel zum Blatt
+- Durch Balancierungskriterium wird Eigenschaft nahe an der vollständigen Ausgeglichenheit erreicht (1. Kriterium vollständig erfüllt, 2. Kriterium näherungsweise)
+- Kriterium garantiert 50% Speicherplatzausnutzung
+- einfache, schnelle Algorithmen zum Suchen, Einfügen und Löschen von Datensätzen (Komplexität von $O(log_m(n))$)
+
+Suchen in B-Bäumen
+- lookup wie in statischen Indexverfahren
+- Startend auf Wurzelseite Eintrag im B-Baum ermitteln, der den gesuchten Zugriffsattributwert $w$ überdeckt => Zeiger verfolgen, Seite nächster Stufe laden
+- Suchen: 38, 20, 6
+- ![](Assets/DBimpl-b-baum-lookup.png)
+
+Einfügen in B-Bäumen
+- Einfügen eines Wertes _w_
+    - mit lookup entsprechende Blattseite suchen
+    - passende Seite $n<2m$ Elemente, _w_ einsortieren
+    - passende Seite $n=2m$ Elemente, neue Seite erzeugen,
+       - ersten _m_ Werte auf Originalseite
+       - letzten _m_ Werte auf neue Seite
+       - mittleres Element auf entsprechende Indexseite nach oben
+    - eventuell dieser Prozess rekursiv bis zur Wurzel
+
+Einfügen in einen B-Baum: Beispiel
+![](Assets/DBimpl-b-baum-beispiel.png)
+![](Assets/DBimpl-b-baum-beispiel-2.png)
+
+Löschen in B-Bäumen
+- bei weniger als $m$ Elementen auf Seite: Unterlauf
+- Löschen eines Wertes $w$ : Bsp.: 24; 28, 38, 35
+    - mit lookup entsprechende Seite suchen
+    - $w$ auf Blattseite gespeichert => Wert löschen, eventuell Unterlauf behandeln
+    - $w$ nicht auf Blattseite gespeichert => Wert löschen, durch lexikographisch nächstkleineres Element von einer Blattseite ersetzen, eventuell auf Blattseite => Unterlauf
+- Unterlaufbehandlung
+    - Ausgleichen mit der benachbarten Seite (benachbarte Seite $n$ Elemente mit $n>m$)
+    - oder Zusammenlegen zweier Seiten zu einer (Nachbarseite $n=m$ Elemente), das "mittlere" Element von Indexseite darüber dazu, auf Indexseite eventuell => Unterlauf
+- Einfügen des Elementes 22; Löschen von 22
+    ![](Assets/DBimpl-b-baum-beispiel-3.png)
+
+Komplexität der Operationen
+- Aufwand beim Einfügen, Suchen und Löschen im B-Baum immer $O(log_m(n))$ Operationen
+- entspricht genau der "Höhe" des Baumes
+- Konkret: Seiten der Größe 4 KB, Zugriffsattributwert 32 Bytes, 8-Byte-Zeiger: zwischen 50 und 100 Indexeinträge pro Seite; Ordnung dieses B-Baumes 50
+- 1.000.000 Datensätze: $log_{50}(1000000) = 4$ Seitenzugriffe im schlechtesten Fall
+- Wurzelseite jedes B-Baumes normalerweise im Puffer: 3 Seitenzugriffe
+
+## B+-Baum
+Varianten
+- B+-Bäume: nur Blattebene enthält Daten -> Baum ist hohl
+- B∗-Bäume: Aufteilen von Seiten vermeiden durch "Shuffle"
+- Präfix-B-Bäume: Zeichenketten als Zugriffsattributwerte, nur Präfix indexieren
+
+B+-Baum: Motivation
+- B-Baum: Wie/wo werden Nicht-Schlüsseldaten (Tupel, TIDs) gespeichert?
+       - Zusammen mit Schlüsseln in allen Knoten?
+       - Problem beim Traversieren des Baumes, z.B. bei Bereichsanfragen
+    ![](Assets/DBimpl-b+-baum-traversieren.png)
+
+B+-Baum
+- in der Praxis am häufigsten eingesetzte Variante des B-Baumes:
+       - effizientere Änderungsoperationen, insb. Löschen
+       - Verringerung der Baumhöhe
+- Änderungen gegenüber B-Baum
+    - in inneren Knoten nur noch Zugriffsattributwert und Zeiger auf nachfolgenden Seite der nächsten Stufe; nur Blattknoten enthalten neben Zugriffsattributwert die Daten (Datensätze bzw. Verweise auf Datensätze in der Hauptdatei)
+    - Knoten der Blattebene sind untereinander verkettet für effiziente Unterstützung von Bereichsanfragen
+
+B+-Baum: Aufbau
+![](Assets/Dbimpl-b+-baum-aufbau.png)
+
+Ordnung; Operationen
+- Ordnung für B+-Baum: $(x,y), x$ Mindestbelegung der Indexseiten, $y$ Mindestbelegung der Blattseiten
+- delete gegenüber B-Baum effizienter ("Ausleihen" eines Elementes von der Blattseite entfällt)
+- Zugriffsattributwerte in inneren Knoten können sogar stehenbleiben
+- häufig als Primärindex eingesetzt
+- B+-Baum ist dynamische, mehrstufige, indexsequenziellen Datei
+
+B+-Baum: Blattebene mit Verweisen
+![](Assets/DBimpl-b+-baum-blattebenen.png)
+
+B+-Baum: Datenstrukturen
+```cpp
+BPlusBranchNode =record of
+    nkeys: int;
+    ptrs: array[0 .. nkeys ] of PageNum;
+    keys: array[1 .. nkeys ]of KeyType;
+    level: int;
+/* Level= 1 zeigt an, dass die ptrs auf Blätter zeigen */
+end;
+```
+```cpp
+BPlusLeafNode = record of
+    nkeys: int;
+    keys: array[1 .. nkeys ]of KeyType;
+    payload: array[1 .. nkeys ]of LoadType ; /* Daten bzw. TIDs */
+    nextleaf: PageNum;
+end;
+```
+
+Operationen im B+-Baum
+- lookup: wie im B-Baum jedoch immer bis zur Blattebene
+- $search(u,o)$: Lookup für unteren Wert $u$ , Traversieren auf der Blattebene bis zum oberen Wert $o$
+- $insert$: ähnlich zum B-Baum
+    - im Fall des Split bei Überlaufbehandlung wird nur ein Separatorschlüssel im Elternknoten eingefügt
+    - z.B. Kopie des kleinsten Schlüsselwertes des "rechten" Kindknotens oder geeigneter Wert zwischen beiden Knoten
+- $delete$: ähnlich zum B-Baum, jedoch
+    - Löschen der Daten zunächst nur auf Blattebene
+    - bei Unterlauf: entweder Ausgleich mit Nachbarknoten oder Vereinigen mit Nachbarknoten; ggf. Anpassen (Ausgleich) oder Löschen (Vereinigen) des Separatorschlüssels
+    - alternativ: Unterlauf akzeptieren und durch spätere inserts oder Reorganisation auflösen
+
+Weitere Entwurfsentscheidungen für B+-Baum
+- Schlüsselsuche im Knoten: sequenzielle Suche vs. binäre Suche vs. Interpolation Search
+- Knotengröße: Maximieren der Anzahl der Vergleiche (Knotennutzen) pro I/O-Zeiteinheit
+
+| Seitengröße (KB) | Sätze/Seite | Knotennutzen | I/O-Zeit (ms) | Nutzen/Zeit |
+| ---------------- | ----------- | ------------ | ------------- | ----------- |
+| 4                | 143         | ≈7           | 5,020         | 1,427       |
+| 16               | 573         | ≈ 9          | 5,080         | 1,804       |
+| 64               | 2.294       | ≈ 11         | 5,320         | 2,098       |
+| 128              | 4.588       | ≈ 12         | 5,640         | 2,157       |
+| 256              | 9.175       | ≈ 13         | 6,280         | 2,096       |
+| 1024             | 36.700      | ≈ 15         | 10,120        | 1,498       |
+| 4096             | 146.801     | ≈ 17         | 25,480        | 0,674       |
+[Literatur](G. Graefe: Modern B-Tree Techniques, Foundations and Trends in Databases, 2010)
+
+- Konsistenzprüfung während der Traversierung
+    - mögliche Inkonsistenzen durch Speicherfehler, konkurrierende Änderungen + Implementierungsfehler, ...
+- Cache-Optimierung: Knotenstruktur, Kompression (Präfix-/Suffix Truncation)
+- Pointer Swizzling: zur Ersetzung der logischen Seitennummern durch physische Adressen
+- Knotengröße: bei großen Puffern kann großer Teil der inneren Knoten im Puffer gehalten werden -> größere Knoten (im MB-Bereich) sinnvoll
+- Verzögern des Splits bei Überlaufbehandlung: Ausgleichen mit Nachbarknoten soweit möglich; verbessert Auslastung der Knoten
+- zusätzliche Verweise zwischen Knoten
+    - z.B. zwischen inneren Knoten der gleichen Ebene, zu Elternknoten, etc.
+    - ermöglichen Konsistenzchecks, aber erschweren Sperren für Nebenläufigkeitskontrolle
+
+## Weitere Varianten
+Präfix-B-Baum
+- B-Baum über Zeichenkettenattribut
+    - lange Schlüssel in inneren Knoten -> hoher Speicherplatzbedarf
+    - vollständige Schlüssel eigentlich nicht notwendig, da nur "Wegweiser"
+- Idee: Verwaltung von Trennwerten -> Präfix-B-Baum
+    - in inneren Knoten nur Trennwerte, die lexikographisch zwischen den Werten liegen
+    - möglichst kurze Trennwerte, z.B. kürzester eindeutiger Präfix
+    ![](Assets/DBimpl-präfix-b-baum.png)
+    - aber: Beispiel "Vandenberg" und "Vandenbergh"
+
+Mehr-Attribut-B-Baum
+- B-Baum ist eindimensionale Struktur, jedoch können mehrere Attribute als kompositer Schlüssel indexiert werden
+  `create index NameIdx on KUNDE(Name, Vorname)`
+- allerdings: Attribute werden bei partial-match-Anfragen nicht gleich behandelt!
+- Alternative: raumfüllende Kurven -> multidimensionale Indexstrukturen
+    ![](Assets/Dbimpl-mehr-attribut-b-baum.png)
+    
+## Optimierungen für moderne Hardware
+Optimierungspotential
+- Verbesserung der Cache-Trefferrate
+    - Organisation der Datenstruktur entsprechend Cacheline (Größe, Anordnung der Daten)
+    - In-Place-Update im Hauptspeicher -> Cache-Invalidierung: verändertes Update Handling
+    - Pointer Swizzling
+- Berücksichtigung der Storage-Eigenschaften
+    - SSD vs. HDD
+    - Bevorzugung sequentieller Schreiboperationen
+    - spezielle Berücksichtigung für Main-Memory-Indexe
+- Synchronisation in Multicore-Umgebungen
+    - Lock/Latch-freie Operationen
+
+
+CSB+-Baum
+- =Cache Sensitive B+ Tree (Rao, Ross: Making B+-Trees Cache Conscious in Main Memory, SIGMOD 2000)
+- "Cache-Freundlichkeit" durch
+    1. Platzsparen im Knoten -> mehr relevante Daten im Cache
+    2. Eliminieren von Zeigern für 1. und Reduzierung von Zeigerarithmetik
+- Ansatz: veränderte Struktur der inneren Knoten
+    - Zeiger auf ersten Kindknoten
+    - alle Kindknoten eines Knotens sind in einem zusammenhängenden Speicherbereich (Knotengruppe) allokiert und werden über einenOffsetadressiert
+    ![](Assets/DBimpl-csb-baum.png)
+
+Bw-Baum
+- = Buzzword Tree (Levandoski, Lomet, Sengupta: The Bw-Tree: A B-tree for New Hardware Platforms, ICDE 2013)
+- Ziele: Cache-Freundlichkeit, Multicore-CPUs, Flash-Speichereigenschaften
+- Techniken
+    - überwiegend Latch-freie Operationen, stattdessen atomare CAS-Instruktionen
+    - spezifische Struktur-Modifikationsoperationen: Folge von atomaren Modifikationen, Blink-ähnliche Struktur
+    - Delta-Updates und Log Structured Storage (LSS)
+        - Änderungen an Seiten/Knoten werden nicht direkt ausgeführt, sondern in Delta-Records pro Knoten erfasst
+        - keine Synchronisation für Zugriff auf Seiten notwendig
+        - Seite kann auch nach Änderung im Cache verbleiben
+        - Seiten + Delta Records werden periodisch konsolidiert
+        - Log Structured Storage -> später!
+    - Mapping-Tabelle: logische Seitennummern in
+      - (a) Offset im Flash-Speicher
+      - (b) Zeiger im Hauptspeicher
+
+## LSM-Baum
+- = Log Structured Merge Tree (O’Neil, Cheng, Gawlick, O’Neil: The log-structured merge-tree (LSM-tree). Acta Informatica. 33 (4): 351-385, 1996)
+- Ziel: höherer Schreibdurchsatz durch Eliminierung verstreuter In-Place-Updates
+- Einsatz in diversen NoSQL-Systemen: HBase, Cassandra, BigTable, LevelDB, RocksDB, ...
+- Grundidee
+    - Batches von Schreiboperationen werden sequentiell in Indexdateien gespeichert, d.h. Sortieren vor Schreiben auf Externspeicher (Log Structured)
+    - Neue Updates werden in neuen Indexdateien gespeichert
+    - Indexdateien werden periodisch zusammengefügt (Merge)
+    - Leseoperationen müssen alle Indexdateien konsultieren
+![](Assets/DBimpl-LSM-baum.png)
+
+LSM-Baum: Realisierung
+- Main-Memory-Baum $C_0$ als Puffer, sortiert nach Schlüsseln, z.B. als AVL- oder RB-Baum
+  - bei Erreichen eines gegebenen Füllgrads -> Herausschreiben auf Disk (siehe unten)
+  - ergänzt um Write Ahead Logging auf Disk für Wiederherstellung nach Systemfehler
+- mehrere Append-only, disk-basierte Indexe $C_1, C_2,...,$ ebenfalls sortiert nach Schlüssel (z.B. als B-Baum)
+  - effiziente Unterstützung von Scans (Schlüsselsuche)
+  - Merge in einem Schritt
+- Aktualität der Indexe: $C_0,C_1,...,C_n$
+
+LSM-Baum: Verdichtung
+- wenn bestimmte Anzahl von Dateien erzeugt wurden (z.B. 5 Dateien je 100 Datensätze), werden diese in eine Datei gemischt (1 Datei mit 500 Sätzen)
+- sobald 5 Dateien mit 500 Sätzen vorliegen, dann Mischen in eine Datei
+- usw.
+- Nachteil: große Anzahl von Dateien, die alle durchsucht werden müssen
+
+LSM-Baum: Ebenenweise Verdichtung
+1. pro Ebene wird eine bestimmte Zahl von Dateien verwaltet, partitioniert nach Schlüsseln (keine Überlappung der Schlüssel) -> Suche nur in einer Datei notwendig
+2. Ausnahme: erste Ebene (Überlappung erlaubt)
+3. Mischen der Dateien jeweils in die nächsthöhere Ebene: Auswahl einer Datei und Aufteilen der Sätze -> Platz für neue Daten schaffen
+
+LSM-Baum: Lesezugriffe
+- grundsätzlich: Verbesserung der Schreibperformance zulasten der Leseperformance
+  - Suche in allen Indexen $C_0,C_1,...,C_n$ notwendig
+- Vermeiden unnötiger Lesevorgänge durch Bloom-Filter pro Index oder pro Run
+  - (probabilistische) Datenstruktur zum Feststellen, ob Objekt in einer Menge enthalten ist
+  - Bit-Feld: Objekt wird über $k$ Hashfunktionen auf $k$ Bits abgebildet, die auf 1 gesetzt werden
+  - Prüfen auf Enthaltensein: Hashfunktionen anwenden -> Wenn alle $k$ Bits $= 1$, dann ist Objekt enthalten
+  - aber falsch-positive Werte möglich!
+  - können ebenfalls durch Mischen kombiniert werden
+  - [Quelle](Bloom: Space/Time Trade-offs in Hash Coding with Allowable Errors. CACM, 13(7):422-426, 1970)
+
+## Zusammenfassung
+- B+-Baum als "Arbeitspferd" für Indexing
+- Standardoperationen: Suche, Einfügen, Löschen
+- noch nicht betrachtet: Nebenläufigkeitskontrolle und Wiederherstellung im Fehlerfall
+- diverse Varianten und Optimierungen
+- LSM-Baum für schreibintensive Workloads

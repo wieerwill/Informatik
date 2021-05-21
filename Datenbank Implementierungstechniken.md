@@ -589,7 +589,7 @@ Aufgaben der Pufferverwaltung
 ![](Assets/DBimpl-pufferverwaltung.png)
 
 Mangelnde Eignung des BS-Puffers
-- Natürlicher Verbund von Relationen _A_ und _B_ (zugehörige Folge von Seiten: _Ai_ bzw. _Bj_ )
+- Natürlicher Verbund von Relationen $a$ und $b$ (zugehörige Folge von Seiten: _Ai_ bzw. _Bj_ )
 - Implementierung: _Nested-Loop_
     ![](Assets/DBimpl-bs-puffer.png)
 - Ablauf
@@ -717,7 +717,7 @@ Approximierende Verfahren
 - Idee:
     - Vereinfachung der benötigten Datenstruktur durch Approximation
     - Effektivität (Trefferrate) vs. Skalierbarkeit (Anzahl der Threads)
-- CLOCK: Approximation der Historie durch Bit-Schieberegister der Länge _k_
+- CLOCK: Approximation der Historie durch Bit-Schieberegister der Länge $k$
        - $k= 0$: FIFO
        - $k\rightarrow\infty$: LRU
        - typisch: $k = 1$
@@ -843,7 +843,7 @@ Klassifikation der Speichertechniken
 ![](Assets/DBimpl-speichertechniken-klassifikation.png)
 
 Dünn- vs. dichtbesetzter Index
-- dünnbesetzter Index: nicht für jeden Zugriffsattributwert _K_ ein Eintrag in Indexdatei sondern z.B. nur für _Seitenanführer_ einer sortierten Relation
+- dünnbesetzter Index: nicht für jeden Zugriffsattributwert $k$ ein Eintrag in Indexdatei sondern z.B. nur für _Seitenanführer_ einer sortierten Relation
 - dichtbesetzter Index: für jeden Datensatz der internen Relation ein Eintrag in Indexdatei
 
 Geclusterter vs. nicht-geclusterter Index
@@ -1498,7 +1498,7 @@ Grid-File: Zielsetzungen
 
 Prinzip der zwei Plattenzugriffe
 - bei exact-match
-    1. gesuchtes _k_ -Tupel auf Intervalle der Skalen abbilden; als Kombination der ermittelten Intervalle werden Indexwerte errechnet; Skalen im Hauptspeicher => noch kein Plattenzugriff
+    1. gesuchtes $k$ -Tupel auf Intervalle der Skalen abbilden; als Kombination der ermittelten Intervalle werden Indexwerte errechnet; Skalen im Hauptspeicher => noch kein Plattenzugriff
     2. über errechnete Indexwerte Zugriff auf das _Grid-Directory_ ; dort Adressen der Datensatz-Seiten gespeichert; erster _Plattenzugriff_.
     3. Der Datensatz-Zugriff: zweiter _Plattenzugriff_.
 
@@ -1544,3 +1544,370 @@ Buddy-System
 - Unflexibel beim Löschen: nur Zusammenfassungen von Regionen erlaubt, die vorher als Zwillinge entstanden waren
 - Beispiel: $(15,D)$ löschen: Seiten 1 und 4 zusammenfassen; $(87,S)$ löschen, Seite 2 zwar unterbelegt, kann aber mit keiner anderen Seite zusammengefasst werden
 
+# Weitere Indexstrukturen
+## Bitmap-Indexe
+Bitmap-Indexe
+- Idee: _Bit-Vektor_ zur Kodierung der Tupel-Attributwert-Zuordnung
+- Vergleich mit baumbasierten Indexstrukturen:
+    - vermeidet degenerierte B-Bäume
+    - unempfindlicher gegenüber höherer Zahl von Attributen
+    - einfachere Unterstützung von Anfragen, in denen nur einige (der indexierten) Attribute beschränkt werden
+    - dafür aber i.allg. höhere Aktualisierungskosten
+       - beispielsweise in Data Warehouses wegen des überwiegend lesenden Zugriffs unproblematisch
+
+Bitmap-Index: Realisierung
+- Prinzip: Ersetzung der TIDs (rowid) für einen Schlüsselwert im $b$ +-Baum durch Bitvektor
+- Knotenaufbau: $|B: 0 1001 0...0 1 | F: 1 01 000... 10  | O: 000 101 ...00 |$
+- Vorteil: geringerer Speicherbedarf
+    - Beispiel: 150.000 Tupel, 3 verschiedene Schlüsselwerte, 4 Byte für TID
+          - B+-Baum: 600 KB
+          - Bitmap: $3*18750 Byte =56KB$
+- Nachteil: Aktualisierungsaufwand
+- Definition in Oracle
+    ```sql
+    CREATE BITMAP INDEX bestellstatus_idx ON bestellung(status);
+    ```
+- Speicherung in komprimierter Form
+
+Standard-Bitmap-Index
+- jedes Attribut wird getrennt abgespeichert
+- für jede Ausprägung eines Attributs wird ein
+    Bitmap-Vektor angelegt:
+       - für jedes Tupel steht ein Bit, dieses wird auf 1 gesetzt, wenn das indexierte Attribut in dem Tupel den Referenzwert dieses Bitmap-Vektors enthält
+       - die Anzahl der entstehenden Bitmap-Vektoren pro Dimension entspricht der Anzahl der unterschiedlichen Werte, die für das Attribut vorkommen
+- Beispiel: Attribut Geschlecht
+    - 2 Wertausprägungen (m/w)
+    - 2 Bitmap-Vektoren
+    | PersId | Name | Geschlecht | Bitmap-w | Bitmap-m |
+    | --- | --- | --- | --- | --- |
+    007 |James Bond |M |0 |1
+    008 |Amelie Lux |W |1 |0
+    010 |Harald Schmidt |M |0 |1
+    011 |Heike Drechsler |W |1 |0
+- Selektion von Tupeln kann nun durch entsprechende Verknüpfung von Bitmap-Vektoren erfolgen
+- Beispiel: Bitmap-Index über Attribute Geschlecht und Geburtsmonat
+  - (d.h. 2 Bitmap-Vektoren B-w und B-m für Geschlecht und 12 Bitmap-Vektoren B-1, ..., B-12 für die Monate, wenn alle Monate vorkommen)
+- Anfrage: "alle im März geborenen Frauen"
+    - Berechnung: $B-w \wedge B-3$ (bitweise konjunktiv verknüpft)
+    - Ergebnis: alle Tupel, an deren Position im Bitmap-Vektor des Ergebnis eine 1 steht
+
+Mehrkomponenten-Bitmap-Index
+- bei Standard-Bitmap-Indexe entstehen für Attribute mit vielen Ausprägungen sehr viele Bitmap-Vektoren
+- $<n,m>$-Mehrkomponenten-Bitmap-Indexe erlauben $n*m$ mögliche Werte durch $n+m$ Bitmap-Vektoren zu
+    indexieren
+- jeder Wert $x(0\leq x\leq n*m-1)$ kann durch zwei Werte $y$ und $z$ repräsentiert werden:
+    $x=n*y+z$ mit $0\leq y\leq m-1$ und $0\leq z\leq n-1$
+    - dann nur noch maximal $m$ Bitmap-Vektoren für $y$ und $n$ Bitmap-Vektoren für $z$
+    - Speicheraufwand reduziert sich von $n*m$ auf $n+m$
+    - dafür müssen für eine Punktanfrage aber 2 Bitmap-Vektoren gelesen werden
+- Beispiel: Zweikomponenten-Bitmap-Index
+    - Für $M= 0 ..11$ etwa $x= 4*y + z$
+    - y-Werte: $B-2-1, B-1-1, B-0-1$
+    - z-Werte: $B-3-0, B-2-0, B-1-0, B-0-0$
+    | x|  y | || z |||||
+    | --- | --- | --- | --- | --- | --- | --- | --- |
+    | M | B-2-1 | B-1-1 | B-0-1| B-3-0| B-2-0| B-1-0| B-0-0
+    |5| 0 |1 |0 |0 |0 |1 |0
+    |3| 0 |0 |1 |1 |0 |0 |0
+    |0| 0 |0 |1 |0 |0 |0 |1
+    |11| 1| 0 |0| 1 |0| 0 |0
+
+Beispiel: Postleitzahlen
+- Kodierung von Postleitzahlen
+- Werte 00000 bis 99999
+- direkte Umsetzung: 100.000 Spalten
+- Zweikomponenten-Bitmap-Index (erste 2 Ziffern + 3 letzte Ziffern): 1.100 Spalten
+- Fünf Komponenten: 50 Spalten
+    - geeignet für Bereichsanfragen "PLZ 39***"
+- Binärkodiert (bis $2^17$): 34 Spalten
+    - nur für Punktanfragen!
+- Bemerkung: Kodierung zur Basis 3 ergibt sogar nur 33 Spalten...
+
+## Indexierung von Texten
+Indexierung von Texten
+- bisher vorgestellte Verfahren unterstützen prinzipiell auch die Indexierung von Zeichenketten
+- Probleme bereitet folgendes:
+    - unterschiedliche Längen der Zeichenketten als Suchschlüssel
+    - bei Sätzen: Zugriff auf einzelne Wörter bevorzugt
+    - Ähnlichkeiten u.a. über gemeinsame Präfixe und Editierabstand
+
+Digital- und Präfixbäume
+- B-Bäume: Problem bei zu indexierenden Zeichenketten
+- Lösung: Digital- oder Präfixbäume
+- Digitalbäume indexieren (fest) die Buchstaben des zugrundeliegenden Alphabets
+- können dafür unausgeglichen werden
+- Beispiele: Tries, Patricia-Bäume
+- Präfixbäume indexieren Präfix der Zeichenketten
+
+Tries
+- von "Information Retrieval", aber wie try gesprochen
+    - Abgrenzung vom _tree_ für allgemeine Suchbäume
+    ![](Assets/DBimpl-tries.png)
+- Knoten eines Tries
+    ![](Assets/Dbimpl-tries-knoten.png)
+    - Probleme: lange gemeinsame Teilworte, nicht vorhandenen Buchstaben und Buchstabenkombinationen, möglicherweise leere Knoten, sehr unausgeglichene Bäume
+
+Patricia-Bäume
+- Tries: Probleme bei Teilekennzahlen, Pfadnamen, URLs (lange gemeinsame Teilworte)
+- Lösung: Practical Algorithm To Retrieve Information Coded In Alphanumeric (Patricia)
+- Prinzip: Überspringen von Teilworten
+- Problem: Datenbanksprache bei Suchbegriff _Triebwerksperre_
+
+Patricia-Baum und Trie im Vergleich
+![](Assets/Dbimpl-trie-vs-patricia.png)
+- übersprungene Teilworte zusätzlich speichern: Präfix-Bäume
+
+
+Präfix-Bäume
+- Patricia-Baum plus Abspeicherung der übersprungenen Präfixe
+    ![](Assets/DBimpl-präfix-baum.png)
+
+Invertierte Listen
+- indizierte Worte (Zeichenketten) bilden eine lexikographisch sortierte Liste
+- einzelner Eintrag besteht aus einem _Wort_ und einer Liste von Dokument-Identifikatoren derjenigen Dokumente, in denen das Wort vorkommt
+- zusätzlich können weitere Informationen für die Wort-Dokument-Kombination abgespeichert werden:
+    - Position des (ersten Auftretens des) Wortes im Text
+    - Häufigkeit des Wortes im Text
+
+Invertierte Listen
+    ![](Assets/DBimpl-invertierte-liste.png)
+
+## Mehrdimensionale Speichertechniken
+Mehrdimensionale Speichertechniken
+- bisher: eindimensional (keine partial-match-Anfragen, nur lineare Ordnung)
+- jetzt: mehrdimensional (auch partial-match-Anfragen, Positionierung im mehrdimensionalen Datenraum)
+- $k$ Dimensionen = $k$ Attribute können gleichberechtigt unterstützt werden
+- dieser Abschnitt
+    - mehrdimensionaler B-Baum
+    - mehrdimensionales Hashverfahren
+
+## Mehrdimensionale Baumverfahren
+Mehrdimensionale Baumverfahren
+- KdB-Baum ist B+-Baum, bei dem Indexseiten als binäre Bäume mit Zugriffsattributen, Zugriffsattributwerten und Zeigern realisiert werden
+- Varianten von $k$ -dimensionalen Indexbäumen:
+    - _kd-Baum_ von Bentley und Friedman: für Hauptspeicheralgorithmen entwickelte, mehrdimensionale Grundstruktur (binärer Baum)
+    - _KDB-Baum_ von Robinson: Kombination kd-Baum und B-Baum ( $k$ -dimensionaler Indexbaum bekommt höheren Verzweigungsgrad)
+    - _KdB-Baum_ von Kuchen: Verbesserung des Robinson-Vorschlags, wird hier behandelt
+- KdB-Baum kann Primär- und mehrere Sekundärschlüssel gleichzeitig unterstützen
+- macht als Dateiorganisationsform zusätzliche Sekundärindexe überflüssig
+
+Definition KdB-Baum
+- Idee: auf jeder Indexseite einen Teilbaum darstellen, der nach mehreren Attributen hintereinander verzweigt
+    - _KdB-Baum vom Typ_ ( $b$ , $t$ ) besteht aus
+        - inneren Knoten (Bereichsseiten) die einen _kd-Baum_ mit maximal $b$ internen Knoten enthalten
+        - Blättern (Satzseiten) die bis zu $t$ Tupel der gespeicherten Relation speichern können
+    - Bereichsseiten: _kd-Baum_ enthalten mit Schnittelementen und zwei Zeigern
+        - Schnittelement enthält Zugriffsattribut und Zugriffsattributwert; 
+        - linker Zeiger: kleinere Zugriffsattributwerte; 
+        - rechter Zeiger: größere Zugriffsattributwerte
+
+Beispiel
+![](Assets/Dbimpl-kdb-baum-beispiel.png)
+
+KdB-Baum: Struktur
+- Bereichsseiten
+    - Anzahl der Schnitt- und Adressenelemente der Seite
+    - Zeiger auf Wurzel des in der Seite enthaltenen kd-Baumes
+    - Schnitt- und Adressenelemente.
+- Schnittelement
+    - Zugriffsattribut
+    - Zugriffsattributwert
+    - zwei Zeiger auf Nachfolgerknoten des kd-Baumes dieser Seite (können Schnitt- oder Adressenelemente sein)
+- Adressenelemente: Adresse eines Nachfolgers der Bereichsseite im KdB-Baum (Bereichs- oder Satzseite)
+
+KdB-Baum: Operationen
+- Komplexität $lookup$, $insert$ und $delete$ bei exact-match $O(log n)$
+- bei partial-match besser als $O(n)$
+- bei $t$ von $k$ Attributen in der Anfrage spezifiziert: Zugriffskomplexität von $O(n^{1-t/k})$
+
+KdB-Baum: Trennattribute
+- Reihenfolge der Trennattribute
+    - entweder zyklisch festgelegt
+    - oder Selektivitäten einbeziehen: Zugriffsattribut mit hoher Selektivität sollte früher und häufiger als Schnittelement eingesetzt werden
+- Trennattributwert: aufgrund von Informationen über Verteilung von Attributwerten eine geeignete "Mitte" eines aufzutrennenden Attributwertebereichs ermitteln
+
+
+KdB-Baum: Brickwall
+![](Assets/DBimpl-kdb-baum-brickwall.png)
+
+## Mehrdimensionales Hashen
+Mehrdimensionales Hashen
+- Idee: Bit Interleaving
+- abwechselnd von verschiedenen Zugriffsattributwerten die Bits der Adresse berechnen
+- Beispiel: zwei Dimensionen
+    | | *0*0 | *0*1 | *1*0| *1*1|
+    | --- | --- | --- | --- | --- |
+    0*0*| 0000 |0001 |0100 |0101
+    0*1*| 0010 |0011 |0110 |0111
+    1*0*| 1000 |1001 |1100 |1101
+    1*1*| 1010 |1011 |1110 |1111
+
+MDH von Kuchen
+- MDH baut auf linearem Hashen auf
+- Hash-Werte sind Bitfolgen, von denen jeweils ein Anfangsstück als aktueller Hashwert dient
+- je ein Bitstring pro beteiligtem Attribut berechnen
+- Anfangsstücke nun nach dem Prinzip des Bit-Interleaving zyklisch abarbeiten
+- Hashwert reihum aus den Bits der Einzelwerte zusammensetzen
+
+MDH formal
+- mehrdimensionaler Wert $x := (x_1,..., x_k)\in D = D_1\times ...\times D_k$
+- Folge von mit _i_ indizierten Hashfunktionen konstruieren
+- _i_-te Hashfunktion $h_i(x)$ wird mittels Kompositionsfunktion $\bar{h}_i$ aus den jeweiligen $i$ -ten Anfangsstücken der lokalen Hash-Werte $h_{i_j}(x_j)$ zusammengesetzt: $h_i(x)=\bar{h}_i(h_{i_1}(x_1),...,h_{i_k}(x_k))$
+- lokale Hashfunktionen $h_{i_j}$ ergeben jeweils Bitvektor der Länge $z_{i_j} +1$:$h_{i_j} : D_j\rightarrow \{0,..., z_{i_j}\}, j\in\{1 ,..., k\}$
+- $z_{i_j}$ sollten möglichst gleich groß sein, um die Dimensionen gleichmäßig zu berücksichtigen
+- Kompositionsfunktion $\bar{h}_i$ setzt lokale Bitvektoren zu einem Bitvektor der Länge $i$ zusammen: $\bar{h}_i:\{0,...,z_{i1}\times ...\times\{0,..., z_{i_k}\}\rightarrow\{0,...,2^{i+1}-1\}$
+- ausgeglichene Länge der $z_{i_j}$ wird durch folgende Festlegung bestimmt, die Längen zyklisch bei jedem Erweiterungsschritt an einer Stelle erhöht:
+    $$z_{i_j} = \begin{cases} 2^{\lfloor \frac{i}{k}\rfloor +1} -1 \quad\text{ für } j-1\leq (i mod k)\\ 2^{\lfloor \frac{i}{k}\rfloor} -1 \quad\text{ für } j-1 > (i mod k) \end{cases}$$
+- Kompositionsfunktion:
+    $$\bar{h}_i(x)=\sum_{r=0}^i (\frac{(x_{(r mod k)+1} mod 2^{\lfloor \frac{r}{k}\rfloor +1}) - (x_{(r mod k)+1} mod 2^{\lfloor \frac{r}{k}\rfloor})}{2^{\lfloor \frac{r}{k}\rfloor})}) 2^r$$
+
+MDH Veranschaulichung
+![](Assets/DBimpl-mdh-veranschaulichung.png)
+- verdeutlicht Komposition der Hashfunktion $h_i$ für drei Dimensionen und den Wert $i=7$
+- graphisch unterlegte Teile der Bitstrings entsprechen den Werten $h_{7_1}(x_1),h_{7_2}(x_2)$ und $h_{7_3}(x_3)$
+- beim Schritt auf $i=8$ würde ein weiteres Bit von $x_2$ (genauer: von $h_{8_2}(x_2)$) verwendet
+
+MDH Komplexität
+- Exact-Match-Anfragen: $O(1)$
+- Partial-Match-Anfragen, bei $t$ von $k$ Attributen festgelegt, Aufwand $O(n^{1-\frac{t}{k}})$
+- ergibt sich aus der Zahl der Seiten, wenn bestimmte Bits "unknown"
+- Spezialfälle: $O(1)$ für $t=k$, $O(n)$ für $t=0$
+
+## Geometrische Zugriffsstrukturen
+Geometrische Zugriffsstrukturen
+- große Mengen geometrischer Objekte ($> 10^6$)
+- Eigenschaften geometrischer Objekte
+    - Geometrie (etwa Polygonzug)
+    - zur Unterstützung bei Anfragen: zusätzlich $d$-dimensionales umschreibendes Rechteck (bounding
+       box)
+    - nichtgeometrische Attribute
+- Anwendungsszenarien: Geoinformationssysteme (Katasterdaten, Karten), CAx-Anwendungen (etwa VLSI
+    Entwurf), ...
+- Zugriff primär über Geometriedaten: Suchfenster (Bildschirmausschnitt), Zugriff auf benachbarte Objekte
+
+Typische Operationen
+- exakte Suche
+    - Vorgabe: exakte geometrische Suchdaten
+    - Ergebnis: maximal ein Objekt
+- Bereichsanfrage für vorgegebenes $n$-dimensionales Fenster
+    - Suchfenster: $d$-dimensionales Rechteck (entspricht mehrdimensionalem Intervall)
+    - Ergebnis sind alle geometrischen Objekte, die das Suchfenster schneiden
+    - Ergebnisgröße parameterabhängig
+- Einfügen von geometrischen Objekten
+    - wünschenswert ohne globale Reorganisation!
+- Löschen von geometrischen Objekten
+    - wünschenswert ohne globale Reorganisation!
+
+Nachbarschaftserhaltende Suchbäume
+- Aufteilung des geometrischen Bereichs in Regionen
+- benachbarte Objekte wenn möglich der selben Region zuordnen
+- falls dieses nicht geht, diese auf benachbarte Regionen aufteilen
+- Baumstruktur entsteht durch Verfeinerung von Regionen in benachbarte Teilregionen
+- Speicherung von Objekten erfolgt in den Blattregionen
+- Freiheitsgrade
+    - Form der Regionen
+    - vollständige Partitionierung oder Überlappung durch die Regionen
+    - eindeutige Zuordnung von Objekten zu Regionen oder Mehrfachzuordnung
+    - Speicherung und Zugriff über Originalgeometrie oder über abgeleitete Geometrie für Objekte
+    - Grad des Baumes & Organisationsform
+
+Mehrstufige Bearbeitung geom. Anfragen
+![](Assets/DBimpl-mehrstufige-geom-bearbeitung.png)
+
+Geom. Baumstruktur: BSP-Baum
+- Binary Space Partitioning: schrittweises binäres Teilen des Datenraums
+![](Assets/DBimpl-bsp-partition.png)
+
+Realisierungsvarianten
+| Alternative | Baumstrukturen | | |
+| --- | --- | --- | --- |
+| | BSP-Baum | R-Baum | R+-Baum |
+Regionenform | konvexe Polygone |Rechtecke| Rechtecke|
+Teilregionen |vollständig |unvollständig |unvollständig|
+Überlappung |nein |ja |nein|
+ausgeglichen |nein |ja |ja|
+
+R-Bäume
+- R-Baum: Verallgemeinerung des B-Baum-Prinzips auf mehrere Dimensionen
+    - Baumwurzel entspricht einem Rechteck, das alle geometrischen Objekte umfasst
+    - Geo-Objekte werden durch ihre umschließenden Rechtecke repräsentiert
+    - Aufteilung in Regionen erfolgt in nichtdisjunkte Rechtecke
+    - Jedes Geo-Objekt ist eindeutig einem Blatt zugeordnet
+- Regionenaufteilung durch Rechtecke im R-Baum
+    ![](Assets/DBimpl-r-baum.png)
+- Baumstruktur für R-Baum
+    ![](Assets/DBimpl-r-baum-struktur.png)
+
+Probleme mit R-Bäumen
+- gegebenes Rechteck kann von vielen Regionen überlappt werden, es ist aber genau in einer Region gespeichert
+- auch Punktanfragen können eine Suche in sehr vielen Rechteckregionen bedeuten
+- Ineffizient bei exakter Suche (exakte Suche auch bei Einfügen und Löschen notwendig!)
+- Probleme beim Einfügen
+    - Einfügen erfordert oft Vergrößern von Regionen (aufwärts propagiert)
+
+Vergrößern beim Einfügen
+![](Assets/DBimpl-r-baum-vergrößern.png)
+
+R+-Bäume
+- R+-Bäume: Aufteilung in Teilregionen disjunkt
+- Jedem gespeicherten Punkt des geometrischen Bereichs ist eindeutig ein Blatt zugeordnet
+- In jeder Baumebene ist einem Punkt ebenfalls maximal ein Rechteck zugeordnet -> eindeutiger Pfad von der Wurzel zum speichernden Blatt
+- ‘Clipping’ von Geo-Objekten notwendig!
+    ![](Assets/DBimpl-r+-baum.png)
+    ![](Assets/DBimpl-r+-baum-struktur.png)
+
+Probleme mit R+-Bäumen
+- Objekte müssen in mehreren Rechteckregionen gespeichert werden (clipping) - erhöhter Speicher- & Modifikationsaufwand
+- Einfügen von Objekten erfordert möglicherweise Modifikation mehrerer Rechteckregionen
+    ![](Assets/DBimpl-r+-baum-problem.png)
+- Einfügen kann in bestimmten Situationen unvermeidbar zu Regionenaufteilungen führen
+    ![](Assets/Dbimpl-r+-baum-problem-2.png)
+- Regionenmodifikationen haben Konsequenzen sowohl in Richtung Blätter als auch in Richtung Wurzel
+- obere Grenze für Einträge in Blattknoten kann nicht mehr garantiert werden
+
+Rechteckspeicherung durch Punktdatenstrukturen
+- Probleme bei ausgedehnten Geometrien -> Entartung
+- Nutzung "robuster" mehrdimensionaler Indexstrukturen (z.B. Grid-File) durch Abbildung von Rechtecken auf Punkte möglich?
+
+Punktdatenstrukturen
+- Rechteckspeicherung durch Punktdatenstrukturen
+    - Transformation von ausgedehnten Objekten (mehrdimensionale Rechtecke) in Punktdaten
+    - Transformation bildet $d$-dimensionale Rechtecke auf Punkte im $2d$-dimensionalen Raum $R^{2d}$ ab
+    - $d$-dimensionale Rechteck: $r=[l_1, r_1]\times ...\times [l_d, r_d]$
+- Eckentransformation
+    $p_r = (l_1, r_1,..., l_d, r_d) \in R^{2d}$
+    pro Intervall als Koordinaten: obere Schranke, untere Schranke
+- Mittentransformation $p_r =(\frac{l_1+r_1}{2}, \frac{r_1-l_1}{2},...,\frac{l_d+l_r}{2},\frac{r_d-l_d}{2})\in\mathbb{R}^{2d}$
+    pro Intervall als Koordinaten: Mittelpunkt, halbe Breite
+
+Eckentransformation
+![](Assets/DBimpl-eckentransformation.png)
+
+Mittentransformation
+![](Assets/DBimpl-mittentransformation.png)
+
+Suchfenster
+![](Assets/DBimpl-suchfenster.png)
+
+Grid-File-Degeneration
+![](Assets/Dbimpl-grid-file-degeneration.png)
+
+## Approximierende Verfahren
+Approximierende Verfahren
+- insbesondere für hochdimensionale Daten
+- pro Tupel einen approximierenden Bit-Code mit nur wenigen Bits pro Dimensionen
+       - beispielsweise ein Grid mit jeweils $2^k$ Bit pro Dimension
+       - ordnungserhaltend wenn die Bits geeignet gewählt werden
+       - adressiert werden die Zellen in denen ein Punkt liegt
+       - Nutzung zur Nachbarschaftssuche in hochdimensionalen Räumen
+- VA-File von Weber et al.
+    - ersetzt Durchlauf über alle Punkte durch Durchlauf über alle Approximationswerte zur Vorauswahl von Kandidaten
+
+VA-File
+![](Assets/DBimpl-va-file.png)
+
+Zusammenfassung
+- Bitmap-Indexe
+- Digital- und Präfixbäume
+- Mehrdimensionale Verfahren
+- Geometrische Zugriffsstrukturen

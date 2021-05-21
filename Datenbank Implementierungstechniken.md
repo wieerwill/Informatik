@@ -1255,3 +1255,292 @@ LSM-Baum: Lesezugriffe
 - noch nicht betrachtet: Nebenläufigkeitskontrolle und Wiederherstellung im Fehlerfall
 - diverse Varianten und Optimierungen
 - LSM-Baum für schreibintensive Workloads
+
+# Hashing
+## Hashing
+- Zugriff über Adressberechnung aus Schlüssel
+- linearer Adressraum der Grösse $n$
+    - Adressierung in einem Array
+- Ziel: direkter Zugriff in $O(1)$ statt logarithmisch wie bei Bäumen
+
+Hashverfahren
+- Schlüsseltransformation und Überlaufbehandlung
+- DB-Technik:
+    - Disk-basiert: Bildbereich entspricht Seiten-Adressraum
+    - Hauptspeicher: Adresse in einem Array (Hauptspeicheradresse plus Offset)
+- Dynamik: dynamische Hashfunktionen oder Re-Hashen
+
+Grundprinzipien
+- Basis-Hashfunktion: $h(k)= k mod m$
+    - $m$ oft Primzahl da besseres Verhalten bei Kollisionen
+    - oder $m=2^k$ aufgrund einfacher Berechnungen
+- Überlauf-Behandlung
+    - Überlaufseiten als verkettete Liste
+    - lineares Sondieren
+    - quadratisches Sondieren
+    - doppeltes Hashen
+    - ...
+
+Hashverfahren für blockorientierte Datenhaltung
+![](Assets/Dbimpl-hashverfahren.png)
+
+Operationen und Zeitkomplexität
+- lookup, modify, insert, delete
+- lookup benötigt maximal $1+ #B(h(w))$ Seitenzugriffe
+- $#B(h(w))$ Anzahl der Seiten (inklusive der Überlaufseiten) des Buckets für Hash-Wert $h(w)$
+- Untere Schranke 2 (Zugriff auf Hashverzeichnis plus Zugriff auf erste Seite)
+
+Statisches Hashen: Probleme
+- mangelnde Dynamik
+- Vergrößerung des Bildbereichs erfordert komplettes Neu-Hashen
+- Wahl der Hashfunktion entscheidend; 
+  - Bsp.: Hash-Index aus 100 Buckets, Studenten über 6-stellige MATRNR (wird fortlaufend vergeben) hashen
+  - ersten beiden Stellen: Datensätze auf wenigen Seiten quasi sequenziell abgespeichert
+  - letzten beiden Stellen: verteilen die Datensätze gleichmäßig auf alle Seiten
+- Sortiertes Ausgeben einer Relation nicht unterstützt
+
+## Hash-Funktionen
+- klassisch, etwa Divisions-Rest-Methode
+    $h() = x mod m$
+- zusammengesetzt, etwa $h(k)= h_2 (h_1 (k))$ (siehe später Spriralhashen)
+- ordnungserhaltend
+    $k_1 < k_2 => ( h(k_1) = h(k_2) \vee h(k_1) < h(k_2))$
+- dynamisch (siehe später)
+- mehrdimensional (siehe später)
+- materialisiert (etwa Dictionary Encoding, siehe später)
+
+Ordnungserhaltenes Hashen
+- Schlüsselwerte werden als 8-Bit-Integer-Werte ohne Vorzeichen kodiert und sind gleichmässig im Bereich $0...2^8-1$ verteilt.
+- Die Extraktion der ersten drei Bits ergibt eine ordnungserhaltende Hashfunktion für den Bereich $0...2^3-1$.
+- Sind die Schlüsselwerte nicht gleichverteilt, etwa weil es sich um fortlaufend vergebene Nummern handelt, ist das Ergebnis zwar weiterhin ordnungserhaltend, aber die Hash-Tabelle ist sehr ungleichmäßig gefüllt.
+
+## Hardware-sensitives Hashen
+Neue Hardware und Hash-Funktionen
+- Beobachtung: Hashen mit klassischem Sondieren ungünstig für neue Hardware
+  - schwer parallelisierbar
+  - Clustern von Werten verletzt Nähe der Werte (bei Cache Lines)
+- Varianten versuchen beide Punkte anzugehen
+    - Cuckoo-Hashing
+    - optimiertes lineares Sondieren
+    - Hopscotch-Hashing
+    - Robin-Hood-Hashing
+
+Cuckoo-Hashen
+- Kuckucks-Hashen
+- soll Parallelität erhöhen im Vergleich zu linearem Sondieren
+- Idee: Zwei Tabellen mit zwei Hash-Funktionen
+    - im Fall einer Kollision in einer Tabelle wird in der zweiten Tabelle gesucht
+    - ist dort der Platz belegt, wird der dortige Eintrag verdrängt in die jeweils andere Tabelle
+          - _Kuckuck wirft Ei aus dem Nest_
+    - dies wird solange gemacht bis ein freier Platz gefunden wird
+- Beispiel
+  - zwei einfache Hash-Funktionen, die jeweils die letzte beziehungsweise vorletzte Dezimalstelle einer Zahl extrahieren
+      $h_1(k) = k mod 10$
+      $h_2(k) = (k/10) mod 10$
+  - Bei einer Suche muss immer in beiden Tabellen nachgeschaut werden, also $T_1[h_1(k)] = k\vee T_2[h_2(k)] = k$.
+  - Wir fügen die Zahlen $433, 129$ und $555$ in die Tabelle $T_1$ ein. Beim Einfügen von $783$ ist der Platz in Tabelle $T_1$ belegt, so dass diese Zahl in $T_2$ gespeichert werden muss. Wird nun mit $103$ eine weitere Zahl eingefügt, die mit $433$ unter $h_1$ kollidiert, ist dies mit $h_2$ weiterhin möglich.
+
+Cuckoo Beispiel
+- Ergebnis des Einfügens von 433, 129 , 555 , 783 , 103
+|       | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $T_1$ |     |     |     | 433 |     | 555 |     |     |     | 129 |
+| $T_2$ | 103 |     |     |     |     |     |     |     | 783 |
+- Wird nun die Zahl $889$ eingefügt, so sind beide möglichen Positionen belegt. $889$ kann in $T_1$ die dort stehende Zahl $129$ verdrängen, die in $T_2$ an der Position $T_2[2]$ gespeichert werden kann.
+|       | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $T_1$ |     |     |     | 433 |     | 555 |     |     |     | 129 |
+| $T_2$ | 103 |     | 129 |     |     |     |     |     | 783 |
+- Wird nun $789$ eingefügt, sind wiederum beide Positionen belegt. Das Verdrängen von $889$ aus $T_1$ würde zu einem kaskadierenden Verdrängen führen: $889$ würde in $T_2$ dann $783$ verdrängen, das wiederum $433$ in $T_1$ verdrängen würde. Dies würde gehen da $433$ an der Stelle $T_2[3]$ Platz hätte
+|       | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $T_1$ |     |     |     | 783 |     | 555 |     |     |     | 129 |
+| $T_2$ | 103 |     | 129 | 433 |     |     |     |     | 783 |
+
+Weitere Prinzipien der Optimierung
+- Lokalität von Datenzugriffen verringert die Wahrscheinlichkeit von Cache Misses
+- Blockung von Daten kann an die Grösse von Cache-Lines (64 Bytes) angepasst werden, und erhöht den Durchsatz
+- Parallelisierung für SIMD basierend auf einer Vektorisierung der Daten kann insbesondere SIMD-basierte Co-Prozessoren gut ausnutzen, aber greift auch bei MICs
+
+Optimiertes lineares Sondieren
+- Lineares Sondieren ist gut geeignet, um den Sondierungsvorgang auf Vektoren zu parallelisieren
+  - Suchschlüssel kann in einen Vektor der Länge $n$ an alle Positionen kopiert werden
+  - beginnend ab derem initialen Sondierungspunkt $h(k)$ können dann Vektoren jeweils mit Vektoren aus der Hash-Tabelle verglichen werden, also zuerst mit
+    $H[h)k),...,h(k)+n - 1]$, dann mit $H[h(k) + n,...,h(k) + 2n-1 ]$, etc.
+  - Vergleich kann parallel erfolgen; muss sowohl auf Vorhandensein von $k$ als auch auf Existenz einer leeren Position prüfen
+
+Hopscotch-Hashen
+- Hopscotch: _Himmel und Hölle_ beziehungsweise _wild herumhopsen_
+- Begrenzung des Sondierungsraum auf eine (konstante) Länge
+- Idee:
+    - beim Einfügen erfolgt die Suche (parallel) in der festen Nachbarschaft
+    - wird Schlüssel $k$ nicht gefunden und existiert kein freier Slot in der festen Nachbarschaft, dann wird versucht, $k$ mit einem anderen Schlüssel aus der festen Nachbarschaft zu tauschen
+    - dafür wird die nächste freie Stelle gesucht; von dieser wird rückwärts in Richtung $h(k)$ gesucht und jeder Eintrag $k′$ untersucht
+    - wenn die aktuelle freie Stelle noch in der festen Nachbarschaft von $k′$ liegt, wird getauscht: $k′$ springt auf die freie Stelle
+
+Robin-Hood-Hashen
+- Robin-Hood: _Nimm von den Reichen gib es den Armen_
+- Basisidee: in der Situation, dass beim Sondieren für $k$ ein Platz bereits mit einem Element $k′$ besetzt ist, wird der nächste Sondierungsschritt mit demjenigen Element weitergeführt, das die kleinere Distanz zum eigentlichen Hash-Wert $h(k)$ bzw. $h(k′)$ hat
+
+## Dynamische Hash-Verfahren
+Lineares Hashen
+- Folge von Hash-Funktionen, die wie folgt charakterisiert sind:
+  - $h_i$: dom(Primärschlüssel) ->$\{0,..., 2^i \times N\}$ ist eine Folge von Hash-Funktionen mit $i\in\{0,1,2,...\}$ und $N$ als Anfangsgröße des Hash-Verzeichnisses
+  - Wert von $i$ wird auch als Level der Hash-Funktion bezeichnet 
+  - $dom(Primärschlüssel)$ wird im folgenden als $dom(Prim)$ abgekürzt
+- Für diese Hash-Funktionen gelten die folgenden Bedingungen:
+    - $h_{i+1}(w) = h_i(w)$ für etwa die Hälfte aller $w\in dom(Prim)$
+    - $h_{i+1}(w) = h_i(w) + 2^i\times N$ für die andere Hälfte
+  - Bedingungen sind zum Beispiel erfüllt, wenn $h_i(w)$ als $w mod(2^i\times N)$ gewählt wird
+  - Darstellung durch Bit-Strings, Hinzunahme eines Bits verdoppelt Bildbereich
+
+Prinzip lineares Hashen
+- für ein $w$ höchstens zwei Hash-Funktionen zuständig, deren Level nur um 1 differiert, Entscheidung zwischen diesen beiden durch Split-Zeiger
+  - $sp$ Split-Zeiger (gibt an, welche Seite als nächstes geteilt wird)
+  - $lv$ Level (gibt an, welche Hash-Funktionen benutzt werden)
+- Aus Split-Zeiger und Level läßt sich die Gesamtanzahl $Anz$ der belegten Seiten wie folgt berechnen:
+  - $Anz = 2^{lv} + sp$
+- Beide Werte werden am Anfang mit 0 initialisiert.
+![](Assets/DBimpl-lineares-hashen.png)
+
+Lookup
+- $$s := h_{lv}(w)$;
+- if $s < sp$
+- then $s := h_{lv + 1}(w)$;
+- zuerst Hash-Wert mit der "kleineren" Hash-Funktion bestimmen
+- liegt dieser unter dem Wert des Split-Zeigers => größere Hash-Funktion verwenden
+
+Splitten einer Seite
+1. Die Sätze der Seite (Bucket), auf die $sp$ zeigt, werden mittels $h_{lv+1}$ neu verteilt (ca. die Hälfte der Sätze wird auf Seite (Bucket) unter Hash-Nummer $2^{lv}*N +sp$ verschoben)
+2. Der Split-Zeiger wird weitergesetzt: $sp:=sp +1;$
+3. Nach Abarbeiten eines Levels wird wieder bei Seite 0 begonnen; der Level wird um 1 erhöht:
+
+```
+if sp = 2^{lv} * N then
+    begin
+        lv := lv + 1 ;
+        sp := 0
+    end;
+```
+![](DBimpl-hashing-split.png)
+
+
+Problem lineares Hashen
+![](Assets/DBimpl-lineares-hashing-problem.png)
+
+Erweiterbares Hashen
+- Problem: Split erfolgt an fester Position, nicht dort wo Seiten überlaufen
+- Idee: binärer Trie zum Zugriff auf Indexseiten
+- Blätter unterschiedlicher Tiefe
+    - Indexseiten haben Tiefenwert
+    - Split erfolgt bei Überlauf
+- aber: Speicherung nicht als Trie, sondern als Array
+    - entspricht vollständigem Trie mit maximaler Tiefe
+       - "shared" Seiten als Blätter
+    - Array der Grösse 2 _d_ für maximale Tiefe _d_
+       - erfordert nun nur einen Speicherzugriff!
+    - bei Überlauf: Indexgrösse muss möglicherweise verdoppelt werden!
+- Ausgangslage:
+    - Einfügen von 00111111 würde Überlauf bei erreichter maximaler Tiefe erzeugen
+        ![](Assets/DBimpl-erweiterbares-hashing.png)
+    - Verdopplung der Indexgrösse
+        ![](Assets/DBimpl-erweiterbares-hashing-2.png)
+    - nun möglich: Split der Seite
+        ![](Assets/DBimpl-erweiterbares-hashing-3.png)
+
+Variante: Array als Trie gespeichert
+![](Assets/DBimpl-trie.png)
+
+Spiral-Hashen
+- Problem: zyklisch erhöhte Wahrscheinlichkeit des Splittens
+- Lösung: unterschiedliche Dichte der Hashwerte
+    - Interpretation der Bit-Strings als binäre Nachkommadarstellung einer Zahl zwischen $0.0$ und $1.0$
+    - Funktion von $[0.0,1.0] -> [0.0,1.0]$ so dass Dichte gleichmässig verteilter Werte nahe $1.0$ doppelt so gross ist wie nahe $0.0$
+- Umverteilung mittels Exponentialfunktion
+- Funktion $exp(n)$   $exp(n) = 2^n - 1$ erfüllt die Bedingungen
+- insbesondere gilt $2^0 - 1 = 0$ und $2^1 - 1 = 1$
+- Hashfunktion exhash
+    $exhash(k) = exp(h(k)) = 2^{h(k)} - 1$
+- Wirkung der verwendeten Hashfunktion im Intervall $0.0$ bis $1.0$
+    | $n$   | $2^n-1$     |
+    | ----- | ----------- |
+    | $0.0$ | $0.0$       |
+    | $0.1$ | $0.0717735$ |
+    | $0.2$ | $0.1486984$ |
+    | $0.3$ | $0.2311444$ |
+    | $0.4$ | $0.3195079$ |
+    | $0.5$ | $0.4142136$ |
+    | $0.6$ | $0.5157166$ |
+    | $0.7$ | $0.6245048$ |
+    | $0.8$ | $0.7411011$ |
+    | $0.9$ | $0.866066$  |
+    | $1.0$ | $1.0$       |
+- Spiralförmiges Ausbreiten
+    - Ausgangslage: 4 Seiten der Tiefe 2
+    ![](Assets/DBimpl-spiral-hashing.png)
+- Spiralförmiges Ausbreiten
+    - Split der Seite mit der höchsten Dichte
+    - Ergebnis: 5 Seiten, davon 3 der Tiefe 2 und 2 der Tiefe 3
+    ![](Assets/DBimpl-spiral-hashing-2.png)
+
+## Grid-File
+Grid-Files
+- bekannteste und von der Technik her attraktive mehrdimensionale Dateiorganisationsform
+- eigene Kategorie: Elemente der Schlüsseltransformation wie bei Hashverfahren und Indexdateien wie bei Baumverfahren kombiniert
+  - deshalb hier bei Hash-Verfahren betrachtet
+
+Grid-File: Zielsetzungen
+- Prinzip der 2 Plattenzugriffe: Jeder Datensatz soll bei einer _exact-match_ -Anfrage in 2 Zugriffen erreichbar sein
+- Zerlegung des Datenraums in Quader: _n_ -dimensionale Quader bilden die Suchregionen im Grid-File
+- Prinzip der Nachbarschaftserhaltung: Ähnliche Objekte sollten auf der gleichen Seite gespeichert werden
+- Symmetrische Behandlung aller Raum-Dimensionen: _partial-match_ -Anfragen ermöglicht
+- Dynamische Anpassung der Grid-Struktur beim Löschen und Einfügen
+
+Prinzip der zwei Plattenzugriffe
+- bei exact-match
+    1. gesuchtes _k_ -Tupel auf Intervalle der Skalen abbilden; als Kombination der ermittelten Intervalle werden Indexwerte errechnet; Skalen im Hauptspeicher => noch kein Plattenzugriff
+    2. über errechnete Indexwerte Zugriff auf das _Grid-Directory_ ; dort Adressen der Datensatz-Seiten gespeichert; erster _Plattenzugriff_.
+    3. Der Datensatz-Zugriff: zweiter _Plattenzugriff_.
+
+Aufbau eines Grid-Files
+![](Assets/DBimpl-grid-files.png)
+- Grid: $k$ eindimensionale Felder (Skalen), jede Skala repräsentiert Attribut
+- _Skalen_ bestehen aus Partition der zugeordneten Wertebereiche in Intervalle
+- Grid-Directory besteht aus Grid-Zellen, die den Datenraum in Quader zerlegen
+- Grid-Zellen bilden eine Grid-Region, der genau eine Datensatz-Seite zugeordnet wird
+- Grid-Region: $k$-dimensionales, konvexes (Regionen sind paarweise disjunkt)
+
+Operationen
+- Zu Anfang: Zelle = Region = eine Datensatz-Seite
+- Seitenüberlauf:
+    - Seite wird geteilt
+    - falls zugehörige Gridregion aus nur einer Gridzelle besteht, muss ein Intervall auf einer Skala in zwei Intervalle unterteilt werden
+    - besteht Region aus mehreren Zellen, so werden diese Zellen in einzelne Regionen zerlegt
+- Seitenunterlauf:
+    - Zwei Regionen zu einer zusammenfassen, falls das Ergebnis eine neue, konvexe Region ergibt
+
+Beispiel
+- Start-Grid-File
+    ![](Assets/DBimpl-grid-start.png)
+    - Datensätze einfügen: $(45,D),(2,B),(87,S),(75,M),(55,K),(3,Y),(15,D),(25,K),(48,F)$
+    - jede Seite des Grid-Files fasst bis zu drei Datensätze
+- Eingefügt: $(45, D), (2, B), (87, S)$
+    ![](Assets/DBimpl-grid-beispiel-1.png)
+- Einfügen von $(75, M)$ erzwingt Split
+    ![](Assets/Dbimpl-grid-beispiel-2.png)
+- Eingefügt: $(55, K)$
+    ![](Assets/Dbimpl-grid-beispiel-3.png)
+- Einfügen von $(3, Y)$ erzwingt wiederum einen Split
+    ![](Assets/Dbimpl-grid-beispiel-4.png)
+- Eingefügt: (15, D), (25, K),
+    ![](Assets/DBimpl-grid-beispiel-5.png)
+- Einfügen von (48, F) erzwingt wiederum einen Split
+    ![](Assets/DBimpl-grid-beispiel-6.png)
+
+
+Buddy-System
+- Beschriebenes Verfahren: Buddy-System (Zwillings-System)
+- Die im gleichen Schritt entstandenen Zellen können zu Regionen zusammengefasst werden; Keine andere Zusammenfassung von Zellen ist im Buddy-System erlaubt
+- Unflexibel beim Löschen: nur Zusammenfassungen von Regionen erlaubt, die vorher als Zwillinge entstanden waren
+- Beispiel: $(15,D)$ löschen: Seiten 1 und 4 zusammenfassen; $(87,S)$ löschen, Seite 2 zwar unterbelegt, kann aber mit keiner anderen Seite zusammengefasst werden
+

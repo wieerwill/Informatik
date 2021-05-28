@@ -565,16 +565,16 @@ Eine W-Tautologie ist eine Formel $\phi$ mit $\varnothing \Vdash W\phi$, d.h. $B
 
 Wahrheitstafel für den Booleschen Wahrheitswertebereich B:
 
-| RL | AK | BK | $AK\vee BK$ | $AK\rightarrow BK$ | $(BK\wedge RL)\rightarrow\lnot AK$ | RL | $\lnot AK$ |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-0 |0 |0 |0 |1 |1 |0 |1
-0 |0 |1 |1 |1 |1 |0 |1
-0 |1 |0 |1 |0 |1 |0 |0
-0 |1 |1 |1 |1 |1 |0 |0
-1 |0 |0 |0 |1 |1 |1 |1
-1 |0 |1 |1 |1 |1 |1 |1
-1 |1 |0 |1 |0 |1 |1 |0
-1 |1 |1 |1 |1 |0 |1 |0
+| RL  | AK  | BK  | $AK\vee BK$ | $AK\rightarrow BK$ | $(BK\wedge RL)\rightarrow\lnot AK$ | RL  | $\lnot AK$ |
+| --- | --- | --- | ----------- | ------------------ | ---------------------------------- | --- | ---------- |
+| 0   | 0   | 0   | 0           | 1                  | 1                                  | 0   | 1          |
+| 0   | 0   | 1   | 1           | 1                  | 1                                  | 0   | 1          |
+| 0   | 1   | 0   | 1           | 0                  | 1                                  | 0   | 0          |
+| 0   | 1   | 1   | 1           | 1                  | 1                                  | 0   | 0          |
+| 1   | 0   | 0   | 0           | 1                  | 1                                  | 1   | 1          |
+| 1   | 0   | 1   | 1           | 1                  | 1                                  | 1   | 1          |
+| 1   | 1   | 0   | 1           | 0                  | 1                                  | 1   | 0          |
+| 1   | 1   | 1   | 1           | 1                  | 0                                  | 1   | 0          |
 
 
 Wir erhalten also $\{(AK\vee BK),(AK\rightarrow BK), ((BK\wedge RL)\rightarrow \lnot AK),RL\} \Vdash_B \lnot AK$
@@ -625,12 +625,12 @@ Sei $\phi$ beliebige Formel mit atomaren Formeln in V.
 
 Zusammenfassung der Beispiele
 
-| | B | $B_R$ | $K_3$ | F | $H_R$ | |
-| --- |--- | --- |--- | --- | --- | --- |
-| $\varnothing\Vdash_W\lnot\lnot\phi\rightarrow\phi$ | √ | √ | – | – | – | $\varnothing\vdash \lnot\lnot\phi\rightarrow\phi$ |
-| $\varnothing\Vdash_W\phi\vee\lnot\phi$ | √ | √ |–| –| –| $\varnothing\vdash\phi\vee\lnot\phi$
-| $\{\lnot\phi\rightarrow\bot\}\Vdash_W\phi$ | √ | √ |√ |√ | – | $\{\lnot\phi\rightarrow\bot\}\vdash\phi$ |
-| $\{\phi\}\Vdash_W\lnot\phi\rightarrow\bot$ | √| √ |√ |√ |√ | $\{\phi\}\vdash\lnot\phi\rightarrow\bot$ 
+|                                                    | B   | $B_R$ | $K_3$ | F   | $H_R$ |                                                   |
+| -------------------------------------------------- | --- | ----- | ----- | --- | ----- | ------------------------------------------------- |
+| $\varnothing\Vdash_W\lnot\lnot\phi\rightarrow\phi$ | √   | √     | –     | –   | –     | $\varnothing\vdash \lnot\lnot\phi\rightarrow\phi$ |
+| $\varnothing\Vdash_W\phi\vee\lnot\phi$             | √   | √     | –     | –   | –     | $\varnothing\vdash\phi\vee\lnot\phi$              |
+| $\{\lnot\phi\rightarrow\bot\}\Vdash_W\phi$         | √   | √     | √     | √   | –     | $\{\lnot\phi\rightarrow\bot\}\vdash\phi$          |
+| $\{\phi\}\Vdash_W\lnot\phi\rightarrow\bot$         | √   | √     | √     | √   | √     | $\{\phi\}\vdash\lnot\phi\rightarrow\bot$          |
 
 - $√$ in Spalte W:W-Folgerung gilt
 - $-$ in Spalte W:W-Folgerung gilt nicht
@@ -982,15 +982,15 @@ Beweis: Wir zeigen nur die Äquivalenz (3):
 Sei $B$ beliebige B-Belegung, die wenigstens auf $\{p_1, p_2, p_3\}$ definiert ist.
 Dazu betrachten wir die Wertetabelle:
 | $B(p_1)$ | $B(p_2)$ | $B(p_3)$ | $B(p_1\vee(p_2\wedge p_3))$ | $B((p_1\vee p_2)\wedge(p_1 \vee p_3 ))$ |
-| --- | --- | --- | --- | --- |
-$0_B$ | $0_B$ | $0_B$ | $0_B$ | $0_B$
-$0_B$ | $0_B$ | $1_B$ | $0_B$ | $0_B$
-$0_B$ | $1_B$ | $0_B$ | $0_B$ | $0_B$
-$0_B$ | $1_B$ | $1_B$ | $1_B$ | $1_B$
-$1_B$ | $0_B$ | $0_B$ | $1_B$ | $1_B$
-$1_B$ | $0_B$ | $1_B$ | $1_B$ | $1_B$
-$1_B$ | $1_B$ | $0_B$ | $1_B$ | $1_B$
-$1_B$ | $1_B$ | $1_B$ | $1_B$ | $1_B$
+| -------- | -------- | -------- | --------------------------- | --------------------------------------- |
+| $0_B$    | $0_B$    | $0_B$    | $0_B$                       | $0_B$                                   |
+| $0_B$    | $0_B$    | $1_B$    | $0_B$                       | $0_B$                                   |
+| $0_B$    | $1_B$    | $0_B$    | $0_B$                       | $0_B$                                   |
+| $0_B$    | $1_B$    | $1_B$    | $1_B$                       | $1_B$                                   |
+| $1_B$    | $0_B$    | $0_B$    | $1_B$                       | $1_B$                                   |
+| $1_B$    | $0_B$    | $1_B$    | $1_B$                       | $1_B$                                   |
+| $1_B$    | $1_B$    | $0_B$    | $1_B$                       | $1_B$                                   |
+| $1_B$    | $1_B$    | $1_B$    | $1_B$                       | $1_B$                                   |
 
 Die anderen Äquivalenzen werden analog bewiesen.
 
@@ -1205,7 +1205,7 @@ Nach unserer Herleitung folgern wir, daß das Teil $A$ heil ist.
 2. Wenn der Algorithmus eine atomare Formelqmarkiert und wenn $B$ eine B-Belegung ist, die $\Gamma$ erfüllt, dann gilt $B(q) = 1_B$.
     Beweis: wir zeigen induktiv über $n$: Wenn $q$ in einem der ersten $n$ Schleifendurchläufe markiert wird, dann gilt $B(q) = 1_B$.
   - I.A. Die Aussage gilt offensichtlich für $n=0$.
-  - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so daß $p_1 ,... ,p_k$ in den ersten $n−1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
+  - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so daß $p_1 ,... ,p_k$ in den ersten $n-1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
     Da $B$ alle Hornformeln aus $\Gamma$ erfüllt, gilt insbesondere $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow q) = 1_B$ und damit $B(q) = 1_B$.
 3. Wenn der Algorithmus „unerfüllbar“ ausgibt, dann ist $\Gamma$ unerfüllbar.
     Beweis: indirekt, wir nehmen also an, daß der Algorithmus „unerfüllbar“ ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
@@ -1271,15 +1271,15 @@ Beweis: Endlichkeitssatz: es gibt $\Delta\subseteq\Gamma$ endlich und unerfüllb
 - $r\geq 0...$ Anzahl der Runden
 - $q_i...$ Atomformel, die in $i$ Runde markiert wird $(1\leq i\leq r)$
 
-Behauptung: Es gibt $m\leq r$ und SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Delta$ mit $M_m=\varnothing$ und $M_n\subseteq\{q_1,q_2,... ,q_{r−n}\}$ f.a. $0\leq n\leq m$. (5)
+Behauptung: Es gibt $m\leq r$ und SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Delta$ mit $M_m=\varnothing$ und $M_n\subseteq\{q_1,q_2,... ,q_{r-n}\}$ f.a. $0\leq n\leq m$. (5)
 
 Beweis der Behauptung: Wir konstruieren die Hornklauseln $M_i\rightarrow\bot$ induktiv:
-- I.A.: Da der Markierungsalgorithmus mit „unerfüllbar“ terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r− 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
+- I.A.: Da der Markierungsalgorithmus mit „unerfüllbar“ terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r- 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
 - I.V.: Sei $n\leq r$ und $(M_0\rightarrow\bot,... ,M_n\rightarrow\bot)$ SLD-Resolution, so daß (5) gilt.
 - I.S.: wir betrachten drei Fälle:
   1. Fall $M_n=\varnothing$: mit $m:=n$ ist Beweis der Beh. abgeschlossen.
-  2. Fall $n=r$: Nach (5) gilt $M_n\subseteq\{q_1,...,q_{r−n}\}=\varnothing$. Mit $m:=n$ ist der Beweis der Beh. abgeschlossen.
-  3. Fall $n<r$ und $M_n \not=\varnothing$. Sei $k$ maximal mit $q_k\in M_n\subseteq\{q_1,q_2,... ,q_{r−n}\}$. Also existiert $(N\rightarrow q_k)\in\Delta$, so daß $N\subseteq\{q_1,... ,q_{k−1}\}$. Setze $M_{n+1}=M_n\backslash\{q_k\}\cup N\subseteq\{q_1,... ,q_{k−1}\}\subseteq\{q_1,...,q_{r−(n+1)}\}$.
+  2. Fall $n=r$: Nach (5) gilt $M_n\subseteq\{q_1,...,q_{r-n}\}=\varnothing$. Mit $m:=n$ ist der Beweis der Beh. abgeschlossen.
+  3. Fall $n<r$ und $M_n \not=\varnothing$. Sei $k$ maximal mit $q_k\in M_n\subseteq\{q_1,q_2,... ,q_{r-n}\}$. Also existiert $(N\rightarrow q_k)\in\Delta$, so daß $N\subseteq\{q_1,... ,q_{k-1}\}$. Setze $M_{n+1}=M_n\backslash\{q_k\}\cup N\subseteq\{q_1,... ,q_{k-1}\}\subseteq\{q_1,...,q_{r-(n+1)}\}$.
 
 Damit ist der induktive Beweis der Beh. abgeschlossen, woraus das Lemma unmittelbar folgt.
 
@@ -1307,3 +1307,242 @@ Die Suche nach einer SLD-Resolution mit $M_m=\varnothing$ kann grundsätzlich au
 - Unterschiedliche Wahrheitswertebereiche formalisieren unterschiedliche Vorstellungen von „Wahrheit“.
 - Das natürliche Schließen ist vollständig und korrekt für den Booleschen Wahrheitswertebereich.
 - Der Markierungsalgorithmus und die SLD-Resolution sind praktikable Verfahren, um die Erfüllbarkeit von Hornformeln zu bestimmen.
+
+# Kapitel 2: Prädikatenlogik
+
+Beispiel: Graphen
+![](Assets/Logik-prädikatenlogik-graph.png)
+Um über diesen Graphen Aussagen in der Aussagenlogik zu machen, verwenden wir Formeln $\varphi_{i,j}$ für $1\leq i,j\leq 9$ mit $\varphi_{i,j}=\begin{cases} \lnot\bot\quad\text{ falls} (v_i,v_j) Kante\\ \bot\quad\text{ sonst}\end{cases}$
+- Die aussagenlogische Formel $\bigvee_{1\leq i,j\leq 9} \varphi_{i,j}$ sagt aus, daß der Graph eine Kante enthält.
+- Die aussagenlogische Formel $\bigwedge_{1\leq i\leq 9} \bigvee_{1\leq j\leq 9} \varphi_{i,j}$ sagt aus, daß jeder Knoten einen Nachbarn hat
+- Die aussagenlogische Formel $\bigvee_{1\leq i,j,k\leq 9 verschieden} \varphi_{i,j}\wedge\varphi_{j,k}\wedge\varphi_{k,i}$ sagt aus, daß der Graph ein Dreieck enthält.
+Man kann so vorgehen, wenn der Graph bekannt und endlich ist. Sollen analoge Aussagen für einen anderen Graphen gemacht werden, so ist die Kodierungsarbeit zu wiederholen.
+
+Beispiel: Datenbanken
+- Im folgenden reden wir über die Studenten und die Lehrenden in Veranstaltungen zur Theoretischen Informatik in diesem Semester. Betrachte die folgenden Aussagen:
+  - Jeder ist Student oder wissenschaftlicher Mitarbeiter oder Professor.
+  - Dietrich Kuske ist Professor.
+  - Kein Student ist Professor.
+  - Jeder Student ist jünger als jeder Professor.
+  - Es gibt eine Person, die an den Veranstaltungen „Logik und Logikprogrammierung“ und „Algorithmen und Datenstrukturen“ teilnimmt.
+  - Es gibt eine Person, die kein wissenschaftlicher Mitarbeiter ist und nicht an beiden Veranstaltungen teilnimmt.
+  - Jeder Student ist jünger als die Person, mit der er am besten über Informatik reden kann.
+- Um sie in der Aussagenlogik machen zu können, müssen wir atomare Aussagen für „Hans ist Student“, „Otto ist jünger als Ottilie“ usw. einführen. Dies ist nur möglich, wenn
+  1. alle involvierten Personen bekannt sind und fest stehen und
+  2. es nur endlich viele involvierte Personen gibt.
+- Sollen analoge Aussagen für das vorige oder das kommende Jahr gemacht werden, so ist die gesamte Kodierungsarbeit neu zu machen.
+
+
+## Kodierung in einer „Struktur“
+- Grundmenge: Die Studenten und die Lehrenden in Veranstaltungen zur Theoretischen Informatik in diesem Sommersemester
+- Teilmengen:
+  - $S(x)$ „x ist Student“
+  - $LuLP(x)$ „x nimmt an der Veranstaltung LuLP teil“
+  - $AuD(x)$ „x nimmt an der Veranstaltung AuD teil“
+  - $Pr(x)$ „x ist Professor“
+  - $WM(x)$ „x ist wissenschaftlicher Mitarbeiter“
+- Relationen:
+  - $J(x,y)$ „x ist jünger als y“
+- Funktion:
+  - $f(x)$ ist diejenige Person (aus dem genannten Kreis), mit der x am besten über Informatik reden kann.
+- Konstante:
+  - $dk$ Dietrich Kuske
+
+Die in der Aussagenlogik nur schwer formulierbaren Aussagen werden nun
+- Für alle $x$ gilt $S(x)\vee WM(x)\vee Pr(x)$
+- $Pr(dk)$
+- Für alle $x$ gilt $S(x)\rightarrow\lnot Pr(x)$
+- Für alle $x$ und $y$ gilt $(S(x)\wedge Pr(y))\rightarrow J(x,y)$
+- Es gibt ein $x$ mit $LuLP(x)\wedge AuD(x)$
+- Es gibt ein $x$ mit $((\lnot LuLP(x)\vee\lnot AuD(x))\wedge\lnot WM(x))$
+- Für alle $x$ gilt $S(x)\rightarrow J(x,f(x))$
+
+Bemerkung: Diese Formulierungen sind auch brauchbar, wenn die Grundmenge unendlich ist. Sie sind auch unabhängig vom Jahr (im nächsten Jahr können diese Folien wieder verwendet werden).
+
+Ziel
+- Wir wollen in der Lage sein, über Sachverhalte in „Strukturen“ (Graphen, Datenbanken, relle Zahlen, Gruppen... ) zu reden.
+- Dabei soll es „Relationen“ geben, durch die das Enthaltensein in einer Teilmenge oder Beziehungen zwischen Objekten ausgedrückt werden können (z.B. $S(x),J(x,y),...$ )
+- Weiter soll es „Funktionen“ geben, durch die Objekte (oder Tupel von Objekten) auf andere Objekte abgebildet werden (z.B. $f$)
+- Nullstellige Funktionen (ohne Argumente): Konstante (z.B. $dk$)
+
+Fragen
+- Nach welchen Regeln bildet man korrekte Formeln?
+- Was ist eine Struktur?
+- Wann hat eine Aussage in einer Struktur eine Bedeutung (ist „sinnvoll“)?
+- Wann „gilt“ eine Aussage in einer Struktur?
+- Gibt es Formeln, die in allen Strukturen gelten?
+- Kann man solche Formeln algorithmisch identifizieren? Gibt es einen Beweiskalkül wie das natürliche Schließen oder die SLD-Resolution?
+- .........
+
+## Syntax der Prädikatenlogik
+Formeln machen Aussagen über Strukturen. Dabei hat es keinen Sinn zu fragen, ob eine Formel, die über Studenten etc. redet, im Graphen $G$ gilt.
+
+> Definition
+> 
+> Eine Signatur ist ein Tripel $\sum=(\Omega, Rel,ar)$, wobei $\Omega$ und $Rel$ disjunkte Mengen von Funktions- und Relationsnamen sind und $ar:\Omega\cup Rel\rightarrow\mathbb{N}$ eine Abbildung ist.
+
+Beispiel: $\Omega=\{f,dk\}$ mit $ar(f) =1,ar(dk)=0$ und $Rel=\{S,LuLP,AuD,Pr,WM,J\}$ mit $ar(S) =ar(LuLP) =ar(AuD) =ar(Pr) =ar(WM) =1 undar(J) = 2$ bilden die Signatur der Datenbank von vorhin.
+- typische Funktionsnamen: $f, g, a, b...$ mit $ar(f),ar(g) > 0$ und $ar(a) =ar(b) = 0$
+- typische Relationsnamen: $R,S,...$
+
+> Definition
+> 
+> Die Menge der Variablen ist $Var=\{x_0,x_1 ,...\}$. Sei $\sum$ eine Signatur. Die Menge $T_{\sum}$ der $\sum$-Terme ist induktiv definiert:
+> 1. Jede Variable ist ein Term, d.h. $Var\subseteq T_{\sum}$
+> 2. ist $f\in\Omega$ mit $ar(f)=k$ und sind $t_1,...,t_k\in T_{\sum}$, so gilt $f(t_1,...,t_k)\in T_{\sum}$
+> 3. Nichts ist $\sum$-Term, was sich nicht mittels der obigen Regeln erzeugen läßt.
+
+Beispiel:In der Signatur der Datenbank von vorhin haben wir u.a. die folgenden Terme:
+- $x_1$ und $x_8$
+- $f(x_0)$ und $f(f(x_3))$
+- $dk()$ und $f(dk())$ - hierfür schreiben wir kürzer $dk$ bzw. $f(dk)$
+
+
+> Definition
+> 
+> Sei $\sum$ Signatur. Die atomaren $\sum$-Formeln sind die Zeichenketten der Form
+> - $R(t_1,t_2,...,t_k)$ falls $t_1,t_2,...,t_k\in T_{\sum}$ und $R\in Rel$ mit $ar(R)=k$ oder
+> - $t_1=t_2$ falls $t_1,t_2\in T_{\sum}$ oder
+> - $\bot$.
+
+Beispiel: In der Signatur der Datenbank von vorhin haben wir u.a. die folgenden atomaren Formeln:
+- $S(x_1)$ und $LuLP(f(x4))$
+- $S(dk)$ und $AuD(f(dk))$
+
+> Definition
+> 
+> Sei $\sum$ Signatur. $\sum$-Formeln werden durch folgenden induktiven Prozeß definiert:
+> 1. Alle atomaren $\sum$-Formeln sind $\sum$-Formeln.
+> 2. Falls $\varphi$ und $\Psi$ $\sum$-Formeln sind, sind auch $(\varphi\wedge\Psi)$,$(\varphi\vee\Psi)$ und $(\varphi\rightarrow\Psi)$ $\sum$-Formeln.
+> 3. Falls $\varphi$ eine $\sum$-Formel ist, ist auch $\lnot\varphi$ eine $\sum$-Formel.
+> 4. Falls $\varphi$ eine $\sum$-Formel und $x\in Var$, so sind auch $\forall x\varphi$ und $\exists x\varphi$ $\sum$-Formeln.
+> 5. Nichts ist $\sum$-Formel, was sich nicht mittels der obigen Regeln erzeugen läßt.
+
+Ist die Signatur $\sum$ aus dem Kontext klar, so sprechen wir einfach von Termen, atomaren Formeln bzw.Formeln.
+
+Beispiel:In der Signatur der Datenbank von vorhin haben wir u.a. die folgenden Formeln:
+- $\forall x_0 (S(x_0)\vee WM(x_0)\vee Pr(x_0))$
+- $Pr(dk)$
+- $\forall x_3 (S(x_3)\rightarrow\lnot Pr(x_3))$
+- $\forall x_0 \forall x_2 ((S(x_0)\wedge Pr(x_2))\rightarrow J(x_0,x_2))$
+- $\exists x_1 (LuLP(x_1)\wedge AuD(x_1))$
+- $\exists x_2 ((\lnot LuLP(x_2)\vee\lnot AuD(x_2))\wedge\lnot WM(x_2))$
+- $\forall x_1 (S(x_1)\rightarrow J(x_1,f(x_1)))$
+
+Wir verwenden die aus der Aussagenlogik bekannten Abkürzungen, z.B. steht $\varphi\leftrightarrow\Psi$ für $(\varphi\rightarrow\Psi)\wedge(\Psi\rightarrow\varphi)$.
+
+Zur verbesserten Lesbarkeit fügen wir mitunter hinter quantifizierten Variablen einen Doppelpunkt ein, z.B. steht $\exists x\forall y:\varphi$ für $\exists x\forall y\varphi$ 
+
+Ebenso verwenden wir Variablennamen $x$,$y$,$z$ u.ä.
+
+Präzedenzen: $\lnot,\forall x,\exists x$ binden am stärksten
+
+Beispiel: $(\lnot\forall x:R(x,y)\wedge\exists z:R(x,z))\rightarrow P(x,y,z)$ steht für $((\lnot(\forall x:R(x,y))\wedge\exists z:R(x,z))\rightarrow P(x,y,z))$
+
+## Aufgabe
+Im folgenden seien
+- $P$ ein-stelliges, $Q$ und $R$ zwei-stellige Relationssymbole,
+- $a$ null-stelliges und $f$ ein-stelliges Funktionssymbol und
+- $x,y$ und $z$ Variable.
+
+Welche der folgenden Zeichenketten sind Formeln?
+|                                               |     |
+| --------------------------------------------- | --- |
+| $\forall x P(a)$                              |     |
+| $\forall x\exists y(Q(x,y)\vee R(x))$         |     |
+| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$ |     |
+| $\forall x P(f(x))\vee\forall$ x Q(x,x)$      |     |
+| $\forall x(P(y)\wedge\forall y P(x))$         |     |
+| $P(x) \rightarrow\exists x Q(x,P(x))$         |     |
+| $\forall f\exists x P(f(x))$                  |     |
+
+> Definition
+> 
+> Sei $\sum$ eine Signatur. Die Menge $FV(\varphi)$ der freien Variablen einer $\sum$-Formel $\varphi$ ist induktiv definiert:
+> - Ist $\varphi$ atomare $\sum$-Formel, so ist $FV(\varphi)$ die Menge der in $\varphi$ vorkommenden Variablen.
+> - $FV(\varphi\Box\Psi) =FV(\varphi)\cup FV(\Psi)$ für $\Box\in\{\wedge,\vee,\rightarrow\}$
+> - $FV(\lnot\varphi) =FV(\varphi)$
+> - $FV(\exists x\varphi) =FV(\forall x\varphi) =FV(\varphi)\backslash\{x\}$.
+> Eine $\sum$-Formel $\varphi$ ist geschlossen oder ein $\sum$-Satz, wenn $FV(\varphi)=\varnothing$ gilt.
+
+Was sind die freien Variablen der folgenden Formeln? Welche Formeln sind Sätze?
+|                                                                         | Formel? | Satz? |
+| ----------------------------------------------------------------------- | ------- | ----- |
+| $\forall x P(a)$                                                        |         |       |
+| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$                           |         |       |
+| $\forall x P(x)\vee\forall x Q(x,x)$                                    |         |       |
+| $\forall x(P(y)\wedge\forall y P(x))$                                   |         |       |
+| $\forall x(\lnot\forall y Q(x,y)\wedge R(x,y))$                         |         |       |
+| $\exists z(Q(z,x)\vee R(y,z))\rightarrow\exists y(R(x,y)\wedge Q(x,z))$ |         |       |
+| $\exists x(\lnot P(x)\vee P(f(a)))$                                     |         |       |
+| $P(x)\rightarrow\exists x P(x)$                                         |         |       |
+| $\exists x\forall y((P(y)\rightarrow Q(x,y))\vee\lnot P(x))$            |         |       |
+| $\exists x\forall x Q(x,x)$                                             |         |       |
+
+Semantik der Prädikatenlogik
+- Erinnerung: Die Frage „Ist die aussagenlogische Formel $\varphi$ wahr oder falsch?“ war sinnlos, denn wir wissen i.a. nicht, ob die atomaren Aussagen wahr oder falsch sind.
+- Analog: Die Frage „Ist die prädikatenlogische Formel $\varphi$ wahr oder falsch?“ ist sinnlos, denn wir wissen bisher nicht, über welche Objekte, über welche „Struktur“ $\varphi$ spricht.
+
+> Definition
+> 
+> Sei $\sum$ eine Signatur. Eine $\sum$-Struktur ist ein Tupel $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$, wobei
+> - $U_A$ eine nichtleere Menge, das Universum,
+> - $R^A\supseteq U_A^{ar(R)}$ eine Relation der Stelligkeit $ar(R)$ für $R\in Rel$ und
+> - $f^A:U_A^{ar(f)}\rightarrow U_A$ eine Funktion der Stelligkeit $ar(f)$ für $f\in\Omega$ ist.
+
+Bemerkung: $U_A^0=\{()\}$.
+- Also ist $a^A:U_A^0\rightarrow U_A$ für $a\in\Omega$ mit $ar(a)=0$ vollständig gegeben durch $a^A(())\in U_A$. Wir behandeln 0-stellige Funktionen daher als Konstanten.
+- Weiterhin gilt $R^A=\varnothing$ oder $R^A=\{()\}$ für $R\in Rel$ mit $ar(R)=0$.
+
+Beispiel: Graph
+- Sei $\sum=(\Omega ,Rel,ar)$ mit $\Omega=\varnothing ,Rel=\{E\}$ und $ar(E)=2$ die Signatur der Graphen.
+- Um den Graphen als $\sum$-Struktur $A=(UA,EA)$ zu betrachten, setzen wir
+  - $UA=\{v_1,v_2,...,v_9\}$ und
+  - $EA=\{(v_i,v_j)|(v_i,v_j) ist Kante\}$
+
+Im folgenden sei $\sum$ eine Signatur, A eine $\sum$-Struktur und $ρ:Var\rightarrow U_A$ eine Abbildung (eine Variableninterpretation).
+Wir definieren eine Abbildung $ρ′:T\sum\rightarrow U_A$ induktiv für $t\in T_{\sum}$:
+- ist $t\in Var$, so setze $ρ′(t) =ρ(t)$
+- ansonsten existieren $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in T_{\sum}$ mit $t=f(t_1,...,t_k)$. Dann setze $ρ′(t) =f^A(ρ′(t_1),...,ρ′(t_k))$.
+Die Abbildung $ρ′$ ist die übliche „Auswertungsabbildung“.
+Zur Vereinfachung schreiben wir auch $ρ(t)$ an Stelle von $ρ′(t)$.
+
+Beispiel:
+- Seien $A=(R,f^A,a^A)$ mit $f^A$ die Subtraktion und $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $ρ(x)=7$ und $ρ(y)=-2$. Dann gilt $ρ(f(a,f(x,y))) =ρ(a)-(ρ(x)-ρ(y)) =a^A-(ρ(x)-ρ(y)) = 1$
+- Seien $A= (Z,f^A,a^A)$ mit $f^A$ die Maximumbildung, $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $ρ(x)=7$ und $ρ(y)=-2$. In diesem Fall gilt $ρ(f(a,f(x,y))) = max(ρ(a),max(ρ(x),ρ(y)) = max(a^A,max(ρ(x),ρ(y))) = 10$
+
+Bemerkung: Wir müssten also eigentlich noch vermerken, in welcher Struktur $ρ(t)$ gebildet wird – dies wird aber aus dem Kontext immer klar sein.
+
+Für eine $\sum$-Formel $\varphi$ definieren wir die Gültigkeit in einer $\sum$-Struktur $A$ unter der Variableninterpretation $ρ$ (in Zeichen: $A\Vdash_ρ\varphi$) induktiv:
+- $A\Vdash_ρ\bot$ gilt nicht.
+- $A\Vdash_ρ R(t_1,...,t_k)$ falls $(ρ(t_1),...,ρ(t_k))\in R^A$ für $R\in Rel$ mit $ar(R)=k$ und $t_1,...,t_k\in T_{\sum}$.
+- $A\Vdash_ρ t_1 =t_2$ falls $ρ(t_1) =ρ(t_2)$ für $t_1,t_2\in T_{\sum}$.
+
+Für $\sum$-Formeln $\varphi$ und $\Psi$ und $x\in Var$:
+- $A\Vdash_p \varphi\wedge\Psi$ falls $A\Vdash_p\varphi$ und $A\Vdash_p \Psi$.
+- $A\Vdash_p \varphi\vee\Psi$ falls $A\Vdash_p\varphi$ oder $A\Vdash_p\Psi$ .
+- $A\Vdash_p \varphi\rightarrow\Psi$ falls nicht $A\Vdash_p\varphi$ oder $A\Vdash_p\Psi$ .
+- $A\Vdash_p \lnot\varphi$ falls $A\Vdash_p \varphi$ nicht gilt.
+- $A\Vdash_p \exists x\varphi$ falls ???
+- $A\Vdash_p \forall x\varphi$ falls ???
+
+Für $x\in Var$ und $a\in U_A$ sei $ρ[x\rightarrow a]:Var\rightarrow U_A$ die Variableninterpretation, für die gilt $(ρ[x\rightarrow a])(y) = \begin{cases} ρ(y) \quad\text{ falls } x\not=y \\ a \quad\text{ sonst } \end{cases}$
+- $A\Vdash_p \exists x\varphi$ falls es $a\in U_A$ gibt mit $A\Vdash_{p[x\rightarrow a]}\varphi$.
+- $A\Vdash_p \forall x\varphi$ falls $A\Vdash_{p[x\rightarrow a]}\varphi$ für alle $a\in U_A$.
+
+> Definition
+> 
+> Sei $\sum$ eine Signatur, $\varphi$ eine $\sum$-Formel, $\Delta$ eine Menge von $\sum$-Formeln und $A$ eine $\sum$-Struktur.
+> - $A\Vdash\varphi$ ($A$ ist Modell von $\varphi$) falls $A\Vdash_p\varphi$ für alle Variableninterpretationen $ρ$ gilt.
+> - $A\Vdash\Delta$ falls $A\Vdash\Psi$ für alle $\Psi\in\Delta$.
+
+
+Aufgaben
+- Sei $A$ die Struktur, die dem vorherigen Graphen entspricht
+- Welche der folgenden Formeln $\varphi$ gelten in $A$, d.h. für welche Formeln gilt $A\Vdash_p\varphi$ für alle Variableninterpretationen $ρ$?
+  1. $\exists x\exists y:E(x,y)$
+  2. $\forall x\exists y:E(x,y)$
+  3. $\exists x\forall y:(x\not=y\rightarrow E(x,y))$
+  4. $\forall x\forall y:(x\not=y\rightarrow E(x,y))$
+  5. $\exists x\exists y\exists z:(E(x,y)\wedge E(y,z)\wedge E(z,x))$
+- In der Prädikatenlogik ist es also möglich, die Eigenschaften vom Anfang des Kapitels auszudrücken, ohne den Graphen direkt in die Formel zu kodieren.

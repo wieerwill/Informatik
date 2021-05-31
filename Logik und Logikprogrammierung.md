@@ -1546,3 +1546,197 @@ Aufgaben
   4. $\forall x\forall y:(x\not=y\rightarrow E(x,y))$
   5. $\exists x\exists y\exists z:(E(x,y)\wedge E(y,z)\wedge E(z,x))$
 - In der Prädikatenlogik ist es also möglich, die Eigenschaften vom Anfang des Kapitels auszudrücken, ohne den Graphen direkt in die Formel zu kodieren.
+
+> Definition
+>
+> Sei $\sum$ eine Signatur, $\varphi$ eine $\sum$-Formel, $\Delta$ eine Menge von $\sum$-Formeln und $A$ eine $\sum$-Struktur.
+> - $\Delta$ ist erfüllbar, wenn es $\sum$-Struktur $B$ und Variableninterpretation $ρ:Var\rightarrow U_B$ gibt mit $B\Vdash_ρ\Psi$ für alle $\Psi\in\Delta$.
+> - $\varphi$ ist semantische Folgerung von $\Delta(\Delta\Vdash\varphi)$ falls für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $ρ:Var\rightarrow U_B$ gilt: 
+>     Gilt $B\Vdash_ρ\Psi$ für alle $\Psi\in\Delta$, so gilt auch $B\Vdash_ρ \varphi$.
+> - $\varphi$ ist allgemeingültig, falls $B\Vdash ρ\varphi$ für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $ρ$ gilt.
+
+Bemerkung: $\varphi$ allgemeingültig gdw. $\varnothing\Vdash\varphi$ gdw. $\{\lnot\varphi\}$ nicht erfüllbar. Hierfür schreiben wir auch $\Vdash\varphi$.
+
+Beispiel: Der Satz $\varphi=(\forall x:R(x)\rightarrow\forall x:R(f(x)))$ ist allgemeingültig.
+
+Beweis: Sei $\sum$ Signatur, so daß $\varphi$  $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten zwei Fälle:
+1. Falls $A\not\Vdash_ρ\forall x R(x)$, so gilt $A\Vdash_p\varphi$.
+2. Wir nehmen nun $A\Vdash_p\forall x R(x)$ an. Sei $a\in U_A$ beliebig und $b=f^A(a)$.
+   $A\Vdash_p\forall x R(x) \Rightarrow A\Vdash_{p[x\rightarrow b]} R(x) \Rightarrow RA\owns (p[x\rightarrow b])(x) = b = f^A(a) = (ρ[x\rightarrow a])(f(x)) \Rightarrow A\Vdash_{p[x\rightarrow a]}R(f(x))$.
+   Da $a\in U_A$ beliebig war, haben wir also $A\Vdash_p\forall x:R(f(x))$.
+   Also gilt auch in diesem Fall $A\Vdash_p\varphi$.
+Da $A$ und $ρ$ beliebig waren, ist $\varphi$ somit allgemeingültig.
+
+Beispiel: 
+- Der Satz $\varphi =\exists x(R(x)\rightarrow R(f(x)))$ ist allgemeingültig.
+- Beweis: Sei $\sum$ Signatur, so daß $\varphi$ $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten wieder zwei Fälle:
+  1. Angenommen, $R^A=U_A$. Sei $a\in U_A$ beliebig.
+      - $\Rightarrow f^A(a)\in R^A$
+      - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(f(x))$
+      - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(x)\rightarrow R(f(x))$
+      - $\Rightarrow A\Vdash_p\varphi$.
+  2. Ansonsten existiert $a\in U_A\backslash R^A$.
+      - $\Rightarrow A\not\Vdash_{p[x\rightarrow a]} R(x)$
+      - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(x)\rightarrow R(f(x))$
+      - $\Rightarrow A\Vdash_p \varphi$.
+  Da $A$ und $ρ$ beliebig waren, ist $\varphi$ somit allgemeingültig.
+
+Aufgabe
+| | a: allgemeingültig  | e: erfüllbar  | u: unerfüllbar |
+| --- | --- | --- | --- |
+$P(a)$ | | | | 
+$\exists x:(\lnot P(x)\vee P(a))$ | | | 
+$P(a)\rightarrow\exists x:P(x)$ | | | 
+$P(x)\rightarrow\exists x:P(x)$ | | | 
+$\forall x:P(x)\rightarrow\exists x:P(x)$ | | | 
+$\forall x:P(x)\wedge\lnot\forall y:P(y)$ | | | 
+$\forall x:(P(x,x)\rightarrow\exists x\forall y:P(x,y))$  | | | 
+$\forall x\forall y:(x=y\rightarrow f(x) =f(y))$ | | | 
+$\forall x\forall y:(f(x) =f(y)\rightarrow x=y)$ | | | 
+$\exists x\exists y\exists z:(f(x) =y\wedge f(x) =z\wedge y \not=z)$ | | | 
+$\exists x\forall x:Q(x,x)$ | | | 
+
+## Substitutionen
+> Definition
+>
+> Eine Substitution besteht aus einer Variable $x\in Var$ und einem Term $t\in T_{\sum}$, geschrieben $[x:=t]$.
+
+Die Formel $\varphi[x:=t]$ ist die Anwendung der Substitution $[x:=t]$ auf die Formel $\varphi$. Sie entsteht aus $\varphi$, indem alle freien Vorkommen von $x$ durch $t$ ersetzt werden. Sie soll das über $t$ aussagen, was $\varphi$ über $x$ ausgesagt hat.
+Dazu definieren wir zunächst induktiv, was es heißt, die freien Vorkommen von $x$ im Term $s\in T_{\sum}$ zu ersetzen:
+- $x[x:=t] =t$
+- $y[x:=t] =y$ für $y\in Var\backslash\{x\}$
+- $(f(t_1 ,...,t_k))[x:=t] =f(t_1 [x:=t],...t_k[x:=t])$ für $f\in\Omega$ mit $ar(f) =k$ und $t_1,...,t_k\in T_{\sum}$ 
+
+> Lemma
+>
+> Seien $\sum$ Signatur, $A$ $\sum$-Struktur, $ρ:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $s,t\in T_{\sum}$. Dann gilt $ρ(s[x:=t])=ρ[x\rightarrow ρ(t)](s)$.
+
+Beweis: Induktion über den Aufbau des Terms $s$ (mit $ρ′=ρ[x\rightarrow ρ(t)]$ ):
+- $s=x:ρ(s[x:=t])=ρ(t) =ρ′(x) =ρ′(s)$
+- $s\in Var\backslash\{x\}:ρ(s[x:=t])=ρ(s) =ρ′(s)$
+- $s=f(t_1 ,...,t_k):ρ((f(t_1 ,...,t_k))[x:=t])= ρ(f(t_1[x:=t],...,t_k[x:=t]))= f^A(ρ(t_1[x:=t]),...,ρ(t_k[x:=t])) = f^A(ρ′(t_1),...,ρ′(t_k))= ρ′(f(t_1 ,...,t_k))=ρ′(s)$
+
+Die Definition von $s[x:=t]$ kann induktiv auf $\sum$-Formeln fortgesetzt werden:
+- $(t_1 =t_2 )[x:=t] = (t_1 [x:=t] =t_2 [x:=t])$ für $t_1 ,t_2 \in T_{\sum}$ 
+- $(R(t_1 ,...,t_k))[x:=t] =R(t_1 [x:=t],...,t_k[x:=t])$ für $R\in Rel$ mit $ar(R) =k$ und $t_1 ,...,t_k\in T_{\sum}$ 
+- $\bot[x:=t] =\bot$ 
+
+Für $\sum$ -Formeln $\varphi$ und $\Psi$ und $y\in Var$:
+- $(\varphi\Box\Psi)[x:=t]=\varphi [x:=t]\Box\Psi[x:=t]$ für $\Box\in\{\wedge,\vee,\rightarrow\}$
+- $(\lnot\varphi)[x:=t] = \lnot(\varphi[x:=t])$
+- $(Qy\varphi)[x:=t] = \begin{cases} Qy\varphi[x:=t] \quad\text{ falls } x\not=y \\ Qy\varphi \quad\text{ falls } x=y \end{cases} \text{ für } Q\in\{\exists,\forall\}$.
+
+Beispiel: $(\exists x P(x,f(y))\vee\lnot\forall yQ(y,g(a,h(z))))[y:=f(u)] = (\exists x P(x,f(f(u)))\vee\lnot\forall yQ(y,g(a,h(z))))$
+
+$\varphi [x:=t]$ „soll das über $t$ aussagen, was $\varphi$ über $x$ ausgesagt hat.“
+
+Gegenbeispiel: Aus $\exists y$ $Mutter(x) =y$ mit Substitution $[x:=Mutter(y)]$ wird $\exists y$ Mutter$(Mutter(y)) =y$.
+
+> Definition
+> 
+> Sei $[x:=t]$ Substitution und $\varphi$ $\sum$-Formel. Die Substitution $[x:=t]$ heißt für $\varphi$ zulässig, wenn für alle $y\in Var$ gilt: $y$ Variable in $t\Rightarrow\varphi$ enthält weder $\exists y$ noch $\forall y$
+
+> Lemma
+> 
+> Sei $\sum$ Signatur, A $\sum$-Struktur, $ρ:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $t\in T_{\sum}$. Ist die Substitution $[x:=t]$ für die $\sum$-Formel $\varphi$ zulässig, so gilt $A\Vdash_p\varphi [x:=t]\Leftrightarrow  A\Vdash_{p[x\rightarrow ρ(t)]}\varphi$.
+
+Beweis: Induktion über den Aufbau der Formel $\varphi$ (mit $ρ'=ρ[x\rightarrow ρ(t)])$:
+- $\varphi = (s_1 =s_2)$:
+  - $A\Vdash_p(s_1 =s_2)[x:=t] \Leftrightarrow A\Vdash_p s_1[x:=t] =s_2[x:=t]$
+  - $\Leftrightarrow ρ(s_1[x:=t]) =ρ(s_2[x:=t])\Leftrightarrow ρ'(s_1) =ρ'(s_2)$
+  - $\Leftrightarrow A\Vdash_{p′} s_1 =s_2$
+  - andere atomare Formeln analog
+- $\varphi =\varphi_1\wedge\varphi_2$:
+  - $A\Vdash_p(\varphi_1\wedge\varphi_2)[x:=t] \Leftrightarrow A\Vdash_p\varphi_1 [x:=t]\wedge\varphi_2[x:=t]$
+  - $\Leftrightarrow A\Vdash_p\varphi_1[x:=t]$ und $A\Vdash_p\varphi_2[x:=t]$
+  - $\Leftrightarrow A\Vdash_{p′}\varphi_1$ und $A\Vdash_{p′}\varphi_2$
+  - $\Leftrightarrow A\Vdash_{p′}\varphi_1\wedge\varphi_2$
+  - $\varphi=\varphi_1\vee\varphi_2,\varphi =\varphi_1\rightarrow\varphi_2$ und $\varphi=\lnot\psi$ analog
+- $\varphi=\forall y\psi$:
+  - Wir betrachten zunächst den Fall $x=y$: 
+    - $A\Vdash_p(\forall x\psi)[x:=t]\Leftrightarrow A\Vdash_p\forall x\psi \Leftrightarrow A\Vdash_{p′}\forall x\psi$ (denn $x\not\in FV(\forall x\psi)$ )
+  - Jetzt der Fall $x\not=y$:
+    - Für $a\in U_A$ setze $ρ_a=ρ[y\rightarrow a]$. Da $[x:=t]$ für $\varphi$ zulässig ist, kommt $y$ in $t$ nicht vor. Zunächst erhalten wir
+    - $ρ_a[x\rightarrow ρ_a(t)] = ρ_a[x\rightarrow ρ(t)]$ da $y$ nicht in $t$ vorkommt
+    - $=ρ[y\rightarrow a][x\rightarrow ρ(t)] = ρ[x\rightarrow ρ(t)][y\rightarrow a]$ da $x\not=y$
+    - Es ergibt sich $A\Vdash_p(\forall y\psi)[x:=t]\Leftrightarrow A\Vdash_p\forall y(\psi[x:=t])$ (wegen $x\not=y$)
+    - $\Leftrightarrow A\Vdash_{pa}\psi[x:=t]$ für alle $a\in U_A$
+    - $\Leftrightarrow A\Vdash_{pa[x\rightarrow ρ_a(t)]}\psi$ für alle $a\in U_A$
+    - $\Leftrightarrow A\Vdash_{p[x\rightarrow ρ(t)][y\rightarrow a]}\psi$ für alle $a\in U_A$
+    - $\Leftrightarrow A\Vdash_{p[x\rightarrow ρ(t)]}\forall y\psi$ 
+- $\varphi=\exists y\psi$ : analog
+
+## Natürliches Schließen
+Wir haben Regeln des natürlichen Schließens für aussagenlogische Formeln untersucht und für gut befunden. Man kann sie natürlich auch für prädikatenlogische Formeln anwenden.
+
+Beispiel: Für alle $\sum$-Formel $\varphi$ und $\psi$ gibt es eine Deduktion mit Hypothesen in $\{\lnot\varphi\wedge\lnot\psi\}$ und Konklusion $\lnot(\varphi\vee\psi)$: ![](Assets/Logik-deduktion-konklusion.png)
+
+## Korrektheit
+Können wir durch mathematische Beweise zu falschen Aussagen kommen? Können wir durch das natürliche Schließen zu falschen Aussagen kommen? Existiert eine Menge $\Gamma$ von $\sum$-Formeln und eine $\sum$-Formel $\varphi$ mit $\Gamma\vdash\varphi$ und
+$\Gamma\not\Vdash\varphi$?
+
+Frage: Gilt $\Gamma\vdash\varphi\Rightarrow \Gamma\Vdash\varphi$ bzw. $\varphi$ ist Theorem $\Rightarrow\varphi$ ist allgemeingültig?
+
+Der Beweis des Korrektheitslemmas für das natürliche Schließen kann ohne große Schwierigkeiten erweitert werden. Man erhält
+
+> Lemma V0
+> 
+> Sei $\sum$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik verwendet. Dann gilt $\Gamma\Vdash\varphi$.
+
+Umgekehrt ist nicht zu erwarten, dass aus $\Gamma\Vdash\varphi$ folgt, daß es eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$ gibt, denn die bisher untersuchten Regeln erlauben keine Behandlung von $=,\forall$ bzw. $\exists$. Solche Regeln werden wir jetzt einführen.
+
+Zunächst kümmern wir uns um Atomformeln der Form $t_1 =t_2$. Hierfür gibt es die zwei Regeln $(R)$ und $(GfG)$:
+
+> Reflexivität (ausführlich)
+> 
+> Für jeden Termt ist $\frac{}{t=t}$ eine hypothesenlose Deduktion mit Konklusion $t=t$. ![](Assets/Logik-reflexivität-kurz.png)
+
+> Gleiches-für-Gleiches in mathematischen Beweisen
+> 
+> ,,Zunächst zeige ich, dass $s$ die Eigenschaft $\varphi$ hat:...
+> Jetzt zeige ich $s=t$:...
+> Also haben wir gezeigt, dass $t$ die Eigenschaft $\varphi$ hat. qed''
+> 
+> Gleiches-für-Gleiches (ausführlich)
+> Seien $s$ und $t$ Terme und $\varphi$ Formel, so dass die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ zulässig sind. Sind $D$ und $E$ Deduktionen mit Hypothesen in $\Gamma$ und Konklusionen $\varphi[x:=s]$ bzw. $s=t$, so ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi[x:=t]$: ![](Assets/Logik-gleiches-für-gleiches-ausführlich.png)
+> 
+> Gleiches-für-Gleiches (Kurzform)
+> ![](Assets/Logik-gleiches-für-gleiches-kurz.png)
+> Bedingung: über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert
+
+Die folgenden Beispiele zeigen, daß wir bereits jetzt die üblichen Eigenschaften der Gleichheit (Symmetrie, Transitivität, Einsetzen) folgern können.
+
+Beispiel: Seien $x$ Variable, $s$ Term ohne $x$ und $\varphi=(x=s)$.
+- Da $\varphi$ quantorenfrei ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ zulässig.
+- Außerdem gelten $\varphi[x:=s] = (s=s)$ und $\varphi[x:=t] = (t=s)$.
+- Also ist das folgende eine Deduktion: ![](Assets/Logik-deduktion-beispiel.png)
+- Für alle Termesundthaben wir also $\{s=t\}\vdash t=s$.
+
+Beispiel: Seien $x$ Variable, $r,s$ und $t$ Terme ohne $x$ und $\varphi=(r=x)$.
+- Da $\varphi$ quantorenfrei ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ zulässig.
+- Außerdem gelten $\varphi[x:=s]=(r=s)$ und $\varphi[x:=t]=(r=t)$.
+- Also ist das folgende eine Deduktion: ![](Assets/Logik-deduktion-beispiel-2.png)
+- Für alle Terme $r,s$ und $t$ haben wir also $\{r=s,s=t\}\vdash r=t$.
+
+Beispiel: Seien $x$ Variable, $s$ und $t$ Terme ohne $x$,$f$ einstelliges Funktionssymbol und $\varphi=(f(s)=f(x))$.
+- Da $\varphi$ quatorenfrei ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ zulässig.
+- Außerdem gelten $\varphi[x:=s]=(f(s)=f(s))$ und $\varphi[x:=t]=(f(s)=f(t))$.
+- Also ist das folgende eine Deduktion: ![](Assets/Logik-deduktion-beispiel-3.png)
+
+> Lemma V1
+> 
+> Sei $\sum$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik, $(R)$ und $(GfG)$ verwendet. Dann gilt $\Gamma\Vdash\varphi$.
+
+Beweis: Wir erweitern den Beweis des Korrektheitslemmas bzw. des Lemmas V0, der Induktion über die Größe der Deduktion $D$ verwendete. 
+- Wir betrachten nur den Fall, dass $D$ die folgende Form hat: ![](Assets/Logik-lemma-v1-beweis.png)
+- Da dies Deduktion ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ 
+zulässig, d.h. in $\varphi$ wird über keine Variable aus $s$ oder $t$ quantifiziert.
+- $E$ und $F$ kleinere Deduktionen $\Rightarrow\Gamma\Vdash\varphi[x:=s]$ und $\Gamma\Vdash s=t$
+- Seien A $\sum$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$.
+  - $\Rightarrow A\Vdash_p\varphi[x:=s]$ und $A\Vdash_p s=t$
+  - $\Rightarrow A\Vdash_{p[x\rightarrow ρ(s)]}\varphi$ und $ρ(s) =ρ(t)$
+  - $\Rightarrow A\Vdash_{p[x\rightarrow ρ(t)]}\varphi$
+  - $\Rightarrow A\Vdash_p \varphi[x:=t]$
+- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$ haben wir $\Gamma\Vdash\varphi[x:=t]$ gezeigt.

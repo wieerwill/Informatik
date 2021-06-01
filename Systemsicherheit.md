@@ -45,16 +45,18 @@
         - [Access Control Matrix](#access-control-matrix)
         - [The Harrison-Ruzzo-Ullman Model (HRU)](#the-harrison-ruzzo-ullman-model-hru)
         - [Deterministic Automata](#deterministic-automata)
-    - [HRU Security Model](#hru-security-model)
-      - [State Transition Scheme (STS)](#state-transition-scheme-sts)
-    - [HRU Model Analysis](#hru-model-analysis)
-      - [HRU Safety](#hru-safety)
+        - [HRU Security Model](#hru-security-model)
+        - [State Transition Scheme (STS)](#state-transition-scheme-sts)
+        - [HRU Model Analysis](#hru-model-analysis)
+        - [HRU Safety](#hru-safety)
         - [Proof of Theorem](#proof-of-theorem)
-  - [Security Policies](#security-policies-1)
-  - [Security Models](#security-models-1)
-    - [Access Control Models](#access-control-models-1)
-      - [IBAC](#ibac)
-      - [RBAC](#rbac)
+        - [(A) Restricted Model Variants](#a-restricted-model-variants)
+        - [(B) Heuristic Analysis Methods](#b-heuristic-analysis-methods)
+        - [Summary HRU Models](#summary-hru-models)
+        - [The Typed-Access-Matrix Model (TAM)](#the-typed-access-matrix-model-tam)
+        - [TAM Safety Decidability](#tam-safety-decidability)
+        - [Acyclic TAM Models](#acyclic-tam-models)
+      - [Roles-based Access Control Models (RBAC)](#roles-based-access-control-models-rbac)
       - [ABAC](#abac)
       - [Summary](#summary-2)
     - [Information Flow Models](#information-flow-models)
@@ -1139,7 +1141,7 @@ Example: Return “yes” for any input in an unbroken sequence of “a” or �
 > - While on, the LED indicates modes: red during a call, yellow during pairing, green otherwise.
 > Define a mealy automaton for using this headset by defining $Q,\sum,\Omega$,and $q_0$ and draw the state diagram for $\sigma$ and $\lambda$.
 
-### HRU Security Model
+##### HRU Security Model
 How we use Deterministic Automata
 - Snapshot of an ACMis the automaton’s state
 - Changes of the ACMduring system usage are modeled by state transitions of the automaton
@@ -1173,7 +1175,7 @@ Interpretation
   - $\rightarrow$  We also call $\delta$ the state transition scheme (STS) of a model.
   - Historically: “authorization scheme” [Harrison et al., 1976].
 
-#### State Transition Scheme (STS)
+##### State Transition Scheme (STS)
 Using the STS, $\sigma:Q\times\sum\rightarrow Q$ is defined by a set of specifications in the normalized form
 $\sigma(q,⟨op,(x_1,...,x_k)⟩)$=if $r_1\in m_q(x_{s1},x_{o1}) \wedge ... \wedge r_m\in m_q(x_{sm},x_{om})$ then $p_1\circle ...\circle p_n$ where
 - $q=\{S_q,O_q,m_q\}\in Q,op\in OP$
@@ -1295,7 +1297,7 @@ Summary
   - Correct specification and implementation of the modeled policy
   - Analysis of security properties $\rightarrow$  Next ...
 
-### HRU Model Analysis
+##### HRU Model Analysis
 - Reminder: “For a given security model, is it possible that a subjecteverobtains a specific permission with respect to a specific object?”
 - Analysis of Right Proliferation $\rightarrow$  The HRU safety problem.
 
@@ -1319,7 +1321,7 @@ According to Tripunitara and Li [2013], this property (Due to more technical det
 > 
 > We say that an HRU model is safe w.r.t. r iff $safe(q_0 ,r)$.
 
-#### HRU Safety
+##### HRU Safety
 Examples
 - Assume all states in ${\delta^∗(q,\sigma^∗)|\sigma^∗\in\sum^∗\}$ have been validated except for $q′$:
   - State transfer 1
@@ -1465,12 +1467,374 @@ Consequences:
 - Heuristic analysis methods try to provide educated guesses about safety of unrestricted HRU
 
 
+##### (A) Restricted Model Variants
+Static HRU Models
+- Static: no create primitives allowed
+- safe(q,r) decidable, but NP-complete problem
+- Applications: (static) real-time systems, closed embedded systems
 
-## Security Policies
-## Security Models
-### Access Control Models
-#### IBAC
-#### RBAC
+Monotonous Mono-conditional HRU Models
+- Monotonous (MHRU): no delete or destroy primitives
+- Mono-conditional: at most one clause in conditions part (For monotonous bi-conditional models, safety is already undecidable ...)
+- safe(q,r) efficiently decidable
+- Applications: Archiving/logging systems (where nothing is ever deleted)
+
+Finite Subject Set
+- $\forall q\in Q,\exists n\in N: |S_q|\leq n$
+- $safe(q,r)$ decidable, but high computational complexity
+
+Fixed STS
+- All STS commands are fixed, match particular application domain (e.g. OS access control [Lipton and Snyder, 1977]) $\rightarrow$  no model reusability
+- For Lipton and Snyder [1977]: $safe(q,r)$ decidable in linear time (!)
+
+Strong Type System
+- Special model that generalizes HRU: Typed Access Matrix (TAM) [Sandhu, 1992]
+- $safe(q,r)$ decidable in polynomial time for ternary, acyclic, monotonous variants
+- high, though not unrestricted expressiveness in practice
+
+##### (B) Heuristic Analysis Methods
+Motivation:
+- Restricted model variants: often too weak for real-world applications
+- General HRU models: safety property cannot be guaranteed $\rightarrow$ Let’s try to get a piece from both cakes: Heuristically guided safety estimation [Amthor et al., 2013]
+
+Idea:
+- State-space exploration by model simulation
+- Task of heuristic: generating input sequences (“educated guessing”) 
+
+Outline: Two-phase-algorithm to analyze $safe(q_0,r)$:
+1. Static phase: Infer knowledge from the model that helps heuristic to make “good” decisions.
+    - $\rightarrow$  Runtime: polynomial in model size ($q_0 + STS$)
+2. Simulation phase: The automaton is implemented and, starting with $q_0$, fed with inputs $\sigma=⟨op,x⟩$
+    - $\rightarrow$  For each $\sigma$, the heuristic has to decide:
+      - which operation op to use
+      - which vector of arguments x to pass
+      - which $q_i$ to use from the states in $Q$ known so far
+    - Termination: As soon as $\sigma(q_i,\sigma)$ violates $safe(q_0,r)$.
+
+Goal: Iteratively build up the (possibly infinite!) $Q$ for a model to falsify safety by example (finding a violating, but possible protection state).
+
+Results:
+- Termination: Well ... we only have a semi-decidable problem here: It can be guaranteed that a model is unsafe if we terminate. We cannot ever prove the opposite, however! ($\rightarrow$ safety undecidability)
+- Performance: A few results
+  - 2013:Model size 10 000 ≈2215 s
+  - 2018:Model size 10 000 ≈0,36 s
+  - 2018:Model size 10 000 000 ≈417 s
+
+Achievements:
+- Find typical errors in security policies: Guide their designers, who might know there’s something wrong w. r. t. right proliferation, but not what and why!
+- Increase our understanding of unsafety origins: By building clever heuristics, we started to understand how we might design specialized HRU models ($\rightarrow$ fixed STS, type system) that are safety-decidable yet practically (re-) usable [Amthor and Rabe, 2020].
+
+##### Summary HRU Models
+Goal
+- Analysis of right proliferation in AC models
+- Assessing the computational complexity of such analyses
+
+Method
+- Combining ACMs and deterministic automata
+- Defining $safe(q,r)$ based on this formalism
+
+Conclusions
+- Potential right proliferation (privilege escalation): Generally undecidable problem
+- $\rightarrow$  HRUmodel family, consisting of application-tailored, safety-decidable variants
+- $\rightarrow$  Heuristic analysis methods for practical error-finding 
+
+##### The Typed-Access-Matrix Model (TAM)
+Goal
+- AC model, similar expressiveness to HRU
+- $\rightarrow$  can be directly mapped to implementations of an ACM: OS ACLs, DB permission assignment tables
+- Better suited for safety analyses: precisely statemodel properties for decidable safety
+
+Idea [Sandhu, 1992]
+- Adopted from HRU: subjects, objects, ACM, automaton
+- New:leverage the principle of strong typing known from programming
+- $\rightarrow$  safety decidability properties relate to type-based restrictions 
+
+How it Works:
+- Foundation of a TAM model is an HRU model $⟨Q,\sum,\delta,q_0 ,R⟩$, where $Q= 2^S\times 2^O\times M$
+- However: $S\subseteq O$, i. e.:
+  - all subjects can also act as objects (=targets of an access)
+  - $\rightarrow$  useful for modeling e. g. delegation (“s has the right to grant s′ her read-right”)
+  - objects in $O\backslash S$: pure objects
+- Each $o\in O$ has a type from a type set $T$ assigned through a mapping $type:O\rightarrow T$
+- An HRU model is a special case of a TAM model:
+  - $T=\{tSubject,tObject\}$
+  - $\forall s\in S:type(s)=tSubject; \forall o\in O\backslash S:type(o)=tObject$
+
+> TAM Security Model
+> 
+> A TAM model is a deterministic automaton $⟨Q,\sum,\delta,q_0 ,T,R⟩$ where
+> - $Q= 2^S\times 2^O\times TYPE\times M$ is the state space where $S$ and $O$ are subjects set and objects set as in HRU, where $S\subseteq O$, $TYPE=\{type|type:O\rightarrow T\}$ is a set of possible type functions, $M$ is the set of possible $ACMs$ as in HRU,
+> - $\sum=OP\times X$ is the (finite) input alphabet where $OP$ is a set of operations as in HRU, $X=O^k$ is a set of $k$-dimensional vectors of arguments (objects) of these operations,
+> - $\delta:Q\times\sum\rightarrow Q$ is the state transition function,
+> - $q_0\in Q$ is the initial state,
+> - $T$ is a static (finite) set of types,
+> - $R$ is a (finite) set of access rights.
+
+State Transition Scheme (STS)
+$\delta:Q\times\sum\rightarrow Q$ is defined by a set of specifications: 
+![](Assets/Systemsicherheit-tam-sts.png)
+where
+  - $q= (S_q,O_q,type_q,m_q)\in Q,op\in OP$
+  - $r_1,...,r_m\in R$
+  - $x_{s1},...,x_{sm}\in S_q,x_{o1},...,x_{om}\in Oq\backslash S_q$, and $t_1,...,t_k\in T$ where $s_i$ and $o_i, 1\leq i\leq m$ , are vector indices of the input arguments: $1\leq s_i,o_i\leq k$
+  - $p_1,...,p_n$ are TAM primitives 
+- Convenience Notation where
+  - ![](Assets/Systemsicherheit-tam-sts-convenience.png)
+  - $q\in Q$ is implicit
+  - $op,r_1 ,...,r_m,s_1 ,...,s_m,o_1 ,...,o_m$ as before
+  - $t_1 ,...,t_k$ are argument types
+  - $p_1 ,...,p_n$ are TAM-specific primitives
+- TAM-specific
+  - Implicit Add-on:Type Checking
+  - ![](Assets/Systemsicherheit-tam-sts-specific.png)
+  - where $t_i$ are the types of the arguments $x_i, 1\leq i\leq k$. 
+
+TAM-specific
+- Primitives:
+  - enter r into m(x_s,x_o)
+  - delete r from m(x_s,x_o)
+  - create subject x_s of type t_s
+  - create object x_o of type t_o
+  - destroy subject x_s
+  - destroy object x_o
+- Observation: $S$ and $O$ are dynamic (as in HRU), thus $type:O\rightarrow T$ must be dynamic too (cf. definition of $Q$ in TAM). 
+
+TAM Example: The ORCON Policy
+- Example Scenario: Originator Controlled Access Rights (ORCON Policy)
+- Goal: To illustrate usefulness/convenience of type system
+  - ORCON describes sub-problem of larger policies
+  - Information flow confinement required by ORCON is tricky to do in HRU (“This information may not flow beyond ...”) 
+- The Problem
+  - Creator/owner of a document shouldpermanently retain controlover its accesses
+  - Neither direct nor indirect (by copying) right proliferation
+  - Application scenarios: Digital rights management, confidential sharing (online social networks!)
+  - ![](Assets/Systemsicherheit-orcon-problem.png)
+- Solution with TAM
+  - Idea: A _confined subject_ type that can never execute any operation other than reading
+  - Model Initialization:
+    - Subjects: $S_0=\{ann,bob,chris\}$
+    - Objects: $O_0 =S_0\cup\{projectX\}$
+    - Operations: $\rightarrow$ next ...
+    - Rights: $R=\{read,write,cread,own,parent\}$
+    - Types: $T=\{s,cs,co\}$ (regular subject,confined subject/object)
+    - $type_0$:
+      - $type_0(ann)=s$
+      - $type_0(bob)=s$
+      - $type_0(projectX)=co$
+- Model Behavior (Example)
+  - ann creates ORCON object _projectX_ (STS command createOrconObject)
+  - ann grants cread (“confined read”) right for projectX to bob (STS command grantCRead)
+  - bob uses cread to create confined subject chris with permission to read projectX (STS command useCRead)
+  | m        | ann:s         | bob:s         | projectX:co            | chris:cs      |
+  | -------- | ------------- | ------------- | ---------------------- | ------------- |
+  | ann:s    | $\varnothing$ | $\varnothing$ | $\{own, read, write\}$ | $\varnothing$ |
+  | bob:s    | $\varnothing$ | $\varnothing$ | $\{cread\}$            | $\{parent\}$  |
+  | chris:cs | $\varnothing$ | $\varnothing$ | $\{read\}$             | $\varnothing$ |
+- Model Behavior (STS)
+  - The State Transition Scheme
+    1. createOrconObject
+        ```bash
+        command createOrconObject(s_1:s, o_1:co) ::=
+          if true
+          then
+            create object o_1 of type co;
+            enter own into m(s_1 ,o_1);
+            enter read into m(s_1 ,o_1);
+            enter write into m(s_1 ,o_1);
+          fi
+        ```
+    2. grantCRead
+        ```bash
+        command grantCRead(s 1 :s,s 2 :s,o 1 :co) ::=
+          if own ∈ m(s_1 ,o_1)
+          then
+            enter cread into m(s_2 ,o_1);
+          fi 
+        ```
+    3. useCRead
+        ```bash
+        command useCRead(s_1:s, o_1:co, s_2:cs) ::=
+          if cread ∈ m(s_1 ,o_1)
+          then
+            create subject s_2 of type cs;
+            enter parent into m(s_1 ,s_2);
+            enter readinto m(s_2 ,o_1);
+          fi
+        ```
+    4. Enable ann to revoke cread from bob:
+        ```bash
+        command revokeCRead(s_1:s, s_2:s, o_1:co) ::=
+          if own ∈ m(s_1, o_1)
+          then
+            delete cread from m(s_2, o_1);
+          fi
+        ```
+    5. Enable ann to destroy conf. object projectX:
+        ```bash
+        command destroyOrconObject(s_1:s, o_1:co) ::=
+          if own ∈ m(s_1 ,o_1)
+          then
+            destroy object o_1;
+          fi 
+        ```
+    6. Enable ann to destroy conf. subject chris:
+        ```bash
+        command revokeRead(s_1:s, s_2:cs, o_1:co) ::= 
+          if own ∈ m(s_1 ,o_1) ∧ read ∈ m(s_2 ,o_1)
+          then
+            destroy subject s_2;
+          fi
+        ```
+    7. Enable bob to destroy conf. subject chris:
+        ```bash
+        command finishOrconRead(s_1:s, s_2:cs) ::= 
+          if parent ∈ m(s_1, s_2)
+          then
+            destroy subject s_2;
+          fi 
+        ```
+  - Commands 1.-3.:
+    - Authorize the steps in the example above
+    - Are monotonic
+  - Commands 4.-7.:
+    - Will control right revocation $\rightarrow$  essence of originator control
+    - Are not monotonic (consequences ...) 
+- Summary
+  - Contributions of ORCON Example
+    - Owner (“originator”) retains full control over
+      - Use of her confined objects by third parties $\rightarrow$ transitive right revocation
+      - Subjects using (or misusing) these objects $\rightarrow$ destruction of these subjects
+    - Subjects using such objects are confined: cannot forward read information 
+
+##### TAM Safety Decidability
+Why all this?
+- General TAM models (cf. previous definition) $\rightarrow$  safety not decidable (no surprise, since generalization of HRU)
+- MTAM:monotonous TAM models; STS without delete or destroy primitives $\rightarrow$  safety decidable if mono-conditional only
+- AMTAM:acyclic MTAM models $\rightarrow$ safety decidable, but (most likely) not efficiently: NP-hardproblem
+- TAMTAM: ternaryAMTAM models; each STS command requires max. 3 arguments $\rightarrow$  provably same computational power and thus expressive power as AMTAM; safety decidable in polynomial time
+
+##### Acyclic TAM Models
+Auxiliary analysis tools for TAM models:
+
+> Parent- and Child-Types
+> 
+> For any operation $op$ with arguments $⟨x_1,t_1⟩,⟨x_2,t_2⟩,...,⟨x_k,t_k⟩$ in an STS of a TAM model, it holds that $t_i, 1\leq i\leq k$
+> - is a child type in op if one of its primitives creates a subject or object $x_i$ of type $t_i$,
+> - is a parent type in op if none of its primitives creates a subject or object $x_i$ of type $t_i$.
+
+> Type Creation Graph
+> 
+> The type creation graph $TCG=⟨T,E=T\times T⟩$ for the STS of a TAM model is a directed graph with vertex set $T$ and an $edge⟨u,v⟩\in E$ iff $\exists op\in OP:u$ is a parent type in $op\wedge v$ is a child type in op. 
+
+Example STS:
+```bash
+command foo(s_1:u, o_1:w, o_2:v) ::=
+  if r_1 ∈ m(s_1 ,o_1)
+  then
+    create object o_2 of type v;
+  fi
+
+command bar(s_1:u, s_2:u, s_3:v, o_1:w) ::=
+  if r_2 ∈ m(s_1 ,o_1)
+  then
+    create subject s_2 of type u;
+    create subject s_3 of type v;
+  fi
+```
+![TCG](Assets/Systemsicherheit-acyclic-tam-example.png)
+
+Note:In bar,u is both a parent type (because of $s_1$) and a child type (because of $s_2$) $\rightarrow$  hence the loop edge. 
+
+Safety Decidability
+- We call a TAM model acyclic, iff its TCG is acyclic.
+
+> Theorem [Sandhu, 1992, Theorem 5]
+> 
+> Safety of a ternary, acyclic, monotonous TAM model (TAMTAM) is decidable in polynomial time in the size of $m_0$.
+
+- Crucial property acyclic, intuitively:
+  - Evolution of the system (protection state transitions) checks both rights in the ACMas well as argument types
+  - TCG is acyclic $\Rightarrow\exists$ a finite sequence of possible state transitions after which no input tuple with argument types, that were not already considered before, can be found
+  - One may prove that an algorithm, which tries to expandall possible different follow-up states from $q_0$, may terminate after this finite sequence
+  - Proof details: SeeSandhu [1992].
+
+Expressive Power of TAMTAM
+- MTAM: obviously same expressive power as monotonic HRU (MHRU) $\rightarrow$  cannot model:
+  - transfer of rights: “take r from ... and in turn grant r to ...”
+  - countdown rights: “r can only be used n times”
+- ORCON example (and many others): allow to ignore non-monotonic command $s$ from STS, e.g. 4.-7., since they
+  - only remove rights
+  - are reversible (e. g.: undo 4. by 2.; compensate 7. by 3. where the new subject takes roles of the destroyed one)
+- AMTAM: most MTAM STS may be re-written as acyclic(cf. ORCON example)
+- TAMTAM: expressive power equivalent to AMTAM 
+
+IBAC Model Comparison
+- So far: family of IBAC models to describe different ranges of security policies they are able to express(depicted as an Euler diagram):
+- ![](Assets/Systemsicherheit-ibac-model-comparison.png)
+
+IBAC Summary
+- We May Now
+  - Model identity-based AC policies (IBAC)
+  - Analyze them w. r. t. basic security properties (right proliferation)
+  - $\rightarrow$  Minimize specification errors
+  - $\rightarrow$  Minimize implementation errors
+- Approach
+  - Unambiguous policy representation through formal notation
+  - Prediction and/or verification of mission-critical properties
+  - Derivation of implementation concepts 
+- Model Range
+  - Static models:
+    - Access control function (ACF): $f:S\times O\times OP\rightarrow \{true,false\}$
+    - Access control matrix (ACM): $m:S\times O\rightarrow 2^{OP}$
+    - $\rightarrow$ Static analysis: Which rights are assigned to whom, which (indirect) information flows are possible
+    - $\rightarrow$ Implementation: Access control lists (ACLs), e.g. in OS, (DB)IS 
+  - Dynamic models:
+    - ACM plus deterministic automaton $\rightarrow$ Analysis of dynamic behavior: HRU safety
+      - generally undecidable
+      - decidable under specific restrictions: monotonous mono-conditional, static, typed, etc.
+      - identifying and explaining safety-violations, in case such (are assumed to) exists: heuristic analysis algorithms 
+- Limitations
+  - IBAC models are fundamental: KISS
+  - IBAC models provide basic expressiveness only:
+    - Comparable to “assembler programs for writing AC policies”
+    - Imagine writing a sophisticated end-user application in assembler:
+      - reserve and keep track of memory layout and addresses ≈ create and maintain individual rights for thousands of subjects, billions of objects
+      - display comfortable GUI by writing to the video card framebuffer ≈ specify sophisticated workflows through an HRU STS
+  - For more application-oriented policy semantics:
+    - Large information systems: many users, many databases, files, ... $\rightarrow$ Scalability problem
+    - Access decisions not just based on subjects, objects, and operations $\rightarrow$ Abstraction problem
+
+$\rightarrow$ “New” paradigm (early–mid 90s): Role-based Access Control
+
+#### Roles-based Access Control Models (RBAC)
+
+> Self-Study Task
+> 
+> Have a look at the syscall API of Linux as a typical file server operating system. Roughly count the number of operations and estimate their average number of arguments based on a few samples. Then try to estimate the average number of files that each user keeps in her home directory. A good sample is your own user directory, which you can count (including subdirectories) as follows: `find ~ -type f | wc -l`
+> 
+> If 200 employees of a medium-sized company have user accounts:
+> - How many ACLs must be saved to encode the IBAC policy of this server as a classical ACM?
+> - If each ACL take 12 bits, how big is the resulting storage overhead in total?
+> - If you had to heuristically analyze safety of this policy: how many different inputs would you have to simulate in the worst case just for the first state transition? 
+
+Problems of IBAC Models:
+- Scalability w.r.t. the number of controlled entities
+- Level of abstraction: System-oriented policy semantics (processes, files, databases, ...) instead of problem-oriented (management levels, user accounts, quota, ...)
+
+Goals of RBAC:
+- Solving these problems results in smaller modeling effort results in smaller chance of human errors made in the process:
+  - Improved scalability and manageability
+  - Improved, application-oriented semantics: roles≈functions in organizations
+
+RBAC Application Domains
+- Public health care systems
+  - Roles: Patient, physician, therapist, pharmacist, insurer, legislator, ...
+- Financial services
+  - Roles: Client, consultant, analyst, product manager, ...
+- Operating systems
+  - Roles: System admin, webserver admin, database admin, key account user, user, ...
+
+
 #### ABAC
 #### Summary
 ### Information Flow Models

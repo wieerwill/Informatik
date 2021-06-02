@@ -469,7 +469,7 @@ Beispiele:
 
 
 Sei W eine Menge von Wahrheitswerten.\\
-Eine W-Belegungist eine Abbildung $B:V\rightarrow W$, wobei $V\subseteq\{p_0 ,p_1 ,...\}$ eine Menge atomarer Formeln ist.
+Eine W-Belegung ist eine Abbildung $B:V\rightarrow W$, wobei $V\subseteq\{p_0 ,p_1 ,...\}$ eine Menge atomarer Formeln ist.
 
 Die W-Belegung $B:V\rightarrow W$ paßt zur Formel $\phi$, falls alle atomaren Formeln aus $\phi$ zu V gehören.
 
@@ -519,7 +519,6 @@ Bemerkung: In jedem Verband $(W,\leq)$ gelten $0_W= sup\ \varnothing$ und $1_W= 
 - Der Boolesche Wahrheitswertebereich B ist definiert durch die Grundmenge $B=\{0,1\}$, die natürliche Ordnung $\leq$ und die Funktionen $\lnot_B (a) = 1-a$, $\rightarrow_B(a,b) = max(b, 1 -a)$. Hier gelten:
     - $0_B=0$, $1_B= 1$, 
     - $a\wedge_B b= min(a,b)$, $a\vee_B b= max(a,b)$
-
 - Der Kleenesche Wahrheitswertebereich $K_3$ ist definiert durch die Grundmenge $K_3=\{0,\frac{1}{2},1\}$ mit der natürlichen Ordnung $\leq$ und durch die Funktionen $\lnot_{K_3} (a) = 1 -a $, $\rightarrow_{K_3} (a,b) = max(b, 1-a)$. Hier gelten:
   - $\lnot_{K_3} = 0$, $1_{K_3} = 1$
   - $a\wedge_{K_3} b= min(a,b)$, $a\vee_{K_3} b= max(a,b)$
@@ -555,7 +554,7 @@ Beispiel: Betrachte die Formel $\phi= ((p\wedge q)\rightarrow (q\wedge p))$.
 ## Folgerung und Tautologie
 Sei W ein Wahrheitswertebereich.
 Eine Formel $\phi$ heißt eine W-Folgerung der Formelmenge $\Gamma$, falls für jede W-Belegung B, die zu allen Formeln aus $\Gamma \cup\{\phi\}$ paßt, gilt:
-    $inf\{B(\gamma )|\gamma \in \Gamma \}\leq   B(\phi)$
+    $inf\{B(\gamma )|\gamma \in \Gamma \}\leq B(\phi)$
 
 Wir schreiben $\Gamma \Vdash W\phi$, falls $\phi$ eine W-Folgerung von $\Gamma$ ist.
 
@@ -790,7 +789,7 @@ Beweis: Wir zeigen „$\Gamma\vdash\varphi\Leftrightarrow \Gamma\cup\{\lnot\varp
 ### Maximal konsistente Mengen
 > Definition
 > 
-> Eine Formelmenge $\Delta$ ist maximal konsistent, wenn sie konsistent ist und wenn gilt „$\sum\subseteq\Delta$ konsistent $\Rightarrow\sum = \Delta$“.
+> Eine Formelmenge $\Delta$ ist maximal konsistent, wenn sie konsistent ist und wenn gilt „$\sum\supseteq\Delta$ konsistent $\Rightarrow\sum = \Delta$“.
 
 > Satz
 > 
@@ -827,16 +826,14 @@ Beweis:
 
     Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $\Delta\cup\{\varphi\}$ konsistent.
 
-2. Da $\Delta\cup\{\varphi\}\subseteq\Delta$ konsistent und $\Delta$ maximal konsistent ist, folgt $\Delta=\Delta\cup\{\varphi\}$, d.h. $\varphi\in\Delta$.
+2. Da $\Delta\cup\{\varphi\}\supseteq\Delta$ konsistent und $\Delta$ maximal konsistent ist, folgt $\Delta=\Delta\cup\{\varphi\}$, d.h. $\varphi\in\Delta$.
 
 > Lemma 2
 > 
 > Sei $\Delta$ maximal konsistent und $\varphi$ Formel. Dann gilt $\varphi\not\in\Delta\Leftrightarrow\lnot\varphi\in\Delta$.
 
 Beweis:
-- Zunächst gelte $\lnot\varphi\in\Delta$. Angenommen, $\varphi\in\Delta$. Dann haben wir die Deduktion $\frac{\lnot\varphi\quad\varphi}{\bot}$
-  
-    und damit $\Delta\vdash\bot$, was der Konsistenz von $\Delta$ widerspricht.
+- Zunächst gelte $\lnot\varphi\in\Delta$. Angenommen, $\varphi\in\Delta$. Dann haben wir die Deduktion $\frac{\lnot\varphi\quad\varphi}{\bot}$ und damit $\Delta\vdash\bot$, was der Konsistenz von $\Delta$ widerspricht.
 - Gelte nun $\varphi\not\in\Delta$.
   - $\Rightarrow$ $\Delta(\Delta\cup\{\varphi\}\Rightarrow\Delta\cup\{\varphi\}$ inkonsistent (da $\Delta$ max. konsistent)
   - $\Rightarrow$ Es gibt Deduktion $D$ mit Hypothesen in $\Delta\cup\{\varphi\}$ &Konklusion $\bot$.
@@ -1032,7 +1029,7 @@ Beweis: $\alpha$ ist Theorem
 ### Folgerung 3: Kompaktheit
 > Satz
 > 
-> Seien $\Gamma$ eine u.U. unendliche Menge von Formeln und $\varphi$ eine Formel mit $\Gamma\Vdash_B\varphi$. Dann existiert $\Gamma′\subseteq\Gamma$ endlich mit $\Gamma′\Vdash_B \varphi$.
+> Sei $\Gamma$ eine u.U. unendliche Menge von Formeln und $\varphi$ eine Formel mit $\Gamma\Vdash_B\varphi$. Dann existiert $\Gamma′\subseteq\Gamma$ endlich mit $\Gamma′\Vdash_B \varphi$.
 
 Beweis: $\Gamma\Vdash_B\varphi$ 
 - $\Rightarrow\Gamma\vdash\varphi$ (nach dem Vollständigkeitssatz)
@@ -1070,7 +1067,7 @@ Beweis:
 - $1.\Rightarrow 2.$ trivial
 - $2.\Rightarrow 1.$ Sei nun, für alle endlichen Menge $W\subseteq N$, der induzierte Teilgraph $G\upharpoonright_W$ 3-färbbar.
 
-Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, daß eine 3-Färbung existiert:
+Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, dass eine 3-Färbung existiert:
 - atomare Formeln $p_{n,c}$ für $n\in N$ und $c\in\{1,2,3\}$ (Idee: der Knoten n hat die Farbe c)
 - $\Gamma$ enthält die folgenden Formeln:
   - für alle $n\in N:p_{n, 1} \vee p_{n, 2} \vee p_{n, 3}$ (der Knoten n ist gefärbt)
@@ -1108,7 +1105,7 @@ Berühmtes Beispiel: Mit diesen 11 Kacheln kann die Ebene gefüllt werden, aber 
 
 Beweis: 
 - $\Rightarrow$: trivial
-- $\Leftarrow$: Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, daß eine Kachelung existiert:
+- $\Leftarrow$: Wir beschreiben zunächst mit einer unendlichen Menge $\Gamma$ von Formeln, dass eine Kachelung existiert:
   atomare Formeln $p_{k,i,j}$ für $k\in K$ und $i,j\in Z$ (Idee: an der Stelle $(i,j)$ liegt die Kachel $k$, d.h. $f(i,j) =k$)
   Für alle $(i,j)\in Z$ enthält $\Gamma$ die folgenden Formeln:
   - eine der Kacheln aus $K$ liegt an der Stelle $(i,j):\bigvee_{k\in K} p_{k,i,j}$
@@ -1117,10 +1114,10 @@ Beweis:
   - Kacheln an Stellen $(i,j)$ und $(i+1,j)$ „passen nebeneinander“: $\bigvee_{k,k′\in K,k(W)=k′(O)} (p_{k,i,j}\wedge p_{k′,i+1,j})$
 
 Sei nun $\Delta\subseteq\Gamma$ endlich.
-- $\Rightarrow$ es gibt $n\in N$, so daß $\Delta$ nur atomare Formeln der Form $p_{k,i,j}$ mit $|i|,|j|\leq n$ enthält.
+- $\Rightarrow$ es gibt $n\in N$, so dass $\Delta$ nur atomare Formeln der Form $p_{k,i,j}$ mit $|i|,|j|\leq n$ enthält.
 - Voraussetzung $\Rightarrow$ es gibt Kachelung $g:\{(i,j) :|i|,|j| \leq n\}\rightarrow K$ für $k\in K$ und $|i|,|j|\leq n$ definiere $B(p_{k,i,j}) = \begin{cases} 1_B \quad\text{ falls } g(i,j) =k \\ 0_B \quad\text{ sonst} \end{cases}$
 - $\Rightarrow B(\sigma) = 1_B$ für alle $\sigma\in\Delta$ (da $g$ Kachelung)
-- Also haben wir gezeigt, daß jede endliche Teilmenge von $\Gamma$ erfüllbar ist.
+- Also haben wir gezeigt, dass jede endliche Teilmenge von $\Gamma$ erfüllbar ist.
 - Kompaktheitssatz $\Rightarrow$ es gibt B-Belegung $B$ mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$
 - $\Rightarrow$ es gibt Abbildung $f:Z\times Z\rightarrow K$ mit $f(i,j) =k \Leftarrow\Rightarrow B(p_{k,i,j}) = 1_B$.
 - Wegen $B\Vdash\Gamma$ ist dies eine Kachelung.
@@ -1169,7 +1166,7 @@ Bemerkung, in der Literatur auch:
 
 ### Markierungsalgorithmus
 - Eingabe: eine endliche Menge $\Gamma$ von Hornklauseln.
-1. while es gibt in $\Gamma$ eine Hornklausel $M\rightarrow q$, so daß alle $p\in M$ markiert sind und $q$ unmarkierte atomare Formel ist:
+1. while es gibt in $\Gamma$ eine Hornklausel $M\rightarrow q$, so dass alle $p\in M$ markiert sind und $q$ unmarkierte atomare Formel ist:
    do markiere $q$ (in allen Hornklauseln in $\Gamma$)
 2. if $\Gamma$ enthält eine Hornklausel der Form $M\rightarrow\bot$, in der alle $p\in M$ markiert sind
     then return „unerfüllbar“
@@ -1186,7 +1183,7 @@ Beweis einer Folgerung: Beispiel
   - Aus $BK\wedge RL\rightarrow\lnot AK$ wird $\lnot BH\wedge RL\rightarrow\lnot AK\equiv BH\vee\lnot RL\vee\lnot AK\equiv RL\wedge AK\rightarrow BH\equiv\{RL,AK\}\rightarrow BH$
   - $RL\equiv (\varnothing\rightarrow RL)$
   - $\lnot\lnot AK\equiv (\varnothing\rightarrow AK)$
-- Wir müssen also zeigen, daß die folgende Menge von Hornklauseln unerfüllbar ist:
+- Wir müssen also zeigen, dass die folgende Menge von Hornklauseln unerfüllbar ist:
     $\{\{BH\}\rightarrow AK,\{AK,BH\}\rightarrow\bot,\{RL,AK\}\rightarrow BH,\varnothing\rightarrow RL,\varnothing\rightarrow AK\}$
 
 Der Markierungsalgorithmus geht wie folgt vor:
@@ -1196,21 +1193,21 @@ Der Markierungsalgorithmus geht wie folgt vor:
 
 dann sind keine weiteren Markierungen möglich.
 
-In der Hornklausel $\{AK,BH\}\rightarrow\bot$ sind alle atomaren Formeln aus $\{AK,BH\}$ markiert. Also gibt der Algorithmus aus, daß die Menge von Hornklauseln nicht erfüllbar ist.
+In der Hornklausel $\{AK,BH\}\rightarrow\bot$ sind alle atomaren Formeln aus $\{AK,BH\}$ markiert. Also gibt der Algorithmus aus, dass die Menge von Hornklauseln nicht erfüllbar ist.
 
-Nach unserer Herleitung folgern wir, daß das Teil $A$ heil ist.
+Nach unserer Herleitung folgern wir, dass das Teil $A$ heil ist.
 
 1. Der Algorithmus terminiert: 
    in jedem Durchlauf der while-Schleife wird wenigstens eine atomare Formel markiert. Nach endlich vielen Schritten terminiert die Schleife also.
 2. Wenn der Algorithmus eine atomare Formelqmarkiert und wenn $B$ eine B-Belegung ist, die $\Gamma$ erfüllt, dann gilt $B(q) = 1_B$.
     Beweis: wir zeigen induktiv über $n$: Wenn $q$ in einem der ersten $n$ Schleifendurchläufe markiert wird, dann gilt $B(q) = 1_B$.
   - I.A. Die Aussage gilt offensichtlich für $n=0$.
-  - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so daß $p_1 ,... ,p_k$ in den ersten $n-1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
+  - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so dass $p_1 ,... ,p_k$ in den ersten $n-1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
     Da $B$ alle Hornformeln aus $\Gamma$ erfüllt, gilt insbesondere $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow q) = 1_B$ und damit $B(q) = 1_B$.
 3. Wenn der Algorithmus „unerfüllbar“ ausgibt, dann ist $\Gamma$ unerfüllbar.
-    Beweis: indirekt, wir nehmen also an, daß der Algorithmus „unerfüllbar“ ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
+    Beweis: indirekt, wir nehmen also an, dass der Algorithmus „unerfüllbar“ ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
     Sei $\{p_1 ,... ,p_k\}\rightarrow\bot$ die Hornklausel aus $\Gamma$, die die Ausgabe „unerfüllbar“ verursacht (d.h. die atomaren Formeln $p_1 ,... ,p_k$ sind markiert).
-    Nach 2. gilt $B(p_1) =...=B(p_k) = 1_B$, also $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow\bot) = 0_B$ im Widerspruch zur Annahme, daß $B$ alle Hornklauseln aus $\Gamma$ erfüllt.
+    Nach 2. gilt $B(p_1) =...=B(p_k) = 1_B$, also $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow\bot) = 0_B$ im Widerspruch zur Annahme, dass $B$ alle Hornklauseln aus $\Gamma$ erfüllt.
     Also kann es keine erfüllende B-Belegung von $\Gamma$ geben.
 4. Wenn der Algorithmus „erfüllbar“ ausgibt, dann erfüllt die folgende B-Belegung alle Formeln aus $\Gamma$:
     $B(p_i)=\begin{cases} 1_B \quad\text{ der Algorithmus markiert } p_i \\ 0_B \quad\text{ sonst} \end{cases}$
@@ -1229,7 +1226,7 @@ Beweis: Die Aussagen 1.-4. beweisen diesen Satz.
 
 Bemerkungen:
 - Mit einer geeigneten Implementierung läuft der Algorithmusin linearer Zeit.
-- Wir haben sogar gezeigt, daß bei Ausgabe von „erfüllbar“ eine erfüllende B-Belegung berechnet werden kann.
+- Wir haben sogar gezeigt, dass bei Ausgabe von „erfüllbar“ eine erfüllende B-Belegung berechnet werden kann.
 
 ### SLD-Resolution
 > Definition
@@ -1275,11 +1272,11 @@ Behauptung: Es gibt $m\leq r$ und SLD-Resolution $(M_0\rightarrow\bot,...,M_m\ri
 
 Beweis der Behauptung: Wir konstruieren die Hornklauseln $M_i\rightarrow\bot$ induktiv:
 - I.A.: Da der Markierungsalgorithmus mit „unerfüllbar“ terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r- 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
-- I.V.: Sei $n\leq r$ und $(M_0\rightarrow\bot,... ,M_n\rightarrow\bot)$ SLD-Resolution, so daß (5) gilt.
+- I.V.: Sei $n\leq r$ und $(M_0\rightarrow\bot,... ,M_n\rightarrow\bot)$ SLD-Resolution, so dass (5) gilt.
 - I.S.: wir betrachten drei Fälle:
   1. Fall $M_n=\varnothing$: mit $m:=n$ ist Beweis der Beh. abgeschlossen.
   2. Fall $n=r$: Nach (5) gilt $M_n\subseteq\{q_1,...,q_{r-n}\}=\varnothing$. Mit $m:=n$ ist der Beweis der Beh. abgeschlossen.
-  3. Fall $n<r$ und $M_n \not=\varnothing$. Sei $k$ maximal mit $q_k\in M_n\subseteq\{q_1,q_2,... ,q_{r-n}\}$. Also existiert $(N\rightarrow q_k)\in\Delta$, so daß $N\subseteq\{q_1,... ,q_{k-1}\}$. Setze $M_{n+1}=M_n\backslash\{q_k\}\cup N\subseteq\{q_1,... ,q_{k-1}\}\subseteq\{q_1,...,q_{r-(n+1)}\}$.
+  3. Fall $n<r$ und $M_n \not=\varnothing$. Sei $k$ maximal mit $q_k\in M_n\subseteq\{q_1,q_2,... ,q_{r-n}\}$. Also existiert $(N\rightarrow q_k)\in\Delta$, so dass $N\subseteq\{q_1,... ,q_{k-1}\}$. Setze $M_{n+1}=M_n\backslash\{q_k\}\cup N\subseteq\{q_1,... ,q_{k-1}\}\subseteq\{q_1,...,q_{r-(n+1)}\}$.
 
 Damit ist der induktive Beweis der Beh. abgeschlossen, woraus das Lemma unmittelbar folgt.
 
@@ -1313,9 +1310,9 @@ Die Suche nach einer SLD-Resolution mit $M_m=\varnothing$ kann grundsätzlich au
 Beispiel: Graphen
 ![](Assets/Logik-prädikatenlogik-graph.png)
 Um über diesen Graphen Aussagen in der Aussagenlogik zu machen, verwenden wir Formeln $\varphi_{i,j}$ für $1\leq i,j\leq 9$ mit $\varphi_{i,j}=\begin{cases} \lnot\bot\quad\text{ falls} (v_i,v_j) Kante\\ \bot\quad\text{ sonst}\end{cases}$
-- Die aussagenlogische Formel $\bigvee_{1\leq i,j\leq 9} \varphi_{i,j}$ sagt aus, daß der Graph eine Kante enthält.
-- Die aussagenlogische Formel $\bigwedge_{1\leq i\leq 9} \bigvee_{1\leq j\leq 9} \varphi_{i,j}$ sagt aus, daß jeder Knoten einen Nachbarn hat
-- Die aussagenlogische Formel $\bigvee_{1\leq i,j,k\leq 9 verschieden} \varphi_{i,j}\wedge\varphi_{j,k}\wedge\varphi_{k,i}$ sagt aus, daß der Graph ein Dreieck enthält.
+- Die aussagenlogische Formel $\bigvee_{1\leq i,j\leq 9} \varphi_{i,j}$ sagt aus, dass der Graph eine Kante enthält.
+- Die aussagenlogische Formel $\bigwedge_{1\leq i\leq 9} \bigvee_{1\leq j\leq 9} \varphi_{i,j}$ sagt aus, dass jeder Knoten einen Nachbarn hat
+- Die aussagenlogische Formel $\bigvee_{1\leq i,j,k\leq 9 verschieden} \varphi_{i,j}\wedge\varphi_{j,k}\wedge\varphi_{k,i}$ sagt aus, dass der Graph ein Dreieck enthält.
 Man kann so vorgehen, wenn der Graph bekannt und endlich ist. Sollen analoge Aussagen für einen anderen Graphen gemacht werden, so ist die Kodierungsarbeit zu wiederholen.
 
 Beispiel: Datenbanken
@@ -1387,7 +1384,11 @@ Beispiel: $\Omega=\{f,dk\}$ mit $ar(f) =1,ar(dk)=0$ und $Rel=\{S,LuLP,AuD,Pr,WM,
 
 > Definition
 > 
-> Die Menge der Variablen ist $Var=\{x_0,x_1 ,...\}$. Sei $\sum$ eine Signatur. Die Menge $T_{\sum}$ der $\sum$-Terme ist induktiv definiert:
+> Die Menge der Variablen ist $Var=\{x_0,x_1 ,...\}$. 
+
+> Definition
+> 
+> Sei $\sum$ eine Signatur. Die Menge $T_{\sum}$ der $\sum$-Terme ist induktiv definiert:
 > 1. Jede Variable ist ein Term, d.h. $Var\subseteq T_{\sum}$
 > 2. ist $f\in\Omega$ mit $ar(f)=k$ und sind $t_1,...,t_k\in T_{\sum}$, so gilt $f(t_1,...,t_k)\in T_{\sum}$
 > 3. Nichts ist $\sum$-Term, was sich nicht mittels der obigen Regeln erzeugen läßt.
@@ -1559,7 +1560,7 @@ Bemerkung: $\varphi$ allgemeingültig gdw. $\varnothing\Vdash\varphi$ gdw. $\{\l
 
 Beispiel: Der Satz $\varphi=(\forall x:R(x)\rightarrow\forall x:R(f(x)))$ ist allgemeingültig.
 
-Beweis: Sei $\sum$ Signatur, so daß $\varphi$  $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten zwei Fälle:
+Beweis: Sei $\sum$ Signatur, so dass $\varphi$  $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten zwei Fälle:
 1. Falls $A\not\Vdash_ρ\forall x R(x)$, so gilt $A\Vdash_p\varphi$.
 2. Wir nehmen nun $A\Vdash_p\forall x R(x)$ an. Sei $a\in U_A$ beliebig und $b=f^A(a)$.
    $A\Vdash_p\forall x R(x) \Rightarrow A\Vdash_{p[x\rightarrow b]} R(x) \Rightarrow RA\owns (p[x\rightarrow b])(x) = b = f^A(a) = (ρ[x\rightarrow a])(f(x)) \Rightarrow A\Vdash_{p[x\rightarrow a]}R(f(x))$.
@@ -1569,7 +1570,7 @@ Da $A$ und $ρ$ beliebig waren, ist $\varphi$ somit allgemeingültig.
 
 Beispiel: 
 - Der Satz $\varphi =\exists x(R(x)\rightarrow R(f(x)))$ ist allgemeingültig.
-- Beweis: Sei $\sum$ Signatur, so daß $\varphi$ $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten wieder zwei Fälle:
+- Beweis: Sei $\sum$ Signatur, so dass $\varphi$ $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten wieder zwei Fälle:
   1. Angenommen, $R^A=U_A$. Sei $a\in U_A$ beliebig.
       - $\Rightarrow f^A(a)\in R^A$
       - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(f(x))$
@@ -1684,7 +1685,7 @@ Der Beweis des Korrektheitslemmas für das natürliche Schließen kann ohne gro�
 > Sei $\sum$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel.
 > Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik verwendet. Dann gilt $\Gamma\Vdash\varphi$.
 
-Umgekehrt ist nicht zu erwarten, dass aus $\Gamma\Vdash\varphi$ folgt, daß es eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$ gibt, denn die bisher untersuchten Regeln erlauben keine Behandlung von $=,\forall$ bzw. $\exists$. Solche Regeln werden wir jetzt einführen.
+Umgekehrt ist nicht zu erwarten, dass aus $\Gamma\Vdash\varphi$ folgt, dass es eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$ gibt, denn die bisher untersuchten Regeln erlauben keine Behandlung von $=,\forall$ bzw. $\exists$. Solche Regeln werden wir jetzt einführen.
 
 Zunächst kümmern wir uns um Atomformeln der Form $t_1 =t_2$. Hierfür gibt es die zwei Regeln $(R)$ und $(GfG)$:
 
@@ -1705,7 +1706,7 @@ Zunächst kümmern wir uns um Atomformeln der Form $t_1 =t_2$. Hierfür gibt es 
 > ![](Assets/Logik-gleiches-für-gleiches-kurz.png)
 > Bedingung: über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert
 
-Die folgenden Beispiele zeigen, daß wir bereits jetzt die üblichen Eigenschaften der Gleichheit (Symmetrie, Transitivität, Einsetzen) folgern können.
+Die folgenden Beispiele zeigen, dass wir bereits jetzt die üblichen Eigenschaften der Gleichheit (Symmetrie, Transitivität, Einsetzen) folgern können.
 
 Beispiel: Seien $x$ Variable, $s$ Term ohne $x$ und $\varphi=(x=s)$.
 - Da $\varphi$ quantorenfrei ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ zulässig.

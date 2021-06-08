@@ -4,7 +4,6 @@ vorlesung/quelle: http://www.juergen-nuetzel.de/content_verwertungsmodelle_mobil
 ---
 
 # Motivation und Überblick
-
 mobiler Content
 - Bücher sind schon länger mobil
 - Mobile Musik wurde ab 1979 populär
@@ -20,7 +19,7 @@ Cloud-Computing
 
 Programmierprojekt z.B. mit
 - Android Studio 
-  - Native Apps für Android mit Java)
+  - Native Apps für Android mit Java
   ![](Assets/ContentVerwertungsmodelle-android-studio.png)
   - [How to Build Your First App in Android Studio 3 Tutorial](https://www.youtube.com/watch?v=UQlDjsfiQ-k)
 - Flutter: https://flutter.dev/
@@ -60,37 +59,47 @@ Was sollte ein Endgerät können?
 Was ist unter mobil zu verstehen?
 - Mobile Endgeräte ermöglichen die ...
     - mobile Nutzung von Content
-    - mobile elektronische Kommunikation
+    - mobile elektronische Kommunikation (nicht in stationärer Form)
     - Verarbeitung der Nutzer- und Gerätemobilität
 - Was ist nicht mobil? keine mobile Nutzung; tragbar aber nicht mobil nutzbar
 
-
-Was macht ein Endgerät intelligent?
-- Ein intelligentes (=smart) Endgerät:
-    - Ist/enthält ein(en) freiprogrammierbarer Rechner
-    - Hat einen Internet-Zugang
-- Ein intelligentes (=smart) Endgerät kann somit:
-  - Content erstellen und über das Internet bereitstellen
-  - Content aus dem Internet laden
-  - Content weiterverarbeiten
+Was macht ein Endgerät intelligent (=smart)?
+  - enthält ein(en) freiprogrammierbarer Rechner
+  - hat einen Internet-Zugang
+  - kann Content erstellen und über das Internet bereitstellen
+  - kann Content aus dem Internet laden
+  - kann Content weiterverarbeiten
 
 ## Geschichte des Mobilfunks bis LTE
-- Der Anfang 1918 und 1926
-    - Bei der Reichsbahn in Deutschland
+- Der Anfang 1918 und 1926: Bei der Reichsbahn in Deutschland
 - Erste Generation
-    - A-Netz 1958
+    - A-Netz 1958 (teuer, schwer und in Bereiche unterteilt)
     - B-Netz 1972
-    - C-Netz 1985
+    - C-Netz 1985 (cellulär)
 - GSM ab 1992, 2. Generation (2G), D und E-Netz
   - GPRS (General Packet Radio)
-- UMTS, 3. Generation (3G)
-- LTE
+- UMTS, 3. Generation (3G) ab ca 2000
+- LTE ab 2010
 - [Geschichte des Mobilfunks](http://www.youtube.com/watch?v=oqFEAAYw9RQ)
 - [#kurzerklärt: Was ist 5G?](http://www.youtube.com/watch?v=q4mQUgJzkZE)
 
 ## Historische Geräte - 1. Generation
 - A-Netz: A-Netz Funktelefon (Hersteller: Fa. TeKaDe Nürnberg, 1963)
 - C-Netz: Autotelefon Motorola CM451 von 1990
+
+## 5G Technology
+- Milimeter Waves, 30-600GHz
+  - greater spectrum of communication, less interference
+  - high frequenzy cannot travel through walls
+- Small Cell (Networks)
+  - more little base stations
+- Massive MIMO
+  - multiple input multiple output
+  - more ports 
+- Beamforming
+  - traffic signaling
+  - focus stream to user
+- Full Duplex
 
 ## Historische Geräte - Meilensteine
 - Das erste Handy: Motorola DynaTAC, 1983 (Prototype 1973)
@@ -101,17 +110,16 @@ Was macht ein Endgerät intelligent?
 Weitere Informationen
 - [Vintage Mobiles](http://www.gsmhistory.com/vintage-mobiles)
 - [Die Meilensteine in der Geschichte der Handys und Mobilfunktelefone](http://www.startmobile.net/die-meilensteine-in-der-geschichte-der-handys-und-mobilfunktelefone/)
-- [History of mobile phones][http://en.wikipedia.org/wiki/History_of_mobile_phones](http://en.wikipedia.org/wiki/History_of_mobile_phones)
+- [History of mobile phones](http://en.wikipedia.org/wiki/History_of_mobile_phones)
 - [Geschichte der Mobiltelefonie in Deutschland](http://de.wikipedia.org/wiki/Mobilfunk#Geschichte_der_Mobiltelefonie_in_Deutschland)
 
 ## Die nahe Zukunft - Wearables?
 - Wear OS  by Google
+  - [Introduction to Wear OS by Google Development](http://www.youtube.com/watch?v=penkgJBJdv4)
 - Samsung Gear S3
+  - [Samsung Gear S3 im Test](http://www.youtube.com/watch?v=PQCcV8gIi4I)
 - Apple Watch 4 mit EKG
-
-- [Introduction to Wear OS by Google Development](http://www.youtube.com/watch?v=penkgJBJdv4)
-- [Hands-On With the ECG Feature for Apple Watch Series 4!](http://www.youtube.com/watch?v=jdRXLES7ajY)
-- [Samsung Gear S3 im Test](http://www.youtube.com/watch?v=PQCcV8gIi4I)
+  - [Hands-On With the ECG Feature for Apple Watch Series 4!](http://www.youtube.com/watch?v=jdRXLES7ajY)
 
 # Mobile Geräte - Betriebssysteme
 ## Was ist ein Betriebssystem?
@@ -119,8 +127,8 @@ Ein Betriebssystem ist eine Zusammenstellung von Computerprogrammen, die die Sys
 
 Das Betriebssystem bildet dadurch die Schnittstelle zwischen den Hardwarekomponenten und der Anwendungssoftware des Benutzers.
 
-[Andrew S. Tanenbaum: Moderne Betriebssysteme](Andrew S. Tanenbaum: Moderne Betriebssysteme. 3., aktualisierte Auflage, Pearson Studium, ISBN 978-3-8273-7342-7)
-[http://de.wikipedia.org/wiki/Betriebssystem](http://de.wikipedia.org/wiki/Betriebssystem)
+- [Andrew S. Tanenbaum: Moderne Betriebssysteme](Andrew S. Tanenbaum: Moderne Betriebssysteme. 3., aktualisierte Auflage, Pearson Studium, ISBN 978-3-8273-7342-7)
+- [http://de.wikipedia.org/wiki/Betriebssystem](http://de.wikipedia.org/wiki/Betriebssystem)
 
 ## PDA- und Smartphone-Betriebssysteme
 - Android ... (Marktanteil 03/2020 Internet Nutzung weltweit: 72,3%)
@@ -146,16 +154,9 @@ MIDP-Java ME (kein Betriebssystem)
 
 ## Symbian
 - Überblick
-    - Das Handy-OS Symbian hat seine Ursprünge in der 32-Bit-EPOC-Plattform von Psion;
-       diese wurde in einem 1998 gegründetem Konsortium mit dem Namen Symbian von
-       den Mobilfunkunternehmen Ericsson, Motorola, Nokia und Psion eingesetzt und
-       weiterentwickelt.
-    - Die Symbian Ltd. wurde später vollständig durch Nokia übernommen und in eine
-       gemeinnützige Organisation, die Symbian Foundation, überführt. Nokia erwarb im
-       Dezember 2008 sämtliche Rechte und übertrug sie an die Symbian Foundation.
-       Diese erklärte Symbian im Februar 2010 zur Open Source-Lösung.
-    - Die Unterstützung durch Nokia wurde Ende 2012
-       komplett eingestellt.
+    - Das Handy-OS Symbian hat seine Ursprünge in der 32-Bit-EPOC-Plattform von Psion; diese wurde in einem 1998 gegründetem Konsortium mit dem Namen Symbian von den Mobilfunkunternehmen Ericsson, Motorola, Nokia und Psion eingesetzt und weiterentwickelt.
+    - Die Symbian Ltd. wurde später vollständig durch Nokia übernommen und in eine gemeinnützige Organisation, die Symbian Foundation, überführt. Nokia erwarb im Dezember 2008 sämtliche Rechte und übertrug sie an die Symbian Foundation. Diese erklärte Symbian im Februar 2010 zur Open Source-Lösung.
+    - Die Unterstützung durch Nokia wurde Ende 2012 komplett eingestellt.
 - Technik
     - Symbian hat vieles mit Desktop-Betriebssystemen gemein, z. B. präemptives Multitasking, Multithreading und Speicherschutz.
 - User Interface
@@ -190,8 +191,6 @@ MIDP-Java ME (kein Betriebssystem)
     - Version 10.2 bietet Unterstützung von Android Apps (seit 2014)
     - Version 10.3 unterstützt offiziell den Amazon Appstore
     - [http://en.wikipedia.org/wiki/BlackBerry_10](http://en.wikipedia.org/wiki/BlackBerry_10)
-    - _In April, 2016 BlackBerry announced that they will no longer release new_
-       _BlackBerry 10 devices to solely focus on Google Android devices_
 
 ## Windows Phone, Windows 10 Mobile
 - Windows Phone 7 = Windows CE

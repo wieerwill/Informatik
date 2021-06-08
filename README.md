@@ -13,6 +13,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 - [Computergrafik](Computergrafik.md)
   - [Computergrafik Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf)
 - [Content Verwertungsmodelle](Content%20Verwertungsmodelle.md)
+  - [Content Verwertungsmodelle Cheatsheet](Content%20Verwertungsmodelle%20-%20Cheatsheet.pdf)
 - [Datenbank Implementierungstechniken](Datenbank%20Implementierungstechniken.md) (work in progress)
 - [Datenbanksysteme](Datenbanksysteme.md)
   - [Fragenkatalog](Datenbanksysteme%20-%20Fragen.md)

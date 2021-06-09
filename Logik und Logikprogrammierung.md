@@ -1741,3 +1741,222 @@ zulässig, d.h. in $\varphi$ wird über keine Variable aus $s$ oder $t$ quantifi
   - $\Rightarrow A\Vdash_{p[x\rightarrow ρ(t)]}\varphi$
   - $\Rightarrow A\Vdash_p \varphi[x:=t]$
 - Da $A$ und $ρ$ beliebig waren mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$ haben wir $\Gamma\Vdash\varphi[x:=t]$ gezeigt.
+
+### $\forall$ in math. Beweisen
+Ein mathematischer Beweis einer Aussage „für alle $x$ gilt $\varphi$“ sieht üblicherweise so aus:
+  "Sei $x$ beliebig, aber fest. Jetzt zeige ich $\varphi$ (hier steckt die eigentliche Arbeit). Da $x$ beliebig war, haben wird „für alle $x$ gilt $\varphi$“ gezeigt. qed“
+
+> $\forall$ -Einführung
+>
+> Sei $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$ und sei $x$ eine Variable, die in keiner Formel aus $\Gamma$ frei vorkommt. Dann ist das folgende eine Deduktion
+mit Hypothesen in $\Gamma$ und Konklusion $\forall x\varphi: \frac{\phi}{\forall x\varphi}$
+> 
+> Bedingung: $x$ kommt in keiner Hypothese frei vor
+
+> Lemma V2
+> 
+> Sei $\sum$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik, (R), (GfG) und ($\forall$ -I) verwendet. Dann gilt $\Gamma\Vdash\varphi$.
+
+Beweis: Betrachte die folgende Deduktion $D$
+- Insbesondere ist $x$ keine freie Variable einer Formel aus $\Gamma$ und es gilt nach IV $\Gamma\Vdash\varphi$
+- Sei nun $A$ $\sum$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_p y$ für alle $y\in\Gamma$.
+- Zu zeigen ist $A\Vdash_p \forall x\varphi$:
+  - Sei also $a\in U_A$ beliebig.
+  - $\Rightarrow$ für alle $y\in\Gamma$ gilt $A\Vdash_{p[x\rightarrow a]} y$ da $x\not\in FV(y)$ und $A\Vdash_p y$
+  - $\Rightarrow A\Vdash_{ρ[x\rightarrow a]}\varphi$
+  - Da $a\in U_A$ beliebig war, haben wir $A\Vdash_ρ\forall x\varphi$ gezeigt
+- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_ρ $\Gamma$ $ für alle $$\Gamma$ \in\Gamma$ haben wir also $\Gamma\Vdash\forall x\varphi$ gezeigt.
+
+### $\forall$ -Elimination in math. Beweisen
+Ein mathematischer Beweis einer Aussage „t erfüllt $\varphi$“ kann so aussehen:
+  „Zunächst zeige ich $\forall x\varphi$ (hier steckt die eigentliche Arbeit). Damit erfüllt insbesondere $t$ die Aussage$\varphi$ , d.h., wir haben „$t$ erfüllt $\varphi$“ gezeigt. qed“
+
+> $\forall$ -Elimination
+>
+> Sei $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\forall x\varphi$ und seit Term, so dass Substitution [x:=t] für $\varphi$ zulässig ist.
+> Dann ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi[x:=t]:\frac{\forall x\varphi}{\varphi[x:=t]}$
+>
+> Bedingung: über keine Variable aus $t$ wird in $\varphi$ quantifiziert
+
+> Lemma V3
+> 
+> Sei $\sum$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik, (R), (GfG), ($\forall$-I) und ($\forall$-E) verwendet. > Dann gilt $\Gamma\Vdash\varphi$.
+
+Beweis: Analog zum Beweis von Lemma V2.
+
+### $\exists$ in math. Beweisen
+Ein Beweis von „$\sigma$ gilt“ kann so aussehen:
+  „Zunächst zeige ich $\exists x\varphi$ (hier steckt Arbeit). Jetzt zeige ich, dass $\sigma$ immer gilt, wenn$\varphi$ gilt (mehr Arbeit). Damit gilt $\sigma$. qed“
+
+> $\exists$ -Elimination
+> 
+> Sei $\Gamma$ eine Menge von Formeln, die die Variable $x$ nicht frei enthalten und enthalte die Formel $\sigma$  die Variabel $x$ nicht frei. Wenn $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\exists x\varphi$ und $E$ eine Deduktion mit Hypothesen in $\Gamma ∪\{\varphi\}$ und Konklusion $\sigma$ ist, dann ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\sigma:\frac{\exists x\varphi \quad\quad \sigma}{\sigma}$
+> 
+> Bedingung: $x$ kommt in den Hypothesen und in $\sigma$ nicht frei vor
+
+> Lemma V4
+> Sei $\sigma$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sigma$ -Formel. 
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik, (R), (GfG), ($\forall$-I), ($\forall$-E) und ($\exists$-E) verwendet. Dann gilt $\Gamma\Vdash\varphi$.
+
+Beweis: Sei $D$ die folgende Deduktion
+- Insbesondere kommt $x$ in den Formeln aus $\Gamma\cup\{\sigma\}$ nicht frei vor. Außerdem gelten nach IV $\Gamma\Vdash\exists x\varphi$ und $\Gamma\cup\{\varphi\}\Vdash\sigma$.
+- Sei nun $A$ $\sigma$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_ρ\Gamma$ für alle $\gamma\in\Gamma$.
+- Zu zeigen ist $A\Vdash_ρ\sigma$:
+  - Wegen $A\Vdash_ρ\exists x\varphi$ existiert $a\in U_A$ mit $A\Vdash_{ρ[x\rightarrow a]}\varphi$.
+  - $x$ kommt in Formeln aus $\Gamma$ nicht frei vor $\Rightarrow A\Vdash_{ρ[x\rightarrow a]}\gamma$ für alle $\gamma\in\Gamma$.
+  - Aus $\Gamma\cup\{\varphi\}\Vdash\sigma$ folgt $A\Vdash_{ρ[x\rightarrow a]}\sigma$.
+  - Da $x\not\in FV(\sigma)$ erhalten wir $A\Vdash_ρ \sigma$.
+- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_ρ\gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\sigma$ gezeigt.
+
+### $\exists$ -Einführung in math. Beweisen
+Ein mathematischer Beweis einer Aussage „es gibt ein $x$, das $\varphi$ erfüllt“ sieht üblicherweise so aus: „betrachte dieses $t$ (hier ist Kreativität gefragt). Jetzt zeige ich, daß $t\varphi$ erfüllt (u.U. harte Arbeit). Also haben wir „es gibt ein $x$, das $\varphi$ erfüllt“ gezeigt. qed“
+
+> $\exists$ -Einführung
+> 
+> Sei die Substitution $[x:=t]$ für die Formel $\varphi$ zulässig.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi[x:=t]$.
+> Dann ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\exists x\varphi:\frac{\varphi[x:=t]}{\exists x\varphi}$
+> 
+> Bedingung: über keine Variable in $t$ wird in $\varphi$ quantifiziert
+
+> Korrektheitslemma für das natürliche Schließen in der Prädikatenlogik
+> 
+> Sei $\sigma$ eine Signatur, $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sigma$ -Formel.
+> Sei weiter $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$, die die Regeln des natürlichen Schließens der Aussagenlogik, (R), (GfG), ($\forall$-I), ($\forall$-E), ($\exists$ -E) und ($\exists$ -I) verwendet. Dann gilt $\Gamma\Vdash\varphi$.
+
+Beweis: analog zu obigen Beweisen.
+
+### Regeln des natürlichen Schließens (Erweiterung)
+- ($R$): $\frac{}{t=t}$
+- (GfG): $\frac{\varphi[x:=s] \quad\quad s=t}{\varphi[x:=t]}$ (über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert)
+- ($\forall$-I): $\frac{\varphi}{\forall x\varphi}$ (x nicht frei in Hypothesen)
+- ($\forall$-E): $\frac{\forall x\varphi}{\varphi[x:=t]}$ (über keine Variable aus $t$ wird in $\varphi$ quantifiziert)
+- ($\exists$-I): $\frac{\varphi [x:=t]}{\exists x\varphi}$ (über keine Variable aus $t$ wird in $\varphi$  quantifiziert)
+- ($\exists$-I): $\frac{\exists x\varphi\quad\quad \sigma}{\sigma}$ ($x$ kommt in Hypothesen und $\sigma$ nicht frei vor)
+
+> Definition
+> 
+> Für eine Menge $\Gamma$ von $\sum$-Formeln und eine $\sum$-Formel $\varphi$ schreiben wir $\Gamma\vdash\varphi$ wenn es eine Deduktion gibt mit Hypothesen in $\Gamma$ und Konklusion $\varphi$. Wir sagen „$\varphi$ ist eine syntaktische Folgerung von $\Gamma$“.
+> Eine Formel $\varphi$ ist ein Theorem, wenn $\varnothing\vdash\varphi$ gilt.
+
+Bemerkung: $\Gamma\vdash\varphi$ sagt (zunächst) nichts über den Inhalt der Formeln in $\Gamma\cup\{\varphi\}$ aus, sondern nur über den Fakt, dass $\varphi$ mithilfe des natürlichen Schließens aus den Formeln aus $\Gamma$ hergeleitet werden kann.
+Ebenso sagt „$\varphi$ ist Theorem“ nur, dass $\varphi$ abgeleitet werden kann, über „Wahrheit“ sagt dieser Begriff (zunächst) nichts aus.
+Wir haben aber "en passant" das folgende gezeigt:
+
+> Korrektheitssatz
+> 
+> Für eine Menge von $\sum$-Formeln $\Gamma$ und eine $\sum$-Formel $\varphi$ gilt $\Gamma\vdash\varphi \Rightarrow \Gamma\Vdash\varphi$.
+
+Beispiel: Seien $\varphi$ Formel und $x$ Variable. Dann gelten $\{\lnot\exists x\varphi\}\Vdash\forall x\lnot\varphi$ und $\{\forall x\lnot\varphi\}\Vdash\lnot\exists x\varphi$.
+- Beweis: ![](Assets/Logik-korrekheitssatz.png)
+
+Beispiel: Seien $\varphi$ Formel und $x$ Variable. Dann gelten $\{\lnot\forall x\varphi\}\Vdash \exists x\lnot\varphi$ und $\{\exists x\lnot\varphi\}\Vdash\lnot\forall x\varphi$.
+- Beweis: ![](Assets/Logik-beispiel-korrekheitssatz.png)
+
+## Vollständigkeit
+Können wir durch mathematische Beweise zu allen korrekten Aussagen kommen?
+Können wir durch das natürliche Schließen zu allen korrekten Aussagen kommen?
+
+Existiert eine Menge $\Gamma$ von $\sum$-Formeln und eine $\sum$-Formel $\varphi$ mit $\Gamma\Vdash\varphi$ und $\Gamma\not\vdash\varphi$?
+
+Frage: Gilt $\Gamma\Vdash\varphi \Rightarrow \Gamma\vdash\varphi$ bzw. $\varphi$ ist allgemeingültig $\Rightarrow\varphi$ ist Theorem?
+
+Plan: 
+- z.z. ist $\Gamma\Vdash\varphi \Rightarrow \Gamma\vdash\varphi$.
+- dies ist äquivalent zu $\Gamma\not\vdash\varphi \Rightarrow \Gamma\not\Vdash\varphi$.
+- hierzu geht man folgendermaßen vor:
+  - $\Gamma\not\vdash\varphi$
+  - $\Leftrightarrow \Gamma\cup\{\lnot\varphi\}$ konsistent
+  - $\Rightarrow \exists\Delta\supseteq\Gamma\cup\{\lnot\varphi\}$ maximal konsistent
+  - $\Rightarrow \exists\Delta^+ \supseteq\Delta$ maximal konsistent mit Konkretisierung
+  - $\Rightarrow \Delta^+$ erfüllbar
+  - $\Rightarrow \Delta$ erfüllbar
+  - $\Rightarrow \Gamma\cup\{\lnot\varphi\}$ erfüllbar
+  - $\Leftrightarrow \Gamma\cup\{\lnot\varphi\}$ 
+
+> Definition
+>
+> Eine Menge $\Delta$ von Formeln hat Konkretisierungen, wenn für alle $\exists x\varphi\in\Delta$ ein variablenloser Term $t$ existiert mit $\varphi[x:=t]\in\Delta$.
+
+> Satz
+>
+> Sei $\Delta$ eine maximal konsistente Menge von $\sum$-Formeln. Dann existiert eine Signatur $\sum^+ \supseteq\sum$ und eine maximal konsistente Menge von $\sum^+$-Formeln mit Konkretisierungen, so dass $\Delta\subseteq\Delta^+$.
+
+Beweis: Wir konstruieren induktiv Signaturen $\sum_n$, maximal konsistente Menge von $\sum_n$-Formeln $\Delta_n$ und konsistente Mengen von $\sum_{n+1}$-Formeln $\Delta′_{n+1}$ mit
+- $\sum =\sum_0 \subseteq\sum_1 \subseteq\sum_2...$ und
+- $\Delta = \Delta_0 \subseteq \Delta′_1 \subseteq\Delta_1 \subseteq\Delta′_2...$
+und setzen dann
+- $\sum^+ =\bigcup_{n\geq 0} \sum_n$ und $\Delta^+ = \bigcup_{n\geq 0} \Delta_n$
+
+1. IA: $\sum_0 := \sum$ , $\Delta_0:=\Delta$
+2. IV: Sei $n\geq 0$ und $\Delta_n$ maximal konsistente Menge von $\sum_n$-Formeln. $\psi=\exists x\varphi$, ein „neues“ Konstantensymbol $c_{\psi}$
+3. IS: $\sum_{n+1}$: alle Symbole aus $\sum_n$ und, für jede Formel $\psi\in\Delta_n$ der Form $\Delta′_{n+1}:= \Delta_n\cup\{\varphi[x:=c_{\psi}]|\psi=\exists x\varphi\in\Delta_n\}$
+    - ohne Beweis: $\Delta′_{n+1}$ ist konsistent
+    - Idee: Ist $\varphi$ $\sum_n$-Formel mit $\Delta′_{n+1}\vdash\varphi$, so gilt $\Delta_n\vdash\varphi$.
+    - Konsistenz von $\Delta′_{n+1}$ folgt mit $\varphi=\bot$
+    - Analog zum Satz aus Vorlesung 4 existiert $\Delta_{n+1}\supseteq \Delta'_{n+1}$ maximal konsistent
+- Damit ist die Konstruktion der Signaturen $\sum_n$ und der maximal konsistenten Mengen $\Delta_n$  von $\sum_n$-Formeln abgeschlossen.
+- noch z.z.: $\Delta^+$ hat Konkretisierungen und ist maximal konsistent
+  - $\Delta^+$ hat Konkretisierungen: Sei $\psi=\exists x\varphi\in\Delta^+$
+    - $\Rightarrow$ es gibt $n\geq 0$ mit $\psi\in\Delta_n$
+    - $\Rightarrow \varphi[x:=c_{\psi}]\in\Delta′_{n+1}\subseteq \Delta_{n+1}\subseteq\Delta^+$.
+  - Konsistenz: (indirekt) angenommen, $\Delta^+\vdash\bot$
+    - Da jede Deduktion endlich ist, existiert $\Gamma\subseteq\Delta^+$ endlich mit $\Gamma\vdash\bot$.
+    - $\Rightarrow$ es gibt $n\geq 0$ mit $\Gamma\subseteq\Delta_n$
+    - $\Rightarrow \Delta_n\vdash\bot$ - im Widerspruch zur Konsistenz von $\Delta_n$.
+  - maximale Konsistenz: (indirekt) angenommen, $\Delta^+$ ist nicht maximal konsistent
+    - $\Rightarrow$ es gibt $\Gamma\not\subseteq\Delta^+$ konsistent
+    - $\Rightarrow$ es gibt $\varphi\in\Gamma\backslash\Delta^+$
+    - $\Rightarrow$ $\Delta^+\cup\{\varphi\}\subseteq\Gamma$ konsistent
+    - $\varphi$ ist $\sum^+$-Formel $\Rightarrow$ es gibt $n\geq 0$, so dass $\varphi$ eine $\sum_n$-Formel ist.
+    - $\Delta_n$ maximal konsistente Menge von $\sum_n$-Formeln
+    - $\Rightarrow$ $\varphi\in\Delta_n\subseteq\Delta^+$ oder $\lnot\varphi\in\Delta_n\subseteq\Delta^+$
+    - $\Rightarrow$ $\lnot\varphi\in\Delta^+\subseteq\Gamma$
+    - Also $\varphi,\lnot\varphi\in\Gamma$, im Widerspruch zur Konsistenz von $\Gamma$.
+
+> Satz
+> 
+> Sei $\Delta^+$ maximal konsistente Menge von $\sum^+$-Formeln mit Konkretisierungen. Dann ist $\Delta^+$ erfüllbar.
+
+Beweisidee: Sei $T$ die Menge der variablenlosen $\sum^+$-Terme. Auf $T$ definieren wir eine Äquivalenzrelation $∼$ durch $s∼t\Leftrightarrow \Delta^+\vdash(s=t)\Leftrightarrow (s=t)\in\Delta^+$
+Sei $A$ die folgende $\sum^+$-Struktur:
+- $U_A:=T/∼$ ist die Menge der $∼$-Äquivalenzklassen
+- $R^A=\{([t_1],...,[t_k])|t_1 ,...,t_k\in T,R(t_1,...,t_k)\in\Delta^+\}$ für alle Relationssymbole R aus $\sum^+$
+- $f^A([t_1],...,[t_k]) = [f(t_1,...,t_k)]$ für alle $t_1,...,t_k\in T$ und alle Funktionssymbole $f$ aus $\sum^+$ (Bemerkung: dies ist wohldefiniert)
+Dann gilt tatsächlich $A\Vdash\Delta^+$.
+
+> Satz: Vollständigkeitssatz der Prädikatenlogik
+> 
+> Sei $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\Vdash\varphi \Rightarrow \Gamma\vdash\varphi$.
+> Insbesondere ist jede allgemeingültige Formel ein Theorem.
+
+Beweis:indirekt
+- $\Gamma\not\vdash\varphi$
+- $\Gamma\cup\{\lnot\varphi\}$ konsistent 
+- $\Gamma\cup\{\lnot\varphi\}$ erfüllbar
+- $\exists\Delta\supseteq\Gamma\cup\{\lnot\varphi\}$ maximal konsistent 
+- $\exists\Delta^+\supseteq\Delta$ maximal konsistent mit Konkretisierungen
+- $\Delta^+$ erfüllbar
+- $\Delta$ erfüllbar
+- $\Gamma\not\Vdash\varphi$ 
+
+Bemerkung
+- Dieser Satz ist (im wesentlichen) der berühmte Gödelsche Vollständigkeitssatz von 1930.
+- Der obige Beweis wurde von Leon Henkin 1949 veröffentlicht.
+
+Wir haben gleichzeitig gezeigt:
+> Satz
+> 
+> Sei $\Gamma$ höchstens abzählbar unendliche und konsistente Menge von Formeln. Dann hat $\Gamma$ ein höchstens abzählbar unendliches Modell.
+
+Beweis: $\Gamma$ konsistent heißt $\Gamma\not\vdash\bot$. Obiger Beweis gibt ein Modell $A$ von $\Gamma\cup\{\lnot\bot\}$ an. Wir zeigen, dass diese Struktur $A$ höchstens abzählbar unendlich ist:
+- Sei $\sum$ Signatur der Relations- und Funktionssymbole aus $\Gamma$.
+- $|\Gamma|\leq \mathbb{N}_0 \Rightarrow |\sum|\leq \mathbb{N}_0$
+- $\Rightarrow |\sum_n|\leq \mathbb{N}_0$ und $|\Delta_n|\leq \mathbb{N}_0$ für alle $n\geq 0$
+- $\Rightarrow |\sum^+|,|\Delta^+| \leq\mathbb{N}_0$
+- $\Rightarrow |T| \leq\mathbb{N}_0$
+- $\Rightarrow A$ hat $\leq\mathbb{N}_0$ viele Elemente
+- $\Rightarrow \Gamma\cup\{\lnot\bot\}$ hat ein höchstens abzählbar unendliches Modell
+- $\Rightarrow \Gamma$ hat ein höchstens abzählbar unendliches Modell

@@ -1964,7 +1964,7 @@ Beweis: $\Gamma$ konsistent heißt $\Gamma\not\vdash\bot$. Obiger Beweis gibt ei
 ## Vollständigkeit und Korrektheit für die Prädikatenlogik
 > Satz
 > 
-> Seien $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\vfash\varphi\Leftrightarrow \Gamma\Vdash\varphi$.
+> Seien $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\vdash\varphi\Leftrightarrow \Gamma\Vdash\varphi$.
 > Insbesondere ist eine $\sum$-Formel genau dann allgemeingültig, wenn sie ein Theorem ist.
 
 Beweis: Folgt unmittelbar aus Korrektheitssatz und Vollständigkeitssatz.
@@ -2005,7 +2005,7 @@ Beweis: für $n\in\mathbb{N}$ setze $\varphi_n=\exists x_1 \exists x_2 ...\exist
 - $\Rightarrow$ A hat $\geq n$ Elemente (für alle $n\in\mathbb{N}$)
 
 ### Folgerung 2: Löwenheim-Skolem
-> Frage: Gibt es eine Menge $\Gamma$ von $\sum$-Formeln, so dass für alle Strukturen $A$ gilt: $A\Vdash\Gamma \Leftrightarrow A\congruent (\mathbb{R},+,*, 0 , 1 )$?
+> Frage: Gibt es eine Menge $\Gamma$ von $\sum$-Formeln, so dass für alle Strukturen $A$ gilt: $A\Vdash\Gamma \Leftrightarrow A\cong (\mathbb{R},+,*, 0 , 1 )$?
 
 > Satz von Löwenheim-Skolem
 > 
@@ -2020,7 +2020,7 @@ Die Frage auf der vorherigen Folie muß also verneint werden:
 - angenommen, $\Gamma$ wäre eine solche Menge
 - $\Rightarrow |\Gamma|\leq \mathbb{N}_0$
 - $\Rightarrow \Gamma$ hat ein höchstens abzählbar unendliches Modell $A$
-- $\Rightarrow A\not\congruent (\mathbb{R},+,*, 0 , 1 )$
+- $\Rightarrow A\not\cong (\mathbb{R},+,*, 0 , 1 )$
 
 
 ### Folgerung 3: Semi-Entscheidbarkeit
@@ -2086,7 +2086,7 @@ Beweis: per Induktion über $n\geq 0$.
   - und damit $(f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B), f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) \in R^B$
   - wegen $B\Vdash\psi_I$.
 - IS: Seien $n>0$ und $1\leq i_1 ,i_2 ,...,i_n\leq k$.
-  - Mit $u=u_{i2} u_{i3} ...u_{in}$ und $v=v_{i2} v_{i3} ...v_{in}$ gilt nach IV $(f_u^B(e^B),f_v^B(e^B))\in R^B$. Wegen $B\Vdash\psi_I$ folgt $f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B), f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) = (f_{u_{i1}}^B (f_u^B(e^B)),f_{v_{i1}^B (f_v^B(e^B)))\in RB$.
+  - Mit $u=u_{i2} u_{i3} ...u_{in}$ und $v=v_{i2} v_{i3} ...v_{in}$ gilt nach IV $(f_u^B(e^B),f_v^B(e^B))\in R^B$. Wegen $B\Vdash\psi_I$ folgt $f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B), f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) = (f_{u_{i1}}^B (f_u^B(e^B)),f_{v_{i1}}^B (f_v^B(e^B)))\in RB$.
 
 > Lemma
 > 
@@ -2133,3 +2133,99 @@ einer natürlichen Zahl $c$.
 Bemerkung: Es gibt $\sum$-Formeln
 - $mod(x_1,x_2 ,y)$ mit $N\Vdash_{\alpha} mod \Leftrightarrow \alpha (x_1) mod\alpha (x_2) =\alpha (y)$.
 - $γ(x_1 ,x_2 ,x_3 ,y)$ mit $N\Vdash_{\alpha} γ\Leftrightarrow \alpha(x_1) mod(1+\alpha(x_2)*(\alpha (x3)+1)) =\alpha (y)$.
+
+> Satz
+>
+> Sei $A$ eine Struktur, so dass $Th(A)$ semi-entscheidbar ist. Dann ist $Th(A)$ entscheidbar.
+
+> Korollar
+> Die Menge $TH(N)$ der Aussagen $\varphi$ mit $N\Vdash\varphi$ ist nicht semi-entscheidbar.
+
+> Korollar (1. Gödelscher Unvollständigkeitssatz)
+> 
+> Sei $Gamma$ eine semi-entscheidbare Menge von Sätzen mit $N\Vdash\gamma$ für alle $\gamma\in\Gamma$. Dann existiert ein Satz $\varphi$ mit $\Gamma\not\vdash\varphi$ und $\Gamma\not\vdash\lnot\varphi$ (d.h. "$\Gamma$ ist nicht vollständig").
+
+## 2. Semi Entscheidungsverfahren für allgemeingültige Formeln
+bekanntes Verfahren mittels natürlichem Schließen: Suche hypothesenlose Deduktion mit Konklusion $\psi$.
+
+Jetzt alternatives Verfahren, das auf den Endlichkeitssatz der Aussagenlogik zurückgreift:
+- Berechne aus $\sum$-Formel $\psi$ eine Menge E von aussagenlogischen Formeln mit $E$ unerfüllbar $\Leftrightarrow\lnot\psi$ unerfüllbar $\Leftrightarrow\psi$ allgemeingültig
+- Suche endliche unerfüllbare Teilmenge $E'$ von $E$
+
+Kern des Verfahrens ist es also, aus $\sum$-Formel $\varphi$ eine Menge $E$ aussagenlogischer Formeln zu berechnen mit $\varphi$ unerfüllbar $\Leftrightarrow$ E unerfüllbar.
+
+Hierzu werden wir die Formel $\varphi$ zunächst in zwei Schritten (Gleichungsfreiheit und Skolem-Form) vereinfachen, wobei die Formel erfüllbar bzw unerfüllbar bleiben muss.
+
+> Definition
+> 
+> Zwei $\sum$-Formeln $\varphi$ und $\psi$ heißen erfüllbarkeitsäquivalent, wenn gilt: $\varphi$ ist erfüllbar $\Leftrightarrow\psi$ ist erfüllbar
+
+Unsere Vereinfachungen müssen also erfüllbarkeitsäquivalente Formeln liefern.
+
+### Elimination von Gleichungen
+> Definition
+> 
+> Eine $\sum$-Formel ist gleichungsfrei, wenn sie keine Teilformel der Form $s=t$ enthält. 
+
+Ziel: aus einer $\sum$ Formel $\varphi$ soll eine erfüllbarkeitsäquivalente gleichungsfreue Formel $\varphi'$ berechnet werden
+
+Bemerkung: Man kann i.a. keine äquivalente gleichungsfreie Formel $\varphi'$ angeben, da es eine solche z.B. zu $\varphi=(\forall x\forall y:x=y)$ nicht gibt.
+
+Idee: Die Formel $\varphi'$ entsteht aus $\varphi$, indem alle Teilformeln der Form $x=y$ durch $GI(x,y)$ ersetzt werden, wobei $GI$ ein neues Relationssymbol ist.
+
+Notationen
+- Sei $\sum=(\Omega,Rel,ar)$ endliche Signatur und $\varphi$ $\sum$-Formel
+- $\sum_{GI} = (\Omega, Rel\bigcup^+\{GI\},ar_{GI})$ mit $ar_{GI}(f)$ für alle $f\in\Omega\cup Rel$ und $ar_{GI}(GI)=2$
+- Für eine $\sum$-Formel $\varphi$ bezeichnet $\varphi_{GI}$ die $\sum_{GI}$-Formel, die aus $\varphi$ entsthet, indem alle Vorkommen und Teilformen $s=t$ durch $GI(s,t)$ ersetzt werden.
+
+Behauptung: $\varphi$ erfüllbar $\Rightarrow \varphi_{GI}$ erfüllbar
+
+Behauptung: es gilt nicht $\varphi$ erfüllbar $\Leftarrow\varphi_{GI}$ erfüllbar
+
+> Definition
+>
+> Sei A eine $\sum$-Struktur und $\sim$ eine binäre Relation auf $U_A$. Die Relation $\sim$ heißt Kongruenz auf A, wenn gilt:
+> - $\sim$ ist eine Äquivalentrelation (d.h. reflexiv, transitiv und symmetrisch)
+> - für alle $f\in\Omega$ mit $k=ar(f)$ und alle $a_1,b_1,...,a_k,b_k\in U_A$ gilt $a_1\sim b_1,a_2\sim b_2,...,a_k\sim b_k\Rightarrow f^A(a_1,...,a_k)\sim f^A(b_1,...,b_k)$
+> - für alle $R\in Rel$ mit $k=ar(R)$ und alle $a_1,b_1,...,a_k,b_k\in U_A$ gilt $a_1\sim b_1,...,a_k\sim b_k,(a_1,...,a_k)\in R^A\Rightarrow (b_1,...,b_k)\in R^A$.
+
+> Definition
+>
+> Sei $A$ eine $\sum$-Struktur und $\sim$ eine Kongruenz auf A.
+> 1. Für $a\in U_A$ sei $[a]=\{b\in U_A|a\sim b\}$ die Äquivalenzklasse von a bzgl $\sim$.
+> 2. Dann definieren wir den Quotienten $B=A\backslash \sim$ von $A$ bzgl $\sim$ wie folgt:
+>   - $U_B=U_A\backslash\sim = \{[a]|a\in U_A\}$
+>   - Für jedes $f\in\Omega$ mit $ar(f)=k$ und alle $a_1,...,a_k\in\U_A$ setzten wir $f^B([a_1],...,[a_k])=[f^A(a_1,...,a_k)]$
+>   - für jede $R\in Rel$ mit $ar(R)=k$ setzten wir $R^B=\{([a_1],[a_2],...,[a_k])|(a_1,...,a_k)\in R^A\}$
+> 3. Sei $p:Var\rightarrow U_A$ Variableninterpretation. Dann definieren die Variableninterpretation $p\backslash\sim: Var\rightarrowU_B:x\rightarrow[p(x)]$.
+
+Veranschaulichung: ![](Assets/Logik-variableninterpretation-beispiel.png)
+
+> Lemma 1
+> 
+> Sei A Struktur, $p:Var\rightarrow U_A$ Variableninterpretation und $\sim$ Kongruenz. Seien weiter $B=A\backslash\sim$ und $p_B=p\backslash\sim$. Dann gilt für jeden Term $:[p(t)]=p_B(t)$
+
+Beweis: per Induktion über den Aufbau des Terms t
+
+> Lemma 2
+>
+> Sei $A$ $\sum$-Struktur, $\sim$ Kongruenz und $B=A\backslash\sim$. Dann gilt für alle $R\in Rel$ mit $k=ar(R)$ und alle $c_1,...,c_k\in U_A$: $([c_1],[c_2],...,[c_k])\in R^B\Leftrightarrow (c_1,c_2,...,c_k)\in R^A$
+
+> Satz
+> 
+> Seien $A$ $\sum_{GI}$-Struktur und $p:Var\rightarrow U_A$ Variableninterpretation, so dass $\sim=GI^A$ Kongruenz auf A ist. 
+> Seien $B=A\backslash\sim$ und $p_B=p\backslash\sim$.
+> Dann gilt für alle $\sum$-Formeln $\varphi: A\Vdash_p \varphi_{GI} \Leftrightarrow B\Vdash_{p_B} \varphi$
+
+Beweis: per Induktion über den Aufbau der Formel $\varphi$
+
+> Lemma
+> 
+> Aus einer endlichen Signatur $\sum$ kann ein gleichungsfreuer Horn-Satz $Kong_{\sum}$ über $\sum_{GI}$ berechnet werden, so dass für alle $\sum_{GI}$-Strukturen $A$ gilt: $A\Vdash Kong_{\sum} \Leftrightarrow GI^A$ ist eine Kongruenz
+
+> Satz
+> 
+> Aus einer endlichen Signatur $\sum$ und einer $\sum$-Formel $\varphi$ kann eine gleichungsfreie und erfüllbarkeitsäquivalente $\sum_{GI}$-Formel $\varphi'$ berechnet werden. Ist $\varphi$ Horn Formel, so ist auch $\varphi'$ Horn Formel.
+
+Beweis: Setzte $\varphi' =\varphi_{GI}\wedge Kong_{\sum}$ und zeige: $\varphi$ erfüllbar $\Leftrightarrow \varphi'$ erfüllbar.
+

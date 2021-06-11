@@ -1960,3 +1960,176 @@ Beweis: $\Gamma$ konsistent heißt $\Gamma\not\vdash\bot$. Obiger Beweis gibt ei
 - $\Rightarrow A$ hat $\leq\mathbb{N}_0$ viele Elemente
 - $\Rightarrow \Gamma\cup\{\lnot\bot\}$ hat ein höchstens abzählbar unendliches Modell
 - $\Rightarrow \Gamma$ hat ein höchstens abzählbar unendliches Modell
+
+## Vollständigkeit und Korrektheit für die Prädikatenlogik
+> Satz
+> 
+> Seien $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\vfash\varphi\Leftrightarrow \Gamma\Vdash\varphi$.
+> Insbesondere ist eine $\sum$-Formel genau dann allgemeingültig, wenn sie ein Theorem ist.
+
+Beweis: Folgt unmittelbar aus Korrektheitssatz und Vollständigkeitssatz.
+
+### Folgerung 1: Kompaktheit
+> Satz
+> 
+> Seien $\Gamma$ eine u.U. unendliche Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel mit $\Gamma\Vdash\varphi$. Dann existiert $\Gamma'\subseteq\Gamma$ endlich mit $\Gamma'\Vdash\varphi$.
+
+Beweis: $\Gamma\Vdash\varphi$
+- $\Gamma\vdash\varphi$ (nach dem Vollständigkeitssatz)
+- es gibt Deduktion von $\varphi$ mit Hypothesen $\gamma_1,...,\gamma_n\in\Gamma$
+- $\Gamma′=\{\gamma_1,...,\gamma_n\}\subseteq\Gamma$ endlich mit $\Gamma′\vdash\varphi$
+- $\Gamma′\vdash\varphi$ (nach dem Korrektheitssatz).
+
+> Folgerung (Kompaktheits- oder Endlichkeitssatz)
+> 
+> Sei $\Gamma$ eine u.U. unendliche Menge von $\sum$-Formeln. Dann gilt $\Gamma$ erfüllbar $\Leftrightarrow \forall\Gamma′\subseteq\Gamma$ endlich: $\Gamma′$ erfüllbar
+
+Beweis:
+- $\Gamma$ unerfüllbar
+- $\Leftrightarrow \Gamma\cup\{\lnot\bot\}$ unerfüllbar
+- $\Leftrightarrow \Gamma\Vdash\bot$
+- $\Leftrightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′\Vdash\bot$
+- $\Leftrightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′\cup\{\lnot\bot\}$ unerfüllbar
+- $\Leftrightarrow$ es gibt $\Gamma′\subseteq\Gamma$ endlich: $\Gamma′$ unerfüllbar
+
+> Satz
+> 
+> Sei $\Delta$ eine u.U. unendliche Menge von $\sum$-Formeln, so dass für jedes $n\in\mathbb{N}$ eine endliche Struktur $A_n$ mit $A_\Vdash\Delta$ existiert, die wenigstens $n$ Elemente hat.
+> Dann existiert eine unendliche Struktur $A$ mit $A\Vdash\Delta$.
+
+Beweis: für $n\in\mathbb{N}$ setze $\varphi_n=\exists x_1 \exists x_2 ...\exists x_n \bigwedge_{1\leq i< j \leq n} x_i \not= x_j$
+- und $\Gamma =\Delta\cup\{\varphi_n | n\geq 0\}$.
+- Für $\Gamma′\subseteq\Gamma$ endlich existiert $n\in\mathbb{N}$ mit $\varphi_m\not\in\Gamma′$ für alle $m\geq n$ 
+- $\Rightarrow A_n\Vdash\Gamma′$, d.h. jede endliche Teilmenge von $\Gamma$ ist erfüllbar.
+- $\Rightarrow$ es gibt Struktur $A$ mit $A\Vdash\Gamma$
+- $\Rightarrow$ A hat $\geq n$ Elemente (für alle $n\in\mathbb{N}$)
+
+### Folgerung 2: Löwenheim-Skolem
+> Frage: Gibt es eine Menge $\Gamma$ von $\sum$-Formeln, so dass für alle Strukturen $A$ gilt: $A\Vdash\Gamma \Leftrightarrow A\congruent (\mathbb{R},+,*, 0 , 1 )$?
+
+> Satz von Löwenheim-Skolem
+> 
+> Sei $\Gamma$ erfüllbare und höchstens abzählbar unendliche Menge von $\sum$-Formeln. Dann existiert ein höchstens abzählbar unendliches Modell von $\Gamma$.
+
+Beweis:
+- $Gamma$ erfüllbar $\Rightarrow \Gamma\not\Vdash\bot$
+- $\Rightarrow$ $\Gamma\not\vdash\bot$, d.h. $\Gamma$ konsistent
+- $\Rightarrow \Gamma$ hat ein höchstens abzählbar unendliches Modell.
+
+Die Frage auf der vorherigen Folie muß also verneint werden:
+- angenommen, $\Gamma$ wäre eine solche Menge
+- $\Rightarrow |\Gamma|\leq \mathbb{N}_0$
+- $\Rightarrow \Gamma$ hat ein höchstens abzählbar unendliches Modell $A$
+- $\Rightarrow A\not\congruent (\mathbb{R},+,*, 0 , 1 )$
+
+
+### Folgerung 3: Semi-Entscheidbarkeit
+> Satz
+> 
+> Die Menge der allgemeingültigen $\sum$-Formeln ist semi-entscheidbar.
+
+Beweis:Sei$\varphi$ $\sum$-Formel. Dann gilt
+- $\varphi$ allgemeingültig
+- $\Leftrightarrow \varphi$ Theorem
+- $\Leftrightarrow$ Es gibt hypothesenlose Deduktion mit Konklusion $\varphi$ 
+
+Ein Semi-Entscheidungsalgorithmus kann also folgendermaßen vorgehen: 
+Teste für jede Zeichenkette $w$ nacheinander, ob sie hypothesenlose Deduktion mit Konklusion $\varphi$ ist. Wenn ja, so gib aus „$\varphi$ ist allgemeingültig“. Ansonsten gehe zur nächsten Zeichenkette über.
+
+### Der Satz von Church
+Jetzt zeigen wir, daß dieses Ergebnis nicht verbessert werden kann: Die Menge der allgemeingültigen $\sum$-Formeln ist nicht entscheidbar.
+Wegen $\varphi$ allgemeingültig $\Leftrightarrow\lnot\varphi$ unerfüllbar reicht es zu zeigen, dass die Menge der erfüllbaren Sätze nicht entscheidbar ist.
+Genauer zeigen wir dies sogar für „Horn-Formeln“:
+
+> Definition
+>
+> Eine Horn-Formel ist eine Konjunktion von $\sum$-Formeln der Form 
+> $\forall x_1 \forall x_2 ...\forall x_n((\lnot\bot \wedge\alpha_1\wedge\alpha_2\wedge...\wedge\alpha_m)\rightarrow\beta)$,
+> wobei $\alpha_1,...,\alpha_m$ und $\beta$ atomare $\sum$-Formeln sind.
+
+Unser Beweis reduziert die unentscheidbare Menge PCP auf die Menge der erfüllbaren Horn-Formeln.
+
+Im folgenden sei also $I=((u_1,v_1),(u_2,v_2),...,(u_k,v_k))$ ein Korrespondenzsystem und $A$ das zugrundeliegende Alphabet. 
+Hieraus berechnen wir eine Horn-Formel $\varphi_I$, die genau dann erfüllbar ist, wenn $I$ keine Lösung hat.
+Wir betrachten die Signatur $\sum= (\Omega,Rel,ar)$ mit 
+- $\Omega=\{e\}\cup\{f_a|a\in A\}$ mit $ar(e) =0$ und $ar(f_a) =1$ für alle $a\in A$.
+- $Rel=\{R\}$ mit $ar(R)=2$.
+
+Zur Abkürzung schreiben wir $f_{a_1 a_2 ...a_n} (x)$ für $f_{a_1}(f_{a_2}(...(f_{a_n}(x))...))$ für alle $a_1,a_2,...,a_n\in A$ und $n\geq 0$ (insbes. steht $f_{\epsilon}(x)$ für $x$).
+
+Zunächst betrachten wir die folgende Horn-Formel $\psi_I$:
+- $\wedge \bigwedge_{1\leq j \leq k}^{R(e,e)} \forall x,y(R(x,y)\rightarrow R(f_{u_j}(x),f_{v_j}(y)))$
+- $\wedge \bigwedge_{a\in A} \forall x(e=f_a(x)\rightarrow \bot)$
+
+Beispiel: Betrachte die $\sum$-Struktur $A$ mit Universum $U_A=A^*$
+- $e^A=\epsilon$
+- $f_a^A(u) =au$
+- $R^A=\{(u_{i1} u_{i2} ...u_{in},v_{i1} v_{i2} ...v_{in})|n\geq 0 , 1\geq i_1,i_2,...,i_n\geq k\}$
+- Für $u,v\in A^*$ gilt $f_u^A(v) =uv$.
+- Dann gilt $A\Vdash \psi_I$.
+
+> Lemma
+> 
+> Angenommen, das Korrespondenzsystem $I$ hat keine Lösung. Dann ist die Horn-Formel $\varphi_I=\psi_I \wedge \forall x(R(x,x)\rightarrow x=e)$ erfüllbar.
+
+Beweis: Sei $A$ die obige Struktur mit $A\Vdash\psi_I$.
+- Um $A\Vdash\forall x(R(x,x)\rightarrow x=e)$ zu zeigen, sei $w\in U_A$ beliebig mit $(w,w)\in R^A$.
+- Die Definition von $R^A$ sichert die Existenz von $n\geq 0$ und $1\leq i_1,i_2,...,i_n\leq k$ mit $u_{i1} u_{i2}...u_{in}=w=v_{i1} v_{i2} ...v_{in}$.
+- Da $I$ keine Lösung hat, folgt $n=0$ und damit $w=\epsilon$.
+
+> Lemma
+> 
+> Sei $B$ Struktur mit $B\Vdash\psi_I$. Dann gilt $(f_{u_{i_1} u_{i_2} ...u_{i_n}}^B (e^B),f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B))\in R^B$ für alle $n\geq 0, 1\leq i_1,i_2,...,i_n \leq k$.
+
+Beweis: per Induktion über $n\geq 0$.
+- IA: für $n=0$ gelten $f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B) =e^B$ und $f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) =e^B$ 
+  - und damit $(f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B), f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) \in R^B$
+  - wegen $B\Vdash\psi_I$.
+- IS: Seien $n>0$ und $1\leq i_1 ,i_2 ,...,i_n\leq k$.
+  - Mit $u=u_{i2} u_{i3} ...u_{in}$ und $v=v_{i2} v_{i3} ...v_{in}$ gilt nach IV $(f_u^B(e^B),f_v^B(e^B))\in R^B$. Wegen $B\Vdash\psi_I$ folgt $f_{u_{i_1} u_{i_2} ...u_{i_n}}^B(e^B), f_{v_{i_1} v_{i_2}...v_{i_n}}^B(e^B) = (f_{u_{i1}}^B (f_u^B(e^B)),f_{v_{i1}^B (f_v^B(e^B)))\in RB$.
+
+> Lemma
+> 
+> Angenommen, $(i_1,...,i_n)$ ist eine Lösung von $I$. Dann ist die $\sum$-Formel $\varphi_I$ unerfüllbar.
+
+> Satz
+>
+> Die Menge der unerfüllbaren Horn-Formeln ist nicht entscheidbar.
+
+Beweis: Die Abbildung $I\rightarrow\varphi_I$ ist berechenbar.
+
+Nach den vorherigen Lemmata ist sie eine Reduktion von PCP auf die Menge der unerfüllbaren Horn-Formeln. Da PCP unentscheidbar ist (vgl. Automaten, Sprachen und Komplexität), ist die Menge der unerfüllbaren Horn-Formeln unentscheidbar.
+
+> Folgerung (Church 1936)
+> 
+> Die Menge der allgemeingültigen $\sum$-Formeln ist nicht entscheidbar.
+
+Beweis: Eine $\sum$-Formel $\varphi$ ist genau dann unerfüllbar, wenn $\lnot\varphi$ allgemeingültig ist. Also ist $\varphi\rightarrow\lnot\varphi$ eine Reduktion der unentscheidbaren Menge der unerfüllbaren $\sum$-Formeln auf die Menge der allgemeingültigen $\sum$-Formeln, die damit auch unentscheidbar ist.
+
+Allgemeingültige $\sum$-Formeln gelten in allen Strukturen. Was passiert, wenn wir uns nur auf „interessante“ StrukturenAeinschränken (z.B. auf eine konkrete), d.h. wenn wir die Theorie $Th(A)$ von $A$ betrachten?
+
+
+## Theorie der natürlichen Zahlen
+> Definition
+> 
+> Sei $A$ eine Struktur. Dann ist $Th(A)$ die Menge der prädikatenlogischen $\sum$-Formeln $\varphi$ mit $A\Vdash\varphi$. Diese Menge heißt die(elementare) Theorie von $A$.
+
+Beispiel: Sei $N= (N,\leq,+,*, 0 , 1 )$. Dann gelten
+- $(\forall x\forall y:x+y=y+x)\in Th(N)$
+- $(\forall x\exists y:x+y= 0 )\not\in Th(N)$
+- aber $(\forall x\exists y:x+y= 0 )\in Th((Z,+, 0 ))$.
+
+> Lemma
+>
+> Die Menge $Th(N)$ aller Sätze $\varphi$ mit $N\Vdash\varphi$ ist nicht entscheidbar.
+
+> Zahlentheoretisches Lemma
+>
+> Für alle $n\in N,x_0,x_1,...,x_n\in N$ existieren $c,d\in N$, so dass für alle $0\leq i\leq n$ gilt: $x_i=c\ mod ( 1 +d*(i+ 1 ))$.
+
+Beweis:Setze $m= max\{n,x_0,x_1 ,...,x_n\}$ und $d=2*3*4...(m+1)$. Dann sind die Zahlen $1+d, 1+d*2,..., 1 +d*(n+1)$ paarweise teilerfremd. Nach dem Chinesischen Restsatz folgt die Existenz
+einer natürlichen Zahl $c$.
+
+Bemerkung: Es gibt $\sum$-Formeln
+- $mod(x_1,x_2 ,y)$ mit $N\Vdash_{\alpha} mod \Leftrightarrow \alpha (x_1) mod\alpha (x_2) =\alpha (y)$.
+- $γ(x_1 ,x_2 ,x_3 ,y)$ mit $N\Vdash_{\alpha} γ\Leftrightarrow \alpha(x_1) mod(1+\alpha(x_2)*(\alpha (x3)+1)) =\alpha (y)$.

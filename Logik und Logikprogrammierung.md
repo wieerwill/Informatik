@@ -2229,3 +2229,140 @@ Beweis: per Induktion über den Aufbau der Formel $\varphi$
 
 Beweis: Setzte $\varphi' =\varphi_{GI}\wedge Kong_{\sum}$ und zeige: $\varphi$ erfüllbar $\Leftrightarrow \varphi'$ erfüllbar.
 
+## Skolemform
+Ziel: Jede $\sum$-Formel $\varphi$ ist erfüllbarkeitsäquivalent zu einer $\sum$′-Formel $\varphi′=\forall x_1\forall x_2 ...\forall x_k \psi$, wobei $\psi$ kein Quantoren enthält, $\varphi′$ heißt in Skolemform.
+
+Bemerkung: Betrachte die Formel $\exists x\exists y E(x,y)$. Es gibt keine Formel in Skolemform, die hierzu äquivalent ist.
+
+2 Schritte:
+1. Quantoren nach vorne (d.h. Pränexform)
+2. Existenzquantoren eliminieren
+
+> Definition
+> 
+> Zwei $\sum$-Formeln $\varphi$ und $\psi$ sind äquivalent (kurz:$\varphi\equiv\psi$), wenn für alle $\sum$-Strukturen $A$ und alle Variableninterpretationen $ρ$ gilt: $A\Vdash_ρ\psi \Lefrightarrow $\Leftrightarrow$ A\Vdash_ρ\psi$.
+
+> Lemma
+> 
+> Seien $Q\in\{\exists ,\forall\}$ und $$\oplus $\in\{\wedge,\vee,\rightarrow,\leftarrow\}$. Sei $\varphi= (Qx \alpha)\oplus\beta$ und sei $y$ eine Variable, die weder in $\alpha$ noch in $\beta$ vorkommt. Dann gilt
+> $\varphi \equiv \begin{cases} Qy(\alpha[x:=y]\oplus\beta) \text{ falls } \oplus\in\{\wedge,\vee,\leftarrow\}\\ \forall y(\alpha[x:=y]\rightarrow\beta) \text{ falls } \oplus=\rightarrow,Q=\exists \\ \exists y(\alpha[x:=y]\rightarrow\beta) \text{ falls }\oplus=\rightarrow,Q=\forall\end{cases}$
+
+Notwendigkeit der Bedingung „$y$ kommt weder in $\alpha$ noch in $\beta$ vor“:
+- $(\exists x:f(x) 6 =f(y))\wedge\beta \not\equiv\exists y: (f(y) 6 =f(y)\wedge\beta)$
+- $(\exists x:\lnot P(x))\wedge P(y)\not\equiv \exists y: (\lnot P(y) \wedge P(y))$
+
+> Lemma
+>
+> Seien $Q\in\{\exists,\forall\}$ und $\oplus\in\{\wedge,\vee,\rightarrow,\leftarrow\}$. Sei $\varphi= (Qx\alpha)\oplus\beta$ und sei $y$ eine Variable, die weder in $\alpha$ noch in $\beta$ vorkommt. Dann gilt $\varphi\equiv\begin{cases} Qy(\alpha[x:=y]\oplus\beta) \text{ falls }\oplus\in\{\wedge,\vee,\leftarrow\} \\ \forall y(\alpha[x:=y]\rightarrow\beta) \text{ falls }\oplus=\rightarrow,Q=\exists \\ \exists y(\alpha[x:=y]\rightarrow\beta) \text{ falls }\oplus=\rightarrow,Q=\forall \end{cases}$
+
+Beweis: (für den Fall $Q=\exists$ und $\oplus=\wedge$)
+- Seien $A$ $\sum$-Struktur und $\rho$ Variableninterpretation.
+- Für $a\in U_A$ setze $ρ_a:=ρ[y\rightarrow a]$.
+- Dann gilt $ρ_a[x\rightarrow ρ_a(y)](z) =ρ[x\rightarrow a](z)$ für alle $z\not=y$
+
+
+Wir erhalten also
+- $A\vdash_ρ (\exists x\alpha)\wedge\beta$
+- $\Leftrightarrow A\vdash_ρ (\exists x\alpha) $ und $A\vdash_ρ \beta$
+- $\Leftrightarrow$ (es gibt $a\in U_A$ mit $A\vdash_{ρ[x\rightarrow a]}\alpha$) und (es gilt $A\vdash_ρ \beta$)
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit ($A\vdash_{ρ[x\rightarrow a]}\alpha$ und $A\vdash_ρ \beta$)
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit
+  - $A\vdash_{ρ_a[x\rightarrow ρ_a(y)]}\alpha$ (da $y$ in $\alpha$ nicht vorkommt)
+  - $A\vdash_{ρ_a} \beta$ (da $y$ in $\beta$ nicht vorkommt)
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit
+  - $A\vdash_{ρ_a} \alpha[x:=y]$
+  - $A\vdash_{ρ_a} \beta$
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit $A\vdash_{ρ[y\rightarrow a]}\alpha[x:=y]\wedge\beta$
+- $\Leftrightarrow A\vdash_ρ \exists y(\alpha[x:=y]\wedge\beta)$
+
+> Satz
+> 
+> Aus einer endlichen Signatur $\sum$ und einer $\sum$-Formel $\varphi$ kann eine äquivalente $\sum$-Formel $\varphi′=Q_1 x_1 Q_2 x_2 ...Q_k x_k \psi$ (mit $Q_i\in\{\exists,\forall\},\psi$ quantorenfrei und $x_i$ paarweise verschieden) berechnet werden. Eine Formel $\varphi′$ dieser Form heißt Pränexform.
+> Ist $\varphi$ gleichungsfrei, so ist auch $\varphi′$ gleichungsfrei.
+
+Beweis: Der Beweis erfolgt induktiv über den Aufbau von $\varphi$:
+- I.A. $\varphi$ ist atomare Formel: Setze $\varphi′=\varphi$.
+- I.S. 
+  - $\varphi$=$\lnot$ψ: Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Mit $\forall=\exists$ und $\exists=\forall$ setze $\varphi′=Q_1 x_1 Q_2 x_2 ...Q_m x_m\lnot\psi′$.
+  - $\varphi=\exists x\psi$: Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Setze $\varphi′= \begin{cases} \exists x Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ falls }x\not\in\{x_1,x_2,...,x_m\}\\ Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ sonst}\end{cases}$
+  - $\varphi$=$\alpha$$\wedge$$\beta$: Nach I.V. können Formeln in Pränexform $\alpha\equiv Q_1 x_1 Q_2 x_2 ...Q_mx_m \alpha_0; \beta\equiv Q_1′y_1 Q_2′y_2 ...Q_n′y_n \beta_0$ berechnet werden. 
+
+Ziel: Berechnung einer erfüllbarkeitsäquivalenten Formel in Skolemform
+
+Idee:
+1. wandle Formel in Pränexform um
+2. eliminiere $\exists$-Quantoren durch Einführen neuer Funktionssymbole
+
+Konstruktion: Sei $\varphi=\forall x_1\forall x_2...\forall x_m\exists y\psi$ Formel in Pränexform (u.U. enthält $\psi$ weitere Quantoren). Sei $g\not\in\Omega$ ein neues m-stelliges Funktionssymbol.
+Setze $\varphi′=\forall x_1\forall x_2...\forall x_m \psi[y:=g(x_1,...,x_m)]$.
+Offensichtlich hat $\varphi$′einen Existenzquantor weniger als $\varphi$. Außerdem ist $\varphi′$ keine $\sum$-Formel (denn sie verwendet $g\not\in\Omega$), sondern Formel über einer erweiterten Signatur.
+
+> Lemma
+> 
+> Die Formeln $\varphi$ und $\varphi′$ sind erfüllbarkeitsäquivalent.
+
+Beweis: „$\Leftarrow$“ Sei $A′$ Struktur und $ρ′$ Variableninterpretation mit $A′\vdash_{ρ′}\varphi′$. Wir zeigen $A′\vdash_{ρ′}\varphi$. Hierzu seien $a_1,...,a_m\in U_{A′}$ beliebig.
+
+> Satz
+> 
+> Aus einer Formel $\varphi$ kann man eine erfüllbarkeitsäquivalente Formel $\varphi$ in Skolemform berechnen. Ist $\varphi$ gleichungsfrei, so auch $\varphi$.
+
+Beweis: Es kann zu $\varphi$ äquivalente Formel $\varphi_0 =Q_1 x_1 Q_2 x_2 ...Q_ℓx_ℓ \psi$ in Pränexform berechnet werden (mit $n\leq ℓ$ Existenzquantoren). Durch wiederholte Anwendung des vorherigen Lemmas erhält man Formeln $\varphi_1,\varphi_2,...\varphi_n$ mit
+- $\varphi_i$ und $\varphi_{i+1}$ sind erfüllbarkeitsäquivalent
+- $\varphi_{i+1}$ enthält einen Existenzquantor weniger als $\varphi_i$
+- $\varphi_{i+1}$ ist in Pränexform
+- ist $\varphi_i$ gleichungsfrei, so auch $\varphi_{i+1}$
+
+Dann ist $\bar{\varphi}=\varphi_n$ erfüllbarkeitsäquivalente (ggf. gleichungsfreie) Formel in Skolemform.
+
+## Herbrand-Strukturen und Herbrand-Modelle
+Sei $\sum= (\Omega,Rel,ar)$ eine Signatur. Wir nehmen im folgenden an, dass $\Omega$ wenigstens ein Konstantensymbol enthält.
+
+Das Herbrand-Universum $D(\sum)$ ist die Menge aller variablenfreien $\sum$-Terme.
+
+Beispiel: $\Omega =\{b,f\}$ mit $ar(b) =0$ und $ar(f) =1$. Dann gilt $D(\sum) =\{b,f(b),f(f(b)),f(f(f(b))),...\}$
+
+Eine $\sum$-Struktur $A=(UA,(fA)f\in\Omega,(RA)R\in Rel)$ ist eine Herbrand-Struktur, falls folgendes gilt:
+1. $UA=D(\sum)$,
+2. für alle $f\in\Omega$ mit $ar(f)=k$ und alle $t_1,t_2,...,t_k\in D(\sum)$ ist $f^A(t_1,t_2,...,t_k) =f(t_1,t_2,...,t_k)$.
+
+Für jede Herbrand-Struktur $A$, alle Variableninterpretationen $ρ$ und alle variablenfreien Terme $t$ gilt dann $ρ(t) =t$.
+
+Ein Herbrand-Modell von $\varphi$ ist eine Herbrand-Struktur, die gleichzeitig ein Modell von $\varphi$ ist.
+
+> Satz
+>
+> Sei $\varphi$ eine gleichungsfreie Aussage in Skolemform. $\varphi$ ist genau dann erfüllbar, wenn $\varphi$ ein Herbrand-Modell besitzt.
+
+Beweis: 
+- Falls $\varphi$ ein Herbrand-Modell hat, ist $\varphi$ natürlich erfüllbar.
+- Sei nun $\varphi=\forall y_1...\forall y_n\psi$ erfüllbar. Dann existieren eine $\sum$-Struktur $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$ und eine Variableninterpretation $ρ$ mit $A\vdash_ρ \varphi$.
+
+#### Plan des Beweises
+Wir definieren eine Herbrand-Struktur $B=(D(\sum),(f^B)_{f\in\Omega},(R^B)_{R\in Rel})$:
+- Seien $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in D(\sum)$. Um eine Herbrand-Struktur $B$ zu konstruieren setzen wir $f^B(t_1,...,t_k) =f(t_1,...,t_k)$
+- Sei $R\in Rel$ mit $ar(R)=k$ und seien $t_1,...,t_k\in D(\sum)$. Dann setze $(t_1,...,t_k)\in RB:\Leftrightarrow (ρ(t_1),...,ρ(t_k))\in RA$.
+
+Sei $ρ_B:Var \rightarrow D(\sum)$ beliebige Variableninterpretation.
+
+##### Behauptung 1: 
+Ist $\psi$ eine quantoren- und gleichungsfreie Aussage, so gilt $A\vdash_ρ\psi \Leftrightarrow B\vdash_{ρB} \psi$. Diese Behauptung wird induktiv über den Aufbau von $\psi$ gezeigt.
+
+##### Intermezzo
+Behauptung 1 gilt nur für quantorenfreie Aussagen
+
+$\sum = (\Omega,Rel,ar)$ mit $\Omega =\{a\},ar(a) =0$ und $Rel=\{E\},ar(E) =2$.
+Betrachte die Formel $\varphi=\forall x(E(x,x)\wedge E(a,a))$ in Skolemform.
+$A\vdash_ρ \varphi$ mit $U^A=\{a^A,m\}$ und $E^A=\{(m,m),(a^A,a^A)\}$.
+Die konstruierte Herbrand-Struktur $B:U_B=D(\sum) =\{a\}$ und $E^B=\{(a,a)\}$.
+
+Betrachte nun die Formel $\psi=\forall x,y E(x,y)$. Dann gilt $B\vdash_{ρB}\psi$ und $A\not\vdash_ρ \psi$.
+
+Für allgemeine Formeln in Skolemform (also u.U. mit Quantoren) können wir also Behauptung 1 nicht zeigen, sondern höchstens die folgende Abschwächung.
+
+##### Behauptung 2:
+Ist $\psi$ eine gleichungsfreie Aussage in Skolemform, so gilt $A\vdash_ρ \psi \Rightarrow B\vdash_{ρB}\psi$.
+(hieraus folgt dann $B\vdash_{ρB}\varphi$ wegen $A\vdash_ρ \varphi$)
+
+Diese Behauptung wird induktiv über die Anzahl $n$ der Quantoren in $\psi$ bewiesen.
+

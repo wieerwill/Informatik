@@ -2283,7 +2283,7 @@ Wir erhalten also
 Beweis: Der Beweis erfolgt induktiv über den Aufbau von $\varphi$:
 - I.A. $\varphi$ ist atomare Formel: Setze $\varphi′=\varphi$.
 - I.S. 
-  - $\varphi$=$\lnot$ψ: Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Mit $\forall=\exists$ und $\exists=\forall$ setze $\varphi′=Q_1 x_1 Q_2 x_2 ...Q_m x_m\lnot\psi′$.
+  - $\varphi=\lnot\psi$ : Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Mit $\forall=\exists$ und $\exists=\forall$ setze $\varphi′=Q_1 x_1 Q_2 x_2 ...Q_m x_m\lnot\psi′$.
   - $\varphi=\exists x\psi$: Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Setze $\varphi′= \begin{cases} \exists x Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ falls }x\not\in\{x_1,x_2,...,x_m\}\\ Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ sonst}\end{cases}$
   - $\varphi$=$\alpha$$\wedge$$\beta$: Nach I.V. können Formeln in Pränexform $\alpha\equiv Q_1 x_1 Q_2 x_2 ...Q_mx_m \alpha_0; \beta\equiv Q_1′y_1 Q_2′y_2 ...Q_n′y_n \beta_0$ berechnet werden. 
 
@@ -2366,3 +2366,146 @@ Ist $\psi$ eine gleichungsfreie Aussage in Skolemform, so gilt $A\vdash_ρ \psi 
 
 Diese Behauptung wird induktiv über die Anzahl $n$ der Quantoren in $\psi$ bewiesen.
 
+## Die Herbrand-Expansion
+verbleibende Frage: Wie erkennt man, ob eine gleichungsfreie Aussage in Skolemform ein Herbrand-Modell hat?
+
+Beispiel: Seien $\sum=(\{a,f\},\{P,R\},ar)$ und $\varphi=\forall x\forall$ y (P(a,x)\wedge\lnot R(f(y)))$. 
+Jedes Herbrand-Modell A von $\varphi$
+- hat als Universum das Herbrand-Universum $D(\sum)=\{a,f(a),f^2 (a),...\}=\{f^n(a)|n\geq 0\}$
+- erfüllt $f^A(f^n(a))= f^{n+1} (a)$ für alle $n\geq 0$
+  
+Um ein Herbrand-Modell zu konstruieren, müssen (bzw. können) wir für alle Elemente $s,t,u\in D(\sum)$ unabhängig und beliebig wählen, ob $(s,t)\in P^A$ und $u\in R^A$ gilt.
+Wir fassen dies als „aussagenlogische B-Belegung“ B der „aussagenlogischen atomaren Formeln“ $P(s,t)$ bzw. $R(u)$ auf.
+
+Jede solche aussagenlogische B-Belegung $B$ definiert dann eine Herbrand-Struktur $A_B$:
+- $P^{A_B} = \{(s,t)\in D(\sum)^2 |B(P(s,t))= 1\}$
+- $R^{A_B} = \{u\in D(\sum) |B(R(u))= 1\}$
+
+Mit $\varphi=\forall x\forall y(P(a,x)\wedge\lnot R(f(y)))$ gilt dann $A_B \Vdash_ρ \varphi$ 
+- $\Leftrightarrow A_B \Vdash_{ρ[x\rightarrow f^m(a)][y\rightarrow f^n(a)]} P(a,x)\wedge\lnot R(f(y))$ f.a. $m,n\geq 0$
+- $\Leftrightarrow (a,fm(a))\in P^{A_B}$ und $f^{n+1}(a)\not\in R^{A_B}$ f.a. $m,n\geq 0$
+- $\Leftrightarrow B(P(a,f^m(a)))= 1$ und $B(R(f^{n+1} (a)))= 0$ f.a. $m,n\geq 0$
+- $\Leftrightarrow B(P(a,f^m(a))\wedge\lnot R(f^{n+1} (a)))= 1$ f.a. $m,n\geq 0$
+
+Also hat $\varphi$ genau dann ein Herbrand-Modell, wenn es eine erfüllende B-Belegung $B$ der Menge aussagenlogischer Formeln $E(\varphi)=\{P(a,f^m(a))\wedge\lnot R(f^{n+1}(a)) | m,n\geq 0\}$ gibt.
+
+Beispiellösung: Setzt $B(P(s,t))= 1$ und $B(R(s))= 0$ für alle $s,t\in D(\sum)$.
+
+Diese B-Belegung erfüllt $E(\varphi)$ und „erzeugt“ die Herbrand-Struktur $A_B$ mit $P^{A_B}=D(\sum)^2$ und $R^{A_B}=\varnothing$.
+
+Nach obiger Überlegung gilt $A_B\Vdash\varphi$, wir haben also ein Herbrand-Modell von $\varphi$ gefunden.
+
+
+Sei $\varphi=\forall y_1\forall y_2...\forall y_n\psi$ gleichungsfreie Aussage in Skolemform.
+
+Ziel: Konstruktion einer Menge aussagenlogischer Formeln, die genau dann erfüllbar ist, wenn $\varphi$  ein Herbrand-Modell hat.
+
+Die Herbrand-Expansion von $\varphi$  ist die Menge der Aussagen $E(\varphi)=\{\psi[y_1:=t_1][y_2:=t_2]...[y_n:=t_n]|t_1,t_2,...,t_n\in D(\sum)\}$
+
+Die Formeln von $E(\varphi)$ entstehen also aus $\psi$, indem die (variablenfreien) Terme aus $D(\sum)$ in jeder möglichen Weise in $\psi$ substituiert werden.
+
+Wir betrachten die Herbrand-Expansion von $\varphi$ im folgenden als eine Menge von aussagenlogischen Formeln.
+
+Die atomaren Formeln sind hierbei von der Gestalt $P(t_1,...,t_k)$ für $P\in Rel$ mit $ar(P)=k$ und $t_1,...,t_k\in D(\sum)$.
+
+> Konstruktion
+>
+> Sei $B:\{P(t_1,...,t_k)|P\in Rel,k=ar(P),t_1,...,t_k\in D(\sum)\}\rightarrow B$ eine
+B-Belegung. Die hiervon induzierte Herbrand-Struktur $A_B$ ist gegeben durch $P^{A_B} = \{(t_1,...,t_k)|t_1,...,t_k\in D(\sum),B(P(t_1,...,t_k))= 1\}$ für alle $P\in Rel$ mit $ar(P)=k$.
+
+> Lemma
+>
+> Für jede quantoren- und gleichungsfreie Aussage $\alpha$ und jede Variableninterpretation $ρ$ in $A_B$ gilt $A_B\Vdash_ρ\alpha \Leftrightarrow B(\alpha)= 1$.
+
+Beweis: 
+- per Induktion über den Aufbau von $\alpha$
+- I.A. $\alpha$ ist atomar, d.h. $\alpha= P(t_1,...,t_k)$ mit $t_1,...,t_k$ variablenlos $A_B\Vdash_ρ \alpha\Leftrightarrow (ρ(t_1),ρ(t_2),...,ρ(t_k))\in P^{A_B}\Leftarrow B(\alpha)= 1$
+- I.S.
+  - $\alpha=\beta\wedge\gamma: A_B\Vdash_ρ \alpha\Leftrightarrow A_B \Vdash_ρ\beta$ und $A_B\Vdash_ρ\gamma \Leftrightarrow B(\beta)=B(\gamma)= 1 \Leftrightarrow B(\alpha)= 1$
+  - $\alpha=\beta\vee\gamma$: analog
+  - $\alpha=\beta\rightarrow\gamma$: analog
+  - $\alpha=\lnot\beta$: analog
+
+> Lemma
+>
+> Sei $\varphi=\forall y_1 \forall y_2 ...\forall y_n\psi$ gleichungsfreie Aussage in Skolemform. Sie hat genau dann ein Herbrand-Modell, wenn die Formelmenge $E(\varphi)$ (im aussagenlogischen Sinn) erfüllbar ist.
+
+Beweis: Seien $A$ Herbrand-Struktur und $ρ$ Variableninterpretation. Sei $B$ die B-Belegung mit $B(P(t_1,...,t_k))= 1\Leftrightarrow(t_1,...,t_k)\in P^A$ für alle $P\in Rel$ mit $k=ar(P)$ und $t_1,...,t_k\in D(\sum)$. Dann gilt $A=A_B$.
+
+> Satz von Gödel-Herbrand-Skolem
+>
+> Sei $\varphi$ gleichungsfreie Aussage in Skolemform. Sie ist genau dann erfüllbar, wenn die Formelmenge $E(\varphi)$ (im aussagenlogischen Sinn) erfüllbar ist.
+
+Beweis: $\varphi$ erfüllbar $\Leftrightarrow$ $\varphi$  hat ein Herbrand-Modell $\Leftrightarrow$  $E(\varphi)$ ist im aussagenlogischen Sinne erfüllbar.
+
+> Satz von Herbrand
+>
+> Eine gleichungsfreie Aussage $\varphi$ in Skolemform ist genau dann unerfüllbar, wenn es eine endliche Teilmenge von $E(\varphi)$ gibt, die (im aussagenlogischen Sinn) unerfüllbar ist.
+> 
+> (Jacques Herbrand (1908-1931))
+
+Beweis: $\varphi$ unerfüllbar $\Leftrightarrow$ $E(\varphi)$ unerfüllbar $\Leftrightarrow$ es gibt $M\subseteq E(\varphi)$ endlich und unerfüllbar
+
+
+## Algorithmus von Gilmore
+Sei $\varphi$ gleichungsfreie Aussage in Skolemform und sei $\alpha_1,\alpha_2,\alpha_3,...$ eine Aufzählung von $E(\varphi)$.
+
+Eingabe: $\varphi$ 
+```
+n:=0;
+repeat n := n +1;
+until { alpha_1, alpha_2,..., alpha_n } ist unerfüllbar;
+  (dies kann mit Mitteln der Aussagenlogik, z.B. Wahrheitswertetabelle, getestet werden)
+Gib „unerfüllbar“ aus und stoppe.
+```
+
+Folgerung: Sei $\varphi$  eine gleichungsfreie Aussage in Skolemform. Dann gilt:
+- Wenn die Eingabeformel $\varphi$ unerfüllbar ist, dann terminiert der Algorithmus von Gilmore und gibt „unerfüllbar“ aus.
+- Wenn die Eingabeformel $\varphi$ erfüllbar ist, dann terminiert der Algorithmus von Gilmore nicht, d.h. er läuft unendlich lange.
+
+Beweis: unmittelbar mit Satz von Herbrand
+
+Zusammenfassung: alternative Semi-Entscheidungsverfahren für die Menge der allgemeingültigen Formeln.
+- Berechne aus $\psi$ eine zu $\lnot\psi$ erfüllbarkeitsäquivalente gleichungsfreie Formel $\varphi$ in Skolemform.
+- Suche mit dem Algorithmus von Gilmore nach einer endlichen Teilmenge $E′$ von $E(\varphi)$, die unerfüllbar ist.
+
+
+## Berechnung von Lösungen
+Beispiel 
+  - $\gamma = \forall x,y (R(x,f(y))\wedge R(g(x),y))$
+  - $\varphi = \forall x,yR(x,y)$
+- Gilt $\{\gamma\}\Vdash\varphi$? nein, denn $A\Vdash\gamma\wedge\lnot\varphi$ mit 
+  - $A=(\mathbb{N},f^A,g^A,R)$
+  - f^A(n)=g^A(n)=n+1$ für alle $n\in\mathbb{N}$
+  - $R^A = \mathbb{N}^2 \backslash\{( 0 , 0 )\}$
+- Gibt es variablenfreie Terme $s$ und $t$ mit $\{\gamma\}\Vdash R(s,t)$?
+  - ja: z.B. $(s,t)=(g(f(a)),g(a))$ oder $(s,t)=(g(a),g(a))$ oder $(s,t)=(a,f(b))$
+- Kann die Menge aller Termpaare $(s,t)$ (d.h. aller „Lösungen“) mit $\{\gamma\}\Vdash R(s,t)$ effektiv und übersichtlich angegeben werden?
+  - Wegen $\{\gamma\}\Vdash R(s,t) \Leftrightarrow\gamma\wedge\lnot R(s,t)$ unerfüllbar ist die gesuchte Menge der variablenfreien Terme $(s,t)$ semi-entscheidbar, d.h. durch eine Turing-Maschine beschrieben.
+- Im Rest des Logikteils der Vorlesung „Logik und Logikprogrammierung“ wollen wir diese Menge von Termpaaren „besser“ beschreiben (zumindest in einem Spezialfall, der die Grundlage der logischen Programmierung bildet).
+
+> Erinnerung
+>
+> Eine Horn-Klausel der Prädikatenlogik ist eine Aussage der Form $\forall x_1\forall x_2...\forall x_n ((\lnot\bot\wedge\alpha_1 \wedge\alpha_2 \wedge...\wedge\alpha_m)\rightarrow\beta)$, mit $m\geq 0$, atomaren Formeln $\alpha_1,...,\alpha_m$ und $\beta$ atomare Formel oder $\bot$.
+
+Aufgabe:
+$\varphi_1,...,\varphi_n$ gleichungsfreie Horn-Klauseln, $\psi(x_1,x_2,...,x_ℓ)=R(t_1,...,t_k)$ atomare Formel, keine Gleichung. Bestimme die Menge der Tupel $(s_1,...,s_ℓ)$ von variablenfreien Termen mit $\{\varphi_1,...,\varphi_n\}\Vdash\psi(s_1,...,s_ℓ)=R(t_1,...,t_k)[x_1:=s_1]...[x_ℓ:=s_ℓ]$, d.h., für die die folgende Formel unerfüllbar ist: $\bigwedge_{1\leq i\leq n} \varphi_i \wedge \lnot\psi(s_1,...,s_ℓ) \equiv \bigwedge_{1\leq i\leq n} \varphi_i\wedge(\psi(s_1,...,s_ℓ)\rightarrow\bot)$
+
+Erinnerung
+- Eine Horn-Formel der Prädikatenlogik ist eine Konjunktion von Horn-Klauseln der Prädikatenlogik.
+- Eine Horn-Klausel der Aussagenlogik ist eine Formel der Form $(\lnot\bot\wedge q_1\wedge q_2 \wedge...\wedge q_m)\rightarrow r$ mit $m\geq 0$, atomaren Formeln $q_1,q_2,...,q_m, r$ atomare Formel od. $\bot$.
+
+Beobachtung
+- Wir müssen die Unerfüllbarkeit einer gleichungsfreien Horn-Formel der Prädikatenlogik testen.
+- Ist $\varphi$ gleichungsfreie Horn-Klausel der Prädikatenlogik, so ist $E(\varphi)$ eine Menge von Horn-Klauseln der Aussagenlogik.
+
+Schreib- und Sprechweise
+- $\{\alpha_1,\alpha_2,...,\alpha_n\}\rightarrow\beta$ für Horn-Klausel der Prädikatenlogik $(\lnot\bot\wedge\alpha_1 \wedge\alpha_2\wedge...\wedge\alpha_n)\rightarrow\beta$ insbes. $\varnothing\rightarrow\beta$ für $\lnot\bot\rightarrow\beta$
+- $\{(N_i\rightarrow\beta_i) | 1\leq i\leq m\}$ für Horn-Formel $\bigwedge_{1\leq i\leq m} (N_i\rightarrow\beta_i)$
+
+Folgerung: Sei $\varphi =\bigwedge_{1\leq i\leq n} \varphi_i$ gleichungsfreie Horn-Formel der Prädikatenlogik. Dann ist $\varphi$ genau dann unerfüllbar, wenn $\bigcup_{1\leq i\leq n} E(\varphi_i)$ im aussagenlogischen Sinne unerfüllbar ist.
+
+Beweis: Für $1\leq i\leq n$ sei $\varphi_i=\forall x_1^i,x_2^i,...,x_{m_i}^i \psi_i$.
+Zur Vereinfachung nehme wir an, daß die Variablen $x_j^i$ für $1\leq i\leq n$ und $1\leq j\leq m_i$ paarweise verschieden sind.
+
+Folgerung: Eine gleichungsfreie Horn-Formel der Prädikatenlogik $\varphi=\bigwedge_{1\leq i\leq n} \varphi_i$ ist genau dann unerfüllbar, wenn es eine SLD-Resolution $(M_0\rightarrow\bot,M_1\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\bigcup_{1\leq i\leq n} E(\varphi_i)$ mit $M_m =\varnothing$ gibt.

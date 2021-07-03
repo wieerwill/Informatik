@@ -300,9 +300,9 @@ Ist D eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so e
 ![](Assets/Logik-Implikationseinführung.png)
 
 Kurzform 
-$$[\varphi]$$ 
-$$\vdots$$ 
-$$\frac{\psi}{\varphi\rightarrow\psi} (\rightarrow I)$$
+$[\varphi]$
+$\vdots$
+$\frac{\psi}{\varphi\rightarrow\psi} (\rightarrow I)$
 
 Beispiel: ... Dies ist eine Deduktion von $\varphi\rightarrow\varphi$ ohne Hypothesen. 
 
@@ -343,12 +343,12 @@ Ist D eine Deduktion von $\varphi\vee\psi$ mit Hypothesen aus $\Gamma$, ist E ei
 ![](Assets/Logik-Disjunktionselimination.png)
 
 Disjunktionselimination Kurzform: 
-$$\quad [\psi] \quad[\varphi]$$
-$$\quad \vdots \quad\vdots$$
-$$\frac{\varphi\vee\psi \quad\sigma \quad\sigma}{\sigma} (\vee E)$$
+$\quad [\psi] \quad[\varphi]$
+$\quad \vdots \quad\vdots$
+$\frac{\varphi\vee\psi \quad\sigma \quad\sigma}{\sigma} (\vee E)$
 
 Disjunktionseinführung (Kurzform)
-$$\frac{\varphi}{\varphi\vee\psi} (\vee I_1) \quad \frac{\psi}{\varphi\vee\psi} (\vee I_2)$$
+$\frac{\varphi}{\varphi\vee\psi} (\vee I_1) \quad \frac{\psi}{\varphi\vee\psi} (\vee I_2)$
 
 ### Negation
 #### Negationseinführung in math. Beweisen
@@ -365,9 +365,9 @@ Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so e
 ![](Assets/Logik-Negationseinführung.png)
 
 Kurzform:
-$$[\varphi]$$
-$$\vdots$$
-$$\frac{\bot}{\lnot\varphi} (\lnot I)$$
+$[\varphi]$
+$\vdots$
+$\frac{\bot}{\lnot\varphi} (\lnot I)$
 
 #### Negationselimination (ausführlich)
 Ist D eine Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\varphi$ mit Hypothesen aus $\gamma$, so ergibt sich die folgende Deduktion von $\bot$ mit Hypothesen aus $\Gamma$:
@@ -399,9 +399,9 @@ Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\lnot\varphi\}$,
 ![](Assets/Logik-reductio-ad-absurdum.png)
 
 Kurzform: 
-$$[\lnot\varphi]$$
-$$\vdots$$
-$$\frac{\bot}{\varphi} (raa)$$
+$[\lnot\varphi]$
+$\vdots$
+$\frac{\bot}{\varphi} (raa)$
 
 ## Regeln des natürlichen Schließens
 > Definition
@@ -651,7 +651,7 @@ Können wir durch das natürliche Schließen zu falschen Aussagen kommen?
 Existiert eine Menge $\Gamma$ von Formeln und eine Formel $\varphi$ mit $\Gamma\vdash\varphi$ und $\Gamma\not\Vdash_W \varphi$? Für welche Wahrheitswertebereiche W?
 
 Frage für diese Vorlesung: Für welche Wahrheitswertebereiche W gilt
-$$\Gamma\vdash\varphi\Rightarrow\Gamma\vdash_W \varphi$$ 
+$\Gamma\vdash\varphi\Rightarrow\Gamma\vdash_W \varphi$
 bzw.
 $\varphi$ ist Theorem $\Rightarrow\varphi$ ist W-Tautologie?
 
@@ -1447,15 +1447,15 @@ Im folgenden seien
 - $x,y$ und $z$ Variable.
 
 Welche der folgenden Zeichenketten sind Formeln?
-|                                               |     |
-| --------------------------------------------- | --- |
-| $\forall x P(a)$                              |     |
-| $\forall x\exists y(Q(x,y)\vee R(x))$         |     |
-| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$ |     |
-| $\forall x P(f(x))\vee\forall$ x Q(x,x)$      |     |
-| $\forall x(P(y)\wedge\forall y P(x))$         |     |
-| $P(x) \rightarrow\exists x Q(x,P(x))$         |     |
-| $\forall f\exists x P(f(x))$                  |     |
+|                                               |      |
+| --------------------------------------------- | ---- |
+| $\forall x P(a)$                              | ja   |
+| $\forall x\exists y(Q(x,y)\vee R(x))$         | nein |
+| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$ | ja   |
+| $\forall x P(f(x))\vee\forall$ x Q(x,x)$      | ja   |
+| $\forall x(P(y)\wedge\forall y P(x))$         | ja   |
+| $P(x) \rightarrow\exists x Q(x,P(x))$         | nein |
+| $\forall f\exists x P(f(x))$                  | nein |
 
 > Definition
 > 
@@ -1467,18 +1467,18 @@ Welche der folgenden Zeichenketten sind Formeln?
 > Eine $\sum$-Formel $\varphi$ ist geschlossen oder ein $\sum$-Satz, wenn $FV(\varphi)=\varnothing$ gilt.
 
 Was sind die freien Variablen der folgenden Formeln? Welche Formeln sind Sätze?
-|                                                                         | Formel? | Satz? |
-| ----------------------------------------------------------------------- | ------- | ----- |
-| $\forall x P(a)$                                                        |         |       |
-| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$                           |         |       |
-| $\forall x P(x)\vee\forall x Q(x,x)$                                    |         |       |
-| $\forall x(P(y)\wedge\forall y P(x))$                                   |         |       |
-| $\forall x(\lnot\forall y Q(x,y)\wedge R(x,y))$                         |         |       |
-| $\exists z(Q(z,x)\vee R(y,z))\rightarrow\exists y(R(x,y)\wedge Q(x,z))$ |         |       |
-| $\exists x(\lnot P(x)\vee P(f(a)))$                                     |         |       |
-| $P(x)\rightarrow\exists x P(x)$                                         |         |       |
-| $\exists x\forall y((P(y)\rightarrow Q(x,y))\vee\lnot P(x))$            |         |       |
-| $\exists x\forall x Q(x,x)$                                             |         |       |
+|                                                                         | freie Variablen? | Satz? |
+| ----------------------------------------------------------------------- | ---------------- | ----- |
+| $\forall x P(a)$                                                        | nein             | ja    |
+| $\forall x Q(x,x)\rightarrow\exists x Q(x,y)$                           | y                | nein  |
+| $\forall x P(x)\vee\forall x Q(x,x)$                                    | nein             | ja    |
+| $\forall x(P(y)\wedge\forall y P(x))$                                   | y                | nein  |
+| $\forall x(\lnot\forall y Q(x,y)\wedge R(x,y))$                         | y                | nein  |
+| $\exists z(Q(z,x)\vee R(y,z))\rightarrow\exists y(R(x,y)\wedge Q(x,z))$ | x,y,z            | nein  |
+| $\exists x(\lnot P(x)\vee P(f(a)))$                                     | nein             | ja    |
+| $P(x)\rightarrow\exists x P(x)$                                         | x                | nein  |
+| $\exists x\forall y((P(y)\rightarrow Q(x,y))\vee\lnot P(x))$            | x                | nein  |
+| $\exists x\forall x Q(x,x)$                                             | nein             | ja    |
 
 Semantik der Prädikatenlogik
 - Erinnerung: Die Frage „Ist die aussagenlogische Formel $\varphi$ wahr oder falsch?“ war sinnlos, denn wir wissen i.a. nicht, ob die atomaren Aussagen wahr oder falsch sind.
@@ -1501,23 +1501,23 @@ Beispiel: Graph
   - $UA=\{v_1,v_2,...,v_9\}$ und
   - $EA=\{(v_i,v_j)|(v_i,v_j) ist Kante\}$
 
-Im folgenden sei $\sum$ eine Signatur, A eine $\sum$-Struktur und $ρ:Var\rightarrow U_A$ eine Abbildung (eine Variableninterpretation).
-Wir definieren eine Abbildung $ρ′:T\sum\rightarrow U_A$ induktiv für $t\in T_{\sum}$:
-- ist $t\in Var$, so setze $ρ′(t) =ρ(t)$
-- ansonsten existieren $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in T_{\sum}$ mit $t=f(t_1,...,t_k)$. Dann setze $ρ′(t) =f^A(ρ′(t_1),...,ρ′(t_k))$.
-Die Abbildung $ρ′$ ist die übliche „Auswertungsabbildung“.
-Zur Vereinfachung schreiben wir auch $ρ(t)$ an Stelle von $ρ′(t)$.
+Im folgenden sei $\sum$ eine Signatur, A eine $\sum$-Struktur und $\rho:Var\rightarrow U_A$ eine Abbildung (eine Variableninterpretation).
+Wir definieren eine Abbildung $\rho′:T\sum\rightarrow U_A$ induktiv für $t\in T_{\sum}$:
+- ist $t\in Var$, so setze $\rho′(t) =\rho(t)$
+- ansonsten existieren $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in T_{\sum}$ mit $t=f(t_1,...,t_k)$. Dann setze $\rho′(t) =f^A(\rho′(t_1),...,\rho′(t_k))$.
+Die Abbildung $\rho′$ ist die übliche „Auswertungsabbildung“.
+Zur Vereinfachung schreiben wir auch $\rho(t)$ an Stelle von $\rho′(t)$.
 
 Beispiel:
-- Seien $A=(R,f^A,a^A)$ mit $f^A$ die Subtraktion und $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $ρ(x)=7$ und $ρ(y)=-2$. Dann gilt $ρ(f(a,f(x,y))) =ρ(a)-(ρ(x)-ρ(y)) =a^A-(ρ(x)-ρ(y)) = 1$
-- Seien $A= (Z,f^A,a^A)$ mit $f^A$ die Maximumbildung, $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $ρ(x)=7$ und $ρ(y)=-2$. In diesem Fall gilt $ρ(f(a,f(x,y))) = max(ρ(a),max(ρ(x),ρ(y)) = max(a^A,max(ρ(x),ρ(y))) = 10$
+- Seien $A=(R,f^A,a^A)$ mit $f^A$ die Subtraktion und $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $\rho(x)=7$ und $\rho(y)=-2$. Dann gilt $\rho(f(a,f(x,y))) =\rho(a)-(\rho(x)-\rho(y)) =a^A-(\rho(x)-\rho(y)) = 1$
+- Seien $A= (Z,f^A,a^A)$ mit $f^A$ die Maximumbildung, $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $\rho(x)=7$ und $\rho(y)=-2$. In diesem Fall gilt $\rho(f(a,f(x,y))) = max(\rho(a),max(\rho(x),\rho(y)) = max(a^A,max(\rho(x),\rho(y))) = 10$
 
-Bemerkung: Wir müssten also eigentlich noch vermerken, in welcher Struktur $ρ(t)$ gebildet wird – dies wird aber aus dem Kontext immer klar sein.
+Bemerkung: Wir müssten also eigentlich noch vermerken, in welcher Struktur $\rho(t)$ gebildet wird – dies wird aber aus dem Kontext immer klar sein.
 
-Für eine $\sum$-Formel $\varphi$ definieren wir die Gültigkeit in einer $\sum$-Struktur $A$ unter der Variableninterpretation $ρ$ (in Zeichen: $A\Vdash_ρ\varphi$) induktiv:
-- $A\Vdash_ρ\bot$ gilt nicht.
-- $A\Vdash_ρ R(t_1,...,t_k)$ falls $(ρ(t_1),...,ρ(t_k))\in R^A$ für $R\in Rel$ mit $ar(R)=k$ und $t_1,...,t_k\in T_{\sum}$.
-- $A\Vdash_ρ t_1 =t_2$ falls $ρ(t_1) =ρ(t_2)$ für $t_1,t_2\in T_{\sum}$.
+Für eine $\sum$-Formel $\varphi$ definieren wir die Gültigkeit in einer $\sum$-Struktur $A$ unter der Variableninterpretation $\rho$ (in Zeichen: $A\Vdash_\rho\varphi$) induktiv:
+- $A\Vdash_\rho\bot$ gilt nicht.
+- $A\Vdash_\rho R(t_1,...,t_k)$ falls $(\rho(t_1),...,\rho(t_k))\in R^A$ für $R\in Rel$ mit $ar(R)=k$ und $t_1,...,t_k\in T_{\sum}$.
+- $A\Vdash_\rho t_1 =t_2$ falls $\rho(t_1) =\rho(t_2)$ für $t_1,t_2\in T_{\sum}$.
 
 Für $\sum$-Formeln $\varphi$ und $\Psi$ und $x\in Var$:
 - $A\Vdash_p \varphi\wedge\Psi$ falls $A\Vdash_p\varphi$ und $A\Vdash_p \Psi$.
@@ -1527,20 +1527,20 @@ Für $\sum$-Formeln $\varphi$ und $\Psi$ und $x\in Var$:
 - $A\Vdash_p \exists x\varphi$ falls ???
 - $A\Vdash_p \forall x\varphi$ falls ???
 
-Für $x\in Var$ und $a\in U_A$ sei $ρ[x\rightarrow a]:Var\rightarrow U_A$ die Variableninterpretation, für die gilt $(ρ[x\rightarrow a])(y) = \begin{cases} ρ(y) \quad\text{ falls } x\not=y \\ a \quad\text{ sonst } \end{cases}$
+Für $x\in Var$ und $a\in U_A$ sei $\rho[x\rightarrow a]:Var\rightarrow U_A$ die Variableninterpretation, für die gilt $(\rho[x\rightarrow a])(y) = \begin{cases} \rho(y) \quad\text{ falls } x\not=y \\ a \quad\text{ sonst } \end{cases}$
 - $A\Vdash_p \exists x\varphi$ falls es $a\in U_A$ gibt mit $A\Vdash_{p[x\rightarrow a]}\varphi$.
 - $A\Vdash_p \forall x\varphi$ falls $A\Vdash_{p[x\rightarrow a]}\varphi$ für alle $a\in U_A$.
 
 > Definition
 > 
 > Sei $\sum$ eine Signatur, $\varphi$ eine $\sum$-Formel, $\Delta$ eine Menge von $\sum$-Formeln und $A$ eine $\sum$-Struktur.
-> - $A\Vdash\varphi$ ($A$ ist Modell von $\varphi$) falls $A\Vdash_p\varphi$ für alle Variableninterpretationen $ρ$ gilt.
+> - $A\Vdash\varphi$ ($A$ ist Modell von $\varphi$) falls $A\Vdash_p\varphi$ für alle Variableninterpretationen $\rho$ gilt.
 > - $A\Vdash\Delta$ falls $A\Vdash\Psi$ für alle $\Psi\in\Delta$.
 
 
 Aufgaben
 - Sei $A$ die Struktur, die dem vorherigen Graphen entspricht
-- Welche der folgenden Formeln $\varphi$ gelten in $A$, d.h. für welche Formeln gilt $A\Vdash_p\varphi$ für alle Variableninterpretationen $ρ$?
+- Welche der folgenden Formeln $\varphi$ gelten in $A$, d.h. für welche Formeln gilt $A\Vdash_p\varphi$ für alle Variableninterpretationen $\rho$?
   1. $\exists x\exists y:E(x,y)$
   2. $\forall x\exists y:E(x,y)$
   3. $\exists x\forall y:(x\not=y\rightarrow E(x,y))$
@@ -1551,26 +1551,26 @@ Aufgaben
 > Definition
 >
 > Sei $\sum$ eine Signatur, $\varphi$ eine $\sum$-Formel, $\Delta$ eine Menge von $\sum$-Formeln und $A$ eine $\sum$-Struktur.
-> - $\Delta$ ist erfüllbar, wenn es $\sum$-Struktur $B$ und Variableninterpretation $ρ:Var\rightarrow U_B$ gibt mit $B\Vdash_ρ\Psi$ für alle $\Psi\in\Delta$.
-> - $\varphi$ ist semantische Folgerung von $\Delta(\Delta\Vdash\varphi)$ falls für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $ρ:Var\rightarrow U_B$ gilt: 
->     Gilt $B\Vdash_ρ\Psi$ für alle $\Psi\in\Delta$, so gilt auch $B\Vdash_ρ \varphi$.
-> - $\varphi$ ist allgemeingültig, falls $B\Vdash ρ\varphi$ für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $ρ$ gilt.
+> - $\Delta$ ist erfüllbar, wenn es $\sum$-Struktur $B$ und Variableninterpretation $\rho:Var\rightarrow U_B$ gibt mit $B\Vdash_\rho\Psi$ für alle $\Psi\in\Delta$.
+> - $\varphi$ ist semantische Folgerung von $\Delta(\Delta\Vdash\varphi)$ falls für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $\rho:Var\rightarrow U_B$ gilt: 
+>     Gilt $B\Vdash_\rho\Psi$ für alle $\Psi\in\Delta$, so gilt auch $B\Vdash_\rho \varphi$.
+> - $\varphi$ ist allgemeingültig, falls $B\Vdash \rho\varphi$ für alle $\sum$-Strukturen $B$ und alle Variableninterpretationen $\rho$ gilt.
 
 Bemerkung: $\varphi$ allgemeingültig gdw. $\varnothing\Vdash\varphi$ gdw. $\{\lnot\varphi\}$ nicht erfüllbar. Hierfür schreiben wir auch $\Vdash\varphi$.
 
 Beispiel: Der Satz $\varphi=(\forall x:R(x)\rightarrow\forall x:R(f(x)))$ ist allgemeingültig.
 
-Beweis: Sei $\sum$ Signatur, so dass $\varphi$  $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten zwei Fälle:
-1. Falls $A\not\Vdash_ρ\forall x R(x)$, so gilt $A\Vdash_p\varphi$.
+Beweis: Sei $\sum$ Signatur, so dass $\varphi$  $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $\rho$ Variableninterpretation. Wir betrachten zwei Fälle:
+1. Falls $A\not\Vdash_\rho\forall x R(x)$, so gilt $A\Vdash_p\varphi$.
 2. Wir nehmen nun $A\Vdash_p\forall x R(x)$ an. Sei $a\in U_A$ beliebig und $b=f^A(a)$.
-   $A\Vdash_p\forall x R(x) \Rightarrow A\Vdash_{p[x\rightarrow b]} R(x) \Rightarrow RA\owns (p[x\rightarrow b])(x) = b = f^A(a) = (ρ[x\rightarrow a])(f(x)) \Rightarrow A\Vdash_{p[x\rightarrow a]}R(f(x))$.
+   $A\Vdash_p\forall x R(x) \Rightarrow A\Vdash_{p[x\rightarrow b]} R(x) \Rightarrow RA\owns (p[x\rightarrow b])(x) = b = f^A(a) = (\rho[x\rightarrow a])(f(x)) \Rightarrow A\Vdash_{p[x\rightarrow a]}R(f(x))$.
    Da $a\in U_A$ beliebig war, haben wir also $A\Vdash_p\forall x:R(f(x))$.
    Also gilt auch in diesem Fall $A\Vdash_p\varphi$.
-Da $A$ und $ρ$ beliebig waren, ist $\varphi$ somit allgemeingültig.
+Da $A$ und $\rho$ beliebig waren, ist $\varphi$ somit allgemeingültig.
 
 Beispiel: 
 - Der Satz $\varphi =\exists x(R(x)\rightarrow R(f(x)))$ ist allgemeingültig.
-- Beweis: Sei $\sum$ Signatur, so dass $\varphi$ $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $ρ$ Variableninterpretation. Wir betrachten wieder zwei Fälle:
+- Beweis: Sei $\sum$ Signatur, so dass $\varphi$ $\sum$-Satz ist. Sei $A$ $\sum$-Struktur und $\rho$ Variableninterpretation. Wir betrachten wieder zwei Fälle:
   1. Angenommen, $R^A=U_A$. Sei $a\in U_A$ beliebig.
       - $\Rightarrow f^A(a)\in R^A$
       - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(f(x))$
@@ -1580,22 +1580,22 @@ Beispiel:
       - $\Rightarrow A\not\Vdash_{p[x\rightarrow a]} R(x)$
       - $\Rightarrow A\Vdash_{p[x\rightarrow a]} R(x)\rightarrow R(f(x))$
       - $\Rightarrow A\Vdash_p \varphi$.
-  Da $A$ und $ρ$ beliebig waren, ist $\varphi$ somit allgemeingültig.
+  Da $A$ und $\rho$ beliebig waren, ist $\varphi$ somit allgemeingültig.
 
 Aufgabe
-| | a: allgemeingültig  | e: erfüllbar  | u: unerfüllbar |
-| --- | --- | --- | --- |
-$P(a)$ | | | | 
-$\exists x:(\lnot P(x)\vee P(a))$ | | | 
-$P(a)\rightarrow\exists x:P(x)$ | | | 
-$P(x)\rightarrow\exists x:P(x)$ | | | 
-$\forall x:P(x)\rightarrow\exists x:P(x)$ | | | 
-$\forall x:P(x)\wedge\lnot\forall y:P(y)$ | | | 
-$\forall x:(P(x,x)\rightarrow\exists x\forall y:P(x,y))$  | | | 
-$\forall x\forall y:(x=y\rightarrow f(x) =f(y))$ | | | 
-$\forall x\forall y:(f(x) =f(y)\rightarrow x=y)$ | | | 
-$\exists x\exists y\exists z:(f(x) =y\wedge f(x) =z\wedge y \not=z)$ | | | 
-$\exists x\forall x:Q(x,x)$ | | | 
+|                                                                      | allgemeingültig | erfüllbar | unerfüllbar |
+| -------------------------------------------------------------------- | --------------- | --------- | ----------- |
+| $P(a)$                                                               | nein            | ja        | nein        |
+| $\exists x:(\lnot P(x)\vee P(a))$                                    | ja              | ja        | nein        |
+| $P(a)\rightarrow\exists x:P(x)$                                      | ja              | ja        | nein        |
+| $P(x)\rightarrow\exists x:P(x)$                                      | ja              | ja        | nein        |
+| $\forall x:P(x)\rightarrow\exists x:P(x)$                            | ja              | ja        | nein        |
+| $\forall x:P(x)\wedge\lnot\forall y:P(y)$                            | nein            | nein      | ja          |
+| $\forall x:(P(x,x)\rightarrow\exists x\forall y:P(x,y))$             | nein            | ja        | nein        |
+| $\forall x\forall y:(x=y\rightarrow f(x) =f(y))$                     | ja              | ja        | nein        |
+| $\forall x\forall y:(f(x) =f(y)\rightarrow x=y)$                     | nein            | ja        | nein        |
+| $\exists x\exists y\exists z:(f(x) =y\wedge f(x) =z\wedge y \not=z)$ | nein            | nein      | ja          |
+| $\exists x\forall x:Q(x,x)$                                          | nein            | ja        | nein        |
 
 ## Substitutionen
 > Definition
@@ -1610,12 +1610,12 @@ Dazu definieren wir zunächst induktiv, was es heißt, die freien Vorkommen von 
 
 > Lemma
 >
-> Seien $\sum$ Signatur, $A$ $\sum$-Struktur, $ρ:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $s,t\in T_{\sum}$. Dann gilt $ρ(s[x:=t])=ρ[x\rightarrow ρ(t)](s)$.
+> Seien $\sum$ Signatur, $A$ $\sum$-Struktur, $\rho:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $s,t\in T_{\sum}$. Dann gilt $\rho(s[x:=t])=\rho[x\rightarrow \rho(t)](s)$.
 
-Beweis: Induktion über den Aufbau des Terms $s$ (mit $ρ′=ρ[x\rightarrow ρ(t)]$ ):
-- $s=x:ρ(s[x:=t])=ρ(t) =ρ′(x) =ρ′(s)$
-- $s\in Var\backslash\{x\}:ρ(s[x:=t])=ρ(s) =ρ′(s)$
-- $s=f(t_1 ,...,t_k):ρ((f(t_1 ,...,t_k))[x:=t])= ρ(f(t_1[x:=t],...,t_k[x:=t]))= f^A(ρ(t_1[x:=t]),...,ρ(t_k[x:=t])) = f^A(ρ′(t_1),...,ρ′(t_k))= ρ′(f(t_1 ,...,t_k))=ρ′(s)$
+Beweis: Induktion über den Aufbau des Terms $s$ (mit $\rho′=\rho[x\rightarrow \rho(t)]$ ):
+- $s=x:\rho(s[x:=t])=\rho(t) =\rho′(x) =\rho′(s)$
+- $s\in Var\backslash\{x\}:\rho(s[x:=t])=\rho(s) =\rho′(s)$
+- $s=f(t_1 ,...,t_k):\rho((f(t_1 ,...,t_k))[x:=t])= \rho(f(t_1[x:=t],...,t_k[x:=t]))= f^A(\rho(t_1[x:=t]),...,\rho(t_k[x:=t])) = f^A(\rho′(t_1),...,\rho′(t_k))= \rho′(f(t_1 ,...,t_k))=\rho′(s)$
 
 Die Definition von $s[x:=t]$ kann induktiv auf $\sum$-Formeln fortgesetzt werden:
 - $(t_1 =t_2 )[x:=t] = (t_1 [x:=t] =t_2 [x:=t])$ für $t_1 ,t_2 \in T_{\sum}$ 
@@ -1639,12 +1639,12 @@ Gegenbeispiel: Aus $\exists y$ $Mutter(x) =y$ mit Substitution $[x:=Mutter(y)]$ 
 
 > Lemma
 > 
-> Sei $\sum$ Signatur, A $\sum$-Struktur, $ρ:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $t\in T_{\sum}$. Ist die Substitution $[x:=t]$ für die $\sum$-Formel $\varphi$ zulässig, so gilt $A\Vdash_p\varphi [x:=t]\Leftrightarrow  A\Vdash_{p[x\rightarrow ρ(t)]}\varphi$.
+> Sei $\sum$ Signatur, A $\sum$-Struktur, $\rho:Var\rightarrow U_A$ Variableninterpretation, $x\in Var$ und $t\in T_{\sum}$. Ist die Substitution $[x:=t]$ für die $\sum$-Formel $\varphi$ zulässig, so gilt $A\Vdash_p\varphi [x:=t]\Leftrightarrow  A\Vdash_{p[x\rightarrow \rho(t)]}\varphi$.
 
-Beweis: Induktion über den Aufbau der Formel $\varphi$ (mit $ρ'=ρ[x\rightarrow ρ(t)])$:
+Beweis: Induktion über den Aufbau der Formel $\varphi$ (mit $\rho'=\rho[x\rightarrow \rho(t)])$:
 - $\varphi = (s_1 =s_2)$:
   - $A\Vdash_p(s_1 =s_2)[x:=t] \Leftrightarrow A\Vdash_p s_1[x:=t] =s_2[x:=t]$
-  - $\Leftrightarrow ρ(s_1[x:=t]) =ρ(s_2[x:=t])\Leftrightarrow ρ'(s_1) =ρ'(s_2)$
+  - $\Leftrightarrow \rho(s_1[x:=t]) =\rho(s_2[x:=t])\Leftrightarrow \rho'(s_1) =\rho'(s_2)$
   - $\Leftrightarrow A\Vdash_{p′} s_1 =s_2$
   - andere atomare Formeln analog
 - $\varphi =\varphi_1\wedge\varphi_2$:
@@ -1657,14 +1657,14 @@ Beweis: Induktion über den Aufbau der Formel $\varphi$ (mit $ρ'=ρ[x\rightarro
   - Wir betrachten zunächst den Fall $x=y$: 
     - $A\Vdash_p(\forall x\psi)[x:=t]\Leftrightarrow A\Vdash_p\forall x\psi \Leftrightarrow A\Vdash_{p′}\forall x\psi$ (denn $x\not\in FV(\forall x\psi)$ )
   - Jetzt der Fall $x\not=y$:
-    - Für $a\in U_A$ setze $ρ_a=ρ[y\rightarrow a]$. Da $[x:=t]$ für $\varphi$ zulässig ist, kommt $y$ in $t$ nicht vor. Zunächst erhalten wir
-    - $ρ_a[x\rightarrow ρ_a(t)] = ρ_a[x\rightarrow ρ(t)]$ da $y$ nicht in $t$ vorkommt
-    - $=ρ[y\rightarrow a][x\rightarrow ρ(t)] = ρ[x\rightarrow ρ(t)][y\rightarrow a]$ da $x\not=y$
+    - Für $a\in U_A$ setze $\rho_a=\rho[y\rightarrow a]$. Da $[x:=t]$ für $\varphi$ zulässig ist, kommt $y$ in $t$ nicht vor. Zunächst erhalten wir
+    - $\rho_a[x\rightarrow \rho_a(t)] = \rho_a[x\rightarrow \rho(t)]$ da $y$ nicht in $t$ vorkommt
+    - $=\rho[y\rightarrow a][x\rightarrow \rho(t)] = \rho[x\rightarrow \rho(t)][y\rightarrow a]$ da $x\not=y$
     - Es ergibt sich $A\Vdash_p(\forall y\psi)[x:=t]\Leftrightarrow A\Vdash_p\forall y(\psi[x:=t])$ (wegen $x\not=y$)
     - $\Leftrightarrow A\Vdash_{pa}\psi[x:=t]$ für alle $a\in U_A$
-    - $\Leftrightarrow A\Vdash_{pa[x\rightarrow ρ_a(t)]}\psi$ für alle $a\in U_A$
-    - $\Leftrightarrow A\Vdash_{p[x\rightarrow ρ(t)][y\rightarrow a]}\psi$ für alle $a\in U_A$
-    - $\Leftrightarrow A\Vdash_{p[x\rightarrow ρ(t)]}\forall y\psi$ 
+    - $\Leftrightarrow A\Vdash_{pa[x\rightarrow \rho_a(t)]}\psi$ für alle $a\in U_A$
+    - $\Leftrightarrow A\Vdash_{p[x\rightarrow \rho(t)][y\rightarrow a]}\psi$ für alle $a\in U_A$
+    - $\Leftrightarrow A\Vdash_{p[x\rightarrow \rho(t)]}\forall y\psi$ 
 - $\varphi=\exists y\psi$ : analog
 
 ## Natürliches Schließen
@@ -1735,12 +1735,12 @@ Beweis: Wir erweitern den Beweis des Korrektheitslemmas bzw. des Lemmas V0, der 
 - Da dies Deduktion ist, sind die Substitutionen $[x:=s]$ und $[x:=t]$ für $\varphi$ 
 zulässig, d.h. in $\varphi$ wird über keine Variable aus $s$ oder $t$ quantifiziert.
 - $E$ und $F$ kleinere Deduktionen $\Rightarrow\Gamma\Vdash\varphi[x:=s]$ und $\Gamma\Vdash s=t$
-- Seien A $\sum$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$.
+- Seien A $\sum$-Struktur und $\rho$ Variableninterpretation mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$.
   - $\Rightarrow A\Vdash_p\varphi[x:=s]$ und $A\Vdash_p s=t$
-  - $\Rightarrow A\Vdash_{p[x\rightarrow ρ(s)]}\varphi$ und $ρ(s) =ρ(t)$
-  - $\Rightarrow A\Vdash_{p[x\rightarrow ρ(t)]}\varphi$
+  - $\Rightarrow A\Vdash_{p[x\rightarrow \rho(s)]}\varphi$ und $\rho(s) =\rho(t)$
+  - $\Rightarrow A\Vdash_{p[x\rightarrow \rho(t)]}\varphi$
   - $\Rightarrow A\Vdash_p \varphi[x:=t]$
-- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$ haben wir $\Gamma\Vdash\varphi[x:=t]$ gezeigt.
+- Da $A$ und $\rho$ beliebig waren mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$ haben wir $\Gamma\Vdash\varphi[x:=t]$ gezeigt.
 
 ### $\forall$ in math. Beweisen
 Ein mathematischer Beweis einer Aussage „für alle $x$ gilt $\varphi$“ sieht üblicherweise so aus:
@@ -1760,13 +1760,13 @@ mit Hypothesen in $\Gamma$ und Konklusion $\forall x\varphi: \frac{\phi}{\forall
 
 Beweis: Betrachte die folgende Deduktion $D$
 - Insbesondere ist $x$ keine freie Variable einer Formel aus $\Gamma$ und es gilt nach IV $\Gamma\Vdash\varphi$
-- Sei nun $A$ $\sum$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_p y$ für alle $y\in\Gamma$.
+- Sei nun $A$ $\sum$-Struktur und $\rho$ Variableninterpretation mit $A\Vdash_p y$ für alle $y\in\Gamma$.
 - Zu zeigen ist $A\Vdash_p \forall x\varphi$:
   - Sei also $a\in U_A$ beliebig.
   - $\Rightarrow$ für alle $y\in\Gamma$ gilt $A\Vdash_{p[x\rightarrow a]} y$ da $x\not\in FV(y)$ und $A\Vdash_p y$
-  - $\Rightarrow A\Vdash_{ρ[x\rightarrow a]}\varphi$
-  - Da $a\in U_A$ beliebig war, haben wir $A\Vdash_ρ\forall x\varphi$ gezeigt
-- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_ρ $\Gamma$ $ für alle $$\Gamma$ \in\Gamma$ haben wir also $\Gamma\Vdash\forall x\varphi$ gezeigt.
+  - $\Rightarrow A\Vdash_{\rho[x\rightarrow a]}\varphi$
+  - Da $a\in U_A$ beliebig war, haben wir $A\Vdash_\rho\forall x\varphi$ gezeigt
+- Da $A$ und $\rho$ beliebig waren mit $A\Vdash_\rho\Gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\forall x\varphi$ gezeigt.
 
 ### $\forall$ -Elimination in math. Beweisen
 Ein mathematischer Beweis einer Aussage „t erfüllt $\varphi$“ kann so aussehen:
@@ -1792,7 +1792,7 @@ Ein Beweis von „$\sigma$ gilt“ kann so aussehen:
 
 > $\exists$ -Elimination
 > 
-> Sei $\Gamma$ eine Menge von Formeln, die die Variable $x$ nicht frei enthalten und enthalte die Formel $\sigma$  die Variabel $x$ nicht frei. Wenn $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\exists x\varphi$ und $E$ eine Deduktion mit Hypothesen in $\Gamma ∪\{\varphi\}$ und Konklusion $\sigma$ ist, dann ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\sigma:\frac{\exists x\varphi \quad\quad \sigma}{\sigma}$
+> Sei $\Gamma$ eine Menge von Formeln, die die Variable $x$ nicht frei enthalten und enthalte die Formel $\sigma$  die Variabel $x$ nicht frei. Wenn $D$ eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\exists x\varphi$ und $E$ eine Deduktion mit Hypothesen in $\Gamma $\cup$\{\varphi\}$ und Konklusion $\sigma$ ist, dann ist das folgende eine Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\sigma:\frac{\exists x\varphi \quad\quad \sigma}{\sigma}$
 > 
 > Bedingung: $x$ kommt in den Hypothesen und in $\sigma$ nicht frei vor
 
@@ -1802,13 +1802,13 @@ Ein Beweis von „$\sigma$ gilt“ kann so aussehen:
 
 Beweis: Sei $D$ die folgende Deduktion
 - Insbesondere kommt $x$ in den Formeln aus $\Gamma\cup\{\sigma\}$ nicht frei vor. Außerdem gelten nach IV $\Gamma\Vdash\exists x\varphi$ und $\Gamma\cup\{\varphi\}\Vdash\sigma$.
-- Sei nun $A$ $\sigma$-Struktur und $ρ$ Variableninterpretation mit $A\Vdash_ρ\Gamma$ für alle $\gamma\in\Gamma$.
-- Zu zeigen ist $A\Vdash_ρ\sigma$:
-  - Wegen $A\Vdash_ρ\exists x\varphi$ existiert $a\in U_A$ mit $A\Vdash_{ρ[x\rightarrow a]}\varphi$.
-  - $x$ kommt in Formeln aus $\Gamma$ nicht frei vor $\Rightarrow A\Vdash_{ρ[x\rightarrow a]}\gamma$ für alle $\gamma\in\Gamma$.
-  - Aus $\Gamma\cup\{\varphi\}\Vdash\sigma$ folgt $A\Vdash_{ρ[x\rightarrow a]}\sigma$.
-  - Da $x\not\in FV(\sigma)$ erhalten wir $A\Vdash_ρ \sigma$.
-- Da $A$ und $ρ$ beliebig waren mit $A\Vdash_ρ\gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\sigma$ gezeigt.
+- Sei nun $A$ $\sigma$-Struktur und $\rho$ Variableninterpretation mit $A\Vdash_\rho\Gamma$ für alle $\gamma\in\Gamma$.
+- Zu zeigen ist $A\Vdash_\rho\sigma$:
+  - Wegen $A\Vdash_\rho\exists x\varphi$ existiert $a\in U_A$ mit $A\Vdash_{\rho[x\rightarrow a]}\varphi$.
+  - $x$ kommt in Formeln aus $\Gamma$ nicht frei vor $\Rightarrow A\Vdash_{\rho[x\rightarrow a]}\gamma$ für alle $\gamma\in\Gamma$.
+  - Aus $\Gamma\cup\{\varphi\}\Vdash\sigma$ folgt $A\Vdash_{\rho[x\rightarrow a]}\sigma$.
+  - Da $x\not\in FV(\sigma)$ erhalten wir $A\Vdash_\rho \sigma$.
+- Da $A$ und $\rho$ beliebig waren mit $A\Vdash_\rho\gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\sigma$ gezeigt.
 
 ### $\exists$ -Einführung in math. Beweisen
 Ein mathematischer Beweis einer Aussage „es gibt ein $x$, das $\varphi$ erfüllt“ sieht üblicherweise so aus: „betrachte dieses $t$ (hier ist Kreativität gefragt). Jetzt zeige ich, daß $t\varphi$ erfüllt (u.U. harte Arbeit). Also haben wir „es gibt ein $x$, das $\varphi$ erfüllt“ gezeigt. qed“
@@ -2240,15 +2240,15 @@ Bemerkung: Betrachte die Formel $\exists x\exists y E(x,y)$. Es gibt keine Forme
 
 > Definition
 > 
-> Zwei $\sum$-Formeln $\varphi$ und $\psi$ sind äquivalent (kurz:$\varphi\equiv\psi$), wenn für alle $\sum$-Strukturen $A$ und alle Variableninterpretationen $ρ$ gilt: $A\Vdash_ρ\psi \Lefrightarrow $\Leftrightarrow$ A\Vdash_ρ\psi$.
+> Zwei $\sum$-Formeln $\varphi$ und $\psi$ sind äquivalent (kurz:$\varphi\equiv\psi$), wenn für alle $\sum$-Strukturen $A$ und alle Variableninterpretationen $\rho$ gilt: $A\Vdash_\rho\psi \Lefrightarrow $\Leftrightarrow$ A\Vdash_\rho\psi$.
 
 > Lemma
 > 
-> Seien $Q\in\{\exists ,\forall\}$ und $$\oplus $\in\{\wedge,\vee,\rightarrow,\leftarrow\}$. Sei $\varphi= (Qx \alpha)\oplus\beta$ und sei $y$ eine Variable, die weder in $\alpha$ noch in $\beta$ vorkommt. Dann gilt
+> Seien $Q\in\{\exists ,\forall\}$ und $\oplus\in\{\wedge,\vee,\rightarrow,\leftarrow\}$. Sei $\varphi= (Qx \alpha)\oplus\beta$ und sei $y$ eine Variable, die weder in $\alpha$ noch in $\beta$ vorkommt. Dann gilt
 > $\varphi \equiv \begin{cases} Qy(\alpha[x:=y]\oplus\beta) \text{ falls } \oplus\in\{\wedge,\vee,\leftarrow\}\\ \forall y(\alpha[x:=y]\rightarrow\beta) \text{ falls } \oplus=\rightarrow,Q=\exists \\ \exists y(\alpha[x:=y]\rightarrow\beta) \text{ falls }\oplus=\rightarrow,Q=\forall\end{cases}$
 
 Notwendigkeit der Bedingung „$y$ kommt weder in $\alpha$ noch in $\beta$ vor“:
-- $(\exists x:f(x) 6 =f(y))\wedge\beta \not\equiv\exists y: (f(y) 6 =f(y)\wedge\beta)$
+- $(\exists x:f(x) \not =f(y))\wedge\beta \not\equiv\exists y: (f(y) \not =f(y)\wedge\beta)$
 - $(\exists x:\lnot P(x))\wedge P(y)\not\equiv \exists y: (\lnot P(y) \wedge P(y))$
 
 > Lemma
@@ -2257,23 +2257,23 @@ Notwendigkeit der Bedingung „$y$ kommt weder in $\alpha$ noch in $\beta$ vor�
 
 Beweis: (für den Fall $Q=\exists$ und $\oplus=\wedge$)
 - Seien $A$ $\sum$-Struktur und $\rho$ Variableninterpretation.
-- Für $a\in U_A$ setze $ρ_a:=ρ[y\rightarrow a]$.
-- Dann gilt $ρ_a[x\rightarrow ρ_a(y)](z) =ρ[x\rightarrow a](z)$ für alle $z\not=y$
+- Für $a\in U_A$ setze $\rho_a:=\rho[y\rightarrow a]$.
+- Dann gilt $\rho_a[x\rightarrow \rho_a(y)](z) =\rho[x\rightarrow a](z)$ für alle $z\not=y$
 
 
 Wir erhalten also
-- $A\vdash_ρ (\exists x\alpha)\wedge\beta$
-- $\Leftrightarrow A\vdash_ρ (\exists x\alpha) $ und $A\vdash_ρ \beta$
-- $\Leftrightarrow$ (es gibt $a\in U_A$ mit $A\vdash_{ρ[x\rightarrow a]}\alpha$) und (es gilt $A\vdash_ρ \beta$)
-- $\Leftrightarrow$ es gibt $a\in U_A$ mit ($A\vdash_{ρ[x\rightarrow a]}\alpha$ und $A\vdash_ρ \beta$)
+- $A\vdash_\rho (\exists x\alpha)\wedge\beta$
+- $\Leftrightarrow A\vdash_\rho (\exists x\alpha) $ und $A\vdash_\rho \beta$
+- $\Leftrightarrow$ (es gibt $a\in U_A$ mit $A\vdash_{\rho[x\rightarrow a]}\alpha$) und (es gilt $A\vdash_\rho \beta$)
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit ($A\vdash_{\rho[x\rightarrow a]}\alpha$ und $A\vdash_\rho \beta$)
 - $\Leftrightarrow$ es gibt $a\in U_A$ mit
-  - $A\vdash_{ρ_a[x\rightarrow ρ_a(y)]}\alpha$ (da $y$ in $\alpha$ nicht vorkommt)
-  - $A\vdash_{ρ_a} \beta$ (da $y$ in $\beta$ nicht vorkommt)
+  - $A\vdash_{\rho_a[x\rightarrow \rho_a(y)]}\alpha$ (da $y$ in $\alpha$ nicht vorkommt)
+  - $A\vdash_{\rho_a} \beta$ (da $y$ in $\beta$ nicht vorkommt)
 - $\Leftrightarrow$ es gibt $a\in U_A$ mit
-  - $A\vdash_{ρ_a} \alpha[x:=y]$
-  - $A\vdash_{ρ_a} \beta$
-- $\Leftrightarrow$ es gibt $a\in U_A$ mit $A\vdash_{ρ[y\rightarrow a]}\alpha[x:=y]\wedge\beta$
-- $\Leftrightarrow A\vdash_ρ \exists y(\alpha[x:=y]\wedge\beta)$
+  - $A\vdash_{\rho_a} \alpha[x:=y]$
+  - $A\vdash_{\rho_a} \beta$
+- $\Leftrightarrow$ es gibt $a\in U_A$ mit $A\vdash_{\rho[y\rightarrow a]}\alpha[x:=y]\wedge\beta$
+- $\Leftrightarrow A\vdash_\rho \exists y(\alpha[x:=y]\wedge\beta)$
 
 > Satz
 > 
@@ -2285,7 +2285,7 @@ Beweis: Der Beweis erfolgt induktiv über den Aufbau von $\varphi$:
 - I.S. 
   - $\varphi=\lnot\psi$ : Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Mit $\forall=\exists$ und $\exists=\forall$ setze $\varphi′=Q_1 x_1 Q_2 x_2 ...Q_m x_m\lnot\psi′$.
   - $\varphi=\exists x\psi$: Nach I.V. kann Formel in Pränexform $\psi\equiv Q_1 x_1 Q_2 x_2 ...Q_m x_m \psi′$ berechnet werden. Setze $\varphi′= \begin{cases} \exists x Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ falls }x\not\in\{x_1,x_2,...,x_m\}\\ Q_1 x_1 Q_2 x_2 ...Q_m x_m\psi′\text{ sonst}\end{cases}$
-  - $\varphi$=$\alpha$$\wedge$$\beta$: Nach I.V. können Formeln in Pränexform $\alpha\equiv Q_1 x_1 Q_2 x_2 ...Q_mx_m \alpha_0; \beta\equiv Q_1′y_1 Q_2′y_2 ...Q_n′y_n \beta_0$ berechnet werden. 
+  - $\varphi=\alpha\wedge\beta$: Nach I.V. können Formeln in Pränexform $\alpha\equiv Q_1 x_1 Q_2 x_2 ...Q_mx_m \alpha_0; \beta\equiv Q_1′y_1 Q_2′y_2 ...Q_n′y_n \beta_0$ berechnet werden. 
 
 Ziel: Berechnung einer erfüllbarkeitsäquivalenten Formel in Skolemform
 
@@ -2301,7 +2301,7 @@ Offensichtlich hat $\varphi$′einen Existenzquantor weniger als $\varphi$. Auß
 > 
 > Die Formeln $\varphi$ und $\varphi′$ sind erfüllbarkeitsäquivalent.
 
-Beweis: „$\Leftarrow$“ Sei $A′$ Struktur und $ρ′$ Variableninterpretation mit $A′\vdash_{ρ′}\varphi′$. Wir zeigen $A′\vdash_{ρ′}\varphi$. Hierzu seien $a_1,...,a_m\in U_{A′}$ beliebig.
+Beweis: „$\Leftarrow$“ Sei $A′$ Struktur und $\rho′$ Variableninterpretation mit $A′\vdash_{\rho′}\varphi′$. Wir zeigen $A′\vdash_{\rho′}\varphi$. Hierzu seien $a_1,...,a_m\in U_{A′}$ beliebig.
 
 > Satz
 > 
@@ -2326,7 +2326,7 @@ Eine $\sum$-Struktur $A=(UA,(fA)f\in\Omega,(RA)R\in Rel)$ ist eine Herbrand-Stru
 1. $UA=D(\sum)$,
 2. für alle $f\in\Omega$ mit $ar(f)=k$ und alle $t_1,t_2,...,t_k\in D(\sum)$ ist $f^A(t_1,t_2,...,t_k) =f(t_1,t_2,...,t_k)$.
 
-Für jede Herbrand-Struktur $A$, alle Variableninterpretationen $ρ$ und alle variablenfreien Terme $t$ gilt dann $ρ(t) =t$.
+Für jede Herbrand-Struktur $A$, alle Variableninterpretationen $\rho$ und alle variablenfreien Terme $t$ gilt dann $\rho(t) =t$.
 
 Ein Herbrand-Modell von $\varphi$ ist eine Herbrand-Struktur, die gleichzeitig ein Modell von $\varphi$ ist.
 
@@ -2336,33 +2336,33 @@ Ein Herbrand-Modell von $\varphi$ ist eine Herbrand-Struktur, die gleichzeitig e
 
 Beweis: 
 - Falls $\varphi$ ein Herbrand-Modell hat, ist $\varphi$ natürlich erfüllbar.
-- Sei nun $\varphi=\forall y_1...\forall y_n\psi$ erfüllbar. Dann existieren eine $\sum$-Struktur $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$ und eine Variableninterpretation $ρ$ mit $A\vdash_ρ \varphi$.
+- Sei nun $\varphi=\forall y_1...\forall y_n\psi$ erfüllbar. Dann existieren eine $\sum$-Struktur $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$ und eine Variableninterpretation $\rho$ mit $A\vdash_\rho \varphi$.
 
 #### Plan des Beweises
 Wir definieren eine Herbrand-Struktur $B=(D(\sum),(f^B)_{f\in\Omega},(R^B)_{R\in Rel})$:
 - Seien $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in D(\sum)$. Um eine Herbrand-Struktur $B$ zu konstruieren setzen wir $f^B(t_1,...,t_k) =f(t_1,...,t_k)$
-- Sei $R\in Rel$ mit $ar(R)=k$ und seien $t_1,...,t_k\in D(\sum)$. Dann setze $(t_1,...,t_k)\in RB:\Leftrightarrow (ρ(t_1),...,ρ(t_k))\in RA$.
+- Sei $R\in Rel$ mit $ar(R)=k$ und seien $t_1,...,t_k\in D(\sum)$. Dann setze $(t_1,...,t_k)\in RB:\Leftrightarrow (\rho(t_1),...,\rho(t_k))\in RA$.
 
-Sei $ρ_B:Var \rightarrow D(\sum)$ beliebige Variableninterpretation.
+Sei $\rho_B:Var \rightarrow D(\sum)$ beliebige Variableninterpretation.
 
 ##### Behauptung 1: 
-Ist $\psi$ eine quantoren- und gleichungsfreie Aussage, so gilt $A\vdash_ρ\psi \Leftrightarrow B\vdash_{ρB} \psi$. Diese Behauptung wird induktiv über den Aufbau von $\psi$ gezeigt.
+Ist $\psi$ eine quantoren- und gleichungsfreie Aussage, so gilt $A\vdash_\rho\psi \Leftrightarrow B\vdash_{\rhoB} \psi$. Diese Behauptung wird induktiv über den Aufbau von $\psi$ gezeigt.
 
 ##### Intermezzo
 Behauptung 1 gilt nur für quantorenfreie Aussagen
 
 $\sum = (\Omega,Rel,ar)$ mit $\Omega =\{a\},ar(a) =0$ und $Rel=\{E\},ar(E) =2$.
 Betrachte die Formel $\varphi=\forall x(E(x,x)\wedge E(a,a))$ in Skolemform.
-$A\vdash_ρ \varphi$ mit $U^A=\{a^A,m\}$ und $E^A=\{(m,m),(a^A,a^A)\}$.
+$A\vdash_\rho \varphi$ mit $U^A=\{a^A,m\}$ und $E^A=\{(m,m),(a^A,a^A)\}$.
 Die konstruierte Herbrand-Struktur $B:U_B=D(\sum) =\{a\}$ und $E^B=\{(a,a)\}$.
 
-Betrachte nun die Formel $\psi=\forall x,y E(x,y)$. Dann gilt $B\vdash_{ρB}\psi$ und $A\not\vdash_ρ \psi$.
+Betrachte nun die Formel $\psi=\forall x,y E(x,y)$. Dann gilt $B\vdash_{\rhoB}\psi$ und $A\not\vdash_\rho \psi$.
 
 Für allgemeine Formeln in Skolemform (also u.U. mit Quantoren) können wir also Behauptung 1 nicht zeigen, sondern höchstens die folgende Abschwächung.
 
 ##### Behauptung 2:
-Ist $\psi$ eine gleichungsfreie Aussage in Skolemform, so gilt $A\vdash_ρ \psi \Rightarrow B\vdash_{ρB}\psi$.
-(hieraus folgt dann $B\vdash_{ρB}\varphi$ wegen $A\vdash_ρ \varphi$)
+Ist $\psi$ eine gleichungsfreie Aussage in Skolemform, so gilt $A\vdash_\rho \psi \Rightarrow B\vdash_{\rhoB}\psi$.
+(hieraus folgt dann $B\vdash_{\rhoB}\varphi$ wegen $A\vdash_\rho \varphi$)
 
 Diese Behauptung wird induktiv über die Anzahl $n$ der Quantoren in $\psi$ bewiesen.
 
@@ -2381,8 +2381,8 @@ Jede solche aussagenlogische B-Belegung $B$ definiert dann eine Herbrand-Struktu
 - $P^{A_B} = \{(s,t)\in D(\sum)^2 |B(P(s,t))= 1\}$
 - $R^{A_B} = \{u\in D(\sum) |B(R(u))= 1\}$
 
-Mit $\varphi=\forall x\forall y(P(a,x)\wedge\lnot R(f(y)))$ gilt dann $A_B \Vdash_ρ \varphi$ 
-- $\Leftrightarrow A_B \Vdash_{ρ[x\rightarrow f^m(a)][y\rightarrow f^n(a)]} P(a,x)\wedge\lnot R(f(y))$ f.a. $m,n\geq 0$
+Mit $\varphi=\forall x\forall y(P(a,x)\wedge\lnot R(f(y)))$ gilt dann $A_B \Vdash_\rho \varphi$ 
+- $\Leftrightarrow A_B \Vdash_{\rho[x\rightarrow f^m(a)][y\rightarrow f^n(a)]} P(a,x)\wedge\lnot R(f(y))$ f.a. $m,n\geq 0$
 - $\Leftrightarrow (a,fm(a))\in P^{A_B}$ und $f^{n+1}(a)\not\in R^{A_B}$ f.a. $m,n\geq 0$
 - $\Leftrightarrow B(P(a,f^m(a)))= 1$ und $B(R(f^{n+1} (a)))= 0$ f.a. $m,n\geq 0$
 - $\Leftrightarrow B(P(a,f^m(a))\wedge\lnot R(f^{n+1} (a)))= 1$ f.a. $m,n\geq 0$
@@ -2415,13 +2415,13 @@ B-Belegung. Die hiervon induzierte Herbrand-Struktur $A_B$ ist gegeben durch $P^
 
 > Lemma
 >
-> Für jede quantoren- und gleichungsfreie Aussage $\alpha$ und jede Variableninterpretation $ρ$ in $A_B$ gilt $A_B\Vdash_ρ\alpha \Leftrightarrow B(\alpha)= 1$.
+> Für jede quantoren- und gleichungsfreie Aussage $\alpha$ und jede Variableninterpretation $\rho$ in $A_B$ gilt $A_B\Vdash_\rho\alpha \Leftrightarrow B(\alpha)= 1$.
 
 Beweis: 
 - per Induktion über den Aufbau von $\alpha$
-- I.A. $\alpha$ ist atomar, d.h. $\alpha= P(t_1,...,t_k)$ mit $t_1,...,t_k$ variablenlos $A_B\Vdash_ρ \alpha\Leftrightarrow (ρ(t_1),ρ(t_2),...,ρ(t_k))\in P^{A_B}\Leftarrow B(\alpha)= 1$
+- I.A. $\alpha$ ist atomar, d.h. $\alpha= P(t_1,...,t_k)$ mit $t_1,...,t_k$ variablenlos $A_B\Vdash_\rho \alpha\Leftrightarrow (\rho(t_1),\rho(t_2),...,\rho(t_k))\in P^{A_B}\Leftarrow B(\alpha)= 1$
 - I.S.
-  - $\alpha=\beta\wedge\gamma: A_B\Vdash_ρ \alpha\Leftrightarrow A_B \Vdash_ρ\beta$ und $A_B\Vdash_ρ\gamma \Leftrightarrow B(\beta)=B(\gamma)= 1 \Leftrightarrow B(\alpha)= 1$
+  - $\alpha=\beta\wedge\gamma: A_B\Vdash_\rho \alpha\Leftrightarrow A_B \Vdash_\rho\beta$ und $A_B\Vdash_\rho\gamma \Leftrightarrow B(\beta)=B(\gamma)= 1 \Leftrightarrow B(\alpha)= 1$
   - $\alpha=\beta\vee\gamma$: analog
   - $\alpha=\beta\rightarrow\gamma$: analog
   - $\alpha=\lnot\beta$: analog
@@ -2430,7 +2430,7 @@ Beweis:
 >
 > Sei $\varphi=\forall y_1 \forall y_2 ...\forall y_n\psi$ gleichungsfreie Aussage in Skolemform. Sie hat genau dann ein Herbrand-Modell, wenn die Formelmenge $E(\varphi)$ (im aussagenlogischen Sinn) erfüllbar ist.
 
-Beweis: Seien $A$ Herbrand-Struktur und $ρ$ Variableninterpretation. Sei $B$ die B-Belegung mit $B(P(t_1,...,t_k))= 1\Leftrightarrow(t_1,...,t_k)\in P^A$ für alle $P\in Rel$ mit $k=ar(P)$ und $t_1,...,t_k\in D(\sum)$. Dann gilt $A=A_B$.
+Beweis: Seien $A$ Herbrand-Struktur und $\rho$ Variableninterpretation. Sei $B$ die B-Belegung mit $B(P(t_1,...,t_k))= 1\Leftrightarrow(t_1,...,t_k)\in P^A$ für alle $P\in Rel$ mit $k=ar(P)$ und $t_1,...,t_k\in D(\sum)$. Dann gilt $A=A_B$.
 
 > Satz von Gödel-Herbrand-Skolem
 >
@@ -2509,3 +2509,144 @@ Beweis: Für $1\leq i\leq n$ sei $\varphi_i=\forall x_1^i,x_2^i,...,x_{m_i}^i \p
 Zur Vereinfachung nehme wir an, daß die Variablen $x_j^i$ für $1\leq i\leq n$ und $1\leq j\leq m_i$ paarweise verschieden sind.
 
 Folgerung: Eine gleichungsfreie Horn-Formel der Prädikatenlogik $\varphi=\bigwedge_{1\leq i\leq n} \varphi_i$ ist genau dann unerfüllbar, wenn es eine SLD-Resolution $(M_0\rightarrow\bot,M_1\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\bigcup_{1\leq i\leq n} E(\varphi_i)$ mit $M_m =\varnothing$ gibt.
+
+## Substitutionen
+Eine verallgemeinerte Substitution $\sigma$ ist eine Abbildung der Menge der Variablen in die Menge aller Terme, so daß nur endlich viele Variable $x$ existieren mit $\sigma(x) \not=x$.
+
+Sei $Def(\sigma)=\{x\ Variable|x\not =\sigma(x)\}$ der Definitionsbereich der verallgemeinerten Substitution $\sigma$. Für einen Term $t$ definieren wir den Term $t\sigma$ (Anwendung der verallgemeinerten Substitution $\sigma$ auf den Term $t$) wie folgt induktiv:
+- $x\sigma=\sigma(x)$
+- $[f(t_1 ,... ,t_k)]\sigma=f(t_1\sigma,... ,t_k\sigma)$ für Terme $t_1,... ,t_k,f\in\Omega$ und $k=ar(f)$
+Für eine atomare Formel $\alpha=P(t_1 ,... ,t_k)$ (d.h. $P\in Rel,ar(P) =k,t_1 ,... ,t_k$ Terme) sei $\alpha\sigma = P(t_1\sigma,... ,t_k\sigma)$
+
+Verknüpfungvon verallgemeinerten Substitutionen: Sind $\sigma_1$ und $\sigma_2$ verallgemeinerte Substitutionen, so definieren wir eine neue verallgemeinerte Substitution $\sigma_1 \sigma_2$ durch $(\sigma_1 \sigma_2)(x) = (x\sigma_1)\sigma_2$.
+
+Beispiel: Sei $x$ Variable und $t$ Term. Dann ist $\sigma$ mit
+$\sigma(y) =\begin{cases} t \quad\text{ falls } x=y \\ y \quad\text{ sonst }\end{cases}$
+eine verallgemeinerte Substitution. Für alle Terme $s$ und alle atomaren Formeln $\alpha$ gilt
+$s\sigma=s[x:=t]$ und $\alpha\sigma=\alpha[x:=t]$.
+Substitutionen sind also ein Spezialfall der verallgemeinerten Substitutionen.
+
+Beispiel: Die verallgemeinerte Substitution $\sigma$ mit $Def(\sigma)=\{x,y,z\}$ und $\sigma(x) =f(h(x′)), \sigma(y) =g(a,h(x′)), \sigma(z) =h(x′)$ ist gleich der verallgemeinerten Substitution $[x:=f(h(x′))] [y:=g(a,h(x′))] [z:=h(x′)] = [x:=f(z)] [y:=g(a,z)] [z:=h(x′)]$.
+Es kann sogar jede verallgemeinerte Substitution $\sigma$ als Verknüpfung von Substitutionen der Form $[x:=t]$ geschrieben werden.
+Vereinbarung: Wir sprechen ab jetzt nur von „Substitutionen“, auch wenn wir „verallgemeinerte Substitutionen“ meinen.
+
+> Lemma
+>
+> Seien $\sigma$ Substitution, $x$ Variable und $t$ Term, so dass 
+> - (i) $x\not\in Def(\sigma)$ und
+> - (ii) $x$ in keinem der Terme $y\sigma$ mit $y\in Def(\sigma)$ vorkommt.
+> Dann gilt $[x:=t]\sigma=\sigma[x:=t\sigma]$.
+
+Beispiele: Im folgenden sei $t=f(y)$.
+- Ist $\sigma=[x:=g(z)]$, so gilt $x[x:=t]\sigma=t\sigma=t\not=g(z) =g(z)[x:=t\sigma] =x\sigma[x:=t\sigma]$.
+- Ist $\sigma= [y:=g(x)]$, so gilt $y[x:=t]\sigma=y\sigma=g(x) \not=g(f(g(x)))= g(x) [x:=t\sigma] =y\sigma[x:=t\sigma]$.
+- Ist $\sigma= [y:=g(z)]$, so gelten $Def([x:=t]\sigma) =\{x,y\}=Def(\sigma[x:=t\sigma]),[x:=t]\sigma(x) =f(g(z)) =\sigma[x:=t\sigma]$ und $[x:=t]\sigma(y) =\sigma(z) =\sigma[x:=t\sigma]$, also $[x:=t]\sigma=\sigma[x:=t\sigma]$.
+
+Beweis: Wir zeigen $y[x:=t]\sigma=y\sigma[x:=t\sigma]$ für alle Variablen $y$.
+- $y=x$: Dann gilt $y[x:=t]\sigma=t\sigma$. Außerdem $y\sigma=x$ wegen $y=x\not\in Def(\sigma)$ und damit $y\sigma[x:=t\sigma]=x[x:=t\sigma]=t\sigma$.
+- $y\not =x$: Dann gilt $y[x:=t]\sigma=y\sigma$ und ebenso $y\sigma[x:=t\sigma]=y\sigma$, da $x$ in $y\sigma$ nicht vorkommt.
+
+## Unifikator/Allgemeinster Unifikator
+Gegeben seien zwei gleichungsfreie Atomformeln $\alpha$ und $\beta$. Eine Substitution $\sigma$ heißt Unifikator von $\alpha$ und $\beta$, falls $\alpha\sigma=\beta\sigma$.
+
+Ein Unifikator $\sigma$ von $\alpha$ und $\beta$ heißt allgemeinster Unifikator von $\alpha$ und $\beta$, falls für jeden Unifikator $\sigma′$ von $\alpha$ und $\beta$ eine Substitution $\tau$ mit $\sigma′=\sigma \tau$ existiert.
+
+Aufgabe: Welche der folgenden Paare $(\alpha,\beta)$ sind unifizierbar?
+| $\alpha$ | $\beta$ | Ja  | Nein |
+| --- | --- | --- | --- |
+| $P(f(x))$ | $P(g(y))$ | |
+| $P(x)$ |$P(f(y))$||
+|$Q(x,f(y))$| $Q(f(u),z)$||
+|$Q(x,f(y))$| $Q(f(u),f(z))$||
+|$Q(x,f(x))$| $Q(f(y),y)$||
+|$R(x,g(x),g^2 (x))$| $R(f(z),w,g(w))$ ||
+
+### Zum allgemeinsten Unifikator
+Eine Variablenumbenennung ist eine Substitution $\rho$, die $Def(\rho)$ injektiv in die Menge der Variablen abbildet.
+
+> Lemma
+>
+> Sind $\sigma_1$ und $\sigma_2$ allgemeinste Unifikatoren von $\alpha$ und $\beta$, so existiert eine Variablenumbenennung $\rho$ mit $\sigma_2=\sigma_1 \rho$.
+
+Beweis: $\sigma_1$ und $\sigma_2$ allgemeinste Unifikatoren $\Rightarrow$ es gibt Substitutionen $\tau_1$ und $\tau_2$ mit $\sigma_1\tau_1 =\sigma_2$ und $\sigma_2\tau_2 =\sigma_1$.
+Definiere eine Substitution $\rho$ durch:
+$\rho(y) =\begin{cases} y\tau_1 \quad\text{ falls es x gibt, so dass y in } x\sigma_1 \text{ vorkommt}\\ y \quad\text{ sonst }\end{cases}$
+Wegen $Def(\rho)\subseteq Def(\tau_1)$ ist $Def(\rho)$ endlich, also $\rho$ eine Substitution.
+- Für alle Variablen $x$ gilt dann $x\sigma_1 \rho=x\sigma_1 \tau_1 =x\sigma_2$ und daher $\sigma_2 =\sigma_1 \rho$.
+- Wir zeigen, dass $\rho(y)$ Variable und $\rho$ auf $Def(\rho)$ injektiv ist: Sei $y\in Def(\rho)$. Dann existiert Variable $x$, so dass $y$ in $x\sigma_1$ vorkommt. Es gilt $x\sigma_1 =x\sigma_2\tau_2=x\sigma_1\tau_1\tau_2$, und damit $y=y\tau_1 \tau_2 =y\rho \tau_2 =\rho(y)\tau_2$, d.h. $\rho(y)$ ist Variable, die Abbildung $\rho:Def(\rho)\rightarrow\{z|z\ Variable\}$ ist invertierbar (durch $\tau_2$) und damit injektiv.
+
+### Unifikationsalgorithmus
+- Eingabe: Paar$(\alpha,\beta)$ gleichungsfreier Atomformeln $\sigma:=$ Substitution mit $Def(\sigma)=\varnothing$ (d.h. Identität)
+- while $\alpha\sigma\not =\beta\sigma$ do
+  - Suche die erste Position, an der sich $\alpha\sigma$ und $\beta\sigma$ unterscheiden
+  - if keines der beiden Symbole an dieser Position ist eine Variable
+  - then stoppe mit „nicht unifizierbar“
+  - else sei $x$ die Variable und $t$ der Term in der anderen Atomformel (möglicherweise auch eine Variable)
+    - if $x$ kommt in $t$ vor
+    - then stoppe mit „nicht unifizierbar“
+    - else $\sigma:=\sigma[x:=t]$
+- endwhile
+- Ausgabe: $\sigma$
+
+> Satz
+>
+> - (A) Der Unifikationsalgorithmus terminiert für jede Eingabe.
+> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+> - (C) Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der Unifikationsalgorithmus einen allgemeinsten Unifikator von $\alpha$ und $\beta$.
+
+(C) besagt insbesondere, daß zwei unifizierbare gleichungsfreie Atomformeln (wenigstens) einen allgemeinsten Unifikator haben. Nach dem Lemma oben haben sie also genau einen allgemeinsten Unifikator (bis auf Umbenennung der Variablen).
+
+Die drei Teilaussagen werden in getrennten Lemmata bewiesen werden.
+
+> Lemma (A)
+> Der Unifikationsalgorithmus terminiert für jede Eingabe($\alpha$, $\beta$).
+
+Beweis: Wir zeigen, daß die Anzahl der in $\alpha\sigma$ oder $\beta\sigma$ vorkommenden Variablen in jedem Durchlauf der while-Schleife kleiner wird.
+Betrachte hierzu einen Durchlauf durch die while-Schleife.
+Falls der Algorithmus in diesem Durchlauf nicht terminiert, so wird $\sigma$ auf $\sigma[x:=t]$ gesetzt.
+Hierbei kommt $x$ in $\alpha\sigma$ oder in $\beta\sigma$ vor und der Term $t$ enthält $x$ nicht.
+Also kommt $x$ weder in $\alpha\sigma[x:=t]$ noch in $\beta\sigma[x:=t]$ vor.
+
+> Lemma (B)
+> Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+
+Beweis: Sei die Eingabe $(\alpha,\beta)$ nicht unifizierbar.
+Falls die Bedingung $\alpha\sigma\not=\beta\sigma$ der while-Schleife irgendwann verletzt wäre, so wäre $(\alpha,\beta)$ doch unifizierbar (denn $\sigma$ wäre ja ein Unifikator).
+Da nach Lemma (A) der Algorithmus bei Eingabe $(\alpha,\beta)$ terminiert, muss schließlich „nicht unifizierbar“ ausgegeben werden.
+
+> Lemma (C1)
+> Sei $\sigma′$ ein Unifikator der Eingabe $(\alpha,\beta)$, so dass keine Variable aus $\alpha$ oder $\beta$ auch in einem Term aus $\{y\sigma′|y\in Def(\sigma′)\}$ vorkommt. Dann terminiert der Unifikationsalgorithmus erfolgreich und gibt einen Unifikator $\sigma$ von $\alpha$ und $\beta$ aus. Außerdem gibt es eine Substitution $\tau$ mit $\sigma′=\sigma\tau$.
+
+Beweis:
+- Sei $N\in\mathbb{N}$ die Anzahl der Durchläufe der while-Schleife (ein solches $N$ existiert, da der Algorithmus nach Lemma (A) terminiert).
+- Sei $\sigma_0$ Substitution mit $Def(\sigma_0) =\varnothing$, d.h. die Identität. Für $1\leq i\leq N$ sei $\sigma_i$ die nach dem $i$-ten Durchlauf der while-Schleife berechnete Substitution $\sigma$.
+- Für $1\leq i\leq N$ sei $x_i$ die im $i$-ten Durchlauf behandelte Variable $x$ und $t_i$ der entsprechende Term $t$.
+- Für $0\leq i\leq N$ sei $\tau_i$ die Substitution mit $\tau_i(x)=\sigma′(x)$ für alle $x\in Def(\tau_i) =Def(\sigma′)\backslash\{x_1,x_2,...,x_i\}$.
+
+Behauptung:
+1. Für alle $0\leq i\leq N$ gilt $\sigma′=\sigma_i\tau_i$.
+2. Im $i$-ten Durchlauf durch die while-Schleife $(1\leq i\leq N)$ terminiert der Algorithmus entweder erfolgreich (und gibt die Substitution $\sigma_N$ aus) oder der Algorithmus betritt die beiden else-Zweige.
+3. Für alle $0\leq i\leq N$ enthalten $\{\alpha\sigmai,\beta\sigma_i\}$ und $T_i=\{y\tau_i|y\in Def(\tau_i)\}$ keine gemeinsamen Variablen.
+
+Aus dieser Behauptung folgt tatsächlich die Aussage des Lemmas:
+- Nach (2) terminiert der Algorithmus erfolgreich mit der Substitution $\sigma_N$. Daher gilt aber $\alpha\sigma_N=\beta\sigma_N$, d.h. $\sigma_N$ ist ein Unifikator.
+- Nach (1) gibt es auch eine Substitution $\tau_n$ mit $\sigma′=\sigma_N\tau_n$.
+
+> Lemma (C)
+> Sei die Eingabe $(\alpha,\beta)$ unifizierbar. Dann terminiert der Unifikationsalgorithmus erfolgreich und gibt einen allgemeinsten Unifikator $\sigma$ von $\alpha$ und $\beta$ aus.
+
+Beweis: Sei $\sigma′$ ein beliebiger Unifikator von $\alpha$ und $\beta$. Sei $Y=\{y_1,y_2,... ,y_n\}$ die Menge aller Variablen, die in $\{y\sigma′|y\in Def(\sigma′)\}$ vorkommen.
+Sei $Z=\{z_1,z_2,...,z_n\}$ eine Menge von Variablen, die weder in $\alpha$ noch in $\beta$ vorkommen.
+Sei $\rho$ die Variablenumbenennung mit $Def(\rho)=Y\cup Z,\rho(y_i) =z_i$ und $\rho(z_i)=y_i$ für alle $1\leq i\leq n$.
+Dann ist auch $\sigma′\rho$ ein Unifikator von $\alpha$ und $\beta$ und keine Variable aus $\alpha$ oder $\beta$ kommt in einem der Terme aus $\{y\sigma′\rho|y\in Def(\sigma′)\}$ vor.
+Nach Lemma (C1) terminiert der Unifikationsalgorithmus erfolgreich mit einem Unifikator $\sigma$ von $\alpha$ und $\beta$, so dass es eine Substitution $\tau$ gibt mit $\sigma′\rho=\sigma\tau$.
+Also gilt $\sigma′=\sigma(\tau\rho^{-1})$.
+Da $\sigma′$ ein beliebiger Unifikator von $\alpha$ und $\beta$ war und da die Ausgabe $\sigma$ des Algorithmus nicht von $\sigma′$ abhängt, ist $\sigma$ also ein allgemeinster Unifikator.
+
+> Satz
+>
+> - (A) Der Unifikationsalgorithmus terminiert für jede Eingabe.
+> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+> - (C) Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der Unifikationsalgorithmus immer einen allgemeinsten Unifikator von $\alpha$ und $\beta$.
+
+(C) besagt insbesondere, daß zwei unifizierbare gleichungsfreie Atomformeln(wenigstens) einen allgemeinsten Unifikator haben. Damit haben sie aber genau einen allgemeinsten Unifikator (bis auf Umbenennung der Variablen).

@@ -2307,7 +2307,7 @@ Beweis: „$\Leftarrow$“ Sei $A′$ Struktur und $\rho′$ Variableninterpreta
 > 
 > Aus einer Formel $\varphi$ kann man eine erfüllbarkeitsäquivalente Formel $\varphi$ in Skolemform berechnen. Ist $\varphi$ gleichungsfrei, so auch $\varphi$.
 
-Beweis: Es kann zu $\varphi$ äquivalente Formel $\varphi_0 =Q_1 x_1 Q_2 x_2 ...Q_ℓx_ℓ \psi$ in Pränexform berechnet werden (mit $n\leq ℓ$ Existenzquantoren). Durch wiederholte Anwendung des vorherigen Lemmas erhält man Formeln $\varphi_1,\varphi_2,...\varphi_n$ mit
+Beweis: Es kann zu $\varphi$ äquivalente Formel $\varphi_0 =Q_1 x_1 Q_2 x_2 ...Q_{\iota}  x_{\iota}   \psi$ in Pränexform berechnet werden (mit $n\leq {\iota}  $ Existenzquantoren). Durch wiederholte Anwendung des vorherigen Lemmas erhält man Formeln $\varphi_1,\varphi_2,...\varphi_n$ mit
 - $\varphi_i$ und $\varphi_{i+1}$ sind erfüllbarkeitsäquivalent
 - $\varphi_{i+1}$ enthält einen Existenzquantor weniger als $\varphi_i$
 - $\varphi_{i+1}$ ist in Pränexform
@@ -2489,7 +2489,7 @@ Beispiel
 > Eine Horn-Klausel der Prädikatenlogik ist eine Aussage der Form $\forall x_1\forall x_2...\forall x_n ((\lnot\bot\wedge\alpha_1 \wedge\alpha_2 \wedge...\wedge\alpha_m)\rightarrow\beta)$, mit $m\geq 0$, atomaren Formeln $\alpha_1,...,\alpha_m$ und $\beta$ atomare Formel oder $\bot$.
 
 Aufgabe:
-$\varphi_1,...,\varphi_n$ gleichungsfreie Horn-Klauseln, $\psi(x_1,x_2,...,x_ℓ)=R(t_1,...,t_k)$ atomare Formel, keine Gleichung. Bestimme die Menge der Tupel $(s_1,...,s_ℓ)$ von variablenfreien Termen mit $\{\varphi_1,...,\varphi_n\}\Vdash\psi(s_1,...,s_ℓ)=R(t_1,...,t_k)[x_1:=s_1]...[x_ℓ:=s_ℓ]$, d.h., für die die folgende Formel unerfüllbar ist: $\bigwedge_{1\leq i\leq n} \varphi_i \wedge \lnot\psi(s_1,...,s_ℓ) \equiv \bigwedge_{1\leq i\leq n} \varphi_i\wedge(\psi(s_1,...,s_ℓ)\rightarrow\bot)$
+$\varphi_1,...,\varphi_n$ gleichungsfreie Horn-Klauseln, $\psi(x_1,x_2,...,x_{\iota} )=R(t_1,...,t_k)$ atomare Formel, keine Gleichung. Bestimme die Menge der Tupel $(s_1,...,s_{\iota} )$ von variablenfreien Termen mit $\{\varphi_1,...,\varphi_n\}\Vdash\psi(s_1,...,s_{\iota} )=R(t_1,...,t_k)[x_1:=s_1]...[x_{\iota} :=s_{\iota} ]$, d.h., für die die folgende Formel unerfüllbar ist: $\bigwedge_{1\leq i\leq n} \varphi_i \wedge \lnot\psi(s_1,...,s_{\iota} ) \equiv \bigwedge_{1\leq i\leq n} \varphi_i\wedge(\psi(s_1,...,s_{\iota} )\rightarrow\bot)$
 
 Erinnerung
 - Eine Horn-Formel der Prädikatenlogik ist eine Konjunktion von Horn-Klauseln der Prädikatenlogik.
@@ -2650,3 +2650,68 @@ Da $\sigma′$ ein beliebiger Unifikator von $\alpha$ und $\beta$ war und da die
 > - (C) Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der Unifikationsalgorithmus immer einen allgemeinsten Unifikator von $\alpha$ und $\beta$.
 
 (C) besagt insbesondere, daß zwei unifizierbare gleichungsfreie Atomformeln(wenigstens) einen allgemeinsten Unifikator haben. Damit haben sie aber genau einen allgemeinsten Unifikator (bis auf Umbenennung der Variablen).
+
+## Prädikatenlogische SLD-Resolution
+Erinnerung
+- Eine Horn-Klausel der Prädikatenlogik ist eine Aussage der Form $\forall x_1 \forall x_2... \forall x_n ((\lnot\bot \wedge\alpha_1 \wedge\alpha_2 \wedge...\wedge\alpha_m)\rightarrow\beta)=\Psi$ mit $m\geq 0$, atomaren Formeln $\alpha_1,...,\alpha_m$ und $\beta$ atomare Formel oder $\bot$. Sie ist definit, wenn $\beta\not =\bot$.
+- $E(\varphi) =\{\Psi[x_1 :=t_1 ][x_2 :=t_2 ]...[x_n:=tn]|t_1 ,t_2 ,...,t_n\in D(\sigma)\}$
+- Eine Horn-Klausel der Aussagenlogik ist eine Formel der Form $(\lnot\bot\wedge q_1 \wedge q_2 \wedge... \wedge q_m)\rightarrow r$ mit $m\geq 0$, atomaren Formeln $q_1,q_2,...,q_m,r$ atomare Formel oder $\bot$.
+
+Schreib- und Sprechweise: 
+Für die Horn-Klausel der Prädikatenlogik $\forall x_1...\forall x_n(\lnot\bot \wedge \alpha_1 \wedge \alpha_2 \wedge...\wedge \alpha_m)\rightarrow\beta$ schreiben wir kürzer $\{\alpha_1,\alpha_2,...,\alpha_m\}\rightarrow\beta$. 
+insbes. $\varnothing\rightarrow\beta$ für $\forall x_1...\forall x_n(\lnot\bot\rightarrow\beta)$
+
+Erinnerung: 
+Sei $\Gamma$ eine Menge von Horn-Klauseln der Aussagenlogik. Eine aussagenlogische SLD-Resolution aus $\Gamma$ ist eine Folge $(M_0 \rightarrow\bot,M_1 \rightarrow\bot,...,M_m\rightarrow\bot)$ von Hornklauseln mit
+- $(M_0\rightarrow\bot)\in\Gamma$ und
+- für alle $0\leq n<m$ existiert $(N\rightarrow q)\in\Gamma$ mit $q\in M_n$ und $M_{n+1} =M_n\backslash\{q\}\cup N$
+
+> Definition
+>
+> Sei $\Gamma$ eine Menge von gleichungsfreien Horn-Klauseln der Prädikatenlogik. Eine SLD-Resolution aus $\Gamma$ ist eine Folge $((M_0\rightarrow\bot,\sigma_0),(M_1\rightarrow\bot,\sigma_1),...,(M_m\rightarrow\bot,\sigma_m))$ von Horn-Klauseln und Substitutionen mit
+> - $(M_0\rightarrow\bot)\in\Gamma$ und $Def(\sigma_0)=\varnothing$
+> - für alle $0\leq n<m$ existieren $\varnothing\not=Q\subseteq M_n,(N\rightarrow\alpha)\in\Gamma$ und Variablenumbenennung $\rho$, so dass
+>   - $(N\cup\{\alpha\})\rho$ und $M_n$ variablendisjunkt sind,
+>   - $\sigma_{n+1}$ ein allgemeinster Unifikator von $\alpha\rho$ und $Q$ ist und 
+>   - $M_{n+1} = (M_n\Q\cup N\rho)\sigma_{n+1}$.
+
+Ziel: 
+Seien $\Gamma=\{\varphi_1,...,\varphi_n\}$ Menge gleichungsfreier Horn-Klauseln, $\Psi(x_1,x_2 ,...,x_{\iota}) =R(t_1 ,...,t_k)$ atomare Formel, keine Gleichung und $(s_1,...,s_{\iota})$ Tupel variablenloser Terme.
+Dann sind äquivalent:
+1. $\Gamma\Vdash\Psi(s_1,...,s_{\iota}).
+2. Es gibt eine SLD-Resolution $((M_n\rightarrow\bot,\sigma_n))_{0\leq n\leq m}$ aus $\Gamma\cup\{M_0\rightarrow\bot\}$ mit $M_0=\{\Psi(x_1,...,x_{\iota})\}$ und $M_m=\varnothing$ und eine Substitution $\tau$, so dass $s_i=x_i\sigma_0 \sigma_1 ...\sigma_m\tau$ für alle $1\leq i\leq \iota$ gilt.
+
+> Lemma
+>
+> Sei $\Gamma$ Menge von gleichungsfreien Horn-Klauseln der Prädikatenlogik und $(M_n \rightarrow\bot,\sigma_n))_{0\leq n\leq m}$ eine SLD-Resolution aus $\Gamma\cup\{M_0\rightarrow\bot\}$ mit $M_m=\varnothing$.
+> Dann gilt $\Gamma\Vdash\Psi\sigma_0 \sigma_1\sigma_2...\sigma_m$ für alle $\Psi\in M_0$.
+
+Konsequenz:
+$\Gamma=\{\varphi_1,...,\varphi_n\},M_0 =\{\Psi(x_1,...,x_{\iota})\},\tau$ Substitution, so dass $s_i=x_i \sigma_0 \sigma_1 \sigma_2 ...\sigma_m \tau$ variablenlos für alle $1\leq i \leq \iota$. Nach dem Lemma gilt also $\Gamma \Vdash\Psi(x_1,...,x_{\iota})\sigma_0 ...\sigma_m$ und damit $\Gamma\Vdash\Psi(x_1 ,...,x_{\iota} )\sigma_0 ...\sigma_m\tau=\Psi(s_1,...,s_{\iota} )$.
+Die Implikation $(2)\Rightarrow (1)$ des Ziels folgt also aus diesem Lemma.
+
+> Lemma
+>
+> Sei $\Gamma$ eine Menge von definiten gleichungsfreien Horn-Klauseln der Prädikatenlogik, sei $M\rightarrow\bot$ eine gleichungsfreie Horn-Klausel und sei $\nu$ Substitution, so dass $M\nu$ variablenlos ist und $\Gamma\Vdash M\nu$ gilt. Dann existieren eine prädikatenlogische SLD-Resolution $((M_n \rightarrow\bot,\sigma_n))_{0 \leq n\leq m}$ und eine Substitution $\tau$ mit $M_0=M,M_m=\varnothing$ und $M_0 \sigma_0 \sigma_1... \sigma_m \tau=M_{\nu}$.
+
+Konsequenz:
+$\Gamma=\{\varphi_1,...,\varphi_n\},M=\{\psi(x_1 ,...,x_{\iota})\},s_1,...,s_\iota}$ variablenlose Terme, so dass $\{\varphi_1 ,...,\varphi_n\}\Vdash\psi(s_1,...,s_{\iota}) =\psi(x_1 ,...,x_{\iota})\nu$ mit $\nu(x_i)=s_i$. Dann existieren SLD-Resolution und Substitution $\tau$ mit $M_0\sigma 0...\sigma_m\tau=M\nu=\{\psi (s_1,...,s_{\iota} )\}$.
+Die Implikation $(1)\Rightarrow (2)$ des Ziels folgt also aus diesem Lemma.
+
+
+> Satz
+>
+> Sei $\Gamma$ eine Menge von definiten gleichungsfreien Horn-Klauseln der Prädikatenlogik, sei $M\rightarrow\bot$ eine gleichungsfreie Horn-Klausel und sei $\nu$ Substitution, so dass $M\nu$ variablenlos ist. Dann sind äquivalent:
+> - $\Gamma\Vdash M\nu$
+> - Es existieren eine SLD-Resolution $((M_n\rightarrow\bot,\sigma_n))_{0\leq n\leq m}$ aus $\Gamma\cup\{M\nu\rightarrow\bot\}$ und eine Substitution $\tau$ mit $M_0=M,M_m=\varnothing$ und $M_0\sigma_0\sigma_1...\sigma_m\tau=M\nu$.
+
+Konsequenz: 
+$\Gamma =\{\varphi_1,...,\varphi_n\},M_0 =\{\psi(x_1,...,x_{\iota})\}=\{R(t_1,t_2,...,t_k)\}$. Durch SLD-Resolutionen können genau die Tupel variablenloser Terme gewonnen werden, für die gilt:
+$\{\varphi_1,...,\varphi_n\}\Vdash\psi (s_1,...,s_{\iota})$
+
+## Zusammenfassung Prädikatenlogik
+- Das natürliche Schließen formalisiert die „üblichen“ Argumente in     mathematischen Beweisen.
+- Das natürliche Schließen ist vollständig und korrekt.
+- Die Menge der allgemeingültigen Formeln ist semi-entscheidbar, aber nicht entscheidbar.
+- Die Menge der Aussagen, die in $(\mathbb{N},+,*,0,1)$ gelten, ist nicht     semi-entscheidbar.
+- Die SLD-Resolution ist ein praktikables Verfahren, um die Menge der     "Lösungen" $(s_1,...,s_{\iota})$ von $\Gamma\Vdash\psi(s_1,...,s_{\iota})$ zu bestimmen (wobei $\Gamma$ Menge von gleichungsfreien Horn-Klauseln und $\psi$ Konjunktion von gleichungsfreien Atomformeln sind.

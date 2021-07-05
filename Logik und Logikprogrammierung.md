@@ -3013,3 +3013,140 @@ Dies geschieht solange, bis
 
 Zusätzliche Markierung der Kanten mit der Variablenersetzung (dem Unifikator).
 
+
+### PROLOG aus prozeduraler Sicht
+Beispiel: die „Hackordnung“
+1. chef_von(mueller,mayer).
+2. chef_von(mayer,otto).
+3. chef_von(otto,walter).
+4. chef_von(walter,schulze).
+5. weisungsrecht(X,Y) :- chef_von(X,Y).
+6. weisungsrecht(X,Y) :- chef_von(X,Z), weisungsrecht(Z,Y).
+   
+> Deklarative Interpretation 
+In einem Objektbereich $I=\{mueller, mayer, schulze, ...\}$ bildet das Prädikat $weisungsrecht(X,Y)$ $[X,Y]$ auf wahr ab, gdw.
+- das Prädikat $chef_von(X,Y)$ das Paar $[X,Y]$ auf wahr abbildet oder
+- es ein $Z\in I$ gibt, so dass
+  - das Prädikat $chef_von(X,Z)$ das Paar $[X,Z]$ auf wahr abbildet und
+  - das Prädikat $weisungsrecht(Z,Y)$ das Paar $[Z,Y]$ auf wahr abbildet.
+
+> Prozedurale Interpretation 
+Die Prozedur $weisungsrecht(X,Y)$ wird abgearbeitet, indem
+1. die Unterprozedur $chef_von(X,Y)$ abgearbeitet wird. Im Erfolgsfall ist die Abarbeitung beendet; anderenfalls werden
+2. die Unterprozeduren $chef_von(X,Z)$ und $weisungsrecht(Z,Y)$ abgearbeitet; indem systematisch Prozedurvarianten beider Unterprozeduren aufgerufen werden.Dies geschieht bis zum Erfolgsfall oder erfolgloser erschöpfender Suche.
+
+
+| deklarative Interpretation | prozedurale Interpretation |
+| --- | --- |
+Prädikat | Prozedur
+Ziel | Prozeduraufruf
+Teilziel | Unterprozedur
+Klauseln mit gleichem Kopfprädikat | Prozedur-varianten
+Klauselkopf | Prozedurkopf
+Klauselkörper | Prozedurrumpf
+
+Die Gratwanderung zwischen Wünschenswertem und technisch Machbarem erfordert mitunter „Prozedurales Mitdenken“, um
+1. eine gewünschte Reihenfolge konstruktiver Lösungen zu erzwingen,
+2. nicht terminierende (aber – deklarativ, d.h. logisch interpretiert - völlig korrekte) Programme zu vermeiden,
+3. seiteneffektbehaftete Prädikate sinnvoll einzusetzen,
+4. (laufzeit-) effizienter zu programmieren und
+5. das Suchverfahren gezielt zu manipulieren.
+
+Programm inkl. Deklarationsteil (BSP3.PRO)
+```
+domains
+  person = symbol
+predicates
+  chef_von(person,person)
+  weisungsrecht(person,person)
+clauses
+  chef_von(mueller,mayer).
+  chef_von(mayer,otto).
+  chef_von(otto,walter).
+  chef_von(walter,schulze).
+  weisungsrecht(X,Y) :- chef_von(X,Y).
+  weisungsrecht(X,Y) :- chef_von(X,Z), weisungsrecht(Z,Y).
+goal
+  weisungsrecht(Wer,Wem).
+```
+
+Prädikate zur Steuerung der Suche nach einer Folge von Resolutionsschritten! 
+
+!(cut)
+Das Prädikat $!/0$ ist stets wahr. In Klauselkörpern eingefügt verhindert es ein Backtrack der hinter $!/0$ stehenden Teilziele zu den vor $!/0$ stehenden Teilzielen sowie zu alternativen Klauseln des gleichen Kopfprädikats. Die Verarbeitung von $!/0$ schneidet demnach alle vor der Verarbeitung verbliebenen Lösungswege betreffenden Prozedur ab.
+
+Prädikate zur Steuerung der Suche: $!/0$
+![](Assets/Logik-prädikate-suche.png)
+
+
+Prädikate zur Steuerung der Suche nach einer Folge von Resolutionsschritten 
+**fail**
+Das Prädikat $fail/0$ ist stets falsch. In Klauselkörpern eingefügt löst es ein Backtrack aus bzw. führt zum Misserfolg, falls der Backtrack-Keller leer ist, d.h. falls es keine verbleibenden Lösungswege (mehr) gibt.
+![BSP4.PRO](Assets/Logik-prädikate-suche-fail.png)
+![BSP4.PRO](Assets/Logik-prädikate-suche-fail-2.png)
+
+### Listen und rekursive Problemlösungsstrategien
+Listen 
+1. $[]$ ist eine Liste.
+2. Wenn $T$ ein Term und $L$ eine Liste ist, dann ist
+   1. $[T|L]$ eine Liste.
+   2. $T.L$ eine Liste. (ungebräuchlich)
+   3. $.(T,L)$ eine Liste. (ungebräuchlich)
+   Das erste Element $T$ heißt Listenkopf, $L$ heißt Listenkörper oder Restliste.
+3. Wenn $t_1, ... ,t_n$ Terme sind, so ist $[t_1,...,t_n]$ eine Liste.
+4. Weitere Notationsformen von Listen gibt es nicht.
+
+
+
+Listen als kompakte Wissensrepräsentation: ein bekanntes Beispiel (BSP5.PRO)
+- arbeiten_in([meier, mueller], raum_1).
+  - arbeitet_in(meier, raum_1).
+  - arbeitet_in(mueller, raum_1).
+- arbeitet_in(otto, raum_2).
+  - arbeiten_in([otto], raum_2 ).
+- arbeitet_in(kraus, raum_3).
+  - arbeiten_in([kraus], raum_3 ).
+- anschluesse_in([raum_2, raum_3]).
+  - anschluss_in(raum_2).
+  - anschluss_in(raum_3).
+
+**Rekursion** in der Logischen Programmierung
+Eine Prozedur heißt (direkt) rekursiv, wenn in mindestens einem der Klauselkörper ihrer Klauseln ein erneuter Aufruf des Kopfprädikates erfolgt.
+Ist der Selbstaufruf die letzte Atomformel des Klauselkörpers der letzten Klausel dieser Prozedur - bzw. wird er es durch vorheriges „Abschneiden“ nachfolgender
+Klauseln mit dem Prädikat $!/0$ - , so spricht man von Rechtsrekursion ; anderenfalls von Linksrekursion.
+Eine Prozedur heißt indirekt rekursiv, wenn bei der Abarbeitung ihres Aufrufes ein erneuter Aufruf derselben Prozedur erfolgt.
+
+Wissensverarbeitung mit Listen: (BSP5.PRO)
+- erreichbar(K) :- arbeitet_in(K,R), anschluss_in(R).
+  - erreichbar(K) :- anschluesse_in(Rs), member(R, Rs), arbeiten_in(Ks, R), member(K, Ks).
+- koennen_daten_austauschen(K1,K2) :- arbeitet_in(K1,R),arbeitet_in(K2,R).
+  - koennen_daten_austauschen(K1,K2) :- arbeiten_in(Ks,_),member(K1,Ks), member(K2,Ks).
+- koennen_daten_austauschen(K1,K2) :- erreichbar(K1),erreichbar(K2).
+  - koennen_daten_austauschen(K1,K2) :- erreichbar(K1),erreichbar(K2).
+
+BSP5.PRO
+```
+domains
+  person, raum = symbol
+  raeume = raum*
+  personen = person*
+predicates
+  arbeiten_in(personen, raum)
+  anschluesse_in(raeume)
+  erreichbar(person)
+  koennen_daten_austauschen(person,person)
+  member(person,personen)
+  member(raum,raeume)
+clauses
+  ... (siehe oben)
+  member(E,[E|_]).
+  member(E,[_|R]) :- member(E,R).
+goal
+  erreichbar(Wer).
+```
+
+**Unifikation 2er Listen**
+1. Zwei leere Listen sind (als identische Konstanten aufzufassen und daher) miteinander unifizierbar.
+1. Zwei nichtleere Listen $[K_1|R_1]$ und $[K_2|R_2]$ sind miteinander unifizierbar, wenn ihre Köpfe ($K_1$ und $K_2$) und ihre Restlisten ($R_1$ und $R_2$) jeweils miteinander unifizierbar sind.
+3. Eine Liste $L$ und eine Variable $X$ sind miteinander unifizierbar, wenn die Variable selbst nicht in der Liste enthalten ist. Die Variable $X$ wird bei erfolgreicher Unifikation mit der Liste $L$ instanziert: $X:=L$.
+

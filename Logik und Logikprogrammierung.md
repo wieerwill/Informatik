@@ -2919,3 +2919,97 @@ BACKUS-NAUR-Form
 - Name ::= Kleinbuchstabe |Kleinbuchstabe Restname | "Zeichenfolge" | Sonderzeichenfolge
 - RestName ::= Kleinbuchstabe | Ziffer | _ | Kleinbuchstabe RestName | Ziffer RestName | _ RestName
 - ...
+
+### PROLOG aus logischer Sicht
+Was muss der Programmierer tun? 
+- Formulierung einer Menge von Fakten und Regeln (kurz: Klauseln), d.h. einer Wissensbasis $M\equiv\{K_1,...,K_n\}$
+- Formulierung einer negierten Hypothese (Frage, Ziel) $\lnot H\equiv\bigwedge_{i=1}^m H_i \equiv false\leftarrow \bigwedge_{i=1}^m H_i$
+
+Was darf der Programmierer erwarten? 
+- Dass das „Deduktionstool“ PROLOG $M \Vdash H$ zu zeigen versucht, d.h. $kt(\bigwedge_{i=1}^n K_i\wedge \lnot H)$ )
+- ..., indem systematisch die Resolutionsmethode auf $\lnot H$ und eine der Klauseln aus $M$ angewandt wird, solange bis $\lnot H\equiv false\leftarrow true$ entsteht
+
+#### Formulierung von Wissensbasen
+1. Beispiel 1 (BSP1.PRO)
+- Yoshihito und Sadako sind die Eltern von Hirohito.
+  - vater_von(yoshihito,hirohito).
+  - mutter_von(sadako,hirohito).
+- Kuniyoshi und Chikako sind die Eltern von Nagako.
+  - vater_von(kunioshi,nagako).
+  - mutter_von(chikako,nagako).
+- Akihito‘s und Hitachi‘s Eltern sind Hirohito und Nagako.
+  - vater_von(hirohito,akihito).
+  - vater_von(hirohito,hitachi).
+  - mutter_von(nagako,akihito).
+  - mutter_von(nagako,hitachi).
+- Der Großvater ist der Vater des Vaters oder der Vater der Mutter.
+  - grossvater_von(G,E) :- vater_von(G,V), vater_von(V,E).
+  - grossvater_von(G,E) :-vater_von(G,M),mutter_von(M,E).
+- Geschwister haben den gleichen Vater und die gleiche Mutter.
+  - geschwister(X,Y) :- vater_von(V,X), vater_von(V,Y), mutter_von(M,X), mutter_von(M,Y).
+
+Visual Prolog benötigt aber einen Deklarationsteil für Datentypen und Aritäten der Prädikate, der für die o.g. Wissensbasis so aussieht:
+```
+domains
+  person = symbol
+predicates
+  vater_von(person,person)        % bei nichtdeterministischen Prädikaten
+  mutter_von(person,person).      % kann man „nondeterm“ vor das
+  grossvater_von(person,person)   % Prädikat schreiben, um die
+  geschwister(person,person)      % Kompilation effizienter zu machen
+clauses
+  < Wissensbasis einfügen und Klauseln gleichen Kopfprädikates gruppieren>
+goal
+  < Frage ohne „?-“ einfügen>
+```
+
+2. Beispiel 2 (BSP2.PRO)
+- Kollegen Meier und Müller arbeiten im Raum 1, Kollege Otto im Raum 2 und Kollege Kraus im Raum 3.
+  - arbeitet_in(meier,raum_1).
+  - arbeitet_in(mueller,raum_1).
+  - arbeitet_in(otto,raum_2).
+  - arbeitet_in(kraus,raum_3).
+- Netzanschlüsse gibt es in den Räumen 2 und 3.
+  - anschluss_in(raum_2).
+  - anschluss_in(raum_3).
+- Ein Kollege ist erreichbar, wenn er in einem Raum mit Netzanschluss arbeitet.
+  - erreichbar(K) :- arbeitet_in(K,R),anschluss_in(R).
+- 2 Kollegen können Daten austauschen, wenn sie im gleichen Raum arbeiten oder beide erreichbar sind. 
+  - koennen_daten_austauschen(K1,K2) :- arbeitet_in(K1,R),arbeitet_in(K2,R).
+  - koennen_daten_austauschen(K1,K2) :- erreichbar(K1),erreichbar(K2).
+
+Deklarationsteil
+```
+domains
+  person, raum: symbol
+predicates
+  arbeitet_in(person,raum)
+  ansluss_in(raum)
+  erreichbar(person)
+  koennen_daten_austauschen(person,person)
+clauses
+  ...
+goal
+  ...
+```
+
+#### Verarbeitung Logischer Programme
+##### Veranschaulichung ohne Unifikation
+![](Assets/Logik-prolog-ohne-unifikation.png)
+
+Tiefensuche mit Backtrack:
+Es werden anwendbare Klauseln für das erste Teilziel gesucht. Gibt es ...
+- ... genau eine, so wird das 1. Teilziel durch deren Körper ersetzt.
+- ... mehrere, so wird das aktuelle Ziel inklusive alternativ anwendbarer Klauseln im Backtrack-Keller abgelegt und die am weitesten oben stehende Klausel angewandt.
+- ... keine (mehr), so wird mit dem auf dem Backtrack-Keller liegendem Ziel die Bearbeitung fortgesetzt.
+  
+Dies geschieht solange, bis
+- das aktuelle Ziel leer ist oder
+- keine Klausel (mehr) anwendbar ist und der Backtrack-Keller leer ist.
+
+
+##### Veranschaulichung mit Unifikation
+![](Assets/Logik-prolog-mit-unifikation.png)
+
+Zusätzliche Markierung der Kanten mit der Variablenersetzung (dem Unifikator).
+

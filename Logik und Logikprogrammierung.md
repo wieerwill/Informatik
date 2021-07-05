@@ -2715,3 +2715,207 @@ $\{\varphi_1,...,\varphi_n\}\Vdash\psi (s_1,...,s_{\iota})$
 - Die Menge der allgemeingültigen Formeln ist semi-entscheidbar, aber nicht entscheidbar.
 - Die Menge der Aussagen, die in $(\mathbb{N},+,*,0,1)$ gelten, ist nicht     semi-entscheidbar.
 - Die SLD-Resolution ist ein praktikables Verfahren, um die Menge der     "Lösungen" $(s_1,...,s_{\iota})$ von $\Gamma\Vdash\psi(s_1,...,s_{\iota})$ zu bestimmen (wobei $\Gamma$ Menge von gleichungsfreien Horn-Klauseln und $\psi$ Konjunktion von gleichungsfreien Atomformeln sind.
+
+# Logische Programmierung
+## Einführung in die Künstliche Intelligenz (KI)
+Ziel: Mechanisierung von Denkprozessen
+
+Grundidee (nach G.W. Leibniz)
+1. lingua characteristica - Wissensdarstellungssprache
+2. calculus ratiocinator - Wissensverarbeitungskalkül
+
+**Teilgebiete der KI** 
+- Wissensrepräsentation
+- maschinelles Beweisen (Deduktion)
+- KI-Sprachen: Prolog, Lisp
+- Wissensbasierte Systeme
+- Lernen (Induktion)
+- Wissensverarbeitungstechnologien (Suchtechniken, fallbasiertes Schließen, Multiagenten-Systeme)
+- Sprach- und Bildverarbeitung
+
+## Logische Grundlagen
+### PROLOG – ein „Folgerungstool“
+Sei $M$ eine Menge von Aussagen, $H$ eine Hypothese.
+
+$H$ folgt aus $M(M \Vdash H)$, falls jede Interpretation, die zugleich alle Elemente aus $M$ wahr macht (jedes Modell von M), auch $H$ wahr macht.
+Für endliche Aussagenmengen $M=\{A_1, A_2, ... , A_n\}$ bedeutet das:
+$M \Vdash H$, gdw. $ag(\bigwedge_{i=1}^n A_i\rightarrow A)$ bzw. (was dasselbe ist) $kt(\bigwedge_{i=1}^n A_i \wedge \lnot A)$
+ 
+### Aussagen in PROLOG: HORN-Klauseln des PK1
+![](Assets/Logik-prolog-horn.png)
+
+$A(X_1,...,X_n), A_i(X_1,...,X_n)$ quantorfreie Atomformeln, welche die allquantifizierten Variablen $X_1,...,X_n$ enthalten können
+
+Varianten / Spezialfälle
+1. Regeln (vollständige HORN-Klauseln)
+      $\forall X_1... \forall X_n(A(X_1,...,X_n)\leftarrow \bigwedge_{i=1}^n A_i(X_1,...,X_n))$
+2. Fakten (HORN-Klauseln mit leerem Klauselkörper)
+      $\forall X_1...\forall X_n(A(X_1,...,X_n)\leftarrow true)$
+3. Fragen (HORN-Klauseln mit leerem Klauselkopf)
+      $\forall X_1...\forall X_n(false \leftarrow \bigwedge_{i=1}^n A_i(X_1,...,X_n))$
+4. leere HORN-Klauseln (mit leeren Kopf & leerem Körper)
+      $false\leftarrow true$
+
+
+Effekte der Beschränkung auf HORN-Logik
+1. Über HORN-Klauseln gibt es ein korrektes und vollständiges Ableitungsverfahren.
+    - $\{K_1, ...,K_n\} \Vdash H$ , gdw. $\{K_1,...,K_n\} \vdash_{ROB} H$
+1. Die Suche nach einer Folge von Resolutionsschritten ist algorithmisierbar.
+    - Das Verfahren „Tiefensuche mit Backtrack“ sucht systematisch eine Folge, die zur leeren Klausel führt.
+    - Rekursive und/oder metalogische Prädikate stellen dabei die Vollständigkeit in Frage.
+3. Eine Menge von HORN-Klauseln mit nichtleeren Klauselköpfen ist stets erfüllbar; es lassen sich keine Widersprüche formulieren.
+    - $K_1 \wedge K_2...\wedge K_n \not= false$
+
+Die systematische Erzeugung von (HORN-) Klauseln
+1. Verneinungstechnischen Normalform (VTNF): $\lnot$ steht nur vor Atomformeln
+    - $\lnot\lnot A\equiv A$
+2. Erzeugung der Pränexen Normalform (PNF): $\forall, \exists$ stehen vor dem Gesamtausdruck
+    - $\forall X A(X) \rightarrow B \equiv \exists X(A(X)\rightarrow B)$
+    - $\exists X A(X) \rightarrow B \equiv \forall X(A(X)\rightarrow B)$
+3. Erzeugung der SKOLEM‘schen Normalform (SNF): $\exists$ wird eliminiert
+    Notation aller existenzquantifizierten Variablen als Funktion derjenigen allquantifizierten Variablen, in deren Wirkungsbereich ihr Quantor steht. Dies ist keine äquivalente - , wohl aber eine die Kontradiktorizität erhaltende Umformung.
+4. Erzeugung der Konjunktiven Normalform (KNF)
+    Durch systematische Anwendung des Distributivgesetzes $A\vee (B\wedge C)\equiv (A\vee B)\wedge(A\vee C)$ lässt sich aus der SNF $\forall X_1...\forall X_n A(X_1,...,X_n)$ stets die äquivalente KNF $\forall X_1...\forall X_n((L_1^1\vee...\vee L_1^{n_1})\wedge...\wedge(L_m^1\vee...\vee L_m^{n_m}))$ erzeugen. Die $L_i^k$ sind unnegierte oder negierte Atomformeln und heißen positive bzw. negative Literale.
+5. Erzeugung der Klauselform (KF)
+    Jede der Elementardisjunktionen $(L_1^j \vee...\vee L_1^{j_k})$ der KNF kann man als äquivalente Implikation (Klausel) $(L_i^j \vee...\vee L_i^{j_m})\leftarrow(L_1^{j_{m+1}}\wedge ...\wedge L_1^{j_k})$ notieren, indem man alle positiven Literale $L_i^j,...,L_i^{j_m}$ disjunktiv verknüpft in den DANN-Teil (Klauselkopf) und alle negativen Literale $L_i^{j_{m+1}},...,L_i^{j_k}$ konjunktiv verknüpft in den WENN-Teil (Klauselkörper) notiert.
+6. Sind die Klauseln aus Schritt 5. HORN?
+    In dem Spezialfall, dass alle Klauselköpfe dabei aus genau einem Literal bestehen, war die systematische Erzeugung von HORN-Klauseln erfolgreich; anderenfalls gelingt sie auch nicht durch andere Verfahren. 
+    Heißt das etwa, die HORN-Logik ist eine echte Beschränkung der Ausdrucksfähigkeit? Richtig, das heißt es.
+
+Im Logik-Teil dieser Vorlesung lernten Sie eine Resolutionsmethode für Klauseln kennenlernen
+- ... deren Algorithmisierbarkeit allerdings an der „kombinatorischen Explosion“ der Resolutionsmöglichkeiten scheitert, aber ...
+- ... in der LV „Inferenzmethoden“ können Sie noch ein paar „Tricks“ kennenlernen, die „Explosion“ einzudämmen
+
+
+### Inferenz in PROLOG: Resolution nach ROBINSON
+gegeben:
+- Menge von Regeln und Fakten M $M=\{K_1,...,K_n\}$
+- negierte Hypothese $\lnot H$ $\lnot H\equiv \bigwedge_{i=1}^m H_i \equiv false \rightarrow \bigwedge_{i=1}^m H_i$
+  
+Ziel: Beweis, dass $M \Vdash H$. $kt(\bigwedge_{i=1}^n K_i \wedge \lnot H)$
+
+Eine der Klauseln habe die Form $A\leftarrow \bigwedge_{k=1}^p B_k$. ($A,B_k$- Atomformeln)
+
+Es gebe eine Substitution (Variablenersetzung) $\nu$ für die $A$ und eines der $H_i$ (etwa $H_l$) vorkommenden Variablen, welche $A$ und $H_l$ syntaktisch identisch macht.
+
+$M\equiv \bigwedge_{i=1}^n K_i\wedge \lnot(\bigwedge_{i=1}^m H_i)$ ist kontradiktorisch ($kt\ M‘$), gdw. $M‘$ nach Ersetzen von $H$ durch $\bigwedge_{i=1}^{l-1}\nu(H_i)\wedge\bigwedge_{k=1}^p\nu(B_k)\wedge\bigwedge_{i=l+1}^m \nu(H_i)$ noch immer kontradiktorisch ist.
+
+Jetzt wissen wir also, wie man die zu zeigende Kontradiktorizität auf eine andere – viel kompliziertere Kontradiktorizität zurückführen kann. 
+Für $p=0$ und $m=1$ wird es allerdings trivial.
+Die sukzessive Anwendung von Resolutionen muss diesen Trivialfall systematisch herbeiführen: 
+
+> Satz von ROBINSON
+> 
+> $M'\equiv\bigwedge_{i=1}^n K_i\wedge \lnot H$ ist kontradiktorisch ($kt\ M‘$), gdw. durch wiederholte Resolutionen in endlich vielen Schritten die negierte Hypothese $\lnot H\equiv false \leftarrow H$ durch die leere Klausel $false\leftarrow true$ ersetzt werden kann.
+
+Substitution
+- Eine (Variablen-) Substitution $\nu$ einer Atomformel $A$ ist eine Abbildung der Menge der in $A$ vorkommenden Variablen $X$ in die Menge der Terme (aller Art: Konstanten, Variablen, strukturierte Terme).
+- Sie kann als Menge von Paaren $[Variable,Ersetzung]$ notiert werden: $\nu=\{[x,t]: x\in X, t=\nu(x)\}$
+- Für strukturierte Terme wird die Substitution auf deren Komponenten angewandt: $\nu(f(t_1,...,t_n)) = f(\nu(t_1),...,\nu(t_n))$
+- Verkettungsoperator $\circ$ für Substitutionen drückt Hintereinander-anwendung aus: $\sigma\circ\nu(t)=\sigma(\nu(t))$
+- Substitutionen, die zwei Terme syntaktisch identisch machen, heißen Unifikator: $\nu$unifiziert zwei Atomformeln (oder Terme) $s$ und $t$ (oder: heißt Unifikator von $s$ und $t$), falls dessen Einsetzung $s$ und $t$ syntaktisch identisch macht.
+
+#### Unifikation
+Zwei Atomformeln $p(t_{11},...,t_{1n})$ und $p_2(t_{21},...,t_{2n})$ sind unifizierbar, gdw.
+- sie die gleichen Prädikatensymbole aufweisen ($p_1= p_2$),
+- sie die gleichen Stelligkeiten aufweisen ($n = m$) und
+- die Terme $t_{1i}$ und $t_{2i}$ jeweils miteinander unifizierbar sind.
+
+Die Unifizierbarkeit zweier Terme richtet sich nach deren Sorte:
+1. Zwei Konstanten $t_1$ und $t_2$ sind unifizierbar, gdw. $t_1= t_2$
+2. Zwei strukturierte Terme $f(t_{11},...,t_{1n})$ und $f(t_{21},...,t_{2n})$ sind unifizierbar, gdw.
+    - sie die gleichen Funktionssymbole aufweisen ($f_1= f_2$),
+    - sie die gleichen Stelligkeiten aufweisen ($n=m$) und
+    - die Terme $t_{1i}$ und $t_{2i}$ jeweils miteinander unifizierbar sind.
+3. Eine Variable $t_1$ ist mit einer Konstanten oder einem strukturierten Term $t_2$ unifizierbar. $t_1$ wird durch $t_2$ ersetzt (instanziert): $t_1:= t_2$
+4. Zwei Variablen $t_1$ und $_2$ sind unifizierbar und werden gleichgesetzt: $t_1:=t_2$ bzw. $t_2:= t_1$
+
+Genügt „irgendein“ Unifikator? 
+- ein Beispiel
+  - $K_1: p(A,B)\leftarrow q(A)\wedge r(B)$
+  - $K_2:q(c)\leftarrow true$
+  - $K_3:r(d)\leftarrow true$
+  - $\lnot H: false\leftarrow p(X,Y)$
+- Unifikatoren für $H_1^0$ und Kopf von $K_1$:
+  - $\nu^1 = \{[X,a],[Y,b],[A,a],[B,b]\}$
+  - $\nu^2 =\{[X,a],[Y,B],[A,a]\}$
+  - $\nu^3 =\{[X,A],[Y,b],[B,b]\}$
+  - $\nu^4=\{[A,X],[B,Y]\}$ ...
+- Obwohl $\{K_1, K_2, K_3\}\Vdash H$, gibt es bei Einsetzung von $\nu^1$, $\nu^2$ und $\nu^3$ keine Folge von Resolutionsschritten, die zur leeren Klausel führt.
+- Bei Einsetzung von $\nu^4$ hingegen gibt es eine solche Folge.
+- Die Vollständigkeit des Inferenzverfahrens hängt von der Wahl des „richtigen“ Unifikators ab.
+- Dieser Unifikator muss möglichst viele Variablen variabel belassen. Unnötige Spezialisierungen versperren zukünftige Inferenzschritte.
+- Ein solcher Unifikator heißt **allgemeinster Unifikator** bzw. "most general unifier" (m.g.u.).
+
+> Allgemeinster Unifikator 
+> 
+> Eine Substitution heißt allgemeinster Unifikator (most general unfier; m.g.u.) zweier (Atomformeln oder) Terme $s$ und $t$ ($\nu= m.g.u.(s,t)$), gdw.
+> 1. die Substitution $\nu$ ein Unifikator von $s$ und $t$ ist und
+> 2. für jeden anderen Unifikator $\sigma$ von $s$ und $t$ eine nichtleere und nicht identische Substitution $\tau$ existiert, so dass $\sigma=\tau\circ\nu$ ist.
+> graphisch betrachtet: ![](Assets/Logik_allgemeinster-unifikator.png)
+
+Der Algorithmus zur Berechnung des m.g.u. zweier Terme $s$ und $t$ verwendet Unterscheidungsterme: Man lese $s$ und $t$ zeichenweise simultan von links nach rechts. Am ersten Zeichen, bei welchem sich $s$ und $t$ unterscheiden, beginnen die Unterscheidungsterme $s*$ und $t*$ und umfassen die dort beginnenden (vollständigen) Teilterme.
+
+Algorithmus zur Bestimmung des allgemeinsten Unifikators 2er Terme
+
+- input: s, t
+- output: Unifizierbarkeitsaussage, ggf. $\nu= m.g.u.( s , t )$
+- $i:=0;\nu_i:=\varnothing;s_i:=s; t_i=t$
+- Start: $s_i$ und $t_i$ identisch?
+  - ja $\Rightarrow$ s und t sind unifizierbar, $\nu=\nu_i=m.g.u.(s,t)$ (fertig)
+  - nein $\Rightarrow$ Bilde die Unterscheidungsterme $s_i^*$ und $t_i^*$
+    - $s_i^*$ oder $t_i^*$ Variable?
+      - nein $\Rightarrow$ $s$ und $t$ sind nicht unifizierbar (fertig)
+      - ja $\Rightarrow$ sei (o.B.d.A.) $s_i^*$ eine Variable
+        - $s_i^* \subseteq t_i^*$? (enthält $t_i^*$ die Variable $s_i^*$?)
+          - ja $\Rightarrow$ $s$ und $t$ sind nicht unifizierbar (fertig)
+          - nein $\Rightarrow$ 
+            - $\nu':=\{[s,t']: [s,t]\in\nu, t':=t|_{s*\rightarrow t*}\}\cup \{[s_i^*, t_i^*]\}$
+            - $s':=\nu'(s_i); t':=\nu'(t_i); i:=i+1;$
+            - $\nu_i:=\nu'; s_i:=s'; t_i:=t';$ 
+            - gehe zu Start
+
+## Logische Programmierung
+### Einordnung des logischen Paradigmas
+![](Assets/Logik-logische-programmierung-einordnung.png)
+
+„deskriptives“ Programmierparadigma =
+1. Problembeschreibung
+    - Die Aussagenmenge $M =\{K_1,...,K_n\}$, über denen gefolgert wird, wird in Form von Fakten und Regeln im PK1 notiert.
+    - Eine mutmaßliche Folgerung (Hypothese) $H$ wird in Form einer Frage als negierte Hypothese hinzugefügt.
+2. (+) Programmverarbeitung 
+    - Auf der Suche eines Beweises für $M \Vdash H$ werden durch mustergesteuerte Prozedur-Aufrufe Resolutions-Schritte zusammengestellt.
+    - Dem „Programmierer“ werden (begrenzte) Möglichkeiten gegeben, die systematische Suche zu beeinflussen.
+
+### Syntax
+Syntax von Klauseln
+| | Syntax | Beispiel
+| --- | --- | --- |
+Fakt | praedikatensymbol(term,...term). | liefert(xy_ag,motor,vw).
+Regel | praedikatensymbol(term,...term) :- praedikatensymbol(term,...term) ,... , praedikatensymbol(term,...term). | konkurrenten(Fa1,Fa2) :- liefert(Fa1,Produkt,_),liefert(Fa2,Produkt,_).
+Frage | ?- praedikatensymbol(term,...term) , ... ,praedikatensymbol(term,...term). | ?- konkurrenten(ibm,X), liefert(ibm,_,X).
+
+Syntax von Termen
+| | | Syntax | Beispiele | 
+| --- | --- | --- | --- |
+Konstante | Name | Zeichenfolge, beginnend mit Kleinbuchstaben, die Buchstaben, Ziffern und \_ enthalten kann. | otto\_1 , tisch, hund
+|| beliebige Zeichenfolge in “...“ geschlossen | “Otto“, “r@ho“
+|| Sonderzeichenfolge | €%&§$€
+| Zahl | Ziffernfolge, ggf. mit Vorzeichen, Dezimalpunkt und Exponentendarstellung | 3, -5, 1001, 3.14E-12
+Variable | allg. | Zeichenfolge, mit Großbuchstaben oder \_ beginnend | X, Was, _alter
+| anonym | Unterstrich | \_
+strukturierter Term | allg. | funktionssymbol( term , ... , term ) | nachbar(chef(X))
+| Liste | leere Liste | [ ]
+| | $[term|restliste]$ | $[mueller|[mayer|[]]]$
+|| $[term , term , ... , term ]$ | $[ mueller, mayer, schulze ]$
+
+BACKUS-NAUR-Form
+- PROLOG-Programm ::= Wissensbasis Hypothese
+- Wissensbasis ::= Klausel | Klausel Wissensbasis
+- Klausel ::= Fakt | Regel
+- Fakt ::= Atomformel.
+- Atomformel ::= Prädikatensymbol (Termfolge)
+- Prädikatensymbol ::= Name
+- Name ::= Kleinbuchstabe |Kleinbuchstabe Restname | "Zeichenfolge" | Sonderzeichenfolge
+- RestName ::= Kleinbuchstabe | Ziffer | _ | Kleinbuchstabe RestName | Ziffer RestName | _ RestName
+- ...

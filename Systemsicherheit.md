@@ -90,31 +90,20 @@
       - [An MLS Model for Chinese-Wall Policies](#an-mls-model-for-chinese-wall-policies)
         - [Summary CW](#summary-cw)
   - [Summary](#summary-2)
-      - [ABAC](#abac)
-      - [Summary](#summary-3)
-    - [Information Flow Models](#information-flow-models-1)
-      - [Denning](#denning)
-      - [MLS](#mls)
-      - [BLP](#blp)
-      - [Biba](#biba)
-      - [Summary](#summary-4)
-    - [Non-interference Models](#non-interference-models-1)
-    - [Hybrid Models](#hybrid-models-1)
-      - [Brewer-Nash](#brewer-nash)
-      - [LR-CW](#lr-cw)
-      - [MLS-CW](#mls-cw)
 - [Practical Security Engineering](#practical-security-engineering)
   - [Model Engineering](#model-engineering)
+    - [Model Family](#model-family)
   - [Model Specification](#model-specification)
+  - [Model Specification](#model-specification-1)
     - [CorPS](#corps)
     - [SELinux Policy Language](#selinux-policy-language)
-  - [Summary](#summary-5)
+  - [Summary](#summary-3)
 - [Security Mechanisms](#security-mechanisms)
   - [Authorization](#authorization)
     - [Access Control Lists](#access-control-lists)
     - [Capability Lists](#capability-lists)
     - [Interceptors](#interceptors)
-    - [Summary](#summary-6)
+    - [Summary](#summary-4)
   - [Cryptographic Mechanisms](#cryptographic-mechanisms)
     - [Encryption](#encryption)
       - [Symmetric](#symmetric)
@@ -128,7 +117,7 @@
     - [Cryptographic Protocols](#cryptographic-protocols)
       - [SmartCards](#smartcards)
       - [Authentication Protocols](#authentication-protocols)
-  - [Summary](#summary-7)
+  - [Summary](#summary-5)
 - [Security Architectures](#security-architectures)
   - [Design Principles](#design-principles)
   - [Operating Systems Architectures](#operating-systems-architectures)
@@ -138,7 +127,7 @@
     - [CORBA](#corba)
     - [Web Services](#web-services)
     - [Kerberos](#kerberos)
-  - [Summary](#summary-8)
+  - [Summary](#summary-6)
 
 # Introduction
 ## Risk Scenarios
@@ -2788,22 +2777,134 @@ Remember: Goals of Security Models
 2.  correctly implement a policy
 
 
-#### ABAC
-#### Summary
-### Information Flow Models
-#### Denning
-#### MLS
-#### BLP
-#### Biba
-#### Summary
-### Non-interference Models
-### Hybrid Models
-#### Brewer-Nash
-#### LR-CW
-#### MLS-CW
-
 # Practical Security Engineering
+Problem: Off-the-shelf models not always a perfect match for real-world scenarios
+
+Goal: Design of new, application-specific models
+- Identify common components found in many models $\rightarrow$ generic model core
+- Core specialization
+- Core extension
+- Glue between model components
+
 ## Model Engineering 
+### Model Family
+What we have
+![](Assets/Systemsicherheit-model-family.png)
+
+In Formal Words ...
+- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩$
+- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩$
+- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩$
+- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩$
+- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩$
+- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+
+Core Model (Common Model Core)
+- HRU: $⟨ Q, \sum , \delta, q_0  , \not R ⟩$
+- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , \not R, \not P, \not PA ⟩$
+- DABAC: $⟨ \not A , Q ,\sum , \delta, q_0  ⟩$
+- TAM: $⟨ Q , \sum , \delta, q_0  , \not T, \not R ⟩$
+- BLP: $⟨ \not S, \not O, \not L, Q , \sum , \delta, q_0  , \not R ⟩$
+- NI: $⟨ Q , \sum , \delta, \not \lambda ,q_0  , \not D, \not A, \not dom, \not =_{NI} , \not Out ⟩$
+- $\rightarrow  ⟨ Q ,\sum , \delta, q_0  ⟩$
+
+Core Specialization
+- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow Q = 2^S \times  2^O \times M$
+- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow Q = 2^U\times 2^{UA}\times 2^S \times  USER \times  ROLES$
+- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow Q = 2^S\times 2^O \times M\times ATT$
+- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow Q = 2^S\times 2^O\times TYPE \times M$
+- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow Q = M \times CL$
+- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+
+Core Extensions
+- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow R$
+- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow R,P,PA$
+- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow A$
+- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow T,R$
+- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow S,O,L,R$
+- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩ \Rightarrow \lambda,D,A,dom,=_{NI},Out$
+- $\rightarrow R, P, PA, A , T , S , O , L , D , dom , =_{NI} , ...$
+
+Glue
+- E.g. TAM: State transition scheme (types)
+- E.g. DABAC: State transition scheme (matrix and predicates)
+- E.g. Brewer/Nash Chinese Wall model: "$\wedge$" (simple, because $H+C\not= m$)
+- E.g. BLP
+  - BLP read rule
+  - BLP write rule
+  - BST
+  - (much more complex, because rules restrict m by L and cl )
+
+$\rightarrow$  Model Engineering Principles
+-  Core model
+-  Core specialization, e.g.
+  - $Q = 2^S\times 2^O \times M$ (HRU)
+  - $Q = M\times CL$ (BLP)
+- Core extension, e.g.
+  - e.g. $L$ (BLP)
+  - $T$ (TAM)
+  - $D, dom ,=_{NI}$ (NI)
+- Component glue, e.g.
+  - Chinese Wall: DAC "$\wedge$" MAC in AS
+  - BLP: complex relation between ACM and lattice
+  - $\rightarrow$  BLP security, BLP BST
+
+You should have mastered now: A basic tool set for model-based security policy engineering
+- A stock of basic security model abstractions
+  - ACFs and ACMs
+  - Model states and transitions defined by an STS
+  - Attributes (roles, confidentiality classes, information contents, location, ...)
+  - Information flows
+- A stock of formal model building blocks
+  - Sets, functions, relations
+  - Deterministic automatons
+  - Graphs and lattices
+- A stock of standard, off-the-shelf security models
+- Methods and techniques
+  - for model-based proof of policy properties properties
+  - for combining basic model building blocks into new, application-oriented security models
+
+## Model Specification
+Policy Implementation
+- We want: A system controlled by a security policy
+- We have: A (satisfying) formal model of this policy
+
+To Do
+- How to convert a formal model into an executable policy?
+  - $\rightarrow$  Policy specification languages
+- How to enforce an executable policy in a system?
+  - $\rightarrow$  security mechanisms and architectures (Chapters 5 and 6)
+
+Role of Specification Languages: Same as in software engineering
+- To bridge the gap between
+  - Abstractions of security models (sets, relations, ...)
+  - Abstractions of implementation platforms (security mechanisms such as ACLs, krypto-algorithms, Security Server ...)
+- Foundation for
+  - Code verification
+  - Or even more convenient: Automated code generation
+
+
+Approach
+- Abstraction level:
+  - Step stone between model and security mechanisms
+  - $\rightarrow$  More concrete than models
+  - $\rightarrow$  More abstract than programming languages (“what” instead of “how“)
+- Expressive power:
+  - Domain-specific; for representing security models only
+  - $\rightarrow$  Necessary: adequate language paradigms
+  - $\rightarrow$  Sufficient: not more than necessary (no dead weight)
+
+Domains
+- Model domain
+  - e.g. AC models (TAM, RBAC, ABAC)
+  - e.g. IF models (MLS)
+  - e.g. NI models
+- Implementation domain
+  - OS
+  - Middleware
+  - Applications
+
+
 ## Model Specification 
 ### CorPS
 ### SELinux Policy Language

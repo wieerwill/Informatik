@@ -51,14 +51,16 @@ Lernen ist viel Arbeit und bereitet dir Schwierigkeiten? Lies unsere [Hilfe](ric
 Keine Garantie auf Vollständigkeit/Korrektheit! Hilf uns Fehler zu korrigieren und noch weitere Fächer abzudecken.
 
 ## Verwendung
-Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder, Grafiken, Musik etc ist in einem eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
-Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Kein Inhalte oder Teile dieses Repositories dürfen kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
+Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder, Grafiken etc ist in einem eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
+Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Keine Inhalte oder Teile dieses Repositories dürfen kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 
 ## Recht auf Kopie deiner Prüfungsleistung
 Die TU Ilmenau ist sich ja selbst nicht sehr sicher wie sie damit umgeht und, wie so oft, verbietet es erstmal ganz. Nach bereits erfolgreichen Teilschritten hoffen wir bald wieder vollständig Einblick in unsere eigenen Leistungen nehmen zu können und tatsächlich aus unseren Fehlern lernen zu können. Falls du eine Kopie deiner Prüfung mit Aufgaben und Bemerkungen einholen willst, nutze gerne unsere Vorlage.
 
 ! Hinweis: Wir sind keine Juristen oder ähnliche Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
+
+Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort. Wir sind weiter dran.
 
 Hier gehts zum: [Antrag auf Kopie einer Prüfung](Antrag%20auf%20Kopie%20einer%20Prüfung.pdf)
 
@@ -72,7 +74,7 @@ Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet h
 - Erstelle ein 'pull request' damit deine Änderungen in diesem Repository übernommen werden können. Dies kannst du über dein Github Dashboard machen.
 
 ## Bild- und Textrechte
-Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt oder unter ausführlicher Quellangabe verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandelt. Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
+Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt oder unter ausführlicher Quellangabe oder ggf. unter dem Vorlesungstitel verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandhabt. Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
 
 ## Lizenz
 Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt ihr [hier](LICENSE) nachlesen.

@@ -1,15 +1,27 @@
 \documentclass[a4paper]{article}
 \usepackage[ngerman]{babel}
-\usepackage[utf8]{inputenc}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{ifthen}
-\usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
+\usepackage[landscape]{geometry}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{color,graphicx,overpic}
+\usepackage{listings}
 \usepackage[compact]{titlesec} %less space for headers
 \usepackage{mdwlist} %less space for lists
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{pdflscape}
+\usepackage{verbatim}
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Stochastik}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
 
 \pdfinfo{
     /Title (Stochastik - Cheatsheet)
@@ -18,6 +30,16 @@
     /Author (Robert Jeutter)
     /Subject ()
 }
+% Information boxes
+\newcommand*{\info}[4][16.3]{
+  \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
+  \list{$\bullet$}{\topsep=0pt\itemsep=0pt\parsep=0pt
+    \parskip=0pt\labelwidth=8pt\leftmargin=8pt
+    \itemindent=0pt\labelsep=2pt}
+    #4
+  \endlist
+  };
+}
 
 % This sets page margins to .5 inch if using letter paper, and to 1cm
 % if using A4 paper. (This probably isn't strictly necessary.)
@@ -25,8 +47,8 @@
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
     {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+        {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
     }
 
 % Redefine section commands to use less space
@@ -61,9 +83,6 @@
 \titlespacing{\section}{0pt}{*0}{*0}
 \titlespacing{\subsection}{0pt}{*0}{*0}
 \titlespacing{\subsubsection}{0pt}{*0}{*0}
-
-% Turn off header and footer
-\pagestyle{empty}
 
 \begin{document}
 \raggedright
@@ -377,11 +396,11 @@
 \subsection{Skalenniveaus}
 \begin{tabular}{r c c l l}
   Skalen          & diskret & qualitativ & was ist definiert?                                                                 & für                     \\\hline
-  Nominalskala    &         & Y           & Klassifikation/Kategorien                                                          & Geschlecht, Studiengang \\
-  Ordinalskala    &         & Y           & Kategorien + Rangordnung                                                           & Schulnoten              \\
-  Intervallskala  &         &             & Kategorien + Rangordnung + Abstände                                                & Temperatur              \\
-  Verhältnisskala &         &             & Kategorien + Rangordnung + Abstände + natürlicher Nullpunkt                        & Gehalt, Gewicht         \\
-  Absolutskala    & Y       & Y           & Kategorien + Rangordnung + Abstände + natürlicher Nullpunkt + natürliche Einheiten & Anzahl Fachsemester
+  Nominalskala    &         & Y          & Klassifikation/Kategorien                                                          & Geschlecht, Studiengang \\
+  Ordinalskala    &         & Y          & Kategorien + Rangordnung                                                           & Schulnoten              \\
+  Intervallskala  &         &            & Kategorien + Rangordnung + Abstände                                                & Temperatur              \\
+  Verhältnisskala &         &            & Kategorien + Rangordnung + Abstände + natürlicher Nullpunkt                        & Gehalt, Gewicht         \\
+  Absolutskala    & Y       & Y          & Kategorien + Rangordnung + Abstände + natürlicher Nullpunkt + natürliche Einheiten & Anzahl Fachsemester
 \end{tabular}
 
 \end{document}

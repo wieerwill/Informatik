@@ -1,22 +1,27 @@
 \documentclass[a4paper]{article}
 \usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{ifthen}
-\usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
+\usepackage[landscape]{geometry}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{color,graphicx,overpic}
 \usepackage{xcolor, listings}
 \usepackage{textcomp}
 \usepackage[compact]{titlesec} %less space for headers
 \usepackage{mdwlist} %less space for lists
-\usepackage[utf8]{inputenc}
-\usepackage{tikz}
 \usepackage{pdflscape}
 \usepackage{verbatim}
-\usetikzlibrary{mindmap, arrows,shapes,positioning,shadows,trees, er}
-\tikzstyle{every node}=[draw=black,thin,anchor=west, minimum height=2em]
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Datenbanksysteme}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
 
 \pdfinfo{
     /Title (Datenbanksysteme - Cheatsheet)
@@ -24,16 +29,6 @@
     /Producer (pdfTeX 1.40.0)
     /Author (Robert Jeutter)
     /Subject ()
-}
-% Information boxes
-\newcommand*{\info}[4][16.3]{
-  \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
-  \list{$\bullet$}{\topsep=0pt\itemsep=0pt\parsep=0pt
-    \parskip=0pt\labelwidth=8pt\leftmargin=8pt
-    \itemindent=0pt\labelsep=2pt}
-    #4
-  \endlist
-  };
 }
 
 %%% Code Listings
@@ -58,8 +53,8 @@
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
     {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+    {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
     }
 
 % Redefine section commands to use less space
@@ -99,11 +94,6 @@
 \titlespacing{\subsection}{0pt}{*0}{*0}
 \titlespacing{\subsubsection}{0pt}{*0}{*0}
 
-%My Environments
-\newtheorem{example}[section]{Example}
-
-% Turn off header and footer
-\pagestyle{empty}
 \begin{document}
 
 \raggedright
@@ -1007,14 +997,14 @@ call weinliste ("Helena", wliste);
         \item[Primärschlüssel PRIMARY KEY] nicht null, existiert und ist unique
         \item[Fremdschlüssel FOREIGN KEY] wie primary key aus anderer tabelle
         \item[CHECK-Bedingungen] werte vor insert prüfen
-        \item[ASSERTIONs] 
+        \item[ASSERTIONs]
         \item[Trigger]
     \end{description}
 
     \section{CLOSURE-Algorithmus / RAP-Regeln}
     \begin{tabular}{c|c|l}
-        R & Reflexivität & $\{\} \Rightarrow X\rightarrow X$ \\
-        A & Akkumulation & $\{X\rightarrow YZ, Z\rightarrow AW\}\Rightarrow X\rightarrow YZA$\\
+        R & Reflexivität  & $\{\} \Rightarrow X\rightarrow X$                                  \\
+        A & Akkumulation  & $\{X\rightarrow YZ, Z\rightarrow AW\}\Rightarrow X\rightarrow YZA$ \\
         P & Projektivität & $\{X\rightarrow YZ\}\Rightarrow X\rightarrow Y$
     \end{tabular}
 
@@ -1023,18 +1013,18 @@ call weinliste ("Helena", wliste);
         \item[1.NF] Wertebereiche der Merkmale sind atomar (es gibt keine zusammengesetzten Werte).
         \item[2.NF] 1. NF + Nichtschlüsselmerkmale sind von allen Schlüsselmerkmalen voll funktional abhängig.
         \item[3.NF] 2. NF + kein Nichtschlüsselmerkmal ist von irgendeinem Schlüssel transitiv abhängig.
-        \item[Boyce Codd] 3.NF + entgernen funktionaler Abhängigkeiten 
+        \item[Boyce Codd] 3.NF + entgernen funktionaler Abhängigkeiten
         \item[4.NF] BC + Abhängigkeiten von mehrwertigen Attributmengen trivial und Attributmenge der Schlüsselkandidat
     \end{description*}
 
 
-\section{Konsultation}
-Mehrere theoretische Fragen? Nicht multiple choice wie in Moodle sondern zB Definitionen erklären (was ist Transaktion/Sicht?)
+    \section{Konsultation}
+    Mehrere theoretische Fragen? Nicht multiple choice wie in Moodle sondern zB Definitionen erklären (was ist Transaktion/Sicht?)
 
-ERD->Relationenschema
- bei 1:N Beziehung kommt Schlüssel von N Seite
- bei M:N Beziehung kommen Schlüssel von beiden Seiten
- bei 1:1 Beziehung kann Schlüssel von entweder einer oder der anderen seite gewählt werden
+    ERD->Relationenschema
+    bei 1:N Beziehung kommt Schlüssel von N Seite
+    bei M:N Beziehung kommen Schlüssel von beiden Seiten
+    bei 1:1 Beziehung kann Schlüssel von entweder einer oder der anderen seite gewählt werden
 
 
 \end{multicols*}

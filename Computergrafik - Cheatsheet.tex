@@ -1,15 +1,26 @@
 \documentclass[landscape]{article}
 \usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{ifthen}
-\usepackage[landscape,left=1cm,top=1cm,right=1cm,nohead,nofoot]{geometry}
+\usepackage[landscape]{geometry}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{color,graphicx,overpic}
-\usepackage{hyperref}
 \usepackage{listings}
 \usepackage[compact]{titlesec} %less space for headers
 \usepackage{mdwlist} %less space for lists
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Computergrafik}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
 
 \pdfinfo{
     /Title (Computergrafik - Cheatsheet)
@@ -25,12 +36,9 @@
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
     {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
-        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+    {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
     }
-
-% Turn off header and footer
-\pagestyle{empty}
 
 % Redefine section commands to use less space
 \makeatletter
@@ -47,10 +55,6 @@
                                 {1ex plus .2ex}%
                                 {\normalfont\small\bfseries}}
 \makeatother
-
-% Define BibTeX command
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 % Don't print section numbers
 \setcounter{secnumdepth}{0}
@@ -2109,7 +2113,7 @@
       \item z.B. Kantenextraktion
       \item Differenzbildung (Ableitung) → hohe Frequenzen werden verstärkt!
       \item im Gegensatz dazu sind Tiefpassfilter Integralfilter = gewichtete Summe der Nachbarpixel
-    \end{itemize*} 
+    \end{itemize*}
   \end{description*}
   
   

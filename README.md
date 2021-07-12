@@ -42,7 +42,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
 - [Systemsicherheit](Systemsicherheit.md) (work in progress)
 - [Telematik 1](Telematik%201.md)
-  - [Telematik Cheatsheet](Telematik1-cheatsheet.pdf)
+  - [Telematik 1 Cheatsheet](Telematik%201-%20Cheatsheet.pdf)
 
 der Modulplan 2013 für Bachelor Informatik: [Modulplan](Modultafel%20-%20Bachelor%20Informatik%202013.html) (am besten im Browser ansehen)
 

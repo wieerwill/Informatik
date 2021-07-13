@@ -38,9 +38,11 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
 - [Softwaretechnik 2](Softwaretechnik%202.md) (work in progress)
+  - [Softwaretechnik 2 Cheatsheet](Softwaretechnik%202%20-%20Cheatsheet.pdf) (work in progress)
 - [Stochastik](Stochastik.md)
   - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
 - [Systemsicherheit](Systemsicherheit.md) (work in progress)
+  - [Systemsicherheit Cheatsheet](Systemsicherheit%20-%20Cheatsheet.pdf) (work in progress)
 - [Telematik 1](Telematik%201.md)
   - [Telematik 1 Cheatsheet](Telematik%201-%20Cheatsheet.pdf)
 

@@ -773,7 +773,7 @@
             \item any $s\in S$ represents an authenticated active entity which potentially executes operations on objects
             \item any $o\in O$ represents an authenticated passive entity on which operations are executed
             \item for any $s\in S$,$o\in O$,$op\in OP$:s is allowed to execute $op$ on $o$ iff $f(s,o,op)=true$.
-            \item Model making: finding a $tuple⟨S,O,OP,f⟩$
+            \item Model making: finding a $tuple\langle S,O,OP,f\rangle$
         \end{itemize*}
     \end{itemize*}
 
@@ -826,7 +826,7 @@
     Privilege escalation question: "Can it ever happen that in a given state, some specific subject obtains a specific permission?"
     $\varnothing \Rightarrow \{r,w\}$
     \begin{itemize*}
-        \item ACM models a single state ⟨S,O,OP,m⟩
+        \item ACM models a single state $\langle S,O,OP,m\rangle$
         \item ACM does not tell anything about what might happen in future
         \item Behavior prediction $\rightarrow$  proliferation of rights $\rightarrow$ HRU safety
     \end{itemize*}
@@ -866,7 +866,7 @@
         \item Analyses of right proliferation ($\rightarrow$  privilege escalation) are enabled by state reachability analysis methods
     \end{itemize*}
 
-    An HRU model is a deterministic automaton $⟨Q,\sum,\delta,q_0 ,R⟩$ where
+    An HRU model is a deterministic automaton $\langle Q,\sum,\delta,q_0 ,R\rangle$ where
     \begin{itemize*}
         \item $Q= 2^S\times 2^O\times  M$ is the state space where
         \begin{itemize*}
@@ -895,7 +895,7 @@
         \item State transitions modeled by $\delta$ based on
         \begin{itemize*}
             \item the current automaton state
-            \item an input word $⟨op,(x_1,...,x_k)⟩\in\sum$ where $op$
+            \item an input word $\langle op,(x_1,...,x_k)\rangle \in\sum$ where $op$
             \item may modify $S_q$ (create a user $x_i$),
             \item may modify $O_q$ (create/delete a file $x_i$),
             \item may modify the contents of a matrix cell $m_q(x_i,x_j)$ (enter or remove rights) where $1\leq i,j\leq k$.
@@ -906,7 +906,7 @@
 
     \paragraph{State Transition Scheme (STS)}
     Using the STS, $\sigma:Q\times\sum\rightarrow Q$ is defined by a set of specifications in the normalized form
-    $\sigma(q,⟨op,(x_1,...,x_k)⟩)$=if $r_1\in m_q(x_{s1},x_{o1}) \wedge ... \wedge r_m\in m_q(x_{sm},x_{om})$ then $p_1\circ ...\circ p_n$ where
+    $\sigma(q,\langle op,(x_1,...,x_k)\rangle )$=if $r_1\in m_q(x_{s1},x_{o1}) \wedge ... \wedge r_m\in m_q(x_{sm},x_{om})$ then $p_1\circ ...\circ p_n$ where
     \begin{itemize*}
         \item $q=\{S_q,O_q,m_q\}\in Q,op\in OP$
         \item $r_1 ...r_m\in R$
@@ -917,7 +917,7 @@
 
     Conditions: Expressions that need to evaluate "true" for state q as a necessary precondition for command $op$ to be executable (= can be successfully called).
 
-    Primitives: Short, formal macros that describe differences between $q$ and $a$ successor state $q'=\sigma(q,⟨op,(x_1 ,...,x_k)⟩)$ that result from a complete execution of op:
+    Primitives: Short, formal macros that describe differences between $q$ and $a$ successor state $q'=\sigma(q,\langle op,(x_1 ,...,x_k)\rangle )$ that result from a complete execution of op:
     \begin{itemize*}
         \item enter r into $m(x_s,x_o)$
         \item delete r from $m(x_s,x_o)$
@@ -934,7 +934,7 @@
     \begin{enumerate*}
         \item  Model Sets: Subjects, objects, operations, rights $\rightarrow$  define the basic sets $S,O,OP,R$
         \item STS: Semantics of operations (e. g. the future API of the system to model) that modify the protection state $\rightarrow$  define $\sigma$ using the normalized form/programming syntax of the STS
-        \item Initialization: Define a well-known initial stateq $0 =⟨S_0 ,O_0 ,m_0 ⟩$ of the system to model
+        \item Initialization: Define a well-known initial stateq $0 =\langle S_0 ,O_0 ,m_0 \rangle$ of the system to model
     \end{enumerate*}
 
     1. Model Sets
@@ -968,7 +968,7 @@
   \end{lstlisting}
     3. Initialization
     \begin{itemize*}
-        \item By model definition: $q_0 =⟨S_0 ,O_0 ,m_0 ⟩$
+        \item By model definition: $q_0 =\langle S_0 ,O_0 ,m_0 \rangle$
         \item For a course with (initially) three students:
         \begin{itemize*}
             \item $S_0 =\{sAnn, sBob, sChris\}$
@@ -1041,7 +1041,7 @@
 
     According to Tripunitara and Li, simple-safety is defined as:
 
-    \note{HRU Safety}{For a state $q=\{S_q,O_q,m_q\}\in Q$ and a right $r\in R$ of an HRU model $⟨Q,\sum,\delta,q_0,R⟩$, the predicate $safe(q,r)$ holds iff
+    \note{HRU Safety}{For a state $q=\{S_q,O_q,m_q\}\in Q$ and a right $r\in R$ of an HRU model $\langle Q,\sum,\delta,q_0,R\rangle$, the predicate $safe(q,r)$ holds iff
     $\forall q'= S_{q'},O_{q'},m_{q'} \in \{\delta^*(q,\sigma^*)|\sigma^*\in\sum^*\},\forall s\in S_{q'},\forall o\in O_{q'}: r\in m_{q'}(s,o)\Rightarrow s\in S_q \wedge o\in O_q \wedge r\in m_q(s,o)$.
     We say that an HRU model is safe w.r.t. r iff $safe(q_0 ,r)$.}
 
@@ -1127,7 +1127,7 @@
         enter r1 into $m(x7,x5);$  & -
     \end{tabular}
 
-    Conclusions from these Theorems: Dilemma:
+    Conclusions from these Theorems (Dilemma)
     \begin{itemize*}
         \item General (unrestricted) HRU models
         \begin{itemize*}
@@ -1144,6 +1144,7 @@
     \end{itemize*}
 
     \paragraph{(A) Restricted Model Variants}
+
     Static HRU Models
     \begin{itemize*}
         \item Static: no create primitives allowed
@@ -1154,9 +1155,9 @@
     Monotonous Mono-conditional HRU Models
     \begin{itemize*}
         \item Monotonous (MHRU): no delete or destroy primitives
-        \item Mono-conditional: at most one clause in conditions part (For monotonous bi-conditional models, safety is already undecidable ...)
+        \item Mono-conditional: at most one clause in conditions part
         \item safe(q,r) efficiently decidable
-        \item Applications: Archiving/logging systems (where nothing is ever deleted)
+        \item Applications: Archiving/logging systems (nothing is ever deleted)
     \end{itemize*}
 
     Finite Subject Set
@@ -1167,63 +1168,58 @@
 
     Fixed STS
     \begin{itemize*}
-        \item All STS commands are fixed, match particular application domain (e.g. OS access control [Lipton and Snyder, 1977]) $\rightarrow$  no model reusability
-        \item For Lipton and Snyder [1977]: $safe(q,r)$ decidable in linear time (!)
+        \item All STS commands are fixed, match particular application domain (e.g. OS access control) $\rightarrow$  no model reusability
+        \item For Lipton and Snyder [1977]: $safe(q,r)$ decidable in linear time
     \end{itemize*}
 
     Strong Type System
     \begin{itemize*}
-        \item Special model that generalizes HRU: Typed Access Matrix (TAM) [Sandhu, 1992]
+        \item Special model to generalize HRU: Typed Access Matrix (TAM)
         \item $safe(q,r)$ decidable in polynomial time for ternary, acyclic, monotonous variants
         \item high, though not unrestricted expressiveness in practice
     \end{itemize*}
 
     \paragraph{(B) Heuristic Analysis Methods}
-    Motivation:
     \begin{itemize*}
-        \item Restricted model variants: often too weak for real-world applications
-        \item General HRU models: safety property cannot be guaranteed $\rightarrow$ Let’s try to get a piece from both cakes: Heuristically guided safety estimation [Amthor et al., 2013]
+        \item Restricted model variants often too weak for real-world apps
+        \item General HRU models: safety property cannot be guaranteed
+        \item $\rightarrow$ get a piece from both: Heuristically guided safety estimation
     \end{itemize*}
 
     Idea:
     \begin{itemize*}
         \item State-space exploration by model simulation
-        \item Task of heuristic: generating input sequences ("educated guessing")
+        \item Task of heuristic: generating input sequences (,,educated guessing'')
     \end{itemize*}
 
     Outline: Two-phase-algorithm to analyze $safe(q_0,r)$:
-    1. Static phase: Infer knowledge from the model that helps heuristic to make "good" decisions.
-    \begin{itemize*}
-        \item $\rightarrow$  Runtime: polynomial in model size ($q_0 + STS$)
-        2. Simulation phase: The automaton is implemented and, starting with $q_0$, fed with inputs $\sigma=⟨op,x⟩$
+    \begin{enumerate*}
+
+        \item Static phase: knowledge from model to make "good" decisions
+        \begin{itemize*}
+            \item $\rightarrow$  Runtime: polynomial in model size ($q_0 + STS$)
+        \end{itemize*}
+        \item Simulation phase: The automaton is implemented and, starting with $q_0$, fed with inputs $\sigma=<op,x>$
         \begin{itemize*}
             \item $\rightarrow$  For each $\sigma$, the heuristic has to decide:
-            \begin{itemize*}
-                \item which operation op to use
-                \item which vector of arguments x to pass
-                \item which $q_i$ to use from the states in $Q$ known so far
-            \end{itemize*}
+            \item which operation $op$ to use
+            \item which vector of arguments $x$ to pass
+            \item which $q_i$ to use from the states in $Q$ known so far
             \item Termination: As soon as $\sigma(q_i,\sigma)$ violates $safe(q_0,r)$.
         \end{itemize*}
+    \end{enumerate*}
+
+    Goal: Iteratively build up the $Q$ for a model to falsify safety by example (finding a violating but possible protection state).
+
+    \begin{itemize*}
+        \item Termination: only a semi-decidable problem here. It can be guaranteed that a model is unsafe if we terminate. We cannot ever prove the opposite $\rightarrow$ safety undecidability
+        \item Performance: Model size 10 000 000 $\approx 417$s
     \end{itemize*}
 
-    Goal: Iteratively build up the (possibly infinite!) $Q$ for a model to falsify safety by example (finding a violating, but possible protection state).
-
-    Results:
+    Achievements
     \begin{itemize*}
-        \item Termination: Well ... we only have a semi-decidable problem here: It can be guaranteed that a model is unsafe if we terminate. We cannot ever prove the opposite, however! ($\rightarrow$ safety undecidability)
-        \item Performance: A few results
-        \begin{itemize*}
-            \item 2013:Model size 10 000 $\approx 2215$ s
-            \item 2018:Model size 10 000 $\approx 0,36$ s
-            \item 2018:Model size 10 000 000 $\approx 417$ s
-        \end{itemize*}
-    \end{itemize*}
-
-    Achievements:
-    \begin{itemize*}
-        \item Find typical errors in security policies: Guide their designers, who might know there’s something wrong w. r. t. right proliferation, but not what and why!
-        \item Increase our understanding of unsafety origins: By building clever heuristics, we started to understand how we might design specialized HRU models ($\rightarrow$ fixed STS, type system) that are safety-decidable yet practically (re-) usable [Amthor and Rabe, 2020].
+        \item Find typical errors in security policies: Guide designers, who might know there’s something wrong w. r. t. right proliferation, but not what and why!
+        \item Increase our understanding of unsafety origins: By building clever heuristics, we started to understand how we might design specialized HRU models ($\rightarrow$ fixed STS, type system) that are safety-decidable yet practically (re-) usable
     \end{itemize*}
 
     \paragraph{Summary HRU Models}
@@ -1241,33 +1237,32 @@
 
     Conclusions
     \begin{itemize*}
-        \item Potential right proliferation (privilege escalation): Generally undecidable problem
-        \item $\rightarrow$  HRUmodel family, consisting of application-tailored, safety-decidable variants
-        \item $\rightarrow$  Heuristic analysis methods for practical error-finding
+        \item Potential right proliferation: Generally undecidable problem
+        \item $\rightarrow$ HRU model family, consisting of application-tailored, safety-decidable variants
+        \item $\rightarrow$ Heuristic analysis methods for practical error-finding
     \end{itemize*}
 
     \paragraph{The Typed-Access-Matrix Model (TAM)}
-    Goal
     \begin{itemize*}
         \item AC model, similar expressiveness to HRU
-        \item $\rightarrow$  can be directly mapped to implementations of an ACM: OS ACLs, DB permission assignment tables
+        \item $\rightarrow$ directly mapped to implementations of an ACM (DB table)
         \item Better suited for safety analyses: precisely statemodel properties for decidable safety
     \end{itemize*}
 
-    Idea [Sandhu, 1992]
+    Idea
     \begin{itemize*}
         \item Adopted from HRU: subjects, objects, ACM, automaton
-        \item New:leverage the principle of strong typing known from programming
+        \item New: leverage the principle of strong typing (like programming)
         \item $\rightarrow$  safety decidability properties relate to type-based restrictions
     \end{itemize*}
 
     How it Works:
     \begin{itemize*}
-        \item Foundation of a TAM model is an HRU model $⟨Q,\sum,\delta,q_0 ,R⟩$, where $Q= 2^S\times 2^O\times M$
+        \item Foundation of a TAM model is an HRU model $\langle Q,\sum,\delta,q_0 ,R\rangle$, where $Q= 2^S\times 2^O\times M$
         \item However: $S\subseteq O$, i. e.:
         \begin{itemize*}
             \item all subjects can also act as objects (=targets of an access)
-            \item $\rightarrow$  useful for modeling e. g. delegation ("s has the right to grant s' her read-right")
+            \item useful for modeling e.g. delegation
             \item objects in $O\backslash S$: pure objects
         \end{itemize*}
         \item Each $o\in O$ has a type from a type set $T$ assigned through a mapping $type:O\rightarrow T$
@@ -1278,7 +1273,7 @@
         \end{itemize*}
     \end{itemize*}
 
-    \note{TAM Security Model}{A TAM model is a deterministic automaton $⟨Q,\sum,\delta,q_0 ,T,R⟩$ where
+    \note{TAM Security Model}{A TAM model is a deterministic automaton $\langle Q,\sum,\delta,q_0 ,T,R\rangle$ where
         \begin{itemize*}
             \item $Q= 2^S\times 2^O\times TYPE\times M$ is the state space where $S$ and $O$ are subjects set and objects set as in HRU, where $S\subseteq O$, $TYPE=\{type|type:O\rightarrow T\}$ is a set of possible type functions, $M$ is the set of possible $ACMs$ as in HRU,
             \item $\sum=OP\times X$ is the (finite) input alphabet where $OP$ is a set of operations as in HRU, $X=O^k$ is a set of $k$-dimensional vectors of arguments (objects) of these operations,
@@ -1291,7 +1286,7 @@
 
     State Transition Scheme (STS)
     $\delta:Q\times\sum\rightarrow Q$ is defined by a set of specifications:
-    %![](Assets/Systemsicherheit-tam-sts.png)
+    \includegraphics[width=\linewidth]{Assets/Systemsicherheit-tam-sts.png}
     where
     \begin{itemize*}
         \item $q= (S_q,O_q,type_q,m_q)\in Q,op\in OP$
@@ -1301,8 +1296,8 @@
     \end{itemize*}
 
     Convenience Notation where
+    \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-tam-sts-convenience.png}
     \begin{itemize*}
-        \item %![](Assets/Systemsicherheit-tam-sts-convenience.png)
         \item $q\in Q$ is implicit
         \item $op,r_1 ,...,r_m,s_1 ,...,s_m,o_1 ,...,o_m$ as before
         \item $t_1 ,...,t_k$ are argument types
@@ -1310,9 +1305,9 @@
     \end{itemize*}
 
     TAM-specific
+    \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-tam-sts-specific.png}
     \begin{itemize*}
         \item Implicit Add-on:Type Checking
-        \item %![](Assets/Systemsicherheit-tam-sts-specific.png)
         \item where $t_i$ are the types of the arguments $x_i, 1\leq i\leq k$.
     \end{itemize*}
 
@@ -1332,380 +1327,150 @@
 
     TAM Example: The ORCON Policy
     \begin{itemize*}
-        \item Example Scenario: Originator Controlled Access Rights (ORCON Policy)
-        \item Goal: To illustrate usefulness/convenience of type system
-        \begin{itemize*}
-            \item ORCON describes sub-problem of larger policies
-            \item Information flow confinement required by ORCON is tricky to do in HRU ("This information may not flow beyond ...")
-        \end{itemize*}
-        \item The Problem
-        \begin{itemize*}
-            \item Creator/owner of a document shouldpermanently retain controlover its accesses
-            \item Neither direct nor indirect (by copying) right proliferation
-            \item Application scenarios: Digital rights management, confidential sharing (online social networks!)
-            \item %![](Assets/Systemsicherheit-orcon-problem.png)
-        \end{itemize*}
-        \item Solution with TAM
-        \begin{itemize*}
-            \item Idea: A confined subject type that can never execute any operation other than reading
-            \item Model Initialization:
-            \begin{itemize*}
-                \item Subjects: $S_0=\{ann,bob,chris\}$
-                \item Objects: $O_0 =S_0\cup\{projectX\}$
-                \item Operations: $\rightarrow$ next ...
-                \item Rights: $R=\{read,write,cread,own,parent\}$
-                \item Types: $T=\{s,cs,co\}$ (regular subject,confined subject/object)
-                \item $type_0$:
-                \begin{itemize*}
-                    \item $type_0(ann)=s$
-                    \item $type_0(bob)=s$
-                    \item $type_0(projectX)=co$
-                \end{itemize*}
-            \end{itemize*}
-        \end{itemize*}
-        \item Model Behavior (Example)
-        \begin{itemize*}
-            \item ann creates ORCON object projectX (STS command createOrconObject)
-            \item ann grants cread ("confined read") right for projectX to bob (STS command grantCRead)
-            \item bob uses cread to create confined subject chris with permission to read projectX (STS command useCRead)
-        \end{itemize*}
+        \item Creator/owner of a document should permanently retain controlover its accesses
+        \item Neither direct nor indirect (by copying) right proliferation
+        \item Application scenarios: Digital rights management, confidential sharing
+        \item Solution with TAM: A confined subject type that can never execute any operation other than reading
     \end{itemize*}
-
-    \begin{tabular}{l|l|l|l|l}
-        m        & ann:s         & bob:s         & projectX:co            & chris:cs      \\\hline
-        ann:s    & $\varnothing$ & $\varnothing$ & $\{own, read, write\}$ & $\varnothing$ \\
-        bob:s    & $\varnothing$ & $\varnothing$ & $\{cread\}$            & $\{parent\}$  \\
-        chris:cs & $\varnothing$ & $\varnothing$ & $\{read\}$             & $\varnothing$
-    \end{tabular}
 
     Model Behavior (STS): The State Transition Scheme
     \begin{itemize*}
-        \item createOrconObject
-        \begin{lstlisting}[
-    language=Bash,
-    showspaces=false
- ]
-          command createOrconObject(s_1:s, o_1:co) ::=
-            if true
-            then
-              create object o_1 of type co;
-              enter own into m(s_1 ,o_1);
-              enter read into m(s_1 ,o_1);
-              enter write into m(s_1 ,o_1);
-            fi
-  \end{lstlisting}
-
-        \item grantCRead
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command grantCRead(s 1 :s,s 2 :s,o 1 :co) ::=
-            if own in m(s_1 ,o_1)
-            then
-              enter cread into m(s_2 ,o_1);
-            fi 
-        \end{lstlisting}
-
-        \item useCRead
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command useCRead(s_1:s, o_1:co, s_2:cs) ::=
-            if cread in m(s_1 ,o_1)
-            then
-              create subject s_2 of type cs;
-              enter parent into m(s_1 ,s_2);
-              enter readinto m(s_2 ,o_1);
-            fi
-        \end{lstlisting}
-
-        \item Enable ann to revoke cread from bob:
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command revokeCRead(s_1:s, s_2:s, o_1:co) ::=
-            if own in m(s_1, o_1)
-            then
-              delete cread from m(s_2, o_1);
-            fi
-        \end{lstlisting}
-        \item Enable ann to destroy conf. object projectX:
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command destroyOrconObject(s_1:s, o_1:co) ::=
-            if own in m(s_1 ,o_1)
-            then
-              destroy object o_1;
-            fi 
-        \end{lstlisting}
-        \item Enable ann to destroy conf. subject chris:
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command revokeRead(s_1:s, s_2:cs, o_1:co) ::= 
-            if own in m(s_1 ,o_1) and read in m(s_2 ,o_1)
-            then
-              destroy subject s_2;
-            fi
-        \end{lstlisting}
-        \item Enable bob to destroy conf. subject chris:
-        \begin{lstlisting}[
-        language=Bash,
-        showspaces=false
-     ]
-          command finishOrconRead(s_1:s, s_2:cs) ::= 
-            if parent in m(s_1, s_2)
-            then
-              destroy subject s_2;
-            fi 
-        \end{lstlisting}
+        \item $createOrconObject(s_1:s, o_1:co)$
+        \item $grantCRead(s 1 :s,s 2 :s,o 1 :co)$
+        \item $useCRead(s_1:s, o_1:co, s_2:cs)$
+        \item $revokeCRead(s_1:s, s_2:s, o_1:co)$
+        \item $destroyOrconObject(s_1:s, o_1:co)$ (destroy conf. object)
+        \item $revokeRead(s_1:s, s_2:cs, o_1:co)$ (destroy conf. subject)
+        \item $finishOrconRead(s_1:s, s_2:cs)$ (destroy conf. subject)
     \end{itemize*}
 
     \begin{itemize*}
-        \item Commands 1.-3.:
-        \begin{itemize*}
-            \item Authorize the steps in the example above
-            \item Are monotonic
-        \end{itemize*}
-        \item Commands 4.-7.:
-        \begin{itemize*}
-            \item Will control right revocation $\rightarrow$  essence of originator control
-            \item Are not monotonic (consequences ...)
-        \end{itemize*}
-        \item Summary
-        \begin{itemize*}
-            \item Contributions of ORCON Example
-            \item Owner ("originator") retains full control over
-            \item Use of her confined objects by third parties $\rightarrow$ transitive right revocation
-            \item Subjects using (or misusing) these objects $\rightarrow$ destruction of these subjects
-            \item Subjects using such objects are confined: cannot forward read information
-        \end{itemize*}
+        \item Owner retains full control over
+        \item Use of her confined objects by third parties $\rightarrow$ transitive right revocation
+        \item Subjects using these objects $\rightarrow$ destruction of these subjects
+        \item Subjects using such objects are confined: cannot forward read information
     \end{itemize*}
 
     \paragraph{TAM Safety Decidability}
-    Why all this?
     \begin{itemize*}
-        \item General TAM models (cf. previous definition) $\rightarrow$  safety not decidable (no surprise, since generalization of HRU)
-        \item MTAM:monotonous TAM models; STS without delete or destroy primitives $\rightarrow$  safety decidable if mono-conditional only
-        \item AMTAM:acyclic MTAM models $\rightarrow$ safety decidable, but (most likely) not efficiently: NP-hardproblem
-        \item TAMTAM: ternaryAMTAM models; each STS command requires max. 3 arguments $\rightarrow$  provably same computational power and thus expressive power as AMTAM; safety decidable in polynomial time
+        \item General TAM models $\rightarrow$ safety not decidable
+        \item MTAM: monotonous TAM models; STS without delete or destroy primitives $\rightarrow$ safety decidable if mono-conditional only
+        \item AMTAM: acyclic MTAM models $\rightarrow$ safety decidable but not efficiently (NP-hard problem)
+        \item TAMTAM: ternary AMTAM models; each STS command requires max. 3 arguments $\rightarrow$ provably same computational power and thus expressive power as AMTAM; safety decidable in polynomial time
     \end{itemize*}
 
     \paragraph{Acyclic TAM Models}
-    Auxiliary analysis tools for TAM models:
+    Auxiliary analysis tools:
 
-    \note{Parent- and Child-Types}{For any operation $op$ with arguments $⟨x_1,t_1⟩,⟨x_2,t_2⟩,...,⟨x_k,t_k⟩$ in an STS of a TAM model, it holds that $t_i, 1\leq i\leq k$
+    \note{Parent- and Child-Types}{For any operation $op$ with arguments $\langle x_1,t_1\rangle ,...,\langle x_k,t_k\rangle$ in an STS of a TAM model, it holds that $t_i, 1\leq i\leq k$
         \begin{itemize*}
             \item is a child type in op if one of its primitives creates a subject or object $x_i$ of type $t_i$,
             \item is a parent type in op if none of its primitives creates a subject or object $x_i$ of type $t_i$.
         \end{itemize*}
     }
 
-    \note{Type Creation Graph}{The type creation graph $TCG=⟨T,E=T\times T⟩$ for the STS of a TAM model is a directed graph with vertex set $T$ and an $edge⟨u,v⟩\in E$ iff $\exists op\in OP:u$ is a parent type in $op\wedge v$ is a child type in op.}
+    \note{Type Creation Graph}{The type creation graph $TCG=\langle T,E=T\times T\rangle$ for the STS of a TAM model is a directed graph with vertex set $T$ and an $edge\langle u,v\rangle \in E$ iff $\exists op\in OP:u$ is a parent type in $op\wedge v$ is a child type in op.}
 
-    Example STS:
-    \begin{lstlisting}[
-    language=Bash,
-    showspaces=false
- ]
-  command foo(s_1:u, o_1:w, o_2:v) ::=
-    if r_1 $\in$ m(s_1 ,o_1)
-    then
-      create object o_2 of type v;
-    fi
-  
-  command bar(s_1:u, s_2:u, s_3:v, o_1:w) ::=
-    if r_2 $\in$ m(s_1 ,o_1)
-    then
-      create subject s_2 of type u;
-      create subject s_3 of type v;
-    fi
-  \end{lstlisting}
-    %![TCG](Assets/Systemsicherheit-acyclic-tam-example.png)
+    \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-acyclic-tam-example.png}
 
-    Note:In bar,u is both a parent type (because of $s_1$) and a child type (because of $s_2$) $\rightarrow$  hence the loop edge.
+    Note: In bar,u is both a parent type (because of $s_1$) and a child type (because of $s_2$) $\rightarrow$  hence the loop edge.
 
     Safety Decidability: We call a TAM model acyclic, iff its TCG is acyclic.
 
-    \note{Theorem [Sandhu, 1992, Theorem 5]}{Safety of a ternary, acyclic, monotonous TAM model (TAMTAM) is decidable in polynomial time in the size of $m_0$.}
+    \note{Theorem 5}{Safety of a ternary, acyclic, monotonous TAM model (TAMTAM) is decidable in polynomial time in the size of $m_0$.}
 
+    Crucial property acyclic, intuitively:
     \begin{itemize*}
-        \item Crucial property acyclic, intuitively:
-        \begin{itemize*}
-            \item Evolution of the system (protection state transitions) checks both rights in the ACMas well as argument types
-            \item TCG is acyclic $\Rightarrow\exists$ a finite sequence of possible state transitions after which no input tuple with argument types, that were not already considered before, can be found
-            \item One may prove that an algorithm, which tries to expandall possible different follow-up states from $q_0$, may terminate after this finite sequence
-            \item Proof details: SeeSandhu [1992].
-        \end{itemize*}
+        \item Evolution of the system (protection state transitions) checks both rights in the ACM as well as argument types
+        \item TCG is acyclic $\Rightarrow\exists$ a finite sequence of possible state transitions after which no input tuple with argument types, that were not already considered before, can be found
+        \item One may prove that an algorithm, which tries to expandall possible different follow-up states from $q_0$, may terminate after this finite sequence
     \end{itemize*}
 
     Expressive Power of TAMTAM
     \begin{itemize*}
-        \item MTAM: obviously same expressive power as monotonic HRU (MHRU) $\rightarrow$  cannot model:
+        \item MTAM: obviously same expressive power as monotonic HRU
         \begin{itemize*}
-            \item transfer of rights: "take r from ... and in turn grant r to ..."
-            \item countdown rights: "r can only be used n times"
+            \item no transfer of rights: "take r ... in turn grant r to ..."
+            \item no countdown rights: "r can only be used n times"
         \end{itemize*}
-        \item ORCON example (and many others): allow to ignore non-monotonic command $s$ from STS, e.g. 4.-7., since they
-        \begin{itemize*}
-            \item only remove rights
-            \item are reversible (e. g.: undo 4. by 2.; compensate 7. by 3. where the new subject takes roles of the destroyed one)
-        \end{itemize*}
-        \item AMTAM: most MTAM STS may be re-written as acyclic(cf. ORCON example)
+        \item ORCON: allow to ignore non-monotonic command $s$ from STS since they only remove rights and are reversible
+        \item AMTAM: most MTAM STS may be re-written as acyclic
         \item TAMTAM: expressive power equivalent to AMTAM
     \end{itemize*}
 
-    IBAC Model Comparison
-    \begin{itemize*}
-        \item So far: family of IBAC models to describe different ranges of security policies they are able to express(depicted as an Euler diagram):
-        \item x%![](Assets/Systemsicherheit-ibac-model-comparison.png)
-    \end{itemize*}
+    IBAC Model Comparison: family of IBAC models to describe different ranges of security policies they are able to express
+    \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-ibac-model-comparison.png}
 
     IBAC Summary
     \begin{itemize*}
-        \item We May Now
-        \begin{itemize*}
-            \item Model identity-based AC policies (IBAC)
-            \item Analyze them w. r. t. basic security properties (right proliferation)
-            \item $\rightarrow$  Minimize specification errors
-            \item $\rightarrow$  Minimize implementation errors
-        \end{itemize*}
+        \item Model identity-based AC policies (IBAC)
+        \item Analyze them w.r.t. basic security properties (right proliferation)
+        \item $\rightarrow$  Minimize specification errors
+        \item $\rightarrow$  Minimize implementation errors
         \item Approach
         \begin{itemize*}
             \item Unambiguous policy representation through formal notation
             \item Prediction and/or verification of mission-critical properties
             \item Derivation of implementation concepts
         \end{itemize*}
-        \item Model Range
+        \item Model Range - Static models:
         \begin{itemize*}
-            \item Static models:
-            \begin{itemize*}
-                \item Access control function (ACF): $f:S\times O\times OP\rightarrow \{true,false\}$
-                \item Access control matrix (ACM): $m:S\times O\rightarrow 2^{OP}$
-                \item $\rightarrow$ Static analysis: Which rights are assigned to whom, which (indirect) information flows are possible
-                \item $\rightarrow$ Implementation: Access control lists (ACLs), e.g. in OS, (DB)IS
-            \end{itemize*}
-            \item Dynamic models:
-            \begin{itemize*}
-                \item ACM plus deterministic automaton $\rightarrow$ Analysis of dynamic behavior: HRU safety
-                \begin{itemize*}
-                    \item generally undecidable
-                    \item decidable under specific restrictions: monotonous mono-conditional, static, typed, etc.
-                    \item identifying and explaining safety-violations, in case such (are assumed to) exists: heuristic analysis algorithms
-                \end{itemize*}
-            \end{itemize*}
+            \item Access control function: $f:S\times O\times OP\rightarrow \{true,false\}$
+            \item Access control matrix (ACM): $m:S\times O\rightarrow 2^{OP}$
+            \item Static analysis: Which rights are assigned to whom, which (indirect) information flows are possible
+            \item Implementation: Access control lists (ACLs)
+        \end{itemize*}
+        \item Model Range - Dynamic models:
+        \begin{itemize*}
+            \item ACM plus deterministic automaton $\rightarrow$ Analysis of dynamic behavior: HRU safety
+            \item generally undecidable
+            \item decidable under specific restrictions: monotonous mono-conditional, static, typed, etc.
+            \item identifying and explaining safety-violations, in case such (are assumed to) exists: heuristic analysis algorithms
         \end{itemize*}
         \item Limitations
         \begin{itemize*}
             \item IBAC models are fundamental: KISS
-            \item IBAC models provide basic expressiveness only:
-            \begin{itemize*}
-                \item Comparable to "assembler programs for writing AC policies"
-                \item Imagine writing a sophisticated end-user application in assembler:
-                \begin{itemize*}
-                    \item reserve and keep track of memory layout and addresses $\approx$ create and maintain individual rights for thousands of subjects, billions of objects
-                    \item display comfortable GUI by writing to the video card framebuffer $\approx$ specify sophisticated workflows through an HRU STS
-                \end{itemize*}
-            \end{itemize*}
-            \item For more application-oriented policy semantics:
-            \begin{itemize*}
-                \item Large information systems: many users, many databases, files, ... $\rightarrow$ Scalability problem
-                \item Access decisions not just based on subjects, objects, and operations $\rightarrow$ Abstraction problem
-            \end{itemize*}
+            \item IBAC models provide basic expressiveness only
+        \end{itemize*}
+        \item For more application-oriented policy semantics:
+        \begin{itemize*}
+            \item Large information systems: many users, many databases, files, ... $\rightarrow$ Scalability problem
+            \item Access decisions not just based on subjects, objects, and operations $\rightarrow$ Abstraction problem
         \end{itemize*}
     \end{itemize*}
 
-    $\rightarrow$ "New" paradigm (early-mid 90s): Role-based Access Control
-
-    \paragraph{Roles-based Access Control Models (RBAC)}
-
-    Problems of IBAC Models:
+    \subsubsection{Roles-based Access Control Models (RBAC)}
+    Solving Scalability and Abstraction results in smaller modeling effort results in smaller chance of human errors made in the process
     \begin{itemize*}
-        \item Scalability w.r.t. the number of controlled entities
-        \item Level of abstraction: System-oriented policy semantics (processes, files, databases, ...) instead of problem-oriented (management levels, user accounts, quota, ...)
-    \end{itemize*}
-
-    Goals of RBAC:
-    \begin{itemize*}
-        \item Solving these problems results in smaller modeling effort results in smaller chance of human errors made in the process:
-        \begin{itemize*}
-            \item Improved scalability and manageability
-            \item Improved, application-oriented semantics: roles$\approx$functions in organizations
-        \end{itemize*}
-    \end{itemize*}
-
-    RBAC Application Domains
-    \begin{itemize*}
-        \item Public health care systems
-        \begin{itemize*}
-            \item Roles: Patient, physician, therapist, pharmacist, insurer, legislator, ...
-        \end{itemize*}
-        \item Financial services
-        \begin{itemize*}
-            \item Roles: Client, consultant, analyst, product manager, ...
-        \end{itemize*}
-        \item Operating systems
-        \begin{itemize*}
-            \item Roles: System admin, webserver admin, database admin, key account user, user, ...
-        \end{itemize*}
-    \end{itemize*}
-
-    RBAC Idea
-    \begin{itemize*}
+        \item Improved scalability and manageability
+        \item application-oriented semantic: $roles\approx functions$ in organizations
         \item Models include smart abstraction: roles
-        \item Access control rules are specified based on roles instead of identities:
-        \begin{itemize*}
-            \item "All ward physiciansare allowed to read EPRs."
-            \item "Allnursesare allowed to log body temperature."
-        \end{itemize*}
-        \item Compared to IBAC
-        \begin{itemize*}
-            \item IBAC Semantics:
-            \begin{itemize*}
-                \item Subjects, objects, and rights for executing operations
-                \item Access rules are based onidentity of individualsubjects and objects
-            \end{itemize*}
-            \item RBAC Semantics:
-            \begin{itemize*}
-                \item Users, roles, and rights for executing operations
-                \item Access rules are based onrolesof users $\rightarrow$ on assignments:
-            \end{itemize*}
-        \end{itemize*}
+        \item AC rules are specified based on roles instead of identities
+        \item Users, roles, and rights for executing operations
+        \item Access rules are based onrolesof users $\rightarrow$ on assignments
     \end{itemize*}
 
-
-    RBAC Security Model Definition
-    \note{Basic RBAC model: "$RBAC_0$" [Sandhu, 1994]}{An RBAC 0 model is a tuple $⟨U,R,P,S,UA,PA,user,roles⟩$ where
-    \begin{itemize*}
-        \item U is a set of user identifiers,
-        \item R is a set of role identifiers,
-        \item P is a set of permission identifiers,
-        \item S is a set of session identifiers,
-        \item $UA\subseteq U\times R$ is a many-to-many user-role-relation,
-        \item $PA\subseteq P\times R$ is a many-to-many permission-role-relation,
-        \item $user:S\rightarrow U$ is a total function mapping sessions to users,
-        \item $roles:S\rightarrow 2^R$ is a total function mapping sessions to sets of roles such that $\forall s\in S:r\in roles(s)\Rightarrow ⟨user(s),r⟩\in UA$.
-    \end{itemize*}
+    \note{Basic RBAC model ,,$RBAC_0$''}{An $RBAC_0$ model is a tuple $\langle U,R,P,S,UA,PA,user,roles\rangle$ where
+        \begin{itemize*}
+            \item U is a set of user identifiers,
+            \item R is a set of role identifiers,
+            \item P is a set of permission identifiers,
+            \item S is a set of session identifiers,
+            \item $UA\subseteq U\times R$ is a many-to-many user-role-relation,
+            \item $PA\subseteq P\times R$ is a many-to-many permission-role-relation,
+            \item $user:S\rightarrow U$ is a total function mapping sessions to users,
+            \item $roles:S\rightarrow 2^R$ is a total function mapping sessions to sets of roles such that $\forall s\in S:r\in roles(s)\Rightarrow \langle user(s),r\rangle \in UA$.
+        \end{itemize*}
     }
 
     Interpretation
     \begin{itemize*}
         \item Users U model people: actual humans that operate the AC system
-        \item Roles R model functions (accumulations of tasks), that originate from the workflows and areas of responsibility in organizations
-        \item Permissions P model rights for any particular access to a particular document (e. g. read project documentation, transfer money, write into EPR, ...)
-        \item The user-role-relation $UA\subseteq U\times R$ defines which roles are available to users at any given time $\rightarrow$ must be assumed during runtime first, before they are usable!
-        \item The permission-role-relation $PA\subseteq P\times R$ defines which permissions are associate with roles
-        \item $UA$ and $PA$ describe static policy rules: Roles available to a user are not considered to possibly change, same with permissions associated with a role. Examples:
-        \begin{itemize*}
-            \item "Bob may assume the role of a developer; Ann may assume the role of a developer or a project manager; ..."
-            \item "A developer may read and write the project documentation; a project manager may create branches of a source code repository; ..."
-        \end{itemize*}
+        \item Roles R model functions, that originate from the workflows and areas of responsibility in organizations
+        \item Permissions P model rights for any particular access to a particular document
+        \item user-role-relation $UA\subseteq U\times R$ defines which roles are available to users at any given time $\rightarrow$ must be assumed during runtime first before they are usable!
+        \item permission-role-relation $PA\subseteq P\times R$ defines which permissions are associate with roles
+        \item $UA$ and $PA$ describe static policy rules: Roles available to a user are not considered to possibly change, same with permissions associated with a role.
         \item Sessions $S$ describe dynamic assignments of roles $\rightarrow$ a session $s\in S$ models when a user is logged in(where she may use some role(s) available to her as per $UA$):
         \begin{itemize*}
             \item The session-user-mapping user: $S\rightarrow U$ associates a session with its ("owning") user
@@ -1713,103 +1478,83 @@
         \end{itemize*}
     \end{itemize*}
 
-    %![](Assets/Systemsicherheit-rbac-0.png)
-
-    Remark:
-    Note the difference between users in RBAC and subjects in IBAC: the latter usually represent a technical abstraction, such as an OS process, while RBAC users always model an organizational abstraction, such as an employee, a patient, etc.!
+    \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-rbac-0.png}
 
     \paragraph{RBAC Access Control Function}
     \begin{itemize*}
-        \item Authorization in practice: access rules have to be defined for operations on objects (cf. IBAC)
-        \item IBAC approach: access control function $f:S\times O\times OP\rightarrow \{true,false\}$
-        \item RBAC approach: implicitly defined through $P\rightarrow$ made explicit: $P\subseteq O\times OP$ is a set of permission tuples $⟨o,op⟩$ where
+        \item access rules have to be defined for operations on objects
+        \item implicitly defined through $P\rightarrow$ made explicit: $P\subseteq O\times OP$ is a set of permission tuples $\langle o,op\rangle$ where
         \begin{itemize*}
             \item $o\in O$ is an object from a set of object identifiers,
             \item $op\in OP$ is an operation from a set of operation identifiers.
         \end{itemize*}
-        \item We may now define the $ACF$ for $RBAC_0$:
+        \item We may now define the $ACF$ for $RBAC_0$
     \end{itemize*}
 
     \note{$RBAC_0$ ACF}{
-        \begin{itemize*}
-            \item $f_{RBAC_0}:U \times O\times OP\rightarrow\{true,false\}$ where
-            \item $f_{RBAC_0} (u,o,op)= \begin{cases} true, \quad \exists r\in R,s\in S:u=user(s)\wedge r\in roles(s)\wedge ⟨⟨o,op⟩,r⟩ \in PA \\ false, \quad\text{ otherwise } \end{cases}$.
-        \end{itemize*}
+        $f_{RBAC_0}:U \times O\times OP\rightarrow\{true,false\}$ where
+
+        $f_{RBAC_0} (u,o,op)= \begin{cases} true, \quad \exists r\in R,s\in S:u=user(s)\wedge r\in roles(s)\wedge \langle \langle o,op\rangle ,r\rangle  \in PA \\ false, \quad\text{ otherwise } \end{cases}$
     }
 
     \paragraph{RBAC96 Model Family}
-    Sandhu et al. [1996]
-
-    In practice, organizations have more requirements that need to be expressed in their security policy:
+    In practice, organizations have more requirements that need to be expressed in their security policy
     \begin{itemize*}
-        \item Roles are often hierarchical: "Any project manager is also a developer, any medical director is also a doctor, ..." $\rightarrow RBAC_1 = RBAC_0 + hierarchies$
-        \item Role association and activation are often constrained: "No purchasing manager may be head of internal auditing, no product manager may be logged in as a project manager for more than one project at a time, ..." $\rightarrow$ $RBAC_2 = RBAC_0 + constraints$
-        \item Both may be needed: $\rightarrow$ $RBAC_3$ = consolidation: $RBAC_0 + RBAC_1 + RBAC_2$
+        \item Roles are often hierarchical $\rightarrow RBAC_1 = RBAC_0 + hierarchies$
+        \item Role association and activation are often constrained $\rightarrow$ $RBAC_2 = RBAC_0 + constraints$
+        \item Both may be needed $\rightarrow$ $RBAC_3$ = consolidation: $RBAC_0 + RBAC_1 + RBAC_2$
     \end{itemize*}
 
-    RBAC 1 : Role Hierarchies
+    \paragraph{RBAC 1: Role Hierarchies}
+    Roles often overlap
+    \begin{enumerate*}
+        \item disjoint permissions for roles proManager and proDev $\rightarrow$ any proManager user must always have proDev assigned and activated for any of her workflows $\rightarrow$ role assignment redundancy
+        \item overlapping permissions: $\forall p\in P:\langle p,proDev\rangle \in PA\Rightarrow \langle p,proManager\rangle \in PA\rightarrow$ any permission for project developers must be assigned to two different roles $\rightarrow$ role definition redundancy
+        \item Two types of redundancy $\rightarrow$ undermines scalability goal of RBAC
+    \end{enumerate*}
+
+    Solution: Role hierarchy $\rightarrow$ Eliminates role definition redundancy through permissions inheritance
+
+    Modeling Role Hierarchies
     \begin{itemize*}
-        \item Observation: Roles in organizations often overlap:
+        \item Lattice here: $\langle R,\leq\rangle$
+        \item Hierarchy expressed through dominance relation: $r_1\leq r_2 \Leftrightarrow r_2$ inherits any permissions from $r_1$
+        \item Interpretation
         \begin{itemize*}
-            \item Users in different roles havecommon permissions: "Any project manager must have the same permissions as any developer in the same project."
-            \item Approach 1: disjoint permissions for roles proManager and proDev $\rightarrow$ any proManager user must always have proDev assigned and activated for any of her workflows $\rightarrow$ role assignment redundancy
-            \item Approach 2: overlapping permissions: $\forall p\in P:⟨p,proDev⟩ \in PA\Rightarrow ⟨p,proManager⟩ \in PA\rightarrow$ any permission for project developers must be assigned to two different roles $\rightarrow$ role definition redundancy
-            \item Two types of redundancy $\rightarrow$ undermines scalability goal of RBAC!
-        \end{itemize*}
-        \item Solution
-        \begin{itemize*}
-            \item Role hierarchy: Eliminates role definition redundancy through permissions inheritance
-        \end{itemize*}
-        \item Modeling Role Hierarchies
-        \begin{itemize*}
-            \item Lattice here: $⟨R,\leq⟩$
-            \item Hierarchy expressed through dominance relation: $r_1\leq r_2 \Leftrightarrow r_2$ inherits any permissions from $r_1$
-            \item Interpretation
-            \begin{itemize*}
-                \item Reflexivity: any role consists of ("inherits") its own permissions $\forall r\in R:r\leq r$
-                \item Antisymmetry: no two different roles may mutually inherit their respective permissions $\forall r_1 ,r_2\in R:r_1\leq r_2\wedge r_2\leq r_1\Rightarrow r_1=r_2$
-                \item Transitivity: permissions may be inherited indirectly $\forall r_1,r_2,r_3\in R:r_1\leq r_2 \wedge r_2\leq r_3\Rightarrow r_1\leq r_3$
-            \end{itemize*}
+            \item Reflexivity: any role consists of ("inherits") its own permissions
+            \item Antisymmetry: no two different roles may mutually inherit their respective permissions
+            \item Transitivity: permissions may be inherited indirectly
         \end{itemize*}
     \end{itemize*}
 
-    \note{$RBAC_1$ Security Model}{An $RBAC_1$ model is a tuple $⟨U,R,P,S,UA,PA,user,roles,RH⟩$ where
+    \note{$RBAC_1$ Security Model}{An $RBAC_1$ model is a tuple $\langle U,R,P,S,UA,PA,user,roles,RH\rangle$ where
         \begin{itemize*}
             \item $U,R,P,S,UA,PA$ and $user$ are defined as for $RBAC_0$,
-            \item $RH\subseteq R\times R$ is a partial order that represents a role hierarchy where $⟨r,r'⟩\in RH\Leftrightarrow r\leq r'$ such that $⟨R,\leq⟩$ is a lattice,
+            \item $RH\subseteq R\times R$ is a partial order that represents a role hierarchy where $\langle r,r'\rangle \in RH\Leftrightarrow r\leq r'$ such that $\langle R,\leq\rangle$ is a lattice,
             \item roles is defined as for $RBAC_0$, while additionally holds: $\forall r,r'\in R,\exists s\in S:r\leq r'\wedge r'\in roles(s)\Rightarrow r\in roles(s)$.
         \end{itemize*}
     }
 
-    In prose: When activating any role that inherits permissions from another role, this other role isautomatically(by definition) active as well.
+    \paragraph{RBAC 2 : Constraints}
+    Assuming and activating roles in organizations is often more restricted:
     \begin{itemize*}
-        \item $\rightarrow$ no role assignment redundancy in defining the STS
-        \item $\rightarrow$ no role definition redundancy in defining PA
+        \item Certain roles may not be active at the same time (same session) for any user
+        \item Certain roles may not be together assigned to any user
+        \item $\rightarrow$ separation of duty (SoD)
+        \item While SoD constraints are a more fine-grained type of security requirements to avoid mission-critical risks, there are other types represented by RBAC constraints.
     \end{itemize*}
-
-
-    RBAC 2 : Constraints
+    Constraint Types
     \begin{itemize*}
-        \item Observation: Assuming and activating roles in organizations is often more restricted:
-        \begin{itemize*}
-            \item Certain roles may not beactive at the same time(same session)for any user: "A payment initiator may not be a payment authorizer at the same time (in the same session)."
-            \item Certain roles may not be together assigned to any user: "A purchasing manager never be the same person as the head of internal auditing."
-            \item $\rightarrow$ separation of duty (SoD)
-            \item While SoD constraints are a more fine-grained type of security requirements to avoid mission-critical risks, there are other types represented by RBAC constraints.
-        \end{itemize*}
-        \item Constraint Types
-        \begin{itemize*}
-            \item Separation of duty: mutually exclusive roles
-            \item Quantitative constraints: maximum number of roles per user
-            \item Temporal constraints: time/date/week/... of role activation (advanced RBAC models, e.g. Bertino et al. [2001])
-            \item Factual constraints: assigning or activating roles for specific permissions causally depends on any roles for a certain, other permissions (e.g. only allow user $u$ to activate auditingDelegator role if audit payments permission is usable by $u$)
-        \end{itemize*}
-        \item Modeling Constraints:(idea only)
-        \begin{itemize*}
-            \item $RBAC_2 : ⟨U,R,P,S,UA,PA,user,roles,RE⟩$
-            \item $RBAC_3 : ⟨U,R,P,S,UA,PA,user,roles,RH,RE⟩$
-            \item where $RE$ is aset of logical expressions over the other model components (such as $UA,PA,user,roles$).
-        \end{itemize*}
+        \item Separation of duty: mutually exclusive roles
+        \item Quantitative constraints: maximum number of roles per user
+        \item Temporal constraints: time/date/week/... of role activation
+        \item Factual constraints: assigning or activating roles for specific permissions causally depends on any roles for a certain, other permissions
+    \end{itemize*}
+    Modeling Constraints Idea
+    \begin{itemize*}
+        \item $RBAC_2: \langle U,R,P,S,UA,PA,user,roles,RE\rangle$
+        \item $RBAC_3: \langle U,R,P,S,UA,PA,user,roles,RH,RE\rangle$
+        \item where $RE$ is a set of logical expressions over the other model components (such as $UA,PA,user,roles$)
     \end{itemize*}
 
     \paragraph{RBAC Summary}
@@ -1819,37 +1564,27 @@
         \item Standardization (RBAC96) $\rightarrow$ tool-support for:
         \begin{itemize*}
             \item role engineering (identifying and modeling roles)
-            \item model engineering (specifying and validating a model configuration)
+            \item model engineering (specifying/validating a model config.)
             \item static model checking (verifying consistency and plausibility of a model configuration)
         \end{itemize*}
         \item Still weak OS-support
         \begin{itemize*}
-            \item $\rightarrow$ application-level integrations (e. g. hospital IS, DBIS, ERP systems)
-            \item $\rightarrow$ middleware integrations (e. g. XACML, NGAC[Ferraiolo et al., 2016])
+            \item $\rightarrow$ application-level integrations
+            \item $\rightarrow$ middleware integrations
         \end{itemize*}
         \item Limited dynamic analyses w.r.t. automaton-based models
-        \begin{itemize*}
-            \item cf. HRU:safety properties?
-            \item solution approach: automaton-based RBAC96 model
-            \item $\rightarrow$ DRBAC 0 ... 3 [Schlegel and Amthor, 2020]
-        \end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{Attribute-based Access Control Models}
-    Goals of ABAC:
+    \subsubsection{Attribute-based Access Control Models}
     \begin{itemize*}
-        \item Providing a more versatile solution than RBAC for these problems, especially for open and distributed systems.
+        \item Scalability and manageability
+        \item Application-oriented model abstractions
+        \item Model semantics meet functional requirements of open systems:
         \begin{itemize*}
-            \item Scalability and manageability
-            \item Application-oriented model abstractions
-            \item Model semantics meet functional requirements of open systems:
-            \begin{itemize*}
-                \item user IDs, INode IDs, ... only available locally, scaling bad
-                \item roles that gather permissions model functions limited to specific organizational structure; only assignable to users
-            \end{itemize*}
-            \item $\rightarrow$ Consider application-specific context of an access: attributes of subjects and objects(e. g. age, location, trust level, ...)
+            \item user IDs, INode IDs, ... only available locally
+            \item roles limited to specific organizational structure; only assignable to users
         \end{itemize*}
+        \item $\rightarrow$ Consider application-specific context of an access: attributes of subjects and objects(e. g. age, location, trust level, ...)
     \end{itemize*}
 
     Idea: Generalizing the principle of indirection already known from RBAC
@@ -1857,11 +1592,11 @@
         \item IBAC: no indirection between subjects and objects
         \item RBAC: indirection via roles assigned to subjects
         \item ABAC: indirection via arbitrary attributes assigned to subjects or objects
-        \item Attributes model application-specific properties of the system entities involved in any access, e. g.:
+        \item Attributes model application-specific properties of the system entities involved in any access
         \begin{itemize*}
-            \item Age, location, trustworthiness of a application/user/device/...
-            \item Size, creation time, premium-access classification of web resource/multimedia content/document/...
-            \item Risk quantification involved with these subjects and objects (e. g. access from an IP address/proxy domain reportedly belonging to a TOR network)
+            \item Age, location, trustworthiness of a application/user/...
+            \item Size, creation time, access classification of resource/...
+            \item Risk quantification involved with these subjects and objects
         \end{itemize*}
     \end{itemize*}
 
@@ -1870,17 +1605,17 @@
         \item $f_{IBAC}:S\times O\times OP\rightarrow\{true,false\}$
         \item $f_{RBAC}:U\times O\times OP\rightarrow\{true,false\}$
         \item $f_{ABAC}:S\times O\times OP\rightarrow\{true,false\}$
-        \item $\rightarrow$ Evaluates attribute values for $⟨s,o,op⟩$, e. g.: $f_{ABAC}(user,game,download)=game.pegi \leq user.age$
+        \item $\rightarrow$ Evaluates attribute values for $\langle s,o,op\rangle$
     \end{itemize*}
 
     \paragraph{ABAC Security Model}
     \begin{itemize*}
-        \item Note: There is no such thing (yet) like a standard ABAC model (such as RBAC96).
+        \item Note: There is no such thing (yet) like a standard ABAC model
         \item Instead: Many highly specialized, application-specific models.
-        \item Here: minimal common formalism, based on Servos and Osborn [2017]
+        \item Here: minimal common formalism, based on Servos and Osborn
     \end{itemize*}
 
-    \note{ABAC Security Model}{An ABAC security model is a tuple $⟨S,O,AS,AO,attS,attO,OP,AAR⟩$ where
+    \note{ABAC Security Model}{An ABAC security model is a tuple $\langle S,O,AS,AO,attS,attO,OP,AAR\rangle$ where
         \begin{itemize*}
             \item $S$ is a set of subject identifiers and $O$ is a set of object identifiers,
             \item $A_S=V_S^1 \times...\times V_S^n$ is a set of subject attributes, where each attribute is an n-tuple of values from arbitrary domains $V_S^i$, $1\leq i \leq n$,
@@ -1898,124 +1633,68 @@
         \item Attributes in $AS,AO$ are index-referenced tuples of values, which are specific to some property of subjects $V_S^i$ (e.g. age) or of objects $V_O^j$ (e. g. PEGI rating)
         \item Attributes are assigned to subjects and objects via $att_S,att_O$
         \item Access control rules w.r.t. the execution of operations in $OP$ are modeled by the $AAR$ relation $\rightarrow$ determines ACF!
-        \item $AAR$ is based on aset of first-order logic predicates $\Phi$: $\Phi=\{\phi_1 (x_{s1},x_{o1}),\phi_2 (x_{s2},x_{o2}),...\}$. Each $\phi_i\in\Phi$ is a binary predicate (a logical statement with two arguments), where $x_{si}$ is a subject variable and $x_{oi}$ is an object variable.
+        \item $AAR$ is based on a set of first-order logic predicates $\Phi$: $\Phi=\{\phi_1 (x_{s1},x_{o1}),\phi_2 (x_{s2},x_{o2}),...\}$. Each $\phi_i\in\Phi$ is a binary predicate, where $x_{si}$ is a subject variable and $x_{oi}$ is an object variable.
     \end{itemize*}
 
-
-    \paragraph{ABAC Access Control Function}
-    With conditions from $\Phi$ for executing operations in $OP,AAR$ determines the ACF of the model:
-
-    \note{ABAC ACF}{
+    \note{ABAC Access Control Function (ACF)}{
         \begin{itemize*}
             \item $f_{ABAC}:S\times O\times OP\rightarrow\{true,false\}$ where
-            \item $f_{ABAC}(s,o,op)= \begin{cases} true, \quad\exists ⟨\phi,op⟩\in AAR:\phi(s,o)=true\\ false, \quad\text{ otherwise } \end{cases}$.
+            \item $f_{ABAC}(s,o,op)= \begin{cases} true, \quad\exists \langle \phi,op\rangle \in AAR:\phi(s,o)=true\\ false, \quad\text{ otherwise } \end{cases}$.
             \item We call $\phi$ an authorization predicate for $op$.
         \end{itemize*}
     }
-
-    Example 1: Online Game Store
-    \begin{itemize*}
-        \item Policy goal: Enforce PEGI age restrictions for video game access
-        \item S: set of client IDs
-        \item O: set of video game titles
-        \item $A_S=\mathbb{N}(where\ n=1)$: one subject attribute (age)
-        \item $A_O=\{0,3,7,12,14,18\}(where\ m=1)$: one object attribute (PEGI rating)
-        \item $att_S:S\rightarrow A_S$: assigns age attribute to clients
-        \item $att_O:O\rightarrow A_O$: assigns PEGI rating attribute to games
-        \item $OP=\{download\}$: sole operation
-        \item One simpleauthorization rule: $AAR=\{⟨att_O(o) \leq att_S(s),download⟩\}$
-    \end{itemize*}
-
-    Example 2: Document Management System
-    \begin{itemize*}
-        \item Policy goal: Enforce document confidentiality
-        \item $S$: set of user IDs
-        \item $O$: set of document IDs
-        \item $A_S=\mathbb{N}(where\ n=1)$: subject attribute (trustworthiness value)
-        \item $A_O=\mathbb{N}(where\ m=1)$: object attribute (confidentiality level)
-        \item $att_S:S\rightarrow A_S$: assigns trustworthiness value to user (e. g. based on management level)
-        \item $att_O:O\rightarrow A_O$: assigns confidentiality level to documents
-        \item $OP=\{read,write,append,...\}$: operations
-        \item Authorization rules: $AAR=\{⟨att_O(o)\leq att_S(s),read⟩,⟨att_S(s) \leq att_O(o),write⟩,...\}$
-    \end{itemize*}
 
     \paragraph{ABAC Summary}
     \begin{itemize*}
         \item Scalability
         \item Application-oriented model abstractions
-        \item Universality: ABAC can conveniently express
-        \begin{itemize*}
-            \item IBAC (attributes: IDs)
-            \item RBAC (attributes: roles)
-            \item MLS (attributes: sensitivity levels $\rightarrow$ next topic)
-        \end{itemize*}
-        \item Still weak OS-support $\rightarrow$ application-level integrations (increasingly replacing RBAC)
-        \item Attribute semantics highly diverse, not normalizable $\rightarrow$ no common "standard ABAC" to expect (all too soon ...)
+        \item Universality: ABAC can conveniently express IBAC, RBAC, MLS
+        \item Still weak OS-support $\rightarrow$ application-level integrations
+        \item Attribute semantics highly diverse, not normalizable $\rightarrow$ no common ,,standard ABAC''
         \item Limited dynamic analyses w.r.t. automaton-based models
-        \begin{itemize*}
-            \item cf. HRU:safety properties?
-            \item solution approach: automaton-based ABAC model ...
-        \end{itemize*}
     \end{itemize*}
 
     \subsubsection{Information Flow Models}
-    Abstraction Level of AC Models: rules about subjects accessing objects
-
-    Adequate for
+    Abstraction Level of AC Models: rules about subjects accessing objects. Adequate for
     \begin{itemize*}
         \item Workflow systems
         \item Document/information management systems
-        \item ... that’s it.
     \end{itemize*}
 
     Goal of Information Flow (IF) Models: Problem-oriented definition of policy rules for scenarios based on information flows(rather than access rights)
 
     Lattices (refreshment)
     \begin{itemize*}
-        \item Terms:
-        \begin{itemize*}
-            \item $inf_C$: "systemlow"
-            \item $sup_C$: "systemhigh"
-        \end{itemize*}
-        \item $\rightarrow$ notably, a graph described by a lattice
-        \item is connected
+        \item $inf_C$: ,,systemlow''
+        \item $sup_C$: ,,systemhigh''
         \item has a source: $deg^-(inf_C)= 0$
         \item has a sink: $deg^+(sup_C)= 0$
     \end{itemize*}
 
     Implementation of Information Flow Models
     \begin{itemize*}
-        \item Background: Information flows and read/write operations are isomorphic
+        \item Information flows and read/write operations are isomorphic
         \begin{itemize*}
-            \item s has read permission w.r.t. o $\Leftrightarrow$ information may flow from o to s
-            \item s has write permission w.r.t. o $\Leftrightarrow$ information may flow from s to o
+            \item s has read permission o $\Leftrightarrow$ information may flow from o to s
+            \item s has write permission o $\Leftrightarrow$ information may flow from s to o
         \end{itemize*}
         \item $\rightarrow$ Implementation by standard AC mechanisms!
     \end{itemize*}
 
     Analysis of Information Flow Models
     \begin{itemize*}
-        \item IF Transitivity $\rightarrow$ analysis goal: covert information flows
-        \begin{itemize*}
-            \item Question: "Is there a possible, sequential usage of read\item and write-permissions that ultimately leads to an unintended information flow?"
-        \end{itemize*}
-        \item IF Antisymmetry $\rightarrow$ analysis goal: redundancy
-        \begin{itemize*}
-            \item Question: "Which subjects/object share the same possible information flows and are therefore redundant?"
-        \end{itemize*}
+        \item IF Transitivity $\rightarrow$ goal: covert information flows
+        \item IF Antisymmetry $\rightarrow$ goal: redundancy
     \end{itemize*}
 
-    \paragraph{The Denning Model}
-    On of the first information flow models [Denning, 1976]:
-
-    \note{Denning Security Model}{A Denning information flow model is a tuple $⟨S,O,L,cl,\bigoplus⟩$ where
+    \note{Denning Security Model}{A Denning information flow model is a tuple $\langle S,O,L,cl,\bigoplus\rangle$ where
         \begin{itemize*}
             \item S is a set of subjects,
             \item O is a set of objects,
-            \item $L=⟨C,\leq⟩$ is a lattice where
+            \item $L=\langle C,\leq\rangle$ is a lattice where
             \begin{itemize*}
                 \item C is a set of classes,
-                \item $\leq$ is a dominance relation wherec $\leq d \Leftrightarrow$ information may flow from c to d,
+                \item $\leq$ is a dominance relation where c $\leq d \Leftrightarrow$ information may flow from c to d,
             \end{itemize*}
             \item $cl:S\cup O\rightarrow C$ is a classification function, and
             \item $\bigoplus:C\times C\rightarrow C$ is a reclassification function.
@@ -2025,26 +1704,10 @@
     Interpretation
     \begin{itemize*}
         \item Subject set S models active entities, which information flows originate from
-        \item Object set O models passive entities, which may receive information flows (e.g. documents)
-        \item Classes set C used to label entities with identical information flow properties, e.g. $C=\{Physician,Patient\}$
-        \item Classification function $cl$ assigns a class to each entity, e.g. $cl(cox)=Physician$
-        \item Reclassification function $\bigoplus$ determines which class an entity is assigned after receiving certain a information flow; e.g. for Physician to Patient: $\bigoplus (Physician,Patient)=sup_{\{Physician,Patient\}}$
-    \end{itemize*}
-
-    Example $⟨S,O,L,cl,\bigoplus⟩$ mit $L=⟨C,\leq⟩$:
-    \begin{itemize*}
-        \item $S=O=\{cox,kelso,carla,...\}$
-        \item $C=\{Physician, Anamnesis, Pharmacy, Medication,...\}$
-        \item dominance relation $\leq$:
-        \begin{itemize*}
-            \item rule "information may flow from any ward physician to an anamnesis record" $\Leftrightarrow$ Physician $\leq$ Anamnesis
-            \item rule "information may flow from a medication record to the pharmacy" $\Leftrightarrow$ Medication $\leq$ Pharmacy
-        \end{itemize*}
-        \item classification cl:
-        \begin{itemize*}
-            \item $cox=Physician$
-            \item $carla=Medication$
-        \end{itemize*}
+        \item Object set O models passive entities, which may receive information flows
+        \item Classes set C used to label entities with identical information flow properties
+        \item Classification function $cl$ assigns a class to each entity
+        \item Reclassification function $\bigoplus$ determines which class an entity is assigned after receiving certain a information flow
     \end{itemize*}
 
     We can now ...
@@ -2058,9 +1721,7 @@
         \item implement a model: through an automatically generated, isomorphic ACM(using already-present ACLs!)
     \end{itemize*}
 
-
     \paragraph{Multilevel Security (MLS)}
-    Motivation
     \begin{itemize*}
         \item Introducing a hierarchy of information flow classes: levels of trust
         \item Subjects and objects are classified:
@@ -2068,51 +1729,20 @@
             \item Subjects w.r.t. their trust worthiness
             \item Objects w.r.t. their criticality
         \end{itemize*}
-        \item Within this hierarchy, information may flow only in one direction $\rightarrow$ "secure" according to these levels!
+        \item Within this hierarchy, information may flow only in one direction $\rightarrow$ ,,secure'' according to these levels!
         \item $\rightarrow \exists$ MLS models for different security goals!
     \end{itemize*}
 
     Modeling Confidentiality Levels
     \begin{itemize*}
-        \item Class set: levels of confidentiality e.g. $C=\{public,confidential,secret\}$
+        \item Class set: levels of confidentiality e.g. $C=\{public,conf,secret\}$
         \item Dominance relation: hierarchy between confidentiality levels e.g. $\{public \leq confidential,confidential \leq secret\}$
         \item Classification of subjects and objects: $cl:S\cup O\rightarrow C$ e.g. $cl(BulletinBoard)=public,cl(Timetable)=confidential$
-        \item Note: In contrast du Denning, $\leq$ in MLS models is a total order.
+        \item In contrast due Denning $\leq$ in MLS models is a total order
     \end{itemize*}
-
-    Example
-    \begin{itemize*}
-        \item Lattice $⟨\{public,confidential,secret\},\leq⟩$ where $\leq=\{⟨public,confidential⟩,⟨confidential,secret⟩\}$
-        \item Objects $O=\{ProjectXFiles, Timetable, BulletinBoard\}$
-        \item Subjects $S=\{Ann, Bob\}$
-        \item Classification of objects (classification level):
-        \begin{itemize*}
-            \item $cl(ProjectXFiles)=secret$
-            \item $cl(Timetable)=confidential$
-            \item $cl(BulletinBoard)=pulic$
-        \end{itemize*}
-        \item Classification of subjects (clearance level):
-        \begin{itemize*}
-            \item $cl(Ann)=confidential$
-            \item $cl(Bob)=public$
-        \end{itemize*}
-        \item Neither Ann nor Bob can readProjectXFiles
-        \item Ann can
-        \begin{itemize*}
-            \item write to ProjectXFiles and Timetable
-            \item read from Timetable and BulletinBoard
-        \end{itemize*}
-        \item Bob can
-        \begin{itemize*}
-            \item write to all objects
-            \item read from BulletinBoard
-        \end{itemize*}
-    \end{itemize*}
-
 
     \paragraph{The Bell-LaPadula Model}
-    Goal: MLS-Model for Preserving Information Confidentiality
-
+    MLS-Model for Preserving Information Confidentiality.
     Incorporates impacts on model design ...
     \begin{itemize*}
         \item from the application domain: hierarchy of trust
@@ -2129,7 +1759,7 @@
     Idea:
     \begin{itemize*}
         \item entity sets S,O
-        \item $lattice⟨C,\leq⟩$ defines information flows by
+        \item $lattice\langle C,\leq\rangle$ defines information flows by
         \begin{itemize*}
             \item C: classification/clearance levels
             \item $\leq$: hierarchy of trust
@@ -2142,18 +1772,18 @@
         \item Model’s runtime behavior is specified by a deterministic automaton
     \end{itemize*}
 
-    \note{BLP Security Model}{A BLP model is a deterministic automaton $⟨S,O,L,Q,\sum,\sigma,q_0,R⟩$ where
+    \note{BLP Security Model}{A BLP model is a deterministic automaton $\langle S,O,L,Q,\sum,\sigma,q_0,R\rangle$ where
         \begin{itemize*}
             \item S and O are (static) subject and object sets,
-            \item $L=⟨C,\leq⟩$ is a (static) lattice consisting of
+            \item $L=\langle C,\leq\rangle$ is a (static) lattice consisting of
             \begin{itemize*}
                 \item the classes set C,
                 \item the dominance relation $\leq$,
             \end{itemize*}
             \item $Q=M\times CL$ is the state space where
             \begin{itemize*}
-                \item $M=\{m|m:S\times O\rightarrow 2^R\}$ is the set ofpossible ACMs,
-                \item $CL=\{cl|cl:S\cup O\rightarrow C\}$ is a set offunctions that classify entities in $S\cup O$,
+                \item $M=\{m|m:S\times O\rightarrow 2^R\}$ is the set of possible ACMs,
+                \item $CL=\{cl|cl:S\cup O\rightarrow C\}$ is a set of functions that classify entities in $S\cup O$,
             \end{itemize*}
             \item $\sum$ is the input alphabet,
             \item $\sigma:Q\times \sum\rightarrow Q$ is the state transition function,
@@ -2171,7 +1801,7 @@
         \begin{itemize*}
             \item rights in the ACM,
             \item classification of subjects/objects,
-            \item not: S and O (different to HRU $\rightarrow$ consequences for safety analysis?)
+            \item not: S and O (different to HRU)
         \end{itemize*}
         \item Commands in the STS may therefore
         \begin{itemize*}
@@ -2179,53 +1809,25 @@
             \item reclassify subjects and objects.
         \end{itemize*}
     \end{itemize*}
+    \includegraphics[width=\linewidth]{Assets/Systemsicherheit-lattice-vs-acm.png}
 
-    \paragraph{Lattice vs. ACM}
-    Given an exemplary BLP model where
-    \begin{itemize*}
-        \item $S=\{s_1,s_2\}, O=\{o_1,o_2\}$
-        \item $C=\{public,confidential\}$
-        \item $\leq=\{⟨public,confidential⟩\}$
-        \item $cl(s_1)=cl(o_1)=public$, $cl(s_2)=cl(o_2)=confidential$
-        \item %![](Assets/Systemsicherheit-lattice-vs-acm.png)
-        \item Observation: L and m are isomorphic $\rightarrow$ redundancy?
-        \item $\rightarrow$ So, why do we need both model components?
-    \end{itemize*}
-
-    Rationale
     \begin{itemize*}
         \item L is an application-oriented abstraction
         \begin{itemize*}
             \item Supports convenient for model specification
-            \item Supports easy model correctness analysis ($\rightarrow$ reachability analyses in graphs)
+            \item Supports easy model correctness analysis
             \item $\rightarrow$ easy to specify and to analyze
         \end{itemize*}
         \item m can be directly implemented by standard OS/DBIS access control mechanisms (ACLs, Capabilities) $\rightarrow$ easy to implement
-        \item m is determined (= restricted) by L and cl, not vice-versa!
-    \end{itemize*}
-
-    Rationale for L and m
-    \begin{itemize*}
+        \item m is determined (= restricted) by L and cl, not vice-versa
         \item L and cl control m
         \item m provides an easy specification for model implementation
     \end{itemize*}
 
-    \paragraph{Consistency of L,cl, and m}
-    We know: IF rules specificed by L and cl are implemented by an ACM m...
+    \subsubsection{BLP Security}
+    \note{Read-Security Rule}{A BLP model state $\langle m,cl\rangle$ is called read-secure iff $\forall s\in S,o\in O:read\in m(s,o)\Rightarrow cl(o) \leq cl(s)$.}
 
-    So: What are the conditions for m to be a correct representation of L and cl?
-
-    Intuition: An ACM m is a correct representation of a lattice L iff information flows granted by m do not exceed those defined by L and cl. $\rightarrow$ BLP security property
-
-    Consequence: If we can prove this property for a given model, then its implementation (by m) is consistent with the rules given by L and cl.
-
-    \paragraph{BLP Security}
-    Help Definitions
-    \note{Read-Security Rule}{A BLP model state $⟨m,cl⟩$ is called read-secure iff $\forall s\in S,o\in O:read\in m(s,o)\Rightarrow cl(o) \leq cl(s)$.}
-
-    \note{Write-Security Rule}{A BLP model state $⟨m,cl⟩$ is called write-secure iff $\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)$.}
-
-    Note: In some literature, read-security is called "simple security", while write-security is called "$^*$-property". Reasons are obscure-historical.
+    \note{Write-Security Rule}{A BLP model state $\langle m,cl\rangle$ is called write-secure iff $\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)$.}
 
     \note{State Security}{A BLP model state is called secure iff it is both read- and write-secure.}
 
@@ -2236,22 +1838,16 @@
         \end{enumerate*}
     }
 
-    The above definition is
-    \begin{itemize*}
-        \item intuitive
-        \item difficult to verify: state reachability...
-    \end{itemize*}
-
     Auxiliary Definition: The Basic Security Theorem for BLP (BLP BST)
     \begin{itemize*}
         \item A convenient tool for proving BLP security
         \item Idea: let’s look at properties of the finite and small model components $\rightarrow\sigma\rightarrow$ STS
     \end{itemize*}
 
-    \note{The BLP Basic Security Theorem}{A BLP model $⟨S,O,L,Q,\sum,\sigma,q_0,R⟩$ is secure iff both of the following holds:
+    \note{The BLP Basic Security Theorem}{A BLP model $\langle S,O,L,Q,\sum,\sigma,q_0,R\rangle$ is secure iff both of the following holds:
         \begin{enumerate*}
             \item $q_0$ is secure
-            \item $\sigma$ is build such that for each state q reachable from $q_0$ by a finite input sequence, where $q=⟨m,cl⟩$ and $q'=\sigma(q,\delta)=m',cl',\forall s\in S, o\in O,\delta\in\sum$ the following holds:
+            \item $\sigma$ is build such that for each state q reachable from $q_0$ by a finite input sequence, where $q=\langle m,cl\rangle$ and $q'=\sigma(q,\delta)=m',cl',\forall s\in S, o\in O,\delta\in\sum$ the following holds:
         \end{enumerate*}
         \begin{itemize*}
             \item Read-security conformity:
@@ -2269,8 +1865,7 @@
 
     Proof of Read Security
     \begin{itemize*}
-        \item Technique: Term rewriting
-        \item Let $q=\sigma*(q_0 ,\sigma^+),\sigma^+\in\sigma^+,q'=\delta(q,\sigma),\sigma\in\sigma,s\in S,o\in O$. With $q=⟨m,cl⟩$ and $q'=m',cl'$, the BLP BST for read-security is
+        \item Let $q=\sigma*(q_0 ,\sigma^+),\sigma^+\in\sigma^+,q'=\delta(q,\sigma),\sigma\in\sigma,s\in S,o\in O$. With $q=\langle m,cl\rangle$ and $q'=m',cl'$, the BLP BST for read-security
         \begin{itemize*}
             \item (a1) $read \not\in m(s,o) \wedge read\in m'(s,o) \Rightarrow cl'(o) \leq cl'(s)$
             \item (a2) $read \in m(s,o) \wedge\lnot (cl'(o)\leq cl'(s)) \Rightarrow read \not\in m'(s,o)$
@@ -2287,71 +1882,51 @@
         \end{itemize*}
     \end{itemize*}
 
-    Where Do We Stand?
-    \begin{itemize*}
-        \item Precision: necessary and sufficient conditions for BLP security property
-        \item Analytical power: statements about dynamic model behavior based on static analysis of the (finite and generally small) STS $\rightarrow$ tool support
-        \item Insights: shows that BLP security is an inductive property
-    \end{itemize*}
-
-    Problem: Larger systems: only source of access rules is the trust hierarchy $\rightarrow$ too coarse-grained!
-
     Idea: Encode an additional, more fine-grained type of access restriction in the ACM $\rightarrow$ compartments
     \begin{itemize*}
         \item Comp: set of compartments
         \item $co:S\cup O\rightarrow 2^{Comp}$: assigns a set of compartments to an entity as an (additional) attribute
         \item Refined state security rules:
         \begin{itemize*}
-            \item $⟨m,cl,co⟩$ is read-secure $\Leftrightarrow\forall s\in S,o\in O:read \in m(s,o)\Rightarrow cl(o)\leq cl(s)\wedge co(o) \subseteq co(s)$
-            \item $⟨m,cl,co⟩$ is write-secure $\Leftrightarrow\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)\wedge co(o) \subseteq co(s)$
-            \item Good ol’ BLP: $⟨S,O,L,Q,\sigma,\delta,q_0⟩$
-            \item With compartments: $⟨S,O,L,Comp,Q_{co},\sigma,\delta,q_0⟩$ where $Q_{co}=M\times CL\times CO$ and $CO=\{co|co:S\cup O\rightarrow 2^{Comp}\}$
+            \item $\langle m,cl,co\rangle$ is read-secure $\Leftrightarrow\forall s\in S,o\in O:read \in m(s,o)\Rightarrow cl(o)\leq cl(s)\wedge co(o) \subseteq co(s)$
+            \item $\langle m,cl,co\rangle$ is write-secure $\Leftrightarrow\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)\wedge co(o) \subseteq co(s)$
         \end{itemize*}
+        \item old BLP: $\langle S,O,L,Q,\sigma,\delta,q_0\rangle$
+        \item With compartments: $\langle S,O,L,Comp,Q_{co},\sigma,\delta,q_0\rangle$ where $Q_{co}=M\times CL\times CO$ and $CO=\{co|co:S\cup O\rightarrow 2^{Comp}\}$
     \end{itemize*}
 
     Example
     \begin{itemize*}
         \item Let $co(o)=secret,co(o)=airforce$
         \item $s_1$ where $cl(s_1)=public,co(s_1)=\{airforce,navy\}$ can write o
-        \item $s_2$ where $cl(s_2)=secret,co(s_2)=\{airforce,navy\}$ can read and write o
+        \item $s_2$ where $cl(s_2)=secret,co(s_2)=\{airforce,navy\}$ read/write o
         \item $s_3$ where $cl(s_3)=secret,co(s_3)=\{navy\}$ can do neither
-        \item %![](Assets/Systemsicherheit-blp-example.png)
     \end{itemize*}
 
 
     \paragraph{BLP Model Summary}
-    Model Achievements
     \begin{itemize*}
-        \item Application-oriented modeling $\rightarrow$ hierarchical information flow (goal: preserve confidentiality)
+        \item Application-oriented modeling $\rightarrow$ hierarchical information flow
         \item Scalability $\rightarrow$ attributes: trust levels
         \item Modeling dynamic behavior $\rightarrow$ automaton with STS
-        \item Correctness guarantees
+        \item Correctness guarantees (analysis of)
         \begin{itemize*}
-            \item Of model specification: analysis of
-            \begin{itemize*}
-                \item consistency: BLP security, BST
-                \item completeness of IF: IFG path finding
-                \item presence of unintended, transitive IF: IFG path finding
-                \item unwanted redundancy: IF cycles $\rightarrow$ information equivalence classes
-                \item safety properties:decidable!
-                \item $\rightarrow$ tool-supportpossible!
-            \end{itemize*}
-            \item Of model implementation: good ol’ ACM $\rightarrow$ ACLs, capabilities
+            \item consistency: BLP security, BST
+            \item completeness of IF: IFG path finding
+            \item presence of unintended IF: IFG path finding
+            \item unwanted redundancy: IF cycles
+            \item safety properties: decidable
         \end{itemize*}
         \item Implementation
         \begin{itemize*}
             \item ACM is a standard AC mechanism in contemporary implementation platforms (cf. prev. slide)
-            \item Contemporary standard OSs need this: do not support mechanisms for
-            \begin{itemize*}
-                \item entity classification
-                \item arbitrary STSs
-            \end{itemize*}
-            \item $\rightarrow$ newer platforms may do: SELinux, SEAndroid, TrustedBSD, Solaris, Trusted Extensions, PostgreSQL
+            \item Contemporary standard OSs need this: do not support mechanisms for entity classification, arbitrary STSs
+            \item new platforms: SELinux, TrustedBSD, PostgreSQL, ...
         \end{itemize*}
         \item Is an example of a hybrid model: IF + AC + ABAC
     \end{itemize*}
 
-    Lessons Learned - What we can learn from BLP for designing and using security models:
+    learn from BLP for designing and using security models
     \begin{itemize*}
         \item Model composition from known model abstractions
         \begin{itemize*}
@@ -2362,59 +1937,42 @@
             \item ACM: implementing application-oriented policy semantics
         \end{itemize*}
         \item Consistency is an important property of composed models
-        \item BLP is further extensible and refinable $\rightarrow$ starting point for later models, e. g. Biba
+        \item BLP is further extensible and refinable
     \end{itemize*}
 
+    \subsubsection{The Biba Model}
+    BLP upside down
 
-    \paragraph{The Biba Model}
-    BLP upside down [Biba, 1977]:
-    %![](Assets/Systemsicherheit-blp-vs-biba.png)
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/Systemsicherheit-blp-vs-biba.png}
+    \end{center}
     \begin{itemize*}
         \item BLP $\rightarrow$ preserves confidentiality
         \item Biba $\rightarrow$ preserves integrity
     \end{itemize*}
 
-    Applications Example: On-board Airplane Passenger Information Systems
+    OS Example
     \begin{itemize*}
-        \item Goal: Provide in-flight information in cabin network
-        \begin{itemize*}
-            \item Flight instruments data
-            \item Outboard camera video streams
-            \item communication pilot - tower
-        \end{itemize*}
-        \item Integrity: no information flow from cabin to flight deck!
-        \item As employed in Boeing 787: common network for cabin and flight deck + software firewall + Biba implementation
-    \end{itemize*}
-
-    Windows Vista UAC
-    \begin{itemize*}
-        \item An application of the Biba model for OS access control:
-        \item Integrity: Protect system files from malicious user (software) tampering
-        \item Class hierarchy:
-        \begin{itemize*}
-            \item system: OS level objects
-            \item high: services
-            \item medium: user level objects
-            \item low: untrusted processes e. g. web browser, setup application, ...
-        \end{itemize*}
-        \item Consequence: every file, process, ... created by the web browser is classified low $\rightarrow$ cannot violate integrity of system- and user-objects
-        \item Manual user involvement ($\rightarrow$ DAC portion of the policy):resolving intended exceptions, e. g. to install trusted application software
+        \item Integrity: Protect system files from malicious user/software
+        \item Class hierarchy (system, high, medium, low)
+        \item every file/process/... created is classified $\rightarrow$ cannot violate integrity of objects
+        \item Manual user involvement: resolving intended exceptions, e.g. install trusted application
     \end{itemize*}
 
 
     \subsubsection{Non-interference Models}
-    Problem No. 1: Covert Channels
+    Problems: Covert Channels \& Damage Range (Attack Perimeter)
 
-    \note{Covert Channel [Lampson, 1973]}{Channels [...] not intended for information transfer at all, such as the service program’s effect on the system load.}
+    \note{Covert Channel}{Channels not intended for information transfer at all, such as the service program’s effect on the system load.}
 
     \begin{itemize*}
         \item AC policies (ACM, HRU, TAM, RBAC, ABAC): colluding malware agents, escalation of common privileges
         \begin{itemize*}
             \item Process 1: only read permissions on user files
             \item Process 2: only permission to create an internet socket
-            \item both:communication via covert channel(e. g. swapping behavior)
+            \item both: communication via covert channel
         \end{itemize*}
-        \item MLS policies (Denning, BLP, Biba): indirect information flow exploitation (Note: We can never prohibitany possible transitive IF ...)
+        \item MLS policies (Denning, BLP, Biba): indirect information flow exploitation (can never prohibitany possible transitive IF ...)
         \begin{itemize*}
             \item Test for existence of a file
             \item Volume control on smartphones
@@ -2422,40 +1980,29 @@
         \end{itemize*}
     \end{itemize*}
 
-    Problem No. 2: Damage Range
-    How to substantiate a statement like: "Corruption of privileged system software will never have any impact on other system components." $\rightarrow$ Attack perimeter
-
-    Idea of NI models:
+    Idea of NI models
     \begin{itemize*}
-        \item Once more: higher level of abstraction
+        \item higher level of abstraction
         \item Policy semantics: which domains should be isolated based on their mutual impact
     \end{itemize*}
 
-    Consequences:
+    Consequences
     \begin{itemize*}
         \item Easier policy modeling
-        \item More difficult policy implementation ...($\rightarrow$ higher degree of abstraction!)
+        \item More difficult policy implementation $\rightarrow$ higher degree of abstraction
     \end{itemize*}
 
-
-    \paragraph{Example 1: Multi-application Smart Cards}
+    Example
     \begin{itemize*}
+        \item Fields: Smart Cards, Server System
         \item Different services, different providers, different levels of trust
-        \item Shared resources: Runtime software, OS, hardware (processor, memory, I/O interfaces, ...)
-        \item Needed:Total isolation of services (program code, security-critical information e. g. private keys)
-        \item $\rightarrow$ Guarantee of total non-interference between domains
-    \end{itemize*}
-
-    \paragraph{Example 2: Server System}
-    \begin{itemize*}
-        \item Different services: web hosting, mail service, file sharing
-        \item Shared resources (see example 1)
-        \item Needed:Precisely defined and restricted cross-domain interactions (e. g. file up-/downloads, socket communication, shared memory read/write, ...)
-        \item $\rightarrow$ Guarantee of limited non-interferenc ebetween domains
+        \item Shared resources
+        \item Needed: isolation of services, restricted cross-domain interactions
+        \item $\rightarrow$ Guarantee of total/limited non-interference between domains
     \end{itemize*}
 
     \paragraph{NI Security Policies}
-    NI-Policies Specify
+    Specify
     \begin{itemize*}
         \item Security domains
         \item Cross-domain (inter)actions $\rightarrow$ interference
@@ -2463,15 +2010,7 @@
     From convert channels to domain interference:
     \note{Non-Interference}{Two domains do not interfere with each other iff no action in one domain can be observed by the other.}
 
-    $\rightarrow$ NI Model Abstractions:
-    \begin{itemize*}
-        \item Set of domains D
-        \item A non-interference relation $\approx_{NI}\subseteq D\times D$, such that $d_1 \approx_{NI} d_2\Leftrightarrow d_1$ does not interfere with $d_2$
-        \item Subjects executeactions $a\in A$
-        \item Effects of actions on domains defined by a mapping $dom:A\rightarrow 2^D$
-    \end{itemize*}
-
-    \note{NI Security Model}{An NI model is a det. automaton $⟨Q,\sigma,\delta,\lambda,q_0,D,A,dom,\approx_{NI},Out⟩$ where
+    \note{NI Security Model}{An NI model is a det. automaton $\langle Q,\sigma,\delta,\lambda,q_0,D,A,dom,\approx_{NI},Out\rangle$ where
         \begin{itemize*}
             \item Q is the set of (abstract) states,
             \item $\sigma=A$ is the input alphabet where A is the set of (abstract) actions,
@@ -2483,9 +2022,8 @@
             \item $\approx_{NI}\subseteq D\times D$ is a non-interference relation,
             \item $Out$ is a set of (abstract) outputs.
         \end{itemize*}
+        NI Security Model is also called Goguen/Meseguer-Model.
     }
-
-    NI Security Model is also called Goguen/Meseguer-Model [Goguen and Meseguer, 1982].
 
     BLP written as an NI Model
     \begin{itemize*}
@@ -2505,17 +2043,13 @@
     \end{itemize*}
 
     \paragraph{NI Model Analysis}
-    Goal
+    Goals
     \begin{itemize*}
         \item AC models: privilege escalation ($\rightarrow$ HRU safety)
-        \item BLP models:model consistency ($\rightarrow$ BLP security)
-        \item NI models:Non-interference between domains
+        \item BLP models: model consistency ($\rightarrow$ BLP security)
+        \item NI models: Non-interference between domains
     \end{itemize*}
 
-    Non-Interference Intuitively:
-    Is there a sequence of actions $a^*\in A^*$ that violates $\approx_{NI}$? $\rightarrow$ A model is called $NI$-secure iff there is no sequence of actions that results in an illegal domain interference. Now what does this meansprecisely...?
-
-    Before we define what NI-secure is, assume we could remove all actions from an action sequence that have no effect on a given set of domains:
     \note{Purge Function}{Let $aa^*\in A^*$ be a sequence of actions consisting of a single action $a\in A\cup\{\epsilon\}$ followed by a sequence $a^*\in A^*$, where $\epsilon$ denotes an empty sequence. Let $D'\in 2^D$ be any set of domains. Then, purge: $A^*\times 2^D \rightarrow A^*$ computes a subsequence of $aa^*$ by removing such actions without an observable effect on any element of $D':$
         \begin{itemize*}
             \item $purge(aa^*,D')=\begin{cases} a\circ purge(a^*,D'), \quad\exists d_a\in dom(a),d'\in D':d_a\approx_I d' \\ purge(a^*,D'), \quad\text{ otherwise }\end{cases}$
@@ -2524,12 +2058,14 @@
         where $\approx_I$ is the complement of $\approx_{NI}:d_1 \approx_I d_2\Leftrightarrow \lnot(d_1 \approx_{NI} d_2)$.
     }
 
-    \note{NI Security}{For a state $q\in Q$ of an NI model $⟨Q,\sigma,\delta,\lambda,q_0,D,A,dom,\approx_{NI},Out⟩$, the predicate ni-secure(q) holds iff $\forall a\in A,\forall a^*\in A^*:\lambda (\delta^*(q,a^*),a)=\lambda(\delta^*(q,purge(a^*,dom(a))),a)$.}
+    \note{NI Security}{For a state $q\in Q$ of an NI model $\langle Q,\sigma,\delta,\lambda,q_0,D,A,dom,\approx_{NI},Out\rangle$, the predicate ni-secure (q) holds iff $\forall a\in A,\forall a^*\in A^*:\lambda (\delta^*(q,a^*),a)=\lambda(\delta^*(q,purge(a^*,dom(a))),a)$.}
 
     Interpretation
-    1. Running an NI model on $⟨q,a^*⟩$ yields $q'=\delta^*(q,a^*)$.
-    2. Running the model on the purged input sequence so that it contains only actions that, according to $\approx_{NI}$, actually have impact on $dom(a)$ yields $q'_{clean}=\delta^*(q,purge(a^*,dom(a)))$
-    3. If $\forall a\in A:\lambda(q',a)=\lambda(q'_{clean},a)$, than the model is called NI-secure w.r.t. q($ni-secure(q)$).
+    \begin{enumerate*}
+        \item Running an NI model on $\langle q,a^*\rangle$ yields $q'=\delta^*(q,a^*)$.
+        \item Running the model on the purged input sequence so that it contains only actions that, according to $\approx_{NI}$, actually have impact on $dom(a)$ yields $q'_{clean}=\delta^*(q,purge(a^*,dom(a)))$
+        \item If $\forall a\in A:\lambda(q',a)=\lambda(q'_{clean},a)$, than the model is called NI-secure w.r.t. q($ni-secure(q)$).
+    \end{enumerate*}
 
     \paragraph{Comparison to HRU and IF Models}
     \begin{itemize*}
@@ -2549,16 +2085,14 @@
         \begin{itemize*}
             \item Rules about mutual interference between domains
             \item Analysis goal: consistency of $\approx_{NI}$ and $dom$
-            \item Implementation needs rigorous domain isolation (more rigorous than MLS, e.g. object encryption is not sufficient!) $\rightarrow$ expensive
-            \item State of the Art w.r.t. isolation completeness: VMs > OS domains (SELinux) > Containers
+            \item Implementation needs rigorous domain isolation (e.g. object encryption is not sufficient) $\rightarrow$ expensive
+            \item State of the Art w.r.t. isolation completeness
         \end{itemize*}
     \end{itemize*}
 
     \subsubsection{Hybrid Models}
-    Real-world Scenarios e.g. workflow modeling: IBAC plus RBAC plus IF plus time... $\rightarrow$ Hybrid models by composing pure models
-
     \paragraph{Chinese-Wall Policies}
-    Security policy family for consulting companies
+    for consulting companies
     \begin{itemize*}
         \item Clients of any such company
         \begin{itemize*}
@@ -2567,76 +2101,62 @@
         \end{itemize*}
         \item Employees of consulting companies
         \begin{itemize*}
-            \item Are assigned to clients they consult (decided by management)
+            \item Are assigned to clients they consult
             \item Work for many clients $\rightarrow$ gather insider information
         \end{itemize*}
-        \item $\rightarrow$ Policy goal: No flow of (insider) information between competing clients
+        \item Policy goal: No flow of (insider) information between competing clients
     \end{itemize*}
 
-    Why look at specifically these policies?
+    Why look at specifically these policies? Modeling
     \begin{itemize*}
-        \item Modeling
+        \item Composition of
         \begin{itemize*}
-            \item Composition of
-            \begin{itemize*}
-                \item Discretionary IBAC components
-                \item Mandatory ABAC components
-            \end{itemize*}
-            \item Driven by real-world demands: iterative refinements of a model over time
-            \begin{itemize*}
-                \item Brewer-Nash model [Brewer and Nash, 1989]
-                \item Information flow model [Sandhu, 1992a]
-                \item Attribute-based model [Sharifi and Tripunitara, 2013]
-            \end{itemize*}
-            \item Application areas: consulting, cloud computing
+            \item Discretionary IBAC components
+            \item Mandatory ABAC components
         \end{itemize*}
+        \item Driven by real-world demands: iterative refinements of a model over time
+        \begin{itemize*}
+            \item Brewer-Nash model
+            \item Information flow model
+            \item Attribute-based model
+        \end{itemize*}
+        \item Application areas: consulting, cloud computing
     \end{itemize*}
 
     \paragraph{The Brewer-Nash Model}
-    Specialized model: Explicitly tailored towards Chinese Wall (CW) policies
+    Explicitly tailored towards Chinese Wall (CW) policies
 
     Model Abstractions
     \begin{itemize*}
         \item Consultants represented by subjects
         \item Client companies represented by objects, which comprise a company’s business data
         \item Modeling of competition by conflict classes: two different clients are competitors $\Leftrightarrow$ their objects belong to the same class
-        \item No information flow between competing objects $\rightarrow$ a "wall" separating any two objects from the same conflict class
+        \item No information flow between competing objects $\rightarrow$ a ,,wall'' separating any two objects from the same conflict class
         \item Additional ACM for refined management settings of access permissions
-    \end{itemize*}
-
-    Example
-    \begin{itemize*}
-        \item Consultancy clients
-        \begin{itemize*}
-            \item Banks: HSBC, Deutsche Bank, Citigroup
-            \item Oil companies: Shell, Exxon Mobil/Esso
-        \end{itemize*}
-        \item Conflicts: business-crucial information flows between banks and oil companies
-        %![](Assets/Systemsicherheit-brewer-example.png)
     \end{itemize*}
 
     Representation of Conflict Classes
     \begin{itemize*}
         \item Client company data: object set O
-        \item Competition: conflict relation $C\subseteq O\times O:⟨o,o'⟩\in C\Leftrightarrow o$ and $o'$ belong to competing companies (non-reflexive, symmetric, generally not transitive)
-        \item In terms of ABAC:object attribute $att_O:O\rightarrow 2^O$, such that $att_O(o)=\{o'\in O|⟨o,o'⟩\in C\}$.
+        \item Competition: conflict relation $C\subseteq O\times O:\langle o,o'\rangle \in C\Leftrightarrow o$ and $o'$ belong to competing companies (non-reflexive, symmetric, generally not transitive)
+        \item In terms of ABAC:object attribute $att_O:O\rightarrow 2^O$, such that $att_O(o)=\{o'\in O|\langle o,o'\rangle \in C\}$.
     \end{itemize*}
 
     Representation of a Consultant’s History
     \begin{itemize*}
         \item Consultants: subject set S
-        \item History relation $H\subseteq S\times O:⟨s,o⟩\in H\Leftrightarrow s$ has previously consulted $o$
-        \item In terms of ABAC: subject attribute $att_S:S\rightarrow 2^O$, such that $att_S(s)=\{o\in O|⟨s,o⟩\in H\}$.
+        \item History relation $H\subseteq S\times O:\langle s,o\rangle \in H\Leftrightarrow s$ has previously consulted $o$
+        \item In terms of ABAC: subject attribute $att_S:S\rightarrow 2^O$, such that $att_S(s)=\{o\in O|\langle s,o\rangle \in H\}$.
     \end{itemize*}
 
-    \note{Brewer-Nash Security Model}{The Brewer-Nash model of the CW policy is a det. $automaton⟨S,O,Q,\sigma,\delta,q_0,R⟩$ where
+    \note{Brewer-Nash Security Model}{The Brewer-Nash model of the CW policy is a det. $automaton\langle S,O,Q,\sigma,\delta,q_0,R\rangle$ where
         \begin{itemize*}
             \item $S$ and $O$ are sets of subjects (consultants) and (company data) objects,
             \item $Q=M\times 2^C\times 2^H$ is the state space where
             \begin{itemize*}
-                \item $M=\{m|m:S\times O\rightarrow 2^R\}$ is the set ofpossible ACMs,
-                \item $C\subseteq O\times O$ is the conflict relation: $⟨o,o'⟩\in C\Leftrightarrow o$ and $o'$ are competitors,
-                \item $H\subseteq S\times O$ is the history relation: $⟨s,o⟩\in H\Leftrightarrow s$ has previously
+                \item $M=\{m|m:S\times O\rightarrow 2^R\}$ is the set of possible ACMs,
+                \item $C\subseteq O\times O$ is the conflict relation: $\langle o,o'\rangle \in C\Leftrightarrow o$ and $o'$ are competitors,
+                \item $H\subseteq S\times O$ is the history relation: $\langle s,o\rangle \in H\Leftrightarrow s$ has previously
                 consulted $o$,
             \end{itemize*}
             \item $\sigma=OP \times X$ is the input alphabet where
@@ -2650,43 +2170,31 @@
         \end{itemize*}
     }
 
-    %![](Assets/Systemsicherheit-brewer-example-2.png)
-    At the time depicted:
-    \begin{itemize*}
-        \item Conflict relation: $C=\{⟨HSBC,DB⟩,⟨HSBC,Citi⟩,⟨DB,Citi⟩,⟨Shell,Esso⟩\}$
-        \item History relation: $H=\{⟨Ann,DB⟩,⟨Bob,Citi⟩,⟨Bob,Esso⟩\}$
-    \end{itemize*}
-
-
     \paragraph{Brewer-Nash STS}
     \begin{itemize*}
-        \item Read (here: similar to HRU notation)
-        $command read(s,o)::=if read \in m(s,o) \wedge\forall ⟨o',o⟩\in C:⟨s,o'⟩\not\in H$
-        $then$
-        $H:=H\cup\{⟨s,o⟩\}$
-        $fi$
+        \item Read (similar to HRU notation)
+        command read(s,o)::=if read $\in$ m(s,o) $\wedge\forall \langle o',o\rangle \in C:\langle s,o'\rangle \not\in H$
+        then
+        $H:=H\cup\{\langle s,o\rangle \}$
+        fi
         \item Write
-        $command write(s,o)::=if write \in m(s,o) \wedge\forall o'\in O:o'\not=o \Rightarrow ⟨s,o'⟩\not\in H$
-        $then$
-        $H:=H\cup\{⟨s,o⟩\}$
-        $fi$
+        command write(s,o)::=if write $\in$ m(s,o) $\wedge\forall o'\in O:o'\not=o \Rightarrow \langle s,o'\rangle \not\in H$
+        then
+        $H:=H\cup\{\langle s,o\rangle \}$
+        fi
     \end{itemize*}
 
     Not shown: Discretionary policy portion $\rightarrow$ modifications in m to enable fine-grained rights management.
 
     Restrictiveness
     \begin{itemize*}
-        \item Write Command: s is allowed to write $o\Leftrightarrow write\in m(s,o)\wedge\forall o'\in O:o'\not=o\Rightarrow⟨s,o'⟩\not\in H$
+        \item Write Command: s is allowed to write $o\Leftrightarrow write\in m(s,o)\wedge\forall o'\in O:o'\not=o\Rightarrow\langle s,o'\rangle \not\in H$
         \item Why so restrictive? $\rightarrow$ No transitive information flow!
-        \begin{itemize*}
-            \item $\rightarrow$ s must never have previously consulted any other client!
-            \item $\Rightarrow$ any consultant is stuck with her client on first read access
-            \item $\Rightarrow$ not (yet) a professional model!
-        \end{itemize*}
+        \item $\rightarrow$ s must never have previously consulted any other client!
+        \item any consultant is stuck with her client on first read access
     \end{itemize*}
 
     \paragraph{Brewer-Nash Model}
-    Instantiation of a Model
     \begin{itemize*}
         \item Initial State $q_0$
         \begin{itemize*}
@@ -2696,14 +2204,12 @@
         \end{itemize*}
     \end{itemize*}
 
-    \note{Secure State}{$\forall o,o' \in O,s\in S:⟨s,o⟩\in H_q\wedge⟨s,o'⟩\in H_q\Rightarrow⟨o,o'⟩\not\in C_q$
+    \note{Secure State}{$\forall o,o' \in O,s\in S:\langle s,o\rangle \in H_q\wedge\langle s,o'\rangle \in H_q\Rightarrow\langle o,o'\rangle \not\in C_q$
 
-        Corollary: $\forall o,o'\in O,s\in S:⟨o,o'⟩\in C_q\wedge⟨s,o⟩\in H_q\Rightarrow ⟨s,o'⟩\not\in H_q$
+        Corollary: $\forall o,o'\in O,s\in S:\langle o,o'\rangle \in C_q\wedge\langle s,o\rangle \in H_q\Rightarrow \langle s,o'\rangle \not\in H_q$
     }
 
-    \note{Secure Brewer-Nash Model}{Similar to "secure BLP model".}
-
-    In the exercises: STS, transformation into pure HRU calculus, dynamic subject and object sets.
+    \note{Secure Brewer-Nash Model}{Similar to ,,secure BLP model''.}
 
     \paragraph{Summary Brewer-Nash}
     What’s remarkable with this model?
@@ -2714,7 +2220,7 @@
             \item Sets (subjects, objects)
             \item ACM (DAC)
             \item Relations (company conflicts, consultants history)
-            \item Simple "read" and "write" rule
+            \item Simple ,,read'' and ,,write'' rule
             \item $\rightarrow$ easy to implement
         \end{itemize*}
         \item Analysis goals
@@ -2730,10 +2236,10 @@
         \item Remember the difference: trusting humans (consultants) vs. trusting software agents (subjects)
         \begin{itemize*}
             \item Consultants are assumed to be trusted
-            \item Systems (processes, sessions, etc.) may fail, e. g. due to a malware attack
+            \item Systems (processes, sessions, ...) may fail
         \end{itemize*}
-        \item $\rightarrow$ Write-rule applied not to humans, but to (shorter-lived) software agents $\rightarrow$ mitigating malware effectiveness
-        \item $\rightarrow$ Subject set S models consultant’s subjects (e. g. processes) in a group model:
+        \item $\rightarrow$ Write-rule applied not to humans, but to software agents
+        \item $\rightarrow$ Subject set S models consultant’s subjects (e.g. processes) in a group model
         \begin{itemize*}
             \item All processes of one consultant form a group
             \item Group members
@@ -2743,35 +2249,32 @@
                 \item are strictly isolated w.r.t. IF
             \end{itemize*}
         \end{itemize*}
-        \item Solution approach: as we already know $\rightarrow$ model refinement!
     \end{itemize*}
-
 
     \paragraph{The Least-Restrictive-CW Model}
+
     Restrictiveness of Brewer-Nash Model:
     \begin{itemize*}
-        \item If $⟨o_i,o_k⟩\in C$: no transitive information flow $o_i \rightarrow o_j\rightarrow o_k$, i.e. consultant(s) of $o_i$ must never write to any $o_j\not=o_i$
-        \item This is actually more restrictive than necessary: $o_j\rightarrow o_k$ and afterwards $o_i\rightarrow o_j$ would be fine! (no information can actually flow from $o_i$ to $o_k$)
-        \item In other words: Criticality of an IF depends on existence of earlier flows.
+        \item If $\langle o_i,o_k\rangle \in C$: no transitive information flow $o_i \rightarrow o_j\rightarrow o_k$, i.e. consultant(s) of $o_i$ must never write to any $o_j\not=o_i$
+        \item This is actually more restrictive than necessary: $o_j\rightarrow o_k$ and afterwards $o_i\rightarrow o_j$ would be fine
+        \item Criticality of an IF depends on existence of earlier flows.
     \end{itemize*}
 
-    Idea LR-CW[Sharifi and Tripunitara, 2013]: Include time as a model abstraction!
-
-    Approach:
+    Idea LR-CW: Include time as a model abstraction!
     \begin{itemize*}
-        \item $\forall s\in S,o\in O$: remember, which information has flown to an entity
-        \item $\rightarrow$ subject-/object-specific history, $\approx$attributes ("lables")
+        \item $\forall s\in S,o\in O$: remember, which information has flown to entity
+        \item $\rightarrow$ subject-/object-specific history, $\approx$attributes (,,lables'')
     \end{itemize*}
 
-    \note{LR-CW Model}{The Least-Restrictive model of the CW policy is a deterministic $automaton ⟨S,O,F,\zeta,Q,\sigma,\delta,q_0⟩$ where
+    \note{LR-CW Model}{The Least-Restrictive model of the CW policy is a deterministic $automaton \langle S,O,F,\zeta,Q,\sigma,\delta,q_0\rangle$ where
         \begin{itemize*}
             \item S and O are sets of subjects (consultants) and data objects,
             \item F is the set of client companies,
-            \item $\zeta:O\rightarrow F$ ("zeta") is a function mapping each object to its company,
+            \item $\zeta:O\rightarrow F$ (,,zeta'') function mapping each object to its company,
             \item $Q=2^C \times 2^H$ is the state space where
             \begin{itemize*}
-                \item $C\subseteq F\times F$ is the conflict relation: $⟨f,f'⟩\in C\Leftrightarrow f$ and $f'$ are competitors,
-                \item $H=\{Z_e\subseteq F|e\in S\cup O\}$ is the history set: $f\in Z_e\Leftrightarrow e$ contains information about $f(Z_e$ is the "history label" of $e$),
+                \item $C\subseteq F\times F$ is the conflict relation: $\langle f,f'\rangle \in C\Leftrightarrow f$ and $f'$ are competitors,
+                \item $H=\{Z_e\subseteq F|e\in S\cup O\}$ is the history set: $f\in Z_e\Leftrightarrow e$ contains information about $f(Z_e$ is the ,,history label'' of $e$),
             \end{itemize*}
             \item $\sigma=OP\times X$ is the input alphabet where
             \begin{itemize*}
@@ -2783,40 +2286,18 @@
         \end{itemize*}
     }
 
-    %![](Assets/Systemsicherheit-brewer-example-2.png)
-    \begin{itemize*}
-        \item At the time depicted (before the first write):
-        \begin{itemize*}
-            \item Client companies: $F=\{HSBC,DB,Citi,Shell,Esso\}$
-            \item History set: $H=\{Z_{Ann},Z_{Bob},Z_{o1} ,...,Z_{o|O|}\}$ with history labels
-            \begin{itemize*}
-                \item $Z_{Ann}=\{DB\}$
-                \item $Z_{Bob}=\{Citi,Esso\}$,
-                \item $Z_{oi}=\{\zeta(o_i)\}, 1\leq i\leq |O|$.
-            \end{itemize*}
-        \end{itemize*}
-    \end{itemize*}
-
     Inside the STS
     \begin{itemize*}
-        \item a reading operation
-        \begin{itemize*}
-            \item requires that no conflicting information is accumulated in the subject potentially increases the amount of information in the subject
-            \item command read(s,o) ::= if $\forall f,f'\in Z_s \cup Z_o:⟨f,f'⟩\not\in C$ then $Z_s:=Z_s\cup Z_o$ fi
-        \end{itemize*}
-        \item a writing operation
-        \begin{itemize*}
-            \item requires that no conflicting information is accumulated in the object potentially increases the amount of information in the object
-            \item command write(s,o) ::= if $\forall f,f'\in Z_s\cup Z_o:⟨f,f'⟩\not\in C$ then $Z_o:=Z_o\cup Z_s$ fi
-        \end{itemize*}
+        \item a reading operation: requires that no conflicting information is accumulated in the subject potentially increases the amount of information in the subject
+        \item a writing operation: requires that no conflicting information is accumulated in the object potentially increases the amount of information in the object
     \end{itemize*}
 
     Model Achievements
     \begin{itemize*}
-        \item Applicability: more writes allowed in comparison to Brewer-Nash (note that this still complies with the general CW policy)
+        \item Applicability: more writes allowed in comparison to Brewer-Nash
         \item Paid for with
         \begin{itemize*}
-            \item Need to store individual attributes of all entities (their history labels $Z_e$)
+            \item Need to store individual attributes of all entities (history labels)
             \item Dependency of write permissions on earlier actions of other subjects
         \end{itemize*}
         \item More extensions:
@@ -2826,30 +2307,12 @@
         \end{itemize*}
     \end{itemize*}
 
-    \paragraph{An MLS Model for Chinese-Wall Policies}
-    Problems
-    \begin{itemize*}
-        \item Modeling of conflict relation
-        \item Modeling of consultants history
-    \end{itemize*}
-
+    \subsubsection{An MLS Model for Chinese-Wall Policies}
     Conflict relation is
     \begin{itemize*}
         \item non-reflexive: no company is a competitor of itself
         \item symmetric: competition is always mutual
-        \item not necessarily transitive: any company might belong to more than one conflict class $\Rightarrow$ if a competes with b and b competes with c, then a and c might still be in different conflict classes (= no competitors) $\rightarrow$ Cannot be modeled by a lattice!
-    \end{itemize*}
-
-    Reminder:In a lattice$⟨C,\leq⟩$,$\leq$ is a partial order:
-    1. reflexive $(\forall a\in C:a \leq a)$
-    2. anti-symmetric $(\forall a,b \in C:a \leq b \wedge b \leq a\Rightarrow a=b)$
-    3. transitive $(a,b,c \in C:a \leq b \wedge b \leq c \Rightarrow a \leq c)$
-
-    MLS-CW Example:
-    \begin{itemize*}
-        \item Two conflict classes: %![](Assets/Systemsicherheit-mls-conflict-classes.png)
-        \item Resulting valid information flows: %![](Assets/Systemsicherheit-mls-information-flow.png)
-        \item Problem: How to express this more directly, by allowed information flows rather than (forbidden) conflicts?
+        \item not necessarily transitive: any company might belong to more than one conflict class $\rightarrow$ Cannot be modeled by a lattice
     \end{itemize*}
 
     Idea: Labeling of entities
@@ -2858,110 +2321,82 @@
         \item Consultant reclassified whenever a company data object is read
         \item $\rightarrow$ Classes and labels:
         \item Class set of a lattice $C=\{DB,Citi,Shell,Esso\}$
-        \item Entity label: vector of information already present in each business branch (formerly known as conflict classin Brewer-Nash!)
-        \item In our example, a vector consists of 2 elements $\in C$; resulting in labels such as:
+        \item Entity label: vector of information already present in each business branch
+        \item In example, a vector consists of 2 elements $\in C$ resulting in labels as:
         \begin{itemize*}
             \item $[\epsilon,\epsilon]$ (exclusively for $inf_C$)
             \item $[DB,\epsilon]$ (for DB-objects or -consultants)
             \item $[DB,Shell]$ (for subjects or objects containing information from both DB and Shell)
-            \item $[Esso,Shell]$ (illegal label!)
-            \item ...
         \end{itemize*}
     \end{itemize*}
 
-    \paragraph{Summary CW}
-    Why is the "Chinese Wall" policy interesting?
+    Why is the ,,Chinese Wall'' policy interesting?
     \begin{itemize*}
         \item One policy, multiple models:
-        \begin{itemize*}
-            \item The Brewer-Nash model demonstrates hybrid DAC-/MAC-/IFC-approach
-            \item The Least-Restrictive CW model demonstrates a more practical professionalization
-            \item The MLS-CW model demonstrates applicability of lattice-based IF modeling $\rightarrow$ semantically cleaner approach
-        \end{itemize*}
+        \item Brewer-Nash model demonstrates hybrid DAC-/MAC-/IFC-approach
+        \item Least-Restrictive CW model demonstrates a more practical professionalization
+        \item MLS-CW model demonstrates applicability of lattice-based IF modeling $\rightarrow$ semantically cleaner approach
         \item Applications: Far beyond traditional consulting scenarios...$\rightarrow$ current problems in cloud computing!
     \end{itemize*}
 
-
-    \subsection{Summary}
-    Security Models
+    \subsection{Summary - Security Models}
     \begin{itemize*}
         \item Formalize informal security policies for the sake of
         \begin{itemize*}
             \item objectification by unambiguous calculi
-            \item explanation and (possibly) proof of security properties (e.g. HRU safety, BLP security, NI security) by formal analysis techniques
+            \item explanation and proof of security properties by formal analysis techniques
             \item foundation for correct implementations
         \end{itemize*}
-        \item Are composed of simple building blocks
-        \begin{itemize*}
-            \item E.g. ACMs, sets, relations, functions, lattices, state machines
-            \item ... that are combined and interrelated to form more complex models
-            \item $\rightarrow$ (D)RBAC, (D)ABAC, BLP, Brewer-Nash, LR-CW, MLS-CW
-        \end{itemize*}
+        \item Are composed of simple building blocks (e.g. ACMs, sets, relations, functions, lattices, state machines) that are combined and interrelated to form more complex models
     \end{itemize*}
-
-    Remember: Goals of Security Models
-    \begin{itemize*}
-        \item Unambiguous policy formalization to
-        1. reason about policy correctness
-        2.  correctly implement a policy
-    \end{itemize*}
-
 
     \section{Practical Security Engineering}
-    Problem: Off-the-shelf models not always a perfect match for real-world scenarios
-
     Goal: Design of new, application-specific models
     \begin{itemize*}
-        \item Identify common components found in many models $\rightarrow$ generic model core
+        \item Identify common components $\rightarrow$ generic model core
         \item Core specialization
         \item Core extension
         \item Glue between model components
     \end{itemize*}
 
-    \subsection{Model Engineering }
-    \subsubsection{Model Family}
-    What we have
-    %![](Assets/Systemsicherheit-model-family.png)
-
-    In Formal Words ...
+    \subsection{Model Engineering}
+    Model Engineering Principles
     \begin{itemize*}
-        \item HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩$
-        \item $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩$
-        \item DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩$
-        \item TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩$
-        \item BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩$
-        \item NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+        \item Core model
+        \item Core specialization
+        \item Core extension
+        \item Component glue
     \end{itemize*}
 
     Core Model (Common Model Core)
     \begin{itemize*}
-        \item HRU: $⟨ Q, \sum , \delta, q_0  , \not R ⟩$
-        \item $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , \not R, \not P, \not PA ⟩$
-        \item DABAC: $⟨ \not A , Q ,\sum , \delta, q_0  ⟩$
-        \item TAM: $⟨ Q , \sum , \delta, q_0  , \not T, \not R ⟩$
-        \item BLP: $⟨ \not S, \not O, \not L, Q , \sum , \delta, q_0  , \not R ⟩$
-        \item NI: $⟨ Q , \sum , \delta, \not \lambda ,q_0  , \not D, \not A, \not dom, \not =_{NI} , \not Out ⟩$
-        \item $\rightarrow  ⟨ Q ,\sum , \delta, q_0  ⟩$
+        \item HRU: $\langle  Q, \sum , \delta, q_0  , \not R \rangle$
+        \item $DRBAC_0$ : $\langle  Q, \sum , \delta, q_0  , \not R, \not P, \not PA \rangle$
+        \item DABAC: $\langle  \not A , Q ,\sum , \delta, q_0  \rangle$
+        \item TAM: $\langle  Q , \sum , \delta, q_0  , \not T, \not R \rangle$
+        \item BLP: $\langle  \not S, \not O, \not L, Q , \sum , \delta, q_0  , \not R \rangle$
+        \item NI: $\langle  Q , \sum , \delta, \not \lambda ,q_0  , \not D, \not A, \not dom, \not =_{NI} , \not Out \rangle$
+        \item $\rightarrow  \langle  Q ,\sum , \delta, q_0  \rangle$
     \end{itemize*}
 
     Core Specialization
     \begin{itemize*}
-        \item HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow Q = 2^S \times  2^O \times M$
-        \item $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow Q = 2^U\times 2^{UA}\times 2^S \times  USER \times  ROLES$
-        \item DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow Q = 2^S\times 2^O \times M\times ATT$
-        \item TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow Q = 2^S\times 2^O\times TYPE \times M$
-        \item BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow Q = M \times CL$
-        \item NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+        \item HRU: $\langle  Q, \sum , \delta, q_0  , R \rangle  \Rightarrow Q = 2^S \times  2^O \times M$
+        \item $DRBAC_0$ : $\langle  Q, \sum , \delta, q_0  , R, P, PA \rangle  \Rightarrow Q = 2^U\times 2^{UA}\times 2^S \times  USER \times  ROLES$
+        \item DABAC: $\langle  A , Q ,\sum , \delta, q_0  \rangle  \Rightarrow Q = 2^S\times 2^O \times M\times ATT$
+        \item TAM: $\langle  Q , \sum , \delta, q_0  , T, R \rangle  \Rightarrow Q = 2^S\times 2^O\times TYPE \times M$
+        \item BLP: $\langle  S, O, L, Q , \sum , \delta, q_0  , R \rangle  \Rightarrow Q = M \times CL$
+        \item NI: $\langle  Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out \rangle$
     \end{itemize*}
 
     Core Extensions
     \begin{itemize*}
-        \item HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow R$
-        \item $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow R,P,PA$
-        \item DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow A$
-        \item TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow T,R$
-        \item BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow S,O,L,R$
-        \item NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩ \Rightarrow \lambda,D,A,dom,=_{NI},Out$
+        \item HRU: $\langle  Q, \sum , \delta, q_0  , R \rangle  \Rightarrow R$
+        \item $DRBAC_0$ : $\langle  Q, \sum , \delta, q_0  , R, P, PA \rangle  \Rightarrow R,P,PA$
+        \item DABAC: $\langle  A , Q ,\sum , \delta, q_0  \rangle  \Rightarrow A$
+        \item TAM: $\langle  Q , \sum , \delta, q_0  , T, R \rangle  \Rightarrow T,R$
+        \item BLP: $\langle  S, O, L, Q , \sum , \delta, q_0  , R \rangle  \Rightarrow S,O,L,R$
+        \item NI: $\langle  Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out \rangle  \Rightarrow \lambda,D,A,dom,=_{NI},Out$
         \item $\rightarrow R, P, PA, A , T , S , O , L , D , dom , =_{NI} , ...$
     \end{itemize*}
 
@@ -2969,58 +2404,12 @@
     \begin{itemize*}
         \item E.g. TAM: State transition scheme (types)
         \item E.g. DABAC: State transition scheme (matrix and predicates)
-        \item E.g. Brewer/Nash Chinese Wall model: "$\wedge$" (simple, because $H+C\not= m$)
-        \item E.g. BLP
+        \item E.g. Brewer/Nash Chinese Wall model: ,,$\wedge$'' (simple, because $H+C\not= m$)
+        \item E.g. BLP (much more complex, because rules restrict m by L and cl )
         \begin{itemize*}
             \item BLP read rule
             \item BLP write rule
             \item BST
-            \item (much more complex, because rules restrict m by L and cl )
-        \end{itemize*}
-    \end{itemize*}
-
-    $\rightarrow$  Model Engineering Principles
-    \begin{itemize*}
-        \item  Core model
-        \item  Core specialization, e.g.
-        \begin{itemize*}
-            \item $Q = 2^S\times 2^O \times M$ (HRU)
-            \item $Q = M\times CL$ (BLP)
-        \end{itemize*}
-        \item Core extension, e.g.
-        \begin{itemize*}
-            \item e.g. $L$ (BLP)
-            \item $T$ (TAM)
-            \item $D, dom ,=_{NI}$ (NI)
-        \end{itemize*}
-        \item Component glue, e.g.
-        \begin{itemize*}
-            \item Chinese Wall: DAC "$\wedge$" MAC in AS
-            \item BLP: complex relation between ACM and lattice
-            \item $\rightarrow$  BLP security, BLP BST
-        \end{itemize*}
-    \end{itemize*}
-
-    You should have mastered now: A basic tool set for model-based security policy engineering
-    \begin{itemize*}
-        \item A stock of basic security model abstractions
-        \begin{itemize*}
-            \item ACFs and ACMs
-            \item Model states and transitions defined by an STS
-            \item Attributes (roles, confidentiality classes, information contents, location, ...)
-            \item Information flows
-        \end{itemize*}
-        \item A stock of formal model building blocks
-        \begin{itemize*}
-            \item Sets, functions, relations
-            \item Deterministic automatons
-            \item Graphs and lattices
-        \end{itemize*}
-        \item A stock of standard, off-the-shelf security models
-        \item Methods and techniques
-        \begin{itemize*}
-            \item for model-based proof of policy properties properties
-            \item for combining basic model building blocks into new, application-oriented security models
         \end{itemize*}
     \end{itemize*}
 
@@ -3029,18 +2418,8 @@
     \begin{itemize*}
         \item We want: A system controlled by a security policy
         \item We have: A (satisfying) formal model of this policy
-    \end{itemize*}
-
-    To Do
-    \begin{itemize*}
-        \item How to convert a formal model into an executable policy?
-        \begin{itemize*}
-            \item $\rightarrow$  Policy specification languages
-        \end{itemize*}
-        \item How to enforce an executable policy in a system?
-        \begin{itemize*}
-            \item $\rightarrow$  security mechanisms and architectures (Chapters 5 and 6)
-        \end{itemize*}
+        \item How to convert a formal model into an executable policy? $\rightarrow$ Policy specification languages
+        \item How to enforce an executable policy in a system? $\rightarrow$ security mechanisms and architectures
     \end{itemize*}
 
     Role of Specification Languages: Same as in software engineering
@@ -3048,46 +2427,25 @@
         \item To bridge the gap between
         \begin{itemize*}
             \item Abstractions of security models (sets, relations, ...)
-            \item Abstractions of implementation platforms (security mechanisms such as ACLs, krypto-algorithms, Security Server ...)
+            \item Abstractions of implementation platforms (security mechanisms such as ACLs, krypto-algorithms,...)
         \end{itemize*}
-        \item Foundation for
-        \begin{itemize*}
-            \item Code verification
-            \item Or even more convenient: Automated code generation
-        \end{itemize*}
+        \item Foundation for Code verification or even more convenient: Automated code generation
     \end{itemize*}
-
 
     Approach
     \begin{itemize*}
-        \item Abstraction level:
-        \begin{itemize*}
-            \item Step stone between model and security mechanisms
-            \item $\rightarrow$  More concrete than models
-            \item $\rightarrow$  More abstract than programming languages (“what” instead of “how“)
-        \end{itemize*}
-        \item Expressive power:
-        \begin{itemize*}
-            \item Domain-specific; for representing security models only
-            \item $\rightarrow$  Necessary: adequate language paradigms
-            \item $\rightarrow$  Sufficient: not more than necessary (no dead weight)
-        \end{itemize*}
+        \item Abstraction level: Step stone between model and security mechanisms
+        \item $\rightarrow$  More concrete than models
+        \item $\rightarrow$  More abstract than programming languages (,,what'' instead of ,,how'')
+        \item Expressive power: Domain-specific, for representing security models only
+        \item $\rightarrow$  Necessary: adequate language paradigms
+        \item $\rightarrow$  Sufficient: not more than necessary (no dead weight)
     \end{itemize*}
 
     Domains
     \begin{itemize*}
-        \item Model domain
-        \begin{itemize*}
-            \item e.g. AC models (TAM, RBAC, ABAC)
-            \item e.g. IF models (MLS)
-            \item e.g. NI models
-        \end{itemize*}
-        \item Implementation domain
-        \begin{itemize*}
-            \item OS
-            \item Middleware
-            \item Applications
-        \end{itemize*}
+        \item Model domain, e.g. AC/IF/NI models (TAM, RBAC, ABAC)
+        \item Implementation domain (OS, Middleware, Applications)
     \end{itemize*}
 
 

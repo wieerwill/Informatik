@@ -94,40 +94,13 @@
   - [Model Engineering](#model-engineering)
     - [Model Family](#model-family)
   - [Model Specification](#model-specification)
-  - [Model Specification](#model-specification-1)
-    - [CorPS](#corps)
+    - [DYNAMO: A Dynamic-Model-Specification Language](#dynamo-a-dynamic-model-specification-language)
+        - [Example: Specification of a DRBAC_0 Model](#example-specification-of-a-drbac_0-model)
     - [SELinux Policy Language](#selinux-policy-language)
-  - [Summary](#summary-3)
-- [Security Mechanisms](#security-mechanisms)
-  - [Authorization](#authorization)
-    - [Access Control Lists](#access-control-lists)
-    - [Capability Lists](#capability-lists)
-    - [Interceptors](#interceptors)
-    - [Summary](#summary-4)
-  - [Cryptographic Mechanisms](#cryptographic-mechanisms)
-    - [Encryption](#encryption)
-      - [Symmetric](#symmetric)
-      - [Asymmetric](#asymmetric)
-    - [Cryptographic Hashing](#cryptographic-hashing)
-    - [Digital Signatures](#digital-signatures)
-    - [Cryptographic Attacks](#cryptographic-attacks)
-  - [Identification and Authentication](#identification-and-authentication)
-    - [Passwords](#passwords)
-    - [Biometrics](#biometrics)
-    - [Cryptographic Protocols](#cryptographic-protocols)
-      - [SmartCards](#smartcards)
-      - [Authentication Protocols](#authentication-protocols)
-  - [Summary](#summary-5)
-- [Security Architectures](#security-architectures)
-  - [Design Principles](#design-principles)
-  - [Operating Systems Architectures](#operating-systems-architectures)
-    - [Nizza](#nizza)
-    - [SELinux](#selinux)
-  - [Distributed Systems Architectures](#distributed-systems-architectures)
-    - [CORBA](#corba)
-    - [Web Services](#web-services)
-    - [Kerberos](#kerberos)
-  - [Summary](#summary-6)
+      - [Idea only: SELinux RBAC](#idea-only-selinux-rbac)
+      - [Summary SELinux Policy Specification Language](#summary-selinux-policy-specification-language)
+    - [Summary](#summary-3)
+    - [Next Step: Policy Implementation & Integration](#next-step-policy-implementation--integration)
 
 # Introduction
 ## Risk Scenarios
@@ -2883,12 +2856,11 @@ Role of Specification Languages: Same as in software engineering
   - Code verification
   - Or even more convenient: Automated code generation
 
-
 Approach
 - Abstraction level:
   - Step stone between model and security mechanisms
   - $\rightarrow$  More concrete than models
-  - $\rightarrow$  More abstract than programming languages (“what” instead of “how“)
+  - $\rightarrow$  More abstract than programming languages ("what" instead of "how")
 - Expressive power:
   - Domain-specific; for representing security models only
   - $\rightarrow$  Necessary: adequate language paradigms
@@ -2904,40 +2876,207 @@ Domains
   - Middleware
   - Applications
 
+### DYNAMO: A Dynamic-Model-Specification Language
+formerly known as "CorPS: Core-based Policy Specification Language"
 
-## Model Specification 
-### CorPS
+Language Domain: RBACmodels
+- RBAC 0 - 3
+- DRBAC 0 - 3
+- DABAC (with some restrictions)
+
+Language Paradigms: Abstractions of (D)RBAC models
+- Users, roles, permissions, sessions
+- State transition scheme (STS)
+
+Language Features: Re-usability and inheritance
+- Base Classes: Model family (e.g. $DRBAC_0 , DRBAC_1 , ...$)
+  - Model components
+  - Conditions
+  - Primitives
+- Policy Classes : Inherit definitions from Base Classes
+  - State space
+  - State transition scheme
+  - Extensions
+
+Tools
+- DYNAMO compiler("corps2cpp"): Translates specification into
+  - XML $\rightarrow$ analysis by WORSE algorithms
+  - C++ classes $\rightarrow$ integration into TCB (OS/Middleware/Application)
+
+##### Example: Specification of a DRBAC_0 Model
+$DRBAC_0 = RBAC_0 + Automaton \rightarrow$
+$RBAC_0 = ⟨ U , R , P , S , UA , PA , user , roles ⟩$
+$DRBAC_0 = ⟨ Q , \sum, \delta, q_0 , R , P , PA ⟩$
+$Q = 2^U \times 2^S \times 2^{UA}\times ...$
+
+Policy Specification in EBNF
+```cpp
+policy =
+  "begin" "policy" string ":" string ":"
+    "state-space" ":" "{" state_space "}" ";"     // Q
+    "input-vector" ":" "{" input_vector "}" ";"   // SUM
+    "begin" "authorisation-scheme" ":"            // delta
+      authorisation_scheme
+    "end" "authorisation-scheme" ";"              // q_0
+    "begin" "initial-state" ":"
+      inital_state
+    "end" "initial-state" ";"
+    "begin" "extension-vector" ":"                // E
+      extension_vector
+    "end" "extension-vector" ";"
+"end" "policy" ";"
+```
+
+OpenMRS: A DRBAC_0 Policy Specification Example
+```cpp
+begin policy openRMS: DRBAC_0 :
+  state-space : {U, O, S, UA, PA, user, roles};
+  input-vector : {OP, U, O, S , R};
+  begin authorisation-scheme :
+    read_medical_record(U u, O o, OP op):
+      condition : f_rbac(u, o, ’read_medical_record’);
+    write_medical_record(U u, O o, OP op):
+      condition : f_rbac(u, o, ’write_medical_record’);
+    activate_role_in_session(S s, R r):
+      condition : can_activate_role(s, r);
+      begin body :
+        activate_role(s, r);
+      end body ;
+  end authorisation-scheme ;
+  begin initial-state :
+    U = {’Cox’, ’Reid’};
+    O = {‘epr1’, ‘epr2’, ...}; S = {‘s1’, ‘s2’};
+    UA = {[’Cox’, ’doctor’], [’Reid’, ’doctor’]};
+    user = {(’s1’ : ‘Cox’), (‘s2’ : ’Reid’)}; ...
+  end initial-state;
+  begin extension-vector :
+    OP = {’read_medical_record’, ’write_medical_record’, ’activate_role_in_session’};
+    R = {’doctor’, ’nurse’, ’researcher’};
+  end extension-vector ;
+end policy ;
+```
+
+What Can We Do Now?
+DYNAMO specification $\rightarrow$ corps2cpp $\rightarrow$ C++-Classes $\rightarrow$ Security Server
+
+DYNAMO Summary
+- Specification language for (D)RBAC security models
+- Base classes: $DRBAC_0 ... DRBAC_3$
+- Conditions
+  - $f_rbac$
+  - $can_activate_role$
+  - $can_assign_user_to_role$
+- Primitives
+  - $create_user , destroy_user$
+  - $create_object , destroy_object$
+  - $create_role , destroy_role$
+  - $create_session , destroy_session$
+  - $activate_role$
+  - ...
+- Tools
+  - Compiler: XML, C++ generation
+
+
 ### SELinux Policy Language
-## Summary
+Language Domain
+- I/R/A-BAC models
+- IF models
+- NI models
 
-# Security Mechanisms
-## Authorization
-### Access Control Lists
-### Capability Lists
-### Interceptors
+Implementation Domain
+- Operating systems accesscontrol
+
+Language paradigms
+- OS Abstractions: Users, processes, files, directories, sockets, pipes, ...
+- I/R/ABAC, TAM, MLS, NI model paradigms: Users, rights, roles, types, attributes, security domains, ...
+
+Tools
+- Specification: Policy creating and validation
+- Policy compiler: Translates policy specifications
+- Security server: Policy runtime environment (RTE) in OS kernel’s security architecture
+- LSM hooks: Support policy enforcement in OS kernel’s security architecture
+
+Technology
+- Policy compiler $\rightarrow$ translates specifications into loadable binaries (ACM)
+- Security architecture $\rightarrow$ implementation of Flask architecture
+
+Fundamental Flask Security Architecture as found in SELinux:
+![](Assets/Systemsicherheit-fundamental-flask.png)
+
+Basic Language Concepts
+- Definition of types (a.k.a. "domains")
+- Labeling of subjects (e.g. processes) with "domains" $\rightarrow passwd_t$: all processes managing passwords
+- Labeling of objects (e.g. files, sockets) with "types" $\rightarrow shadow_t$: all files containing password info
+- AC: defined by permissions between pairs of types ("type enforcement") $\rightarrow allow\ passwd_t\ shadow_t:file \{read\ write\}$
+- Dynamic interactions: transitions between domains $\rightarrow allow\ user_t\ passwd_t:process {\transition\}$
+
+Policy Rules
+- Grant permissions: allow rules
+    "allow" <source type> <target type> ":" <target class> <permissions>
+- Typical domains: $user_t$, $bin_t$, $passwd_t$, $insmod_t$, $tomCat_t$, ...
+- Classes: OS abstractions (process, file, socket, ...)
+- Permissions: read, write, execute, getattr, signal, transition, ... (≈ 1000)
+
+The Model Behind: 3 Mappings
+- Classification
+  $cl : S\cup O \rightarrow$ C where C $=\{ process , file , dir , pipe, socket , ...\}$
+- Types
+  $type: S\cup O \rightarrow$ T where T $=\{ user_t , passwd_t , bin_t , ...\}$
+- Access Control Function ( Type Enforcement , TE )
+  $te : T\times T \times C \rightarrow 2^R$
+- $\rightarrow ACM : T\times( T \times C ) \rightarrow 2^R$
+
+#### Idea only: SELinux RBAC
+Users and Roles
+- User ID assigned on login
+- RBAC rules confine type associations "Only users in role $doctor_r$ may transit to domain $edit-epr_t$"
+- $\rightarrow$ fine-grained domain transitions
+- $\rightarrow$ Attributes in SELinux-style RBAC:
+  - User ID ($\not =$ Linux UID)
+  - Role ID
+
+What we can do now: Specification $\rightarrow$ Tool $\rightarrow$ Binary $\rightarrow$ Security Server
+
+#### Summary SELinux Policy Specification Language
+Application Domain
+- OS-level security policies
+
+Model Domain
+- ∗BAC, MLS, NI
+
+Model abstractions
+- TE: MAC rules based on types
+- ABAC:MAC rules based on attributes
+- RBAC: MAC rules based on roles
+- Additionally: BLP-style MLS
+
+Other Policy Specification Languages
+- XACML ( eXtensibleAccess Control Markup Language )
+- NGAC ( Next Generation Access Control Language )
+- SEAL (Label-based AC policies)
+- Ponder (Event-based condition/action rules)
+- GrapPS (Graphical Policy Specification Language)
+- GemRBAC (Role-based AC models)
+- PTaCL (Policy re-use by composition)
+
 ### Summary
-## Cryptographic Mechanisms
-### Encryption
-#### Symmetric
-#### Asymmetric
-### Cryptographic Hashing
-### Digital Signatures
-### Cryptographic Attacks
-## Identification and Authentication
-### Passwords
-### Biometrics
-### Cryptographic Protocols
-#### SmartCards
-#### Authentication Protocols
-## Summary
+Security Models in Practice
+- Model abstractions
+  - Subjects, objects, rights
+  - ACMs and state transition schemes
+  - Types, roles, attributes
+  - Information flow, non-interference domains
+- Model languages
+  - Sets, functions, relations, lattices/IFGs
+  - Deterministic automata
+- Model engineering
+  - Generic model core
+  - Core specialization and extension
 
-# Security Architectures
-## Design Principles
-## Operating Systems Architectures
-### Nizza
-### SELinux 
-## Distributed Systems Architectures
-### CORBA 
-### Web Services 
-### Kerberos 
-## Summary 
+### Next Step: Policy Implementation & Integration
+Models expect
+- Confidentiality, integrity, and authenticity of
+  - Model entities
+  - Entity communication
+- Tamperproofness of policy implementation
+- Total access mediation for policy

@@ -101,6 +101,50 @@
       - [Summary SELinux Policy Specification Language](#summary-selinux-policy-specification-language)
     - [Summary](#summary-3)
     - [Next Step: Policy Implementation & Integration](#next-step-policy-implementation--integration)
+- [Security Mechanisms](#security-mechanisms)
+  - [Definitions](#definitions)
+  - [Authorization](#authorization)
+    - [Access Control Lists und Capability Lists](#access-control-lists-und-capability-lists)
+      - [Operations on ACLs](#operations-on-acls)
+      - [Example: ACLs in Unix](#example-acls-in-unix)
+      - [Operations on Capability Lists](#operations-on-capability-lists)
+      - [$\delta s$ in Administration](#delta-s-in-administration)
+      - [$\delta s$ in Distributed Systems](#delta-s-in-distributed-systems)
+      - [Vulnerabilities and Counteractions](#vulnerabilities-and-counteractions)
+      - [On the Expressive Power of ACLs and Capability Lists](#on-the-expressive-power-of-acls-and-capability-lists)
+    - [Interceptors](#interceptors)
+    - [Summary](#summary-4)
+  - [Cryptographic Security Mechanisms](#cryptographic-security-mechanisms)
+    - [Encryption Techniques and Algorithms](#encryption-techniques-and-algorithms)
+      - [Kerkhoff’s Principle](#kerkhoffs-principle)
+      - [Symmetric Encryption Schemes](#symmetric-encryption-schemes)
+      - [Asymmetric Encryption Schemes](#asymmetric-encryption-schemes)
+      - [The RSA Cryptosystem ( Rivest / Shamir / Adleman , 1978)](#the-rsa-cryptosystem--rivest--shamir--adleman--1978)
+    - [Cryptographic Hash Functions](#cryptographic-hash-functions)
+    - [Digital Signatures](#digital-signatures)
+    - [Cryptographic Attacks](#cryptographic-attacks)
+      - [Ciphertext Only Attacks (weakest assumptions)](#ciphertext-only-attacks-weakest-assumptions)
+      - [Known Plaintext Attacks](#known-plaintext-attacks)
+      - [Chosen Plaintext Attacks](#chosen-plaintext-attacks)
+      - [Chosen Ciphertext Attacks](#chosen-ciphertext-attacks)
+    - [Summary](#summary-5)
+  - [Identification and Authentication](#identification-and-authentication)
+    - [Passwords](#passwords)
+    - [Biometrics](#biometrics)
+    - [Cryptographic Protocols](#cryptographic-protocols)
+      - [SmartCards](#smartcards)
+      - [Authentication Protocols](#authentication-protocols)
+  - [Summary](#summary-6)
+- [Security Architectures](#security-architectures)
+  - [Design Principles](#design-principles)
+  - [Operating Systems Architectures](#operating-systems-architectures)
+    - [Nizza](#nizza)
+    - [SELinux](#selinux)
+  - [Distributed Systems Architectures](#distributed-systems-architectures)
+    - [CORBA](#corba)
+    - [Web Services](#web-services)
+    - [Kerberos](#kerberos)
+  - [Summary](#summary-7)
 
 # Introduction
 ## Risk Scenarios
@@ -3080,3 +3124,981 @@ Models expect
   - Entity communication
 - Tamperproofness of policy implementation
 - Total access mediation for policy
+
+# Security Mechanisms
+Security Models Implicitly Assume
+-  Integrity of model implementation
+  -  Model state
+  -  Authorization scheme
+-  Integrity of model operations call
+  -  Parameters of authorization scheme ops
+  -  Completeness and total mediation of their invocation
+-  AC, IF: no covert chanels
+-  NI: Rigorous domain isolation
+-  ... $\rightarrow$ job of the "Trusted Computing Base" (TCB) of an IT system
+
+## Definitions
+
+> Trusted Computing Base (TCB)
+> The set of functions of an IT system that are necessary and sufficient for implementing its security properties
+> $\rightarrow$ Isolation, Policy Enforcement, Authentication ...
+
+> Security Architecture
+> The part of a system’s architecture that implement its TCB
+> $\rightarrow$ Security policies, Security Server (PDP) and PEPs, authentication components, ...
+
+> Security Mechanisms
+> Algorithms and data structures for implementing functions of a TCB
+> $\rightarrow$ Isolation mechanisms, communication mechanisms, authentication mechanisms, ...
+
+$\rightarrow$ TCB - runtime environment for security policies
+
+Implementation of Security Policies
+- (some) TCB functions are integrated in today's commodity OSes
+  - Isolation
+  - Subject/object authentication
+- Complex models (HRU, RBAC, ABAC, MLS) additionally require implementation of
+  - Authorization schemes
+  - Roles, lattices, attributes
+  - $\rightarrow$ stronger concepts and mechanisms
+  -  OS level: Security Server (SELinux, OpenSolaris, TrustedBSD)
+  -  Middleware level: Policy Objects (CORBA, Java, DBMSs, Web Services)
+  -  Application level: user level reference monitors (Flume), user level policy servers (SELinux)
+
+Security mechanisms: A Visit in the Zoo: ...
+-  In OSes
+  -  Authenticity
+      - Of subjects: login
+      - Of objects: object management, e.g. file systems, communication
+  -  Confidentialityand integrity
+      - Access control lists
+-  In middleware layer (DBMSs, distributed systems)
+  -  Authentication
+      - Authentication server (e.g. Kerberos AS, see below)
+      - Authentication protocols (e.g. LDAP )
+  -  Authorization
+      - Ticket server (e.g. Kerberos TGS, see below)
+-  In application systems
+  -  Authentication
+- In email servers, Web browsers
+-  In libraries
+  -  Confidentiality, integrity, authenticity
+      - Cryptographic algorithms
+      - Certificate management for PKIs
+-  In utilities
+  -  Confidentiality, integrity, authenticity
+      - Document integrity
+      ```
+      dunraven> md5 kap3.pptx
+      MD5 (kap3.pptx) = 17467e340438ae4dc0e2d9ad9afe
+      dunraven>
+      ```
+  -  Isolation
+      - Sandboxing in OS X
+      ```
+      dunraven> sandbox-exec -f policy fishy-program
+      sandbox-exec: fishy-program: operation not permitted
+      dunraven>
+      ```
+- $\rightarrow$ security mechanisms are everywhere
+
+## Authorization
+Lampson, HRU, RBAC, ABAC, BLP, CW $\rightarrow$ ACMs
+
+Security Mechanisms for Implementation?
+
+### Access Control Lists und Capability Lists
+Lampson’s ACM
+
+We have
+-  Sets $S$, $O$ and $R$
+-  ACM $m: S\times O\rightarrow 2^R$
+
+| m   | o_1 | o_2   | o_3   | ... | o_m |
+| --- | --- | ----- | ----- | --- | --- |
+| s_1 |
+| s_2 |     |       | {r,w} |
+| s_3 |     | {r,w} |
+| ... |     |       |       |     | {w} |
+| s_n |
+
+Properties of an ACM
+-  Large (e.g. "normal" file server: $|m| >> 1$ TByte)
+-  Sparsely populated
+-  Subject and object identifications in OSes generally are
+  -  Not numerical
+  -  Not consecutive
+-  Rowsand columns are created and destroyed dynamically
+- $\rightarrow$ naive ACM implementation such as
+    rightset m[SubjectIdType][ObjectIdType]
+  in a file system‘s metadata (e.g. similar to inode table) out of question
+
+Idea: Distributed ACM Implementation
+1. Split matrix into vectors; options:
+      -  Column vectors
+      -  Row vectors
+2. Attach vectors to subjects resp. objects
+
+Alternative Approaches
+- Column vectors
+  -  Describe every existing right wrt. an object
+  -  Each vector associated to its object, part of object‘s metadata
+  - $\rightarrow$ Access control lists (ACLs)
+-  Row vectors
+  -  Describe every existing right wrt. a subject
+  -  Associated to its subject, part of subject‘s metadata
+  - $\rightarrow$ capability lists
+
+ACLs
+-  Associated to exactly one object
+-  Describes every existing right wrt. object by a set of tuples (subject identification, right set)
+-  Implemented e.g. as list, table, bitmap
+-  Part of object‘s metadata (generally located in inode)
+
+Capability Lists
+-  Associated to exactly one subject
+-  Describes every existing right wrt. subject by a set of tuples (object identification, right set)
+-  Implemented e.g. as list, table, bitmap
+-  Part of object‘s metadata (generally located in process descriptor)
+
+Figuratively
+- Enrollment: capability list
+    1. Authorization: high school diploma (personal capability carrying authenticity proof)
+    2. Authentication: id card
+- Vienna Opera Ball: ACL
+    1. Authorization: list of invited people
+    2. Authentication: (id card)
+
+#### Operations on ACLs
+Create and Delete an ACL
+-  Together with creation and deletion of an object
+-  Options for initialization
+  -  Initialrights are create operation parameters
+  - $\rightarrow$ discretionary access control
+  -  Initialrights issued by third party
+  - $\rightarrow$ mandatory access control
+
+Example: creat/open of Unix API
+  - S_IRWXU (= 00700oct) user (=owner) has read-, write- and execute permissions
+  - S_IRUSR (= 00400oct) user has read permission
+  - S_IRWXG (= 00070oct) group has read-, write- und execute permissions
+
+Modify an ACL
+- Add or remove tuples (subject identification, right set)
+- General Options
+  - Owner has right to modify ACL
+    - $\rightarrow$ implements discretionary access control
+  - Third party has right to modify ACL
+    - $\rightarrow$ implements mandatory access control
+  - Right to modify ACL is part of ACL
+    - $\rightarrow$ universal
+
+Check Rights
+-  Whenever an object is accessed
+-  Search granting tuple in ACL
+
+Negative Rights
+-  Dominate positive rights
+-  Are represented - same as positive rights - by tuples (subject identification, negative rights set)
+-  Rights of a subject $s$: difference of accumulated positive rights and accumulated negative rights
+
+#### Example: ACLs in Unix
+Metadata (management data) of a file system include
+-  Directories
+-  Inodelist and inodes
+![](Assets/Systemsicherheit-acl-in-unix.png)
+![](Assets/Systemsicherheit-acl-in-unix-2.png)
+
+Model of a Unix ACL...
+|        | read | write | exec |
+| ------ | ---- | ----- | ---- |
+| owner  | y    | y     | n    |
+| group  | y    | n     | n    |
+| others | n    | n     | n    |
+-  3 elements per list list
+-  3 elements per right set
+- $\rightarrow$ 9 bits
+- ... and its implementation ... coded in 16-bit-word (PDP 11, 1972 !!)
+  `...110 100 000`
+
+#### Operations on Capability Lists
+Create and Delete a Capability List
+-  Together with creation and deletion of a subject
+-  Options for initialization
+  - Initial rights same as parent
+    - $\rightarrow$inherited
+  - Constraints by
+    - Parent
+      - $\rightarrow$ discretionary access control
+    - Capability
+      - $\rightarrow$ mandatory access control
+
+Modification of Capability Lists
+- Add or remove tuples (object identification, right set)
+
+Passing on Capabilities, options:
+- Emission and call-back by capability owner
+  - $\rightarrow$ discretionary access control
+- Emission and call-back by third party
+  - $\rightarrow$ mandatory access control
+- Emission and call-back controlled by capability itself
+  - $\rightarrow$ universal
+
+Equivalence of ACLs and Capability Lists
+-  Strictly formally speaking: isomorphic
+-  $\delta s$:
+  -  Administration
+  -  Distributed systems
+
+#### $\delta s$ in Administration
+ACLs - Located near objects
+- $\rightarrow$ finding all rights of a subject expensive
+
+Example BLP: re-classification of a subject
+- $\rightarrow$ update every ACL with rights of this subject
+
+Consequence - Group models; e.g.
+-  BLP: subjects with same classification
+-  Unix: subjects belonging to project staff
+
+Capability Lists - Located near objects
+- $\rightarrow$ finding all rights of an object expensive
+
+Example BLP: re-classification of an object
+- $\rightarrow$ update every Capability with rights for this object
+
+Consequence - Role models (role: set of rights); e.g.
+-  BLP: set of rights wrt. objects with same classification
+
+#### $\delta s$ in Distributed Systems
+Non-distributed Systems: Management and protection of 
+  - subject ids and ACLs in trustworthy OS kernel
+  - capability lists in trustworthy OS kernel
+- Example: Traditional monolithic OS architecture
+- or in a microkernel architecture
+- $\rightarrow$ in non-distributed systems,
+  -  Management
+  -  Authentication
+  -  Management and checking of capabilities
+  -  Checking of rights in trustworthy environment
+
+Distributed Systems
+- No encapsulation of subject ids and ACLs in a single trustworthy OS
+- $\rightarrow$ in distributed systems,
+  - Authentication of subjects on subject’s system
+  - Transfer of subject id via open communication system
+  - Checking of subject id by object’s system
+- No encapsulation of capability lists in a single trustworthy OS kernel
+- $\rightarrow$ in distributed systems,
+  -  Authentication of subjects and management of capabilities on subject’s system
+  -  Transfer of subject id and capabilities via open communication system
+  -  Checking of capabilities and subject ids on object’s system
+
+Vulnerabilities and Counteractions
+- Subject’s system may fake subject ids
+- Consequence: Reliable subject authentication required
+  - $\rightarrow$ authentication architectures (e.g. Kerberos)
+
+$\rightarrow$ in non-distributed systems,
+  -  Authentication
+  -  Management and checking of capabilities
+in trustworthy environment
+
+#### Vulnerabilities and Counteractions
+- Non-trustworthy subject systems modify capabilities
+  - $\rightarrow$ cryptographic sealing of capabilities such that
+  - Issuer can be determined
+  - Modification can be detected
+  - sealing e.g. by digital signatures (see below)
+
+- Non-trustworthy subject systems pass capabilities to third parties, or Capabilities are copied by third parties while in transit
+  - $\rightarrow$ personalized capabilities
+
+- Exploit stolen capabilities by ntw. subject system by forging subject id
+  - $\rightarrow$ cryptographically sealed personalized capabilities
+  - $\rightarrow$ reliable subject authentication required
+    - $\rightarrow$ authentication architectures
+
+#### On the Expressive Power of ACLs and Capability Lists
+ACLs and capability lists
+-  Efficient data structures for implementing ACMs
+-  located in
+  -  OSs, middleware, DBMSe, application systems
+-  Correctness, tamperproofness, total S/O interaction mediation vital for enforcing access control
+  - $\rightarrow$ implementation by strong architectural principles, see below
+-  Assume reliable authentication of subjects and objects
+  - $\rightarrow$ support by further security mechanisms
+-  Not sufficient for implementing more complex security policies
+  -  Authorization schemes
+
+### Interceptors
+Problem: Implementing authorization schemes
+-  Examples
+  -  Open university scenario: "After accessing the solution, assignments can no
+longer be submitted"
+  -  Unix _fork_ : "A child process inherits all security attributes from its parent"
+-  ACLs and capability lists are just lists...
+
+Idea: Policy implementation by algorithms instead of lists
+
+Interceptors
+-  Tamperproof runtime environments for security policies
+-  In total control of subject/object interactions
+  -  Observation
+  -  Modification
+  -  Prevention
+
+General Architectural Principle: Separation of
+-  (Replaceable) strategies
+-  (Strategy-independent) mechanisms
+
+Applied to Interceptors $\rightarrow$ 2 Parts
+- Runtime environment for security policies (strategies) 
+  - often called "policy decision point" (PDP)
+-  Interception points (mechanisms)
+  - often called "policy enforcement points" (PEP)
+
+Summary Interceptors
+-  RTE for security policies in policy-controlled systems
+  -  SELinux: "Policy Server"
+  -  CORBA: "Policy Objects"
+-  Architecture: separation of responsibilities
+  -  Strategic component
+      - State; e.g.
+          - HRU models: $Q= 2^S\times 2^O\times M$
+          - MLS models: $Q =M\times CL$
+      - Algorithms
+          - authorization scheme
+  -  Mechanisms component
+- Policy enforcement: total policy entities interaction mediation
+-  Generality: implement - apart from AC policies - a broad scope of policies (all that generally are computable)
+  -  "Only documents signed by X may be classified as ‘public’"
+    - $\rightarrow$ rules based on checking digital signatures
+  -  "Documents may be sent over public networks only if they are encrypted"
+    - $\rightarrow$ interceptor checks/implements encryption
+
+### Summary
+ACLs and Capability Lists
+-  Efficient data structures for implementing ACFs
+-  Located in
+  -  OSs, middleware, DBMSe, application systems
+-  Assume reliable authentication of subjects and objects
+-  Are too weak to implement complex security policies
+
+Interceptors
+-  For implementing complex security policies
+-  Located in
+  -  OSs, middleware (SELinux LSM-Framework and Security Server; CORBA Policy Objects)
+  -  Middleware platforms
+      - As "policy objects" (CORBA, Java)
+      - As part of a handler chain (Web services middleware, Apache Axis)
+
+
+## Cryptographic Security Mechanisms
+Goal: Enforcement of access control policies
+
+IBAC/ABAC/RBAC/MLS Models assume
+-  Reliable identification of subjects and objects
+-  Integrity and confidentiality of
+  -  Subjects and objects
+  -  Their communication
+(especially in distributed environments)
+
+### Encryption Techniques and Algorithms
+Encryption
+-  Transformation of a plaintext into a ciphertext
+-  Decryption possible only if decrypt algorithm is known
+
+Cryptosystem Components
+-  2 functions encrypt, decrypt
+-  2 keys k1, k2
+
+Notation
+-  $text = decrypt_{k2}(encrypt_{k1}(text))$ or simply
+-  $text = \{\{text\}_{k1}\}_{k2}$ (if encryption function is obvious)
+
+#### Kerkhoff’s Principle
+1. Encryption functions (algorithms) are publicly known
+  - $\rightarrow$ many experts look at it
+  - $\rightarrow$ quality advantage assumed
+2. Keys are secret
+- $\rightarrow$ encryption security depends on
+  - Properties of algorithms
+  - Confidentiality of keys
+
+Classification of Encryption Schemes
+- Symmetric schemes (secret key): one single key: $k1=k2$
+- Asymmetric schemes (public key): two different keys: $K1\not=K2$
+
+#### Symmetric Encryption Schemes
+Characteristic Feature
+- Encryption and decryption with same key
+- $\rightarrow$ security based on keeping key secret
+
+Example
+- Key $k\in\mathbb{N}$
+- $encrypt_k$: shift letters of a plaintext backwards in alphabet by K positions
+- $decrypt_k$: shift letters of a ciphertext forward by K positions
+- ciphertext "HAL", key $k=1$ $\rightarrow$ decrypt_1 ("HAL") = "IBM"
+
+Application Examples
+1. Confidentiality of Communication (Assumptions)
+  -  Sender and receiver share key k , which has to be established
+    - Before communication
+    - Authentically
+    - Confidentially
+  - Nobody else must know $k(secretkey)$
+2. Authentication: E.g. client to server ( challenge-response - authentication by shared secret key)
+  -  Each client shares an individual andsecret key $k_{client}$ with server
+  -  Server and clients keep key secret
+  -  Server reliably generates a nonce (= never sent once before )
+3. Sealing of Documents, e.g. Capabilities
+  - 1 key owner $\rightarrow$ owner may
+    - seal document
+    - check whether seal is sound
+  - Group of key owners $\rightarrow$ each group membermay
+    - Seal document
+    - Check whether seal was impressed by group member
+    - $\rightarrow$ but also: nobody in this group can prove it was or wasn’t him (this is not yet a digital signature!)
+  - Outside the group $\rightarrow$ nobody can do any of these things
+
+Algorithms
+- Block and Stream Ciphers
+- Block cipher
+  - Decompose plaintext into blocks of equal size (e.g. 64 bits)
+  - Encrypt each block
+- stream cipher
+  - Encrypt each digit of a plaintext stream by a cipher digit stream (e.g. by XOR)
+  - Cipher digit stream: pseudo-random digit stream
+
+Block Cipher Algorithms
+- Data Encryption Standard (DES)
+  -  Published 1975
+  -  Keyspace 56 bits, 8 parity bits (much too small today)
+  -  HW implementation $~10^9$ bit/sec (FPGAs, 2002)
+  -  No longer certified since 1998
+- Advanced Encryption Standard (AES)
+  - Standard since May 2002; variable key and block lengths
+  - Encryption speed (SmartCard 28MHz ARM processor) $2,4*10^6$ bits/sec for 128 - bit keys, 128-bit block length
+
+#### Asymmetric Encryption Schemes
+Characteristic Feature: Encryption and decryption with different keys
+- $\rightarrow$ key pair $(k1,k2) = (k_{pub} , k_{sec})$ where
+- $decrypt_{k_{sec}} ( encrypt_{k_{pub}} (text)) = text$
+- $k_{pub}$: public key
+- $k_{sec}$: private (secret) key
+
+Conditio sine qua non
+-  Secret key not computable from public key
+
+Application Examples
+1. Confidentiality of Communication (compare symmetric encryption schemes)
+   - Sender shares no secret with receiver
+     - No key exchange before communication
+     - Sender can be anonymous (e.g. electronic payment systems)
+     - No trust between sender and receiver necessary
+   - Sender must know public key of receiver
+    - $\rightarrow$ public-key-Infrastructures (PKIs) containing key certificates
+2. Authentication: e.g. client to server 
+   - challenge-response - authentication using public key
+   - Assumptions
+     - Each client owns an individual key pair ( $k_{pub}, k_{sec}$ )
+     - Server knows public keys of clients (PKI)
+     - Clients are not disclosing secret key
+     - Server reliably generates nonces
+     - Properties
+        -  Client and server share no secrets
+           - No key exchange before communication
+           - No mutual trust required
+        -  But: sender must know public key of receiver
+          - $\rightarrow$ PKIs
+3. Sealing of Documents, e.g. Contracts (compare sealing using secret keys)
+   - $\exists$ just 1 owner of secret key
+    - $\rightarrow$ only she may seal contract
+   -  Knowing her public key,
+     - $\rightarrow$ everybody can check contract’s authenticity
+     - $\rightarrow$ especially, everybody can prove that she was not the author
+     - $\rightarrow$ repudiability; see below, digital signatures
+   - Consequence of Symmetric vs. Asymmetric Encryption
+     - Symmetric: shared key, integrity and authenticity can be checked only by key holders $\rightarrow$ message authentication codes (MACs)
+     - Asymmetric: integrity and authenticity can be checked by anyone holding public key (because only holder of secret key could have encrypted the checksum $\rightarrow$ digital signatures
+4. Key Distribution for Symmetric Schemes
+     - Asymmetric encryption is expensive
+       -  Runtime > 3 orders of magnitude
+       -  Key pairs generation
+           - High computational costs
+          - High degree of trust needed in generating organization
+       - Public Key Infrastructures needed for publishing public keys
+          - Worldwide data bases with key certificates, certifying (public key $\Leftrightarrow$ person)
+          - Certification authorities
+       - $\rightarrow$ Use asymmetric key for establishing communication
+          - Mutual authentication
+          - Symmetric key exchange
+       -  Use symmetric encryption for communication
+
+#### The RSA Cryptosystem ( Rivest / Shamir / Adleman , 1978)
+Applied in $>95%$ of today’s applications of asymmetric cryptosystems
+
+Attractive because $encrypt=decrypt$
+1. $decrypt_{k_{sec}}(encrypt_{k_{pub}}(Text))$
+2. $decrypt_{k_{pub}}(encrypt_{k_{sec}}(Text))$
+
+$\rightarrow$ universal:
+1. Confidentiality
+2. Integrity and authenticity (non repudiability, digital signatures)
+
+Problem: Inference of private key from public key
+
+Idea: Link this problem to known hard problem: prime factorization 
+$\Leftrightarrow$ For $n\in\mathbb{N}$ we search 2 primes $p$ and $q$ such that $n=p*q$
+- $\rightarrow$ (believed to be) a hard problem because for factorization, prime numbers are needed
+-  There are many of them, e.g. between $2^{512}$ and $2^{513}$ approx. $7*10^{151}$
+-  Finding them is extremely expensive: Sieve of Eratosthenes
+      -  Memory $O(n)$ $\rightarrow$ 12 - digit primes ~4 Terabyte
+      -  64 digits: more memory cells than atoms in Solar system
+      -  Current standard $\geq 308$ digits
+-  Optimization: Atkin’s Sieve, $O(n^{1/2+O(1)})$
+
+However ...
+-  Until today, we only believe that for computing $k_{sec}$ we need to factorize $n$; there might be a completely different way but: if we can compute $k_{sec}$ in this way, we would have solved the factorization problem
+-  Until today, no polynomial factorization algorithm is known
+-  Until today, nobody proved that such algorithm cannot exist...
+
+Precautions in PKIs: Prepare for fast exchange of cryptosystem (e.g. based on computation of logarithm in elliptic curves)
+
+Attack on confidentiality
+- Ann with ($k_{pub}, k_{sec}$) is client of 2 servers Good und Bad:
+_Bad_ listenswhile
+_Good_ $\rightarrow$Ann: {X} _kpub_ (someconfidentialmessage)
+
+Next authenticationchallengeby _Bad_ :
+_Bad_ $\rightarrow$Ann: {X} _kpub_ (uses{X} _kpub_ as _nonce_ )
+Ann $\rightarrow$ _Bad_ : {{X} _kpub_ } _ksec_ = X (responsebyAnn)
+
+Cause
+-  _nonce_ property violated
+-  Samekey used for 2 differentpurposes (authentication, confidentiality)
+$\rightarrow$ flawed use of security mechanism
+
+### Cryptographic Hash Functions
+Goal
+- Discover violation of integrity of data
+- So that integrity of information is maintained
+
+Method
+- Checksum generation by cryptographic hash functions
+- Checksum encryption
+- Integrity check by
+  - Generating a new checksum
+  - Decryption of encrypted checksum
+  - Comparison of both values
+
+Method of Operation: Map data
+-  Of arbitrary length
+-  To checksum of fixed length
+such that $Text1 \not= Text2 \Rightarrow hash(Text1) \not= hash(Text2)$ with high probability
+
+Weak and Strong Hash Functions: One-way
+1. $\forall x\in X, hash:X\rightarrow Y$ is efficiently computable
+2. There is no efficient algorithm that computes $x$ from $hash(x)$ $\rightarrow$ given $hash(x)$, it is practically impossible to compute an $x\not= x'$ where $hash(x‘)=hash(x)$
+
+Strong Hash Functions: + Collision-free
+1. $hash: X\rightarrow Y$ is a weak hash function
+2. It is practically impossible to find $x\not= x‘$ where $hash(x)=hash(x‘)$  (however, they do exist ...)
+
+Algorithms: best before ...
+- 160 - Bit checksums
+  - RIPEMD-160
+    -  For creating qualified digital signatures certified in Germany until end of 2010
+    -  For checking until end of 2015
+  - Secure Hash Algorithm (SHA-1, published NIST 1993)
+    -  2010/2015
+- Larger Checksums
+  - SHA-256, SHA-384, SHA-512
+- No longer approved
+  - Message Digest (MD4 (1991), MD5 (1992)); 128-Bit checksum
+    -  MD5: belongs to IPsec algorithm group, used also in SSL
+    -  Since 1996 doubts concerning collisions
+
+### Digital Signatures
+Goal
+- To assert author of a document (signer) $\rightarrow$ Authenticity
+-  To discover modifications after signing $\rightarrow$ Integrity
+- $\Rightarrow$ non-repudiability
+
+Approach
+- Create signature
+  - Integrity: create checksum $\rightarrow$ cryptographic hash function
+  - Authenticity: encrypt checksum $\rightarrow$ use private key of signer
+- check signature
+  - Decryptchecksum using public key of signer
+  - Compare result with newly created checksum
+
+Applications
+-  Authenticity of documents
+  -  Orders to banks(HBCI / FinTS)
+  -  Contracts (signed by all parties)
+  -  Emails (e.g. from your bank)
+  -  Ownership proofs (cadastral register, permissions (capabilities))
+  -  Tax declarations
+  -  Key certificates
+-  Authenticity of software
+  -  Downloads, OS updates, Microsoft device driver signatures
+
+### Cryptographic Attacks
+4 Classes
+- Ciphertext Only attacks
+- Known Plaintext attacks
+- Chosen Plaintext attacks
+- Chosen Ciphertext attacks
+
+Notation
+- T: plaintext
+- CT: ciphertext
+- Ke: encryption key, so $CT =\{T\}_{Ke}$
+- Kd: decryption key, so $T=\{CT\}_{Kd}$
+
+#### Ciphertext Only Attacks (weakest assumptions)
+-  Known: ciphertext $CT$
+-  Wanted: plaintext $T$, $Ke$, $Kd$, algorithm
+-  Typical assumptions
+  - $CT$ was completely generated by one $Ke$
+  - Known algorithm
+
+Examples
+-  Observation of packet sequences in networks
+-  Listening into password-based authentication with encrypted passwords
+
+#### Known Plaintext Attacks
+-  Known: $T$ and $CT$ (respectively parts thereof)
+-  Wanted: $Ke$, $Kd$, algorithm
+
+Example
+- Listening into challenge/response protocols
+  - Server $\rightarrow$ Client: nonce
+  - Client $\rightarrow$ Server: $\{nonce\}_{Ke}$
+- (countermeasure often: Client $\rightarrow$ Server:$\{nonce + Time\}_{Ke}$)
+
+#### Chosen Plaintext Attacks
+- Known: $T$ and $CT$ where $T$ can be chosen by attacker, $CT$ observable 
+  - attacker $\rightarrow X:T$
+  - $X\rightarrow attacker:CT(=\{T\}_{Ke})$
+- Wanted: $Ke, Kd$ (algorithm often known)
+
+Examples
+-  Authentication in challenge/response protocols
+  -  Attacker (malicious server) tries to find client’s private key
+  -  sends tailored nonces
+-  Authentication by chosen passwords
+  -  Attacker tries to find login password
+  -  Generates passwords and compares their encryptions with password data base
+
+#### Chosen Ciphertext Attacks
+- Known: $T,CT$ and $Kd$ where $CT$ can be chosen and $T$ can be computed from $CT$
+- wanted: $Ke$
+- $\rightarrow$ successful attacks allow forging digital signatures
+
+Examples: Attack by
+-  (within limits) Servers while authenticating clients
+-  (within limits) Observers of such authentications
+-  In a PK cryptosystem: Everybody knowing $Kd$ (the whole world)
+
+Scenario
+-  Public network, public key encryption, RSA
+-  Authentication and confidentiality using same key pairs
+-  Client/server
+-  One server is a bad guy
+
+### Summary
+Goals of Cryptographic Algorithms
+-  To provide security properties such as
+  -  Integrity, confidentiality, non-repudiability
+      - Of communication
+      - Of resources such as files, documents, program code
+-  Especially: implement assumptions made by security models, such as
+  -  Authenticity, integrity, confidentiality of
+      - Model entities (subjects, objects, roles, attributes)
+      - Model implementations
+
+Cryptographic Mechanisms
+-  Encryption algorithms
+  -  Symmetric
+  -  Asymmetric
+-  Hash functions
+-  Combinationsof these mechanisms
+  -  _Messageauthentication codes_
+  -  Digitalsignatures
+
+Beware: Many Pitfalls!
+-  Weaknesses of mathematical foundations $\rightarrow$ unproved assumptions
+-  Weaknesses of algorithms $\rightarrow$ cryptographic attacks
+-  Weaknesses of key generation $\rightarrow$ e.g. weak prime numbers
+-  Weaknesses of mechanism use $\rightarrow$ co-existence of mechanisms
+
+## Identification and Authentication
+Goal: To reliably identify people, servers, systems, subjects, objects ... $\rightarrow$ general term in authentication: "principal"
+
+Required e.g. by
+-  IBACpolicies
+-  RBAC policies
+  -  User-to-role association
+-  ABAC policies
+  -  Assignment of attributes to subjects and objects
+-  MLS policies
+  -  Assignment of classes to subjects and objects
+
+Approaches: Proof of identity by
+-  By proving knowledge of simple secret $\rightarrow$ passwords
+-  By biophysicproperties $\rightarrow$ biometrics
+-  By proving knowledge of simple secret $\rightarrow$ cryptographic protocols
+
+### Passwords
+Used For: Authentication of humans to IT systems
+
+Verified Item: Knowledge of simple secret
+
+Properties
+- Convenient
+- Easy to guess / compute (RainbowCrack: $104*10^9$ hash values per second $\rightarrow$ 10 - digits passwords in 1,5 months ...)
+  - $\rightarrow$ password generators ("TomApple")
+  - $\rightarrow$ password checkers (min. 8 chars, no word from dictionary, not the dog, ...)
+- Easy to compute $\rightarrow$ longpasswords
+- Problem of careless handling (password on post-it pinned to screen)
+- Input can easily be observed (see EC PINs)
+- Trust in system necessary, secret is exposed (EC-PINs)
+- Fundamental requirement in distributed systems:
+  - Confidential communication with authenticating system
+
+Storing the Secret at 2 parties
+-  Principal
+  - Bio-mem, key store, memo
+  - plaintext
+-  Authentication service
+  -  Local data base, file ("/etc/passwd", "/etc/shadow")
+  -  Distributedsystems: centralized directory (LDAP server)
+  -  Encrypted byone-wayfunction
+  - Password-DB (principal, hash (password))
+
+Verifying a Secret (Principalname, hash(password)) = Password-DB.Principalname.hashvalue
+
+### Biometrics
+Used For: Authentication of humans to IT systems
+
+Verified Items: Individual properties such as voice, hand/retina geometry, finger print, Signature
+
+Verification: By comparing probe with reference pattern
+
+- Pros
+  -  Convenient, no secrets to remember, cannot be lost
+  -  Difficult to intentionally pass on
+  -  (prospectively) Difficult to counterfeit
+- Contras: Fundamental technical problems
+  - Comparison methods with reference fuzzy techniques, e.g. for finger prints: coordinate grid, geometry of minutiae
+  - FalseNon-match Rate (FNMR): authorized people are rejected
+  - False Match Rate (FMR): not authorized people are accepted
+
+Some numbers (2008) :
+-  Finger print readers: FMR 0,01% -0,0001% (1 von 10^4 - 106 ), FNMR 1%
+-  Iris readers: FMR »0,0008%
+
+More Technical Issues
+-  Susceptible wrt. environmental conditions
+  -  Voice: noise
+  -  Finger print: dirt
+  -  Signature: nervousness, fractured arm
+-  Trust in system required
+-  Fundamental weaknesses in distributed systems
+  -  Secure communication to authenticating system required (personal data)
+
+Organizational Costs
+-  Reference probes are personal data $\rightarrow$ Data Protection Act
+-  Reaction time on security incidents
+  -  Passwords, smartcards can be exchanged easily
+  -  Fingers or eyes ...
+
+Social Barriers
+-  Not easily accepted
+  -  Finger prints: criminal image
+  -  Retina
+- Some weekend entertainments identifiable
+- Some diseases identifiable
+-  Naive advertising calls for distrust
+  -  Politically: "Biometrician undesired on national security congress"
+  -  Technically: for many years unkeptpromise to cure weaknesses
+
+### Cryptographic Protocols
+#### SmartCards
+Used For: Authentication of humans to IT systems
+
+Verified Item: Knowledge of complex secret
+-  Secret part of asymmetric key pair
+-  Symmetric key
+
+Verification
+- Challenge/response protocols
+- Goal
+  - Proof that secret is knows
+  - Contrary to password authentication, no secret exposure
+
+Vehicle for Humans: SmartCards
+- Small Computing Devices Encompassing
+  -  Processor(s)
+  -  RAM
+  -  Persistent memory
+  -  Communication interfaces
+- What They Do
+  -  Store and keep complex secrets (keys)
+  -  Run cryptographic algorithms
+    -  Response to challenges in challenge/response protocols
+    - Encryptincoming nonces
+  -  Launch challenges to authenticate other principals
+    - Generate nonces, verify response
+
+Usage... e.g. via plug-ins in browsers
+
+Properties
+- no secret is exposed
+  - $\rightarrow$ no trust in authenticating system required
+  - $\rightarrow$ no trust in network required
+- Besides authentication other features possible
+  - $\rightarrow$ digital signatures, credit card, parking card ...
+- Weak verification of card right to use card (PIN, password)
+  - $\rightarrow$ some cards have finger print readers
+- Power supply for contactless cards
+
+#### Authentication Protocols
+Used For: Authentication between IT systems
+
+Method: challenge/response-scheme
+
+Based on
+- symmetric key: principal and authenticating system share secret
+- asymmetric key: authenticating system knows public key of principal
+
+Authentication Using Secret Keys
+The Fundamentals: 2 Scenarios
+1. After one single authentication, Alice wants to use all servers in a distributed system of an organization. "Here is a nonce I encrypted using Alice‘s secret key. Prove that you are Alice by decrypting it."
+2. Alice wants authentic and confidential communication with Bob. Authentication Server serves session keys to Bob and Alice
+
+Needham-Schroeder Authentication Protocol
+- for secret keys
+- Goal: To establish authentic and confidential communication between 2 Principals
+- Method
+  1. Authentication of Alice to Bob $\rightarrow$ Bob knows the other end is Alice
+  2. Authentication of Bob to Alice $\rightarrow$ Alice knows the other end is Bob
+  3. Establish a fresh secret between Alice and Bob: a shared symmetric session key      $\rightarrow$ confidentiality, integrity, authenticity
+
+Fundamental
+-  Common trust in same authentication server
+-  Client-specific secret keys ($K_{AS}, K_{BS}$)
+
+![](Assets/Systemsicherheit-needham-schreoeder.png)
+
+Note: Protocol used in Kerberos security architecture
+
+Message Semantics
+1. $A\rightarrow S:A,B,N_A$: A requests session key for B from S
+2. $S\rightarrow A:\{N_A,B,K_{AB},K_{AB},A\}_{KBS}\}_{KAS}$: S responds encrypted with $K_{AS}$ such that only A is able to understand
+    - nonce proves that 2. is a reply to 1. (fresh)
+    - session key $K_{AB}$
+    - ticket for B; encryption proves that $K_{AB}$ was generated by $S$ (S assures that $K_{AB}$ belongs to A)
+3. $A\rightarrow B:\{K_{AB},A\}_{KBS}$: A gives ticket to B; encryption serves as challenge
+4. $B\rightarrow A:\{N_B\}_{KAB}$: B decrypts ticket (response) and verifies whether A knows $K_{AB}$ (challenge)
+5. $A\rightarrow B:\{N_B-1\}_{KAB}$: A proves by using $K_{AB}$ that he was the sender of 3. (response)
+- Authentication of A to B: only A can decrypt 2.; freshness from 5.
+- Authentication of B to A: only B can decrypt 3. (use of $K_{AB}$ in 4. must be recognizable by A (recognizable nonce, e.g. timestamp))
+- A and B now also share a secret session key
+
+
+Authentication Servers
+-  Common trust in server by all principals
+  - $\rightarrow$ closed user group, in general belonging to same organization
+-  Servershares individual secret with each principal (symmetric key)
+
+Needham-Schroeder Authentication Protocol for public keys
+- Goal: To establish authentic and confidential communication between Principals
+- Method
+  1. Authentication of Alice to Bob $\rightarrow$ Bob knows the other end is Alice
+  2. Authentication of Bob to Alice $\rightarrow$ Alice knows the other end is Bob
+  3. Establish a fresh secret between Alice and Bob: a shared symmetric session key $\rightarrow$ confidentiality, integrity, authenticity
+- Premise: Trust
+  - Individually in issuer of certificate (certification authority, CA)
+  - Not necessary: in certificate server!
+  - $\rightarrow$ much weaker than secret key based authentication
+- Message Semantics
+  1. $A\rightarrow S:A,B$: A requests public key of B
+  2. $S\rightarrow A:\{PK_B,B\}_{SK_S}$: S sends certificate; A must know public key of CA
+  3. $A\rightarrow B:\{N_A,A\}_{PK_B}: A sends challenge to B
+  4. $B\rightarrow S:B,A$: B requests public key of A
+  5. $S\rightarrow B:\{PK_A,A\}_{SK_S}$: S responds (see 2.)
+  6. $B\rightarrow A:\{N_A, N_B\}_{PK_A}$: B proves it is B (response) and challenges A with $N_B$
+  7. $A\rightarrow B:\{N_B\}_{PK_B}: A replies to challenge and proves that it is A
+  -  Authentication of A to B: 6. together with 7. (only A can decrypt 6.)
+  -  Authentication of B to A: 3. together with 6. (only B can decrypt 3.)
+  -  From WHERE the key certificates actually are obtained is irrelevant
+
+Certificate Servers: Basis of Authentication
+-  Key certificates
+  -  Digitally signed mappings (name $\leftrightarrow$ public key)
+  -  Issued by certification authorities (CAs, trustworthy organizations)
+-  Certificate servers
+  -  Manage certificate data base
+  -  Need not be trustworthy
+![](Assets/Systemsicherheit-Certificate-server.png)
+
+$\delta s$ Between Secret Key and Public Key Authentication
+- Functionality
+  - SK:
+    - Requires common trust in AS, á-priori key exchange, and mutual trust in keeping session key secret
+    - Allows for message authentication codes
+  - PK:
+    - Requires knowledge of public keys $\rightarrow$ PKIs
+    - Allows for digital signatures
+- Availability
+  - SK: Require online AS
+  - PK: Allow for local chaching of certificates (e.g. in web browsers)
+- Key Management
+  - security
+    - SK: accumulation of secrets at AS $\rightarrow$ dangerous, server always online
+  - complexity
+    - SK:
+      - n keys for authenticating n principals
+      - $O(n^2)$ session keys for n communicating parties
+    - PK:
+      - n keys for authenticating n principals
+      - $O(n)$ keys for $n$ communicating parties if PKs are used
+      - $O(n^2)$ key for n communicating parties if session keys are used
+      - Certificate management: PKIs, CAs, data bases, callbacks list, ...
+
+## Summary
+TCB: All functions of an IT system necessary and sufficient to establish its security properties
+
+Basic Security Mechanisms of a TCB
+- Authentication
+  - $\rightarrow$ passwords, biometrics, symmetric and asymmetric encryption, challenge/response protocols, hash functions, message authentication codes, digital signatures
+- Authorization
+  - $\rightarrow$ ACLs, capability lists, interceptors, policy servers/objects
+  - $\rightarrow$ symmetric and asymmetric cryptosystems
+- $\rightarrow$ confidentiality, integrity, ...
+  -  Of subjects and objects
+  -  Of their communication
+- Problems Only Touched
+  -  Multitude and diversity of security mechanisms
+  -  Distributed among
+     -  OS
+     -  Middleware platforms
+     -  Libraries
+     -  Application software
+  - $\rightarrow$ large, distributed TCB with fuzzy perimeter
+  - $\rightarrow$ set of all security mechanisms $\not =$ security architecture
+
+# Security Architectures
+## Design Principles
+## Operating Systems Architectures
+### Nizza
+### SELinux 
+## Distributed Systems Architectures
+### CORBA 
+### Web Services 
+### Kerberos 
+## Summary 

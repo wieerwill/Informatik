@@ -1030,3 +1030,20 @@ Wie komme ich an das nötige Kapital?
 - Durststrecke bis zum ersten B2B-Kunden selbst finanzieren
 - Crowdfunding oder Crowdinvesting
     - Übersicht: https://www.startplatz.de/crowdfunding-plattformen/
+
+
+# Fragestunde & Konsultation
+- Klausur 60 Minuten
+- Stoff sind Vorlesungsfolien
+- Fragestellung z.B: "Schildern Sie Problem im App Projekt"
+- zu MobileEnterpreneurship bisher kaum Fragen
+- gerne Fragen zu Digital Rights Management 
+  - PublicKey Kryptographie
+  - Symmetrische/Asymetrische Kryptographie verstanden haben
+- allgemeine Fragen z.B. "was ist Content", Definitionen
+- keine Programmieraufgabe, evtl mal Verschlüsselung
+- Jahreszahlen/Meilensteine sind nicht relevant, kein stupides Auswendiglernen aber grob Reihenfolge der Entwicklung
+- mobile Betriebssysteme kennen (Android, iOS + 2 weitere)
+- Urheberrecht kommt vor + CreativeCommons (Rechtemodule)
+- aktuelle Bezahlsysteme
+- unterschied zertifikat - lizenz

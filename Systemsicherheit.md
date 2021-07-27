@@ -136,14 +136,20 @@
       - [Authentication Protocols](#authentication-protocols)
   - [Summary](#summary-6)
 - [Security Architectures](#security-architectures)
-  - [Design Principles](#design-principles)
-  - [Operating Systems Architectures](#operating-systems-architectures)
+  - [Architecture Design Principles](#architecture-design-principles)
+    - [The Reference Monitor Principles](#the-reference-monitor-principles)
+    - [Implementation Layers](#implementation-layers)
+  - [Security Architectures of Operating Systems](#security-architectures-of-operating-systems)
     - [Nizza](#nizza)
-    - [SELinux](#selinux)
-  - [Distributed Systems Architectures](#distributed-systems-architectures)
+    - [Security Enhanced Linux (SELinux)](#security-enhanced-linux-selinux)
+  - [Security Architectures of Distributed Systems](#security-architectures-of-distributed-systems)
     - [CORBA](#corba)
     - [Web Services](#web-services)
     - [Kerberos](#kerberos)
+      - [Kerberos Cryptography: Inside Kerberos Tickets](#kerberos-cryptography-inside-kerberos-tickets)
+      - [Kerberos Login](#kerberos-login)
+      - [Using a Server](#using-a-server)
+      - [Kerberos Summary](#kerberos-summary)
   - [Summary](#summary-7)
 
 # Introduction
@@ -3899,7 +3905,7 @@ Verification: By comparing probe with reference pattern
 
 Some numbers (2008) :
 -  Finger print readers: FMR 0,01% -0,0001% (1 von 10^4 - 106 ), FNMR 1%
--  Iris readers: FMR »0,0008%
+-  Iris readers: FMR $\sim$ 0,0008%
 
 More Technical Issues
 -  Susceptible wrt. environmental conditions
@@ -4093,12 +4099,488 @@ Basic Security Mechanisms of a TCB
   - $\rightarrow$ set of all security mechanisms $\not =$ security architecture
 
 # Security Architectures
-## Design Principles
-## Operating Systems Architectures
+
+> Trusted Computing Base (TCB)
+> The set of functionsof an IT system that are necessary and sufficient for implementing its security properties $\rightarrow$  Isolation, Policy Enforcement, Authentication ...
+
+> Security Architecture
+> The part(s) of a system’s architecture that implement its TCB $\rightarrow$  Security policies, Security Server (PDP) and PEPs, authentication components, ...
+
+> Security Mechanisms
+> Algorithms and data structures for implementing functions of a TCB $\rightarrow$  Isolation mechanisms, communication mechanisms, authentication mechanisms, ...
+
+$\rightarrow$ TCB $\sim$ runtime environment for security policies
+
+Security architectures have been around for a long time ...
+- Architecture Components
+  - Buildings, walls, windows, doors, moats, draw bridges
+- Architecture
+  - Component arrangement and interaction
+- Goal of a Security Architecture: Build a stronghold such that security policies can be enforced
+  - Presence of necessary components/mechanisms
+  - Totality of interaction control ("mediation")
+  - Tamperproofness
+  - $\rightarrow$ architecture design principles
+
+Check your trust in
+- Completeness of access mediation (and its verification!)
+- Policy tamperproofness(and its verification!)
+- TCB correctness (and its verification!)
+
+Problem Areas
+- PDPs (policy decision points)
+- PEPs (policy enforcement points)
+
+are
+- Scattered among many OS components $\rightarrow$  Problem of security architecture design
+- Not robust
+  - Notisolated from errors within the entire OS implementation
+  - Especially in dynamically loaded OS modules
+  - $\rightarrow$  Problem of security architecture implementation
+
+... and that is not all
+
+Linux set-user-id programs
+- Execute security-sensitive operations
+- Adopt different effective user id during execution
+- Thushave different privileges
+- Especially those of user id "root"
+- $\rightarrow$  each such program is part of the TCB!
+- e.g.
+  - /usr/bin/passwd (> 50 y old open sourceprogram)
+  - /opt/google/chrome/chrome-sandbox (author: Google!)
+  - /usr/lib/virtualbox/VirtualBox (author: Oracle!)
+
+Problem
+- OSes/Middleware/Applications are big
+- Only a small set of their functions logically belongs to the TCB
+- $\rightarrow$ Security architecture design such that TCB functions are collected in an
+  - not bypassable (total access mediation),
+  - isolated (tamperproofness),
+  - trustworthy (verifiable correctness) core
+  - $\rightarrow$  Security architecture implementation such that these properties are enforced
+
+## Architecture Design Principles
+Goal
+- Complete
+- Tamperproof
+- Verifiably correct
+- control of all security-relevant actions in a system
+
+Approach: Definitions of fundamental security architecture design principles
+
+### The Reference Monitor Principles
+There Exists an Architecture Component that is
+- (RM 1) Involved in any subject/object interaction
+  - $\rightarrow$  _total mediation property_
+- (RM 2) Well-isolated from the rest of the system
+  - $\rightarrow$  _tamperproofness_
+- (RM 3) Small and well-structured enough to analyze correctness by formal methods
+  - $\rightarrow$  _verifiability_
+
+A security architecture component built along these principles: "Reference Monitor"
+
+Idea
+- 1 PDP (policy implementation)
+- many PEPs (interceptors, policy enforcement)
+
+Reference Monitor
+- Core component of a TCB
+- Typically encloses
+  - Security policy implementation(s) (PDP)
+    - Model state (e.g. ACM, subject set, entity attributes)
+    - Model behavioral logic (e.g.authorization scheme)
+  - Enforcement mechanisms: PEPs
+- Typically excludes (due to complexity and size, RM 3)
+  - Authentication
+  - Cryptographic mechanisms
+  - Sometimes also model state (e.g.ACLs)
+
+Consequences of (RM 3) for TCBs
+- Few functions $\rightarrow$ small size (LoC)
+- Simple functions $\rightarrow$ low complexity
+- Strong isolation
+- Precisely known perimeter
+
+### Implementation Layers
+- Policy-controlled OS - Monolithic OS Kernel 
+  - OS level policy: ![](Assets/Systemsicherheit-policy-controlled-os.png)
+  - TCB - Functional View: ![](Assets/Systemsicherheit-policy-controlled-os-tcp-functional.png)
+  - TCB - Implementation View: ![](Assets/Systemsicherheit-policy-controlled-os-tcp-implementation.png)
+- Policy-controlled OS - Microkernel Architecture ( Nizza )
+  - OS level policy: ![](Assets/Systemsicherheit-policy-microkernel-os-policy.png)
+  - TCP functional view: ![](Assets/Systemsicherheit-policy-microkernel-tcp-functional.png)
+  - TCP implementation view: ![](Assets/Systemsicherheit-policy-microkernel-tcp-functional.png)
+- Policy-controlled Application: Middleware-level Policy
+  - ![](Assets/Systemsicherheit-middleware-level-policy.png)
+  - Example: Web Services on Apache Axis-2 Webservers
+- Policy-controlled Application
+  - Application-level Policy ![](Assets/Systemsicherheit-policy-controlled-app-application.png)
+  - TCB - Functional View ![](Assets/Systemsicherheit-policy-controlled-app-tcp-functional.png)
+  - TCB - Implementation View ![](Assets/Systemsicherheit-policy-controlled-app-tcp-implementation.png)
+
+State of the Art
+- Numerous rather weak implementations in
+  - Commodity OSes
+  - Middleware
+  - Applications
+- Stronger approaches in
+  - Microkernel OSes (e.g.L4/Nizza)
+  - Security-focused OSes(e.g.SELinux, Trusted BSD, Open Solaris)
+
+## Security Architectures of Operating Systems
+Goal: OS security architecture such that reference monitor principles
+- (RM 1) Involved in any subject/object interaction
+- (RM 2) Well isolated from the rest of the system
+- (RM 3) Small and well-structured
+
+for security policy are satisfied
+
 ### Nizza
-### SELinux 
-## Distributed Systems Architectures
-### CORBA 
-### Web Services 
-### Kerberos 
-## Summary 
+Goals
+- RM 1 - RM 3
+  - Especially: Small TCB
+- Maintain functionality of
+  - Contemporary legacy OSes
+  - Legacy Applications ("legacy" = unmodified for security)
+
+Concepts
+- Reference monitor principles: Separation of OS, Applications into security-critical vs. non-critical components
+  - $\rightarrow$  precise identification of a (minimal) TCB
+- Maintain functionality
+  - $\rightarrow$  Paravirtualization of standard, legacy OSes
+
+OS View
+![](Assets/Systemsicherheit-nizza-os-view.png)
+- Trustworthymicrokernel
+- Trustworthybasic services
+- Nottrustworthy (paravirtualized) legacy OS
+
+Application View
+- Vulnerability increaseswith growing complexity
+  - $\rightarrow$  reduce vulnerability of security-critical code by
+- Software functionality separation
+- Isolation of functional domains
+  - ![](Assets/Systemsicherheit-nizza-application-view.png)
+- Example: Email Client
+  - Non-critical: reading/composing/sending emails
+  - Critical: signing emails (email-client $\leftrightarrow$ Enigmail Signer)
+
+Putting it all Together
+![](Assets/Systemsicherheit-nizza-enigmail.png)
+
+![](Assets/Systemsicherheit-nizza-enigmail-tcb.png)
+
+Size of TCB: 105 000 LoC
+- Microkernel (L4/Fiasco): 15 000 LoC
+- Trustworthy basic services: 35 000 LoC
+- Enigmail Signer: 55 000 LoC
+
+Results
+- Code size of TCB reduced by 2 orders of magnitude (100 000 LOC vs. 10 000 000 LOC!)
+- Functionality of legacy OSes and applications preserved
+
+Costs
+- (Moderate) performance penalties
+- Paravirtualization of legacy OS
+- Decomposition of trusted applications
+
+### Security Enhanced Linux (SELinux)
+Goal: Security-aware OS
+- State-of-the-art OS
+- State-of-the-art security paradigms
+
+Idea: Policy-controlled (Linux) OS kernel
+
+Approach SELinux =
+- Linux (DAC, IBAC)
+- MAC, RBAC, ABAC, TAM, MLS
+
+Security Policies in SELinux
+- Implementation by new OS abstractions (unheard of for > 40 years...)
+- Somewhat comparable to " process" abstraction!
+  - Specification ...
+    - of a process is a program: algorithm implemented in formal language (C++, Rust, Python, Java, ...)
+    - of a security policy is a security model: rule set in formal language (predicate logic, automaton theory, DynaMo, ...)
+  - Runtime environment (RTE) ...
+    - of a process is OSprocess management $\rightarrow$ RTE for application-level programs
+    - of a security policy is OS security Server $\rightarrow$ RTE for kernel-level policies
+
+SELinux Architecture
+![](Assets/Systemsicherheit-selinux-architecture.png)
+- Policy-aware Security Server (policy decision point, PDP)
+  - Policy RTE in kernel‘s protectiondomain
+- Interceptors (policy enforcement points, PEPs)
+  - Total interaction control in object managers (part of Linux Security Module Framework)
+
+Implementation Concepts
+- Reference Monitor Principles
+  - Total mediation of security-relevant interactions
+    - $\rightarrow$ placement of PEPs: Integration into object managers
+  - Tamperproofness of policy implementation
+    - $\rightarrow$  placement of PDP: Integration into kernel ( security server )
+- Policy Support
+  - Remember: Security policies require
+  - Authenticity of entities: Unique subject/object identifiers
+  - Policy-specific entity attributes (type, role, MLS label)
+- Problem in Linux,
+  - Subject identifiers (PIDs) or object identifiers (i-node numbers)are
+    - neither unique
+    - nor are of uniform type
+  - $\rightarrow$  security identifier (SID)
+  - Policy-specific subject/object attributes (type, role, MLS label) are
+    - not part of subject/object metadata (task struct, i-node struct)
+    - $\rightarrow$  security context
+  - $\rightarrow$  Approach: Extensions of process/file/socket...-management
+
+Authenticity of Entities
+- Object managers help: implement injective mapping SÈO $\rightarrow$  SID
+  - SID created by security server
+  - Mapping of SIDs to objects by object managers
+![](Assets/Systemsicherheit-object-managers.png)
+
+Entity Attributes
+- Security policy implements injective mapping SID $\rightarrow$  security context
+- security contexts creation according to policy-specific labeling rules
+- Entry in SID $\rightarrow$ security context mapping table
+
+Security Context contains
+- Standard entity attributes such as
+  - Unique user ID
+  - Role
+  - Type (user_t , tomCat_t, ...)
+  - Class (process, file, ...)
+- Policy-specific entity attributes such as
+  - Confidentiality/clearance level (e.g.MLS label)
+- is implemented as
+  - A text string with policy-dependent format:
+    ```bash
+    $ ps -Z
+    bob:doctor_r:shell_t:s0-s0:c0.c255 4056 pts/2 00:00:00 bash
+    ```
+
+Problem: Security contexts of persistent Entities
+- Policies not aware of persistency of entities, e.g. files (that continue existing over system shutdowns)
+  - $\rightarrow$ persistency of security contexts is job of object managers
+- Layout of object metadata (e.g. inodes in a file system) is file system standard
+  - $\rightarrow$ security contexts cannot be integrated in i-nodes (their implementation: policy-independent)!
+
+Solution
+- Persistent objects additionally have (OM-local) persistent SID : "PSID"
+- OMs map these to SID
+- 3 invisible storage areas ($\sim$  files) in persistent memory(HDD, SSD) implementing
+  - Security context of file system itself (label)
+  - Bijective mapping: inode $\rightarrow$  PSID
+  - Bijective mapping: PSID $\rightarrow$  security context
+
+Access Vector Cache(AVC)
+- Located in object managers (user level) resp. in Security Server (kernel level)
+- Caches access decisions
+
+Summary SELinux
+- Motivation
+  - Out-of-date and weak security mechanisms in contemporary commodity OSs
+- Consequence
+  - Insufficient and inadequate security specification paradigms
+  - Numerous vulnerabilities
+- Approach
+  - New OS abstraction: Security policies
+  - $\rightarrow$  policy-controlled OS: DAC & MAC, IBAC, RBAC, ABAC, TAM, MLS
+
+RM Evaluation of SELinux
+- Compliance with Reference Monitor Principles
+  1. Total Mediation Property (placement of PEPs) (currently) done manually
+  2. Tamperproofness of Policy Implementation
+      - Fundamental problem in monolithic software architectures
+      - $\rightarrow$  TCB implementation vulnerable from entire OS kernel code
+      - Security server
+      - All object managers
+      - Memory management
+      - IPC implementation
+      - I/O system
+      - It can be done: Nizza
+  3. Verifiability
+      - Size and complexity of policy (reference policy $\sim$  50.000 rules) $\rightarrow$ analysis tools
+      - Policy‘s RTE claim to be universal
+      - Completeness of PEPs
+      - Policy isolation
+
+## Security Architectures of Distributed Systems
+Scenario: ![](Assets/Systemsicherheit-security-architecture-distributed.png)
+
+### CORBA
+Integration of Security Policies
+
+![](Assets/Systemsicherheit-cobra-1.png)
+![](Assets/Systemsicherheit-cobra-2.png)
+
+### Web Services
+Integration of Security Policies
+
+Example: Apache Axis-2 Webserver
+
+![](Assets/Systemsicherheit-apache-axis-2.png)
+
+### Kerberos
+Authentication and authorization architecture for distributed systems with closed user groups( $\rightarrow$ static sets of subjects)
+
+Target Scenario:
+- Distributed system run by single organization
+- Workstations and Servers
+- 2 Kerberos servers
+  - Authentication Server (AS)
+  - Authorization Server (TGS)
+
+History:
+- MIT _Athena_ project, started 1986
+- Concepts are part of CORBA‘s _Basic CORBA Security Architecture_ specification
+- Originally designed for: 650 workstations, 65 servers, 5000 users (1988)
+
+Principal Architecture Components
+- Authentication Server (AS)
+  - Authenticates users
+    - Based on (symmetric) key shared between user and AS
+    - Result: electronic ID card (authenticator)
+  - Authorizes use of TGS
+    - Based on key shared between AS and TGS
+    - Result: ticket (capability) for TGS
+- Ticket Granting Server (TGS)
+  - Issues tickets for all servers
+    - Based on key shared between TGS and respective server
+    - Result: ticket(s) for server(s)
+- Kerberos database
+  - Contains for each user and server a mapping $⟨user, server⟩\rightarrow$ authentication key
+  - Used by AS
+  - Is multiply replicated (availability, scalability)
+
+Typical Use Case
+1. Authentication, then request for TGS ticket
+2. Authenticator, TGS-Ticket
+3. Request for further server tickets
+4. Server tickets
+5. Service request: Servers decide based on
+  - authenticator of client
+  - server ticket
+  - (tentatively) local security policies
+
+#### Kerberos Cryptography: Inside Kerberos Tickets
+Tickets
+- Issued by Ticket Granting Server
+- Specify right of one client to use one server (personalized capability)
+- Limited lifetime (to make cryptographic attacks difficult)
+  - $\sim$ 1 day; balance between secure and convenient
+  - Short: inconvenient but more secure (if ticket is stolen it soon expires)
+  - Long: insecure but more convenient (no need for frequent renewal)
+- Can be used multiply while valid
+- Are sealed by TGS with key of server
+
+$T_{Client/Server}=\{Client, Server, Client.NetworkAddress, Timestamp, Lifetime, SessionKey_{Client/Server}\}_{KTGS/Server}$
+
+Provisions against Misuse
+- Tampering by client to fabricate rights for different server
+  - $\rightarrow$  provision: guarantee of integrity by MAC using KTGS/Server
+- Use by third party intercepting ticket
+  - $\rightarrow$  provision: personalization by
+  - Name and network address of client together with
+    - Limited lifetime
+    - Authenticator of client $\rightarrow$ 
+
+Authenticators
+- Proof of identity of client to server
+- Created using SessionKeyClient/Server
+  - $\rightarrow$  can be created and checked only by
+  - Client (without help by AS, because client knows session key (see below))
+  - Server
+  - TGS (trusted)
+- Can be used exactly once
+  - $\rightarrow$  prevent replay attacks by checking freshness
+
+$A_{Client}=\{Client, Client.NetworkAddress, Timestamp\}_{SessionKey_{Client/Server}}$
+
+#### Kerberos Login
+The Complete Process
+![](Assets/Systemsicherheit-kerberos-login.png)
+
+Single Steps:
+1. Alice tells her name
+2. Alice’s workstation requests authentication
+3. The AS
+  - Creates fresh timestamp
+  - Creates a fresh session key for Alice's communication with the TGS: $SessionKey_{Alice/TGS}$
+  - Creates Alice’s ticket for TGS and encrypts it with $K_{AS/TGS}$ (so Alice cannot modify it): $Ticket_{Alice/TGS}=\{Alice, TGS, ..., SessionKey_{Alice/TGS}\}_{K_{AS/TGS}}$
+  - Encrypts everything with $K_{Alice/AS}$ (so only Alice can read the session key and the TGS-Ticket) $\{TGS, Timestamp , SessionKey_{Alice/TGS}, Ticket_{Alice/TGS}\}_{K_{Alice/AS}}$
+4. Alice’s workstation
+  - Now has ${TGS, Timestamp , SessionKey_{Alice/TGS} , Ticket_{Alice/TGS}\}_{K_{Alice/AS}}$
+  - Requests Alice’s password
+  - Computes $K_{Alice/AS}$ from password using a cryptographic hash function
+  - Uses it to decrypt above message from AS
+- Result: Alice’s workstation has
+  - Session key for TGS session: $SessionKey_{Alice/TGS}$
+  - Ticket for TGS: $Ticket_{Alice/TGS}$
+  - The means to create an authenticator
+
+#### Using a Server
+Authentication (bidirectional)
+
+2 Steps
+1. Authentication of client to server
+2. Authentication of server to client (optional)
+
+1. Authentication of Client
+  - Assumptions
+    - Alice has session key
+    - Alice has server ticket
+  1. Alice assembles authenticator $A_{Alice}=\{Alice,Alice’s network address,timestamp\}_{SessionKey_{Alice/Server}}$ Only Alice can do that, because only she knows $SessionKey_{Alice/Server}$
+  2. Alice sends $Ticket_{Alice/Server}, A_{Alice}$ to Server
+  3. Server decrypts ticket and thus gets session key; thus it can decrypt $A_{Alice}$ and check:
+      - Freshness
+      - Compliance of names in ticket and authenticator
+      - Origin of message (as told by network interface) and network address in authenticator
+2. Authentication of Servers
+  - Server sends $\{Timestamp+1\}_{SessionKey_{Alice/Server}}$ to Alice
+  - Can only be done by principal that knows $SessionKey_{Alice/Server}$
+  - This can only be a server that can extract the session key from the ticket $Ticket_{Alice/Server}=\{Alice,Server ,..., SessionKey_{Alice/Server}\}_{K_{TGS/Server}}$
+
+Getting a Ticket for a Server
+- Are valid for a pair ⟨client, server⟩
+- Are issued (but for TGS-Ticket itself) only by TGS
+- Ticket request to TGS: $(server, TGS ticket, authenticator)$
+
+TGS:
+- Checks $Ticket_{Alice/TGS}$ and $authenticator$
+- Generates session key for client and server: $SessionKey_{Alice/Server}$
+- Generates ticket: $Ticket_{Alice/Server}$
+- Encrypts both using shared session key $\{Server, SessionKey_{Alice/Server}, Ticket_{Alice/Server}\}_{SessionKey_{Alice/TGS}}$
+
+#### Kerberos Summary
+Distributed Authentication and Authorization Architecture
+- 2 Security servers
+  - Authentication
+  - Authorization
+- Cryptographic mechanisms for
+  - Authentication
+  - Symmetric encryption: Confidentiality + Integrity + Authenticity
+    - of communication
+    - of tickets and authenticators
+- Kerberos TCB: TCBs of all OSes+
+  - Authentication Server
+  - Ticket GrantingServer
+  - Kerberos database
+  - All PDPs and PEPs on the servers
+  - Time server ($\rightarrow$ signed time stamps!)
+
+## Summary
+Current TCBs
+- Huge
+- Inhomogeneous
+- Distributed
+- Hard to identify precisely
+
+Security Architectures’ Problem
+- Compliance to reference monitor principles
+
+Case Studies
+- Nizza
+- SELinux
+- CORBA, Web Services, Kerberos
+- $\rightarrow$ Huge challenges!

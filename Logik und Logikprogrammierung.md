@@ -449,17 +449,17 @@ $\{\lnot(\varphi\wedge\psi)\}\Vdash\lnot\varphi\vee\lnot\psi$
 
 ## Semantik
 Formeln sollen Verknüpfungen von Aussagen widerspiegeln, wir haben dies zur Motivation der einzelnen Regeln des natürlichen Schließens genutzt.
-Aber die Begriffe „syntaktische Folgerung“ und „Theorem“ sind rein syntaktisch definiert.
+Aber die Begriffe "syntaktische Folgerung" und "Theorem" sind rein syntaktisch definiert.
 
-Erst die jetzt zu definierende „Semantik“ gibt den Formeln „Bedeutung“.
+Erst die jetzt zu definierende "Semantik" gibt den Formeln "Bedeutung".
 
 Idee der Semantik: wenn man jeder atomaren Formel $p_i$ einen Wahrheitswertzuordnet, so kann man den Wahrheitswert jeder Formel berechnen.
 
 Es gibt verschiedene Möglichkeiten, Wahrheitswerte zu definieren:
-- zweiwertige oder Boolesche Logik $B=\{0,1\}$: Wahrheitswerte „wahr“=1 und „falsch“= 0
-- dreiwertige Kleene-Logik $K_3=\{0,\frac{1}{2},1\}$: zusätzlicher Wahrheitswert „unbekannt“$=\frac{1}{2}$
-- Fuzzy-Logik $F=[0,1]$: Wahrheitswerte sind „Grad der Überzeugtheit“
-- unendliche Boolesche Algebra $B_R$= Menge der Teilmengen von $\mathbb{R}$; $A\subseteq\mathbb{R}$ ist „Menge der Menschen, die Aussage für wahr halten“
+- zweiwertige oder Boolesche Logik $B=\{0,1\}$: Wahrheitswerte "wahr"=1 und "falsch"= 0
+- dreiwertige Kleene-Logik $K_3=\{0,\frac{1}{2},1\}$: zusätzlicher Wahrheitswert "unbekannt"$=\frac{1}{2}$
+- Fuzzy-Logik $F=[0,1]$: Wahrheitswerte sind "Grad der Überzeugtheit"
+- unendliche Boolesche Algebra $B_R$= Menge der Teilmengen von $\mathbb{R}$; $A\subseteq\mathbb{R}$ ist "Menge der Menschen, die Aussage für wahr halten"
 - Heyting-Algebra $H_R$= Menge der offenen Teilmengen von $\mathbb{R}$
     - Erinnerung: $A\subseteq\mathbb{R}$ offen, wenn $\forall a\in A\exists\epsilon >0:(a-\epsilon,a+\epsilon)\subseteq A$, d.h., wenn $A$ abzählbare Vereinigung von offenen Intervallen $(x,y)$ ist.
 
@@ -487,7 +487,7 @@ Zur Beantwortung dieser Frage benötigen wir eine Funktion $\vee_W :W\times W\ri
 Beispiel
 1. Sei $\leq$ übliche Ordnung auf $\mathbb{R}$und $W\subseteq\mathbb{R}$. Dann ist $(W,\leq)$ partiell geordnete Menge.
 2. Sei $X$ eine Menge und $W\subseteq P(X)$. Dann ist $(W,\subseteq)$ partiell geordnete Menge.
-3. Sei $W=P(\sum ∗)$ und $\leq_p$ die Relation „es gibt Polynomialzeitreduktion“ (vgl. „Automaten, Sprachen und Komplexität“). Diese Relation ist reflexiv, transitiv, aber nicht
+3. Sei $W=P(\sum ∗)$ und $\leq_p$ die Relation "es gibt Polynomialzeitreduktion" (vgl. "Automaten, Sprachen und Komplexität"). Diese Relation ist reflexiv, transitiv, aber nicht
 antisymmetrisch (denn $3-SAT\leq_p HC$ und $HC\leq_p_3-SAT$).
 
 > Definition: Sei $(W,\leq)$ partiell geordnete Menge, $M\subseteq W$ und $a\in W$.
@@ -579,7 +579,7 @@ Wahrheitstafel für den Booleschen Wahrheitswertebereich B:
 Wir erhalten also $\{(AK\vee BK),(AK\rightarrow BK), ((BK\wedge RL)\rightarrow \lnot AK),RL\} \Vdash_B \lnot AK$
 und können damit sagen: 
 
-„Wenn die Aussagen „Bauteil A oder Bauteil B ist kaputt“ und „daraus, dass Bauteil A kaputt ist, folgt, dass Bauteil B kaputt ist“ und... wahr sind, ... dann kann man die Folgerung ziehen: die Aussage „das Bauteil A ist heil“ ist wahr.“
+"Wenn die Aussagen "Bauteil A oder Bauteil B ist kaputt" und "daraus, dass Bauteil A kaputt ist, folgt, dass Bauteil B kaputt ist" und... wahr sind, ... dann kann man die Folgerung ziehen: die Aussage "das Bauteil A ist heil" ist wahr."
 
 Erinnerung aus der ersten Vorlesung: $\{(AK\vee BK),(AK\rightarrow BK), ((BK\wedge RL)\rightarrow \lnot AK),RL\} \vdash  \lnot AK$
 
@@ -626,9 +626,9 @@ Zusammenfassung der Beispiele
 
 |                                                    | B   | $B_R$ | $K_3$ | F   | $H_R$ |                                                   |
 | -------------------------------------------------- | --- | ----- | ----- | --- | ----- | ------------------------------------------------- |
-| $\varnothing\Vdash_W\lnot\lnot\phi\rightarrow\phi$ | √   | √     | –     | –   | –     | $\varnothing\vdash \lnot\lnot\phi\rightarrow\phi$ |
-| $\varnothing\Vdash_W\phi\vee\lnot\phi$             | √   | √     | –     | –   | –     | $\varnothing\vdash\phi\vee\lnot\phi$              |
-| $\{\lnot\phi\rightarrow\bot\}\Vdash_W\phi$         | √   | √     | √     | √   | –     | $\{\lnot\phi\rightarrow\bot\}\vdash\phi$          |
+| $\varnothing\Vdash_W\lnot\lnot\phi\rightarrow\phi$ | √   | √     | -     | -   | -     | $\varnothing\vdash \lnot\lnot\phi\rightarrow\phi$ |
+| $\varnothing\Vdash_W\phi\vee\lnot\phi$             | √   | √     | -     | -   | -     | $\varnothing\vdash\phi\vee\lnot\phi$              |
+| $\{\lnot\phi\rightarrow\bot\}\Vdash_W\phi$         | √   | √     | √     | √   | -     | $\{\lnot\phi\rightarrow\bot\}\vdash\phi$          |
 | $\{\phi\}\Vdash_W\lnot\phi\rightarrow\bot$         | √   | √     | √     | √   | √     | $\{\phi\}\vdash\lnot\phi\rightarrow\bot$          |
 
 - $√$ in Spalte W:W-Folgerung gilt
@@ -637,11 +637,11 @@ Zusammenfassung der Beispiele
 
 > Überblick: Wir haben definiert
 - $\Gamma\vdash\phi$ syntaktische Folgerung
-  - Theorem („hypothesenlos ableitbar“)
+  - Theorem ("hypothesenlos ableitbar")
 - $\Gamma\Vdash_W \phi$ (semantische) W-Folgerung
-  - W-Tautologie („wird immer zu $1_W$ ausgewertet“)
+  - W-Tautologie ("wird immer zu $1_W$ ausgewertet")
 
-Frage: Was ist die Beziehung zwischen diesen Begriffen, insbes. zwischen „Theorem“ und „W-Tautologie“? Da z.B. B-Folgerung $\not =K_3$-Folgerung, hängt die Anwort von W ab.
+Frage: Was ist die Beziehung zwischen diesen Begriffen, insbes. zwischen "Theorem" und "W-Tautologie"? Da z.B. B-Folgerung $\not =K_3$-Folgerung, hängt die Anwort von W ab.
 
 ## Korrektheit
 Können wir durch mathematische Beweise zu falschen Aussagenkommen?
@@ -776,12 +776,12 @@ Frage für diese Vorlesung: Für welche Wahrheitswertebereiche $W$ gilt $\Gamma\
 > 
 > Sei $\Gamma$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Gamma\not\vdash\varphi \Leftrightarrow \Gamma\cup\{\lnot\varphi\}$ konsistent.
 
-Beweis: Wir zeigen „$\Gamma\vdash\varphi\Leftrightarrow \Gamma\cup\{\lnot\varphi\}$ inkonsistent“:
-- Richtung „$\Rightarrow$“, gelte also $\Gamma \vdash \varphi$.
+Beweis: Wir zeigen "$\Gamma\vdash\varphi\Leftrightarrow \Gamma\cup\{\lnot\varphi\}$ inkonsistent":
+- Richtung "$\Rightarrow$", gelte also $\Gamma \vdash \varphi$.
   - $\Rightarrow$ es gibt Deduktion $D$ mit Hypothesen in $\Gamma$ und Konklusion $\varphi$
   - $\Rightarrow$ Wir erhalten die folgende Deduktion mit Hypothesen in $\Gamma\cup\{\lnot\varphi\}$ und Konklusion $\bot$: $\frac{\lnot\varphi\quad\varphi}{\bot}$
   - $\Rightarrow\Gamma\cup\{\lnot\varphi\}\vdash\bot$, d.h.$\Gamma\cup\{\lnot\varphi\}$ ist inkonsistent.
-- Richtung „$\Leftarrow$“, sei also $\Gamma\cup\{\lnot\varphi\}$ inkonsistent.
+- Richtung "$\Leftarrow$", sei also $\Gamma\cup\{\lnot\varphi\}$ inkonsistent.
   - $\Rightarrow$ Es gibt Deduktion $D$ mit Hypothesen in $\Gamma\cup\{\lnot\varphi\}$ und Konklusion $\bot$.
   - $\Rightarrow$ Wir erhalten die folgende Deduktion mit Hypothesen in $\Gamma$ und Konklusion $\varphi$: $\frac{\bot}{\varphi}$
   - $\Gamma\vdash\varphi$
@@ -789,7 +789,7 @@ Beweis: Wir zeigen „$\Gamma\vdash\varphi\Leftrightarrow \Gamma\cup\{\lnot\varp
 ### Maximal konsistente Mengen
 > Definition
 > 
-> Eine Formelmenge $\Delta$ ist maximal konsistent, wenn sie konsistent ist und wenn gilt „$\sum\supseteq\Delta$ konsistent $\Rightarrow\sum = \Delta$“.
+> Eine Formelmenge $\Delta$ ist maximal konsistent, wenn sie konsistent ist und wenn gilt "$\sum\supseteq\Delta$ konsistent $\Rightarrow\sum = \Delta$".
 
 > Satz
 > 
@@ -945,7 +945,7 @@ Beweis: indirekt
 Beweis: Folgt unmittelbar aus Korrektheitssatz und Vollständigkeitssatz.
 
 > Bemerkung:
-> - gilt für jede „Boolesche Algebra“, z.B. $B_R$
+> - gilt für jede "Boolesche Algebra", z.B. $B_R$
 > - $\Gamma\vdash\varphi$ ohne ($raa$) $\Leftarrow\Rightarrow\Gamma\Vdash_{H_R} \varphi$ (Tarksi 1938)
 
 
@@ -1094,7 +1094,7 @@ Berühmtes Beispiel: Mit diesen 11 Kacheln kann die Ebene gefüllt werden, aber 
 
 > Definition
 > 
-> Ein Kachelsystem besteht aus einer endlichen Menge C von „Farben“ und einer Menge K von Abbildungen $\{N,O,S,W\}\rightarrow C$ von „Kacheln“.
+> Ein Kachelsystem besteht aus einer endlichen Menge C von "Farben" und einer Menge K von Abbildungen $\{N,O,S,W\}\rightarrow C$ von "Kacheln".
 > Eine Kachelung von $G\subseteq Z\times Z$ ist eine Abbildung $f:G\rightarrow K$ mit
 > - $f(i,j)(N) =f(i,j+ 1 )(S)$ für alle $(i,j),(i,j+ 1 )\in G$
 > - $f(i,j)(O) =f(i+ 1 ,j)(W)$ für alle $(i,j),(i+ 1 ,j)\in G$
@@ -1110,8 +1110,8 @@ Beweis:
   Für alle $(i,j)\in Z$ enthält $\Gamma$ die folgenden Formeln:
   - eine der Kacheln aus $K$ liegt an der Stelle $(i,j):\bigvee_{k\in K} p_{k,i,j}$
   - es liegen nicht zwei verschiedene Kacheln an der Stelle $(i,j): \bigwedge_{k,k′\in K,k\not=k′} \lnot(p_{k,i,j}\wedge p_{k′,i,j})$
-  - Kacheln an Stellen $(i,j)$ und $(i,j+1)$ „passen übereinander“: $\bigvee_{k,k′\in K,k(N)=k′(S)} (p_{k,i,j}\wedge p_{k′,i,j+1})$
-  - Kacheln an Stellen $(i,j)$ und $(i+1,j)$ „passen nebeneinander“: $\bigvee_{k,k′\in K,k(W)=k′(O)} (p_{k,i,j}\wedge p_{k′,i+1,j})$
+  - Kacheln an Stellen $(i,j)$ und $(i,j+1)$ "passen übereinander": $\bigvee_{k,k′\in K,k(N)=k′(S)} (p_{k,i,j}\wedge p_{k′,i,j+1})$
+  - Kacheln an Stellen $(i,j)$ und $(i+1,j)$ "passen nebeneinander": $\bigvee_{k,k′\in K,k(W)=k′(O)} (p_{k,i,j}\wedge p_{k′,i+1,j})$
 
 Sei nun $\Delta\subseteq\Gamma$ endlich.
 - $\Rightarrow$ es gibt $n\in N$, so dass $\Delta$ nur atomare Formeln der Form $p_{k,i,j}$ mit $|i|,|j|\leq n$ enthält.
@@ -1144,11 +1144,11 @@ Bemerkung: Der Kompaktheitssatz gilt auch, wenn die Menge der atomaren Formeln n
 > Frage: existiert eine B-Belegung $B$ mit $B(\Gamma) = 1_B$.
 
 - offensichtlicher Algorithmus: probiere alle Belegungen durch (d.h. stelle Wahrheitswertetabelle auf)$\rightarrow$ exponentielle Zeit
-- „Automaten, Sprachen und Komplexität“: das Problem ist NP-vollständig
+- "Automaten, Sprachen und Komplexität": das Problem ist NP-vollständig
 - nächstes Ziel:spezielle Algorithmen für syntaktisch eingeschränkte Formeln $\Gamma$
-- Spätere Verallgemeinerung dieser Algorithmen (letzte Vorlesung des Logik-Teils von „Logik und Logikprogrammierung“) bildet Grundlage der logischen Programmierung.
+- Spätere Verallgemeinerung dieser Algorithmen (letzte Vorlesung des Logik-Teils von "Logik und Logikprogrammierung") bildet Grundlage der logischen Programmierung.
 
-### Hornformeln (Alfred Horn, 1918–2001)
+### Hornformeln (Alfred Horn, 1918-2001)
 > Definition
 > 
 > Eine Hornklausel hat die Form $(\lnot\bot\wedge p_1\wedge p_2\wedge ... \wedge p_n)\rightarrow q$ für $n\geq 0$, atomare Formeln $p_1 ,p_2 ,... ,p_n$ und $q$ atomare Formel oder $q=\bot$.
@@ -1162,15 +1162,15 @@ Schreib- und Sprechweise
 Bemerkung, in der Literatur auch:
 - $\{\lnot p_1,\lnot p_2 ,... ,\lnot p_n,q\}$ für $\{p_1 ,... ,p_n\}\rightarrow q$ mit $q$ atomare Formel
 - $\{\lnot p_1,\lnot p_2 ,... ,\lnot p_n\}$ für $\{p_1 ,... ,p_n\}\rightarrow\bot$ 
-- $\Box$ für $\varnothing\rightarrow\bot$, die „leere Hornklausel“
+- $\Box$ für $\varnothing\rightarrow\bot$, die "leere Hornklausel"
 
 ### Markierungsalgorithmus
 - Eingabe: eine endliche Menge $\Gamma$ von Hornklauseln.
 1. while es gibt in $\Gamma$ eine Hornklausel $M\rightarrow q$, so dass alle $p\in M$ markiert sind und $q$ unmarkierte atomare Formel ist:
    do markiere $q$ (in allen Hornklauseln in $\Gamma$)
 2. if $\Gamma$ enthält eine Hornklausel der Form $M\rightarrow\bot$, in der alle $p\in M$ markiert sind
-    then return „unerfüllbar“
-    else return „erfüllbar“
+    then return "unerfüllbar"
+    else return "erfüllbar"
 
 Beweis einer Folgerung: Beispiel
 - Ziel ist es, die folgende Folgerung zu zeigen: $\{(AK\vee BK),(AK\rightarrow BK),(BK\wedge RL\rightarrow\lnot AK),RL\}\Vdash\lnot AK$
@@ -1204,18 +1204,18 @@ Nach unserer Herleitung folgern wir, dass das Teil $A$ heil ist.
   - I.A. Die Aussage gilt offensichtlich für $n=0$.
   - I.S. werde die atomare Formel $q$ in einem der ersten $n$ Schleifendurchläufe markiert. Dann gibt es eine Hornklausel $\{p_1,p_2 ,... ,p_k\}\rightarrow q$, so dass $p_1 ,... ,p_k$ in den ersten $n-1$ Schleifendurchläufen markiert wurden. Also gilt $B(p_1)=...=B(p_k) = 1_B$ nach IV. 
     Da $B$ alle Hornformeln aus $\Gamma$ erfüllt, gilt insbesondere $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow q) = 1_B$ und damit $B(q) = 1_B$.
-3. Wenn der Algorithmus „unerfüllbar“ ausgibt, dann ist $\Gamma$ unerfüllbar.
-    Beweis: indirekt, wir nehmen also an, dass der Algorithmus „unerfüllbar“ ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
-    Sei $\{p_1 ,... ,p_k\}\rightarrow\bot$ die Hornklausel aus $\Gamma$, die die Ausgabe „unerfüllbar“ verursacht (d.h. die atomaren Formeln $p_1 ,... ,p_k$ sind markiert).
+3. Wenn der Algorithmus "unerfüllbar" ausgibt, dann ist $\Gamma$ unerfüllbar.
+    Beweis: indirekt, wir nehmen also an, dass der Algorithmus "unerfüllbar" ausgibt, $B$ aber eine B-Belegung ist, die $\Gamma$ erfüllt.
+    Sei $\{p_1 ,... ,p_k\}\rightarrow\bot$ die Hornklausel aus $\Gamma$, die die Ausgabe "unerfüllbar" verursacht (d.h. die atomaren Formeln $p_1 ,... ,p_k$ sind markiert).
     Nach 2. gilt $B(p_1) =...=B(p_k) = 1_B$, also $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow\bot) = 0_B$ im Widerspruch zur Annahme, dass $B$ alle Hornklauseln aus $\Gamma$ erfüllt.
     Also kann es keine erfüllende B-Belegung von $\Gamma$ geben.
-4. Wenn der Algorithmus „erfüllbar“ ausgibt, dann erfüllt die folgende B-Belegung alle Formeln aus $\Gamma$:
+4. Wenn der Algorithmus "erfüllbar" ausgibt, dann erfüllt die folgende B-Belegung alle Formeln aus $\Gamma$:
     $B(p_i)=\begin{cases} 1_B \quad\text{ der Algorithmus markiert } p_i \\ 0_B \quad\text{ sonst} \end{cases}$
     Beweis:
       - Sei $M\rightarrow q$ eine beliebige Hornklausel aus $\Gamma$.
       - Ist ein $p\in M$ nicht markiert, so gilt $B(\bigwedge_{p\in M} p) = 0_B$ und damit $B(M\rightarrow q) = 1_B$.
       - Sind alle $p\in M$ markiert, so wird auch $q$ markiert, also $B(q) = 1_B$ und damit $B(M\rightarrow q) = 1_B$.
-      - Gilt $q=\bot$, so existiert unmarkiertes $p\in M$ (da der Algorithmus sonst „unerfüllbar“ ausgegeben hätte), also $B(M\rightarrow\bot) = 1_B$ wie im ersten Fall.
+      - Gilt $q=\bot$, so existiert unmarkiertes $p\in M$ (da der Algorithmus sonst "unerfüllbar" ausgegeben hätte), also $B(M\rightarrow\bot) = 1_B$ wie im ersten Fall.
     Also gilt $B(M\rightarrow q) = 1_B$ für alle Hornklauseln aus $\Gamma$, d.h. $\Gamma$ ist erfüllbar.
 
 > Satz
@@ -1226,7 +1226,7 @@ Beweis: Die Aussagen 1.-4. beweisen diesen Satz.
 
 Bemerkungen:
 - Mit einer geeigneten Implementierung läuft der Algorithmusin linearer Zeit.
-- Wir haben sogar gezeigt, dass bei Ausgabe von „erfüllbar“ eine erfüllende B-Belegung berechnet werden kann.
+- Wir haben sogar gezeigt, dass bei Ausgabe von "erfüllbar" eine erfüllende B-Belegung berechnet werden kann.
 
 ### SLD-Resolution
 > Definition
@@ -1264,14 +1264,14 @@ Beweis:
 > 
 > Sei $\Gamma$ eine (u.U. unendliche) unerfüllbare Menge von Hornklauseln. Dann existiert eine SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Gamma$ mit $M_m=\varnothing$.
 
-Beweis: Endlichkeitssatz: es gibt $\Delta\subseteq\Gamma$ endlich und unerfüllbar. Bei Eingabe von$\Delta$ terminiert Markierungsalgorithmus mit „unerfüllbar“
+Beweis: Endlichkeitssatz: es gibt $\Delta\subseteq\Gamma$ endlich und unerfüllbar. Bei Eingabe von$\Delta$ terminiert Markierungsalgorithmus mit "unerfüllbar"
 - $r\geq 0...$ Anzahl der Runden
 - $q_i...$ Atomformel, die in $i$ Runde markiert wird $(1\leq i\leq r)$
 
 Behauptung: Es gibt $m\leq r$ und SLD-Resolution $(M_0\rightarrow\bot,...,M_m\rightarrow\bot)$ aus $\Delta$ mit $M_m=\varnothing$ und $M_n\subseteq\{q_1,q_2,... ,q_{r-n}\}$ f.a. $0\leq n\leq m$. (5)
 
 Beweis der Behauptung: Wir konstruieren die Hornklauseln $M_i\rightarrow\bot$ induktiv:
-- I.A.: Da der Markierungsalgorithmus mit „unerfüllbar“ terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r- 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
+- I.A.: Da der Markierungsalgorithmus mit "unerfüllbar" terminiert, existiert eine Hornklausel $(M_0\rightarrow\bot)\in\Gamma$ mit $M_0\subseteq\{q_1,... ,q_{r- 0}\}$. $(M_0\rightarrow\bot)$ ist SLD-Resolution aus $\Delta$, die (5) erfüllt.
 - I.V.: Sei $n\leq r$ und $(M_0\rightarrow\bot,... ,M_n\rightarrow\bot)$ SLD-Resolution, so dass (5) gilt.
 - I.S.: wir betrachten drei Fälle:
   1. Fall $M_n=\varnothing$: mit $m:=n$ ist Beweis der Beh. abgeschlossen.
@@ -1300,8 +1300,8 @@ Die Suche nach einer SLD-Resolution mit $M_m=\varnothing$ kann grundsätzlich au
   - findet existierende SLD-Resolution mit $M_m=\varnothing$ nicht immer (siehe Beispiel)
 
 ## Zusammenfassung Aussagenlogik
-- Das natürliche Schließen formalisiert die „üblichen“ Argumente in mathematischen Beweisen.
-- Unterschiedliche Wahrheitswertebereiche formalisieren unterschiedliche Vorstellungen von „Wahrheit“.
+- Das natürliche Schließen formalisiert die "üblichen" Argumente in mathematischen Beweisen.
+- Unterschiedliche Wahrheitswertebereiche formalisieren unterschiedliche Vorstellungen von "Wahrheit".
 - Das natürliche Schließen ist vollständig und korrekt für den Booleschen Wahrheitswertebereich.
 - Der Markierungsalgorithmus und die SLD-Resolution sind praktikable Verfahren, um die Erfüllbarkeit von Hornformeln zu bestimmen.
 
@@ -1321,25 +1321,25 @@ Beispiel: Datenbanken
   - Dietrich Kuske ist Professor.
   - Kein Student ist Professor.
   - Jeder Student ist jünger als jeder Professor.
-  - Es gibt eine Person, die an den Veranstaltungen „Logik und Logikprogrammierung“ und „Algorithmen und Datenstrukturen“ teilnimmt.
+  - Es gibt eine Person, die an den Veranstaltungen "Logik und Logikprogrammierung" und "Algorithmen und Datenstrukturen" teilnimmt.
   - Es gibt eine Person, die kein wissenschaftlicher Mitarbeiter ist und nicht an beiden Veranstaltungen teilnimmt.
   - Jeder Student ist jünger als die Person, mit der er am besten über Informatik reden kann.
-- Um sie in der Aussagenlogik machen zu können, müssen wir atomare Aussagen für „Hans ist Student“, „Otto ist jünger als Ottilie“ usw. einführen. Dies ist nur möglich, wenn
+- Um sie in der Aussagenlogik machen zu können, müssen wir atomare Aussagen für "Hans ist Student", "Otto ist jünger als Ottilie" usw. einführen. Dies ist nur möglich, wenn
   1. alle involvierten Personen bekannt sind und fest stehen und
   2. es nur endlich viele involvierte Personen gibt.
 - Sollen analoge Aussagen für das vorige oder das kommende Jahr gemacht werden, so ist die gesamte Kodierungsarbeit neu zu machen.
 
 
-## Kodierung in einer „Struktur“
+## Kodierung in einer "Struktur"
 - Grundmenge: Die Studenten und die Lehrenden in Veranstaltungen zur Theoretischen Informatik in diesem Sommersemester
 - Teilmengen:
-  - $S(x)$ „x ist Student“
-  - $LuLP(x)$ „x nimmt an der Veranstaltung LuLP teil“
-  - $AuD(x)$ „x nimmt an der Veranstaltung AuD teil“
-  - $Pr(x)$ „x ist Professor“
-  - $WM(x)$ „x ist wissenschaftlicher Mitarbeiter“
+  - $S(x)$ "x ist Student"
+  - $LuLP(x)$ "x nimmt an der Veranstaltung LuLP teil"
+  - $AuD(x)$ "x nimmt an der Veranstaltung AuD teil"
+  - $Pr(x)$ "x ist Professor"
+  - $WM(x)$ "x ist wissenschaftlicher Mitarbeiter"
 - Relationen:
-  - $J(x,y)$ „x ist jünger als y“
+  - $J(x,y)$ "x ist jünger als y"
 - Funktion:
   - $f(x)$ ist diejenige Person (aus dem genannten Kreis), mit der x am besten über Informatik reden kann.
 - Konstante:
@@ -1357,16 +1357,16 @@ Die in der Aussagenlogik nur schwer formulierbaren Aussagen werden nun
 Bemerkung: Diese Formulierungen sind auch brauchbar, wenn die Grundmenge unendlich ist. Sie sind auch unabhängig vom Jahr (im nächsten Jahr können diese Folien wieder verwendet werden).
 
 Ziel
-- Wir wollen in der Lage sein, über Sachverhalte in „Strukturen“ (Graphen, Datenbanken, relle Zahlen, Gruppen... ) zu reden.
-- Dabei soll es „Relationen“ geben, durch die das Enthaltensein in einer Teilmenge oder Beziehungen zwischen Objekten ausgedrückt werden können (z.B. $S(x),J(x,y),...$ )
-- Weiter soll es „Funktionen“ geben, durch die Objekte (oder Tupel von Objekten) auf andere Objekte abgebildet werden (z.B. $f$)
+- Wir wollen in der Lage sein, über Sachverhalte in "Strukturen" (Graphen, Datenbanken, relle Zahlen, Gruppen... ) zu reden.
+- Dabei soll es "Relationen" geben, durch die das Enthaltensein in einer Teilmenge oder Beziehungen zwischen Objekten ausgedrückt werden können (z.B. $S(x),J(x,y),...$ )
+- Weiter soll es "Funktionen" geben, durch die Objekte (oder Tupel von Objekten) auf andere Objekte abgebildet werden (z.B. $f$)
 - Nullstellige Funktionen (ohne Argumente): Konstante (z.B. $dk$)
 
 Fragen
 - Nach welchen Regeln bildet man korrekte Formeln?
 - Was ist eine Struktur?
-- Wann hat eine Aussage in einer Struktur eine Bedeutung (ist „sinnvoll“)?
-- Wann „gilt“ eine Aussage in einer Struktur?
+- Wann hat eine Aussage in einer Struktur eine Bedeutung (ist "sinnvoll")?
+- Wann "gilt" eine Aussage in einer Struktur?
 - Gibt es Formeln, die in allen Strukturen gelten?
 - Kann man solche Formeln algorithmisch identifizieren? Gibt es einen Beweiskalkül wie das natürliche Schließen oder die SLD-Resolution?
 - .........
@@ -1481,8 +1481,8 @@ Was sind die freien Variablen der folgenden Formeln? Welche Formeln sind Sätze?
 | $\exists x\forall x Q(x,x)$                                             | nein             | ja    |
 
 Semantik der Prädikatenlogik
-- Erinnerung: Die Frage „Ist die aussagenlogische Formel $\varphi$ wahr oder falsch?“ war sinnlos, denn wir wissen i.a. nicht, ob die atomaren Aussagen wahr oder falsch sind.
-- Analog: Die Frage „Ist die prädikatenlogische Formel $\varphi$ wahr oder falsch?“ ist sinnlos, denn wir wissen bisher nicht, über welche Objekte, über welche „Struktur“ $\varphi$ spricht.
+- Erinnerung: Die Frage "Ist die aussagenlogische Formel $\varphi$ wahr oder falsch?" war sinnlos, denn wir wissen i.a. nicht, ob die atomaren Aussagen wahr oder falsch sind.
+- Analog: Die Frage "Ist die prädikatenlogische Formel $\varphi$ wahr oder falsch?" ist sinnlos, denn wir wissen bisher nicht, über welche Objekte, über welche "Struktur" $\varphi$ spricht.
 
 > Definition
 > 
@@ -1505,14 +1505,14 @@ Im folgenden sei $\sum$ eine Signatur, A eine $\sum$-Struktur und $\rho:Var\righ
 Wir definieren eine Abbildung $\rho′:T\sum\rightarrow U_A$ induktiv für $t\in T_{\sum}$:
 - ist $t\in Var$, so setze $\rho′(t) =\rho(t)$
 - ansonsten existieren $f\in\Omega$ mit $ar(f)=k$ und $t_1,...,t_k\in T_{\sum}$ mit $t=f(t_1,...,t_k)$. Dann setze $\rho′(t) =f^A(\rho′(t_1),...,\rho′(t_k))$.
-Die Abbildung $\rho′$ ist die übliche „Auswertungsabbildung“.
+Die Abbildung $\rho′$ ist die übliche "Auswertungsabbildung".
 Zur Vereinfachung schreiben wir auch $\rho(t)$ an Stelle von $\rho′(t)$.
 
 Beispiel:
 - Seien $A=(R,f^A,a^A)$ mit $f^A$ die Subtraktion und $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $\rho(x)=7$ und $\rho(y)=-2$. Dann gilt $\rho(f(a,f(x,y))) =\rho(a)-(\rho(x)-\rho(y)) =a^A-(\rho(x)-\rho(y)) = 1$
 - Seien $A= (Z,f^A,a^A)$ mit $f^A$ die Maximumbildung, $a$ nullstelliges Funktionssymbol mit $a^A=10$. Seien weiter $x,y\in Var$ mit $\rho(x)=7$ und $\rho(y)=-2$. In diesem Fall gilt $\rho(f(a,f(x,y))) = max(\rho(a),max(\rho(x),\rho(y)) = max(a^A,max(\rho(x),\rho(y))) = 10$
 
-Bemerkung: Wir müssten also eigentlich noch vermerken, in welcher Struktur $\rho(t)$ gebildet wird – dies wird aber aus dem Kontext immer klar sein.
+Bemerkung: Wir müssten also eigentlich noch vermerken, in welcher Struktur $\rho(t)$ gebildet wird - dies wird aber aus dem Kontext immer klar sein.
 
 Für eine $\sum$-Formel $\varphi$ definieren wir die Gültigkeit in einer $\sum$-Struktur $A$ unter der Variableninterpretation $\rho$ (in Zeichen: $A\Vdash_\rho\varphi$) induktiv:
 - $A\Vdash_\rho\bot$ gilt nicht.
@@ -1629,7 +1629,7 @@ Für $\sum$ -Formeln $\varphi$ und $\Psi$ und $y\in Var$:
 
 Beispiel: $(\exists x P(x,f(y))\vee\lnot\forall yQ(y,g(a,h(z))))[y:=f(u)] = (\exists x P(x,f(f(u)))\vee\lnot\forall yQ(y,g(a,h(z))))$
 
-$\varphi [x:=t]$ „soll das über $t$ aussagen, was $\varphi$ über $x$ ausgesagt hat.“
+$\varphi [x:=t]$ "soll das über $t$ aussagen, was $\varphi$ über $x$ ausgesagt hat."
 
 Gegenbeispiel: Aus $\exists y$ $Mutter(x) =y$ mit Substitution $[x:=Mutter(y)]$ wird $\exists y$ Mutter$(Mutter(y)) =y$.
 
@@ -1743,8 +1743,8 @@ zulässig, d.h. in $\varphi$ wird über keine Variable aus $s$ oder $t$ quantifi
 - Da $A$ und $\rho$ beliebig waren mit $A\Vdash_p\gamma$ für alle $\gamma\in\Gamma$ haben wir $\Gamma\Vdash\varphi[x:=t]$ gezeigt.
 
 ### $\forall$ in math. Beweisen
-Ein mathematischer Beweis einer Aussage „für alle $x$ gilt $\varphi$“ sieht üblicherweise so aus:
-  "Sei $x$ beliebig, aber fest. Jetzt zeige ich $\varphi$ (hier steckt die eigentliche Arbeit). Da $x$ beliebig war, haben wird „für alle $x$ gilt $\varphi$“ gezeigt. qed“
+Ein mathematischer Beweis einer Aussage "für alle $x$ gilt $\varphi$" sieht üblicherweise so aus:
+  "Sei $x$ beliebig, aber fest. Jetzt zeige ich $\varphi$ (hier steckt die eigentliche Arbeit). Da $x$ beliebig war, haben wird "für alle $x$ gilt $\varphi$" gezeigt. qed"
 
 > $\forall$ -Einführung
 >
@@ -1769,8 +1769,8 @@ Beweis: Betrachte die folgende Deduktion $D$
 - Da $A$ und $\rho$ beliebig waren mit $A\Vdash_\rho\Gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\forall x\varphi$ gezeigt.
 
 ### $\forall$ -Elimination in math. Beweisen
-Ein mathematischer Beweis einer Aussage „t erfüllt $\varphi$“ kann so aussehen:
-  „Zunächst zeige ich $\forall x\varphi$ (hier steckt die eigentliche Arbeit). Damit erfüllt insbesondere $t$ die Aussage$\varphi$ , d.h., wir haben „$t$ erfüllt $\varphi$“ gezeigt. qed“
+Ein mathematischer Beweis einer Aussage "t erfüllt $\varphi$" kann so aussehen:
+  "Zunächst zeige ich $\forall x\varphi$ (hier steckt die eigentliche Arbeit). Damit erfüllt insbesondere $t$ die Aussage$\varphi$ , d.h., wir haben "$t$ erfüllt $\varphi$" gezeigt. qed"
 
 > $\forall$ -Elimination
 >
@@ -1787,8 +1787,8 @@ Ein mathematischer Beweis einer Aussage „t erfüllt $\varphi$“ kann so ausse
 Beweis: Analog zum Beweis von Lemma V2.
 
 ### $\exists$ in math. Beweisen
-Ein Beweis von „$\sigma$ gilt“ kann so aussehen:
-  „Zunächst zeige ich $\exists x\varphi$ (hier steckt Arbeit). Jetzt zeige ich, dass $\sigma$ immer gilt, wenn$\varphi$ gilt (mehr Arbeit). Damit gilt $\sigma$. qed“
+Ein Beweis von "$\sigma$ gilt" kann so aussehen:
+  "Zunächst zeige ich $\exists x\varphi$ (hier steckt Arbeit). Jetzt zeige ich, dass $\sigma$ immer gilt, wenn$\varphi$ gilt (mehr Arbeit). Damit gilt $\sigma$. qed"
 
 > $\exists$ -Elimination
 > 
@@ -1811,7 +1811,7 @@ Beweis: Sei $D$ die folgende Deduktion
 - Da $A$ und $\rho$ beliebig waren mit $A\Vdash_\rho\gamma$ für alle $\gamma\in\Gamma$ haben wir also $\Gamma\Vdash\sigma$ gezeigt.
 
 ### $\exists$ -Einführung in math. Beweisen
-Ein mathematischer Beweis einer Aussage „es gibt ein $x$, das $\varphi$ erfüllt“ sieht üblicherweise so aus: „betrachte dieses $t$ (hier ist Kreativität gefragt). Jetzt zeige ich, daß $t\varphi$ erfüllt (u.U. harte Arbeit). Also haben wir „es gibt ein $x$, das $\varphi$ erfüllt“ gezeigt. qed“
+Ein mathematischer Beweis einer Aussage "es gibt ein $x$, das $\varphi$ erfüllt" sieht üblicherweise so aus: "betrachte dieses $t$ (hier ist Kreativität gefragt). Jetzt zeige ich, daß $t\varphi$ erfüllt (u.U. harte Arbeit). Also haben wir "es gibt ein $x$, das $\varphi$ erfüllt" gezeigt. qed"
 
 > $\exists$ -Einführung
 > 
@@ -1838,11 +1838,11 @@ Beweis: analog zu obigen Beweisen.
 
 > Definition
 > 
-> Für eine Menge $\Gamma$ von $\sum$-Formeln und eine $\sum$-Formel $\varphi$ schreiben wir $\Gamma\vdash\varphi$ wenn es eine Deduktion gibt mit Hypothesen in $\Gamma$ und Konklusion $\varphi$. Wir sagen „$\varphi$ ist eine syntaktische Folgerung von $\Gamma$“.
+> Für eine Menge $\Gamma$ von $\sum$-Formeln und eine $\sum$-Formel $\varphi$ schreiben wir $\Gamma\vdash\varphi$ wenn es eine Deduktion gibt mit Hypothesen in $\Gamma$ und Konklusion $\varphi$. Wir sagen "$\varphi$ ist eine syntaktische Folgerung von $\Gamma$".
 > Eine Formel $\varphi$ ist ein Theorem, wenn $\varnothing\vdash\varphi$ gilt.
 
 Bemerkung: $\Gamma\vdash\varphi$ sagt (zunächst) nichts über den Inhalt der Formeln in $\Gamma\cup\{\varphi\}$ aus, sondern nur über den Fakt, dass $\varphi$ mithilfe des natürlichen Schließens aus den Formeln aus $\Gamma$ hergeleitet werden kann.
-Ebenso sagt „$\varphi$ ist Theorem“ nur, dass $\varphi$ abgeleitet werden kann, über „Wahrheit“ sagt dieser Begriff (zunächst) nichts aus.
+Ebenso sagt "$\varphi$ ist Theorem" nur, dass $\varphi$ abgeleitet werden kann, über "Wahrheit" sagt dieser Begriff (zunächst) nichts aus.
 Wir haben aber "en passant" das folgende gezeigt:
 
 > Korrektheitssatz
@@ -1891,7 +1891,7 @@ und setzen dann
 - $\sum^+ =\bigcup_{n\geq 0} \sum_n$ und $\Delta^+ = \bigcup_{n\geq 0} \Delta_n$
 
 1. IA: $\sum_0 := \sum$ , $\Delta_0:=\Delta$
-2. IV: Sei $n\geq 0$ und $\Delta_n$ maximal konsistente Menge von $\sum_n$-Formeln. $\psi=\exists x\varphi$, ein „neues“ Konstantensymbol $c_{\psi}$
+2. IV: Sei $n\geq 0$ und $\Delta_n$ maximal konsistente Menge von $\sum_n$-Formeln. $\psi=\exists x\varphi$, ein "neues" Konstantensymbol $c_{\psi}$
 3. IS: $\sum_{n+1}$: alle Symbole aus $\sum_n$ und, für jede Formel $\psi\in\Delta_n$ der Form $\Delta′_{n+1}:= \Delta_n\cup\{\varphi[x:=c_{\psi}]|\psi=\exists x\varphi\in\Delta_n\}$
     - ohne Beweis: $\Delta′_{n+1}$ ist konsistent
     - Idee: Ist $\varphi$ $\sum_n$-Formel mit $\Delta′_{n+1}\vdash\varphi$, so gilt $\Delta_n\vdash\varphi$.
@@ -2034,12 +2034,12 @@ Beweis:Sei$\varphi$ $\sum$-Formel. Dann gilt
 - $\Leftrightarrow$ Es gibt hypothesenlose Deduktion mit Konklusion $\varphi$ 
 
 Ein Semi-Entscheidungsalgorithmus kann also folgendermaßen vorgehen: 
-Teste für jede Zeichenkette $w$ nacheinander, ob sie hypothesenlose Deduktion mit Konklusion $\varphi$ ist. Wenn ja, so gib aus „$\varphi$ ist allgemeingültig“. Ansonsten gehe zur nächsten Zeichenkette über.
+Teste für jede Zeichenkette $w$ nacheinander, ob sie hypothesenlose Deduktion mit Konklusion $\varphi$ ist. Wenn ja, so gib aus "$\varphi$ ist allgemeingültig". Ansonsten gehe zur nächsten Zeichenkette über.
 
 ### Der Satz von Church
 Jetzt zeigen wir, daß dieses Ergebnis nicht verbessert werden kann: Die Menge der allgemeingültigen $\sum$-Formeln ist nicht entscheidbar.
 Wegen $\varphi$ allgemeingültig $\Leftrightarrow\lnot\varphi$ unerfüllbar reicht es zu zeigen, dass die Menge der erfüllbaren Sätze nicht entscheidbar ist.
-Genauer zeigen wir dies sogar für „Horn-Formeln“:
+Genauer zeigen wir dies sogar für "Horn-Formeln":
 
 > Definition
 >
@@ -2106,7 +2106,7 @@ Nach den vorherigen Lemmata ist sie eine Reduktion von PCP auf die Menge der une
 
 Beweis: Eine $\sum$-Formel $\varphi$ ist genau dann unerfüllbar, wenn $\lnot\varphi$ allgemeingültig ist. Also ist $\varphi\rightarrow\lnot\varphi$ eine Reduktion der unentscheidbaren Menge der unerfüllbaren $\sum$-Formeln auf die Menge der allgemeingültigen $\sum$-Formeln, die damit auch unentscheidbar ist.
 
-Allgemeingültige $\sum$-Formeln gelten in allen Strukturen. Was passiert, wenn wir uns nur auf „interessante“ StrukturenAeinschränken (z.B. auf eine konkrete), d.h. wenn wir die Theorie $Th(A)$ von $A$ betrachten?
+Allgemeingültige $\sum$-Formeln gelten in allen Strukturen. Was passiert, wenn wir uns nur auf "interessante" StrukturenAeinschränken (z.B. auf eine konkrete), d.h. wenn wir die Theorie $Th(A)$ von $A$ betrachten?
 
 
 ## Theorie der natürlichen Zahlen
@@ -2247,7 +2247,7 @@ Bemerkung: Betrachte die Formel $\exists x\exists y E(x,y)$. Es gibt keine Forme
 > Seien $Q\in\{\exists ,\forall\}$ und $\oplus\in\{\wedge,\vee,\rightarrow,\leftarrow\}$. Sei $\varphi= (Qx \alpha)\oplus\beta$ und sei $y$ eine Variable, die weder in $\alpha$ noch in $\beta$ vorkommt. Dann gilt
 > $\varphi \equiv \begin{cases} Qy(\alpha[x:=y]\oplus\beta) \text{ falls } \oplus\in\{\wedge,\vee,\leftarrow\}\\ \forall y(\alpha[x:=y]\rightarrow\beta) \text{ falls } \oplus=\rightarrow,Q=\exists \\ \exists y(\alpha[x:=y]\rightarrow\beta) \text{ falls }\oplus=\rightarrow,Q=\forall\end{cases}$
 
-Notwendigkeit der Bedingung „$y$ kommt weder in $\alpha$ noch in $\beta$ vor“:
+Notwendigkeit der Bedingung "$y$ kommt weder in $\alpha$ noch in $\beta$ vor":
 - $(\exists x:f(x) \not =f(y))\wedge\beta \not\equiv\exists y: (f(y) \not =f(y)\wedge\beta)$
 - $(\exists x:\lnot P(x))\wedge P(y)\not\equiv \exists y: (\lnot P(y) \wedge P(y))$
 
@@ -2301,7 +2301,7 @@ Offensichtlich hat $\varphi$′einen Existenzquantor weniger als $\varphi$. Auß
 > 
 > Die Formeln $\varphi$ und $\varphi′$ sind erfüllbarkeitsäquivalent.
 
-Beweis: „$\Leftarrow$“ Sei $A′$ Struktur und $\rho′$ Variableninterpretation mit $A′\vdash_{\rho′}\varphi′$. Wir zeigen $A′\vdash_{\rho′}\varphi$. Hierzu seien $a_1,...,a_m\in U_{A′}$ beliebig.
+Beweis: "$\Leftarrow$" Sei $A′$ Struktur und $\rho′$ Variableninterpretation mit $A′\vdash_{\rho′}\varphi′$. Wir zeigen $A′\vdash_{\rho′}\varphi$. Hierzu seien $a_1,...,a_m\in U_{A′}$ beliebig.
 
 > Satz
 > 
@@ -2375,7 +2375,7 @@ Jedes Herbrand-Modell A von $\varphi$
 - erfüllt $f^A(f^n(a))= f^{n+1} (a)$ für alle $n\geq 0$
   
 Um ein Herbrand-Modell zu konstruieren, müssen (bzw. können) wir für alle Elemente $s,t,u\in D(\sum)$ unabhängig und beliebig wählen, ob $(s,t)\in P^A$ und $u\in R^A$ gilt.
-Wir fassen dies als „aussagenlogische B-Belegung“ B der „aussagenlogischen atomaren Formeln“ $P(s,t)$ bzw. $R(u)$ auf.
+Wir fassen dies als "aussagenlogische B-Belegung" B der "aussagenlogischen atomaren Formeln" $P(s,t)$ bzw. $R(u)$ auf.
 
 Jede solche aussagenlogische B-Belegung $B$ definiert dann eine Herbrand-Struktur $A_B$:
 - $P^{A_B} = \{(s,t)\in D(\sum)^2 |B(P(s,t))= 1\}$
@@ -2391,7 +2391,7 @@ Also hat $\varphi$ genau dann ein Herbrand-Modell, wenn es eine erfüllende B-Be
 
 Beispiellösung: Setzt $B(P(s,t))= 1$ und $B(R(s))= 0$ für alle $s,t\in D(\sum)$.
 
-Diese B-Belegung erfüllt $E(\varphi)$ und „erzeugt“ die Herbrand-Struktur $A_B$ mit $P^{A_B}=D(\sum)^2$ und $R^{A_B}=\varnothing$.
+Diese B-Belegung erfüllt $E(\varphi)$ und "erzeugt" die Herbrand-Struktur $A_B$ mit $P^{A_B}=D(\sum)^2$ und $R^{A_B}=\varnothing$.
 
 Nach obiger Überlegung gilt $A_B\Vdash\varphi$, wir haben also ein Herbrand-Modell von $\varphi$ gefunden.
 
@@ -2456,11 +2456,11 @@ n:=0;
 repeat n := n +1;
 until { alpha_1, alpha_2,..., alpha_n } ist unerfüllbar;
   (dies kann mit Mitteln der Aussagenlogik, z.B. Wahrheitswertetabelle, getestet werden)
-Gib „unerfüllbar“ aus und stoppe.
+Gib "unerfüllbar" aus und stoppe.
 ```
 
 Folgerung: Sei $\varphi$  eine gleichungsfreie Aussage in Skolemform. Dann gilt:
-- Wenn die Eingabeformel $\varphi$ unerfüllbar ist, dann terminiert der Algorithmus von Gilmore und gibt „unerfüllbar“ aus.
+- Wenn die Eingabeformel $\varphi$ unerfüllbar ist, dann terminiert der Algorithmus von Gilmore und gibt "unerfüllbar" aus.
 - Wenn die Eingabeformel $\varphi$ erfüllbar ist, dann terminiert der Algorithmus von Gilmore nicht, d.h. er läuft unendlich lange.
 
 Beweis: unmittelbar mit Satz von Herbrand
@@ -2480,9 +2480,9 @@ Beispiel
   - $R^A = \mathbb{N}^2 \backslash\{( 0 , 0 )\}$
 - Gibt es variablenfreie Terme $s$ und $t$ mit $\{\gamma\}\Vdash R(s,t)$?
   - ja: z.B. $(s,t)=(g(f(a)),g(a))$ oder $(s,t)=(g(a),g(a))$ oder $(s,t)=(a,f(b))$
-- Kann die Menge aller Termpaare $(s,t)$ (d.h. aller „Lösungen“) mit $\{\gamma\}\Vdash R(s,t)$ effektiv und übersichtlich angegeben werden?
+- Kann die Menge aller Termpaare $(s,t)$ (d.h. aller "Lösungen") mit $\{\gamma\}\Vdash R(s,t)$ effektiv und übersichtlich angegeben werden?
   - Wegen $\{\gamma\}\Vdash R(s,t) \Leftrightarrow\gamma\wedge\lnot R(s,t)$ unerfüllbar ist die gesuchte Menge der variablenfreien Terme $(s,t)$ semi-entscheidbar, d.h. durch eine Turing-Maschine beschrieben.
-- Im Rest des Logikteils der Vorlesung „Logik und Logikprogrammierung“ wollen wir diese Menge von Termpaaren „besser“ beschreiben (zumindest in einem Spezialfall, der die Grundlage der logischen Programmierung bildet).
+- Im Rest des Logikteils der Vorlesung "Logik und Logikprogrammierung" wollen wir diese Menge von Termpaaren "besser" beschreiben (zumindest in einem Spezialfall, der die Grundlage der logischen Programmierung bildet).
 
 > Erinnerung
 >
@@ -2528,7 +2528,7 @@ Substitutionen sind also ein Spezialfall der verallgemeinerten Substitutionen.
 
 Beispiel: Die verallgemeinerte Substitution $\sigma$ mit $Def(\sigma)=\{x,y,z\}$ und $\sigma(x) =f(h(x′)), \sigma(y) =g(a,h(x′)), \sigma(z) =h(x′)$ ist gleich der verallgemeinerten Substitution $[x:=f(h(x′))] [y:=g(a,h(x′))] [z:=h(x′)] = [x:=f(z)] [y:=g(a,z)] [z:=h(x′)]$.
 Es kann sogar jede verallgemeinerte Substitution $\sigma$ als Verknüpfung von Substitutionen der Form $[x:=t]$ geschrieben werden.
-Vereinbarung: Wir sprechen ab jetzt nur von „Substitutionen“, auch wenn wir „verallgemeinerte Substitutionen“ meinen.
+Vereinbarung: Wir sprechen ab jetzt nur von "Substitutionen", auch wenn wir "verallgemeinerte Substitutionen" meinen.
 
 > Lemma
 >
@@ -2580,10 +2580,10 @@ Wegen $Def(\rho)\subseteq Def(\tau_1)$ ist $Def(\rho)$ endlich, also $\rho$ eine
 - while $\alpha\sigma\not =\beta\sigma$ do
   - Suche die erste Position, an der sich $\alpha\sigma$ und $\beta\sigma$ unterscheiden
   - if keines der beiden Symbole an dieser Position ist eine Variable
-  - then stoppe mit „nicht unifizierbar“
+  - then stoppe mit "nicht unifizierbar"
   - else sei $x$ die Variable und $t$ der Term in der anderen Atomformel (möglicherweise auch eine Variable)
     - if $x$ kommt in $t$ vor
-    - then stoppe mit „nicht unifizierbar“
+    - then stoppe mit "nicht unifizierbar"
     - else $\sigma:=\sigma[x:=t]$
 - endwhile
 - Ausgabe: $\sigma$
@@ -2591,7 +2591,7 @@ Wegen $Def(\rho)\subseteq Def(\tau_1)$ ist $Def(\rho)$ endlich, also $\rho$ eine
 > Satz
 >
 > - (A) Der Unifikationsalgorithmus terminiert für jede Eingabe.
-> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe "nicht unifizierbar".
 > - (C) Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der Unifikationsalgorithmus einen allgemeinsten Unifikator von $\alpha$ und $\beta$.
 
 (C) besagt insbesondere, daß zwei unifizierbare gleichungsfreie Atomformeln (wenigstens) einen allgemeinsten Unifikator haben. Nach dem Lemma oben haben sie also genau einen allgemeinsten Unifikator (bis auf Umbenennung der Variablen).
@@ -2608,11 +2608,11 @@ Hierbei kommt $x$ in $\alpha\sigma$ oder in $\beta\sigma$ vor und der Term $t$ e
 Also kommt $x$ weder in $\alpha\sigma[x:=t]$ noch in $\beta\sigma[x:=t]$ vor.
 
 > Lemma (B)
-> Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+> Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe "nicht unifizierbar".
 
 Beweis: Sei die Eingabe $(\alpha,\beta)$ nicht unifizierbar.
 Falls die Bedingung $\alpha\sigma\not=\beta\sigma$ der while-Schleife irgendwann verletzt wäre, so wäre $(\alpha,\beta)$ doch unifizierbar (denn $\sigma$ wäre ja ein Unifikator).
-Da nach Lemma (A) der Algorithmus bei Eingabe $(\alpha,\beta)$ terminiert, muss schließlich „nicht unifizierbar“ ausgegeben werden.
+Da nach Lemma (A) der Algorithmus bei Eingabe $(\alpha,\beta)$ terminiert, muss schließlich "nicht unifizierbar" ausgegeben werden.
 
 > Lemma (C1)
 > Sei $\sigma′$ ein Unifikator der Eingabe $(\alpha,\beta)$, so dass keine Variable aus $\alpha$ oder $\beta$ auch in einem Term aus $\{y\sigma′|y\in Def(\sigma′)\}$ vorkommt. Dann terminiert der Unifikationsalgorithmus erfolgreich und gibt einen Unifikator $\sigma$ von $\alpha$ und $\beta$ aus. Außerdem gibt es eine Substitution $\tau$ mit $\sigma′=\sigma\tau$.
@@ -2646,7 +2646,7 @@ Da $\sigma′$ ein beliebiger Unifikator von $\alpha$ und $\beta$ war und da die
 > Satz
 >
 > - (A) Der Unifikationsalgorithmus terminiert für jede Eingabe.
-> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe „nicht unifizierbar“.
+> - (B) Wenn die Eingabe nicht unifizierbar ist, so terminiert der Unifikationsalgorithmus mit der Ausgabe "nicht unifizierbar".
 > - (C) Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der Unifikationsalgorithmus immer einen allgemeinsten Unifikator von $\alpha$ und $\beta$.
 
 (C) besagt insbesondere, daß zwei unifizierbare gleichungsfreie Atomformeln(wenigstens) einen allgemeinsten Unifikator haben. Damit haben sie aber genau einen allgemeinsten Unifikator (bis auf Umbenennung der Variablen).
@@ -2710,7 +2710,7 @@ $\Gamma =\{\varphi_1,...,\varphi_n\},M_0 =\{\psi(x_1,...,x_{\iota})\}=\{R(t_1,t_
 $\{\varphi_1,...,\varphi_n\}\Vdash\psi (s_1,...,s_{\iota})$
 
 ## Zusammenfassung Prädikatenlogik
-- Das natürliche Schließen formalisiert die „üblichen“ Argumente in     mathematischen Beweisen.
+- Das natürliche Schließen formalisiert die "üblichen" Argumente in     mathematischen Beweisen.
 - Das natürliche Schließen ist vollständig und korrekt.
 - Die Menge der allgemeingültigen Formeln ist semi-entscheidbar, aber nicht entscheidbar.
 - Die Menge der Aussagen, die in $(\mathbb{N},+,*,0,1)$ gelten, ist nicht     semi-entscheidbar.
@@ -2734,7 +2734,7 @@ Grundidee (nach G.W. Leibniz)
 - Sprach- und Bildverarbeitung
 
 ## Logische Grundlagen
-### PROLOG – ein „Folgerungstool“
+### PROLOG - ein "Folgerungstool"
 Sei $M$ eine Menge von Aussagen, $H$ eine Hypothese.
 
 $H$ folgt aus $M(M \Vdash H)$, falls jede Interpretation, die zugleich alle Elemente aus $M$ wahr macht (jedes Modell von M), auch $H$ wahr macht.
@@ -2761,7 +2761,7 @@ Effekte der Beschränkung auf HORN-Logik
 1. Über HORN-Klauseln gibt es ein korrektes und vollständiges Ableitungsverfahren.
     - $\{K_1, ...,K_n\} \Vdash H$ , gdw. $\{K_1,...,K_n\} \vdash_{ROB} H$
 1. Die Suche nach einer Folge von Resolutionsschritten ist algorithmisierbar.
-    - Das Verfahren „Tiefensuche mit Backtrack“ sucht systematisch eine Folge, die zur leeren Klausel führt.
+    - Das Verfahren "Tiefensuche mit Backtrack" sucht systematisch eine Folge, die zur leeren Klausel führt.
     - Rekursive und/oder metalogische Prädikate stellen dabei die Vollständigkeit in Frage.
 3. Eine Menge von HORN-Klauseln mit nichtleeren Klauselköpfen ist stets erfüllbar; es lassen sich keine Widersprüche formulieren.
     - $K_1 \wedge K_2...\wedge K_n \not= false$
@@ -2783,8 +2783,8 @@ Die systematische Erzeugung von (HORN-) Klauseln
     Heißt das etwa, die HORN-Logik ist eine echte Beschränkung der Ausdrucksfähigkeit? Richtig, das heißt es.
 
 Im Logik-Teil dieser Vorlesung lernten Sie eine Resolutionsmethode für Klauseln kennenlernen
-- ... deren Algorithmisierbarkeit allerdings an der „kombinatorischen Explosion“ der Resolutionsmöglichkeiten scheitert, aber ...
-- ... in der LV „Inferenzmethoden“ können Sie noch ein paar „Tricks“ kennenlernen, die „Explosion“ einzudämmen
+- ... deren Algorithmisierbarkeit allerdings an der "kombinatorischen Explosion" der Resolutionsmöglichkeiten scheitert, aber ...
+- ... in der LV "Inferenzmethoden" können Sie noch ein paar "Tricks" kennenlernen, die "Explosion" einzudämmen
 
 
 ### Inferenz in PROLOG: Resolution nach ROBINSON
@@ -2800,7 +2800,7 @@ Es gebe eine Substitution (Variablenersetzung) $\nu$ für die $A$ und eines der 
 
 $M\equiv \bigwedge_{i=1}^n K_i\wedge \lnot(\bigwedge_{i=1}^m H_i)$ ist kontradiktorisch ($kt\ M‘$), gdw. $M‘$ nach Ersetzen von $H$ durch $\bigwedge_{i=1}^{l-1}\nu(H_i)\wedge\bigwedge_{k=1}^p\nu(B_k)\wedge\bigwedge_{i=l+1}^m \nu(H_i)$ noch immer kontradiktorisch ist.
 
-Jetzt wissen wir also, wie man die zu zeigende Kontradiktorizität auf eine andere – viel kompliziertere Kontradiktorizität zurückführen kann. 
+Jetzt wissen wir also, wie man die zu zeigende Kontradiktorizität auf eine andere - viel kompliziertere Kontradiktorizität zurückführen kann. 
 Für $p=0$ und $m=1$ wird es allerdings trivial.
 Die sukzessive Anwendung von Resolutionen muss diesen Trivialfall systematisch herbeiführen: 
 
@@ -2830,7 +2830,7 @@ Die Unifizierbarkeit zweier Terme richtet sich nach deren Sorte:
 3. Eine Variable $t_1$ ist mit einer Konstanten oder einem strukturierten Term $t_2$ unifizierbar. $t_1$ wird durch $t_2$ ersetzt (instanziert): $t_1:= t_2$
 4. Zwei Variablen $t_1$ und $_2$ sind unifizierbar und werden gleichgesetzt: $t_1:=t_2$ bzw. $t_2:= t_1$
 
-Genügt „irgendein“ Unifikator? 
+Genügt "irgendein" Unifikator? 
 - ein Beispiel
   - $K_1: p(A,B)\leftarrow q(A)\wedge r(B)$
   - $K_2:q(c)\leftarrow true$
@@ -2843,7 +2843,7 @@ Genügt „irgendein“ Unifikator?
   - $\nu^4=\{[A,X],[B,Y]\}$ ...
 - Obwohl $\{K_1, K_2, K_3\}\Vdash H$, gibt es bei Einsetzung von $\nu^1$, $\nu^2$ und $\nu^3$ keine Folge von Resolutionsschritten, die zur leeren Klausel führt.
 - Bei Einsetzung von $\nu^4$ hingegen gibt es eine solche Folge.
-- Die Vollständigkeit des Inferenzverfahrens hängt von der Wahl des „richtigen“ Unifikators ab.
+- Die Vollständigkeit des Inferenzverfahrens hängt von der Wahl des "richtigen" Unifikators ab.
 - Dieser Unifikator muss möglichst viele Variablen variabel belassen. Unnötige Spezialisierungen versperren zukünftige Inferenzschritte.
 - Ein solcher Unifikator heißt **allgemeinster Unifikator** bzw. "most general unifier" (m.g.u.).
 
@@ -2879,13 +2879,13 @@ Algorithmus zur Bestimmung des allgemeinsten Unifikators 2er Terme
 ### Einordnung des logischen Paradigmas
 ![](Assets/Logik-logische-programmierung-einordnung.png)
 
-„deskriptives“ Programmierparadigma =
+"deskriptives" Programmierparadigma =
 1. Problembeschreibung
     - Die Aussagenmenge $M =\{K_1,...,K_n\}$, über denen gefolgert wird, wird in Form von Fakten und Regeln im PK1 notiert.
     - Eine mutmaßliche Folgerung (Hypothese) $H$ wird in Form einer Frage als negierte Hypothese hinzugefügt.
 2. (+) Programmverarbeitung 
     - Auf der Suche eines Beweises für $M \Vdash H$ werden durch mustergesteuerte Prozedur-Aufrufe Resolutions-Schritte zusammengestellt.
-    - Dem „Programmierer“ werden (begrenzte) Möglichkeiten gegeben, die systematische Suche zu beeinflussen.
+    - Dem "Programmierer" werden (begrenzte) Möglichkeiten gegeben, die systematische Suche zu beeinflussen.
 
 ### Syntax
 Syntax von Klauseln
@@ -2899,7 +2899,7 @@ Syntax von Termen
 | | | Syntax | Beispiele | 
 | --- | --- | --- | --- |
 Konstante | Name | Zeichenfolge, beginnend mit Kleinbuchstaben, die Buchstaben, Ziffern und \_ enthalten kann. | otto\_1 , tisch, hund
-|| beliebige Zeichenfolge in “...“ geschlossen | “Otto“, “r@ho“
+|| beliebige Zeichenfolge in "..." geschlossen | "Otto", "r@ho"
 || Sonderzeichenfolge | €%&§$€
 | Zahl | Ziffernfolge, ggf. mit Vorzeichen, Dezimalpunkt und Exponentendarstellung | 3, -5, 1001, 3.14E-12
 Variable | allg. | Zeichenfolge, mit Großbuchstaben oder \_ beginnend | X, Was, _alter
@@ -2926,7 +2926,7 @@ Was muss der Programmierer tun?
 - Formulierung einer negierten Hypothese (Frage, Ziel) $\lnot H\equiv\bigwedge_{i=1}^m H_i \equiv false\leftarrow \bigwedge_{i=1}^m H_i$
 
 Was darf der Programmierer erwarten? 
-- Dass das „Deduktionstool“ PROLOG $M \Vdash H$ zu zeigen versucht, d.h. $kt(\bigwedge_{i=1}^n K_i\wedge \lnot H)$ )
+- Dass das "Deduktionstool" PROLOG $M \Vdash H$ zu zeigen versucht, d.h. $kt(\bigwedge_{i=1}^n K_i\wedge \lnot H)$ )
 - ..., indem systematisch die Resolutionsmethode auf $\lnot H$ und eine der Klauseln aus $M$ angewandt wird, solange bis $\lnot H\equiv false\leftarrow true$ entsteht
 
 #### Formulierung von Wissensbasen
@@ -2954,13 +2954,13 @@ domains
   person = symbol
 predicates
   vater_von(person,person)        % bei nichtdeterministischen Prädikaten
-  mutter_von(person,person).      % kann man „nondeterm“ vor das
+  mutter_von(person,person).      % kann man "nondeterm" vor das
   grossvater_von(person,person)   % Prädikat schreiben, um die
   geschwister(person,person)      % Kompilation effizienter zu machen
 clauses
   < Wissensbasis einfügen und Klauseln gleichen Kopfprädikates gruppieren>
 goal
-  < Frage ohne „?-“ einfügen>
+  < Frage ohne "?-" einfügen>
 ```
 
 2. Beispiel 2 (BSP2.PRO)
@@ -3015,7 +3015,7 @@ Zusätzliche Markierung der Kanten mit der Variablenersetzung (dem Unifikator).
 
 
 ### PROLOG aus prozeduraler Sicht
-Beispiel: die „Hackordnung“
+Beispiel: die "Hackordnung"
 1. chef_von(mueller,mayer).
 2. chef_von(mayer,otto).
 3. chef_von(otto,walter).
@@ -3045,9 +3045,9 @@ Klauseln mit gleichem Kopfprädikat | Prozedur-varianten
 Klauselkopf | Prozedurkopf
 Klauselkörper | Prozedurrumpf
 
-Die Gratwanderung zwischen Wünschenswertem und technisch Machbarem erfordert mitunter „Prozedurales Mitdenken“, um
+Die Gratwanderung zwischen Wünschenswertem und technisch Machbarem erfordert mitunter "Prozedurales Mitdenken", um
 1. eine gewünschte Reihenfolge konstruktiver Lösungen zu erzwingen,
-2. nicht terminierende (aber – deklarativ, d.h. logisch interpretiert - völlig korrekte) Programme zu vermeiden,
+2. nicht terminierende (aber - deklarativ, d.h. logisch interpretiert - völlig korrekte) Programme zu vermeiden,
 3. seiteneffektbehaftete Prädikate sinnvoll einzusetzen,
 4. (laufzeit-) effizienter zu programmieren und
 5. das Suchverfahren gezielt zu manipulieren.
@@ -3112,7 +3112,7 @@ Listen als kompakte Wissensrepräsentation: ein bekanntes Beispiel (BSP5.PRO)
 
 **Rekursion** in der Logischen Programmierung
 Eine Prozedur heißt (direkt) rekursiv, wenn in mindestens einem der Klauselkörper ihrer Klauseln ein erneuter Aufruf des Kopfprädikates erfolgt.
-Ist der Selbstaufruf die letzte Atomformel des Klauselkörpers der letzten Klausel dieser Prozedur - bzw. wird er es durch vorheriges „Abschneiden“ nachfolgender
+Ist der Selbstaufruf die letzte Atomformel des Klauselkörpers der letzten Klausel dieser Prozedur - bzw. wird er es durch vorheriges "Abschneiden" nachfolgender
 Klauseln mit dem Prädikat $!/0$ - , so spricht man von Rechtsrekursion ; anderenfalls von Linksrekursion.
 Eine Prozedur heißt indirekt rekursiv, wenn bei der Abarbeitung ihres Aufrufes ein erneuter Aufruf derselben Prozedur erfolgt.
 
@@ -3149,4 +3149,376 @@ goal
 1. Zwei leere Listen sind (als identische Konstanten aufzufassen und daher) miteinander unifizierbar.
 1. Zwei nichtleere Listen $[K_1|R_1]$ und $[K_2|R_2]$ sind miteinander unifizierbar, wenn ihre Köpfe ($K_1$ und $K_2$) und ihre Restlisten ($R_1$ und $R_2$) jeweils miteinander unifizierbar sind.
 3. Eine Liste $L$ und eine Variable $X$ sind miteinander unifizierbar, wenn die Variable selbst nicht in der Liste enthalten ist. Die Variable $X$ wird bei erfolgreicher Unifikation mit der Liste $L$ instanziert: $X:=L$.
+
+
+**Differenzlisten:** eine intuitive Erklärung
+Eine Differenzliste $L_1 - L_2$ besteht aus zwei Listen $L_1$ und $L_2$ und wird im allgemeinen als $[L_1,L_2]$ oder (bei vorheriger Definition eines pre- bzw. infix notierten Funktionssymbols
+-/2) als $-(L_1,L_2)$ bzw. $L_1-L_2$ notiert.
+
+Sie wird (vom Programmierer, nicht vom PROLOG-System!) als eine Liste interpretiert, deren Elemente sich aus denen von $L_1$ abzüglich derer von $L_2$ ergeben. Differenzlisten verwendet man typischerweise, wenn häufig Operationen am Ende von Listen vorzunehmen sind.
+
+Eine Definition
+1. Die Differenz aus einer leeren Liste und einer (beliebigen) Liste ist die leere Liste: $[] - L = []$
+2. Die Differenz aus einer Liste $[E|R]$ und der Liste $L$, welche $E$ enthält, ist die Liste $D$,
+wenn die Differenz aus $R$ und $L$ (abzügl. $E$) die Liste $D$ ist: $[E|R]-L = D$, wenn $E\in L$ und $R-(L-[E]) = D$
+3. Die Differenz aus einer Liste $[E|R]$ und einer Liste $L$, welche $E$ nicht enthält, ist die Liste $[E|D]$, wenn die Differenz aus $R$ und $L$ die Liste $D$ ist: $[E|R] - L = [E|D]$, wenn $E\in L$ und $R-L=D$
+
+Differenzlisten: Ein Interpreter $interpret(Differenzliste,Interpretation)$ (BSP6.PRO)
+1. $interpret([[],_],[]).$ 
+2. $interpret([[E|R],L] , D ) :- loesche(E , L, L1),! , interpret( [ R , L1 ] , D ).$
+3. $interpret([[E|R],L] , [E|D] ) :- interpret([R,L],D).$
+4. $loesche(E, [E|R], R) :-!.$
+5. $loesche(E, [K|R], [K|L]) :- loesche(E,R,L).$
+
+### Prolog-Fallen
+#### Nicht terminierende Programme 
+Ursache: "ungeschickt" formulierte (direkte oder indirekte) Rekursion
+
+##### Alternierende Zielklauseln
+Ein aktuelles Ziel wiederholt sich und die Suche nach einer Folge von Resolutionsschritten endet nie:
+1. $liegt_auf(X,Y) :- liegt_unter(Y,X).$
+2. $liegt_unter(X,Y) :- liegt_auf(Y,X).$
+- $?- liegt_auf( skript, pult ).$
+- logisch korrekte Antwort: nein
+- tatsächliche Antwort: keine
+Logische Programmierung
+
+oder die Suche nach Resolutionsschritten endet mit einem Überlauf des Backtrack-Kellers: (BSP8.PRO)
+1. $liegt_auf(X,Y) :- liegt_unter(Y,X).$
+2. $liegt_auf( skript , pult ).$
+3. $liegt_unter(X,Y) :- liegt_auf(Y,X).$
+- $?- liegt_auf( skript , pult ).$
+- logisch korrekte Antwort: ja
+- tatsächliche Antwort: keine
+
+##### Expandierende Zielklauseln 
+Das erste Teilziel wird in jeden Resolutionsschritt durch mehrere neue Teilziele ersetzt; die Suche endet mit einem Speicherüberlauf: (BSP9.PRO)
+1. $liegt_auf( notebook , pult ).$
+2. $liegt_auf( skript , notebook ).$
+3. $liegt_auf(X,Y) :- liegt_auf(X,Z), liegt_auf(Z,Y).$
+- $?- liegt_auf( handy , skript ).$
+- logisch korrekte Antwort: nein
+- tatsächliche Antwort: keine
+
+Auch dieses Beispiel lässt sich so erweitern, dass die Hypothese offensichtlich aus der Wissensbasis folgt, die Umsetzung der Resolutionsmethode aber die Vollständigkeit zerstört:
+1. $liegt_auf( notebook , pult ).$
+2. $liegt_auf( skript , notebook ).$
+3. $liegt_auf(X,Y) :- liegt_auf(X,Z), liegt_auf(Z,Y).$
+4. $liegt_auf( handy , skript ).$
+- $?- liegt_auf( handy , pult ).$
+- logisch korrekte Antwort: ja
+- tatsächliche Antwort: keine
+
+Auch dieses Beispiel zeigt, dass das Suchverfahren "Tiefensuche mit Backtrack" die Vollständigkeit des Inferenzverfahrens zerstört.
+
+#### Metalogische Prädikate und konstruktive Lösungen
+Das Prädikat $not/1$ hat eine Aussage als Argument und ist somit eine Aussage über eine Aussage, also metalogisch.
+I.allg. ist $not/1$ vordefiniert, kann aber mit Hilfe von $call/1$ definiert werden. $call/1$ hat Erfolg, wenn sein Argument - als Ziel interpretiert - Erfolg hat.
+
+Beispiel (BSP10.PRO):
+1. $fleissig(horst).$
+2. $fleissig(martin).$
+3. $faul(X) :- not( fleissig(X) ).$
+4. $not(X) :- call(X), !, fail.$
+5. $not( _ ).$
+- $?- faul(horst).$ Antwort: nein
+- $?- faul(alex).$ Antwort: ja
+- $?- faul(Wer).$ Antwort: nein
+
+Widerspruch ... und Beweis der Unvollständigkeit durch Metalogik
+
+### Typische Problemklassen für die Anwendung der Logischen Programmierung
+#### Rekursive Problemlösungsstrategien
+> Botschaft  1
+> Man muss ein Problem nicht in allen Ebenen überblicken, um eine Lösungsverfahren zu programmieren. Es genügt die Einsicht,
+> 1. wie man aus der Lösung eines einfacheren Problems die Lösung des präsenten Problems macht und
+> 2. wie es im Trivialfall zu lösen ist.
+
+**Türme von Hanoi**
+Es sind N Scheiben von der linken Säule auf die mittlere Säule zu transportieren, wobei die rechte Säule als Zwischenablage genutzt wird. Regeln: 
+1. Es darf jeweils nur eine Scheibe transportiert werden.
+2. Die Scheiben müssen mit fallendem Durchmesser übereinander abgelegt werden.
+
+(doppelt) rekursive Lösungsstrategie:
+- $N = 0:$ Das Problem ist gelöst.
+- $N > 0:$
+  1. Man löse das Problem für N-Scheiben, die von der Start-Säule zur Hilfs-Säule zu transportieren sind.
+  2. Man lege eine Scheibe von der Start- zur Ziel-Säule.
+  3. Man löse das Problem für N-Scheiben, die von der Hilfs-Säule zur Ziel-Säule zu transportieren sind.
+  
+Prädikate 
+- $hanoi(N)$ löst das Problem für N Scheiben
+- $verlege(N,Start,Ziel,Hilf)$ verlegt N Scheiben von Start nach Ziel unter Nutzung von Hilf als Ablage
+
+Die Regeln zur Kodierung der Strategie (BSP11.PRO)
+- $hanoi( N ) :- verlege( N , s1 , s2 , s3 ).$
+- $verlege( 0 , _ , _ , _ ).$
+- $verlege( N , S , Z , H ) :-$
+  - $N1 = N - 1,$
+  - $verlege( N1 , S , H , Z ),$
+  - $write("Scheibe von ", S," nach ", Z),$
+  - $verlege( N1 , H , Z , S ).$
+
+#### Sprachverarbeitung mit PROLOG
+> Botschaft  2
+> Wann immer man Objekte mit Mustern vergleicht, z.B.
+> 1. eine Struktur durch "Auflegen von Schablonen" identifiziert,
+> 2. Gemeinsamkeiten mehrerer Objekte identifiziert, d.h. "eine Schablone entwirft" oder
+> 3. "gemeinsame Beispiele für mehrere Schablonen" sucht, 
+> mache man sich den Unifikations-Mechanismus zu nutzen.
+
+- Eine kontextfreie Grammatik (Chomsky-Typ 2) besteht aus
+   1. einem Alphabet A, welches die terminalen (satzbildenden) Symbole enthält 
+   2. einer Menge nichtterminaler (satzbeschreibender) Symbole N (= Vokabular abzüglich des Alphabets: $N = V \backslash A$)
+   3. einer Menge von Ableitungsregeln $R\subseteq N\times (N\cup A)^*$
+   4. dem Satzsymbol $S\in N$
+- ... und in PROLOG repräsentiert werden durch
+   1. 1-elementige Listen, welche zu satzbildenden Listen komponiert werden: $[der],[tisch],[liegt],...$
+   2. Namen, d.h. mit kleinem Buchstaben beginnende Zeichenfolgen: $nebensatz,subjekt,attribut,...$
+   3. PROLOG-Regeln mit $l\in N$ im Kopf und $r\in(N\cup A)^*$ im Körper
+   4. einen reservierten Namen: $satz$
+
+Ein Ableitungsbaum beschreibt die grammatische Struktur eines Satzes. Seine Wurzel ist das Satzsymbol, seine Blätter in Hauptreihenfolge bilden den Satz.
+![](Assets/Logik-ableitungsbaum-beispiel.png)
+
+1. Alphabet $ministerium, rektorat, problem, das, loest, ignoriert, verschaerft$
+2. nichtterminale Symbole $satz, subjekt, substantiv, artikel, praedikat,objekt$
+3. Ableitungsregeln (in BACKUS-NAUR-Form)
+    - $satz ::= subjekt praedikat objekt$
+    - $subjekt ::= artikel substantiv$
+    - $objekt ::=  artikel substantiv$
+    - $substantiv ::= ministerium | rektorat | problem$
+    - $artikel ::= das$
+    - $praedikat ::= loest | ignoriert | verschaerft$
+4. Satzsymbol $satz$
+
+Verketten einer Liste von Listen
+```
+% die Liste ist leer
+verkette( [ ] , [ ] ) .
+
+% das erste Element ist eine leere Liste
+verkette( [ [ ] | Rest ] , L ) :-
+  verkette( Rest , L ).
+
+% das erste Element ist eine nichtleere Liste
+verkette([ [K | R ] | Rest ] , [ K | L ] ) :-
+  verkette( [ R | Rest ] , L ).4
+```
+
+#### Die "Generate - and - Test" Strategie
+> Botschaft  3
+> Es ist mitunter leichter (oder überhaupt erst möglich), für komplexe Probleme
+> 1. eine potentielle Lösung zu "erraten" und dazu
+> 2. ein Verfahren zu entwickeln, welches diese Lösung auf Korrektheit testet, 
+> als zielgerichtet die korrekte Lösung zu entwerfen. Hierbei kann man den Backtrack-Mechanismus nutzen.
+
+Strategie: Ein Prädikat $moegliche_loesung(L)$ generiert eine potentielle Lösung, welche von einem Prädikat $korrekte_loesung(L)$ geprüft wird:
+- Besteht $L$ diesen Korrektheitstest, ist eine Lösung gefunden. 
+- Fällt $L$ bei diesem Korrektheitstest durch, wird mit Backtrack das Prädikat $moegliche_loesung(L)$ um eine alternative potentielle Lösung ersucht.
+(vgl.: Lösen NP-vollständiger Probleme, Entscheidung von Erfüllbarkeit)
+
+ein Beispiel: konfliktfreie Anordnung von $N$ Damen auf einem $N\times N$ Schachbrett (BSP13.PRO)
+- eine Variante: Liste strukturierter Terme
+  - $[dame(Zeile,Spalte),...,dame(Zeile,Spalte)]$
+  - $[dame(1,2), dame(2,4), dame(3,1), dame(4,3) ]$
+- noch eine Variante: Liste von Listen
+  - $[[Zeile, Spalte] , ... , [Zeile,Spalte] ]$
+  - $[ [1,2] , [2,4] , [3,1] , [4,3] ]$
+- ... und noch eine (in die Wissensdarstellung etwas "natürliche" Intelligenz investierende, den Problemraum enorm einschränkende) Variante: Liste der Spaltenindizes
+  - $[ Spalte_zu_Zeile_1, ..., Spalte_zu_Zeile_N ]$
+  - $[ 2, 4, 1, 3 ]$
+
+#### Heuristische Problemlösungsmethoden
+> Botschaft  4
+> Heuristiken sind 
+> 1. eine Chance, auch solche Probleme einer Lösung zuzuführen, für die man keinen (determinierten) Lösungsalgorithmus kennt und
+> 2. das klassische Einsatzgebiet zahlreicher KI-Tools - auch der Logischen Programmierung.
+
+Was ist eine Heuristik? Worin unterscheidet sich eine heuristische Problemlösungsmethode von einem Lösungsalgorithmus?
+
+Heuristiken bewerten die Erfolgsaussichten alternativer Problemlösungsschritte. Eine solche Bewertung kann sich z.B. ausdrücken in
+- einer quantitativen Abschätzung der "Entfernung" zum gewünschten Ziel oder der "Kosten" für das Erreichen des Ziels,
+- einer quantitativen Abschätzung des Nutzens und/oder der Kosten der alternativen nächsten Schritte,
+- eine Vorschrift zur Rangordnung der Anwendung alternativer Schritte, z.B. durch Prioritäten oder gemäß einer sequenziell abzuarbeitenden Checkliste.
+
+Ein Beispiel: Das Milchgeschäft meiner Großeltern in den 40er Jahren
+- Der Milchhof liefert Milch in großen Kannen.
+- Kunden können Milch nur in kleinen Mengen kaufen.
+- Es gibt nur 2 Sorten geeichter Schöpfgefäße; sie fassen 0.75 Liter bzw. 1.25 Liter.
+- Eine Kundin wünscht einen Liter Milch.
+1. Wenn das große Gefäß leer ist, dann fülle es.
+2. Wenn das kleine Gefäß voll ist, dann leere es.
+3. Wenn beides nicht zutrifft, dann schütte so viel wie möglich vom großen in das kleine Gefäß.
+
+Prädikat $miss_ab(VolGr, VolKl, Ziel, InhGr, InhKl)$ mit
+- VolGr -  Volumen des großen Gefäßes
+- VolKl -  Volumen des kleinen Gefäßes
+- Ziel - die abzumessende (Ziel-) Menge
+- InhGr - der aktuelle Inhalt im großen Gefäß
+- InhKl - der aktuelle Inhalt im kleinen Gefäß
+
+Beispiel-Problem: $?- miss_ab( 1.25 , 0.75 , 1 , 0 , 0 )4$
+
+#### Pfadsuche in gerichteten Graphen
+> Botschaft  5
+> 1. Für die systematische Suche eines Pfades kann der Suchprozess einer Folge von Resolutionsschritten genutzt werden. Man muss den Suchprozess nicht selbst programmieren.
+> 2. Für eine heuristische Suche eines Pfades gilt Botschaft 4: Sie ist das klassische Einsatzgebiet zahlreicher KI-Tools - auch der Logischen Programmierung.
+
+Anwendungen
+- Handlungsplanung, z.B.
+  - Suche einer Folge von Bearbeitungsschritten für ein Produkt, eine Dienstleistung, einen "Bürokratischen Vorgang"
+  - Suche eines optimalen Transportweges in einem Netzwerk von Straßen-, Bahn-, Flugverbindungen
+- Programmsynthese = Handlungsplanung mit ...
+  - ... Schnittstellen für die Datenübergabe zwischen "Handlungsschritten" (= Prozeduraufrufen) und
+  - ... einem hierarchischen Prozedurkonzept, welches die Konfigurierung von "Programmbausteinen" auf mehreren Hierarchie-Ebenen
+
+Ein Beispiel: Suche einer zeitoptimalen Flugverbindung (BSP15.PRO)
+- Repräsentation als Faktenbasis $verbindung(Start,Zeit1,Ziel,Zeit2,Tag).$
+- Start -  Ort des Starts
+- Zeit1 - Zeit des Starts
+- Ziel - Ort der Landung
+- Zeit2 - Zeit der Landung
+- Tag - 0, falls Zeit1 und Zeit2 am gleichen Tag und 1 ansonsten
+- möglich:
+  - $verbindung(fra,z(11,45),ptb,z(21,0),0).$
+  - $verbindung(fra,z(11,15),atl,z(21,25),0).$
+  - $verbindung(ptb,z(24,0),orl,z(2,14),1).$
+  - $verbindung(atl,z(23,30),orl,z(0,54),1).$
+
+In einer dynamischen Wissensbasis wird die bislang günstigste Verbindung in Form eines Faktes $guenstigste([ v(Von,Zeit1,Nach,Zeit2,Tag), ... ], Ankunftszeit, Tag ).$ festgehalten und mit den eingebauten Prädikaten $assert(<Fakt>)$ - zum Einfügen des Faktes - und $retract (<Fakt>)$ - zum Entfernen des Faktes - bei Bedarf aktualisiert. 
+Zum Beispiel $guenstigste([v(fra,z(11,45),ptb,z(21,00),0),v(ptb,z(24,0),orl,z(2,14),1)],z(2,14),1).$ erklärt den Weg über Pittsburgh zum bislang günstigsten gefundenen Weg.
+
+#### "Logeleien" als Prolog-Wissensbasen
+> Botschaft 6
+> 1. "Logeleien" sind oft Aussagen über Belegungen von Variablen mit endlichem Wertebereich, ergänzt um eine Frage zu einem nicht explizit gegebenen Wert.
+> 2. Dabei handelt es sich um Grunde um eine Deduktionsaufgabe mit einer Hypothese zu einem mutmaßlichen Wert der gesuchten Variablen. Deshalb ist es oft auch mit dem "Deduktionstool" Prolog lösbar, denn Prolog tut im Grunde nichts anderes als ein ziel-gerichtetes "Durchprobieren" legitimer Deduktionsschritte im "Generate - and - Test" - Verfahren.
+
+Beispiel das "Zebra-Rätsel"(BSP16.PRO):
+1. Es gibt fünf Häuser.
+2. Der Engländer wohnt im roten Haus.
+3. Der Spanier hat einen Hund.
+4. Kaffee wird im grünen Haus getrunken.
+5. Der Ukrainer trinkt Tee.
+6. Das grüne Haus ist (vom Betrachter aus gesehen) direkt rechts vom weißen Haus.
+7. Der Raucher von Atem-Gold-Zigaretten hält Schnecken als Haustiere.
+8. Die Zigaretten der Marke Kools werden im gelben Haus geraucht.
+9. Milch wird im mittleren Haus getrunken.
+10. Der Norweger wohnt im ersten Haus.
+11. Der Mann, der Chesterfields raucht, wohnt neben dem Mann mit dem Fuchs.
+12. Die Marke Kools wird geraucht im Haus neben dem Haus mit dem Pferd.
+13. Der Lucky-Strike-Raucher trinkt am liebsten Orangensaft.
+14. Der Japaner raucht Zigaretten der Marke Parliament.
+15. Der Norweger wohnt neben dem blauen Haus.
+
+Jedes Haus ist in einer anderen Farbe gestrichen und jeder Bewohner hat eine andere Nationalität, besitzt ein anderes Haustier, trinkt ein von den anderen Bewohnern verschiedenes Getränk und raucht eine von den anderen Bewohnern verschiedene Zigarettensorte. Fragen:
+- Wer trinkt Wasser?
+- Wem gehört das Zebra?
+```
+loesung(WT, ZB) :-
+  haeuser(H), nationen(N), getraenke(G), tiere(T), zigaretten(Z),aussagentest(H,N,G,T,Z), !, wassertrinker(N,G,WT), zebrabesitzer(N,T,ZB).
+tiere(X) :- permutation([fuchs, hund, schnecke, pferd, zebra],X).
+nationen([norweger|R]) :- permmutation([englaender, spanier, ukrainer, japaner], R). % erfüllt damit Aussage 10
+getraenke(X) :- permutation([kaffee, tee, milch, osaft, wasser], X), a9(X). % erfüllt damit Aussage 9
+zigaretten(X) :- permmutation([atemgold,kools,chesterfield, luckystrike, parliament], X).
+haeuser(X) :- permutation([rot, gruen, weiss, gelb, blau], X), a6(X).
+% parmutation/2, fuege_ein/3: siehe BSP13-PRO
+wassertrinker([WT| _ ], [wasser| _ ], WT ) :- !.
+wassertrinker([ _ |R1], [ _ |R2],WT) :- wassertrinker(R1, R2, WT).
+zebrabesitzer([ZB| _ ], [zebra| _ ], ZB) :- !.
+zebrabesitzer([ _ |R1], [ _ |R2],ZB) :- zebrabesitzer(R1, R2, ZB).
+aussagentest(H,N,G,T,Z) :-
+  a2(H,N), a3(N,T), a4(H,G), a5(N,G), a7(Z,T), a8(H,Z), a11(Z,T), a12(Z,T),a13(Z,G), a14(N,Z), a15(H,N).
+  
+a2([rot| _ ], [englaender| _ ]) :- !
+.a2([ _ |R1], [ _ |R2]) :- a2(R1, R2).
+a3([spanier| _ ], [hund| _ ]) :- !.
+a3([ _ |R1], [ _ |R2]) :- a3(R1, R2).
+a4([gruen| _ ], [kaffee| _ ]) :- !.
+a4([ _ |R1], [ _ |R2]) :- a4(R1, R2).
+a5([ukrainer| _ ], [tee| _ ]) :- !.
+a5([ _ |R1], [ _ |R2]) :- a5(R1, R2).
+a6([weiss, gruen| _ ]) :- !.
+a6([weiss| _ ]) :- !, fail.a6([ _ |R]) :- a6(R).
+a7([atemgold| _ ], [schnecke| _ ]) :- !.
+a7([ _ |R1], [ _ |R2]) :- a7(R1, R2).
+a8([gelb| _ ], [kools| _ ]) :- !.
+a8([ _ |R1], [ _ |R2]) :- a8(R1, R2).
+a9([ _ , _ , milch, _ , _ ]).
+a11([chesterfield| _ ], [ _ ,fuchs| _ ]) :-!.
+a11([ _ , chesterfield| _ ], [fuchs| _ ]) :- !.
+a11([ _ |R1], [ _ |R2]) :- a11(R1, R2).
+a12([kools| _ ], [ _ , pferd| _ ]) :- !.
+a12([ _ , kools| _ ], [pferd| _ ] ) :- !.
+a12([ _ |R1], [ _ |R2]) :- a12(R1, R2).
+a13([luckystrike| _ ], [osaft| _ ]) :- !.
+a13([ _ |R1], [ _ |R2]) :- a13(R1, R2).
+a14([japaner| _ ], [parliament| _ ]) :- !.
+a14([ _ |R1], [ _ |R2]) :- a14(R1, R2).
+%a15([blau| _ ], [ _, norweger| _ ]) :- !.
+a15([ _ , blau| _ ], [norweger| _ ]) :- !.
+%a15([ _ |R1], [ _ |R2]) :- a15(R1, R2).
+
+?- loesung(Wassertrinker, Zebrabesitzer).
+```
+
+Beispiel SUDOKU (BSP17.PRO):
+- Liste 9-elementliger Listen, die (von links nach rechts) die Zeilen (von oben nach unten)repräsentieren
+- Elemente einer jeden eine Zeile repräsentierenden Liste:
+  - Ziffer, falls dort im gegebenen Sudoku eine Ziffer steht
+  - Anonyme Variable andernfalls
+
+#### Tools für die formale Logik
+> Botschaft 7
+> Auch in der formalen Logik gibt es Deduktionsaufgaben, bei der Variablenbelegungen gesucht sind, welche eine Aussage wahr machen:
+> 1. Meist geschieht das durch systematische Auswertung der Aussage, wozu das Suchverfahren von Prolog genutzt werden kann.
+> 2. Auch hier geht es oft um gesuchte Werte für Variablen. Deshalb ist es oft auch mit dem "Deduktionstool" Prolog lösbar, denn Prolog tut im Grunde nichts anderes als ein ziel-gerichtetes "Durchprobieren" legitimer Deduktionsschritte im "Generate - and - Test" - Verfahren.
+
+Repräsentation von Aussagen als PROLOG-Term:
+- true, false: atom(true), atom(false)
+- $A1\wedge A2$: und(A1,A2)
+- $A1\vee A2$: oder(A1,A2)
+- $\lnot A$: nicht(A)
+- $A1\rightarrow A2$: wenndann(A1,A2)
+- $A1\leftarrow A2$: dannwenn(A1,A2)
+- $A1\leftrightarrow A2$: gdw(A1,A2)
+
+Erfüllbarkeitstest: 
+- $?- erfuellbar(gdw(wenndann(nicht(oder(atom(false),atom(X))),atom(Y)), atom(Z))).$
+- X=true, Y=_, Z=true ; steht für 2 Modelle (eines mit Y = true und eines mit Y = false)
+- X=false, Y=true, Z=true
+
+Ketten von Konjunktionen und Disjunktionen als PROLOG-Listen:
+- $A1\wedge A2\wedge ... \wedge An$: und verkettung([A1,A2, ..., An])
+- $A1\vee A2\vee ...\vee An$: oder verkettung([A1,A2, ..., An])
+
+Erfüllbarkeitstest: 
+- $?- erfuellbar(undverkettung([true,X,Y,true]))$
+- X = true Y = true
+- $?- erfuellbar(oderverkettung([false,X,Y,false]))$
+- X = true Y = _
+- X = _ Y = true
+
+Repräsentation von Termen als PROLOG-Term:
+- Wert: atom(<reelle Zahl>)
+- $A1\wedge A2$: und(A1,A2)
+- $A1\vee A2$: oder(A1,A2)
+- $\lnot A$: nicht(A)
+- $A1\rightarrow A2$: wenndann(A1,A2)
+- $A1\leftarrow A2$: dannwenn(A1,A2)
+- $A1\leftrightarrow A2$: gdw(A1,A2)
+- $A1\wedge A2\wedge ... \wedge An$: und verkettung([A1,A2, ..., An])
+- $A1\vee A2\vee ...\vee An$: oder verkettung([A1,A2, ..., An])
+
+Termauswertung: 
+- $?- hat_wert(und(atom(0.5),oder(atom(0.7),atom(0.3))),X).$
+- X=0.5
+
+Termauswertung unter Vorgabe des Wertebereiches:
+- $?- hat_wert([0,0.3, 0.5, 0.7, 1], und(atom(X),oder(atom(0.5),atom(0.7))),Wert).$
+- X=0, Wert=0
+- X=0.3, Wert=0.3
+- X=0.5, Wert=0.5
+- X=0.7, Wert=0.7
+- X=1, Wert=0.7
 

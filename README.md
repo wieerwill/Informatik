@@ -43,6 +43,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [Stochastik Cheatsheet](Stochastik%20-%20Cheatsheet.pdf)
 - [Systemsicherheit](Systemsicherheit.md) (work in progress)
   - [Systemsicherheit Cheatsheet](Systemsicherheit%20-%20Cheatsheet.pdf) (work in progress)
+  - [Systemsicherheit Questions](Systemsicherheit%20-%20Questions.pdf) (work in progress)
 - [Telematik 1](Telematik%201.md)
   - [Telematik 1 Cheatsheet](Telematik%201-%20Cheatsheet.pdf)
 

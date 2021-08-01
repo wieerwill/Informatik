@@ -22,7 +22,7 @@
 \begin{document}
 \begin{questions}
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Risks in Electronic Payment:}\hfill
+    \question \textbf{Risks in Electronic Payment}\hfill
 
     From your personal experience: Which risks are involved in electronic payment systems?
     Start with thinking about the vulnerabilities of today’s methods, procedures, and mechanisms you are familiar with. Here are two possible scenarios:
@@ -40,16 +40,16 @@
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Buffer Overflow Attacks:}\hfill
+    \question \textbf{Buffer Overflow Attacks}\hfill
 
     Which vulnerabilities are exploited by a buffer overflow attack? How can you counter buffer overflow attacks? How could you at least mitigate the effects of successful buffer overflow attacks?
     \begin{solution}
-Buffer overflow attacks aim to trick the softwar to execute futher attack code and exploit whatever the hacker needs. To prevent buffer overflow, one must check the maximum possible length of the input versus the users input. To mitigate any successfull attack, a programm should be contained and not have access to further information or programms but the necessary.
+        Buffer overflow attacks aim to trick the softwar to execute futher attack code and exploit whatever the hacker needs. To prevent buffer overflow, one must check the maximum possible length of the input versus the users input. To mitigate any successfull attack, a programm should be contained and not have access to further information or programms but the necessary.
 
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Data vs. Information:}\hfill
+    \question \textbf{Data vs. Information}\hfill
 
     \begin{parts}
         \part What is the difference between data and information?
@@ -61,120 +61,150 @@ Buffer overflow attacks aim to trick the softwar to execute futher attack code a
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Root Kits:}\hfill
+    \question \textbf{Root Kits}\hfill
 
     Which special properties of root kits make them so extremely dangerous?
     \begin{solution}
-        Invisible, total sustainable takeover of a complete IT system. 
+        Invisible, total sustainable takeover of a complete IT system.
         Root Kits are a comprehensive tool kit for fully automated attacks on all levels of the software stack.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{NI: Dynamic Properties:}\hfill
+    \question \textbf{NI: Dynamic Properties}\hfill
 
     Similar to HRU, an NI model is basically formalized through a deterministic automaton. Can we also use it to analyze HRU Safety (no matter if by proof or by simulation)?
 
     If yes: How would HRU Safety for NI be defined (in prose)? If no: What extension of the NI model in the lecture would be required to enable Safety analysis?
     \begin{solution}
+        With an NI model you can proof if it is NI-secure but not HRU safety as the NI Model holds no subjects or objects but domains and states. It must be extended with sets of subjects and objects to do so.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{NI: Motivation:}\hfill
+    \question \textbf{NI: Motivation}\hfill
 
     Which security problem do NI models address? Name two modern application scenarios where this problem is highly relevant!
     \begin{solution}
+        The two problems NI models address are Covert Channels (Channels not intended for information transfer) and Damage Range.
+
+        E.g. Multi-application Smart Cards and Server systems
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{BLP and Biba:}\hfill
+    \question \textbf{BLP and Biba}\hfill
 
     What's the difference in terms of goals and formalism between the BLP and the Biba model?
     \begin{solution}
+        BLP is the upside down Biba model in view of confidential information flow from high to low 
+        \begin{itemize}
+            \item BLP preserves confidentiality 
+            \item Biba preserves integrity
+        \end{itemize}
+    Biba classifies with a hierarchy and chooses the lowest possible for each object while BLP uses the highest possible
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{BLP: Lattice vs. ACM:}\hfill
+    \question \textbf{BLP: Lattice vs. ACM}\hfill
     \begin{parts}
         \part Why does the BLP model contain both: (1) a lattice, which is mapped to subjects and objects via cl, and (2) an ACM?
         \part What problem might occur from using both (1) and (2)?
     \end{parts}
     \begin{solution}
+        The Bell-LaPadula Model is a model engineered from know abstractions. The lattice that maps subjects and objects is needed to model confidentiality hierarchy (public or confidential subject and objects). The ACM next to that stores the read and write access of subjects and objects.
+        Both can be used alone to check confidentiality and the ACM can be used to analyze the ACF of the model.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{DAC vs. MAC:}\hfill
+    \question \textbf{DAC vs. MAC}\hfill
     \begin{parts}
         \part What is the difference between discretionary (DAC) and mandatory access control (MAC)?
         \part What are the weaknesses of discretionary access control systems?
     \end{parts}
     \begin{solution}
+        DAC: Individual users specify access rules to objects within their area of responsibility ("at their discretion"). E.g. locally within a project, team members individually define permissions w. r. t. documents (implemented in project management software and workstation OSs) inside this closed scope. With DAC it can happen to loose confidentiality and it's weaker to social engineering attacks.
+
+MAC: System designers and administrators specify system-wide rules, that apply for all users and cannot be sidestepped. E.g. globally for the organization, such that e. g. only documents approved for release by organizational policy rules (implemented in servers and their communication middleware) may be accessed from outside a project’s scope.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{TAM: Type System:}\hfill
+    \question \textbf{TAM: Type System}\hfill
 
     How is the type system in TAM formally represented within the HRU-based automaton? Which parts of the type system may change during runtime?
     \begin{solution}
+        All Subjects can also act as objects and can be used to model delegation of rights. Each objects has a type from a type set trough a mapping style. 
+        An HRU model is a special case of a TAM model $T=\{tSubject,tObject\}$ with $\forall s\in S:type(s)=tSubject; \forall o\in O\backslash S:type(o)=tObject$
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{TAM: Motivation:}\hfill
+    \question \textbf{TAM: Motivation}\hfill
 
     What is the goal of the TAM security model?
     \begin{solution}
+        AC model, similar expressiveness to HRU that can be directly mapped to implementations of an ACM: OS ACLs, DB permission assignment tables. Better suited for safety analyses: precisely statemodel properties for decidable safety.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{RBAC ACF:}\hfill
+    \question \textbf{RBAC ACF}\hfill
 
     As with any AC model, the formal components of RBAC are designed to enable access control decisions. However, in the ACF definition of RBAC0 (which is the basis for ACFs of the other RBAC96 models), the component UA is not included. Why?
     \begin{solution}
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{RBAC Safety:}\hfill
+    \question \textbf{RBAC Safety}\hfill
 
     How can we analyze RBAC safety? Which information is needed for this, and is it provided by RBAC96 models?
     \begin{solution}
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{IBAC vs. RBAC vs. ABAC:}\hfill
+    \question \textbf{IBAC vs. RBAC vs. ABAC}\hfill
 
     What is the key difference between IBAC and RBAC models? How about ABAC models then?
     \begin{solution}
+        IBAC is the fundamental model and provides basic expressiveness. The abstraction is very low and not application oriented. No indirection between subjects and objects, Subjects and Objects have direct rights assigned to each other.
+
+        RBAC: indirection via roles assigned to subjects
+
+        ABAC: indirection via arbitrary attributes assigned to subjects or objects. More scalable and manageable.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{HRU Safety Undecidability:}\hfill
+    \question \textbf{HRU Safety Undecidability}\hfill
 
     Given HRU Safety is undecidable, what is the actual merit of this model? What can we do to handle the undecidability problem in practice?
     \begin{solution}
+        We can narrow down the complexity of an HRU model to make it decidable and check, if the model instantiation itself is safe. E.g. a mono-operational model is not useful but expressive and is efficient to analyse and design. 
+
+        Another way may be heuristic analysis to have heuristics guided safety decisions.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{HRU: Unix Read:}\hfill
+    \question \textbf{HRU: Unix Read}\hfill
 
     How do we model a read operation, such as for a Unix-OS file system, in HRU? Remember that this operation neither modifies the subject set, nor the object set, nor the ACM.
     \begin{solution}
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{ACM vs. HRU:}\hfill
+    \question \textbf{ACM vs. HRU}\hfill
 
     What is the idea that distinguishes an ACM from an HRU model? How is it formally represented?
     \begin{solution}
+        An Access Control Matrix is a well-structured store to efficiently evaluate and completly analyze an Access Control Function. It only models a single state and cannot predict future proliferation of rights. 
+
+        The Harrison-Ruzzo-Ulman Model uses the single protection state of an Access Control System and deterministic automata to model runtime changes of these protection states. Formally it uses a State Transition Scheme with given primitives.
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{HRU: Output Function:}\hfill
+    \question \textbf{HRU: Output Function}\hfill
 
     Why does an HRU automaton not have an output function?
     \begin{solution}
+        The result of the automaton (if its safe or not) is not resulting in an output function but the state space q' of Q in comparison to q (inital state; $safe(q_0,r)$)
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Core-based Model Engineering:}\hfill
+    \question \textbf{Core-based Model Engineering}\hfill
 
     Assume you have to design the security policy for a very simple hospital information system, including
     \begin{itemize}
@@ -193,14 +223,15 @@ Buffer overflow attacks aim to trick the softwar to execute futher attack code a
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Common Model Core:}\hfill
+    \question \textbf{Common Model Core}\hfill
 
     What is the common model core shared by models such as HRU, DRBAC, BLP, Brewer-Nash, and NI?
     \begin{solution}
+        The common model core is $\langle Q, \sum, \delta, q_0\rangle$
     \end{solution}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \question \textbf{Hybrid Models:}\hfill
+    \question \textbf{Hybrid Models}\hfill
 
     Name the semantical concepts from AC, IF and/or NI models that can be found in
     \begin{itemize}
@@ -210,6 +241,11 @@ Buffer overflow attacks aim to trick the softwar to execute futher attack code a
     \end{itemize}
     Compare how these three models express allowed information flows according to the CW policy.
     \begin{solution}
+        Brewer-Nash: no information flow between competing objects. Competing objects belong to the same class. With the history relation, subjects can access new objects only if they didn't access competing objects before.
+
+        Least-Restrictive: includes time as a model abstraction. no conflicting information is accumulated in the subject/object potentially increases the amount of information in the subject/object
+
+        MLS: labels entities. Class of an entity (subject or object) reflects information it carries and is reclassified whenever an data object is read.
     \end{solution}
 
 \end{questions}

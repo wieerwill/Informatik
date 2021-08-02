@@ -407,8 +407,7 @@ in privileged system software:
 
 Consequence: Privileged software can be tricked into executing attacker’s code
 
-Approach: Cleverly forged parameters overwrite procedure activation frames in
-memory
+Approach: Cleverly forged parameters overwrite procedure activation frames in memory
 - ->  exploitation of missing length checks on input buffers
 - -> buffer overflow
 
@@ -1045,7 +1044,7 @@ Access Control Functions [Lampson, 1974]
   - any $s\in S$ represents an authenticated active entity (e. g. a user or process) which potentially executes operations on objects
   - any $o\in O$ represents an authenticated passive entity (e. g. a file or a database table) on which operations are executed
   - for any $s\in S$,$o\in O$,$op\in OP$:s is allowed to execute op on o iff f(s,o,op)=true.
-  - Model making: finding a $tuple⟨S,O,OP,f⟩$
+  - Model making: finding a $tuple\langleS,O,OP,f\rangle$
     - $\rightarrow$  Definition of S,O, and OP
     - $\rightarrow$  Definition of f
 
@@ -1142,7 +1141,7 @@ Our HIS scenario ... modeled by an ACM:
 We might do it like this, but ... Privilege escalation question:
 "Can it ever happen that in a given state, some specific subject obtains a specific permission?"
 $\varnothing \Rightarrow \{r,w\}$
-- ACM models a single state ⟨S,O,OP,m⟩
+- ACM models a single state \langleS,O,OP,m\rangle
 - ACM does not tell us anything about what might happen in the future
 - Behavior prediction $\rightarrow$  proliferation of rights $\rightarrow$ HRU safety
 
@@ -1159,14 +1158,14 @@ Idea [Harrison et al., 1976]: A (more complex) security model combining
 This idea was pretty awesome. We need to understand automata, since from then on they were used for most security models. $\rightarrow$  Small excursus 
 
 ##### Deterministic Automata
-Mealy Automaton: $⟨Q,\sum,\Omega,\delta,\lambda,q_0⟩$
+Mealy Automaton: $\langleQ,\sum,\Omega,\delta,\lambda,q_0\rangle$
 - $Q$ is a finite set of states (state space), e. g. $Q=\{q_0 ,q_1 ,q_2\}$
 - $\sum$ is a finite set of input words (input alphabet), e. g. $\sum=\{a,b\}$
 - $\Omega$ is a finite set of output words (output alphabet), e. g. $\Omega=\{yes,no\}$
 - $\delta:Q\times\sum\rightarrow Q$ is the state transition function
 - $\lambda:Q\times\sum\rightarrow\Omega$ is the output function
 - $q_0\in Q$ is the initial state
-- $\delta(q,\sigma)=q′$ and $\lambda(q,\sigma)=\omega$ can be expressed through thestate diagram: a directed graph $⟨Q,E⟩$, where each edge $e\in E$ is represented by a state transition’s predecessor node $q$, its successor node $q′$, and a string "$\sigma|\omega$" of its input and output, respectively.
+- $\delta(q,\sigma)=q′$ and $\lambda(q,\sigma)=\omega$ can be expressed through thestate diagram: a directed graph $\langleQ,E\rangle$, where each edge $e\in E$ is represented by a state transition’s predecessor node $q$, its successor node $q′$, and a string "$\sigma|\omega$" of its input and output, respectively.
 ![](Assets/Systemsicherheit-mealy-automaton.png)
 
 Example: Return "yes" for any input in an unbroken sequence of "a" or "b", "no" otherwise.
@@ -1191,7 +1190,7 @@ How we use Deterministic Automata
 - Effects ofoperationsthat cause such transitions are described by the state transition function
 - Analyses ofright proliferation($\rightarrow$  privilege escalation)are enabled by state reachability analysis methods
 
-An HRU model is a deterministic automaton $⟨Q,\sum,\delta,q_0 ,R⟩$ where 
+An HRU model is a deterministic automaton $\langleQ,\sum,\delta,q_0 ,R\rangle$ where 
 - $Q= 2^S\times 2^O\times  M$ is the state space where
   - S is a (not necessarily finite) set of subjects,
   - O is a (not necessarily finite) set of objects,
@@ -1211,7 +1210,7 @@ Interpretation
   - current ACM $m_q\in M$ where $m_q:S_q\times O_q\rightarrow 2^R$
 - State transitions modeled by $\delta$ based on
   - the current automaton state
-  - an input word $⟨op,(x_1,...,x_k)⟩\in\sum$ where $op$
+  - an input word $\langleop,(x_1,...,x_k)\rangle\in\sum$ where $op$
     - may modify $S_q$ (create a user $x_i$, kill a process $x_i$ etc.),
     - may modify $O_q$ (create/delete a file $x_i$, open a socket $x_i$ etc.),
     - may modify the contents of a matrix cell $m_q(x_i,x_j)$ (enter or remove rights) where $1\leq i,j\leq k$.
@@ -1220,7 +1219,7 @@ Interpretation
 
 ##### State Transition Scheme (STS)
 Using the STS, $\sigma:Q\times\sum\rightarrow Q$ is defined by a set of specifications in the normalized form
-$\sigma(q,⟨op,(x_1,...,x_k)⟩)$=if $r_1\in m_q(x_{s1},x_{o1}) \wedge ... \wedge r_m\in m_q(x_{sm},x_{om})$ then $p_1\circle ...\circle p_n$ where
+$\sigma(q,\langleop,(x_1,...,x_k)\rangle)$=if $r_1\in m_q(x_{s1},x_{o1}) \wedge ... \wedge r_m\in m_q(x_{sm},x_{om})$ then $p_1\circle ...\circle p_n$ where
 - $q=\{S_q,O_q,m_q\}\in Q,op\in OP$
 - $r_1 ...r_m\in R$
 - $x_{s1},...,x_{sm}\in S_q$ and $x_{o1},...,x_{om}\in O_q$ where $s_i$ and $o_i$, $1\leq i\leq m$, are vector indices of the input arguments: $1\leq s_i,o_i\leqk$
@@ -1237,7 +1236,7 @@ Conditions:
 Expressions that need to evaluate "true" for state q as a necessary precondition for command $op$ to be executable (= can be successfully called). 
 
 Primitives:
-Short, formal macros that describe differences between $q$ and $a$ successor state $q′=\sigma(q,⟨op,(x_1 ,...,x_k)⟩)$ that result from a complete execution of op:
+Short, formal macros that describe differences between $q$ and $a$ successor state $q′=\sigma(q,\langleop,(x_1 ,...,x_k)\rangle)$ that result from a complete execution of op:
 - enter r into $m(x_s,x_o)$
 - delete r from $m(x_s,x_o)$
 - create subject $x_s$
@@ -1251,7 +1250,7 @@ Note the atomic semantics: the HRU model assumes that each command successfully 
 How to Design an HRU Security Model:
 1. Model Sets: Subjects, objects, operations, rights $\rightarrow$  define the basic sets $S,O,OP,R$
 2. STS: Semantics of operations (e. g. the future API of the system to model) that modify the protection state $\rightarrow$  define $\sigma$ using the normalized form/programming syntax of the STS
-3. Initialization: Define a well-known initial stateq $0 =⟨S_0 ,O_0 ,m_0 ⟩$ of the system to model
+3. Initialization: Define a well-known initial stateq $0 =\langleS_0 ,O_0 ,m_0 \rangle$ of the system to model
 
 An Open University Information System
 ![](Assets/Systemsicherheit-university-information-system.png)
@@ -1278,7 +1277,7 @@ Model Making
 2. State Transition Scheme
   - Effects of operations on protection state:
     - writeSolution
-      Informal Policy: "A sample solution (...) can be downloaded by students only after submitting their own solution." $\Leftrightarrow$  "If the automaton receives an input ⟨writeSolution,(s,o)⟩ and the conditions are satisfied, it transitions to a state where s is allowed to download the sample solution."
+      Informal Policy: "A sample solution (...) can be downloaded by students only after submitting their own solution." $\Leftrightarrow$  "If the automaton receives an input \langlewriteSolution,(s,o)\rangle and the conditions are satisfied, it transitions to a state where s is allowed to download the sample solution."
       ```
       command writeSolution(s,o) ::= if write $\in$ m(s,o) 
         then 
@@ -1286,7 +1285,7 @@ Model Making
         fi
       ```
     - readSample
-      Informal Policy: "Student solutions can be submitted only before downloading any sample solution." $\Leftrightarrow$  "If the automaton receives an input⟨readSample,(s,o)⟩and the conditions are satisfied, it transitions to a state wheresis denied to submit a solution."
+      Informal Policy: "Student solutions can be submitted only before downloading any sample solution." $\Leftrightarrow$  "If the automaton receives an input\langlereadSample,(s,o)\rangleand the conditions are satisfied, it transitions to a state wheresis denied to submit a solution."
       ```
       command readSample(s,o) ::= if read$\in$ m(s,o)
         then
@@ -1294,7 +1293,7 @@ Model Making
         fi
       ```
 3. Initialization
-  - By model definition: $q_0 =⟨S_0 ,O_0 ,m_0 ⟩$
+  - By model definition: $q_0 =\langleS_0 ,O_0 ,m_0 \rangle$
   - For a course with (initially) three students:
     - $S_0 =\{sAnn, sBob, sChris\}$
     - $O_0 =\{oAnn, oBob, oChris\}$
@@ -1359,7 +1358,7 @@ A state q of an HRU model is called HRU safe with respect to a right $r\in R$ if
 According to Tripunitara and Li [2013], this property (Due to more technical details, it’s called simple-safety there.) is defined as:
 > HRU Safety
 > 
-> For a state $q=\{S_q,O_q,m_q\}\in Q$ and a right $r\in R$ of an HRU model $⟨Q,\sum,\delta,q_0,R⟩$, the predicate $safe(q,r)$ holds iff 
+> For a state $q=\{S_q,O_q,m_q\}\in Q$ and a right $r\in R$ of an HRU model $\langleQ,\sum,\delta,q_0,R\rangle$, the predicate $safe(q,r)$ holds iff 
 > $\forall q′= S_{q′},O_{q′},m_{q′} \in \{\delta^^*(q,\sigma^^*)|\sigma^^*\in\sum^^*\},\forall s\in S_{q′},\forall o\in O_{q′}: r\in m_{q′}(s,o)\Rightarrow s\in S_q \wedge o\in O_q \wedge r\in m_q(s,o)$.
 > 
 > We say that an HRU model is safe w.r.t. r iff $safe(q_0 ,r)$.
@@ -1546,7 +1545,7 @@ Idea:
 Outline: Two-phase-algorithm to analyze $safe(q_0,r)$:
 1. Static phase: Infer knowledge from the model that helps heuristic to make "good" decisions.
     - $\rightarrow$  Runtime: polynomial in model size ($q_0 + STS$)
-2. Simulation phase: The automaton is implemented and, starting with $q_0$, fed with inputs $\sigma=⟨op,x⟩$
+2. Simulation phase: The automaton is implemented and, starting with $q_0$, fed with inputs $\sigma=\langleop,x\rangle$
     - $\rightarrow$  For each $\sigma$, the heuristic has to decide:
       - which operation op to use
       - which vector of arguments x to pass
@@ -1588,11 +1587,11 @@ Goal
 
 Idea [Sandhu, 1992]
 - Adopted from HRU: subjects, objects, ACM, automaton
-- New:leverage the principle of strong typing known from programming
+- New: leverage the principle of strong typing known from programming
 - $\rightarrow$  safety decidability properties relate to type-based restrictions 
 
 How it Works:
-- Foundation of a TAM model is an HRU model $⟨Q,\sum,\delta,q_0 ,R⟩$, where $Q= 2^S\times 2^O\times M$
+- Foundation of a TAM model is an HRU model $\langleQ,\sum,\delta,q_0 ,R\rangle$, where $Q= 2^S\times 2^O\times M$
 - However: $S\subseteq O$, i. e.:
   - all subjects can also act as objects (=targets of an access)
   - $\rightarrow$  useful for modeling e. g. delegation ("s has the right to grant s′ her read-right")
@@ -1604,7 +1603,7 @@ How it Works:
 
 > TAM Security Model
 > 
-> A TAM model is a deterministic automaton $⟨Q,\sum,\delta,q_0 ,T,R⟩$ where
+> A TAM model is a deterministic automaton $\langleQ,\sum,\delta,q_0 ,T,R\rangle$ where
 > - $Q= 2^S\times 2^O\times TYPE\times M$ is the state space where $S$ and $O$ are subjects set and objects set as in HRU, where $S\subseteq O$, $TYPE=\{type|type:O\rightarrow T\}$ is a set of possible type functions, $M$ is the set of possible $ACMs$ as in HRU,
 > - $\sum=OP\times X$ is the (finite) input alphabet where $OP$ is a set of operations as in HRU, $X=O^k$ is a set of $k$-dimensional vectors of arguments (objects) of these operations,
 > - $\delta:Q\times\sum\rightarrow Q$ is the state transition function,
@@ -1760,13 +1759,13 @@ Auxiliary analysis tools for TAM models:
 
 > Parent- and Child-Types
 > 
-> For any operation $op$ with arguments $⟨x_1,t_1⟩,⟨x_2,t_2⟩,...,⟨x_k,t_k⟩$ in an STS of a TAM model, it holds that $t_i, 1\leq i\leq k$
+> For any operation $op$ with arguments $\langlex_1,t_1\rangle,\langlex_2,t_2\rangle,...,\langlex_k,t_k\rangle$ in an STS of a TAM model, it holds that $t_i, 1\leq i\leq k$
 > - is a child type in op if one of its primitives creates a subject or object $x_i$ of type $t_i$,
 > - is a parent type in op if none of its primitives creates a subject or object $x_i$ of type $t_i$.
 
 > Type Creation Graph
 > 
-> The type creation graph $TCG=⟨T,E=T\times T⟩$ for the STS of a TAM model is a directed graph with vertex set $T$ and an $edge⟨u,v⟩\in E$ iff $\exists op\in OP:u$ is a parent type in $op\wedge v$ is a child type in op. 
+> The type creation graph $TCG=\langleT,E=T\times T\rangle$ for the STS of a TAM model is a directed graph with vertex set $T$ and an $edge\langleu,v\rangle\in E$ iff $\exists op\in OP:u$ is a parent type in $op\wedge v$ is a child type in op. 
 
 Example STS:
 ```bash
@@ -1893,7 +1892,7 @@ RBAC Idea
 RBAC Security Model Definition
 > Basic RBAC model: "$RBAC_0$" [Sandhu, 1994]:
 > 
-> An RBAC 0 model is a tuple $⟨U,R,P,S,UA,PA,user,roles⟩$ where
+> An RBAC 0 model is a tuple $\langleU,R,P,S,UA,PA,user,roles\rangle$ where
 > - U is a set of user identifiers,
 > - R is a set of role identifiers,
 > - P is a set of permission identifiers,
@@ -1901,7 +1900,7 @@ RBAC Security Model Definition
 > - $UA\subseteq U\times R$ is a many-to-many user-role-relation,
 > - $PA\subseteq P\times R$ is a many-to-many permission-role-relation,
 > - $user:S\rightarrow U$ is a total function mapping sessions to users,
-> - $roles:S\rightarrow 2^R$ is a total function mapping sessions to sets of roles such that $\forall s\in S:r\in roles(s)\Rightarrow ⟨user(s),r⟩\in UA$.
+> - $roles:S\rightarrow 2^R$ is a total function mapping sessions to sets of roles such that $\forall s\in S:r\in roles(s)\Rightarrow \langleuser(s),r\rangle\in UA$.
 
 Interpretation
 - Users U model people: actual humans that operate the AC system
@@ -1924,7 +1923,7 @@ Note the difference between users in RBAC and subjects in IBAC: the latter usual
 ##### RBAC Access Control Function
 - Authorization in practice: access rules have to be defined for operations on objects (cf. IBAC)
 - IBAC approach: access control function $f:S\times O\times OP\rightarrow \{true,false\}$
-- RBAC approach: implicitly defined through $P\rightarrow$ made explicit: $P\subseteq O\times OP$ is a set of permission tuples $⟨o,op⟩$ where
+- RBAC approach: implicitly defined through $P\rightarrow$ made explicit: $P\subseteq O\times OP$ is a set of permission tuples $\langleo,op\rangle$ where
   - $o\in O$ is an object from a set of object identifiers,
   - $op\in OP$ is an operation from a set of operation identifiers.
 - We may now define the $ACF$ for $RBAC_0$:
@@ -1932,7 +1931,7 @@ Note the difference between users in RBAC and subjects in IBAC: the latter usual
 > $RBAC_0$ ACF
 > 
 > $f_{RBAC_0}:U \times O\times OP\rightarrow\{true,false\}$ where
-> $f_{RBAC_0} (u,o,op)= \begin{cases} true, \quad \exists r\in R,s\in S:u=user(s)\wedge r\in roles(s)\wedge ⟨⟨o,op⟩,r⟩ \in PA \\ false, \quad\text{ otherwise\end{cases}$.
+> $f_{RBAC_0} (u,o,op)= \begin{cases} true, \quad \exists r\in R,s\in S:u=user(s)\wedge r\in roles(s)\wedge \langle\langleo,op\rangle,r\rangle \in PA \\ false, \quad\text{ otherwise\end{cases}$.
 
 ##### RBAC96 Model Family
 Sandhu et al. [1996]
@@ -1946,12 +1945,12 @@ RBAC 1 : Role Hierarchies
 - Observation: Roles in organizations often overlap:
   - Users in different roles havecommon permissions: "Any project manager must have the same permissions as any developer in the same project."
   - Approach 1: disjoint permissions for roles proManager and proDev $\rightarrow$ any proManager user must always have proDev assigned and activated for any of her workflows $\rightarrow$ role assignment redundancy
-  - Approach 2: overlapping permissions: $\forall p\in P:⟨p,proDev⟩ \in PA\Rightarrow ⟨p,proManager⟩ \in PA\rightarrow$ any permission for project developers must be assigned to two different roles $\rightarrow$ role definition redundancy
+  - Approach 2: overlapping permissions: $\forall p\in P:\langlep,proDev\rangle \in PA\Rightarrow \langlep,proManager\rangle \in PA\rightarrow$ any permission for project developers must be assigned to two different roles $\rightarrow$ role definition redundancy
   - Two types of redundancy $\rightarrow$ undermines scalability goal of RBAC!
 - Solution
   - Role hierarchy: Eliminates role definition redundancy through permissions inheritance 
 - Modeling Role Hierarchies
-  - Lattice here: $⟨R,\leq⟩$
+  - Lattice here: $\langleR,\leq\rangle$
   - Hierarchy expressed through dominance relation: $r_1\leq r_2 \Leftrightarrow r_2$ inherits any permissions from $r_1$
   - Interpretation
     - Reflexivity: any role consists of ("inherits") its own permissions $\forall r\in R:r\leq r$
@@ -1960,9 +1959,9 @@ RBAC 1 : Role Hierarchies
 
 > $RBAC_1$ Security Model
 > 
-> An $RBAC_1$ model is a tuple $⟨U,R,P,S,UA,PA,user,roles,RH⟩$ where
+> An $RBAC_1$ model is a tuple $\langleU,R,P,S,UA,PA,user,roles,RH\rangle$ where
 > - $U,R,P,S,UA,PA$ and $user$ are defined as for $RBAC_0$,
-> - $RH\subseteq R\times R$ is a partial order that represents a role hierarchy where $⟨r,r′⟩\in RH\Leftrightarrow r\leq r′$ such that $⟨R,\leq⟩$ is a lattice,
+> - $RH\subseteq R\times R$ is a partial order that represents a role hierarchy where $\langler,r′\rangle\in RH\Leftrightarrow r\leq r′$ such that $\langleR,\leq\rangle$ is a lattice,
 > - roles is defined as for $RBAC_0$, while additionally holds: $\forall r,r′\in R,\exists s\in S:r\leq r′\wedge r′\in roles(s)\Rightarrow r\in roles(s)$.
 
 In prose: When activating any role that inherits permissions from another role, this other role isautomatically(by definition) active as well.
@@ -1982,8 +1981,8 @@ RBAC 2 : Constraints
   - Temporal constraints: time/date/week/... of role activation (advanced RBAC models, e.g. Bertino et al. [2001])
   - Factual constraints: assigning or activating roles for specific permissions causally depends on any roles for a certain, other permissions (e.g. only allow user $u$ to activate auditingDelegator role if audit payments permission is usable by $u$)
 - Modeling Constraints:(idea only)
-  - $RBAC_2 : ⟨U,R,P,S,UA,PA,user,roles,RE⟩$
-  - $RBAC_3 : ⟨U,R,P,S,UA,PA,user,roles,RH,RE⟩$
+  - $RBAC_2 : \langleU,R,P,S,UA,PA,user,roles,RE\rangle$
+  - $RBAC_3 : \langleU,R,P,S,UA,PA,user,roles,RH,RE\rangle$
   - where $RE$ is aset of logical expressions over the other model components (such as $UA,PA,user,roles$).
 
 ##### RBAC Summary
@@ -2025,7 +2024,7 @@ Idea: Generalizing the principle of indirection already known from RBAC
 - $f_{IBAC}:S\times O\times OP\rightarrow\{true,false\}$
 - $f_{RBAC}:U\times O\times OP\rightarrow\{true,false\}$
 - $f_{ABAC}:S\times O\times OP\rightarrow\{true,false\}$
-- $\rightarrow$ Evaluates attribute values for $⟨s,o,op⟩$, e. g.: $f_{ABAC}(user,game,download)=game.pegi \leq user.age$
+- $\rightarrow$ Evaluates attribute values for $\langles,o,op\rangle$, e. g.: $f_{ABAC}(user,game,download)=game.pegi \leq user.age$
 
 ##### ABAC Security Model
 - Note: There is no such thing (yet) like a standard ABAC model (such as RBAC96).
@@ -2034,7 +2033,7 @@ Idea: Generalizing the principle of indirection already known from RBAC
 
 > ABAC Security Model
 > 
-> An ABAC security model is a tuple $⟨S,O,AS,AO,attS,attO,OP,AAR⟩$ where
+> An ABAC security model is a tuple $\langleS,O,AS,AO,attS,attO,OP,AAR\rangle$ where
 > - $S$ is a set of subject identifiers and $O$ is a set of object identifiers,
 > - $A_S=V_S^1 \times...\times V_S^n$ is a set of subject attributes, where each attribute is an n-tuple of values from arbitrary domains $V_S^i$, $1\leq i \leq n$,
 > - $A_O=V_O^1\times...\times V_O^m$ is a corresponding set of object attributes, based on values from arbitrary domains $V_O^j$, $1\leq j \leq m$,
@@ -2057,7 +2056,7 @@ With conditions from $\Phi$ for executing operations in $OP,AAR$ determines the 
 > ABAC ACF
 >
 > $f_{ABAC}:S\times O\times OP\rightarrow\{true,false\}$ where
-> $f_{ABAC}(s,o,op)= \begin{cases} true, \quad\exists ⟨\phi,op⟩\in AAR:\phi(s,o)=true\\ false, \quad\text{ otherwise }$.
+> $f_{ABAC}(s,o,op)= \begin{cases} true, \quad\exists \langle\phi,op\rangle\in AAR:\phi(s,o)=true\\ false, \quad\text{ otherwise }$.
 > We call $\phi$ an authorization predicate for $op$.
 
 Example 1: Online Game Store
@@ -2069,7 +2068,7 @@ Example 1: Online Game Store
 - $att_S:S\rightarrow A_S$: assigns age attribute to clients
 - $att_O:O\rightarrow A_O$: assigns PEGI rating attribute to games
 - $OP=\{download\}$: sole operation
-- One simpleauthorization rule: $AAR=\{⟨att_O(o) \leq att_S(s),download⟩\}$
+- One simpleauthorization rule: $AAR=\{\langleatt_O(o) \leq att_S(s),download\rangle\}$
 
 Example 2: Document Management System
 - Policy goal: Enforce document confidentiality
@@ -2080,7 +2079,7 @@ Example 2: Document Management System
 - $att_S:S\rightarrow A_S$: assigns trustworthiness value to user (e. g. based on management level)
 - $att_O:O\rightarrow A_O$: assigns confidentiality level to documents
 - $OP=\{read,write,append,...\}$: operations
-- Authorization rules: $AAR=\{⟨att_O(o)\leq att_S(s),read⟩,⟨att_S(s) \leq att_O(o),write⟩,...\}$
+- Authorization rules: $AAR=\{\langleatt_O(o)\leq att_S(s),read\rangle,\langleatt_S(s) \leq att_O(o),write\rangle,...\}$
 
 ##### ABAC Summary
 - Scalability
@@ -2094,10 +2093,6 @@ Example 2: Document Management System
 - Limited dynamic analyses w.r.t. automaton-based models
   - cf. HRU:safety properties?
   - solution approach: automaton-based ABAC model ...
-
-
-
-
 
 ### Information Flow Models
 Abstraction Level of AC Models: rules about subjects accessing objects
@@ -2121,10 +2116,10 @@ Lattices (refreshment)
 
 > Self-Study Task
 >
-> I work on six days in a $week:W=\{Mo,Tu,We,Th,Fr,Sa\}$. On each of these days, I can decide to procrastinate work from daywtow′: the same or a day later that week $(w\rightarrow w′)$. For a lattice $⟨W,\rightarrow⟩$:
+> I work on six days in a $week:W=\{Mo,Tu,We,Th,Fr,Sa\}$. On each of these days, I can decide to procrastinate work from daywtow′: the same or a day later that week $(w\rightarrow w′)$. For a lattice $\langleW,\rightarrow\rangle$:
 > - Draw the lattice as a graph.
 > - Determine $inf_W$ and $sup_W$.
-> Let’s assume that Saturday is exclusively reserved for work I was unable to do on Monday. Is $⟨W,\rightarrow⟩$ still a lattice now? Why (not)?
+> Let’s assume that Saturday is exclusively reserved for work I was unable to do on Monday. Is $\langleW,\rightarrow\rangle$ still a lattice now? Why (not)?
 
 Implementation of Information Flow Models
 - Background: Information flows and read/write operations are isomorphic
@@ -2143,10 +2138,10 @@ On of the first information flow models [Denning, 1976]:
 
 > Denning Security Model
 > 
-> A Denning information flow model is a tuple $⟨S,O,L,cl,\bigoplus⟩$ where
+> A Denning information flow model is a tuple $\langleS,O,L,cl,\bigoplus\rangle$ where
 > - S is a set of subjects,
 > - O is a set of objects,
-> - $L=⟨C,\leq⟩$ is a lattice where
+> - $L=\langleC,\leq\rangle$ is a lattice where
 >   - C is a set of classes,
 >   - $\leq$ is a dominance relation wherec $\leq d \Leftrightarrow$ information may flow from c to d,
 > - $cl:S\cup O\rightarrow C$ is a classification function, and
@@ -2159,7 +2154,7 @@ Interpretation
 - Classification function $cl$ assigns a class to each entity, e.g. $cl(cox)=Physician$
 - Reclassification function $\bigoplus$ determines which class an entity is assigned after receiving certain a information flow; e.g. for Physician to Patient: $\bigoplus (Physician,Patient)=sup_{\{Physician,Patient\}}$
 
-Example $⟨S,O,L,cl,\bigoplus⟩$ mit $L=⟨C,\leq⟩$:
+Example $\langleS,O,L,cl,\bigoplus\rangle$ mit $L=\langleC,\leq\rangle$:
 - $S=O=\{cox,kelso,carla,...\}$
 - $C=\{Physician, Anamnesis, Pharmacy, Medication,...\}$
 - dominance relation $\leq$:
@@ -2193,7 +2188,7 @@ Modeling Confidentiality Levels
 - Note: In contrast du Denning, $\leq$ in MLS models is a total order.
 
 Example
-- Lattice $⟨\{public,confidential,secret\},\leq⟩$ where $\leq=\{⟨public,confidential⟩,⟨confidential,secret⟩\}$
+- Lattice $\langle\{public,confidential,secret\},\leq\rangle$ where $\leq=\{\langlepublic,confidential\rangle,\langleconfidential,secret\rangle\}$
 - Objects $O=\{ProjectXFiles, Timetable, BulletinBoard\}$
 - Subjects $S=\{Ann, Bob\}$
 - Classification of objects (classification level): 
@@ -2226,7 +2221,7 @@ Incorporates impacts on model design ...
 
 Idea:
 - entity sets S,O
-- $lattice⟨C,\leq⟩$ defines information flows by
+- $lattice\langleC,\leq\rangle$ defines information flows by
   - C: classification/clearance levels
   - $\leq$: hierarchy of trust
 - classification function $cl$ assigns
@@ -2236,9 +2231,9 @@ Idea:
 
 > BLP Security Model
 >
-> A BLP model is a deterministic automaton $⟨S,O,L,Q,\sum,\sigma,q_0,R⟩$ where
+> A BLP model is a deterministic automaton $\langleS,O,L,Q,\sum,\sigma,q_0,R\rangle$ where
 > - S and O are (static) subject and object sets,
-> - $L=⟨C,\leq⟩$ is a (static) lattice consisting of
+> - $L=\langleC,\leq\rangle$ is a (static) lattice consisting of
 >   - the classes set C,
 >   - the dominance relation $\leq$,
 > - $Q=M\times CL$ is the state space where
@@ -2265,7 +2260,7 @@ Interpretation
 Given an exemplary BLP model where
 - $S=\{s_1,s_2\}, O=\{o_1,o_2\}$
 - $C=\{public,confidential\}$
-- $\leq=\{⟨public,confidential⟩\}$
+- $\leq=\{\langlepublic,confidential\rangle\}$
 - $cl(s_1)=cl(o_1)=public$, $cl(s_2)=cl(o_2)=confidential$
 - ![](Assets/Systemsicherheit-lattice-vs-acm.png)
 - Observation: L and m are isomorphic $\rightarrow$ redundancy?
@@ -2295,10 +2290,10 @@ Consequence: If we can prove this property for a given model, then its implement
 ##### BLP Security
 Help Definitions
 > Read-Security Rule
-> A BLP model state $⟨m,cl⟩$ is called read-secure iff $\forall s\in S,o\in O:read\in m(s,o)\Rightarrow cl(o) \leq cl(s)$.
+> A BLP model state $\langlem,cl\rangle$ is called read-secure iff $\forall s\in S,o\in O:read\in m(s,o)\Rightarrow cl(o) \leq cl(s)$.
 
 > Write-Security Rule
-> A BLP model state $⟨m,cl⟩$ is called write-secure iff $\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)$.
+> A BLP model state $\langlem,cl\rangle$ is called write-secure iff $\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)$.
 
 Note: In some literature, read-security is called "simple security", while write-security is called "^*-property". Reasons are obscure-historical.
 
@@ -2321,9 +2316,9 @@ Auxiliary Definition: The Basic Security Theorem for BLP (BLP BST)
 
 > The BLP Basic Security Theorem
 >
-> A BLP model $⟨S,O,L,Q,\sum,\sigma,q_0,R⟩$ is secure iff both of the following holds:
+> A BLP model $\langleS,O,L,Q,\sum,\sigma,q_0,R\rangle$ is secure iff both of the following holds:
 > 1. $q_0$ is secure
-> 2. $\sigma$ is build such that for each state q reachable from $q_0$ by a finite input sequence, where $q=⟨m,cl⟩$ and $q′=\sigma(q,\delta)=m′,cl′,\forall s\in S, o\inO,\delta\in\sum$ the following holds:
+> 2. $\sigma$ is build such that for each state q reachable from $q_0$ by a finite input sequence, where $q=\langlem,cl\rangle$ and $q′=\sigma(q,\delta)=m′,cl′,\forall s\in S, o\inO,\delta\in\sum$ the following holds:
 >   - Read-security conformity:
 >     - read $\not\in m(s,o)\wedge read\in m′(s,o)\Rightarrow cl′(o)\leq cl′(s)$
 >     - read $\in m(s,o) \wedge\lnot (cl′(o)\leq cl′(s)) \Rightarrow read \not\in m′(s,o)$
@@ -2333,7 +2328,7 @@ Auxiliary Definition: The Basic Security Theorem for BLP (BLP BST)
 
 Proof of Read Security
 - Technique: Term rewriting
-  Let $q=\sigma*(q_0 ,\sigma^+),\sigma^+\in\sigma^+,q′=\delta(q,\sigma),\sigma\in\sigma,s\in S,o\in O$. With $q=⟨m,cl⟩$ and $q′=m′,cl′$, the BLP BST for read-security is
+  Let $q=\sigma*(q_0 ,\sigma^+),\sigma^+\in\sigma^+,q′=\delta(q,\sigma),\sigma\in\sigma,s\in S,o\in O$. With $q=\langlem,cl\rangle$ and $q′=m′,cl′$, the BLP BST for read-security is
   - (a1) $read \not\in m(s,o) \wedge read\in m′(s,o) \Rightarrow cl′(o) \leq cl′(s)$
   - (a2) $read \in m(s,o) \wedge\lnot (cl′(o)\leq cl′(s)) \Rightarrow read \not\in m′(s,o)$
   - Let’s first introduce some convenient abbreviations for this:
@@ -2356,10 +2351,10 @@ Idea: Encode an additional, more fine-grained type of access restriction in the 
 - Comp: set of compartments
 - $co:S\cup O\rightarrow 2^{Comp}$: assigns a set of compartments to an entity as an (additional) attribute
 - Refined state security rules:
-  - $⟨m,cl,co⟩$ is read-secure $\Leftrightarrow\forall s\in S,o\in O:read \in m(s,o)\Rightarrow cl(o)\leq cl(s)\wedge co(o) \subseteq co(s)$
-  - $⟨m,cl,co⟩$ is write-secure $\Leftrightarrow\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)\wedge co(o) \subseteq co(s)$
-  - Good ol’ BLP: $⟨S,O,L,Q,\sigma,\delta,q_0⟩$
-  - With compartments: $⟨S,O,L,Comp,Q_{co},\sigma,\delta,q_0⟩ where $Q_{co}=M\times CL\times CO$ and $CO=\{co|co:S\cup O\rightarrow 2^{Comp}\}$
+  - $\langlem,cl,co\rangle$ is read-secure $\Leftrightarrow\forall s\in S,o\in O:read \in m(s,o)\Rightarrow cl(o)\leq cl(s)\wedge co(o) \subseteq co(s)$
+  - $\langlem,cl,co\rangle$ is write-secure $\Leftrightarrow\forall s\in S,o\in O:write\in m(s,o)\Rightarrow cl(s)\leq cl(o)\wedge co(o) \subseteq co(s)$
+  - Good ol’ BLP: $\langleS,O,L,Q,\sigma,\delta,q_0\rangle$
+  - With compartments: $\langleS,O,L,Comp,Q_{co},\sigma,\delta,q_0\rangle where $Q_{co}=M\times CL\times CO$ and $CO=\{co|co:S\cup O\rightarrow 2^{Comp}\}$
 
 Example
 - Let $co(o)=secret,co(o)=airforce$
@@ -2427,8 +2422,6 @@ Windows Vista UAC
 - Consequence: every file, process, ... created by the web browser is classified low $\rightarrow$ cannot violate integrity of system- and user-objects
 - Manual user involvement ($\rightarrow$ DAC portion of the policy):resolving intended exceptions, e. g. to install trusted application software
 
-
-
 ### Non-interference Models
 Problem No. 1: Covert Channels
 
@@ -2484,7 +2477,7 @@ $\rightarrow$ NI Model Abstractions:
 - Effects of actions on domains defined by a mapping $dom:A\rightarrow 2^D$
 
 > NI Security Model
-> An NI model is a det. automaton $⟨Q,\sigma,\delta,\lambda,q_0,D,A,dom,≈_{NI},Out⟩$ where
+> An NI model is a det. automaton $\langleQ,\sigma,\delta,\lambda,q_0,D,A,dom,≈_{NI},Out\rangle$ where
 > - Q is the set of (abstract) states,
 > - $\sigma=A$ is the input alphabet where A is the set of (abstract) actions,
 > - $\delta:Q\times\sigma\rightarrow Q$ is the state transition function,
@@ -2527,10 +2520,10 @@ Before we define what NI-secure is, assume we could remove all actions from an a
 
 > NI Security
 >
-> For a state $q\in Q$ of an NI model $⟨Q,\sigma,\delta,\lambda,q_0,D,A,dom,≈_{NI},Out⟩$, the predicate ni-secure(q) holds iff $\forall a\in A,\forall a^*\in A^*:\lambda (\delta^*(q,a^*),a)=\lambda(\delta^*(q,purge(a^*,dom(a))),a)$
+> For a state $q\in Q$ of an NI model $\langleQ,\sigma,\delta,\lambda,q_0,D,A,dom,≈_{NI},Out\rangle$, the predicate ni-secure(q) holds iff $\forall a\in A,\forall a^*\in A^*:\lambda (\delta^*(q,a^*),a)=\lambda(\delta^*(q,purge(a^*,dom(a))),a)$
 
 Interpretation
-1. Running an NI model on $⟨q,a^*⟩$ yields $q′=\delta^*(q,a^*)$.
+1. Running an NI model on $\langleq,a^*\rangle$ yields $q′=\delta^*(q,a^*)$.
 2. Running the model on the purged input sequence so that it contains only actions that, according to $≈_{NI}$, actually have impact on $dom(a)$ yields $q′_{clean}=\delta^*(q,purge(a^*,dom(a)))$
 3. If $\forall a\in A:\lambda(q′,a)=\lambda(q′_{clean},a)$, than the model is called NI-secure w.r.t. q($ni-secure(q)$).
 
@@ -2592,22 +2585,22 @@ Example
 
 Representation of Conflict Classes
 - Client company data: object set O
-- Competition: conflict relation $C\subseteq O\times O:⟨o,o′⟩\in C\Leftrightarrow o$ and $o′$ belong to competing companies (non-reflexive, symmetric, generally not transitive)
-- In terms of ABAC:object attribute $att_O:O\rightarrow 2^O$, such that $att_O(o)=\{o′\in O|⟨o,o′⟩\in C\}$.
+- Competition: conflict relation $C\subseteq O\times O:\langleo,o′\rangle\in C\Leftrightarrow o$ and $o′$ belong to competing companies (non-reflexive, symmetric, generally not transitive)
+- In terms of ABAC:object attribute $att_O:O\rightarrow 2^O$, such that $att_O(o)=\{o′\in O|\langleo,o′\rangle\in C\}$.
 
 Representation of a Consultant’s History
 - Consultants: subject set S
-- History relation $H\subseteq S\times O:⟨s,o⟩\in H\Leftrightarrow s$ has previously consulted $o$
-- In terms of ABAC: subject attribute $att_S:S\rightarrow 2^O$, such that $att_S(s)=\{o\in O|⟨s,o⟩\in H\}$.
+- History relation $H\subseteq S\times O:\langles,o\rangle\in H\Leftrightarrow s$ has previously consulted $o$
+- In terms of ABAC: subject attribute $att_S:S\rightarrow 2^O$, such that $att_S(s)=\{o\in O|\langles,o\rangle\in H\}$.
 
 > Brewer-Nash Security Model
 > 
-> The Brewer-Nash model of the CW policy is a det. $automaton⟨S,O,Q,\sigma,\delta,q_0,R⟩$ where
+> The Brewer-Nash model of the CW policy is a det. $automaton\langleS,O,Q,\sigma,\delta,q_0,R\rangle$ where
 > - $S$ and $O$ are sets of subjects (consultants) and (company data) objects,
 > - $Q=M\times 2^C\times 2^H$ is the state space where
 >   - $M=\{m|m:S\times O\rightarrow 2^R\}$ is the set ofpossible ACMs,
->   - $C\subseteq O\times O$ is the conflict relation: $⟨o,o′⟩\in C\Leftrightarrow o$ and $o′$ are competitors,
->   - $H\subseteq S\times O$ is the history relation: $⟨s,o⟩\in H\Leftrightarrow s$ has previously
+>   - $C\subseteq O\times O$ is the conflict relation: $\langleo,o′\rangle\in C\Leftrightarrow o$ and $o′$ are competitors,
+>   - $H\subseteq S\times O$ is the history relation: $\langles,o\rangle\in H\Leftrightarrow s$ has previously
 consulted $o$,
 > - $\sigma=OP \times X$ is the input alphabet where
 >   - $OP=\{read,write\}$ is a set of operations,
@@ -2618,26 +2611,26 @@ consulted $o$,
 
 ![](Assets/Systemsicherheit-brewer-example-2.png)
 At the time depicted:
-- Conflict relation: $C=\{⟨HSBC,DB⟩,⟨HSBC,Citi⟩,⟨DB,Citi⟩,⟨Shell,Esso⟩\}$
-- History relation: $H=\{⟨Ann,DB⟩,⟨Bob,Citi⟩,⟨Bob,Esso⟩\}$
+- Conflict relation: $C=\{\langleHSBC,DB\rangle,\langleHSBC,Citi\rangle,\langleDB,Citi\rangle,\langleShell,Esso\rangle\}$
+- History relation: $H=\{\langleAnn,DB\rangle,\langleBob,Citi\rangle,\langleBob,Esso\rangle\}$
 
 
 ##### Brewer-Nash STS
 - Read (here: similar to HRU notation)
-    $command read(s,o)::=if read \in m(s,o) \wedge\forall ⟨o′,o⟩\in C:⟨s,o′⟩\not\in H$
+    $command read(s,o)::=if read \in m(s,o) \wedge\forall \langleo′,o\rangle\in C:\langles,o′\rangle\not\in H$
     $then$
-      $H:=H\cup\{⟨s,o⟩\}$
+      $H:=H\cup\{\langles,o\rangle\}$
     $fi$
 - Write
-    $command write(s,o)::=if write \in m(s,o) \wedge\forall o′\in O:o'\not=o \Rightarrow ⟨s,o′⟩\not\in H$
+    $command write(s,o)::=if write \in m(s,o) \wedge\forall o′\in O:o'\not=o \Rightarrow \langles,o′\rangle\not\in H$
     $then$
-      $H:=H\cup\{⟨s,o⟩\}$
+      $H:=H\cup\{\langles,o\rangle\}$
     $fi$
 
 Not shown: Discretionary policy portion $\rightarrow$ modifications in m to enable fine-grained rights management.
 
 Restrictiveness
-- Write Command: s is allowed to write $o\Leftrightarrow write\in m(s,o)\wedge\forall o′\in O:o′\not=o\Rightarrow⟨s,o′⟩\not\in H$
+- Write Command: s is allowed to write $o\Leftrightarrow write\in m(s,o)\wedge\forall o′\in O:o′\not=o\Rightarrow\langles,o′\rangle\not\in H$
 - Why so restrictive? $\rightarrow$ No transitive information flow!
   - $\rightarrow$ s must never have previously consulted any other client!
   - $\Rightarrow$ any consultant is stuck with her client on first read access
@@ -2651,8 +2644,8 @@ Instantiation of a Model
   - $H_0 =\varnothing$ 
 
 > Secure State
-> $\forall o,o′ \in O,s\in S:⟨s,o⟩\in H_q\wedge⟨s,o′⟩\in H_q\Rightarrow⟨o,o′⟩\not\in C_q$
-> Corollary: $\forall o,o′\in O,s\in S:⟨o,o′⟩\in C_q\wedge⟨s,o⟩\in H_q\Rightarrow ⟨s,o′⟩\not\in H_q$
+> $\forall o,o′ \in O,s\in S:\langles,o\rangle\in H_q\wedge\langles,o′\rangle\in H_q\Rightarrow\langleo,o′\rangle\not\in C_q$
+> Corollary: $\forall o,o′\in O,s\in S:\langleo,o′\rangle\in C_q\wedge\langles,o\rangle\in H_q\Rightarrow \langles,o′\rangle\not\in H_q$
 
 > Secure Brewer-Nash Model
 > Similar to "secure BLP model".
@@ -2689,7 +2682,7 @@ Professionalization
 
 #### The Least-Restrictive-CW Model
 Restrictiveness of Brewer-Nash Model:
-- If $⟨o_i,o_k⟩\in C$: no transitive information flow $o_i \rightarrow o_j\rightarrow o_k$, i.e. consultant(s) of $o_i$ must never write to any $o_j\not=o_i$
+- If $\langleo_i,o_k\rangle\in C$: no transitive information flow $o_i \rightarrow o_j\rightarrow o_k$, i.e. consultant(s) of $o_i$ must never write to any $o_j\not=o_i$
 - This is actually more restrictive than necessary: $o_j\rightarrow o_k$ and afterwards $o_i\rightarrow o_j$ would be fine! (no information can actually flow from $o_i$ to $o_k$)
 - In other words: Criticality of an IF depends on existence of earlier flows.
 
@@ -2701,12 +2694,12 @@ Approach:
 
 > LR-CW Model
 >
-> The Least-Restrictive model of the CW policy is a deterministic $automaton ⟨S,O,F,\zeta,Q,\sigma,\delta,q_0⟩$ where
+> The Least-Restrictive model of the CW policy is a deterministic $automaton \langleS,O,F,\zeta,Q,\sigma,\delta,q_0\rangle$ where
 > - S and O are sets of subjects (consultants) and data objects,
 > - F is the set of client companies,
 > - $\zeta:O\rightarrow F$ ("zeta") is a function mapping each object to its company,
 > - $Q=2^C \times 2^H$ is the state space where
->   - $C\subseteq F\times F$ is the conflict relation: $⟨f,f′⟩\in C\Leftrightarrow f$ and $f′$ are competitors,
+>   - $C\subseteq F\times F$ is the conflict relation: $\langlef,f′\rangle\in C\Leftrightarrow f$ and $f′$ are competitors,
 >   - $H=\{Z_e\subseteq F|e\in S\cup O\}$ is the history set: $f\in Z_e\Leftrightarrow e$ contains information about $f(Z_e$ is the "history label" of $e$),
 > - $\sigma=OP\times X$ is the input alphabet where
 >   - $OP=\{read,write\}$ is the set of operations,
@@ -2725,10 +2718,10 @@ Approach:
 Inside the STS
 - a reading operation
   - requires that no conflicting information is accumulated in the subject potentially increases the amount of information in the subject 
-  - command read(s,o) ::= if $\forall f,f′\in Z_s \cup Z_o:⟨f,f′⟩\not\in C$ then $Z_s:=Z_s\cup Z_o$ fi
+  - command read(s,o) ::= if $\forall f,f′\in Z_s \cup Z_o:\langlef,f′\rangle\not\in C$ then $Z_s:=Z_s\cup Z_o$ fi
 - a writing operation
   - requires that no conflicting information is accumulated in the object potentially increases the amount of information in the object
-  - command write(s,o) ::= if $\forall f,f′\in Z_s\cup Z_o:⟨f,f′⟩\not\in C$ then $Z_o:=Z_o\cup Z_s$ fi
+  - command write(s,o) ::= if $\forall f,f′\in Z_s\cup Z_o:\langlef,f′\rangle\not\in C$ then $Z_o:=Z_o\cup Z_s$ fi
 
 Model Achievements
 - Applicability: more writes allowed in comparison to Brewer-Nash (note that this still complies with the general CW policy)
@@ -2749,7 +2742,7 @@ Conflict relation is
 - symmetric: competition is always mutual
 - not necessarily transitive: any company might belong to more than one conflict class $\Rightarrow$ if a competes with b and b competes with c, then a and c might still be in different conflict classes (= no competitors) $\rightarrow$ Cannot be modeled by a lattice!
 
-Reminder:In a lattice$⟨C,\leq⟩$,$\leq$ is a partial order:
+Reminder:In a lattice$\langleC,\leq\rangle$,$\leq$ is a partial order:
 1. reflexive $(\forall a\in C:a \leq a)$
 2. anti-symmetric $(\forall a,b \in C:a \leq b \wedge b \leq a\Rightarrow a=b)$
 3. transitive $(a,b,c \in C:a \leq b \wedge b \leq c \Rightarrow a \leq c)$
@@ -2815,37 +2808,37 @@ What we have
 ![](Assets/Systemsicherheit-model-family.png)
 
 In Formal Words ...
-- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩$
-- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩$
-- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩$
-- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩$
-- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩$
-- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+- HRU: $\langle Q, \sum , \delta, q_0  , R \rangle$
+- $DRBAC_0$ : $\langle Q, \sum , \delta, q_0  , R, P, PA \rangle$
+- DABAC: $\langle A , Q ,\sum , \delta, q_0  \rangle$
+- TAM: $\langle Q , \sum , \delta, q_0  , T, R \rangle$
+- BLP: $\langle S, O, L, Q , \sum , \delta, q_0  , R \rangle$
+- NI: $\langle Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out \rangle$
 
 Core Model (Common Model Core)
-- HRU: $⟨ Q, \sum , \delta, q_0  , \not R ⟩$
-- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , \not R, \not P, \not PA ⟩$
-- DABAC: $⟨ \not A , Q ,\sum , \delta, q_0  ⟩$
-- TAM: $⟨ Q , \sum , \delta, q_0  , \not T, \not R ⟩$
-- BLP: $⟨ \not S, \not O, \not L, Q , \sum , \delta, q_0  , \not R ⟩$
-- NI: $⟨ Q , \sum , \delta, \not \lambda ,q_0  , \not D, \not A, \not dom, \not =_{NI} , \not Out ⟩$
-- $\rightarrow  ⟨ Q ,\sum , \delta, q_0  ⟩$
+- HRU: $\langle Q, \sum , \delta, q_0  , \not R \rangle$
+- $DRBAC_0$ : $\langle Q, \sum , \delta, q_0  , \not R, \not P, \not PA \rangle$
+- DABAC: $\langle \not A , Q ,\sum , \delta, q_0  \rangle$
+- TAM: $\langle Q , \sum , \delta, q_0  , \not T, \not R \rangle$
+- BLP: $\langle \not S, \not O, \not L, Q , \sum , \delta, q_0  , \not R \rangle$
+- NI: $\langle Q , \sum , \delta, \not \lambda ,q_0  , \not D, \not A, \not dom, \not =_{NI} , \not Out \rangle$
+- $\rightarrow  \langle Q ,\sum , \delta, q_0  \rangle$
 
 Core Specialization
-- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow Q = 2^S \times  2^O \times M$
-- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow Q = 2^U\times 2^{UA}\times 2^S \times  USER \times  ROLES$
-- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow Q = 2^S\times 2^O \times M\times ATT$
-- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow Q = 2^S\times 2^O\times TYPE \times M$
-- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow Q = M \times CL$
-- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩$
+- HRU: $\langle Q, \sum , \delta, q_0  , R \rangle \Rightarrow Q = 2^S \times  2^O \times M$
+- $DRBAC_0$ : $\langle Q, \sum , \delta, q_0  , R, P, PA \rangle \Rightarrow Q = 2^U\times 2^{UA}\times 2^S \times  USER \times  ROLES$
+- DABAC: $\langle A , Q ,\sum , \delta, q_0  \rangle \Rightarrow Q = 2^S\times 2^O \times M\times ATT$
+- TAM: $\langle Q , \sum , \delta, q_0  , T, R \rangle \Rightarrow Q = 2^S\times 2^O\times TYPE \times M$
+- BLP: $\langle S, O, L, Q , \sum , \delta, q_0  , R \rangle \Rightarrow Q = M \times CL$
+- NI: $\langle Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out \rangle$
 
 Core Extensions
-- HRU: $⟨ Q, \sum , \delta, q_0  , R ⟩ \Rightarrow R$
-- $DRBAC_0$ : $⟨ Q, \sum , \delta, q_0  , R, P, PA ⟩ \Rightarrow R,P,PA$
-- DABAC: $⟨ A , Q ,\sum , \delta, q_0  ⟩ \Rightarrow A$
-- TAM: $⟨ Q , \sum , \delta, q_0  , T, R ⟩ \Rightarrow T,R$
-- BLP: $⟨ S, O, L, Q , \sum , \delta, q_0  , R ⟩ \Rightarrow S,O,L,R$
-- NI: $⟨ Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out ⟩ \Rightarrow \lambda,D,A,dom,=_{NI},Out$
+- HRU: $\langle Q, \sum , \delta, q_0  , R \rangle \Rightarrow R$
+- $DRBAC_0$ : $\langle Q, \sum , \delta, q_0  , R, P, PA \rangle \Rightarrow R,P,PA$
+- DABAC: $\langle A , Q ,\sum , \delta, q_0  \rangle \Rightarrow A$
+- TAM: $\langle Q , \sum , \delta, q_0  , T, R \rangle \Rightarrow T,R$
+- BLP: $\langle S, O, L, Q , \sum , \delta, q_0  , R \rangle \Rightarrow S,O,L,R$
+- NI: $\langle Q , \sum , \delta, \lambda ,q_0  , D, A, dom, =_{NI} , Out \rangle \Rightarrow \lambda,D,A,dom,=_{NI},Out$
 - $\rightarrow R, P, PA, A , T , S , O , L , D , dom , =_{NI} , ...$
 
 Glue
@@ -2955,8 +2948,8 @@ Tools
 
 ##### Example: Specification of a DRBAC_0 Model
 $DRBAC_0 = RBAC_0 + Automaton \rightarrow$
-$RBAC_0 = ⟨ U , R , P , S , UA , PA , user , roles ⟩$
-$DRBAC_0 = ⟨ Q , \sum, \delta, q_0 , R , P , PA ⟩$
+$RBAC_0 = \langle U , R , P , S , UA , PA , user , roles \rangle$
+$DRBAC_0 = \langle Q , \sum, \delta, q_0 , R , P , PA \rangle$
 $Q = 2^U \times 2^S \times 2^{UA}\times ...$
 
 Policy Specification in EBNF
@@ -4449,7 +4442,7 @@ Principal Architecture Components
     - Based on key shared between TGS and respective server
     - Result: ticket(s) for server(s)
 - Kerberos database
-  - Contains for each user and server a mapping $⟨user, server⟩\rightarrow$ authentication key
+  - Contains for each user and server a mapping $\langleuser, server\rangle\rightarrow$ authentication key
   - Used by AS
   - Is multiply replicated (availability, scalability)
 
@@ -4542,7 +4535,7 @@ Authentication (bidirectional)
   - This can only be a server that can extract the session key from the ticket $Ticket_{Alice/Server}=\{Alice,Server ,..., SessionKey_{Alice/Server}\}_{K_{TGS/Server}}$
 
 Getting a Ticket for a Server
-- Are valid for a pair ⟨client, server⟩
+- Are valid for a pair \langleclient, server\rangle
 - Are issued (but for TGS-Ticket itself) only by TGS
 - Ticket request to TGS: $(server, TGS ticket, authenticator)$
 

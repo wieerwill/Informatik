@@ -128,7 +128,7 @@
 
     Goal of IT Security \textbf{Reduction of Operational Risks of IT Systems}
     \begin{itemize*}
-        \item \textbf{Confidentiality} the property of information to be available only to anauthorized user group
+        \item \textbf{Confidentiality} the property of information to be available only to an authorized user group
         \item \textbf{Integrity} the property of information to be protected against unauthorized modification
         \item \textbf{Availability} the property of information to be available in an reasonable time frame
         \item \textbf{Authenticity} the property to be able to identify the author of an information
@@ -226,7 +226,7 @@
         \item Lack of knowledge
         \begin{itemize*}
             \item Importing and executing malware
-            \item Indirect, hidden information flowin access control systems
+            \item Indirect, hidden information flow in access control systems
         \end{itemize*}
         \item Limited knowledge/skills of users
     \end{itemize*}
@@ -336,38 +336,18 @@
 
     \paragraph{Scenario 2: Malware (a family heirloom \dots )}
     \begin{itemize*}
-        \item Trojan horses: Executable code with hidden functionality
-        \item Viruses: Code for self-modification and self-duplication
-        \item Logical bombs: Code that is activated by some event recognizable from the host (e. g. time, date, temperature, \dots ).
-        \item Backdoors: Code that is activated through undocumented interfaces (mostly remote).
+        \item Trojan horse: Executable code with hidden functionality
+        \item Virus: Code for self-modification and self-duplication
+        \item Logical bomb: Code that is activated by some event recognizable from the host (e. g. time, date, temperature, \dots ).
+        \item Backdoor: Code that is activated through undocumented interfaces (mostly remote).
         \item Ransomware: Code for encrypting possibly all user data found on the host, used for blackmailing the victims
-        \item Worms: Autonomous, self-duplicating programs
+        \item Worm: Autonomous, self-duplicating programs
     \end{itemize*}
 
     \paragraph{Scenario 3: Outsider Attack}
     \begin{itemize*}
         \item Attack Method: Buffer Overflow
         \item Exploitation of implementation errors
-    \end{itemize*}
-
-    \paragraph{Scenario 4: High-end Malware (Root Kits)}
-    \begin{itemize*}
-        \item Invisible, total, sustainable takeover of a complete IT system
-        \item Method: Comprehensive tool kit for fully automated attacks
-        \begin{enumerate*}
-            \item automatic analysis of technical vulnerabilities
-            \item automated attack execution
-            \item automated installation of backdoors
-            \item installation and activation of stealth mechanisms
-        \end{enumerate*}
-        \item Target: Attacks on all levels of the software stack:
-        \begin{itemize*}
-            \item firmware \& bootloader
-            \item operating system (e. g. file system, network interface)
-            \item system applications (e. g. file and process managers)
-            \item user applications (e. g. web servers, email, office)
-        \end{itemize*}
-        \item tailored to specific software and software versions found there
     \end{itemize*}
 
     \subsubsection{Buffer Overflow Attacks}
@@ -398,6 +378,26 @@
     \end{itemize*}
 
     \note{Security Breach}{The attacker can remotely communicate, upload, download, and execute anything- with cooperation of the OS, since all of this runs with the original privileges of the victim program!}
+
+    \paragraph{Scenario 4: High-end Malware (Root Kits)}
+    \begin{itemize*}
+        \item Invisible, total, sustainable takeover of a complete IT system
+        \item Method: Comprehensive tool kit for fully automated attacks
+        \begin{enumerate*}
+            \item automatic analysis of technical vulnerabilities
+            \item automated attack execution
+            \item automated installation of backdoors
+            \item installation and activation of stealth mechanisms
+        \end{enumerate*}
+        \item Target: Attacks on all levels of the software stack:
+        \begin{itemize*}
+            \item firmware \& bootloader
+            \item operating system (e. g. file system, network interface)
+            \item system applications (e. g. file and process managers)
+            \item user applications (e. g. web servers, email, office)
+        \end{itemize*}
+        \item tailored to specific software and software versions found there
+    \end{itemize*}
 
     \subsubsection{Root Kits}
     Step 1: Vulnerability Analysis
@@ -854,7 +854,7 @@
     \begin{enumerate*}
         \item Model Sets: Subjects, objects, operations, rights $\rightarrow$ define the basic sets $S,O,OP,R$
         \item STS: Semantics of operations (e. g. the future API of the system to model) that modify the protection state $\rightarrow$ define $\sigma$ using the normalized form/programming syntax of the STS
-        \item Initialization: Define a well-known initial stateq $0 =\langle S_0 ,O_0 ,m_0 \rangle$ of the system to model
+        \item Initialization: Define a well-known initial state $q_0 =\langle S_0 ,O_0 ,m_0 \rangle$ of the system to model
     \end{enumerate*}
 
     Summary: Model Behavior
@@ -1553,20 +1553,6 @@
         \item Is an example of a hybrid model: IF + AC + ABAC
     \end{itemize*}
 
-    learn from BLP for designing and using security models
-    \begin{itemize*}
-        \item Model composition from known model abstractions
-        \begin{itemize*}
-            \item Denning: IF modeling
-            \item ABAC: IF classes and compartments as attributes
-            \item MSL: modeling trust as a linear hierarchy
-            \item HRU: modeling dynamic behavior
-            \item ACM: implementing application-oriented policy semantics
-        \end{itemize*}
-        \item Consistency is an important property of composed models
-        \item BLP is further extensible and refinable
-    \end{itemize*}
-
     \subsubsection{The Biba Model}
     \begin{multicols}{2}
         BLP upside down
@@ -1583,7 +1569,7 @@
 
     OS Example: file/process/\dots created is classified $\rightarrow$ cannot violate integrity of objects
 
-    \subsubsection{Non-interference Models}
+    \subsubsection{Non-interference Models (NI)}
     Problems: Covert Channels \& Damage Range (Attack Perimeter)
 
     \note{Covert Channel}{Channels not intended for information transfer at all, such as the service program’s effect on the system load.}
@@ -1650,9 +1636,6 @@
     \end{itemize*}
 
     \paragraph{NI Model Analysis}
-    \begin{itemize*}
-        \item[$\rightarrow$] NI models: Non-interference between domains
-    \end{itemize*}
 
     \note{Purge Function}{Let $aa^*\in A^*$ be a sequence of actions consisting of a single action $a\in A\cup\{\epsilon\}$ followed by a sequence $a^*\in A^*$, where $\epsilon$ denotes an empty sequence. Let $D'\in 2^D$ be any set of domains. Then, purge: $A^*\times 2^D \rightarrow A^*$ computes a subsequence of $aa^*$ by removing such actions without an observable effect on any element of $D':$
         \begin{itemize*}
@@ -2058,7 +2041,7 @@
         \end{itemize*}
         \item AC, IF: no covert chanels
         \item NI: Rigorous domain isolation
-        \item \dots  $\rightarrow$ job of the ,,Trusted Computing Base'' (TCB) of an IT system
+        \item[$\rightarrow$] job of the ,,Trusted Computing Base'' (TCB) of an IT system
     \end{itemize*}
 
     \note{Trusted Computing Base (TCB)}{The set of functions of an IT system that are necessary and sufficient for implementing its security properties $\rightarrow$ Isolation, Policy Enforcement, Authentication \dots }
@@ -2195,21 +2178,21 @@
     \end{itemize*}
 
     \begin{multicols}{2}
-    Example: ACLs in Unix
-    \begin{itemize*}
-        \item 3 elements per list list
-        \item 3 elements per right set
-        \item[$\rightarrow$] 9 bits coded in 16-bit-word (PDP 11, 1972)
-    \end{itemize*}
-\columnbreak
+        Example: ACLs in Unix
+        \begin{itemize*}
+            \item 3 elements per list list
+            \item 3 elements per right set
+            \item[$\rightarrow$] 9 bits coded in 16-bit-word (PDP 11, 1972)
+        \end{itemize*}
+        \columnbreak
 
-    \begin{tabular}{c | c | c| c}
-               & read & write & exec \\\hline
-        owner  & y    & y     & n    \\
-        group  & y    & n     & n    \\
-        others & n    & n     & n
-    \end{tabular}
-\end{multicols}
+        \begin{tabular}{c | c | c| c}
+                   & read & write & exec \\\hline
+            owner  & y    & y     & n    \\
+            group  & y    & n     & n    \\
+            others & n    & n     & n
+        \end{tabular}
+    \end{multicols}
 
     \paragraph{Operations on Capability Lists}
     Create and Delete
@@ -2642,7 +2625,7 @@
             \item False Non-match Rate: authorized people are rejected
             \item False Match Rate: not authorized people are accepted
             \item Susceptible environmental conditions (noise, dirt, fractured)
-    \item Social Barriers, Acceptance
+            \item Social Barriers, Acceptance
         \end{itemize*}
         \item Fundamental weaknesses in distributed systems $\rightarrow$ Secure communication to authenticating system required (personal data)
         \item Reference probes are personal data $\rightarrow$ Data Protection Act
@@ -3127,7 +3110,7 @@
         \end{itemize*}
         \item Kerberos database
         \begin{itemize*}
-            \item Contains for each user and server a mapping $⟨user, server⟩\rightarrow$ authentication key
+            \item Contains for each user and server a mapping $\langle user, server\rangle\rightarrow$ authentication key
             \item Used by AS
             \item Is multiply replicated (availability, scalability)
         \end{itemize*}
@@ -3237,7 +3220,7 @@
 
     Getting a Ticket for a Server
     \begin{itemize*}
-        \item Are valid for a pair ⟨client, server⟩
+        \item Are valid for a pair $\langle client, server\rangle$
         \item Are issued (but for TGS-Ticket itself) only by TGS
         \item Ticket request to TGS: $(server, TGS_{ticket}, authenticator)$
     \end{itemize*}
@@ -3251,4 +3234,168 @@
     \end{itemize*}
 
 \end{multicols}
+
+\newpage
+
+\begin{multicols*}{3}
+
+    \subsubsection{Identity-based access control models (IBAC)}
+    \begin{itemize*}
+        \item ACF: $f_{ABAC}:S\times O\times OP\rightarrow\{true,false\}$ 
+        \item ACM: $m:S\times O \rightarrow 2^{OP}$ so $\forall s\in S,\forall o\in O:op\in m(s,o)\Leftrightarrow f(s,o,op)$.
+    \end{itemize*}    
+
+    \subsubsection{HRU (Harrison-Ruzzo-Ullman) Safety}
+    iff, beginning with q, there is no sequence of commands that enters r in an ACM cell where it did not exist in q
+
+    \subsubsection{TAM Security Model $\langle Q,\sum,\delta,q_0 ,T,R\rangle$}
+    \begin{itemize*}
+        \item $Q= 2^S\times 2^O\times TYPE\times M$ where $S$ and $O$ are subjects set and objects set as in HRU, where $S\subseteq O$, $TYPE=\{type|type:O\rightarrow T\}$ is a set of possible type functions, $M$ is the set of possible $ACMs$ as in HRU,
+        \item $\sum=OP\times X$ is the input alphabet where $OP$ is a set of operations as in HRU, $X=O^k$ is a set of $k$-dim. vectors of arguments of these operations,
+        \item $\delta:Q\times\sum\rightarrow Q$ is the state transition function,
+        \item $q_0\in Q$ is the initial state,
+        \item $T$ is a static (finite) set of types,
+        \item $R$ is a (finite) set of access rights.
+    \end{itemize*}
+
+    \subsubsection{Theorem 5}
+    Safety of a ternary, acyclic, monotonous TAM model (TAMTAM) is decidable in polynomial time
+
+    \subsubsection{Role-based access control models (RBAC)}
+    $RBAC_0=\langle U,R,P,S,UA,PA,user,roles\rangle$ where
+    \begin{itemize*}
+        \item U is a set of user identifiers,
+        \item R is a set of role identifiers,
+        \item P is a set of permission identifiers,
+        \item S is a set of session identifiers,
+        \item $UA\subseteq U\times R$ is a many-to-many user-role-relation,
+        \item $PA\subseteq P\times R$ is a m:m permission-role-relation,
+        \item $user:S\rightarrow U$ function mapping sessions to users,
+        \item $roles:S\rightarrow 2^R$ function mapping sessions to roles
+    \end{itemize*}
+    \begin{itemize*}
+        \item $RBAC_1 = RBAC_0 + hierarchies$
+        \item $RBAC_2 = RBAC_0 + constraints$
+        \item $RBAC_3 = RBAC_0 + RBAC_1 + RBAC_2$
+    \end{itemize*}
+    \begin{itemize*}
+        \item \textbf{Separation of duty} mutually exclusive roles
+        \item \textbf{Quantitative constraints} max. number of use
+        \item \textbf{Temporal constraints} time/date/week/\dots
+    \end{itemize*}
+    \begin{itemize*}
+        \item $RBAC_1: \langle U,R,P,S,UA,PA,user,roles,RH\rangle$
+        \item $RBAC_2: \langle U,R,P,S,UA,PA,user,roles,RE\rangle$
+        \item $RBAC_3: \langle U,R,P,S,UA,PA,user,roles,RH,RE\rangle$
+        \item $RH\subseteq R\times R$ is a partial order of hierarchy
+        \item $RE$ logical expressions over the other model components
+    \end{itemize*}
+
+    \subsubsection{Attribute-based access control models (ABAC)}
+    Model $\langle S,O,AS,AO,attS,attO,OP,AAR\rangle$ where
+    \begin{itemize*}
+        \item $S,O$ are subject/object identifiers,
+        \item $A_S=V_S^1 \times\dots \times V_S^n$ is a set of subject attributes,
+        \item $A_O=V_O^1\times\dots \times V_O^m$ set of object attributes,
+        \item $att_S:S\rightarrow A_S$ subject attribute assignment func.,
+        \item $att_O:O\rightarrow A_O$ object attribute assignment function,
+        \item $OP$ is a set of operation identifiers,
+        \item $AAR\subseteq \Phi\times OP$ is the authorization relation.
+    \end{itemize*}
+
+    \subsubsection{Denning Security Model}
+    a tuple $\langle S,O,L,cl,\bigoplus\rangle$ where
+    \begin{itemize*}
+        \item $L=\langle C,\leq\rangle$ is a lattice where C is a set of classes, $\leq$ is a dominance relation
+        \item $cl:S\cup O\rightarrow C$ is a classification function,
+        \item $\bigoplus:C\times C\rightarrow C$ is a reclassification function.
+    \end{itemize*}
+
+    \subsubsection{BLP Security Model}
+    automaton $\langle S,O,L,Q,\sum,\sigma,q_0,R\rangle$ where
+    \begin{itemize*}
+        \item S and O are (static) subject and object sets,
+        \item $L=\langle C,\leq\rangle$ is a (static) lattice consisting of classes set C, the dominance relation $\leq$,
+        \item $Q=M\times CL$ is the state space where
+        \begin{itemize*}
+            \item $M=\{m|m:S\times O\rightarrow 2^R\}$ set of possible ACMs,
+            \item $CL=\{cl|cl:S\cup O\rightarrow C\}$ classify entities in $S\cup O$,
+        \end{itemize*}
+        \item $\sum$ is the input alphabet,
+        \item $\sigma:Q\times \sum\rightarrow Q$ is the state transition function,
+        \item $q_0\in Q$ is the initial state,
+        \item $R=\{read,write\}$ is the set of access rights.
+    \end{itemize*}
+
+    \subsubsection{NI Security Model}
+    automaton $\langle Q,\sigma,\delta,\lambda,q_0,D,A,dom,\approx_{NI},Out\rangle$ where
+    \begin{itemize*}
+        \item Q is the set of (abstract) states,
+        \item $\sigma=A$ is the input alphabet, A set of actions,
+        \item $\delta:Q\times\sigma\rightarrow Q$ is the state transition function,
+        \item $\lambda:Q\times\sigma\rightarrow Out$ is the output function,
+        \item $q_0\in Q$ is the initial state,
+        \item $D$ is a set of domains,
+        \item $dom:A\rightarrow 2^D$ is adomain function that completely defines the set of domains affected by an action,
+        \item $\approx_{NI}\subseteq D\times D$ is a non-interference relation,
+        \item $Out$ is a set of (abstract) outputs.
+    \end{itemize*}
+    NI Security Model is also called Goguen/Meseguer-Model.
+
+    \subsubsection{Brewer-Nash Security Model}
+    is a deterministic $automaton\langle S,O,Q,\sigma,\delta,q_0,R\rangle$ where
+    \begin{itemize*}
+        \item $S,O$ sets of subjects (consultants) \& objects (data),
+        \item $Q=M\times 2^C\times 2^H$ is the state space where
+        \begin{itemize*}
+            \item $M=\{m|m:S\times O\rightarrow 2^R\}$ set of possible ACMs,
+            \item $C\subseteq O\times O$ is the conflict relation,
+            \item $H\subseteq S\times O$ is the history relation,
+        \end{itemize*}
+        \item $\sigma=OP \times X$ is the input alphabet where
+        \begin{itemize*}
+            \item $OP=\{read,write\}$ is a set of operations,
+            \item $X=S \times O$ arguments of these operations,
+        \end{itemize*}
+        \item $\delta:Q \times\sigma\rightarrow Q$ is the state transition function,
+        \item $q_0\in Q$ is the initial state,
+        \item $R=\{read,write\}$ is the set of access rights.
+    \end{itemize*}
+    
+    \subsubsection{Least-Restrictive CW model}
+    automaton $\langle S,O,F,\zeta,Q,\sigma,\delta,q_0\rangle$ where
+    \begin{itemize*}
+        \item S and O are sets of subjects and data objects,
+        \item F is the set of client companies,
+        \item $\zeta:O\rightarrow F$ mapping each object to its company,
+        \item $Q=2^C \times 2^H$ is the state space where
+        \begin{itemize*}
+            \item $C\subseteq F\times F$ is the conflict relation,
+            \item $H=\{Z_e\subseteq F|e\in S\cup O\}$ is the history set,
+        \end{itemize*}
+        \item $\sigma=OP\times X$ is the input alphabet where
+        \begin{itemize*}
+            \item $OP=\{read,write\}$ is the set of operations,
+            \item $X=S\times O$ arguments of these operations,
+        \end{itemize*}
+        \item $\delta:Q\times\sigma\rightarrow Q$ is the state transition function,
+        \item $q_0\in Q$ is the initial state
+    \end{itemize*}
+
+    \subsubsection{Discretionary Access Control (DAC)}
+    Individual users specify access rules to objects within their area of responsibility (at their discretion).
+
+    \subsubsection{Mandatory Access Control (MAC)}
+    System designers and administrators specify system-wide rules, that apply for all users and cannot be sidestepped.
+
+    \subsubsection{Non-Interference}
+    Two domains do not interfere with each other iff no action in one domain can be observed by the other.
+    
+    \subsubsection{Trusted Computing Base (TCB)}
+    The set of functions of an IT system that are necessary and sufficient for implementing its security properties $\rightarrow$ Isolation, Policy Enforcement, Authentication \dots
+
+    \subsubsection{Security Architecture}
+    part of a system’s architecture that implement its TCB $\rightarrow$ Security policies, PDP and PEPs, \dots
+
+\end{multicols*}
 \end{document}

@@ -23,6 +23,8 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)
 - [Logik und Logikprogrammierung](Logik%20und%20Logikprogrammierung.md) (work in progress)
+  - [Cheatsheet](Logik%20und%20Logikprogrammierung%20-%20Cheatsheet.pdf) (work in progress)
+  - [Flashcards - Karteikarten für Definitionen](Logik%20und%20Logikprogrammierung%20-%20Flashcards.pdf)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - [Programmierparadigmen](Programmierparadigmen.md)

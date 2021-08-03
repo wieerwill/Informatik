@@ -14,6 +14,7 @@
 \usepackage{verbatim}
 \usepackage[most]{tcolorbox}
 \usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{bussproofs}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \pagestyle{fancy}
@@ -128,312 +129,142 @@
 
   \subsubsection{Probleme mit natürlicher Sprache}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \item Zuordnung von Wahrheitswerten zu natürlichsprachigen Aussagen ist problematisch. (Ich habe nur ein bißchen getrunken.)
     \item Natürliche Sprache ist oft schwer verständlich.
     \item Natürliche Sprache ist mehrdeutig.
     \item Natürliche Sprache hängt von Kontext ab.
-  \end{enumerate}
+  \end{enumerate*}
 
   \section{Aussagenlogik}
   In der Aussagenlogik gehen wir von ``Aussagen'' aus, denen wir (zumindest prinzipiell) Wahrheitswerte zuordnen können.
 
-  Für Aussagen verwenden wir die atomaren Formeln $p,q,r$ bzw.
-  $p_0,p_1,...$
+  Die Aussagen werden durch ``Operatoren'' verbunden.
 
-  Die Aussagen werden durch ``Operatoren'' verbunden. Beispiele - \ldots{}
-  und\ldots{} - \ldots{} oder\ldots{} - nicht\ldots{} - wenn\ldots{}
-  dann\ldots{} - entweder\ldots{} oder\ldots{} , aber nicht beide. - mehr
-  als die Hälfte der Aussagen \ldots{} gilt.
+  Für zusammengesetzten Aussagen verwenden wir $\varphi,\psi$ usw.
 
-  Für solche zusammengesetzten Aussagen verwenden wir $\varphi,\psi$ usw.
+  Durch die Wahl der erlaubten Operatoren erhält man unterschiedliche ``Logiken''.
 
-  Durch die Wahl der erlaubten Operatoren erhält man unterschiedliche
-  ``Logiken''.
+  Da der Wahrheitswert einer zusammengesetzten Aussage nur vom Wahrheitswert der Teilaussagen abhängen soll, sind Operatoren wie ``weil'' oder ``obwohl'' nicht zulässig.
 
-  Da der Wahrheitswert einer zusammengesetzten Aussage nur vom
-  Wahrheitswert der Teilaussagen abhängen soll, sind Operatoren wie
-  ``weil'' oder ``obwohl'' nicht zulässig.
-
-  \subsection{Syntax der Aussagenlogik}\label{syntax-der-aussagenlogik}
-
-  Eine atomare Formel hat die Form $p_i$ (wobei
-  $i\in\mathbb{N}=\{0,1,...\}$). Formeln werden durch folgenden induktiven
-  Prozess definiert: 1. Alle atomaren Formeln und $\bot$ sind Formeln. 2.
-  Falls $\varphi$ und $\psi$ Formeln sind, sind auch
-  $(\varphi\wedge\psi),(\varphi\wedge\psi)$($\varphi \rightarrow\psi$)und
-  $\lnot\varphi$Formeln. 3. Nichts ist Formel, was sich nicht mittels der
-  obigen Regeln erzeugen läßt.
+  \subsection{Syntax der Aussagenlogik}
+  Eine atomare Formel hat die Form $p_i$ (wobei $i\in\mathbb{N}=\{0,1,...\}$). Formeln werden durch folgenden induktiven Prozess definiert: 
+  \begin{enumerate*}
+  \item Alle atomaren Formeln und $\bot$ sind Formeln. 
+  \item Falls $\varphi$ und $\psi$ Formeln sind, sind auch $(\varphi\wedge\psi),(\varphi\wedge\psi)$($\varphi \rightarrow\psi$) und $\lnot\varphi$Formeln. 
+  \item Nichts ist Formel, was sich nicht mittels der obigen Regeln erzeugen läßt.
+  \end{enumerate*}
 
   Beispielformel: $\lnot((\lnot p_4 \vee p_1)\wedge\bot)$
 
-  Bezeichnungen: - Falsum: $\bot$ - Konjunktion: $\wedge$ - Disjunktion:
-  $\vee$ - Implikation: $\rightarrow$ - Negation: $\lnot$
+  Präzedenz der Operatoren: 
+  \begin{itemize*}
+  \item $\leftrightarrow$ bindet am schwächsten 
+  \item $\rightarrow$\ldots{} 
+  \item $\vee$\ldots{} 
+  \item $\wedge$\ldots{} 
+  \item $\lnot$ bindet am stärksten
+  \end{itemize*}
 
-  Abkürzungen $p,q,r...$ statt $p_0,p_1,p_2...$
+  \subsection{Natürliches Schließen}
+  Ein (mathematischer) Beweis zeigt, wie die Behauptung aus den Voraussetzungen folgt.
+  Analog zeigt ein ``Beweisbaum'' (=``Herleitung'' = ``Deduktion''), wie eine Formel der Aussagenlogik aus Voraussetzungen (ebenfalls Formeln der Aussagenlogik) folgt.
+  Diese ``Deduktionen'' sind Bäume, deren Knoten mit Formeln beschriftet sind: 
+  \begin{itemize*}
+  \item an der Wurzel steht die Behauptung (= Konklusion $\varphi$) 
+  \item an den Blättern stehen Voraussetzungen (= Hypothesen oder Annahmen aus $\Gamma$) 
+  \item an den inneren Knoten stehen ``Teilergebnisse'' und ``Begründungen''
+  \end{itemize*}
 
-  $(\bigvee_{i=1}^n \varphi_i$ statt
-  $(...((\varphi_1\vee\varphi_2)\vee\varphi_3)\vee...\vee\varphi_n)$
-
-  $(\bigwedge_{i=1}^n \varphi_i)$ statt
-  $(...((\varphi_1\wedge\varphi_2)\wedge\varphi_3)\wedge...\wedge\varphi_n)$
-
-  $(\varphi \leftrightarrow \psi)$ statt
-  $((\varphi\rightarrow\psi)\wedge(\psi\rightarrow\varphi))$
-
-  Präzedenz der Operatoren: - $\leftrightarrow$ bindet am schwächsten -
-  $\rightarrow$\ldots{} - $\vee$\ldots{} - $\wedge$\ldots{} - $\lnot$
-  bindet am stärksten
-
-  Es gilt also z.B.:
-  $(\alpha\leftrightarrow\beta\vee\lnot\gamma\rightarrow\sigma\wedge\lnot\eta) = (\alpha\leftrightarrow ((\beta\vee\lnot\gamma)\rightarrow(\sigma\wedge\lnot\eta)))$
-
-  Dennoch: Zu viele Klammern schaden i.A. nicht.
-
-  \subsection{Natürliches Schließen}\label{natuxfcrliches-schlieuxdfen}
-
-  Ein (mathematischer) Beweis zeigt, wie die Behauptung aus den
-  Voraussetzungen folgt.\\Analog zeigt ein ``Beweisbaum'' (=
-  ``Herleitung'' = ``Deduktion''), wie eine Formel der Aussagenlogik aus
-  Voraussetzungen (ebenfalls Formeln der Aussagenlogik) folgt.\\Diese
-  ``Deduktionen'' sind Bäume, deren Knoten mit Formeln beschriftet sind: -
-  an der Wurzel steht die Behauptung (= Konklusion $\varphi$) - an den
-  Blättern stehen Voraussetzungen (= Hypothesen oder Annahmen aus
-  $\Gamma$) - an den inneren Knoten stehen ``Teilergebnisse'' und
-  ``Begründungen''
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-deduktionsbaum.png}
-
-  \subsection{Konstruktion von
-    Deduktionen}\label{konstruktion-von-deduktionen}
-
-  Aus der Annahme der Aussage $\varphi$ folgt $\varphi$ unmittelbar: eine
-  triviale Deduktion
+  \subsection{Konstruktion von Deduktionen}
+  Aus der Annahme der Aussage $\varphi$ folgt $\varphi$ unmittelbar: eine triviale Deduktion
 
   $\varphi$ mit Hypothesen $\{\varphi\}$ und Konklusion $\varphi$.
 
-  Folgend werden wir - überlegen, wie aus ``einfachen mathematischen
-  Beweisen'' umfangreichere entstehen können und - parallel
-  dazudefinieren, wie aus einfachen Deduktionen umfangreichere konstruiert
-  werden können.
-
-  \subsubsection{Konjunktion}\label{konjunktion}
-
-  \paragraph{Konjunktionseinführung in math.
-    Beweisen}\label{konjunktionseinfuxfchrung-in-math.-beweisen}
-
-  Ein mathematischer Beweis einer Aussage ``$\varphi$ und $\psi$'' sieht
-  üblicherweise so aus: - ``Zunächst zeige ich $\varphi$: \ldots{} (hier
-  steckt die eigentliche Arbeit)\\- Jetzt zeige ich $\psi$: \ldots{}
-  (nochmehr eigentliche Arbeit)\\- Also haben wir''$\varphi$ und $\psi$"
-  gezeigt. qed"
-
-  \paragraph{Konjunktionseinführung
-    (ausführlich)}\label{konjunktionseinfuxfchrung-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E
-  eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma$, so ergibt sich
-  die folgende Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus
-  $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-konjunktionseinführung.png}
-
-  Kurzform: $\frac{\varphi\quad\psi}{\varphi\wedge\psi} (\wedge I)$
-
-  \paragraph{Konjunktionselimination
-    (ausführlich)}\label{konjunktionselimination-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus
-  $\Gamma$, so ergeben sich die folgenden Deduktionen von $\varphi$ bzw.
-  von $\psi$ mit Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Konjunktionselimination.png}
-
-  Kurzform:
-  $\frac{\varphi\wedge\psi}{\varphi} (\wedge E_1) \quad\quad \frac{\varphi\wedge\psi}{\psi} (\wedge E_2)$
-
-  \paragraph{Beispiel}\label{beispiel}
-
-  Wir zeigen $\varphi\wedge\psi$ unter der Hypothese
-  $\psi\wedge\varphi$:\ldots{}
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Deduktionsbeispiel.png}
-
-  Dies ist eine Deduktion mit Konklusion $\varphi\wedge\psi$ und Hypothese
-  $\psi\wedge\varphi$ (zweimal verwendet).
-
-  \subsubsection{Implikation}\label{implikation}
-
-  \paragraph{Implikationseinführung in math.
-    Beweisen}\label{implikationseinfuxfchrung-in-math.-beweisen}
-
-  Ein mathematischer Beweis einer Aussage ``Aus $\varphi$ folgt $\psi$''
-  sieht üblicherweise so aus:\\- ``Angenommen, $\varphi$ gilt. - Dann
-  \ldots{} (hier steckt die eigentliche Arbeit).\\- Damit gilt $\psi$.\\-
-  Also haben wir gezeigt, dass $\psi$ aus $\varphi$ folgt. qed''
-
-  Die Aussage $\varphi$ ist also eine ``temporäre Hypothese''.
-
-  \paragraph{Implikationseinführung
-    (ausführlich)}\label{implikationseinfuxfchrung-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\psi$ mit Hypothesen aus
-  $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von
-  $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Implikationseinführung.png}
-
-  Kurzform $[\varphi]$ $\vdots$
-  $\frac{\psi}{\varphi\rightarrow\psi} (\rightarrow I)$
-
-  Beispiel: \ldots{} Dies ist eine Deduktion von
-  $\varphi\rightarrow\varphi$ ohne Hypothesen.
-
-  \paragraph{Implikationselimination in math.
-    Beweisen}\label{implikationselimination-in-math.-beweisen}
-
-  Ein mathematischer Beweis einer Aussage ``$\psi$ gilt'' über eine
-  Hilfsaussage sieht so aus: - ``Zunächst zeigen wir, dass $\varphi$ gilt:
-  \ldots{} - Dann beweisen wir, dass $\psi$ aus $\varphi$ folgt: \ldots{}
-  - Also haben wir $\psi$ gezeigt. qed''
-
-  \paragraph{Implikationselimination oder modus ponens
-    (ausführlich)}\label{implikationselimination-oder-modus-ponens-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E
-  eine Deduktion von $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$,
-  so ergibt sich die folgende Deduktion von $\psi$ mit Hypothesen aus
-  $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Implikationselimination.png}
-
-  Kurzform:
-  $\frac{\varphi\quad \varphi\rightarrow\psi}{\psi} (\rightarrow E)$
-
-  \paragraph{Beispiel}\label{beispiel-1}
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Implikationseleimination-beispiel.png}
-
-  Bemerkung: die Indizes 1, 2 und 3 machen deutlich, welche Hypothese bei
-  welcher Regelanwendung gestrichen wurde. Deduktionen können recht groß
-  werden.
-
-  Diese Deduktion hat keine Hypothesen!
-
-  \subsubsection{Disjunktion}\label{disjunktion}
-
-  \paragraph{Disjunktionselimination oder Fallunterscheidung in math.
-    Beweisen}\label{disjunktionselimination-oder-fallunterscheidung-in-math.-beweisen}
-
-  Ein mathematischer Beweis einer Aussage ``$\sigma$ gilt'' mittels
-  Fallunterscheidung sieht üblicherweise so aus: - ``Zunächst zeigen wir,
-  dass $\varphi\vee\psi$ gilt: \ldots{} - Gilt $\varphi$, so gilt
-  $\sigma$, denn \ldots{} - Gilt $\psi$, so gilt ebenfalls $\sigma$, denn
-  \ldots{} - Also haben wir gezeigt, dass $\sigma$ gilt. qed''
-
-  Die Aussagen $\varphi$ und $\psi$ sind also wieder ``temporäre
-  Hypothesen''.
-
-  \paragraph{Disjunktionselimination oder Fallunterscheidung
-    (ausführlich)}\label{disjunktionselimination-oder-fallunterscheidung-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\varphi\vee\psi$ mit Hypothesen aus $\Gamma$,
-  ist E eine Deduktion von $\sigma$ mit Hypothesen aus
-  $\Gamma\cup\{\varphi\}$und ist F eine Deduktion von $\sigma$ mit
-  Hypothesen aus $\Gamma\cup\{\psi\}$, so ergibt sich die folgende
-  Deduktion von $\sigma$ mit Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Disjunktionselimination.png}
-
-  Disjunktionselimination Kurzform: $\quad [\psi] \quad[\varphi]$
-  $\quad \vdots \quad\vdots$
-  $\frac{\varphi\vee\psi \quad\sigma \quad\sigma}{\sigma} (\vee E)$
-
-  Disjunktionseinführung (Kurzform)
-  $\frac{\varphi}{\varphi\vee\psi} (\vee I_1) \quad \frac{\psi}{\varphi\vee\psi} (\vee I_2)$
-
-  \subsubsection{Negation}\label{negation}
-
-  \paragraph{Negationseinführung in math.
-    Beweisen}\label{negationseinfuxfchrung-in-math.-beweisen}
-
-  Ein mathematischer Beweis einer Aussage ``$\varphi$ gilt nicht'' sieht
-  so aus:\\- ``Angenommen,$\varphi$gilt.\\- Dann folgt $0=1$, denn
-  \ldots{}. Mit anderen Worten, dies führt zu einem Widerspruch. - Also
-  haben wir gezeigt, dass $\varphi$ nicht gilt. qed''\\- Die Aussage
-  $\varphi$ ist also wieder eine ``temporäre Hypothese''.
-
-  \paragraph{Negationseinführung
-    (ausführlich)}\label{negationseinfuxfchrung-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\bot$ mit Hypothesen aus
-  $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von
-  $\lnot\varphi$ mit Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Negationseinführung.png}
-
-  Kurzform: $[\varphi]$ $\vdots$ $\frac{\bot}{\lnot\varphi} (\lnot I)$
-
-  \paragraph{Negationselimination
-    (ausführlich)}\label{negationselimination-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$ und
-  ist E eine Deduktion von $\varphi$ mit Hypothesen aus $\gamma$, so
-  ergibt sich die folgende Deduktion von $\bot$ mit Hypothesen aus
-  $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Negationselimination.png}
-
-  Kurzform: $\frac{\lnot\varphi \quad \varphi}{\bot} (\lnot E)$
-
-  \subsubsection{Falsum}\label{falsum}
-
-  Hat man ``$0=1$'' bewiesen, so ist man bereit, alles zu glauben: ex
-  falso sequitur quodlibet
-
-  ausführlich: Ist D eine Deduktion von $\bot$ mit Hypothesen aus
-  $\Gamma$, so ergibt sich die folgende Deduktion von $\varphi$ mit
-  Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-Falsumeinführung.png}
-
-  Kurzform: $\frac{\bot}{\varphi} (\bot)$
-
-  \paragraph{math. Widerspruchsbeweis}\label{math.-widerspruchsbeweis}
-
-  Ein indirekter Beweis einer Aussage ``$\varphi$ gilt'' sieht
-  üblicherweise so aus: - ``Angenommen, $\varphi$ gilt nicht, d.h.
-  $\lnot\varphi$ gilt. - Dann folgt $0=1$, d.h. ein Widerspruch.\\- Also
-  haben wir gezeigt, dass $\varphi$ gilt. qed''
-
-  Die Aussage $\lnot\varphi$ ist also wieder eine ``temporäre Hypothese''.
-
-  \paragraph{reductio ad absurdum
-    (ausführlich)}\label{reductio-ad-absurdum-ausfuxfchrlich}
-
-  Ist D eine Deduktion von $\bot$ mit Hypothesen aus
-  $\Gamma\cup\{\lnot\varphi\}$, so ergibt sich die folgende Deduktion von
-  $\varphi$ mit Hypothesen aus $\Gamma$:
-
-
-  \includegraphics[width=\linewidth]{Assets/Logik-reductio-ad-absurdum.png}
-
-  Kurzform: $[\lnot\varphi]$ $\vdots$ $\frac{\bot}{\varphi} (raa)$
-
-  \subsection{Regeln des natürlichen
-    Schließens}\label{regeln-des-natuxfcrlichen-schlieuxdfens}
-
+  \subsubsection{Konjunktionseinführung}
+  Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus $\Gamma$:
+\begin{prooftree}
+  \AxiomC{$\varphi$}
+  \AxiomC{$\psi$}
+                  \RightLabel{\scriptsize ($\wedge I$)}
+          \BinaryInfC{$\varphi\wedge\psi$}
+\end{prooftree}
+
+  \subsubsection{Konjunktionselimination}
+  Ist D eine Deduktion von $\varphi\wedge\psi$ mit Hypothesen aus $\Gamma$, so ergeben sich die folgenden Deduktionen von $\varphi$ bzw. von $\psi$ mit Hypothesen aus $\Gamma$:
+
+  \begin{prooftree}
+    \AxiomC{$\varphi\wedge\psi$}
+                    \RightLabel{\scriptsize ($\wedge E_1$)}
+            \UnaryInfC{$\varphi$}
+  \end{prooftree}
+  \begin{prooftree}
+    \AxiomC{$\varphi\wedge\psi$}
+                    \RightLabel{\scriptsize ($\wedge E_2$)}
+            \UnaryInfC{$\psi$}
+  \end{prooftree}
+
+  \subsubsection{Implikationseinführung}
+  Ist D eine Deduktion von $\psi$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\psi$}
+    \RightLabel(\scriptsize ($\rightarrow I)$)
+    \UnaryInfC{$\varphi\rightarrow\psi$}
+  \end{prooftree}
+
+  \subsubsection{Implikationselimination oder modus ponens}
+  Ist D eine Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\varphi\rightarrow\psi$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\psi$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\varphi$}
+    \AxiomC{$\varphi\rightarrow\psi$}
+    \RightLabel(\scriptsize ($\rightarrow E)$)
+    \BinaryInfC{$\varphi$}
+  \end{prooftree}
+
+  \subsubsection{Disjunktionselimination}
+  Ist D eine Deduktion von $\varphi\vee\psi$ mit Hypothesen aus $\Gamma$, ist E eine Deduktion von $\sigma$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$und ist F eine Deduktion von $\sigma$ mit Hypothesen aus $\Gamma\cup\{\psi\}$, so ergibt sich die folgende Deduktion von $\sigma$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\varphi\vee\psi$}
+    \AxiomC{$\sigma$}
+    \AxiomC{$\sigma$}
+    \RightLabel(\scriptsize ($\vee E)$)
+    \TrinaryInfC{$\sigma$}
+  \end{prooftree}
+
+  \subsubsection{Negationseinführung}
+  Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\varphi\}$, so ergibt sich die folgende Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\bot$}
+    \RightLabel(\scriptsize ($\lnot I)$)
+    \UnaryInfC{$\varphi$}
+  \end{prooftree}
+
+  \subsection{Negationselimination}
+  Ist D eine Deduktion von $\lnot\varphi$ mit Hypothesen aus $\Gamma$ und ist E eine Deduktion von $\varphi$ mit Hypothesen aus $\gamma$, so ergibt sich die folgende Deduktion von $\bot$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\lnot\varphi$}
+    \AxiomC{$\varphi$}
+    \RightLabel(\scriptsize ($\lnot E)$)
+    \BinaryInfC{$\bot$}
+  \end{prooftree}
+
+  \subsubsection{Falsum}
+Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma$, so ergibt sich die folgende Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$:
+\begin{prooftree}
+  \AxiomC{$\bot$}
+  \RightLabel(\scriptsize ($\bot)$)
+  \UnaryInfC{$\varphi$}
+\end{prooftree}
+
+  \subsubsection{reductio ad absurdum}
+  Ist D eine Deduktion von $\bot$ mit Hypothesen aus $\Gamma\cup\{\lnot\varphi\}$, so ergibt sich die folgende Deduktion von $\varphi$ mit Hypothesen aus $\Gamma$:
+  \begin{prooftree}
+    \AxiomC{$\bot$}
+    \RightLabel(\scriptsize ($raa)$)
+    \UnaryInfC{$\varphi$}
+  \end{prooftree}
+
+  \subsection{Regeln des natürlichen Schließens}
   \begin{quote}
     Definition
 
@@ -610,7 +441,7 @@
 
   \subsubsection{Beispiel}\label{beispiel-2}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Der Boolesche Wahrheitswertebereich B ist definiert durch die
@@ -618,12 +449,12 @@
           Funktionen $\lnot_B (a) = 1-a$, $\rightarrow_B(a,b) = max(b, 1 -a)$.
           Hier gelten:
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $0_B=0$, $1_B= 1$,
             \item
                   $a\wedge_B b= min(a,b)$, $a\vee_B b= max(a,b)$
-          \end{itemize}
+          \end{itemize*}
     \item
           Der Kleenesche Wahrheitswertebereich $K_3$ ist definiert durch die
           Grundmenge $K_3=\{0,\frac{1}{2},1\}$ mit der natürlichen Ordnung
@@ -670,7 +501,7 @@
     \item
           Beispiele:
           $Inneres((0,1))=(0,1)=Inneres([0,1]),Inneres(N)=\varnothing,Inneres(\mathbb{R}_{\geq 0}) = \mathbb{R}_{> 0}$
-  \end{itemize}
+  \end{itemize*}
 
   Sei W ein Wahrheitswertebereich und B eine W-Belegung. Induktiv über den
   Formelaufbau definieren wir den Wahrheitswert $\hat{B}(\phi)\in W$ jeder
@@ -748,19 +579,19 @@ $B(\lnot\lnot\phi\rightarrow\phi) = \rightarrow B(\lnot B\lnot B(B(\phi)),B(\phi
 Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den Wahrheitswertebereich $B_R$).
 \end{verbatim}
 
-  \begin{itemize}
+  \begin{itemize*}
     \item
           Sei $B:V\rightarrow H_R$ eine $H_R$-Belegung mit
           $B(\phi) =R\backslash\{0\}$. Dann gelten
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $B(\lnot\phi) = Inneres(\mathbb{R}\backslash B(\phi)) = Inneres(\{0\}) =\varnothing$
             \item
                   $B(\lnot\lnot\phi) = Inneres(\mathbb{R}\backslash B(\lnot\phi)) = Inneres(\mathbb{R}) = \mathbb{R}$
             \item
                   $B(\lnot\lnot\phi\rightarrow\phi) = \rightarrow_{H_R} (B(\lnot\lnot\phi),B(\phi)) = \rightarrow_{H_R} (\mathbb{R},\mathbb{R}\backslash \{0\}) = Inneres(\mathbb{R}\backslash\{0\}\cup\mathbb{R}\backslash\mathbb{R}) = \mathbb{R}\backslash\{0\}\not =\mathbb{R}= 1_{H_R}$
-          \end{itemize}
+          \end{itemize*}
 
           Also ist $\lnot\lnot\phi\rightarrow\phi$ keine $H_R$-Tautologie (gilt
           ebenso für die Wahrheitswertebereiche $K_3$ und $F$).
@@ -788,7 +619,7 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
     \item
           Ebenso erhält man:
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $\{\lnot\phi\rightarrow\bot\}\Vdash_{K_3} \phi$
             \item
@@ -797,7 +628,7 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
                   $\{\lnot\phi\rightarrow\bot\}\Vdash_F\phi$
             \item
                   $\{\phi\}\Vdash F\lnot\phi\rightarrow\bot$
-          \end{itemize}
+          \end{itemize*}
     \item
           Sei $B:D\rightarrow H_R$ eine $H_R$-Belegung mit
           $B(\phi) =\mathbb{R}\backslash\{0\}$. Dann gilt
@@ -806,7 +637,7 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
           also $\{\lnot\phi\rightarrow\bot\}\not\Vdash_{H_R} \phi$.
 
           Es gilt aber $\{\phi\}\Vdash_{H_R}\lnot \phi\rightarrow\bot$.
-  \end{itemize}
+  \end{itemize*}
 
   Zusammenfassung der Beispiele
 
@@ -822,13 +653,13 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
     $\{\phi\}\vdash\lnot\phi\rightarrow\bot$                                             \\
   \end{tabular}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $Y$ in Spalte W:W-Folgerung gilt
     \item
           $-$ in Spalte W:W-Folgerung gilt nicht
-  \end{itemize}
+  \end{itemize*}
 
   \begin{quote}
     Überblick: Wir haben definiert - $\Gamma\vdash\phi$ syntaktische
@@ -1019,7 +850,7 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
 
   \subsubsection{Plan}\label{plan}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Sei $W$ einer der Wahrheitswertebereiche
@@ -1046,7 +877,7 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
           $\Leftrightarrow$ $\Gamma\not\Vdash_B \varphi$
     \item
           $\Rightarrow$ $\Gamma\not\Vdash\varphi$
-  \end{itemize}
+  \end{itemize*}
 
   \subsubsection{Konsistente Mengen}\label{konsistente-mengen}
 
@@ -1140,14 +971,14 @@ Also ist $\lnot\lnot\phi\rightarrow\phi$ eine B-Tautologie (gilt ebenso für den
 Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $\Delta\cup\{\varphi\}$ konsistent.
 \end{verbatim}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \setcounter{enumi}{1}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Da $\Delta\cup\{\varphi\}\supseteq\Delta$ konsistent und $\Delta$
           maximal konsistent ist, folgt $\Delta=\Delta\cup\{\varphi\}$, d.h.
           $\varphi\in\Delta$.
-  \end{enumerate}
+  \end{enumerate*}
 
   \begin{quote}
     Lemma 2
@@ -1197,7 +1028,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
 
   Der Beweis erfolgt per Induktion über die Länge von $\varphi$.
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           I.A.: hat $\varphi$ die Länge 1, so ist $\varphi$ atomare Formel. Hier
@@ -1209,7 +1040,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           Formeln $\alpha$ und $\beta$ der Länge$<n$ mit
           $\varphi\in\{\lnot\alpha,\alpha\wedge\beta,\alpha\vee\beta,\alpha\rightarrow\beta\}$.
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   Wir zeigen (*) für diese vier Fälle einzeln auf den folgenden
                   Folien.
@@ -1220,15 +1051,15 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
             \item
                   Lemma 2:
                   $\varphi\not\in\Delta\Leftarrow\Rightarrow\lnot\varphi\in\Delta$
-          \end{itemize}
+          \end{itemize*}
     \item
           $\varphi =\lnot\alpha$.
           $B(\varphi) = 1_B \Leftarrow\Rightarrow B(\alpha) = 0_B \Leftarrow\Rightarrow \alpha\not\in\Delta\Leftarrow\Rightarrow \Delta \owns\lnot\alpha =\varphi$
     \item
           $\varphi =\alpha\wedge\beta$.
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $B(\varphi) = 1_B \Rightarrow B(\alpha) =B(\beta) = 1_B \Rightarrow\alpha,\beta\in\Delta\Rightarrow\Delta\vdash\varphi$
@@ -1239,21 +1070,21 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $\Delta\vdash\beta$ denn $\frac{\varphi}{\alpha}$ und
           $\frac{\varphi}{\beta}$ sind Deduktionen.
           $\Rightarrow\alpha,\beta\in\Delta\Rightarrow B(\alpha),B(\beta) = 1_B=\Rightarrow B(\varphi) = 1_B$
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \setcounter{enumi}{2}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $\varphi =\alpha\vee\beta$.
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $B(\varphi) = 1_B \Rightarrow B(\alpha) = 1_B$ oder $B(\beta) = 1_B$
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   angenommen,
                   $B(\alpha) = 1_B \Rightarrow\alpha\in\Delta\Rightarrow\Delta\vdash\varphi$
@@ -1262,7 +1093,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
             \item
                   angenommen, $B(\alpha) = 0_B \Rightarrow B(\beta) = 1_B$. weiter
                   analog.
-          \end{itemize}
+          \end{itemize*}
     \item
           $\varphi\in\Delta$. Dann gilt
           $\Delta\cup\{\lnot\alpha ,\lnot\beta\}\vdash \bot$ aufgrund der
@@ -1273,16 +1104,16 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $\Rightarrow\alpha\in\Delta$ oder $\beta\in\Delta$ nach Lemma 2
           $\Rightarrow B(\alpha) = 1_B$ oder $B(\beta) =1_B$
           $\Rightarrow B(\varphi) = 1_B$.
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \setcounter{enumi}{3}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $\varphi = \alpha\rightarrow\beta$.
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           $B(\varphi) = 1_B \Rightarrow B(\alpha) = 0_B$ oder
@@ -1298,7 +1129,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $\Delta$ ist inkonsistent, im Widerspruch zur Annahme.
           $\Rightarrow B(\varphi) = 1_B$
           \includegraphics[width=\linewidth]{Assets/Logik-beispiel-10.png}
-  \end{itemize}
+  \end{itemize*}
 
   \begin{quote}
     Lemma
@@ -1659,7 +1490,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
     Frage: existiert eine B-Belegung $B$ mit $B(\Gamma) = 1_B$.
   \end{quote}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           offensichtlicher Algorithmus: probiere alle Belegungen durch (d.h.
@@ -1674,7 +1505,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           Spätere Verallgemeinerung dieser Algorithmen (letzte Vorlesung des
           Logik-Teils von ``Logik und Logikprogrammierung'') bildet Grundlage
           der logischen Programmierung.
-  \end{itemize}
+  \end{itemize*}
 
   \subsubsection{Hornformeln (Alfred Horn,
     1918-2001)}\label{hornformeln-alfred-horn-1918-2001}
@@ -1704,13 +1535,13 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
 
   \subsubsection{Markierungsalgorithmus}\label{markierungsalgorithmus}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Eingabe: eine endliche Menge $\Gamma$ von Hornklauseln.
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           while es gibt in $\Gamma$ eine Hornklausel $M\rightarrow q$, so dass
@@ -1720,7 +1551,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           if $\Gamma$ enthält eine Hornklausel der Form $M\rightarrow\bot$, in
           der alle $p\in M$ markiert sind then return ``unerfüllbar'' else
           return ``erfüllbar''
-  \end{enumerate}
+  \end{enumerate*}
 
   Beweis einer Folgerung: Beispiel - Ziel ist es, die folgende Folgerung
   zu zeigen:
@@ -1752,7 +1583,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
 
   Nach unserer Herleitung folgern wir, dass das Teil $A$ heil ist.
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Der Algorithmus terminiert: in jedem Durchlauf der while-Schleife wird
@@ -1763,9 +1594,9 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           B-Belegung ist, die $\Gamma$ erfüllt, dann gilt $B(q) = 1_B$. Beweis:
           wir zeigen induktiv über $n$: Wenn $q$ in einem der ersten $n$
           Schleifendurchläufe markiert wird, dann gilt $B(q) = 1_B$.
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           I.A. Die Aussage gilt offensichtlich für $n=0$.
@@ -1777,9 +1608,9 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $B(p_1)=...=B(p_k) = 1_B$ nach IV. Da $B$ alle Hornformeln aus
           $\Gamma$ erfüllt, gilt insbesondere
           $B(\{p_1 ,p_2 ,... ,p_k\}\rightarrow q) = 1_B$ und damit $B(q) = 1_B$.
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \setcounter{enumi}{2}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
@@ -1799,7 +1630,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $B(p_i)=\begin{cases} 1_B \quad\text{ der Algorithmus markiert } p_i \\ 0_B \quad\text{ sonst} \end{cases}$
           Beweis:
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   Sei $M\rightarrow q$ eine beliebige Hornklausel aus $\Gamma$.
             \item
@@ -1814,8 +1645,8 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
                   $B(M\rightarrow\bot) = 1_B$ wie im ersten Fall. Also gilt
                   $B(M\rightarrow q) = 1_B$ für alle Hornklauseln aus $\Gamma$, d.h.
                   $\Gamma$ ist erfüllbar.
-          \end{itemize}
-  \end{enumerate}
+          \end{itemize*}
+  \end{enumerate*}
 
   \begin{quote}
     Satz
@@ -1945,7 +1776,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
   \subsection{Zusammenfassung
     Aussagenlogik}\label{zusammenfassung-aussagenlogik}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Das natürliche Schließen formalisiert die ``üblichen'' Argumente in
@@ -1959,7 +1790,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
     \item
           Der Markierungsalgorithmus und die SLD-Resolution sind praktikable
           Verfahren, um die Erfüllbarkeit von Hornformeln zu bestimmen.
-  \end{itemize}
+  \end{itemize*}
 
   \section{Kapitel 2: Prädikatenlogik}\label{kapitel-2-pruxe4dikatenlogik}
 
@@ -2000,7 +1831,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
   \subsection{Kodierung in einer
     ``Struktur''}\label{kodierung-in-einer-struktur}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Grundmenge: Die Studenten und die Lehrenden in Veranstaltungen zur
@@ -2030,7 +1861,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           Konstante:
     \item
           $dk$ Dietrich Kuske
-  \end{itemize}
+  \end{itemize*}
 
   Die in der Aussagenlogik nur schwer formulierbaren Aussagen werden nun -
   Für alle $x$ gilt $S(x)\vee WM(x)\vee Pr(x)$ - $Pr(dk)$ - Für alle $x$
@@ -2767,7 +2598,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
   \subsubsection{Regeln des natürlichen Schließens
     (Erweiterung)}\label{regeln-des-natuxfcrlichen-schlieuxdfens-erweiterung}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           ($R$): $\frac{}{t=t}$
@@ -2786,7 +2617,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
     \item
           ($\exists$-I): $\frac{\exists x\varphi\quad\quad \sigma}{\sigma}$ ($x$
           kommt in Hypothesen und $\sigma$ nicht frei vor)
-  \end{itemize}
+  \end{itemize*}
 
   \begin{quote}
     Definition
@@ -2872,7 +2703,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
   und setzen dann - $\sum^+ =\bigcup_{n\geq 0} \sum_n$ und
   $\Delta^+ = \bigcup_{n\geq 0} \Delta_n$
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           IA: $\sum_0 := \sum$ , $\Delta_0:=\Delta$
@@ -2885,7 +2716,7 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $\psi\in\Delta_n$ der Form
           $\Delta'_{n+1}:= \Delta_n\cup\{\varphi[x:=c_{\psi}]|\psi=\exists x\varphi\in\Delta_n\}$
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   ohne Beweis: $\Delta'_{n+1}$ ist konsistent
             \item
@@ -2896,10 +2727,10 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
             \item
                   Analog zum Satz aus Vorlesung 4 existiert
                   $\Delta_{n+1}\supseteq \Delta'_{n+1}$ maximal konsistent
-          \end{itemize}
-  \end{enumerate}
+          \end{itemize*}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Damit ist die Konstruktion der Signaturen $\sum_n$ und der maximal
@@ -2910,16 +2741,16 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
           $\Delta^+$ hat Konkretisierungen: Sei
           $\psi=\exists x\varphi\in\Delta^+$
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $\Rightarrow$ es gibt $n\geq 0$ mit $\psi\in\Delta_n$
             \item
                   $\Rightarrow \varphi[x:=c_{\psi}]\in\Delta'_{n+1}\subseteq \Delta_{n+1}\subseteq\Delta^+$.
-          \end{itemize}
+          \end{itemize*}
     \item
           Konsistenz: (indirekt) angenommen, $\Delta^+\vdash\bot$
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   Da jede Deduktion endlich ist, existiert $\Gamma\subseteq\Delta^+$
                   endlich mit $\Gamma\vdash\bot$.
@@ -2928,12 +2759,12 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
             \item
                   $\Rightarrow \Delta_n\vdash\bot$ - im Widerspruch zur Konsistenz von
                   $\Delta_n$.
-          \end{itemize}
+          \end{itemize*}
     \item
           maximale Konsistenz: (indirekt) angenommen, $\Delta^+$ ist nicht
           maximal konsistent
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $\Rightarrow$ es gibt $\Gamma\not\subseteq\Delta^+$ konsistent
             \item
@@ -2953,8 +2784,8 @@ Also $\Delta\vdash\bot$, ein Widerspruch zur Konsistenz von $\Delta$. Also ist $
             \item
                   Also $\varphi,\lnot\varphi\in\Gamma$, im Widerspruch zur Konsistenz
                   von $\Gamma$.
-          \end{itemize}
-  \end{itemize}
+          \end{itemize*}
+  \end{itemize*}
 
   \begin{quote}
     Satz
@@ -4013,7 +3844,7 @@ Gib "unerfüllbar" aus und stoppe.
 
   \subsubsection{Unifikationsalgorithmus}\label{unifikationsalgorithmus}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Eingabe: Paar$(\alpha,\beta)$ gleichungsfreier Atomformeln $\sigma:=$
@@ -4031,51 +3862,51 @@ Gib "unerfüllbar" aus und stoppe.
           else sei $x$ die Variable und $t$ der Term in der anderen Atomformel
           (möglicherweise auch eine Variable)
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   if $x$ kommt in $t$ vor
             \item
                   then stoppe mit ``nicht unifizierbar''
             \item
                   else $\sigma:=\sigma[x:=t]$
-          \end{itemize}
+          \end{itemize*}
     \item
           endwhile
     \item
           Ausgabe: $\sigma$
-  \end{itemize}
+  \end{itemize*}
 
   \begin{quote}
     Satz
 
-    \begin{itemize}
+    \begin{itemize*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \item
                     Der Unifikationsalgorithmus terminiert für jede Eingabe.
-            \end{enumerate}
+            \end{enumerate*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \setcounter{enumi}{1}
               \item
                     Wenn die Eingabe nicht unifizierbar ist, so terminiert der
                     Unifikationsalgorithmus mit der Ausgabe ``nicht unifizierbar''.
-            \end{enumerate}
+            \end{enumerate*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \setcounter{enumi}{2}
               \item
                     Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der
                     Unifikationsalgorithmus einen allgemeinsten Unifikator von $\alpha$
                     und $\beta$.
-            \end{enumerate}
-    \end{itemize}
+            \end{enumerate*}
+    \end{itemize*}
   \end{quote}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \def\labelenumi{(\Alph{enumi})}
     \setcounter{enumi}{2}
     \itemsep1pt\parskip0pt\parsep0pt
@@ -4084,7 +3915,7 @@ Gib "unerfüllbar" aus und stoppe.
           Atomformeln (wenigstens) einen allgemeinsten Unifikator haben. Nach
           dem Lemma oben haben sie also genau einen allgemeinsten Unifikator
           (bis auf Umbenennung der Variablen).
-  \end{enumerate}
+  \end{enumerate*}
 
   Die drei Teilaussagen werden in getrennten Lemmata bewiesen werden.
 
@@ -4174,34 +4005,34 @@ Gib "unerfüllbar" aus und stoppe.
   \begin{quote}
     Satz
 
-    \begin{itemize}
+    \begin{itemize*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \item
                     Der Unifikationsalgorithmus terminiert für jede Eingabe.
-            \end{enumerate}
+            \end{enumerate*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \setcounter{enumi}{1}
               \item
                     Wenn die Eingabe nicht unifizierbar ist, so terminiert der
                     Unifikationsalgorithmus mit der Ausgabe ``nicht unifizierbar''.
-            \end{enumerate}
+            \end{enumerate*}
       \item
-            \begin{enumerate}
+            \begin{enumerate*}
               \def\labelenumi{(\Alph{enumi})}
               \setcounter{enumi}{2}
               \item
                     Wenn die Eingabe $(\alpha,\beta)$ unifizierbar ist, dann findet der
                     Unifikationsalgorithmus immer einen allgemeinsten Unifikator von
                     $\alpha$ und $\beta$.
-            \end{enumerate}
-    \end{itemize}
+            \end{enumerate*}
+    \end{itemize*}
   \end{quote}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \def\labelenumi{(\Alph{enumi})}
     \setcounter{enumi}{2}
     \itemsep1pt\parskip0pt\parsep0pt
@@ -4210,7 +4041,7 @@ Gib "unerfüllbar" aus und stoppe.
           Atomformeln(wenigstens) einen allgemeinsten Unifikator haben. Damit
           haben sie aber genau einen allgemeinsten Unifikator (bis auf
           Umbenennung der Variablen).
-  \end{enumerate}
+  \end{enumerate*}
 
   \subsection{Prädikatenlogische
     SLD-Resolution}\label{pruxe4dikatenlogische-sld-resolution}
@@ -4328,7 +4159,7 @@ Gib "unerfüllbar" aus und stoppe.
   \subsection{Zusammenfassung
     Prädikatenlogik}\label{zusammenfassung-pruxe4dikatenlogik}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Das natürliche Schließen formalisiert die ``üblichen'' Argumente in
@@ -4347,7 +4178,7 @@ Gib "unerfüllbar" aus und stoppe.
           $\Gamma\Vdash\psi(s_1,...,s_{\iota})$ zu bestimmen (wobei $\Gamma$
           Menge von gleichungsfreien Horn-Klauseln und $\psi$ Konjunktion von
           gleichungsfreien Atomformeln sind.
-  \end{itemize}
+  \end{itemize*}
 
   \section{Logische Programmierung}\label{logische-programmierung}
 
@@ -4548,7 +4379,7 @@ Gib "unerfüllbar" aus und stoppe.
 
   Algorithmus zur Bestimmung des allgemeinsten Unifikators 2er Terme
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           input: s, t
@@ -4564,7 +4395,7 @@ Gib "unerfüllbar" aus und stoppe.
     \item
           nein $\Rightarrow$ Bilde die Unterscheidungsterme $s_i^*$ und $t_i^*$
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $s_i^*$ oder $t_i^*$ Variable?
             \item
@@ -4572,7 +4403,7 @@ Gib "unerfüllbar" aus und stoppe.
             \item
                   ja $\Rightarrow$ sei (o.B.d.A.) $s_i^*$ eine Variable
 
-                  \begin{itemize}
+                  \begin{itemize*}
                     \itemsep1pt\parskip0pt\parsep0pt
                     \item
                           $s_i^* \subseteq t_i^*$? (enthält $t_i^*$ die Variable $s_i^*$?)
@@ -4581,7 +4412,7 @@ Gib "unerfüllbar" aus und stoppe.
                     \item
                           nein $\Rightarrow$
 
-                          \begin{itemize}
+                          \begin{itemize*}
                             \itemsep1pt\parskip0pt\parsep0pt
                             \item
                                   $\nu':=\{[s,t']: [s,t]\in\nu, t':=t|_{s*\rightarrow t*}\}\cup \{[s_i^*, t_i^*]\}$
@@ -4591,10 +4422,10 @@ Gib "unerfüllbar" aus und stoppe.
                                   $\nu_i:=\nu'; s_i:=s'; t_i:=t';$
                             \item
                                   gehe zu Start
-                          \end{itemize}
-                  \end{itemize}
-          \end{itemize}
-  \end{itemize}
+                          \end{itemize*}
+                  \end{itemize*}
+          \end{itemize*}
+  \end{itemize*}
 
   \subsection{Logische Programmierung}\label{logische-programmierung-1}
 
@@ -4667,13 +4498,13 @@ Gib "unerfüllbar" aus und stoppe.
   \paragraph{Formulierung von
     Wissensbasen}\label{formulierung-von-wissensbasen}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Beispiel 1 (BSP1.PRO)
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Yoshihito und Sadako sind die Eltern von Hirohito.
@@ -4708,7 +4539,7 @@ Gib "unerfüllbar" aus und stoppe.
     \item
           geschwister(X,Y) :- vater\_von(V,X), vater\_von(V,Y),
           mutter\_von(M,X), mutter\_von(M,Y).
-  \end{itemize}
+  \end{itemize*}
 
   Visual Prolog benötigt aber einen Deklarationsteil für Datentypen und
   Aritäten der Prädikate, der für die o.g. Wissensbasis so aussieht:
@@ -4727,14 +4558,14 @@ goal
   < Frage ohne "?-" einfügen>
 \end{verbatim}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \setcounter{enumi}{1}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Beispiel 2 (BSP2.PRO)
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Kollegen Meier und Müller arbeiten im Raum 1, Kollege Otto im Raum 2
@@ -4766,7 +4597,7 @@ goal
           arbeitet\_in(K1,R),arbeitet\_in(K2,R).
     \item
           koennen\_daten\_austauschen(K1,K2) :- erreichbar(K1),erreichbar(K2).
-  \end{itemize}
+  \end{itemize*}
 
   Deklarationsteil
 
@@ -5103,13 +4934,13 @@ goal
     sucht, mache man sich den Unifikations-Mechanismus zu nutzen.
   \end{quote}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Eine kontextfreie Grammatik (Chomsky-Typ 2) besteht aus
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           einem Alphabet A, welches die terminalen (satzbildenden) Symbole
@@ -5121,15 +4952,15 @@ goal
           einer Menge von Ableitungsregeln $R\subseteq N\times (N\cup A)^*$
     \item
           dem Satzsymbol $S\in N$
-  \end{enumerate}
+  \end{enumerate*}
 
-  \begin{itemize}
+  \begin{itemize*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           \ldots{} und in PROLOG repräsentiert werden durch
-  \end{itemize}
+  \end{itemize*}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           1-elementige Listen, welche zu satzbildenden Listen komponiert werden:
@@ -5141,14 +4972,14 @@ goal
           PROLOG-Regeln mit $l\in N$ im Kopf und $r\in(N\cup A)^*$ im Körper
     \item
           einen reservierten Namen: $satz$
-  \end{enumerate}
+  \end{enumerate*}
 
   Ein Ableitungsbaum beschreibt die grammatische Struktur eines Satzes.
   Seine Wurzel ist das Satzsymbol, seine Blätter in Hauptreihenfolge
   bilden den Satz.
   \includegraphics[width=\linewidth]{Assets/Logik-ableitungsbaum-beispiel.png}
 
-  \begin{enumerate}
+  \begin{enumerate*}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
           Alphabet
@@ -5159,7 +4990,7 @@ goal
     \item
           Ableitungsregeln (in BACKUS-NAUR-Form)
 
-          \begin{itemize}
+          \begin{itemize*}
             \item
                   $satz ::= subjekt praedikat objekt$
             \item
@@ -5172,10 +5003,10 @@ goal
                   $artikel ::= das$
             \item
                   $praedikat ::= loest | ignoriert | verschaerft$
-          \end{itemize}
+          \end{itemize*}
     \item
           Satzsymbol $satz$
-  \end{enumerate}
+  \end{enumerate*}
 
   Verketten einer Liste von Listen
 

@@ -2552,14 +2552,14 @@ Gegeben seien zwei gleichungsfreie Atomformeln $\alpha$ und $\beta$. Eine Substi
 Ein Unifikator $\sigma$ von $\alpha$ und $\beta$ heißt allgemeinster Unifikator von $\alpha$ und $\beta$, falls für jeden Unifikator $\sigma′$ von $\alpha$ und $\beta$ eine Substitution $\tau$ mit $\sigma′=\sigma \tau$ existiert.
 
 Aufgabe: Welche der folgenden Paare $(\alpha,\beta)$ sind unifizierbar?
-| $\alpha$ | $\beta$ | Ja  | Nein |
-| --- | --- | --- | --- |
-| $P(f(x))$ | $P(g(y))$ | |
-| $P(x)$ |$P(f(y))$||
-|$Q(x,f(y))$| $Q(f(u),z)$||
-|$Q(x,f(y))$| $Q(f(u),f(z))$||
-|$Q(x,f(x))$| $Q(f(y),y)$||
-|$R(x,g(x),g^2 (x))$| $R(f(z),w,g(w))$ ||
+| $\alpha$            | $\beta$          | Ja  | Nein |
+| ------------------- | ---------------- | --- | ---- |
+| $P(f(x))$           | $P(g(y))$        |     |
+| $P(x)$              | $P(f(y))$        |     |
+| $Q(x,f(y))$         | $Q(f(u),z)$      |     |
+| $Q(x,f(y))$         | $Q(f(u),f(z))$   |     |
+| $Q(x,f(x))$         | $Q(f(y),y)$      |     |
+| $R(x,g(x),g^2 (x))$ | $R(f(z),w,g(w))$ |     |
 
 ### Zum allgemeinsten Unifikator
 Eine Variablenumbenennung ist eine Substitution $\rho$, die $Def(\rho)$ injektiv in die Menge der Variablen abbildet.
@@ -2889,25 +2889,25 @@ Algorithmus zur Bestimmung des allgemeinsten Unifikators 2er Terme
 
 ### Syntax
 Syntax von Klauseln
-| | Syntax | Beispiel
-| --- | --- | --- |
-Fakt | praedikatensymbol(term,...term). | liefert(xy_ag,motor,vw).
-Regel | praedikatensymbol(term,...term) :- praedikatensymbol(term,...term) ,... , praedikatensymbol(term,...term). | konkurrenten(Fa1,Fa2) :- liefert(Fa1,Produkt,_),liefert(Fa2,Produkt,_).
-Frage | ?- praedikatensymbol(term,...term) , ... ,praedikatensymbol(term,...term). | ?- konkurrenten(ibm,X), liefert(ibm,_,X).
+|       | Syntax                                                                                                     | Beispiel                                                                |
+| ----- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Fakt  | praedikatensymbol(term,...term).                                                                           | liefert(xy_ag,motor,vw).                                                |
+| Regel | praedikatensymbol(term,...term) :- praedikatensymbol(term,...term) ,... , praedikatensymbol(term,...term). | konkurrenten(Fa1,Fa2) :- liefert(Fa1,Produkt,_),liefert(Fa2,Produkt,_). |
+| Frage | ?- praedikatensymbol(term,...term) , ... ,praedikatensymbol(term,...term).                                 | ?- konkurrenten(ibm,X), liefert(ibm,_,X).                               |
 
 Syntax von Termen
-| | | Syntax | Beispiele | 
-| --- | --- | --- | --- |
-Konstante | Name | Zeichenfolge, beginnend mit Kleinbuchstaben, die Buchstaben, Ziffern und \_ enthalten kann. | otto\_1 , tisch, hund
-|| beliebige Zeichenfolge in "..." geschlossen | "Otto", "r@ho"
-|| Sonderzeichenfolge | €%&§$€
-| Zahl | Ziffernfolge, ggf. mit Vorzeichen, Dezimalpunkt und Exponentendarstellung | 3, -5, 1001, 3.14E-12
-Variable | allg. | Zeichenfolge, mit Großbuchstaben oder \_ beginnend | X, Was, _alter
-| anonym | Unterstrich | \_
-strukturierter Term | allg. | funktionssymbol( term , ... , term ) | nachbar(chef(X))
-| Liste | leere Liste | [ ]
-| | $[term|restliste]$ | $[mueller|[mayer|[]]]$
-|| $[term , term , ... , term ]$ | $[ mueller, mayer, schulze ]$
+|                     |                                                                           | Syntax                                                                                      | Beispiele             |
+| ------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------- |
+| Konstante           | Name                                                                      | Zeichenfolge, beginnend mit Kleinbuchstaben, die Buchstaben, Ziffern und \_ enthalten kann. | otto\_1 , tisch, hund |
+|                     | beliebige Zeichenfolge in "..." geschlossen                               | "Otto", "r@ho"                                                                              |
+|                     | Sonderzeichenfolge                                                        | €%&§$€                                                                                      |
+| Zahl                | Ziffernfolge, ggf. mit Vorzeichen, Dezimalpunkt und Exponentendarstellung | 3, -5, 1001, 3.14E-12                                                                       |
+| Variable            | allg.                                                                     | Zeichenfolge, mit Großbuchstaben oder \_ beginnend                                          | X, Was, _alter        |
+| anonym              | Unterstrich                                                               | \_                                                                                          |
+| strukturierter Term | allg.                                                                     | funktionssymbol( term , ... , term )                                                        | nachbar(chef(X))      |
+| Liste               | leere Liste                                                               | [ ]                                                                                         |
+|                     | $[term                                                                    | restliste]$                                                                                 | $[mueller             | [mayer | []]]$ |
+|                     | $[term , term , ... , term ]$                                             | $[ mueller, mayer, schulze ]$                                                               |
 
 BACKUS-NAUR-Form
 - PROLOG-Programm ::= Wissensbasis Hypothese
@@ -3036,14 +3036,14 @@ Die Prozedur $weisungsrecht(X,Y)$ wird abgearbeitet, indem
 2. die Unterprozeduren $chef_von(X,Z)$ und $weisungsrecht(Z,Y)$ abgearbeitet; indem systematisch Prozedurvarianten beider Unterprozeduren aufgerufen werden.Dies geschieht bis zum Erfolgsfall oder erfolgloser erschöpfender Suche.
 
 
-| deklarative Interpretation | prozedurale Interpretation |
-| --- | --- |
-Prädikat | Prozedur
-Ziel | Prozeduraufruf
-Teilziel | Unterprozedur
-Klauseln mit gleichem Kopfprädikat | Prozedur-varianten
-Klauselkopf | Prozedurkopf
-Klauselkörper | Prozedurrumpf
+| deklarative Interpretation         | prozedurale Interpretation |
+| ---------------------------------- | -------------------------- |
+| Prädikat                           | Prozedur                   |
+| Ziel                               | Prozeduraufruf             |
+| Teilziel                           | Unterprozedur              |
+| Klauseln mit gleichem Kopfprädikat | Prozedur-varianten         |
+| Klauselkopf                        | Prozedurkopf               |
+| Klauselkörper                      | Prozedurrumpf              |
 
 Die Gratwanderung zwischen Wünschenswertem und technisch Machbarem erfordert mitunter "Prozedurales Mitdenken", um
 1. eine gewünschte Reihenfolge konstruktiver Lösungen zu erzwingen,

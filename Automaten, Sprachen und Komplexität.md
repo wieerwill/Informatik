@@ -16,7 +16,7 @@ author: Robert Jeutter
   - [Zusammenfassung](#zusammenfassung)
   - [Nicht-Reguläre Sprachen](#nicht-reguläre-sprachen)
     - [Konkrete nicht-reguläre Sprachen](#konkrete-nicht-reguläre-sprachen)
-    - [Pumping Lemma (auswendig lernen!)](#pumping-lemma-auswendig-lernen)
+    - [Pumping Lemma](#pumping-lemma)
     - [Myhill-Nerode Äquivalenz](#myhill-nerode-äquivalenz)
   - [Minimalautomat](#minimalautomat)
     - [Algorithmus Minimalautomat](#algorithmus-minimalautomat)
@@ -132,7 +132,7 @@ Mengen nennt man "Sprachen"
 # Grundbegriffe
 Natürliche Zahlen $\N = {0,1,2,3,...}$
 
-> Definition: Für eine Menge X ist X* die Menge der endlichen Folgen über X.
+> Definition: Für eine Menge $X$ ist $X*$ die Menge der endlichen Folgen über $X$.
 
 > Definition: Ein Alphabet ist eine endliche nichtleere Menge.
 
@@ -408,7 +408,6 @@ Betrachte den NFA M' mit $\begin{cases}
 \delta(z,a)\cup S &\text{ sonst } \end{cases}$
 
 Behauptung: für alle $Y\subseteq Z$ und $w\in\sum^+$ gilt $\top{\sigma}(Y,w)=\top{sigma}(Y,w)\cup \bigcup \top{\sigma}(S, u_n)$
-
 
 > Satz: Wenn L eine reguläre Sprache ist, dann ist auch $L^*$ regulär.
 
@@ -845,7 +844,7 @@ Wir haben als nächstes zu zeigen, dass jede kontextfreie Sprache von einem PDA 
 > Definition: eine kontextfreie Grammatik G ist in **Greibach Normalform** falls alle Produktionen aus P folgende Form haben: $A\rightarrow aB_1B_2...B_k$, mit $k\in \N$, $A,B_1,...,B_k\in V$ und $a\in \sum$
 Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein Alphabetsymbol entsteht.
 
-> Satz: aus einer kontextfreien Grammatik G kann eine kontextfreie Grammatik G' in Greibach Normalform berechnetwerden mit $L(G')=L(G)\ \{\epsilon\}$.
+> Satz: aus einer kontextfreien Grammatik G kann eine kontextfreie Grammatik G' in Greibach Normalform berechnet werden mit $L(G')=L(G)\ \{\epsilon\}$.
 
 ## Von Grammatiken zu PDAs
 Konstruktion: Sei G eine kontextfreie Grammatik in Greibach Normalform. Konstruiere den PDA $M_G$:
@@ -1262,7 +1261,7 @@ Syntaktische Komponenten für While Programme: wie Loop Programme, nur Schlüsse
 Intuition: Programm P wird so oft ausgeführt, bis der Wert von $x_i$ gleich 0 ist.
 
 Da while-Schleifen nicht unbedingt terminieren, berechnen While-Programme i.a. keine totalen, sondern nur partielle Funktionen:
-> Definition: Seien $r\in\N und $D\subseteq\N^r$. Eine Funktion $f:D\rightarrow\N$ heißt partielle Funktion von $\N^r$ nach $\N$. Wir schreiben hierfür $f:\N^r --\rightarrow\N$.
+> Definition: Seien $r\in\N$ und $D\subseteq\N^r$. Eine Funktion $f:D\rightarrow\N$ heißt partielle Funktion von $\N^r$ nach $\N$. Wir schreiben hierfür $f:\N^r --\rightarrow\N$.
 
 > Definition: wie bei Loop Programmen definieren wir zunächst für jedes While Programm P in dem keine Variable $x_i$ mit $i>k$ vorkommt induktiv eine partielle Abbildung $[[P]]_k:\N^k--\rightarrow\N^k$. Hierfür sei $\bar{n}\in\N^k$
 > - $[[x_i=c]]_k(n_1,...,n_k)=(m_1,...,m_k)$ genau dann, wenn $m_i=c$ und $m_l=n_l$ für $l\not = i$
@@ -1307,7 +1306,7 @@ Durch den $\mu$-Operator können auch echt partielle Funktionen erzeugt werden.
 > - $f(n)$ definiert $\leftrightarrow [[P]]_l(\bar{n},0,...,0)$ definiert
 > - Falls $f(\bar{n})$ definiert ist, gilt $f(\bar{n})=\pi_1^l ([[P]]_l(\bar{n},0,...,0))$
 
-> Definition: Seien $P=A_1;A_2;...;A_m;$ ein GoTo Programm und $(\bar{n},p), (\bar{n'},p')$ zwei Konfigurationen. Wir setzen $(\bar{n},p)\vdash_P (\bar{n'},p'), falls $p>0$ und eine der folgenden Bedingungen gilt:
+> Definition: Seien $P=A_1;A_2;...;A_m;$ ein GoTo Programm und $(\bar{n},p), (\bar{n'},p')$ zwei Konfigurationen. Wir setzen $(\bar{n},p)\vdash_P (\bar{n'},p')$, falls $p>0$ und eine der folgenden Bedingungen gilt:
 > - $A_p=(x_i=c), n'_i=c, n'_l=n_l \text{ für } l\not\ =i \text { und } p'=p+1$
 > - $A_p=(x_i=x_j+c), n'_i=n_j+c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
 > - $A_p=(x_i=x_j-c), n'_i=n_j-c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
@@ -1385,7 +1384,7 @@ Bedeutung: k=uzv
 - Schritt nach Rechts: $\quad a_1\dots a_mzb_1b_2\dots b_n \vdash_M a_1\dots a_mcz'b_2\dots b_n$
 - Schritt nach Rechts am rechten Bandende: $\quad a_1\dots a_m zb_1\vdash_M a_1\dots a_m cz'\Box$
 
-> Definition: Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM und k eine Konfiguration. Dann heißt k Haltekonfiguration falls für alle Konfigurationen $k'$ gilt: $k\vdash_M k'\Rightarrow k=k'$ (d.h. ist %k=uzav$, so gilt $\delta(z,a)=(z,a,N)$). Die Haltekonfiguration k ist akzeptierend, wenn zusätzlich $k\in\Box^*E\sum^*\Box^*$ gilt.
+> Definition: Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM und k eine Konfiguration. Dann heißt k Haltekonfiguration falls für alle Konfigurationen $k'$ gilt: $k\vdash_M k'\Rightarrow k=k'$ (d.h. ist $k=uzav$, so gilt $\delta(z,a)=(z,a,N)$). Die Haltekonfiguration k ist akzeptierend, wenn zusätzlich $k\in\Box^*E\sum^*\Box^*$ gilt.
 
 > Definition: Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM. Die von M berechnete partielle Funktion $f_M:\sum^*--\rightarrow \sum^*$ erfüllt f+r alle $x,y\in\sum^*: f_M(x)=y\leftrightarrow \exists z_e \in E,i,j,\in\N:z_0x\Box \vdash_M^* \Box^i z_e y\Box^j$ und $\Box^iz_ey\Box^j$ ist Haltekonfiguration.
 

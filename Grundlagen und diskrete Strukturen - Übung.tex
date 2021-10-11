@@ -1,11 +1,12 @@
 \documentclass[10pt, a4paper]{exam}
-%\printanswers			    % Comment this line to hide the answers 
+\printanswers			    % Comment this line to hide the answers 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage[many]{tcolorbox}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
 
 \pdfinfo{
     /Title (Grundlagen und diskrete Strukturen - Übung)
@@ -81,45 +82,98 @@
     \begin{parts}
         \part  Es gibt unendlich viele Primzahlen.
         \begin{solution}
+            Ist eine Aussage, es gibt entweder unendlich viele Primzahlen oder nicht. Nach Euklid ist diese Aussage wahr: "Satz von Euklid"
         \end{solution}
         \part Hat die Gleichung $x^3-x = 0$ zwei reelle Lösungen?
         \begin{solution}
+            Ist eine Aussage, entweder stimmt die Aussage und die Gleichung hat zwei reelle Lösungen oder es gibt keine oder mehr reelle Lösungen. Die Gleichung hat tatsächlich drei Lösungen $(-1,0,-1)$, damit ist die Aussage falsch.
         \end{solution}
         \part Dieser Satz besteht aus sechs Wörtern.
         \begin{solution}
+            Ist eine Aussage und ist wahr.
         \end{solution}
         \part Dieser Satz ist falsch.
         \begin{solution}
+            Ist eine keine Aussage. Wäre er wahr, so wäre er nach eigener Aussage falsch. Ist ein "Antinomien".
         \end{solution}
         \part Ein Satz, der das Wort Steuersenkung enthält ist falsch.
         \begin{solution}
+            Ist eine Aussage die einem Wahrheitswert zugewiesen werden kann. Der Wahrheitswert ist falsch, da mindestens ein Satz existiert der das Wort Steuersenkung enthält und wahr ist.
         \end{solution}
         \part Es gibt einen Gott.
         \begin{solution}
+            Ist keine Aussage. Dem Satz kann kein Wahrheitswert oder eindeutige Bedeutung zugewiesen werden.
         \end{solution}
         \part Wenn Rot gleich Grün ist, dann ist Schwarz gleich Gelb.
         \begin{solution}
+            Ist keine Aussage. Werten Rot, Grün usw. kann man keinen eindeutigen Eigenwert zuweisen (Additiv, Substraktiv, ...). Damit kann auch kein Wahrheitswert zugewiesen werden.
         \end{solution}
     \end{parts}
 
     \question Bestimmen Sie den Wahrheitswerteverlauf der aussagenlogischen Formel $((p \leftrightarrow q) \wedge q) \rightarrow p$.
     \begin{solution}
+
+        \begin{tabular}{c c c c c}
+            $p$ & $q$ & $x=(p\leftrightarrow q)$ & $y=(x\wedge q)$ & $y\rightarrow p$ \\\hline
+            0   & 0   & 1                        & 0               & 1                \\
+            0   & 1   & 0                        & 0               & 1                \\
+            1   & 0   & 0                        & 0               & 0                \\
+            1   & 1   & 1                        & 1               & 1                \\
+        \end{tabular}
     \end{solution}
 
     \question Untersuchen Sie mit Hilfe aussagenlogischer Formeln, ob sich die folgende Argumentation als Beweis dafür eignet , dass 7 eine Primzahl ist. Aus der Aussage ,,Wenn 7 kleiner ist als 4, dann ist 7 keine Primzahl.'' und der Aussage ,,7 ist nicht kleiner als 4'' folgt die Aussage ,,7 ist eine Primzahl.''
     \begin{solution}
+        \begin{itemize}
+            \item $a: (7<4)\rightarrow 7\not\in Prim$
+            \item $b: (7\not<4)\rightarrow 7\in Prim$
+            \item $c: 7>4 \rightarrow wahr$
+            \item $c\rightarrow \bar{a} \cup b \rightarrow \lnot(7\not\in Prim) \cup 7\in Prim \Rightarrow 7\in Prim$
+        \end{itemize}
     \end{solution}
 
     \question Welche der folgenden aussagenlogischen Formeln sind Tautologien bzw. Kontradiktionen?
     \begin{parts}
         \part $(p \wedge (p \rightarrow q)) \rightarrow q$
         \begin{solution}
+
+            \begin{tabular}{ccccc}
+                $p$ & $q$ & $x:p\rightarrow q$ & $y:p\wedge x$ & $y\rightarrow q$ \\\hline
+                0   & 0   & 1                  & 0             & 1                \\
+                0   & 1   & 1                  & 0             & 1                \\
+                1   & 0   & 0                  & 0             & 1                \\
+                1   & 1   & 1                  & 1             & 1                \\
+            \end{tabular}
+
+            ist Tautologie
         \end{solution}
         \part $(\lnot p \vee (\lnot p \wedge q)) \leftrightarrow p$
         \begin{solution}
+
+            \begin{tabular}{ccccc}
+                $p$ & $q$ & $x:\lnot p\wedge q$ & $y:\lnot p\vee x$ & $y\leftrightarrow q$ \\\hline
+                0   & 0   & 0                   & 1                 & 1                    \\
+                0   & 1   & 1                   & 1                 & 1                    \\
+                1   & 0   & 0                   & 0                 & 1                    \\
+                1   & 1   & 0                   & 0                 & 1                    \\
+            \end{tabular}
+
+            alternativ umwandeln: $((\lnot p\vee\lnot p)\wedge(\lnot p\vee q))\leftrightarrow p\Rightarrow (\lnot p\vee q)\leftrightarrow p$
+
+            ist Tautologie
         \end{solution}
         \part $(p \leftrightarrow q) \leftrightarrow (\lnot p \leftrightarrow \lnot q)$
         \begin{solution}
+
+            \begin{tabular}{ccccc}
+                $p$ & $q$ & $x:p\leftrightarrow q$ & $y:\lnot p\leftrightarrow \lnot q$ & $x\leftrightarrow y$ \\\hline
+                0   & 0   & 1                      & 1                                  & 1                    \\
+                0   & 1   & 0                      & 0                                  & 1                    \\
+                1   & 0   & 0                      & 0                                  & 1                    \\
+                1   & 1   & 1                      & 1                                  & 1                    \\
+            \end{tabular}
+
+            ist Tautologie
         \end{solution}
     \end{parts}
 
@@ -127,15 +181,55 @@
     \begin{parts}
         \part $p\equiv (p \wedge (p \vee q))$
         \begin{solution}
+
+            \begin{tabular}{cccc}
+                $p$ & $q$ & $p\vee q$ & $p\wedge(p\vee q)$ \\\hline
+                0   & 0   & 0         & 0                  \\
+                0   & 1   & 1         & 0                  \\
+                1   & 0   & 1         & 1                  \\
+                1   & 1   & 1         & 1                  \\
+            \end{tabular}
         \end{solution}
         \part $(p \wedge (q \wedge r)) \equiv ((p \wedge q) \wedge r)$
         \begin{solution}
+
+            \begin{tabular}{cccccccc}
+                $p$ & $q$ & $r$ & $(q \wedge r)$ & $x: (p \wedge (q \wedge r)$ & $p \wedge q$ & $y: (p \wedge q) \wedge r$ & $x\equiv y$ \\\hline
+                0   & 0   & 0   & 0              & 0                           & 0            & 0                          & 1           \\
+                0   & 0   & 1   & 0              & 0                           & 0            & 0                          & 1           \\
+                0   & 1   & 0   & 0              & 0                           & 0            & 0                          & 1           \\
+                0   & 1   & 1   & 0              & 0                           & 0            & 0                          & 1           \\
+                1   & 0   & 0   & 0              & 0                           & 0            & 0                          & 1           \\
+                1   & 0   & 1   & 1              & 0                           & 0            & 0                          & 1           \\
+                1   & 1   & 0   & 0              & 0                           & 1            & 0                          & 1           \\
+                1   & 1   & 1   & 1              & 1                           & 1            & 1                          & 1           \\
+            \end{tabular}
         \end{solution}
         \part $(p \wedge (q \vee r)) \equiv ((p \wedge q) \vee (p \wedge r))$
         \begin{solution}
+
+            \begin{tabular}{ccccccccc}
+                $p$ & $q$ & $r$ & $q\vee r$ & $x:p\wedge(q\vee r)$ & $a:p\wedge q$ & $b:p\wedge r$ & $y:a\vee b$ & $x\equiv y$ \\\hline
+                0   & 0   & 0   & 0         & 0                    & 0             & 0             & 0           & 1           \\
+                0   & 0   & 1   & 1         & 0                    & 0             & 0             & 0           & 1           \\
+                0   & 1   & 0   & 1         & 0                    & 0             & 0             & 0           & 1           \\
+                0   & 1   & 1   & 1         & 0                    & 0             & 0             & 0           & 1           \\
+                1   & 0   & 0   & 0         & 0                    & 0             & 0             & 0           & 1           \\
+                1   & 0   & 1   & 1         & 1                    & 0             & 1             & 1           & 1           \\
+                1   & 1   & 0   & 1         & 1                    & 1             & 0             & 1           & 1           \\
+                1   & 1   & 1   & 1         & 1                    & 1             & 1             & 1           & 1           \\
+            \end{tabular}
         \end{solution}
         \part $(\lnot(p \wedge q)) \equiv ((\lnot p) \vee (\lnot q))$
         \begin{solution}
+
+            \begin{tabular}{ccccc}
+                $p$ & $q$ & $x:\lnot(p\wedge q)$ & $y:\lnot p \vee \lnot q$ & $x\equiv y$ \\\hline
+                0   & 0   & 1                    & 1                        & 1           \\
+                0   & 1   & 1                    & 1                        & 1           \\
+                1   & 0   & 1                    & 1                        & 1           \\
+                1   & 1   & 0                    & 0                        & 1           \\
+            \end{tabular}
         \end{solution}
     \end{parts}
 
@@ -143,52 +237,72 @@
     \begin{parts}
         \part Jede Aussagenlogische Formel ist äquivalent zu einer aussagenlogischen Formel, in der die konstanten Wahrheitswerte w und f nicht vorkommen.
         \begin{solution}
+
         \end{solution}
         \part Jede Aussagenlogische Formel ist äquivalent zu einer aussagenlogischen Formel, in der weder Implikation noch Äquivalenz vorkommt.
         \begin{solution}
+            $p\wedge q \vee r \not\equiv p\vee q\wedge r $
+
+            $\Rightarrow$ nicht jede
         \end{solution}
     \end{parts}
 
     \question Auf einer Insel leben nur Ritter und Schurken. Die Ritter sagen immer die Wahrheit, und die Schurken lügen immer. Wir treffen auf der Insel drei Personen A, B und C. A sagt: ,,Jeder von uns dreien ist ein Schurke,'' B sagt: ,,Genau einer von uns dreien ist ein Ritter.'' Der Vollständigkeit und guten Ordnung halber sei erwähnt, dass C schweigt. Was sind A, B und C?
     \begin{solution}
+        Ist Aussage A richtig, dann sind alle Schurken und lügen. Aber wenn alle Schurken sind, wäre dieser Satz gelogen und ist damit falsch. Daraus folgt, dass mindestens ein Ritter existieren muss.
+        Sei Aussage B richtig, dann ist genau einer von dreien ein Ritter. Wenn B richtig ist, sagt B die Wahrheit und ist damit ein Ritter, die anderen beiden Schurken.
+        Sei Aussage B falsch, dann müssen es zwei Ritter sein. Es kann nicht nur Schurken geben, da sonst A wahr wäre. Dann wären B und C Ritter, A ist bereits Schurke. Aber wenn B ein Ritter sein soll, wäre seine Aussage wahr und widerspricht den zwei Rittern.
+        Deshalb ist B wahr, B ein Ritter und C ein Schurke.
     \end{solution}
 
     \question Geben Sie für die Aussageform $p(x) = $,,x ist nicht durch zwei teilbar'' Universen $U_1,U_2,U_3$ und $U_4$ mit unendlich vielen Elementen so an, dass
     \begin{parts}
         \part ,,$\forall x \in U_1 : p(x)$,, wahr ist,
         \begin{solution}
+            $U_1 = \{z | \text{z ist ungerade}\}$
         \end{solution}
         \part ,,$\forall x \in U_2 : p(x)$,, falsch ist,
         \begin{solution}
+            $U_2 = \{z | \text{ z ist gerade}\}$
         \end{solution}
         \part ,,$\exists x \in U_3 : p(x)$,, wahr ist,
         \begin{solution}
+            $U_3 = \mathbb{R}$
         \end{solution}
         \part ,,$\exists x \in U_4 : p(x)$,, falsch ist.
         \begin{solution}
+            $U_4 = \mathbb{R}$
         \end{solution}
     \end{parts}
 
-    \question Stellen Sie den folgenden mathematischen Sachverhalt als Aussageform dar. ,,Das arithmetische Mittel verschiedener positiver reeller Zahlen ist größer als deren geometrisches Mittel.''
+    \question Stellen Sie den folgenden mathematischen Sachverhalt als Aussageform dar:
+    ,,Das arithmetische Mittel verschiedener positiver reeller Zahlen ist größer als deren geometrisches Mittel.''
     \begin{solution}
+        $ x_{arit} > x_{geom} \Rightarrow \frac{1}{n}\sum_{i=1}^n x_i > \sqrt[n]{\prod_{i=1}^n x_i}$
+
     \end{solution}
 
     \question Bilden Sie die Negation folgender Aussagen:
     \begin{parts}
         \part Für jedes Töpfchen gibt es ein Deckelchen.
         \begin{solution}
+            Es gibt mindestens einen Topf ohne Deckel.
         \end{solution}
         \part Immer, wenn ich nach Ilmenau komme, regnet es oder die Schranken sind unten.
         \begin{solution}
+            Es gibt mindestens ein mal nach dem ich in Ilmenau komme, dass es nicht rechnet und nicht die Schranken unten sind.
         \end{solution}
         \part Für jeden Studierenden gibt es mindestens eine interessante Vorlesung.
         \begin{solution}
+            Es gibt mindestens einen Studenten für den es es keine interessante Vorlesung gibt.
         \end{solution}
         \part Everybody loves somebody sometimes.
         \begin{solution}
+            Somebody loves nobody anytime.
         \end{solution}
         \part Kleine Kinder und Betrunkene sagen immer die Wahrheit.
         \begin{solution}
+            Kleine Kinder und Betrunkene sagen nicht immer die Wahrheit.
         \end{solution}
         \part $\forall \epsilon > 0 \exists N \in\mathbb{N}\forall n > N: |a_n - g| < \epsilon \quad\quad (lim_{n\rightarrow\infty} a_n = g)$
         \begin{solution}
@@ -221,15 +335,22 @@
     \begin{parts}
         \part $A \cup  B$
         \begin{solution}
+            $A\cup B = \{n | (n\in N)\wedge (\text{3 oder 2 teilt n})\}$
         \end{solution}
         \part $A \cap  B$
         \begin{solution}
+            $A\cap B = \{n | (n\in N)\wedge (3*2=6 \text{ teilt n})\}$
         \end{solution}
         \part $C \backslash A$
         \begin{solution}
+            $C\backslash A = \{n | (n\in N)\wedge(\text{2 teilt n aber nicht 3})\}$
+
+            Hinweis: $6/3=2$
         \end{solution}
         \part $A \backslash C$
         \begin{solution}
+            $A\backslash C = \{n | (n\in N)\wedge(\text{3 teilt n abe
+                    r nicht 6})\}$
         \end{solution}
     \end{parts}
 
@@ -244,17 +365,14 @@
     \end{parts}
 
     \question Es seien A und B Mengen. Beweisen Sie: Wenn zwei der folgenden drei Aussagen wahr sind, dann gilt auch die dritte.
-    \begin{parts}
-        \part $A \backslash B = \varnothing$.
-        \begin{solution}
-        \end{solution}
-        \part $A \subseteq B$.
-        \begin{solution}
-        \end{solution}
-        \part $A = \varnothing$.
-        \begin{solution}
-        \end{solution}
-    \end{parts}
+    \begin{itemize}
+        \item $A \backslash B = \varnothing$.
+        \item $A \subseteq B$.
+        \item $A = \varnothing$.
+    \end{itemize}
+    \begin{solution}
+
+    \end{solution}
 
     \question Beweisen Sie die folgenden Aussagen für beliebig gegebene Mengen A, B, C.
     \begin{parts}
@@ -270,12 +388,15 @@
     \begin{parts}
         \part $A \backslash (B \backslash A)$
         \begin{solution}
+            $A$
         \end{solution}
         \part $B \backslash (A \backslash B)$
         \begin{solution}
+            $B$
         \end{solution}
         \part $(A \cup B) \backslash (A \backslash B)$
         \begin{solution}
+            $B$
         \end{solution}
     \end{parts}
 
@@ -302,7 +423,7 @@
         \end{solution}
     \end{parts}
 
-    \question Beweisen Sie die folgende Behauptung durch vollständige Induktion: Für jede Menge M und jedes $n\in N$ gilt: $|M| = n\Rightarrow |\mathcal{P}(M)| = 2^n$.
+    \question Beweisen Sie die folgende Behauptung durch vollständige Induktion: Für jede Menge M und jedes $n\in N$ gilt: $|M| = n\Rightarrow |\mathcal{P}(M)| = 2^n$ .
     \begin{solution}
     \end{solution}
 
@@ -314,7 +435,7 @@
         \part $R \subseteq R_2$ und $R_2$ ist reflexiv und transitiv
         \begin{solution}
         \end{solution}
-        \part $R \subseteq R_3$ und $R_3$ ist reflexiv, transitiv und symmetrisch
+        \part $R \subseteq R_3$ und $R_3$ ist reflexiv, transitiv und symmetrisch.
         \begin{solution}
         \end{solution}
     \end{parts}
@@ -426,12 +547,21 @@
     \begin{parts}
         \part Sind $f$ und $g$ injektiv, so ist auch $g\circ f$ injektiv.
         \begin{solution}
+            gilt nach Definition
+
+            Aus der Injektivität von $g\circ f$ folgt, dass $f$ f injektiv ist
         \end{solution}
         \part Sind $f$ und $g$ surjektiv, so ist auch $g\circ f$ surjektiv.
         \begin{solution}
+            gilt nach Definition
+
+            Aus der Surjektivität von $g\circ f$ folgt, dass $f$ auch Surjektiv ist.
         \end{solution}
         \part Sind $f$ und $g$ bijektiv, so ist auch $g\circ f$ bijektiv.
         \begin{solution}
+            Nach Definition ist $g\circ f$ bijektiv, dann ist $f$ injektiv und $g$ surjektiv.
+
+            Sind die Funktionen $f: A\rightarrow B$ und $g\colon B\to C$ bijektiv, dann gilt dies auch für die Verkettung $g\circ f\colon A\to C$. Die Umkehrfunktion von $g\circ f$ ist dann $f^{-1}\circ g^{-1}$.
         \end{solution}
     \end{parts}
 
@@ -524,6 +654,12 @@
 
     \question Berechnen Sie $(430772581411 * 2391233625 + 22222136 * 555503 - 18522)\ mod\ m$ für jedes $m\in\{1, 2, 5, 100\}$.
     \begin{solution}
+        \begin{itemize}
+            \item $(430772581411 * 2391233625 + 22222136 * 555503 - 18522)\ mod\ 1 = 0$
+            \item $(430772581411 * 2391233625 + 22222136 * 555503 - 18522)\ mod\ 2 = (430772581411\ mod\ 2)*(2391233625\ mod\ 2 )+(22222136\ mod\ 2)*(555503)\ mod\ 2 -(18522\ mod\ 2 )$
+            \item $(430772581411 * 2391233625 + 22222136 * 555503 - 18522)\ mod\ 5 =$
+            \item $(430772581411 * 2391233625 + 22222136 * 555503 - 18522)\ mod\ 100 =$
+        \end{itemize}
     \end{solution}
 
     \question Man beweise die folgenden Teilbarkeitsregeln:
@@ -540,12 +676,15 @@
     \begin{parts}
         \part $(1546984316385^7)^3\ mod\ 11$
         \begin{solution}
+            $=((1546984316385\ mod\ 11)^7)^3 = (1546984316385\ mod\ 11)^{21}$
         \end{solution}
-        \part $12^31\ mod\ 7$
+        \part $12^{31}\ mod\ 7$
         \begin{solution}
+            $=(12\ mod\ 7)^{31} = 5^{31}$
         \end{solution}
-        \part $13^43\ mod\ 47$
+        \part $13^{43}\ mod\ 47$
         \begin{solution}
+            $(13\ mod\ 47)^{43} = 0$
         \end{solution}
     \end{parts}
 
@@ -597,59 +736,117 @@
 
     \question Bei einem Wurf mit zwei fairen Würfeln seien $A$ das Ereignis, dass die Summe der Augen ungerade ist, und $B$ das Ereignis, dass mindestens ein Wurf die Augenzahl eins oder zwei ergibt. Bestimmen Sie die Wahrscheinlichkeiten der Ereignisse $A, B, A\cap B, A\cup B$ und $A\cap\bar{B}$.
     \begin{solution}
+
+        $A=\{(1,1),(1,3),(1,5),(2,2),(2,4),(2,6),(3,1),(3,3),(3,5),(4,2),(4,4),(4,6),(5,1),(5,3),(5,6),(6,2),(6,4),(6,6)\}$,
+
+        $B=\{(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(3,1),(4,1),(5,1),(6,1),(3,2),(4,2),(5,2),(6,2)\}$,
+
+        $P(E)=\frac{1}{6^2}$,
+        $|A|=12$,
+        $|B|=20$,
+
+        \begin{itemize}
+            \item $P(A)=\frac{12}{36}=\frac{1}{3}$,
+            \item $P(B)=\frac{20}{36}=\frac{5}{9}$
+            \item $P(A\cap B)= \frac{1}{3}*\frac{5}{9}=\frac{5}{27}$
+            \item $P(A\cup B)= \frac{1}{3}+\frac{5}{9}=\frac{8}{9}$
+            \item $P(A\cap\bar{B})= \frac{1}{3}*\frac{4}{9}=\frac{4}{27}$
+        \end{itemize}
     \end{solution}
 
     \question Es seien $b_1,b_2$ und $b_3$ elektronische Bauteile, die mit den Wahrscheinlichkeiten $0.05, 0.08$ und $0.1$ unabhängig voneinander durch Stromunterbrechung ausfallen.
-    \begin{solution}
-    \end{solution}
-
-    \begin{center}\includegraphics[width=.2\linewidth]{Assets/GudS-schaltung.png}\end{center}
+    \begin{center}
+        \includegraphics[width=.2\linewidth]{Assets/GudS-schaltung.png}
+    \end{center}
     \begin{parts}
         \part Mit welcher Wahrscheinlichkeit ist der Stromfluss in gegebenen Schaltung von A nach B unterbrochen?
         \begin{solution}
+            $b_1=0.05$, $b_2=0.08$, $b=0.1$
+
+            $P(X)=(b_1 + b_2)*b_3=(0,05+0,08)*0,1=0,013$
         \end{solution}
         \part Um wieviele Bauteile der Sorte $b_3$ ist die in a) gezeigte Schaltung durch Parallelschaltung mindestens zu erweitern, damit die Ausfallwahrscheinlichkeit noch höchstens $0.0002$ beträgt?
         \begin{solution}
+            $P(X)=(b_1+b_2)*n*b_3 \leq^! 0,0002$
+
+            $n= \frac{(b_1+b_2)*b_3}{0,0002} = 65$
         \end{solution}
     \end{parts}
 
     \question Drei Personen besteigen in der Tiefgarage eines Gebäudes den Fahrstuhl und verlassen diesen unabhängig voneinander und jeweils mit gleicher Wahrscheinlichkeit in einem der folgenden 10 Etagen. Es bezeichne X die Anzahl der Fahrstuhlhalts, den die drei Fahrgäste benötigen. Berechnen Sie $P[X=k]$ für $1\leq k\leq 10$ und $E[X]$.
     \begin{solution}
+        $\Omega=\{1,2,3,4,5,6,7,8,9,10\}^3$
+
+        \begin{itemize}
+            \item $P(X=1)=\frac{1}{10}*\frac{1}{10}*\frac{1}{10}=\frac{1}{1000}$
+            \item $P(X=2)=\frac{1}{10}*\frac{1}{10}*\frac{9}{10}=\frac{9}{1000}$
+            \item $P(X=3)=\frac{1}{10}*\frac{9}{10}*\frac{8}{10}=\frac{72}{1000}$
+            \item $P(X=\{4...10\})=0$
+        \end{itemize}
+        $E(X)=1*\frac{1}{1000}+2*\frac{9}{1000}+3*\frac{72}{1000}=\frac{219}{1000}$
     \end{solution}
 
     \question Zwei Unternehmen sind zu 60\% bzw. zu 40\% an der Gesamtproduktion eines elektronischen Bauteils beteiligt. Die Wahrscheinlichkeit, dass ein Bauteil mindestens 2000 Stunden betriebsfähig bleibt, ist für das erste Unternehmen $0.8$ und für das zweite Unternehmen $0.7$.
     \begin{parts}
         \part Mit welcher Wahrscheinlichkeit bleibt ein der Gesamtproduktion entnommenes Bauteil mindestens 2000 Stunden lang betriebsfähig?
         \begin{solution}
+
+            $A=0,6*0,8$, $B=0,4*0,7$,
+
+            $P(A\cup B)=0,6*0,8+0,4*0,7=0,48+0,28=0,76 = 76\%$
         \end{solution}
         \part Wie groß ist die Wahrscheinlichkeit dafür, dass ein beliebig ausgewähltes Bauteil, das bereits nach 1200 Stunden ausfiel, aus dem zweiten Unternehmen stammt?
         \begin{solution}
+
+            $P(B|\bar{A})=\frac{P(B)}{P(A\cup B)}=\frac{0,28}{0,28+0,48}= 0.368 \approx 37\%$
         \end{solution}
     \end{parts}
 
     \question In einer Spielshow stellt der Moderator den Kandidaten vor die Entscheidung, eines von drei Toren zu wählen. Hinter einem verbrirgt sich der Hauptpreis, hinter den zwei anderen der Zonk (eine Niete). Der Kandidat wählt eines der Tore. Daraufhin öffnet der Moderator eines der beiden anderen Tore hinter dem sich ein Zonk befindet und lässt dem Kandidaten die Wahl, das gewählte Tor zu behalten oder das verbleibende zu wählen. Sollte der Kandidat wechseln?
     \begin{solution}
+        Im folgenden wird der Fall angenommen, dass der Kandidat zunächst auf Tür 1 zeigt. Die Begründung für die anderen beiden Fälle verläuft analog.
+
+        In $\frac{1}{3}$ der Fälle steht das Auto hinter Tür 1. In der Hälfte dieser Fälle, also in $\frac{1}{6}$ der Gesamtzahl der Fälle, wird vom Moderator Tür 2 geöffnet, in einem weiteren Sechstel Tür 3.
+
+        In $\frac{2}{3}$ der Fälle steht das Auto hinter Tür 2 oder Tür 3, und zwar in der einen Hälfte dieser Fälle hinter Tür 2, in der anderen Hälfte hinter Tür 3. In der einen Hälfte dieser Fälle, also in einem Drittel der Gesamtzahl der Fälle, wird vom Moderator Tür 2 geöffnet, in der anderen Hälfte Tür 3.
+
+        Durch das Öffnen der Nietentür 2 oder 3 reduziert sich die Zahl der Fälle, bei denen das Auto hinter Tür 2 oder 3 steht, um die Hälfte, also auf $\frac{1}{3}$ der Gesamtzahl der Fälle.
+
+        Außerdem reduziert sich die Zahl der Fälle, bei denen das Auto hinter Tür 1 steht, ebenfalls um die Hälfte, also auf $\frac{1}{6}$ der Gesamtzahl der Fälle.
+
+        Die Gewinnwahrscheinlichkeit für diejenige der Türen 2 oder 3, die der Moderator nicht geöffnet hat, beträgt also $(\frac{1}{3})/(\frac{1}{6}+\frac{1}{3}) = \frac{2}{3}$.
     \end{solution}
 
     \question An der Technischen Universität Hintertupfingen studieren 10\% aller Studierenden Informatik, 15\% Angewandte Medienwissenschaften, 20\% beginnen ein Wirtschafts- und 55\% ein Ingenieurstudium. Im Wintersemester 2011/12 lag bei der Mathematik I Prüfung die Durchfallquote bei 50\% bei den Informatikern 35\% bei den Ingenieuren 30\% bei den Wirtschaftlern und bei den angewandten Medienwissenschaftlern bei 60\%. Im April läuft ein glücklich aussehender Student über den Campus, der gerade seine Mathe I Klausur bestanden hat. Wie groß ist die Wahrscheinlichkeit, dass er Informatiker ist?
     \begin{solution}
+        $P(A|B)=(0,5*0,1)/(0,5)=0,1$
     \end{solution}
 
     \question Anna ist Informatikstudentin und besucht etwa jede 2. Woche ihre Lieblingsdiskothek. Diese hat 3 Räume, von denen Anna jeden gleich häufig besucht. Ihr Kommilitone Bastian besucht eines Samstags die Disko. Er trifft Anna in den ersten beiden Räumen nicht an. Wie groß ist die Wahrscheinlichkeit, dass Anna sich im dritten Raum befindet?
     \begin{solution}
+        $P(A\cap B_3)= \frac{1}{2}*\frac{1}{3} = \frac{1}{6}$
     \end{solution}
 
     \question Bastian findet Anna nicht in der Disko, dafür aber zwei flüchtige Bekanntschaften namens Dorothea und Eleonore, die er gerne näher kennenlernen würde. Er schätzt die Chancen dazu bei Dorothea auf 70\% und bei Eleonore auf 50\%. Bei einem Misserfolg könnte er sein Glück noch bei der jeweils anderen versuchen. Dann hätte er nur noch eine 10\%ige Aussicht auf Erfolg, falls sein erster Versuch aufgefallen ist. Eleonore würde das sofort bemerken, Dorothea nur zu 50\%, da sie gerade etwas abgelenkt ist. In welcher Reihenfolge sollte Bastian die Damen ansprechen?
     \begin{solution}
+        $P(E\ vor\ D)= 0,5*(0,9*0,5+0,1*0,5)=0,5*0,5=0,25$
+
+        $P(D\ vor\ E)= 0,7*0,9=0,63$
     \end{solution}
 
     \question Ein Postbote soll ein Paket bei einem Empfänger abgeben. Trifft er diesen nicht an, wird der Postbote noch 3 weitere Zustellversuche machen ehe das Paket an den Absender zurückgeschickt wird. Die Ereignisse, den Empfänger an einem bestimmten Tag anzutreffen seien dabei unabhängig und haben die Wahrscheinlichkeit $p=0,3$.
     \begin{parts}
         \part Mit welcher Wahrscheinlichkeit erreicht das Paket den Empfänger?
         \begin{solution}
+            $P(kommt\ an)=0,3+0,7*0,3+0,7*0,7*0,3+0,7*0,7*0,7*0,3=0.7599$
         \end{solution}
         \part Für die Zufallsgröße X der Anzahl der Zustellversuche gebe man Erwartungswert und Varianz an.
         \begin{solution}
+
+            $E(X)=1*0,3+2*0,7*0,3+3*0,7*0,7*0,3+4*0,7*0,7*0,7*0,3 =
+            1.5726$
+
+            $Var(X)=\sum(x_i-E(X))^2*P(x_i) = (1-1,5726)*0,3+ (2-1,5726)*0,7*0,3 + (3-1,5726)*0,7*0,7*0,3 + (4-1,5726)*0,7*0,7*0,7*0,3 = 0.378$
         \end{solution}
     \end{parts}
 
@@ -657,39 +854,55 @@
     \begin{parts}
         \part mindestens einmal ein Buch liest,
         \begin{solution}
+
+            $P(a)=\frac{1}{6}*\frac{5}{6}*\frac{5}{6}*\frac{5}{6}+\frac{1}{6}*\frac{1}{6}*\frac{5}{6}*\frac{5}{6}+\frac{1}{6}*\frac{1}{6}*\frac{1}{6}*\frac{5}{6}+\frac{1}{6}*\frac{1}{6}*\frac{1}{6}*\frac{1}{6}=\frac{341}{279936}\approx 0,00122$
         \end{solution}
         \part 2 mal ins Kino geht,
         \begin{solution}
+            $P(b)=\frac{1}{6}*\frac{1}{6}*\frac{5}{6}*\frac{5}{6}=\frac{25}{1296}\approx 0,019$
         \end{solution}
         \part 4 mal tanzen geht,
         \begin{solution}
+            $P(c)=\frac{4}{6}^4=\frac{16}{81}\approx 0,198$
         \end{solution}
         \part nie tanzen geht,
         \begin{solution}
+            $P(d)=\frac{2}{6}^4=\frac{1}{81}\approx 0,012$
         \end{solution}
         \part alle drei Beschäftigungen wenigstens einmal auftreten.
         \begin{solution}
+            $P(e)=\frac{4}{6}*\frac{1}{6}*\frac{1}{6}=\frac{1}{54}\approx 0,019$
         \end{solution}
-        \part Außerdem bestimme man die zu erwartende Anzahl von Perioden, in denen er min-
-        destens 3mal tanzen geht.
+        \part Außerdem bestimme man die zu erwartende Anzahl von Perioden, in denen er mindestens 3mal tanzen geht.
         \begin{solution}
+            $P(mind.\ 3mal\ tanzen)=\frac{4}{6}^3*\frac{2}{6}+\frac{4}{6}^4=\frac{8}{27}\approx 0,296$
+
+            $E(X)=\sum_{i=1}^{13} x_i*\frac{8}{27} \approx 3,85$
         \end{solution}
     \end{parts}
 
     \question Beim Biathlon darf beim Schießen bei 5 Schüssen höchstens 2 mal nachgeladen werden, wenn nicht getroffen wurde. Ansonsten müssen Strafrunden gelaufen werden. Es bezeichne X die Anzahl der abgegebenen Schüsse und Y die Anzahl der Strafrunden. Berechnen Sie für beide Zufallsgrößen den Erwartungswert und die Varianz, wenn die Trefferwahrscheinlichkeit 80 Prozent beträgt.
     \begin{solution}
+        %$P(X)=\binom{15}{5} 0,8^5 (1-0,8)^{15-5}= \frac{15!}{5!10!}0,8^5 (1-0,8)^{10}=0,0001$
     \end{solution}
 
     \question 5 Personen fahren gemeinsam mit einem Auto von der Disko nach Hause. 2 von ihnen haben in der Diskothek Drogen konsumiert. Das Auto wird von der Polizei angehalten und zwei der Insassen werden zufällig zu einem Drogentest ausgewählt.
     \begin{parts}
         \part Für die Zufallsgröße X der positiv getesteten Personen bestimme man die Einzelwahrscheinlichkeiten sowie Erwartungswert und Varianz.
         \begin{solution}
+            $P(X)=\binom{5}{2}$
+
+            $E(X)=1*P(1)+2*P(2)$
+
+            $Var(X)=E(X)^2-E(X)^2$
         \end{solution}
         \part Der Test sei nun nicht ganz sicher sondern schlägt nur mit einer Wahrscheinlichkeit von 75\% an. (0\% falls keine genommen wurden). Y sei dann die Zufallsgröße der positiv getesteten Personen. Bestimmen Sie wieder Einzelwahrscheinlichkeiten, Erwartungswert und Varianz.
         \begin{solution}
+            $P(X)=\binom{5}{2}*0,75^2*0,25^3$
         \end{solution}
         \part 100 der 1000 Besucher der Diskothek haben Drogen genommen. Die Polizei testet 20 Personen. Man bestimme näherungsweise die Wahrscheinlichkeit dafür, dass mindestens 3 von ihnen positiv getestet werden.
         \begin{solution}
+            %$P(X)=\binom{1000}{100} *\binom{100}{20} *0,75 $
         \end{solution}
     \end{parts}
 

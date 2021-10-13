@@ -27,7 +27,7 @@ Unterlagen zu Informatik Vorlesungen der TU Ilmenau
 - [Logik und Logikprogrammierung](Logik%20und%20Logikprogrammierung.md) 
   - [Cheatsheet](Logik%20und%20Logikprogrammierung%20-%20Cheatsheet.pdf)
   - [Flashcards - Karteikarten für Definitionen](Logik%20und%20Logikprogrammierung%20-%20Flashcards.pdf)
-- [Network Security]
+- [Network Security](Network%20Security.md)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
 - [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - [Programmierparadigmen](Programmierparadigmen.md)

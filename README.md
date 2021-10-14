@@ -60,36 +60,35 @@ Lernen ist viel Arbeit und bereitet dir Schwierigkeiten? Lies unsere [Hilfe](ric
 Keine Garantie auf Vollständigkeit/Korrektheit! Hilf uns Fehler zu korrigieren und noch weitere Fächer abzudecken.
 
 ## Verwendung
-Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder, Grafiken etc ist in einem eigenen Ordner "Assets". Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
+Alle Dokumente werden in (bevorzugt) Markdown  oder LaTex geschrieben. Bilder/Grafiken werden im Ordner `Assets` abgelegt. Bei Fragen zu Markdown könnt ihr Google befragen, Cheatsheets lesen (da steht meistens alles drauf) oder im Notfall den Admin fragen.
 Dieses Repo ist zum Selbststudium und erlernen neuen Wissens gedacht. Keine Inhalte oder Teile dieses Repositories dürfen kommerziell verwendet werden. Es steht frei zu Teilen, Klonen und Mitzuarbeiten.
 Wir freuen uns über jeden der mitmacht.
 
 ## Recht auf Kopie deiner Prüfungsleistung
 Die TU Ilmenau ist sich ja selbst nicht sehr sicher wie sie damit umgeht und, wie so oft, verbietet es erstmal ganz. Nach bereits erfolgreichen Teilschritten hoffen wir bald wieder vollständig Einblick in unsere eigenen Leistungen nehmen zu können und tatsächlich aus unseren Fehlern lernen zu können. Falls du eine Kopie deiner Prüfung mit Aufgaben und Bemerkungen einholen willst, nutze gerne unsere Vorlage.
 
-! Hinweis: Wir sind keine Juristen oder ähnliche Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
+! Hinweis: Wir sind keine Juristen oder haben ähnliche Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
 
-Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort. Wir sind weiter dran.
+Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort ("[Wir sind] nicht berechtigt solche Fragen zu stellen.[...]" aus der Antwort des Dezernat). Wir sind weiter dran.
 
 Hier gehts zum: [Antrag auf Kopie einer Prüfung](Antrag%20auf%20Kopie%20einer%20Prüfung.pdf)
 
 ## Mitmachen
-Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet haben. Vorraussetzung für diese Aktionen ist es, ein Github-Konto zu besitzen.
-- Erstelle ein 'issue'. Gehe davor die offene 'issues' durch (oder überlege dir welches Fach/Seminar noch fehlt)
+Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet haben. Vorraussetzung für diese Aktionen ist es, ein GitHub-Konto zu besitzen.
+- Erstelle ein `issue`. Gehe davor die offene `issues` durch (oder überlege dir welches Fach/Seminar noch fehlt)
 - Klone das Repository oder erstelle einen Fork. Über die Kommandozeile: ```git clone https://github.com/wieerwill/Informatik.git```
-- Erstelle deinen eigenen Feature Branch, damit deine Version nicht mit anderen kollidiert: ```git checkout -b <my-new-feature>``` (in <> kannst du frei wählen wie du deinen Branch nennst)
-- Nachdem du Änderungen vorgenommen hast, stelle deine Änderungen bereit: ```git add * && git commit -m <dein Kommentar>``` (in <> kommt dein Kommentar was sich geändert hat bzw woran du gearbeitet hast. Nicht der Dateiname!)
-- Lade die Änderung auf deinen Branch hoch: ```git push origin <my-new-feature>```
-- Erstelle ein 'pull request' damit deine Änderungen in diesem Repository übernommen werden können. Dies kannst du über dein Github Dashboard machen.
+- Erstelle deinen eigenen Feature Branch, damit deine Version nicht mit anderen kollidiert: ```git checkout -b <my-new-feature>``` (in <> kannst du frei wählen wie du deinen Branch nennst, z.B. nach dem bearbeiteten Fach)
+- Nachdem du Änderungen vorgenommen hast, stelle deine Änderungen bereit: ```git add * && git commit -m <dein Kommentar>``` (in <> kommt dein Kommentar was sich geändert hat bzw woran du gearbeitet hast. Nicht der Dateiname! Bsp: "Kapitel 2 hinzugefügt")
+- Lade die Änderung auf deinen Branch hoch: ```git push origin <my-new-feature>``` (<my-new-feature> ist der selbe Name den du oben deinem Branch gegeben hast)
+- Erstelle ein `pull request` damit deine Änderungen in dieses Repository übernommen werden können. Dies kannst du über dein Github Dashboard machen.
 
 ## Bild- und Textrechte
-Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt oder unter ausführlicher Quellangabe oder ggf. unter dem Vorlesungstitel verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandhabt. Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
+Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt oder unter ausführlicher Quellangabe oder unter dem Vorlesungstitel verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt, wir arbeiten mit bestem Wissen und Gewissen; ob der Professor abgeschrieben hat können wir nicht vorhersehen. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandhabt. Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
 
 ## Lizenz
 Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt ihr [hier](LICENSE) nachlesen.
 
-
 ## Hinweis für Dozenten
-Wir freuen uns immer helfen zu können. Für Fragen und Hinweise können Sie uns jederzeit kontaktieren. Sollten Sie ein Problem mit Persönlichkeits- oder Urheberrechten finden geben Sie uns bitte umgehend bescheid (per Email oder Issue), wir nehmen jeden Hinweis ernst.
+Wir freuen uns immer helfen und zusammenarbeiten zu können. Für Fragen und Hinweise können Sie uns jederzeit kontaktieren. Sollten Sie ein Problem mit Persönlichkeits- oder Urheberrechten finden geben Sie uns bitte umgehend bescheid (per Email oder Issue), wir nehmen jeden Hinweis ernst.
 
 Grundlage für dieses Repository ist das Teilen öffentlich bekannten Wissens und aufbereiten der Vorlesunginhalte die wir Studenten besuchen. Wir haben uns bewusst für ein öffentliches Repository entschieden um Missbrauch und Verjähung vorzubeugen; leider gibt es immer noch "geheime" Dropbox Ordner mit teils veraltetem oder falschem Inhalt.

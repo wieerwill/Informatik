@@ -1,0 +1,235 @@
+\documentclass[10pt, a4paper]{exam}
+\printanswers			    % Comment this line to hide the answers 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+
+\pdfinfo{
+    /Title (Advanced Operating Systems - Übung)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+\title{Advanced Operating Systems - Übung}
+\author{}
+\date{}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newtcolorbox{myboxii}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+  Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Advanced Operating Systems}! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
+\end{myboxii}
+
+%##########################################
+\begin{questions}
+  \question Funktionale und nichtfuntionale Eigenschaften
+  \begin{parts}
+    \part Was ist eine nichtfunktionale Eigenschaft? Finden Sie Beispiele für sowohl funktionale als auch nichtfunktionale Eigenschaften
+    \begin{itemize}
+      \item eines Flugzeugs,
+      \item eines Smartphones,
+      \item eines Betriebssystems.
+    \end{itemize}
+    \begin{solution}
+      \begin{itemize}
+        \item Flugzeugs
+              \begin{itemize}
+                \item F: fliegen, bremsen,
+                \item NF: Innentemperatur halten, automatisierte Steuerung
+              \end{itemize}
+        \item Smartphones
+              \begin{itemize}
+                \item F: telefonieren ermöglichen, Internetzugang
+                \item NF: klein, leicht, energiesparend, strahlungsarm, umweltfreundlich,
+              \end{itemize}
+        \item Betriebssystems
+              \begin{itemize}
+                \item F: den Zugriff auf Daten ermöglichen
+                \item NF: leicht zu bedienen, skalierbar, offen, performant,
+              \end{itemize}
+      \end{itemize}
+    \end{solution}
+    \part Charakterisieren Sie den Unterschied zwischen Laufzeiteigenschaften und Evolutionseigenschaften anhand je einer beispielhaften Eigenschaft.
+    \begin{solution}
+      Laufzeiteigenschaften Verfügbarkeit: während das System aktiv ist (läuft) muss es verfügbar sein. Überwachbar für ein einzelnes System nur über kurze Zeit.
+
+      Evolutionseigenschaft Wartbarkeit: das System kann über eine längere Zeit überarbeitet/verbessert werden auch ohne dass dieses aktiv ist oder laufen muss. Überwachbar über eine Reihe von Systemen und nur eine lange Zeit
+    \end{solution}
+  \end{parts}
+
+  \question Anforderungen an Betriebssysteme
+  \begin{parts}
+    \part  Welche grundlegenden funktionalen Eigenschaften muss jedes Betriebssystem qua definitione besitzen?
+    \begin{solution}
+      \begin{itemize}
+        \item Harware Multiplexen
+        \item Hardware Schutz
+        \item Harware Abstraktion
+      \end{itemize}
+    \end{solution}
+    \part Die Erfüllung spezieller nichtfunktionaler Eigenschaften kann Auswirkungen auf den gesamten Hard- und Softwarestack eines IT-Systems haben. Kennen Sie Anwendungsfälle für Betriebssysteme, die \begin{itemize}
+      \item keinen Scheduler,
+      \item kein Paging,
+      \item keinen privilegierten Prozessormodus
+    \end{itemize}
+    benutzen? Recherchieren und begründen Sie, warum solche Designs möglich und sinnvoll sein können!
+    \begin{solution}
+      Embedded Systems mit nur einem Programm verwenden kein Scheduler oder Paging
+
+
+    \end{solution}
+  \end{parts}
+
+  \question Sparsamkeitsbegriff
+  \begin{parts}
+    \part Erläutern Sie die Begriffe „Sparsamkeit“ und „Effizienz“. Nennen und begründen Sie in diesem Zusammenhang mögliche Ziele eines sparsamen Betriebssystems.
+    \begin{solution}
+    \end{solution}
+    \part Ist Sparsamkeit grundsätzlich als Laufzeit- oder als Evolutionseigenschaft anzusehen? Begründen Sie anhand Ihrer Antwort auf Frage a).
+    \begin{solution}
+    \end{solution}
+    \part Begründen Sie anhand selbstgewählter Anwendungsszenarien, wann Effizienz im Umgang
+    \begin{itemize}
+      \item mit Energie
+      \item mit Speicherplatz
+    \end{itemize} eine zentrale nichtfunktionale Eigenschaft eines Betriebssystems ist.
+    \begin{solution}
+    \end{solution}
+    \part Sparsamkeit ist auch eine mögliche Anforderung an den Betrieb eines IT-Systems. Können Sie sich vorstellen, warum dabei „Sparsamkeit mit Funktionalität“ oder „Sparsamkeit mit Code“ eine Rolle spielen könnte? Bewerten Sie den aktuellen Linux-Mainline Kernel1 nach diesen Kriterien. . .
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Energieeffizienz
+  \begin{parts}
+    \part Welche hardwareseitigen Voraussetzungen müssen für energieeffizienten Betrieb eines Rechnersystems vorliegen? Welche Rolle spielt das Betriebssystem hierbei?
+    \begin{solution}
+      Hardware kann Energiesparmodi bereitstellen (sleep mode) und das Betriebssystem muss diese einstellen/umstellen können
+    \end{solution}
+    \part Erklären Sie die Begriffe Reaktivität und Nutzererfahrung vor dem Hintergrund Ihrer Antwort auf Frage a).
+    \begin{solution}
+      Aus dem Energiesparenden Modi wird die Reaktivität niedriger sein aber kann durch das Betriebssystem für die jeweilige Anwendung angepasst wieder in einen Aktiven Modi versetzt werden.
+      Z.B. anpassung der Framerate einer GUI oder Grafik-intensiven Anwendung
+    \end{solution}
+  \end{parts}
+
+  \question Speichereffizienz
+  \begin{parts}
+    \part Erläutern Sie den Begriff Fragmentierung bei Realspeicherverwaltung. Warum kann dies auch für virtuelle Speicherverwaltung zum Problem werden?
+    \begin{solution}
+    \end{solution}
+    \part Welchen Einfluss hat die Seitentabelle für virtuelle Speicherverwaltung auf den unmittelbaren Speicherbedarf eines Betriebssystem-Kernels? Welchen haben etwaige Gerätetreiber? Und welche Möglichkeiten hat ein BS-Entwickler, mit beiden Problemen umzugehen?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question  Betriebssystemarchitekturen für Sparsamkeit und Effizienz
+
+  Welche Vor- und Nachteile haben die beiden Architekturkonzepte Makro- und Mikrokernel für Entwurf und Implementierung energie- und speichereffizienter Betriebssysteme? Diskutieren Sie anhand der Betriebssysteme TinyOS und RIOT!
+  \begin{solution}
+  \end{solution}
+
+  \question  Energieeffiziente Dateizugriffe
+  Nehmen Sie an, eine Anwendung referenziert eine Folge von Festplattenblöcken: $A,B,C,A,C,D,E,A$.
+  Zur Optimierung von sowohl Performanz als auch Energieverbrauch beim Zugriff auf diese Blöcke soll energieeffizientes Prefetching zum Einsatz kommen. Nehmen Sie weiterhin an, dass ein Blockzugriff (access) jeweils konstant 4 Zeiteinheiten (ZE) dauert, ein fetch oder prefetch je 1 ZE sowie dass der verwendete Festplattencache maximal 3 Blöcke fasst. Die gegebene Referenzfolge können Sie als gesichert annehmen (d. h. es sind keine Abweichungen im tatsächlichen Verhalten der Anwendung zu erwarten).
+  \begin{parts}
+    \part Entwickeln Sie zwei Zugriffsabläufe für diese Referenzfolge: einen, bei dem traditionelles
+    Prefetching angewandt wird, sowie einen weiteren mit dem in Vorlesung besprochenen Verfahren zum engergieeffizienten Prefetching.
+    \begin{solution}
+    \end{solution}
+    \part Begründen Sie anhand des Vergleichs beider Abläufe, welche Vorteile das energieeffizente Verfahren in diesem Beispiel hat. Kann es Referenzfolgen geben, bei denen beide Verfahren (nahezu oder völlig) gleichen Energieverbrauch verursachen? Unter welchen Umständen, bzw. warum nicht?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Energieeffizientes Scheduling
+
+  Schedulingalgorithmen, welche die optimale Reaktivität eines interaktiven Systems zum Ziel haben, basieren in der Regel auf Round Robin (RR) unter Einbeziehung von Prioritäten. Wenn zugleich Strategien zum sparsamen Umgang mit Prozessorenergie durchgesetzt werden, können solche Algorithmen ihr Ziel jedoch verfehlen.
+  \begin{parts}
+    \part Begründen Sie obige These anhand einer geeignet konstruierten, beispielhaften Prozessmenge.
+    \begin{solution}
+    \end{solution}
+    \part Das Schedulingziel von RR („maximale Reaktivität“) lässt sich als die möglichst faire Verteilung von Rechenzeit auf Threads beschreibt. Finden Sie eine analoge Beschreibung des Schedulingziels „Energieeffizienz“ im Sinne der Antwort auf Frage a). Definieren Sie hierfür einen formalen Schedulingparameter analog zur Zeitscheibenlänge T bei RR.
+    \begin{solution}
+    \end{solution}
+    \part Implementieren Sie die einfache RR-Strategie (ohne Prioritäten) so, dass beide in Frage b)beschriebenen Schedulingziele verfolgt werden. Beachten Sie insbesondere, dass \begin{itemize}
+      \item stark interaktive Threads durch verlängerte Antwortzeiten behindert sowie
+      \item energiesparsame Threads durch relativ geringere Prozessorzeit benachteiligt werden können.
+    \end{itemize}
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+  Als Ablaufumgebung zur Simulation einer Prozessmenge können Sie entweder ein kleines multi-threaded Programm schreiben oder den Scheduling-Simulator PSSAV verwenden, den Sie evtl. noch aus der zweiten Übung im Grundlagenfach Betriebssysteme kennen. Im letzteren Fall können Sie bereits auf eine RR-Implementierung zurückgreifen; diese und die vom Simulator vorgesehenen Prozessinformationen müssen natürlich modifiziert werden.
+  Stellen Sie Ihren Algorithmus (in knappem Pseudocode) im Seminar vor und zeigen Sie möglichst eine kleine Demonstration. Gehen Sie dabei auf die in der Vorlesung gestellten Implementierungsfragen ein.
+  Tipps: Zur Simulation des Energieverbrauchs eines ablaufenden Prozesses dürfen Sie annehmen, dass dieser linear abhängig von der Prozesslaufzeit ist. Sie müssen daher dieses Prozessmerkmal lediglich als Faktor repräsentieren, der bspw. das verbleibende Energiebudget zum Zeitpunkt des Ablaufs einer Zeitscheibe errechnet oder bestimmt, wann einzum Prozessstart gegebenes Energiebudget aufgebraucht sein wird (als zusätzlichen Schedulingzeitpunkt).
+
+
+\end{questions}
+\end{document}

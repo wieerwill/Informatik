@@ -3,6 +3,7 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
 
 - [Advanced Operating Systems](Advanced%20Operating%20Systems.md)
+  - [Advanced Operating Systems - Übung](Advanced%20Operating%20Systems%20-%20Übung.pdf) 
 - [Algorithmen und Datenstrukturen](Algorithmen%20und%20Datenstrukturen.md)
 - [Automaten, Sprachen und Komplexität](Automaten,%20Sprachen%20und%20Komplexität.md)
   - [Flashcards - Karteikarten für Definitionen](Automaten,%20Sprachen%20und%20Komplexität%20-%20Flashcards.pdf)

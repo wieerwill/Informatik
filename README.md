@@ -26,6 +26,7 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)
 - [Kryptographie](Kryptographie.md)
+  - [Kryptographie - Übung](Kryptographie%20-%20Übung.pdf)
 - [Logik und Logikprogrammierung](Logik%20und%20Logikprogrammierung.md) 
   - [Cheatsheet](Logik%20und%20Logikprogrammierung%20-%20Cheatsheet.pdf)
   - [Flashcards - Karteikarten für Definitionen](Logik%20und%20Logikprogrammierung%20-%20Flashcards.pdf)

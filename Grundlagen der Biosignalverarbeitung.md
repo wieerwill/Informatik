@@ -47,6 +47,30 @@ Grundlage ist der piezoresestive Widerstandseffekt: Durch Zug/Druck nimmt der el
 Die Widerstandsänderung ist linear abhängig von der Temperaturabhängigkeit des spez. Widerstandes, jedoch nicht linear abhängig von der mechanisch bedingten Änderung der
 Abmessungen. Natürlich hängen die Längenänderung und die des Durchmessers zusammen. Der konkrete Zusammenhang ist jedoch durch die Konstruktion und das Material gegeben und kann nicht verallgemeinert werden. Da für die Messung allein die Längenänderung von Interesse ist, wird im weiteren nur diese betrachtet.
 
+- $\frac{\delta R}{R}=k\frac{\delta l}{l}=k*\epsilon$, $\epsilon$-relative Dehnung
+- $\epsilon=\frac{F}{EA}$, $F=\frac{\delta R}{R}*\frac{EA}{k}$, E-Elastizitätsmodul
+- In der Praxis aus Kostengründen und wegen geringer Temperaturabhängigkeit meistens Konstant an (54% Cu, 45% Ni, 1% Mn mit $k=2,05$) verwendet
+
+Messverfahren: Widerstandsmessung mit Brückenschaltung
+- Wheatstone'sche Brücke: $U_A\rightarrow 0|_R \Rightarrow \frac{R_x}{R_V}=\frac{R_2}{R_1}$
+- $R_X=R_V\frac{R_2}{R_1}$
+- ![](./Assets/Biosignalverarbeitung-wheatstone-brücke.png)
+- Warum wird Rx mit Wheatstone-Brücke und nicht klassisch über Stromeinspeisung und Spannungsmessung bestimmt?
+  - Das Messsignal (Ua) ist stärker bzw. die Empfindlichkeit der Messanordnung ist höher als bei einer reinen Strom/Spannungsmessung, außerdem ist Temperaturkompensation möglich. 
+  - Starkes Messsignal ist sinnvoll wegen der immer vorhandenen Störungen vom Netz und Leitungen, die direkt auf die Kabel der Messanordnung wirken.
+
+Folien-DMS:
+- Widerstandsdraht mit ca $20\mu m$ Durchmesser oder Halbleiter
+- Träger Acrylharz, Epoxydharz, Polyamid
+- ![](Assets/Biosignalverarbeitung-folien-dms.png)
+
+Dehnungsmessrosette:
+- Messung in drei Richtungen
+- ![](Assets/Biosignalverarbeitung-Dehnungsmessrosette.png)
+
+Wie man an diesen Konstruktionsbeispielen gut erkennen kann, bilden die Leitungen ungewollterweise eine Antenne, die alle vorhandenen Störungen aus der Umgebung aufnimmt, vor allem Netzeinstreuung, Mobilfunk und Computernetze.
+
+
 ### Durchfluss, Volumen
 ### Optische Sensoren
 ### Akustische Sensoren

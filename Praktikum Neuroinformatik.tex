@@ -1,0 +1,268 @@
+\documentclass[a4paper,10pt,titlepage]{scrartcl}
+\usepackage[sc]{mathpazo} % Schrift - wie Funcky und in PDF zu Fonts beschrieben
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a-1b]{pdfx}
+\usepackage[ngerman]{babel}
+\usepackage[amssymb]{SIunits} 
+\usepackage{graphicx} 
+\usepackage{subfigure}                         
+\usepackage{float}
+\usepackage[iso,german]{isodate} %his package provides commands to switch between different date formats
+\usepackage{hyperref}
+\usepackage{listings}
+
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+%Abstand zwischen Absätzen, Zeilenabstände
+\voffset26pt 
+\parskip6pt
+%\parindent1cm  %Rückt erste Zeile eines neuen Absatzes ein
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+\pagenumbering{roman}
+\titlehead
+{
+    \small
+    {
+        Technische Universität Ilmenau\\
+        Fakulät IA\\
+        Fachgebiet Neuroninformatik\\
+
+        Praktikum Neuroinformatik\\
+        WS 2021/22}
+}
+
+\title {Versuchsprotokoll}
+\subtitle{Neuroinformatik}
+\author{}
+\date{\today\\*[60pt]}
+\maketitle
+
+\pagestyle{fancy}
+\fancyhead[R]{Praktikumsbericht: Neuroinformatik}
+\pagenumbering{arabic}
+\newpage
+
+\section{Vorbereitung: Virtuelle Python Umgebung}
+Ordner erstellen mit \lstinline{mkdir}
+
+dann virtuelle Umgebung mit \lstinline{python3 -m venv env}
+
+Dieser Ordner enhält daraufhin:
+\begin{itemize}
+    \item bin: Dateien die mit der virtuellen Umgebung interagieren
+    \item include: C Header Dateien um Python Pakete zu kompilieren
+    \item lib: eine Kopie der Python version mit Abhängigkeiten
+\end{itemize}
+
+Aktiviere die virtuelle paket isolation \lstinline{source env/bin/activate}
+
+Zum deaktivieren \lstinline{deactivate}
+
+Pip Pakete installieren: 
+\begin{lstlisting}
+    pip install jupyterlab notebook spyder setuptools matplotlib scikit-learn numpy scipy ipython jupyter pandas sympy nose conda
+\end{lstlisting}
+
+NeuroInformatik Pakete runterladen: 
+
+\lstinline{pip install tui-ni-practical-course --upgrade --extra-index-url <URL-vom-Fachgebiet>`}
+
+danach Anaconda herunterladen und installieren: 
+
+\lstinline{bash ~/Downloads/Anaconda3-2020.02-Linux-x86_64.sh}
+
+\section*{Aufgabe 1a: Kohonen Kette}
+Bash:\lstinline{tui-ni-kohonen-chain}
+
+\subsection*{1.}
+\textit{Wählen Sie ,,L-shape'' als Datenverteilung aus (Dieser Input wird für die Aufgaben 1-5 verwendet). Starten Sie die Simulation (,,Start'') und beobachten Sie die Bewegungen der Gewichtsvektoren im Inputraum. Stoppen Sie die Simulation, wenn sich die Gewichtsvektoren stabilisiert haben.}
+
+mit ca 300 Schritten passt sich das Kohonen Netz der Datenverteilung an
+
+\subsection*{2.}
+\textit{Stoppen Sie die letzte Simulation (,,Stop'') und initialisieren Sie die Kohonen-Kette neu (,,Reset''). Beobachten Sie die Bewegung der Gewichtsvektoren bei Nutzung des Einzelschrittbetriebs (,,Step'') für ca. 20 Schritte. Beobachten Sie dabei, wie die Neuronen in Abhängigkeit des Inputs und der Nachbarschaftsfunktion aktiviert werden (rote Färbung).}
+\begin{itemize}
+    \item nähern sich immer weiter an
+    \item bilden eine Linie
+    \item ab ca Schritt 10 gleichen sie sich der L-Shape an
+\end{itemize}
+
+\subsection*{3.}
+\textit{Vergleichen Sie die Ergebnisse mit denen von Kohonen-Ketten, die die Lernraten $\eta=0, \eta=1, \eta=2$ sowie $\eta=-0.5$ nutzen (Nach jeder Änderung der Lernrate das Netzwerk zurücksetzen (,,Reset'')). Worin bestehen die wesentlichen Unterschiede der entsprechenden Netze? Welche Lernrate ist in diesem Beispiel für einen praktischen Einsatz am geeignetsten und warum? Traten topologische Defekte auf: falls ja, wodurch wurden sie verursacht?}
+
+\begin{itemize}
+    \item $\eta=0$
+          \begin{itemize}
+              \item das Kohonen Netz wird nicht angepasst/verändert
+              \item die Nachbarschaftsfunktion ändert sich
+          \end{itemize}
+    \item $\eta=1$
+          \begin{itemize}
+              \item mit 6 schritten in einer reihe
+              \item Kohonen Kette springt immer wieder über L-Ecke hinaus
+              \item erst später richtige anpassung an L-Shape, ca 240 Schritte
+          \end{itemize}
+    \item $\eta=2$
+          \begin{itemize}
+              \item sehr große Sprünge der gesamten Kette
+              \item viele Überkreuzungen der Nachbarschaften
+              \item springt aus L Shape heraus
+          \end{itemize}
+    \item $\eta=-0.5$
+          \begin{itemize}
+              \item Kohonen Karte wird immer größer
+              \item ab ca 20 Schritten Karte nicht mehr zu sehen
+          \end{itemize}
+\end{itemize}
+
+am geeignetsten hier: $\eta=1$, da schnellste (überhaupt) anpassung
+
+\subsection*{4.}
+\textit{Initialisieren Sie (,,Reset'') eine Kohonen-Kette mit den folgenden Parametern: 20 Neuronen, Lernrate $\eta=0.2$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.99$. Starten Sie die Simulation im Einzelschrittbetrieb (,,Step''). Verfolgen Sie die Entwicklung der Gewichtsvektoren.}
+\begin{itemize}
+    \item Ab ca 400 Schritten komplette Anpassung an L-Shape
+    \item langsame anpassung an Shape
+    \item ab 50 schritten schon ungefähr L-Shape, nur nicht ausgefüllt
+\end{itemize}
+\textit{Vergleichen Sie die Ergebnisse mit denen von Kohonen-Ketten, die die Lernradien $r=100$ sowie $r=0.001$ nutzen! Worin bestehen die wesentlichen Unterschiede der entsprechenden Netze? Welcher Lernradius ist in diesem Beispiel für einen praktischen Einsatz am geeignetsten und warum? Traten topologische Defekte auf: falls ja, wodurch wurden sie verursacht?}
+
+\begin{itemize}
+    \item $r=100$
+          \begin{itemize}
+              \item bildet erst punkt
+              \item ab ca 100 schritten bildet sich linie
+              \item ab ca 400 anpassung an L Shape, ab ca 600 fertig
+          \end{itemize}
+    \item $r=0,001$
+          \begin{itemize}
+              \item passt nur gewichtsvektoren an die schon im L Shape sind, weiter entfernte bleiben außerhalb des Netzes
+              \item viele Überkreuzungen möglich
+          \end{itemize}
+\end{itemize}
+
+hier am praktischsten: $r=10$, hat schon früh eine relaitv gute anpassung an L-Shape
+
+\subsection*{5.}
+\textit{Initialisieren Sie (,,Reset'') eine Kohonen-Kette mit den folgenden Parametern:
+    \begin{itemize}
+        \item 20 Neuronen, Lernrate $\eta=0.2$, Decay Lernrate $\delta\eta=0.9$, Lernradius $r=10$ und Decay Lernradius $delta r=0.99$ sowie
+        \item 20 Neuronen, Lernrate $\eta=0.2$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.5$.
+    \end{itemize}
+    Starten Sie die Simulation im Einzelschrittbetrieb (,,Step''). Beobachten Sie die Adaptation der Gewichtsvektoren! Worin liegen die Ursachen der aufgetretenen Probleme?}
+\begin{enumerate}
+    \item nach ca 100 Schritten bewegt sich nichts mehr
+    \item sehr schneller abfall der anpassung, nach weniger als 100 Schritten keine anpassung mehr
+    \item zu schneller abbau der Lernrate; Lernradius zu klein, sodass weiter entfernte Gewichtsvektoren nicht mehr beachtet werden
+\end{enumerate}
+
+\subsection*{6.}
+\textit{Initialisieren Sie (,,Reset'') eine Kohonen-Kette mit 20 Neuronen sowie den Parametern Lernrate $\eta=0.2$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.99$. Wählen Sie als Inputpattern ,,equally distributed'' und starten Sie die Simulation (,,Start''). Welches grundsätzliche Problem ist bei der Nutzung einer Kohonen-Kette in einem zweidimensionalen Inputraum zu berücksichtigen?}
+
+passt sich dem 2D Raum an, jedoch jedes mal anders, da es keinen richtigen orientierungspunkt hat.
+
+\subsection*{7.}
+\textit{Initialisieren Sie (,,Reset'') eine Kohonen-Kette mit 20 Neuronen sowie den Parametern Lernrate $\eta=0.5$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.99$. Wählen Sie als Inputpattern ,,Omega-shape'' und starten Sie die Simulation 3 mal (,,Reset''+,,Start''). Überlegen Sie, warum sich die Nachbarschaftsbeziehung der Neuronen in der Kette in diesem Fall als hinderlich für den Lernprozess erweist?}
+
+durch die verkettung benötigt es mehr schritte und passt sich nicht genau an
+
+\section*{Aufgabe 1b: Neural Gas}
+\lstinline{tui-ni-neural-gas}
+\subsection*{1.}
+\textit{Wählen Sie ,,Omega-shape'' als Datenverteilung aus. Starten Sie die Simulation (,,Start'') und beobachten Sie den Lernprozess. Welche Unterschiede ergeben sich im Vergleich zu dem Lernprozess der Kohonen-Kette. Betrachten Sie dabei auch die Aktivierung der Neuronen im Einzelschrittbetrieb.}
+
+- nach ca 200 Schritten fertig, wesentlich schneller als Kohonen Kette
+- zieht sich Anfangs nicht so stark zusammen wie kohonen kette
+
+\subsection*{2.}
+\textit{Wählen Sie ,,Travelling Salesman'' als Datenverteilung und vergegenwärtigen Sie sich welches Problem dabei gelöst werden soll: Problem des Handlungsreisenden. Initialisieren Sie (,,Reset'') ein Neural Gas mit 20 Neuronen sowie den Parametern Lernrate $\eta=0.2$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.99$. Können Sie mit dem Netzwerk eine Lösung für das Problem finden?}
+\begin{itemize}
+    \item ab 400 Schritten kaum mehr bewegung, die meisten (bis auf vier) sind auf die ,,Orte'' verteilt
+    \item kürzester Weg kann so nicht gefunden werden da es keine verknüpfung/reihenfolge zwischen den orten gibt
+\end{itemize}
+
+\subsection*{3.}
+\textit{Initialisieren Sie (,,Reset'') ein Neural Gas mit den folgenden Parametern: 20 Neuronen, Lernrate $\eta=0.5$, Decay Lernrate $\delta\eta=0.999$, Lernradius $r=10$ und Decay Lernradius $\delta r=0.99$. Wählen Sie als Inputpattern ,,slowly moving rectangle'' und starten Sie die Simulation (,,Start''). Welche Parameter müssen Sie adaptieren, damit sich die Gewichtsneuronen an den sich ständig ändernden Input anpassen können?}
+\begin{itemize}
+    \item anfangs gute anpassung an viereck, jedoch mit vortschreitenden schritten keine anpassung mehr
+    \item Lernrate/Lernradius Decay muss auf ,,1'' gesetzt werden, um stetige anpassung aller Punkte zu garantieren
+\end{itemize}
+
+\section*{Aufgabe 2a: Transferfunktion}
+\lstinline{tui-ni-transfer-function}
+\subsection*{1.}
+\textit{Setzen Sie bitte die Gewichte auf die Werte $w_0=0.5$ und $w_1=0.5$. Machen Sie sich durch unterschiedliche Wahl von Aktivierungs- und Ausgabefunktion mit der Bedienung des Applets vertraut. Variieren Sie dabei auch den Parameter ,,Classification threshold'' auf der rechten Seite der Visualisierung, um die Auswirkung der virtuellen Trennebene (Schwellwert über die Ausgabe des Neurons) für die Lösung eines Zweiklassenproblems zu untersuchen.}
+
+\subsection*{2.+3.}
+\textit{Aktivieren Sie die Checkbox ,,Dataset classification'' um den ersten Datensatz in die Visualisierung einzublenden. Wählen Sie als Aktivierungsfunktion ,,Dot product'' und als Ausgabefunktion ,,linear''. Variieren Sie die Gewichte des Neurons (w0,w1,bias) und den Klassifikationsschwellwert (,,Classification threshold'') um eine korrekte Klassifikation der Datenpunkte zu erreichen. Bei dem grünen Datenpunkten muss die Ausgabe des Neurons oberhalb der Klassifikationsschwelle liegen und bei den roten Datenpunkten unterhalb der Schwelle. Korrekt klassifizierte Datenpunkte werden vergrößert dargestellt. Wählen Sie nacheinander die Datensätze 2 bis 5 und kombinieren Sie jeweils geeignete Aktivierungs- und Ausgabefunktionen, um die Daten, mit dem einen realisierten Neuron, jeweils korrekt in zwei Klassen zu trennen.}
+
+\begin{tabular}{c|c|c|c|c|c|c}
+    Datensatz   & $w_0$ & $w_1$ & bias & Threshold & Aktivierungsfunktion                                        & Ausgabefunktion         \\
+    Point Set 1 & $0,5$ & $0,5$ & $0$  & $0$       & Dot Product                                                 & Linear                  \\
+    Point Set 2 & 0,5   & 0,5   & 0    & 0,18      & Dot Product                                                 & Gaussian                \\
+    Point Set 3 & 0,5   & 0,5   & 0    & 0         & Min Distance                                                & Linear                  \\
+    Point Set 4 & 0,5   & 0,5   & 0    & 0,27      & Mahalanobis, $\phi=143$, $\sigma_0=0$, $\sigma_1=12.5$      & Symetric Sigmoidal      \\
+    Point Set 5 & 0,5   & 0,5   & 0    & 0         & Mahalonobis, $\phi=143$, $\sigma_0=\infty$, $\sigma_1=3.57$ & Gaussian, $\sigma=0.04$ \\
+\end{tabular}
+
+
+\subsection*{4.}
+\textit{Wenn alle Datensätze korrekt klassifiziert wurden, wird der ,,Submit''-Button aktiviert. Klicken Sie auf den ,,Submit''-Button und geben Sie in dem sich öffnenden Fenster Ihre E-Mail-Adresse ein. Klicken Sie anschließend auf ,,Generate!'' und kopieren Sie den angezeigten, kodierten (nicht lesbaren) Text, welcher die von Ihnen bei der Bearbeitung eingestellten Parameter enthält. Diesen Text reichen Sie in der dazugehörigen Aufgabe in Moodle ein. Bitte beachten Sie dabei die Einreichungsfrist im Moodle-Kurs.}
+
+\section*{Aufgabe 2b: Delta Regel}
+\lstinline{tui-ni-delta-rule}
+
+\subsection*{1.}
+\textit{Wählen Sie bitte die ,,Teacher function'' ,,y=x'' und die ,,Output function'' ,,Linear''! Starten Sie die Simulation im Schrittbetrieb (,,Step'')!}
+\textit{1. Beobachten Sie dabei den Verlauf der Fehler E(t) bzw. E(w) sowie des Gradienten von E(w) in Abhängigkeit der präsentierten Inputs! Wodurch entsteht der periodische Verlauf der beiden Fehlerfunktionen?}
+der Input pendelt periodisch zwischen $\pm 1$, das Neuron versucht entgegenzusteuern
+
+\textit{2. Initialisieren Sie das Netz neu (,,Reset'') und wählen Sie eine ,,Batch size'' von ,,11 samples''! Beobachten Sie erneut den Verlauf der Fehler E(t) bzw. E(w) sowie des Gradienten von E(w) im Einzelschrittbetrieb (,,Step'')! Starten Sie nach etwa 30 Lernschritten den Trainingsprozess (,,Start''). Welcher Unterschied ergibt sich für den Verlauf des Fehlers E(t)?}
+\begin{itemize}
+    \item Fehler fallen exponentiell ab
+    \item kein Periodischer Verlauf der Fehler mehr
+    \item Neuron passt sich immer weiter den Input-Werten an
+\end{itemize}
+
+\subsection*{2.}
+\textit{Stoppen Sie bitte die letzte Simulation und initialisieren Sie das Netz neu (,,Reset'')! Wählen Sie ,,$y=|x|$'' als ,,Teacher function'' und starten Sie den Lernprozess (,,Start'')! Warum konvergiert der Fehler nicht gegen den Wert Null? Wie kann dieses Problem behoben werden?}
+\begin{itemize}
+    \item Fehler $E_t$ konvergiert gegen $0,4$
+    \item Fehler $E_w$ konvergiert gegen $0,6$
+    \item Ausgabefunktion ReL nähert den Fehler $E_w$ an $0,2$ und $E_t$ immer weiter an $0$ an
+\end{itemize}
+
+\subsection*{3.}
+\textit{Wählen Sie die lineare Ausgabefunktion und aktivieren Sie die Checkbox ,,Use own output implementation''. Da diese Ausgabefunktion die Aktivierung identisch weiterleitet, müssen Sie dem y-Wert einfach die Aktivierung zuweisen. Tragen Sie dazu bitte: $y=z$ ein. Klicken Sie anschließend auf ,,Check code''. Bei einer korrekten Umsetzung wird die Textbox grün hinterlegt.}
+
+\subsection*{4.}
+\textit{Aktivieren Sie die Checkbox ,,Use own derivative''. Wenn Sie die Funktion $y=z$ nach $z$ ableiten, erhalten Sie die Ableitung von 1. Weisen Sie daher der Variablen $dy_{dz} = 1$ zu. Klicken Sie wieder auf ,,Check code'' um Ihre Umsetzung zu testen.}
+
+\subsection*{5.}
+\textit{Wählen Sie ,,Sigmoid'' als Ausgabefunktion. Aktivieren Sie die Checkbox ,,Use own output implementation'' und geben Sie die Fermi-Ausgabefunktion ein (siehe Skript Neuroinformatik). Die erfolgreiche Umsetzung wird durch einen Haken hinter ,,Sigmoid output function'' im unteren Bereich gekennzeichnet. Geben Sie anschließend auch die Gleichung für die Ableitung der Fermi-Funktion ein (Hinweis: die Ableitung enthält y, welches in diesem Code-Fenster noch nicht berechnet vorliegt).}
+\begin{itemize}
+    \item Implementation: $y= 1/(1+exp(-c*z))$
+    \item derivate: $dy_dz= c*y (1-y) = c*(1/(1+exp(-c*z))) (1-(1/(1+exp(-c*z))))$
+\end{itemize}
+
+\subsection*{6.}
+\textit{Wählen Sie ,,ReLU'' als Ausgabefunktion und setzen Sie die Ausgabefunktion und deren Ableitung um. Beachten Sie für die Ableitung, dass sich die ReL-Funktion, abhängig von z, wie eine Konstante oder wie eine lineare Ausgabefunktion verhält. Die Umsetzung von If-Abfragen finden Sie am Ende dieser Seite.}
+\begin{itemize}
+    \item Implementation: $y=max(0,z)$
+    \item derivate:
+          \begin{lstlisting}
+    if z<= 0:
+        dy_dz=0
+    else:
+        dy_dz=1
+    \end{lstlisting}
+\end{itemize}
+
+\subsection*{7.}
+\textit{Wenn alle Funktionen korrekt umgesetzt wurden, wird der ,,Submit''-Button aktiviert. Klicken Sie auf den ,,Submit''-Button und geben Sie in dem sich öffnenden Fenster Ihre E-Mail-Adresse ein. Klicken Sie anschließend auf ,,Generate!'', kopieren Sie den angezeigten, kodierten (nicht lesbaren) Text, welcher die von Ihnen bei der Bearbeitung eingestellten Parameter. Reichen Sie diesen Text über die dazugehörige Aufgabe in Moodle ein. Bitte beachten Sie dabei die Einreichungsfrist im Moodle-Kurs.}
+
+\end{document}

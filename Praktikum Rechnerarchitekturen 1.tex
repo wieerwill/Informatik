@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,titlepage]{scrartcl}
+\documentclass[a4paper,10pt,titlepage]{scrartcl}
 \usepackage[sc]{mathpazo} % Schrift - wie Funcky und in PDF zu Fonts beschrieben
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -10,6 +10,8 @@
 \usepackage{float}
 \usepackage[iso,german]{isodate} %his package provides commands to switch between different date formats
 \usepackage{hyperref}
+\usepackage[top=1.5cm, bottom=3cm, left=1.7cm, right=1.7cm, columnsep=20pt]{geometry} 
+\usepackage{multicol}
 \usepackage{listings}
 
 \usepackage{fancyhdr}
@@ -40,7 +42,7 @@
   captionpos=b,                    
   keepspaces=true,                 
   numbers=left,                    
-  numbersep=5pt,                  
+  numbersep=4pt,                  
   showspaces=false,                
   showstringspaces=false,
   showtabs=false,                  
@@ -53,14 +55,14 @@
 \pagenumbering{roman}
 \titlehead
 {
-    \small
-    {
-        Technische Universität Ilmenau\\
-        Fakulät IA\\
-        Fachgebiet Rechnerarchitektur\\
+        \small
+        {
+                Technische Universität Ilmenau\\
+                Fakulät IA\\
+                Fachgebiet Rechnerarchitektur\\
 
-        Praktikum Rechnerarchitektur 1\\
-        WS 2021/22}
+                Praktikum Rechnerarchitektur 1\\
+                WS 2021/22}
 }
 
 \title {Versuchsprotokoll}
@@ -115,14 +117,14 @@ Versuchsaufbau anhand einfacher Assemblerprogramme. Benutze parallele digitale E
     verzoe  DD    ?         ;Eine Speicherzelle (Doppelwort)
     ziff    DB    3FH,03H,6DH,67H,53H,76H,7EH,23H,7FH,77H
     \end{lstlisting}
-    
-    \begin{description}
+
+\begin{description}
         \item[anf] setzt die Länge der Wartezeit
         \item[m1] Lädt Register
         \item[m2] Zählt auf Sieben Segment Anzeige
         \item[m3] schreibt auf LED Reihe links und invertierend rechts
-        \item[zeit] Verbraucht Zeit nach "verzoe"     
-    \end{description}
+        \item[zeit] Verbraucht Zeit nach "verzoe"
+\end{description}
 
 \subsection*{Grundaufgabe b}
 \subsubsection*{einfaches Lauflicht}
@@ -240,8 +242,8 @@ z1:     DEC     ECX
 \subsection*{Zusatzaufgabe}
 Erweiterungen des Programms nach eigenen Ideen:
 \begin{itemize}
-    \item symetrische LED Reihe zur Mitte
-    \item Sieben Segment zählt 9 Schritte mit 
+        \item symetrische LED Reihe zur Mitte
+        \item Sieben Segment zählt 9 Schritte mit
 \end{itemize}
 \begin{lstlisting}
 anf:    MOV     Al, 80H
@@ -285,20 +287,21 @@ z1:     DEC     ECX
         RET
 \end{lstlisting}
 
+\newpage
 \section*{A2: Timerbaustein}
 Arbeite mit einem programmierbaren Interfacebaustein, der über eigene Register angesprochen wird. Als Beispiel dient ein Programmierbarer Intervalltimer (PIT, auch als „Zähler-Zeitgeber-Baustein“ oder „Timerbaustein“ bezeichnet) vom Typ 8254.
 
 \begin{center}
-    \begin{tabular}{| l | c | c | c | c | c | c | c | c | }
-            \hline
-            \multicolumn{9}{|c|}{Frequenzen der C-Dur Tonleiter}\\
-            \hline
-            \hline
-            Ton   & c'    & d'    & e'    & f'    & g'    & a'    & h'    & c''   \\\hline
-            f(Hz) & 261,6 & 293,7 & 329,6 & 349,2 & 392,0 & 440,0 & 493,9 & 523,2 \\\hline
-            Zählkonstante & 7662 & 6825 & 6079 & 5730 & 5102 & 4545 & 4056 & 3824 \\\hline
-            Freq(Hex) & 1DEEH & 1AA9H & 17BFH & 1662H & 13EEH & 11C1 & FD8H & EF0H\\\hline
-    \end{tabular}
+        \begin{tabular}{| l | c | c | c | c | c | c | c | c | }
+                \hline
+                \multicolumn{9}{|c|}{Frequenzen der C-Dur Tonleiter}                          \\
+                \hline
+                \hline
+                Ton           & c'    & d'    & e'    & f'    & g'    & a'    & h'    & c''   \\\hline
+                f(Hz)         & 261,6 & 293,7 & 329,6 & 349,2 & 392,0 & 440,0 & 493,9 & 523,2 \\\hline
+                Zählkonstante & 7662  & 6825  & 6079  & 5730  & 5102  & 4545  & 4056  & 3824  \\\hline
+                Freq(Hex)     & 1DEEH & 1AA9H & 17BFH & 1662H & 13EEH & 11C1  & FD8H  & EF0H  \\\hline
+        \end{tabular}
 \end{center}
 
 \subsection*{Grundaufgabe a}
@@ -389,66 +392,296 @@ tonC:   MOV AL, 000H
         JMP taste
 \end{lstlisting}
 
-\subsection*{Zusatzaufgabe}
-
+\newpage
 \section*{A3: Matrixtastatur}
-Eine 4x4 Matrixtastatur ist über Zeilen- und Spaltenleitungen verbunden. Um eine gedrückte Taste zu erkennen müssen alle Zeilen nacheinander abgefragt werden. Bei jedem Abfrageschnitt erhält man die Information über die gedrückten Tasten jeweils einer Zeile. 
+Eine 4x4 Matrixtastatur ist über Zeilen- und Spaltenleitungen verbunden. Um eine gedrückte Taste zu erkennen müssen alle Zeilen nacheinander abgefragt werden. Bei jedem Abfrageschnitt erhält man die Information über die gedrückten Tasten jeweils einer Zeile.
 
 \subsection*{Grundaufgabe a}
-Alle Zeilen der Matrix je einmal abfragen und zurückkehren. Falls eine gedrückte Taste erkannt wurde, soll in einem gewählten Byteregister eine von Null verschiedene Tastennummer übergeben werden. 
+Alle Zeilen der Matrix je einmal abfragen und zurückkehren. Falls eine gedrückte Taste erkannt wurde, soll in einem gewählten Byteregister eine von Null verschiedene Tastennummer übergeben werden. Dies geschieht mit dem Unterprogramm \textit{matr}.
 
-Tastaturbelegung:
-\begin{tabular}{c|c|c|c}
-    1 & 2 & 3 & 4\\
-    5 & 6 & 7 & 8\\
-    9 &10 &11 &12\\
-   13 &14 &15 &16
-\end{tabular}
-\begin{lstlisting}[caption= matr]
-    
-\end{lstlisting}
+Wie \textit{matr} soll das Unterprogramm \textit{wmatr} alle Zeilen der Matrix abfragen aber erst beim Erkennen eines Tastendrucks zurückkehren. Das bedeutet, dass es das Drücken einer Taste abwartet und dann deren Nummer übergibt.
 
-Wie \textit{matr} soll das Unterprogramm \textit{wmatr} alle Zeilen der Matrix abfragen aber erst beim Erkennen eines Tastendrucks zurückkehren. Das bedeutet, dass es das Drücken einer Taste abwartet und dann deren Nummer übergibt. 
-\begin{lstlisting}[caption= wmatr]
-    
-\end{lstlisting}
-
-Zur Durchführung sollen die Unterprogramme nacheinander in einem Hauptprogramm aufgerufen werden. Das Hauptprogramm selbst soll in einer "ewigen" Schleife arbeiten und die erkannte Tastennummer binär auf einer der LED-Zeilen anzeigen. 
-\begin{lstlisting}[caption= mainA]
-    
+Zur Durchführung sollen die Unterprogramme nacheinander in einem Hauptprogramm aufgerufen werden. Das Hauptprogramm selbst soll in einer "ewigen" Schleife arbeiten und die erkannte Tastennummer binär auf einer der LED-Zeilen anzeigen.
+\begin{lstlisting}[caption=aufgabe 3a]
+main:
+        CALL wmatr              ; Tasten abfragen
+        MOV AL, BL              ; Ausgabe vorbereiten
+        OUT 5Dh, AL             ; Bits auf LED-Port
+        JMP main                ; Schleife
+matr:
+        IN AL, 5Ah              ; Zeile einlesen
+        MOV BL, AL              ; in Register B
+        SHL BL, 4               ; Bits nach oben schieben
+        IN AL, 5Bh              ; Spalte einlesen
+        OR BL, AL               ; Spalten & Zeilen zusammenfassen
+        RET  
+wmatr:
+        CALL matr               ; Tasten abfragen
+        JNZ wmatr               ; weiter wenn keine Taste gedrueckt
+wloop:  CALL matr               ; Taste abfragen
+        JZ wloop                ; weiter wenn Taste gedrueckt
+        RET 
 \end{lstlisting}
 
 
 \subsection*{Grundaufgabe b}
-Realisiere ein Programm, das die jeweils gedrückte Ziffer in lesbarer Darstellung auf der linken Stelle der Sieben-Segment-Anzeigen anzeigt. 
-\begin{lstlisting}[caption= mainB]
-    
+\begin{multicols}{2}
+Realisiere ein Programm, das die jeweils gedrückte Ziffer in lesbarer Darstellung auf der linken Stelle der Sieben-Segment-Anzeigen anzeigt.
+Tastaturbelegung:
+
+\begin{center}
+        \begin{tabular}{c|c|c|c}
+                0 & 1 & 2 & 3 \\
+                4 & 5 & 6 & 7 \\
+                8 & 9 & - & - \\
+                - & - & - & -
+        \end{tabular}
+\end{center}
+\end{multicols}
+
+\begin{lstlisting}[caption=aufgabe 3b]
+        MOV DX, 0BBh            ; Startwertpointer 7Seg.Anzeige
+anf:
+        CALL wmatr              ; Tasten abfragen
+        CALL ziff               ; Ziffern abfragen
+        CALL anz                ; Ausgabe auf Anzeige
+        JMP anf
+matr:
+        IN AL, 5Ah              ; Zeile einlesen
+        MOV BL, AL              ; in Register B sichern
+        SHL BL, 4               ; Bits nach oben schieben
+        IN AL, 5Bh              ; Spalte einlesen
+        OR BL, AL               ; Spalten & Zeilen in Byte zusammenfassen
+        RET
+wmatr:
+        CALL matr               ; Tasten abfragen
+        JNZ wmatr               ; weiter wenn keine Taste gedrueckt
+w2:     CALL matr               ; Taste abfragen
+        JZ w2                   ; weiter wenn Taste gedrueckt
+        RET
+ziff:
+        CMP BL, 17h
+        JNC z1
+        MOV BH, 3Fh
+        RET
+z1:     CMP BL, 18h
+        JNC z2
+        MOV BH, 03h
+        RET
+z2:     CMP BL, 20h
+        JNC z3
+        MOV BH, 6Dh
+        RET
+z3:     CMP BL, 24h
+        JNC z4
+        MOV BH, 67h
+        RET
+z4:     CMP BL, 33h
+        JNC z5
+        MOV BH, 53h
+        RET
+z5:     CMP BL, 34h
+        JNC z6
+        MOV BH, 76h
+        RET
+z6:     CMP BL, 36h
+        JNC z7
+        MOV BH, 7Eh
+        RET
+z7:     CMP BL, 40h
+        JNC z8
+        MOV BH, 23h
+        RET
+z8:     CMP BL, 65h
+        JNC z9
+        MOV BH, 7Fh
+        RET
+z9:     CMP BL, 66h
+        JNC zq
+        MOV BH, 77h
+        RET
+zq:     MOV BH, 04h
+        RET
+anz:
+        MOV AL, BH
+        OUT DX, AL
+        RET
 \end{lstlisting}
 
 
 \subsection*{Fortgeschrittene Aufgabe c}
-Erweitere das Programm so dass gedrückte Ziffern der Reihe nach nebeneinander angezeigt werden und beim erreichen der letzten Stelle wieder links beginnt. 
+Erweitere das Programm so dass gedrückte Ziffern der Reihe nach nebeneinander angezeigt werden und beim erreichen der letzten Stelle wieder links beginnt.
 Das Drücken einer nicht als Ziffer definierten Taste soll eine leere Stelle erzeugen.
-\begin{lstlisting}[caption= mainC]
-    
+\begin{lstlisting}[caption= aufgabe 3c]
+        MOV DX, 0BBh            ; Startwertpointer 7Seg.Anzeige
+anf:
+        CALL wmatr              ; Tasten abfragen
+        CALL ziff               ; Ziffern abfragen
+        CALL anz                ; Ausgabe auf Anzeige
+        JMP anf
+matr:
+        IN AL, 5Ah              ; Zeile einlesen
+        MOV BL, AL              ; in Register B sichern
+        SHL BL, 4               ; Bits nach oben schieben
+        IN AL, 5Bh              ; Spalte einlesen
+        OR BL, AL               ; Spalten & Zeilen in Byte zusammenfassen
+        RET
+wmatr:
+        CALL matr               ; Tasten abfragen
+        JNZ wmatr               ; weiter wenn keine Taste gedrueckt
+w2:     CALL matr               ; Taste abfragen
+        JZ w2                   ; weiter wenn Taste gedrueckt
+        RET
+ziff:
+        CMP BL, 17h
+        JNC z1
+        MOV BH, 3Fh
+        RET
+z1:     CMP BL, 18h
+        JNC z2
+        MOV BH, 03h
+        RET
+z2:     CMP BL, 20h
+        JNC z3
+        MOV BH, 6Dh
+        RET
+z3:     CMP BL, 24h
+        JNC z4
+        MOV BH, 67h
+        RET
+z4:     CMP BL, 33h
+        JNC z5
+        MOV BH, 53h
+        RET
+z5:     CMP BL, 34h
+        JNC z6
+        MOV BH, 76h
+        RET
+z6:     CMP BL, 36h
+        JNC z7
+        MOV BH, 7Eh
+        RET
+z7:     CMP BL, 40h
+        JNC z8
+        MOV BH, 23h
+        RET
+z8:     CMP BL, 65h
+        JNC z9
+        MOV BH, 7Fh
+        RET
+z9:     CMP BL, 66h
+        JNC zq
+        MOV BH, 77h
+        RET
+zq:     CMP BL, 77h
+        JNC z1
+        MOV BH, 04h
+        RET
+anz:
+        MOV AL, BH
+        OUT DX, AL
+        CMP DX, 0B0h
+        JC rst
+        DEC DX
+        RET
+rst:    MOV DX, 0BBh
+        RET    
 \end{lstlisting}
 
 
 \subsection*{Fortgeschrittene Aufgabe d}
-Verhindere das Prellen der Tasten durch Software um doppelte Tastendrücke zu vermeiden. 
-\begin{lstlisting}[caption= mainD]
-    
+Verhindere das Prellen der Tasten durch Software um doppelte Tastendrücke zu vermeiden.
+\begin{lstlisting}[caption= aufgabe 3d]
+        MOV DX, 0BBh            ; Startwertpointer 7Seg.Anzeige
+anf:
+        CALL wmatr              ; Tasten abfragen
+        CALL ziff               ; Ziffern abfragen
+        CALL anz                ; Ausgabe auf Anzeige
+        JMP anf
+matr:
+        MOV ECX, 50000h         ; Entprelltimer
+t:      DEC ECX
+        JNZ t 
+        IN AL, 5Ah              ; Zeile einlesen
+        MOV BL, AL              ; in Register B sichern
+        SHL BL, 4               ; Bits nach oben schieben
+        IN AL, 5Bh              ; Spalte einlesen
+        OR BL, AL               ; Spalten & Zeilen in Byte zusammenfassen
+        RET
+wmatr:
+        CALL matr               ; Tasten abfragen
+        JNZ wmatr               ; weiter wenn keine Taste gedrueckt
+w2:     CALL matr               ; Taste abfragen
+        JZ w2                   ; weiter wenn Taste gedrueckt
+        RET
+ziff:
+        CMP BL, 17h
+        JNC z1
+        MOV BH, 3Fh
+        RET
+z1:     CMP BL, 18h
+        JNC z2
+        MOV BH, 03h
+        RET
+z2:     CMP BL, 20h
+        JNC z3
+        MOV BH, 6Dh
+        RET
+z3:     CMP BL, 24h
+        JNC z4
+        MOV BH, 67h
+        RET
+z4:     CMP BL, 33h
+        JNC z5
+        MOV BH, 53h
+        RET
+z5:     CMP BL, 34h
+        JNC z6
+        MOV BH, 76h
+        RET
+z6:     CMP BL, 36h
+        JNC z7
+        MOV BH, 7Eh
+        RET
+z7:     CMP BL, 40h
+        JNC z8
+        MOV BH, 23h
+        RET
+z8:     CMP BL, 65h
+        JNC z9
+        MOV BH, 7Fh
+        RET
+z9:     CMP BL, 66h
+        JNC zq
+        MOV BH, 77h
+        RET
+zq:     CMP BL, 77h
+        JNC z1
+        MOV BH, 04h
+        RET
+anz:
+        MOV AL, BH
+        OUT DX, AL
+        CMP DX, 0B0h
+        JC rst
+        DEC DX
+        RET
+rst:    MOV DX, 0BBh
+        RET    
 \end{lstlisting}
 
 \subsection*{Zusatzaufgabe}
-Realisiere einen einfachen Taschenrechner der einstellige nichtnegative Dezimalzahlen addiert und das ein- bis zweistellige Ergebnis auf der Sieben-Segment-Anzeige anzeigt. 
-Definiere dafür Tasten für ,,+'' und ,,=''. 
-\begin{tabular}{c|c|c|c}
-    1 & 2 & 3 & 4\\
-    5 & 6 & 7 & 8\\
-    0 & 0 & 0 & 0\\
-    + & 0 & 0 & = 
-\end{tabular}
+Realisiere einen einfachen Taschenrechner der einstellige nichtnegative Dezimalzahlen addiert und das ein- bis zweistellige Ergebnis auf der Sieben-Segment-Anzeige anzeigt.
+Definiere dafür Tasten für ,,+'' und ,,=''.
+
+\begin{center}
+        \begin{tabular}{c|c|c|c}
+                1 & 2 & 3 & 4 \\
+                5 & 6 & 7 & 8 \\
+                0 & 0 & 0 & 0 \\
+                + & 0 & 0 & =
+        \end{tabular}
+\end{center}
 
 \begin{lstlisting}[caption= addition]
     

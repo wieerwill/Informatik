@@ -396,3 +396,186 @@ Schreibweisen: Für $S\subseteq R$ ist $X^{-1}(S)=\{a\in\Omega|X(a)\in S\}$ ein 
 
 Sind $X_i:\Omega\rightarrow R_i$ Zufallsvariable und $S_i\subseteq R_i$, für $i=1,2$, dann schreiben wir ,,$\{X_1\in S_1,X_2\in S_2\}$'' für das Ereignis $X^{-1}(S_1)\cap X^{-1}(S_2)$. Die beiden Zufallsvariablen $X_1$ und $X_2$ heißen unabhängig, wenn $Pr(X_1\in S_1,X_2\in S_2)=Pr(X_1\in S_1)*Pr(X_2\in S_2)$ gilt, für alle $S_i\subseteq R_i,i=1,2$. Dies ist gleichbedeutend mit der Forderung $Pr(X_1=r_1,X_2=r_2)=Pr(X_1=r_1)*Pr(X_2=r_2)$ für alle $r_i\in R_i, i=1,2$.
 
+
+## Informationstheoretische Sicherheit
+Man erinnere sich an Beispiel 1.12. Eine naheliegende Annahme ist, dass jeder Klartextbuchstabe mit Wahrscheinlichkeit $\frac{1}{2}$ und jeder Schlüssel mit Wahrscheinlichkeit $\frac{1}{3}$ auftritt, und zwar unabhängig voneinander. Dann ist $Pr$(Klartext x ist a $\wedge$ Chiffretext y ist A)$=\frac{1}{3}$, Pr(Chiffretext y ist A)$=\frac{1}{2}$, also Pr(Klartext x ist a | Chiffretext y ist A)$=\frac{2}{3}\not=\frac{1}{2}=$Pr(Klartext x ist a). Wenn Eva also A beobachtet,ändert sich ihre Ansicht über die Verteilung auf den Klartextbuchstaben.
+
+Für das Konzept der informationstheoretischen Sicherheit nehmen wir an, dass Klartexte mit bestimmten Wahrscheinlichkeiten auftreten. Was diese Wahrscheinlichkeiten sind, kann der Anwender normalerweise nicht kontrollieren. Die konsequente Anwendung des Kerckhoffs-Prinzips besagt aber, dass man annehmen muss, dass Eva die relevante Wahrscheinlichkeitsverteilung auf X kennt. (Zum Beispiel würde sie wissen, dass $Pr^X(x_0)=\frac{1}{2}$ ist, für ein bestimmtes $x_0\in X$.) Nun betrachten wir ein Kryptosystem $S=(X,K,Y,e,d). Wir nehmen an, dass Alice und Bob ihren gemeinsamen Schlüssel k durch ein Zufallsexperiment wählen. Hierzu gehört ein zweiter Wahrscheinlichkeitsraum $(K,Pr_K)$. Es ist sinnvoll anzunehmen, dass $Pr_X$ und $Pr_K$ nichts miteinander zu tun haben. Es wird verschlüsselt und Chiffretext y wird gesendet. Dieser wird von Eva beobachtet. Wenn sich dadurch die Meinung von Eva über die Wahrscheinlichkeiten der verschiedenen Klartexte von der ursprünglichen Verteilung unterscheidet (etwa jetzt: ,,mit 90%iger Wahrscheinlichkeit ist es Klartext $x_0$''), hat Eva aus der Beobachtung von y eine gewisse Information erhalten.
+
+Wir geben nun ein mathematisches Modell an, innerhalb dessen man über Begriffe wie ,,Eva erhält Information'' sprechen und argumentieren kann. Dazu konstruieren wir einen W-Raum mit $\Omega=X\times K$. In das Modell bauen wir die Vorstellung ein, dass $x\in X$ und $k\in K$ nach den Verteilungen $Pr_X$ und $Pr_K$ zufällig und unabhängig gewählt werden.
+
+Man beachte, dass die Verteilung $Pr_K$ ,,Teil des Kryptosystems'' ist, also der Kontrolle von Alice und Bob unterliegt, während $Pr_X$ ,,Teil der Anwendung'' oder ,,Teil der Realität'' ist, also von den Teilnehmern normalerweise nicht beeinflusst werden kann. Die Verteilung $Pr_X$ braucht beim Entwurf des Kryptosystems nicht einmal bekannt zu sein. (Alice und Bob sollten ihr Kryptosystem ohne Kenntnis von $Pr_X$ planen können. Die Annahme, dass Eva $Pr_X$ kennt, ist eine worst-case-Annahme, sie muss in der Realität nicht unbedingt erfüllt sein.)
+
+**Definition 1.19** Ein Kryptosystem mit Schlüsselverteilung (KSV) ist ein 6-Tupel $V=(X,K,Y,e,d,Pr_K)$, wobei
+- $S=(X,K,Y,e,d)$ ein Kryptosystem (das zugrundeliegende Kryptosystem) ist und
+- $Pr_K:K\rightarrow (0,1]$ eine Wahrscheinlichkeitsfunktion (die Schlüsselverteilung) ist.
+- Für $V=(X,K,Y,e,d,Pr_K)$ schreiben wir auch $S[Pr_K]$.
+- Achtung: Die Definition verlangt $Pr_K(k)\in (0,1]$, also $Pr_K(k)> 0$ für alle $k\in K$. (Hat man Schlüssel mit Wahrscheinlichkeit 0, kann man sie aus K einfach weg lassen.)
+
+Sei weiter $Pr_X:X\rightarrow [0,1]$ eine Wahrscheinlichkeitsfunktion auf der Menge der Klartexte. Das heißt: $\sum_{x\in X}Pr_X(x)=1$. Diese Wahrscheinlichkeitsfunktion definiert natürlich eine W-Verteilung auf X, die wir wieder $Pr_X$ nennen. (Achtung: Es kann Klartextexte mit $Pr(x)=0$ geben. Solche Klartexte heißen passiv, die anderen, mit $Pr_X(x)>0$, aktiv.) Wir definieren die gemeinsame Wahrscheinlichkeitsfunktion $Pr:X\times K\rightarrow [0,1]$ durch $Pr((x,k)):=Pr_X(x)*Pr_K(k)$.
+Dies definiert einen Wahrscheinlichkeitsraum auf $X\times K$, für den $Pr(X′\times K′)=Pr_X(X′)*Pr_K(K′)$, für alle $X′\subseteq X,K′\subseteq K$ gilt. Durch diese Definition wird die Annahme modelliert, dass der Schlüssel k unabhängig vom Klartext durch ein von $Pr_K$ gesteuertes Zufallsexperiment gewählt wird.
+
+**Beispiel 1.20** Sei $X=\{a,b,c\},K=\{0,1,2,3\},Y=\{A,B,C\}$ und die Verschlüsselungsfunktion sei durch die folgende Tabelle gegeben:
+| e                 | a(0,4) | b(0) | c(0,6) |
+| ----------------- | ------ | ---- | ------ |
+| 0 ($\frac{1}{4}$) | A      | B    | C      |
+| 1 ($\frac{1}{8}$) | B      | C    | A      |
+| 2 ($\frac{1}{2}$) | C      | A    | B      |
+| 3 ($\frac{1}{8}$) | C      | B    | A      |
+
+Die Wahrscheinlichkeiten $Pr_X(x)$ sind beiden Klartexten, die Wahrscheinlichkeiten $Pr_K(k)$ beiden Schlüsseln in Klammern notiert. Klartexte a und c sind aktiv, Klartext b ist passiv. Die Wahrscheinlichkeit für einen Punkt $(x,k)\in X\times K$ erhält man durch Multiplikation: $Pr((c,2)) = 0,6 *\frac{1}{2}=0,3$ und $Pr((b,k))=0*Pr_K(k)=0$ für alle $k\in K$.
+
+Der Chiffretext y ist dann eine Zufallsvariable auf diesem Wahrscheinlichkeitsraum: $X_3((x,k)):=e(x,k)$.
+Auch die beiden Komponenten $x$ und $k$ werden als Zufallsvariable betrachtet (Projektionen):
+- $X_1:X\times K\rightarrow X,(x,k) \rightarrow x$
+- $X_2:X\times K\rightarrow K,(x,k) \rightarrow k$
+
+Wir beobachten einige einfache Zusammenhänge, für $x_0\in X,k_0\in K,y_0\in Y$:
+- $Pr(x_0):=Pr(X_1=x_0)=Pr(\{x_0\}\times K) = Pr_X(x_0)*Pr_K(K) = Pr_X(x_0)$.
+- $Pr(k_0):=Pr(X_2=k_0)=Pr(X\times\{k_0\})=Pr_X(X)*Pr_K(k_0)=Pr_K(k_0)$
+
+(Man erhält also die ursprünglichen Wahrscheinlichkeiten für Klartexte und Schlüssel zurück. Dies ist eine einfache Grundeigenschaft von Produkträumen.)
+
+$$Pr(y_0):=Pr(X_3=y_0)=Pr(\{(x,k)|x\in X,k\in K,e(x,k) =y_0\}) =\sum_{x\in X,k\in K,e(x,k)=y_0} Pr((x,k)) =\sum_{x\in X,k\in K,e(x,k)=y_0} Pr_X(x)*Pr_K(k)$$
+
+(In Beispiel 1.20 gilt $Pr(A)=\frac{1}{4}*0,4+ \frac{1}{8}*0,6 +\frac{1}{2}*0 +\frac{1}{8}* 0,6=0,25$ und $Pr(B) =\frac{1}{4}*0 +\frac{1}{8}*0,4 +\frac{1}{2}*0,6 +\frac{1}{8}*0 = 0,35$.)
+
+$$Pr(x_0,y_0):=Pr(X_1=x_0,X_3=y_0)=Pr(\{x_0\}\times\{k\in K|e(x_0,k)=y_0\})= Pr_X(x_0)*\sum_{k\in K:e(x_0,k)=y_0} Pr_K(k)$
+
+(In Beispiel 1.20 gilt $Pr(c,A)=0,6*(\frac{1}{8}+\frac{1}{8})=0,15$ und $Pr(a,C)=0,6*(\frac{1}{2}+\frac{1}{8})= 0,375$.)
+
+$Pr(x_0|y_0):=Pr(X_1=x_0|X_3=y_0)= \frac{Pr(x_0,y_0)}{Pr(y_0)}= Pr_X(x_0)*\frac{\sum_{k\in K:e(x_0,k)=y_0} Pr_K(k)}{\sum_{x\in X,k\in K:e(x,k)=y_0} Pr_X(x)*Pr_K(k)}$.
+
+(In Beispiel 1.20 gilt $Pr(c|A)=0,15/0,25=0,6$.) Die letzte Formel ist nur für $y_0$ mit $Pr(y_0)>0$ definiert.
+
+**Definition 1.21** Sei $V=(X,K,Y,e,d,Pr_K)$ ein Kryptosystem mit Schlüsselverteilung.
+1. Sei $Pr_X$ eine Wahrscheinlichkeitsfunktion auf den Klartexten. Dann heißt $V$ informationstheoretisch sicher bezüglich $Pr_X$, wenn für alle $x\in X,y\in Y$ mit $Pr(y)>0$ gilt: $Pr(x) = Pr(x|y)$.
+2. Das KSV $V$ heißt informationstheoretisch sicher, wenn es bezüglich jeder beliebigen Klartextverteilung $Pr_X$ informationstheoretisch sicher ist.
+
+Bemerkungen: Hinter Definition 1. steckt die folgende Vorstellung: Eva kennt (im schlimmsten Fall) die Wahrscheinlichkeitsfunktion $Pr_X$. Das System gilt als sicher, wenn sich durch Abfangen eines Chiffretextes y aus Evas Sicht die Wahrscheinlichkeiten der einzelnen Klartexte x nicht ändern. Die Bedingung $Pr(y)>0$ in 1. ist nötig, damit $Pr(x|y)$ definiert ist. Sie bedeutet aber keine Einschränkung, da Chiffretexte $y$ mit $Pr(y)=0$ nie vorkommen, also auch nicht abgefangen werden können. Das Konzept in 2. ist relevant, weil man beim Entwurf eines Kryptosystems meistens die Klartextverteilung nicht oder nicht genau kennt.
+
+Man beachte, dass in der Definition der informationstheoretischen Sicherheit die Fähigkeiten von Eva überhaupt nicht eingeschränkt werden. Auf welche Weise sie eventuell ermittelt, dass sich Wahrscheinlichkeiten geändert haben, wird gar nicht diskutiert. (Eva könnte zum Beispiel für jedes $y\in Y$ eine Tabelle haben, in der die Wahrscheinlichkeiten $Pr(x|y)$ für alle $x\in X$ aufgelistet sind. Oder sie fängt beim Vorliegen von $y$ an, eine solche Tabelle zu berechnen. Beides ist natürlich für nicht ganz kleine X und Y völlig unrealistisch.)
+
+**Beispiel 1.22**
+| e                  | a($\frac{1}{4}$) | b(\frac{3}{4}$ ) |
+| ------------------ | ---------------- | ---------------- |
+| $k_0(\frac{1}{3})$ | A                | B                |
+| $k_1(\frac{2}{3})$ | B                | A                |
+
+(Notation: In der Tabelle stehen neben den Namen von Klartexten und Schlüsseln in Klammern deren Wahrscheinlichkeiten.) Dieses Kryptosystem ist possibilistisch sicher. Es gilt ab er:
+$Pr(a|A)=\frac{Pr(a,A)}{Pr(A)}=\frac{\frac{1}{3}*\frac{1}{4}}{\frac{1}{3}*\frac{1}{4}+\frac{2}{3}*\frac{3}{4}}=\frac{1}{7}$ und $Pr(a)=\frac{1}{4}$. 
+Nach dem Abhören von A sieht also Eva den Klartext a als weniger wahrscheinlich an als vorher. Also ist dieses Kryptosystem mit Schlüsselverteilung bzgl. $Pr_X$ nicht informationstheoretisch sicher.
+
+**Beispiel 1.23**
+| e                  | a($\frac{1}{4}$) | b($\frac{3}{4}$) |
+| ------------------ | ---------------- | ---------------- |
+| $k_0(\frac{1}{2}$) | A                | B                |
+| $k_1(\frac{1}{2}$) | B                | A                |
+
+Dieses System ist bezüglich $Pr_X$ informationstheoretisch sicher. Zum Beispiel gilt $Pr(a|A) =\frac{Pr(a,A)}{Pr(A)}=\frac{\frac{1}{4}*\frac{1}{2}}{\frac{1}{4}*\frac{1}{2}+\frac{3}{4}*\frac{1}{2}}=\frac{\frac{1}{8}}{\frac{1}{2}}=\frac{1}{4}$ und $Pr(a)=\frac{1}{4}$. Die anderen drei verlangten Gleichheiten rechnet man analog nach.
+
+**Satz 1.24** (Informationstheoretische Sicherheit des Vernam-Systems) Sei $l>0$ und $S=(X,K,Y,e,d)$ mit $X=K=Y=\{0,1\}^l$ und $e=d=\oplus_l$ das Vernam-System der Länge $l$. Sei weiter $Pr_K:K\rightarrow [0,1]$ die Gleichverteilung. Dann ist $V=S[Pr_K]$ informationstheoretisch sicher.
+
+Beweis: Sei $Pr_X:X\rightarrow [0,1]$ eine beliebige Wahrscheinlichkeitsfunktion. Wir müssen zeigen, dass $V$ bezüglich $Pr_X$ informationstheoretisch sicher ist. Wir beginnen mit folgender Beobachtung: Zu $x\in X$ und $y\in Y$  existiert genau ein $k_{x,y}\in K$ mit $e(x,k_{x,y})=y$, nämlich $k_{x,y}=x\oplus_l y$. Damit gilt für jedes $y\in Y$: $Pr(y)=\sum_{x\in X,k\in K,e(x,k)=y} Pr(x)Pr(k) = \sum_{x\in X} Pr(x) Pr(kx,y)= 2^{-l}* \sum_{x\in X} Pr(x)=2^{-l}$.
+
+(D.h.: Jeder Chiffretext y hat dieselbe Wahrscheinlichkeit $2^{-l}$, ganz gleich was $Pr_X$ ist.)
+Sei nun $x\in X$ und $y\in Y$ beliebig gewählt. Dann gilt $Pr(x,y) = Pr(x)*\sum_{k\in K, e(x,k)=y} Pr(k) = Pr(x)*Pr(k_{x,y}) = Pr(x)* 2^{-l}= Pr(x)*Pr(y)$.
+
+Damit folgt $Pr(x)=\frac{Pr(x,y)}{Pr(y)}= Pr(x|y)$, wie bei der informationstheoretischen Sicherheit verlangt.
+
+Bemerkung 1.25
+1. Der Beweis und damit das Vernamsystem kommt mit jeder beliebigen Klartextverteilung zurecht.
+2. Im KSV V wird die Gleichverteilung $Pr_K$ auf den Schlüsseln benutzt.
+
+Wir wollen nun überlegen, dass diese beiden Sachverhalte nicht zufällig sind.  Es wird sich herausstellen, dass informationstheoretische Sicherheit inbestimmten  Fällen (nämlich wenn y und K möglichst ,,sparsam'' gebaut sind) Gleichverteilung auf den Schlüsseln erzwingt, und dass die informationstheoretische Sicherheit eines KSV nichts mit den konkreten Wahrscheinlichkeiten der Klartextverteilung $Pr_X$ zu tun hat, sondern nur die Menge $\{x\in X|Pr_X(x)> 0\}$ der ''aktiven'' Klartexte relevant ist.
+
+Lemma 1.26 Sei $V=(X,K,Y,e,d,Pr_K)$ ein KSV. Sei $V$ informationstheoretisch sicher bezüglich einer Klartextverteilung $Pr_X$ mit $Pr(x)>0$ für alle $x\in X$. Dann gilt:
+1. $Pr(y)>0$ für alle $y\in Y$, und $S=(X,K,Y,e,d)$ ist possibilistisch sicher.
+2. Gilt zusätzlich $|X|=|Y|=|K|$, so gilt $Pr_K(k)=\frac{1}{|K|}$ für alle $k\in K$.
+
+Beweis: 
+1. Sei $y\in Y$ beliebig. Nach Definition 1.1(2) gibt es $x_0\in X$ und $k_0\in K$ mit $e(x_0,k_0)=y$. Da $Pr_X(x_0)>0$ (nach Vor.) und $Pr_K(k_0)>0$ (nach Def 1.19),erhalten wir $Pr(y)\geq Pr_X(x_0)Pr_K(k_0)>0$. Sei nun zusätzlich auch $x\in X$ beliebig. Dann gilt: $\sum_{k\in K:e(x,k)=y} Pr(x)Pr(k)= Pr(x,y)= Pr(x|y)Pr(y)=^* Pr(x)Pr(y)> 0$. ((∗) gilt, da V informationstheoretisch sicher bzgl. $Pr_X$ ist.) Also existiert $k\in K$ mit $e(x,k)=y$. Da $x$ und $y$ beliebig waren, ist S possibilistisch sicher.
+2. Nun nehmen wir zusätzlich $|X|=|Y|=|K|$ an. Wir beobachten zuerst zwei Dinge:
+    1. Für jedes $x\in X$ ist die Abbildung $K\ni k \rightarrow e(x,k)\in Y$  bijektiv. (Dass diese Abbildung surjektiv ist, ist eine Umformulierung der possibilistischen Sicherheit, die nach 1. gegeben ist. Aus Surjektivität folgt Bijektivität, wegen $|K|=|Y|$.)
+    2. Für jedes $k\in K$ ist die Abbildung $X\ni x \rightarrow e(x,k)\in Y$ bijektiv. (Dass die Abbildung injektiv ist, folgt aus der Dechiffrierbedingung. Aus Injektivität folgt Bijektivität, wegen $|X|=|Y|$.)
+
+Nun seien $k_1,k_2\in K$ beliebig. Unser Ziel ist zu zeigen, dass $Pr(k_1)=Pr(k_2)$ gilt. (Dann ist gezeigt,dass $Pr_K$ die uniforme Verteilung ist.) Wähle $x\in X$ beliebig und setze $y:=e(x,k_1)$. Beachte, dass es wegen 1. keinen Schlüssel $k\not=k_1$ mit $y=e(x,k)$ gibt. Wegen 2. gibt es ein $x′\in X$ mit $e(x′,k_2)=y$. Auch hier gibt es kein $k′\not=k_2$ mit $e(x′,k′)=y$. Es gilt also: $Pr(x)Pr(k_1)=\sum_{k\in K:e(x,k)=y} Pr(x)Pr(k) = Pr(x,y) = Pr(x|y)Pr(y) =^∗ Pr(x)Pr(y)$, und daher $Pr(k_1)=Pr(y)$, wegen $Pr(x)>0$. (∗ gilt, weil $V$ informationstheoretisch sicher ist.) Analog gilt $Pr(x′)Pr(k_2)=Pr(x′)Pr(y)$, und daher $Pr(k_2)=Pr(y)$. Es folgt $Pr(k_1)=Pr(k_2)$, wie gewünscht.
+Teil 2. dieses Lemmas hat eine Umkehrung.
+
+Lemma 1.27 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV mit $|X|=|Y|=|K|$. Wenn $S=(X,K,Y,e,d)$ possibilistisch sicher ist und $Pr_K$ die Gleichverteilung ist, dann ist $V$ informationstheoretisch sicher.
+
+Beweis: Es sei eine beliebige Klartextverteilung $Pr_X$ gegeben. Da S possibilistisch sicher ist und $|X|=|Y|=|K|$ gilt,existiert für jedes Paar $(x,y)\in X\times Y$ genau ein $k_{x,y}\in K$ mit $e(x,k_{x,y}) =y$ (vgl.Aussage 1. im Beweis des vorherigen Lemmas).
+Damit gilt für jedes $y\in Y$:$Pr(y)=\sum_{x\in X,k\in K:e(x,k)=y} Pr(x)Pr(k) =\sum_{x\in X} Pr(x) Pr(k_{x,y})=\frac{1}{|K|}* \sum_{x\in X} Pr(x) = \frac{1}{|K|}$.
+Wir haben benutzt, dass $Pr_K$ die uniforme Verteilung ist und dass $\sum_{x\in X} Pr(x) = 1$ gilt.
+Seien nun $x\in X$ und $y\in Y$ beliebig. Wenn $Pr(x)=0$ ist, gilt auf jeden Fall $Pr(x|y)=0=Pr(x)$. Wir können also $Pr(x)> 0$ annehmen und rechnen: $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*Pr(x)}{Pr(y)}=^* \frac{\frac{1}{|K|}*Pr(x)}{\frac{1}{|K|}}=Pr(x)$.
+(Für ∗ benutzen wir die Annahme über $Pr_K$ und die Gleichheit $Pr(y)=\frac{1}{|K|}$ von oben.) Das heißt, dass V  für $Pr_X$ informationstheoretisch sicher ist.
+Aus den beiden Lemmas erhalten wir den folgenden Satz, der die informationstheoretisch sicheren KSVs für den Fall $|X|=|Y|=|K|$ vollständig beschreibt.
+
+Satz 1.28 Sei $V= (X,K,Y,e,d,Pr_K)$ ein KSV mit $|X|=|Y|=|K|$. Dann sind äquivalent:
+1. $V$ ist informationstheoretisch sicher.
+2. $(X,K,Y,e,d)$ ist possibilistisch sicher und $Pr_K(k)=\frac{1}{|K|}$ für alle $k\in K$.
+
+Beweis:  ,,$(a)\Rightarrow (b)$'': Wenn V informationstheoretisch sicher ist, dann auch bezüglich einer Klartextverteilung $Pr_X$, in der alle Klartexte aktiv sind. Lemma 1.26 liefert 2. ,,$(b)\Rightarrow (a)$'': Lemma 1.27.
+
+Der Satz besagt, dass man informationstheoretisch sichere Systeme mit $|X|=|Y|=|K|$ daran erkennt, dass in der Verschlüsselungstabelle (für e) in jeder Spalte alle Chiffretexte vorkommen (possibilistische Sicherheit) und dass die Schlüsselverteilung $Pr_K$ uniform ist. Auch in jeder Zeile kommen natürlich alle Chiffretexte vor: das liegt aber einfach an der Dechiffrierbedingung. 
+Wir geben ein Beispiel für ein solches informationstheoretisch sicheres Kryptosystem mit $|X|=|Y|=|K|=6$ an. Die Klartextverteilung ist irrelevant. (Die Verschlüsselungsfunktion ist übrigens mit Hilfe der Multiplikationstabelle der multiplikativen Gruppe $\mathbb{Z}^∗_7$ des Körpers $\mathbb{Z}_7$ konstruiert worden. Solche Tabellen haben die Eigenschaft, dass jeder mögliche Eintrag in jeder Zeile und in jeder Spalte genau einmal vorkommt.)
+
+Beispiel 1.29 Wir betrachten $X=\{a,b,c,d,e,f\},K=\{k_0 ,...,k_5\},Y=\{A,...,F\}$.
+| e                   | a   | b   | c   | d   | e   | f   |
+| ------------------- | --- | --- | --- | --- | --- | --- |
+| $k_0 (\frac{1}{6})$ | A   | B   | C   | D   | E   | F   |
+| $k_1 (\frac{1}{6})$ | B   | D   | F   | A   | C   | E   |
+| $k_2 (\frac{1}{6})$ | C   | F   | B   | E   | A   | D   |
+| $k_3 (\frac{1}{6})$ | D   | A   | E   | B   | F   | C   |
+| $k_4 (\frac{1}{6})$ | E   | C   | A   | F   | D   | B   |
+| $k_5 (\frac{1}{6})$ | F   | E   | D   | C   | B   | A   |
+
+Nun betrachten wir allgemeinere Situationen, und fragen auch nach informationstheoretischer Sicherheit für spezifische Klartextverteilungen $Pr_X$ und für Mengen $K$ und $Y$, die größer als $X$ sind. Die Bedingung ,,uniforme Verteilung auf den Schlüsseln'' verschwindet dann komplett! Wir erinnern uns: Klartexte $x$ mit $Pr_X(x)> 0$ heißen aktiv (bzgl. $Pr_X$), die anderen passiv. Es wird sich herausstellen, dass sich informationstheoretische Sicherheit für $Pr_X$ mit dem Verhalten von $e(x,k)$ auf den aktiven Klartexten entscheidet, wobei es auf die tatsächlichen Wahrscheinlichkeiten für die aktiven Klartexte nicht ankommt.
+
+Technisch hilfreich sind die folgenden Größen, die nur von der Verschlüsselungsfunktion und der Schlüsselverteilung abhängen (nicht von irgendeiner Klartextverteilung): $P^x(y):=\sum_{k\in K, e(x,k)=y} Pr(k)$, für $x\in X,y\in Y$ (1.1). 
+Man beobachtet sofort die folgenden Gleichungen, die aus der Unabhängigkeit der Verteilungen $Pr_X$ und $Pr_K$ folgen:
+- Für alle $x\in X:Pr(x,y) = Pr(x)*P^x(y)$. (1.2)
+- Wenn $Pr(x)> 0$:$Pr(y|x) = \frac{Pr(x,y)}{Pr(x)}=P^x(y)$. (1.3)
+
+Umgekehrt wie bei der Definition der informationstheoretischen Sicherheit stellt man sich hier vor, dass ein Klartext x gegeben ist und man fragt nach der resultierenden Verteilung auf den Chiffretexten.
+Das nächste Lemma besagt, dass man die Wahrscheinlichkeiten aktiver Klartexte beliebig ändern kann (auch auf 0, also sie weglassen), ohne dass eine bestehende informationstheoretische Sicherheit zerstört wird.
+
+Lemma 1.30 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und seien $Pr_X$ und $Pr′_X$ Klartextverteilungen mit $Pr′_X(x)>0\Rightarrow Pr_X(x)>0$. Dann gilt: Ist $V$ informationstheoretisch sicher bzgl. $Pr_X$, so ist V informationstheoretisch sicher bzgl. $Pr′_X$.
+
+Beweis: Sei $V$ informationstheoretisch sicher bzgl. $Pr_X$. Wir haben es jetzt mit zwei Wahrscheinlichkeitsräumen zu tun, einem zu $Pr_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr)$) und einem zu $Pr′_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr′)$).
+Wir zeigen nacheinander vier Aussagen.
+1. $Pr_X(x)> 0 \Rightarrow P^x(y) = Pr(y|x) = Pr(y)$ für alle $y\in Y$. (Die Verteilungen $Pr^X(*)=Pr(*|x)$ auf den Chiffretexten sind für alle (Pr-)aktiven Klartexte x gleich und sind auch gleich der globalen Verteilung auf den Chiffretexten.) Beweis hierzu: Sei $Pr(x)>0$. Dann gilt $P^x(y)=Pr(y|x)$, siehe (1.3). Wenn $Pr(y)=0$ gilt, folgt auch $Pr(y|x)=0$. Sei also $Pr(y)>0$. Dann gilt: $Pr(y|x) =\frac{Pr(x,y)}{Pr(x)}=\frac{Pr(x|y)Pr(y)}{Pr(x)}=^* \frac{Pr(x)Pr(y)}{Pr(x)}= Pr(y)$. (∗ gilt, weil V informationstheoretisch sicher bzgl. $Pr_X$ ist.)
+2. $Pr′_X(x)> 0 \Rightarrow Pr′(y|x) = Pr(y)$ für alle $y\in Y$. Beweis hierzu: Aus $Pr′(x)>0$ folgt $Pr(x)>0$, nach Voraussetzung. Wir wenden (1.3) für $Pr′$ und für $Pr$ an und erhalten für alle $y\in Y$: $Pr′(y|x)=P^x(y)=Pr(y|x)=^a Pr(y)$.
+3. $Pr′(y)=Pr(y)$ für alle $y\in Y$. Beweis hierzu: Mit Lemma 1.15(a) (Formel von der totalen Wahrscheinlichkeit): $Pr′(y)=\sum_{x\in X: Pr′(x)> 0} Pr′(y|x)Pr′(x)=^b \sum_{x\in X: Pr′(x)> 0} Pr(y)Pr′(x) = Pr(y)$.
+4. $Pr′(x)=Pr′(x|y)$ für alle $x\in X,y\in Y$ mit $Pr′(y)>0$. (D.h.: V ist bzgl. $Pr′_X$ informationstheoretisch sicher.) Beweis hierzu: Wenn $Pr′(x)=0$ gilt, dann folgt $Pr′(x|y)=0=Pr′(x)$. Sei nun $Pr′(x)>0$. Dann: $Pr′(x|y)=\frac{Pr′(x,y)}{Pr′(y)}=\frac{Pr′(y|x)Pr′(x)}{Pr′(y)}=^{b,c} \frac{Pr(y)Pr′(x)}{Pr(y)} = Pr′(x)$.
+
+Satz 1.31 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und sei $Pr_X$ eine Klartextverteilung. Dann sind äquivalent:
+1. V ist informationstheoretisch sicher für $Pr_X$.
+2. Für jedes $x\in X$ und jedes $y\in Y$ gilt: $Pr(x,y)=Pr(x)Pr(y)$ (das Eintreten von x und das Eintreten von y sind unabhängig).
+3. Für alle $x\in X$ mit $Pr(x)>0$ und alle $y\in Y$ gilt $Pr(y)=Pr(y|x)$ (andere Formulierung der Unabhängigkeit).
+4. Für alle $x,x′\in X$ mit $Pr(x),Pr(x′)>0$ und alle $y\in Y$ gilt $P^x(y)=P^{x′}(y)$.
+
+Bemerkung: Bedingung 1. fragt nach der Situation bei gegebenem Chiffretext y mit $Pr(y)>0$. Bedingung 2. ist die wahrscheinlichkeitstheoretisch klarste Charakterisierung von informationstheoretischer Sicherheit, ohne bedingte Wahrscheinlichkeiten zu verwenden. Bedingungen 3. und 4. machen deutlich, dass es nur auf das Verhalten des Kryptosystems (mit seiner Verteilung $Pr_K$) auf den aktiven Klartexten ankommt, nicht auf die Klartextverteilung. Sie sagen auch, worauf genau es ankommt: Für jeden beliebigen aktiven Buchstaben ist die von $e(x,*)$ und der Schlüsselverteilung erzeugte Verteilung auf den Chiffretexten gleich, und zwar gleich der absoluten Verteilung auf den Chiffretexten. Informationstheoretische Sicherheit von $V$ (also für alle Klartextverteilungen) heißt also, dass alle Funktionen $P^x:Y\rightarrow [0,1]$, für $x\in X$, gleich sind (weil man als $Pr_X$ eine Verteilung wählen kann, bei der alle Klartexte aktiv sind, zum Beispiel die Gleichverteilung).
+
+Beweis: 
+- ,,$1.\Rightarrow 2.$'': Wenn $Pr(y)=0$, gilt $Pr(x,y)=0=Pr(x)Pr(y)$. Sei jetzt $Pr(y)>0. Dann gilt $Pr(x,y)=Pr(y)Pr(x|y) = Pr(y)Pr(x)$, nach 1.
+- ,,2.\Rightarrow 3.'': Wegen 2. gilt $Pr(y)Pr(x)=Pr(x,y)$. Andererseits ist $Pr(y|x)Pr(x)=Pr(x,y)$, also folgt 3. durch Kürzen mit $Pr(x)>0$.
+- ,,3.\Rightarrow 4.'': Verwende (1.3) für $x$ und $x′$ und benutze 3.
+- ,,4.\Rightarrow 1.'': (Dies ist natürlich der entscheidende und schwierigste Beweisschritt!) Nach Voraussetzung 4. gibt es für jedes $y\in Y$ ein $p_y$ mit $P^x(y)=p_y$ für alle aktiven $x\in X$. 
+  - Nach Lemma 1.15.1 (Formel von der totalen Wahrscheinlichkeit) gilt dann für jedes y: $Pr(y)=\sum_{x\in X:Pr(x)>0} Pr(y|x)*Pr(x) = \sum_{x\in X: Pr(x)>0} P^x(y)*Pr(x) = \sum_{x\in X:Pr(x)>0} p_y*Pr(x) =p_y$.
+  - Sei nun $y\in Y$ mit $Pr(y)>0$, und sei $x\in X$. Wenn $Pr(x)=0$ gilt, folgt auch $Pr(x|y)=0$. Wenn $x$ aktiv ist, dann gilt $Pr(x|y)=\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)Pr(x)}{p_y}=\frac{P^x(y)Pr(x)}{p_y}=Pr(x)$, wie gewünscht.
+
+Beispiel 1.32 Wir geben noch ein Beispiel für ein informationstheoretisch sicheres Kryptosystem mit $|X|=4,|Y|=6$ und $|K|=8$ an. Die Klartextverteilung ist irrelevant. Sei $X=\{a,b,c,d\},K=\{k_0,...,k_7\},Y=\{A,B,C,D,E,F\}$, und $e$ durch die folgende Tabelle gegeben. (Sie entsteht durch Zusammensetzen zweier informationstheoretisch sicherer Kryptosysteme mit jeweils vier Schlüsseln und vier Chiffretexten.)
+| e                    | a   | b   | c   | d   |
+| -------------------- | --- | --- | --- | --- |
+| $k_0 (\frac{1}{6})$  | A   | B   | C   | D   |
+| $k_1 (\frac{1}{6})$  | B   | C   | D   | A   |
+| $k_2 (\frac{1}{6})$  | C   | D   | A   | B   |
+| $k_3 (\frac{1}{6})$  | D   | A   | B   | C   |
+| $k_4 (\frac{1}{12})$ | A   | B   | E   | F   |
+| $k_5 (\frac{1}{12})$ | B   | A   | F   | E   |
+| $k_6 (\frac{1}{12})$ | E   | F   | A   | B   |
+| $k_7 (\frac{1}{12})$ | F   | E   | B   | A   |
+
+Offensichtlich ist die Schlüsselverteilung nicht uniform. Jeder Schlüssel $k$ hat eine andere Chiffre $x\rightarrow e(x,k)$. Die (absoluten) Wahrscheinlichkeiten für die Chiffretexte sind ebenfalls nicht uniform ($Pr(A)=Pr(B)=\frac{1}{4}$, $Pr(C)=Pr(D)=\frac{1}{6}$, $Pr(E)=Pr(F)=\frac{1}{12}$). 
+Die informationstechnische Sicherheit drückt sich dadurch aus, dass diese Chiffretextwahrscheinlichkeiten auch für jeden Klartext (also jede Spalte) separat auftreten.

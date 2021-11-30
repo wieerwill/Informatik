@@ -657,8 +657,97 @@ Die Form der Biosignale ist diagnostisch relevant, Formverzerrungen können zur 
 
 # Signalkonditionierung, Abtastung und Digitalisierung
 ## Pegelanpassung
+Pegelanpassung notwendig für
+- massebezogene Eingänge von ADC (+/- 1V...+/-10V)
+- standardisierte Schnittstellen (0...1V, z.B. Schreiber)
+- verkabelte Übertragung zur Zentrale (Elektrodenbrause bei EEG)
+
+Realisierung mit 
+- Pegelschieber
+- programmierbare Verstärker (integierte analoge Elektronik)
+- automatische Verstärkungsregelung (Rückkopplung)
+
+massefreie und massebezogene Signale
+- ![](Assets/Biosignalverarbeitung-pegelanpassung.png)
+- biologisches Objekt - Volumenleiter, immer kann nur Potentialdifferenz abgeleitet werden, d.h. massefrei (symmetrisch)
+- bei der Verstärkung, spätestens bei der AD-Wandlung, Massebezug notwendig
+- Wegen Störungen massefreie (symmetrische) analoge Strecke möglichst durchgängig bis zum ADC (verdrillte Leitungen, Differenzverstärker)
+  
 ## Abstastung, Aliasing
+Antastung im technischen Sinne ist die Erfassung des momentanen Wertes eines Signals zu definierten Zeitpunkten.
+Üblicherweise ist das Signal zeitkontinuierlich, nach der Abtastung liegt eine zeitdiskrete Variante des Signals vor
+- kontinuierliches Signal ![](Assets/Biosignalverarbeitung-kontinuierliches-signal.png)
+- zeitdiskretes Signal ![](Assets/Biosignalverarbeitung-zeitdiskretes-signal.png)
+
+Abtastung ist mathematisch eine Multiplikation des Signals mit einer Folge von Dirac-Pulsen: $y(t)=x(t)*\sum_{n=-\infty}^{\infty}\sigma(t-nT_A)$ ($T_A$ ist die Abtastperiode)
+
+Eine Multiplikation von zwei Signalen im Zeitbereich entspricht der Faltung ihrer Spektren im Frequenzbereich (und umgekehrt): $Y(\omega)=X(\omega)*\sum_{n=-\infty}^{\infty} \sigma(\omega-n\frac{1}{T_A})$
+
+![](Assets/Biosignalverarbeitung-EKG-kontinuierlich-spektrum.png)
+- Das EKG ist natürlich digitalisiert, um es hier darstellen zu können. Die Abbildung entspricht jedoch einer Aufzeichnung unter realen Bedingungen.
+- stark instationäres Signal mit scharfer R-Zacke. Daraus ergibt sich ein periodisches Spektrum, da die R-Zacke einen nahezu impulsartigen Verlauf hat. Beachten Sie die Beziehung zwischen impulsartigen Vorgängen in der Zeit und ihrem Spektrum.
+
+![](Assets/Biosignalverarbeitung-EKG-tasten-falten.png)
+- Um Überlappung (Aliasing) der Spektren und Mehrdeutigkeiten zu vermeiden, muss gelten: $\frac{1}{T_A}\geq 2*f_{max}$
+- Nyquist-Frequenz entspricht der halben Grundfrequenz der Abtastrate, sie begrenzt nach oben das bei Null beginnende sog. Basisband. Das Basisband ist der Frequenzbereich, in dem man bei der Signalanalyse arbeitet. Damit das gespiegelte Spektrum nicht bis ins Basisband reicht und dadurch das Vorhandensein real nichtexistenter Signalkomponenten vortäuscht, muss gewährleistet werden, dass die halbe AR höher liegt, als die höchste Frequenz des Signals, d.h. die AR muss mindestens doppelt so hoch sein, die die höchste vorhandene Frequenz.
+- Die periodische Wiederholung des Spektrums nach der Abtastung hat folgende praktische Bedeutung: Da sich das Spektrum mit jeder Harmonischen der AR wiederholt und gespiegelt wird, kann man ein bandbegrenztes Signal ins Basisband holen. So wäre bspw. denkbar, das zwischen 500 und 625 Hz liegendes EKG abzutasten und im Basisband zu verarbeiten. Dazu später ein Beispiel mit AM-modulierten EKG
+
+Ein aus Film und Fernsehen bekanntes Beispiel zur Verletzung des Abtasttheorems:
+- ![](Assets/Biosignalverarbeitung-beispiel-film.png)
+- Annahme: Ein Rad mit 8 Speichen dreht sich so, dass der Wagen sich mit 28.3 km/h bewegt, die Drehfrequenz des Rades beträgt demnach 2.5Hz. $v=28,3\frac{km}{s}=7,85\frac{m}{s}$, $f=\frac{v}{U}=\frac{7,85m/s}{3,14m}=2,5Hz$
+- Die Periode, mit der die Speichen einen Referenzpunkt passieren (oben) beträgt 50ms bei einer Wiederholrate von 20/s $f_s=8*f=20Hz\Rightarrow T_s=50ms$
+- Entsprechend der Fernsehnorm werden 25 Bilder pro Sekunde aufgenommen, die Periode ist also 40ms. $f_A=25fps\Rightarrow=40ms$
+- Entsprechend der Faltung beim Abtasten entstehen zwei Frequenzen -5 und 20, wobei nur die -5Hz im Basisband liegen. Das bedeutet praktisch, dass man das Rad langsam nach hinten drehen sieht. $f_{SA}=f_A\pm f_S=-5/20 Hz$
+- reale Effekte: Räder (Auto), Stroboskopeffekt in Industriehallen mit Leuchtstoffröhren an rotierenden Maschinen
+
+![](Assets/Biosignalverarbeitung-rekonstruierter-sinus.png)
+Oft wird nach der Abtastung und anschließenden Signalverarbeitung das Ergebnis im ursprünglichen Bereich des Signals benötigt. Dazu ist die sog. Rekonstruktion notwendig, also eine Übertragung aus dem Analyse-in den Originalbereich. Zur Rekonstruktion ist allgemein eine Interpolation zwischen den diskreten Punkten notwendig, oder aus Sicht der Filtertheorie die Anwendung eines Interpolationsfilters. Das einfachste Interpolationsfilter ist ein Tiefpass in Nähe der höchsten Signalfrequenz. Wurde bei der Abtastung das Abtasttheorem verletzt, so treten im rekonstruierten Signal Komponenten auf, die im Originalsignal nicht vorhanden waren, siehe oben.
+
+Dieser Effekt kann auch im Fernsehen beobachtet werden: Tragen die Sprecher z.B. ein Hemd mit einem sehr feinen Strichmuster, so reicht die Bildschirmauflösung -d.h. die räumliche Abtastrate -nicht aus, um das Muster richtig zu erfassen und am Fernsehmonitor entsteht sog. Moiree, d.h. großflächige Farbmuster, die es in der Realität nicht gibt.
+![](Assets/Biosignalverarbeitung-abtastung-rekonstruktion.png)
+
+- $y(t)=x(t)*\sum^{\infty}_{n=-\infty} \sigma(t-nT_A) \Leftrightarrow Y(\omega)=X(\omega)*\sum^{\infty}_{n=-\infty}\sigma(\omega-n\frac{1}{T_A})$
+- Übergang aus dem kontinuierlichen Zeitbereich in eine Folge, d.h. Entkopplung von der Abtastperiode
+- $y(n)=y(nT_A) \Leftrightarrow Y(k)=Y(k\omega_A/M)=\sum_{n=1}^M y(nT_A)^{-jkn/M}$
+- $Y(K)\Leftrightarrow FFT(y(n))\Rightarrow$ normierte Frequenz $\omega\in(0,2\pi)\vee f\in(0,1)$
+- Nyquist Frequenz $\omega_N=\pi$, $f_N=0,5$
+- Nach der Abtastung und Digitalisierung hat das Signal die Form einer Zahlenfolge bzw. eines Vektors oder Matrix. Ist die Abtastrate unbekannt, so ist das Signal auch nicht mehr reproduzierbar. Da sich aber Analysen und digitale Filterung grundsätzlich auch ohne Kenntnis der Abtastrate durchführen lassen, wird die sog. normierte Frequenz eingeführt, die bei der Rekonstruktion durch eine reale Abtastrate ersetzt wird.
+
+![](Assets/Biosignalverarbeitung-amplitudenmodulation.png)
+- $EKG_{AM}=EKG*sin(\omega_c t)$
+- Beispiel zum Abtasttheorem: Das EKG wird für eine Kabelübertragung mit einem Träger bei 10kHz multipliziert, was nachrichtentechnisch einer Amplitudenmodulation entspricht. Das Spektrum spiegelt sich um den Träger herum, ähnlich wie bei der Abtastung. Hier gibt es allerdings nur eine Spiegelung, da der Träger eine Harmonische ist und somit im Spektrum nur eine Nadel darstellt. Es entstehen zwei Seitenbänder, das obere und das untere. Beide sind hinsichtlich des Informationsgehaltes völlig identisch.
+- Die Frage ist nun zu beantworten, wie hoch die Abtastrate für ein solches Signal sein muss.
+
+Abtasttheorem Kotelnikov, Channon ($T_A=1/2f_{max}$)
+- hinreichende/notwendige Bedingung
+- hinreichend aber nicht notwendig $AR\geq 22ksps$
+- $Y(\omega)=X(\omega)*\sum^{\infty}_{n=-\infty} \sigma(\omega-n\frac{1}{T_A})$
+- notwendig und hinreichend: $AR\geq 2ksps$
+- ![](Assets/Biosignalverarbeitung-abtastung-kotelnikov.png)
+- Da die höchste Frequenz im Signal 11kHz beträgt, müsste die Abtastrate mind. 22ksps betragen. Dies ist eine hinreichende, aber keine notwendige Bedingung. Denn bezieht man sich auf die Wiederholung des Spektrums um jede Harmonische der Abtastrate, wird eine AR von 2ksps ausreichen. Damit passt eine Wiederholung des Spektrums in das Basisband, in wir ja analysieren.
+
+Pulsamplitudenmodulation (PAM)
+- nach Sample & Hold
+  - Zeit diskret
+  - Pegel analog
+- ![](Assets/Biosignalverarbeitung-Pulsamplitudenmodulation.png)
+- Die Abtastung (sample & hold) entspricht nachrichtentechnisch der PAM: die Werte treten in definierten Abständen entsprechend dem Pulsbreite (Abtastperiode) auf und haben einen kontinuierlichen Wertebereich. Allerdings spielt diese Modulationsart in der Nachrichtentechnik keine praktische Rolle, wichtig ist sie für die Theorie.
+
+Mehrkanalsystem - Simultansampling
+- ![](Assets/Biosignalverarbeitung-Mehrkanalsysteme.png)
+- Oft werden in der Technik und vor allem in der Medizin mehrkanalige Messsysteme benötigt. Für die Analyse ist von entscheidender Bedeutung, dass der zeitliche Zusammenhang der Kanäle identisch, oder zumindest bekannt ist. Beim echten Simultansampling werden alle Kanalsignale zum selben Zeitpunkt abgetastet und sequentiell digitalisiert. Damit reicht im Normalfall ein ADC für alle Kanäle.
+- ![](Assets/Biosignalverarbeitung-Mehrkanalsysteme2.png)
+  - alle Kanäle im selben Augenblick abgetastet, echtes Simultansampling
+- ![](Assets/Biosignalverarbeitung-Mehrkanalsysteme3.png)
+  - Um den HW-Aufwand zu minimieren, werden die Kanalsignale sequentiell abgetastet und digitalisiert, dabei kann die Einsparung an Elektronik beachtlich sein. Signalanalytisch kann sie jedoch problematisch sein: Aus der Signalsequenz wird das Simultansignal über die Laufzeitkorrektur in der FFT zurückgerechnet. Bei zeitkritischen Vorgängen ist diese Alternative zu verwerfen, da die durch die sequentielle Abtastung verlorengegangenen Signalteile durch Rückrechnung nicht mehr zu retten sind.
+- ![](Assets/Biosignalverarbeitung-Mehrkanalsysteme4.png)
+  - Versatz der Kanäle um $T_A/N$
+  - Rechnerische Korrektur der Abtastzeit (nicht-online-fähig)
+  - $X^*(j\omega)=X(j\omega)^{j\omega T_A/N}$
+
 ## Digitalisierung
+
+
 ## Telemetrie
 
 # Digitale Filterung

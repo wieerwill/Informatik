@@ -26,7 +26,32 @@ Biosignalverarbeitung
   - [Differenzverstärker](#differenzverstärker)
     - [Funktionsprinzip](#funktionsprinzip)
     - [Differenz- und Gleichtaktverhalten](#differenz--und-gleichtaktverhalten)
+  - [Instrumentationsverstärker](#instrumentationsverstärker)
+    - [Mehrstufiger Verstärker](#mehrstufiger-verstärker)
+    - [Hoher Eingangswiderstand](#hoher-eingangswiderstand)
+    - [Hohe Gleichtaktunterdrückung](#hohe-gleichtaktunterdrückung)
+  - [Isolationsverstärker](#isolationsverstärker)
+    - [Funktionsprinzip](#funktionsprinzip-1)
+    - [Galvanische Trennung und ihre Auswirkung](#galvanische-trennung-und-ihre-auswirkung)
+    - [Datenübertragung, Modulation und Demodulation](#datenübertragung-modulation-und-demodulation)
+  - [Guardingtechnik](#guardingtechnik)
+    - [Funktionsprinzip](#funktionsprinzip-2)
+    - [Realisierung](#realisierung)
+  - [Aktive Elektroden](#aktive-elektroden)
+    - [Funktionsprinzip](#funktionsprinzip-3)
+    - [Störungsresistenz](#störungsresistenz)
+    - [Gleichtaktunterdrückung](#gleichtaktunterdrückung)
+  - [Analoge Filter](#analoge-filter)
+    - [Passive Filter](#passive-filter)
+      - [Grundlagen der Filtertheorie](#grundlagen-der-filtertheorie)
+      - [Filterentwurf](#filterentwurf)
+    - [Aktive Filter](#aktive-filter)
+  - [Linearer Phasenfrequenzgang](#linearer-phasenfrequenzgang)
 - [Signalkonditionierung, Abtastung und Digitalisierung](#signalkonditionierung-abtastung-und-digitalisierung)
+  - [Pegelanpassung](#pegelanpassung)
+  - [Abtastung, Aliasing](#abtastung-aliasing)
+  - [Digitalisierung](#digitalisierung)
+  - [Telemetrie](#telemetrie)
 - [Digitale Filterung](#digitale-filterung)
 
 # Sensorik
@@ -448,8 +473,822 @@ Die wichtigste Eigenschaft der Biosignale, die von Medizinern diagnostisch genut
 
 ## Differenzverstärker
 ### Funktionsprinzip
+Vollkommene Symmetrie (DV und Signalanbindung)
+- ![](Assets/Biosignalverarbeitung-Differenzverstärker-funktion.png)
+- Vg ist Quelle der massebezogenen Störung. Die Störspannung gelangt auf beide Eingänge über Streukapazitäten, deren Impedanzen mit R4 und R5 simuliert werden, in gleicher Phase und im Idealfall auch mit gleichem Pegel. Die Störsignale an den Eingängen U10 und U20 sind also gleich, werden daher als Gleichtaktsignale bezeichnet.
+- Vd ist die gewünschte massefreie Spannung (aus Sicht der Signalquelle zählen R4 und R5 nicht als Masseverbindung, die ,,hängt in der Luft'', floating source). Die Signalquelle Vd liegt direkt zwischen den Eingängen an, erzeugt daher eine Differenzspannung (siehe Funktionsprinzip eines Differenzverstärkers: Durch die Verkopplung der beiden Zweige T1 und T2 hat eine Zunahme der Eingangsspannung U10 Abnahme von Ud1 und Zunahme von Ud2, analog gilt das für U20. Daher liegt zwischen Ud1 und Ud2 die verstärkte Differenz von U10 und U20 an).
+- Betrachtet man Ud1 und Ud2 massebezogen, so liegen überlagerte Gleichtakt- und Differenzspannungen an (unterer Grafik). Betrachtet man die verstärkte Spannung massefrei (also als Differenz zwischen Ud1 und Ud2), so verschwindet durch die Differenzbildung die Gleichtaktstörung und die gewünschte Differenzspannung bleibt übrig.
+- Alle bisherigen Erläuterungen gelten nur im Idealfall: Sowohl der Verstärker ist ideal symmetrisch (identische Transistoren und Widerstände), als auch die Einkopplung der Gleichtaktstörung erfolgt ideal symmetrisch (über R4 und R5).
+
+Symmetrie im DV, asymmetrische (realistische) Signalanbindung
+- ![](Assets/Biosignalverarbeitung-Differenzverstärker-asymmetrisch.png)
+- In der Realität lassen sich zwar Verstärker bauen, die an das Ideal gut herankommen.
+- Die Einkopplung der Gleichtaktstörung ist jedoch immer unsymmetrisch, es ist unmöglich, im Messkreis Symmetrie herzustellen (R4 und R5 unterschiedlich). Daher wird aus der ihrem Wesen nach Gleichtaktstörung zum Teil eine Differenzstörung. Und die Differenzstörung erscheint in der Ausgangsspannung Ud1-Ud2 zwangsläufig auch.
+- Das heißt, in der Realität wird der Gleichtaktanteil der Störung zwar unterdrückt, aber der zur Differenz gewordene Anteil bleibt am Ausgang bestehen.
 
 ### Differenz- und Gleichtaktverhalten
+![](Assets/Biosignalverarbeitung-Diff-und-Gleichtakt.png)
+- $SNR_{in} = \frac{U_{d\_in}}{U_{g\_in}}=\frac{1mV}{10V}=10^{-4}\approx -80dB$
+- $V_g$: Gleichtaktstörung (Netz)
+- $V_d$: Nutzsignal (EKG) 
+- Heute werden Differenzverstärker meistens als integrierte analoge Schaltungen mit OPVs eingesetzt. Da der Ausgang massefrei ist, folgt eine zweite Stufe zur Differenzbildung (IC3), die am Ausgang eine -wie üblich -massebezogene Spannung liefert. Diese Anordnung wird als Instrumentationsverstärker bezeichnet (instrumenation amplifier) und ist auch integriert verfügbar.
+- Am Eingang liegt eine realistische Situation vor: Das gewünschte Signal hat den Pegel von 1mV (EKG), die Netzstörung erreicht (auch mehr als) 10V. Daher ist der SNR am Eingang sehr niedrig, -80dB.
+- ![](Assets/Biosignalverarbeitung-Diff-und-Gleichtakt2.png)
+- $CMRR=\frac{U_{d\_out}}{U_{g\_out}}*\frac{U_{g\_in}}{U_{d\_in}}=\frac{200mV}{20mV} *\frac{10V}{1mV}=10^5\approx 100dB$
+- Führt man mit dem Ausgangssignal des Verstärkers Spektralanalyse durch, so stellt man fest, dass die Netzstörung am Ausgang 20mV beträgt, während das gewünschte Signal 200mV erreicht, also der SNR am Ausgang ist 10 bzw. 20dB. Da der SNR am Eingang - 80dB betrug, wurde eine SNR-Verbesserung von 100dB erreicht. Diese Verbesserung ist auf die Gleichtaktunterdrückung selbst bei Asymmetrie am Eingang zurückzuführen, so dass in diesem Fall das CMRR identisch der SNR-Verbesserung ist. (Common-Mode Rejection Ratio, Gleichtaktunterdrückung, muss in der Medizintechnik laut Katalog mindestens 100dB, besser 120dB erreichen).
+
+## Instrumentationsverstärker
+Der Instrumentationsverstärker (IV) ist ein mehrstufiger Verstärker, von dem in der medizinischen Messtechnik ein hoher Eingangswiderstand (besser als 100MOhm) und eine hohe CMRR (besser 100dB) gefordert wird.
+
+### Mehrstufiger Verstärker
+- ![](Assets/Biosignalverarbeitung-mehrstufiger-verstärker.png)
+- Die erste Stufe ist der Eingangs-Differenzverstärker mit massefreiem Ausgang; die Ausgangsspannung ergibt sich aus der Differenz der Ausgangsspannungen von IC1 und IC2. Die zweite Stufe verstärkt zusätzlich und bezieht die verstärkte Spannung auf Masse, so dass am Ausgang massebezogene, verstärkte Eingangsdifferenz vorliegt.
+- V1: $u_{ad}=A*u_{ed}+B*u_{eg}$, $u_{ag}=C*u_{eg}+D+u_{ed}$, 
+  - $A/B=F$: Diskriminationsfaktor
+  - $A/C=H$: Rejektionsfaktor 
+- V2:
+  - $u_a=V_d u_{ed}+\frac{V_d}{CMR}u_{eg}=V_d(A u_{ed}+\frac{A}{F} u_{eg})+\frac{V_d}{CMR}\frac{A}{H} u_{eg}$
+  - $u_a|_{u_{ed}=0} = V_d A(\frac{1}{F}+\frac{1}{CMR*H}) u_{eg}$
+  - die gesamt-Gleichtaktunterdrückung eines mehrstufigen Verstärkers ist abhängig im Wesentlichen von der ersten (Eingangs-) Stufe
+- Berechnet man die Ausgangsspannung in Abhängigkeit von der Eingangs-Gleichtaktspannung und von den Verstärkerparametern, so zeigt sich, dass für den CMRR die erste Stufe (wie auch bei anderen Parametern, z.B. Eigenrauschen) entscheidend ist, die folgenden Stufen sind unwesentlich beteiligt. Daher wird in der ersten Stufe der höchste Entwicklungsaufwand getrieben.
+
+### Hoher Eingangswiderstand
+- ![](Assets/Biosignalverarbeitung-hoher-eingangswiderstand.png)
+- $R^{(1)}_{ed}=2R_D+R_C\approx 2R_D$
+- $R^{(2)}_{ed}=R_1+R_3<<R_D$
+- Theoretisch würde zur Ableitung von Biosignalen die zweite Stufe allein reichen, denn sie selbst verstärkt die Differenzspannung an ihrem Eingang (R1 und R3). Allerdings ist der Eingangswiderstand der zweiten Stufe für Biosignale viel zu niedrig. Eine zusätzliche Stufe mit hohem Eingangswiderstand ist daher notwendig, die außerdem noch wesentlich zur Verstärkung beiträgt.
+
+### Hohe Gleichtaktunterdrückung
+- ![](Assets/Biosignalverarbeitung-hohe-gleichtaktunterdrückung.png)
+- rot: OPs integriert
+- blau: Widerstände getrimmt
+- Gute Eigenschaften sind nur mit integrierter Technologie und getrimmten Widerständen erreichbar. Daher werden bis auf einige speziellen Ausnahmen ausschließlich integrierte IV eingesetzt.
+
+## Isolationsverstärker
+Aus Sicherheitsgründen bzw. wegen zu hoher Spannungen ist es in der Medizin, aber auch z.B. in der Leistungselektronik, oft notwendig, den Messkreis von der Umgebung galvanisch zu trennen, ihn also bezugsfrei schweben zu lassen (floating circuit).
+
+### Funktionsprinzip
+- ![](Assets/Biosignalverarbeitung-Isolationsverstäker.png)
+- Das Prinzip ist einfach: Alle Signalverbindungen und die Stromversorgung werden getrennt und entweder optisch oder transformatorisch über eine Isolationsbarriere realisiert. Da Biosignale sehr tieffrequent sind, müssen sie für die Übertragung moduliert bzw. demoduliert werden. Der Hardwareaufwand steigt enorm. Dennoch stehen heute bereits integrierte Isolationsverstärker zur Verfügung.
+
+### Galvanische Trennung und ihre Auswirkung
+- ![](Assets/Biosignalverarbeitung-Galvanische-trennung.png)
+- Durch die galvanische Trennung wird die Patientensicherheit enorm verbessert. Allerdings werden aus Sicht der Biosignalanalyse keine Verbesserungen erreicht, die Signaleingenschaften werden u.U. sogar noch schlechter. Der Grund sind die immer vorhandenen Streukapazitäten, die natürlich auch nach der galvanischen Trennung immer noch vorhanden sind und so Störungen in den Messkreis einkoppeln. Der notwendige Modem erzeugt weitere Störungen und Verzerrungen des gewünschten Signals.
+
+### Datenübertragung, Modulation und Demodulation
+- ![](Assets/Biosignalverarbeitung-AD289.png)
+- Realisierungsbeispiel von Analog Devices.
+
+## Guardingtechnik
+### Funktionsprinzip
+- ![](Assets/Biosignalverarbeitung-guarding.png)
+- Eine wirkungsvolle Massnahme zur Störungsreduktion ist die Abschirmung der Messkabel, die in der Medizin bis zu zwei Metern Länge haben können (EKG) und damit gute aber unterwünschte Antennen realisieren. Der Schirm und das Messkabel bilden eine relativ große Kapazität von bis zu 100pF. Die Impedanz dieser Kapazität liegt parallel zum Eingangswiderstand des Verstärkers (untere Grafik) und reduziert diesen erheblich, wie man an den Verläufen des Messtromes erkennen kann: Während ohne Schirmung der Messstrom 100nA beträgt, steigt er auf 300nA bei Schirmung an, der Eingangswiderstand wurde also auf ein Drittel seines ursprünglichen Wertes reduziert und das ist inakzeptabel.
+- ![](Assets/Biosignalverarbeitung-guarding2.png)
+- Prinzip: Die Eingangsspannung wird über den Impedanzwandler an den Schirm gelegt. Die Schirmkapazität ist zwar immer noch vorhanden, über ihr liegt aber keine Spannungsdifferenz mehr an, also fließt auch kein Strom. Damit erscheint die Impedanz der Schirmkapazität vom Eingang her theoretisch unendlich groß, praktisch nah dran. Früher als Bootstrap-Prinzip bekannt.
+- Die Impedanz der Kapazität wurde dynamisch idealerweise beseitigt, ist also theoretisch von den Eingangsklemmen nicht sichtbar. Die Kapazität ist aber nach wie vor physisch vorhanden! Diese Tatsache ist für bestimmte Fragestellungen sehr wichtig, z.B. Analyse bei implusartigen Störungen, bei den der Verstärker es natürlich dynamisch nicht schafft, den Impuls in Echtzeit auf den Schirm zu führen.
+
+### Realisierung
+- ![](Assets/Biosignalverarbeitung-guarding-real.png)
+- Schaltungstechnisch lässt sich Guarding mit einem zusätzlichen OPV (IC4) im IV realisieren. In diesem Fall wird nicht jeder Kanal einzeln, sondern alle mit dem Gleichtaktsignal belegt. Das spart Hardware und ist ausreichend, denn kritisch ist der Gleichtakt-Eingangswiderstand, während der Differenz-Eingangswiderstand nicht von Bedeutung ist.
+
+## Aktive Elektroden
+### Funktionsprinzip
+- ![](Assets/Biosignalverarbeitung-aktive-elektroden.png)
+- Lösungsansatz: Verstärkung und Digitalisierung direkt auf Elektrode. Datenübertragung robust gegen Störungen, da binär
+- Problem: Zuführung des Bezugspotentials notwendig
+
+### Störungsresistenz
+- Aktive Elektroden technologisch aufwendig, haben aber Vorteile bei Störungen, die direkt auf die Messanordnung wirken
+  - Elektrode: Drift der Polarisationsspannung kompensierbar
+  - Kabel: unempfindlich gegen kapazitiv, induktiv und HF-eingekoppelte Störungen
+  - Verstärkereingang: durch kürzste Wege zum Sensor keine direkte Beeinträchtigung der Eingangskreise
+  - Unsymmetrie: lässt sich in Rückkopplung computergesteuert reduzieren bzw. eliminieren
+- die Übertragung ist digital, daher störungsresistent und distanzunabhängig
+
+### Gleichtaktunterdrückung
+Die unter 2.4.1 hergeleitete Gleichtaktunterdrückung gilt nicht pauschal, bei aktiven Elektroden ist Differenzierung notwendig
+- Aktive Elektroden meistens mit Verstärkung $V=1$
+- daher CMR rechnerisch gleich 1, theoretisch zu niedrig
+- prinzipbedingt starke Unterdrückung der Stör-Gleichtaktsignale
+- daher praktisch sehr gute CMRR von 100dB und mehr
+
+## Analoge Filter
+Das Unterscheidungskriterium ist, ob ein aktives Bauelement im Filter eingesetzt wird, d.h. ob es die Filtercharakteristik direkt beeinflusst. Dies ist der Fall bei allen rückgekoppelten Filtern mit Transistoren oder Operationsverstärkern. Dagegen ist ein Filter (z.B. RC-Tiefpass 1. Ordnung), dem ein OV als Impedanzwandler folgt, kein aktives Filter.
+
+### Passive Filter
+#### Grundlagen der Filtertheorie
+- ![](Assets/Biosignalverarbeitung-Filtertheorie.png)
+- Bei spektralen Filtern werden folgende Parameter verwendet, um die Filtercharakteristik zu beschreiben:
+  - Die Eckfrequenz, oder Grenzfrequenz: Frequenz $F_{pass}$, bei der der Durchlassbereich in die Filterflanke übergeht und bei der die Übertragung um 3dB bzw. auf 70% der Übertragung vom Durchlassbereiche abgesunken ist.
+  - Die Sperrfrequenz $F_{stop}$, bei der die geforderte Dämpfung im Sperrbereich erreicht wird. Übergangsband Fstop-Fpass, auch transition band, ist der Übergangsbereich vom Durchlass-in das Sperrband, auch Filterflanke genannt.
+  - Steilheit ist Maß für die Filterflanke in dB/Hz. Grundsätzlich gilt, je steiler, umso besser. Hängt hauptsächlich von der Filterordnung ab.
+  - Welligkeit im Durchlassbereich Apass gibt an, im welchen Bereich die Übertragung im Durchlassbereich schwankt. Üblich ist weniger als 1dB, um 3dB ist für niedrige Ansprüche ausreichend.
+  - Minimale Dämpfung Astop gibt die garantierte Dämpfung an. Hängt hauptsächlich von der Filterordnung ab.
+  - Fs/2 ist die halbe Abtastrate oder die Nyquistfrequenz.
+- ![](Assets/Biosignalverarbeitung-Filtertheorie2.png)
+- Die Filtertheorie unterscheidet vier Grundtypen, siehe oben. Die Filtertheorie bietet ein Instrumentarium zum Entwurf von Filtern, vor allem aber für den nachrichtentechnischen Bereich, d.h. L-C-Kombinationen, also schwingfähige Systeme. Im Spektralbereich der Biosignale werden fast ausschließlich RC-Filter verwendet. Die Vorgehensweise beim klassischen Filterentwurf ist über die Schaltungsanalyse, also faktisch in einem Iterationsverfahren: Grundbausteine der spektralen Filter sind bekannt und mit diesen versucht man die gewünschte Charakteristik iterativ durch hinzufügen von Elementen und anschließender Analyse zu erreichen. Im analogen Bereich ist es kaum möglich, eine Filtercharakteristik vorzugeben und nach irgendeiner Methode die Schaltung als Ergebnis zu erhalten, der Entwurf ist daher sehr intuitiv und routineorientiert. Die Schaltungssynthese reduziert sich dann lediglich auf die Entnormung der Modelle auf konkrete Bauelemente.
+  - Übertragungsfunktion $G(j\omega)=\frac{U_2(j\omega)}{U_1(j\omega)}=|G(j\omega)|*e^{j\omega\phi}$
+  - Amplitudenfrequenzgang $|G(j\omega)|=\sqrt{Re\{G(j\omega)\}^2 +Im\{G(j\omega)\}^2}$
+  - Phasenfrequenzgang $\phi(\omega)=arctan\frac{IM\{G(j\omega)\}}{Re\{G(j\omega)\}}$
+  - Grenzfrequenz $\omega_g=\frac{1}{RC}$
+- Üblicherweise werden die Filter über ihre Übertragungsfunktion beschrieben, wobei auch äquivalente Beschreibungen möglich sind -Impulsantwort im digitalen Bereich, Pole-Nullstellen-Diagramme, seltener Zustandsgleichungen.
+- Aus Sicht der BSA sind entscheidend die Beschreibungen über den Amplituden- und Phasenfrequenzgang.
+
+#### Filterentwurf
+- passive Bauelemente
+  - R,C,L
+  - mechanische Resonatoren
+  - Quarzfilter
+  - akustische Oberflächenwellenfilter
+- im spektralen Bereich der Biosignale (0...1kHz) nur R und C
+- Als Bauelemente zum Filterbau kommen neben R,C und L weitere Alternativen in Frage, die vor allem auf der mechanischen bzw. geometrischen Stabilität der schwingenden Anordnung aufbauen: piezokeramische und Quarzfilter oder akustische OWF.
+- Im Spektralbereich der Biosignale kommen jedoch nur R-C-Kombinationen in Frage.
+- Beispiele: oben ein zweikreisiger Parallelschwingkreis, der zur Schmalbandfilterung in der Nachrichtentechnik eingesetzt wird. Unten ein Phasenschiebernetzwerk, z.B. in einem RC-Generator.
+  - ![](Assets/Biosignalverarbeitung-filterentwurf.png)
+  - ![](Assets/Biosignalverarbeitung-filterentwurf2.png)
+
+### Aktive Filter
+- ![](Assets/Biosignalverarbeitung-tiefpass-2.ordnung.png)
+- ![](Assets/Biosignalverarbeitung-hochpass-2.ordnung.png)
+- $R_{0a}=(\epsilon-1)R_0$, $u_a=\epsilon*u_e$ $\Rightarrow$ Filtertyp mit $R_0$ einstellbar
+    || Bessel| Butterworth|Tschebyscheff (1,5dB)|
+    |---|---|---|---|
+    $\epsilon$|$1,267$|$1,586$|$2,482$|
+    $\gamma$|$0,618$|$1,0$|$1,663$|
+- Durch die Verwendung von OVs, die eine definierte Gegenkopplung ermöglichen, ist es mit relativ einfachen Mitteln möglich, effektive Filter zu konstruieren, die mit passiven Bauelementen allein um Größenordnungen komplizierter wären. Die beliebteste Entwurfstechnik ist die mit Hilfe von kaskadierten Stufen 2. Ordnung, auch im digitalen Bereich. Filter 2.Ordnung sind übersichtlich strukturiert, die Bauelemente müssen nicht mühsam ausgesucht und ausgemessen werden, die Eigenschaften sind sehr gut bekannt und bequem einstellbar, so dass eine kompliziertere Filterstruktur - z.B. Antialiasing-Tiefpass 8. Ordnung - durch einfache Kaskadierung (Serienschaltung) realisierbar ist. Natürlich muss man bei der Kaskadierung beachten, dass jede Stufe bei ihrer Grenzfrequenz 3dB-Abfall verursacht, so dass man die Kette entsprechend dimensionieren muss.
+- Sehr vorteilhaft ist in dieser Schaltung, dass der Filtertyp bequem durch die Veränderung (Durchstimmung) eines einzigen Widerstandes über alle drei Basischarakteristiken eingestellt werden kann, sonst ist keine Veränderung der Schaltung notwendig.
+- die Basistypen sind folgende:
+  - Bessel, mit relativ flacher Flanke,
+  - Butterworth, mit wenig Welligkeit im Durchlassbereich, steilere Flanke als Bessel,
+  - Tschebysheff, mit steilster Flanke und Welligkeit im Durchlassbereich.
+  - ![](Assets/Biosignalverarbeitung-aktive-filter.png)
+  - ![](Assets/Biosignalverarbeitung-aktive-filter2.png)
+  - Bessel: niedrigste Flankensteilheit, konstante Gruppenlaufzeit
+- Von allen drei hat nur Bessel konstante Gruppenlaufzeit, die in der BSA zwingend notwendig ist bei Echtzeitanwendungen. Folgen nichtkonstanter Gruppenlaufzeit sind u.a. Formverzerrungen, wie später gezeigt wird.
+- ![](Assets/Biosignalverarbeitung-diskreter-integrator-mit-ov.png)
+  - $\tau=RC$
+- ![](Assets/Biosignalverarbeitung-integrierter-integrator-mit-sc.png)
+  - $\tau=\frac{1}{f_S}*\frac{C_3}{C_2}$
+- Konventionell werden aktive Filter -am häufigsten der Antialiasing-Tiefpass vor dem AD-Wandler -mit Hilfe von OVs und RC-Netzwerken realisiert.
+- Eine sehr elegante Alternative bieten die Filter mit geschalteten Kapazitäten: An Stelle des Widerstandes am Eingang befindet sich eine Kapazität, die im Takt von fs zwischen Eingang und dem OV umgeschaltet wird. Der mittlere Strom, der mit C3 integriert wird, hängt also von der Schaltfrequenz und dem Kapazität C2 ab. Daher ergibt sich die Zeitkonstante aus den beiden Kapazitäten, die auf dem Chip integriert sind und aus der Abtastfrequenz. Man kann also die Zeitkonstante allein durch Veränderung der Schaltfrequenz einstellen, ohne ein Bauelement der Schaltung ändern zu müssen.
+- ![](Assets/Biosignalverarbeitung-maxim7418.png)
+  - Antianliasing-Tiefpass mit integriertem Filter 5. Ordnung
+  - kein RC-Netzwerk
+  - Grenzfrequenz abhängig nur vom Takt, daher durchstimmbar
+  - Eine Lösung für SC-Filter bietet u.a. Maxim, siehe oben. Die Kapazitäten sind allein zum Abblocken der Spannungsversorgung notwendig, für die Filterung selbst sind sie nicht notwendig.
+  - Der Takt muss den vorgeschriebenen Pegeln entsprechen, sonst ist es gleichgültig, aus welcher Quelle er geliefert wird.
+
+## Linearer Phasenfrequenzgang
+- ![](Assets/Biosignalverarbeitung-linearer-phasenfrequenzgang.png)
+  - blau: das Eingangssignal
+  - rot: Ausgangssignal
+  - das Eingangssignal erscheint am Ausgang eines Tschebysheff-Filters wegen nichtkonstanter Gruppenlaufzeit verzerrt
+
+In vielen Bereichen der Technik (Nachrichtentechnik, Messdatenerfassung in Technik und Natur, Medizin) ist die Signalform der wichtigste Signalparameter. Daher ist es zwingend notwendig dafür zu sorgen, dass sie vom Messsystem nicht verzerrt wird. Notwendige, aber nicht hinreichende Bedingung für die Erhaltung der Signalform ist konstante Gruppenlaufzeit. Konstante Gruppenlaufzeit heißt, dass alle spektralen Anteile des Signals im System um gleiche Zeit verzögert werden. Ist diese Zeit nicht gleich, so erscheinen z.B. höherfrequente Anteil am Ausgang später als niederfrequente. Das obige Beispiel zeigt diesen Sachverhalt: Die Flanke eines Rechtecks ist ein zeitlich sehr schneller Vorgang, spektral demzufolge breitbandig von tiefen bis zu sehr hohen Frequenzen. Die hohen Frequenzen werden aber mehr verzögert als tiefe, was dazu führt, dass der Flanke am Ausgang hochfrequentes Nachschwingen folgt. Es wird demnach eine Signalform am Ausgang vorgetäuscht, die es am Eingang gar nicht gab.
+
+Die Form der Biosignale ist diagnostisch relevant, Formverzerrungen können zur falschen Diagnose führen
+- ![](Assets/Biosignalverarbeitung-ekg-verzerrt.png)
+- Der selbe Effekt tritt bspw. bei der EKG-Filterung mit einem Butterworth-Filter auf: Dieser Filtertyp besitzt einen nichtlinearen Phasenfrequenzgang, also nichtkonstante Gruppenlaufzeiten. Diese führen dazu, dass die hochfrequenten Anteile des QRS- Komplexes deutlich verspätet erscheinen, was in der Signalform schnelles Nachschwingen zur Folge hat. Dieser Effekt kann unter Umständen zur falschen Diagnose mit entsprechenden Folgen führen.
+- ![](Assets/Biosignalverarbeitung-ekg-verzerrt2.png)
+- Das Original-EKG (schwarz) wurde mit einem IIR-Filter -das grundsätzlich einen nichtlinearen Phasengang hat -gefiltert und über das Original geschrieben (rot). Die relativ kurze Verzögerung der R-Zacke ist zunächst positiv und gewollt, damit das EKG in Echtzeit verarbeitet werden kann. Die Nachschwingungen nach der S-Zacke sind jedoch, wie beschrieben, sehr ungünstig.
+- Das Spektrogramm des Original-EKG zeigt die ganz typische Energieverteilung in der t-f-Ebene: Die P-und T-Welle liegen im tieffrequenten Bereich bis ca. 10Hz. Die R-Zacke ist deutlich kürzer und hat Impulscharakter, so dass sie spektral wesentlich breiter ist und höhere Frequenzen beinhaltet, hier bis 50Hz, ohne Filterung bis 100Hz.
+- Das Spektrogramm des gefilterten Signals (oben rechts) zeigt den typischen Effekt nichtkonstanter Laufzeit: Die Frequenzen(-gruppen), die höher als ca. 20Hz liegen, werden deutlich verzögert und erzeugen das schnelle Nachschwingen.
 
 # Signalkonditionierung, Abtastung und Digitalisierung
+## Pegelanpassung
+
+## Abtastung, Aliasing
+
+## Digitalisierung
+
+## Telemetrie
+
 # Digitale Filterung
+
+
+- Das EKG ist natürlich digitalisiert, um es hier darstellen zu können. Die Abbildung
+entspricht jedoch einer Aufzeichnung unter realen Bedingungen.
+- stark instationäres Signal mit scharfer R-Zacke. Daraus ergibt sich ein periodisches
+Spektrum, da die R-Zacke einen nahezu impulsartigen Verlauf hat. Beachten Sie die
+Beziehung zwischen impulsartigen Vorgängen in der Zeit und ihrem Spektrum.
+
+
+- Nyquist-Frequenz entspricht der halben Grundfrequenz der Abtastrate, sie begrenzt
+nach oben das bei Null beginnende sog. Basisband. Das Basisband ist der
+Frequenzbereich, in dem man bei der Signalanalyse arbeitet. Damit das gespiegelte
+Spektrum nicht bis ins Basisband reicht und dadurch das Vorhandensein real
+nichtexistenter Signalkomponenten vortäuscht, muss gewährleistet werden, dass die
+halbe AR höher liegt, als die höchste Frequenz des Signals, d.h. die AR muss
+mindestens doppelt so hoch sein, die die höchste vorhandene Frequenz.
+- Die periodische Wiederholung des Spektrums nach der Abtastung hat folgende
+praktische Bedeutung: Da sich das Spektrum mit jeder Harmonischen der AR wiederholt
+und gespiegelt wird, kann man ein bandbegrenztes Signal ins Basisband holen. So wäre
+bspw. denkbar, das zwischen 500 und 625 Hz liegendes EKG abzutasten und im
+Basisband zu verarbeiten. Dazu später ein Beispiel mit AM-modulierten EKG
+
+
+Ein aus Film und Fernsehen bekanntes Beispiel zur Verletzung des Abtasttheorems:
+
+- Annahme: Ein Rad mit 8 Speichen dreht sich so, dass der Wagen sich mit 28.3 km/h
+bewegt, die Drehfrequenz des Rades beträgt demnach 2.5Hz.
+- Die Periode, mit der die Speichen einen Referenzpunkt passieren (oben) beträgt 50ms
+bei einer Wiederholrate von 20 /s
+- Entsprechend der Fernsehnorm werden 25 Bilder pro Sekunde aufgenommen, die
+Periode ist also 40ms.
+- Entsprechend der Faltung beim Abtasten entstehen zwei Frequenzen -5 und 20, wobei
+nur die -5Hz im Basisband liegen. Das bedeutet praktisch, dass man das Rad langsam
+nach hinten drehen sieht.
+
+
+
+Oft wird nach der Abtastung und anschließenden Signalverarbeitung das Ergebnis im
+ursprünglichen Bereich des Signals benötigt. Dazu ist die sog. Rekonstruktion
+notwendig, also eine Übertragung aus dem Analyse-in den Originalbereich. Zur
+Rekonstruktion ist allgemein eine Interpolation zwischen den diskreten Punkten
+notwendig, oder aus Sicht der Filtertheorie die Anwendung eines Interpolationsfilters.
+Das einfachste Interpolationsfilter ist ein Tiefpass in Nähe der höchsten Signalfrequenz.
+Wurde bei der Abtastung das Abtasttheorem verletzt, so treten im rekonstruierten Signal
+Komponenten auf, die im Originalsignal nicht vorhanden waren, siehe oben.
+
+Dieser Effekt kann auch im Fernsehen beobachtet werden: Tragen die Sprecher z.B. ein
+Hemd mit einem sehr feinen Strichmuster, so reicht die Bildschirmauflösung -d.h. die
+räumliche Abtastrate -nicht aus, um das Muster richtig zu erfassen und am
+Fernsehmonitor entsteht sog. Moiree, d.h. großflächige Farbmuster, die es in der
+Realität nicht gibt.
+
+
+
+Nach der Abtastung und Digitalisierung hat das Signal die Form einer Zahlenfolge bzw.
+eines Vektors oder Matrix. Ist die Abtastrate unbekannt, so ist das Signal auch nicht
+mehr reproduzierbar. Da sich aber Analysen und digitale Filterung grundsätzlich auch
+ohne Kenntnis der Abtastrate durchführen lassen, wird die sog. normierte Frequenz
+eingeführt, die bei der Rekonstruktion durch eine reale Abtastrate ersetzt wird.
+
+
+Beispiel zum Abtasttheorem: Das EKG wird für eine Kabelübertragung mit einem Träger
+bei 10kHz multipliziert, was nachrichtentechnisch einer Amplitudenmodulation entspricht.
+Das Spektrum spiegelt sich um den Träger herum, ähnlich wie bei der Abtastung. Hier
+gibt es allerdings nur eine Spiegelung, da der Träger eine Harmonische ist und somit im
+Spektrum nur eine Nadel darstellt. Es entstehen zwei Seitenbänder, das obere und das
+untere. Beide sind hinsichtlich des Informationsgehaltes völlig identisch.
+
+Die Frage ist nun zu beantworten, wie hoch die Abtastrate für ein solches Signal sein
+muss.
+
+
+Da die höchste Frequenz im Signal 11kHz beträgt, müsste die Abtastrate mind. 22ksps
+betragen. Dies ist eine hinreichende, aber keine notwendige Bedingung. Denn bezieht
+man sich auf die Wiederholung des Spektrums um jede Harmonische der Abtastrate,
+wird eine AR von 2ksps ausreichen. Damit passt eine Wiederholung des Spektrums in
+das Basisband, in wir ja analysieren.
+
+
+Die Abtastung (sample & hold) entspricht nachrichtentechnisch der PAM: die Werte
+treten in definierten Abständen entsprechend dem Pulsbreite (Abtastperiode) auf und
+haben einen kontinuierlichen Wertebereich. Allerdings spielt diese Modulationsart in der
+Nachrichtentechnik keine praktische Rolle, wichtig ist sie für die Theorie.
+
+
+Oft werden in der Technik und vor allem in der Medizin mehrkanalige Messsysteme
+benötigt. Für die Analyse ist von entscheidender Bedeutung, dass der zeitliche
+Zusammenhang der Kanäle identisch, oder zumindest bekannt ist. Beim echten
+Simultansampling werden alle Kanalsignale zum selben Zeitpunkt abgetastet und
+sequentiell digitalisiert. Damit reicht im Normalfall ein ADC für alle Kanäle.
+
+
+
+Um den HW-Aufwand zu minimieren, werden die Kanalsignale sequentiell abgetastet
+und digitalisiert, dabei kann die Einsparung an Elektronik beachtlich sein.
+Signalanalytisch kann sie jedoch problematisch sein: Aus der Signalsequenz wird das
+Simultansignal über die Laufzeitkorrektur in der FFT zurückgerechnet. Bei zeitkritischen
+Vorgängen ist diese Alternative zu verwerfen, da die durch die sequentielle Abtastung
+verlorengegangenen Signalteile durch Rückrechnung nicht mehr zu retten sind.
+
+
+
+- Ur steigt aus dem negativen Bereich an, kreuzt es die Null, so wird K1 positiv. Da K2
+noch positiv ist, da Ur unterhalb von Ue liegt, öffnet das Äquivalenzgatter = das Tor &
+und der Zähler beginnt zu zählen.
+- Erreicht Ur den Pegel von Ue, so wird K2 negativ bzw. logisch Null, = schließt und das
+Tor & geht zu, der Zähler hört auf zu zählen. Der erreichte Zählerstand ist damit
+proportional der Spannung Ue.
+- Vorteile: Einfach, wenig Aufwand, relativ schnell. Nachteil: stark temperaturabhängig,
+da Zählgrenzen von Analogwerten bestimmt. Wandelzeit abhängig von der
+Eingangsspannung.
+
+
+- In Phase 1 Aufladung durch die Eingangsspannung Ue über konstante Zeit. Damit ist
+der integrierte Wert proportional zur Ue.
+- In Phase 2 Entladung mit konstanter Referenzspannung Ur bis zum Erreichen von Null.
+Damit ist die Entladezeit proportional Ue. Die Entladezeit wird digital gezählt, damit ist
+der Digitalwert am Ende proportional Ue.
+- Vorteil: durch gespiegelte analoge Integration Temperatureinfluß weitgehend reduziert,
+da durch Auf-und Abintegrieren die Fehlerquellen mit entgegengesetzten Vorzeichen.
+Gute Genauigkeit von bis zu 16 bit. Nachteil: Wandlerzeit abhängig von Ue, daher nicht
+konstant.
+
+
+- Im Wesentlichen eine DA-Wandlung mit vorgeschaltetem Komparator. Macht Sinn, weil
+DA-Wandler präziser herstellbar als herkömmliche ADC.
+- Prinzip: Das Steuerwerk beginnt mit dem MSB und schaltet die Bits bis zum LSB so
+lange um, bis die beste Approximation von Ue erreicht wurde, daher sukzessive Appr.
+Ablauf: ist bei MSB=1 die DAC-Spannung höher als Ue, so wird MSB=0 gesetzt, da der
+Komparator anzeigt, dass die DAC-Spannung zu hoch war. Ist bei MSB-1=1 die DAC-
+Spannung niedriger als Ue, so bleibt MSB-1=1 und das nächste Bit folgt. Es wird also
+sukzessive bis zum LSB nach der besten Annäherung gesucht.
+- Vorteil: DAC technologisch präziser herstellbar als ADC. Konstante Wandlungszeit,
+daher planbar im Zeitregime. Gute Auflösung (bis 18bit), relativ schnell und preiswert.
+
+
+Beim Delta-Modulator handelt es sich um einen Ein-Bit-Wandler: Sobald das
+Eingangssignal x(t) die aufintegrierte bereits digitale Folge xD(t) über/unterschreitet, wird
+das Bit gesetzt/rückgesetzt. Damit erreicht man, dass das integrierte Binärsignal dem
+Eingangssignal mit höchstens einer Schrittweite als Fehler folgt.
+
+
+- Im Demodulator müssen die bei der Modulation durchgeführten Schritte invertiert
+werden: Der Integrator im Modulator wirkt insgesamt wegen der Rückführung
+differenzierend, so dass im Demodulator integriert werden muss. Wegen der Taktung
+muss im Demodulator noch ein Tiefpass folgen um das Signal zu glätten.
+- Zwischen dem Modulator und dem Demodulator liegt die Übertragungsstrecke
+(Telemetrie, Multimedia, usw.). Unter der Annahme, dass sie linear ist, kann die
+Integration vom Demod nach vorn zum Mod vor den Summierer verlagert werden. Damit
+können beide Integratoren zu einem hinter dem Summierer zusammengefasst werden.
+Auf diese Weise entsteht der Delta-Sigma-Wandler (Differenz-Integration- 1 - Bit-
+Modulator).
+
+
+- Durch die Vorlagerung des Integrators reduziert sich der Demodulator (signalanalytisch)
+auf einen Tiefpass.
+
+
+- Diese Grafik zeigt die typischen Zeitverläufe im D-S-Modulator. Wie man bereits an der
+Blockstruktur erkennen konnte, handelt es sich -wie bei sukzessiver Approximation -
+um einen rückgekoppelten Kreis mit negativer Rückführung. In Anlehnung an die
+Regelungstechnik kann man demnach die Funktion so verstehen, dass die Bits im
+Bitstream so gesetzt werden, dass der Mittelwert des Ausgangs (siehe Integrator im
+Zeitverlauf) gegen Null bzw. einen Referenzwert läuft. Das digitale Ausgangssignal
+(Bitstream) ist qualitativ identisch mit eine Pulsbreitenmodulierten Signal, allerdings mit
+quantisiertem Pulsverhältnis. Das gleitende Mittel eines solchen Signals entspricht dem
+Originalsignal.
+- Die erforderliche Taktrate ergibt sich aus der gewünschten Auflösung. So z.B. bei einer
+CD, die mit einer Abtastrate von 44,1kHz arbeitet und mit 16bit digitalisiert, kann der
+Takt des DS-Wandlers weit über 10MHz liegen (Oversamplingrate von 200).
+
+
+- Am anderen Ende der Skala liegen die Flash-Converter. Diese sind sehr schnell,
+arbeiten weit in den Videobereich von über 100MHz hinein. Das geht natürlich nur auf
+Kosten der Parallelität, was bedeutet, dass für jede Quantisierungsstufe ein Komparator
+vorhanden sein muss. Für eine Bitbreite von 8bit werden also 256 Komparatoren
+benötigt. Dies ist heute integriert machbar aber auch schon die Obergrenze.
+
+
+
+
+Das Prinzip der AM besteht darin, dass ein harmonischer Träger (Begriff der
+Nachrichtentechnik, das tragende Signal, die tragende elektromagnetische Welle) vom
+Modulationssignal so beeinflusst wird, dass seine momentane Amplitude dem Pegel des
+Modulationssignals entspricht.
+
+- Mathematisch und bei tiefen Frequenzen auch elektronisch einfach über Multiplikation
+des Trägers mit dem Modulationssignal realisierbar. Im HF-Bereich zur Ausstrahlung
+über Antenne über aufwendige Modulationsschaltungen und Leistungsverstärker.
+- Das AM-Signal ist sehr störungsempfindlich, da Störungen direkt auf die Amplitude
+wirken, außerdem wird es als elektromagnetische Welle von aktuellen
+Ausbreitungsbedingungen beeinflusst. Für niedrige Ansprüche auf akustische Qualität
+akzeptabel z.B. Mittelwellen-Rundfunk oder Kurzwellen-Funk. Für Messtechnik als
+Trägermedium nicht geeignet. AM kann in ersten Stufen eines mehrkanaligen Systems
+eingesetzt werden (Untermodulatoren), in den keine Störungen von außen auftreten und
+welche die notwendige Bandbreite sehr sparsam nutzen im Vergleich zur FM
+
+
+- Im Spektrum des AM-Signals ist es sichtbar, dass die notwendige Bandbreite doppelt
+so groß ist wie die des Modulationssignals EKG. Diese ließe sich nochmal halbieren,
+also auf die ursprüngliche Bandbreite reduzieren, da das informationstragende Spektrum
+im AM-Signal doppelt vorhanden ist, daher auch die Bezeichnung DSB (double side
+band). Würde man z.B. die linke Hälfte wegfiltern, bliebe nur das eine zur
+Informationsübetragung notwendige Band übrig, daher die Bezeichnung SSB (single
+side band).
+
+
+Bei der FM wird die Trägerfrequenz moduliert, d.h., die Momentanfrequenz des FM-
+Signals hängt vom aktuellen Pegel des Modulationssignals EKG ab. Wie die rechte
+Grafik zeigt, die Amplitude des FM-Signals ist konstant, die Dichte der Nulldurchgänge
+nimmt mit dem Pegel des Modulationssignals zu. Rechts ist in Zeitlupe der QRS-
+Komplex des EKG dargestellt (100ms der ersten Herzaktion aus der linken Grafik). Die
+hohe Amplitude der R-Zacke erzeugt im FM-Signal hohe Frequenzen (zwischen ca.
+15ms und 65ms), während links und rechts der R-Zacke sichtbar tiefere Frequenzen
+vorliegen.
+
+Die FM ist besonders gut für Übertragungen sowohl kabelgebunden als auch kabellos
+(Telemetrieband 433MHz) geeignet, da sie sehr unempfindlich gegen
+Amplitudenstörungen ist -die Information ist allein in der Häufigkeit der Nulldurchgänge
+kodiert.
+
+
+Ein wesentlicher Nachteil der FM ist die sehr hohe erforderliche Bandbreite des FM-
+Signals: diese beträgt das 10 bis 20-fache der Bandbreite des Modulationssignals. Beim
+EKG können daher Bandbreiten von bis zu 20kHz notwendig sein. Wie die rechte Grafik
+zeigt, erstreckt sich das Spektrum weit hinter die Nyquistfrequenz (2000Hz) aus, so dass
+man es vor der Abtastung mit einem Antialiasinftiefpass beschränken bzw. mit einer viel
+höheren Abtastrate abtasten müsste.
+
+
+Die einfachste binäre Übertragung ist die PCM: nach Begrenzung des Spektrums nach
+oben bei 3.4 kHz bleibt ein Band von ca. 300 Hz bis 3.4 kHz übrig.
+
+- Nach der Abtastung mit 8 ksps liegt also ein zeitdiskretes wertanaloges Signal vor,
+entspricht der Puls-Amplituden-Modulation.
+- Nach der AD-Wandlung mit 8 bit und P/S-Wandlung liegt ein serielles, binäres Signal
+vor, das PCM-Signal.
+- Das PCM-Signal wird über Leistungsverstärker und Leitungsanpassung auf das Kabel
+gelegt, z.B. ISDN.
+- Nicht eingezeichnet ist die Kompression, die die Dynamik des Sprachsignals begrenzt
+und die Reduktion der Bitbreite und damit der Übertragungskapazität ermöglicht.
+
+
+- Zur Übertragung über vorhandene Telefonkanäle ist es notwendig, die Pulse (z.B. der
+PCM) im Übertragungsband zur transportieren. Dazu werden der logischen Nullen und
+Einsen zwei verschiedene Frequenzen zugeteilt, die im Sender und im Empfänger gleich
+sind. Nach diesem Prinzip funktionieren die einfachen PC-Kommunikations-Modems.
+- Natürlich kann man auch mehr Frequenzen zuweisen, z.B. mit 16 unterschiedlichen
+Frequenzen könnte man direkt Hexadezimalzahlen übertragen. Die rechte Grafik zeigt
+eine solche Alternative mit 16 verschiedenen Frequenzen (horizontal Zeit, vertikal
+Frequenz, Darstellung als Spektrogramm). Allerdings wurde hier das EKG nicht kodiert,
+sondern zur Veranschaulichung als 1-aus- 16 - Wert übertragen.
+
+
+Die Klassifikation nach der Länge der Impulsantwort (IR) orientiert sich allein nach
+praktischen Gesichtspunkten.
+
+- Durch die rekursive Struktur der IIR-Filter ist deren Impulsantwort (IR) nicht nur
+theoretisch, sondern auch praktisch unendlich lang. IIR werden auf Grund ihrer Struktur
+auch Rekursivfilter genannt. IIR haben eine sehr interessante Eigenschaft: Rein
+theoretisch -und mit entsprechender Genauigkeit vielleicht auch praktisch -wäre damit
+ein unendlich langer Datenspeicher eines Zeitverlaufs realisierbar, denn der letzte Wert
+am Filterausgang reicht immer aus, um den Wert am Filtereingang zu berechnen.
+Problematisch ist der i.A. nichtlineare Phasengang, der für Formanalyse unzulässig ist.
+- Selbst FIR-Filter haben theoretisch unendlich lange IR, damit sie aber realisierbar sind,
+wird diese nach einer bestimmte Länge abgeschnitten und ist damit endlich. Diese Filter
+werden in der Form eines Koeffizientenvektors realisiert und daher als Transversalfilter
+bezeichnet. Die Typenbreite der FIR-Filter ist ungleich größer als bei IIR, da mit diesen
+Filtertypen realisierbar sind, die es in der analogen Welt gar nicht gibt. Mit der
+Transversalstruktur der FIR ist die Linearität des Phasenganges gewährleistet. Im
+Vergleich zu IIR-Filtern haben FIR um Größenordnungen mehr Filterkoeffizienten.
+
+
+- Im analogen Zeitbereich ergibt sich der Filterausgang aus der Faltung der
+Impulsantwort mit dem Eingangssignal. Entsprechend der FT ist dies äquivalent der
+Multiplikation von Spektren im f-Bereich.
+- Am Beispiel eines TP erster Ordnung soll veranschaulicht werden, wie ein digitaler IIR
+entworfen werden kann: Die Impulsantwort ist eine fallende e-Funktion, im f-Bereich ein
+T1-Glied.
+
+
+- In Anlehnung an die sog. Impulsantwort-Invariant-Technik wird die IR abgetastet, es
+liegt also zeitdiskrete Version der IR vor. Diese lässt sich als exponentielle Folge
+beschreiben.
+- Die FT der Zeitverschiebung ist bekannt, damit gibt es ein Äquivalent der Reihe im f-
+Bereich.
+- Über Näherungsrechnung lässt sich die geometrische Folge im f-Bereich zu einem
+Quotienten zusammenfassen.
+- Nun wird der Übergang aus zeitanalogem in den zeitdiskreten Bereich vollzogen -über
+die z-Transformation.
+- Aus Sicht der Realisierung des digitalen Filters ist die z-Transformation besonders
+anschaulich -der Exponent über z gibt die Anzahl der Einheitsverzögerungen als
+Vielfaches der Abtastperiode an.
+
+
+- Nun wird das Vorgehen auf ein beliebiges Filter verallgemeinert: Natürlich sind die IIR
+im allgemeinen viel komplizierter, als ein TP 1. Ordnung. Jedoch lässt sich jede IR auf
+eine Summe von abklingenden e-Funktionen zurückführen (siehe Regelung), so dass
+die Verallgemeinerung nach diesem Schema möglich ist.
+- Bringt man die Formel auf den gemeinsamen Nenner, so kann man sie in Terme für
+den Eingang x und den Ausgang y trennen.
+- Transformiert man die Formel in den zeitanalogen Bereich zurück, so lässt sich
+überprüfen, ob die gewünschte Übertragungsfunktion erreicht wurde.
+- Überträgt man die Formel in den zeitdiskreten Bereich, so erhält man eine
+Rekursionsformel für den Ausgang y(n).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Durch die Beschneidung der IR-Länge weicht die Filtercharakteristik in Abhängigkeit von
+der tatsächlichen Länge ab. Hier wird die gewünschte Grenzfrequenz mit 501
+Filterkoeffizienten noch ganz gut erreicht (bis ca. -40dB).
+
+
+Je kürzer die Impulsantwort abgeschnitten wird, umso mehr kommt der sog. Gibb‘s-
+Effekt zum Tragen. Dieser präsentiert sich damit, dass die Filtercharakteristik immer
+welliger wird. Im praktischen Einsatz weitgehend akzeptabel.
+
+
+- In der echtzeitfähigen Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe
+Filterlänge, und das unabhängig von der Frequenz(!). Dies wird deutlich, wenn man sich
+die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang
+linear ist und es zu keinen Formverzerrungen kommt.
+
+
+- Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
+- Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe
+Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine
+solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im
+Herzschrittmacher nicht mehr.
+
+
+- Die FIR-Impulsantworten sind symmetrisch, während die eine Hälfte immer im
+zeitnegativen, also im nichtkausalen Bereich liegt. Ein kausales Filter lässt sich nur
+realisieren, wenn es um die negative Hälfte in den positiven Bereich verschoben wird.
+Dann erhält man reale Ausgangsdaten, die allerdings zum Eingangssignal um die Zeit
+verschoben sind, die der halben Filterlänge entspricht. In diesem Beispiel ,,hängen'' die
+Ausgangsdaten dem Eingang um zwei Samples -zeitlich also um zwei Abtastperioden -
+hinterher.
+- Anm.: Der Index 1 bei y sagt nur aus, dass es der erste Ausgangswert ist. Auf der
+Zeitachse liegt er neben dem Index 3 von x. Es mussten also zwei Werte von x
+hineinlaufen in das Filter, bevor überhaupt der erste Ausgangswert erschien.
+- Die diskrete Faltung ist der Kern der DSP (digitale Signalprozessoren), da im Normalfall
+in Echtzeit gefiltert werden muss, welches Filter auch immer verwendet wird. Daher
+haben DSP einen on-chip Multiplikator und Addierer.
+
+
+
+
+
+- Filterung mit FIR entspricht einer diskreten Faltung, so dass sie sich algorithmisch
+einfach mit zwei verschachtelten Schleifen realisieren lässt, wie hier mit einem Matlab-
+Programm gezeigt.
+- In diesem Beispiel hat die FIR-IR 15 Koeffizienten, das Ausgangssignal wird also um 7
+Abtastperioden verschoben sein und um 14 Werte kürzer.
+- Da beim FIR die Filterkoeffizienten identisch mit der IR sind, erhält man nach der FFT
+direkt die spektrale Filterfunktion.
+
+
+- Im Zeitverlauf des weißen Rauschens ist erkennbar, dass das gefilterte Signal (rot)
+kürzer und nach links verschoben ist. Für einen zeitlichen Vergleich der beiden Signale
+wäre es notwendig, mit geeigneten Maßnahmen Zeitgleichheit herzustellen, z.B. durch
+Verschiebung des gefilterten Signals um (die verlorene) halbe Länge nach rechts. Oder
+durch Auffüllen von jeweils (L-1)/2 Nullen links und rechts des Eingangssignals wird
+erreicht, dass das gefilterte Signal gleich lang und zeitgleich erscheint.
+- Der Spektrenvergleich bestätigt, dass es sich hier um einen Tiefpass handelt.
+
+
+Zum Vergleich konventioneller CPU und eines DSP soll hier ein Überblick über die
+Architekturen folgen:
+
+- Konventionelle CPU bzw. PCs bauen auf der ältesten, von Neumann -Architektur auf.
+Hardwaremäßig vorteilhaft, dass nur ein Speicher benötigt wird, allerdings passiert es in
+der Programmentwicklung immer wieder, dass man mit nicht korrekt organisierten Daten
+Programme überschreibt. Passiert dies zufällig, so kann das Debugging zur
+Lebensaufgabe werden.
+
+
+- Die Harvard-Architektur löst das Überschreibungsproblem durch Trennung von
+Instruktionen und Daten in zwei Speicher. Außerdem können hier Zugriffe parallel
+erfolgen, womit die Geschwindigkeit enorm gesteigert wird.
+
+
+- Da in der DSV die Algorithmen weitgehend identisch sind, kann die Abfolge der
+Instruktionen mit guter Wahrscheinlichkeit ,,vorhergesagt'' werden, so dass sich mehrere
+vorab im instruction cache der CPU befinden, dekodiert und zur Abarbeitung in der
+pipeline vorbereitet sind. Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten
+nicht von der CPU mit der Außenwelt zu organisieren, sondern über einen I/O-Controller
+direkt vom Speicher aus, also mit einer Art DMA. Der Datenspeicher muss natürlich über
+zwei Zugangsports verfügen, sog. dual-port-RAM.
+
+
+- Bei der sog. Tiger-Sharc-Architektur (geschütze Marke von AD) werden Daten in zwei
+Speichern gelagert. Das hat den Vorteil eines parallelen Zugriffs auf Instruktionen und
+zwei Datenblöcke, da in den Algorithmen der DSV überwiegend zwei Operatoren in
+einer Instruktion verarbeitet werden. Damit steigt die Rechengeschwindigkeit noch mal
+enorm.
+
+
+- Eine typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei
+Adress-und Datenbusse sowie der Vier-Port-Speicher.
+
+
+- Die DSPs werden vorwiegend im Assembler programmiert, um die höchstmögliche
+Geschwindigkeit zu erreichen. Vor allem für Entwicklungszwecke werden jedoch auch
+höhere Sprachen verwendet, vor allem C und C++, sowie CAD-Pakete, wie z.B. Matlab. Durch
+die Koordination zwischen Mathworks und TI entstand ein sehr leistungsfähiges und effektives
+Entwicklungstool, mit dem man von Matlab aus direkt auf die DSP-Boards von TI zugreifen kann.
+- Hier folgt ein Beispiel zu ersten Entwicklungsschritten von Filtern im Akustikbereich: Zunächst
+wird die Startmelodie von Windows vom Netz gestört, durch Abspielen kann dies überprüft
+werden.
+- Mit dem fdatool wird zunächst ein IIR-Filter entworfen, eigene Entwürfe sind an dieser Stelle
+empfehlenswert.
+
+
+- Man kann natürlich eigene diskrete Faltung schreiben und verwenden, mit der Matlab-
+Funktion filter(b,a,x) geht es viele effektiver.
+- Das abgespielte Signal entspricht nicht dem Ziel, undefiniertes Geräusch ist das
+Ergebnis.
+- Das Filter muss überprüft werden. Im Plot des gefilterten Signals wird schnell deutlich,
+welches Problem aufgetreten ist: Das Signal verläßt den normalen Wertebereich und
+sogar auch den Zahlenbereich. Fazit ist, das Filter ist instabil. Selbst wenn das fdatool
+behauptet, das Filter wäre stabil, so stimmt das nur für den Entwurf. Die Stabilität ist
+auch eine Frage des gefilterten Signals und wird hier eben nicht gewährleistet. Das
+Problem in diesem konkreten Fall ist, dass die geforderte Bandsperre sehr schmal und
+bei sehr niedriger Frequenz im Vergleich zur Abtastrate liegt (Breite 10 Hz bei 50Hz
+Mittenfrequenz und Abtastrate 22050sps), so dass die relative Frequenz gerade nur
+0.0023 und die Bandbreite nur 0.00045 betragen. Bei so niedrigen Werten ist ein
+Filterentwurf sehr problematisch. Der sicherste Ausweg aus diesem Problem ist ein FIR-
+Filter, das immer stabil ist, denn es hat keine Rückführung.
+- Die geforderte Bandsperre wird einigermaßen erfüllt, was aber auf Kosten der
+Filterlänge geht, die hier mit 1776 Koeffizienten schon beachtlich ist. Durch Abspielen
+kann man sich überzeugen, dass dieses mal das Ziel erreicht wurde.
+
+
+- Bei der realisierten Filterlänge von 1776 und der Abtastrate von 22050 kommt es zu
+einer Verzögerung des gefilterten Signals um 38ms, wie man insbesondere im rechten
+Bild gut erkennen kann. Im Normalfall bzw. bei geringen Ansprüchen wäre diese
+Verzögerung akzeptabel. Für zeitkritische Methoden der DSV (z.B. Quellenortung bzw. -
+verfolgung, Beamforming, adaptive Rauschunterdrückung) wäre das jedoch zu viel,
+wenn man bedenkt, dass der Schall in der Luft in dieser Zeit 12.m Strecke zurücklegt
+oder es sich um 38 Perioden einer 1kHz-Schwingung handelt.
+
+
+- Das adaptive Filter ist ein Rückgekoppeltes System mit negativer Rückkopplung, so
+dass -ähnlich wie bei Regelkreisen -auch Stabilitätsbedingungen eingehalten werden
+müssen.
+- Die einfachste Variante eines adaptiven Filters (AF) ist ein FIR mit der Länge 2L+1, das
+man mathematisch mit einem Vektor w beschreiben kann. Grundsätzlich kann der
+Eingangsvektor x physisch ein Spaltenvektor sein, dann entsprechend die
+Filterkoeffizienten der Wichtung von Signalen in parallel liegenden Kanälen, üblich in der
+spatialen Signalverarbeitung, kommt im nächsten Kapitel. Oder x ist ein Zeilenvektor,
+d.h. er wird als Analysefenster temporal über ein Signal geschoben, ist also ein Filter im
+üblichen Sinne der temporalen Filterung. Die physikalische Anordnung ist jedoch für die
+Herleitung an dieser Stelle irrelevant, im weiteren gehen wir wegen der einheitlichen
+Schreibweise von einem Spaltenvektor aus, wie üblich in der Signalverarbeitung.
+- Der Ausgang entspricht der Faltung des Filtervektors mit dem Eingangssignal im Punkt
+n, jeweils L samples nach links und rechts bzw. nach oben und unten.
+- d(n) ist die desired response, regelungstechnisch das Sollsignal oder analytisch das
+Modell.
+- Aus der Differenz von d(n) und y(n) wird das Errorsignal gebildet, das von einem
+Adaptionsalgorithmus ausgewertet wird und die Filterkoeffizienten dann von dem
+Algorithmus so verändert, dass der Fehler gegen Null konvergiert.
+
+
+- Das Errorsignal ist ein Skalar, ergibt sich aus der Differenz der desired response (auf
+der Position n) und dem Skalarprodukt des Eingangsvektors mit den Filtervektor
+(Filterkoeffizienten)
+- Man geht hier vom stationären Fall der Signalstatistik aus, so dass primär nicht der
+Momentanwert des Errors Null sein soll, sondern seine Energie bzw. Leistung. Dazu
+wird der Error zunächst quadriert (zweite Potenz ist Maß für Energie bzw. Leistung).
+- Der Erwartungswert des Fehlers F (praktisch der quadratische Mittelwert) soll minimal
+werden, dann entspricht der Filterausgang der Modellfunktion.
+- Man bildet die erste Ableitung des Fehlers F nach den Filterkoeffizienten (w für weights)
+und setzt diese gleich Null. Die Lösung dieser Gleichung ergibt das Wiener-oder
+Optimalfilter.
+- Das Wienerfilter kann im Originalbereich mit Hilfe von Auto-und Kreuzkovarianzen
+beschrieben werden,
+- oder im Spektralbereich mit Auto-und Kreuzleistungsdichte (siehe Regelungstechnik
+und Modellbildung)
+
+
+
+
+
+- Das Wienerfilter zu realisieren ist in der Praxis sehr schwierig. Die Berechnung der
+inversen Autokovarianzmatrix stößt schon bei niedrigen Rangordnungen (etwa N=10)
+auf ihre Grenzen.
+- Das Leistungsspektrum gilt nur für den stationären Fall, den wir bei Biosignalen auch
+nicht nur annähernd haben.
+- Schließlich stellt sich die pragmatische Frage: Wenn wir genau wissen, wonach wir
+suchen -den das muss für die Modellfunktion bekannt sein -warum sollten wird danach
+dann noch suchen?
+- Dennoch hat das Wienerfilter für die Filtertheorie grundlegende Bedeutung und kann in
+modifizierten Varianten auch umgesetzt werden.
+
+
+Die Annahme der starken Stationarität ist zwar für viele Methoden der Signalstatistik
+notwendig (i.i.d. = independent identically distributed). Sie kann aber pratkisch nicht
+erfüllt bzw. geprüft werden.
+
+
+Da die Annahme der Gleichheit von Verteilungen der Zufallsgrößen real nicht geprüft
+werden kann, wird sie auch nicht gefordert. Faktisch müssen nur die Momente erster
+und zweiter Ordnung zeitlich konstant sein.
+
+Dies wiederum ist für die signalanalytische Praxis oft zu wenig, da Momente dritter und
+vierter Ordnung nicht gleich sein müssen (Schiefe, Exzess).
+
+
+- Die Fehlerfunktion F(w) ist eine (2L+1 -dimensionale) Parabel, deren Minimum der
+Optimallösung entspricht. Es gibt mehrere Wege, dieses Minimum zu erreichen. An
+dieser Stelle leiten wir die Optimallösung mit Hilfe des sehr anschaulichen LMS-
+Algorithmus her (LMS -Least-Mean-Square, Methode der kleinsten Quadrate).
+- Da der Weg zum Optimum über die inverse Autokovarianzmatrix und über die
+Leistungsdichten verbaut ist, nähern wir uns dem Minimum der Parabel mit Hilfe des
+Gradienten iterativ. Der Gradient ist mathematisch über die partiellen Ableitungen der
+Parameter definiert. Das stößt in der Praxis -vor allem bei der Online-Analyse -bald an
+Grenzen, da der Erwartungswert über längere Zeit ermittelt werden müsste.
+- Daher schätzt man den Gradienten aus dem aktuellen Fehler, faktisch lässt man also
+die Mittelwertbildung weg. Das kann man unter der Annahme der Stationarität machen.
+Der geschätzte Gradient ergibt sich dann allein aus dem Produkt des Fehlers und des
+Eingangsvektors.
+- Nun kann man den Gradienten dazu nutzen, mit hinreichend kleinen, durch die
+Adaptionskonstante bestimmten, Schritten auf das Minimum zu konvergieren.
+- Die Stabilitätsbedingung ergibt sich aus dem größten Eigenwert der
+Autokovarianzmatrix. In der Praxis wird die wesentlich einfacher zu berechnende
+Signalenergie verwendet, die größer ist als der Eigenwert und damit die Stabilität auch
+hinreichend sicher gewährleistet.
+
+
+- Ein reales IPG wurde nachträglich mit additiven simulierten Störungen (50 Hz, 75 Hz, Rauschen) stark gestört (Amplitude der Harmonischen A=1, Effektivwert des Rauschens 20).
+- Eine Modellfunktion liegt daher vor.
+- Das gefilterte Signal erreicht relativ schnell die Qualität des Originals.
+- Basiert auf der Übung 5.4 des Buches Biosignalverarbeitung/Elektrische Biosignale in der Medizintechnik
+
+
+- Im stationären Fall und nach erfolgter Konvergenz kann man davon ausgehen, dass der
+Filterausgang diejenigen Anteile von x(n) enthält, die mit d(n) gut korrelieren. Das
+funktioniert natürlich nur, wenn man das Mustersignal ganz genau kennt und vorgeben
+kann.
+- Woher aber sollen wir das Mustersignal nehmen, wenn es ja gestört und verrauscht am
+Filtereingang vorliegt? Fazit ist, ein solches Filter ist nicht realisierbar bzw. macht keinen
+Sinn, wenn das Muster vorliegt.
+
+
+- In der praktischen Analyse ist es sehr oft so, dass man zwar kein Mustersignal hat,
+dafür aber eine Rauschreferenz, d.h. genügend Information über das Störsignal ohne
+Anteile des gewünschten Signals. Die Aufgabe jetzt heißt also, wenn wir schon kein
+Mustersignal haben, dann können wir versuchen, die Störung zu beseitigen, wenn wir
+sie kennen. Im Idealfall ist die Störung eliminiert und das gewünschte Signal bleibt übrig.
+- Hierzu werden die Filteranschlüsse umfunktioniert: Der Filtereingang wird zur
+Rauschreferenz, hier wird die vorliegende Störung eingespeist, die allerdings keine
+Anteile des gewünschten Signals enthalten darf. Dies ist aber bei technischen Störungen
+bei Biosignalverarbeitung kein wesentliches Problem.
+- Der Eingang für Mustersignal wird zum Primäreingang, in den das gestörte aber noch
+unbekannte Wunschsignal eingespeist wird.
+- Entsprechend dem Funktionsprinzip erscheint am Filterausgang der Teil vom
+Referenzeingang, der gut mit dem Primärsignal korreliert -die Störung, in diesem
+Beispiel die Netzstörung. Da aber das Primärsignal mit dem Referenzsignal nicht
+korreliert, muss das gesuchte Signal als Rest -als Errorsignal -übrig bleiben.
+Demzufolge ist der eigentliche Ausgang eines ANC das ursprüngliche Errorsignal.
+
+
+- Man kann folgende Überlegung anstellen: Am Filterausgang liegen die Signalanteile
+vom Filtereingang an, die gut mit dem Primäreingang korrelieren. Das Filter stellt sich
+relativ langsam auf die Optimallösung ein, denn es geht vom stationären Prozess aus
+und konvergiert auf das Optimum mit der Adaptionskonstante tau zu. Wenn man nun
+des gestörte Signal auf den primären Eingang legt und auf den Referenzeingang statt
+der Rauschreferenz -die nicht immer verfügbar ist -das gleiche, jedoch zeitlich
+verschobenes Signal, so ändert sich die Lage für die stationäre und gut korrelierende
+Störung nicht -sie ist in beiden, dem Referenz-und dem Primäreingang enthalten.
+Demzufolge wird sie auch am Ausgang des Filters -wie mit Rauschreferenz erscheinen.
+Also wird sich die Störung aus dem Errorsignal wie mit Referenz wegfiltern und übrig
+bleibt das gewünschte Signal, auch ohne die Notwendigkeit, eine Störungsreferenz
+bereitstellen zu müssen. Das funktioniert natürlich nur so lange, wie zeitverschobene
+Anteile des gewünschten Signals miteinander bei der konkreten Zeitverschiebung
+unkorreliert sind, daher kommt der Wahl des Zeitversatzes entscheidende Bedeutung
+zu. Allerdings ist es nicht möglich, streng mathematisch oder pauschal eine gute
+Verschiebung anzugeben. Diese wird -wie auch die Adaptionskonstante -eher nach
+empirischen Gesichtspunkten (,,nach Gefühl'') eingestellt.
+- Hier kommt Demonstration in Matlab. Die Matlab-Funktionen sind auf Anfrage erhältlich.
+
+
+Verläufe der Gewichte des Signals aus Folie 178
+
+
+
+
+- Der ANC enthält nach abgeschlossener Konvergenz die Impulsantwort des optimalen
+Filters. Im Falle einer Netzstörung ist es also ein sehr schmaler Bandpass bei der
+Netzfrequenz bzw. die Impulsantwort ist identisch der Harmonischen der Netzfrequenz.
+
+
+- Der ANC wurde zur Trennung des fötalen EKG (fEKG) vom maternalen mEKG. Zur
+Gewinnung des fEKG wird das abdominale EKG (aEKG, vom Bauch) benötigt, das
+mEKG wird konventionell an Extremitäten abgeleitet. Das fEKG (untere Grafik) ist nur
+schlecht erkennbar und vom mEKG selbst nach zahlreichen empirischen
+zweidimensionalen Optimierungen der Filterlänge und der Adaptionskonstante noch
+immer stark gestört. Die Ursache liegt darin, dass beide Signale (Störung und gestörtes
+Signal) stark instationär sind, die für die Konvergenz zur optimalen Lösung notwendige
+Bedingung der Stationarität mindestens eines Signalanteils ist hier nicht erfüllt.
+
+
+- In bestimmten Messsituationen (Ruhe EKG vor Fahrradergometrie) liegt eine Musterfunktion (Template) vor.
+- Für signalanalytische korrekte Detektion/Filterung müssen Signal (EKG) sowie Template (Muster) weißes Spektrum haben
+- Zum Prewhitening wird LMS mit binärem Gradienten verwendet. Die selben Filterkoeffizienten filtern auch das Template für das MF
+
+
+
+- Da Biosignale relativ tieffrequente Signale sind (Energiemaximum zwischen 10 Hz und 100 Hz), führt Prewhitening zur relativen Anhebung der hochfrequenten Anteile (grüne Kurve oben) sowie des breitbandigen Rauschens.
+- Wegen der relativen Anhebung hochfrequenten Anteile haben Prewhitener implizit einen Hochpass-Charakter. Dies kann man gut im Vergleich der blauen (Original) und der grünen Kurven erkennen: Die tieffrequenten Anteile (,,langsame Wellen'') sind nach Prewhitening deutlich reduziert.
+
+
+
+- Durch das Prewhitening und nach dem MF (matched filter) ist die Signalform des Biosignals zum Teil stark verändert. Daher eignet sich das MF nur zur Detektion von Biosignalkomponenten, nicht aber zur diagnostischen Kurvenvermessung.
+- Das MF ist der empfindlichste und sicherste Detektor von bekannten Mustern.

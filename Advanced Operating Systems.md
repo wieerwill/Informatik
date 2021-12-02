@@ -185,7 +185,7 @@ Mobile und eingebettete Systeme (eine kleine Auswahl)
 - Automobile
   - Steuerung von Motor-und Bremssystemen
   - Fahrsicherheit
-  - Insasseninformation (und –unterhaltung)
+  - Insasseninformation (und -unterhaltung)
   - (teil-) autonomes Fahren
 - verteilte Sensornetze (WSN)
 - Chipkarten
@@ -195,15 +195,15 @@ Mobile und eingebettete Systeme (eine kleine Auswahl)
   - Digitalkameras
 
 Beispiel: Weltraumerkundung
-- Cassini-Huygens (1997–2017)
+- Cassini-Huygens (1997-2017)
   - Radionuklidbatterien statt Solarzellen
   - Massenspeicher: SSDs statt Magnetbänder
-- Rosetta (2004–2016)
+- Rosetta (2004-2016)
   - 31 Monate im Energiesparmodus
-- Opportunity (2003–2019)
+- Opportunity (2003-2019)
   - geplante Missionsdauer: 90 d
   - Missionsdauer insgesamt: >> 5000 d
-- Hayabusa (2003–2010)
+- Hayabusa (2003-2010)
   - Beschädigung der Energieversorgung
   - Energiesparmodus: um 3 Jahre verzögerte Rückkehr
 - Voyager 1 (1977 bis heute)
@@ -773,6 +773,549 @@ Implementierung
 
 
 # Robustheit und Verfügbarkeit
+## Motivation
+-  allgemein: verlässlichkeitskritischeAnwendungsszenarien
+  - Forschung in garstiger Umwelt
+  - Weltraumerkundung
+  - hochsicherheitskritische Systeme:
+    - Rechenzentren von Finanzdienstleistern
+    - Rechenzentren von Cloud-Dienstleistern
+  - hochverfügbare System:
+    - all das bereits genannte
+    - öffentliche Infrastruktur(Strom, Fernwärme, ...)
+  - HPC (high performancecomputing)
+
+## Allgemeine Begriffe
+-  Verlässlichkeit, Zuverlässigkeit (dependability)
+  - übergeordnete Eigenschaft eines Systems [ALRL04]
+  - Fähigkeit, eine Leistungzu erbringen, der man berechtigterweise vertrauen kann
+- Taxonomie: umfasst entsprechend Definition die Untereigenschaften
+    1. Verfügbarkeit (availability)
+    2. Robustheit (robustness, reliability
+    3. (Funktions-) Sicherheit (safety)
+    4. Vertraulichkeit (confidentiality)
+    5. Integrität (integrity)
+    6. Wartbarkeit (maintainability) (vgl.: evolutionäre Eigenschaften)
+- 1., 4. & 5. auch Untereigenschaften von IT-Sicherheit (security)
+- $\rightarrow$ nicht für alle Anwendungen sind alle Untereigenschaften erforderlich
+
+### Robustheitsbegriff
+-  Teil der primären Untereigenschaften von Verlässlichkeit: Robustheit (robustness, reliability)
+-  Ausfall: beobachtbare Verminderung der Leistung, die ein System tatsächlich erbringt, gegenüber seiner als korrekt spezifizierten Leistung
+-  Robustheit: Verlässlichkeit unter Anwesenheit externer Ausfälle (= Ausfälle, deren Ursache außerhalb des betrachteten Systems liegt)
+-  im Folgenden: kurze Systematik der Ausfälle ...
+
+### Fehler und Ausfälle ...
+-  Fehler $\rightarrow$ fehlerhafter Zustand $\rightarrow$ Ausfall
+  - grundlegende Definitionen dieser Begriffe (ausführlich: [ALRL04, AvLR04] ):
+    - Ausfall (failure): liegt vor, wenn tatsächliche Leistung(en), die ein System erbringt, von als korrekt spezifizierter Leistung abweichen
+    - fehlerhafter Zustand ( error ): notwendige Ursacheeines Ausfalls (nicht jeder error muss zu failure führen)
+    - Fehler ( fault ): Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
+  - ![](Assets/AdvancedOperatingSystems-fehler.png)
+
+### ... und ihre Vermeidung
+- Umgang mit ...
+  - faults:
+    - Korrektheit testen
+    - Korrektheit beweisen($\rightarrow$ formale Verifikation)
+  - errors:
+    - Maskierung, Redundanz
+    - Isolationvon Subsystemen
+    - $\rightarrow$ Isolationsmechanismen
+  - failures:
+    - Ausfallverhalten (neben korrektem Verhalten) spezifizieren
+    - Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen...
+    - $\rightarrow$ Micro-Reboots
+
+## Fehlerhafter Zustand
+- interner und externer Zustand (internal & external state)
+  - externer Zustand (einer Systems oder Subsystems): der Teil des Gesamtzustands, der an externer Schnittstelle (also für das umgebende (Sub-) System) sichtbar wird
+  - interner Zustand: restlicher Teilzustand
+  - (tatsächlich) erbrachte Leistung: zeitliche Folge externer Zustände
+- Beispiele für das System ( Betriebssystem-) Kernel :
+  - Subsysteme: Dateisystem, Scheduler, E/A, IPC, ..., Gerätetreiber
+  - fault : Programmierfehler im Gerätetreiber
+  - externer Zustand des Treibers (oder des Dateisystems, Schedulers, E/A, IPC, ...) ⊂ interner Zustand des Kernels
+  - ![](Assets/AdvancedOperatingSystems-treiber-kernel.png)
+
+### Fehlerausbreitung und (externer) Ausfall
+-  Wirkungskette:
+  -[X] Treiber-Programmierfehler (fault)
+  -[X] fehlerhafter interner Zustand des Treibers (error)
+    - Ausbreitung dieses Fehlers ( failure des Treibers)
+    - = fehlerhafter externer Zustand des Treibers
+    - = fehlerhafter interner Zustand des Kernels( error )
+    - = Kernelausfall!( failure )
+  - [X] Auswirkung: fehlerhafter interner Zustand eines weiteren Kernel-Subsystems (z.B. error des Dateisystems)
+- $\rightarrow$ Robustheit: Isolationsmechanismen
+- ![](Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png)
+
+## Isolationsmechanismen
+- im Folgenden: Isolationsmechanismen für robuste Betriebssysteme
+  - durch strukturierte Programmierung
+  - durch Adressraumisolation
+- es gibt noch mehr: Isolationsmechanismen für sichere Betriebssysteme
+  - all die obigen...
+  - durch kryptografische Hardwareunterstützung: Enclaves
+  - durch streng typisierte Sprachen und managed code 
+  - durch isolierte Laufzeitumgebungen: Virtualisierung
+
+### Strukturierte Programmierung
+Monolithisches BS... in historischer Reinform:
+-  Anwendungen
+-  Kernel
+  - gesamte BS-Funktionalität
+  - programmiert als Sammlung von Prozeduren
+  - jede darf jede davon aufrufen
+  - keine Modularisierung
+  - keine definierten internen Schnittstellen
+
+#### Monolithisches Prinzip
+- Ziel: Isolation zwischen Anwendungen und Betriebssystem
+- Mechanismus: Prozessor-Privilegierungsebenen ( user space und kernel space )
+- Konsequenz für Strukturierung des Kernels: Es gibt keine Strukturierung des Kernels ...
+- ... jedenfalls fast: Ablauf eines Systemaufrufs (Erinnerung)
+  - ![](Assets/AdvancedOperatingSystems-systemaufruf.png)
+
+#### Strukturierte Makrokernarchitektur
+- Resultat: schwach strukturierter (monolithischer) Makrokernel
+- ![](Assets/AdvancedOperatingSystems-makrokernelarchitektur.png)
+  - nach [TaWo05], S. 45
+-  Weiterentwicklung:
+  - Schichtendifferenzierung ( layered operating system )
+  - Modularisierung (Bsp.: Linux-Kernel)
+    | Kernelcode                |
+    | ------------------------- |
+    | VFS                       |
+    | IPC, Dateisystem          |
+    | Scheduler, VMM            |
+    | Dispatcher, Gerätetreiber |
+-  Modularer Makrokernel:
+  - alle Kernelfunktionen in Moduleunterteilt (z.B. verschiedene Dateisystemtypen) $\rightarrow$ Erweiterbarkeit, Wartbarkeit, Portierbarkeit
+  - klar definierte Modulschnittstellen(z.B. virtualfilesystem, VFS )
+  - Module zur Kernellaufzeit dynamisch einbindbar ($\rightarrow$ Adaptivität)
+
+#### Fehlerausbreitung beim Makrokernel
+-  strukturierte Programmierung:
+  - ✓ Wartbarkeit
+  - ✓ Portierbarkeit
+  - ✓ Erweiterbarkeit
+  - O (begrenzt) Adaptivität
+  - O (begrenzt) Schutz gegen statische Programmierfehler: nur durch Compiler (z.B. C private, public)
+  - ✗ kein Schutz gegen dynamische Fehler
+  - $\rightarrow$ Robustheit...?
+-  nächstes Ziel: Schutz gegen Laufzeitfehler... $\rightarrow$ Laufzeitmechanismen
+
+### Adressraumisolation
+- zur Erinnerung: private virtuelle Adressräume zweier Tasks ($i\not= j$)
+  - ![](Assets/AdvancedOperatingSystems-private-virtuelle-adressräume.png)
+- private virtuelle vs. physischer Adresse
+  - ![](Assets/AdvancedOperatingSystems-virtuelle-vs-physische-adresse.png)
+
+#### Private virtuelle Adressräume und Fehlerausbreitung
+- korrekte private vAR ~ kollisionsfreie Seitenabbildung!
+- Magie in Hardware: MMU (BS steuert und verwaltet...)
+- Robustheit: Was haben wir von privaten vAR?
+  - ✓ nichtvertrauenswürdiger (i.S.v. potenziell nicht korrekter) Code kann keine beliebigen physischen Adressen schreiben (er erreicht sie ja nicht mal...)
+  - ✓ Kommunikation zwischen nvw. Code (z.B. Anwendungstasks) muss durch IPC-Mechanismen explizit hergestellt werden (u.U. auch shared memory)
+    - $\rightarrow$ Überwachung und Validierung zur Laufzeit möglich
+  - ✓ Kontrollfluss begrenzen: Funktionsaufrufe können i.A. (Ausnahme: RPC) keine AR-Grenzen überschreiten
+    - $\rightarrow$ BS-Zugriffssteuerungkann nicht durch Taskfehler ausgehebelt werden
+    - $\rightarrow$ unabsichtliche Terminierungsfehler(unendliche Rekursion) erschwert ...
+
+#### Was das für den Kernel bedeutet
+- private virtuelle Adressräume
+  - gibt es schon so lange wie VMM
+  - gab es lange nur auf Anwendungsebene
+  - $\rightarrow$ keine Isolation zwischen Fehlern innerhalb des Kernels!
+  - ![](Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png)
+- nächstes Ziel: Schutz gegen Kernelfehler (Gerätetreiber)... $\rightarrow$ BS-Architektur
+
+## Mikrokernelarchitektur
+- Fortschritt ggü. Makrokernel:
+  - Strukturierungskonzept:
+    - strenger durchgesetzt durch konsequente Isolation voneinander unabhängiger Kernel-Subsysteme
+    - zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich!
+  - zusätzlich zu vertikaler Strukturierung des Kernels: horizontale Strukturierungeingeführt
+    - $\rightarrow$ funktionale Einheiten: vertikal (Schichten)
+    - $\rightarrow$ isolierteEinheiten: horizontal (private vAR)
+- Idee:
+  - Kernel (alle BS-Funktionalität) $\rightarrow$ μKernel (minimale BS-Funktionalität)
+  - Rest (insbes. Treiber): ,,gewöhnliche'' Anwendungsprozesse mit Adressraumisolation
+  - Kommunikation: botschaftenbasierteIPC (auch client-server operating system )
+  - Nomenklatur: Mikrokernelund Serverprozesse
+
+### Modularer Makrokernel vs. Mikrokernel
+- ![Abb. nach [Heis19]](Assets/AdvancedOperatingSystems-modularer-makrokernel.png)
+-  minimale Kernelfunktionalität:
+  - keine Dienste, nur allgemeine Schnittstellenfür diese
+  - keine Strategien, nur grundlegende Mechanismenzur Ressourcenverwaltung
+-  neues Problem: minimales Mikrokerneldesign
+  - ,,Wir haben 100 Leute gefragt...'': Wie entscheide ich das?
+- ![Abb. nach [Heis19]](Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png)
+  - Ablauf eines Systemaufrufs
+  - schwarz: unprivilegierteInstruktionen
+  - blau:privilegierte Instruktionen
+  - rot:Übergang zwischen beidem (μKern $\rightarrow$ Kontextwechsel!)
+
+#### Robustheit von Mikrokernen
+- = Gewinn durch Adressraumisolation innerhalb des Kernels
+  - ✓ kein nichtvertrauenswürdiger Code im kernelspace , der dort beliebige physische Adressen manipulieren kann
+  - ✓ Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
+  - ✓ Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
+- Neu:
+  - ✓ nvw. BS-Code muss nicht mehr im kernelspace (höchste Prozessorprivilegierung) laufen
+  - ✓ verbleibender Kernel (dessen Korrektheit wir annehmen): klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
+  - ✓ daneben: Adaptivitätdurch konsequentere Modularisierung des Kernels gesteigert
+
+### Mach
+- Mikrokernel-Design: Erster Versuch
+  - Carnegie Mellon University (CMU), School of Computer Science 1985 - 1994
+- ein wenig Historie
+  - UNIX (Bell Labs) - K. Thompson, D. Ritchie
+  - BSD (U Berkeley) - W. Joy
+  - System V - W. Joy
+  - Mach (CMU) - R. Rashid
+  - MINIX - A. Tanenbaum
+  - NeXTSTEP (NeXT) - S. Jobs
+  - Linux - L. Torvalds
+  - GNU Hurd (FSF) - R. Stallman
+  - Mac OS X (Apple) - S. Jobs
+
+#### Mach: Ziele
+Entstehung
+- Grundlage:
+  - 1975: Aleph(BS des ,,Rochester Intelligent Gateway''), U Rochester
+  - 1979/81: Accent (verteiltes BS), CMU
+- gefördert durch militärische Geldgeber:
+  - DARPA: Defense AdvancedResearch Projects Agency
+  - SCI: Strategic Computing Initiative
+
+Ziele
+- Mach 3.0 (Richard Rashid, 1989): einer der ersten praktisch nutzbaren μKerne
+- Ziel: API-Emulation(≠ Virtualisierung!)von UNIX und -Derivaten auf unterschiedlichen Prozessorarchitekturen
+- mehrere unterschiedliche Emulatoren gleichzeitig lauffähig
+  - Emulation außerhalb des Kernels
+  - jeder Emulator:
+    - Komponente im Adressraum des Applikationsprogramms
+    - 1...n Server, die unabhängig von Applikationsprogramm laufen
+
+Mach-Server zur Emulation
+- ![Abb.: [TaBo15]](Assets/AdvancedOperatingSystems-mach-server.png)
+- Emulation von UNIX-Systemen mittels Mach-Serverprozessen
+ 
+μKernel-Funktionen
+1. Prozessverwaltung
+2. Speicherverwaltung
+3. IPC-und E/A-Dienste, einschließlich Gerätetreiber
+
+unterstützte Abstraktionen ($\rightarrow$ API, Systemaufrufe):
+1. Prozesse
+2. Threads
+3. Speicherobjekte
+4. Ports (generisches, ortstransparentes Adressierungskonzept; vgl. UNIX ,,everything is a file'')
+6. Botschaften
+7. ... (sekundäre, von den obigen genutzte Abstraktionen)
+
+Architektur
+- ![](Assets/AdvancedOperatingSystems-mach-architektur.png)
+
+- Systemaufrufkosten:
+  - IPC-Benchmark (1995): i486 Prozessor, 50 MHz
+  - Messung mit verschiedenen Botschaftenlängen( x - Werte)
+  - ohne Nutzdaten (0 Byte Botschaftenlänge): 115 μs (Tendenz unfreundlich ...)
+  - ![Heis19](Assets/AdvancedOperatingSystems-mach-systemaufruf.png)
+- Bewertung aus heutiger Sicht:
+  - funktional komplex
+  - 153 Systemaufrufe
+  - mehrere Schnittstellen, parallele Implementierungen für eine Funktion
+  - $\rightarrow$ Adaptivität (Auswahl durch Programmierer)
+- Fazit:
+  - zukunftsweisender Ansatz
+  - langsame und ineffiziente Implementierung
+
+Lessons Learned
+-  erster Versuch:
+  - Idee des Mikrokernelsbekannt
+  - Umsetzung: Designkriterienweitgehend unbekannt
+-  Folgen für Performanz und Programmierkomfort: [Heis19]
+  - ✗ ,,complex''
+  - ✗ ,,inflexible''
+  - ✗ ,,slow''
+- wir wissen etwas über Kosten: IPC-Performanz, Kernelabstraktionen
+- wir wissen noch nichts über guten μKern-Funktionsumfangund gute Schnittstellen...
+- $\rightarrow$ nächstes Ziel!
+
+### L4
+- Made in Germany:
+  - Jochen Liedtke (GMD, ,,Gesellschaft für Mathematik und Datenverarbeitung''), Betriebssystemgruppe (u.a.): J. Liedtke, H. Härtig, W. E. Kühnhauser
+  - Symposium on Operating Systems Principles 1995 (SOSP '95): ,,On μ-Kernel Construction'' [Lied95]
+- Analyse des Mach-Kernels:
+  1. falsche Abstraktionen
+  2. unperformanteKernelimplementierung
+  3. prozessorunabhängige Implementierung
+      - Letzteres: effizienzschädliche Eigenschaft eines Mikrokernels
+      - Neuimplementierung eines (konzeptionell sauberen!) μ-Kerns kaum teurer als Portierung auf andere Prozessorarchitektur
+
+L3 und L4
+-  Mikrokerne der 2. Generation
+  - zunächst L3, insbesondere Nachfolger L4: erste Mikrokerne der 2. Generation
+- vollständige Überarbeitung des Mikrokernkonzepts: wesentliche Probleme der 1. Generation (z.B. Mach) vermieden
+- Bsp.: durchschnittliche Performanz von User-Mode IPC in L3 ggü. Mach: Faktor 22 zugunsten L3
+  - heute: verschiedene Weiterentwicklungen von L4 (bezeichnet heute Familie ähnlicher Mikrokerne)
+  
+  | First generation                                    | Second Generation                                    | Third generation                                    |
+  | --------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------- |
+  | Eg Mach [87]                                        | Eg L4 [95]                                           | seL4 [09]                                           |
+  | ![](Assets/AdvancedOperatingSystems-l4-first-g.png) | ![](Assets/AdvancedOperatingSystems-L4-second-g.png) | ![](Assets/AdvancedOperatingSystems-l4-third-g.png) |
+  | 180 syscalls                                        | ~7 syscalls                                          | ~3 syscalls                                         |
+  | 100 kLOC                                            | ~10 kLOC                                             | 9 kLOC                                              |
+  | 100 $\mu s$ IPC                                     | ~1 $\mu s$ IPC                                       | $0,2-1 \mu s$ IPC                                   |
+
+#### Mikrokernel-Designprinzipien
+- Was gehört in einen Mikrokern?
+  - Liedtke: Unterscheidung zwischen Konzepten und deren Implementierung
+  - bestimmende Anforderungen an beide:
+    - Konzeptsicht $\rightarrow$ Funktionalität,
+    - Implementierungssicht $\rightarrow$ Performanz
+  - $\rightarrow$ 1. μKernel-Generation: Konzept durch Performanzentscheidungen aufgeweicht
+  - $\rightarrow$ Effekt in der Praxis genau gegenteilig: schlechte (IPC-) Performanz!
+
+> ,,The determining criterion used is functionality, not performance. More precisely, a concept is tolerated inside the μ-kernel only if moving it outside the kernel, i.e. permitting competing implementations, would prevent the implementation of the systems‘s required functionality .'' [Jochen Liedtke]
+
+Designprinzipien für Mikrokernel-Konzept:
+- $\rightarrow$ Annahmen hinsichtlich der funktionalen Anforderungen:
+1. System interaktive und nicht vollständig vertrauenswürdige Applikationen unterstützen ($\rightarrow$ HW-Schutz, -Multiplexing),
+2. Hardware mit virtueller Speicherverwaltung und Paging
+
+Designprinzipien:
+1. Autonomie: ,,Ein Subsystem (Server)muss so implementiert werden können, dass es von keinem anderen Subsystem gestört oder korrumpiert werden kann.''
+2. Integrität: ,,Subsystem (Server) $S_1$ muss sich auf Garantien von $S_2$ verlassen können. D.h. beide Subsysteme müssen miteinander kommunizieren können, ohne dass ein drittes Subsystem diese Kommunikation stören, fälschen oder abhören kann.''
+
+L4: Speicherabstraktion
+- Adressraum: Abbildung, die jede virtuelle Seite auf einen physischen Seitenrahmen abbildet oder als ,,nicht zugreifbar'' markiert
+- Implementierung über Seitentabellen, unterstützt durch MMU-Hardware
+- Aufgabe des Mikrokernels (als gemeinsame obligatorische Schicht aller Subsysteme): muss Hardware-Konzept des Adressraums verbergen und durch eigenes Adressraum-Konzept überlagern (sonst Implementierung von VMM-Mechanismen durch Server unmöglich)
+- Mikrokernel-Konzept des Adressraums:
+  - muss Implementierung von beliebigen virtuellen Speicherverwaltungs-und -schutzkonzepten oberhalb des Mikrokernels (d.h. in den Subsystemen) erlauben
+  - sollte einfach und dem Hardware-Konzept ähnlich sein
+- Idee: abstrakte Speicherverwaltung
+  - rekursive Konstruktion und Verwaltung der Adressräume auf Benutzer-(Server-)Ebene
+  - Mikrokernel stellt dafür genau drei Operationen bereit:
+    1. grant(x) - Server $S$ überträgt Seite $x$ seines AR in AR von Empfänger $S‘$
+    2. map(x) - Server $S$ bildet Seite $x$ seines AR in AR von Empfänger $S‘$ ab
+    3. flush(x) - Server $S$ entfernt (flusht) Seite x seines AR aus allen fremden AR
+
+Hierarchische Adressräume
+- Rekursive Konstruktion der Adressraumhierarchie
+  - Server und Anwendungenkönnen damit ihren Klienten Seiten des eigenen Adressraumes zur Verfügung stellen
+  - Realspeicher: Ur-Adressraum, vom μKernel verwaltet
+  - Speicherverwaltung(en), Paging usw.: vollständig außerhalb des μ-Kernels realisiert
+  - ![](Assets/AdvancedOperatingSystems-adressraumhierarchie.png)
+
+L4: Threadabstraktion
+- Thread
+  - innerhalb eines Adressraumesablaufende Aktivität
+  - $\rightarrow$ Adressraumzuordnung ist essenziell für Threadkonzept (Code + Daten)
+    - Bindung an Adressraum: dynamisch oder fest
+    - Änderung einer dynamischen Zuordnung: darf nur unter vertrauenswürdiger Kontrolle erfolgen (sonst: fremde Adressräume les- und korrumpierbar)
+- Designentscheidung
+  - $\rightarrow$ Autonomieprinzip
+  - $\rightarrow$ Konsequenz: Adressraumisolation
+  - $\rightarrow$ entscheidender Grund zur Realisierung des Thread-Konzepts innerhalb des Mikrokernels
+
+IPC
+- Interprozess-Kommunikation
+  - Kommunikation über Adressraumgrenzen: vertrauenswürdig kontrollierte Aufhebung der Isolation
+  - $\rightarrow$ essenziell für (sinnvolles) Multitasking und -threading
+- Designentscheidung
+  - $\rightarrow$ Integritätsprinzip
+  - $\rightarrow$ wir haben schon: vertrauenswürdige Adressraumisolation im μKernel
+  - $\rightarrow$ grundlegendes IPC-Konzepts innerhalb des Mikrokernels (flexibel und dynamisch durch Server erweiterbar, analog Adressraumhierarchie)
+
+Identifikatoren
+- Thread-und Ressourcenbezeichner
+  - müssen vertrauenswürdig vergeben (authentisch und i.A. persistent) und verwaltet(eindeutig und korrekt referenzierbar)werden
+  - $\rightarrow$ essenziell für (sinnvolles) Multitasking und -threading
+  - $\rightarrow$ essenziell für vertrauenswürdige Kernel-und Server-Schnittstellen
+- Designentscheidung
+  - $\rightarrow$ Integritätsprinzip
+  - $\rightarrow$ ID-Konzept innerhalb des Mikrokernels (wiederum: durch Server erweiterbar)
+
+Lessons Learned
+1. Ein minimaler Mikrokernel
+    - soll Minimalmenge an geeigneten Abstraktionenzur Verfügung stellen:
+    - flexibel genug, um Implementierung beliebiger Betriebssysteme zu ermöglichen
+    - Nutzung umfangreicher Mengeverschiedener Hardware-Plattformen
+2. Geeignete, funktional minimale Mechanismen im μKern:
+    - Adressraum mit map-, flush-, grant-Operation
+    - Threadsinklusive IPC
+    - eindeutige Identifikatoren
+3. Wahl der geeigneten Abstraktionen:
+    - kritischfür Verifizierbarkeit ( $\rightarrow$ Robustheit), Adaptivität und optimierte Performanz des Mikrokerns
+4. Bisherigen μ-Kernel-Abstraktionskonzepte:
+    1. ungeeignete
+    2. zu viele
+    3. zu spezialisierte u. inflexible Abstraktionen
+5. Konsequenzen für Mikrokernel-Implementierung
+    - müssen für jeden Prozessortyp neu implementiert werden
+    - sind deshalb prinzipiell nicht portierbar $\rightarrow$ L3-und L4-Prototypen by J. Liedtke: 99% Assemblercode
+6. innerhalb eines Mikrokernels sind
+    1. grundlegende Implementierungsentscheidungen
+    2. meiste Algorithmen u. Datenstrukturen
+    - von Prozessorhardware abhängig
+
+- Fazit:
+  - Mikrokernelmit akzeptabler Performanz: hardwarespezifische Implementierung minimalerforderlicher, vom Prozessortyp unabhängiger Abstraktionen
+  - ![Heis19](Assets/AdvancedOperatingSystems-l4-ipc-performance.png)
+
+Heutige Bedeutung
+- nach Tod von J. Liedtke (2001) auf Basis von L4 zahlreiche moderne BS
+- L4 heute: Spezifikation eines Mikrokernels (nicht Implementierung)
+- ![Heis19](Assets/AdvancedOperatingSystems-l4-family.png)
+-  Einige Weiterentwicklungen:
+  - TU Dresden (Hermann Härtig): Neuimplementierung in C++ (L4/Fiasco), Basis des Echtzeit-Betriebssystems DROPS, der VirtualisierungsplattformNOVA (genauer: Hypervisor) und des adaptiven BS-Kernels Fiasco.OC
+  - University ofNew South Wales (UNSW), Australien (Gernot Heiser):
+    - Implementierung von L4 auf verschiedenen 64 - Bit-Plattformen, bekannt als L4/MIPS, L4/Alpha
+    - Implementierung in C (Wartbarkeit, Performanz)
+    - Mit L4Ka::Pistachio bisher schnellste Implementierung von botschaftenbasierterIPC (2005: 36 Zyklen auf Itanium-Architektur)
+    - seit 2009: seL4, erster formal verifizierter BS-Kernel (d.h. mathematisch bewiesen, dass Implementierung funktional korrekt ist und nachweislich keinen Entwurfsfehler enthält)
+
+Zwischenfazit
+-  Begrenzung von Fehlerausbreitung ( $\rightarrow$ Folgen von errors ):
+  - konsequent modularisierte Architektur aus Subsystemen
+  - Isolationsmechanismen zwischen Subsystemen
+-  Konsequenzen für BS-Kernel:
+  - statische Isolation auf Quellcodeebene $\rightarrow$ strukturierte Programmierung
+  - dynamische Isolation zur Laufzeit $\rightarrow$ private virtuelle Adressräume
+  - Architektur, welche diese Mechanismen komponiert: Mikrokernel
+-  Was haben wir gewonnen?
+  - ✓ Adressraumisolation für sämtlichen nichtvertrauenswürdigen Code
+  - ✓ keine privilegierten Instruktionen in nvw. Code (Serverprozesse)
+  - ✓ geringe Größe (potenziell: Verifizierbarkeit) des Kernels
+  - ✓ neben Robustheit: Modularitätund Adaptivitätdes Kernels
+- Und was noch nicht?
+  - ✗ Behandlung von Ausfällen ( $\rightarrow$ abstürzende Gerätetreiber ...)
+
+## 3.5 Micro-Reboots
+-  Beobachtungen am Ausfallverhalten von BS:
+  - Kernelfehler sind (potenziell) fatal für gesamtes System
+  - Anwendungsfehler sind es nicht
+  - $\rightarrow$ kleiner Kernel = geringeres Risiko von Systemausfällen
+  - $\rightarrow$ durch BS-Code in Serverprozessen: verbleibendes Risiko unabhängiger Teilausfälle von BS-Funktionalität (z.B. FS, Treiberprozesse, GUI, ...)
+-  Ergänzung zu Isolationsmechanismen:
+  - Mechanismen zur Behandlung von Subsystem-Ausfällen
+  - = Mechanismen zur Behandlung Anwendungs-, Server- und Gerätetreiberfehlen
+- $\rightarrow$ Micro-Reboots
+
+Ansatz
+-  wir haben:
+  - kleinen, ergo vertrauenswürdigen (als fehlerfrei angenommenen)μKernel
+  - BS-Funktionalität in bedingt vertrauenswürdigen Serverprozessen (kontrollierbare, aber wesentlich größere Codebasis)
+  - Gerätetreiber und Anwendungen in nicht vertrauenswürdigen Prozessen (nicht kontrollierbare Codebasis)
+-  wir wollen:
+  - Systemausfälle verhindern durch Vermeidung von errors im Kernel $\rightarrow$ höchste Priorität
+  - Treiber-und Serverausfälle minimieren durch Verbergen ihrer Auswirkungen $\rightarrow$ nachgeordnete Priorität (Best-Effort-Prinzip)
+- Idee:
+  - Systemausfälle $\rightarrow$ μKernel
+  - Treiber-und Serverausfälle $\rightarrow$ Neustart durch spezialisierten Serverprozess
+
+Beispiel: Ethernet-Treiberausfall
+- ![](Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png)
+- schwarz: ausfallfreie Kommunikation
+- rot: Ausfall und Behandlung
+- blau: Wiederherstellung nach Ausfall
+
+Beispiel: Dateisystem-Serverausfall
+- ![](Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png)
+- schwarz: ausfallfreie Kommunikation
+- rot: Ausfall und Behandlung
+- blau: Wiederherstellung nach Ausfall
+
+## Beispiel-Betriebssystem: MINIX
+-  Ziele:
+  - robustes Betriebssystems
+  - $\rightarrow$ Schutz gegen Sichtbarwerden von Fehlern(= Ausfälle) für Nutzer
+  - Fokus auf Anwendungsdomänen: Endanwender-Einzelplatzrechner (Desktop, Laptop, Smart*) und eingebettete Systeme
+  - Anliegen: Robustheit > Verständlichkeit > geringer HW-Bedarf
+-  aktuelle Version: MINIX 3.3.0
+
+Architektur
+- Kommunikationsschnittstellen ...
+  - ![](Assets/AdvancedOperatingSystems-minix-architektur.png)
+  - ... für Anwendungen (weiß): Systemaufrufe im POSIX-Standard
+  - ... für Serverprozesse (grau):
+    - untereinander: IPC (botschaftenbasiert)
+    - mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt
+-  Betriebssystem-Serverprozesse:
+  - ![](Assets/AdvancedOperatingSystems-minix-architektur-bs.png)
+  - Dateisystem (FS)
+  - Prozessmanagement (PM)
+  - Netzwerkmanagement (Net)
+  - Reincarnation Server (RS) $\rightarrow$ Micro-Reboots jeglicher Serverprozesse
+  - (u. a.) ...
+-  Kernelprozesse:
+  - systemtask
+  - clocktask
+
+Reincarnation Server
+- Implementierungstechnik für Micro-Reboots:
+- Prozesse zum Systemstart ( $\rightarrow$ Kernel Image): system, clock, init, rs
+  - system, clock: Kernelprogramm
+  - init: Bootstrapping (Initialisierung von rs und anderer BS-Serverprozesse), Fork der Login-Shell (und damit sämtlicher Anwendungsprozesse)
+  - rs: Fork sämtlicher BS-Serverprozesse, einschließlich Gerätetreiber
+- ![](Assets/AdvancedOperatingSystems-minix-reincarnation-server.png)
+
+MINIX: Ausprobieren
+- [ausführliche Dokumentation](https://wiki.minix3.org/doku.php?id=www:getting-started:start)
+- [vorkompiliertes Kernel-Image zum Installieren (VirtualBox, VMWare, ...)](https://wiki.minix3.org/doku.php?id=www:download:start)
+
+## Verfügbarkeit
+- komplementäre NFE zu Robustheit: Verfügbarkeit ( availability )
+  - Zur Erinnerung: Untereigenschaften von Verlässlichkeit
+  1. Verfügbarkeit (availability)
+  2. Robustheit (robustness, reliability)
+- Beziehung:
+  - Verbesserung von Robustheit $\Rightarrow$ Verbesserung von Verfügbarkeit
+  - Robustheitsmaßnahmen hinreichend , nicht notwendig (hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
+- eine weitere komplementäre NFE:
+  - Robustheit $\Rightarrow$ Sicherheit (security)
+
+Allgemeine Definition: Der Grad, zu welchem ein System oder eine Komponente funktionsfähig und zugänglich (erreichbar) ist,wann immer seine Nutzung erforderlichist. (IEEE)
+
+genauer quantifiziert:
+- Der Anteil an Laufzeit eines Systems, in dem dieses seine spezifizierte Leistung erbringt.
+- ![](Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png)
+- Availability= Total Uptime/ Total Lifetime= MTTF / (MTTF + MTTR)
+  - MTTR: Mean Time to Recovery ... Erwartungswert für TTR
+  - MTTF: Mean Time to Failure ... Erwartungswert für TTF
+- einige Verfügbarkeitsklassen:
+    | Verfügbarkeit | Ausfallzeit pro Jahr | Ausfallzeit pro Woche |
+    | ------------- | -------------------- | --------------------- |
+    | 90%           | > 1 Monat            | ca. 17 Stunden        |
+    | 99%           | ca. 4 Tage           | ca. 2 Stunden         |
+    | 99,9%         | ca. 9 Stunden        | ca. 10 Minuten        |
+    | 99,99%        | ca. 1 Stunde         | ca. 1 Minute          |
+    | 99,999%       | ca. 5 Minuten        | ca. 6 Sekunden        |
+    | 99,9999%      | ca. 2 Sekunden       | << 1 Sekunde          |
+- Hochverfügbarkeitsbereich (gefeierte ,,five nines'' availability)
+-  Maßnahmen:
+  - Robustheitsmaßnahmen
+  - Redundanz
+  - Ausfallmanagement
+
+### QNX Neutrino: Hochverfügbares Echtzeit-BS
+Überblick QNX:
+- Mikrokern-Betriebssystem
+- primäres Einsatzfeld: eingebettete Systeme, z.B. Automobilbau
+- Mikrokernarchitektur mit Adressraumisolation für Gerätetreiber
+- (begrenzt) dynamische Micro-Rebootsmöglich
+- $\rightarrow$ Maximierung der Uptime des Gesamtsystems
+
+Hochverfügbarkeitsmechanismen:
+1. ,,High-Avalability-Manager'': Laufzeit-Monitor, der Systemdienste oder Anwendungsprozesse überwacht und neustartet $\rightarrow$ μReboot-Server
+2. ,,High-Availability-Client-Libraries'': Funktionen zur transparenten automatischen Reboot für ausgefallene Server-Verbindungen
+
 # Sicherheit
 # Echtzeitfähigkeit
 # Adaptivität
@@ -808,3 +1351,17 @@ Implementierung
 - TinyOS
   - KELLNER, SIMON; BELLOSA, FRANK: Energy Accounting Support in TinyOS
   - KELLNER, SIMON: Flexible Online Energy Accounting in TinyOS
+- Verlässlichkeitsbegriff, Fehlermodell:
+  - [ALRL04] AVIŽIENIS, ALGIRDAS; LAPRIE, JEAN-CLAUDE; RANDELL, BRIAN; LANDWEHR, CARL: Basic Concepts and Taxonomy of Dependable and Secure Computing. In: IEEE Trans. Dependable Secur. Comput. https://doi.org/10.1109/TDSC.2004.2
+  - [AvLR04] AVIŽIENIS, ALGIRDAS; LAPRIE, JEAN-CLAUDE; RANDELL, BRIAN: Dependability and Its Threats: A Taxonomy. In: JACQUART, R.(Hrsg.): Building theInformation Society , IFIP International Federation for Information Processing : Springer US, 2004, https://doi.org/10.1007/978
+- DeepSpace 1 Remote Debugging:
+  - GARRET, RON: Lispingat JPL. URL http://www.flownet.com/gat/jpl-lisp.html
+- Kernelarchitekturdesign und Mikrokernelprinzip:
+  - [Heis19] HEISER, GERNOT: COMP9242 Advanced Operating Systems. Lecture Slides UNSW Australia, 2019. Courtesy of Gernot Heiser, UNSW. https://www.cse.unsw.edu.au/~cs9242/19/lectures.shtml
+  - [TaBo15] TANENBAUM, ANDREWS; WOODHULL, ALBERTS: Operating Systems Design and Implementation. 3. Aufl. UpperSaddleRiver, NJ, USA: Prentice-Hall, Inc., 2005 
+- Mikrokerneldesign, L4:
+  - [Lied95] LIEDTKE, JOCHEN: On μ-Kernel Construction. In: Operating Systems Review. Special issue for the Fifteenth ACM Symposium on Operating System Principles Bd. 29 (1995), https://doi.org/10.1145/224056.224075
+- MINIX:
+  - HERDER, JORRITN.; BOS, HERBERT; GRAS, BEN; HOMBURG, PHILIP; TANENBAUM, ANDREWS.: MINIX 3: A Highly Reliable, Self-repairing Operating System. In: ACM SIGOPS Operating Systems Review https://doi.org/10.1145/1151374.1151391
+  - TANENBAUM, ANDREWS. APPUSWAMY, RAJA; BOS, HERBERTJ. ; CAVALLARO, LORENZO; GIUFFRIDA, CRISTIANO; HRUBY, TOMAS; HERDER, JORRIT; VANDERKOUWE, ERIK; U.A.: MINIX 3: Status Report and Current Research. In: login: The USENIX Magazine Bd. 35 (2010) https://www.usenix.org/publications/login/june- 2010
+  - [TaWo05] TANENBAUM, ANDREWS; WOODHULL, ALBERTS: Operating Systems Design and Implementation. 3. Aufl. UpperSaddleRiver, NJ, USA: Prentice-Hall, Inc.

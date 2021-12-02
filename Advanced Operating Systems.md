@@ -47,7 +47,7 @@ Gegenstand dieser Vorlesung: Konstruktionsrichtlinien für solche ,,High-End Bet
         - Quality ofservice(QoS) requirements
         - u.a.
 - ,,~ilities''
-    - im Englischen: nichtfunktionale Eigenschaften eines Systems etc. informell auch als seine „ilities“ bezeichnet, hergeleitet von Begriffen wie
+    - im Englischen: nichtfunktionale Eigenschaften eines Systems etc. informell auch als seine ,,ilities'' bezeichnet, hergeleitet von Begriffen wie
         - Stability
         - Portability
         - ...
@@ -242,7 +242,7 @@ Energiezustände beim Betrieb von Festplatten:
 - Schlussfolgerung: durch geringe Verlängerungen des idle - Intervalls kann signifikant der Energieverbrauch reduziert werden.
 
 #### Prefetching-Mechanismus
-- Prefetching („Speichervorgriff“, vorausschauendes Lesen) & Caching
+- Prefetching (,,Speichervorgriff'', vorausschauendes Lesen) & Caching
   - Standard-Praxis bei moderner Datei-E/A
   - Voraussetzung: Vorwissen über benötigte Folge von zukünftigen Datenblockreferenzen (z.B. Blockadressen für bestimmte Dateien, gewonnen durch Aufzeichnung früherer Zugriffsmuster beim Start von Anwendungen -Linux: readahead syscall)
   - Ziel: Performanzverbesserungdurch Durchsatzerhöhung u. Latenzzeit-Verringerung
@@ -270,7 +270,7 @@ Energiezustände beim Betrieb von Festplatten:
   - Regeln für diese Strategie:
     1. Optimales Prefetching: Jedes _prefetch_ sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist.
     2. Optimales Ersetzen: Bei jedem ersetzenden _prefetch_ sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird.
-    3. „Richte keinen Schaden an“: Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird.
+    3. ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird.
     4. Erste Möglichkeit: Führe nie ein ersetzendes _prefetch_ aus, wenn dieses schon vorher hätte ausgeführt werden können.
 - Energieeffizientes Prefetching
   - Optimale Ersetzungsstrategie und 3 unterschiedliche Prefetching-Strategien:
@@ -286,7 +286,7 @@ Energiezustände beim Betrieb von Festplatten:
 - Auswertung: Regeln für energieeffiziente Prefetching-Strategie nach Papathanasiou elal.: [PaSc04]
   1. Optimales Prefetching: Jedes _prefetch_ sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist.
   2. Optimales Ersetzen: Bei jedem ersetzenden _prefetch_ sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird.
-  3. „Richte keinen Schaden an“: Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird.
+  3. ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird.
   4. Maximiere Zugriffsfolgen: Führe immer dann nach einem _fetch_ oder _prefetch_ ein weiteres _prefetch_ aus, wenn Blöcke für eine Ersetzung geeignet sind. (i.S.v. Regel 3)
   5. Beachte Idle-Zeiten: Unterbrich nur dann eine Inaktivitätsperiode durch ein _prefetch_ , falls dieses sofort ausgeführt werden muss, um einen Cache-Miss zu vermeiden.
 
@@ -333,7 +333,7 @@ Verlustleistung: $P_{leakage}$
 - Typ einer Anwendung
   - entscheidet über jeweilige Nutzererwartung
     1. Hintergrundanwendung (z.B. Compiler); von Interesse: Gesamt-Bearbeitungsdauer, Durchsatz
-    2. Echtzeitanwendung(z.B. Video-Player, MP3-Player); von Interesse: „flüssiges“ Abspielen von Video oder Musik
+    2. Echtzeitanwendung(z.B. Video-Player, MP3-Player); von Interesse: ,,flüssiges'' Abspielen von Video oder Musik
     3. Interaktive Anwendung (z.B. Webbrowser); von Interesse: Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen Nutzer-Aktion und Rechner-Reaktion
   - Insbesondere kritisch: Echtzeitanwendungen, interaktive Anwendungen
 
@@ -413,7 +413,7 @@ Energiebewusstes RR: Reaktivität und Fairness
 - Beispiel: Synergie nichtfunktionaler Eigenschaften
   - Performanz nur möglich durch Parallelität $\rightarrow$ Multicore-Hardware
   - Multicore-Hardware nur möglich mit Lastausgleich und Lastverteilungauf mehrere CPUs
-  - dies erfordert ebenfalls Verteilungsstrategien: „Energy-aware Scheduling“ (Linux-Strategie zur Prozessorallokation -nicht zeitlichem Multiplexing!)
+  - dies erfordert ebenfalls Verteilungsstrategien: ,,Energy-aware Scheduling'' (Linux-Strategie zur Prozessorallokation -nicht zeitlichem Multiplexing!)
 
 ### Systemglobale Energieeinsparungsmaßnahmen
 - Traditionelle Betriebssysteme: Entwurf so, dass zu jedem Zeitpunkt Spitzen-Performanzangestrebt
@@ -434,8 +434,8 @@ Energiebewusstes RR: Reaktivität und Fairness
   - Steuerung/Strategien: Softwareunterstützungnotwendig!
 
 Dynamisches Energiemanagement (DPM)- Strategien (Klassen) bestimmt, wann und wie lange eine Hardware-Komponente sich in Energiesparmodusbefinden sollte
-- Greedy: Hardware-Komponente sofort nach Erreichen des Leerlaufs in Energiesparmodus, „Aufwecken“ durch neue Anforderung
-- Time-out: Energiesparmodus erst nachdem ein definiertes Intervall im Leerlauf, „Aufwecken“ wie bei Greedy-Strategien
+- Greedy: Hardware-Komponente sofort nach Erreichen des Leerlaufs in Energiesparmodus, ,,Aufwecken'' durch neue Anforderung
+- Time-out: Energiesparmodus erst nachdem ein definiertes Intervall im Leerlauf, ,,Aufwecken'' wie bei Greedy-Strategien
 - Vorhersage: Energiesparmodus sofort nach Erreichen des Leerlaufs, wenn Heuristik vorhersagt,dass Kosten gerechtfertigt
 - Stochastisch: Energiesparmodus auf Grundlage eines stochastischen Modells
 
@@ -496,7 +496,7 @@ weitere Einflussfaktoren: Speicherverwaltungskosten
 - dynamische Speicherreservierung durch Tasks
 
 ##### Beispiel 1: sparsam
-Prozesskontrollblock (PCB, Metadatenstruktur des Prozessdeskriptors) eines kleinen Echtzeit-Kernels („DICK“):
+Prozesskontrollblock (PCB, Metadatenstruktur des Prozessdeskriptors) eines kleinen Echtzeit-Kernels (,,DICK''):
 ```cpp
 // Process Control Block (PCB)
 struct pcb {
@@ -630,6 +630,146 @@ Einflussfaktoren des Betriebssystems:
 - VMM: Größe des Auslagerungsbereichs (inkl. Teilen der Seitentabelle!) für Anwendungen
 - Modularisierung (zur Kompilierzeit) des Kernels: gezielte Anpassung an Einsatzdomäne möglich
 - Adaptivität (zur Kompilier-und Laufzeit) des Kernels: gezielte Anpassung an sich ändernde Umgebungsbedingungen möglich ($\rightarrow$ Cassini-Huygens-Mission)
+
+## Architekturentscheidungen
+- bisher betrachtete Mechanismen: allgemein für alle BS gültig
+- ... typische Einsatzgebiete sparsamer BS: eingebettete Systeme
+- eingebettetes System: (nach [Manl94] )
+  - Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient,physisch eingebunden ist.
+  - Wesentlicher Bestandteil dieses größeren Systems hinsichtlich seiner Entwicklung, technischer Ausstattung sowie seines Betriebs.
+  - Liefert Ausgaben in Form von (menschenlesbaren)Informationen, (maschinenlesbaren)Daten zur Weiterverarbeitung und Steuersignalen.
+- BS für eingebettete Systeme: spezielle, anwendungsspezifische Ausprägung der Aufgaben eines ,,klassischen'' Universal-BS
+  - reduzierter Umfang von HW-Abstraktion, generell: hardwarenähere Ablaufumgebung
+  - begrenzte (extrem: gar keine) Notwendigkeit von HW-Multiplexing & -Schutz
+- daher eng verwandte NFE: Adaptivitätvon sparsamen BS
+- sparsame Betriebssysteme:
+  - energieeffizient ~ geringe Architekturanforderungen an energieintensive Hardware (besonders CPU, MMU, Netzwerk)
+  - speichereffizient ~ Auskommen mit kleinen Datenstrukturen (memory footprint)
+- Konsequenz: geringe logische Komplexität des Betriebssystemkerns
+- sekundär: Adaptivität des Betriebssystemkerns
+
+### Makrokernel (monolithischer Kernel)
+![](Assets/AdvancedOperatingSystems-makrokernel.png)
+- User Space:
+  - Anwendungstasks
+  - CPU im unprivilegiertenModus (Unix ,,Ringe'' 1...3)
+  - Isolation von Tasks durch Programmiermodell(z.B. Namespaces) oder VMM(private vAR)
+- Kernel Space:
+  - Kernelund Gerätecontroller (Treiber)
+  - CPU im privilegierten Modus (Unix ,,Ring'' 0)
+  - keine Isolation (VMM: Kernel wird in alle vAR eingeblendet)
+
+### Mikrokernel
+![](Assets/AdvancedOperatingSystems-mikrokernel.png)
+- User Space:
+  - Anwendungstasks, Kernel-und Treiber tasks ( Serverprozesse, grau)
+  - CPU im unprivilegiertenModus
+  - Isolation von Tasks durch VMM
+- Kernel Space:
+  - funktional minimaler Kernel(μKernel)
+  - CPU im privilegierten Modus
+  - keine Isolation (Kernel wird in alle vAR eingeblendet)
+
+### Architekturkonzepte im Vergleich
+- Makrokernel:
+  - ✓ vglw. geringe Kosten von Kernelcode (Energie, Speicher)
+  - ✓ VMM nicht zwingend erforderlich
+  - ✓ Multitasking ($\rightarrow$ Prozessmanagement!)nicht zwingend erforderlich
+  - ✗ Kernel (inkl. Treibern) jederzeit im Speicher
+  - ✗ Robustheit, Sicherheit, Adaptivität
+- Mikrokernel:
+  - ✓ Robustheit, Sicherheit, Adaptivität
+  - ✓ Kernelspeicherbedarf gering, Serverprozesse nur wenn benötigt ($\rightarrow$ Adaptivität)
+  - ✗ hohe IPC-Kosten von Serverprozessen
+  - ✗ Kontextwechselkosten von Serverprozessen
+  - ✗ VMM, Multitasking i.d.R. erforderlich 
+
+## Beispiel-Betriebssysteme
+### TinyOS
+- Beispiel für sparsame BS im Bereich eingebetteter Systeme
+- verbreitete Anwendung: verteilte Sensornetze (WSN)
+- ,,TinyOS'' ist ein quelloffenes, BSD-lizenziertes Betriebssystem
+- das für drahtlose Geräte mit geringem Stromverbrauch, wie sie in
+    - Sensornetzwerke, ($\rightarrow$  Smart Dust)
+    - Allgegenwärtiges Computing,
+    - Personal Area Networks,
+    - intelligente Gebäude,
+    - und intelligente Zähler.
+- Architektur:
+  - grundsätzlich: monolithisch (Makrokernel) mit Besonderheiten:
+  - keine klare Trennung zwischen der Implementierung von Anwendungen und BS (wohl aber von deren funktionalen Aufgaben!)
+  - $\rightarrow$ zur Laufzeit: 1 Anwendung + Kernel
+- Mechanismen:
+  - kein Multithreading, keine echte Parallelität
+  - $\rightarrow$ keine Synchronisation zwischen Tasks
+  - $\rightarrow$ keine Kontextwechsel bei Taskwechsel
+  - Multitasking realisiert durch Programmiermodell 
+  - nicht-präemptives FIFO-Scheduling
+  - kein Paging$\rightarrow$ keine Seitentabellen, keine MMU
+- in Zahlen:
+  - Kernelgröße: 400 Byte
+  - Kernelimagegröße: 1 - 4 kByte
+  - Anwendungsgröße: typisch ca. 15 kB, Datenbankanwendung: 64 kB
+- Programmiermodell:
+  - BS und Anwendung werden als Ganzes übersetzt: statische Optimierungen durch Compilermöglich (Laufzeit, Speicherbedarf)
+  - Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel
+    - $\rightarrow$  command: API-Aufruf, z.B. EA-Operation (vglb. Systemaufruf)
+    - $\rightarrow$  event: Reaktion auf diesen durch Anwendung
+  - sowohl commands als auch events : asynchron
+- Beispieldeklaration:
+    ```cpp
+    interface Timer {
+      command result_t start(char type, uint32_t interval);
+      command result_t stop();
+      event result_t fired();
+    }
+    interface SendMsg {
+      command result_t send(uint16_t address, uint8_t length, TOS_MsgPtr msg);
+      event result_t sendDone(TOS_MsgPtr msg, result_t success);
+    }
+    ```
+
+### RIOT
+[RIOT-Homepage: http://www.riot-os.org]
+- ebenfalls sparsames BS,optimiert für anspruchsvollere Anwendungen (breiteres Spektrum)
+- ,,RIOT ist ein Open-Source-Mikrokernel-basiertes Betriebssystem, das speziell für die Anforderungen von Internet-of-Things-Geräten (IoT) und anderen eingebetteten Geräten entwickelt wurde.''
+  - Smartdevices,
+  - intelligentes Zuhause, intelligente Zähler,
+  - eingebettete Unterhaltungssysteme
+  - persönliche Gesundheitsgeräte,
+  - intelligentes Fahren,
+  - Geräte zur Verfolgung und Überwachung der Logistik.
+- Architektur:
+  - halbwegs: Mikrokernel
+  - energiesparendeKernelfunktionalität:
+    - minimale Algorithmenkomplexität
+    - vereinfachtes Threadkonzept $\rightarrow$ keine Kontextsicherung erforderlich
+    - keine dynamische Speicherallokation
+    - energiesparende Hardwarezustände vom Scheduler ausgelöst (inaktive CPU)
+  - Mikrokerneldesign unterstützt komplementäre NFE: Adaptivität, Erweiterbarkeit
+  - Kosten: IPC (hier gering!)
+- Mechanismen:
+  - Multithreading-Programmiermodell
+  - modulare Implementierung von Dateisystemen, Scheduler, Netzwerkstack
+- in Zahlen:
+  - Kernelgröße: 1,5 kByte
+  - Kernelimagegröße: 5 kByte
+
+Implementierung
+- ... kann sich jeder mal ansehen (keine spezielle Hardware, beliebige Linux-Distribution, FreeBSD, macOSX mit git ):
+  ```bash
+  $ git clone git://github.com/RIOT-OS/RIOT.git
+  $ cd RIOT
+  $ cd examples/default/
+  $ make all
+  $ make term
+  ```
+- startet interaktive Instanz von RIOT als ein Prozess des Host-BS
+- Verzeichnis RIOT: Quellenzur Kompilierung des Kernels, mitgelieferte Bibliotheken, Gerätetreiber, Beispielanwendungen; z.B.:
+  - RIOT/core/include/thread.h: Threadmodell, Threaddeskriptor
+  - RIOT/core/include/sched.h,
+  - RIOT/core/sched.c: Implementierung des (einfachen) Schedulers
+- weitere Infos: riot-os.org/api
 
 
 # Robustheit und Verfügbarkeit

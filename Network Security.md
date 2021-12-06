@@ -73,6 +73,12 @@
     - [Kleiner Exkurs: Rechenoperationen in $GF(2^n)$](#kleiner-exkurs-rechenoperationen-in-gf2n)
   - [SpongeWrap](#spongewrap)
 - [Zufallszahlengenerierung](#zufallszahlengenerierung)
+  - [Aufgaben der Schlüsselverwaltung](#aufgaben-der-schlüsselverwaltung)
+  - [Zufalls- und Pseudo-Zufallszahlengenerierung](#zufalls--und-pseudo-zufallszahlengenerierung)
+  - [Zufallszahlengenerierung](#zufallszahlengenerierung-1)
+  - [Statistische Tests für Zufallszahlen](#statistische-tests-für-zufallszahlen)
+  - [Sichere Pseudo-Zufallszahlengenerierung](#sichere-pseudo-zufallszahlengenerierung)
+  - [CSPRNG-Sicherheit ist eine große Sache!](#csprng-sicherheit-ist-eine-große-sache)
 - [Kryptographische Protokolle](#kryptographische-protokolle)
 - [Sichere Gruppenkommunikation](#sichere-gruppenkommunikation)
 - [Zugriffskontrolle](#zugriffskontrolle)
@@ -588,7 +594,7 @@ Geschichte
     - Tabelle 1 enthält die Werte von $X$, wenn $P$ mit allen möglichen Werten von $K$ verschlüsselt ist
     - Tabelle 2 enthält die Werte von $X$, wenn $C$ mit allen möglichen Werten von $K$ entschlüsselt wird
     - Sortiere die beiden Tabellen und konstruiere Schlüssel $K_{T1}||K_{T2}$ für alle Kombinationen von Einträgen, die den gleichen Wert ergeben.
-- Da es für jeden beliebigen Klartext $2^64$ mögliche Chiffretext-Werte gibt, die mit Double-DES erzeugt werden könnten, gibt es beim ersten bekannten Klartext/Chiffretext-Paar durchschnittlich $2^{112}/2^{64}=2^{48}$ Fehlalarme.
+- Da es für jeden beliebigen Klartext $2^{64}$ mögliche Chiffretext-Werte gibt, die mit Double-DES erzeugt werden könnten, gibt es beim ersten bekannten Klartext/Chiffretext-Paar durchschnittlich $2^{112}/2^{64}=2^{48}$ Fehlalarme.
 - Jedes weitere Klartext/Chiffretext-Paar verringert die Chance, einen falschen Schlüssel zu erhalten, um den Faktor $1/2^{64}$, so dass bei zwei bekannten Blöcken die Chance $2^{-16}$ beträgt.
 - Der Aufwand, der erforderlich ist, um Double DES zu knacken, liegt also in der Größenordnung von $2^{56}$, was nur geringfügig besser ist als der Aufwand von $2^{55}$, der erforderlich ist, um Single DES mit einem Angriff mit bekanntem Klartext zu knacken, und weit entfernt von den $2^{111}$, die wir von einer Chiffre mit einer Schlüssellänge von 112 Bit erwarten würden!
 - Diese Art von Angriff kann durch die Verwendung eines dreifachen Verschlüsselungsschemas umgangen werden, wie es 1979 von W. Tuchman vorgeschlagen wurde
@@ -758,13 +764,13 @@ Eine vorherige Beschäftigung mit der diskreten Mathematik wird dem Leser jedoch
     - Faktorisierungsproblem: Grundlage des RSA-Algorithmus
     - Diskreter-Logarithmus-Problem: Grundlage von Diffie-Hellman und ElGamal
 
-##                 Einige mathematische Hintergründe
+## Einige mathematische Hintergründe
 - Sei $\mathbb{Z}$ die Menge der ganzen Zahlen, und $a,b,n\in\mathbb{Z}$
-- Wir sagen, $a$ teilt $b(,,a|b'')$, wenn es eine ganze Zahl $k\in\mathbb{Z}$ gibt, so dass $a\mal k=b$
+- Wir sagen, $a$ teilt $b(a|b)$, wenn es eine ganze Zahl $k\in\mathbb{Z}$ gibt, so dass $a\times k=b$
 - $a$ ist prim, wenn es positiv ist und die einzigen Teiler von a $1$ und $a$ sind.
 - $r$ ist der Rest von a geteilt durch $n$, wenn $r=a-\lfloor a / n \rfloor\times n$, wobei $\lfloor x\rfloor$ die größte ganze Zahl kleiner oder gleich $x$ ist.
     - Beispiel: 4 ist der Rest von 11 geteilt durch 7 als $4=11-\lfloor 11/7\rfloor\times 7$
-    - Wir können dies auch anders schreiben: $a=q\mal n + r$ mit $q=\lfloor a/n\rfloor$
+    - Wir können dies auch anders schreiben: $a=q\times n + r$ mit $q=\lfloor a/n\rfloor$
 - Für den Rest $r$ der Division von a durch n schreiben wir $a\ MOD\ n$
 - Wir sagen, b ist kongruent $a\ mod\ n$, wenn es bei der Division durch n den gleichen Rest wie a hat. Also teilt n $(a-b)$, und wir schreiben $b\equiv a\ mod\ n$
   - Beispiele: $4\equiv 11\ mod\ 7$, $25\equiv 11\ mod\ 7$, $11\equiv 25\ mod\ 7$, $11\equiv 4\ mod\ 7$, $-10\equiv 4\ mod\ 7$
@@ -772,21 +778,20 @@ Eine vorherige Beschäftigung mit der diskreten Mathematik wird dem Leser jedoch
 
 | Eigenschaft | Ausdruck |
 | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Kommutativgesetze           
-                                                                       | $(a + b)\ MOD\ n = (b + a)\ MOD\ n$                                                    |
-| $(a \times b)\ MOD\ n = (b \times a)\ MOD\ n$                                                                       |
+| Kommutativgesetze   |  $(a + b)\ MOD\ n = (b + a)\ MOD\ n$                                                    |
+|| $(a \times b)\ MOD\ n = (b \times a)\ MOD\ n$                                                                       |
 | Assoziativgesetze                                                                                                   | $[(a + b) + c]\ MOD\ n = [a + (b + c)]\ MOD\ n$                                        |
-| $[(a \times b) \times c]\ MOD\ n = [a \times (b \times c)]\ MOD\ n$                                                 |
+|| $[(a \times b) \times c]\ MOD\ n = [a \times (b \times c)]\ MOD\ n$                                                 |
 | Distributivgesetz                                                                                                    | $[a \times (b + c)]\ MOD\ n = [(a \times b) + (a \times c)]\ MOD\ n$                   |
 | Identitäten                                                                                                          | $(0 + a)\ MOD\ n = a\ MOD\ n$                                                          |
-| $(1 \times a)\ MOD\ n = a\ MOD\ n$                                                                                  |
+|| $(1 \times a)\ MOD\ n = a\ MOD\ n$                                                                                  |
 | Inverse                                                                                                            | $\forall  a \in \mathbb{Z}n: \exists (-a) \in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$ |
-| $p is prime \Rightarrow \forall  a \in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$ |
+|| p is prime $\Rightarrow \forall  a \in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$ |
 
 Größter gemeinsamer Teiler
 - $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge [\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )]$ und $gcd(a, 0 ) : = | a |$
 - Der gcd-Rekursionssatz :
-  - $\für alle a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ MOD\ b)$
+  - $\forall a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ MOD\ b)$
   - Beweis:
     - Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ MOD\ b$, also $gcd(a, b) | gcd(b, a\ MOD\ b)$
     - Da $gcd(b, a\ MOD\ b)$ sowohl b als auch $a\ MOD\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ MOD\ b) = a$, also $gcd(b, a\ MOD\ b) | gcd(a, b)$
@@ -809,44 +814,44 @@ Größter gemeinsamer Teiler
     return(d, m, n); }
   ```
   - Beweis: (durch Induktion)
-    - Grundfall $(a,0): gcd(a, 0) = a = 1 \Zeiten a + 0 \Zeiten 0$
+    - Grundfall $(a,0): gcd(a, 0) = a = 1 \times  a + 0 \times  0$
     - Induktion von $(b, a\ MOD\ b)$ auf $(a, b)$:
       - ExtendedEuclid berechnet $d', m', n'$ korrekt (Induktionshypothese)
-      - $d=d'=m'\Zeiten b+n'\Zeiten (a\ MOD\ b)=m'\Zeiten b+n'\Zeiten(a-\lfloor a/b\rfloor\Zeiten b)=n'\Zeiten a+(m'-\lfloor a/b\rfloor\Zeiten n')\Zeiten b$
+      - $d=d'=m'\times  b+n'\times  (a\ MOD\ b)=m'\times  b+n'\times (a-\lfloor a/b\rfloor\times  b)=n'\times  a+(m'-\lfloor a/b\rfloor\times  n')\times  b$
   - Die Laufzeit von $Euclid(a, b)$ und $ExtendedEuclid(a, b)$ ist von $O(log\ b)$
     - Beweis: siehe [Cor90a], Abschnitt 33.
-  - Lemma 1: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\mal a+n \mal b$
-- Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\mal b)\Rechtspfeil (p|a) \vier (p|b)$
-    - Der Beweis: Es sei $p|(a\mal b)$
+  - Lemma 1: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\times a+n \times b$
+- Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\times b)\Rightarrow (p|a)\times(p|b)$
+    - Der Beweis: Es sei $p|(a\times b)$
       - Wenn $p|a$ dann sind wir fertig.
-      - Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\existiert m, n\in\mathbb{N}:1=m\mal p+n\mal a \Leftrightarrow b=m\mal p \mal b + n \mal a \mal b$
-      - Da $p|(a\mal b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist 
+      - Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\exists m, n\in\mathbb{N}:1=m\times p+n\times a \Leftrightarrow b=m\times p \times b + n \times a \times b$
+      - Da $p|(a\times b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist 
 - Theorem 2 (Fundamentalsatz der Arithmetik): Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig.
     - Der Beweis:
         - Wir werden zeigen, dass jede ganze Zahl mit einer nicht eindeutigen Faktorisierung einen eigenen Teiler mit einer nicht eindeutigen Faktorisierung hat, was zu einem klaren Widerspruch führt, wenn wir schließlich auf eine Primzahl reduziert haben.
-        - Nehmen wir an, dass n eine ganze Zahl mit einer nicht eindeutigen Faktorisierung ist: $n=p_1\mal p_2\mal ...\mal p_r=q_1 \mal q_2\mal ... \times q_s$. Die Primzahlen sind nicht notwendigerweise verschieden, aber die zweite Faktorisierung ist nicht einfach eine Umordnung der ersten. Da $p_1$ n dividiert, dividiert es auch das Produkt $q_1\mal q_2\mal ... \times q_s$. Durch wiederholte Anwendung von Satz 1 zeigen wir, dass es mindestens ein $q_i$ gibt, das durch $p_1$ teilbar ist. Gegebenenfalls ordnen wir die $q_i$'s so, dass es $q_1$ ist. Da sowohl $p_1$ als auch $q_1$ Primzahlen sind, müssen sie gleich sein. Wir können also durch $p_1$ dividieren und haben, dass $n/p_1$ eine nicht-eindeutige Faktorisierung hat.
+        - Nehmen wir an, dass n eine ganze Zahl mit einer nicht eindeutigen Faktorisierung ist: $n=p_1\times p_2\times ...\times p_r=q_1 \times q_2\times ... \times q_s$. Die Primzahlen sind nicht notwendigerweise verschieden, aber die zweite Faktorisierung ist nicht einfach eine Umordnung der ersten. Da $p_1$ n dividiert, dividiert es auch das Produkt $q_1\times q_2\times ... \times q_s$. Durch wiederholte Anwendung von Satz 1 zeigen wir, dass es mindestens ein $q_i$ gibt, das durch $p_1$ teilbar ist. Gegebenenfalls ordnen wir die $q_i$'s so, dass es $q_1$ ist. Da sowohl $p_1$ als auch $q_1$ Primzahlen sind, müssen sie gleich sein. Wir können also durch $p_1$ dividieren und haben, dass $n/p_1$ eine nicht-eindeutige Faktorisierung hat.
   - Wir verwenden Theorem 2, um die folgende Korollarie 1 zu beweisen
-    - Wenn $gcd(c,m)=1$ und $(a\mal c)\equiv(b\mal c)mod\ m$, dann $a\equiv b\ mod\ m$
-    - Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\existiert n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
-    - $\Leftrightarrow ( a - b ) \Zeiten c = n \Zeiten m$
-    - $\Leftrightarrow p_1\Zeiten ...\Zeiten p_i\Zeiten q_1\Zeiten ...\Zeiten q_j=r_1\Zeiten ...\Zeiten r_k\Zeiten s_1\Zeiten ...\Zeiten s_l$
+    - Wenn $gcd(c,m)=1$ und $(a\times c)\equiv(b\times c)mod\ m$, dann $a\equiv b\ mod\ m$
+    - Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\exists n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
+    - $\Leftrightarrow ( a - b ) \times  c = n \times  m$
+    - $\Leftrightarrow p_1\times  ...\times  p_i\times  q_1\times  ...\times  q_j=r_1\times  ...\times  r_k\times  s_1\times  ...\times  s_l$
     - Man beachte, dass die $p$'s, $q$'s, $r$'s und $s$'s Primzahlen sind und nicht verschieden sein müssen, aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$.
-    - Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\mal ...\mal p_i=r_1\mal ...\mal r_o\mal s_1\mal ...\mal s_l$ (beachten Sie, dass es weniger r's geben wird)
-    - $\Leftrightarrow(a-b)=r_1\Zeiten ...\Zeiten r_o\Zeiten m\Rightarrow a \equiv b\ mod\ m$
+    - Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\times ...\times p_i=r_1\times ...\times r_o\times s_1\times ...\times s_l$ (beachten Sie, dass es weniger r's geben wird)
+    - $\Leftrightarrow(a-b)=r_1\times  ...\times  r_o\times  m\Rightarrow a \equiv b\ mod\ m$
   - Bezeichne $\phi(n)$ die Anzahl der positiven ganzen Zahlen, die kleiner als n und relativ zu n prim sind
     - Beispiele: $\phi(4) = 2$, \phi(6)=2$, $\phi(7)=6$, $\phi(15)=8$
     - Wenn p eine Primzahl ist $\Rightarrow\phi(p)=p-1$
 - Theorem 3 (Euler): Seien n und b positive und relativ primäre ganze Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
   - Beweis:
-    - Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\mal a_1\ mod\ n , ..., b\mal a_t\ mod\ n$, d.h.: $b\mal a_i \equiv r_i\ mod\ n$.
-    - Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$. Wäre dies nicht der Fall, hätten wir $b\mal a_i\equiv b\mal a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
-    - Wir wissen auch, dass jedes $r_i$ relativ prim zu n ist, denn jeder gemeinsame Teiler k von $r_i$ und $n$ , d.h. $n=k\mal m$ und $r_i=p_i\mal k$, müsste auch $a_i$ teilen,
-    - da $b\mal a_i$gleich (p_i\mal k)\ mod\ (k\mal m)\Rightarrow\existiert s\in\mathbb{N}:(b\mal a_i)-(p_i\mal k)=s\mal k\mal m \Leftrightarrow (b\mal a_i)=s\mal k\mal m+(p_i\mal k)$
+    - Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\times a_1\ mod\ n , ..., b\times a_t\ mod\ n$, d.h.: $b\times a_i \equiv r_i\ mod\ n$.
+    - Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$. Wäre dies nicht der Fall, hätten wir $b\times a_i\equiv b\times a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
+    - Wir wissen auch, dass jedes $r_i$ relativ prim zu n ist, denn jeder gemeinsame Teiler k von $r_i$ und $n$ , d.h. $n=k\times m$ und $r_i=p_i\times k$, müsste auch $a_i$ teilen,
+    - da $b\times a_i$gleich (p_i\times k)\ mod\ (k\times m)\Rightarrow\exists s\in\mathbb{N}:(b\times a_i)-(p_i\times k)=s\times k\times m \Leftrightarrow (b\times a_i)=s\times k\times m+(p_i\times k)$
     - Da k jeden der Summanden auf der rechten Seite dividiert und k nicht durch b dividiert (n und b sind relativ prim), müsste es auch $a_i$ dividieren, das relativ prim zu n sein soll
-    - Somit ist $r_1, ...,r_t$ eine Menge von $\phi(n)$ verschiedenen ganzen Zahlen, die relativ prim zu $n$ sind. Das bedeutet, dass sie genau dasselbe sind wie $a_1,...a_t$, nur dass sie in einer anderen Reihenfolge stehen. Insbesondere wissen wir, dass $r_1\mal...\mal r_t=a_1\mal...\mal a_t$
-    - Wir verwenden nun die Kongruenz $r_1\Zeiten...\Zeiten r_t\equiv b\Zeiten a_1\Zeiten...\Zeiten b\Zeiten a_t\ mod\ n$
-        $\Leftrightarrow r_1\Zeiten...\Zeiten r_t\equiv b_t\Zeiten a_1\Zeiten...\Zeiten a_t\ mod\ n$
-        $\Leftrightarrow r_1\Zeiten...\Zeiten r_t\equiv b_\Zeiten r_1\Zeiten...\Zeiten r_t\ mod\ n$
+    - Somit ist $r_1, ...,r_t$ eine Menge von $\phi(n)$ verschiedenen ganzen Zahlen, die relativ prim zu $n$ sind. Das bedeutet, dass sie genau dasselbe sind wie $a_1,...a_t$, nur dass sie in einer anderen Reihenfolge stehen. Insbesondere wissen wir, dass $r_1\times ...\times r_t=a_1\times ...\times a_t$
+    - Wir verwenden nun die Kongruenz $r_1\times ...\times  r_t\equiv b\times  a_1\times ...\times  b\times  a_t\ mod\ n$
+        $\Leftrightarrow r_1\times ...\times  r_t\equiv b_t\times  a_1\times ...\times  a_t\ mod\ n$
+        $\Leftrightarrow r_1\times ...\times  r_t\equiv b_\times  r_1\times ...\times  r_t\ mod\ n$
     - Da alle $r_i$ relativ prim zu $n$ sind, können wir Korollar 1 anwenden und durch ihr Produkt dividieren: $1\equiv b_t\ mod\ n \Leftrightarrow 1\equiv b\phi(n)\ mod n$ 
 - Satz 4 (Chinese Remainder Theorem):
   - Seien $m_1,...,m_r$ positive ganze Zahlen, die paarweise relativ prim sind,
@@ -856,28 +861,28 @@ Größter gemeinsamer Teiler
     - $a\equiv a_2\ mod\ m_2$
     - ...
     - $a\equiv a_r\ mod\ m_r$
-  - Außerdem ist a eindeutig modulo $M := m_1\mal...\mal m_r$
+  - Außerdem ist a eindeutig modulo $M := m_1\times ...\times m_r$
   - Beweis:
     - Für alle $i\in\{1,...,r\}$ definieren wir $M_i:=(M/m_i)\phi(m_i)$
     - Da $M_i$ per Definition relativ prim zu $m_i$ ist, können wir Theorem 3 anwenden und wissen, dass $M_i\equiv 1\ mod\ m_i$
-    - Da $M_i$ durch $m_j$ für jedes $j\not= i$ teilbar ist, haben wir $\füralle j\not= i:M_i\equiv 0\ mod\ m_j$
-    - Wir können nun die Lösung konstruieren, indem wir definieren: $a:= a_1\mal M_1+a_2\mal M_2+...+a_r\mal M_r$
+    - Da $M_i$ durch $m_j$ für jedes $j\not= i$ teilbar ist, haben wir $\forall j\not= i:M_i\equiv 0\ mod\ m_j$
+    - Wir können nun die Lösung konstruieren, indem wir definieren: $a:= a_1\times M_1+a_2\times M_2+...+a_r\times M_r$
     - Die beiden oben angeführten Argumente bezüglich der Kongruenzen der $M_i$ implizieren, dass a tatsächlich alle Kongruenzen erfüllt.
-    - Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\für alle i\in\{1,...,r\}:a\equiv b\ mod\ m_i\Rightarrow\für alle i\in\{1,. ...,r\}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
+    - Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\forall i\in\{1,...,r\}:a\equiv b\ mod\ m_i\Rightarrow\forall i\in\{1,. ...,r\}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
 - Lemma 2:
-  - Wenn $gcd(m,n)=1$, dann ist $\phi(m\mal n)=\phi(m)\mal\phi(n)$
+  - Wenn $gcd(m,n)=1$, dann ist $\phi(m\times n)=\phi(m)\times \phi(n)$
   - Der Beweis:
-    - Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\mal n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\mal n)$ gezählt werden.
-    - Betrachten Sie die Entsprechung $a\rightarrow(a\ MOD\ m, a\ MOD\ n)$. Die ganze Zahl a ist relativ prim zu m und relativ prim zu n (andernfalls würde sie $m \mal n$ teilen). Also ist $(a\ MOD\ m)$ relativ prim zu m und $(a\ MOD\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ MOD\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ MOD\ m)$ gäbe, würde dieser Teiler auch a teilen. Somit entspricht jede Zahl a, die durch $\phi(m\mal n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ MOD\ m,a\ MOD\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
-    - Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\mal n)$ der simultanen Kongruenzen:
+    - Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\times n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\times n)$ gezählt werden.
+    - Betrachten Sie die Entsprechung $a\rightarrow(a\ MOD\ m, a\ MOD\ n)$. Die ganze Zahl a ist relativ prim zu m und relativ prim zu n (andernfalls würde sie $m \times n$ teilen). Also ist $(a\ MOD\ m)$ relativ prim zu m und $(a\ MOD\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ MOD\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ MOD\ m)$ gäbe, würde dieser Teiler auch a teilen. Somit entspricht jede Zahl a, die durch $\phi(m\times n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ MOD\ m,a\ MOD\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
+    - Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen:
         $a \equiv(a\ mod\ m)\ mod\ m$
         $a \equiv(a\ MOD\ n)\ mod\ n$
-      können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\mal n)$ gezählt werden, verschiedenen Paaren entsprechen:
-      - Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\mal n)$, demselben Paar $(a\ MOD\ m, a\ MOD\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde:
+      können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen:
+      - Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ MOD\ m, a\ MOD\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde:
         $b\equiv (a\ MOD\ m)\ mod\ m$
         $b\equiv (a\ MOD\ n)\ mod\ n$
-        aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \mal n)$ 
-      - Daher ist $\phi(m \mal n)$ höchstens die Anzahl solcher Paare: $\phi(m \mal n)\leq \phi(m)\mal\phi(n)$
+        aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$ 
+      - Daher ist $\phi(m \times n)$ höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
     - Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
 
 ## Der RSA Public Key Algorithmus
@@ -888,7 +893,7 @@ Größter gemeinsamer Teiler
 - Zum Verschlüsseln berechnen Sie: $E = M^e\ MOD\ n$
     - Dies kann mit dem Quadrat- und Multiplikationsalgorithmus effizient durchgeführt werden
 - Zum Entschlüsseln berechnet man: $M'=E^d\ MOD\ n$
-    - Da $d\times e\equiv 1\ mod\ \phi(n)\Rightarrow\existiert k\in\mathbb{Z}:(d\times e)-1=k\times\phi(n)\Leftrightarrow(d\times e)=k\times\phi(n)+1$
+    - Da $d\times e\equiv 1\ mod\ \phi(n)\Rightarrow\exists k\in\mathbb{Z}:(d\times e)-1=k\times\phi(n)\Leftrightarrow(d\times e)=k\times\phi(n)+1$
     - haben wir: $M'\equiv E^d\equiv M^{e\times d}\equiv M^{k\times\phi(n)+1}\equiv 1^k\times M\equiv M\ mod\ n$ 
 - Da $(d\times e)=(e\times d)$ funktioniert die Operation auch in umgekehrter Richtung, d.h. man kann mit d verschlüsseln und mit e entschlüsseln
   - Diese Eigenschaft erlaubt es, die gleichen Schlüssel d und e zu verwenden:
@@ -896,12 +901,12 @@ Größter gemeinsamer Teiler
   - Senden von Nachrichten, die mit dem eigenen privaten Schlüssel signiert wurden
 - So richten Sie ein Schlüsselpaar für RSA ein:
   - Wählen Sie zufällig zwei Primzahlen $p$ und $q$ (mit jeweils 100 bis 200 Ziffern)
-  - Berechne $n=p\mal q,\phi(n)=(p-1)\mal (q-1)$ (Lemma 2)
+  - Berechne $n=p\times q,\phi(n)=(p-1)\times (q-1)$ (Lemma 2)
   - Wähle zufällig $e$, so dass $gcd(e,\phi(n))=1$
-  - Berechne mit dem erweiterten euklidischen Algorithmus d und c, so dass: $e\mal d+\phi(n)\mal c = 1$, wobei zu beachten ist, dass dies impliziert, dass $e\mal d\equiv 1\ mod\ \phi(n)$
+  - Berechne mit dem erweiterten euklidischen Algorithmus d und c, so dass: $e\times d+\phi(n)\times c = 1$, wobei zu beachten ist, dass dies impliziert, dass $e\times d\equiv 1\ mod\ \phi(n)$
   - Der öffentliche Schlüssel ist das Paar $(e, n)$
   - Der private Schlüssel ist das Paar $(d, n)$
-- Die Sicherheit des Verfahrens liegt in der Schwierigkeit der Faktorisierung von $n=p\mal q$, da es einfach ist, $\phi(n)$ und dann $d$ zu berechnen, wenn $p$ und $q$ bekannt sind.
+- Die Sicherheit des Verfahrens liegt in der Schwierigkeit der Faktorisierung von $n=p\times q$, da es einfach ist, $\phi(n)$ und dann $d$ zu berechnen, wenn $p$ und $q$ bekannt sind.
 - In diesem Kurs wird nicht gelehrt, warum es schwierig ist, große n zu faktorisieren, da dies einen tiefen Einblick in die Mathematik erfordern würde.
   - Wenn p und q bestimmte Eigenschaften erfüllen, sind die besten bekannten Algorithmen exponentiell zur Anzahl der Ziffern von n
   - Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist:
@@ -921,7 +926,7 @@ Größter gemeinsamer Teiler
       - Assoziativität: Für alle a, b, c \in S , gilt ( a \oplus b ) \oplus c = a \oplus ( b \oplus c )
       - Inversen: Für jedes a \in S , gibt es ein einziges Element b \in S , so dass
   dass a \oplus b = b \oplus a = e
-  - Erfüllt eine Gruppe ( S , \oplus) das Kommutativgesetz \für alle a, b \in S : a \oplus b = b \oplus a
+  - Erfüllt eine Gruppe ( S , \oplus) das Kommutativgesetz \forall a, b \in S : a \oplus b = b \oplus a
   dann nennt man sie eine abelsche Gruppe
   - Wenn eine Gruppe ( S , \oplus) nur eine endliche Menge von Elementen hat, d.h. |S| < \infty, dann wird sie
   eine endliche Gruppe genannt
@@ -935,7 +940,7 @@ Größter gemeinsamer Teiler
     - mit $\mathbb{Z}^*_n :=\{[a]_n\in \mathbb{Z}_n | gcd(a,n)=1\}$, und
     - $\times_n$ ist so definiert, dass $[a]_n\times_n [b]_n=[a\times b]_n$
     - eine endliche abelsche Gruppe ist. Man beachte, dass $\mathbb{Z}^*_n$ nur die Elemente von $\mathbb{Z}_n$ enthält, die eine multiplikative Inverse modulo n haben. Zum Beweis siehe Eigenschaften der modularen Arithmetik
-    - Beispiel: $\mathbb{Z}^*_{15}=\{[1]_{15},[2]_{15},[4]_{15},[7]_{15},[8]_{15},[11]_{15},[13]_{15},[14]_{15}\}$, als $1\times 1\equiv 1 mod 15$, $2 \Zeiten 8 \equiv 1 mod 15$, $4 \Zeiten 4 \equiv 1 mod 15$, $7 \Zeiten 13 \equiv 1 mod 15$, $11 \Zeiten 11 \equiv 1 mod 15$, $14 \Zeiten 14 \equiv 1 mod 15$
+    - Beispiel: $\mathbb{Z}^*_{15}=\{[1]_{15},[2]_{15},[4]_{15},[7]_{15},[8]_{15},[11]_{15},[13]_{15},[14]_{15}\}$, als $1\times 1\equiv 1 mod 15$, $2 \times  8 \equiv 1 mod 15$, $4 \times  4 \equiv 1 mod 15$, $7 \times  13 \equiv 1 mod 15$, $11 \times  11 \equiv 1 mod 15$, $14 \times  14 \equiv 1 mod 15$
 - Wenn klar ist, dass es sich um $(\mathbb{Z}_n, +_n)$ oder $(\mathbb{Z}^*_n, \times_n)$ handelt, werden Äquivalenzklassen $[a]_n$ oft durch ihre repräsentativen Elemente a dargestellt und $+_n$ und $\times_n$ durch $+$ bzw. $\times$ bezeichnet.
   - Definition: endliche Felder
     - Ein Feld $(S,\oplus, \otimes)$ ist eine Menge S zusammen mit zwei Operationen $\oplus$, $\otimes$, so dass
@@ -968,8 +973,8 @@ Größter gemeinsamer Teiler
 - Die Theoreme 5, 7 und 8 sind die Grundlage des folgenden Algorithmus, der eine zyklische Gruppe $\mathbb{Z}^*_p$ und eine Urwurzel g davon findet:
   - Man wählt eine große Primzahl q, so dass $p=2q+1$ eine Primzahl ist.
     - Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist.
-    - Die Ordnung von $\mathbb{Z}^*_p$ ist $2\-mal q$ und $\phi(2\-mal q)=\phi(2)\-mal\phi(q)=q-1$, da $q$ prim ist.
-    - Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \ca. 1/2$.
+    - Die Ordnung von $\mathbb{Z}^*_p$ ist $2\times  q$ und $\phi(2\times  q)=\phi(2)\times \phi(q)=q-1$, da $q$ prim ist.
+    - Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \approx 1/2$.
     - Um effizient zu prüfen, ob ein zufällig gewähltes g eine Urwurzel ist, müssen wir nur prüfen, ob $g^2\equiv 1 mod p$ oder $g^q\equiv 1 mod p$ ist. Wenn nicht, dann muss seine Ordnung $|\mathbb{Z}^*_p|$ sein, da Satz 7 besagt, dass die Ordnung von g $|\mathbb{Z}^*_p|$ teilen muss
 - Definition: diskreter Logarithmus
   - Sei p eine Primzahl, g eine Urwurzel von $(\mathbb{Z}^*_p,\times_p)$ und c ein beliebiges Element von $\mathbb{Z}^*_p$. Dann gibt es z so, dass: $g^z\equiv c mod p$
@@ -993,7 +998,7 @@ Größter gemeinsamer Teiler
   - Beide Seiten errechnen das gemeinsame Geheimnis:
     - A errechnet $s=w^q\ MOD\ p$
     - B errechnet $s'=v^r\ MOD\ p$
-    - Da $g^{q\mal r}\ MOD\ p = g^{r \mal q}\ MOD\ p$ ist, gilt: $s=s'$
+    - Da $g^{q\times r}\ MOD\ p = g^{r \times q}\ MOD\ p$ ist, gilt: $s=s'$
   - Ein Angreifer Eve, der den öffentlichen Kanal abhört, kann das Geheimnis s nur berechnen, wenn er entweder q oder r berechnen kann, die die diskreten Logarithmen von v, w modulo p zur Basis g sind.
 - Wenn der Angreifer Eve in der Lage ist, Nachrichten auf dem öffentlichen Kanal zu verändern, kann er einen Man-in-the-Middle-Angriff starten:
   - Eve generiert zwei Zufallszahlen $q'$ und $r'$: Eve berechnet $v'=g^{q'}\ MOD\ p$ und $w'=g^{r'}\ MOD\ p$
@@ -1027,20 +1032,20 @@ Größter gemeinsamer Teiler
   - Wähle eine Zufallszahl k so, dass k relativ prim zu $p-1$ ist.
   - Berechne $r=g^k mod p$
   - Berechne mit dem erweiterten euklidischen Algorithmus $k^{-1}$, den Kehrwert von $k mod (p - 1)$
-  - Berechne $s=k^{-1} \mal ( m - v \mal r) mod ( p - 1)$
+  - Berechne $s=k^{-1} \times ( m - v \times r) mod ( p - 1)$
   - Die Signatur über die Nachricht ist $( r, s )$
 - Überprüfen einer Signatur $( r , s )$ über eine Nachricht m:
   - Bestätige, dass $y^r \times r^s\ MOD\ p = g^m\ MOD\ p$
   - Der Beweis: Wir benötigen Folgendes
     - Lemma 3: Sei p eine Primzahl und g ein Generator von $\mathbb{Z}^*_p$. Dann sei $i \equiv j mod ( p -1) \Rightarrow g i \equiv g j mod p$
-    - Beweis: $i \equiv j mod (p-1) \Rightarrow$ es gibt $k\in \mathbb{Z}^+$ so, dass $(i-j)=(p-1)\mal k$
-    - Also $g^{(i-j)}=g^{(p-1)\mal k} \equiv 1^k\equiv 1 mod p$, wegen Theorem 3 (Euler) $\Rightarrow g^i \equiv g^j mod p$
+    - Beweis: $i \equiv j mod (p-1) \Rightarrow$ es gibt $k\in \mathbb{Z}^+$ so, dass $(i-j)=(p-1)\times k$
+    - Also $g^{(i-j)}=g^{(p-1)\times k} \equiv 1^k\equiv 1 mod p$, wegen Theorem 3 (Euler) $\Rightarrow g^i \equiv g^j mod p$
   - Als $s\equiv k^{-1}\times(m-v\times r) mod (p-1)$
     - $\Leftrightarrow k \times s\equiv m-v\times r mod (p-1)$
     - $\Leftrightarrow m \equiv v\times r+k\times s mod (p-1)$
-    - $\Rightarrow g^m \equiv g^{(v\Zeiten r+ k\Zeiten s)} mod p$ mit Lemma 3
-    - $\Leftrightarrow g^m \equiv g^{(v\Zeiten r)}\Zeiten g^{(k\Zeiten s)} mod p$
-    - $\Leftrightarrow g^m \equiv y^r\Zeiten r^s mod p$
+    - $\Rightarrow g^m \equiv g^{(v\times  r+ k\times  s)} mod p$ mit Lemma 3
+    - $\Leftrightarrow g^m \equiv g^{(v\times  r)}\times  g^{(k\times  s)} mod p$
+    - $\Leftrightarrow g^m \equiv y^r\times  r^s mod p$
 - Sicherheit von ElGamal-Signaturen:
   - Da der private Schlüssel v benötigt wird, um s berechnen zu können, müsste ein Angreifer den diskreten Logarithmus von y modulo p zur Basis g berechnen, um Signaturen zu fälschen
   - Entscheidend für die Sicherheit ist, dass für jede Nachricht eine neue Zufallszahl k gewählt wird, denn ein Angreifer kann das Geheimnis v berechnen, wenn er zwei Nachrichten zusammen mit ihren Signaturen auf der Basis des gleichen k erhält (siehe [Men97a], Anmerkung 11.66.ii)
@@ -1048,12 +1053,12 @@ Größter gemeinsamer Teiler
 - Um eine Nachricht m mit dem öffentlichen Schlüssel $(y,g,p)$ zu verschlüsseln:
   - Wähle einen zufälligen $k\in\mathbb{Z}^+$ mit $k<p-1$
   - Berechne $r=g^k\ MOD\ p$
-  - Berechne $s=m\mal y^k\ MOD\ p$
+  - Berechne $s=m\times y^k\ MOD\ p$
   - Der verschlüsselte Text ist $(r,s)$, der doppelt so lang ist wie m
 - Entschlüsseln der Nachricht $(r,s)$ mit v:
   - Verwenden Sie den privaten Schlüssel v zur Berechnung von $r^{(p-1-v)}\ MOD\ p=r^{(-v)}\ MOD\ p$
-  - Wiederherstellung von m durch Berechnung von $m=r^{(-v)}\mal s\ MOD\ p$
-  - Beweis: $r^{(-v)}\times s\equiv r^{(-v)} \Zeiten m \Zeiten y^k\equiv g^{(-vk)}\Zeiten m \Zeiten y^k\equiv g^{(-v \Zeiten k)} \Zeiten m\Zeiten g^{(v \Zeiten k)} \equiv m mod p$
+  - Wiederherstellung von m durch Berechnung von $m=r^{(-v)}\times s\ MOD\ p$
+  - Beweis: $r^{(-v)}\times s\equiv r^{(-v)} \times  m \times  y^k\equiv g^{(-vk)}\times  m \times  y^k\equiv g^{(-v \times  k)} \times  m\times  g^{(v \times  k)} \equiv m mod p$
 - Sicherheit:
   - Die einzige bekannte Möglichkeit für einen Angreifer, m wiederherzustellen, ist die Berechnung des diskreten Logarithmus v von y modulo p zur Basis g
   - Für jede Nachricht wird ein neues zufälliges k benötigt ([Men97a], Anmerkung 8.23.ii)
@@ -1300,7 +1305,7 @@ Größter gemeinsamer Teiler
 - Definieren Sie $P(n,k):= Pr$[mindestens ein Duplikat in k Elementen, wobei jedes Element einen von n gleich wahrscheinlichen Werten zwischen 1 und n annehmen kann ]
 - Definieren Sie $Q(n,k):= Pr$[kein Duplikat in k Artikeln, jeder Artikel zwischen 1 und n ]
   - Wir können das erste Element aus n möglichen Werten wählen, das zweite Element aus $n-1$ möglichen Werten, usw.
-  - Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten ohne Duplikate auszuwählen, ist also: $N=n \mal (n-1)\mal...\mal(n-k+1)= n!\backslash(n-k)!$
+  - Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten ohne Duplikate auszuwählen, ist also: $N=n \times (n-1)\times ...\times (n-k+1)= n!\backslash(n-k)!$
   - Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten auszuwählen, mit oder ohne Duplikate, ist: $n^k$
   - Also, $Q(n,k)=N\backslash n^k=n!\backslash((n-k)! \times n^k)$
 - Wir haben: $P(n,k)=1-Q(n,k)=1-\frac{n!}{(n-k)!\times n^k}=1-\frac{n\times(n-1)\times...\times(n-k+1)}{n^k}=1-[(1-\frac{1}{n})\times(1-\frac{2}{n})\times...\times(1-\frac{k-1}{n})]$
@@ -1310,7 +1315,7 @@ Größter gemeinsamer Teiler
   - Übung: Beweisen Sie die obige Gleichheit durch Induktion
 - Kehren wir zu unserer ursprünglichen Frage zurück: Wie viele Personen k müssen sich in einem Raum befinden, damit mindestens zwei Personen mit demselben Geburtstag (von $n=365$ möglichen) mit der Wahrscheinlichkeit $\geq 0,5$ vorhanden sind?
   - Wir wollen also lösen: $\frac{1}{2}=1-e^{\frac{-k\times(k-1)}{2n}}\Leftrightarrow 2=e^{\frac{k\times(k-1)}{2n}}\Leftrightarrow ln(2)=\frac{k\times(k-1)}{2n}$
-  - Für große k können wir $k\times(k-1)$ durch $k^2$ approximieren, und wir erhalten: $k=\sqrt{2 ln(2)n}\ca. 1,18\sqrt{n}$
+  - Für große k können wir $k\times(k-1)$ durch $k^2$ approximieren, und wir erhalten: $k=\sqrt{2 ln(2)n}\approx  1,18\sqrt{n}$
   - Für $n=365$ erhalten wir $k=22,54$, was der richtigen Antwort recht nahe kommt 23
 - Was hat das mit MDCs zu tun?
 - Wir haben gezeigt, dass bei n möglichen unterschiedlichen Werten die Anzahl k der Werte, die man zufällig wählen muss, um mindestens ein Paar identischer Werte zu erhalten, in der Größenordnung von $\sqrt{n}$ liegt.
@@ -1416,8 +1421,8 @@ Größter gemeinsamer Teiler
     - Die Runden haben eine ähnliche Struktur, aber jede Runde verwendet eine andere primitive logische Funktion $f_1, f_2, f_3, f_4$.
     - Bei jedem Schritt wird eine feste additive Konstante $K_t$ verwendet, die während einer Runde unverändert bleibt
 - ![](Assets/NetworkSecurity-sha1.png)
-  - $t\in\{0,...,15\}\Rechtspfeil W_t:= y_i[t]$
-  - $t\in\{16,...,79\}\Pfeil nach rechts W_t:=CLS_1(W_{t-16}\oplus W_{t-14}\oplus W_{t-8} \oplus W_{t-3})$
+  - $t\in\{0,...,15\}\\Rightarrow  W_t:= y_i[t]$
+  - $t\in\{16,...,79\}\Rightarrow W_t:=CLS_1(W_{t-16}\oplus W_{t-14}\oplus W_{t-8} \oplus W_{t-3})$
   - Nach Schritt 79 wird jedes Register A, B, C, D, E modulo $2^{32}$ mit dem Wert des entsprechenden Registers vor Schritt 0 addiert, um $CV_{i+1}$ zu berechnen
 - Der SHA-1-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks.
 - Vergleich zwischen SHA-1 und MD5:
@@ -1437,7 +1442,7 @@ Größter gemeinsamer Teiler
   - 64 Runden (SHA-256) oder 80 Runden (SHA-512)
 - Ein Schritt
   - ![](Assets/NetworkSecurity-sha-2.png)
-  - $t\in\{0, ..., 15\}\Rechtspfeil W_t:=y_i[t]$
+  - $t\in\{0, ..., 15\}\\Rightarrow  W_t:=y_i[t]$
   - $t\in\{16, ..., r\}\Rightarrow W_t:=W_{t-16}\oplus \delta_0(W_{t-15})\oplus W_{t-7}\oplus\delta_1(W_{t-2})$
   - $K_t$ ist der gebrochene Teil der Kubikwurzel aus der t-ten Primzahl
   - Die ROTR- und Funktionen XOR-verknüpfen verschiedene Verschiebungen des Eingangswertes
@@ -1599,6 +1604,138 @@ Größter gemeinsamer Teiler
   - Auffüllungen mit einem einzelnen ,,0''- oder ,,1''-Bit stellen sicher, dass verschiedene Datenblocktypen gut voneinander getrennt sind
 
 # Zufallszahlengenerierung
+## Aufgaben der Schlüsselverwaltung
+- Erzeugung:
+  - Für die Sicherheit ist es von entscheidender Bedeutung, dass die Schlüssel mit einem wirklich zufälligen oder zumindest pseudozufälligen Generierungsverfahren erzeugt werden (siehe unten).
+  - Andernfalls könnte ein Angreifer den Schlüsselgenerierungsprozess reproduzieren und den zur Sicherung einer bestimmten Kommunikation verwendeten Schlüssel leicht finden.
+- Verteilung:
+  - Die Verteilung einiger anfänglicher Schlüssel muss in der Regel manuell / "out of band" erfolgen.
+  - Die Verteilung von Sitzungsschlüsseln wird in der Regel während eines Authentifizierungsaustauschs durchgeführt.
+  - Beispiele: Diffie-Hellman, Otway-Rees, Kerberos, X.
+- Speicherung:
+  - Schlüssel, insbesondere Authentifizierungsschlüssel, sollten sicher gespeichert werden:
+    - entweder verschlüsselt mit einer schwer zu erratenden Passphrase, oder besser
+    - in einem sicheren Gerät wie einer Smart-Card
+- Entzug:
+  - Wenn ein Schlüssel kompromittiert wurde, sollte es möglich sein, diesen Schlüssel zu widerrufen, damit er nicht mehr missbraucht werden kann (vgl. X.509).
+- Vernichtung:
+  - Schlüssel, die nicht mehr verwendet werden (z. B. alte Sitzungsschlüssel), sollten sicher vernichtet werden.
+- Wiederherstellung:
+  - Wenn ein Schlüssel verloren gegangen ist (z. B. defekte Chipkarte, Diskette, versehentliches Löschen), sollte er wiederhergestellt werden können, um Datenverluste zu vermeiden.
+  - Die Wiederherstellung von Schlüsseln ist nicht zu verwechseln mit der Schlüsselhinterlegung
+- Hinterlegung:
+  - Mechanismen und Architekturen, die es staatlichen Stellen (und nur diesen) ermöglichen sollen, Sitzungsschlüssel zu erhalten, um zu Strafverfolgungszwecken die Kommunikation abzuhören / gespeicherte Daten zu lesen
+    - Wenn ich meinen Schlüssel zurückbekomme, ist es Schlüsselwiederherstellung, wenn du meinen Schlüssel zurückbekommst, ist es Schlüsselhinterlegung...'')
+
+## Zufalls- und Pseudo-Zufallszahlengenerierung
+- Definition: ,,Ein Zufallsbitgenerator ist ein Gerät oder ein Algorithmus, der eine Folge statistisch unabhängiger und unverfälschter Binärziffern ausgibt.''
+- Bemerkung: Ein Zufallsbitgenerator kann zur Erzeugung gleichmäßig verteilter Zufallszahlen verwendet werden, z. B. kann eine zufällige ganze Zahl im Intervall $[0,n]$ erhalten werden, indem eine zufällige Bitfolge der Länge $\lfloor lg n\rfloor+1$ erzeugt und in eine Zahl umgewandelt wird. Ist die resultierende ganze Zahl größer als n, so kann sie verworfen werden, und der Vorgang wird so lange wiederholt, bis eine ganze Zahl im gewünschten Bereich erzeugt worden ist.
+- Definition: Ein Pseudo-Zufallsbitgenerator (PRBG) ist ein deterministischer Algorithmus, der bei einer wirklich zufälligen Binärfolge der Länge k eine Binärfolge der Länge $m>>k$ ausgibt, die ,,zufällig'' erscheint. Die Eingabe in den PRBG wird als Seed bezeichnet, die Ausgabe als pseudozufällige Bitfolge.
+- Bemerkungen:
+  - Die Ausgabe eines PRBG ist nicht zufällig, tatsächlich ist die Anzahl der möglichen Ausgabesequenzen der Länge m höchstens ein kleiner Bruchteil $2^k/2^m$, da der PRBG immer dieselbe Ausgabesequenz für einen (festen) Seed erzeugt
+  - Die Motivation für die Verwendung einer PRBG ist, dass es zu teuer sein könnte, echte Zufallszahlen der Länge m zu erzeugen, z. B. durch Münzwurf, so dass nur eine kleinere Menge von Zufallsbits erzeugt wird und dann aus den k echten Zufallsbits eine pseudozufällige Bitfolge erzeugt wird
+  - Um Vertrauen in die ,,Zufälligkeit'' einer Pseudo-Zufallsfolge zu gewinnen, werden statistische Tests mit den erzeugten Folgen durchgeführt
+- Beispiel:
+  - Ein linearer Kongruenzgenerator erzeugt eine Pseudo-Zufallsfolge von Zahlen $y_1,y_2, ...$ gemäß der linearen Rekursion $y_i= a\times y_{i-1} + b\ mod\ q$, wobei $a, b, q$ Parameter sind, die den PRBG charakterisieren
+  - Leider ist dieser Generator auch dann vorhersehbar, wenn $a, b$ und $q$ unbekannt sind, und sollte daher nicht für kryptographische Zwecke verwendet werden
+- Sicherheitsanforderungen an PRBGs für die Verwendung in der Kryptographie:
+  - Als Mindestsicherheitsanforderung sollte die Länge k des Seeds einer PRBG so groß sein, dass eine Brute-Force-Suche über alle Seeds für einen Angreifer nicht durchführbar ist
+  - Die Ausgabe einer PRBG sollte statistisch nicht von echten Zufallssequenzen unterscheidbar sein.
+  - Die Ausgabebits sollten für einen Angreifer mit begrenzten Ressourcen unvorhersehbar sein, wenn er den Seed nicht kennt.
+- Definition: Ein PRBG besteht alle statistischen Polynomialzeit-Tests, wenn kein deterministischer Polynomialzeit-Algorithmus zwischen einer Ausgangssequenz des Generators und einer echten Zufallssequenz derselben Länge mit einer Wahrscheinlichkeit deutlich größer als 0 unterscheiden kann.
+  - Polynomialzeit-Algorithmus bedeutet, dass die Laufzeit des Algorithmus durch ein Polynom in der Länge m der Sequenz begrenzt ist
+- Definition: Ein PRBG besteht den Next-Bit-Test, wenn es keinen deterministischen Polynomialzeit-Algorithmus gibt, der bei Eingabe der ersten m Bits einer Ausgangssequenz $s$ das $(m+1)$-te Bit $s_{m+1}$ der Ausgangssequenz mit einer Wahrscheinlichkeit deutlich größer als 0 vorhersagen kann.
+- Theorem (Universalität des Next-Bit-Tests): Wenn eine PRBG den Next-Bit-Test $\Leftrightarrow$ besteht, dann besteht sie alle statistischen Polynomialzeittests
+- Definition: Ein PRBG, der den Next-Bit-Test besteht - möglicherweise unter einer plausiblen, aber unbewiesenen mathematischen Annahme wie der Unlösbarkeit des Faktorisierungsproblems für große ganze Zahlen - wird als kryptographisch sicherer Pseudo-Zufallsgenerator (CSPRBG) bezeichnet
+
+## Zufallszahlengenerierung
+- Hardware-basierte Zufallsbit-Generatoren basieren auf physikalischen Phänomenen, wie:
+  - die verstrichene Zeit zwischen der Emission von Teilchen beim radioaktiven Zerfall,
+  - thermisches Rauschen einer Halbleiterdiode oder eines Widerstandes,
+  - Frequenzinstabilität eines frei laufenden Oszillators,
+  - der Betrag, um den ein Metall-Isolator-Halbleiter-Kondensator während eines bestimmten Zeitraums aufgeladen wird,
+  - Luftturbulenzen in einem versiegelten Festplattenlaufwerk, die zufällige Schwankungen in den Sektor-Lese-Latenzen des Festplattenlaufwerks verursachen, und
+  - Ton von einem Mikrofon oder Videoeingang von einer Kamera
+  - der Zustand einer ungeraden Anzahl von kreisförmig verbundenen NOT-Gattern
+- Ein hardwarebasierter Zufallsbitgenerator sollte idealerweise in einer manipulationssicheren Vorrichtung untergebracht und so vor möglichen Angreifern geschützt sein.
+- Softwarebasierte Zufallsbit-Generatoren können auf Prozessen basieren wie
+  - der Systemuhr,
+  - der verstrichenen Zeit zwischen Tastenanschlägen oder Mausbewegungen,
+  - Inhalt von Eingabe-/Ausgabepuffern
+  - Benutzereingaben und
+  - Werte des Betriebssystems wie Systemauslastung und Netzwerkstatistiken
+- Idealerweise sollten mehrere Zufallsquellen ,,gemischt'' werden, z. B. durch Verkettung ihrer Werte und Berechnung eines kryptografischen Hashwerts für den kombinierten Wert, um zu verhindern, dass ein Angreifer den Zufallswert erraten kann
+  - Wird z. B. nur die Systemuhr als Zufallsquelle verwendet, könnte ein Angreifer die aus dieser Zufallsquelle gewonnenen Zufallszahlen erraten, wenn er weiß, wann sie erzeugt wurden.
+- Verzerrung:
+  - Betrachten wir einen Zufallsgenerator, der verzerrte, aber unkorrelierte Bits erzeugt, z. B. 1en mit der Wahrscheinlichkeit $p\not= 0,5$ und 0en mit der Wahrscheinlichkeit $1-p$, wobei p unbekannt, aber fest ist
+- Die folgende Technik kann verwendet werden, um eine Zufallsfolge zu erhalten, die unkorreliert und unverzerrt ist:
+  - Die Ausgangssequenz des Generators wird in Bitpaare gruppiert
+  - Alle Paare 00 und 11 werden verworfen.
+  - Für jedes Paar 10 erzeugt der unvoreingenommene Generator eine 1 und für jedes Paar 01 eine 0.
+- Ein weiteres praktisches (wenn auch nicht beweisbares) Verfahren zur Entzerrung ist die Weiterleitung von Sequenzen, deren Bits korreliert oder verzerrt sind, durch eine kryptografische Hash-Funktion wie MD5 oder SHA-1
+
+## Statistische Tests für Zufallszahlen
+- Mit den folgenden Tests lässt sich überprüfen, ob eine generierte Zufalls- oder Pseudozufallsfolge bestimmte statistische Eigenschaften nicht erfüllt:
+  - Monobit-Test: Gibt es gleich viele 1en wie 0en?
+  - Serieller Test (Zwei-Bit-Test): Gibt es gleich viele 00-, 01-, 10-, 11-Paare?
+  - Poker-Test: Gibt es gleich viele Sequenzen ni der Länge q, die mit $q$ den gleichen Wert haben, so dass $\lfloor m/q\rfloor\geq 5\times (2^q)$
+  - Test auf Durchläufe: Entspricht die Anzahl der Läufe (Sequenzen, die nur entweder 0 oder 1 enthalten) unterschiedlicher Länge den Erwartungen für Zufallszahlen?
+  - Autokorrelationstest: Gibt es Korrelationen zwischen der Sequenz und (nicht-zyklischen) verschobenen Versionen davon?
+  - Maurer's Universal Test: Kann die Sequenz komprimiert werden?
+  - NIST SP 800-22: Standardisierte Testsuite, umfasst die oben genannten und weitere fortgeschrittene Tests
+
+## Sichere Pseudo-Zufallszahlengenerierung
+- Es gibt eine Reihe von Algorithmen, die kryptografische Hash-Funktionen oder Verschlüsselungsalgorithmen zur Erzeugung von kryptografisch sicheren Pseudozufallszahlen verwenden.
+  - Obwohl diese Verfahren nicht als sicher bewiesen werden können, scheinen sie
+für die meisten praktischen Situationen ausreichend
+- Ein solcher Ansatz ist der Generator ANSI X9.17:
+  - Eingabe: ein zufälliger und geheimer 64-Bit-Seed s, eine ganze Zahl m und ein 3-DES-Schlüssel K
+  - Ausgabe: m pseudo-zufällige 64-Bit-Strings $y_1,y_2,...Y_m$
+      1. $q = E(K, Date\_Time)$
+      2. For i von 1 bis m do
+         1. $x_i = E(K, (q\oplus s)$
+         2. $s = E(K, (x_i\oplus q)$
+      3. $Return(x_1,x_2,...x_m)$
+  - Diese Methode ist eine vom U.S. Federal Information Processing Standard (FIPS) zugelassene Methode zur pseudozufälligen Erzeugung von Schlüsseln und Initialisierungsvektoren zur Verwendung mit DES
+- Das RSA-PRBG ist ein CSPRBG unter der Annahme, dass das RSA-Problem unlösbar ist:
+  - Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge k
+  1. Setup-Prozedur: Erzeuge zwei geheime Primzahlen $p, q$, die für die Verwendung mit RSA geeignet sind. Berechne $n=p\times q$ und $\phi=(p-1)\times(q-1)$. Wähle eine zufällige ganze Zahl e so, dass $1<e<\phi$ und $gcd(e,\phi)=1$
+  2. Wähle eine zufällige ganze Zahl $y_0$ (den Keim) so, dass $y_0\in [1,n]$
+  3. Für i von 1 bis k tun
+     1. $y_i=(y_{i-1})^e\ mod\ n$
+     2. $z_i =$ das niedrigstwertige Bit von $y_i$
+  - Die Effizienz des Generators kann leicht verbessert werden, indem man die letzten j Bits von jedem $y_i$ nimmt, wobei $j=c\times lg(lg(n))$ und c eine Konstante ist
+  - Für eine gegebene Bitlänge m von n wurde jedoch noch kein Wertebereich für die Konstante c ermittelt, in dem der Algorithmus noch einen CSPRBG ergibt
+- Der Blum-Blum-Shub-PRBG ist ein CSPRBG unter der Annahme, dass das Problem der ganzzahligen Faktorisierung unlösbar ist:
+  - Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge k
+  1. Setup-Prozedur: Erzeuge zwei große geheime und unterschiedliche Primzahlen $p,q$, so dass $p,q$ jeweils kongruent 3 modulo 4 sind, und lass $n=p\times q$
+  2. Wähle eine zufällige ganze Zahl s (den Keim) so, dass $s\in [1, n-1]$ liegt, so dass $gcd(s,n)=1$ und $y_0=s^2\ mod\ n$
+  3. Für i von 1 bis k tun
+     1. $y_i = (y_{i-1})^2\ mod\ n$
+     2. $z_i =$ das niedrigstwertige Bit von $y_i$
+  - Die Effizienz des Generators kann mit der gleichen Methode wie beim RSA-Generator verbessert werden, wobei ähnliche Einschränkungen für die Konstante c gelten
+- Dualer deterministischer Zufallsbitgenerator mit elliptischer Kurve:
+  - Basierend auf der Unlösbarkeit des Problems des diskreten Logarithmus elliptischer Kurven
+  - Vereinfachte Version: ![](Assets/NetworkSecurity-dual-elliptic-curve-deterministic-random-bit-generator.png)
+  - Der Zustand t wird mit einem Generator P multipliziert, der x-Wert des neuen Punktes wird zu t'
+  - Multiplikation mit einem anderen Punkt Q r Bits der Ausgabe können erzeugt werden, die Anzahl der Bits hängt von der Kurve ab (zwischen 240 und 504 Bits)
+  - Teil der Norm NIST 800-90A
+  - Sicherheit:
+    - Es wurde gezeigt, dass Angreifer den Zustand t ableiten können, wenn P für eine Konstante e gleich eQ gewählt wird.
+    - Wir wissen nicht, wie die vordefinierten Punkte P und Q in NIST 800-90A abgeleitet werden, also Vorsicht
+
+## CSPRNG-Sicherheit ist eine große Sache!
+- Im September 2006 wurde Debian versehentlich so verändert, dass nur die Prozess-ID verwendet wurde, um den OpenSSL CSPRNG zu füttern
+  - Nur 32.768 mögliche Werte!
+  - Wurde bis Mai 2008 nicht entdeckt
+- Ein Scan von etwa 23 Millionen TLS- und SSH-Hosts zeigte, dass
+  - Mindestens 0,34% der Hosts teilten Schlüssel aufgrund fehlerhafter RNGs
+  - 0,50% der gescannten TLS-Schlüssel aufgrund einer geringen Zufälligkeit kompromittiert werden konnten
+  - und 1,06% der SSH-Hosts...
+- Überwachen Sie Ihren CSPRNG!
+  - Generieren Sie keine Zufallszahlen direkt nach dem Booten Ihres Systems
+  - Verwenden Sie blockierende RNGs, d.h. solche, die nicht fortfahren, bis sie genügend Entropie haben
+
 # Kryptographische Protokolle
 # Sichere Gruppenkommunikation
 # Zugriffskontrolle

@@ -34,10 +34,44 @@
   - [Der Stromchiffre-Algorithmus RC4](#der-stromchiffre-algorithmus-rc4)
   - [KASUMI](#kasumi)
     - [KASUMI - Sicherheitsdiskussion](#kasumi---sicherheitsdiskussion)
-- [Grundlagen der Kryptographie](#grundlagen-der-kryptographie-1)
-- [Symmetrische Kryptographie](#symmetrische-kryptographie-1)
 - [Asymmetrische Kryptographie](#asymmetrische-kryptographie)
+  - [Einige mathematische Hintergründe](#einige-mathematische-hintergründe)
+  - [Der RSA Public Key Algorithmus](#der-rsa-public-key-algorithmus)
+  - [Einige weitere mathematische Hintergründe](#einige-weitere-mathematische-hintergründe)
+  - [Diffie-Hellman-Schlüsselaustausch](#diffie-hellman-schlüsselaustausch)
+  - [ElGamal Algorithmus](#elgamal-algorithmus)
+  - [Elliptische Kurven Kryptographie](#elliptische-kurven-kryptographie)
+    - [Gruppenelemente](#gruppenelemente)
+    - [Punktaddition](#punktaddition)
+    - [Grundlagen des ECC - Algebraische Addition](#grundlagen-des-ecc---algebraische-addition)
+    - [Multiplikation](#multiplikation)
+    - [Kurven über $\mathbb{Z}_p$](#kurven-über-mathbbz_p)
+    - [Berechnen Sie die y-Werte in $\mathbb{Z}_p$](#berechnen-sie-die-y-werte-in-mathbbz_p)
+    - [Addition und Multiplikation in $\mathbb{Z}_p$](#addition-und-multiplikation-in-mathbbz_p)
+    - [Foundations of ECC - Größe der erzeugten Gruppen](#foundations-of-ecc---größe-der-erzeugten-gruppen)
+    - [ECDH](#ecdh)
+    - [EC-Version des ElGamal-Algorithmus](#ec-version-des-elgamal-algorithmus)
+    - [Sicherheit](#sicherheit)
+    - [Weitere Anmerkungen](#weitere-anmerkungen)
+  - [Schlussfolgerung](#schlussfolgerung)
 - [Modifikationsprüfwerte](#modifikationsprüfwerte)
+  - [Motivation](#motivation)
+  - [Kryptographische Hash-Funktionen](#kryptographische-hash-funktionen)
+  - [Nachrichten-Authentifizierungs-Codes (MAC)](#nachrichten-authentifizierungs-codes-mac)
+  - [Ein einfacher Angriff gegen einen unsicheren MAC](#ein-einfacher-angriff-gegen-einen-unsicheren-mac)
+  - [Anwendungen für kryptographische Hash-Funktionen und MACs](#anwendungen-für-kryptographische-hash-funktionen-und-macs)
+  - [Angriffe basierend auf dem Geburtstagsphänomen](#angriffe-basierend-auf-dem-geburtstagsphänomen)
+  - [Übersicht über die gebräuchlichen MDCs](#übersicht-über-die-gebräuchlichen-mdcs)
+  - [Gemeinsame Struktur von kryptografischen Hash-Funktionen](#gemeinsame-struktur-von-kryptografischen-hash-funktionen)
+  - [Der Message Digest 5](#der-message-digest-5)
+  - [Der sichere Hash-Algorithmus SHA-1](#der-sichere-hash-algorithmus-sha-1)
+  - [Der sichere Hash-Algorithmus SHA-3](#der-sichere-hash-algorithmus-sha-3)
+  - [Cipher Block Chaining Message Authentication Codes](#cipher-block-chaining-message-authentication-codes)
+  - [Konstruktion eines MAC aus einem MDC](#konstruktion-eines-mac-aus-einem-mdc)
+  - [Authentifizierte Verschlüsselung mit zugehörigen Daten (AEAD) Modi](#authentifizierte-verschlüsselung-mit-zugehörigen-daten-aead-modi)
+    - [Galois/Zähler-Modus (GCM) [MV04]](#galoiszähler-modus-gcm-mv04)
+    - [Kleiner Exkurs: Rechenoperationen in $GF(2^n)$](#kleiner-exkurs-rechenoperationen-in-gf2n)
+  - [SpongeWrap](#spongewrap)
 - [Zufallszahlengenerierung](#zufallszahlengenerierung)
 - [Kryptographische Protokolle](#kryptographische-protokolle)
 - [Sichere Gruppenkommunikation](#sichere-gruppenkommunikation)
@@ -133,8 +167,6 @@ Diese Bedrohungen werden oft kombiniert, um einen Angriff durchzuführen!
 | Verfügbarkeit               | x         |         | x                        | x                                                          |                                  |                             | x                                 |  |
 | Kontrollierter Zugriff      | x         |         | x                        |                                                            |                                  | x                           |                                   |
 
-
-
 ## Analyse der Netzwerksicherheit
 - Um geeignete Gegenmaßnahmen gegen Bedrohungen ergreifen zu können, müssen diese für eine gegebene Netzkonfiguration angemessen bewertet werden.
 - Daher ist eine detaillierte Netzsicherheitsanalyse erforderlich, die
@@ -215,7 +247,6 @@ Diese Bedrohungen werden oft kombiniert, um einen Angriff durchzuführen!
     - Kontrolliert, dass jede Identität nur auf die Dienste und Informationen zugreift, zu denen sie berechtigt ist
 - **Nicht-Abstreitbarkeit (Non Repudiation)**
     - Schützt davor, dass an einem Kommunikationsaustausch beteiligte Entitäten später fälschlicherweise abstreiten können, dass der Austausch stattgefunden hat
-
 
 ## Sicherheitsunterstützende Mechanismen
 - Allgemeine Mechanismen
@@ -461,7 +492,6 @@ Output-Feedback-Modus (OFB)
       - Es ist für einen Angreifer möglich, bestimmte Bits des Klartextes zu manipulieren
 - ![](Assets/NetworkSecurity-output-feedback-mode.png)
 
-
 Algorithmus-Übersicht
 - Datenverschlüsselungsstandard (DES)
   - Alter amerikanischer Standard aus den 70er Jahren
@@ -530,7 +560,6 @@ Geschichte
     - $L_{16}' || R_{16}' = R_0 || L_0$
 - Nach der letzten Runde führt DES einen 32-Bit-Tausch und die inverse Anfangspermutation durch
   - InverseInitialPermutation($L_0||R_0$) = InverseInitialPermutation(InitialPermutation(Klartext)) = Klartext
-
 
 ### DES - Sicherheit
 - Schwächen der Schlüssel
@@ -703,10 +732,872 @@ Standardisierte AES-Konfigurationen
   - Stromchiffre basierend auf LFSR, kann in 7.500 ASIC-Gattern implementiert werden
   - Aber auch anfällig für verwandte Schlüsselangriffe [KY11].
 
-# Grundlagen der Kryptographie
-# Symmetrische Kryptographie
 # Asymmetrische Kryptographie
+Eine vorherige Beschäftigung mit der diskreten Mathematik wird dem Leser jedoch helfen, die hier vorgestellten Konzepte zu verstehen.'' E. Amoroso in einem anderen Zusammenhang [Amo94]
+
+- Allgemeine Idee:
+  - Verwenden Sie zwei verschiedene Schlüssel $-K$ und $+K$ für die Ver- und Entschlüsselung
+  - Bei einem zufälligen Chiffretext $c=E(+K, m)$ und $+K$ sollte es nicht möglich sein, $m = D(-K, c) = D(-K, E(+K, m))$ zu berechnen.
+    - Dies impliziert, dass die Berechnung von $-K$ bei $+K$ nicht möglich sein sollte.
+  - Der Schlüssel $-K$ ist nur einer Entität A bekannt und wird A's privater Schlüssel $-K_A$ genannt
+  - Der Schlüssel $+K$ kann öffentlich bekannt gegeben werden und wird A's öffentlicher Schlüssel $+K_A$ genannt
+- Anwendungen:
+  - Verschlüsselung:
+    - Wenn B eine Nachricht mit dem öffentlichen Schlüssel $+K_A$ von A verschlüsselt, kann er sicher sein, dass nur A sie mit $-K_A$ entschlüsseln kann.
+  - Signieren:
+    - Wenn A eine Nachricht mit seinem eigenen privaten Schlüssel $-K_A$ verschlüsselt, kann jeder diese Signatur verifizieren, indem er sie mit A's öffentlichem Schlüssel $+K_A$ entschlüsselt
+  - Achtung! Entscheidend ist, dass jeder nachprüfen kann, dass er wirklich den öffentlichen Schlüssel von A kennt und nicht den Schlüssel eines Gegners!
+- Entwurf von asymmetrischen Kryptosystemen:
+  - Schwierigkeit: Finde einen Algorithmus und eine Methode, zwei Schlüssel $-K$, $+K$ so zu konstruieren, dass es nicht möglich ist, $E(+K, m)$ mit der Kenntnis von $+K$ zu entschlüsseln
+  - Beschränkungen:
+    - Die Schlüssellänge sollte ,,überschaubar'' sein
+    - Verschlüsselte Nachrichten sollten nicht beliebig länger sein als unverschlüsselte Nachrichten (wir würden einen kleinen konstanten Faktor tolerieren)
+    - Ver- und Entschlüsselung sollten nicht zu viele Ressourcen verbrauchen (Zeit, Speicher)
+  - Grundlegende Idee: Man nehme ein Problem aus dem Bereich der Mathematik/Informatik, das schwer zu lösen ist, wenn man nur $+K$ kennt, aber leicht zu lösen, wenn man $-K$ kennt
+    - Knapsack-Probleme: Grundlage der ersten funktionierenden Algorithmen, die sich leider fast alle als unsicher erwiesen haben
+    - Faktorisierungsproblem: Grundlage des RSA-Algorithmus
+    - Diskreter-Logarithmus-Problem: Grundlage von Diffie-Hellman und ElGamal
+
+##                 Einige mathematische Hintergründe
+- Sei $\mathbb{Z}$ die Menge der ganzen Zahlen, und $a,b,n\in\mathbb{Z}$
+- Wir sagen, $a$ teilt $b(,,a|b'')$, wenn es eine ganze Zahl $k\in\mathbb{Z}$ gibt, so dass $a\mal k=b$
+- $a$ ist prim, wenn es positiv ist und die einzigen Teiler von a $1$ und $a$ sind.
+- $r$ ist der Rest von a geteilt durch $n$, wenn $r=a-\lfloor a / n \rfloor\times n$, wobei $\lfloor x\rfloor$ die größte ganze Zahl kleiner oder gleich $x$ ist.
+    - Beispiel: 4 ist der Rest von 11 geteilt durch 7 als $4=11-\lfloor 11/7\rfloor\times 7$
+    - Wir können dies auch anders schreiben: $a=q\mal n + r$ mit $q=\lfloor a/n\rfloor$
+- Für den Rest $r$ der Division von a durch n schreiben wir $a\ MOD\ n$
+- Wir sagen, b ist kongruent $a\ mod\ n$, wenn es bei der Division durch n den gleichen Rest wie a hat. Also teilt n $(a-b)$, und wir schreiben $b\equiv a\ mod\ n$
+  - Beispiele: $4\equiv 11\ mod\ 7$, $25\equiv 11\ mod\ 7$, $11\equiv 25\ mod\ 7$, $11\equiv 4\ mod\ 7$, $-10\equiv 4\ mod\ 7$
+- Da der Rest r der Division durch n immer kleiner als n ist, stellt man manchmal die Menge $\{x\ MOD\ n | x\in\mathbb{Z}\}$ durch Elemente der Menge $\mathbb{Z}_n=\{0, 1, ..., n-1\}$ dar
+
+| Eigenschaft | Ausdruck |
+| ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Kommutativgesetze           
+                                                                       | $(a + b)\ MOD\ n = (b + a)\ MOD\ n$                                                    |
+| $(a \times b)\ MOD\ n = (b \times a)\ MOD\ n$                                                                       |
+| Assoziativgesetze                                                                                                   | $[(a + b) + c]\ MOD\ n = [a + (b + c)]\ MOD\ n$                                        |
+| $[(a \times b) \times c]\ MOD\ n = [a \times (b \times c)]\ MOD\ n$                                                 |
+| Distributivgesetz                                                                                                    | $[a \times (b + c)]\ MOD\ n = [(a \times b) + (a \times c)]\ MOD\ n$                   |
+| Identitäten                                                                                                          | $(0 + a)\ MOD\ n = a\ MOD\ n$                                                          |
+| $(1 \times a)\ MOD\ n = a\ MOD\ n$                                                                                  |
+| Inverse                                                                                                            | $\forall  a \in \mathbb{Z}n: \exists (-a) \in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$ |
+| $p is prime \Rightarrow \forall  a \in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$ |
+
+Größter gemeinsamer Teiler
+- $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge [\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )]$ und $gcd(a, 0 ) : = | a |$
+- Der gcd-Rekursionssatz :
+  - $\für alle a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ MOD\ b)$
+  - Beweis:
+    - Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ MOD\ b$, also $gcd(a, b) | gcd(b, a\ MOD\ b)$
+    - Da $gcd(b, a\ MOD\ b)$ sowohl b als auch $a\ MOD\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ MOD\ b) = a$, also $gcd(b, a\ MOD\ b) | gcd(a, b)$
+- Euklidischer Algorithmus:
+  - Der euklidische Algorithmus berechnet aus a, b $gcd(a, b)$
+  ```cpp
+  int Euclid(int a, b){
+    if (b = 0) { return(a); }
+    {return(Euclid(b, a\ MOD\ b);} 
+  }
+  ```
+- Erweiterter euklidischer Algorithmus:
+  - Der Algorithmus ExtendedEuclid berechnet für a, b d, m, n so, dass: $d = gcd(a, b) = m \times a + n \times b$
+  ```cpp
+  struct{int d, m, n} ExtendedEuclid(int a, b)
+  { int d, d', m, m', n, n';
+    if (b = 0) {return(a, 1, 0); }
+    (d', m', n') = ExtendedEuclid(b, a MOD b);
+    (d, m, n) = (d', n', m' - \lfloor a / b \rfloor \times n');
+    return(d, m, n); }
+  ```
+  - Beweis: (durch Induktion)
+    - Grundfall $(a,0): gcd(a, 0) = a = 1 \Zeiten a + 0 \Zeiten 0$
+    - Induktion von $(b, a\ MOD\ b)$ auf $(a, b)$:
+      - ExtendedEuclid berechnet $d', m', n'$ korrekt (Induktionshypothese)
+      - $d=d'=m'\Zeiten b+n'\Zeiten (a\ MOD\ b)=m'\Zeiten b+n'\Zeiten(a-\lfloor a/b\rfloor\Zeiten b)=n'\Zeiten a+(m'-\lfloor a/b\rfloor\Zeiten n')\Zeiten b$
+  - Die Laufzeit von $Euclid(a, b)$ und $ExtendedEuclid(a, b)$ ist von $O(log\ b)$
+    - Beweis: siehe [Cor90a], Abschnitt 33.
+  - Lemma 1: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\mal a+n \mal b$
+- Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\mal b)\Rechtspfeil (p|a) \vier (p|b)$
+    - Der Beweis: Es sei $p|(a\mal b)$
+      - Wenn $p|a$ dann sind wir fertig.
+      - Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\existiert m, n\in\mathbb{N}:1=m\mal p+n\mal a \Leftrightarrow b=m\mal p \mal b + n \mal a \mal b$
+      - Da $p|(a\mal b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist 
+- Theorem 2 (Fundamentalsatz der Arithmetik): Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig.
+    - Der Beweis:
+        - Wir werden zeigen, dass jede ganze Zahl mit einer nicht eindeutigen Faktorisierung einen eigenen Teiler mit einer nicht eindeutigen Faktorisierung hat, was zu einem klaren Widerspruch führt, wenn wir schließlich auf eine Primzahl reduziert haben.
+        - Nehmen wir an, dass n eine ganze Zahl mit einer nicht eindeutigen Faktorisierung ist: $n=p_1\mal p_2\mal ...\mal p_r=q_1 \mal q_2\mal ... \times q_s$. Die Primzahlen sind nicht notwendigerweise verschieden, aber die zweite Faktorisierung ist nicht einfach eine Umordnung der ersten. Da $p_1$ n dividiert, dividiert es auch das Produkt $q_1\mal q_2\mal ... \times q_s$. Durch wiederholte Anwendung von Satz 1 zeigen wir, dass es mindestens ein $q_i$ gibt, das durch $p_1$ teilbar ist. Gegebenenfalls ordnen wir die $q_i$'s so, dass es $q_1$ ist. Da sowohl $p_1$ als auch $q_1$ Primzahlen sind, müssen sie gleich sein. Wir können also durch $p_1$ dividieren und haben, dass $n/p_1$ eine nicht-eindeutige Faktorisierung hat.
+  - Wir verwenden Theorem 2, um die folgende Korollarie 1 zu beweisen
+    - Wenn $gcd(c,m)=1$ und $(a\mal c)\equiv(b\mal c)mod\ m$, dann $a\equiv b\ mod\ m$
+    - Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\existiert n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
+    - $\Leftrightarrow ( a - b ) \Zeiten c = n \Zeiten m$
+    - $\Leftrightarrow p_1\Zeiten ...\Zeiten p_i\Zeiten q_1\Zeiten ...\Zeiten q_j=r_1\Zeiten ...\Zeiten r_k\Zeiten s_1\Zeiten ...\Zeiten s_l$
+    - Man beachte, dass die $p$'s, $q$'s, $r$'s und $s$'s Primzahlen sind und nicht verschieden sein müssen, aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$.
+    - Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\mal ...\mal p_i=r_1\mal ...\mal r_o\mal s_1\mal ...\mal s_l$ (beachten Sie, dass es weniger r's geben wird)
+    - $\Leftrightarrow(a-b)=r_1\Zeiten ...\Zeiten r_o\Zeiten m\Rightarrow a \equiv b\ mod\ m$
+  - Bezeichne $\phi(n)$ die Anzahl der positiven ganzen Zahlen, die kleiner als n und relativ zu n prim sind
+    - Beispiele: $\phi(4) = 2$, \phi(6)=2$, $\phi(7)=6$, $\phi(15)=8$
+    - Wenn p eine Primzahl ist $\Rightarrow\phi(p)=p-1$
+- Theorem 3 (Euler): Seien n und b positive und relativ primäre ganze Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
+  - Beweis:
+    - Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\mal a_1\ mod\ n , ..., b\mal a_t\ mod\ n$, d.h.: $b\mal a_i \equiv r_i\ mod\ n$.
+    - Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$. Wäre dies nicht der Fall, hätten wir $b\mal a_i\equiv b\mal a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
+    - Wir wissen auch, dass jedes $r_i$ relativ prim zu n ist, denn jeder gemeinsame Teiler k von $r_i$ und $n$ , d.h. $n=k\mal m$ und $r_i=p_i\mal k$, müsste auch $a_i$ teilen,
+    - da $b\mal a_i$gleich (p_i\mal k)\ mod\ (k\mal m)\Rightarrow\existiert s\in\mathbb{N}:(b\mal a_i)-(p_i\mal k)=s\mal k\mal m \Leftrightarrow (b\mal a_i)=s\mal k\mal m+(p_i\mal k)$
+    - Da k jeden der Summanden auf der rechten Seite dividiert und k nicht durch b dividiert (n und b sind relativ prim), müsste es auch $a_i$ dividieren, das relativ prim zu n sein soll
+    - Somit ist $r_1, ...,r_t$ eine Menge von $\phi(n)$ verschiedenen ganzen Zahlen, die relativ prim zu $n$ sind. Das bedeutet, dass sie genau dasselbe sind wie $a_1,...a_t$, nur dass sie in einer anderen Reihenfolge stehen. Insbesondere wissen wir, dass $r_1\mal...\mal r_t=a_1\mal...\mal a_t$
+    - Wir verwenden nun die Kongruenz $r_1\Zeiten...\Zeiten r_t\equiv b\Zeiten a_1\Zeiten...\Zeiten b\Zeiten a_t\ mod\ n$
+        $\Leftrightarrow r_1\Zeiten...\Zeiten r_t\equiv b_t\Zeiten a_1\Zeiten...\Zeiten a_t\ mod\ n$
+        $\Leftrightarrow r_1\Zeiten...\Zeiten r_t\equiv b_\Zeiten r_1\Zeiten...\Zeiten r_t\ mod\ n$
+    - Da alle $r_i$ relativ prim zu $n$ sind, können wir Korollar 1 anwenden und durch ihr Produkt dividieren: $1\equiv b_t\ mod\ n \Leftrightarrow 1\equiv b\phi(n)\ mod n$ 
+- Satz 4 (Chinese Remainder Theorem):
+  - Seien $m_1,...,m_r$ positive ganze Zahlen, die paarweise relativ prim sind,
+  - d.h. $ganz i\not= j:gcd(m_i, m_j) = 1$. Seien $a_1,...,a_r$ beliebige ganze Zahlen.
+  - Dann gibt es eine ganze Zahl a derart, dass:
+    - $a\equiv a_1\ mod\ m_1$
+    - $a\equiv a_2\ mod\ m_2$
+    - ...
+    - $a\equiv a_r\ mod\ m_r$
+  - Außerdem ist a eindeutig modulo $M := m_1\mal...\mal m_r$
+  - Beweis:
+    - Für alle $i\in\{1,...,r\}$ definieren wir $M_i:=(M/m_i)\phi(m_i)$
+    - Da $M_i$ per Definition relativ prim zu $m_i$ ist, können wir Theorem 3 anwenden und wissen, dass $M_i\equiv 1\ mod\ m_i$
+    - Da $M_i$ durch $m_j$ für jedes $j\not= i$ teilbar ist, haben wir $\füralle j\not= i:M_i\equiv 0\ mod\ m_j$
+    - Wir können nun die Lösung konstruieren, indem wir definieren: $a:= a_1\mal M_1+a_2\mal M_2+...+a_r\mal M_r$
+    - Die beiden oben angeführten Argumente bezüglich der Kongruenzen der $M_i$ implizieren, dass a tatsächlich alle Kongruenzen erfüllt.
+    - Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\für alle i\in\{1,...,r\}:a\equiv b\ mod\ m_i\Rightarrow\für alle i\in\{1,. ...,r\}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
+- Lemma 2:
+  - Wenn $gcd(m,n)=1$, dann ist $\phi(m\mal n)=\phi(m)\mal\phi(n)$
+  - Der Beweis:
+    - Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\mal n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\mal n)$ gezählt werden.
+    - Betrachten Sie die Entsprechung $a\rightarrow(a\ MOD\ m, a\ MOD\ n)$. Die ganze Zahl a ist relativ prim zu m und relativ prim zu n (andernfalls würde sie $m \mal n$ teilen). Also ist $(a\ MOD\ m)$ relativ prim zu m und $(a\ MOD\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ MOD\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ MOD\ m)$ gäbe, würde dieser Teiler auch a teilen. Somit entspricht jede Zahl a, die durch $\phi(m\mal n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ MOD\ m,a\ MOD\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
+    - Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\mal n)$ der simultanen Kongruenzen:
+        $a \equiv(a\ mod\ m)\ mod\ m$
+        $a \equiv(a\ MOD\ n)\ mod\ n$
+      können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\mal n)$ gezählt werden, verschiedenen Paaren entsprechen:
+      - Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\mal n)$, demselben Paar $(a\ MOD\ m, a\ MOD\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde:
+        $b\equiv (a\ MOD\ m)\ mod\ m$
+        $b\equiv (a\ MOD\ n)\ mod\ n$
+        aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \mal n)$ 
+      - Daher ist $\phi(m \mal n)$ höchstens die Anzahl solcher Paare: $\phi(m \mal n)\leq \phi(m)\mal\phi(n)$
+    - Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
+
+## Der RSA Public Key Algorithmus
+- Der RSA-Algorithmus wurde 1977 von R. Rivest, A. Shamir und L. Adleman [RSA78] erfunden und basiert auf Theorem 3.
+- Seien $p, q$ verschiedene große Primzahlen und $n=p\times q$. Nehmen wir an, wir haben auch zwei ganze Zahlen e und d, so dass: $d\times e \equiv 1\ mod\ \phi(n)$
+- M sei eine ganze Zahl, die die zu verschlüsselnde Nachricht darstellt, wobei M positiv, kleiner als und relativ prim zu n ist.
+  - Beispiel: Verschlüsseln mit <blank> = 99, A = 10, B = 11, ..., Z = 35. Somit würde ,,HELLO'' als 1714212124 kodiert werden. Falls erforderlich, ist M in Blöcke kleinerer Nachrichten aufzuteilen: 17142 12124
+- Zum Verschlüsseln berechnen Sie: $E = M^e\ MOD\ n$
+    - Dies kann mit dem Quadrat- und Multiplikationsalgorithmus effizient durchgeführt werden
+- Zum Entschlüsseln berechnet man: $M'=E^d\ MOD\ n$
+    - Da $d\times e\equiv 1\ mod\ \phi(n)\Rightarrow\existiert k\in\mathbb{Z}:(d\times e)-1=k\times\phi(n)\Leftrightarrow(d\times e)=k\times\phi(n)+1$
+    - haben wir: $M'\equiv E^d\equiv M^{e\times d}\equiv M^{k\times\phi(n)+1}\equiv 1^k\times M\equiv M\ mod\ n$ 
+- Da $(d\times e)=(e\times d)$ funktioniert die Operation auch in umgekehrter Richtung, d.h. man kann mit d verschlüsseln und mit e entschlüsseln
+  - Diese Eigenschaft erlaubt es, die gleichen Schlüssel d und e zu verwenden:
+  - den Empfang von Nachrichten, die mit dem eigenen öffentlichen Schlüssel verschlüsselt wurden
+  - Senden von Nachrichten, die mit dem eigenen privaten Schlüssel signiert wurden
+- So richten Sie ein Schlüsselpaar für RSA ein:
+  - Wählen Sie zufällig zwei Primzahlen $p$ und $q$ (mit jeweils 100 bis 200 Ziffern)
+  - Berechne $n=p\mal q,\phi(n)=(p-1)\mal (q-1)$ (Lemma 2)
+  - Wähle zufällig $e$, so dass $gcd(e,\phi(n))=1$
+  - Berechne mit dem erweiterten euklidischen Algorithmus d und c, so dass: $e\mal d+\phi(n)\mal c = 1$, wobei zu beachten ist, dass dies impliziert, dass $e\mal d\equiv 1\ mod\ \phi(n)$
+  - Der öffentliche Schlüssel ist das Paar $(e, n)$
+  - Der private Schlüssel ist das Paar $(d, n)$
+- Die Sicherheit des Verfahrens liegt in der Schwierigkeit der Faktorisierung von $n=p\mal q$, da es einfach ist, $\phi(n)$ und dann $d$ zu berechnen, wenn $p$ und $q$ bekannt sind.
+- In diesem Kurs wird nicht gelehrt, warum es schwierig ist, große n zu faktorisieren, da dies einen tiefen Einblick in die Mathematik erfordern würde.
+  - Wenn p und q bestimmte Eigenschaften erfüllen, sind die besten bekannten Algorithmen exponentiell zur Anzahl der Ziffern von n
+  - Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist:
+    - Daher sollten p und q ungefähr die gleiche Bitlänge haben und ausreichend groß sein
+    - $(p-q)$ sollte nicht zu klein sein
+    - Wenn man einen kleinen Verschlüsselungsexponenten, z.B. 3, wählen will, kann es zusätzliche Einschränkungen geben, z.B. $gcd(p-1, 3) = 1$ und $gcd(q-1,3)=1$
+  - Die Sicherheit von RSA hängt auch davon ab, dass die erzeugten Primzahlen wirklich zufällig sind (wie jede Methode zur Schlüsselerzeugung bei jedem Algorithmus).
+  - Moral: Wenn Sie RSA selbst implementieren wollen, bitten Sie einen Mathematiker oder besser einen Kryptographen, Ihren Entwurf zu überprüfen.
+
+## Einige weitere mathematische Hintergründe
+- Definition: endliche Gruppen
+  - Eine Gruppe ( S , \oplus) ist eine Menge S zusammen mit einer binären Operation \oplus, für die die
+  folgende Eigenschaften gelten:
+      - Geschlossenheit: Für alle a, b \in S , haben wir a \oplus b \in S
+      - Identität: Es gibt ein Element e \in S , so dass e \oplus a = a \oplus e = a für alle
+  a \in S
+      - Assoziativität: Für alle a, b, c \in S , gilt ( a \oplus b ) \oplus c = a \oplus ( b \oplus c )
+      - Inversen: Für jedes a \in S , gibt es ein einziges Element b \in S , so dass
+  dass a \oplus b = b \oplus a = e
+  - Erfüllt eine Gruppe ( S , \oplus) das Kommutativgesetz \für alle a, b \in S : a \oplus b = b \oplus a
+  dann nennt man sie eine abelsche Gruppe
+  - Wenn eine Gruppe ( S , \oplus) nur eine endliche Menge von Elementen hat, d.h. |S| < \infty, dann wird sie
+  eine endliche Gruppe genannt
+- Beispiele:
+  - $(\mathbb{Z}_n , +_n)$
+    - mit $\mathbb{Z}_n:=\{[0]_n,[1]_n,...,[n-1]_n\}$
+    - wobei $[a]_n:=\{b \in \mathbb{Z} | b \equiv a mod n\}$ und
+    - $+_n$ ist so definiert, dass $[a]_n+_n[b]_n=[a+b]_n$
+    - eine endliche abelsche Gruppe ist. Für den Beweis siehe die Tabelle mit den Eigenschaften der modularen Arithmetik
+  - $(\mathbb{Z}^*_n , \times_n)$
+    - mit $\mathbb{Z}^*_n :=\{[a]_n\in \mathbb{Z}_n | gcd(a,n)=1\}$, und
+    - $\times_n$ ist so definiert, dass $[a]_n\times_n [b]_n=[a\times b]_n$
+    - eine endliche abelsche Gruppe ist. Man beachte, dass $\mathbb{Z}^*_n$ nur die Elemente von $\mathbb{Z}_n$ enthält, die eine multiplikative Inverse modulo n haben. Zum Beweis siehe Eigenschaften der modularen Arithmetik
+    - Beispiel: $\mathbb{Z}^*_{15}=\{[1]_{15},[2]_{15},[4]_{15},[7]_{15},[8]_{15},[11]_{15},[13]_{15},[14]_{15}\}$, als $1\times 1\equiv 1 mod 15$, $2 \Zeiten 8 \equiv 1 mod 15$, $4 \Zeiten 4 \equiv 1 mod 15$, $7 \Zeiten 13 \equiv 1 mod 15$, $11 \Zeiten 11 \equiv 1 mod 15$, $14 \Zeiten 14 \equiv 1 mod 15$
+- Wenn klar ist, dass es sich um $(\mathbb{Z}_n, +_n)$ oder $(\mathbb{Z}^*_n, \times_n)$ handelt, werden Äquivalenzklassen $[a]_n$ oft durch ihre repräsentativen Elemente a dargestellt und $+_n$ und $\times_n$ durch $+$ bzw. $\times$ bezeichnet.
+  - Definition: endliche Felder
+    - Ein Feld $(S,\oplus, \otimes)$ ist eine Menge S zusammen mit zwei Operationen $\oplus$, $\otimes$, so dass
+      - $(S,\oplus)$ und $(S\backslash\{e_{\oplus}\},\otimes)$ sind kommutative Gruppen, d.h. nur das Identitätselement bezüglich der Operation $\oplus$ muss kein Inverses bezüglich der Operation $\otimes$ haben
+      - Für alle $a,b,c\in S$ haben wir ein $\otimes(b\oplus c)=(a\otimes b)\oplus(a\otimes c)$
+  - Wenn $|S|<\infty$ dann heißt $(S,\oplus,\otimes)$ ein endliches Feld
+- Beispiel: $(\mathbb{Z}_p, +_p, \times_p)$ ist ein endliches Feld für jede Primzahl p
+- Definition: Primitive Wurzel, Generator
+  - Sei $(S,\circ)$ eine Gruppe, $g\in S$ und $g^a:=g\circ g\circ...\circ g$ (a mal mit $a\in\mathbb{Z}^+$)
+  - Dann heißt g eine primitive Wurzel oder ein Generator von $(S,\circ):\Leftrightarrow\{g^a|1\leq a\leq |S|\}=S$
+  - Beispiele:
+    - 1 ist eine primitive Wurzel von $(\mathbb{Z}_n, +_n)$
+    - 3 ist eine Primitivwurzel von $(\mathbb{Z}^*_7, \times_7)$
+  - Nicht alle Gruppen haben Primitivwurzeln, und diejenigen, die sie haben, nennt man zyklische Gruppen
+- Theorem 5:
+  - $(\mathbb{Z}^*_n, \times_n)$ hat eine primitive Wurzel $\Leftrightarrow n\in\{2,4,p,2\times p^e\}$, wobei p eine ungerade Primzahl ist und $e\in\mathbb{Z}^+$
+- Theorem 6:
+  - Wenn $(S,\circ)$ eine Gruppe ist und $b\in S$, dann ist $(S',\circ)$ mit $S'=\{b^a|a\in\mathbb{Z}^+\}$ ebenfalls eine Gruppe.
+  - Da $S'\subseteq S, heißt (S',\circ)$ eine Untergruppe von $(S,\circ)$
+  - Wenn b eine Urwurzel von $(S,\circ)$ ist, dann ist $S'=S$
+- Definition: Ordnung einer Gruppe und eines Elements
+  - Sei $(S,\circ)$ eine Gruppe, $e\in S$ ihr Identitätselement und $b\in S$ irgendein Element von $S$:
+    - Dann heiße $|S|$ die Ordnung von $(S,\circ)$
+    - Sei $c\in\mathbb{Z}^+$ das kleinste Element, so dass $b^c=e$ ist (falls ein solches c existiert, falls nicht, setze $c=\infty$). Dann wird c die Ordnung von b genannt.
+- Theorem 7 (Lagrange):
+  - Ist G eine endliche Gruppe und H eine Untergruppe von G , so ist $|H|$ Teiler von $|G|$.
+  - Wenn also $b in G$ ist, dann ist die Ordnung von b Teiler von $|G|$.
+- Theorem 8:
+  - Ist G eine zyklische endliche Gruppe der Ordnung n und d ist Teiler von n, dann hat G genau $\phi(d)$ Elemente der Ordnung $d$. Insbesondere hat G $\phi(n)$-Elemente der Ordnung n.
+- Die Theoreme 5, 7 und 8 sind die Grundlage des folgenden Algorithmus, der eine zyklische Gruppe $\mathbb{Z}^*_p$ und eine Urwurzel g davon findet:
+  - Man wählt eine große Primzahl q, so dass $p=2q+1$ eine Primzahl ist.
+    - Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist.
+    - Die Ordnung von $\mathbb{Z}^*_p$ ist $2\-mal q$ und $\phi(2\-mal q)=\phi(2)\-mal\phi(q)=q-1$, da $q$ prim ist.
+    - Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \ca. 1/2$.
+    - Um effizient zu prüfen, ob ein zufällig gewähltes g eine Urwurzel ist, müssen wir nur prüfen, ob $g^2\equiv 1 mod p$ oder $g^q\equiv 1 mod p$ ist. Wenn nicht, dann muss seine Ordnung $|\mathbb{Z}^*_p|$ sein, da Satz 7 besagt, dass die Ordnung von g $|\mathbb{Z}^*_p|$ teilen muss
+- Definition: diskreter Logarithmus
+  - Sei p eine Primzahl, g eine Urwurzel von $(\mathbb{Z}^*_p,\times_p)$ und c ein beliebiges Element von $\mathbb{Z}^*_p$. Dann gibt es z so, dass: $g^z\equiv c mod p$
+  - z wird der diskrete Logarithmus von c modulo p zur Basis g genannt
+  - Beispiel 6 ist der diskrete Logarithmus von 1 modulo 7 zur Basis 3 als $3^6\equiv 1 mod 7$
+  - Die Berechnung des diskreten Logarithmus z bei gegebenem g, c und p ist ein rechnerisch schwieriges Problem, und die asymptotische Laufzeit der besten bekannten Algorithmen für dieses Problem ist exponentiell zur Bitlänge von p
+
+## Diffie-Hellman-Schlüsselaustausch
+- Der Diffie-Hellman-Schlüsselaustausch wurde erstmals in der bahnbrechenden Arbeit [DH76] veröffentlicht, in der auch die Grundidee der asymmetrischen Kryptographie vorgestellt wurde
+- Der DH-Austausch in seiner Grundform ermöglicht es zwei Parteien A und B, sich über einen öffentlichen Kanal auf ein gemeinsames Geheimnis zu einigen:
+  - Öffentlicher Kanal bedeutet, dass ein potentieller Angreifer E (E steht für Eavesdropper) alle zwischen A und B ausgetauschten Nachrichten lesen kann
+  - Es ist wichtig, dass A und B sicher sein können, dass der Angreifer nicht in der Lage ist, Nachrichten zu verändern, da er in diesem Fall einen Man-in-the-Middle-Angriff starten könnte
+  - Die mathematische Grundlage für den DH-Austausch ist das Problem, diskrete Logarithmen in endlichen Feldern zu finden.
+  - Der DH-Austausch ist kein asymmetrischer Verschlüsselungsalgorithmus, wird aber dennoch hier vorgestellt, da er gut zum mathematischen Charakter dieser Vorlesung passt...
+- Wenn Alice (A) und Bob (B) sich auf ein gemeinsames Geheimnis s einigen wollen und ihr einziges Kommunikationsmittel ein öffentlicher Kanal ist, können sie wie folgt vorgehen:
+  - A wählt eine Primzahl p, eine primitive Wurzel g von $\mathbb{Z}^*_p$ und eine Zufallszahl q:
+    - A und B können sich vor der Kommunikation auf die Werte p und g einigen, oder A wählt p und g und sendet sie mit seiner ersten Nachricht
+    - A berechnet $v=g^q\ MOD\ p$ und sendet an $B:\{p,g,v\}$
+  - B wählt eine Zufallszahl r:
+    - B berechnet $w=g^r\ MOD\ p$ und sendet an $A:\{p,g,w\}$ (oder einfach $\{w\}$)
+  - Beide Seiten errechnen das gemeinsame Geheimnis:
+    - A errechnet $s=w^q\ MOD\ p$
+    - B errechnet $s'=v^r\ MOD\ p$
+    - Da $g^{q\mal r}\ MOD\ p = g^{r \mal q}\ MOD\ p$ ist, gilt: $s=s'$
+  - Ein Angreifer Eve, der den öffentlichen Kanal abhört, kann das Geheimnis s nur berechnen, wenn er entweder q oder r berechnen kann, die die diskreten Logarithmen von v, w modulo p zur Basis g sind.
+- Wenn der Angreifer Eve in der Lage ist, Nachrichten auf dem öffentlichen Kanal zu verändern, kann er einen Man-in-the-Middle-Angriff starten:
+  - Eve generiert zwei Zufallszahlen $q'$ und $r'$: Eve berechnet $v'=g^{q'}\ MOD\ p$ und $w'=g^{r'}\ MOD\ p$
+  - Wenn A $\{p,g,v\}$ sendet, fängt sie die Nachricht ab und sendet an $B:\{p,g,v'\}$
+  - Wenn B $\{p,g,w\}$ sendet, fängt sie die Nachricht ab und sendet an $A:\{p,g,w'\}$
+  - Wenn das angebliche ,,gemeinsame Geheimnis'' berechnet wird, erhalten wir:
+    - A berechnet $s_1=w'^q\ MOD\ p = v^{r'}\ MOD\ p$, letzteres berechnet von E
+    - B berechnet $s_2=v'^r\ MOD\ p = w^{q'}\ MOD\ p$, letzteres berechnet von E
+    - A und E haben sich also auf ein gemeinsames Geheimnis $s_1$ geeinigt, und E und B haben sich auf ein gemeinsames Geheimnis $s_2$ geeinigt.
+  - Wenn das ,,gemeinsame Geheimnis'' nun von A und B verwendet wird, um Nachrichten zu verschlüsseln, die über den öffentlichen Kanal ausgetauscht werden sollen, kann E alle Nachrichten abfangen und ent- bzw. wiederverschlüsseln, bevor er sie zwischen A und B weiterleitet.
+- Zwei Gegenmaßnahmen gegen den Man-in-the-Middle-Angriff:
+  - Das gemeinsame Geheimnis wird ,,authentifiziert'', nachdem es vereinbart worden ist.
+    - Wir werden dies im Abschnitt über die Schlüsselverwaltung behandeln
+  - A und B verwenden ein sogenanntes Interlock-Protokoll, nachdem sie sich auf ein gemeinsames Geheimnis geeinigt haben:
+    - Dazu müssen sie Nachrichten austauschen, die E weiterleiten muss, bevor sie sie entschlüsseln bzw. wieder verschlüsseln kann.
+    - Der Inhalt dieser Nachrichten muss von A und B überprüfbar sein.
+    - Dies zwingt E dazu, Nachrichten zu erfinden, und sie kann entdeckt werden.
+    - Eine Technik, um zu verhindern, dass E die Nachrichten entschlüsselt, besteht darin, sie in zwei Teile aufzuteilen und den zweiten Teil vor dem ersten zu senden.
+      - Wenn der verwendete Verschlüsselungsalgorithmus bestimmte Eigenschaften verhindert, kann E den zweiten Teil nicht verschlüsseln, bevor sie den ersten erhält.
+      - Da A den ersten Teil erst senden wird, nachdem er eine Antwort (den zweiten Teil) von B erhalten hat, ist E gezwungen, zwei Nachrichten zu erfinden, bevor sie die ersten Teile erhalten kann.
+- Bemerkung: In der Praxis muss die Zahl g nicht unbedingt eine Urwurzel von p sein, es genügt, wenn sie eine große Untergruppe von $\mathbb{Z}^*_p$ erzeugt
+
+## ElGamal Algorithmus
+- Der ElGamal-Algorithmus kann sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden (siehe auch [ElG85a]).
+- Wie der DH-Austausch basiert er auf der Schwierigkeit, diskrete Logarithmen in endlichen Feldern zu berechnen
+- Um ein Schlüsselpaar zu erstellen:
+  - Wähle eine große Primzahl p, einen Generator g der multiplikativen Gruppe $\mathbb{Z}^*_p$ und eine Zufallszahl v, so dass $1\leq v\leq p - 2$. Berechnen Sie: $y=g^v mod p$
+  - Der öffentliche Schlüssel ist $( y, g, p )$
+  - Der private Schlüssel ist v
+- So signieren Sie eine Nachricht m :
+  - Wähle eine Zufallszahl k so, dass k relativ prim zu $p-1$ ist.
+  - Berechne $r=g^k mod p$
+  - Berechne mit dem erweiterten euklidischen Algorithmus $k^{-1}$, den Kehrwert von $k mod (p - 1)$
+  - Berechne $s=k^{-1} \mal ( m - v \mal r) mod ( p - 1)$
+  - Die Signatur über die Nachricht ist $( r, s )$
+- Überprüfen einer Signatur $( r , s )$ über eine Nachricht m:
+  - Bestätige, dass $y^r \times r^s\ MOD\ p = g^m\ MOD\ p$
+  - Der Beweis: Wir benötigen Folgendes
+    - Lemma 3: Sei p eine Primzahl und g ein Generator von $\mathbb{Z}^*_p$. Dann sei $i \equiv j mod ( p -1) \Rightarrow g i \equiv g j mod p$
+    - Beweis: $i \equiv j mod (p-1) \Rightarrow$ es gibt $k\in \mathbb{Z}^+$ so, dass $(i-j)=(p-1)\mal k$
+    - Also $g^{(i-j)}=g^{(p-1)\mal k} \equiv 1^k\equiv 1 mod p$, wegen Theorem 3 (Euler) $\Rightarrow g^i \equiv g^j mod p$
+  - Als $s\equiv k^{-1}\times(m-v\times r) mod (p-1)$
+    - $\Leftrightarrow k \times s\equiv m-v\times r mod (p-1)$
+    - $\Leftrightarrow m \equiv v\times r+k\times s mod (p-1)$
+    - $\Rightarrow g^m \equiv g^{(v\Zeiten r+ k\Zeiten s)} mod p$ mit Lemma 3
+    - $\Leftrightarrow g^m \equiv g^{(v\Zeiten r)}\Zeiten g^{(k\Zeiten s)} mod p$
+    - $\Leftrightarrow g^m \equiv y^r\Zeiten r^s mod p$
+- Sicherheit von ElGamal-Signaturen:
+  - Da der private Schlüssel v benötigt wird, um s berechnen zu können, müsste ein Angreifer den diskreten Logarithmus von y modulo p zur Basis g berechnen, um Signaturen zu fälschen
+  - Entscheidend für die Sicherheit ist, dass für jede Nachricht eine neue Zufallszahl k gewählt wird, denn ein Angreifer kann das Geheimnis v berechnen, wenn er zwei Nachrichten zusammen mit ihren Signaturen auf der Basis des gleichen k erhält (siehe [Men97a], Anmerkung 11.66.ii)
+  - Um zu verhindern, dass ein Angreifer eine Nachricht M mit einer passenden Signatur erstellen kann, ist es notwendig, die Nachricht M nicht direkt zu signieren, sondern einen kryptographischen Hashwert $m=h(M)$ davon zu signieren (diese werden bald behandelt, siehe auch [Men97a], Anmerkung 11.66.iii)
+- Um eine Nachricht m mit dem öffentlichen Schlüssel $(y,g,p)$ zu verschlüsseln:
+  - Wähle einen zufälligen $k\in\mathbb{Z}^+$ mit $k<p-1$
+  - Berechne $r=g^k\ MOD\ p$
+  - Berechne $s=m\mal y^k\ MOD\ p$
+  - Der verschlüsselte Text ist $(r,s)$, der doppelt so lang ist wie m
+- Entschlüsseln der Nachricht $(r,s)$ mit v:
+  - Verwenden Sie den privaten Schlüssel v zur Berechnung von $r^{(p-1-v)}\ MOD\ p=r^{(-v)}\ MOD\ p$
+  - Wiederherstellung von m durch Berechnung von $m=r^{(-v)}\mal s\ MOD\ p$
+  - Beweis: $r^{(-v)}\times s\equiv r^{(-v)} \Zeiten m \Zeiten y^k\equiv g^{(-vk)}\Zeiten m \Zeiten y^k\equiv g^{(-v \Zeiten k)} \Zeiten m\Zeiten g^{(v \Zeiten k)} \equiv m mod p$
+- Sicherheit:
+  - Die einzige bekannte Möglichkeit für einen Angreifer, m wiederherzustellen, ist die Berechnung des diskreten Logarithmus v von y modulo p zur Basis g
+  - Für jede Nachricht wird ein neues zufälliges k benötigt ([Men97a], Anmerkung 8.23.ii)
+
+## Elliptische Kurven Kryptographie
+- Die bisher vorgestellten Algorithmen wurden für die multiplikative Gruppe $(\mathbb{Z}^*_p,\times p)$ bzw. das Feld $(\mathbb{Z}_p, +_p, \times_p)$ entwickelt.
+- In den 1980er Jahren wurde festgestellt, dass sie verallgemeinert und auch für andere Gruppen und Felder verwendet werden können
+- Die Hauptmotivation für diese Verallgemeinerung ist:
+  - Zahlreiche mathematische Forschungen auf dem Gebiet der Primzahlprüfung, der Faktorisierung und der Berechnung diskreter Logarithmen haben zu Techniken geführt, mit denen diese Probleme effizienter gelöst werden können, wenn bestimmte Eigenschaften erfüllt sind:
+    - Als 1977 die RSA-129-Aufgabe gestellt wurde, ging man davon aus, dass es etwa 40 Billiarden Jahre dauern würde, die 129-stellige Zahl ($\approx 428$ Bit) zu faktorisieren.
+    - Im Jahr 1994 benötigte eine Gruppe von Computern, die über das Internet vernetzt waren, 8 Monate, um die Zahl zu faktorisieren, was etwa 5000 MIPS-Jahre entsprach.
+    - Fortschritte bei den Faktorisierungsalgorithmen ermöglichten 2009 die Faktorisierung einer 232-stelligen Zahl (768 Bit) in etwa 1500 AMD64-Jahren [KAFL10].
+    - $\Rightarrow$ die Schlüssellänge muss erhöht werden (derzeit etwa 2048 Bit)
+  - Einige der effizienteren Verfahren beruhen auf bestimmten Eigenschaften der algebraischen Strukturen $(\mathbb{Z}^*_p,\times p)$ und $(\mathbb{Z}_p, +_p, \times_p)$
+  - Verschiedene algebraische Strukturen können daher die gleiche Sicherheit mit kürzeren Schlüssellängen bieten
+- Eine sehr vielversprechende Struktur für die Kryptographie lässt sich aus der Gruppe der Punkte auf einer elliptischen Kurve über einem endlichen Feld gewinnen
+  - Die mathematischen Operationen in diesen Gruppen können sowohl in Hardware als auch in Software effizient implementiert werden.
+  - Das Problem des diskreten Logarithmus gilt in der allgemeinen Klasse, die sich aus der Gruppe der Punkte auf einer elliptischen Kurve über einem endlichen Feld ergibt, als schwierig
+
+### Gruppenelemente
+- Algebraische Gruppe bestehend aus
+  - Punkte auf der Weierstraß'schen Gleichung: $y^2 = x^3 + ax + b$
+  - Zusätzlicher Punkt O im ,,Unendlichen''
+- Kann über $\mathbb{R}$ berechnet werden, aber in der Kryptographie werden $\mathbb{Z}_p$ und $GF(2^n)$ verwendet
+  - Schon in $\mathbb{R}$ beeinflussen Argumente die Form erheblich:
+    - $y^2 = x^3-3x+5$ ![](Assets/NetworkSecurity-ecc-1.png)
+    - $y^2 = x^3-40x+5$ ![](Assets/NetworkSecurity-ecc-2.png)
+
+### Punktaddition
+- Addition von Elementen = Addition von Punkten auf der Kurve
+- Geometrische Interpretation:
+  - Jeder Punkt $P:(x,y)$ hat einen Kehrwert $-P:(x,-y)$
+  - Eine Linie durch zwei Punkte P und Q schneidet sich normalerweise mit einem dritten Punkt R
+  - Im Allgemeinen ist die Summe von zwei Punkten P und Q gleich $-R$
+  - ![](Assets/NetworkSecurity-ecc-3.png)
+- Addition (Sonderfälle)
+  - Der zusätzliche Punkt O ist das neutrale Element, d.h. $P+O=P$
+  - $P + (-P)$:
+    - Wird der inverse Punkt zu P addiert, schneiden sich Linie und Kurve im ,,Unendlichen''
+    - Per Definition: $P+(-P) = O$
+  - $P+P$: Die Summe zweier identischer Punkte P ist der Kehrwert des Schnittpunkts mit der Tangente durch P:
+    - ![](Assets/NetworkSecurity-ecc-4.png)
+
+### Grundlagen des ECC - Algebraische Addition
+- Wenn einer der Summanden O ist, ist die Summe der andere Summand
+- Wenn die Summanden zueinander invers sind, ist die Summe O
+- Für die allgemeineren Fälle ist die Steigung der Geraden: $\alpha=\begin{cases} \frac{y_Q-y_P}{x_Q-x_P} \quad\text{ for } P\not=-Q \keil P\not=Q \\ \frac{3x^2_P +a}{2y_P} \quad\text{ for } P=Q \end{cases}$
+- Ergebnis der Punktaddition, wobei $(x_r,y_r)$ bereits der Spiegelpunkt $(-R)$ ist
+
+### Multiplikation
+- Multiplikation von natürlicher Zahl n und Punkt P durch mehrfache wiederholte Additionen
+- Zahlen werden in 2er-Potenzen gruppiert, um eine logarithmische Laufzeit zu erreichen, z.B. $25P = P + 8P + 16P$
+- Dies ist nur möglich, wenn das n bekannt ist!
+- Wenn n für $nP = Q$ unbekannt ist, muss ein Logarithmus gelöst werden, was möglich ist, wenn die Koordinatenwerte aus $\mathbb{R}$ gewählt werden
+- Für $\mathbb{Z}_p$ und $GF(2^n)$ muss das diskrete Logarithmusproblem für elliptische Kurven gelöst werden, was nicht effizient durchgeführt werden kann!
+- Hinweis: Es ist nicht definiert, wie zwei Punkte multipliziert werden, sondern nur eine natürliche Zahl n und der Punkt P
+
+### Kurven über $\mathbb{Z}_p$
+- Über $\mathbb{Z}_p$ zerfällt die Kurve in eine Menge von Punkten
+- Für: $y^2=x^3-3x+5\ mod\ 19$
+  - ![](Assets/NetworkSecurity-ecc-5.png)
+  - Hinweis: Für einige x-Werte gibt es keinen y-Wert!
+
+### Berechnen Sie die y-Werte in $\mathbb{Z}_p$
+- Im Allgemeinen etwas problematischer: Bestimmen Sie die y-Werte für ein gegebenes x (da sein quadratischer Wert berechnet wird) durch $y^2\equiv f(x)\ mod\ p$
+- Daher wird p oft s.t. gewählt $p\equiv 3\ mod\ 4$
+- Dann wird y durch $y_1\equiv f(x)^{\frac{p+1}{4}}$ und $y_2\equiv -f(x)^{\frac{p+1}{4}}$ berechnet, wenn und nur wenn überhaupt eine Lösung existiert
+- Kurzer Beweis:
+  - Aus dem Euler-Theorem 3 wissen wir, dass $f(x)^{p-1}\equiv 1\ mod\ p$
+  - Die Quadratwurzel muss also 1 oder -1 sein $f(x)^{\frac{p-1}{2}}\equiv\pm 1\ mod\ p$
+- Fall 1: $f(x)^{\frac{p-1}{2}}\equiv1\ mod\ p$
+    - Multiplizieren Sie beide Seiten mit f(x): $f(x)^{\frac{p-1}{2}}\equiv f(x)\equiv y^2\ mod\ p$
+    - Da $p + 1$ durch 4 teilbar ist, können wir die Quadratwurzel ziehen, so dass $f(x)^{\frac{p-1}{2}}\equiv y\ mod\ p$
+- Fall 2: In diesem Fall existiert keine Lösung für den gegebenen x-Wert (wie von Euler gezeigt)
+
+### Addition und Multiplikation in $\mathbb{Z}_p$
+- Aufgrund des diskreten Strukturpunktes haben mathematische Operationen keine geometrische Interpretation mehr, sondern
+- Algebraische Addition ähnlich der Addition über $\mathbb{R}$
+- Wird der inverse Punkt zu P addiert, schneiden sich Linie und ,,Kurve'' immer noch im ,,Unendlichen''
+- Alle x- und y-Werte werden mod p berechnet
+- Division wird durch Multiplikation mit dem inversen Element des Nenners ersetzt
+  - Verwendung des erweiterten euklidischen Algorithmus mit w und p zur Ableitung der Inversen $-w$
+- Die algebraische Multiplikation einer natürlichen Zahl n und eines Punktes P erfolgt ebenfalls durch wiederholte Addition von Summanden der Potenz von 2
+- Das Problem des diskreten Logarithmus ist die Bestimmung einer natürlichen Zahl n in $nP=Q$ für zwei bekannte Punkte P und Q
+
+### Foundations of ECC - Größe der erzeugten Gruppen
+- Bitte beachten Sie, dass die Ordnung einer durch einen Punkt auf einer Kurve über $\mathbb{Z}_p$ erzeugten Gruppe nicht $p-1$ ist!
+- Die Bestimmung der exakten Ordnung ist nicht einfach, kann aber mit Schoofs Algorithmus [Sch85] in logarithmischer Zeit durchgeführt werden (erfordert viel mehr mathematischen Hintergrund als hier gewünscht)
+- Der Satz von Hasse über elliptische Kurven besagt jedoch, dass die Gruppengröße n zwischen: $p+1 - 2\sqrt{p}\leq n\leq p+1+2\sqrt{p}$ liegen muss
+- Wie bereits erwähnt: Es genügt, relativ große Gruppen zu erzeugen
+
+### ECDH
+- Der Diffie-Hellman-Algorithmus kann leicht an elliptische Kurven angepasst werden
+- Wenn Alice (A) und Bob (B) sich auf ein gemeinsames Geheimnis s einigen wollen:
+  - A und B einigen sich auf eine kryptographisch sichere elliptische Kurve und einen Punkt P auf dieser Kurve
+  - A wählt eine Zufallszahl q:
+    - A berechnet $Q=qP$ und überträgt Q an Bob
+  - B wählt eine Zufallszahl r:
+    - B berechnet $R=rP$ und überträgt P an Alice
+  - Beide Seiten errechnen das gemeinsame Geheimnis:
+    - A errechnet $S=qR$
+    - B errechnet $S'=rQ$
+    - Da $qrP=rqP$ der geheime Punkt $S=S'$
+- Angreifer, die den öffentlichen Kanal abhören, können S nur berechnen, wenn sie entweder q oder r berechnen können, die die diskreten Logarithmen von Q und R für den Punkt P sind
+
+### EC-Version des ElGamal-Algorithmus
+- Die Anpassung von ElGamal für elliptische Kurven ist für die Verschlüsselungsroutine recht einfach
+- Ein Schlüsselpaar einrichten:
+  - Wählen Sie eine elliptische Kurve über einem endlichen Feld, einen Punkt G, der eine große Gruppe erzeugt, und eine Zufallszahl v, so dass $1 < v < n$, wobei n die Größe der induzierten Gruppe bezeichnet, Berechnen Sie: $Y = vG$
+  - Der öffentliche Schlüssel ist $(Y,G,Kurve)$
+  - Der private Schlüssel ist v
+- Um eine Nachricht zu verschlüsseln:
+  - Wähle eine zufällige $k\in\mathbb{Z}^+$ mit $k<n-1$, berechne $R=kG$
+  - Berechne $S=M+kY$, wobei M ein von der Nachricht abgeleiteter Punkt ist
+    - Problem: Die Interpretation der Nachricht m als x-Koordinate von M ist nicht ausreichend, da der y-Wert nicht existieren muss
+    - Lösung aus [Ko87]: Wähle eine Konstante c (z.B. 100) und prüfe, ob $cm$ die x-Koordinate eines gültigen Punktes ist, wenn nicht, versuche $cm+1$, dann $cm+2$ usw.
+    - Um m zu entschlüsseln: nimm den x-Wert von M und führe eine ganzzahlige Division durch c durch (der Empfänger muss c ebenfalls kennen)
+  - Der Chiffretext sind die Punkte $(R,S)$
+  - Doppelt so lang wie m, wenn sie in so genannter komprimierter Form gespeichert werden, d.h. nur die x-Koordinaten werden gespeichert und ein einziges Bit, das angibt, ob die größere oder kleinere entsprechende y-Koordinate verwendet werden soll
+- Um eine Nachricht zu entschlüsseln:
+  - Ableitung von M durch Berechnung von $S-vR$
+  - Beweis: $S-vR=M+kY-vR =M+kvG-vkG= M+O= M$
+- Eine Nachricht signieren:
+  - Wähle ein zufälliges $k\in\mathbb{Z}^+$ mit $k<n-1$, berechne $R = kG$
+  - Berechne $s=k^{-1}(m+rv) mod\ n$, wobei $r$ der x-Wert von R ist
+  - Die Signatur ist $(r,s)$, wiederum etwa doppelt so lang wie n
+- Überprüfen einer signierten Nachricht:
+  - Prüfen, ob der Punkt $P=ms^{-1}G+rs^{-1}Y$ die x-Koordinate r hat
+  - Anmerkung: $s^{-1}$ wird durch den Erweiterten Euklidischen Algorithmus mit den Eingaben s und n (der Ordnung der Gruppe) berechnet.
+  - Beweis: $ms^{-1}G+rs^{-1}Y = ms^{-1}G+rs^{-1}vG = (m+rv)(s^{-1})G = (ks)(s^{-1})G = kG = R$
+- Diskussion zur Sicherheit:
+  - Wie in der ursprünglichen Version von ElGamal ist es entscheidend, k nicht zweimal zu verwenden
+  - Nachrichten sollten nicht direkt signiert werden
+  - Weitere Prüfungen können erforderlich sein, d.h. G darf nicht O sein, ein gültiger Punkt auf der Kurve usw. (siehe [NIST09] für weitere Details)
+
+### Sicherheit
+- Die Sicherheit hängt stark von der gewählten Kurve und dem Punkt ab:
+- Die Diskriminante der Kurve darf nicht Null sein, d.h. $4a^3+27b^2\not\equiv 0\ mod\ p$ sonst ist die Kurve degradiert (eine sogenannte ,,singuläre Kurve'' )
+- Menezes et. al. haben einen subexponentiellen Algorithmus für sogenannte ,,supersinguläre elliptische Kurven'' gefunden, der aber im allgemeinen Fall nicht funktioniert [Men93a]
+- Die konstruierten algebraischen Gruppen sollten so viele Elemente wie möglich haben.
+- In diesem Kurs wird nicht näher auf die Kryptographie elliptischer Kurven eingegangen, da dies viel mehr Mathematik erfordert, als für diesen Kurs erwünscht ist...
+- Für Nicht-Kryptographen ist es am besten, sich auf vordefinierte Kurven zu verlassen, z.B. [LM10] oder [NIST99] und Standards wie ECDSA
+- Viele Veröffentlichungen wählen die Parameter a und b so, dass sie nachweislich durch einen Zufallsprozess gewählt werden (z.B. veröffentlichen Sie x für $h(x)=a$ und $y$ für $h(y) = b$); so soll sichergestellt werden, dass die Kurven keine kryptographische Schwäche enthalten, die nur den Autoren bekannt ist
+- Die Sicherheit ist abhängig von der Länge von p
+  - Schlüssellängen mit vergleichbaren Stärken nach [NIST12]:
+    | Symmetrische Algorithmen | RSA | ECC |
+    | -------------------- | ----- | ------- |
+    | 112 | 2048 | 224-255 |
+    | 128 | 3072 | 256-383 |
+    | 192 | 7680 | 384-511 |
+    | 256 | 15360 | > 512 |
+- Die Sicherheit hängt auch stark von der Implementierung ab!
+  - Die verschiedenen Fälle (z.B. mit O) in der ECC-Berechnung können beobachtbar sein, d.h. Stromverbrauch und Zeitunterschiede
+  - Angreifer können Seitenkanalangriffe ableiten, wie in OpenSSL 0.9.8o [BT11]
+    - Ein Angreifer kann die Bitlänge eines Wertes k in $kP$ ableiten, indem er die für den Quadrat- und Multiplikationsalgorithmus benötigte Zeit misst
+    - Der Algorithmus wurde in OpenSSL frühzeitig abgebrochen, wenn keine weiteren Bits auf ,,1'' gesetzt wurden
+  - Angreifer könnten versuchen, ungültige Punkte zu generieren, um Fakten über den verwendeten Schlüssel abzuleiten, wie in OpenSSL 0.9.8g, was zu einer Wiederherstellung eines vollen 256-Bit ECC-Schlüssels nach nur 633 Abfragen führte [BBP12]
+- Lektion gelernt: Machen Sie es nicht selbst, es sei denn, Sie müssen es tun und wissen, was Sie tun!
+
+### Weitere Anmerkungen
+- Wie bereits erwähnt, ist es möglich, kryptographische elliptische Kurven über $G(2^n)$ zu konstruieren, was in Hardware-Implementierungen schneller sein kann.
+  - Wir haben auf Details verzichtet, da dies nicht viele neue Erkenntnisse gebracht hätte!
+- Elliptische Kurven und ähnliche algebraische Gruppen sind ein aktives Forschungsgebiet und ermöglichen weitere fortgeschrittene Anwendungen, z.B:
+  - Sogenannte Edwards-Kurven werden derzeit diskutiert, da sie robuster gegen Seitenkanalangriffe zu sein scheinen (z.B. [BLR08])
+  - Bilineare Paarungen ermöglichen
+    - Programme zu verifizieren, dass sie zur selben Gruppe gehören, ohne ihre Identität preiszugeben (Secret Handshakes, z.B. [SM09])
+    - Öffentliche Schlüssel können strukturiert werden, z.B. ,,Alice'' als öffentlicher Schlüssel für Alice verwenden (Identitätsbasierte Verschlüsselung, Grundlagen in [BF03])
+- Bevor Sie elliptische Kurvenkryptographie in einem Produkt einsetzen, stellen Sie sicher, dass Sie keine Patente verletzen, da es noch viele gültige Patente in diesem Bereich gibt!
+
+## Schlussfolgerung
+- Asymmetrische Kryptographie erlaubt es, zwei verschiedene Schlüssel zu verwenden:
+  - Verschlüsselung / Entschlüsselung
+  - Signieren / Überprüfen
+- Die praktischsten Algorithmen, die immer noch als sicher gelten, sind:
+  - RSA, basierend auf der Schwierigkeit, diskrete Logarithmen zu faktorisieren und zu lösen
+  - Diffie-Hellman (kein asymmetrischer Algorithmus, sondern ein Schlüsselvereinbarungsprotokoll)
+  - ElGamal, wie DH basierend auf der Schwierigkeit, diskrete Logarithmen zu berechnen
+- Da ihre Sicherheit vollständig auf der Schwierigkeit bestimmter mathematischer Probleme beruht, stellt der algorithmische Fortschritt ihre größte Bedrohung dar.
+- Praktische Überlegungen:
+  - Asymmetrische kryptografische Operationen sind um Größenordnungen langsamer als symmetrische Operationen.
+  - Daher werden sie oft nicht für die Verschlüsselung/Signierung von Massendaten verwendet.
+  - Symmetrische Verfahren werden zur Verschlüsselung / Berechnung eines kryptografischen Hashwerts verwendet, während die asymmetrische Kryptografie nur zur Verschlüsselung eines Schlüssels / Hashwerts eingesetzt wird.
+
 # Modifikationsprüfwerte
+## Motivation
+- In der Datenkommunikation ist es üblich, eine Art Fehlererkennungscode für Nachrichten zu berechnen, mit dem der Empfänger überprüfen kann, ob eine Nachricht während der Übertragung verändert wurde.
+  - Beispiele: Parität, Bit-Interleaved Parity, Cyclic Redundancy Check (CRC)
+- Dies führt zu dem Wunsch, einen ähnlichen Wert zu haben, der es ermöglicht zu überprüfen, ob eine Nachricht während der Übertragung verändert wurde.
+- Es ist jedoch ein großer Unterschied, ob man davon ausgeht, dass die Nachricht durch mehr oder weniger zufällige Fehler oder absichtlich verändert wird:
+  - Wenn jemand eine Nachricht, die mit einem CRC-Wert geschützt ist, absichtlich verändern will, kann er den CRC-Wert nach der Veränderung neu berechnen oder die Nachricht so verändern, dass sie den gleichen CRC-Wert ergibt.
+- Ein Änderungsprüfwert muss also einige zusätzliche Eigenschaften erfüllen, die es Angreifern unmöglich machen, ihn zu fälschen
+  - Zwei Hauptkategorien von Modifikationsprüfwerten:
+    - Modifikationserkennungscode (MDC)
+    - Nachrichten-Authentifizierungs-Code (MAC)
+
+## Kryptographische Hash-Funktionen
+- Definition: Hash-Funktion
+  - Eine Hash-Funktion ist eine Funktion h, die die folgenden zwei Eigenschaften hat:
+     - Komprimierung: h bildet eine Eingabe x mit beliebiger endlicher Bitlänge auf eine Ausgabe $h(x)$ mit fester Bitlänge n ab.
+     - Einfachheit der Berechnung: Bei h und x ist es einfach, $h(x)$ zu berechnen.
+- Definition: kryptografische Hash-Funktion
+  - Eine kryptografische Hash-Funktion h ist eine Hash-Funktion, die zusätzlich unter anderem die folgenden Eigenschaften erfüllt:
+    - Pre-Image-Resistenz: für im Wesentlichen alle vorgegebenen Ausgaben y ist es rechnerisch nicht möglich, ein x zu finden, so dass $h(x)=y$
+    - 2. Vorabbild-Resistenz: Bei x ist es rechnerisch nicht möglich, eine zweite Eingabe $x'$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
+    - Kollisionssicherheit: Es ist rechnerisch nicht möglich, ein beliebiges Paar $(x,x')$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
+  - Kryptographische Hash-Funktionen werden zur Berechnung von Modification Detection Codes (MDC) verwendet
+
+## Nachrichten-Authentifizierungs-Codes (MAC)
+- Definition: Nachrichten-Authentifizierungs-Code
+  - Ein Message-Authentication-Code-Algorithmus ist eine Familie von Funktionen $h_k$, die durch einen geheimen Schlüssel k parametrisiert sind und die folgenden Eigenschaften aufweisen:
+    - Komprimierung: hk bildet eine Eingabe x beliebiger endlicher Bitlänge auf eine Ausgabe $h_k(x)$ fester Bitlänge ab, genannt MAC
+    - Einfache Berechnung: Bei k, x und einer bekannten Funktionsfamilie $h_k$ ist der Wert $h_k(x)$ einfach zu berechnen
+    - Berechnungsresistenz: für jeden festen, erlaubten, aber unbekannten Wert von k ist es bei null oder mehr Text-MAC-Paaren $(x_i, h_k(x_i))$ rechnerisch nicht möglich, ein Text-MAC-Paar $(x, h_k(x))$ für jede neue Eingabe $x\not= x_i$ zu berechnen
+  - Bitte beachten Sie, dass Rechenresistenz die Eigenschaft der Nicht-Wiederherstellung des Schlüssels impliziert, d.h. k kann nicht aus Paaren $(x_i,h_k(x_i))$ wiederhergestellt werden, aber Rechenresistenz kann nicht aus der Nicht-Wiederherstellung des Schlüssels abgeleitet werden, da der Schlüssel k nicht immer wiederhergestellt werden muss, um neue MACs zu fälschen
+
+## Ein einfacher Angriff gegen einen unsicheren MAC
+- Betrachten wir zur Veranschaulichung die folgende MAC-Definition:
+  - Eingabe: Nachricht $m=(x_1,x_2,...,x_n)$, wobei $x_i$ 64-Bit-Werte sind, und Schlüssel k
+  - Berechne $\delta(m):= x_1\oplus x_2\oplus...\oplus x_n$, wobei $\oplus$ die bitweise Exklusiv-Oder-Verknüpfung bezeichnet
+  - Ausgabe: MAC $C_k(m):= E_k(\delta(m))$ mit $E_k(x)$ für die DES-Verschlüsselung
+- Die Schlüssellänge beträgt 56 Bit und die MAC-Länge 64 Bit, so dass wir einen Aufwand von etwa $2^{55}$ Operationen erwarten würden, um den Schlüssel k zu erhalten und den MAC zu knacken (= Nachrichten fälschen zu können).
+- Leider ist die MAC-Definition unsicher:
+  - Angenommen, ein Angreifer Eve, der die zwischen Alice und Bob ausgetauschten Nachrichten fälschen will, erhält eine Nachricht $(m,C_k(m))$, die von Alice mit dem mit Bob geteilten geheimen Schlüssel k ,,geschützt'' wurde
+  - Eve kann eine Nachricht $m'$ konstruieren, die denselben MAC ergibt:
+    - Sei $y_1,y_2,...,y_{n-1}$ ein beliebiger 64-Bit-Wert
+    - Definiere $y_n:= y_1\oplus y_2\oplus...\oplus y_{n-1}\oplus \delta(m)$, und $m':=(y_1,y_2,...,y_n)$
+    - Wenn Bob $(m',C_k(m))$ von Eve erhält, die vorgibt, Alice zu sein, wird er es als von Alice stammend akzeptieren, da $C_k(m)$ ein gültiger MAC für $m'$ ist
+
+## Anwendungen für kryptographische Hash-Funktionen und MACs
+- Wichtigste Anwendung, die zum ursprünglichen Entwurf führte: Integrität von Nachrichten
+   - Ein MDC stellt einen digitalen Fingerabdruck dar, der mit einem privaten Schlüssel signiert werden kann, z. B. mit dem RSA- oder ElGamal-Algorithmus, und es ist nicht möglich, zwei Nachrichten mit demselben Fingerabdruck zu erstellen, so dass ein bestimmter signierter Fingerabdruck von einem Angreifer nicht wiederverwendet werden kann
+   - Ein MAC über eine Nachricht m bescheinigt direkt, dass der Absender der Nachricht im Besitz des geheimen Schlüssels k ist und die Nachricht ohne Kenntnis dieses Schlüssels nicht verändert worden sein kann.
+- Andere Anwendungen, die eine gewisse Vorsicht erfordern:
+  - Bestätigung von Wissen
+  - Schlüsselableitung
+  - Pseudo-Zufallszahlengenerierung
+- Je nach Anwendung müssen weitere Anforderungen erfüllt werden:
+  - Partielle Vorabbild-Resistenz: auch wenn nur ein Teil der Eingabe, z.B. t Bit, unbekannt ist, sollte es im Durchschnitt $2^{t-1}$ Operationen benötigen, um diese Bits zu finden
+
+## Angriffe basierend auf dem Geburtstagsphänomen
+- Das Geburtstagsphänomen:
+  - Wie viele Personen müssen sich in einem Raum befinden, damit die Wahrscheinlichkeit, dass es mindestens zwei Personen mit demselben Geburtstag gibt, größer als 0,5 ist?
+  - Der Einfachheit halber lassen wir den 29. Februar beiseite und nehmen an, dass jeder Geburtstag gleich wahrscheinlich ist
+- Definieren Sie $P(n,k):= Pr$[mindestens ein Duplikat in k Elementen, wobei jedes Element einen von n gleich wahrscheinlichen Werten zwischen 1 und n annehmen kann ]
+- Definieren Sie $Q(n,k):= Pr$[kein Duplikat in k Artikeln, jeder Artikel zwischen 1 und n ]
+  - Wir können das erste Element aus n möglichen Werten wählen, das zweite Element aus $n-1$ möglichen Werten, usw.
+  - Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten ohne Duplikate auszuwählen, ist also: $N=n \mal (n-1)\mal...\mal(n-k+1)= n!\backslash(n-k)!$
+  - Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten auszuwählen, mit oder ohne Duplikate, ist: $n^k$
+  - Also, $Q(n,k)=N\backslash n^k=n!\backslash((n-k)! \times n^k)$
+- Wir haben: $P(n,k)=1-Q(n,k)=1-\frac{n!}{(n-k)!\times n^k}=1-\frac{n\times(n-1)\times...\times(n-k+1)}{n^k}=1-[(1-\frac{1}{n})\times(1-\frac{2}{n})\times...\times(1-\frac{k-1}{n})]$
+- Wir werden die folgende Ungleichung verwenden: $(1-x) \leq e^{-x}$ für alle $x \geq 0$
+- So: $P(n,k)>1-[(e^{-1/n})\times(e^{-2/n})\times...\times(e^{-(k-1)/n})]=1-e^{\frac{-k\times(k-1)}{2n}}$
+- Im letzten Schritt haben wir die Gleichheit: $1+2+...+(k-1)=(k^2 - k)\backslash 2$
+  - Übung: Beweisen Sie die obige Gleichheit durch Induktion
+- Kehren wir zu unserer ursprünglichen Frage zurück: Wie viele Personen k müssen sich in einem Raum befinden, damit mindestens zwei Personen mit demselben Geburtstag (von $n=365$ möglichen) mit der Wahrscheinlichkeit $\geq 0,5$ vorhanden sind?
+  - Wir wollen also lösen: $\frac{1}{2}=1-e^{\frac{-k\times(k-1)}{2n}}\Leftrightarrow 2=e^{\frac{k\times(k-1)}{2n}}\Leftrightarrow ln(2)=\frac{k\times(k-1)}{2n}$
+  - Für große k können wir $k\times(k-1)$ durch $k^2$ approximieren, und wir erhalten: $k=\sqrt{2 ln(2)n}\ca. 1,18\sqrt{n}$
+  - Für $n=365$ erhalten wir $k=22,54$, was der richtigen Antwort recht nahe kommt 23
+- Was hat das mit MDCs zu tun?
+- Wir haben gezeigt, dass bei n möglichen unterschiedlichen Werten die Anzahl k der Werte, die man zufällig wählen muss, um mindestens ein Paar identischer Werte zu erhalten, in der Größenordnung von $\sqrt{n}$ liegt.
+- Betrachten wir nun den folgenden Angriff [Yuv79a]:
+  - Eve möchte, dass Alice eine Nachricht m1 signiert, die Alice normalerweise nie signieren würde. Eve weiß, dass Alice die Funktion MDC1(m) verwendet, um eine MDC von m zu berechnen, die eine Länge von r Bit hat, bevor sie diese MDC mit ihrem privaten Schlüssel signiert, was ihre digitale Signatur ergibt.
+  - Zunächst erzeugt Eve ihre Nachricht m1. Würde sie nun MDC1(m1) berechnen und dann versuchen, eine zweite harmlose Nachricht m2 zu finden, die zu demselben MDC führt, wäre ihr Suchaufwand im durchschnittlichen Fall in der Größenordnung von $2^{(r-1)}$.
+  - Stattdessen nimmt sie eine beliebige harmlose Nachricht m2 und beginnt, Variationen m1' und m2' der beiden Nachrichten zu produzieren, z.B. durch Hinzufügen von <space> <backspace>-Kombinationen oder Variationen mit semantisch identischen Wörtern.
+- Wie wir aus dem Geburtstagsphänomen gelernt haben, muss sie nur etwa $\sqrt{2^r}=2^{r/2}$ Variationen von jeder der beiden Nachrichten produzieren, so dass die Wahrscheinlichkeit, dass sie zwei Nachrichten m1' und m2' mit demselben MDC erhält, mindestens 0,5 beträgt
+- Da sie die Nachrichten zusammen mit ihren MDCs speichern muss, um eine Übereinstimmung zu finden, liegt der Speicherbedarf ihres Angriffs in der Größenordnung von $2^{\frac{r}{2}}$ und der Rechenzeitbedarf in der gleichen Größenordnung
+- Nachdem sie m1' und m2' mit $MDC1(m1')=MDC1(m2')$ gefunden hat, fordert sie Alice auf, $m2'$ zu signieren. Eve kann dann diese Unterschrift nehmen und behaupten, dass Alice $m1'$ unterschrieben hat.
+- Angriffe nach dieser Methode werden Geburtstagsangriffe genannt.
+- Nehmen wir nun an, dass Alice RSA mit Schlüsseln der Länge 2048 Bit und eine kryptographische Hashfunktion verwendet, die MDCs der Länge 96 Bit erzeugt.
+  - Eves durchschnittlicher Aufwand, zwei Nachrichten m1' und m2' wie oben beschrieben zu erzeugen, liegt in der Größenordnung von $2^{48}$, was heute machbar ist. Das Knacken von RSA-Schlüsseln der Länge 2048 Bit ist mit den heutigen Algorithmen und Technologien bei weitem nicht möglich.
+
+## Übersicht über die gebräuchlichen MDCs
+- Kryptografische Hash-Funktionen zur Erstellung von MDCs:
+  - Message Digest 5 (MD5):
+    - Erfunden von R. Rivest
+    - Nachfolger von MD
+  - Sicherer Hash-Algorithmus 1 (SHA-1):
+    - Erfunden von der National Security Agency (NSA)
+    - Der Entwurf wurde von MD inspiriert.
+  - Sicherer Hash-Algorithmus 2 (SHA-2, auch SHA-256 und SHA-512)
+    - Ebenfalls von der National Security Agency (NSA) entwickelt
+    - Auch Merkle-Dåmgard-Verfahren
+    - Größere Blockgröße & komplexere Rundenfunktion
+  - Sicherer Hash-Algorithmus 3 (SHA-3, Keccak)
+    - Gewinner eines offenen Wettbewerbs
+    - Sogenannte Sponge-Konstruktion
+    - Vielseitiger als frühere Hash-Funktionen
+- Nachrichten-Authentifizierungs-Codes (MACs):
+  - DES-CBC-MAC:
+    - Verwendet den Data Encryption Standard im Cipher Block Chaining Modus
+    - Im Allgemeinen kann die CBC-MAC-Konstruktion mit jeder Blockchiffre verwendet werden.
+  - MACs, die aus MDCs aufgebaut sind:
+    - Dieser sehr verbreitete Ansatz wirft einige kryptografische Bedenken auf, da er einige implizite, aber nicht verifizierte Annahmen über die Eigenschaften der MDCs trifft.
+- Authentifizierte Verschlüsselung mit zugehörigen Daten (AEAD)
+  - Galois-Counter-Verfahren (GCM)
+    - Verwendet eine Blockchiffre zur Verschlüsselung und Authentifizierung von Daten
+    - Schnell in Netzwerkanwendungen
+  - Sponge Wrap
+    - Verwendet eine SHA-3 ähnliche Hash-Funktion zur Verschlüsselung und Authentifizierung von Daten
+
+## Gemeinsame Struktur von kryptografischen Hash-Funktionen
+- So wie viele der heutigen Blockchiffren der allgemeinen Struktur eines Feistel-Netzwerks folgen, folgen auch viele der heute verwendeten kryptografischen Hash-Funktionen einer gemeinsamen Struktur, der sogenannten Merkle-Dåmgard-Struktur:
+  - Sei y eine beliebige Nachricht. Normalerweise wird die Länge der Nachricht an die Nachricht angehängt und auf ein Vielfaches einer Blockgröße b aufgefüllt. Bezeichnen wir $(y_0,y_1,...,y_{L-1})$ die resultierende Nachricht, die aus L Blöcken der Größe b
+  - Die allgemeine Struktur ist wie folgt abgebildet: ![](Assets/NetworkSecurity-feistel.png)
+  - CV ist ein Verkettungswert, mit $CV_0:= IV$ und $MDC(y) := CV_L$
+  - f ist eine spezifische Kompressionsfunktion, die $(n+b)$ Bit auf n Bit komprimiert
+- Die Hash-Funktion H lässt sich wie folgt zusammenfassen:
+  - $CV_0 = IV =$ anfänglicher n-Bit-Wert
+  - $CV_i = f(CV_{i -1}, y_{i-1}) \quad\quad 1\leq i \leq L$
+  - $H(y) = CV_L$
+- Es wurde gezeigt [Mer89a], dass, wenn die Kompressionsfunktion f kollisionssicher ist, die resultierende iterierte Hash-Funktion H ebenfalls kollisionssicher ist.
+- Die Kryptoanalyse kryptographischer Hash-Funktionen konzentriert sich daher auf die interne Struktur der Funktion f und die Suche nach effizienten Techniken zur Erzeugung von Kollisionen bei einer einzigen Ausführung von f
+- In erster Linie durch Geburtstagsangriffe motiviert, ist ein gängiger Mindestvorschlag für n , die Bitlänge des Hashwerts, 160 Bit, da dies einen Aufwand der Größenordnung $2^{80}$ für einen Angriff impliziert, der heute als undurchführbar gilt
+
+## Der Message Digest 5
+- MD5 folgt der zuvor skizzierten allgemeinen Struktur (z. B. [Riv92a]):
+  - Die Nachricht y wird mit einer ,,1'' aufgefüllt, gefolgt von 0 bis 511 ,,0'' Bits, so dass die Länge der resultierenden Nachricht kongruent 448 modulo 512 ist
+  - Die Länge der ursprünglichen Nachricht wird als 64-Bit-Wert hinzugefügt, so dass eine Nachricht entsteht, deren Länge ein ganzzahliges Vielfaches von 512 Bit ist.
+  - Diese neue Nachricht wird in Blöcke der Länge $b=512$ Bit unterteilt.
+  - Die Länge des Verkettungswertes ist $n=128$ Bit
+    - Der Verkettungswert ist ,,strukturiert'' als vier 32-Bit-Register A, B, C, D
+    - Initialisierung: 
+      - A := 0x 01 23 45 67 
+      - B := 0x 89 AB CD EF
+      - C := 0x FE DC BA 98 
+      - D := 0x 76 54 32 10
+  - Jeder Block der Nachricht $y_i$ wird mit dem Verkettungswert $CV_i$ mit der Funktion f verarbeitet, die intern durch 4 Runden zu je 16 Schritten realisiert ist
+    - Jede Runde ist ähnlich aufgebaut und verwendet eine Tabelle T, die 64 konstante Werte von je 32 Bit enthält,
+    - Jede der vier Runden verwendet eine bestimmte logische Funktion g
+- ![](Assets/NetzwerkSicherheit-md5.png) 
+  - Die Funktion g ist eine von vier verschiedenen logischen Funktionen
+  - $y_i[k]$ bezeichnet das k-te$ 32-Bit-Wort des Nachrichtenblocks i
+  - $T[j]$ ist der j-te Eintrag der Tabelle t, wobei j bei jedem Schritt modulo 64 inkrementiert wird
+  - CLS s bezeichnet die zyklische Linksverschiebung um s Bits, wobei s einem bestimmten Schema folgt.
+- Der MD5-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks.
+- Sicherheit von MD5:
+  - Jedes Bit des 128-Bit-Hash-Codes ist eine Funktion eines jeden Eingabebits
+  - 1996 veröffentlichte H. Dobbertin einen Angriff, der es erlaubt, eine Kollision für die Funktion f zu erzeugen (realisiert durch die oben beschriebenen 64 Schritte).
+  - Es dauerte bis 2004, bis eine erste Kollision gefunden wurde [WLYF04].
+  - Inzwischen ist es möglich, Kollisionen innerhalb von Sekunden auf allgemeiner Hardware zu erzeugen [Kl06].
+  - MD5 darf nicht in Betracht gezogen werden, wenn Kollisionssicherheit erforderlich ist!
+    - Dies ist oft der Fall!
+    - Beispiele: Zwei Postskripte mit unterschiedlichen Texten, aber gleichen Hashes [LD05], Zertifikate, eines für eine gesicherte Domain und eines für eine eigene Zertifizierungsstelle [LWW05], Jede Nachricht, die erweiterbar ist [KK06]
+  - Die Resistenz gegen Preimage-Angriffe ist mit 2123.4 Berechnungen noch o.k[SA09]
+
+## Der sichere Hash-Algorithmus SHA-1
+- Auch SHA-1 folgt der gleichen Struktur wie oben beschrieben:
+  - SHA-1 arbeitet mit 512-Bit-Blöcken und erzeugt einen 160-Bit-Hash-Wert.
+  - Da sein Design auch vom MD4-Algorithmus inspiriert wurde, ist seine Initialisierung im Grunde dieselbe wie die von MD5:
+    - Die Daten werden aufgefüllt, ein Längenfeld wird hinzugefügt und die resultierende Nachricht wird als Blöcke der Länge 512 Bit verarbeitet.
+    - Der Verkettungswert ist als fünf 32-Bit-Register A, B, C, D, E strukturiert
+    - Initialisierung: 
+        - A = 0x 67 45 23 01 
+        - B = 0x EF CD AB 89
+        - C = 0x 98 BA DC FE 
+        - D = 0x 10 32 54 76
+        - E = 0x C3 D2 E1 F
+    - Die Werte werden im Big-Endian-Format gespeichert.
+  - Jeder Block yi der Nachricht wird zusammen mit CVi in einem Modul verarbeitet, das die Kompressionsfunktion f in vier Runden zu je 20 Schritten realisiert.
+    - Die Runden haben eine ähnliche Struktur, aber jede Runde verwendet eine andere primitive logische Funktion $f_1, f_2, f_3, f_4$.
+    - Bei jedem Schritt wird eine feste additive Konstante $K_t$ verwendet, die während einer Runde unverändert bleibt
+- ![](Assets/NetworkSecurity-sha1.png)
+  - $t\in\{0,...,15\}\Rechtspfeil W_t:= y_i[t]$
+  - $t\in\{16,...,79\}\Pfeil nach rechts W_t:=CLS_1(W_{t-16}\oplus W_{t-14}\oplus W_{t-8} \oplus W_{t-3})$
+  - Nach Schritt 79 wird jedes Register A, B, C, D, E modulo $2^{32}$ mit dem Wert des entsprechenden Registers vor Schritt 0 addiert, um $CV_{i+1}$ zu berechnen
+- Der SHA-1-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks.
+- Vergleich zwischen SHA-1 und MD5:
+  - Geschwindigkeit: SHA-1 ist etwa 25% langsamer als MD5 (CV ist etwa 25% größer)
+  - Einfachheit und Kompaktheit: beide Algorithmen sind einfach zu beschreiben und zu implementieren und erfordern keine großen Programme oder Ersetzungstabellen
+- Sicherheit von SHA-1:
+  - Da SHA-1 MDCs der Länge 160 Bit erzeugt, wird erwartet, dass es eine bessere Sicherheit gegen Brute-Force- und Geburtstagsangriffe bietet als MD5.
+  - Einige inhärente Schwächen von Merkle-Dåmgard-Konstruktionen, z. B. [KK06], sind vorhanden
+  - Im Februar 2005 veröffentlichten X. Wang et. al. einen Angriff, der es erlaubt, eine Kollision mit einem Aufwand von $2^{69}$ zu finden, der in den folgenden Monaten auf $2^{63}$ verbessert und in [WYY05a] veröffentlicht wurde
+  - Die Forschung ging weiter (z.B. [Man11]), und im Februar 2017 wurde die erste tatsächliche Kollision gefunden (demonstriert mit einem veränderten PDF-Dokument)
+- SHA-2-Familie
+  - Im Jahr 2001 veröffentlichte das NIST einen neuen Standard FIPS PUB 180-2, der neue Varianten mit den Bezeichnungen SHA-256, SHA-384 und SHA-512 [NIST02] mit 256, 384 und 512 Bits enthält.
+    - SHA-224 wurde im Jahr 2004 hinzugefügt.
+  - SHA-224 und SHA-384 sind verkürzte Versionen von SHA-256 und SHA-512 mit unterschiedlichen Initialisierungswerten
+  - SHA-2 verwendet ebenfalls die Merkle-Dåmgard-Konstruktion mit einer Blockgröße von 512 Bit (SHA-256) und 1024 Bit (SHA-512)
+  - Der interne Zustand ist in 8 Registern von 32 Bit (SHA-256) und 64 Bit (SHA-512) organisiert
+  - 64 Runden (SHA-256) oder 80 Runden (SHA-512)
+- Ein Schritt
+  - ![](Assets/NetworkSecurity-sha-2.png)
+  - $t\in\{0, ..., 15\}\Rechtspfeil W_t:=y_i[t]$
+  - $t\in\{16, ..., r\}\Rightarrow W_t:=W_{t-16}\oplus \delta_0(W_{t-15})\oplus W_{t-7}\oplus\delta_1(W_{t-2})$
+  - $K_t$ ist der gebrochene Teil der Kubikwurzel aus der t-ten Primzahl
+  - Die ROTR- und Funktionen XOR-verknüpfen verschiedene Verschiebungen des Eingangswertes
+  - Ch und Maj sind logische Kombinationen der Eingabewerte
+- SHA-2-Familie
+  - Alles in allem sehr ähnlich zu SHA-1
+  - Aufgrund der Größe und der komplizierteren Rundungsfunktionen etwa 30-50 Prozent langsamer als SHA-1 (variiert für 64-Bit- und 32-Bit-Systeme!)
+  - Sicherheitsdiskussion:
+    - Bereits 2004 wurde entdeckt, dass eine vereinfachte Version des Algorithmus (mit XOR statt Addition und symmetrischen Konstanten) hochkorrelierte Ausgaben erzeugt [GH04]
+    - Für rundenreduzierte Versionen von SHA-2 gibt es Pre-Image-Angriffe, die schneller sind als Brute-Force, aber sehr unpraktisch (z.B. [AGM09])
+    - Auch wenn Größe und Komplexität derzeit keine Angriffe zulassen, ist die Situation unangenehm
+    - Dies führte zur Notwendigkeit eines neuen SHA-3-Standards
+
+## Der sichere Hash-Algorithmus SHA-3
+- Sicherheitsbedenken bezüglich SHA-1 und SHA-2 führten zu einem offenen Wettbewerb des NIST, der 2007 begann
+  - 5 Finalisten ohne nennenswerte Schwächen
+  - Oktober 2012: NIST gibt bekannt, dass Keccak zu SHA-3 wird
+  - 4 europäische Erfinder
+  - Einer davon ist Joan Daemen, der AES mitentwickelt hat
+  - SHA-3 ist sehr schnell, besonders in der Hardware
+  - Sehr gut dokumentiert und analysierbar
+- Keccak basiert auf einer so genannten Schwammkonstruktion anstelle der früheren Merkle-Dåmgard-Konstruktionen
+  - Vielseitiges Design, um fast alle symmetrischen kryptographischen Funktionen zu implementieren (allerdings ist nur das Hashing standardisiert)
+- Arbeitet normalerweise in 2 Phasen
+  - ,,Absorbieren'' von Informationen beliebiger Länge in 1600 Bit des internen Zustands
+  - ,,Auspressen'' (d.h. Ausgeben) von Hash-Daten beliebiger Länge (nur 224, 256, 384 und 512 Bit standardisiert)
+- Der interne Zustand ist in 2 Registern organisiert
+  - Ein Register der Größe r ist ,,public'': Eingabedaten werden in der Absorptionsphase mit XOR verknüpft, Ausgabedaten werden in der Quetschungsphase daraus abgeleitet
+  - Das Register der Größe c ist ,,privat''; Ein- und Ausgabe wirken sich nicht direkt auf es aus.
+  - In Keccak ist die Größe der Register 1600 Bits (d.h. $c+r=1600$ Bits)
+  - Die Größe von c ist doppelt so groß wie die Länge des Ausgangsblocks
+  - Beide Register werden mit ,,0'' initialisiert
+- Das Hashing erfolgt durch eine Funktion f, die die Register liest und einen neuen Zustand ausgibt
+- Sponge-Konstruktion
+  - ![](Assets/NetzwerkSicherheit-sha-3.png)
+  - Absorptionsphase: $k + 1$ Eingabeblöcke der Größe r werden in den Zustand gemischt
+  - Quetschphase: $l + 1$ Ausgangsblöcke der Größe r werden erzeugt (oft nur einer)
+  - Der letzte Eingabe- und Ausgabeblock kann aufgefüllt oder abgeschnitten werden.
+- Die Funktion f
+  - Offensichtlich hängt die Sicherheit einer Sponge-Konstruktion von der Sicherheit von f
+  - Keccak verwendet 24 Runden von 5 verschiedenen Unterfunktionen $(\Sigma, \ro,\pi,𝜒,ɩ)$, um f zu implementieren.
+  - Die Unterfunktionen operieren auf einem ,,dreidimensionalen'' Bit-Array a $[5][5][w]$, wobei w entsprechend der Größe r und c gewählt wird
+  - Alle Operationen werden über $GF(2^n)$ durchgeführt.
+  - Jede der Unterfunktionen gewährleistet bestimmte Eigenschaften, z.B,
+    - Schnelle Diffusion der geänderten Bits im gesamten Zustand ($\Sigma$)
+    - Langfristige Diffusion ($\pi$)
+    - Sicherstellung, dass f nichtlinear wird (𝜒)
+    - Rundenspezifische Substitution (ɩ)
+- $\Sigma$ wird zuerst ausgeführt, um sicherzustellen, dass sich der geheime und der öffentliche Zustand schnell vermischen, bevor andere Unterfunktionen angewendet werden.
+- Sicherheit
+  - Derzeit gibt es keine nennenswerten Schwachstellen in SHA-3
+    - Die bekanntesten Pre-Image-Angriffe funktionieren nur mit einer Funktion f mit bis zu 8 Runden
+    - Zum Schutz vor internen Kollisionen sollten 11 Runden ausreichen.
+  - Im Vergleich zu SHA-1 und SHA-2 werden zusätzliche Sicherheitseigenschaften garantiert, da der interne Zustand nie öffentlich gemacht wird
+    - Verhindert Angriffe, bei denen beliebige Informationen zu einer gültigen geheimen Nachricht hinzugefügt werden
+    - Bietet Chosen Target Forced Prefix (CTFP) Preimage-Resistenz [KK06], d.h. es ist nicht möglich, eine Nachricht $m=P||S$ zu konstruieren, wobei P fest und S beliebig gewählt ist, s.t., $H(m)=y$
+    - Für Merkle-Dåmgard-Konstruktionen ist dies nur so schwer wie die Kollisionssicherheit
+    - Keine schnelle Möglichkeit, Multikollisionen schnell zu erzeugen [Jou04]
+
+## Cipher Block Chaining Message Authentication Codes
+- Ein CBC-MAC wird berechnet, indem eine Nachricht im CBC-Modus verschlüsselt wird und der letzte Chiffretextblock oder ein Teil davon als MAC verwendet wird:
+  - ![](Assets/NetworkSecurity-CBC-mac.png)
+- Dieser MAC muss nicht mehr signiert werden, da er bereits mit einem gemeinsamen Geheimnis K erzeugt wurde.
+  - Es ist jedoch nicht möglich zu sagen, wer genau einen MAC erstellt hat, da jeder (Sender, Empfänger), der den geheimen Schlüssel K kennt, dies tun kann
+- Dieses Verfahren funktioniert mit jeder Blockchiffre (DES, IDEA, ...)
+- Sicherheit von CBC-MAC:
+  - Da ein Angreifer K nicht kennt, ist ein Geburtstagsangriff sehr viel schwieriger (wenn nicht gar unmöglich) zu starten
+  - Ein Angriff auf einen CBC-MAC erfordert bekannte Paare (Nachricht, MAC)
+  - Dies ermöglicht kürzere MACs
+  - Ein CBC-MAC kann optional verstärkt werden, indem man sich auf einen zweiten Schlüssel $K'\not= K$ einigt und eine dreifache Verschlüsselung des letzten Blocks durchführt: $MAC:=E(K,D(K',E(K,C_{n-1})))$
+  - Dadurch verdoppelt sich der Schlüsselraum bei nur geringem Rechenaufwand
+  - Die Konstruktion ist nicht sicher, wenn die Nachrichtenlängen variieren!
+- Es gibt auch einige Vorschläge, MDCs aus symmetrischen Blockchiffren zu erzeugen, indem der Schlüssel auf einen festen (bekannten) Wert gesetzt wird:
+  - Wegen der relativ kleinen Blockgröße von 64 Bit der meisten gängigen Blockchiffren bieten diese Verfahren keine ausreichende Sicherheit gegen Geburtstagsangriffe.
+  - Da symmetrische Blockchiffren mehr Rechenaufwand erfordern als spezielle kryptografische Hash-Funktionen, sind diese Verfahren relativ langsam.
+
+## Konstruktion eines MAC aus einem MDC
+- Grund für die Konstruktion von MACs aus MDCs Kryptografische Hash-Funktionen laufen im Allgemeinen schneller ab als symmetrische Blockchiffren
+- Grundidee: ,,mix'' einen geheimen Schlüssel K mit der Eingabe und berechne einen MDC
+- Die Annahme, dass ein Angreifer K kennen muss, um einen gültigen MAC zu erzeugen, wirft dennoch einige kryptografische Probleme auf (zumindest für Merkle-Dåmgard-Hash-Funktionen):
+  - Die Konstruktion $H(K||m)$ ist nicht sicher (siehe Anmerkung 9.64 in [Men97a])
+  - Die Konstruktion $H(m||K)$ ist nicht sicher (siehe Bemerkung 9.65 in [Men97a])
+  - Die Konstruktion $H(K||p||m||K)$, bei der p ein zusätzliches Auffüllfeld bezeichnet, bietet keine ausreichende Sicherheit (siehe Anmerkung 9.66 in [Men97a])
+- Die am häufigsten verwendete Konstruktion ist: $H(K\oplus p_1|| H(K\oplus p_2|| m))$
+  - Der Schlüssel wird mit 0's aufgefüllt, um den Schlüssel zu einem Eingabeblock der kryptographischen Hashfunktion aufzufüllen
+  - Zwei verschiedene konstante Muster $p_1$ und $p_2$ werden mit dem aufgefüllten Schlüssel XOR-verknüpft
+  - Dieses Schema scheint sicher zu sein (siehe Anmerkung 9.67 in [Men97a])
+  - Es wurde in RFC 2104 [Kra97a] standardisiert und wird HMAC genannt.
+
+## Authentifizierte Verschlüsselung mit zugehörigen Daten (AEAD) Modi
+- Normalerweise sind die Daten nicht authentifiziert oder verschlüsselt, sondern verschlüsselt UND authentifiziert (Blöcke $P_0...P_n$)
+- Manchmal müssen zusätzliche Daten authentifiziert werden (z.B. Paketköpfe), im Folgenden mit $A_0...A_m$ bezeichnet
+- führte zur Entwicklung von AEAD-Betriebsarten
+- Beispiele hierfür sind
+  - Galois/Zähler-Modus (GCM)
+  - Zähler mit CBC-MAC (CCM)
+  - Offset-Codebuch-Modus (OCM)
+  - SpongeWrap - eine Methode zur Verwendung von Keccak für den AEAD-Betrieb
+
+### Galois/Zähler-Modus (GCM) [MV04]
+- Beliebter AEAD-Modus
+- NIST-Standard, Teil von IEEE 802.1AE, IPsec, TLS, SSH usw.
+- Frei von Patenten
+- Wird wegen seiner hohen Geschwindigkeit hauptsächlich in Netzwerkanwendungen eingesetzt
+  - Äußerst effizient in der Hardware
+  - Prozessorunterstützung auf neueren x86-CPUs
+  - Zeitintensive Aufgaben können vorberechnet und parallelisiert werden
+  - Keine Notwendigkeit für Auffüllungen
+- Verwendet konventionelle Blockchiffre mit 128-Bit-Blockgröße (z. B. AES)
+- Berechnet MAC durch Multiplikationen und Additionen in $GF(2^{128})$ über das irreduzible Polynom $x^{128}+x^{7}+x^{2}+x+1$
+- Erfordert nur $n+1$ Blockchiffre-Aufrufe pro Paket (n = Länge der verschlüsselten und authentifizierten Daten)
+- ![](Assets/NetworkSecurity-gcm.png)
+  - $I_0$ wird mit dem IV und einem Padding oder einem Hash des IV initialisiert (wenn er nicht 96 Bit beträgt)
+  - $\circ H$ ist $GF(2^{128})$ Multiplikation mit $H=E(K,0^{128})$
+  - Die Eingabeblöcke $A_m$ und $P_n$ werden auf 128 Bit aufgefüllt
+  - $A_m$ und $C_n$ werden vor der Ausgabe auf die Originalgröße gekürzt
+  - Die letzte Authentifizierung verwendet 64 Bit kodierte Bitlängen von A und C
+- Sicherheit
+  - Schneller Modus, erfordert aber einige Sorgfalt:
+    - Erwiesenermaßen sicher (unter bestimmten Voraussetzungen, z. B. wenn die verwendete Blockchiffre nicht von Zufallszahlen unterscheidbar ist), aber die Konstruktion ist anfällig:
+  - IVs MÜSSEN NICHT wiederverwendet werden, da sonst Datenströme XOR-verknüpft werden können und das XOR der Datenströme wiederhergestellt werden kann, was zu einer sofortigen Wiederherstellung des geheimen Werts ,,H'' führen kann
+  - H hat einen möglichen schwachen Wert $0^{128}$, in diesem Fall wird die Authentifizierung nicht funktionieren, und wenn IVs mit einer anderen Länge als 96 Bits verwendet werden, wird $C_0$ immer gleich sein!
+  - Einige andere Schlüssel erzeugen Hash-Schlüssel mit einer niedrigen Ordnung, was vermieden werden muss... [Saa11]
+  - Erfolgreiche Fälschungsversuche können Informationen über H durchsickern lassen, daher MÜSSEN kurze MAC-Längen vermieden oder risikominimiert werden [Dwo07]
+  - Die erreichte Sicherheit ist nur $2^{t-k}$ und nicht $2^t$ (für MAC-Länge t und Anzahl der Blöcke $2^k$), da Blöcke modifiziert werden können, um nur Teile des MAC zu ändern [Fer05]
+
+### Kleiner Exkurs: Rechenoperationen in $GF(2^n)$
+- Galoisfeld-Arithmetik definiert über Termen (z.B. $a_3x^3+a_2x^2+a_1x+a_0$)
+- Koeffizienten sind Elemente des Feldes $\matbb{Z}_2$, d.h. entweder 0 oder 1
+- Oft werden nur die Koeffizienten gespeichert, so wird aus x^4 +x^2 +x^1 0x16
+- Die Addition in $GF(2^n)$ ist einfach die Addition von Termen
+  - Da gleiche Koeffizienten auf 0 abbilden, einfach XOR der Werte!
+  - Extrem schnell in Hard- und Software!
+- Multiplikation in $GF(2^n)$ ist Polynommultiplikation und anschließende Modulodivision durch ein irreduzibles Polynom vom Grad n
+  - Irreduzible Polynome sind nicht ohne Rest durch irgendein anderes Polynom teilbar, außer durch ,,1'', ähnlich wie Primzahlen in GF
+  - Kann durch eine Reihe von Verschiebe- und XOR-Operationen implementiert werden
+  - Sehr schnell in Hardware oder auf neueren Intel-CPUs (mit CLMUL-Operationen)
+  - Modulo-Operation kann wie bei einer regulären CRC-Berechnung durchgeführt werden
+- Addition Beispiel:
+  - $x^3 +x+1 x\oplus x^2+x = x^3 +x^2 +1 \leftrightarrow$ 0x0B XOR 0x06 = 0x0D
+- Multiplikationsbeispiel (über $x^4 +x+1$):
+  - $x^3 +x+1\circ x^2+x = x^5+x^3+x^2\oplus x^4+x^2+x\ MOD\ x^4+x+1=x^5+x^4+x^3+x\ MOD\ x^4+x+1 = x^3 +x^2 +x+1$
+- Elemente von $GF(2^n)$ (mit Ausnahme von 1 und dem irreduziblen Polynom) können ein Generator für die Gruppe sein
+- Beispiel für x und das Polynom $x^4+x+1:x,x^2,x^3,x+1,x^2+x,x^3+x^2,x^3+x+1,x^2 +1,x^3+x,x^2+x+1,x^3+x^2+x,x^3+x^2+x+1,x^3+x^2+1,x^3+1,1,x,...$
+- Andere Konzepte endlicher Gruppen gelten ebenfalls, z. B. hat jedes Element ein multiplikatives inverses Element
+  - Kann durch eine angepasste Version des Erweiterten Euklidischen Algorithmus gefunden werden
+
+## SpongeWrap
+- Durch Verwendung von SHA-3 ist es auch möglich, ein AEAD-Konstrukt zu implementieren [BDP11a]
+- Die Konstruktion ist sehr einfach und vergleichsweise leicht zu verstehen
+- Verwendet den sogenannten Duplex-Modus für Sponge-Funktionen, bei dem Schreib- und Leseoperationen verschachtelt werden
+- Erfordert kein Auffüllen der Daten auf eine bestimmte Blockgröße
+- Kann nicht parallelisiert werden
+- Sicherheit:
+  - Noch nicht weit verbreitet, aber mehrere Aspekte haben sich als genauso sicher wie SHA-3 im standardisierten Modus erwiesen
+  - Wenn die authentifizierten Daten A keine eindeutige IV enthalten, wird derselbe Schlüsselstrom erzeugt (ermöglicht die Wiederherstellung eines Blocks XOR-verschlüsselter Daten)
+- ![](Assets/NetworkSecurity-sponge-wrap.png)
+  - Vereinfachte Version, bei der die Länge von Schlüssel und MAC kleiner sein muss als die Blockgröße
+  - Auffüllungen mit einem einzelnen ,,0''- oder ,,1''-Bit stellen sicher, dass verschiedene Datenblocktypen gut voneinander getrennt sind
+
 # Zufallszahlengenerierung
 # Kryptographische Protokolle
 # Sichere Gruppenkommunikation
@@ -745,3 +1636,48 @@ Standardisierte AES-Konfigurationen
 - [Sch96] B. Schneier - Applied Cryptography Second Edition: Protocols, Algorithms and Source Code in C
 - [Sta13] W. Stallings - Cryptography and Network Security: Principles and Practice
 - [Sti05] D. R. Stinson - Cryptography: Theory and Practice (Discrete Mathematics and Its Applications)
+- [Bre88a] D. M. Bressoud. - Factorization and Primality Testing
+- [Cor90a] T. H. Cormen, C. E. Leiserson, R. L. Rivest. Introduction to Algorithms.
+- [DH76] W. Diffie, M. E. Hellman - New Directions in Cryptography
+- [ElG85a] T. ElGamal - A Public Key Cryptosystem and a Signature Scheme based on Discrete Logarithms.
+- [Kob87a] N. Koblitz - A Course in Number Theory and Cryptography
+- [Men93a] A. J. Menezes - Elliptic Curve Public Key Cryptosystems.
+- [Niv80a] I. Niven, H. Zuckerman - An Introduction to the Theory of Numbers
+- [RSA78] R. Rivest, A. Shamir und L. Adleman - A Method for Obtaining Digital Signatures and Public Key Cryptosystems
+- [KAFL10] T. Kleinjung, K. Aoki, J. Franke, A. Lenstra, E. Thomé, J. Bos, P. Gaudry, A. Kruppa, P. Montgomery, D. Osvik, H. Te Riele, A.Timofeev, P. Zimmermann - Factorization of a 768-bit RSA modulus
+- [LM10] M. Lochter, J. Merkle - Elliptic Curve Cryptography (ECC) Brainpool Standard Curves and Curve Generation 
+- [NIST99] NIST - Recommended Elliptic Curves for Federal Government Use
+- [NIST12] NIST - Recommendation for Key Management: Part 1: General (Revision 3)
+- [Ko87] N. Koblitz - Elliptic Curve Cryptosystems
+- [BBP12] B.B. Brumley, M. Barbosa, D. Page, F. Vercauteren - Practical realisation and elimination of an ECC-related software bug attack
+- [BT11] B.B. Brumley, N. Tuveri - Remote timing attacks are still practical
+- [BLR08] D. Bernstein, T. Lange, R. Rezaeian Farashahi - Binary Edwards Curves
+- [NIST09] NIST - Digital Signature Standard (DSS)
+- [SM09] A. Sorniotti, R. Molva - A provably secure secret handshake with dynamic controlled matching
+- [BF03] D. Boneh, M. Franklin - Identity-Based Encryption from the Weil Pairing
+- [Sch85] R. Schoof - Elliptic Curves over Finite Fields and the Computation of Square Roots mod p
+- [Kra97a] H. Krawczyk, M. Bellare, R. Canetti. HMAC: Keyed-Hashing for Message Authentication. Internet RFC 2104, February 1997.
+- [Mer89a] R. Merkle. One Way Hash Functions and DES. Proceedings of Crypto ‘89, Springer, 1989
+- [Men97a] A. J. Menezes, P. C. Van Oorschot, S. A. Vanstone. Handbook of Applied Cryptography, CRC Press Series on Discrete Mathematics and Its Applications, Hardcover, 816 pages, CRC Press, 1997
+- [NIST02] National Institute of Standards and Technology (NIST). Secure Hash Standard. Federal Information Processing Standards Publication (FIPS PUB), 180-2, 2002
+- [Riv92a] R. L. Rivest. The MD5 Message Digest Algorithm. Internet RFC 1321, April 1992
+- [Rob96a] M. Robshaw. On Recent Results for MD2, MD4 and MD5. RSA Laboratories' Bulletin, No. 4, November 1996
+- [WYY05a] X. Wang, Y. L. Yin, H. Yu. Finding collisions in the full SHA-1. In Advances in Cryptology - CRYPTO'05, pages 18-36, 2005
+- [Yuv79a] G. Yuval. How to Swindle Rabin. Cryptologia, July 1979.
+- [WLYF04] X. Wang, D. Feng, X. Lai, H. Yu. Collisions for Hash Functions MD4, MD5, HAVAL-128 and RIPEMD. IACR Eprint archive, 2004.
+- [LWW05] A. Lenstra, X. Wang, B. de Weger. Colliding X.509 Certificates. Cryptology ePrint Archive: Report 2005/067. 2005
+- [LD05] S. Lucks, M. Daum. The Story of Alice and her Boss. In Rump session of Eurocrypt’05. 2005.
+- [Kl06] V. Klima. Tunnels in Hash Functions: MD5 Collisions Within a Minute (extended abstract), Cryptology ePrint Archive: Report 2006/105, 2006
+- [SA09] Y. Sasaki, K. Aoki. Finding Preimages in Full MD5 Faster Than Exhaustive Search. Advances in Cryptology - EUROCRYPT’09. 2009
+- [Man11] M. Manuel. Classification and Generation of Disturbance Vectors for Collision Attacks against SHA-1. Journal Designs, Codes and Cryptography. Volume 59, Issue 1-3, pages 247-263, 2011
+- [GH04] H. Gilbert, H. Handschuh. Security Analysis of SHA-256 and Sisters. Lecture Notes in Computer Science, 2004, Volume 3006/2004, pages 175-193. 2004
+- [AGM09] K. Aoki, J. Guo, K. Matusiewicz, V. Sasaki, L. Wang. Preimages for Step-Reduced SHA-2. Advances in Cryptology - ASIACRYPT 2009. pages 578-597, 2009
+- [KK06] J. Kelsey, T. Kohno. Herding Hash Functions and the Nostradamus Attack. Advances in Cryptology - EUROCRYPT’06. 2006
+- [Jou04] A. Joux: Multicollisions in Iterated Hash Functions. Application to Cascaded Constructions. CRYPTO 2004: pages 306-316. 2004
+- [MV04] D. McGrew, J. Viega. The Security and Performance of the Galois/Counter Mode (GCM) of Operation (Full Version). [http://eprint.iacr.org/2004/193.](http://eprint.iacr.org/2004/193.)
+- [Fer05] N. Ferguson. Authentication weaknesses in GCM. 2005
+- [Dwo07] M. Dworkin. Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC. NIST Special Publication 800-38D. 2007
+- [Saa11] M. Saarinen. GCM, GHASH and Weak Keys. Cryptology ePrint Archive, Report 2011/202, [http://eprint.iacr.org/2011/202,](http://eprint.iacr.org/2011/202,) 2011
+- [BDP07] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. Sponge Functions. Ecrypt Hash Workshop 2007
+- [BDP11a] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. Cryptographic sponge functions. Research report. Version 0.1. 2011
+- [BDP11b] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. The Keccak reference. Research report. Version 3.0. 2011

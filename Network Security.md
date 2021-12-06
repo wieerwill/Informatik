@@ -80,6 +80,30 @@
   - [Sichere Pseudo-Zufallszahlengenerierung](#sichere-pseudo-zufallszahlengenerierung)
   - [CSPRNG-Sicherheit ist eine große Sache!](#csprng-sicherheit-ist-eine-große-sache)
 - [Kryptographische Protokolle](#kryptographische-protokolle)
+  - [Anwendungen von kryptographischen Protokollen](#anwendungen-von-kryptographischen-protokollen)
+  - [Schlüsselaustausch](#schlüsselaustausch)
+  - [Authentifizierung der Datenherkunft](#authentifizierung-der-datenherkunft)
+  - [Authentifizierung von Entitäten](#authentifizierung-von-entitäten)
+  - [Notation kryptographischer Protokolle](#notation-kryptographischer-protokolle)
+  - [Das Needham-Schroeder-Protokoll](#das-needham-schroeder-protokoll)
+  - [Das Otway-Rees-Protokoll](#das-otway-rees-protokoll)
+  - [Kerberos](#kerberos)
+    - [Kerberos für mehrere Domänen](#kerberos-für-mehrere-domänen)
+    - [Kerberos Version 5](#kerberos-version-5)
+  - [Fortgeschrittene Methoden zur Passwortauthentifizierung](#fortgeschrittene-methoden-zur-passwortauthentifizierung)
+  - [PAKE-Schemata: EKE](#pake-schemata-eke)
+    - [Sicherheitsdiskussion](#sicherheitsdiskussion)
+    - [DH-EKE](#dh-eke)
+    - [Sicherheitsdiskussion 2](#sicherheitsdiskussion-2)
+    - [SRP](#srp)
+    - [SRP - Dialog](#srp---dialog)
+    - [SRP - Diskussion](#srp---diskussion)
+  - [X.509 - Einführung](#x509---einführung)
+    - [X.509 - Zertifikate mit öffentlichem Schlüssel](#x509---zertifikate-mit-öffentlichem-schlüssel)
+    - [X.509 - Zertifikatsketten & Zertifikatshierarchie](#x509---zertifikatsketten--zertifikatshierarchie)
+    - [X.509 - Zertifikatssperrung](#x509---zertifikatssperrung)
+    - [X.509 - Authentifizierungsprotokolle](#x509---authentifizierungsprotokolle)
+  - [Formale Validierung von kryptographischen Protokollen](#formale-validierung-von-kryptographischen-protokollen)
 - [Sichere Gruppenkommunikation](#sichere-gruppenkommunikation)
 - [Zugriffskontrolle](#zugriffskontrolle)
 - [Integration von Sicherheitsdiensten in Kommunikationsarchitekturen](#integration-von-sicherheitsdiensten-in-kommunikationsarchitekturen)
@@ -776,17 +800,17 @@ Eine vorherige Beschäftigung mit der diskreten Mathematik wird dem Leser jedoch
   - Beispiele: $4\equiv 11\ mod\ 7$, $25\equiv 11\ mod\ 7$, $11\equiv 25\ mod\ 7$, $11\equiv 4\ mod\ 7$, $-10\equiv 4\ mod\ 7$
 - Da der Rest r der Division durch n immer kleiner als n ist, stellt man manchmal die Menge $\{x\ MOD\ n | x\in\mathbb{Z}\}$ durch Elemente der Menge $\mathbb{Z}_n=\{0, 1, ..., n-1\}$ dar
 
-| Eigenschaft | Ausdruck |
-| ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Kommutativgesetze   |  $(a + b)\ MOD\ n = (b + a)\ MOD\ n$                                                    |
-|| $(a \times b)\ MOD\ n = (b \times a)\ MOD\ n$                                                                       |
-| Assoziativgesetze                                                                                                   | $[(a + b) + c]\ MOD\ n = [a + (b + c)]\ MOD\ n$                                        |
-|| $[(a \times b) \times c]\ MOD\ n = [a \times (b \times c)]\ MOD\ n$                                                 |
-| Distributivgesetz                                                                                                    | $[a \times (b + c)]\ MOD\ n = [(a \times b) + (a \times c)]\ MOD\ n$                   |
-| Identitäten                                                                                                          | $(0 + a)\ MOD\ n = a\ MOD\ n$                                                          |
-|| $(1 \times a)\ MOD\ n = a\ MOD\ n$                                                                                  |
-| Inverse                                                                                                            | $\forall  a \in \mathbb{Z}n: \exists (-a) \in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$ |
-|| p is prime $\Rightarrow \forall  a \in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$ |
+| Eigenschaft       | Ausdruck                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Kommutativgesetze | $(a + b)\ MOD\ n = (b + a)\ MOD\ n$                                                                                 |
+|                   | $(a \times b)\ MOD\ n = (b \times a)\ MOD\ n$                                                                       |
+| Assoziativgesetze | $[(a + b) + c]\ MOD\ n = [a + (b + c)]\ MOD\ n$                                                                     |
+|                   | $[(a \times b) \times c]\ MOD\ n = [a \times (b \times c)]\ MOD\ n$                                                 |
+| Distributivgesetz | $[a \times (b + c)]\ MOD\ n = [(a \times b) + (a \times c)]\ MOD\ n$                                                |
+| Identitäten       | $(0 + a)\ MOD\ n = a\ MOD\ n$                                                                                       |
+|                   | $(1 \times a)\ MOD\ n = a\ MOD\ n$                                                                                  |
+| Inverse           | $\forall  a \in \mathbb{Z}n: \exists (-a) \in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$                              |
+|                   | p is prime $\Rightarrow \forall  a \in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$ |
 
 Größter gemeinsamer Teiler
 - $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge [\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )]$ und $gcd(a, 0 ) : = | a |$
@@ -1204,12 +1228,12 @@ Größter gemeinsamer Teiler
 - Viele Veröffentlichungen wählen die Parameter a und b so, dass sie nachweislich durch einen Zufallsprozess gewählt werden (z.B. veröffentlichen Sie x für $h(x)=a$ und $y$ für $h(y) = b$); so soll sichergestellt werden, dass die Kurven keine kryptographische Schwäche enthalten, die nur den Autoren bekannt ist
 - Die Sicherheit ist abhängig von der Länge von p
   - Schlüssellängen mit vergleichbaren Stärken nach [NIST12]:
-    | Symmetrische Algorithmen | RSA | ECC |
-    | -------------------- | ----- | ------- |
-    | 112 | 2048 | 224-255 |
-    | 128 | 3072 | 256-383 |
-    | 192 | 7680 | 384-511 |
-    | 256 | 15360 | > 512 |
+    | Symmetrische Algorithmen | RSA   | ECC     |
+    | ------------------------ | ----- | ------- |
+    | 112                      | 2048  | 224-255 |
+    | 128                      | 3072  | 256-383 |
+    | 192                      | 7680  | 384-511 |
+    | 256                      | 15360 | > 512   |
 - Die Sicherheit hängt auch stark von der Implementierung ab!
   - Die verschiedenen Fälle (z.B. mit O) in der ECC-Berechnung können beobachtbar sein, d.h. Stromverbrauch und Zeitunterschiede
   - Angreifer können Seitenkanalangriffe ableiten, wie in OpenSSL 0.9.8o [BT11]
@@ -1737,6 +1761,430 @@ für die meisten praktischen Situationen ausreichend
   - Verwenden Sie blockierende RNGs, d.h. solche, die nicht fortfahren, bis sie genügend Entropie haben
 
 # Kryptographische Protokolle
+- Definition: Ein kryptographisches Protokoll ist definiert als eine Reihe von Schritten und der Austausch von Nachrichten zwischen mehreren Einheiten, um ein bestimmtes Sicherheitsziel zu erreichen.
+- Eigenschaften eines Protokolls (im Allgemeinen):
+  - Jeder, der an dem Protokoll beteiligt ist, muss das Protokoll und alle zu befolgenden Schritte im Voraus kennen
+  - Jeder, der an dem Protokoll beteiligt ist, muss zustimmen, es zu befolgen.
+  - Das Protokoll muss eindeutig sein, d.h. jeder Schritt ist genau definiert, und es gibt keine Möglichkeit für Missverständnisse
+  - Das Protokoll muss vollständig sein, d. h. es gibt für jede mögliche Situation eine bestimmte Aktion.
+- Zusätzliche Eigenschaft eines kryptographischen Protokolls:
+  - Es sollte nicht möglich sein, mehr zu tun oder zu erfahren als das, was im Protokoll angegeben ist.
+
+## Anwendungen von kryptographischen Protokollen
+- Schlüsselaustausch
+- Authentifizierung
+  - Authentifizierung der Datenherkunft
+  - Authentifizierung von Entitäten
+- Kombinierte Authentifizierung und Schlüsselaustausch
+- Aufteilung des Geheimnisses (alle Teile werden für die Rekonstruktion benötigt)
+- Gemeinsame Nutzung des Geheimnisses (m von n Teilen werden für die Rekonstruktion benötigt)
+- Zeitstempelung
+- Schlüsselhinterlegung (Sicherstellung, dass nur eine befugte Stelle Schlüssel wiederherstellen kann)
+- Zero-Knowledge-Beweise (Nachweis der Kenntnis einer Information ohne Offenlegung der Information)
+- Blindsignaturen (nützlich für die Wahrung der Privatsphäre bei Zeitstempeldiensten)
+- Sichere Wahlen
+- Elektronisches Geld
+
+## Schlüsselaustausch
+- Das vorgestellte Diffie-Hellman-Protokoll ist unser erstes Beispiel für ein kryptographisches Protokoll zum Schlüsselaustausch
+- Bitte beachten Sie, dass es keine Authentifizierung realisiert:
+  - Weder Alice noch Bob wissen nach einem Protokolldurchlauf, mit wem sie einen Schlüssel ausgetauscht haben
+  - Da dieser reine Schlüsselaustausch ohne Authentifizierung nicht einmal die Vertraulichkeit der Kommunikation nach dem Austausch garantieren kann, muss er mit Authentifizierung kombiniert werden
+- Diese Trennung von Schlüsselaustausch und Authentifizierung des Austauschs hat jedoch einen großen Vorteil, da sie es ermöglicht, die Eigenschaft des perfekten Vorwärtsgeheimnisses (Perfect Forward Secrecy, PFS) zu gewährleisten:
+  - Wenn ein Schlüsselaustausch PFS gewährleistet, kann die Kompromittierung eines Schlüssels in der Zukunft keine Daten kompromittieren, die mit anderen Schlüsseln geschützt wurden, die vor dieser Kompromittierung ausgetauscht wurden.
+  - Beispiel: Stellen Sie sich vor, Alice und Bob signieren beide die zur Berechnung von sk ausgetauschten Daten mit ihren privaten Schlüsseln. Selbst die Kompromittierung eines privaten Schlüssels in der Zukunft wird es nicht ermöglichen, aufgezeichnete Daten zu entschlüsseln, die mit sk geschützt wurden.
+
+## Authentifizierung der Datenherkunft
+Definition: Die Datenursprungsauthentifizierung ist der Sicherheitsdienst, der es Entitäten ermöglicht, zu überprüfen, ob eine Nachricht von einer bestimmten Entität stammt und nicht nachträglich verändert wurde. Ein Synonym für diesen Dienst ist Datenintegrität.
+- Die Beziehung zwischen Datenintegrität und kryptografischen Protokollen ist zweifach:
+  - Es gibt kryptografische Protokolle zur Sicherstellung der Datenintegrität. Sie umfassen in der Regel nur einen Protokollschritt und sind daher nicht sehr ,,spannend'':
+    - Beispiel 1: Angenommen, jeder kennt den öffentlichen RSA-Schlüssel von Alice und kann sicher sein, dass er den Schlüssel von Alice wirklich kennt, dann kann Alice die Datenintegrität ihrer Nachrichten sicherstellen, indem sie sie mit ihrem privaten Schlüssel verschlüsselt.
+    - Beispiel 2: Alice kann auch einen MDC über ihre Nachricht berechnen und den mit ihrem privaten Schlüssel verschlüsselten MDC an die Nachricht anhängen
+  - Die Datenintegrität der ausgetauschten Nachrichten ist oft eine wichtige Eigenschaft in kryptografischen Protokollen, daher ist die Datenintegrität ein Baustein für kryptografische Protokolle
+
+## Authentifizierung von Entitäten
+Definition: Entitätsauthentifizierung ist der Sicherheitsdienst, der es Kommunikationspartnern ermöglicht, die Identität ihrer Peer-Entitäten zu überprüfen.
+- Die Entitätsauthentifizierung ist der grundlegendste Sicherheitsdienst, da alle anderen Sicherheitsdienste auf ihr aufbauen.
+- Im Allgemeinen kann sie durch verschiedene Mittel erreicht werden:
+  - Wissen: z. B. Passwörter
+  - Besitz: z. B. physische Schlüssel oder Karten
+  - Unveränderliches Merkmal: z. B. biometrische Eigenschaften wie Fingerabdruck usw.
+  - Ort: Es wird der Nachweis erbracht, dass sich eine Entität an einem bestimmten Ort befindet (Beispiel: Menschen überprüfen selten die Authentizität von Agenten in einer Bank)
+  - Delegation der Authentizität: Die überprüfende Stelle akzeptiert, dass eine vertrauenswürdige Person die Authentifizierung bereits vorgenommen hat.
+- In Kommunikationsnetzen ist die direkte Überprüfung der oben genannten Mittel schwierig oder unsicher, weshalb kryptographische Protokolle erforderlich sind.
+- Der Hauptgrund, warum die Authentifizierung von Entitäten mehr ist als ein Austausch von (datenherkunfts-) authentischen Nachrichten, ist die Aktualität:
+  - Selbst wenn Bob während einer Kommunikation authentische Nachrichten von Alice erhält, kann er nicht sicher sein, ob:
+    - Alice zu diesem Zeitpunkt tatsächlich an der Kommunikation teilnimmt, oder ob
+    - Eve alte Nachrichten von Alice abspielt
+  - Dies ist von besonderer Bedeutung, wenn die Authentifizierung nur zum Zeitpunkt des Verbindungsaufbaus erfolgt:
+    - Beispiel: Übermittlung einer (möglicherweise verschlüsselten) PIN beim Einloggen
+  - Zwei grundsätzliche Mittel zur Sicherstellung der Aktualität in kryptographischen Protokollen:
+    - Zeitstempel (erfordern mehr oder weniger synchronisierte Uhren)
+    - Zufallszahlen (Challenge-Response-Austausch)
+- Die meisten Authentifizierungsprotokolle erstellen auch einen geheimen Sitzungsschlüssel zur Sicherung der Sitzung nach dem Authentifizierungsaustausch
+- Zwei Hauptkategorien von Protokollen für die Authentifizierung von Entitäten:
+  - Arbitrierte Authentifizierung: ein Arbiter, auch vertrauenswürdige dritte Partei (TTP) genannt, ist direkt an jedem Authentifizierungsaustausch beteiligt
+    - Vorteile:
+      - Dies ermöglicht es zwei Parteien A und B, sich gegenseitig zu authentifizieren, ohne ein vorher festgelegtes Geheimnis zu kennen.
+      - Selbst wenn sich A und B nicht kennen, kann die symmetrische Kryptographie verwendet werden.
+    - Nachteilig:
+      - Das TTP kann zu einem Engpass werden, die Verfügbarkeit des TTP ist entscheidend
+      - Der TTP kann alle Authentifizierungsaktivitäten überwachen.
+  - Direkte Authentifizierung: A und B authentifizieren sich direkt gegenseitig
+    - Vorteile: keine Online-Teilnahme einer dritten Partei erforderlich und kein möglicher Leistungsengpass wird eingeführt
+    - Nachteile: erfordert asymmetrische Kryptographie oder im Voraus festgelegte geheime Schlüssel
+
+## Notation kryptographischer Protokolle
+| Notation               | Bedeutung                                                                                                                    |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| $A$                    | Name von A , analog für B, E, TTP, CA                                                                                        |
+| $CA_A$                 | Zertifizierungsstelle von A                                                                                                  |
+| $r_A$                  | Zufallswert, gewählt von A                                                                                                   |
+| $t_A$                  | Zeitstempel erzeugt von A                                                                                                    |
+| $(m_1,...,m_m)$        | Verkettung von Nachrichten $m_1, ...,m_n$                                                                                    |
+| $A\rightarrow B:m$     | A sendet Nachricht m an B                                                                                                    |
+| $K_{A,B}$              | Geheimer Schlüssel, nur A und B bekannt                                                                                      |
+| $+K_A$                 | Öffentlicher Schlüssel von A                                                                                                 |
+| $-K_A$                 | Privater Schlüssel von A                                                                                                     |
+| $\{m\}_K$              | Nachricht m verschlüsselt mit Schlüssel K , Synonym für $E(K, m)$                                                            |
+| $H(m)$                 | MDC über Nachricht m, berechnet mit Funktion H                                                                               |
+| $A[m]$                 | Kurzschreibweise für $(m,\{H(m)\}_{-K_A})$                                                                                   |
+| $Cert_{-CK_{CA}}(+K_A)$ | Zertifikat der CA für den öffentlichen Schlüssel $+K_A$ von A, signiert mit dem privaten Zertifizierungsschlüssel $-CK_{CA}$ |
+| $CA<<A>>$              | Kurzschreibweise für $Cert_{-CK_{CA}}(+K_A)$                                                                                 |
+
+## Das Needham-Schroeder-Protokoll
+- Erfunden im Jahr 1978 von Roger Needham und Michael Schroeder [Nee78a]
+- Das Protokoll basiert auf symmetrischer Verschlüsselung und nutzt eine vertrauenswürdige dritte Partei (TTP)
+- Angenommen, TTP teilt die geheimen Schlüssel KA,TTP und KB,TTP mit Alice bzw. Bob:
+  - A erzeugt eine Zufallszahl rA und sendet die folgende Nachricht: 
+    1. $A\rightarrow TTP: (A, B, r_A)$
+  - TTP erzeugt einen Sitzungsschlüssel KA,B für die sichere Kommunikation zwischen A und B und antwortet A: 
+    2. $TTP\rightarrow A:\{r_A, B, K_{A,B}, \{K_{A,B}, A\}_{K_{B,TTP}}\}_{K_{A,TTP}}$
+  - A entschlüsselt die Nachricht und extrahiert $K_{A,B}$. Sie bestätigt, dass $r_A$ mit der von ihr im ersten Schritt generierten Zahl identisch ist, so dass sie weiß, dass die Antwort eine neue Antwort von TTP ist. Dann sendet sie an B: 3.) $A\rightarrow B:\{K_{A,B}, A\}_{K_{B,TTP}}$
+  - Bob entschlüsselt die Nachricht und erhält $K_{A,B}$. Er erzeugt dann eine Zufallszahl $r_B$ und antwortet Alice: 4.) $B\rightarrow A:\{r_B\}_{K_{A,B}}$
+  - Alice entschlüsselt die Nachricht, errechnet $r_{B}-1$ und antwortet mit: 5.) $A\rightarrow B:\{r_B-1\}_{K_{A,B}}$
+  - Bob entschlüsselt die Nachricht und prüft, ob sie $r_B-1$ enthält.
+- Diskussion:
+  - Der Austausch von $r_B$ und $r_{B-1}$ soll sicherstellen, dass ein Angreifer, der versucht, sich als Alice auszugeben, keinen vollständigen Protokolldurchlauf mit nachgespielten Nachrichten durchführen kann
+  - Da jedoch alte Sitzungsschlüssel $K_{A,B}$ gültig bleiben, kann ein Angreifer, Eve, der es schafft, einen Sitzungsschlüssel $K_{A,B}$ in Erfahrung zu bringen, diesen später dazu verwenden, sich als Alice auszugeben:
+    1. $E\rightarrow B:\{K_{A,B}, A\}_{K_{B,TTP}}$
+    2. $B\rightarrow A:\{r_B\}_{K_{A,B}}$ Eve muss diese Nachricht abfangen
+    3. $E\rightarrow B:\{r_B -1\}_{K_{A,B}}$
+    - Eve gibt sich also als Alice aus, obwohl sie weder $K_{A,TTP}$ noch $K_{B,TTP}$ kennt!
+
+## Das Otway-Rees-Protokoll
+- Das oben beschriebene Sicherheitsproblem sowie einige andere wurden von Needham und Schroeder behandelt. Ihre Lösung [Nee87a] ist im Wesentlichen die gleiche wie die von Otway und Rees in der gleichen Zeitschrift [Otw87a] vorgeschlagene:
+  - Alice generiert eine Nachricht, die eine Indexzahl $i_A$, ihren Namen A, Bobs Namen B und die gleichen Informationen plus eine zusätzliche Zufallszahl $r_A$ enthält, die mit dem Schlüssel $K_{A,TTP}$ verschlüsselt ist, den sie mit TTP teilt, und sendet diese Nachricht an Bob:
+    1. $A\rightarrow B:(i_A, A, B,\{r_A, i_A, A, B\}_{K_{A,TTP}})$
+  - Bob erzeugt eine Zufallszahl $r_B$, verschlüsselt sie zusammen mit $i_A$, A und B mit dem Schlüssel $K_{B,TTP}$, den er mit TTP teilt, und sendet die Nachricht an TTP:
+    2. $B\rightarrow TTP:(i_A, A, B,\{r_A,i_A,A,B\}_{K_{A,TTP}},\{r_B,i_A,A,B\}_{K_{B,TTP}})$
+  - TTP erzeugt einen neuen Sitzungsschlüssel KA,B und erstellt zwei verschlüsselte Nachrichten, eine für Alice und eine für Bob, und sendet sie an Bob:
+    3. $TTP\rightarrow B:(i_A,\{r_A,K_{A,B}\}_{K_{A,TTP}},\{r_B, K_{A,B}\}_{K_{B,TTP}})$
+  - Bob entschlüsselt seinen Teil der Nachricht, verifiziert rB und sendet Alices Teil der Nachricht an sie:
+    4. $B\rightarrow A:(i_A,\{r_A,K_{A,B}\}_{K_{A,TTP}})$
+  - Alice entschlüsselt die Nachricht und überprüft, ob sich $i_A$ und $r_A$ während des Austauschs nicht geändert haben. Wenn nicht, kann sie sicher sein, dass TTP ihr einen neuen Sitzungsschlüssel $K_{A,B}$ für die Kommunikation mit Bob geschickt hat. Wenn sie nun diesen Schlüssel in einer verschlüsselten Kommunikation mit Bob verwendet, kann sie sich seiner Authentizität sicher sein.
+- Diskussion:
+  - Die Indexzahl $i_A$ schützt vor Replay-Attacken. Dies erfordert jedoch, dass TTP überprüft, ob $i_A$ größer ist als das letzte $i_A$, das er von Alice erhalten hat.
+  - Da TTP nur dann zwei Nachrichten generiert, wenn beide Teile der Nachricht, die er erhält, die gleiche Indexnummer $i_A$ und die Namen $A, B,$ enthalten, können Alice und Bob sicher sein, dass sie sich beide während des Protokolllaufs gegenüber TTP authentifiziert haben.
+
+## Kerberos
+- Kerberos ist ein Authentifizierungs- und Zugangskontrolldienst für Workstation-Cluster, der in den späten 1980er Jahren am MIT entwickelt wurde.
+- Entwurfsziele:
+  - Sicherheit: Abhörer oder aktive Angreifer sollten nicht in der Lage sein, die notwendigen Informationen zu erhalten, um sich beim Zugriff auf einen Dienst als ein Benutzer auszugeben
+  - Zuverlässigkeit: Da jede Nutzung eines Dienstes eine vorherige Authentifizierung erfordert, sollte Kerberos höchst zuverlässig und verfügbar sein.
+  - Transparenz: Der Authentifizierungsprozess sollte für den Benutzer transparent sein und nicht nur die Eingabe eines Passworts erfordern.
+  - Skalierbarkeit: Das System sollte in der Lage sein, eine große Anzahl von Clients und Servern zu unterstützen.
+- Das Kerberos zugrunde liegende kryptografische Verfahren ist die symmetrische Verschlüsselung (Kerberos V. 4 verwendet DES, V. 5 erlaubt andere Algorithmen).
+- Eine gute Anleitung zu den Überlegungen hinter dem Kerberos-Design findet sich in [Bry88a], wo das Protokoll in einer Reihe von fiktiven Dialogen entwickelt wird
+- Das grundlegende Anwendungsszenario von Kerberos ist ein Benutzer, Alice, der auf einen oder mehrere verschiedene Dienste zugreifen möchte, die von verschiedenen Servern $S_1, S_2, ...$ bereitgestellt werden, die über ein unsicheres Netzwerk verbunden sind
+- Kerberos befasst sich mit den folgenden Sicherheitsaspekten in diesem Szenario:
+  - Authentifizierung: Alice authentifiziert sich bei einem Authentifizierungsserver (AS), der eine zeitlich begrenzte Genehmigung für den Zugang zu Diensten erteilt. Diese Erlaubnis wird Ticket-granting ticket (TicketTGS) genannt und ist vergleichbar mit einem zeitlich begrenzten Reisepass.
+  - Zugangskontrolle: Durch Vorlage ihres TicketTGS kann Alice einen Ticket-gewährenden Server (TGS) anfordern, um Zugang zu einem Dienst zu erhalten, der von einem bestimmten Server S1 bereitgestellt wird. Der TGS entscheidet, ob der Zugang erlaubt wird und antwortet mit einem TicketS1 für den Server S.
+  - Schlüsselaustausch: Der Authentifizierungsserver stellt einen Sitzungsschlüssel für die Kommunikation zwischen Alice und TGS bereit, und der TGS stellt einen Sitzungsschlüssel für die Kommunikation zwischen Alice und S1 bereit. Die Verwendung dieser Sitzungsschlüssel dient auch der Authentifizierung.
+
+Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
+- ![](Assets/NetworkSecurity-Kerberos.png)
+- Der Benutzer meldet sich an seiner Arbeitsstation an und fordert den Zugriff auf einen Dienst an:
+  - Die Workstation repräsentiert ihn im Kerberos-Protokoll und sendet die erste Nachricht an den Authentifizierungsserver AS, die seinen Namen, den Namen eines geeigneten Ticket-Granting-Servers TGS und einen Zeitstempel $t_A$ enthält:
+  1. $A\rightarrow AS:(A, TGS, t_A)$
+- Der AS prüft, ob A sich für den Zugang zu den Diensten authentifizieren darf, generiert aus A's Passwort (das ihm bekannt ist) den Schlüssel KA, extrahiert die Arbeitsplatzadresse $Addr_A$ der Anfrage, erstellt ein Ticket $Ticket_{TGS}$ und einen Sitzungsschlüssel $K_{A,TGS}$ und sendet die folgende Nachricht an A:
+  2. $AS\rightarrow A:\{K_{A,TGS}, TGS, t_{AS}, LifetimeTicket_{TGS}, Ticket_{TGS}\}_{K_A}$ mit $Ticket_{TGS}=\{K_{A,TGS},A, Addr_A, TGS, t_{AS}, LifetimeTicket_{TGS}\}_{K_{AS,TGS}}$
+- Nach Erhalt dieser Nachricht fordert die Workstation Alice auf, ihr Passwort einzugeben, berechnet daraus den Schlüssel $K_A$ und entschlüsselt die Nachricht mit diesem Schlüssel. Wenn Alice nicht ihr ,,authentisches'' Passwort angibt, sind die extrahierten Werte ,,Müll'' und der Rest des Protokolls schlägt fehl.
+- Alice erstellt einen sogenannten Authenticator und sendet ihn zusammen mit dem Ticket und dem Namen des Servers $S1$ an TGS:
+  3. $A\rightarrow TGS:(S1, Ticket_{TGS}, Authenticator_{A,TGS})$ mit Authenticator $A,TGS=\{A,Addr_A,t'_A\}_{K_{A,TGS}}$
+- Nach Erhalt entschlüsselt TGS $Ticket_{TGS}$, extrahiert daraus den Schlüssel $K_{A,TGS}$ und verwendet diesen Schlüssel zur Entschlüsselung von $Authenticator_{A,TGS}$. Wenn Name und Adresse des Authentifikators und des Tickets übereinstimmen und der Zeitstempel $t'_A$ noch frisch ist, wird geprüft, ob A auf den Dienst S1 zugreifen darf, und die folgende Nachricht erstellt:
+  4. $TGS\rightarrow A:\{K_{A,S1}, S1, t_{TGS}, Ticket_{S1}\}_{K_{A,TGS}}$ mit $Ticket_{S1}=\{K_{A,S1}, A, Addr_A, S1, t_{TGS}, LifetimeTicket_{S1}\}_{K_{TGS,S}}$
+- Alice entschlüsselt die Nachricht und verfügt nun über einen Sitzungsschlüssel für die sichere Kommunikation mit S1. Sie sendet nun eine Nachricht an S1, um ihm ihr Ticket und einen neuen Authentifikator zu zeigen:
+  5. $A\rightarrow S1:(Ticket_{S1}, Authenticator_{A,S1})$ mit $Authenticator_{A,S1}=\{A,Addr_A, t''_A\}_{K_{A,S1}}$
+- Nach Erhalt entschlüsselt S1 das Ticket mit dem Schlüssel $K_{TGS,S1}$, den er mit TGS teilt, und erhält den Sitzungsschlüssel $K_{A,S1}$ für die sichere Kommunikation mit A. Mit diesem Schlüssel überprüft er den Authentifikator und antwortet A:
+  6. $S1\rightarrow A:\{t’’_A+1\}_{K_{A,S}}$
+- Durch Entschlüsselung dieser Nachricht und Überprüfung des enthaltenen Wertes kann Alice nachweisen, dass sie wirklich mit S1 kommuniziert, da nur er (neben TGS) den Schlüssel $K_{TGS,S1}$ zur Entschlüsselung von $Ticket_{S1}$ kennt, der den Sitzungsschlüssel $K_{A,S1}$ enthält, und somit nur er in der Lage ist, $Authenticator_{A,S1}$ zu entschlüsseln und mit $t''_{A+1}$ verschlüsselt mit $K_{A,S}$ zu antworten
+- Das oben beschriebene Protokoll ist der Kerberos-Dialog der Version 4.
+  - In diesem Protokoll wurden eine Reihe von Mängeln festgestellt, so dass eine neue Version 5 des Protokolls definiert wurde, auf die wir später eingehen werden...
+  - Wo liegt eigentlich das Problem?
+
+### Kerberos für mehrere Domänen
+- Stellen Sie sich eine Organisation mit Workstation-Clustern an zwei verschiedenen Standorten vor, und stellen Sie sich vor, dass Benutzer A von Standort 1 einen Server von Standort 2 benutzen möchte:
+  - Wenn beide Standorte ihre eigenen Kerberos-Server und Benutzerdatenbanken (mit Passwörtern) verwenden, gibt es in der Tat zwei verschiedene Domänen, in der Kerberos-Terminologie auch Realms genannt.
+  - Um zu vermeiden, dass der Benutzer A in beiden Realms registriert sein muss, ermöglicht Kerberos eine Inter-Realm-Authentifizierung.
+- Die Inter-Realm-Authentifizierung erfordert, dass die Ticket-erteilenden Server beider Domänen einen geheimen Schlüssel $K_{TGS1,TGS2}$ teilen.
+  - Die Grundidee ist, dass der TGS eines anderen Realms als normaler Server angesehen wird, für den der TGS des lokalen Realms ein Ticket ausstellen kann.
+  - Nachdem Alice das Ticket für den entfernten Realm erhalten hat, fordert sie ein Ticket für den Dienst beim entfernten TGS an.
+  - Dies bedeutet jedoch, dass der entfernte Realm dem Kerberos-Authentifizierungsdienst der Heimatdomäne eines ,,besuchenden'' Benutzers vertrauen muss!
+  - Skalierbarkeitsproblem: n Realms benötigen $n\times(n-1)/2$ geheime Schlüssel!
+- ![](Assets/NetworkSecurity-multi-domain-kerberos.png)
+- Nachrichten, die während eines Protokolllaufs mit mehreren Domänen ausgetauscht werden:
+  1. $A\rightarrow AS1:(A,TGS1, t_A)$
+  2. $AS1\rightarrow A:\{K_{A,TGS1}, TGS1, t_{AS}, LifetimeTicket_{TGS1}, Ticket_{TGS1}\}_{K_A}$ mit $Ticket_{TGS1}=\{K_{A,TGS1}, A, Addr_A, TGS1, t_{AS}, LifetimeTicket_{TGS1}\}_{K_{AS,TGS1}}$
+  3. $A\rightarrow TGS1:(TGS2,Ticket_{TGS1},Authenticator_{A,TGS1})$ mit $Authenticator_{A,TGS1}=\{A,Addr_A,t'_A\}_{K_{A,TGS1}}$
+  4. $TGS1:\{K_{A,TGS2}, TGS2, t_{TGS1}, Ticket_{TGS2}\}_{K_{A,TGS1}}$ mit $Ticket_{TGS2}=\{K_{A,TGS2}, A, Addr_A, TGS2, t_{TGS1}, LifetimeTicket_{TGS2}\}_{K_{TGS1,TGS2}}$
+  5. $A\rightarrow TGS2:(S2,Ticket_{TGS2},Authenticator_{A,TGS2})$ mit $Authenticator_{A,TGS2}=\{A,Addr_A,t''_A\}_{K_{A,TGS2}}$
+  6. $TGS2\rightarrow A:\{K_{A,S2},S2,t_{TGS2},Ticket_{S2}\}_{K_{A,TGS2}}$ with $Ticket_{S2}=\{K_{A,S2},A,Addr_A,S2,t_{TGS2}, LifetimeTicket_{S2}\}_{K_{TGS2,S2}}$
+  7. S2:(Ticket_{S2}, Authentifikator_{A,S2})$ mit $Authentifikator_{A,S2}=\{A,Addr_A,t'''_A\}_{K_{A,S2}}$
+  8. $S2\rightarrow A:\{t’’’_A+1\}_{K_{A,S2}}$
+
+### Kerberos Version 5
+- Letzter Standard von 2005 (RFC 4120)
+- Entwickelt als Reaktion auf Schwachstellen, die bei Kerberos v4 bekannt wurden
+  - Enthält explizite Prüfsummen, um zu verifizieren, dass die Nachrichten nicht verändert wurden
+  - Unterstützt mehrere Chiffren (andere als das unsichere DES)
+- Einheitliches Nachrichtenformat - Nachrichten an den Authentifizierungsserver und den Ticketvergabeserver sind sehr ähnlich
+- Flexible ASN.1-Kodierung der Nachrichten, ermöglicht spätere Erweiterungen
+- Im Folgenden wird nur eine vereinfachte Version gezeigt, weit mehr Funktionen sind standardisiert, z.B:
+  - Client-zu-Client gegenseitige Authentifizierung
+  - Vorauthentifizierte Tickets
+  - Erneuerung von Tickets
+  - Multidomain Kerberos
+- Der Authentifizierungsdialog in Kerberos Version 5 ist ähnlich wie in Version 4
+- Der Austausch des Authentifizierungsdienstes: Bei der ersten Kontaktaufnahme sendet der Client A nicht nur Namen und Zeitstempel, sondern auch eine Nonce n , die hilft, Wiederholungen zu vermeiden, wenn sich die Zeit geändert hat; es ist auch möglich, mehrere Adressen anzugeben
+  1. $A\rightarrow AS:(A,TGS,t_{start},t_{end},n,Addr_A, ...)$
+- Die Antwort enthält ein Klartext-Ticket und verschlüsselte Informationen:
+  2. $AS\rightarrow A: (A,Ticket_{TGS},\{K_{A,TGS}, LastRequest,n,t_{expire},t_{AS},t_{start},t_{end},t_{renew},TGS, Addr_A\}_{K_A})$ mit $Ticket_{TGS}=(TGS, \{K_{A,TGS},A,transited, t_{AS}, t_{start},t_{end},t_{renew},Addr_A,restrictions\}_{K_{AS,TGS}})$
+  - LastRequest gibt den letzten Login des Benutzers an transited enthält die Vertrauenskette Multidomain Kerberos Restriktionen für den Benutzer können dem TGS und den Servern übergeben werden $t_{expire}$ und $t_{end}$ enthalten verschiedene Zeiten, um die Erneuerung von Tickets zu ermöglichen (wobei die Start- und Endzeit einfach aktualisiert werden können)
+- Der Dialog zum TGS ist mit dem Ausgangsdialog harmonisiert: Er enthält zusätzlich Tickets und einen Authentifikator, der beweist, dass A $K_{A,TGS}$ kennt
+  3. $Aufrechtes TGS:(A,S1,t_{start},t_{end},n',Addr_A,Authenticator_{A,TGS}, Tickets,...)$ mit $Authenticator_{A,TGS}=\{A, CheckSum, t_{A'}, K_{A,TGS'}, Seq\#,...\}_{K_{A,TGS}}$
+  Hinweis: Der Authentifikator enthält jetzt eine kryptographische Prüfsumme!
+- Die Antwort an A ist völlig analog zu Nachricht 2:
+  4. $TGS\rightarrow A:(A,Ticket_{S1},\{K_{A,S1},LastRequest, n',t_{expire},t_{TGS},t_{start},t_{end},t_{renew},S1,Addr_A\}_{K_{A,TGS}})$
+- Der Austausch mit dem Server ist ebenfalls ähnlich wie bei Version 4, aber mit dem Authentifikator ist eine explizite Prüfsumme möglich:
+  5. $A\rightarrow S1:(Ticket_{S1}, Authenticator_{A,S1})$ mit $Authenticator_{A,S1}=\{A,CheckSum,t_{A''},K_{A,S1}', Seq\#, ...\}_{K_{A,S1}}$
+- Nach Erhalt entschlüsselt S1 das Ticket mit dem Schlüssel $K_{TGS,S1}$, den er mit TGS teilt, und erhält den Sitzungsschlüssel $K_{A,S1}$ für die sichere Kommunikation mit A. Mit diesem Schlüssel überprüft er den Authentifikator und antwortet A:
+  6. $S1\rightarrow A:\{t_{S1},K_{A,S1}’,Seq\#,...\}_{K_{A,S1}}$
+- Alles in allem behebt der Dialog mehrere potenzielle Schwachstellen, während andere bestehen bleiben:
+  - Sequenznummern und Nonces ermöglichen eine zusätzliche Replay-Prüfung, wenn sich die Zeitbasis ändert
+  - Explizite Prüfsummen verhindern die Änderung von Daten innerhalb von Tickets
+  - Zentrale Server sind immer noch potentielle Single-Points-of-Failure
+  - Für den ersten Austausch ist immer noch eine gewisse Zeitsynchronisierung erforderlich.
+
+## Fortgeschrittene Methoden zur Passwortauthentifizierung
+- Alle gezeigten Protokolle haben eine gemeinsame Schwäche:
+  - Passwörter müssen leicht zu merken und leicht einzugeben sein $\rightarrow$ Geringe Entropie
+  - Angreifer können schnell alle möglichen Kombinationen ausprobieren
+  - Offline, über Grafikkarten, Cloud-Computer, spezielle Hardware...
+  - Asymmetrische Situation
+- Mögliche Lösungen:
+  - Schlüsselableitungsfunktionen
+    - Erschweren Brute-Force-Angriffe durch extrem häufiges Hashing
+    - Erfordert auch Aufwand durch legitime Geräte
+    - Nur linearer Sicherheitsgewinn
+    - Bessere Funktionen verbrauchen viel Speicher, um Angriffe mit Grafikkarten und spezieller Hardware undurchführbar zu machen
+  - Passwort-authentifizierter Schlüsselaustausch (PAKE)
+- Passwortauthentifizierter Schlüsselaustausch (PAKE) - Grundlegende Idee
+  - Durchführen eines Schlüsselaustauschs mit asymmetrischer Kryptographie
+  - Authentifizierung von Peers mit einem Passwort unter Verwendung eines Zero Knowledge Proofs
+  - Die Peers können nur feststellen, ob die Passwörter übereinstimmen oder nicht
+  - Keine weiteren Informationen, um effiziente Bruteforce-Suchen durchzuführen
+    - Würde das Lösen schwieriger Probleme erfordern, z. B. eine Art DH-Problem
+    - Macht Offline-Angriffe undurchführbar
+  - Online-Angriffe möglich, können aber entdeckt werden
+
+## PAKE-Schemata: EKE
+- Ein einfaches erstes Protokoll ist Encrypted Key Exchange (EKE) [BM92]
+- Der Dialog beginnt damit, dass A ein privates/öffentliches Schlüsselpaar zur einmaligen Verwendung erzeugt und den öffentlichen Schlüssel $+K_{ar}$ verschlüsselt mit dem Passwort $K_{A,B}$ an B sendet
+    1. $A\rightarrow B:A,\{+K_{ar}\}_{K_{A,B}}$
+- B wählt einen symmetrischen Sitzungsschlüssel $K_r$ und sendet ihn verschlüsselt mit dem öffentlichen Schlüssel und dem Passwort zurück an A
+    1. $B\rightarrow A:\{\{K_r\}_{+K_{ar}}\}_{K_{A,B}}$
+- A und B teilen sich nun einen gemeinsamen Sitzungsschlüssel und beweisen ihr Wissen darüber durch den Austausch von Nonces
+    1. $A\rightarrow B:\{r_A\}_{K_r}$
+    2. $B\rightarrow A:\{r_A,r_B\}_{K_r}$
+    3. $A\rightarrow B:\{r_B\}_{K_r}$
+- Nach diesem Schritt ist sichergestellt, dass beide $K_{A,B}$ gekannt haben müssen und es keinen Man-in-the-Middle-Angriff gegeben hat
+
+
+### Sicherheitsdiskussion
+- Resistenz gegen Offline-Angriffe hängt davon ab, dass $+K_{ar}$ nicht von Zufallszahlen zu unterscheiden ist
+  - Was bedeutet das für ECC?
+  - Für RSA schlagen die Autoren vor, e zu verschlüsseln und n im Klartext zu senden
+    - n hat keine kleinen Primfaktoren und ist daher von Zufallszahlen unterscheidbar
+    - Immer noch unsicher gegen Man-in-the-Middle-Angriffe, da Angreifer n mit besonderen Eigenschaften wählen können (z.B. $p-1$ und $q-1$ teilbar durch 3)
+    - Antwort von B ist von Zufallszahlen unterscheidbar
+    - Details sind in [Par97] oder [SR14] zu finden.
+- Bietet keine perfekte Vorwärtsverschwiegenheit...
+- Aber es gibt ein anderes Protokoll von den Autoren namens DH-EKE
+
+### DH-EKE
+- DH-EKE ist im Grunde ein DH-Austausch mit cleverer Authentifizierung
+- A sendet DH-Austausch verschlüsselt mit dem Passwort $K_{A,B}$
+  1. $A\rightarrow B:\{g^{ra}\ mod\ p\}_{K_{A,B}}$
+- B antwortet mit seinem Teil des DH-Austauschs (verschlüsselt mit dem Passwort $K_{A,B}$) und verwendet den Sitzungsschlüssel $K_S=g^{ra*rb}\ mod\ p$, um eine verschlüsselte Nonce $c_b$ zu senden
+  2. $B\rightarrow A:\{g^{rb}\ mod\ p\}_{K_{A,B}}\{c_b\}_{K_s}$
+- Beide Parteien beweisen ihre Kenntnis von $K_S$
+  3. $A\rightarrow B:\{c_a||c_b\}_{K_s}
+  4. $B\rightarrow A:\{c_a\}_{K_s}$
+
+### Sicherheitsdiskussion 2
+- Wiederum müssen verschlüsselte Daten von Zufallsdaten ununterscheidbar sein
+  - Der Wert p muss klug gewählt werden, d.h. $p-1$ muss nahe bei $2^{8*n}$ für ausreichend große natürliche Zahlen n liegen
+  - Um Angriffe auf kleine Gruppen leicht zu verhindern, sollte $(p-1)/2$ ebenfalls eine Primzahl sein.
+  - ECC ist immer noch schwierig zu realisieren
+- Bietet perfektes Vorwärtsgeheimnis
+- Alles in allem ein nettes Verfahren, das jedoch patentiert werden musste
+  - Keine breite Anpassung
+  - Führte zur Entwicklung zahlreicher anderer Verfahren
+
+### SRP
+- Das heute am weitesten verbreitete Protokoll: Sicheres Fernkennwort (SRP)
+- Mehrere Versionen: Hier SRP-6a [Wu02]
+- Initialisierung:
+  - Server B wählt eine Zufallszahl $s_{A,B}$
+  - berechnet $x=H(s_{A,B} || Benutzername || Passwort)$ und $v=g^x\ mod\ p$
+  - Benutzer werden durch $(Benutzername, s_{A,B}, v)$ authentifiziert
+  - Der Server braucht das Passwort nicht zu speichern $\rightarrow$ kann nicht leicht erlangt werden, wenn der Server kompromittiert wird!
+  - Server kann diese Werte auch nicht verwenden, um sich als Benutzer auf anderen Servern auszugeben
+  - Die Eigenschaft wird als erweitertes PAKE-Schema bezeichnet
+
+### SRP - Dialog
+- A initiiert die Verbindung durch Senden seines Benutzernamens
+  1. $A\rightarrow B: A$
+- B antwortet mit ausgewählten kryptographischen Parametern und einem Verifizierer v, der durch einen DH-Austausch ,,geblendet'' ist
+  2. $B\rightarrow A: p, g, s_{A,B}, (H(g || p)*v + g^{rb})\ mod\ p$
+- A berechnet den gemeinsamen Sitzungsschlüssel durch $K_S=(Y_B-H(g || p)*g^x)^{ra+u*x}\ mod\ p$, mit $u=H(Y_A||Y_B)$, und sendet seinen Teil des DH-Austauschs und eine Bestätigung zurück, dass er $K_S$ kennt
+  3. $A\rightarrow B:g^{ra}\ mod\ p, H(Y_A,Y_B,K_S)$
+- B berechnet $K_S'=(Y_A v^u)^{rb}\ mod\ p$ und beweist seine Kenntnis
+  4. $B\rightarrow A:H(Y_A, H(Y_A,Y_B,K_S),K_S')$
+- $K_S'$ und $K_S$ stimmen überein, wenn es keinen Man-in-the-Middle-Angriff gegeben hat
+
+### SRP - Diskussion
+- Sicheres Schema
+  - Gegenseitige Authentifizierung zwischen Server und Client
+  - Erweiterung erhöht die Sicherheit in Client/Server-Szenarien
+  - Keine Unterstützung für ECC, da es Feldarithmetik erfordert
+- Patentiert, aber frei zu verwenden
+- Unterstützung für TLS, IPsec, ...
+
+## X.509 - Einführung
+- X.509 ist eine internationale Empfehlung der ITU-T und gehört zur X.500-Reihe, die Verzeichnisdienste definiert:
+  - Die erste Version von X.509 wurde 1988 standardisiert.
+  - Eine zweite Version, die 1993 standardisiert wurde, löste einige Sicherheitsbedenken
+  - Eine dritte Version von X.509 wird derzeit von der IETF in RFC 4211 gepflegt.
+- X.509 definiert einen Rahmen für die Bereitstellung von Authentifizierungsdiensten, der Folgendes umfasst:
+  - Zertifizierung von öffentlichen Schlüsseln und Handhabung von Zertifikaten:
+    - Zertifikatsformat
+    - Zertifikats-Hierarchie
+    - Zertifikatswiderrufslisten
+  - Drei verschiedene Dialoge für die direkte Authentifizierung:
+    - Einseitige Authentifizierung, erfordert synchronisierte Uhren
+    - Gegenseitige Zwei-Wege-Authentifizierung, erfordert immer noch synchronisierte Uhren
+    - Gegenseitige Drei-Wege-Authentifizierung, die vollständig auf Zufallszahlen basiert
+
+### X.509 - Zertifikate mit öffentlichem Schlüssel
+![](Assets/NetworkSecurity-x509-certificates.png)
+- Ein Public-Key-Zertifikat ist eine Art Reisepass, der bescheinigt, dass ein öffentlicher Schlüssel zu einem bestimmten Namen gehört
+- Zertifikate werden von Zertifizierungsstellen (CA) ausgestellt.
+- Wenn alle Nutzer den öffentlichen Schlüssel der CA kennen, kann jeder Nutzer jedes von dieser CA ausgestellte Zertifikat überprüfen.
+- Zertifikate können die Online-Teilnahme eines TTP verhindern
+- Die Sicherheit des privaten Schlüssels der CA ist entscheidend für die Sicherheit aller Nutzer!
+- Notation eines Zertifikats, das einen öffentlichen Schlüssel $+K_A$ an Benutzer A bindet, ausgestellt von der Zertifizierungsstelle CA unter Verwendung ihres privaten Schlüssels $-CK_{CA}$:
+  - $Cert_{-CK_{CA}}(+K_A) = CA[V, SN, AI, CA, T_{CA}, A, +K_A]$ mit: 
+    - V = Versionsnummer
+    - SN = Seriennummer
+    - AI = Algorithmus-Bezeichner des verwendeten Signatur-Algorithmus
+    - CA = Name der Zertifizierungsstelle
+    - $T_{CA}$ = Gültigkeitsdauer dieses Zertifikats
+    - A = Name, an den der öffentliche Schlüssel in diesem Zertifikat gebunden ist
+    - $+K_A$ = öffentlicher Schlüssel, der an einen Namen gebunden wird
+  - Die Kurzschreibweise $CA[m]$ steht für $(m,\{H(m)\}_{-CK_{CA}})$
+  - Eine andere Kurzschreibweise für $Cert_{-CK_{CA}}(+K_A)$ ist $CA<<A>>$
+
+### X.509 - Zertifikatsketten & Zertifikatshierarchie
+- Betrachten wir nun zwei Benutzer Alice und Bob, die in verschiedenen Ländern leben und sicher kommunizieren wollen:
+  - Die Wahrscheinlichkeit ist recht hoch, dass ihre öffentlichen Schlüssel von verschiedenen CAs zertifiziert sind
+  - Nennen wir die Zertifizierungsstelle von Alice CA und die von Bob CB
+  - Wenn Alice CB nicht vertraut oder gar kennt, dann ist Bobs Zertifikat $CB<<B>>$ für sie nutzlos, dasselbe gilt in der anderen Richtung
+- Eine Lösung für dieses Problem ist die Konstruktion von Zertifikatsketten:
+  - Stellen Sie sich einmal vor, dass CA und CB einander kennen und einander vertrauen.
+    - Ein Beispiel aus der realen Welt für dieses Konzept ist das gegenseitige Vertrauen zwischen Ländern hinsichtlich ihrer Passausgabestellen
+  - Wenn CA den öffentlichen Schlüssel von CB mit einem Zertifikat $CA<<CB>>$ und CB den öffentlichen Schlüssel von CA mit einem Zertifikat $CB<<CA>>$ beglaubigt, können A und B ihre Zertifikate anhand einer Zertifikatskette überprüfen:
+    - Nachdem ihr $CB<<B>>$ vorgelegt wurde, versucht Alice herauszufinden, ob es ein Zertifikat $CA<<CB>>$ gibt.
+    - Sie überprüft dann die Kette: $CA<<CB>>, CB<<B>>$
+- Zertifikatsketten müssen nicht auf eine Länge von zwei Zertifikaten beschränkt sein:
+  - $CA<<CC>>, CC<<CD>>, CD<<CE>>, CE<<CG>>, CG<<G>$ würde es Alice erlauben, das von CG ausgestellte Zertifikat des Benutzers G zu überprüfen, auch wenn sie nur ihre eigene Zertifizierungsstelle CA kennt und ihr vertraut.
+  - Tatsächlich wird das Vertrauen von A in den Schlüssel +KG durch eine Vertrauenskette zwischen Zertifizierungsstellen hergestellt.
+  - Wenn Alice jedoch $CG<<G>>$ vorgelegt wird, ist es nicht offensichtlich, welche Zertifikate sie zur Überprüfung benötigt
+- X.509 schlägt daher vor, dass die Zertifizierungsstellen in einer Zertifizierungshierarchie angeordnet werden, so dass die Navigation einfach ist:
+  - ![](Assets/NetworkSecurity-x509-hierarchy.png)
+- Verbleibendes Problem:
+  - Zertifizierungspfade können ziemlich lang werden
+  - Die Kompromittierung eines einzigen Zwischenzertifikats reicht aus, um die Sicherheit zu brechen
+- Führt zu zwei Entwicklungen
+  - Kreuzzertifizierung:
+    - Ermöglicht das Signieren von Stammzertifikaten untereinander
+    - Erlaubt aber auch ,,Abkürzungen'' im Zertifikatswald
+    - Macht die Navigation komplexer, aber potenziell mehrwegfähig
+  - Anheften von Zertifikaten:
+    - Ermöglicht Anwendungen, z. B. Webbrowsern, zu lernen, dass Peers nur Zertifikate von einer bestimmten CA verwenden
+    - Wird z. B. von Google Chrome verwendet, nachdem Man-in-the-Middle-Angriffe auf google.com bekannt wurden
+
+### X.509 - Zertifikatssperrung
+- Nehmen wir nun an, dass der private Schlüssel von Alice kompromittiert wurde, z.B. weil Eve in ihren Computer eingebrochen ist, ihren privaten Schlüssel aus einer Datei gelesen und das Passwort geknackt hat, das sie zum Schutz des privaten Schlüssels verwendet hat:
+  - Wenn Alice feststellt, dass ihr privater Schlüssel kompromittiert wurde, möchte sie unbedingt den Widerruf des entsprechenden Zertifikats für den öffentlichen Schlüssel beantragen.
+  - Wenn das Zertifikat nicht widerrufen wird, könnte sich Eve bis zum Ende der Gültigkeitsdauer des Zertifikats weiterhin als Alice ausgeben.
+- Eine noch schlimmere Situation tritt ein, wenn der private Schlüssel einer Zertifizierungsstelle kompromittiert wird:
+  - Dies bedeutet, dass alle mit diesem Schlüssel signierten Zertifikate widerrufen werden müssen!
+- Der Widerruf von Zertifikaten wird durch das Führen von Zertifikatswiderrufslisten (CRL) realisiert:
+  - CRLs werden im X.500-Verzeichnis gespeichert, oder Erweiterungen können auf eine URL verweisen
+  - Bei der Überprüfung eines Zertifikats muss auch geprüft werden, ob das Zertifikat noch nicht widerrufen wurde (Suche nach dem Zertifikat in der CRL) 
+  - Der Widerruf von Zertifikaten ist ein relativ langsamer und teurer Vorgang
+
+### X.509 - Authentifizierungsprotokolle
+- Einweg-Authentifizierung:
+  - Wenn nur Alice sich gegenüber Bob authentifizieren will, sendet sie folgende Nachricht an Bob:
+  1. $(A[t_A, r_A, B, sgnData_A, \{K_{A,B}\}_{+KB}], CA<<A>>)$, wobei $sgnData_A$ optionale Daten darstellt, die von $A signiert werden sollen, \{K_{A,B}\}_{+K_B}$ ein optionaler Sitzungsschlüssel ist, der mit Bobs öffentlichem Schlüssel verschlüsselt wird, und $CA<<A>>$ ebenfalls optional ist
+  - Beim Empfang dieser Nachricht verifiziert Bob mit $+K_{CA}$ das enthaltene Zertifikat, extrahiert Alices öffentlichen Schlüssel, überprüft Alices Signatur der Nachricht und die Aktualität der Nachricht $(t_A)$ und entschlüsselt optional den enthaltenen Sitzungsschlüssel $K_{A,B}$, den Alice vorgeschlagen hat
+- Zwei-Wege-Authentifizierung:
+  - Wenn eine gegenseitige Authentifizierung erwünscht ist, dann erstellt Bob eine ähnliche Nachricht:
+  2. $(B[t_B, r_B, A, r_A, sgnData_B,\{K_{B,A}\}_{+K_A}], CA<<B>>)$ der enthaltene Zeitstempel $t_B$ ist nicht wirklich erforderlich, da Alice überprüfen kann, ob die signierte Nachricht die Zufallszahl $r_A$ enthält
+- Drei-Wege-Authentifizierung:
+  - Wenn Alice und Bob nicht sicher sind, ob sie synchrone Uhren haben, sendet Alice die folgende Nachricht an Bob:
+  3. $A[r_B]$
+  - Die Rechtzeitigkeit der Teilnahme von Alice am Authentifizierungsdialog wird also durch die Unterzeichnung der ,,frischen'' Zufallszahl $r_B$ nachgewiesen.
+- Anmerkung zum Signaturalgorithmus:
+  - Wie aus der Verwendung von Zertifikaten ersichtlich, schlägt X.509 vor, die Authentifizierungsnachrichten mit asymmetrischer Kryptographie zu signieren.
+  - Das Authentifizierungsprotokoll selbst kann jedoch auch mit symmetrischer Kryptographie eingesetzt werden:
+    - In diesem Fall müssen sich A und B vor jedem Protokolldurchlauf auf einen geheimen Authentifizierungsschlüssel $AK_{A,B}$ geeinigt haben, und
+    - die Nachrichten werden durch Anhängen eines mit diesem Schlüssel berechneten MAC signiert.
+
+## Formale Validierung von kryptographischen Protokollen
+- Wie wir am Beispiel des Needham-Schroeder-Protokolls gesehen haben, ist die Sicherheit eines kryptografischen Protokolls nicht einfach zu beurteilen:
+  - Es gibt viele weitere Beispiele für Protokollfehler in kryptografischen Protokollen, die manchmal erst Jahre nach der Veröffentlichung des Protokolls entdeckt wurden
+    - Eine frühe Version des X.509-Standards enthielt einen Fehler, der dem Fehler im Needham-Schroeder-Protokoll ähnlich war.
+  - Daraus ergibt sich der Bedarf an formalen Methoden zur Analyse der Eigenschaften von kryptographischen Protokollen
+- Kategorien von formalen Validierungsmethoden für kryptografische Protokolle:
+  - Allgemeine Ansätze zur Analyse spezifischer Protokolleigenschaften:
+    - Beispiele: Finite-State-Machine-basierte Ansätze, Prädikatenkalkül erster Ordnung, Allzweck-Spezifikationssprachen
+    - Hauptnachteil: Sicherheit unterscheidet sich wesentlich von Korrektheit, da für letztere keine böswillige Manipulation angenommen werden muss
+- Kategorien von formalen Validierungsmethoden für kryptographische Protokolle:
+  - Expertensystembasierte Ansätze:
+    - Das Wissen menschlicher Experten wird in deduktive Regeln formalisiert, die von einem Protokolldesigner zur Untersuchung verschiedener Szenarien verwendet werden können.
+    - Hauptnachteil: nicht gut geeignet, um Schwachstellen in kryptografischen Protokollen zu finden, die auf unbekannten Angriffstechniken beruhen
+  - Algebraische Ansätze:
+    - Kryptografische Protokolle werden als algebraische Systeme spezifiziert
+    - Die Analyse wird durchgeführt, indem algebraische Termumschreibungseigenschaften des Modells untersucht werden und geprüft wird, ob das Modell bestimmte erwünschte oder unerwünschte Zustände erreichen kann
+  - Spezifische logikbasierte Ansätze:
+    - Ansätze dieser Klasse definieren einen Satz von Prädikaten und eine Abbildung der während eines Protokolllaufs ausgetauschten Nachrichten auf einen Satz von Formeln
+    - Ein generischer Satz von Regeln erlaubt es dann, das Wissen und den Glauben zu analysieren, der von den Peer-Entitäten eines kryptographischen Protokolls während eines Protokolllaufs erlangt wird (recht erfolgreicher Ansatz: GNY-Logik [GNY90a])
+
+
 # Sichere Gruppenkommunikation
 # Zugriffskontrolle
 # Integration von Sicherheitsdiensten in Kommunikationsarchitekturen
@@ -1818,3 +2266,13 @@ für die meisten praktischen Situationen ausreichend
 - [BDP07] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. Sponge Functions. Ecrypt Hash Workshop 2007
 - [BDP11a] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. Cryptographic sponge functions. Research report. Version 0.1. 2011
 - [BDP11b] G. Bertoni, J. Daemen, M. Peeters, G. Van Assche. The Keccak reference. Research report. Version 3.0. 2011
+- [BM92] BELLOVIN, S.; MERRITT, M.: Encrypted Key Exchange: Password-Based Protocols Secure Against Dictionary Attacks. In: IEEE Computer Society Symposium on Research in Security and Privacy, 1992
+- [Bry88] BRYANT, R.: Designing an Authentication System: A Dialogue in Four Scenes. 1988. Project Athena, Massachusetts Institute of Technology, Cambridge, USA 
+- [GNY90] GONG, L.; NEEDHAM, R. M.; YAHALOM, R.: Reasoning About Belief in Cryptographic Protocols. In: Symposium on Research in Security and Privacy IEEE Computer Society, IEEE Computer Society Press, May 1990
+- [KNT94] KOHL, J.; NEUMAN, B.; TS’O, T.: The Evolution of the Kerberos Authentication Service. In: BRAZIER, F.; JOHANSEN, D. (Eds): Distributed Open Systems, IEEE Computer Society Press, 1994
+- [NS78] NEEDHAM, R. M.; SCHROEDER, M. D.: Using Encryption for Authentication in Large Networks of Computers. In: Communications of the ACM, 1978
+- [NS87] NEEDHAM, R.; SCHROEDER, M.: Authentication Revisited. In: Operating Systems Review, 1987
+- [NYH+05] NEUMAN, C.; YU, T.; HARTMAN, S. ; RAEBURN, K.: The Kerberos Network Authentication Service (V5)_. 2005. - RFC 4120, IETF, Status: Standard, https://tools.ietf.org/html/rfc4120
+- [OR87] OTWAY, D.; REES, O.: Efficient and Timely Mutual Authentication. In: Operating Systems Review, 1987
+- [Pat97] PATEL, S.: Number Theoretic Attacks On Secure Password Schemes. In: IEEE Symposium on Security and Privacy, 1997
+- [Sch05] SCHAAD, J.: _Internet X.509 Public Key Infrastructure Certificate Request Message Format (CRMF)_. September 2005. - RFC 4211, IETF, Status: Proposed Standard, https://tools.ietf.org/html/rfc4211

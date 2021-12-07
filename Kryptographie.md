@@ -8,325 +8,14 @@
     - [Die Vigenère-Chiffre und Angriffe bei bekannter Schlüssellänge](#die-vigenère-chiffre-und-angriffe-bei-bekannter-schlüssellänge)
     - [Der Kasiski-Test](#der-kasiski-test)
     - [Koinzidenzindex und Friedman-Methode](#koinzidenzindex-und-friedman-methode)
-  - [2 Frische symmetrische Verschlüsselung](#2-frische-symmetrische-verschlüsselung)
-  - [und Blo ckchiffren](#und-blo-ckchiffren)
-      - [](#)
-      - [](#-1)
-      - [](#-2)
-      - [|Y|!](#y)
-      - [(|Y|-|X|)!](#y-x)
-      - [\geq |X|!](#geq-x)
-    - [2.1 Substitutions-Permutations-Kryptosysteme(SPKS)](#21-substitutions-permutations-kryptosystemespks)
-      - [{](#-3)
-    - [Einschub:EndlicheKörp er](#einschubendlichekörp-er)
-      - [\sum](#sum)
-      - [\oplus  0 1 2 3 4 5 6 7 8 9 A B C D E F](#oplus--0-1-2-3-4-5-6-7-8-9-a-b-c-d-e-f)
-      - [0 0 1 2 3 4 5 6 7 8 9 A B C D E F](#0-0-1-2-3-4-5-6-7-8-9-a-b-c-d-e-f)
-      - [1 1 0 3 2 5 4 7 6 9 8 B A D C F E](#1-1-0-3-2-5-4-7-6-9-8-b-a-d-c-f-e)
-      - [2 2 3 0 1 6 7 4 5 A B 8 9 E F C D](#2-2-3-0-1-6-7-4-5-a-b-8-9-e-f-c-d)
-      - [3 3 2 1 0 7 6 5 4 B A 9 8 F E D C](#3-3-2-1-0-7-6-5-4-b-a-9-8-f-e-d-c)
-      - [4 4 5 6 7 0 1 2 3 C D E F 8 9 A B](#4-4-5-6-7-0-1-2-3-c-d-e-f-8-9-a-b)
-      - [5 5 4 7 6 1 0 3 2 D C F E 9 8 B A](#5-5-4-7-6-1-0-3-2-d-c-f-e-9-8-b-a)
-      - [6 6 7 4 5 2 3 0 1 E F C D A B 8 9](#6-6-7-4-5-2-3-0-1-e-f-c-d-a-b-8-9)
-      - [7 7 6 5 4 3 2 1 0 F E D C B A 9 8](#7-7-6-5-4-3-2-1-0-f-e-d-c-b-a-9-8)
-      - [8 8 9 A B C D E F 0 1 2 3 4 5 6 7](#8-8-9-a-b-c-d-e-f-0-1-2-3-4-5-6-7)
-      - [9 9 8 B A D C F E 1 0 3 2 5 4 7 6](#9-9-8-b-a-d-c-f-e-1-0-3-2-5-4-7-6)
-      - [A A B 8 9 E F C D 2 3 0 1 6 7 4 5](#a-a-b-8-9-e-f-c-d-2-3-0-1-6-7-4-5)
-      - [B B A 9 8 F E D C 3 2 1 0 7 6 5 4](#b-b-a-9-8-f-e-d-c-3-2-1-0-7-6-5-4)
-      - [C C D E F 8 9 A B 4 5 6 7 0 1 2 3](#c-c-d-e-f-8-9-a-b-4-5-6-7-0-1-2-3)
-      - [D D C F E 9 8 B A 5 4 7 6 1 0 3 2](#d-d-c-f-e-9-8-b-a-5-4-7-6-1-0-3-2)
-      - [E E F C D A B 8 9 6 7 4 5 2 3 0 1](#e-e-f-c-d-a-b-8-9-6-7-4-5-2-3-0-1)
-      - [F F E D C B A 9 8 7 6 5 4 3 2 1 0](#f-f-e-d-c-b-a-9-8-7-6-5-4-3-2-1-0)
-      - [0000 0001 0010 0011 0100 1000 1100](#0000-0001-0010-0011-0100-1000-1100)
-      - [0000 0000 0000 0000 0000 0000 0000 0000](#0000-0000-0000-0000-0000-0000-0000-0000)
-      - [0001 0000 0001 0010 0011 0100 1000 1100](#0001-0000-0001-0010-0011-0100-1000-1100)
-      - [0010 0000 0010 0100 0110 1000 0011 1011](#0010-0000-0010-0100-0110-1000-0011-1011)
-      - [0011 0000 0011 0110 0101 1100 1011 0111](#0011-0000-0011-0110-0101-1100-1011-0111)
-      - [0100 0000 0100 1000 1100 0011 0110 0101](#0100-0000-0100-1000-1100-0011-0110-0101)
-      - [1000 0000 1000 0011 1011 0110 1100 1010](#1000-0000-1000-0011-1011-0110-1100-1010)
-      - [1100 0000 1100 1011 0111 0101 1010 1111](#1100-0000-1100-1011-0111-0101-1010-1111)
-      - [0 1 2 3 4 8 C](#0-1-2-3-4-8-c)
-      - [0 0 0 0 0 0 0 0](#0-0-0-0-0-0-0-0)
-      - [1 0 1 2 3 4 8 C](#1-0-1-2-3-4-8-c)
-      - [2 0 2 4 6 8 3 B](#2-0-2-4-6-8-3-b)
-      - [3 0 3 6 5 C B 7](#3-0-3-6-5-c-b-7)
-      - [4 0 4 8 C 3 6 5](#4-0-4-8-c-3-6-5)
-      - [8 0 8 3 B 6 C A](#8-0-8-3-b-6-c-a)
-      - [C 0 C B 7 5 A F](#c-0-c-b-7-5-a-f)
-      - [0 1 2 3 4 5 6 7 8 9 A B C D E F](#0-1-2-3-4-5-6-7-8-9-a-b-c-d-e-f)
-      - [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0](#0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0)
-      - [1 0 1 2 3 4 5 6 7 8 9 A B C D E F](#1-0-1-2-3-4-5-6-7-8-9-a-b-c-d-e-f)
-      - [2 0 2 4 6 8 A C E 3 1 7 5 B 9 F D](#2-0-2-4-6-8-a-c-e-3-1-7-5-b-9-f-d)
-      - [3 0 3 6 5 C F A 9 B 8 D E 7 4 1 2](#3-0-3-6-5-c-f-a-9-b-8-d-e-7-4-1-2)
-      - [4 0 4 8 C 3 7 B F 6 2 E A 5 1 D 9](#4-0-4-8-c-3-7-b-f-6-2-e-a-5-1-d-9)
-      - [5 0 5 A F 7 2 D 8 E B 4 1 9 C 3 6](#5-0-5-a-f-7-2-d-8-e-b-4-1-9-c-3-6)
-      - [6 0 6 C A B D 7 1 5 3 9 F E 8 2 4](#6-0-6-c-a-b-d-7-1-5-3-9-f-e-8-2-4)
-      - [7 0 7 E 9 F 8 1 6 D A 3 4 2 5 C B](#7-0-7-e-9-f-8-1-6-d-a-3-4-2-5-c-b)
-      - [8 0 8 3 B 6 E 5 D C 4 F 7 A 2 9 1](#8-0-8-3-b-6-e-5-d-c-4-f-7-a-2-9-1)
-      - [9 0 9 1 8 2 B 3 A 4 D 5 C 6 F 7 E](#9-0-9-1-8-2-b-3-a-4-d-5-c-6-f-7-e)
-      - [A 0 A 7 D E 4 9 3 F 5 8 2 1 B 6 C](#a-0-a-7-d-e-4-9-3-f-5-8-2-1-b-6-c)
-      - [B 0 B 5 E A 1 F 4 7 C 2 9 D 6 8 3](#b-0-b-5-e-a-1-f-4-7-c-2-9-d-6-8-3)
-      - [C 0 C B 7 5 9 E 2 A 6 1 D F 3 4 8](#c-0-c-b-7-5-9-e-2-a-6-1-d-f-3-4-8)
-      - [D 0 D 9 4 1 C 8 5 2 F B 6 3 E A 7](#d-0-d-9-4-1-c-8-5-2-f-b-6-3-e-a-7)
-      - [E 0 E F 1 D 3 2 C 9 7 6 8 4 A B 5](#e-0-e-f-1-d-3-2-c-9-7-6-8-4-a-b-5)
-      - [F 0 F D 2 9 6 4 B 1 E C 3 8 7 5 A](#f-0-f-d-2-9-6-4-b-1-e-c-3-8-7-5-a)
-      - [√](#-4)
-    - [2.2 AES, Advanced EncryptionStandard](#22-aes-advanced-encryptionstandard)
-      - [](#-5)
-      - [](#-6)
-      - [](#-7)
-      - [](#-8)
-      - [](#-9)
-      - [](#-10)
-      - [](#-11)
-      - [.](#-12)
-      - [A=](#a)
-      - [](#-13)
-      - [](#-14)
-      - [](#-15)
-      - [](#-16)
-      - [A 00 A 01 A 02 A 03](#a-00-a-01-a-02-a-03)
-      - [A 10 A 11 A 12 A 13](#a-10-a-11-a-12-a-13)
-      - [A 20 A 21 A 22 A 23](#a-20-a-21-a-22-a-23)
-      - [A 30 A 31 A 32 A 33](#a-30-a-31-a-32-a-33)
-      - [](#-17)
-      - [](#-18)
-      - [](#-19)
-      - [.](#-20)
-      - [](#-21)
-      - [](#-22)
-      - [](#-23)
-      - [](#-24)
-      - [](#-25)
-      - [](#-26)
-      - [](#-27)
-      - [A 00 A 01 A 02 A 03](#a-00-a-01-a-02-a-03-1)
-      - [A 10 A 11 A 12 A 13](#a-10-a-11-a-12-a-13-1)
-      - [A 20 A 21 A 22 A 23](#a-20-a-21-a-22-a-23-1)
-      - [A 30 A 31 A 32 A 33](#a-30-a-31-a-32-a-33-1)
-      - [](#-28)
-      - [](#-29)
-      - [](#-30)
-      - [  \rightarrow](#--rightarrow)
-      - [](#-31)
-      - [](#-32)
-      - [](#-33)
-      - [](#-34)
-      - [A 00 A 01 A 02 A 03](#a-00-a-01-a-02-a-03-2)
-      - [A 11 A 12 A 13 A 10](#a-11-a-12-a-13-a-10)
-      - [A 22 A 23 A 20 A 21](#a-22-a-23-a-20-a-21)
-      - [A 33 A 30 A 31 A 32](#a-33-a-30-a-31-a-32)
-      - [](#-35)
-      - [](#-36)
-      - [](#-37)
-      - [](#-38)
-      - [M=](#m)
-      - [](#-39)
-      - [](#-40)
-      - [](#-41)
-      - [](#-42)
-      - [02 03 01 01](#02-03-01-01)
-      - [01 02 03 01](#01-02-03-01)
-      - [01 01 02 03](#01-01-02-03)
-      - [03 01 01 02](#03-01-01-02)
-      - [](#-43)
-      - [](#-44)
-      - [](#-45)
-      - [\in GF(2](#in-gf2)
-      - [M*](#m-1)
-      - [](#-46)
-      - [](#-47)
-      - [](#-48)
-      - [](#-49)
-      - [4F](#4f)
-      - [B0](#b0)
-      - [3E](#3e)
-      - [A0](#a0)
-      - [](#-50)
-      - [](#-51)
-      - [](#-52)
-      - [=](#-53)
-      - [(](#-54)
-      - [02 *4F\oplus  03 *B0\oplus  01 *3E\oplus  01 *A0](#02-4foplus--03-b0oplus--01-3eoplus--01-a0)
-      - [..](#-55)
-      - [.](#-56)
-      - [)](#-57)
-      - [=](#-58)
-      - [(](#-59)
-      - [9E\oplus CB\oplus 3E\oplus A0](#9eoplus-cboplus-3eoplus-a0)
-      - [..](#-60)
-      - [.](#-61)
-      - [)](#-62)
-      - [=](#-63)
-      - [(](#-64)
-      - [CB](#cb)
-      - [..](#-65)
-      - [.](#-66)
-      - [)](#-67)
-      - [.](#-68)
-      - [M-^1 =](#m-1-)
-      - [](#-69)
-      - [](#-70)
-      - [](#-71)
-      - [](#-72)
-      - [0E 0B 0D 09](#0e-0b-0d-09)
-      - [09 0E 0B 0D](#09-0e-0b-0d)
-      - [0D 09 0E 0B](#0d-09-0e-0b)
-      - [0B 0D 09 0E](#0b-0d-09-0e)
-      - [](#-73)
-      - [](#-74)
-      - [](#-75)
-      - [](#-76)
-      - [0 1 2 3 4 5 6 7 8 9 A B C D E F](#0-1-2-3-4-5-6-7-8-9-a-b-c-d-e-f-1)
-      - [0 63 7C 77 7B F2 6B 6F C5 30 01 67 2B FE D7 AB 76](#0-63-7c-77-7b-f2-6b-6f-c5-30-01-67-2b-fe-d7-ab-76)
-      - [1 CA 82 C9 7D FA 59 47 F0 AD D4 A2 AF 9C A4 72 C0](#1-ca-82-c9-7d-fa-59-47-f0-ad-d4-a2-af-9c-a4-72-c0)
-      - [2 B7 FD 93 26 36 3F F7 CC 34 A5 E5 F1 71 D8 31 15](#2-b7-fd-93-26-36-3f-f7-cc-34-a5-e5-f1-71-d8-31-15)
-      - [3 04 C7 23 C3 18 96 05 9A 07 12 80 E2 EB 27 B2 75](#3-04-c7-23-c3-18-96-05-9a-07-12-80-e2-eb-27-b2-75)
-      - [4 09 83 2C 1A 1B 6E 5A A0 52 3B D6 B3 29 E3 2F 84](#4-09-83-2c-1a-1b-6e-5a-a0-52-3b-d6-b3-29-e3-2f-84)
-      - [5 53 D1 00 ED 20 FC B1 5B 6A CB BE 39 4A 4C 58 CF](#5-53-d1-00-ed-20-fc-b1-5b-6a-cb-be-39-4a-4c-58-cf)
-      - [6 D0 EF AA FB 43 4D 33 85 45 F9 02 7F 50 3C 9F A8](#6-d0-ef-aa-fb-43-4d-33-85-45-f9-02-7f-50-3c-9f-a8)
-      - [7 51 A3 40 8F 92 9D 38 F5 BC B6 DA 21 10 FF F3 D2](#7-51-a3-40-8f-92-9d-38-f5-bc-b6-da-21-10-ff-f3-d2)
-      - [8 CD 0C 13 EC 5F 97 44 17 C4 A7 7E 3D 64 5D 19 73](#8-cd-0c-13-ec-5f-97-44-17-c4-a7-7e-3d-64-5d-19-73)
-      - [9 60 81 4F DC 22 2A 90 88 46 EE B8 14 DE 5E 0B DB](#9-60-81-4f-dc-22-2a-90-88-46-ee-b8-14-de-5e-0b-db)
-      - [A E0 32 3A 0A 49 06 24 5C C2 D3 AC 62 91 95 E4 79](#a-e0-32-3a-0a-49-06-24-5c-c2-d3-ac-62-91-95-e4-79)
-      - [B E7 C8 37 6D 8D D5 4E A9 6C 56 F4 EA 65 7A AE 08](#b-e7-c8-37-6d-8d-d5-4e-a9-6c-56-f4-ea-65-7a-ae-08)
-      - [C BA 78 25 2E 1C A6 B4 C6 E8 DD 74 1F 4B BD 8B 8A](#c-ba-78-25-2e-1c-a6-b4-c6-e8-dd-74-1f-4b-bd-8b-8a)
-      - [D 70 3E B5 66 48 03 F6 0E 61 35 57 B9 86 C1 1D 9E](#d-70-3e-b5-66-48-03-f6-0e-61-35-57-b9-86-c1-1d-9e)
-      - [E E1 F8 98 11 69 D9 8E 94 9B 1E 87 E9 CE 55 28 DF](#e-e1-f8-98-11-69-d9-8e-94-9b-1e-87-e9-ce-55-28-df)
-      - [F 8C A1 89 0D BF E6 42 68 41 99 2D 0F B0 54 BB 16](#f-8c-a1-89-0d-bf-e6-42-68-41-99-2d-0f-b0-54-bb-16)
-      - [           ](#-----------)
-      - [1 1 1 1 1 0 0 0](#1-1-1-1-1-0-0-0)
-      - [0 1 1 1 1 1 0 0](#0-1-1-1-1-1-0-0)
-      - [0 0 1 1 1 1 1 0](#0-0-1-1-1-1-1-0)
-      - [0 0 0 1 1 1 1 1](#0-0-0-1-1-1-1-1)
-      - [1 0 0 0 1 1 1 1](#1-0-0-0-1-1-1-1)
-      - [1 1 0 0 0 1 1 1](#1-1-0-0-0-1-1-1)
-      - [1 1 1 0 0 0 1 1](#1-1-1-0-0-0-1-1)
-      - [1 1 1 1 0 0 0 1](#1-1-1-1-0-0-0-1)
-      - [           ](#------------1)
-      - [*](#-77)
-      - [           ](#------------2)
-      - [           ](#------------3)
-    - [2.3 Bemerkungenzurandomisierten Algorithmen](#23-bemerkungenzurandomisierten-algorithmen)
-      - [(](#-78)
-      - [1](#1)
-      - [2](#2)
-      - [) 3](#-3)
-      - [=](#-79)
-      - [1](#1-1)
-      - [8](#8)
-      - [,](#-80)
-      - [1](#1-2)
-      - [2](#2-1)
-      - [1](#1-3)
-      - [8](#8-1)
-      - [=](#-81)
-      - [1](#1-4)
-      - [4](#4)
-      - [• B,](#-b)
-    - [2.4 SicherheitvonBlo ck-Kryptosystemen](#24-sicherheitvonblo-ck-kryptosystemen)
-      - [\oplus](#oplus)
-      - [\geq](#geq)
-      - [1](#1-5)
-      - [(](#-82)
-      - [1](#1-6)
-      - [2](#2-2)
-      - [)](#-83)
-      - [.](#-84)
-      - [1](#1-7)
-      - [2](#2-3)
-      - [(](#-85)
-      - [)](#-86)
-      - [=](#-87)
-      - [1](#1-8)
-      - [2](#2-4)
-      - [(](#-88)
-      - [)](#-89)
-      - [=](#-90)
-      - [1](#1-9)
-      - [2](#2-5)
-      - [1](#1-10)
-      - [2](#2-6)
-      - [1](#1-11)
-      - [2](#2-7)
-      - [.](#-91)
-      - [1](#1-12)
-      - [2 l- 1](#2-l--1)
-      - [.](#-92)
-      - [1](#1-13)
-      - [2 l- 1](#2-l--1-1)
-      - [=](#-93)
-      - [2 l- 2](#2-l--2)
-      - [2 l- 1](#2-l--1-2)
-      - [≈ 1.](#-1)
-      - [1](#1-14)
-      - [2](#2-8)
-      - [-](#-)
-      - [1](#1-15)
-      - [≈](#-94)
-      - [1](#1-16)
-      - [2](#2-9)
-      - [.](#-95)
-  - [3 Uneingeschränkte symmetrische Verschlüsselung](#3-uneingeschränkte-symmetrische-verschlüsselung)
-    - [3.1 Betriebsarten](#31-betriebsarten)
-    - [3.2 SicherheitvonsymmetrischenKryptoschemen](#32-sicherheitvonsymmetrischenkryptoschemen)
-      - [(](#-96)
-      - [1](#1-17)
-      - [2](#2-10)
-      - [)](#-97)
-      - [,](#-98)
-      - [.](#-99)
-      - [266 + 2^72](#266--272)
-      - [2128](#2128)
-      - [.](#-100)
-  - [A Anhang:Beweis von Satz 3.8 (Stand: 26.11.2018)](#a-anhangbeweis-von-satz-38-stand-26112018)
-      - [. (1.6)](#-16)
-      - [.](#-101)
-      - [⋃](#-102)
-      - [, (1.7)](#-17)
-      - [\sum](#sum-1)
-      - [=](#-103)
-      - [<](#-104)
-      - [. (1.8)](#-18)
-      - [⋃](#-105)
-      - [⋃](#-106)
-      - [\sum](#sum-2)
-      - [\sum](#sum-3)
-      - [\geq](#geq-1)
-      - [1](#1-18)
-      - [2 l+1](#2-l1)
-      - [\sum](#sum-4)
-      - [=](#-107)
-      - [1](#1-19)
-      - [2 l+1](#2-l1-1)
-      - [(](#-108)
-      - [\sum](#sum-5)
-      - [\sum](#sum-6)
-      - [\sum](#sum-7)
-      - [\sum](#sum-8)
-      - [)](#-109)
-      - [=](#-110)
-      - [=](#-111)
-      - [.](#-112)
-      - [. (1.10)](#-110)
-      - [..](#-113)
-      - [.](#-114)
-      - [+](#-115)
-      - [=](#-116)
-      - [1](#1-20)
-      - [2](#2-11)
-      - [+](#-117)
-      - [.](#-118)
-      - [-](#--1)
-      - [(](#-119)
-      - [1](#1-21)
-      - [2](#2-12)
-      - [+](#-120)
-      - [)](#-121)
-      - [=](#-122)
-      - [-](#--2)
-      - [,](#-123)
-
+- [Frische symmetrische Verschlüsselung und Blockchiffren](#frische-symmetrische-verschlüsselung-und-blockchiffren)
+  - [Substitutions-Permutations-Kryptosysteme (SPKS)](#substitutions-permutations-kryptosysteme-spks)
+    - [Einschub: Endliche Körper](#einschub-endliche-körper)
+    - [AES: Advanced Encryption Standard](#aes-advanced-encryption-standard)
+        - [AES-Chiffrieralgorithmus](#aes-chiffrieralgorithmus)
+        - [Die S-Box von AES:](#die-s-box-von-aes)
+        - [AES-Rundenschlüsselberechnung](#aes-rundenschlüsselberechnung)
+     
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
 - Jonathan Katz und Yehuda Lindell, Introduction to Modern Cryptography,CRCPress, 2015
@@ -337,8 +26,8 @@ Literaturempfehlung:
 - David Kahn: The Codebreakers, Scribner, 1996
 
 # Einführung
-_κρυ$\pi$τóς_= kryptos(griech.): verborgen
-_γραφειν_ = graphein (griech.): schreiben
+_$\kappa\ro\vartheta\pi\tau\delta\zeta$_= kryptos(griech.): verborgen
+_$\gamma\ro\alpha\varphi\epsilon\iota\nu$_ = graphein (griech.): schreiben
 
 Kryptographie im klassischen Wortsinn betrifft also Methoden,Nachrichten so zu schreiben, dass sie ,,verborgen'' bleiben,das heißt von keinem Unberechtigten (mit)gelesen werden können.Das hier angesprochene ,,Sicherheitsziel'' heißt ,,Vertraulichkeit'' oder ,,Geheimhaltung'' oder Konzelation (concelare(lat.):sorgfältig verbergen, davon englisch: conceal). Verfahren, die dieses Ziel erreichen,heißen Konzelationssysteme.
 
@@ -1099,10 +788,350 @@ Diese Zahl sollte näherungsweise gleich $\frac{1}{2}l(l-1)IC(y)$ sein. Wir kön
 Eine tatsächliche Durchführung des Verfahrens mit Chiffretexten wie im vorigen Kapitel erfordert viel Geduld (oder den Einsatz eines Computers).
 
 Beim ,,venezianischen'' Chiffretext EYRYC...UYR von oben ergibt sich:
-| $a_i$  | A   | B   | C   | D   | E   | F   | G   | H   | I   | J   | K   | L   | M   | N   | O   | P   | Q   | R   | S   | T   | U   | V   | W   | X   | Y   | Z |
-| --- |--- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| $n′_i$ | 8   | 12  | 13  | 2   | 18  | 25  | 7   | 19  | 20  | 14  | 8   | 15  | 16  | 7   | 12  | 8   | 3   | 15  | 25  | 10  | 19  | 41  | 13  | 11  | 19  | 8 |
+| $a_i$  | A   | B   | C   | D   | E   | F   | G   | H   | I   | J   | K   | L   | M   | N   | O   | P   | Q   | R   | S   | T   | U   | V   | W   | X   | Y   | Z   |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $n′_i$ | 8   | 12  | 13  | 2   | 18  | 25  | 7   | 19  | 20  | 14  | 8   | 15  | 16  | 7   | 12  | 8   | 3   | 15  | 25  | 10  | 19  | 41  | 13  | 11  | 19  | 8   |
 
 Dies liefert $IC(y)\approx 0,048024$ und $l=368$. Damit erhalten wir $s\approx\frac{0,0375*368}{367 *0,048024-0,0385 *368+0,076}\approx 3,9$.
 Das ist nicht zu nahe am tatsächlichen Wert 5, aber auch nicht ungeheuer weit weg. (Die Formel reagiert sehr empfindlich auf kleine Änderungen in $IC(y)$. Mit $IC(y)=0,05$ ergibt sich $s\approx 3,24$, mit $IC(y)=0,046$ ergibt sich $s\approx 4,95$.)
 
+# Frische symmetrische Verschlüsselung und Blockchiffren
+Szenarium 2 (frische symmetrische Verschlüsselung): Alice möchte Bob mehrere verschiedene Klartexte vorher bekannter und begrenzter Länge übermitteln. Sie verwendet dafür immer denselben Schlüssel. Eva hört die Chiffretexte mit und kann sich sogar einige Klartexte mit dem verwendeten Schlüssel verschlüsseln lassen (chosen-plaintext attack, CPA).
+
+Bemerkung: Das informationstheoretisch sichere Vernam-Kryptosystem aus Kapitel 1 ist nutzlos: Aus Kenntnis von $x\in\{0,1\}^l$ und $y=e(x,k)$ für ein einziges Paar $(x,k)\in X\times K$ kann Eva den Schlüssel $k=x\oplus_l y$ berechnen.
+Gleiches gilt für das Cäsar-System und das Vigenère-System.
+
+Mit dem nächsten Begriff erfassen wir folgende Situation: Eva kennt eine ganze Folge von Klartext-Chiffretext-Paaren bezüglich des (ihr unbekannten) Schlüssels k. Dabei kann sie sich die Klartexte sogar selbst herausgesucht haben. Wir wollen ,,possibilistische Sicherheit'' so definieren, dass sie trotzdem bei beliebigem gegebenem weiteren Chiffretext y keinen Klartext ausschließen kann.
+
+Definition 2.1 Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2 ,wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k′\in K$ existiert mit $e(x_i,k)=e(x_i,k′)$ für alle $1\leq i< r$ und $e(x_r,k′)=y$.
+
+Wenn man die Definition auf $r=1$ anwendet, ergibt sich, dass S auch possibilistisch sicher im Sinn von Kapitel 1 ist.
+
+Proposition 2.2 Für jede nichtleere Menge $X$ ist das Substitutionskryptosystem (Def.1.9) auf X possibilistisch sicher. (Erinnerung: $K=P_X=\{\pi|\pi\text{ ist Permutation von }X\}$ und $e(\pi,x)=\pi(x)$.) 
+Beweis: Seien $x_1,x_2,...,x_r\in X$ paarweise verschieden, $k\in K=P_X$ und $y\in Y\{e(x_i,k)|1\leq i<r\}$. Aufgrund der Dechiffrierbedingung sind die Geheimtexte $e(x_i,k)$ für $1\leq i<r$ paarweise verschieden. Also gilt $|Y\backslash(\{y\}\cup\{e(x_i,k)| 1\leq i<r\})|=|Y|-r=|X|-r=|X\backslash\{x_1 ,...,x_r\}|$, und es existiert eine Bijektion $f:X\{x_1,...,x_r\}\rightarrow Y\backslash(\{y\}\cup\{e(x_i,k)| 1\leq i<r\})$.
+Definiere nun $\pi:X\rightarrow Y$ durch $\pi(x) =\begin{cases} e(x_i,k)\quad\text{ falls }\exists i\in\{1,...,r-1\}:x=x_i \\ y\quad\text{ falls } x=x_r \\ f(x)\quad\text{ sonst}\end{cases}$.
+Dann ist $\pi$ eine Bijektion und damit eine Permutation von X (da $X=Y$).
+
+Proposition 2.3 Sei $S=(X,K,Y,e,d)$ ein Kryptosystem, das possibilistisch sicher ist bzgl. Szenarium 2. Dann ist $\{e(.,k)|k\in K\}$ die Menge aller injektiven Abbildungen von X nach Y.
+Beweis: Aus der Dechiffrierbedingung folgt sofort, dass alle Abbildungen $e(.,k)$ injektiv sind.
+Sei nun $\pi:X\rightarrow Y$ eine beliebige injektive Abbildung. Weiter gelte $X=\{x_1,...,x_t\}$. Wir konstruieren induktiv Schlüssel $k_1,...,k_t$ mit $\forall i\in\{1,...,r\}:e(x_i,k_r)=\pi(x_i)$.
+Das heißt: Schlüssel $k_r$ realisiert $\pi$ eingeschränkt auf $\{x_1,...,x_r\}$.
+
+Da S auch possibilistisch sicher bzgl. Szenarium 1 ist, existiert der Schlüssel $k_1$ wie gewünscht. Die Schlüssel $k_r$ für $r=2,...,t$ ergeben sich nacheinander, indem man wiederholt Definition 2.1 auf $\{x_1,...,x_r\},k_{r-1}$ und $y=\pi(x_r)$ anwendet. Schließlich gilt $e(.,k_t)=\pi$.
+
+Im Fall $X=Y$ folgt, dass nur das Substitutionskryptosystem possibilistisch sicher bzgl. Szenarium 2 ist.
+
+Ein Kryptosystem, das possibilistisch sicher bzgl. Szenarium 2 ist, hat also mindestens $|\{\pi |\pi :X\rightarrow Y\text{ ist injektiv}\}|=\frac{|Y|!}{(|Y|-|X|)!} \geq |X|!$ Schlüssel. Mit $X=\{0,1\}^{128}$  (das ist durchaus realistisch!) gibt es also $\geq 2^{128}!$ viele Schlüssel. Für die Speicherung eines Schlüssels braucht man also durchschnittlich (Es gilt $log_2(N!)>N(log_2 N-log_2 e)> N(log_2 N- 1.45)$) $log(2^{128}!)> 2^{128}*(128- 1.45)> 2^{134}>(10^3 )^{13.4} > 10^{40}$ viele Bits, eine völlig unpraktikable Zahl.
+Also können wir in realen Situationen im Szenarium 2 keine possibilistische Sicherheit, geschweige denn informationstheoretische Sicherheit erhalten.
+
+Wir werden uns in diesem Kapitel also darauf verlassen müssen, dass Eva nur beschränkte Rechenressourcen hat, um einen praktikablen Angriff zu starten. Auf der anderen Seite wollen wir jetzt auch annehmen, dass Alice und Bob mit Computerhilfe verschlüsseln und entschlüsseln wollen, d.h. dass wir effiziente Algorithmen für die Ver- und Entschlüsselung benötigen. Damit wird es sinnvoll anzunehmen, dass Klar- und Geheimtexte und Schlüssel Bitvektoren sind.
+
+Definition 2.4 Sei $l>0$. Ein l-Block-Kryptosystem ist ein Kryptosystem $S=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ mit $K\subseteq \{0,1\}^s$ für ein $s>0$.
+
+Beispiele für l-Block-Kryptosysteme sind das Vernam-System der Länge l und Substitutionskryptosystem mit $X=\{0,1\}^l$, falls Permutationen als Bitvektoren kodiert sind. Wir sprechen dann vom Substitutionskryptosystem mit Parameter $l$.
+Eine weitere Klasse von Verfahren wird im nächsten Abschnitt vorgestellt.
+
+## Substitutions-Permutations-Kryptosysteme (SPKS)
+Substitutions-Permutations-Kryptosysteme bilden eine große Familie von praktisch relevanten Kryptosystemen, zu denen auch die Verfahren des Data Encryption Standard (DES) und des Advanced Encryption Standard (AES) gehören.
+
+Grundsätzlich handelt es sich um $mn$-Block-Kryptosysteme. Dabei werden die Klartexte $x=(x_0,...,x_{mn-1})\in\{ 0,1\}^{mn}$ als m-Tupel $(x^{(0)},x^{(1)},...,x^{(m-1)})$ von Bitvektoren der Länge n betrachtet. Dabei gilt $x(i)=(x_{in},x_{in+1},...,x_{(i+1)n-1})$, für $0\leq i<m$. 
+Ein Baustein der Verschlüsselungs- und Entschlüsselungsfunktion bei diesen Systemen sind Bitpermutationen  auf Bitstrings der Länge l: Sei β eine Permutation von $\{0,...,l-1\}$ und $x\in\{0,1\}^l$. Dann bezeichnet $x^β$ den Bitvektor $(x_{β(0)},x_{β(1)},...,x_{β(l-1)})$. Kurz: $x^β_{(i)}=x_{β(i)}$, für $0\leq i<l$.
+Sehr oft werden wir annehmen, dass β selbst invers ist, dass also $β^{-1}=β$ ist (oder $β(β(i))=i$ für $0\leq i<l$). Dann erhält man $x^β$ aus x, indem man $x(i)$ an die Stelle $β(i)$ des neuen Vektors schreibt.
+
+Definition 2.5 Ein Substitutions-Permutations-Netzwerk (SPN) ist ein Tupel $N=(m,n,r,s,S,\beta,\kappa)$ wobei 
+- die positiven ganzen Zahlen $m,n,r$ und $s$ die Wortanzahl $m$, die Wortlängen, die Rundenzahl r und die Schlüssellänge s angeben,
+- $S:\{0,1\}^n\rightarrow\{0,1\}^n$ eine bijektive Funktion ist (,,Substitution'',die S-Box),
+- $β:\{0,...,mn-1\}\rightarrow\{0,...,mn-1\}$ eine selbstinverse Permutation (die Bitpermutation) ist und
+- $\kappa :\{0,1\}s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$ die Rundenschlüsselfunktion ist.
+
+Das zu N gehörende Substitutions-Permutations-Kryptosystem (SPKS) ist das mn-Block-Kryptosystem $B(N)=(\{0,1\}^{mn},\{0,1\}^s,\{0,1\}^{mn},e,d)$, das durch folgende Operationen beschrieben ist:
+
+Chiffrierung: $e(x,k)$ wird für $x\in\{0,1\}^{mn}$ und $k\in\{0,1\}^s$ wie folgt berechnet:
+1. Initialisierung (,,Weißschritt''): Berechne $u=x\oplus_{mn} \kappa (k,0)$.
+2. Verschlüsselung in Runden: für $i=1,...,r-1$ berechne
+    1. $v(j)=S(u(j))$ für $0\leq j<m$ (jedes Wort einzeln durch die S-Box)
+    2. $w=v^β$ (Bitpermutation auf dem Gesamtwort der Länge mn)
+    3. $u=w\oplus_{mn} \kappa (k,i)$ (XOR mit dem Rundenschlüssel)
+3. Schlussrunde: $v(j)=S(u(j))$ für $0\leq j<m$
+4. Ausgabe: $y=v\oplus \kappa (k,r)$ (wie gewöhnliche Runde, ohne Bitpermutation)
+
+Dechiffrierung: $d(y,k)$ wird aus y und k nach demselben Verfahren berechnet, wobei jedoch
+1. die S-Box (die eine Permutation ist) durch ihre Inverse $S^{-1}$ ersetzt wird und
+2. die Rundenschlüsselfunktion $\kappa$ ersetzt wird durch die Funktion $\kappa′:\{0,1\}^s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$, $(k,i)\rightarrow\begin{cases} \kappa (k,r-i)\quad\text{ für } i\in\{0,r\}\\ \kappa(k,r-i)^{\beta} \quad\text{ für } 0<i<r \end{cases}$
+
+Vorteil der Struktur: Man kann dieselbe Hardware für Verschlüsselung und Entschlüsselung benutzen. Bei der Entschlüsselung läuft der Vorgang rückwärts ab, wobei die Runden anders gruppiert sind. Anstelle von S verwendet man $S^{-1}$. Da $β$ selbst invers ist, kann man für die Permutation auch bei der Dekodierung β verwenden. Da Permutation und Schlüsselanwendung in den Runden vertauscht sind, muss man auf die Rundenschlüssel der ,,inneren'' Runden bei der Dekodierung auch noch β anwenden.
+
+Ein typischer Vertreter dieser Art Kryptosystem ist DES (bzw. sind die Chiffren der DES-Familie). Die DES-Version mit Blocklänge 64 und effektiver Schlüsselbreite 56 (das heißt, dass der Schlüsselraum Größe $2^{56}$ hat) wurde im Jahr 1977 als Standard für nicht geheime Dokumente in den USA publiziert. ,,Lineare Kryptanalyse'' ist eine Methode, solche Verfahren zu attackieren. Nach Weiterentwicklung der Methode gelang 1999 die Entschlüsselung einer DES-verschlüsselten Nachricht in weniger als einem Tag, mit einem Verbund von 100000 Arbeitsplatzrechnern, die im Wesentlichen alle Schlüssel durchprobierten. Dabei wurden über 240 Milliarden Schlüssel pro Sekunde getestet. Stärkere Varianten wie Triple-DES werden auch heute noch eingesetzt.
+
+Beispiel 2.6 Die Wortanzahl ist $m=3$, die Wortlänge $n=4$, die Rundenzahl $r=3$, die Schlüssellänge $s=24=6*n$, und $\kappa (k,i)=k^{(i)}k^{(i+1)}k^{(i+2)}$. Die Bitpermutation β vertauscht die Bits $(0,4),(1,5),(2,8),(3,9),(6,10)$ und $(7,11)$ und ist damit selbst invers. Die S-Box ist gegeben durch die folgende zweizeilige Tabelle:
+| b    | 0000 | 0001 | 0010 | 0011 | 0100 | 0101 | 0110 | 0111 | 1000 | 1001 | 1010 | 1011 | 1100 | 1101 | 1110 | 1111 |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| S(b) | 0101 | 0100 | 1101 | 0001 | 0011 | 1100 | 1011 | 1000 | 1010 | 0010 | 0110 | 1111 | 1001 | 1110 | 0000 | 0111 |
+
+Für $x= 0000 1111 0000$ und $k=0000 0001 0010 0011 0100 0101$ ergeben sich nacheinander
+1. $\kappa (k,0) = 0000 0001 0010$ und damit $u= 0000 1110 0010$
+2. 
+   - $i=1$ $v=0101 0000 1101$, $w=0011 0101 0100$, $\kappa (k,1) = 0001 0010 0011$ und $u=0010 0111 0111$ 
+   - $i=2$ $v=1101 1000 1000$, $w=1010 1100 0100$, $\kappa (k,2) = 0010 0011 0100$ und damit $u= 1000 1111 0000$
+3. $v=1010 0111 0101$, $\kappa (k,3) = 0011 0100 0101$ und damit $y=1001 0011 0000$
+
+
+### Einschub: Endliche Körper
+Zur Vorbereitung der Beschreibung von AES und für die spätere Verwendung in asymmetrischen Systemen diskutieren wir kurz die Konstruktion von endlichen Körpern mit $2^k$ Elementen. Dies ist eine Spezialisierung einer allgemeinen Konstruktion, die es erlaubt, aus einem Körper mit $q$ Elementen einen mit $q^k$ Elementen zu konstruieren.
+Die Struktur $\mathbb{Z}_2=(\{0,1\},\oplus,\odot, 0 ,1)$ ist ein Körper, wobei $\oplus$ für die XOR-Operation und für $\wedge$ (AND) steht. (Körper: Addition, Multiplikation mit den üblichen Gesetzen, d.h. $(F,\oplus ,0)$ ist kommutative Gruppe, ist assoziativ und hat 1 als neutrales Element, die Distributivgesetze gelten, und Elemente $\not=0$ haben ein multiplikatives Inverses.) Man beachte, dass in $\mathbb{Z}_2$ die Subtraktion dasselbe ist wie die Addition: $a\oplus a= 0$ für $a=0,1$.
+
+Zu einem endlichen Körper $F$ (zentrales Beispiel:$\mathbb{Z}_2$) bildet man den Polynomring $F[X]$. Vorstellen sollte man sich diesen als die Menge aller ,,formalen Ausdrücke'' $a_n* X^n+...+a_2 *X^2 +a_1 *X+a_0$, für $n\geq 0$ und $a_n,...,a_1,a_0\in F$. Ein solcher Ausdruck wird mit seiner Koeffizientenfolge $(...,0,0,a_n,...,a_1,a_0)$ (gegebenenfalls künstlich als unendliche Folge geschrieben) identifiziert. Normalerweise lässt man Terme mit Koeffizient 0 weg. Über $\mathbb{Z}_2$ schreibt man wie üblich oft nur den Bitstring $a_n...a_1a_0$ ohne Klammern und Kommas.
+
+Beispiel: In $\mathbb{Z}_2[X]$ liegen die Polynome $g=01011=(..., 0 , 1 , 0 , 1 ,1) =X^3 +X+1$ und $h=0110=(..., 0 , 1 , 1 ,0) =X^2 +X$.
+
+Der Grad eines solchen Polynoms ist n, wenn n maximal mit $a_n\not = 0$ ist. Falls alle Koeffizienten gleich 0 sind (f ist das ,,Nullpolynom'', man schreibt 0), ist der Grad $-\infty$. Man addiert und subtrahiert solche Polynome wie üblich (d.h. komponentenweise) und multipliziert sie wie üblich (aus multiplizieren, Koeffizienten bei der selben X-Potenz aufsammeln). Als geschlossene Formel: Das Produkt von $(...,0,0,a_n,...,a_1,a_0)$ und $(...,0,0,b_m,...,b_1,b_0)$ ist $(...,0,0,c_{n+m},...,c_1,c_0)$ mit $c_k=\sum_{0\geq i\geq n; 0\geq j\geq m; i+j=k} a_i*b_j$.
+
+Beispiel: Die Summe von g und h ist $g+h=01101=(...,0,1,1,0,1)$, ihr Produkt ist $g*h=X^5+X^4+X^3+X=(...,0,0,1,1,1,0,1,0)=111010$.
+
+Mit diesen Operationen erhält $F[X]$ die Struktur eines Rings: Die Addition ist Gruppe mit neutralem Element 0 (Nullpolynom), die Multiplikation ist assoziativ mit neutralem Element $1=(...,0,0,0,1)$, die Distributivgesetze gelten.
+Als Grundmenge des zu konstruierenden Körpers verwenden wir $F^k$, die Menge aller k-Tupel über F. Dies entspricht der Menge aller Polynome vom Grad bis zu $k-1$. Diese Menge hat genau $|F|^k$ Elemente. Im Fall $F=\mathbb{Z}_2$ erhalten wir $\{0,1\}^k$, die Menge aller Bitstrings der Länge k.
+
+Als Addition $\oplus$ benutzen wir die gewöhnliche Addition von Polynomen, also die komponentenweise Addition der Tupel. Bei $F=\mathbb{Z}^k_2$ ist dies einfach das bitweise XOR. Wir geben die Additionstafel für $k=4$ an. Die Elemente des Körpers $GF(2^4)$ werden dabei wir üblich als Hexadezimalziffern geschrieben. Achtung: Man muss die Einträge richtig interpretieren, nämlich als Bitstrings, nicht als Zahlen: $5\oplus C=0101\oplus 1100=1001=9$.
+
+| $\oplus$ | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F |
+| -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0        | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F |
+| 1        | 1   | 0   | 3   | 2   | 5   | 4   | 7   | 6   | 9   | 8   | B   | A   | D   | C   | F   | E |
+| 2        | 2   | 3   | 0   | 1   | 6   | 7   | 4   | 5   | A   | B   | 8   | 9   | E   | F   | C   | D |
+| ...      |
+
+Die Multiplikation $\odot$ ist etwas komplizierter.
+
+Es wird ein irreduzibles Polynom $f=X^k+a_{k-1}* X^{k-1}+...+a_1*X+a_0$ vom Grad k (mit ,,Leitkoeffizient'' $a_k=1$) benötigt, also ein Koeffiziententupel $(1,a_{k-1},...,a_1,a_0)$ mit der Eigenschaft, dass man nicht $f=f_1*f_2$ schreiben kann, für Polynome $f_1$ und $f_2$, die Grad $\geq 1$ haben. Man kann zeigen, dass es für jedes $k\geq 2$ stets solche Polynome gibt. Sie können mit randomisierten Algorithmen effizient gefunden werden. Hier einige Beispiele für $F=\mathbb{Z}_2$. Wie üblich schreibt man die Koeffizientenfolge als Bitstring. Dieser Bitstring kann dann auch als natürliche Zahl (dezimal geschrieben) interpretiert werden.
+
+| k   | irreduzibles Polynom vom Grad k über $\mathbb{Z}_2$ | Kurzform  | Zahl |
+| --- | --------------------------------------------------- | --------- | ---- |
+| 1   | $X+ 1$                                              | 11        | 3    |
+| 2   | $X^2 +X+ 1$                                         | 111       | 7    |
+| 3   | $X^3 +X+ 1$                                         | 1011      | 11   |
+| 4   | $X^4 +X+ 1$                                         | 10011     | 19   |
+| 5   | $X^5 +X^2 + 1$                                      | 100101    | 37   |
+| 6   | $X^6 +X+ 1$                                         | 1000011   | 67   |
+| 7   | $X^7 +X^3 + 1$                                      | 10001001  | 137  |
+| 8   | $X^8 +X^4 +X^3 +X+ 1$                               | 100011011 | 283  |
+
+Das Polynom $X^2+1=(1,0,1)=101$ ist nicht irreduzibel, da über $\mathbb{Z}_2$ die Gleichung $(X+1)*(X+1)=X^2+1$ gilt.
+
+Die Multiplikation funktioniert nun wie folgt: Wenn g und h gegeben sind, berechnet man das Prddukt $g*h$ (Grad maximal $2k-2$) und bestimmt den Rest $r$ von $g*h$ bei der Division durch $f$. Dieser Rest (genannt ,,$g*h mod f$'') ist das eindeutig bestimmte Polynom r vom Grad höchstens $k-1$, das $g*h=q*f+r$ erfüllt, für ein ,,Quotientenpolynom'' q.
+
+Beispiel: Sei $k=4$ und $f=(1,0,0,1,1)=10011$. Die Faktoren seien $g=(1,0,1,1)=1011$ und $h=(0,1,1,0)=110$. Das Produkt ist $g*h=(1,1,1,0,1,0)=111010$. Wenn wir hier von $f*(X+1)=(1,1,0,1,0,1)=110101$ subtrahieren, erhalten wir das Produkt $(1,1,1,1)=1111$ im Körper.
+
+Man kann durch geduldiges Multiplizieren und Bilden von Resten (also Dividieren von Polynomen) in dieser Weise eine komplette Multiplikationstabelle aufstellen. Geschickter ist Folgendes: Man berechnet alle Produkte $g*h mod f$, für die in g und in h jeweils die ersten beiden Bits oder die letzten beiden Bits 0 sind. (Wenn man beobachtet, dass $(0,0,0,1)=0001$ das neutrale Element ist, und die Kommutativität berücksichtigt, muss man nur 15 Produkte berechnen.) Es ergibt sich die folgende Tabelle.
+
+| $\odot$ | 0000 | 0001 | 0010 | 0011 | 0100 | 1000 | 1100 |
+| ------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 0000    | 0000 | 0000 | 0000 | 0000 | 0000 | 0000 | 0000 |
+| 0001    | 0000 | 0001 | 0010 | 0011 | 0100 | 1000 | 1100 |
+| 0010    | 0000 | 0010 | 0100 | 0110 | 1000 | 0011 | 1011 |
+| 0011    | 0000 | 0011 | 0110 | 0101 | 1100 | 1011 | 0111 |
+| 0100    | 0000 | 0100 | 1000 | 1100 | 0011 | 0110 | 0101 |
+| 1000    | 0000 | 1000 | 0011 | 1011 | 0110 | 1100 | 1010 |
+| 1100    | 0000 | 1100 | 1011 | 0111 | 0101 | 1010 | 1111 |
+
+Wir notieren weiterhin Bitstrings $(a_3,a_2,a_1,a_0)=a_3a_2a_1a_0$ hexadezimal. Das Polynom $g=(1,0,1,1)=1011$ ist also $B=1000\oplus 0011=8\oplus 3$, das Polynom $h=(0,1,1,0)=0110$ ist $6=0100\oplus 0010=4\oplus 2$.
+Die Tabelle sieht dann so aus:
+| $\odot$ | 0   | 1   | 2   | 3   | 4   | 8   | C   |
+| ------- | --- | --- | --- | --- | --- | --- | --- |
+| 0       | 0   | 0   | 0   | 0   | 0   | 0   | 0   |
+| 1       | 0   | 1   | 2   | 3   | 4   | 8   | C   |
+| 2       | 0   | 2   | 4   | 6   | 8   | 3   | B   |
+| 3       | 0   | 3   | 6   | 5   | C   | B   | 7   |
+| 4       | 0   | 4   | 8   | C   | 3   | 6   | 5   |
+| 8       | 0   | 8   | 3   | B   | 6   | C   | A   |
+| C       | 0   | C   | B   | 7   | 5   | A   | F   |
+
+Nun wollen wir beliebige Polynome multiplizieren. Beispiel: Um $g=(1,0,1,1)=1011=B$ und $h=(0,1,1,0)=0110=6$ zu multiplizieren, rechnet man unter Benutzung der Tabelle und des Distributivgesetzes wie folgt (Multiplikation modulo f):
+$B\odot 6=(8\oplus 3)(4\oplus 2)=(8\odot 4)\oplus(8\odot 2)\oplus(3\odot 4)\oplus(3\odot 2)=6\oplus 3\oplus C\oplus 6= 0110\oplus 0011 \oplus 1100 \oplus 0110 = 1111 = F$.
+
+Mit etwas Geduld und unter Ausnutzung des Distributivgesetzes lässt sich auf diese Weise die folgende Multiplikationstabelle für die Elemente von $\mathbb{Z}^4_2$ finden.
+|     | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   |
+| 1   | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F   |
+| 2   | 0   | 2   | 4   | 6   | 8   | A   | C   | E   | 3   | 1   | 7   | 5   | B   | 9   | F   | D   |
+| 3   | 0   | 3   | 6   | 5   | C   | F   | A   | 9   | B   | 8   | D   | E   | 7   | 4   | 1   | 2   |
+| 4   | 0   | 4   | 8   | C   | 3   | 7   | B   | F   | 6   | 2   | E   | A   | 5   | 1   | D   | 9   |
+| 5   | 0   | 5   | A   | F   | 7   | 2   | D   | 8   | E   | B   | 4   | 1   | 9   | C   | 3   | 6   |
+| 6   | 0   | 6   | C   | A   | B   | D   | 7   | 1   | 5   | 3   | 9   | F   | E   | 8   | 2   | 4   |
+| 7   | 0   | 7   | E   | 9   | F   | 8   | 1   | 6   | D   | A   | 3   | 4   | 2   | 5   | C   | B   |
+| 8   | 0   | 8   | 3   | B   | 6   | E   | 5   | D   | C   | 4   | F   | 7   | A   | 2   | 9   | 1   |
+| 9   | 0   | 9   | 1   | 8   | 2   | B   | 3   | A   | 4   | D   | 5   | C   | 6   | F   | 7   | E   |
+| A   | 0   | A   | 7   | D   | E   | 4   | 9   | 3   | F   | 5   | 8   | 2   | 1   | B   | 6   | C   |
+| B   | 0   | B   | 5   | E   | A   | 1   | F   | 4   | 7   | C   | 2   | 9   | D   | 6   | 8   | 3   |
+| C   | 0   | C   | B   | 7   | 5   | 9   | E   | 2   | A   | 6   | 1   | D   | F   | 3   | 4   | 8   |
+| D   | 0   | D   | 9   | 4   | 1   | C   | 8   | 5   | 2   | F   | B   | 6   | 3   | E   | A   | 7   |
+| E   | 0   | E   | F   | 1   | D   | 3   | 2   | C   | 9   | 7   | 6   | 8   | 4   | A   | B   | 5   |
+| F   | 0   | F   | D   | 2   | 9   | 6   | 4   | B   | 1   | E   | C   | 3   | 8   | 7   | 5   | A   |
+
+Das neutrale Element der Multiplikation ist das Polynom $1=(0,..., 0 ,1) = 0... 01$. Man beobachtet, dass in jeder Zeile (und ebenso in jeder Spalte) der Tabelle, außer der für das Nullpolynom, alle Elemente genau einmal vorkommen. Dies ist für jeden Körper F und jedes beliebige k so, und es folgt daraus, dass die Elemente der Menge $F^k-\{0\}$ ein Inverses haben.
+
+Fakt: Wenn man die Multiplikation wie beschrieben definiert, mit einem irreduziblen Polynom f mit Leitkoeffizient $a_k=1$, dann gibt es für jedes Polynom $g\not=(0,...,0)$ vom Grad $<k$ (genau) ein Polynom h mit $g*h\ mod\ f=(0,...,0,1)=1$. Dieses Polynom h ist also $g^{-1}$, das multiplikative Inverse von g.
+
+(Beweisidee: Man zeigt, dass die Abbildung $h\rightarrow g*h\ mod\ f$ in der Menge dieser Polynome injektiv ist. Ist $h_1*g\ mod\ f=h_2*g\ mod\ f$, so ist $(h_1-h_2)*g\ mod\ f= 0$, also ist $(h_1-h_2)*g$ durch f teilbar. Nach einem Lemma über irreduzible Polynome (analog zur Situation bei Primzahlen) folgt, dass f Teiler von $h_1-h_2$ oder Teiler von g sein muss. Weil $g$ nicht das Nullpolynom ist und Grad $<k$ hat, kann f kein Teiler von g sein. Also teilt f das Polynom $h_1-h_2$. Da auch dieses Grad $<k$ hat, muss $h_1-h_2$ das Nullpolynom sein, also $h_1=h_2$ gelten. Aus der Injektivität von $h\rightarrow g*h\ mod\ f$ folgt die Surjektivität, also gibt es ein $h$ mit $g*h\ mod\ f=1$.)
+
+Weil die üblichen Rechenregeln in der Struktur $(F^k,\oplus,\odot,0,1)$ mit den angegebenen Operationen leicht nachzuweisen sind, bedeutet dies, dass wir einen Körper mit $|F|^k$ Elementen erhalten haben. Wir nennen ihn $F[X]/(f)$, für das gewählte irreduzible Polynom $f$ vom Grad $k$. Wenn $|F|^k=q$ ist, nennen wir diesen Körper $GF(q)$. Im Fall $F=\mathbb{Z}_2$ erhalten wir so Körper $GF(2^k)$, deren zugrunde liegende Menge einfach $\{0,1\}^k$ ist, die Menge der Bitstrings der Länge k.
+
+Bemerkung: In der Algebra zeigt man folgende Fakten über endliche Körper:
+- Es gibt einen endlichen Körper $GF(q)$ mit $q$ Elementen genau dann wenn $q=p^r$ für eine Primzahl p und einen Exponenten $r\geq 1$.
+- Es ist gleichgültig, auf welchem Konstruktionsweg man zu einem Körper mit $q$ Elementen gelangt: alle diese Körper sind isomorph, also strukturell identisch. (Insbesondere ist der Körper $GF(2^k)$ immer ,,der gleiche'' , ganz egal welches irreduzible Polynom f man benutzt.) Die Tabellen für die Operationen können eventuell unterschiedlich aussehen, aber nur aufgrund von Umbenennungen von Objekten.
+
+Ab hier schreiben wir $+$ für die Körperaddition und $*$ für die Körpermultiplikation.
+
+Bemerkungen zur Zeit- und Platzeffizienz: Allgemein, und für beliebig große k, kann man für ein festes Polynom f den Rest der Division durch f stets als Produkt des Zeilenvektors, der $g*h$ darstellt, mit einer festen $((2k-1)\times k)$-Matrix $M_f$ erhalten.
+
+Damit ist die Komplexität der Multiplikation in einem solchen Körper definiert: Es muss das Produkt $g*h$ berechnet werden (,,Konvolution'' von zwei Bitvektoren) und dann eine Vektor-Matrix-Multiplikation ausgeführt werden. Über dem Körper $\mathbb{Z}_2$ lässt sich die Vektor-Matrix-Multiplikation mit Hilfe der wortweisen XOR-Operation sehr effizient durchführen. Wenn zusätzlich $f$ nur wenige Terme hat, hat $M_f$ nur wenige 1-Einträge und die Matrix-Vektor-Multiplikation läuft auf einer Addition weniger Shifts eines Vektors hinaus. Für die Konvolution ist effiziente Ausführung etwas schwieriger; es gibt aber moderne Prozessoren, die diese Operation für konstante Wortlängen bereitstellen, was diese Operation auch für beliebige Wortlängen beschleunigt.
+
+Wenn die Bitlänge $k$ kurz und bekannt ist, wird man Tabellen benutzen. (Zum Beispiel benutzt AES einen Körper der Größe 256.) Für die Multiplikation verwendet man auch gerne Potenz- und Logarithmentabellen.
+
+Fakt 2.7 Sei F ein endlicher Körper mit $q$ Elementen. Dann gibt es in Fein ,,primitives Element'' g, d.h., g erfüllt $\{g^i| 0 \geq i < q-1\}=F-\{0\}$. (g ist erzeugendes Element der multiplikativen Gruppe von F.)
+
+Beispiel: Wir hatten oben eine Multiplikationstabelle für $GF(2^4)$ aufgestellt. Mit ihrer Hilfe findet man leicht die ersten 15 Potenzenvon 2:
+Potenztab elle:
+| i              | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  |
+| -------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $exp_2(i)=2^i$ | 1   | 2   | 4   | 8   | 3   | 6   | C   | B   | 5   | A   | 7   | E   | F   | D   | 9   |
+
+Diese Potenzen sind alle verschieden, also ist $g=2$ primitives Element. Die entsprechende Logarithmentab elle sieht so aus:
+| x          | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F   |
+| ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $log_2(x)$ | 0   | 1   | 4   | 2   | 8   | 5   | 10  | 3   | 14  | 9   | 7   | 6   | 13  | 11  | 12  |
+
+Achtung: Der Index der Exponential- und der Logarithmenfunktion ist nicht die natürliche Zahl 2, sondern 2, das ist das Element $X=0010$ von $GF(2^4)$.
+
+Allgemein: Wenn $g$ primitives Element ist, dann betrachtet man die Exponentialfunktion zur Basis $g$: $exp_g:\mathbb{Z}\in i\rightarrow g^i\in F-\{0\}$.
+
+Diese ist periodisch: Wenn $i-j$ durch $q-1$ teilbar ist, dann ist $g^i=g^j$. Es genügt also, die Werte $g^i$ für $0\geq i<q-1$ zukennen. Man erstellt eine Tabelle mit diesen $q-1$ Werten.
+Die Umkehrfunktion ist die Logarithmusfunktion $log_g$ zur Basis $g$. Sie ordnet jedem $x\in F-\{0\}$ den (eindeutig bestimmten) Wert $i\in\{0,1,...,q-2\}$ mit $x=g^i$ zu, genannt $log_g(x)$. Es gilt $log_g(g^i)=i$ für $i\in\{0,1,...,q-2\}$ und $g^{log_g(x)}=x$ für alle $x\in F-\{0\}$. Man erstellt ebenfalls eine Tabelle mit diesen Werten. 
+Nun kann man leicht multiplizieren.
+
+Aufgabe: Berechne $z=x*y$.
+Falls $x=0$ oder $y=0$ in $F$, ist $z=0$. Andernfalls schaue in die log-Tabelle, um $i=log_g(x)$ und $j=log_g(y)$ zu finden. Berechne $k=(i+j)\ mod\ (q-1)$. Das Ergebnis $z=g^k$ liest man nun in der exp-Tabelle an Stelle $k$ ab.
+
+Beispiel: In $GF(2^4)$ seien $x=9$ und $y=C$ gegeben. Die $log_2$-Tabelle liefert $i=log_2(9)=14$ und $j=log_2(C)=6$. Wir erhalten $k= (14+6)\ mod\ 15 = 5$ und $z=g^5=6$ mit der $exp_2$-Tabelle. Man kontrolliert mit der Multiplikationstabelle für $GF(2^4)$, dass dort tatsächlich $9*C=6$ gilt.
+
+Aufwand für eine Multiplikation: Drei Zugriffe auf Tabellen, eine modulare Addition!
+
+Der Rechenaufwand für die Erstellung der Tabellen und auch ihr Platzbedarf ist $O(q)$ und damit akzeptabel, wenn $q$ nicht zu groß ist. Im Fall von $q=256$ hat man zwei Tabellen mit je $255$ Einträgen und kann damit sehr leicht in konstanter Zeit multiplizieren. Auch Tabellen für $q=2\frac{1}{6}=65536$ stellen weiter kein Problem dar. Für noch größere $q$ benötigt man weitere Tricks zum Ermitteln diskreter Logarithmen mit Hilfe von Tabellen der Größe etwa $\sqrt{q}$. (Wir werden später darauf zurückkommen.) Sollte $q$ sehr groß werden (Hunderte oder Tausende von Bits), wird man, wie oben skizziert, Konvolution und Matrix-Vektor-Multiplikation benutzen.
+
+### AES: Advanced Encryption Standard
+Der ,,Advanced Encryption Standard(AES)'' ist ein symmetrisches Verschlüsselungsverfahren (d.h., beide Kommunikationspartner benutzen denselben Schlüssel). AES wird in vielen Standardverfahren beider Kommunikation im Internet benutzt, zum Beispiel bei Secure Socket Layer (SSL)/Transport Layer Security (TLS) und bei Secure Shell (SSH). 
+
+Die AES-Chiffren gehören in die Klasse der Substitutions-Permutations-Kryptosysteme, auch wenn es in Details Abweichungen von der in Abschnitt 2.1 vorgestellten Struktur gibt. Bei der standardisierten Version AES ist die Klartextlänge und Chiffretextlänge stets $l= 128$, die Schlüssellänge $128,192$ oder $256$ Bits. Wir konzentrieren uns auf die Variante mit Klartextlänge $128$, Schlüssellänge $128$. AES umfasst einige Spezialfälle der Rijndael-Familie von Chiffren, mit der Klartexte der Länge 128, 160,192, 224 oder 256 Bits ver- und entschlüsselt werden können.
+
+In AES wird Arithmetik im Körper $GF(2^8)$ benutzt, dessen Elemente $8$-Bit-Vektoren, also Bytes, entsprechen.
+
+Klartext und alle Zwischenergebnisse beider Ver- und Entschlüsselung sind Strings aus 128 Bits, die als 16 Wörter von 8 Bit Länge aufgefasst werden (1 Wort= 1 Byte= 2 Hexziffern). Die Bytes werden als Elemente von $GF(2^8)$ aufgefasst, konstruiert aus $\mathbb{Z}_2$ mit irreduziblem Polynom $f(X) =X^8 +X^4 +X^3 +X+ 1 (= (1, 0 , 0 , 0 , 1 , 1 , 0 , 1 ,1) )$.
+
+Die 16 Bytes werden als $4\times 4$-Matrix (mit Einträgen aus $GF(2^8)=GF(256)$) aufgefasst. Die Leseanordnung ist dabei spaltenweise von links nach rechts, wobei Spalten von oben nach unten gelesen werden. Ein Bitstring $z\in\{0,1\}^{128}$ wird also in 16 Bytes $z^{(0)},z^{(1)},...,z^{(15)}$ mit $z=z^{(0)}z^{(1)}...z^{(15)}$ aufgeteilt und wie folgt als Matrix $A(z)\in(\{0,1\}^8)^{4\times 4}$ geschrieben: $A(z) =\begin{pmatrix} z^{(0)}& z^{(4)}& z^{(8)}& z^{(12)} \\ z^{(1)}& z^{(5)}& z^{(9)}& z^{(13)} \\ z^{(2)}& z^{(6)}& z^{(10)}& z^{(14)} \\ z^{(3)}& z^{(7)}& z^{(11)}& z^{(15)} \end{pmatrix}$.
+
+Die Einträge einer solchen Matrix sind mit $0\geq i,j\geq 3$ indiziert, wie folgt: $A=\begin{pmatrix} A_{00}& A_{01}& A_{02}& A_{03}\\ A_{10}& A_{11}& A_{12}& A_{13}\\ A_{20}& A_{21}& A_{22}& A_{23}\\ A_{30}& A_{31}& A_{32}& A_{33}\end{pmatrix}$.
+
+Aus jeder solchen Matrix ergibt sich durch spaltenweises Auslesen wieder ein Bitstring $A_{00} A_{10} A_{20} A_{30} A_{01} A_{11} A_{21} A_{31} A_{02} A_{12} A_{22} A_{32} A_{03} A_{13} A_{23} A_{33}$.
+
+Abkürzungen für Zeilen und Spalten einer Matrix A: 
+- Zeile $i: row_i(A)=(A_{i0},A_{i1},A_{i2} ,A_{i3})$, für $i=0,1,2,3$.
+- Spalte $j:col_j(A)=\begin{pmatrix} A_{0j}\\ A_{1j}\\ A_{2j}\\ A_{3j} \end{pmatrix}$, für $j=0,1,2,3$.
+
+Elementare Operationen auf Matrizen:
+- Für Matrizen A und B in $GF(2^8)^{4\times 4}$ bedeutet $A\oplus B$ die komponentenweise Anwendung der Addition im Körper $GF(2^8)$. (Diese ist wiederum $\oplus_8$, die bitweise XOR-Operation auf Bytes.)
+- Zyklischer Linksshift von Zeile i um $h=1,2,3$ Positionen:
+  - $rotLeft_1((A_{i0}, A_{i1}, A_{i2}, A_{i3})) =(A_{i1}, A_{i2}, A_{i3}, A_{i0})$ usw.
+  - Beispiel: $rotLeft_2((A1,06,4B,EF)) = (4B,EF,A1,06)$.
+  - In AES wird Zeile i um i Positionen nach links rotiert. Die Abbildung ist also folgende: $\begin{pmatrix} A_{00}& A_{01}& A_ {02}& A_{03}\\ A_{10}& A_{11}& A_{12}& A_{13}\\ A_{20}& A_{21}& A_{22}& A_{23}\\ A_{30}& A_{31}& A_{32}& A_{33}\end{pmatrix} \rightarrow \begin{pmatrix} A_{00}& A_{01}& A_{02}& A_{03}\\ A_{11}& A_{12}& A_{13}& A_{10}\\ A_{22}& A_{23}& A_{20}& A_{21}\\ A_{33}& A_{30}& A_{31}& A_{32}\end{pmatrix}$
+  - Diese Zeilenrotation ist eine Bitpermutation. Ihre Inverse besteht offenbar darin, Zeile i um i Positionen nach rechts zu rotieren. (Sie ist also nicht selbst invers)
+- Zyklischer Shift von Spalte $j$ um $h=1,2,3$ Positionen nach oben: $rotUp_1((A_{0j},A_{1j},A_{2j},A_{3j})^T) = (A_{1j},A_{2j},A_{3j},A_{0j})^T$ usw. (Benötigt bei der Rundenschlüsselerzeugung.)
+-  ,,Lineare Spaltendurchmischung'' 
+  - $col_j(A) \rightarrow M*col_j(A)$, für $0\geq j\geq 3$, für die feste Matrix $M=\begin{pmatrix} 02& 03& 01& 01\\ 01& 02& 03& 01\\ 01& 01& 02& 03\\ 03& 01& 01& 02\end{pmatrix}\in GF(2^8)^{4\times 4}$.
+
+Achtung: Gerechnet wird in $GF(2^8)$!
+
+Beispiel: $M*\begin{pmatrix} 4F\\ B0\\ 3E\\ A0\end{pmatrix} = \begin{pmatrix} 02*4F\oplus 03*B0\oplus 01*3E\oplus 01*A0\\ ... \end{pmatrix} = \begin{pmatrix} 9E\oplus CB\oplus 3E\oplus A0 \\ ... \end{pmatrix} = \begin{pmatrix} CB\\...\end{pmatrix}$.
+In AES werden einmal alle vier Spalten auf diese Weise transformiert. Dies kann man auch zu einer Matrixmultiplikation zusammenfassen: $A \rightarrow M*A$.
+
+Diese Operation ,,vermischt'' die Einträge, ist aber keine Bitpermutation mehr, da Bits nicht nur vertauscht werden, sondern mit Körperoperationen verrechnet. Allerdings ist M invertierbar, sodass man die Operation auch wieder rückgängig machen kann, indem man mit $M^{-1}=\begin{pmatrix} 0E& 0B& 0D& 09\\ 09& 0E& 0B& 0D\\ 0D& 09& 0E& 0B\\ 0B& 0D& 09& 0E\end{pmatrix}$ multipliziert.
+- Die S-Box von AES ist eine feste bijektive Abbildung $\{0,1\}^8\rightarrow {0,1}^8$. Der mathematische Hintergrund der S-Box wird weiter unten diskutiert.
+- Rundenschlüssel: Aus Schlüssel $k\in\{0,1\}^{128}$ und Rundennummer r wird Rundenschlüssel $\kappa (k,r)\in\{0,1\}^{128}=(\{0,1\}^8)^{4\times 4}$ berechnet. Details hierzu folgen.
+
+##### AES-Chiffrieralgorithmus
+- X:128-Bit-Klartext, 
+- k:128-Bit-Schlüssel)
+- Umarrangiert: $X\in GF(2^8)^{4\times 4}$: Klartextmatrix; $k\in\{0,1\}^{128}$: Schlüssel.
+1. Initialschritt (,,Weißschritt''):
+    - $U\leftarrow X\oplus \kappa (k,0)$ // addiere Rundenschlüssel für Runde $r=0$, als 128-Bit-String.
+2. Für $r=1,...,9$ tue
+    1. Substitution: Anwendung der S-Box auf jedes Byte in U
+        - $V_{ij}\leftarrow S(U_{ij})$, für $0\geq i,j\geq 3$;
+    2. Zeilenrotation: i-te Zeile um i Positionen nach links
+        - $row_i(W)\leftarrow rotLeft_i(row_i(V))$, für $0\geq i\geq 3$;
+    3. Lineare Spalten durchmischung: M wie oben beschrieben
+        - $Z\leftarrow M*W$, für $0\geq i\geq 3$;
+    4. Schlüsseladdition: Rundenschlüssel für Runde r
+        - $U\leftarrow Z\oplus \kappa (k,r)$ // komponentenweise Addition
+3. Verkürzte Schlussrunde, $r=10$, keine Spaltendurchmischung:
+    1. Substitution
+        - $V_{ij}\leftarrow S(U_{ij})$, für $0\geq i,j\geq 3$;
+    2. Zeilenrotation
+        - $row_i(Z)\leftarrow rotLeft_i(row_i(V))$, für $0\geq i\geq 3$;
+    3. Schlüsseladdition
+        - $Y\leftarrow Z\oplus \kappa (k,10)$
+4. Ausgabe: $Y\in GF(2^8)^{4\times 4}$, geschrieben als 128-Bit-Wort.
+
+Abbildung 3: Die S-Box für AES. $S(z_1 z_0)$ für Hexziffern $z_1,z_0$ steht in Zeile $z_1$, Spalte $z_0$. Beispiel: $S(A4)=49$.
+|     | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | A   | B   | C   | D   | E   | F   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0   | 63  | 7C  | 77  | 7B  | F2  | 6B  | 6F  | C5  | 30  | 01  | 67  | 2B  | FE  | D7  | AB  | 76  |
+| 1   | CA  | 82  | C9  | 7D  | FA  | 59  | 47  | F0  | AD  | D4  | A2  | AF  | 9C  | A4  | 72  | C0  |
+| 2   | B7  | FD  | 93  | 26  | 36  | 3F  | F7  | CC  | 34  | A5  | E5  | F1  | 71  | D8  | 31  | 15  |
+| 3   | 04  | C7  | 23  | C3  | 18  | 96  | 05  | 9A  | 07  | 12  | 80  | E2  | EB  | 27  | B2  | 75  |
+| 4   | 09  | 83  | 2C  | 1A  | 1B  | 6E  | 5A  | A0  | 52  | 3B  | D6  | B3  | 29  | E3  | 2F  | 84  |
+| 5   | 53  | D1  | 00  | ED  | 20  | FC  | B1  | 5B  | 6A  | CB  | BE  | 39  | 4A  | 4C  | 58  | CF  |
+| 6   | D0  | EF  | AA  | FB  | 43  | 4D  | 33  | 85  | 45  | F9  | 02  | 7F  | 50  | 3C  | 9F  | A8  |
+| 7   | 51  | A3  | 40  | 8F  | 92  | 9D  | 38  | F5  | BC  | B6  | DA  | 21  | 10  | FF  | F3  | D2  |
+| 8   | CD  | 0C  | 13  | EC  | 5F  | 97  | 44  | 17  | C4  | A7  | 7E  | 3D  | 64  | 5D  | 19  | 73  |
+| 9   | 60  | 81  | 4F  | DC  | 22  | 2A  | 90  | 88  | 46  | EE  | B8  | 14  | DE  | 5E  | 0B  | DB  |
+| A   | E0  | 32  | 3A  | 0A  | 49  | 06  | 24  | 5C  | C2  | D3  | AC  | 62  | 91  | 95  | E4  | 79  |
+| B   | E7  | C8  | 37  | 6D  | 8D  | D5  | 4E  | A9  | 6C  | 56  | F4  | EA  | 65  | 7A  | AE  | 08  |
+| C   | BA  | 78  | 25  | 2E  | 1C  | A6  | B4  | C6  | E8  | DD  | 74  | 1F  | 4B  | BD  | 8B  | 8A  |
+| D   | 70  | 3E  | B5  | 66  | 48  | 03  | F6  | 0E  | 61  | 35  | 57  | B9  | 86  | C1  | 1D  | 9E  |
+| E   | E1  | F8  | 98  | 11  | 69  | D9  | 8E  | 94  | 9B  | 1E  | 87  | E9  | CE  | 55  | 28  | DF  |
+| F   | 8C  | A1  | 89  | 0D  | BF  | E6  | 42  | 68  | 41  | 99  | 2D  | 0F  | B0  | 54  | BB  | 16  |
+
+##### Die S-Box von AES:
+Die S-Box ist als $16\times 16$-Tabelle gegeben, siehe Abb.3. Zur kompakten Darstellung wird ein Element $(a_7,a_6,a_5,a_4,a_3,a_2,a_1,a_0)$ von $GF(2^8)$ in zwei Hexziffern zerlegt: $(a_7,a_6,a_5,a_4)$ ist der Zeilenindex, $(a_3,a_2,a_1,a_0)$ der Spaltenindex der Position von $S((a_7,a_6,a_5,a_4,a_3,a_2,a_1,a_0))$.
+
+Interessanterweise steckt hinter dieser chaotisch aussehenden Tabelle eine einfache Formel, die eine ,,nichtlineare'' Komponente in AES einbringt. Zu $x\in GF(2^8)$ betrachtet man $x^{-1}$, das multiplikative Inverse. Künstlich definiert man $00^{-1}:= 00$ (nur hier und nur für diesen Zweck). Weiter ist h eine invertierbare lineare Funktion auf dem $\mathbb{Z}_2$-Vektorraum $\{0,1\}^8$. Dazu werden die Elemente von $GF(2^8)$ als Spaltenvektoren aufgefasst, die 8 Bits enthalten.
+$h((a_7,...,a_0))^T= $\begin{pmatrix} 1& 1& 1& 1& 1& 0& 0& 0\\ 0& 1& 1& 1& 1& 1& 0& 0\\ 0& 0& 1& 1& 1& 1& 1& 0\\ 0& 0& 0& 1& 1& 1& 1& 1\\ 1& 0& 0& 0& 1& 1& 1& 1\\ 1& 1& 0& 0& 0& 1& 1& 1\\ 1& 1& 1& 0& 0& 0& 1& 1\\ 1& 1& 1& 1& 0& 0& 0& 1\end{pmatrix} * \begin{pmatrix} a_7\\ a_6\\a_5\\a_4\\a_3\\a_2\\a_1\\a_0\end{pmatrix}$
+
+Dann ist die S-Box wie folgt definiert: $S(x)=h(x^{-1})\oplus_8 63$.
+
+Auch hinter der Matrix M, die im Teil ,,Lineare Spaltendurchmischung'' benutzt wird, steckt eine relativ einfache lineare Operation über einer passenden algebraischen Struktur.
+
+Wir nehmen den endlichen Körper $\mathbb{F}_{2^8}=GF(2^8)$ als Ausgangssituation und betrachten Polynome $b_0+b_1X+b_2X^2+b_3X^3$ vom Grad maximal 3 über diesem Körper. Diese bilden die Grundmenge des Rings $\mathbb{F}_{2^8} [X]/(X^4+1)$: Addition wie gewöhnlich, Multiplikation modulo $X^4+1$. Ein solches Polynom wird durch den Spaltenvektor $(b_0,b_1,b_2,b_3)^T\in (F_{2^8})^4$ beschrieben. Wir multiplizieren dieses Polynom über $F_{2^8} [X]/(X^4+1)$ mit dem festen Polynom $c(X)=02+01*X+01*X^2+03*X^3$. (Da die Koeffizienten Elemente von $F_{2^8}$ sind, werden sie durch zwei Hexziffern dargestellt.) Der Koeffizientenvektor $(c_0,c_1,c_2,c_3)^T$ des Produktpolynoms bildet die transformierte Spalte. Man kann nachrechnen, dass sie sich als $M*(b_0,b_1,b_2,b_3)^T$ ergibt.
+
+Die Rundenschlüssel werden mit einem iterativen Verfahren berechnet. Dabei wird zunächst Spalte 3 intensiv manipuliert und auf Spalte 0 addiert.
+
+##### AES-Rundenschlüsselberechnung
+$K_0 =\kappa (k,0)\leftarrow k$ //128-Bit-Schlüssel als $4\times 4$-Matrix
+
+Für $r= 1,..., 10$ führe Runde r aus.
+- Input: Rundenschlüssel $K_{r-1}$ als $4\times 4$-Matrix
+- Output: Rundenschlüssel $K_r$ als $4\times 4$-Matrix
+- Berechnung von Spalte 0:
+    1. Rotation (analog zur Zeilenrotation): $U\leftarrow rotUp_1(col_3(K_{r-1}))$ //Spalte 3 zyklisch eine Position nach oben
+    2. Substitution: $V_i\leftarrow S(U_i)$, für $0\geq i\geq 3$;
+    3. Konstantenaddition: $V_0\leftarrow V_0+02^{r-1}$; //Potenz in $GF(2^8)$;
+    4. Addition auf Spalte 0: $col_0(K_r)\leftarrow col_0(K_{r-1})+V$; //Vektoraddition;
+- Berechnung von Spalten 1 bis 3:
+  - Iterative Addition: für $i=1,2,3: col_i(K_r)\leftarrow col_i(K_{r-1})+col_{i-1}(K_r)$; //Vektoraddition;
+- Ergebnis: $K_r=\kappa (k,r)$ für $r=0,1,...10$.
+
+Entschlüsselung: 
+Man geht nach dem schon diskutierten grundsätzlichen Ansatz bei Substitutions-Permutations-Kryptosystemen vor. Erst werden alle Rundenschlüssel berechnet. Diese werden in umgekehrter Reihenfolge benutzt. Für die Substitution wird stets die inverse S-Box $S^{-1}$ benutzt. Rotationen werden in umgekehrter Richtung ausgeführt. Die ,,lineare Spaltendurchmischung'' wird mit der zu $M$ inversen Matrix $M^{-1}$ ausgeführt. Ansonsten ist der Ablauf völlig analog der Verschlüsselung.
+
+Aktuelle Lage: 
+Bisher gilt AES als praktisch sicher (insbesondere die 192-Bit- und die 256-Bit-Variante), wenn auch nicht in dem im Folgenden zu besprechenden technischen Sinn. Es wurden einige Angriffe vorgeschlagen, die zu schnellerem ,,Brechen'' führen als dem vollständigen Durchsuchen des Schlüsselraums (nur noch 299 Schlüssel müssen getestet werden... ), aber dies führt nicht zu praktisch durchführbaren Verfahren.

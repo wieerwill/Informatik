@@ -35,6 +35,8 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
 - [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
 - Praktika
   - [Neuroinformatik](Praktikum%20Neuroinformatik.pdf)
+  - [Labor BMT - Deep Learning](Praktikum%20BMT%20-%20Deep%20Learning%20in%20der%20Biomedizintechnik.pdf)
+  - [Labot BMT - EKG-Signalanalyse](Praktikum%20BMT%20-%20EKG%20Signalanalyse.pdf)
   - [Rechnerarchitekturen 1](Praktikum%20Rechnerarchitekturen%201.pdf)
   - [Rechnerarchitekturen 2](Praktikum%20Rechnerarchitekturen%202.pdf)
   - [Schaltsysteme](Praktikum%20Schaltsysteme.pdf)

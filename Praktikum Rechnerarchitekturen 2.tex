@@ -11,6 +11,11 @@
 \usepackage[iso,german]{isodate} %his package provides commands to switch between different date formats
 \usepackage{hyperref}
 \usepackage{listings}
+\lstset{
+  literate={ö}{{\"o}}1
+           {ä}{{\"a}}1
+           {ü}{{\"u}}1
+}
 
 \usepackage{fancyhdr}
 \renewcommand{\headrulewidth}{0.5pt}
@@ -48,11 +53,135 @@
 \pagenumbering{arabic}
 \newpage
 
-\section{Versuch B: Befehlsausführung}
-Simulative Untersuchung der Ausführung von Maschinenbefehlen in unterschiedlichen Pipeline-Architekturen  
+\section*{Versuch B: Befehlsausführung}
+Simulative Untersuchung der Ausführung von Maschinenbefehlen in unterschiedlichen Pipeline-Architekturen
 
-\section{Versuch M: Mikrocontroller}
-Assemblerprogrammierung mit dem 8-Bit-Mikrocontroller ATtiny25  
+\subsection*{Aufgabe 1}
+Untersuchen Sie die in der Praktikumsumgebung bereits vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen! Beobachten Sie den Programmablauf und machen Sie sich mit der Bedienung vertraut! Schauen Sie sich vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an (hier können Sie auch Änderungen vornehmen) und interpretieren Sie das Verhalten während der Simulation dementsprechend!
+
+\subsection*{Aufgabe 2}
+Untersuchen Sie die Befehlsfolgen der Übungsaufgaben A4 und B2 mit mindestens je drei unterschiedlichen Simulationsläufen! Die benutzten Pipelinestrukturen und Parametereinstellungen wählen Sie selbst aus. Vergleichen Sie die Ergebnisse mit den Lösungen aus der Übung und suchen Sie Erklärungen für eventuelle Unterschiede!
+
+\subsection*{Aufgabe 3}
+Ändern Sie nun eine der vorgegebenen Pipelinestrukturen ab, indem Sie z.B. die Anzahl der parallelen Pipelines verändern. Orientieren Sie sich zuvor über den Inhalt des „Baukastens“. Untersuchen Sie mit den oben verwendeten Befehlsfolgen die Auswirkungen auf die Simulationsergebnisse! Variieren Sie dabei die Parameter und interpretieren Sie die Ergebnisse!
+
+\subsection*{Zusatzaufgaben}
+\subsubsection*{Z1}
+Untersuchen Sie weitere Befehlsfolgen, z.B. aus den Aufgaben A5, A6, A7, B1 oder nach eigenen Entwürfen!
+
+\subsubsection*{Z2}
+Nehmen Sie weitere Änderungen an Parametern und Pipelinestrukturen vor!
+
+\subsubsection*{Z3}
+Versuchen Sie Befehlsfolgen zu finden, die die strukturellen Ressourcen besonders gut ausnutzen oder die Wirksamkeit bestimmter Methoden (wie z.B. Sprungvorhersagen) besonders gut sichtbar werden lassen!
+
+
+\section*{Versuch M: Mikrocontroller}
+Assemblerprogrammierung mit dem 8-Bit-Mikrocontroller ATtiny25
+
+\subsection*{Aufgabe 1: Ein- und Ausschalten der LED}
+In dieser Teilaufgabe soll die LED über die beiden Taster ein-, aus- und umgeschaltet werden. Dazu
+ist eine funktionierende Teillösung vorgegeben, welche Sie anschließend erweitern sollen.
+
+\subsubsection*{Schritt a: Start der Entwicklungsumgebung}
+Geben Sie das folgende Programm ein. Es soll die vorhandenen Befehle ersetzen.
+\begin{lstlisting}[basicstyle=\tiny]
+.INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
+.DEVICE ATtiny25            // Festlegen des Controllertyps
+anf:
+    ldir    16,0x07
+    out     DDRB,r16        // Port B: Richtungseinstellung
+    ldi     r16,0x18
+    out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
+lo1:
+    sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    rjmp    lo1             // Sprung zum Schleifenbeginn
+\end{lstlisting}
+
+\subsubsection*{Schritt b: Manuelle Farbwechsel der LED}
+Das Programm soll jetzt so erweitert werden, dass die LED mit den beiden Tastern zwischen zwei Leuchtfarben umgeschaltet werden kann.
+\begin{lstlisting}[basicstyle=\tiny]
+\end{lstlisting}
+
+Verändern Sie das Programm nun so, dass durch abwechselndes Drücken der beiden Taster eine Sequenz von mindestens sechs unterschiedlichen Leuchtvarianten der LED durchgeschaltet werden kann.
+\begin{lstlisting}[basicstyle=\tiny]
+\end{lstlisting}
+
+\subsection*{Aufgabe 2: Blinken der LED}
+In dieser Teilaufgabe soll das Programm die LED fortlaufend blinken lassen. Diese Funktion wird mit einem Zähler/Zeitgeber-Interrupt realisiert.
+
+\subsubsection*{Schritt a: Einfaches Blinken}
+Die Aufgabe besteht nun darin, die LED periodisch ein- und auszuschalten, so dass sich eine Frequenz von etwa 2 Hz ergibt. Das Umschalten der LED soll in der Interruptserviceroutine eines Zähler/Zeitgeber-Interrupts erfolgen. Dafür soll Timer/Counter 0 so initialisiert werden, dass er Interrupts mit einer Folgefrequenz von etwa 4 Hz auslöst.
+
+Stützen Sie sich dazu auf das folgende Programmfragment:
+\begin{lstlisting}[basicstyle=\tiny]
+// Interrupttabelle (muss vor dem ersten ausführbaren Befehl stehen):
+tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    rjmp    i_11 // Timer 0 Compare A Interrupt (Interrupt 11)
+    reti
+    reti
+    reti
+    reti    // Tabellenende (Interrupt 15)
+
+// Initialisierungsteil und Hintergrundprogramm:
+anf: [...]  // Weitere Initialisierungen
+     [...]  // Initialisierung von Timer/Counter 0 (Empfehlung:
+            // Betriebsart CTC, Vergleichsregister A nutzen)
+    sei     // Globale Interruptfreigabe
+    ldi r16,0x10
+    out TIMSK,r16   // Freigabe von Interrupt 11 (Timer 0 Compare A)
+lo2: rjmp   lo2     // Leere Hintergrundschleife
+
+// Interruptserviceroutine:
+i_11: in    r25,SREG    // Flags retten (weitere Rettungen nach Bedarf)
+    [...]               // Inhalt der Routine
+    out     SREG,r25    // Flags restaurieren
+    reti                // Routine beenden
+\end{lstlisting}
+
+Die Hintergrundschleife bleibt zunächst leer. Entwickeln und testen Sie das Programm für diese Aufgabe.
+
+\subsubsection*{Schritt b: Erweitertes Blinken}
+Bauen Sie in die Hintergrundschleife eine Abfrage von TASTER1 und TASTER2 ein. Durch Drücken von TASTER1 soll die Blinkfrequenz verdreifacht werden, durch TASTER2 wird sie auf den ursprünglichen Wert zurückgestellt.
+Testen Sie diese Funktion. Der Vorgang soll sich beliebig wiederholen lassen.
+Stellen Sie das Programm nun so um, dass die beiden Blinkfrequenzen deutlich langsamer sind: Etwa 1,0 Hz und etwa 0,5 Hz. Beachten Sie, dass der Zählumfang des Timer/Counter dafür nicht ausreicht, auch nicht mit dem größten Vorteiler. Sie müssen das Programm also in der Struktur verändern.
+Erweitern Sie das Programm so, dass eine Sequenz aus mindestens vier unterschiedlichen Leuchtzuständen durchlaufen wird. Sie können dabei nach Belieben auch komplexere Abläufe realisieren.
+
+Optional: Stellen Sie die Tasterabfrage auf Interruptbetrieb um. Hierfür bietet sich der ,,Pin Change Interrupt'' an. Beachten Sie, dass wegen des Prellens der Taster ein einzelner Tastendruck eine ganze Serie von Interrupts auslösen kann.
+
+Optional: Realisieren Sie eine Entprellung der Taster. Dazu ist nach jeder erkannten Änderung des Zustands eines Tasters eine Wartezeit von z.B. 0,2 s nötig, während derer weitere Zustandswechsel dieses Tasters ignoriert werden. Auf der Grundlage entprellter Taster können Sie erweiterte Umschaltfunktionen implementieren, bei denen auch das mehrmalige Drücken desselben Tasters eine Rolle spielt.
+
+\subsection*{Aufgabe 3: Einfaches Dimmen der LED mittels PWM}
+In dieser Aufgabe soll die Helligkeit der LED mittels PWM (pulse width modulation, Pulsbreitenmodulation) auf wählbare Zwischenwerte eingestellt werden.
+
+\subsubsection*{Schritt a: Einfache Helligkeitseinstellung}
+Zunächst soll die LED (nur eine Farbe) auf eine beliebige, aber konstante Helligkeit eingestellt werden können. Realisieren Sie dazu eine PWM-Ausgabe mit 256 Helligkeitsstufen, wobei Sie die Zeitintervalle wahlweise mittels Zählschleifen oder mittels Timer/Counter-Interrupt generieren. Den Helligkeitswert können Sie über ein Universalregister vorgeben, in welches Sie im Debugger bei gestopptem Programm jeweils unterschiedliche Werte eintragen.
+Alternativ können Sie auch die PWM-Betriebsarten der Timer/Counter-Baugruppen ausprobieren, soweit es die Hardwarekonfiguration zulässt. Empfohlen wird die Betriebsart ,,Fast PWM'' mit normaler Zählung.
+
+\subsubsection*{Schritt b: Helligkeitseinstellung mit Tastern}
+Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werten Sie dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
+
+\subsubsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
+Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. In Absprache mit dem Betreuer können Sie andere Aufgabenteile weglassen, falls Sie die Zusatzaufgabe unter Einbeziehung umfangreicher eigener Ideen in Angriff nehmen wollen.
+
+\subsubsection*{Schritt c}
+Fortlaufendes Auf- und Abdimmen
+Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu müssen Sie einen Mechanismus implementieren, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
+Realisieren Sie weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind.
+Realisieren Sie eine Umschaltung zwischen unterschiedlichen Lichteffekten.
+Realisieren Sie weitergehende Funktionen nach eigenen Ideen.
 
 \end{document}
 

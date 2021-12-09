@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt,titlepage]{scrartcl}
+\usepackage[sc]{mathpazo} % Schrift - wie Funcky und in PDF zu Fonts beschrieben
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a-1b]{pdfx}
+\usepackage[ngerman]{babel}
+\usepackage[amssymb]{SIunits} 
+\usepackage{graphicx} 
+\usepackage{subfigure}                         
+\usepackage{float}
+\usepackage[iso,german]{isodate} %his package provides commands to switch between different date formats
+\usepackage{hyperref}
+\usepackage{listings}
+
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+%Abstand zwischen Absätzen, Zeilenabstände
+\voffset26pt 
+\parskip6pt
+%\parindent1cm  %Rückt erste Zeile eines neuen Absatzes ein
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+\pagenumbering{roman}
+\titlehead
+{
+    \small
+    {
+        Technische Universität Ilmenau\\
+        Fakulät IA\\
+        Fachgebiet Biosignalverarbeitung\\
+
+        Praktikum EKG-Signalanalyse\\
+        WS 2021/22}
+}
+
+\title {Versuchsprotokoll}
+\subtitle{EKG-Signalanalyse}
+\author{}
+\date{\today\\*[60pt]}
+\maketitle  %Erstellt das Titelblatt wie oben definiert
+
+%Einstellungen zur Kopf- und Fußzeile
+\pagestyle{fancy}
+\fancyhead[R]{Praktikumsbericht: EKG-Signalanalyse}
+\pagenumbering{arabic}
+\newpage
+
+\section{Vorbereitungsaufgaben}
+\subsection{EKG-Vorverarbeitung}
+Entwickeln Sie eine Strategie zur EKG-Vorverarbeitung (Filterung)! Bedenken Sie dabei, dass die EKG-Vorverarbeitung maßgeblichen Einfluss auf die Qualität der QRS-Detektion hat.
+
+\subsection{QRS-Detektion}
+\subsubsection{}
+Entwickeln Sie einen Algorithmus zur adaptiven QRS-Detektion, von dem Sie ein möglichst gutes Detektionsergebnis erwarten! Achten Sie dabei besonders auf dessen prinzipielle Online-Fähigkeit. 250 ms Zeitvorlauf sollen dabei nicht überschritten werden, d.h. zur Entscheidungsfindung, ob ein Abtastwert zum Zeitpunkt t eine R-Zacke darstellt oder nicht, können maximal die Abtastwerte der nächsten 250 ms einbezogen werden. Notieren und erklären Sie die verwendeten Operatoren/Formeln und beschreiben Sie den Block der Entscheidungsfindung in einem Programmablaufplan bzw. Entscheidungsbaum!
+
+\subsubsection{}
+Entwickeln Sie zu diesem Algorithmus die zugehörige(n) MATLAB-Funktion(en) und bringen Sie den Quelltext schriftlich zum Praktikum mit! Benutzen Sie folgende Funktionsschnittstelle:
+\begin{lstlisting}[basicstyle=\tiny]
+function [R_Positionen, Entscheidungssignal, Schwellwertverlauf, Lernphase] = QRS_Detektion (EKG_Signal, fa);
+\end{lstlisting}
+
+\section{Praktikumsaufgaben}
+\subsection{EKG-Ableitung mit Hilfe des Biosignalverstärkers ,,g.BSamp'' und ,,g.ECGbox''}
+Leiten Sie jeweils ein 5 minütiges EKG eines Studenten innerhalb der folgenden vier Phasen ab. Achten Sie dabei auf die Auswahl der Kanäle!
+\begin{itemize}
+    \item Lagetyp-Phase: Proband liegt und atmet normal (alle Kanäle)
+    \item Ruhe-Phase: Proband liegt und atmet normal (Kanal mit größter R-Zacke)
+    \item RESP-Phase: Proband liegt und atmet langsam tief ein und tief aus (Kanal mit größter R- Zacke)
+    \item STEH-Phase: Proband steht und atmet normal (Kanal mit größter R-Zacke)
+\end{itemize}
+
+\subsection{Bestimmung der elektrischen Herzachse}
+Mit Hilfe des Matlab-GUI „Datenanzeigen“ können die abgeleiteten Signale dargestellt und ausgewertet werden. Für die Bestimmung des Lagetyps gehen Sie wie folgt vor:
+\begin{itemize}
+    \item Laden Sie die abgeleiteten Daten und filtern Sie diese, falls nötig
+    \item Wählen Sie einen Artefakt-freien Signalabschnitt
+    \item Suchen Sie die höchste der R-Zacke
+    \item Bestimmen Sie die Amplitude der Zacken zu einem Zeitpunkt in den Ableitungen I, II und III,benutzen Sie dazu den „Data-Cursor“ von Matlab.
+    \item Tragen Sie die Funktionswerte in das vorgefertigte Protokoll ein und bilden Sie von mindestens zwei Vektoren graphisch den Summenvektor
+    \item Mit Hilfe des Cabrera-Kreises können Sie nun den Lagetyp bestimmen.
+\end{itemize}
+
+\subsection{EKG-Vorverarbeitung}
+Unter dem Menü-Punkt EKG-Vorverarbeitung stehen Ihnen Methoden zur Signal-Vorverarbeitung (Filterung) bereits fertig zur Verfügung.
+Überprüfen Sie die Wirksamkeit der von Ihnen vorgeschlagenen Vorverarbeitungsmethoden und deren Parametereinstellungen anhand der EKG-Signale der MIT-Datenbank: 100, 106, 107, 208 und 222 visuell! Überlagern Sie die Signale mit einem Drift und einer 50 Hz-Sinusschwingung!
+
+\subsection{QRS-Detektion mit Hilfe von MATLAB}
+\subsubsection{}
+Implementieren Sie Ihren entwickelten Algorithmus zur QRS-Detektion in die Funktion QRS\_Detektion.m
+
+\subsubsection{}
+Evaluieren Sie Ihren QRS-Detektor anhand der folgenden EKG-Signale der MIT-Datenbank: 100, 106, 107, 208 und 222! Notieren Sie die Detektionsquote! Wo liegen die Stärken bzw. die Schwächen Ihres Detektors?
+
+\subsubsection{}
+Versuchen Sie anhand der Ergebnisse dieses ersten Detektionstests den Detektionsalgorithmus bzw. (falls angebracht) auch Ihre EKG-Vorverarbeitung zu optimieren! Wiederholen Sie den Detektionstest! Inwieweit konnten die Detektionseigenschaften verbessert werden?
+
+\subsection{Analyse der Herzfrequenzvariabilität}
+\subsubsection{}
+Analysieren Sie die aufgezeichneten EKG-Signale während der drei Phasen (RUHE, RESP und STEH)!
+
+Interpretieren Sie die Unterschiede in den Ergebnissen der einzelnen Phasen der HRV-Analyse!
+
+\subsubsection{}
+Vergleichen Sie die HRV-Ergebnisse des Praktikumsprobanden mit den Ergebnissen eines Polyneuropathie-Patienten (Datei: zwickau.dat).
+
+\end{document}
+

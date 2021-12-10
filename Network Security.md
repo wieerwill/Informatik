@@ -115,6 +115,16 @@
   - [Zugriffsmatrizen](#zugriffsmatrizen)
   - [Gemeinsame Zugriffskontrollschemata](#gemeinsame-zugriffskontrollschemata)
 - [Integration von Sicherheitsdiensten in Kommunikationsarchitekturen](#integration-von-sicherheitsdiensten-in-kommunikationsarchitekturen)
+  - [Motivation: Was ist wo zu tun?](#motivation-was-ist-wo-zu-tun)
+  - [Ein pragmatisches Modell für sicheres und vernetztes Rechnen](#ein-pragmatisches-modell-für-sicheres-und-vernetztes-rechnen)
+  - [Beziehungen zwischen Schichten und Anforderungsniveaus](#beziehungen-zwischen-schichten-und-anforderungsniveaus)
+  - [Allgemeine Überlegungen zur architektonischen Platzierung](#allgemeine-überlegungen-zur-architektonischen-platzierung)
+  - [Überlegungen zu bestimmten Ebenen](#überlegungen-zu-bestimmten-ebenen)
+  - [Interaktionen zwischen menschlichen Nutzern](#interaktionen-zwischen-menschlichen-nutzern)
+  - [Integration in untere Protokollschichten vs. Anwendungen](#integration-in-untere-protokollschichten-vs-anwendungen)
+  - [Integration in Endsysteme vs. Zwischensysteme](#integration-in-endsysteme-vs-zwischensysteme)
+  - [Beispiel: Authentifizierungsbeziehungen in Inter-Netzwerken](#beispiel-authentifizierungsbeziehungen-in-inter-netzwerken)
+  - [Schlussfolgerung](#schlussfolgerung-1)
 - [Sicherheitsprotokolle der Datenübertragungsschicht](#sicherheitsprotokolle-der-datenübertragungsschicht)
 - [Die IPsec-Architektur für das Internet-Protokoll](#die-ipsec-architektur-für-das-internet-protokoll)
 - [Security protocols of the transport layer](#security-protocols-of-the-transport-layer)
@@ -2287,6 +2297,138 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
 - $\rightarrow$ Die Datenintegrität von Zugriffskontrolldatenstrukturen ist entscheidend!
 
 # Integration von Sicherheitsdiensten in Kommunikationsarchitekturen
+## Motivation: Was ist wo zu tun?
+- Analog zur Methodik der Sicherheitsanalyse gibt es zwei Dimensionen, die bei der Integration von Sicherheitsdiensten in Kommunikationsarchitekturen zu beachten sind:
+- Dimension 1: Welcher Sicherheitsdienst soll in welchem Knoten realisiert werden?
+  - ![](Assets/NetworkSecurity-Security-service-dim-1.png)
+- Dimension 2: Welcher Sicherheitsdienst sollte in welcher Schicht realisiert werden?
+  - ![](Assets/NetworkSecurity-Security-service-dim-2.png)
+
+## Ein pragmatisches Modell für sicheres und vernetztes Rechnen
+- ![](Assets/NetzwerkSicherheit-Sicheres-Netz-Modell.png)
+- Anwendung:
+  - Ein Stück Software, das eine bestimmte Aufgabe erfüllt, z. B. elektronische E-Mail, Webdienst, Textverarbeitung, Datenspeicherung usw.
+- Endsystem:
+  - Ein Gerät, das vom Personal Computer über den Server bis zum Großrechner reicht.
+  - Für Sicherheitszwecke hat ein Endsystem in der Regel eine einzige Richtlinienautorität.
+- Teilnetz:
+  - Eine Sammlung von Kommunikationseinrichtungen, die unter der Kontrolle einer Verwaltungsorganisation stehen, z. B. ein LAN, ein Campusnetz, ein WAN usw.
+  - Für Sicherheitszwecke hat ein Teilnetz in der Regel eine Richtlinienkompetenz.
+- Internet:
+  - Eine Sammlung von miteinander verbundenen Teilnetzen
+  - Im Allgemeinen haben die Teilnetze, die in einem Inter-Netzwerk verbunden sind, unterschiedliche Richtlinienautoritäten
+
+- Es gibt vier Ebenen, auf denen unterschiedliche Anforderungen an Sicherheitsprotokollelemente gestellt werden:
+  - Anwendungsebene:
+    - Sicherheitsprotokollelemente, die anwendungsabhängig sind
+  - Endsystem-Ebene:
+    - Bereitstellung von Schutz auf einer Endsystem-zu-Endsystem-Basis
+  - Teilnetzebene:
+    - Bereitstellung von Schutz über ein Teilnetz oder ein Zwischennetz, das als weniger sicher gilt als andere Teile der Netzumgebung
+  - Verbindungsebene:
+    - Bereitstellung von Schutz innerhalb eines Teilnetzes, z. B. über eine Verbindung, die als weniger vertrauenswürdig gilt als andere Teile der Teilnetzumgebung
+
+## Beziehungen zwischen Schichten und Anforderungsniveaus
+- Die Beziehungen zwischen den Protokollschichten und den Stufen der Sicherheitsanforderungen für die Protokollelemente sind nicht eins-zu-eins:
+  - Sicherheitsmechanismen, die sowohl die Anforderungen der Endsystem- als auch der Teilnetzebene erfüllen, können entweder in der Transport- und/oder in der Netzwerkschicht realisiert werden.
+  - Die Anforderungen der Verbindungsebene können durch die Integration von Sicherheitsmechanismen oder durch die Verwendung von ,,speziellen Funktionen'' der Verbindungsschicht und/oder der physikalischen Schicht erfüllt werden.
+  - ![](Assets/NetworkSecurity-Layer-relationship.png)
+
+## Allgemeine Überlegungen zur architektonischen Platzierung
+- Verkehrsvermischung:
+  - Infolge des Multiplexing besteht auf niedrigeren Ebenen eine größere Tendenz, Datenelemente von verschiedenen Quell-/Ziel-Benutzern und/oder Anwendungen in einem Datenstrom zu vermischen
+  - Ein Sicherheitsdienst, der auf einer Schicht/Ebene realisiert wird, behandelt den Verkehr dieser Schicht/Ebene gleich, was zu einer unzureichenden Kontrolle der Sicherheitsmechanismen für Benutzer und Anwendungen führt.
+  - Wenn eine Sicherheitspolitik eine differenziertere Behandlung erfordert, sollte sie besser auf einer höheren Ebene realisiert werden
+- Wissen über die Route:
+  - Auf niedrigeren Ebenen ist in der Regel mehr Wissen über die Sicherheitseigenschaften der verschiedenen Routen und Verbindungen vorhanden.
+  - In Umgebungen, in denen diese Merkmale stark variieren, kann die Platzierung von Sicherheit auf niedrigeren Ebenen Vorteile in Bezug auf Effektivität und Effizienz haben
+  - Geeignete Sicherheitsdienste können auf der Basis von Teilnetzen oder Verbindungen ausgewählt werden, so dass keine Kosten für Sicherheit anfallen, wenn der Schutz unnötig ist.
+- Anzahl der Schutzpunkte:
+  - Wenn die Sicherheit auf der Anwendungsebene angesiedelt wird, muss die Sicherheit in jeder sensiblen Anwendung und jedem Endsystem implementiert werden.
+  - Sicherheit auf der Verbindungsebene bedeutet, dass am Ende jeder Netzverbindung, die als weniger vertrauenswürdig gilt, Sicherheit implementiert werden muss.
+  - Wenn die Sicherheit in der Mitte der Architektur angesiedelt wird, müssen die Sicherheitsmerkmale an weniger Stellen installiert werden.
+- Schutz der Protokoll-Header:
+  - Der Sicherheitsschutz auf höheren Ebenen kann die Protokollköpfe der unteren Protokollschichten nicht schützen.
+  - Die Netzwerkinfrastruktur muss möglicherweise ebenfalls geschützt werden.
+- Quelle/Senke-Bindung:
+  - Sicherheitsdienste wie die Authentifizierung der Datenherkunft und die Unleugbarkeit hängen von der Zuordnung der Daten zu ihrer Quelle oder Senke ab.
+  - Dies wird am effizientesten auf höheren Ebenen erreicht, insbesondere auf der Anwendungsebene.
+
+## Überlegungen zu bestimmten Ebenen
+- Anwendungsebene:
+  - Diese Stufe kann die einzige geeignete Stufe sein, zum Beispiel weil:
+    - Ein Sicherheitsdienst ist anwendungsspezifisch, z.B. die Zugriffskontrolle für einen vernetzten Dateispeicher
+    - Ein Sicherheitsdienst muss Anwendungs-Gateways durchqueren, z.B. Integrität und/oder Vertraulichkeit von elektronischer Post
+    - Die Semantik der Daten ist wichtig, z.B. für Nichtabstreitbarkeitsdienste - Es liegt außerhalb der Reichweite eines Benutzers/Anwendungsprogrammierers, Sicherheit auf einer niedrigeren Ebene zu integrieren
+- Endsystem-Ebene:
+  - Diese Ebene ist geeignet, wenn davon ausgegangen wird, dass die Endsysteme vertrauenswürdig sind und das Kommunikationsnetz als nicht vertrauenswürdig angesehen wird.
+  - Weitere Vorteile der Sicherheit auf Endsystemebene:
+    - Die Sicherheitsdienste sind für die Anwendungen transparent.
+    - Die Verwaltung von Sicherheitsdiensten kann leichter in die Hände eines Systemadministrators gelegt werden.
+- Teilnetzebene:
+  - Auch wenn die auf dieser Ebene implementierte Sicherheit in der gleichen Protokollschicht wie auf der Endsystemebene implementiert werden kann, sollten diese nicht verwechselt werden:
+    - Mit der auf der Subnetzebene implementierten Sicherheit wird in der Regel der gleiche Schutz für alle Endsysteme dieses Subnetzes realisiert
+  - Es ist sehr üblich, dass ein Teilnetz in der Nähe eines Endsystems als ebenso vertrauenswürdig angesehen wird, da es sich in denselben Räumlichkeiten befindet und von denselben Behörden verwaltet wird.
+  - In den meisten Fällen gibt es weit weniger zu sichernde Teilnetz-Gateways als Endsysteme.
+- Verbindungsebene:
+  - Wenn es relativ wenige nicht vertrauenswürdige Verbindungen gibt, kann es ausreichend und zudem einfacher und kostengünstiger sein, das Netz auf der Verbindungsebene zu schützen.
+  - Darüber hinaus können auf der Verbindungsebene spezielle Schutztechniken eingesetzt werden, z. B. Spreizspektrum oder Frequenzsprungverfahren.
+  - Die Vertraulichkeit des Verkehrsflusses erfordert in der Regel einen Schutz auf Verbindungsebene.
+
+## Interaktionen zwischen menschlichen Nutzern
+- Einige Netzsicherheitsdienste beinhalten eine direkte Interaktion mit einem menschlichen Benutzer, der wichtigste davon ist die Authentifizierung.
+- Solche Interaktionen passen in keine der bisher vorgestellten Architekturoptionen, da der Benutzer außerhalb der Kommunikationseinrichtungen steht.
+- Die Kommunikation zur Unterstützung der Authentifizierung kann auf eine der folgenden Weisen erfolgen:
+  - Örtlich:
+    - Der menschliche Benutzer authentifiziert sich gegenüber dem lokalen Endsystem
+    - Das Endsystem authentifiziert sich gegenüber dem entfernten Endsystem und teilt die Identität des Benutzers mit
+    - Das entfernte System muss dem lokalen Endsystem vertrauen
+  - Unter Einbeziehung von Protokollelementen auf der Anwendungsschicht:
+    - Der Benutzer gibt einige Authentifizierungsinformationen an das lokale System weiter, die sicher an das entfernte System weitergeleitet werden
+  - Kombination der oben genannten Mittel:
+    - Beispiel: Kerberos
+
+## Integration in untere Protokollschichten vs. Anwendungen
+- Vorteile der Integration von Sicherheitsdiensten in niedrigere Netzwerkschichten:
+  - Sicherheit:
+    - Auch das Netz selbst muss geschützt werden
+    - Sicherheitsmechanismen, die in den Netzelementen (insbesondere in der Hardware) realisiert sind, sind für die Netznutzer oft schwerer angreifbar
+  - Anwendungsunabhängigkeit:
+    - Grundlegende Netzsicherheitsdienste müssen nicht in jede einzelne Anwendung integriert werden
+  - Dienstgüte (QoS):
+    - Die QoS-erhaltende Planung des Kommunikationssubsystems kann auch die Verschlüsselung nebeneinander bestehender Datenströme planen.
+    - Beispiel: gleichzeitiger Sprachanruf und FTP-Übertragung
+  - Effizienz:
+    - Hardware-Unterstützung für rechenintensive Ver-/Entschlüsselung kann leichter in die Protokollverarbeitung integriert werden
+
+## Integration in Endsysteme vs. Zwischensysteme
+- Integration in Endsysteme:
+  - Kann im Allgemeinen entweder auf der Anwendungs- oder der Endsystemebene erfolgen
+  - In einigen speziellen Fällen kann auch ein Schutz auf Verbindungsebene angebracht sein, z. B. bei der Verwendung eines Modems zur Verbindung mit einem bestimmten Gerät
+- Integration in Zwischensysteme
+  - Kann auf allen vier Ebenen erfolgen:
+    - Anwendungs-/,,Endsystem"-Ebene: zur Sicherung der Verwaltungsschnittstellen von Zwischenknoten, nicht zur Sicherung des Nutzdatenverkehrs
+    - Teilnetz-/Link-Ebene: zur Sicherung des Nutzdatenverkehrs
+- Je nach den Sicherheitszielen kann eine Integration sowohl in Endsystemen als auch in Zwischensystemen sinnvoll sein
+
+## Beispiel: Authentifizierungsbeziehungen in Inter-Netzwerken
+![](Assets/NetworkSecurity-Authentication-relation-in-inter-networks.png)
+
+| Authentication Relation                            | Application for securing                               |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| Endsystem $\leftrightarrow$ Endsystem              | User Channels                                          |
+| Endsystem $\leftrightarrow$ Intermediate System    | Management Interfaces, Accounting                      |
+| Intermediate $\leftrightarrow$ Intermediate System | Network Operation: Signaling, Routing, Accounting, ... |
+
+## Schlussfolgerung
+- Die Integration von Sicherheitsdiensten in Kommunikationsarchitekturen wird von zwei Hauptfragen geleitet:
+  - Welcher Sicherheitsdienst in welchem Knoten?
+  - Welcher Sicherheitsdienst in welcher Schicht?
+- Diese Design-Entscheidungen können auch durch einen Blick auf ein pragmatisches Modell der vernetzten Datenverarbeitung geleitet werden, das vier verschiedene Ebenen unterscheidet, auf denen Sicherheitsdienste realisiert werden können:
+  - Anwendungs-/Endsystem-/Subnetz-/Link-Ebene
+- Da es verschiedene Gründe für und gegen jede Option gibt, gibt es keine einheitliche Lösung für dieses Designproblem.
+- In diesem Kurs werden wir daher einige Beispiele für die Integration von Sicherheitsdiensten in Netzarchitekturen untersuchen, um die Auswirkungen der getroffenen Designentscheidungen besser zu verstehen
+
 # Sicherheitsprotokolle der Datenübertragungsschicht
 # Die IPsec-Architektur für das Internet-Protokoll
 # Security protocols of the transport layer

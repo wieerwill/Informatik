@@ -106,6 +106,14 @@
   - [Formale Validierung von kryptographischen Protokollen](#formale-validierung-von-kryptographischen-protokollen)
 - [Sichere Gruppenkommunikation](#sichere-gruppenkommunikation)
 - [Zugriffskontrolle](#zugriffskontrolle)
+  - [Was ist Zugangskontrolle?](#was-ist-zugangskontrolle)
+  - [Sicherheitspolitik](#sicherheitspolitik)
+  - [Klassische Computersubjekte, Objekte und Zugriffsarten](#klassische-computersubjekte-objekte-und-zugriffsarten)
+  - [Sicherheitskennzeichen](#sicherheitskennzeichen)
+  - [Spezifikation der Sicherheitspolitik](#spezifikation-der-sicherheitspolitik)
+  - [Arten von Zugriffskontrollmechanismen](#arten-von-zugriffskontrollmechanismen)
+  - [Zugriffsmatrizen](#zugriffsmatrizen)
+  - [Gemeinsame Zugriffskontrollschemata](#gemeinsame-zugriffskontrollschemata)
 - [Integration von Sicherheitsdiensten in Kommunikationsarchitekturen](#integration-von-sicherheitsdiensten-in-kommunikationsarchitekturen)
 - [Sicherheitsprotokolle der Datenübertragungsschicht](#sicherheitsprotokolle-der-datenübertragungsschicht)
 - [Die IPsec-Architektur für das Internet-Protokoll](#die-ipsec-architektur-für-das-internet-protokoll)
@@ -1835,22 +1843,22 @@ Definition: Entitätsauthentifizierung ist der Sicherheitsdienst, der es Kommuni
     - Nachteile: erfordert asymmetrische Kryptographie oder im Voraus festgelegte geheime Schlüssel
 
 ## Notation kryptographischer Protokolle
-| Notation               | Bedeutung                                                                                                                    |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| $A$                    | Name von A , analog für B, E, TTP, CA                                                                                        |
-| $CA_A$                 | Zertifizierungsstelle von A                                                                                                  |
-| $r_A$                  | Zufallswert, gewählt von A                                                                                                   |
-| $t_A$                  | Zeitstempel erzeugt von A                                                                                                    |
-| $(m_1,...,m_m)$        | Verkettung von Nachrichten $m_1, ...,m_n$                                                                                    |
-| $A\rightarrow B:m$     | A sendet Nachricht m an B                                                                                                    |
-| $K_{A,B}$              | Geheimer Schlüssel, nur A und B bekannt                                                                                      |
-| $+K_A$                 | Öffentlicher Schlüssel von A                                                                                                 |
-| $-K_A$                 | Privater Schlüssel von A                                                                                                     |
-| $\{m\}_K$              | Nachricht m verschlüsselt mit Schlüssel K , Synonym für $E(K, m)$                                                            |
-| $H(m)$                 | MDC über Nachricht m, berechnet mit Funktion H                                                                               |
-| $A[m]$                 | Kurzschreibweise für $(m,\{H(m)\}_{-K_A})$                                                                                   |
+| Notation                | Bedeutung                                                                                                                    |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| $A$                     | Name von A , analog für B, E, TTP, CA                                                                                        |
+| $CA_A$                  | Zertifizierungsstelle von A                                                                                                  |
+| $r_A$                   | Zufallswert, gewählt von A                                                                                                   |
+| $t_A$                   | Zeitstempel erzeugt von A                                                                                                    |
+| $(m_1,...,m_m)$         | Verkettung von Nachrichten $m_1, ...,m_n$                                                                                    |
+| $A\rightarrow B:m$      | A sendet Nachricht m an B                                                                                                    |
+| $K_{A,B}$               | Geheimer Schlüssel, nur A und B bekannt                                                                                      |
+| $+K_A$                  | Öffentlicher Schlüssel von A                                                                                                 |
+| $-K_A$                  | Privater Schlüssel von A                                                                                                     |
+| $\{m\}_K$               | Nachricht m verschlüsselt mit Schlüssel K , Synonym für $E(K, m)$                                                            |
+| $H(m)$                  | MDC über Nachricht m, berechnet mit Funktion H                                                                               |
+| $A[m]$                  | Kurzschreibweise für $(m,\{H(m)\}_{-K_A})$                                                                                   |
 | $Cert_{-CK_{CA}}(+K_A)$ | Zertifikat der CA für den öffentlichen Schlüssel $+K_A$ von A, signiert mit dem privaten Zertifizierungsschlüssel $-CK_{CA}$ |
-| $CA<<A>>$              | Kurzschreibweise für $Cert_{-CK_{CA}}(+K_A)$                                                                                 |
+| $CA<<A>>$               | Kurzschreibweise für $Cert_{-CK_{CA}}(+K_A)$                                                                                 |
 
 ## Das Needham-Schroeder-Protokoll
 - Erfunden im Jahr 1978 von Roger Needham und Michael Schroeder [Nee78a]
@@ -2186,7 +2194,98 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
 
 
 # Sichere Gruppenkommunikation
+
 # Zugriffskontrolle
+## Was ist Zugangskontrolle?
+- Definition:  Die Zugriffskontrolle umfasst die Mechanismen, die die Vermittlung von Subjektanfragen für den Zugriff auf Objekte, wie sie in einer bestimmten Sicherheitspolitik definiert sind, erzwingen.
+- Ein wichtiges konzeptuelles Modell in diesem Zusammenhang ist der Referenzmonitor: 
+- ![](Assets/NetworkSecurity-reference-monitor.png)
+
+## Sicherheitspolitik
+- Um Entscheidungen über die Zugriffskontrolle treffen zu können, muss der Referenzmonitor die Sicherheitspolitik des Systems kennen
+- Definition: Die Sicherheitspolitik eines Systems definiert die Bedingungen, unter denen Subjektzugriffe auf Objekte durch die Funktionalität des Systemreferenzmonitors vermittelt werden
+- Bemerkungen:
+  - Die obige Definition wird gewöhnlich im Zusammenhang mit der Sicherheit von Computern und Betriebssystemen gegeben.
+  - Der Referenzmonitor ist nur eine konzeptionelle Einheit, er muss nicht unbedingt ein physisches oder logisches Gegenstück in einem bestimmten System haben.
+  - Der Begriff Sicherheitspolitik wird oft auch in einem weiteren Sinne verwendet, um eine Spezifikation aller Sicherheitsaspekte eines Systems einschließlich Bedrohungen, Risiken, Sicherheitsziele, Gegenmaßnahmen usw. zu beschreiben.
+
+## Klassische Computersubjekte, Objekte und Zugriffsarten
+- Definition: Ein Subjekt ist eine aktive Entität, die eine Anfrage nach Ressourcen initiieren und diese Ressourcen nutzen kann, um eine Aufgabe zu erfüllen.
+- Definition: Ein Objekt ist ein passives Repository, das zur Speicherung von Informationen dient
+- Die beiden obigen Definitionen stammen aus der klassischen Computerwissenschaft:
+  - Subjekte sind Prozesse, und Dateien, Verzeichnisse usw. sind Objekte.
+- Es ist jedoch nicht immer offensichtlich, Subjekte und Objekte im Zusammenhang mit der Kommunikation zu identifizieren:
+  - Stellen Sie sich vor, eine Einheit sendet eine Nachricht an eine andere Einheit: Ist die empfangende Einheit als Objekt zu betrachten?
+- Außerdem müssen wir wissen, was ein Zugriff ist und welche Arten von Zugriffen es gibt:
+  - Beispiele aus der klassischen Informatik für Zugriffsarten: Lesen, Schreiben, Ausführen
+  - Objektorientierte Sichtweise: Jede Methode eines Objekts definiert eine Art des Zugriffs
+
+## Sicherheitskennzeichen
+- Definition: Eine Sicherheitsstufe wird als hierarchisches Attribut zu Entitäten eines Systems definiert, um deren Sensibilitätsgrad zu kennzeichnen
+  - Beispiele:
+    - Militär: unklassifiziert < vertraulich < geheim < streng geheim
+    - Kommerziell: öffentlich < sensibel < proprietär < eingeschränkt
+- Definition: Eine Sicherheitskategorie ist definiert als eine nicht-hierarchische Gruppierung von Entitäten, um den Grad ihrer Sensibilität zu kennzeichnen.
+  - Beispiel (Wirtschaft): Abteilung A, Abteilung B, Verwaltung usw.
+- Definition: Eine Sicherheitskennzeichnung ist definiert als ein Attribut, das mit Systemeinheiten verbunden ist, um deren hierarchische Sensibilitätsstufe und Sicherheitskategorien zu kennzeichnen.
+  - In Form von mathematischen Mengen: $Labels = Levels \times Powerset(Categories)$
+- Sicherheitslabels, die die Sicherheitsempfindlichkeit von:
+  - Subjekte werden Freigaben genannt
+  - Objekte werden Klassifizierungen genannt
+- Ein wichtiges Konzept für die Spezifikation von Sicherheitspolitiken sind binäre Relationen auf der Menge der Kennzeichnungen:
+  - Eine binäre Relation auf einer Menge S ist eine Teilmenge des Kreuzprodukts $S\times S$
+  - Beispiel:
+    - Dominiert: $Labels \times Labels$
+    - Dominiert $=\{(b1,b2) | b1, b2 \in Labels \wedge level(b1) \geq level(b2) \wedge categories(b2) \subseteq categories(b1)\}$
+    - Wenn $(b1, b2) \in Dominates$, schreiben wir auch b1 dominates b
+
+## Spezifikation der Sicherheitspolitik
+- Formale Ausdrücke für Regeln der Sicherheitspolitik:
+- Betrachten Sie die folgenden Zuordnungen:
+  - $allow: Subjects \times  Accesses \times  Objects \rightarrow boolean$
+  - $own: Subjects \times  Objects \rightarrow boolean$
+  - $admin: Subjects \rightarrow boolean$
+  - $dominates: Labels \times  Labels \rightarrow boolean$
+- Die oben genannten Zuordnungen können verwendet werden, um bekannte Sicherheitsrichtlinien zu spezifizieren:
+  - $ownership: \forall s \in Subjects, o \in Objects, a \in Accesses: allow(s, o, a) \Leftrightarrow own(s, o)$
+  - $own_admin: \forall s \in Subjects, o \in Objects, a \in Accesses: allow(s, o, a) \Leftrightarrow own(s, o) \wedge admin(s)$
+  - $dom: \forall s \in Subjects, o \in Objects, a \in Accesses: allow(s, o, a) \Leftrightarrow dominates(label(s), label(o))$
+- Die dom-Policy erfordert ein System zur Speicherung und Verarbeitung von Sicherheitskennzeichnungen für jede Entität, erlaubt aber komplexere Zugriffskontrollschemata als die ownership- und own_admin-Policy
+
+## Arten von Zugriffskontrollmechanismen
+- Ein Zugriffskontrollmechanismus ist eine konkrete Umsetzung des Referenzmonitor-Konzepts
+- Es gibt zwei Haupttypen von Zugriffskontrollmechanismen:
+  - Diskretionäre Zugriffskontrolle umfasst diejenigen Verfahren und Mechanismen, die die spezifizierte Vermittlung nach dem Ermessen der einzelnen Benutzer durchsetzen
+    - Beispiel: Das Unix-Betriebssystem ermöglicht es den Benutzern, die Zugriffsrechte für Dateien, die ihnen gehören, zu erteilen oder zu entziehen (Lesen, Schreiben, Ausführen).
+  - Die obligatorische Zugriffskontrolle umfasst die Verfahren und Mechanismen, die die angegebene Vermittlung nach dem Ermessen einer zentralen Systemverwaltung durchsetzen.
+- Beide Arten können kombiniert werden, wobei die obligatorischen Zugriffskontrollentscheidungen in den meisten Fällen Vorrang vor den diskretionären Entscheidungen haben
+  - Beispiel:
+    - Verwendung einer diskretionären Zugangskontrolle auf Personalcomputern kombiniert mit einer obligatorischen Zugangskontrolle für die Kommunikation ($\rightarrow$ Firewalls)
+
+## Zugriffsmatrizen
+- Ein nützliches Konzept für die Beschreibung von Zugangskontrollmechanismen ist die Zugangsmatrix:
+  - In einer Zugriffsmatrix für zwei Mengen von Subjekten und Objekten entspricht jede Zeile einem Subjekt und jede Spalte einem Objekt
+  - Jede Zelle der Matrix definiert die Zugriffsrechte des entsprechenden Subjekts auf das entsprechende Objekt
+
+|           | Object 1 | Object 2 | ...             | Object M |
+| --------- | -------- | -------- | --------------- | -------- |
+| Subject 1 |          |          | ...             |
+| Subject 2 |          |          | ...             |
+| ...       | ...      | ...      | (Access Rights) |
+| Subject N |
+
+## Gemeinsame Zugriffskontrollschemata
+- Zugriffskontroll-Listen (ACL):
+  - ACLs sind die Grundlage für ein Zugriffskontrollschema, bei dem für jedes Objekt eine Liste gültiger Subjekte gespeichert wird, die Zugriff auf dieses Objekt haben könnten (möglicherweise zusammen mit der Art des erlaubten Zugriffs).
+  - ACLs werden in der Regel bei der diskretionären Zugriffskontrolle verwendet, da es zu viele ACLs gibt, als dass sie von einer zentralen Verwaltungseinrichtung verwaltet werden könnten.
+- Fähigkeiten:
+  - Capabilities sind gewissermaßen das Gegenkonzept zu ACLs, da bei Capabilities jedes Subjekt eine Liste von Zugriffsrechten auf Objekte besitzt
+  - Der Vorteil (und die Gefahr) von Capabilities ist, dass ein Subjekt einige seiner Capabilities an andere Subjekte weitergeben kann
+- Label-basierte Zugriffskontrolle:
+  - Wenn Sicherheitslabels mit den Entitäten eines Systems gespeichert und verarbeitet werden, können sie zur Durchführung einer label-basierten Zugriffskontrolle verwendet werden
+  - Dieses Verfahren wird in der Regel als obligatorischer Zugriffskontrollmechanismus verwendet. 
+- $\rightarrow$ Die Datenintegrität von Zugriffskontrolldatenstrukturen ist entscheidend!
+
 # Integration von Sicherheitsdiensten in Kommunikationsarchitekturen
 # Sicherheitsprotokolle der Datenübertragungsschicht
 # Die IPsec-Architektur für das Internet-Protokoll

@@ -1317,6 +1317,642 @@ Hochverfügbarkeitsmechanismen:
 2. ,,High-Availability-Client-Libraries'': Funktionen zur transparenten automatischen Reboot für ausgefallene Server-Verbindungen
 
 # Sicherheit
+
+## Motivation
+Medienberichte zu IT-Sicherheitsvorfällen:
+- 27.-28.11.2016: Ausfälle von über 900.000 Kundenanschlüssen der Deutschen Telekom
+  - Bundesamt für Sicherheit in der Informationstechnik (BSI): weltweiter Angriff auf ausgewählte Fernverwaltungsports von DSL-Routern, um angegriffene Geräte mit Schadsoftware zu infizieren
+  - Angreiferziel: Missbrauch der Hardware für eigentliche Angriffe (Botnet)
+- 15.05.-06.06.2019: Ransomware-Angriff zur Erpressung der Heise Verlagsgruppe
+  - Infektion eines Rechners im lokalen Netz durch Malware in eMail-Anhang (Trojaner)
+  - Täuschung des Nutzers: Schadcode mit Administratorrechten ausgeführt (Spezialfall von Malware: _Root Kit_)
+  - Malwareziel: Verschlüsselungvon Nutzerdaten
+  - Angreiferziel: Erspressungvon Lösegeld für Entschlüsselung
+
+Was sichere Betriebssysteme erreichen können ... und was nicht: [youtube](https://www.youtube.com/watch?v=opRMrEfAIiI&t=)
+
+## Terminologie
+Achtung zwei unterschiedliche ,,Sicherheiten''
+
+1. Security (IT-Sicherheit, Informationssicherheit)
+    - Ziel: Schutz **des** Rechnersystems
+    - hier besprochen
+    - Systemsicherheit
+2. Safety (Funktionale Sicherheit, Betriebssicherheit)
+    - Ziel: Schutz **vor** einem Rechnersystem
+    - an dieser Stelle nicht besprochen
+
+Eine (unvollständige) Taxonomie:
+- ![](Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png)
+
+## Sicherheitsziele
+Allgemeines Ziel von IT-Sicherheit i.S.v. Security ...
+  ein Rechnersystem sicher zu machen gegen Schäden durch zielgerichtete Angriffe, insbesondere in Bezug auf die Informationen, die in solchen Systemen gespeichert, verarbeitet und übertragen werden. (Programme sind somit ebenfalls als Informationen zu verstehen.)
+
+Cave! Insbesondere für Sicherheitsziele gilt: Daten $\not=$ Informationen
+
+Sicherheitsziele: sukzessive Konkretisierungen dieser Allgemeinformel hinsichtlich anwendungsspezifischer Anforderungen
+
+##### Abstrakte Ziele:
+1. Vertraulichkeit (Confidentiality)
+2. Integrität (Integrity)
+3. Verfügbarkeit (Availability)
+4. Authentizität (Authenticity)
+5. Verbindlichkeit = Nichtabstreitbarkeit (Non-repudiability)
+
+Abstrakte Ziele dienen zur Ableitung konkreter Sicherheitsziele. Wir definieren sie als Eigenschaften von gespeicherten oder übertragenen Informationen ...
+- Vertraulichkeit: ... nur für einen autorisierten Nutzerkreis zugänglich (i.S.v. interpretierbar) zu sein.
+- Integrität: ... vor nicht autorisierter Veränderung geschützt zu sein.
+- Verfügbarkeit: ... autorisierten Nutzern in angemessener Frist zugänglich zu sein.
+- Authentizität: ... ihren Urheber eindeutig erkennen zu können.
+- Verbindlichkeit: ... sowohl integer als auch authentisch zu sein.
+
+##### Schadenspotenzial
+1. Vandalismus, Terrorismus
+  - reine Zerstörungswut
+2. Systemmissbrauch
+  - illegitime Ressourcennutzung, Ziel i.d.R.: hocheffektive Folgeangriffe
+  - Manipulationvon Inhalten ($\rightarrow$  Desinformation)
+3. (Wirtschafts-) Spionage und Diebstahl
+  - Verlust der Kontrolle über kritisches Wissen ($\rightarrow$ Risikotechnologien)
+  - immense wirtschaftliche Schäden ($\rightarrow$ Technologieführer, Patentinhaber)
+  - z.B. Diebstahl von industriellem Know-How
+4. Betrug, persönliche Bereicherung
+  - wirtschaftliche Schäden
+5. Sabotage, Erpressung
+  - Außerkraftsetzen lebenswichtiger Infrastruktur (z.B. schon Registrierkassen)
+  - Erpressung von ausgewählten (oder schlicht großen ) Zielgruppen durch vollendete, reversible Sabotage ($\rightarrow$ Verschlüsselung von Endanwenderinformationen)
+
+##### Bedrohungen
+1. Eindringlinge (intruders)
+     - im engeren Sinne menschliche Angreifer ( ,,Hacker'' ), deren Angriff eine technische Schwachstelleausnutzt ( exploit )
+2. Schadsoftware (malicious software, malware)
+     - durch Ausnutzung einer (auch menschlichen) Schwachstelle zur Ausführung gebrachte Programme, die (teil-) automatisierte Angriffe durchführen
+     - Trojanische Pferde (trojan horses): scheinbar nützliche Software, die verborgene Angriffsfunktionalität enthält
+     - Viren, Würmer (viruses, worms): Schadsoftware, die Funktionalität zur eigenen Vervielfältigung und/oder Modifikation beinhaltet
+     - Logische Bomben (logicbombs): Code-Sequenz in trojanischen Pferden, deren Aktivierung an System-oder Datumsereignisse gebunden ist
+     - Root Kits
+3. Bots und Botnets
+     - (weit-) verteilt ausgeführte Schadsoftware
+     - eigentliches Ziel i.d.R. nicht das jeweils infizierte System
+
+##### Professionelle Malware: Root Kit
+- Programm-Paket, das unbemerkt Betriebssystem (und ausgewählte Anwendungen) modifiziert, um Administratorrechte zu erlangen
+  - Administrator-bzw. Rootrechte: ermöglichen Zugriff auf alle Funktionen und Dienste eines Betriebssystems
+  - Angreifer erlangt vollständige Kontrolle des Systems und kann
+    - Dateien (Programme) hinzufügen bzw. ändern
+    - Prozesse überwachen
+    - über die Netzverbindungen senden und empfangen
+    - bei all dem Hintertüren für Durchführung und Verschleierung zukünftiger Angriffe platziere
+  - Ziele eines Rootkits:
+    - seine Existenz verbergen
+    - zu verbergen, welche Veränderungen vorgenommen wurden
+    - vollständige und irreversible Kontrolle über BS zu erlangen
+- Ein erfolgreicher Root-Kit-Angriff ...
+  - ... kann jederzeit
+  - ... mit hochaktuellem und systemspezifischem Wissen über Schwachstellen
+  - ... vollautomatisiert, also reaktiv unverhinderbar
+  - ... unentdeckbar
+  - ... nicht reversibel
+  - ... die uneingeschränkte Kontrolle über das Zielsystem erlangen.
+- Voraussetzung: eine einzige Schwachstelle...
+
+##### Schwachstellen
+1. Passwort (begehrt: Administrator-Passwörter...)
+  - ,,erraten''
+  - zu einfach, zu kurz, usw.
+  - Brute-Force-Angriffe mit Rechnerunterstützung
+  - Abfangen ( eavesdropping )
+  - unverschlüsselte Übertragung (verteilte Systeme) oder Speicherung
+2. Programmierfehler (Speicherfehler...!)
+  - im Anwenderprogrammen
+  - in Gerätemanagern
+  - im Betriebssystem
+3. Mangelhafte Robustheit
+  - keine Korrektur fehlerhafter Eingaben
+  - buffer overrun/underrun (,, Heartbleed'' )
+4. Nichttechnische Schwachstellen
+  - physisch, organisatorisch, infrastrukturell
+  - menschlich ($\rightarrow$ Erpressung, socialengineering )
+
+##### Zwischenfazit
+- Schwachstellen sind unvermeidbar
+- Bedrohungen sind unkontrollierbar
+  - ... und nehmen tendeziellzu!
+
+Beides führt zu operationellen Risiken beim Betrieb eines IT-Systems
+
+$\rightarrow$  Aufgabe der Betriebssystemsicherheit: Auswirkungen operationeller Risiken reduzieren (wo diese nicht vermieden werden können...)
+
+Wie dies geht: Security Engineering
+
+## Sicherheitspolitiken
+- Herausforderung: korrekte Durchsetzung von Sicherheitspolitiken
+- Vorgehensweise: Security Engineering
+
+||
+|---|---
+Sicherheitsziele| Welche Sicherheitsanforderungen muss das Betriebssystem erfüllen?
+Sicherheitspolitik| Durch welche Strategien soll es diese erfüllen? ($\rightarrow$ Regelwerk)
+Sicherheitsmechanismen|Wie implementiert das Betriebssystem seine Sicherheitspolitik?
+Sicherheitsarchitektur| Wo implementiert das Betriebssystem seine Sicherheitsmechanismen (und deren Interaktion)?
+
+##### Sicherheitspolitiken und -modelle
+Kritischfür korrekten Entwurf, Spezifikation, Implementierung der Betriebssystem-Sicherheitseigenschaften!
+
+Begriffsdefinitionen:
+- Sicherheitspolitik (Security Policy): Eine Menge von Regeln, die zum Erreichen eines Sicherheitsziels dienen.
+- Sicherheitsmodell (Security Model): Die formale Darstellung einer Sicherheitspolitik zum Zweck
+  - der Verifikation ihrer Korrektheit
+  - der Spezifikation ihrer Implementierung.
+
+##### Zugriffssteuerungspolitiken
+... geben Regeln vor, welche durch Zugriffssteuerungsmechanismen in BS durchgesetzt werden müssen.
+
+Zugriffssteuerung (access control): Steuerung, welcher Nutzer oder Prozess mittels welcher Operationen auf welche BS-Ressourcen zugreifen darf (z.B.: Anwender darf Textdateien anlegen, Administrator darf Dateisysteme montieren und System-Logdateien löschen, systemd - Prozess darf Prozessdeskriptoren manipulieren, ...)
+
+Zugriffssteuerungspolitik: konkrete Regeln, welche die Zugriffssteuerung in einem BS beschreiben
+
+Zugriffssteuerungsmodell: Sicherheitsmodell einer Zugriffssteuerungspolitik
+
+Zugriffssteuerungsmechanismus: Implementierung einer Zugriffssteuerungspolitik
+
+##### Beispiele für BS-Zugriffssteuerungspolitiken
+klassifiziert nach Semantik der Politikregeln:
+- IBAC (Identity-basedAccess Control): Politik spezifiziert, welcher Nutzer an welchen Ressourcen bestimmte Rechte hat.
+  - Bsp.: ,,Nutzer Anna darf Brief.docx lesen, aber nicht schreiben.''
+- TE (Type-Enforcement): Politik spezifiziert Rechte durch zusätzliche Abstraktion (Typen): welcher Nutzertyp an welchem Ressourcentyp bestimmte Rechte hat.
+  - Bsp.: ,,Nutzer vom Typ Administrator dürfen Dateien vom Typ Log lesen und schreiben.''
+- MLS (Multi-Level Security): Politik spezifiziert Rechte, indem aus Nutzern und Ressourcen hierarchische Klassen (Ebenen, ,,Levels'') gleicher Kritikalität im Hinblick auf Sicherheitsziele gebildet werden.
+  - Bsp.: ,,Nutzer der Klasse nicht vertrauenswürdig dürfen Dateien der Klasse vertraulich nicht lesen.''
+- DAC (Discretionary Access Control, auch: wahlfreie Zugriffssteuerung ): Aktionen der Nutzer setzen die Sicherheitspolitik (oder wesentliche Teile davon) durch. Typisch: Begriff des Eigentümers von BS-Ressourcen.
+  - Bsp.: ,,Der Eigentümer einer Datei bestimmt (bzw. ändert), welcher Nutzer welche Rechte daran hat.''
+- MAC (MandatoryAccess Control, auch: obligatorische Zugriffssteuerung ): Keine Beteiligung der Nutzer an der Durchsetzungeiner (zentral administrierten) Sicherheitspolitik.
+  - Bsp.: ,,Anhand ihres Dateisystempfads bestimmt das Betriebssystem, welcher Nutzer welche Rechte an einer Datei hat.''
+
+##### Einige Beispiele ...
+|| DAC| MAC
+|---|---|---|
+IBAC |Unixoide,Linux, Windows| Linux AppArmor, Mac OS Seatbelt
+TE |-| SELinuxEnterprise Linux (RHEL), RedHat
+MLS |Windows UAC |SELinux, TrustedBSD
+
+... und ein Verdacht
+Eindruck der Effektivität von DAC: ,,[...] so the theory goes. By extension, yes, there may be less malware, but that will depend on whether users keep UAC enabled, which depends on whether developers write software that works with it and that users stop viewing prompts as fast-clicking exercises and actually consider whether an elevation request is legitimate.'' (Jesper M. Johansson, TechNet Magazine)
+[https://technet.microsoft.com/en-us/library/2007.09.securitywatch.aspx, Stand: 10.11.2017]
+
+### Traditionell: DAC, IBAC
+Auszug aus der Unix-Sicherheitspolitik:
+- es gibt Subjekte (Nutzer, Prozesse) und Objekte (Dateien, Sockets ...)
+- jedes Objekt hat einen Eigentümer
+- Eigentümer legen Zugriffsrechte an Objekten fest ($\rightarrow$ DAC)
+- es gibt drei Zugriffsrechte: read, write, execute
+- je Objekt gibt es drei Klassen von Subjekten, für die individuell Zugriffsrechte vergeben werden können: Eigentümer (,,u''), Gruppe (,,g''), Rest der Welt (,,o'')
+
+In der Praxis:
+- identitätsbasierte (IBAC), wahlfreie Zugriffssteuerung (DAC)
+- hohe individuelle Freiheit der Nutzer bei Durchsetzung der Politik
+- hohe Verantwortung ( ,,Welche Nutzer werden jemals in Gruppe vsbs sein...?'' )
+
+```bash
+-rw- rw- r-- 1 amthor vsbs 397032 2017-11-19 12:12 paper.pdf
+```
+
+##### Modellierung: Zugriffsmatrix
+| acm |paper.pdf |aos-05.pptx |gutachten.tex |worse-engine
+|---|---|---|---|---|
+kühnhauser| rw| - |rw |rx
+schlegel |rw| - |- |rx
+amthor |rw| rw| - |rx
+krause|r|-|-|-
+
+- acm (access control matrix): Momentaufnahme der globalen Rechteverteilung zu einem definierten ,,Zeitpunkt t''
+- Korrektheitskriterium: Wie kann sich dies nach t möglicherweise ändern...? (HRU-Sicherheitsmodell)[HaRU76]
+
+##### Modellkorrektheit: Rechteausbreitung
+- Änderungsbeispiel: kühnhauser nimmt krause in Gruppe vsbs auf ...
+- Rechteausbreitung ( privilegeescalation ), hier verursacht durch eine legale Nutzeraktion ($\rightarrow$ DAC)
+  - (Sicherheitseigenschaft: HRU Safety , $\rightarrow$ ,,Systemsicherheit'')
+
+### Modern: MAC, MLS
+Sicherheitspolitik der Windows UAC ( user account control):
+- es gibt Subjekte (Prozesse) und Objekte (Dateisystemknoten)
+- jedem Subjekt ist eine Integritätsklasse zugewiesen:
+  - Low: nicht vertrauenswürdig (z.B. Prozesse aus ausführbaren Downloads)
+  - Medium: reguläre Nutzerprozesse, die ausschließlich Nutzerdaten manipulieren
+  - High: Administratorprozesse, die Systemdaten manipulieren können
+  - System: (Hintergrund-) Prozesse, die ausschließlich Betriebssystemdienste auf Anwenderebene implementieren (etwa der Login-Manager)
+- jedem Objekt ist analog eine dieser Integritätsklassen zugewiesen (Kritikalität von z.B. Nutzerdaten vs. Systemdaten)
+- sämtliche DAC-Zugriffsrechte (die gibt es auch) müssen mit einer Hierarchie der Integritätsklassen konsistent sein ($\rightarrow$ ein bisschen MAC)
+- Nutzer können diese Konsistenzanforderung selektiv außer Kraft setzen ($\rightarrow$ DAC)
+
+##### MAC-Modellierung: Klassenhierarchie
+Beispiel: Modelliert durch Relation $\leq$: gleich oder kritischer als
+
+$\leq=\{( High , Medium ), ( High , Low ), ( Medium , Low ), ( High , High ), ( Medium , Medium ), ( Low , Low )\}$
+- repräsentiert Kritikalität hinsichtlich des Sicherheitsziels Integrität (Biba-Sicherheitsmodell) [Biba77]
+- wird genutzt, um legale Informationsflüsse zwischen Subjekten und Objekten zu modellieren $\rightarrow$ Schutz vor illegalem Überschreiben
+- leitet Zugriffsrechte aus Informationsflüssen ab:
+  - Prozess Datei: schreiben
+  - Prozess Datei: lesen
+
+##### DAC-Modellierung: Zugriffsmatrix
+![](Assets/AdvancedOperatingSystems-dac-zugriffsmatrix.png)
+
+##### Modellkorrektheit: Konsistenz
+- Korrektheitskriterium: Garantiert die Politik, dass acm mit $\leq$ jederzeit konsistent ist? ( BLP Security ) [BeLa76]
+- elevation-Mechanismus: verändert nach Nutzeranfrage ($\rightarrow$ DAC) sowohl acm als auch $\leq\rightarrow$ konsistenzerhaltend?
+- andere BS-Operationen: verändern unmittelbar nur acm (z.B. mittels Dateisystemmanagement) $\rightarrow$ konsistenzerhaltend?
+
+## Autorisierungsmechanismen
+Begriffsdefinitionen:
+- Sicherheitsmechanismen: Datenstrukturen und Algorithmen, welche die Sicherheitseigenschaften eines Betriebssystems implementieren.
+  - $\rightarrow$ Sicherheitsmechanismen benötigt man zur Herstellung jeglicher Sicherheitseigenschaften (auch jener, die in unseren Modellen implizit angenommen werden!)
+  - Nutzerauthentisierung ( login - Dientsprogramm, Passwort-Hashing, ...)
+  - Autorisierungsinformationen (Metainformationen über Rechte, MLS-Klassen, TE-Typen, ...)
+  - Autorisierungsmechanismen (Rechteprüfung, Politikadministration, ...)
+  - kryptografische Mechanismen (Verschlüsselungsalgorithmen, Hashfunktionen, ...)
+- Auswahl im Folgenden: Autorisierungsmechanismen und -informationen
+
+### Traditionell: ACLs, SUID
+Autorisierungsinformationen:
+- müssen Subjekte (Nutzer) bzw. Objekte (Dateien, Sockets ...) mit Rechten assoziieren $\rightarrow$ Implementierung der Zugriffsmatrix ( acm ), diese ist:
+  - groß ($\rightarrow$ Dateianzahl auf Fileserver)
+  - dünn besetzt
+  - in Größe und Inhalt dynamisch veränderlich
+  - $\rightarrow$ effiziente Datenstruktur?
+- Lösung: verteilte Implementierung der acm als Spaltenvektoren, deren Inhalt in den Objekt-Metadaten repräsentiert wird: Zugriffssteuerungslisten ( Access Control Lists , ACLs)
+
+##### ACLs: Linux-Implementierung
+- objektspezifischer Spaltenvektor = Zugriffssteuerungsliste
+- Dateisystem-Metainformationen: implementiert in I-Nodes
+```bash
+-rw- rw- r-- 1 amthor vsbs 397032 2017-11-19 12:12 paper.pdf
+```
+
+#### ACLs: Linux-Implementierung
+Modell einer Unix acm ...
+||lesen |schreiben | ausführen
+---|---|---|---|
+Eigentümer (,,u'') | ja |ja |ja
+Rest der Welt (,,o'') |ja |nein| ja
+Gruppe (,,g'') |ja |nein |ja
+
+- 3 - elementige Liste
+- 3 - elementige Rechtemenge
+- $\rightarrow$ 9 Bits
+- dessen Implementierung kodiert in 16-Bit-Wort: 1 1 1 1 0 1 1 0 1
+- ... und dessen Visualisierung in Linux:
+  
+```bash
+$ ls -alF
+drwxr-xr-x  2 amthor amthor 4096    2017-11-16 12:01 ./
+drwxr-xr-x 31 amthor amthor 4096    2017-11-07 12:42 ../
+-rw-rw-r--  1 amthor vsbs   397032  2017-11-19 12:12 paper.pdf
+-rw-------  1 amthor amthor 120064  2017-02-07 07:56 draft.tex
+```
+
+##### Autorisierungsmechanismen: ACL-Auswertung
+Subjekte = Nutzermenge eines Linux-Systems... besteht aus Anzahl registrierter Nutzer
+- jeder hat eindeutige UID (userID), z.B. integer- Zahl
+- Dateien, Prozesse und andere Ressourcenwerden mit UID des Eigentümersversehen
+  - bei Dateien: Teil des I-Nodes
+  - bei Prozessen: Teil des PCB (vgl. Grundlagen ,,Betriebssysteme'')
+  - standardmäßiger Eigentümer: derjenige, eine Ressource erzeugt hat 
+ 
+Nutzergruppen (groups)
+- jeder Nutzer wird durch Eintrag in einer Systemdatei ( /etc/group ) einer oder mehreren Gruppen zugeordnet($\rightarrow$ ACL: ,, g '' Rechte)
+
+Superuser oder root... hat grundsätzlich uneingeschränkte Rechte.
+- UID = 0
+- darf insbesondere alle Dateien im System lesen, schreiben, ausführen; unabhängig von ACL
+
+##### ACL-Implementierung
+- ACLs:
+  - in welchen Kerneloperationen?
+  - welche Kernelschnittstellen (Rechte prüfen, ändern)?
+  - welche Datenstrukturen, wo gespeichert?
+- acm und ACLs:
+  - Vorteile der Listenimplementierung?
+  - Nachteile ggü. zentral implementierter Matrix? (DAC vs. MAC, Administration, Analyse ...)
+- $\rightarrow$ Übung 2
+
+##### Nutzerrechte $\rightarrow$  Prozessrechte
+bisher: Linux-Sicherheitspolitik formuliert Nutzerrechte an Dateien (verteilt gespeichert in ACLs)
+
+Durchsetzung: basiert auf Prozessrechten
+- Annahme: Prozesse laufen mit UID des Nutzers, welcher sie gestartet hat und repräsentieren Nutzerintention und Nutzerberechtigungen i.S.d. Sicherheitspolitik
+- technisch bedeutet dies: ein Nutzer beauftragt einen anderen Prozess, sich zu dublizieren( fork() ) und das gewünschte Programm auszuführen ( exec*() )
+- Vererbungsprinzip: ![](Assets/AdvancedOperatingSystems-acl-vererbungsprinzip.png)
+
+##### Autorisierungsmechanismen: Set-UID
+konsequente Rechtevererbung:
+- Nutzer können im Rahmen der DAC-Politik ACLs manipulieren
+- Nutzer können (i.A.) jedoch keine Prozess-UIDs manipulieren
+- $\rightarrow$ und genau so sollte es gem. Unix-Sicherheitspolitik auch sein!
+
+Hintergrund:
+- Unix-Philosophie ,, everythingisa file '': BS-Ressourcen wie Sockets, IPC-Instanzen, E/A-Gerätehandler als Datei repräsentiert $\rightarrow$ identische Schutzmechanismen zum regulären Dateisystem
+- somit: Autorisierungsmechanismen zur Begrenzung des Zugriffs auf solche Geräte nutzbar (Bsp.: Zugriffe verschiedener Prozesse auf einem Drucker müssen koordiniert, ggf. eingeschränkt werden)
+- dazu muss
+  - _root_ bzw. zweckgebundener Nutzer Eigentümer des Druckers sein
+  - ACL als `rw- --- ---` gesetzt sein
+
+Folge:
+- Nutzerprozesse könnten z.B. nicht drucken ...
+
+Lösung: Mechanismus zur Rechtedelegation
+- implementiert durch ein weiteres ,,Recht'' in ACL: SUID-Bit (,, setUID'' )
+- Programmausführung modifiziert Kindprozess, so dass UID des Programmeigentümers (im Bsp.: root ) seine Rechte bestimmt
+- Technik: eine von UID abweichende Prozess-Metainformation ($\rightarrow$ PCB) effektive UID (eUID) wird tatsächlich zur Autorisierung genutzt
+- `-rws rws r-x 1 root root 2 2011-10-01 16:00 print`
+
+Strategie für sicherheitskritische Linux-Programme
+- Eigentümer: root
+- SUID-Bit: gesetzt
+- per eUID delegiert root seine Rechte an genau solche Kindprozesse, die SUID-Programme ausführen
+- Folge: Nutzerprozesse können Systemprogramme (und nur diese) ohne permanente root - Rechte ausführen
+
+Weiteres Beispiel: passwd
+- ermöglicht Nutzern Ändern des (eigenen) Anmeldepassworts
+- Schreibzugriff auf /etc/shadow (Password-Hashes) erforderlich ... Schutz der Integrität anderer Nutzerpasswörter?
+- Lösung: `-rws rws r-x 1 root root 1 2005-01-20 10:00 passwd$
+- passwd - Programm (und nur dieses!) wird mit root-Rechten ausgeführt ()... und passwd schreibt ja nur unseren eigenen Passwort-Hash)
+
+##### Beispiel passwd
+- Problem: privilegierter Zugriff durch unprivilegierte Anwendung
+  - ![](Assets/AdvancedOperatingSystems-passwd-problem.png)
+- Standard Linux Lösung:
+  - ![](Assets/AdvancedOperatingSystems-passwd-lösung.png)
+
+### Modern: SELinux
+- Ursprung
+  - Anfang 2000er Jahre: sicherheitsfokussiertes Betriebssystemprojekt für US-amerikanische NSA [LoSm01]
+  - Implementierung des (eigentlich)μKernel-Architekturkonzepts Flask
+  - heute: Open Source, Teil des mainline Linux Kernels
+- Klassische UNIXoide: Sicherheitspolitik fest im Kernel implementiert
+  - I-Nodes, PCBs, ACLs, UID, GID, SUID, ...
+- Idee SELinux: Sicherheitspolitikals eigene BS-Abstraktion
+  - zentrale Datenstruktur für Regeln, die erlaubte Zugriffe auf ein SELinux-System definiert
+  - erlaubt Modifikation und Anpassung an verschiedene Sicherheitsanforderungen $\rightarrow$ NFE Adaptivität ...
+
+##### SELinux-Sicherheitsmechanismen
+BS-Komponenten
+- Auswertung der Sicherheitspolitik: Security- Server , implementiert als Linux-Kernelmodul(Technik: LSM, Linux Security Module ); $\rightarrow$  entscheidet über alle Zugriffe auf alle Objekte
+- Durchsetzung der Sicherheitspolitik : LSM Hooks (generische Anfrage-Schnittstellen in allen BS-Funktionen)
+- Administration der Sicherheitspolitik: geschrieben in Textform, muss zur Laufzeit in Security Server installiert werden
+
+![Schematisch: Security Server und Sicherheitspolitik](Assets/AdvancedOperatingSystems-selinux-security-server.png)
+
+![Schematisch: Installation der Sicherheitspolitik](Assets/AdvancedOperatingSystems-selinux-sicherheitspolitik-installieren.png)
+
+##### SELinux-Sicherheitspolitik
+Repräsentation der Sicherheitspolitik:
+- physisch: in spezieller Datei, die alle Regeln enthält (in maschinenlesbarer Binärdarstellung), die der Kernel durchsetzen muss
+- diese Datei wird aus Menge von Quelldateien in einer Spezifikationssprache für SELinux-Sicherheitspolitiken kompiliert
+- diese ermöglicht anforderungsspezifische SELinux-Politiken: können (und müssen) sich von einem SELinux-System zum anderen wesentlich unterscheiden
+- Politik wird während des Boot-Vorgangs in Kernel geladen
+
+##### Politiksemantik
+Regeln einer SELinux-Sicherheitspolitiken, Semantische Konzepte(Auswahl):
+- Type Enforcement (TE)
+- Typisierung von
+  - Subjekten: Prozesse
+  - Objekten der Klassen: Dateien, Sockets, EA-Geräteschnittstellen, ...
+- Rechte delegation durch Retypisierung(vgl. Unix-SUID!)
+- ![](Assets/AdvancedOperatingSystems-selinux-retypisierung.png)
+
+##### Autorisierungsinformationen
+Security Context: Respräsentiert SELinux-Autorisierungsinformationen für jedes Objekt:
+```bash
+$ ps -Z
+cox:doctor_r:shell_t:s0-s0:c0.c255 4056 pts/2 00:00:00 bash
+$ ls -Z /etc/shadow
+system_u:object_r:shadow_t:s0 /etc/shadow
+```
+- Semantik:
+  - Prozess bash läuft (momentan) mit Typ `shell_t`
+  - Datei shadow hat (momentan) den Typen `shadow_t`.
+
+
+##### Autorisierungsregeln
+... werden systemweit festgelegt in dessen Sicherheitspolitik ($\rightarrow$ MAC):
+
+Access Vector Rules
+- definieren Autorisierungsregeln basierend auf Subjek-/Objekttypen
+- Zugriffe müssen explizit gewährt werden ( default-deny )
+  ```bash
+  allow shell_t passwd_exec_t : file { execute };
+  allow passwd_t shadow_t : file { read write };
+  ```
+- Semantik: Erlaube( ''allow” ) ...
+  - jedem Prozess mit Typ `shell_t`
+  - ausführenden Zugriff (benötigt die Berechtigung `{execute}`),
+  - auf Dateien (also Objekte der Klassefile)
+  - mit Typ `passwd_exec_t`.
+
+##### Autorisierungsmechanismen: passwd Revisited
+Klassischer Anwendungsfall für SELinux-TE: Passwort ändern
+
+Lösung: Retypisierung bei Ausführung
+- Prozess wechselt in einen aufgabenspezifischen Typ `passwd_t`
+- $\rightarrow$ massiv verringertes Missbrauchspotenzial!
+- ![](Assets/AdvancedOperatingSystems-passwd-lösung2.png)
+
+##### SELinux: weitere Politiksemantiken
+- hier nur gezeigt: Überblick über TE
+- außerdem relevant für SELinux-Politiken (und deren Administration...):
+  - Einschränkung von erlaubten Typtransitionen (Welches Programm darf mit welchem Typ ausgeführt werden?)
+  - weitere Abstraktionsschicht: rollenbasierte Regeln (RBAC)
+  - $\rightarrow$ Schutz gegen nicht vertrauenswürdige Nutzer (vs. nvw. Software)
+- Ergebnis:
+  - ✓ extrem feingranulare, anwendungsspezifische Sicherheitspolitik zur Vermeidung von privilege escalation Angriffen
+  - ✓ obligatorische Durchsetzung ($\rightarrow$ MAC, zusätzlich zu Standard-Unix-DAC)
+  - O Softwareentwicklung: Legacy-Linux-Anwendungen laufen ohne Einschränkung, jedoch
+  - ✗ Politikentwicklung und -administrationkomplex!
+
+##### Weitere Informationen zu SELinux
+$\rightarrow$ MAC-Mechanismen à la SELinux sind heutzutage in vielerlei Software bereits zu finden:
+- Datenbanksoftware (SEPostgreSQL)
+- Betriebssysteme für mobile Geräte (FlaskDroid)
+- sehr wahrscheinlich: zukünftige, sicherheitsorientierte BS...
+
+## Isolationsmechanismen
+- bekannt: Isolationsmechanismen für robuste Betriebssysteme
+  - strukturierte Programmierung
+  - Adressraumisolation
+- nun: Isolationsmechanismen für sichere Betriebssysteme
+  - all die obigen...
+  - kryptografische Hardwareunterstützung: Intel SGX Enclaves
+  - sprachbasiert:
+    - streng typisierte Sprachen und _managed code_ : Microsoft Singularity [HLAA05]
+    - speichersichere Sprachen (Rust) + Adressraumisolation (μKernel): [RedoxOS](https://www.redox-os.org/)
+  - isolierte Laufzeitumgebungen: Virtualisierung (Kap. 6)
+
+##### Intel SGX
+- SGX: Software Guard Extensions [CoDe16]
+- Ziel: Schutz von sicherheitskritischen Anwendungen durch vollständige, hardwarebasierte Isolation
+- $\rightarrow$ strenggenommen kein BS-Mechanismus: Anwendungen müssen dem BS nicht mehr vertrauen! (AR-Schutz, Wechsel von Privilegierungsebenen, ...)
+- Annahmen/Voraussetzungen:
+  1. sämtliche Software nicht vertrauenswürdig (potenziell durch Angreifer kontrolliert)
+  2. Kommunikation mit dem angegriffenen System nicht vertrauenswürdig (weder vertraulich noch verbindlich)
+  3. kryptografische Algorithmen (Verschlüsselung und Signierung) sind vertrauenswürdig, also nicht für den Angreifer zu brechen
+  4. Ziel der Isolation: Vertraulichkeit, Integrität und Authentizität(nicht Verfügbarkeit) von Anwendungen (Code) und den durch sie verarbeiteten Informationen
+
+##### Enclaves
+- Idee: geschützter Speicherbereich für Teilmenge der Seiten (Code und Daten) einer Task: Enclave Page Cache (EPC)
+- Prozessor (und nur dieser) ver-und entschlüsselt EPC-Seiten
+- ![](Assets/AdvancedOperatingSystems-SGX-enclaves.png)
+- Enclaves: Erzeugung
+  - Erzeugen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (ECREATE)
+  - Seiten hinzufügen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (EADD)
+    - Metainformationen für jede hinzugefügte Seite als Teil der EPC-Datenstruktur (u.a.: Enklave - ID, Zugriffsrechte, vAR-Adresse)
+  - Initialisieren: App. $\rightarrow$ Syscall $\rightarrow$  BS-Instruktion an CPU (EINIT)
+    - finalisiert gesamten Speicherinhalt für diese Enclave
+    - CPU erzeugt Hashwert = eindeutige Signatur des Enclave - Speicherinhalts
+    - falls BS bis zu diesem Punkt gegen Integrität der Anwendung verstoßen hat: durch Vergleich mit von dritter Seite generiertem Hashwert feststellbar!
+- Enclave - Zustandsmodell (vereinfacht) :
+  - ![](Assets/AdvancedOperatingSystems-SGX-enclaves-model.png)
+- Zugriff: App. $\rightarrow$ CPU-Instruktionen in User Mode (EENTER, EEXIT)
+  - CPU erfordert, dass EPC-Seiten in vARder zugreifenden Task
+  - ![](Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png)
+
+##### SGX: Licht und Schatten
+- Einführung 2015 in Skylake - Mikroarchitektur
+- seither in allen Modellen verbaut, jedoch nicht immer aktiviert
+- Nutzer bislang: Demos und Forschungsprojekte, Unterstützung durch einige Cloud-Anbieter, (noch) keine größeren Märkte erschlossen
+- Konzept hardwarebasierter Isolation ...
+  - ✓ liefert erstmals die Möglichkeit zur Durchsetzung von Sicherheitspolitiken auf Anwendungsebene
+  - O setzt Vertrauen in korrekte (und nicht böswillige) Hardwarevoraus
+  - O Dokumentation und Entwicklerunterstützung (im Ausbau ...)
+  - ✗ schützt mittels Enclaves einzelne Anwendungen, aber nicht das System
+  - ✗ steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. μKernel...):
+    - Performanz [WeAK18]
+    - Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93 MiBnutzbar)
+    - $\rightarrow$ komplementäre NFE: Speichereffizienz!
+
+## Sicherheitsarchitekturen
+Sicherheitsarchitektur... ist die Softwarearchitektur (Platzierung, Struktur und Interaktion) der Sicherheitsmechanismen eines IT-Systems.
+
+- Voraussetzung zum Verstehen jeder Sicherheitsarchitektur:
+  - Verstehen des Referenzmonitorprinzips
+  - frühe Forschungen zu Betriebssystemsicherheit in 1970er-1980er Jahren durch US-Verteidigungsministerium
+  - Schlüsselveröffentlichung: Anderson-Report(1972)[Ande72]
+  - $\rightarrow$ fundamentalen Eigenschaften zur Charakterisierung von Sicherheitsarchitekturen
+- Begriffe des Referenzmonitorprinzips kennen wir schon:
+  - Abgrenzung passiver Ressourcen (in Form einzelner Objekte, z.B. Dateien)
+  - von Subjekten (aktiven Elementen, z.B. laufenden Programmen, Prozessen) durch Betriebssystem
+
+### Referenzmonitorprinzip
+- Idee:
+  - $\rightarrow$ sämtliche Autorisierungsentscheidungen durch einen zentralen (abstrakten) Mechanismus = Referenzmonitor
+  - Bewertet jeden Zugriffsversuch eines Subjekts auf Objekt durch Anwendung einer Sicherheitspolitik (security policy)
+    - $\rightarrow$ vgl. SELinux
+  - somit: Architekturbeschreibung, wie Zugriffe auf Ressourcen (z.B. Dateien) auf solche Zugriffe, die Sicherheitspolitik erlaubt, eingeschränkt werden
+- Autorisierungsentscheidungen
+  - basieren auf sicherheitsrelevanten Eigenschaften jedes Subjekts und jedes Objekts
+  - einige Beispiele kennen wir schon:
+    - Nutzname, Unix-Gruppe
+    - Prozess-ID, INode-Nummer
+    - SELinux-Typ
+- Architekturkomponenten in a nutshell:
+  - ![nach [MaMC06], S.6](Assets/AdvancedOperatingSystems-Referenzmonitorprinzip.png)
+
+Definierende Eigenschaften: Referenzmonitor ist eine Architekturkomponenten, die
+- (RM 1) bei sämtlichen Subjekt/Objekt-Interaktionen involviert sind
+  - $\rightarrow$  Unumgehbarkeit ( total mediation )
+- (RM 2) geschützt sind vor unautorisierter Manipulation
+  - $\rightarrow$  Manipulationssicherheit ( tamperproofness )
+- (RM 3) hinreichend klein und wohlstrukturiert sind, um formalen Analysemethoden zugänglich zu sein
+  - $\rightarrow$  Verifizierbarkeit ( verifyability )
+
+##### Referenzmonitor in Betriebssystemen
+Nahezu alle Betriebssysteme implementieren irgendeine Form eines Referenzmonitors [Jaeg11] und können über Begriffe, wie
+  - Subjekte
+  - Objekte
+  - Regeln einer Sicherheitspolitik
+charakterisiert sowie auf
+  - Unumgehbarkeit
+  - Manipulationssicherheit
+  - Verifizierbarkeit
+ihrer Sicherheitsarchitektur hin untersucht werden
+
+Beispiel: Standard- Linux
+- Subjekte (generell Prozesse)
+  - haben reale (und effektive) Nutzer-Identifikatoren (UIDs)
+- Objekte (verschiedene Systemressourcen, genutzt für Speicherung, Kommunikation: Dateien, Directories, Sockets, SharedMemory usw.)
+  - haben ACLs (,,rwxrw----'')
+- Regeln der Sicherheitspolitik, die durch den Referenzmonitor (hier Kernel) unterstützt werden
+  - hart codiert, starr
+- Sicherheitsattribute, die durch diese Regeln zur Prüfung genutzt werden (z.B. Zugriffsmodi)
+  - Objekten zugeordnet
+  - modifizierbar
+
+Man beurteile die Politikimplementierung in dieser Architektur bzgl.:
+  - Unumgehbarkeit
+  - Manipulationssicherheit
+  - Verifizierbarkeit
+
+##### Referenzmonitorimplementierung: Flask
+( Flask - Architekturmodell)
+
+![Abb. nach \[Spen07\] S. 139, Bild 11.1](Assets/AdvancedOperatingSystems-referenzmonitor-flask.png)
+
+##### SELinux-Architektur: Security Server
+- Security Server: Laufzeitumgebung für Politik in Schutzdomäne des Kerns
+- Objektmanager: implementiert in allen BS-Dienstenmittels,, Linux Security Module Framework ''
+  - jedes Subsystemvon SELinux , das zuständig für
+    1. Erzeugung neuer Objekte
+    2. Zugriff auf existierende Objekte
+  - Beispiele:
+    1. Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse)
+    2. Dateisystem (behandelte Objekte: hauptsächlich Dateien)
+    3. Networking/Socket-Subsystem     (behandelte Objekte: [verschiedene Typen von] Sockets)
+    4. u.a.
+
+SELinux-Architektur: Objektklassen
+- Objektmanager zur Verwaltung verschiedener Objektklassen
+- spiegeln Diversität und Komplexität von Linux BS-Abtraktionen wider:
+  - Dateisysteme: file, dir, fd, filesystem, ...
+  - Netzwerk: netif, socket, tcp_socket, udp_socket, ...
+  - IPC: msgq, sem, shm, ...
+  - Sonstige: process, system, ...
+  - ...
+
+Dateisystem als Objektmanager
+- Durch Analyse von Linux - Dateisystem und zugehöriger API wurden zu überwachenden Objektklassen identifiziert:
+  - ergibt sich unmittelbar aus Linux-API:
+    - Dateien
+    - Verzeichnisse
+    - Pipes
+  - feingranularere Objektklassen für durch Dateien repräsentierte Objekte (Unix-Prinzip: ,,everythingisa file''!):
+    - reguläre Dateien
+    - symbolische Links
+    - zeichenorientierte Geräte
+    - blockorientierte Geräte
+    - FIFOs
+    - Unix-Domain Sockets (lokale Sockets)
+-  Permissions (Zugriffsrechte)
+  - für jede Objektklasse: Menge an Permissions definiert, um Zugriffe auf Objekte dieser Klasse zu kontrollieren
+  - Permissions: abgeleitet aus Dienstleistungen, die Linux-Dateisystem anbietet
+  - $\rightarrow$ Objektklassen gruppieren verschiedene Arten von Zugriffsoperationen auf verschiende Arten von Objekten
+  - z.B. Permissions für alle ,,Datei''-Objektklassen (Auswahl ...): read, write, append, create, execute, unlink
+  - für ,,Verzeichnis''-Objektklasse: add_name, remove_name, reparant, search, rmdir 
+
+### Trusted Computing Base (TCB)
+Begriff zur Bewertung von Referenzmonitorarchitekturen: TCB ( Trusted Computing Base )
+- = die Hard-und Softwarefunktionen eines IT-Systems, die notwendig und hinreichend sind, um alle Sicherheitsregeln durchzusetzen.
+- besteht üblicherweise aus
+  1. Laufzeitumgebung der Hardware(nicht E/A-Geräte)
+  2. verschiedenen Komponenten des Betriebssystem-Kernels
+  3. Benutzerprogrammen mit sicherheitsrelevanten Rechten (bei Standard-UNIX/Linux-Systemen: diejenigen mit root-Rechten)
+- Betriebssystemfunktionen, die Teil der TCB sein müssen, beinhalten Teile
+  - des Prozessmanagements
+  - des Speichermanagements
+  - des Dateimanagements
+  - des E/A-Managements
+  - alle Referenzmonitorfunktionen
+
 # Echtzeitfähigkeit
 # Adaptivität
 # Performanz und Parallelität
@@ -1365,3 +2001,22 @@ Hochverfügbarkeitsmechanismen:
   - HERDER, JORRITN.; BOS, HERBERT; GRAS, BEN; HOMBURG, PHILIP; TANENBAUM, ANDREWS.: MINIX 3: A Highly Reliable, Self-repairing Operating System. In: ACM SIGOPS Operating Systems Review https://doi.org/10.1145/1151374.1151391
   - TANENBAUM, ANDREWS. APPUSWAMY, RAJA; BOS, HERBERTJ. ; CAVALLARO, LORENZO; GIUFFRIDA, CRISTIANO; HRUBY, TOMAS; HERDER, JORRIT; VANDERKOUWE, ERIK; U.A.: MINIX 3: Status Report and Current Research. In: login: The USENIX Magazine Bd. 35 (2010) https://www.usenix.org/publications/login/june- 2010
   - [TaWo05] TANENBAUM, ANDREWS; WOODHULL, ALBERTS: Operating Systems Design and Implementation. 3. Aufl. UpperSaddleRiver, NJ, USA: Prentice-Hall, Inc.
+- Sicherheitsbedrohungen:
+  - [Stal18] STALLINGS, WILLIAM: Operating Systems: Internals and Design Principles. Pearson, 2018
+- Sicherheitsmodelle:
+  - [Amth16] AMTHOR, PETER: The Entity LabelingPattern for Modeling Operating Systems Access Control. In: OBAIDAT, S. M.; LORENZ, P.(Hrsg.): E-Business and Telecommunications: 12th International Joint Conference, ICETE 2015, Colmar, France, http://dx.doi.org/10.1007/978-3-319-30222-5_13
+  - [BeLa76] BELL, D. ELLIOTT; LAPADULA, LEONARDJ.: Secure Computer System: Unified Exposition and MulticsInterpretation (Technical Report Nr. AD-A023 588): MITRE, 1976
+  - [Biba77] BIBA, KENNETHJ.: IntegrityConsiderationsforSecure Computer Systems (Technical Report Nr. ESD-TR-76-372). Bedford, Massachusetts: MITRE, 1977 http://seclab.cs.ucdavis.edu/projects/history/papers/biba75.pdf (digitalisierte Fassung von 1975)
+  - [HaRU76] HARRISON, MICHAELA.; RUZZO, WALTERL.; ULLMAN, JEFFREYD.: Protectionin Operating Systems. In: Communications oftheACM Bd. 19 (1976), Nr.8, S. 461 - 471 http://doi.acm.org/10.1145/360303.360333
+- SELinux:
+  - [LoSm01] LOSCOCCO, PETERA.; SMALLEY, STEPHEND.: Integrating Flexible Support for Security Policies into the Linux Operating System. In: COLE, C.(Hrsg.): Proceedings of the FREENIX Track: 2001 USENIX Annual Technical Conference. Berkeley, CA, USA: USENIX Association
+  - [MaMC06] MAYER, FRANK; MACMILLAN, KARL; CAPLAN, DAVID: SELinux by Example: Using Security Enhanced Linux (Prentice Hall Open Source Software Development Series). UpperSaddle River, NJ, USA: PrenticeHall PTR, 2006
+  - [Spen07] SPENNEBERG, RALF: SELinux & AppArmor: Mandatory Access Control für Linux einsetzen und verwalten. 1. Aufl. München: Addison-Wesley Verlag, 2007
+- Microsoft Singularity:
+  - [HLAA05] HUNT, GALEN; LARUS, JAMES; ABADI, MARTIN; AIKEN, MARK; BARHAM, PAUL; FÄHNDRICH, MANUEL; HAWBLITZEL, CHRIS; HODSON, ORION; U.A.: An Overview of the Singularity Project (Nr. MSR-TR-2005-135): Microsoft Research, Redmond, 2005 http://research.microsoft.com/pubs/52716/tr-2005-135.pdf
+- Intel SGX:
+  - [CoDe16] COSTAN, VICTOR; DEVADAS, SRINIVAS: Intel SGX Explained , 2016. Published: Cryptology ePrintArchive, Report 2016/086 https://eprint.iacr.org/2016/086.pdf
+  - [WeAK18] WEICHBRODT, NICO; AUBLIN, PIERRE-LOUIS; KAPITZA, RÜDIGER: Sgx-perf: A Performance Analysis Tool forIntel SGX Enclaves. In: Proceedingsofthe19th International Middleware Conference , Middleware ’18. New York, NY, USA: ACM, 2018. Rennes, France, S. 201 - 213 http://doi.acm.org/10.1145/3274808.3274824
+Referenzmonitor:
+  - [Ande72] ANDERSON, JAMESP.: Computer Security Technology Planning Study (Nr. ESD-TR-73-51). HanscomAFB, Bedford, MA, USA: Air Force Electronic Systems Division, 1972
+  - [Jaeg11] JAEGER, TRENT: Reference Monitor. In: VANTILBORG, H. C. A.; JAJODIA, S.(Hrsg.): Encyclopedia of Cryptography and Security. Boston, MA: Springer US, 2011, S. 1038 - 1040 http://www.cse.psu.edu/~trj1/cse543-s15/docs/refmon.pdf 

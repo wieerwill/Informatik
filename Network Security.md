@@ -126,6 +126,18 @@
   - [Beispiel: Authentifizierungsbeziehungen in Inter-Netzwerken](#beispiel-authentifizierungsbeziehungen-in-inter-netzwerken)
   - [Schlussfolgerung](#schlussfolgerung-1)
 - [Sicherheitsprotokolle der Datenübertragungsschicht](#sicherheitsprotokolle-der-datenübertragungsschicht)
+  - [Anwendungsbereich von Sicherheitsprotokollen der Verbindungsschicht](#anwendungsbereich-von-sicherheitsprotokollen-der-verbindungsschicht)
+  - [IEEE 802.1](#ieee-8021)
+    - [Die IEEE 802.1 Standardfamilie: Hintergrund und Ziele](#die-ieee-8021-standardfamilie-hintergrund-und-ziele)
+    - [IEEE 802.1Q](#ieee-8021q)
+    - [IEEE 802.1X](#ieee-8021x)
+    - [IEEE 802.1AE](#ieee-8021ae)
+  - [Punkt-zu-Punkt-Protokoll](#punkt-zu-punkt-protokoll)
+    - [Punkt-zu-Punkt-Tunneling-Protokoll (PPTP)](#punkt-zu-punkt-tunneling-protokoll-pptp)
+    - [PPTP: Freiwilliges vs. obligatorisches Tunneling](#pptp-freiwilliges-vs-obligatorisches-tunneling)
+    - [PPTP / PPP Proprietäre Erweiterungen und einige ,,Geschichte''](#pptp--ppp-proprietäre-erweiterungen-und-einige-geschichte)
+    - [Vergleich von PPTP und L2TP](#vergleich-von-pptp-und-l2tp)
+  - [Virtuelle private Netzwerke](#virtuelle-private-netzwerke)
 - [Die IPsec-Architektur für das Internet-Protokoll](#die-ipsec-architektur-für-das-internet-protokoll)
 - [Security protocols of the transport layer](#security-protocols-of-the-transport-layer)
 - [Sicherheitsaspekte der mobilen Kommunikation](#sicherheitsaspekte-der-mobilen-kommunikation)
@@ -2430,6 +2442,372 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
 - In diesem Kurs werden wir daher einige Beispiele für die Integration von Sicherheitsdiensten in Netzarchitekturen untersuchen, um die Auswirkungen der getroffenen Designentscheidungen besser zu verstehen
 
 # Sicherheitsprotokolle der Datenübertragungsschicht
+- IEEE 802.1Q, IEEE 802.1X & IEEE 802.1AE
+- Point-to-Point Protocol (PPP)
+- Point-to-Point Tunneling Protocol (PPTP)
+- Layer 2 Tunneling Protocol (L2TP)
+- Virtual Private Networks (VPN)
+
+## Anwendungsbereich von Sicherheitsprotokollen der Verbindungsschicht
+- Nach dem klassischen Verständnis des OSI-Modells stellt die Verbindungsschicht einen gesicherten Datenübertragungsdienst zwischen zwei gleichrangigen Einheiten bereit, die direkt über ein Kommunikationsmedium miteinander verbunden sind.
+- Ihre Hauptaufgaben sind:
+  - Fehlererkennung und -korrektur
+  - Medium Access Control (MAC, nicht zu verwechseln mit Message Authentication Code) für gemeinsam genutzte Medien, z. B. Ethernet usw.
+- Nicht alle heutigen Netzwerktechnologien passen in dieses Modell:
+  - Einwahlverbindungen zu einem Internetdienstanbieter
+  - Lösungen für virtuelle private Netzwerke (VPN)
+- In diesem Kurs geben wir uns mit der folgenden Definition zufrieden:
+  - Der Zweck eines Link-Layer-Sicherheitsprotokolls besteht darin, bestimmte Sicherheitseigenschaften der Link-Layer-PDUs zu gewährleisten, d. h. der PDUs der Protokollschicht, die die PDUs der Netzwerkschicht (z. B. IP) tragen.
+
+## IEEE 802.1
+### Die IEEE 802.1 Standardfamilie: Hintergrund und Ziele
+- Das Institute of Electrical and Electronics Engineers (IEEE) 802 LAN/MAN Standards Committee entwickelt Standards für lokale Netzwerke und Metropolitan Area Networks.
+- Die am weitesten verbreiteten Standards sind:
+  - Ethernet-Familie (802.3, allgemein als CSMA/CD bezeichnet),
+  - Drahtloses LAN (802.11)
+  - WIMAX (802.16)
+- Die IEEE 802.1-Standards:
+  - Können mit verschiedenen IEEE 802.x Technologien verwendet werden
+  - Definieren unter anderem verschiedene explizite Sicherheitsdienste oder Dienste, die zur Erreichung von Sicherheitszielen verwendet werden können
+
+### IEEE 802.1Q
+Ziele und Dienste
+- Der Standard IEEE 802.1Q:
+  - Ermöglicht die Schaffung von ,,miteinander verbundenen IEEE-802-Standard-LANs mit unterschiedlichen oder identischen Methoden der Medienzugriffskontrolle'', d. h. die Schaffung separater virtueller lokaler Netzwerke (VLANs) über eine physische Infrastruktur
+  - Obwohl es sich nicht um einen echten Sicherheitsstandard handelt, wird er häufig verwendet, um verschiedene Benutzer und Dienste voneinander zu trennen, z. B. nicht vertrauenswürdige Gastcomputer von Unternehmensservern, ohne eine neue Infrastruktur einzurichten
+  - Wird verwendet, um Zugangskontrolle auf Verbindungsebene zu realisieren
+
+Grundlegende Funktionsweise
+- Jedes Netzwerkpaket wird mit einem VLAN-Tag versehen, der eine 12-Bit-VLAN-ID enthält, die ein virtuelles Netzwerk identifiziert
+- Switches stellen sicher, dass Pakete mit bestimmten VLAN-IDs nur an bestimmte Netzwerk-Ports zugestellt werden, z.B. wird ein VLAN mit internen Firmeninformationen nicht an einen öffentlich zugänglichen Port zugestellt
+- Die VLAN-ID ist nicht kryptografisch geschützt!
+  - VLAN IDs müssen auf andere Weise, d.h. physikalisch, gesichert werden!
+  - Normalerweise werden VLAN-IDs am ersten vertrauenswürdigen Switch eingefügt und am letzten vertrauenswürdigen Switch auf dem Weg durch das Netzwerk entfernt
+
+Typisches Einführungsszenario
+- Normalerweise wird das vertrauenswürdige innere Netzwerk durch physische Mittel geschützt
+- Verschiedene Ports zum vertrauenswürdigen Kern werden VLANs zugeordnet
+- VLANs sind virtuell verbunden, dürfen aber nicht auf andere VLANs zugreifen
+- VLANs werden normalerweise gekoppelt durch
+  - Router, die mehrere Schnittstellen in den verschiedenen VLANs haben
+  - Router, die selbst zum vertrauenswürdigen Netzwerk gehören und selbst getaggte Frames empfangen und senden können (kann gefährlich sein, Wechselwirkung zwischen Routing und VLANs, siehe unten)
+- ![](Assets/NetworkSecurity-ieee802.1q-scenario.png)
+
+Weitere Diskussion
+- 802.1Q ermöglicht eine einfache Trennung verschiedener Sicherheitsdomänen innerhalb eines vertrauenswürdigen Netzwerks
+  - Ermöglicht auch die Priorisierung bestimmter VLANs (z. B. um die Verwaltung von Geräten zu ermöglichen, wenn der Rest des Netzes von einem Angreifer überflutet wird)
+  - VLAN-Tags können gestapelt werden, z. B. um verschiedene Kunden zu trennen, die eigene VLANs einrichten
+- Diskussion über die Sicherheit:
+  - Die Sicherheit hängt davon ab, dass kein einziges Gerät in der vertrauenswürdigen Domäne kompromittiert wird!
+  - Alle Switches müssen korrekt konfiguriert sein, d.h. kein einziger Switch darf eingehenden Verkehr aus einem nicht vertrauenswürdigen Netz zulassen, der bereits getaggt ist
+  - Paketfluten in einem VLAN können sich auch auf andere VLANs auswirken
+  - Router, die an mehreren VLANs teilnehmen, können auf einer Schnittstelle Pakete aus verschiedenen VLANs empfangen, aber
+  - Anstatt ein striktes Routing zu einer anderen Schnittstelle (z. B. dem Internet) durchzuführen, könnte ein Angreifer diesen Router nutzen, um über dieselbe Schnittstelle zurück in ein anderes VLAN zu routen (sogenannter Layer-2-Proxy-Angriff)
+  - Kann sogar funktionieren, wenn VLAN 1 und VLAN 2 das gleiche IP-Subnetz nutzen!
+
+### IEEE 802.1X
+Ziele
+- Der Standard IEEE 802.1X:
+  - Ziel ist es, ,,den Zugang zu den von einem LAN angebotenen Diensten auf diejenigen Benutzer und Geräte zu beschränken, die diese Dienste nutzen dürfen''
+- Definiert eine portbasierte Netzwerkzugriffskontrolle, um ein Mittel zur ,,Authentifizierung und Autorisierung von Geräten bereitzustellen, die an einen LAN-Port mit Punkt-zu-Punkt-Verbindungseigenschaften angeschlossen sind''.
+
+Kontrollierte und unkontrollierte Ports
+- IEEE 802.1X führt den Begriff der zwei logischen Ports ein:
+  - Der unkontrollierte Port ermöglicht die Authentifizierung eines Geräts
+  - Der kontrollierte Port ermöglicht es einem authentifizierten Gerät, auf LAN-Dienste zuzugreifen
+- ![](Assets/NetworkSecurity-ieee802.1X-ports.png)
+
+Rollen
+- Es werden drei Hauptrollen unterschieden:
+  - Ein Gerät, das den von einem IEEE 802.1X LAN angebotenen Dienst nutzen möchte, agiert als Supplicant, der den Zugriff auf den kontrollierten Port anfordert
+  - Der Anschlusspunkt an die LAN-Infrastruktur (z. B. eine MAC-Brücke) fungiert als Authentifikator, der den Supplicant auffordert, sich zu authentifizieren.
+  - Der Authentifikator prüft die vom Antragsteller vorgelegten Anmeldeinformationen nicht selbst, sondern leitet sie zur Überprüfung an seinen Authentifizierungsserver weiter.
+- Zugriff auf ein LAN mit IEEE 802.1X Sicherheitsmaßnahmen:
+  - Vor einer erfolgreichen Authentifizierung kann der Antragsteller auf den unkontrollierten Port zugreifen:
+    - Der Port ist unkontrolliert in dem Sinne, dass er den Zugriff vor der Authentifizierung erlaubt.
+    - Dieser Port erlaubt jedoch nur einen eingeschränkten Zugriff
+  - Die Authentifizierung kann durch den Supplicant oder den Authenticator initiiert werden.
+  - Nach erfolgreicher Authentifizierung wird der kontrollierte Port geöffnet.
+
+Sicherheitsprotokolle und Nachrichtenaustausch
+- IEEE 802.1X definiert keine eigenen Sicherheitsprotokolle, sondern befürwortet die Verwendung bestehender Protokolle:
+  - Das Extensible Authentication Protocol (EAP) kann eine grundlegende Geräteauthentifizierung realisieren [RFC 3748].
+  - Wenn die Aushandlung eines Sitzungsschlüssels während der Authentifizierung erforderlich ist, wird die Verwendung des EAP TLS Authentication Protocol empfohlen [RFC 5216].
+  - Außerdem wird empfohlen, den Authentifizierungsserver mit dem Remote Authentication Dial In User Service (RADIUS) [RFC 2865] zu realisieren.
+- Der Austausch von EAP Nachrichten zwischen Supplicant und Authenticator wird mit dem EAP over LANs (EAPOL) Protokoll realisiert:
+  - EAPOL definiert die Verkapselungstechniken, die verwendet werden sollen, um EAP-Pakete zwischen Supplicant Port Access Entities (PAE) und Authenticator PAEs in einer LAN-Umgebung zu übertragen.
+  - EAPOL-Rahmenformate wurden für verschiedene Mitglieder der 802.x-Protokollfamilie definiert, z. B. EAPOL für Ethernet, ...
+  - Zwischen Supplicant und Authenticator können RADIUS-Nachrichten verwendet werden
+
+Beispiel für eine 802.1X-Authentifizierung](Assets/NetworkSecurity-ieee802.1X-example.png)
+
+### IEEE 802.1AE
+Ziele
+- Der Standard IEEE 802.1AE wird auch als MAC-Sicherheit (MACsec) bezeichnet:
+  - Ermöglicht autorisierten Systemen, die sich an LANs in einem Netzwerk anschließen und diese miteinander verbinden, die Vertraulichkeit der übertragenen Daten zu wahren und Maßnahmen gegen Frames zu ergreifen, die von nicht autorisierten Geräten übertragen oder verändert werden. ''
+  - Schützt Pakete durch kryptografische Mittel zwischen Geräten, z. B. zwischen Switches oder einem Computer und einem Switch
+  - Setzt eine gültige Authentifizierung voraus und ist somit eine Erweiterung von 802.1X
+  - Kryptografische Schlüssel werden auch während der 802.1X-Authentifizierungsphase abgeleitet
+  - Kann Datenursprungsauthentifizierung und optional Vertraulichkeit durchführen
+  - Unterstützt AES-128 und AES-256 in GCM, wobei die Unterstützung von AES-128-GCM obligatorisch ist!
+
+Frame-Format
+- ![](Assets/NetworkSecurity-ieee802.1AE-frame.png)
+- Quell- und Zieladressen werden im Klartext gesendet
+- VLAN-Tag, Typfeld und Nutzdaten werden ebenfalls verschlüsselt
+- Ein neuer 8-16 Byte langer SecTAG wird eingefügt
+  - Beginnt mit 0x88e5, um ein Protokoll für ältere Geräte zu emulieren
+  - Enthält einen 4-Byte-Paketzähler (wird als IV verwendet, auch um Replay-Angriffe abzuwehren)
+- FCS wird durch einen kryptografischen MAC von 8-16 Byte ersetzt und von MACsec berechnet, optional kann ein zusätzlicher CRC-FCS für ältere Geräte hinzugefügt werden
+
+Diskussion über Sicherheit
+- MACsec erlaubt es, Verbindungen zu sichern, z.B. zwischen Gebäuden auf einem Campus
+- Es bietet keinen Schutz gegen kompromittierte Geräte!
+  - Wenn es in Kombination mit 802.1Q verwendet wird, kann die vertrauenswürdige Computerbasis immer noch ziemlich groß sein...
+  - Die Verwendung des GCM unterliegt den in Kapitel 5 beschriebenen potenziellen Problemen
+  - Derzeit unterstützen nur hochwertige Switches MACsec!
+
+## Punkt-zu-Punkt-Protokoll
+Zweck und Aufgaben
+- Große Teile des Internets beruhen auf Punkt-zu-Punkt-Verbindungen:
+  - Wide Area Network (WAN)-Verbindungen zwischen Routern
+  - Einwahlverbindungen von Hosts über Modems und Telefonleitungen
+- Protokolle für diesen Zweck:
+  - Serial Line IP (SLIP): keine Fehlererkennung, unterstützt nur IP, keine dynamische Adressvergabe, keine Authentifizierung [RFC 1055]
+  - Point-to-Point Protocol (PPP): Nachfolger von SLIP, unterstützt IP, IPX, ...
+  - ![](Assets/NetworkSecurity-Point-to-Point.png)
+- PPP [RFC 1661/1662]
+  - Schicht-2-Rahmenformat mit Rahmenbegrenzung und Fehlererkennung
+  - Kontrollprotokoll (Link Control Protocol, LCP) für Verbindungsaufbau, -test, -aushandlung und -abbau
+  - Separate Netzwerkkontrollprotokolle (NCP) für unterstützte Schicht-3-Protokolle
+
+Packet Format
+- Zeichenorientierte (statt bitorientierte) $\Rightarrow$ byteausgerichtete Rahmen
+- Code-Transparenz wird durch Zeichenstuffing erreicht
+- Normalerweise werden nur unnummerierte Frames übertragen, in Szenarien mit hoher Fehlerwahrscheinlichkeit (drahtlose Kommunikation) kann jedoch ein zuverlässigerer Modus mit Sequenznummern und erneuten Übertragungen ausgehandelt werden
+- Unterstützte Protokolle für das Nutzdatenfeld sind u.a.: IP, IPX, Appletalk
+- Wenn nicht anders ausgehandelt, beträgt die maximale Nutzdatengröße 1500 Byte.
+- Zusätzliche Aushandlung unterstützt kleinere Paketköpfe
+- ![](Assets/NetzwerkSicherheit-Punkt-zu-Punkt-Format.png)
+
+Eine typische PPP-Verbindung
+- Nutzungsszenario ,,Internetzugang eines PCs über Modem'':
+  - Der Benutzer ruft den Internet Service Provider (ISP) über ein Modem an und stellt eine ,,physikalische'' Verbindung über den ,,Plain Old Telephone Service'' (POTS) her.
+  - Anrufer sendet mehrere LCP-Pakete in PPP-Frames, um die gewünschten PPP-Parameter auszuwählen
+  - Sicherheitsspezifische Aushandlung (siehe unten)
+  - Austausch von NCP-Paketen zur Konfiguration der Netzwerkschicht:
+    - z.B. Konfiguration von IP einschließlich dynamischer Zuweisung einer IP-Adresse über Dynamic Host Configuration Protocol (DHCP)
+  - Der Anrufer kann wie jeder andere Host mit einer festen Verbindung zum Internet beliebige Internetdienste nutzen
+  - Beim Verbindungsabbau werden die zugewiesene IP-Adresse und die Netzschichtverbindung freigegeben
+  - Die Schicht-2-Verbindung wird über LCP freigegeben und das Modem baut die ,,physikalische'' Verbindung ab
+
+Link Control Protocol
+- Rahmenformat des Link Control Protocol (LCP):
+  - Code: configure-request, configure-ack, configure-nack, configure-reject, terminate-request, terminate-ack, code-reject, protocol-reject, echo-request, echo-reply, discard-request
+  - Länge: gibt die Länge des LCP-Pakets einschließlich des Codefelds usw. an
+  - Daten: null oder mehr Oktette befehlsspezifischer Daten
+  - ![](Assets/NetworkSecurity-Point-to-Point-LCP.png)
+- Die Konfigurationsprimitive von LCP ermöglichen die Konfiguration der Verbindungsschicht:
+  - Es gibt verschiedene Optionen für dieses Primitiv zur Konfiguration verschiedener Aspekte (max. Empfangseinheit, Protokollkompression, Authentifizierung, ...)
+
+Sicherheitsdienste
+- Die ursprüngliche Version von PPP [RFC 1661] schlägt die optionale Ausführung eines Authentifizierungsprotokolls nach der Verbindungsaufbauphase vor:
+  - Falls erforderlich, wird die Authentifizierung von einer Peer-Entität über einen LCP Configuration-Request am Ende der Verbindungsaufbauphase gefordert
+  - Ursprünglich sind zwei Authentifizierungsprotokolle definiert worden:
+    - Passwort-Authentifizierungsprotokoll (PAP)
+    - Challenge-Handshake-Authentifizierungsprotokoll (CHAP)
+  - Inzwischen ist ein erweiterbares Protokoll definiert worden:
+    - Erweiterbares Authentifizierungsprotokoll (EAP)
+    - PPP EAP Transport Level Security Protocol (PPP-EAP-TLS)
+- Außerdem kann nach der Authentifizierung eine Verschlüsselung ausgehandelt werden:
+  - Protokolle:
+    - Encryption Control Protocol (ECP) zur Aushandlung
+    - PPP DES-Verschlüsselungsprotokoll (DESE)
+    - PPP-Dreifach-DES-Verschlüsselungsprotokoll (3DESE)
+
+Authentifizierungsprotokolle
+- Passwort-Authentifizierungs-Protokoll (PAP):
+  - PAP wurde 1992 in RFC 1334 definiert.
+  - Das Protokoll ist sehr einfach:
+    - Voraussetzung: der Authentifikator kennt das Passwort der Peer-Entität
+    - Am Ende der Verbindungsaufbauphase fordert eine Entität, Authenticator genannt, die Peer-Entität auf, sich mit PAP zu authentifizieren
+    - Die Peer-Entität sendet eine Authenticate-Request-Nachricht mit ihrer Peer-ID und ihrem Passwort
+    - Der Authentifikator prüft, ob die bereitgestellten Informationen korrekt sind und antwortet entweder mit einem Authenticate-ack oder einem Authenticate-nack
+  - Da das Protokoll keinen kryptographischen Schutz bietet, ist es unsicher.
+  - PAP wird in den aktualisierten RFCs für die PPP-Authentifizierung nicht erwähnt [RFC1994].
+- Challenge Handshake Authentication Protocol (CHAP):
+  - CHAP ist ebenfalls in RFC 1334 und RFC 1994 definiert.
+  - Es verwirklicht ein einfaches Challenge-Response-Protokoll:
+    - Voraussetzung: Authentifikator und Peer-Entität teilen ein Geheimnis
+    - Nach der Verbindungsaufbauphase sendet der Authentifikator (A) eine Challenge-Nachricht, die einen Identifikator für diese Challenge, eine Zufallszahl $r_A$ und seinen Namen enthält, an die Peer-Entität (B): $A \rightarrow B: (1, Identifikator, r_A, A)$
+    - Die Peer-Entität berechnet eine kryptografische Hash-Funktion über ihren Namen, das gemeinsame Geheimnis $K_{A,B}$ und die Zufallszahl $r_A$ und sendet die folgende Nachricht: $B \rightarrow A: (2, Kennung, H(B, K_{A,B}, r_A), B)$
+    - Beim Empfang dieser Nachricht berechnet der Authentifikator den Hashwert neu und vergleicht ihn mit dem empfangenen Wert; wenn beide Werte übereinstimmen, antwortet er mit einer Erfolgsmeldung
+    - RFC 1994 legt fest, dass MD5 als Hash-Funktion unterstützt werden muss, aber die Verwendung anderer Hash-Funktionen kann ausgehandelt werden
+- CHAP-Nachrichtenformat:
+  - Code: 1 ~ Herausforderung / 2 ~ Antwort / 3 ~ Erfolg / 4 ~ Fehler
+  - Identifier: ein Oktett, das bei jeder gesendeten Challenge geändert werden muss
+  - Länge: die Gesamtlänge der CHAP-Nachricht in Oktetten
+  - Value Size: ein Oktett, das die Länge des Wertes angibt
+  - Wert: enthält die zufällige Herausforderung / die Antwort auf die Herausforderung
+  - Name: ein oder mehrere Oktette, die das System identifizieren, das das Paket erstellt hat; die Größe des Namens wird anhand des Längenfeldes berechnet
+  - ![](Assets/NetworkSecurity-Point-to-Point-CHAP1.png)
+  - Nachricht:
+    - Null oder mehr Oktette mit implementierungsabhängigem Inhalt
+    - Der Inhalt soll für den Menschen lesbar sein und hat keinen Einfluss auf die Funktionsweise des Protokolls
+  - ![](Assets/NetworkSecurity-Point-to-Point-CHAP2.png)
+- Erweiterbares Authentifizierungsprotokoll (EAP):
+  - EAP ist ein allgemeines Protokoll für die PPP-Authentifizierung, das mehrere Authentifizierungsmethoden unterstützt [RFC2284].
+  - Die Hauptidee hinter EAP ist es, ein gemeinsames Protokoll bereitzustellen, um komplexere Authentifizierungsmethoden als ,,1 Frage + 1 Antwort'' durchzuführen.
+  - Das Protokoll bietet grundlegende Primitive:
+    - Anfrage, Antwort: weiter verfeinert durch Typfeld + typspezifische Daten
+    - Success, Failure: zur Angabe des Ergebnisses eines Authentifizierungsaustauschs
+  - Typ-Felder:
+    - Identität
+    - Benachrichtigung
+    - Nak (nur Antwort, zur Beantwortung inakzeptabler Anfragetypen)
+    - MD5 Challenge (dies entspricht CHAP)
+    - One-Time Password (OTP): definiert in [RFC2289]
+    - Generische Token-Karte
+    - EAP-TLS
+- Einmaliges Kennwort (One-Time Password, OTP):
+  - Die Grundidee von OTP besteht darin, ein ,,Passwort'' zu übermitteln, das nur für einen Durchlauf eines Authentifizierungsdialogs verwendet werden kann
+  - Erstmalige Einrichtung:
+    - Der Authentifikator A sendet einen Seed-Wert rA und die Peer-Entität B verkettet diesen mit seinem Passwort und berechnet einen Hash-Wert: $PW_N = H^N(r_A, password_B)$
+    - Das Paar $(N, PW_N)$ wird ,,sicher'' an den Authentifikator übertragen und beim Authentifikator gespeichert.
+  - Dialog zur Authentifizierung:
+    - $A\rightarrow B: N - 1$
+    - $B\rightarrow A: PW_{N-1} := H^{N-1}(r_A, Passwort_B)$
+    - A prüft, ob $H(PW_{N-1}) = PW_N$, und speichert $(N-1, PW_{N-1})$ als neue Authentifizierungsinformation für B
+  - Sicherheit: Um dieses Verfahren zu brechen, müsste ein Angreifer ein PWN abhören und $H^{-1}(PW_N)$ berechnen, was unpraktisch ist.
+- Generische Token-Karte:
+  - Im Grunde ein Challenge-Response-Dialog
+  - Eine Token-Karte wird verwendet, um eine Antwort auf eine Herausforderung zu berechnen:
+    - Die Herausforderung wird dem Benutzer präsentiert, der sie in sein Token-Card-Gerät eintippen muss.
+    - Die Token-Karte berechnet die Antwort und zeigt sie an.
+    - Der Benutzer gibt die Antwort in das System ein, das sie als Antwort auf die Aufforderungsnachricht sendet.
+- PPP-EAP-TLS:
+  - TLS steht für Transport Layer Security [RFC 2246].
+  - Es wird also der Authentifizierungsdialog von TLS ausgeführt
+  - Dieser Dialog wird in Kapitel 12 über die Sicherheit der Transportschicht im Detail erläutert.
+
+Verschlüsselungsprotokolle
+- Nach dem Verbindungsaufbau und der Authentifizierungsphase kann die Verschlüsselung für eine PPP-Verbindung ausgehandelt werden:
+  - Das Encryption Control Protocol (ECP) [RFC1968] ist für die Konfiguration und Aktivierung von Datenverschlüsselungsalgorithmen an beiden Enden der PPP-Verbindung zuständig:
+    - ECP verwendet das gleiche Rahmenformat wie LCP und führt zwei neue Primitive ein: Reset-Request und Reset-Ack zur Anzeige von Entschlüsselungsfehlern unabhängig für jede Richtung (nützlich für die kryptographische Resynchronisation)
+    - Eine bestimmte Verschlüsselungsmethode wird mit dem configure-Primitiv ausgehandelt, das eine Option zur Angabe von DESE, 3DESE, Proprietär usw. enthält.
+    - Proprietäre Verschlüsselungsprotokolle werden durch einen registrierten OUI (Organizational Unit Identifier) + einen herstellerspezifischen Wert identifiziert.
+    - Genau ein ECP-Paket wird im PPP-Informationsfeld eines Link-Layer-Pakets transportiert
+    - ECP-Pakete werden durch das PPP-Protokollfeld identifiziert:
+      - 0x8053 für ,,Standard'' Betrieb
+      - 0x8055 für die Verschlüsselung einzelner Verbindungsdaten auf mehreren Verbindungen zum selben Ziel
+- Das PPP DES Encryption Protocol (DESE):
+  - In diesem Kurs wird nur die aktualisierte Version DESEv2 [RFC2419] behandelt
+  - ![](Assets/NetworkSecurity-Point-to-Point-DESE.png)
+  - DESEv2 wird mit einer ECP-Konfigurationsanforderungsnachricht ausgehandelt:
+    - Code: 1 ~ configure request
+    - Identifier: ändert sich mit jeder neuen Anfrage
+    - Länge: Gesamtlänge der Configure-Request-Nachricht
+    - Type: 3 ~ DESEv2
+    - Länge': 10 (die Länge dieser Konfigurationsoption)
+    - Initial Nonce: ein Initialisierungsvektor für DES im CBC-Modus (8 Oktette)
+- PPP DESE v2 Nachrichtenformat:
+  - Adresse: 0x11111111 (bei HDLC-ähnlichem Framing)
+  - Steuerung: 0x00000011 (bei HDLC-ähnlicher Rahmung)
+  - Protokoll-ID: 0x0053 ~ DESE (Standard) / 0x0055 ~ DESE (individuelle Verbindung)
+  - Sequenznummer: anfänglich 0, diese Nummer wird von der verschlüsselnden Stelle bei jedem gesendeten Paket erhöht
+  - Chiffriertext: die verschlüsselten Protokoll- und Informationsfelder eines PPP-Pakets
+    - Nachrichten werden vor der Verschlüsselung auf ein Vielfaches von 8 Oktetten aufgefüllt
+    - die Verschlüsselung erfolgt mit DES im CBC-Modus
+  - ![](Assets/NetworkSecurity-Point-to-Point-DESE2.png)
+- PPP 3DES Encryption Protocol (3DESE):
+  - PPP 3DESE [RFC2420] ist dem PPP DESE sehr ähnlich
+  - PPP 3DESE wird mit einer Configure-Request-Nachricht ausgehandelt, wobei das Type-Feld der Option auf 2 gesetzt ist (~ 3DESE)
+  - Die Verschlüsselung der PPP-Nutzdaten erfolgt wie bei DESE, mit dem Unterschied, dass 3DES mit 3 verschiedenen Schlüsseln verwendet wird
+- Alle PPP-Verschlüsselungsprotokolle gehen davon aus, dass vor der Verschlüsselungsphase ein Sitzungsschlüssel für die Verschlüsselung/Entschlüsselung von PPP-Paketen vereinbart wurde:
+  - Diese Annahme ist sinnvoll, da die Festlegung des Sitzungsschlüssels eine Aufgabe ist, die während der Authentifizierungsphase erfüllt werden sollte.
+  - Allerdings unterstützt nur das PPP-EAP-TLS-Authentifizierungsprotokoll den Aufbau von Sitzungsschlüsseln.
+
+### Punkt-zu-Punkt-Tunneling-Protokoll (PPTP)
+- PPP wurde ursprünglich für den Betrieb zwischen ,,direkt'' verbundenen Einheiten entwickelt, d.h. Einheiten, die eine gemeinsame Schicht-2-Verbindung haben
+  - Beispiel: ein PC und ein Einwahlrouter eines Internetanbieters, die über das Telefonnetz mittels Modem verbunden sind
+- Die Grundidee von PPTP besteht darin, die Reichweite des Protokolls auf das gesamte Internet auszudehnen, indem der Transport von PPP-PDUs in IP-Paketen definiert wird
+  - Die Nutzlast von PPTP-PDUs sind also PPP-Pakete (ohne schicht-2-spezifische Felder wie HDLC-Flags, Bit-Einfügungen, Steuerzeichen, CRC-Fehlerprüfwerte usw.)
+  - PPP-Pakete werden in GRE-Pakete (generische Routing-Kapselung) eingekapselt, die wiederum in IP-Pakete eingekapselt werden:
+
+|                                         |
+| --------------------------------------- |
+| Media Header (e.g. Ethernet MAC header) |
+| IP Header                               |
+| GRE V.2 Header                          |
+| PPP Packet                              |
+
+### PPTP: Freiwilliges vs. obligatorisches Tunneling
+- PPTP realisiert einen ,,Tunnel'' über das Internet, der PPP-Pakete überträgt.
+- Ein solcher Tunnel kann zwischen verschiedenen Einheiten realisiert werden:
+  - Einem Client-PC und einem PPTP Remote Access Server (RAS):
+    - Dies wird auch als freiwilliges Tunneling bezeichnet, da der Client-PC aktiv an der PPTP-Verarbeitung beteiligt ist.
+    - Diese Variante ermöglicht die sichere Kommunikation zwischen einem Client-PC und einem bestimmten Subnetz unter Verwendung beliebiger Zugangs- und Zwischennetze
+  - Ein Point of Presence (POP) eines ISP und ein PPTP-Fernzugangsserver:
+    - Dies wird auch als obligatorisches Tunneling bezeichnet, da der Client-PC nicht an der Entscheidung beteiligt ist, ob PPTP verwendet wird oder nicht.
+    - Auf diese Weise lässt sich Sicherheit auf Subnetzebene realisieren, aber keine echte End-to-End-Sicherheit zwischen dem Client-PC und dem RAS
+    - Beim obligatorischen Tunneling fungiert der ISP POP als Proxy-Client für den RAS
+
+Obligatorische Tunneling-Protokollschichten
+- ![](Assets/NetworkSecurity-PPTP-Tunneling-Protocol.png)
+- ![](Assets/NetworkSecurity-PPTP-Tunneling-Protocol2.png)
+- ![](Assets/NetworkSecurity-PPTP-Packet-Construction-at-Client.png)
+  
+### PPTP / PPP Proprietäre Erweiterungen und einige ,,Geschichte''
+- PPTP hat sich vor allem aufgrund der Unterstützung durch Microsoft durchgesetzt:
+  - Es wurde unter aktiver Beteiligung von Microsoft entwickelt und ist in [RFC2637] dokumentiert.
+  - Microsoft implementierte es als Teil seines Remote Access Service (RAS)
+- Microsoft hat weitere ,,proprietäre'' Erweiterungen für PPP spezifiziert:
+  - Microsoft PPP CHAP-Erweiterungen [RFC2433]
+  - Microsoft Point to Point Encryption Protocol [RFC3078]
+- Allerdings wurde eine Reihe von Schwachstellen in PPTP Version 1 und auch in einer verbesserten Version 2 entdeckt [SM98a, SMW99a]:
+  - Ein allgemeiner Konsens, PPTP als Standardprotokoll zu übernehmen, konnte in den
+in den IETF-Arbeitsgruppen nicht erreicht werden.
+  - Außerdem wurde ein ähnliches Protokoll (Layer 2 Forwarding, L2F) von Cisco als konkurrierender Ansatz vorgeschlagen
+  - Infolgedessen wurde ein Kompromiss gefunden, der die Vorteile beider Vorschläge in einem einzigen Protokoll zusammenfasst: Layer 2 Tunneling Protocol (L2TP)
+
+### Vergleich von PPTP und L2TP
+- Beide Protokolle:
+  - verwenden PPP, um eine anfängliche Umhüllung für Benutzerpakete bereitzustellen
+  - erweitern das PPP-Modell, indem sie erlauben, dass die Layer-2- und PPP-Endpunkte
+sich auf verschiedenen Geräten befinden
+  - unterstützen freiwilliges und obligatorisches Tunneling
+- Zugrundeliegendes Netzwerk:
+  - PPTP benötigt ein IP-Netzwerk für den Transport seiner PDUs
+  - L2TP unterstützt verschiedene Technologien: IP (unter Verwendung von UDP), permanente virtuelle Schaltungen (PVCs) von Frame Relay, virtuelle Schaltungen (VCs) von X.25 oder ATM VCs
+- PPTP kann nur einen einzigen Tunnel zwischen Endpunkten unterstützen, L2TP ermöglicht die Verwendung mehrerer Tunnel zwischen Endpunkten
+  - L2TP ermöglicht z. B. die Erstellung verschiedener Tunnel für unterschiedliche Dienstqualitäten
+- Beide Protokolle bieten eine Header-Kompression:
+  - Mit Header-Kompression kommt L2TP mit 4 Byte Overhead aus, im Vergleich zu 6 Byte bei PPTP.
+- L2TP ermöglicht eine Tunnelauthentifizierung, während PPTP dies nicht tut.
+
+## Virtuelle private Netzwerke
+- Verschiedene Definitionen des Begriffs virtuelles privates Netzwerk (VPN):
+  - Ein privates Netz, das innerhalb einer öffentlichen Netzinfrastruktur, wie dem globalen Internet, aufgebaut ist.
+  - Eine Kommunikationsumgebung, in der der Zugang kontrolliert wird, um Peer-Verbindungen nur innerhalb einer definierten Interessengemeinschaft zuzulassen, und die durch eine Form der Partitionierung eines gemeinsamen zugrundeliegenden Kommunikationsmediums aufgebaut ist, wobei dieses zugrundeliegende Kommunikationsmedium dem Netz Dienste auf nicht-exklusiver Basis bereitstellt
+  - Ein logisches Computernetzwerk mit eingeschränkter Nutzung, das aus den Systemressourcen eines relativ öffentlichen, physischen Netzwerks (z. B. dem Internet) aufgebaut ist, oft unter Verwendung von Verschlüsselung und oft durch Tunneln von Verbindungen des virtuellen Netzwerks über das reale Netzwerk [RFC2828].
+  - Anmerkung: Die beiden letzteren Definitionen beinhalten explizit Sicherheitseigenschaften (kontrollierter Zugriff, Verschlüsselung), die erste hingegen nicht.
+
+> ,,Sicher, es ist viel billiger als eigene Frame-Relay-Verbindungen, aber es funktioniert ungefähr so gut, wie wenn man sich auf dem Times Square Watte in die Ohren steckt und so tut, als wäre sonst niemand da.'' (Wired Magazine Feb. 1998)
+
+Techniken zum Aufbau virtueller privater Netze
+- Nutzung dedizierter Verbindungen (Cut-Through-Mechanismen):
+  - Virtuelle Verbindungen über ATM oder Frame Relay
+  - Multi-Protokoll über ATM (MPOA)
+  - Multiprotokoll-Etiketten-Vermittlung (MPLS)
+  - Sicherheitsdienste für Link Layer VPNs können effizient im Link Layer Protokoll realisiert werden; ein Beispiel ist die ATM Security Specification [ATM99a]
+- Kontrolliertes Routenleck / Routenfilterung:
+  - Grundidee: Kontrolle der Routenausbreitung dahingehend, dass nur bestimmte Netze Routen für andere Netze erhalten
+  - Damit soll ,,security by obscurity'' realisiert werden (also kein wirklicher Schutz!)
+- Tunneln:
+  - Generische Routing-Kapselung (GRE)
+  - PPP / PPTP / L2TP
+  - IPSec-Sicherheitsarchitektur für das Internet-Protokoll
+
 # Die IPsec-Architektur für das Internet-Protokoll
 # Security protocols of the transport layer
 # Sicherheitsaspekte der mobilen Kommunikation
@@ -2516,4 +2894,21 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
 - [NYH+05] NEUMAN, C.; YU, T.; HARTMAN, S. ; RAEBURN, K.: The Kerberos Network Authentication Service (V5)_. 2005. - RFC 4120, IETF, Status: Standard, https://tools.ietf.org/html/rfc4120
 - [OR87] OTWAY, D.; REES, O.: Efficient and Timely Mutual Authentication. In: Operating Systems Review, 1987
 - [Pat97] PATEL, S.: Number Theoretic Attacks On Secure Password Schemes. In: IEEE Symposium on Security and Privacy, 1997
-- [Sch05] SCHAAD, J.: _Internet X.509 Public Key Infrastructure Certificate Request Message Format (CRMF)_. September 2005. - RFC 4211, IETF, Status: Proposed Standard, https://tools.ietf.org/html/rfc4211
+- [Sch05] SCHAAD, J.: Internet X.509 Public Key Infrastructure Certificate Request Message Format (CRMF). September 2005. - RFC 4211, IETF, Status: Proposed Standard, https://tools.ietf.org/html/rfc4211
+- [RFC1661] W. Simpson. _The Point-to-Point Protocol (PPP)._ RFC 1661, 1994.
+- [RFC1968] G. Meyer. _The PPP Encryption Control Protocol (ECP)._ RFC 1968, 1996.
+- [RFC1994] W. Simpson. _PPP Challenge Handshake Authentication Protocol (CHAP)._ RFC 1994 (obsoletes RFC 1334), 1996.
+- [RFC2284] L. Blunk, J. Vollbrecht. _PPP Extensible Authentication Protocol (EAP)._ RFC 2284, 1998.
+- [RFC2289] N. Haller, C. Metz, P. Nesser, M. Straw. _A One-Time Password System._ RFC 2289, 1998.
+- [RFC2341] A. Valencia, M. Littlewood, T. Kolar. _Cisco Layer Two Forwarding Protocol (L2F)._ RFC 2341, 1998.
+- [RFC2419] K. Sklower, G. Meyer. _The PPP DES Encryption Protocol, Version 2 (DESE-bis)._ RFC 2419 (obsoletes RFC 1969), 1998.
+- [RFC2420] H. Kummert. _The PPP Triple-DES Encryption Protocol (3DESE)._ RFC 2420, 1998.
+- [RFC2433] G. Zorn, S. Cobb. _Microsoft PPP CHAP Extensions._ RFC 2433, 1998.
+- [RFC2637] K. Hamzeh, G. Pall , W. Verthein, J. Taarud, W. Little, G. Zorn. _Point-to-Point Tunneling Protocol (PPTP)._ RFC 2637, 1999.
+- [RFC2661] W. Townsley, A. Valencia, A. Rubens, G. Pall, G. Zorn, B. Palter. _Layer Two Tunneling Protocol (L2TP)._ RFC 2661, 1999.
+- [RFC2828] R. Shirey. _Internet Security Glossary._ RFC 2828, 2000. 
+- [RFC3078] G. Pall, G. Zorn. _Microsoft Point to Point Encryption Protocol (MPPE)._ RFC 3078, 2001.
+- [SM98a] B. Schneier, Mudge. _Cryptanalysis of Microsoft’s Point-to-Point Tunneling Protocol (PPTP)._ Proceedings of the 5th ACM Conference on Communications and Computer Security, ACM Press, 1998.
+- [SMW99a] B. Schneier, Mudge, D. Wagner. _Cryptanalysis of Microsoft's PPTP Authentication Extensions (MSCHAPv2)._ Counterpane Systems, 1999.
+- [FH98a] P. Ferguson, G. Huston. _What is a VPN?_ The Internet Protocol Journal, Cisco Systems. 1998.
+- [ATM99a] ATM Forum. _ATM Security Specification Version 1.0._ AF-SEC-0100.000,

@@ -38,8 +38,8 @@
 
 \title {Versuchsprotokoll}
 \author{}
-\date{\today\\*[60pt]}
-\maketitle  %Erstellt das Titelblatt wie oben definiert
+\date{16.12.2021\\*[60pt]}
+\maketitle
 
 %Einstellungen zur Kopf- und Fußzeile
 \pagestyle{fancy}
@@ -48,19 +48,70 @@
 \newpage
 
 \section{Kontrollfragen}
-\begin{itemize}
+\begin{enumerate}
     \item Erklären Sie die Rechenschritte in einem neuronalen Netz.
+          \begin{itemize}
+              \item Signaleingang über Axon an Eingang des Neurons
+              \item Summe aller Eingänge mti Aktivierungsfunktion (Soma) verrechnen
+              \item Ausgabe der Aktivierungsfunktion mit Ausgabefunktion (Axonhügel) berechnen
+              \item Ergebnis der Ausgabefunktion auf Ausgang legen 
+          \end{itemize}
     \item Nennen Sie drei Aktivierungsfunktionen von neuronalen Netzen.
+          \begin{itemize}
+              \item Skalarprodukt $\sum_{j=1}^n w_{ij} * x_J$
+              \item Sigma-Pi $\sum_{j=1}^n (w_{ij} * \prod_{w=1}^p x_{jw})$
+              \item Manhatten $\sum_{j=1}^n |x_j-w_{ji}|$
+              \item Euklidische Distanz $\sqrt{\sum_{j=1}^n (x_j-w_{ji})^2}$
+              \item Mahalanobis $\sqrt{(x-w_i)^T *C_i^{-1} * (x-w_i)}$ mit $C_i=\frac{1}{n} \sum_{p=1}^N (x^p-w_i)*(x^p-w_i)^T$
+              \item Maximum-Distanz: $max_{1\leq j\leq n} |x_j-w_{ij}|$
+              \item Minimum-Distanz: $min_{1\leq j\leq n} |x_j-w_{ij}|$
+          \end{itemize}
     \item Nennen Sie verschiedene Arten von Layern in neuronalen Netzen.
+          \begin{itemize}
+              \item Input-Layer: Neuronen, die von der Aussenwelt Signale empfangen
+              \item Hidden-Layer: Neuronen, die sich im inneren des neuronalen Netzes befinden und eine interne Repräsentation der Aussenwelt enthalten
+              \item Output-Layer: Neuronen, die Signale an die Aussenwelt abgeben
+          \end{itemize}
     \item Warum ist es nicht sinnvoll eine lineare Funktion $(y=\alpha x+b)$ als Aktivierungsfunktion in den verdeckten Schichten eines neuronalen Netzes zu verwenden?
+          \begin{itemize}
+              \item
+          \end{itemize}
     \item Was verstehen Sie unter Backpropagation?
+          \begin{itemize}
+              \item Im Wesentlichen ist Backpropagation ein Algorithmus, der zur schnellen Berechnung von Ableitungen verwendet wird
+              \item auch Fehlerrückführung oder Rückwärtspropagierung
+              \item um einen Gradientenabstieg in Bezug auf Gewichtungen zu berechnen
+              \item gewünschte Ausgaben werden mit erreichten Systemausgaben verglichen, und dann werden die Systeme durch Anpassung der Verbindungsgewichte so eingestellt, dass der Unterschied zwischen den beiden so gering wie möglich ist
+              \item der Algorithmus hat seinen Namen daher, dass die Gewichtungen rückwärts aktualisiert werden, von der Ausgabe zur Eingabe
+          \end{itemize}
     \item Warum ist eine Stufenfunktion (Rosenblatt-Perceptron) ungünstig für den Backpropagation-Algorithmus?
+          \begin{itemize}
+              \item Anpassung schlecht möglich
+          \end{itemize}
     \item Was ist die Learning Rate? Was passiert, wenn sie zu hoch oder niedrig gewählt wird?
+          \begin{itemize}
+              \item Sein Wert bestimmt, wie schnell das Neuronale Netz zu Minima konvergieren würde
+              \item wenn er zu niedrig ist, ist der Konvergenzprozess sehr langsam
+              \item wenn er zu hoch ist, ist die Konvergenz schnell, aber es besteht die Möglichkeit, dass der Verlust überschreitet
+          \end{itemize}
     \item Was verstehen Sie unter Augmentation? Nennen Sie Beispiele für Augmentation.
+          \begin{itemize}
+              \item mit Hilfe von verschiedenen Prozessen die Originalbilddaten verändern
+              \item Beispielsweise kann ein Bild gedreht werden oder es ist möglich einen Filter über das Bild zu legen
+          \end{itemize}
     \item Warum ist es bei neuronalen Netzen besonders wichtig, die Testdaten beim Training außen vor zu lassen?
+          \begin{itemize}
+              \item Um einen korrekten Vergleich mit anderen Netzen und unabhängigkeit vom Training nachzuweisen
+          \end{itemize}
     \item Wie können Sie die Güte eines neuronalen Netzes bewerten?
+          \begin{itemize}
+              \item 
+          \end{itemize}
     \item Warum ist es potentiell kritisch, wenn mit einem neuronalen Netz ein unscharfes Bild scharf und hochaufgelöst gemacht wird?
-\end{itemize}
+          \begin{itemize}
+              \item kleine fehlerhafte oder ungenaue Bild-Sektionen können zu größeren Fehlern und Abweichungen von dem Original führen die durch die Hochauflösung überdeckt oder verschoben werden
+          \end{itemize}
+\end{enumerate}
 
 \section{Versuchsdurchführung}
 \subsection{Grundkenntnisse zur Anwendung von Deep Learning}

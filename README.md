@@ -80,6 +80,10 @@ Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort ("[Wir sind] n
 
 Hier gehts zum: [Antrag auf Kopie einer Prüfung](Antrag%20auf%20Kopie%20einer%20Prüfung.pdf)
 
+## Auskunft über deine Daten
+Jeder hat das Recht einzusehen, welche Daten die Universität über einen speichert. Nutze dies um dich vollumfänglich zu informieren und auch über diesen Weg eine Kopie deiner Klausuren mit Aufgabenstellung zu erhalten. Eine Vorlage für eine Mail oder Brief haben wir dir hier hinterlegt: [Auskunft nach Art. 15 DSGVI](Auskunft%20nach%20Art.%2015%20DSGVO.txt). Fülle einfach die mit XXXXXXXX gekennzeichneten Felder, sende die Mail (oder Brief) mit dem Betreff "Auskunft nach Art. 15 DSGVO" und innerhalb eines Monats muss sich die Universität zurückmelden. 
+Zuständig für den Datenschutz an der TU Ilmenau ist der Datenschutzbeauftragte den du über seine Mail [datenschutz@tu-ilmenau.de](mailto:datenschutz@tu-ilmenau.de) erreichen kannst.
+
 ## Mitmachen
 Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet haben. Vorraussetzung für diese Aktionen ist es, ein GitHub-Konto zu besitzen.
 - Erstelle ein `issue`. Gehe davor die offene `issues` durch (oder überlege dir welches Fach/Seminar noch fehlt)
@@ -90,10 +94,11 @@ Eine kleine Beschreibung für Leute die noch nie auf Github zusammengearbeitet h
 - Erstelle ein `pull request` damit deine Änderungen in dieses Repository übernommen werden können. Dies kannst du über dein Github Dashboard machen.
 
 ## Bild- und Textrechte
-Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt oder unter ausführlicher Quellangabe oder unter dem Vorlesungstitel verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt, wir arbeiten mit bestem Wissen und Gewissen; ob der Professor abgeschrieben hat können wir nicht vorhersehen. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandhabt. Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
+Der Inhalt aller vorhandenen Dokumente beruht auf den Mitschriften besuchter Vorlesungen. Bilder werden von uns selbst erstellt, unter ausführlicher Quellangabe oder unter dem Vorlesungstitel verwendet. Es werden keine Bücher kopiert oder anderweitig Copyright verletzt, wir arbeiten mit bestem Wissen und Gewissen; ob der Professor abgeschrieben hat können wir nicht vorhersehen. Die Verletzung des Copyright oder anderer Rechte Dritter wird mit einem Ausschluss aus dem Repository gehandhabt. 
+Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir werden jedem Fall nachgehen.
 
 ## Lizenz
-Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt ihr [hier](LICENSE) nachlesen.
+Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt in der [Lizenz](LICENSE) nachlesen.
 
 ## Hinweis für Dozenten
 Wir freuen uns immer helfen und zusammenarbeiten zu können. Für Fragen und Hinweise können Sie uns jederzeit kontaktieren. Sollten Sie ein Problem mit Persönlichkeits- oder Urheberrechten finden geben Sie uns bitte umgehend bescheid (per Email oder Issue), wir nehmen jeden Hinweis ernst.

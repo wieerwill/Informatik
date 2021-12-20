@@ -139,6 +139,73 @@
     - [Vergleich von PPTP und L2TP](#vergleich-von-pptp-und-l2tp)
   - [Virtuelle private Netzwerke](#virtuelle-private-netzwerke)
 - [Die IPsec-Architektur für das Internet-Protokoll](#die-ipsec-architektur-für-das-internet-protokoll)
+  - [Überblick](#überblick)
+  - [Die TCP/IP-Protokollsuite](#die-tcpip-protokollsuite)
+  - [Das IPv4-Paketformat](#das-ipv4-paketformat)
+  - [Sicherheitsprobleme des Internet-Protokolls](#sicherheitsprobleme-des-internet-protokolls)
+  - [Sicherheitsziele von IPsec](#sicherheitsziele-von-ipsec)
+  - [Überblick über die IPsec-Standardisierung](#überblick-über-die-ipsec-standardisierung)
+  - [Überblick über die IPsec-Architektur](#überblick-über-die-ipsec-architektur)
+  - [IPsec-Wiedergabeschutz (Replay protection)](#ipsec-wiedergabeschutz-replay-protection)
+  - [IPsec-Implementierungsalternativen: Host-Implementierung](#ipsec-implementierungsalternativen-host-implementierung)
+  - [IPsec-Implementierungsalternativen: Router-Implementierung](#ipsec-implementierungsalternativen-router-implementierung)
+  - [Wann sollte welcher IPsec-Modus verwendet werden?](#wann-sollte-welcher-ipsec-modus-verwendet-werden)
+  - [Verschachtelung von Sicherheitsassoziationen](#verschachtelung-von-sicherheitsassoziationen)
+  - [Grundschema der IPsec-Verarbeitung: Ausgehende Pakete](#grundschema-der-ipsec-verarbeitung-ausgehende-pakete)
+  - [Grundschema der IPsec-Verarbeitung: Eingehende Pakete](#grundschema-der-ipsec-verarbeitung-eingehende-pakete)
+  - [Auswahl der IPsec-Sicherheitspolitik](#auswahl-der-ipsec-sicherheitspolitik)
+  - [IPsec Security Policy Definition](#ipsec-security-policy-definition)
+  - [Die Encapsulating Security Payload](#die-encapsulating-security-payload)
+  - [Der Authentifizierungs-Header](#der-authentifizierungs-header)
+  - [IPsec's Verwendung von kryptographischen Algorithmen](#ipsecs-verwendung-von-kryptographischen-algorithmen)
+  - [Aufbau von Sicherheitsassoziationen](#aufbau-von-sicherheitsassoziationen)
+  - [ISAKMP - Einführung](#isakmp---einführung)
+    - [ISAKMP - Grundlegendes Nachrichtenformat](#isakmp---grundlegendes-nachrichtenformat)
+    - [ISAKMP - Begrenzter Schutz vor Denial of Service](#isakmp---begrenzter-schutz-vor-denial-of-service)
+    - [ISAKMP - Nutzdatenarten](#isakmp---nutzdatenarten)
+    - [ISAKMP - Die Sicherheits-Assoziations-Nutzdaten](#isakmp---die-sicherheits-assoziations-nutzdaten)
+    - [ISAKMP - Die Vorschlagsnutzdaten](#isakmp---die-vorschlagsnutzdaten)
+    - [ISAKMP - Die Transformations-Nutzdaten](#isakmp---die-transformations-nutzdaten)
+    - [ISAKMP - SA-Verhandlung](#isakmp---sa-verhandlung)
+    - [ISAKMP - Session Key Establishment](#isakmp---session-key-establishment)
+  - [IKE - Einführung](#ike---einführung)
+    - [IKE - Berechnung von IKE-Sitzungsschlüsseln](#ike---berechnung-von-ike-sitzungsschlüsseln)
+    - [IKE - Authentifizierungsmethoden](#ike---authentifizierungsmethoden)
+    - [IKE - Main Mode Austausch mit Pre-Shared Key](#ike---main-mode-austausch-mit-pre-shared-key)
+    - [IKE - Hauptmodus Austausch mit Signaturen](#ike---hauptmodus-austausch-mit-signaturen)
+    - [IKE - Main Mode Exchange mit Public Key Encryption](#ike---main-mode-exchange-mit-public-key-encryption)
+    - [IKE - Aggressiver Modus Austausch mit Pre-Shared Key](#ike---aggressiver-modus-austausch-mit-pre-shared-key)
+    - [IKE - Quick Mode Exchange](#ike---quick-mode-exchange)
+  - [Weitere Probleme mit IPsec](#weitere-probleme-mit-ipsec)
+  - [Schlussfolgerung](#schlussfolgerung-2)
+  - [Neue Wege in der IPsec-Entwicklung](#neue-wege-in-der-ipsec-entwicklung)
+  - [Internet Key Exchange Protocol Version 2 [RFC5996]](#internet-key-exchange-protocol-version-2-rfc5996)
+    - [IKEv2 - Schlüsselaustauschverfahren](#ikev2---schlüsselaustauschverfahren)
+    - [IKEv2 - Eigenschaften des Schlüsselaustauschverfahrens](#ikev2---eigenschaften-des-schlüsselaustauschverfahrens)
+    - [IKEv2 - Zusätzliche Funktionen](#ikev2---zusätzliche-funktionen)
+  - [Netzwerk-Adressübersetzung (NAT)](#netzwerk-adressübersetzung-nat)
+    - [NAT - Ein Beispiel](#nat---ein-beispiel)
+    - [Probleme mit NAT und IPsec - NAT-Traversal](#probleme-mit-nat-und-ipsec---nat-traversal)
+    - [Probleme mit NAT und IPsec - BEET-Modus](#probleme-mit-nat-und-ipsec---beet-modus)
+  - [Konfiguration großer IPsec-Infrastrukturen](#konfiguration-großer-ipsec-infrastrukturen)
+  - [Probleme bei der manuellen Konfiguration der IPsec-Infrastruktur](#probleme-bei-der-manuellen-konfiguration-der-ipsec-infrastruktur)
+  - [Automatische IPsec-Konfiguration - einige Anforderungen](#automatische-ipsec-konfiguration---einige-anforderungen)
+  - [Verschiedene Ansätze für die automatische IPsec-Konfiguration](#verschiedene-ansätze-für-die-automatische-ipsec-konfiguration)
+    - [IPsec-Richtlinienverteilung durch zentrale Server](#ipsec-richtlinienverteilung-durch-zentrale-server)
+    - [Tunnel Endpoint Discovery (TED)](#tunnel-endpoint-discovery-ted)
+    - [Gruppenverschlüsseltes Transport-VPN (GET)](#gruppenverschlüsseltes-transport-vpn-get)
+    - [Proaktives Multicast-basiertes IPsec-Erkennungsprotokoll](#proaktives-multicast-basiertes-ipsec-erkennungsprotokoll)
+    - [Soziales VPN](#soziales-vpn)
+    - [Dynamisches Mehrpunkt-VPN (DMVPN)](#dynamisches-mehrpunkt-vpn-dmvpn)
+      - [Dynamisches Mehrpunkt-VPN (DMVPN) - Diskussion](#dynamisches-mehrpunkt-vpn-dmvpn---diskussion)
+    - [Sicheres OverLay für IPsec-Erkennung (SOLID)](#sicheres-overlay-für-ipsec-erkennung-solid)
+      - [SOLID - Topologie-Kontrolle](#solid---topologie-kontrolle)
+      - [SOLID - Erkennung](#solid---erkennung)
+      - [SOLID - Mehr Topologiekontrolle](#solid---mehr-topologiekontrolle)
+      - [SOLID - Weiterleitung von Datenpaketen](#solid---weiterleitung-von-datenpaketen)
+      - [SOLID - Eigenschaften und Ergebnisse](#solid---eigenschaften-und-ergebnisse)
+      - [SOLID - Simulative Bewertung](#solid---simulative-bewertung)
+      - [SOLID - Sonstige Forschung](#solid---sonstige-forschung)
 - [Security protocols of the transport layer](#security-protocols-of-the-transport-layer)
 - [Sicherheitsaspekte der mobilen Kommunikation](#sicherheitsaspekte-der-mobilen-kommunikation)
 - [Sicherheit von drahtlosen lokalen Netzen](#sicherheit-von-drahtlosen-lokalen-netzen)
@@ -1442,7 +1509,7 @@ Größter gemeinsamer Teiler
   - Jeder Block der Nachricht $y_i$ wird mit dem Verkettungswert $CV_i$ mit der Funktion f verarbeitet, die intern durch 4 Runden zu je 16 Schritten realisiert ist
     - Jede Runde ist ähnlich aufgebaut und verwendet eine Tabelle T, die 64 konstante Werte von je 32 Bit enthält,
     - Jede der vier Runden verwendet eine bestimmte logische Funktion g
-- ![](Assets/NetzwerkSicherheit-md5.png) 
+- ![](Assets/NetworkSecurity-md5.png) 
   - Die Funktion g ist eine von vier verschiedenen logischen Funktionen
   - $y_i[k]$ bezeichnet das k-te$ 32-Bit-Wort des Nachrichtenblocks i
   - $T[j]$ ist der j-te Eintrag der Tabelle t, wobei j bei jedem Schritt modulo 64 inkrementiert wird
@@ -1531,7 +1598,7 @@ Größter gemeinsamer Teiler
   - Beide Register werden mit ,,0'' initialisiert
 - Das Hashing erfolgt durch eine Funktion f, die die Register liest und einen neuen Zustand ausgibt
 - Sponge-Konstruktion
-  - ![](Assets/NetzwerkSicherheit-sha-3.png)
+  - ![](Assets/NetworkSecurity-sha-3.png)
   - Absorptionsphase: $k + 1$ Eingabeblöcke der Größe r werden in den Zustand gemischt
   - Quetschphase: $l + 1$ Ausgangsblöcke der Größe r werden erzeugt (oft nur einer)
   - Der letzte Eingabe- und Ausgabeblock kann aufgefüllt oder abgeschnitten werden.
@@ -2317,7 +2384,7 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
   - ![](Assets/NetworkSecurity-Security-service-dim-2.png)
 
 ## Ein pragmatisches Modell für sicheres und vernetztes Rechnen
-- ![](Assets/NetzwerkSicherheit-Sicheres-Netz-Modell.png)
+- ![](Assets/NetworkSecurity-Sicheres-Netz-Modell.png)
 - Anwendung:
   - Ein Stück Software, das eine bestimmte Aufgabe erfüllt, z. B. elektronische E-Mail, Webdienst, Textverarbeitung, Datenspeicherung usw.
 - Endsystem:
@@ -2588,7 +2655,7 @@ Packet Format
 - Unterstützte Protokolle für das Nutzdatenfeld sind u.a.: IP, IPX, Appletalk
 - Wenn nicht anders ausgehandelt, beträgt die maximale Nutzdatengröße 1500 Byte.
 - Zusätzliche Aushandlung unterstützt kleinere Paketköpfe
-- ![](Assets/NetzwerkSicherheit-Punkt-zu-Punkt-Format.png)
+- ![](Assets/NetworkSecurity-Punkt-zu-Punkt-Format.png)
 
 Eine typische PPP-Verbindung
 - Nutzungsszenario ,,Internetzugang eines PCs über Modem'':
@@ -2809,6 +2876,984 @@ Techniken zum Aufbau virtueller privater Netze
   - IPSec-Sicherheitsarchitektur für das Internet-Protokoll
 
 # Die IPsec-Architektur für das Internet-Protokoll
+## Überblick
+- Kurze Einführung in das Internet-Protokoll (IP)
+- Sicherheitsprobleme von IP und Ziele von IPsec
+- Die IPsec-Architektur:
+  - Modi des IPsec-Sicherheitsprotokolls:
+    - Transportmodus
+    - Tunnel-Modus
+  - Alternativen zur Implementierung
+  - IP-Sicherheitsrichtlinien-Datenbank (SPD)
+  - Sicherheitsvereinigungen (SA) und die SA-Datenbank (SADB)
+- IPsec Sicherheitsprotokolle:
+  - Authentifizierungs-Header (AH)
+  - Encapsulating Security Payload (ESP)
+- Entitätsauthentifizierung und der Internet-Schlüsselaustausch (IKE)
+
+## Die TCP/IP-Protokollsuite
+- IP (Internet Protocol): unzuverlässiges, verbindungsloses Netzwerkprotokoll
+- TCP (Transmission Control Protocol): zuverlässiges, verbindungsorientiertes Transportprotokoll, realisiert über IP
+- UDP (User Datagram Protocol): unzuverlässiges, verbindungsloses Transportprotokoll, bietet eine Anwendungsschnittstelle zu IP
+- Beispiele für Anwendungsprotokolle :
+  - HTTP: Hypertext-Übertragungsprotokoll
+  - SMTP: Einfaches Mail-Übertragungsprotokoll
+- ![](Assets/NetworkSecurity-tcp-ip-suite.png)
+
+## Das IPv4-Paketformat
+- ![](Assets/NetworkSecurity-ipv4-packet-format.png)
+- Version (Ver.): 4 bit
+  - Derzeit ist Version 4 weit verbreitet
+  - Version 6 ist bereits spezifiziert, aber es ist noch nicht klar, ob sie jemals zum Einsatz kommen wird
+- IP-Header-Länge (IHL): 4 Bit
+  - Länge des IP-Headers in 32-Bit-Wörtern
+- Art des Dienstes (TOS): 8 Bit
+  - Dieses Feld könnte verwendet werden, um die Verkehrsanforderungen eines Pakets anzugeben.
+  - Jetzt: DCSP und Explicit Congestion (EC) Indication
+- Länge: 16 Bit
+  - Die Länge des Pakets einschließlich des Headers in Oktetten
+  - Dieses Feld ist, wie alle anderen Felder in der IP-Suite, in ,,big endian'' Darstellung
+- Kennung: 16 Bit
+  - Dient der ,,eindeutigen'' Identifizierung eines IP-Datagramms
+  - Wichtig für das Wiederzusammensetzen von fragmentierten IP-Datagrammen
+- Flaggen: 3 Bit
+  - Bit 1: nicht fragmentieren
+  - Bit 2: Datagramm fragmentiert
+  - Bit 3: reserviert für zukünftige Verwendung
+- Fragmentierungs-Offset: 13 Bit
+  - Die Position dieses Pakets im entsprechenden IP-Datagramm
+- Lebenszeit (TTL): 8 Bit
+  - An jedem verarbeitenden Netzknoten wird dieses Feld um eins dekrementiert
+  - Wenn die TTL 0 erreicht, wird das Paket verworfen, um Paketschleifen zu vermeiden.
+- Protokoll: 8 Bit
+  - Gibt das (Transport-)Protokoll der Nutzlast an
+  - Wird vom empfangenden Endsystem verwendet, um Pakete zwischen verschiedenen Transportprotokollen wie TCP, UDP, ... zu entmultiplexen.
+- Prüfsumme: 16 Bit
+  - Schutz vor Übertragungsfehlern
+  - Da es sich nicht um eine kryptografische Prüfsumme handelt, kann sie leicht gefälscht werden.
+- Quelladresse: 32 Bit
+  - Die IP-Adresse des Absenders dieses Pakets
+- Zieladresse: 32 Bit
+  - Die IP-Adresse des vorgesehenen Empfängers dieses Pakets
+- IP-Optionen: variable Länge
+  - Ein IP-Header kann optional zusätzliche Informationen enthalten.
+  - Da sie nicht Bestandteil von IPsec sind, werden sie in diesem Kurs nicht behandelt.
+
+## Sicherheitsprobleme des Internet-Protokolls
+- Wenn eine Einheit ein IP-Paket empfängt, hat sie keine Garantie für:
+  - Authentifizierung der Datenherkunft / Datenintegrität:
+    - Das Paket wurde tatsächlich von der Einrichtung gesendet, auf die die Quelladresse des Pakets verweist.
+    - Das Paket enthält den ursprünglichen Inhalt des Absenders, so dass es während des Transports nicht verändert worden ist.
+    - Die empfangende Einrichtung ist tatsächlich die Einrichtung, an die der Absender das Paket senden wollte.
+  - Vertraulichkeit:
+    - Die ursprünglichen Daten wurden auf dem Weg vom Absender zum Empfänger nicht von Dritten eingesehen.
+
+## Sicherheitsziele von IPsec
+- IPsec zielt darauf ab, die folgenden Sicherheitsziele zu gewährleisten:
+  - Authentifizierung der Datenherkunft / Verbindungslose Datenintegrität:
+    - Es ist nicht möglich, ein IP-Datagramm mit einer maskierten IP-Quell- oder Zieladresse zu senden, ohne dass der Empfänger dies erkennen kann.
+    - Es ist nicht möglich, ein IP-Datagramm während der Übertragung zu verändern, ohne dass der Empfänger diese Veränderung feststellen kann.
+    - Wiedergabeschutz: Es ist nicht möglich, ein aufgezeichnetes IP-Paket zu einem späteren Zeitpunkt erneut abzuspielen, ohne dass der Empfänger dies erkennen kann.
+  - Vertraulichkeit:
+    - Es ist nicht möglich, den Inhalt von IP-Datagrammen zu belauschen
+    - Begrenzte Vertraulichkeit des Verkehrsflusses
+- Sicherheitspolitik:
+  - Sender, Empfänger und Zwischenknoten können den erforderlichen Schutz für ein IP-Paket gemäß einer lokalen Sicherheitsrichtlinie festlegen
+  - Zwischenknoten und der Empfänger verwerfen IP-Pakete, die diese Anforderungen nicht erfüllen
+
+## Überblick über die IPsec-Standardisierung
+![](Assets/NetworkSecurity-IPsec-standardization.png)
+
+## Überblick über die IPsec-Architektur
+- RFC 4301 definiert die grundlegende Architektur von IPsec:
+  - Konzepte:
+    - Sicherheitsvereinigung (SA), Sicherheitsvereinigungsdatenbank (SADB)
+    - Sicherheitsrichtlinien, Sicherheitsrichtlinien-Datenbank (SPD)
+  - Grundlegende IPsec-Protokolle:
+    - Authentifizierungs-Header (AH)
+    - Encapsulating Security Payload (ESP)
+  - Protokoll-Modi:
+    - Transport-Modus
+    - Tunnel-Modus
+  - Schlüsselmanagement-Verfahren:
+    - IKE & IKEv
+- RFC 4301 definiert die grundlegende Architektur von IPsec:
+  - Verwendung von verschiedenen kryptographischen Primitiven mit AH und ESP:
+    - Verschlüsselung: 3DES-CBC, AES und andere CBC-Verschlüsselungsalgorithmen, AES-Zählermodus
+    - Integrität: HMAC-MD5, HMAC-SHA-1, HMAC-SHA-2, HMAC- RIPEMD-160, AES-GMAC, AES-CMAC, AES-XCBC...
+    - Authentifizierte Verschlüsselung: GCM und "Zähler mit CBC-MAC" (CCM), beide für AES definiert
+- Eine Sicherheitsassoziation (SA) ist eine Simplex- ,,Verbindung'', die Sicherheitsdienste für den von ihr beförderten Verkehr bereitstellt.
+  - Sicherheitsdienste werden für eine SA entweder mit AH oder ESP bereitgestellt, jedoch nicht mit beiden.
+  - Für bidirektionale Kommunikation sind zwei Sicherheitsverbindungen erforderlich.
+  - Eine SA wird eindeutig durch ein Tripel identifiziert, das aus einem Sicherheitsparameterindex (SPI), einer IP-Zieladresse und einer Sicherheitsprotokollkennung (AH / ESP) besteht.
+  - Eine SA kann zwischen den folgenden Gegenstellen eingerichtet werden:
+    - Host $\leftrightarrow$ Host
+    - Host $\leftrightarrow$ Gateway (oder andersherum)
+    - Gateway $\leftrightarrow$ Gateway
+  - Es gibt zwei konzeptionelle Datenbanken, die mit SAs verbunden sind:
+    - Die Sicherheitsrichtliniendatenbank (SPD) legt fest, welche Sicherheitsdienste für welche IP-Pakete auf welche Weise bereitgestellt werden sollen.
+    - Die Sicherheitsassoziationsdatenbank (SADB)
+- Protokollmodi - Eine SA ist immer von einem der folgenden Typen:
+  - Der Transportmodus kann nur zwischen den Endpunkten einer Kommunikation verwendet werden:
+    - host $\leftrightarrow$ host, oder
+    - Host $\leftrightarrow$-Gateway, wenn das Gateway ein Kommunikationsendpunkt ist (z. B. für die Netzverwaltung)
+  - Der Tunnelmodus kann für beliebige Peers verwendet werden.
+- Der Unterschied zwischen den beiden Modi ist, dass:
+  - Im Transportmodus wird lediglich ein sicherheitsspezifischer Header (+ eventueller Trailer) hinzugefügt:
+    - ![](Assets/NetworkSecurity-ipsec-transport-mode.png)
+  - Der Tunnelmodus kapselt IP-Pakete ein: Die Verkapselung von IP-Paketen ermöglicht es einem Gateway, den Verkehr im Namen anderer Entitäten zu schützen (z. B. Hosts eines Subnetzes usw.)
+    - ![](Assets/NetworkSecurity-ipsec-tunnel-mode.png)
+- Der Authentifizierungs-Header (AH):
+  - Bietet Authentifizierung der Datenherkunft und Schutz vor Wiederholung
+  - Wird als Header realisiert, der zwischen dem IP-Header und den zu schützenden Daten eingefügt wird
+  - ![](Assets/NetworkSecurity-ipsec-AH.png)
+- Die einkapselnde Sicherheitsnutzlast (ESP):
+  - Bietet Authentifizierung der Datenherkunft, Vertraulichkeit und Schutz vor Wiederholung
+  - Wird mit einem Header und einem Trailer realisiert, der die zu schützenden Daten einkapselt
+  - ![](Assets/NetworkSecurity-ipsec-ESP.png)
+- Die Einrichtung von Sicherheitsvereinigungen wird mit:
+  - Internet Security Association Key Management Protocol (ISAKMP):
+    - Definiert einen generischen Rahmen für die Schlüsselauthentifizierung, den Schlüsselaustausch und die Aushandlung von Sicherheitsassoziationsparametern [RFC2408].
+    - Definiert kein spezifisches Authentifizierungsprotokoll, aber spezifiziert:
+      - Paketformate
+      - Zeitgeber für die Weiterleitung
+      - Anforderungen an den Nachrichtenaufbau
+    - Die Verwendung von ISAKMP für IPsec wird in [RFC2407] näher beschrieben.
+  - Internet-Schlüsselaustausch (IKE):
+    - Definiert ein Authentifizierungs- und Schlüsselaustauschprotokoll [RFC2409].
+    - Ist konform zu ISAKMP und kann für verschiedene Anwendungen verwendet werden
+    - Der Aufbau von IPsec SAs zwischen zwei Entitäten wird in zwei Phasen realisiert:
+      - Einrichtung einer IKE SA (definiert, wie man IPsec SAs einrichtet)
+      - Einrichtung von IPsec SAs
+
+## IPsec-Wiedergabeschutz (Replay protection)
+- Sowohl AH- als auch ESP-geschützte IP-Pakete tragen eine Sequenznummer, die einen Wiedergabeschutz realisiert:
+  - Beim Einrichten einer SA wird diese Sequenznummer auf Null initialisiert.
+  - Die Sequenznummer wird mit jedem gesendeten IP-Paket erhöht
+  - Die Sequenznummer ist 32 Bit lang, es wird ein neuer Sitzungsschlüssel benötigt, bevor ein Wrap-around erfolgt
+  - Der Empfänger eines IP-Pakets prüft, ob die Sequenznummer in einem Fenster zulässiger Nummern enthalten ist
+  - ![](Assets/NetworkSecurity-ipsec-replay-protection.png) 
+    - (Paket mit Sequenznummer N kann noch akzeptiert werden)
+- Wenn ein empfangenes Paket eine Sequenznummer hat, die:
+  - links vom aktuellen Fenster $\Rightarrow$ liegt, lehnt der Empfänger das Paket ab
+  - innerhalb des aktuellen Fensters $\Rightarrow$ liegt, nimmt der Empfänger das Paket an
+  - liegt rechts vom aktuellen Fenster $\Rightarrow$ der Empfänger nimmt das Paket an und schiebt das Fenster weiter 
+  - Natürlich werden IP-Pakete nur akzeptiert, wenn sie die Authentifizierungsprüfung bestehen und das Fenster wird niemals vor dieser Prüfung weitergeschaltet
+- Die minimale Fenstergröße beträgt 32 Pakete (64 Pakete werden empfohlen)
+  - ![](Assets/NetworkSecurity-ipsec-replay-protection2.png)
+    - Paket mit Sequenznummer N kann nicht mehr akzeptiert werden
+
+## IPsec-Implementierungsalternativen: Host-Implementierung
+- Vorteile der IPsec-Implementierung in Endsystemen:
+  - Bereitstellung von End-to-End-Sicherheitsdiensten
+  - Bereitstellung von Sicherheitsdiensten auf einer Per-Flow-Basis
+  - Fähigkeit, alle IPsec-Modi zu implementieren
+- Zwei Hauptalternativen zur Integration:
+  | Integriertes Betriebssystem                                                                                    | ,,Bump'' im Stack                                                                                         |
+  | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+  | Anwendung                                                                                                      | Anwendung                                                                                                 |
+  | Transport                                                                                                      | Transport                                                                                                 |
+  | Netzwerk + IPsec                                                                                               | Netzwerk                                                                                                  |
+  | IPsec                                                                                                          |
+  | Data Link                                                                                                      | Data Link                                                                                                 |
+  |                                                                                                                |
+  | Echte Betriebssystemintegration ist die Methode der Wahl, da sie die Duplizierung von Funktionalität vermeidet | Wenn das Betriebssystem nicht geändert werden kann, wird IPsec über den Datenverbindungstreiber eingefügt |
+
+## IPsec-Implementierungsalternativen: Router-Implementierung
+- Vorteile der IPsec-Implementierung in Routern:
+  - Möglichkeit, IP-Pakete zu sichern, die zwischen zwei Netzen über ein öffentliches Netz wie das Internet fließen:
+    - Ermöglicht die Einrichtung virtueller privater Netzwerke (VPNs)
+    - Keine Notwendigkeit, IPsec in jedes Endsystem zu integrieren
+  - Fähigkeit zur Authentifizierung und Autorisierung des IP-Verkehrs, der von entfernten Benutzern eingeht
+- Zwei Hauptalternativen für die Implementierung:
+  - ![](Assets/NetworkSecurity-ipsec-router-implementation.png)
+
+## Wann sollte welcher IPsec-Modus verwendet werden?
+- In den meisten Fällen handelt es sich bei den Kommunikationsendpunkten um Hosts (Workstations, Server), aber das ist nicht unbedingt der Fall:
+  - Beispiel: ein Gateway wird über SNMP von einer Workstation verwaltet
+- Der Transportmodus wird verwendet, wenn die ,,kryptografischen Endpunkte'' auch die ,,Kommunikationsendpunkte'' der gesicherten IP-Pakete sind
+  - Kryptografische Endpunkte: die Entitäten, die einen IPsec-Header (AH oder ESP) erzeugen/verarbeiten
+  - Kommunikationsendpunkte: Quelle und Ziel eines IP-Pakets
+    - ![](Assets/NetworkSecurity-communication-endpoints.png) 
+- Der Tunnelmodus wird verwendet, wenn mindestens ein ,,kryptographischer Endpunkt'' nicht ein ,,Kommunikationsendpunkt'' der gesicherten IP-Pakete ist
+  - Dies ermöglicht Gateways, die den IP-Verkehr im Namen anderer Stellen sichern
+  - ![](Assets/NetworkSecurity-communication-tunneling.png)
+- Die obige Beschreibung der Anwendungsszenarien für den Tunnelmodus umfasst auch den Fall, dass nur ein kryptografischer Endpunkt kein Kommunikationsendpunkt ist:
+  - Beispiel: ein Sicherheitsgateway, das die Authentifizierung und/oder die Vertraulichkeit des IP-Verkehrs zwischen einem lokalen Teilnetz und einem über das Internet verbundenen Host sicherstellt (,,Road Warrior Szenario'')
+  - ![](Assets/NetworkSecurity-communication-tunnelung-2.png)
+
+## Verschachtelung von Sicherheitsassoziationen
+- Sicherheitsassoziationen können verschachtelt werden:
+  - Beispiel: Host A und Gateway RB führen eine Authentifizierung der Datenherkunft durch und die Gateways RA und RB führen eine Vertraulichkeit von Subnetz zu Subnetz durch
+  - ![](Assets/NetworkSecurity-communication-nesting.png)
+- Bei der Verschachtelung von SAs muss jedoch darauf geachtet werden, dass keine ,,falsche Klammerung'' von SAs erfolgt, wie z. B. ,,[(])''
+  - Ein Beispiel für eine gültige SA-Schachtelung:
+    - ![](Assets/NetworkSecurity-communication-nesting-2.png)
+  - Ein Beispiel für ungültige SA-Schachtelungen:
+    - ![](Assets/NetworkSecurity-communication-nesting-3.png)
+    - Da das Paket von RB nach RD getunnelt wird, kann das Gateway RC den inneren IPsec-Header nicht verarbeiten
+    - Ein mögliches Ergebnis dieser fehlerhaften Konfiguration könnte sein, dass das Paket zurück nach RC geroutet wird
+
+## Grundschema der IPsec-Verarbeitung: Ausgehende Pakete
+- Nehmen wir an, die IP-Schicht eines Knotens (Host/Gateway) wird angewiesen, ein IP-Paket an einen anderen Knoten (Host/Gateway) zu senden
+- Um IPsec zu unterstützen, muss sie die folgenden Schritte durchführen:
+  - Feststellen, ob und wie das ausgehende Paket gesichert werden muss:
+    - Dies wird durch einen Lookup im SPD realisiert
+    - Wenn die Richtlinie ,,verwerfen'' vorschreibt, wird das Paket verworfen $\Rightarrow$ done
+    - Wenn das Paket nicht gesichert werden muss, dann sende es $\Rightarrow$ done
+  - Ermitteln, welche SA auf das Paket angewendet werden soll:
+    - Wenn es noch keine passende SA mit dem entsprechenden Knoten gibt, dann fordere den Key Management Demon auf, einen IKE durchzuführen
+  - Die ermittelte (und eventuell neu erstellte) SA in der SADB nachschlagen
+  - Führen Sie die von der SA festgelegte Sicherheitstransformation durch, indem Sie den Algorithmus, seine Parameter und den Schlüssel, wie in der SA angegeben, verwenden.
+    - Dies resultiert in der Konstruktion eines AH- oder ESP-Headers
+    - Eventuell wird auch ein neuer (äußerer) IP-Header erstellt (Tunnelmodus)
+  - Senden Sie das resultierende IP-Paket $\Rightarrow$ done
+
+## Grundschema der IPsec-Verarbeitung: Eingehende Pakete
+- Nehmen wir an, die IP-Schicht eines Knotens (Host/Gateway) empfängt ein IP-Paket von einem anderen Knoten (Host/Gateway)
+- Um IPsec zu unterstützen, muss sie die folgenden Schritte durchführen:
+  - Feststellen, ob das Paket einen IPsec-Header enthält, den diese Einheit verarbeiten soll:
+    - Wenn es einen solchen IPsec-Header gibt, dann suchen Sie die SA in der SADB, die durch den SPI des IPsec-Headers spezifiziert ist, und führen Sie die entsprechende IPsec-Verarbeitung durch
+    - Wenn die SA, auf die der SPI verweist, (noch) nicht existiert, verwerfen Sie das Paket
+  - Ermitteln, ob und wie das Paket hätte geschützt werden sollen:
+    - Dies wird wiederum durch einen Lookup im SPD realisiert, wobei der Lookup im Falle von getunnelten Paketen durch Auswertung des inneren IP-Headers durchgeführt wird
+    - Wenn die Richtlinie ,,Verwerfen'' vorschreibt, wird das Paket verworfen.
+    - Wenn der Schutz des Pakets nicht mit der Richtlinie übereinstimmt, wird das Paket verworfen.
+    - Wenn das Paket ordnungsgemäß gesichert wurde, dann übergebe es an die entsprechende Protokollinstanz (Netzwerk-/Transportschicht)
+
+## Auswahl der IPsec-Sicherheitspolitik
+Die folgenden Selektoren, die aus den Headern der Netzwerk- und Transportschicht extrahiert werden, ermöglichen die Auswahl einer bestimmten Richtlinie im SPD:
+- IP-Quelladresse:
+    - Bestimmter Host, Netzwerkpräfix, Adressbereich oder Platzhalter
+- IP-Zieladresse:
+    - Bestimmter Host, Netzwerk-Präfix, Adressbereich oder Platzhalter
+    - Im Falle eingehender getunnelter Pakete wird der innere Header ausgewertet
+- Protokoll:
+    - Der Protokoll-Identifikator des Transportprotokolls für dieses Paket
+    - Dies ist möglicherweise nicht zugänglich, wenn ein Paket mit ESP gesichert ist.
+- Ports der oberen Schicht:
+    - Falls zugänglich, die Ports der oberen Schicht für die sitzungsorientierte Policy-Auswahl
+
+## IPsec Security Policy Definition
+- Policy Selectors werden verwendet, um spezifische Policy-Definitionen auszuwählen, spezifiziert:
+  - Wie die Einrichtung einer IKE SA zwischen zwei Knoten durchgeführt werden soll:
+    - Identifizierung: DNS-Name oder andere Namenstypen, wie in der IPsec-Domäne der Interpretation eines Protokolls zur Einrichtung von SAs definiert
+    - Phase I-Modus: Hauptmodus oder aggressiver Modus (siehe unten)
+    - Schutzsuite(n): Angabe, wie die IKE-Authentifizierung durchgeführt wird
+  - Welche und wie Sicherheitsdienste für IP-Pakete bereitgestellt werden sollen:
+    - Selektoren, die bestimmte Flüsse identifizieren
+    - Sicherheitsattribute für jeden Fluss:
+      - Sicherheitsprotokoll: AH oder ESP
+      - Protokollmodus: Transport- oder Tunnelmodus
+      - Sicherheitstransformationen: kryptografische Algorithmen und Parameter
+      - Andere Parameter: SA-Lebensdauer, Replay-Fenster
+    - Aktion: Verwerfen, Sichern, Umgehen
+- Wenn bereits eine SA mit einem entsprechenden Sicherheitsendpunkt eingerichtet ist, wird im SPD auf diese verwiesen.
+
+## Die Encapsulating Security Payload
+- ESP ist ein allgemeines Sicherheitsprotokoll, das IP-Paketen einen Wiederholungsschutz und einen oder beide der folgenden Sicherheitsdienste bietet:
+  - Vertraulichkeit durch Verschlüsselung der eingekapselten Pakete oder nur ihrer Nutzlast
+  - Authentifizierung der Datenherkunft durch Erstellung und Hinzufügung von MACs zu Paketen
+- Die ESP-Definition gliedert sich in zwei Teile:
+  - Die Definition des Basisprotokolls [RFC4303]:
+    - Definition des Header- und Trailer-Formats
+    - Verarbeitung des Basisprotokolls
+    - Tunnel- und Transportmodusbetrieb
+  - Die Verwendung spezifischer kryptographischer Algorithmen mit ESP:
+    - Verschlüsselung: 3DES-CBC, AES-CBC, AES-Zählmodus, Verwendung anderer Chiffren im CBC-Modus
+    - Authentifizierung: HMAC-MD5-96, HMAC-SHA-96,...
+- ![](Assets/NetworkSecurity-ESP.png)
+  - Der ESP-Header folgt unmittelbar auf einen IP-Header oder einen AH-Header
+  - Das Next-Header-Feld des vorangehenden Headers zeigt ,,50'' für ESP an
+  - Das SPI-Feld gibt die SA an, die für dieses Paket verwendet werden soll:
+    - Der SPI-Wert wird immer von der empfangenden Seite während der SA-Aushandlung bestimmt, da der Empfänger das Paket verarbeiten muss.
+  - Die Sequenznummer bietet, wie bereits erläutert, Schutz vor Wiederholung.
+  - Wenn der verwendete kryptographische Algorithmus einen Initialisierungsvektor benötigt, wird dieser in jedem Paket am Anfang der Nutzlast im Klartext übertragen
+  - Das Pad-Feld dient der Sicherstellung:
+    - Auffüllen der Nutzlast bis zur erforderlichen Blocklänge der verwendeten Chiffre
+    - Auffüllen der Nutzlast, um die Felder pad-length und next-header rechtsbündig in die höherwertigen 16 Bit eines 32-Bit-Wortes einzupassen
+  - Die Auffülllänge gibt die Anzahl der hinzugefügten Auffüllbytes an.
+  - Das next-header-Feld des ESP-Headers gibt die eingekapselte Nutzlast an:
+    - Im Falle des Tunnelmodus: IP
+    - Im Falle des Transportmodus: ein beliebiges Protokoll der höheren Schicht wie TCP, UDP, ...
+  - Das optionale Feld authentication-data enthält eine MAC, falls vorhanden
+- ![](Assets/NetworkSecurity-ESP-processing.png)
+- ![](Assets/NetworkSecurity-ESP-prepare-header.png)
+- ![](Assets/NetworkSecurity-ESP-inbound-processing.png)
+- ![](Assets/NetworkSecurity-ESP-inbound-processing-2.png)
+- Beachten Sie, dass das entkapselte IP-Paket ein fragmentiertes Paket sein kann:
+  - Dies kann vorkommen, wenn ESP von einem Router im Tunnelmodus angewendet wurde.
+  - Um die Konformität mit der SA-Policy korrekt zu prüfen, müssen alle zu diesem Paket gehörenden Fragmente vom Router empfangen werden, bevor die Prüfung durchgeführt werden kann
+  - Beispiel: In einer SA sind nur Pakete an einen bestimmten Port erlaubt
+    - Die erforderliche Port-Information ist nur im ersten Fragment des IP-Pakets vorhanden
+- Paketzustellung bedeutet Zustellung an die entsprechende Verarbeitungseinheit:
+  - Wenn ein anderer IPsec-Header für diese Entität vorhanden ist $\Rightarrow$ IPsec-Verarbeitung
+  - Im Tunnelmodus $\Rightarrow$ Übermittlung des Pakets
+  - Im Transportmodus $\Rightarrow$ Aufruf des entsprechenden Protokoll-Headers (TCP, UDP, etc.)
+- Wenn ESP sowohl Vertraulichkeit als auch Authentifizierung bietet, können für beide Dienste unterschiedliche Schlüssel verwendet werden.
+  - Dies muss während der Einrichtung der ESP-SA ausgehandelt werden.
+- Beachten Sie, dass die Verwendung von ESP ohne Authentifizierung unsicher ist...
+  - Kein zuverlässiger Schutz vor Wiederholungen
+  - Zumindest, wenn im CBC-Modus verwendet:
+    - Aktive Angriffe ermöglichen die Wiederherstellung von Nachrichten
+    - Beispiel: Bits umdrehen und prüfen, ob Fehlermeldungen erzeugt werden
+    - Vollständige Wiederherstellung von Klartextblöcken
+
+## Der Authentifizierungs-Header
+- AH ist ein allgemeines Sicherheitsprotokoll, das IP-Paketen Schutz bietet:
+  - Wiedergabeschutz
+  - Authentifizierung der Datenherkunft durch Erstellung und Hinzufügung von MACs zu den Paketen
+- Wie bei ESP ist die AH-Definition in zwei Teile aufgeteilt:
+  - Die Definition des Basisprotokolls [RFC4302]:
+    - Definition des Header-Formats
+    - Verarbeitung des Basisprotokolls
+    - Tunnel- und Transportmodusbetrieb
+  - Die Verwendung spezifischer kryptographischer Algorithmen bei AH:
+    - Authentifizierung: HMAC-MD5-96, HMAC-SHA1-96, HMAC-SHA2, ...
+    - Wenn sowohl ESP als auch AH von einer Stelle angewendet werden sollen, wird immer zuerst ESP angewendet:
+  - Dies führt dazu, dass AH der äußere Header ist.
+  - ,,Vorteil'': der IP-Header kann auch durch AH geschützt werden
+  - Anmerkung: Für jede Richtung werden zwei SAs (je eine für AH, ESP) benötigt.
+- Im Tunnelmodus stellt die Nutzlast ein vollständiges IP-Paket dar
+  - ![](Assets/NetworkSecurity-authentication-header.png)
+- Obwohl AH auch den äußeren IP-Header schützt, dürfen einige seiner Felder nicht geschützt werden, da sie sich während der Übertragung ändern können:
+  - Dies gilt auch für veränderliche IPv4-Optionen oder IPv6-Erweiterungen.
+  - Solche Felder werden bei der Berechnung des MAC als Null angenommen
+  - ![](Assets/NetworkSecurity-authentication-header-2.png)
+- Alle unveränderlichen Felder, Optionen und Erweiterungen (grau) sind geschützt
+- ![](Assets/NetworkSecurity-AH-Ausgangsbearbeitung.png)
+- ![](Assets/NetworkSecurity-AH-prepare-header.png)
+- ![](Assets/NetworkSecurity-AH-inbound-processing-1.png)
+- ![](Assets/NetworkSecurity-AH-inbound-processing-2.png)
+
+## IPsec's Verwendung von kryptographischen Algorithmen 
+- Vertraulichkeit (nur ESP):
+  - Die Verwendung von DES mit ESP [RFC4303] wird nicht mehr empfohlen
+  - AES-CBC, definiert in RFC 3602, ist vielleicht "der" Standardalgorithmus
+  - Der Initialisierungsvektor (IV) ist immer im Klartext enthalten, um Synchronisationsprobleme zu vermeiden.
+  - Der gesamte IV soll zufällig sein
+  - Nehmen Sie KEINE weiteren IVs aus früheren Chiffretexten!
+    - Sicherheitsprobleme
+    - Synchronisationsprobleme
+  - ![](Assets/NetworkSecurity-ipsec-protect-payload.png)
+- Authentifizierung der Datenherkunft (AH und ESP):
+  - Einige der Algorithmen zur Authentifizierung sind bereits definiert:
+    - HMAC-MD5-96 mit Schlüssellänge 128 Bit
+    - HMAC-SHA1-96 mit Schlüssellänge 160 Bit
+    - HMAC-RIPEMD160-96 mit einer Schlüssellänge von 160 Bit
+    - HMAC-SHA2 mit Schlüssellängen von 256, 384 und 512 Bit
+  - Alle diese Algorithmen verwenden die in [RFC2104] definierte HMAC-Konstruktion:
+    - ipad = 0x36 wiederholt B mal (B = 64 für die oben genannten Algorithmen)
+    - opad = 0x5C, B-mal wiederholt
+    - HMAC = H(Key XOR opad, H(Key XOR ipad, data)), wobei H die verwendete kryptografische Hash-Funktion angibt
+  - Das ,,-96'' in den oben genannten Algorithmen bedeutet, dass die Ausgabe der Hash-Funktion auf die 96 ganz linken Bits gekürzt wird
+  - SHA2 abgeschnitten auf die Hälfte der Schlüssellänge
+  - Dieser Wert erfüllt die meisten Sicherheitsanforderungen gut
+
+## Aufbau von Sicherheitsassoziationen
+- Bevor ein Paket durch IPsec geschützt werden kann, muss eine SA zwischen den beiden ,,kryptographischen Endpunkten'', die den Schutz bieten, eingerichtet werden
+- Der Aufbau einer SA kann realisiert werden:
+  - Manuell, durch proprietäre Methoden der Systemverwaltung
+  - Dynamisch, durch ein standardisiertes Authentifizierungs- und Schlüsselverwaltungsprotokoll
+  - Die manuelle Einrichtung sollte nur in sehr eingeschränkten Konfigurationen (z.B. zwischen zwei verschlüsselnden Firewalls eines VPN) und während einer Übergangsphase verwendet werden
+- IPsec definiert eine standardisierte Methode für den SA-Aufbau:
+  - Internet Security Association and Key Management Protocol (ISAKMP)
+    - Definiert Protokollformate und Verfahren für die Sicherheitsaushandlung
+  - Internet-Schlüsselaustausch (IKE)
+    - Definiert das Standard-Authentifizierungs- und Schlüsselaustauschprotokoll von IPsec
+
+## ISAKMP - Einführung
+- Die IETF hat zwei RFCs zu ISAKMP für IPsec verabschiedet:
+  - RFC 2408, der das ISAKMP-Basisprotokoll definiert
+  - RFC 2407, der die ,,domain of interpretation'' (DOI) von IPsec für ISAKMP definiert und die für IPsec spezifischen Nachrichtenformate näher beschreibt
+- Das ISAKMP-Basisprotokoll ist ein generisches Protokoll, das für verschiedene Zwecke verwendet werden kann:
+  - Die für eine Anwendung von ISAKMP spezifischen Verfahren werden in einem DOI-Dokument detailliert beschrieben.
+  - Es wurden weitere DOI-Dokumente erstellt:
+    - Group DOI für sichere Gruppenkommunikation [RFC6407]
+    - MAP DOI für die Verwendung von ISAKMP zum Aufbau von SAs zur Sicherung des Mobile Application Protocol (MAP) von GSM (Internet Draft, Nov. 2000)
+- ISAKMP definiert zwei grundlegende Kategorien von Austauschvorgängen:
+  - Phase 1 Austausch, bei dem eine Art von ,,Master SA'' ausgehandelt wird
+  - Phase 2 Austausch, der die ,,Master SA'' verwendet, um andere SAs zu etablieren
+
+### ISAKMP - Grundlegendes Nachrichtenformat
+- ![](Assets/NetworkSecurity-ISAKMP-format.png)
+- Initiator & Responder Cookie:
+  - Identifizieren einen ISAKMP-Austausch bzw. eine Sicherheitsassoziation
+  - Dienen auch als begrenzter Schutz gegen Denial-of-Service-Angriffe (siehe unten)
+- Nächste Nutzlast: gibt an, welcher ISAKMP-Nutzlasttyp die erste Nutzlast der Nachricht ist
+- Major & Minor Version: gibt die Version des ISAKMP-Protokolls an
+- Austausch-Typ:
+  - Gibt die Art des verwendeten Austauschs an
+  - Es gibt fünf vordefinierte generische Austauschtypen, weitere Typen können pro DOI definiert werden
+- Flags:
+  - Encrypt: wenn auf eins gesetzt, wird die Nutzlast nach dem Header verschlüsselt
+  - Commit: wird für die Schlüsselsynchronisation verwendet
+  - Authenticate only: wenn auf eins gesetzt, wird nur der Schutz der Datenursprungsauthentifizierung auf die ISAKMP-Nutzdaten angewendet und keine Verschlüsselung durchgeführt
+- Nachrichten-ID:
+  - Dient zur Identifizierung von Nachrichten, die zu verschiedenen Austauschen gehören
+- Nachrichtenlänge:
+  - Gesamtlänge der Nachricht (Header + Payload)
+- Nutzlast:
+  - Die Nutzlast einer ISAKMP-Nachricht kann tatsächlich mehrere ,,verkettete'' Nutzlasten enthalten
+  - Der Nutzlasttyp der ersten Nutzlast in der Nachricht wird im nächsten Nutzlastfeld des ISAKMP-Headers angegeben
+  - Alle ISAKMP-Nutzdaten haben einen gemeinsamen Nutzdaten-Header:
+    - ![](Assets/NetworkSecurity-ISAKMP-payload.png)
+    - Next Header: der Payload-Typ des nächsten Payloads in der Nachricht
+    - Payload Length: Gesamtlänge der aktuellen Payload (einschließlich dieses Headers)
+
+### ISAKMP - Begrenzter Schutz vor Denial of Service
+- Die Initiator- und Responder-Cookies dienen auch als Schutz gegen einfache Denial-of-Service-Angriffe:
+  - Authentifizierung und Schlüsselaustausch erfordern oft ,,teure'' Berechnungen, z.B. Potenzierung (für Diffie-Hellman Schlüsselaustausch)
+  - Um zu verhindern, dass ein Angreifer eine ISAKMP-Einheit mit gefälschten Nachrichten von gefälschten Quelladressen überschwemmen und diese teuren Operationen verursachen kann, wird das folgende Schema verwendet:
+    - Die initiierende ISAKMP-Entität erzeugt einen Initiator-Cookie: $CKY-I = H(Secret_{Initiator}, Address_{Responder}, t_{Initiator})$
+    - Der Responder generiert sein eigenes Cookie: $CKY-R = H(Secret_{Responder}, Address_{Initiator}, t_{Responder})$
+    - Beide Entitäten schließen immer beide Cookies ein und überprüfen immer ihr eigenes Cookie, bevor sie eine teure Operation durchführen
+    - Der oben erwähnte Angriff wird daher nicht erfolgreich sein, da der Angreifer eine Antwort von dem angegriffenen System erhalten muss, um ein Cookie von ihm zu erhalten
+  - ISAKMP spezifiziert die genaue Cookie-Erzeugungsmethode nicht
+
+### ISAKMP - Nutzdatenarten
+- RFC 2408 definiert verschiedene Nutzdaten von ISAKMP (Liste ist nicht vollständig):
+  - Generische Payloads: Hash, Signatur, Nonce, Vendor ID, Schlüsselaustausch
+  - Spezifische Payloads: SA, Zertifikat, Zertifikatsanforderung, Identifikation
+  - Abhängige und gekapselte Nutzdaten:
+    - Proposal-Payload: beschreibt einen Vorschlag für die SA-Verhandlung
+    - Transform-Payload: beschreibt eine Transformation eines Proposals
+  - Außerdem gibt es eine generische Attribut-Nutzlast:
+    - Dies ist eigentlich kein ISAKMP-Payload, sondern ein Payload, der innerhalb der ISAKMP-Payloads erscheint.
+    - Alle Attribut-Payloads haben eine gemeinsame Struktur:
+    - ![](Assets/NetworkSecurity-ISAKMP-payload-types.png)
+
+### ISAKMP - Die Sicherheits-Assoziations-Nutzdaten
+- ![](Assets/NetworkSecurity-ISAKMP-security-payload.png)
+- Domain of Interpretation definiert die Anwendungsdomäne für die auszuhandelnde SA, z.B. IPsec
+- Situation ist ein DOI-spezifisches Feld, das die Situation angibt, in der die aktuelle Verhandlung stattfindet (z. B. Notruf vs. normaler Anruf)
+- Auf den SA-Payload folgen ein oder mehrere Proposal-Payloads
+
+### ISAKMP - Die Vorschlagsnutzdaten
+- ![](Assets/NetworkSecurity-ISAKMP-proposal-payload.png)
+- Proposal # wird verwendet, um Richtlinien auszudrücken und Vorschläge auszuhandeln:
+  - Wenn zwei oder mehr Vorschläge die gleiche Nummer tragen, wird ein logisches UND realisiert.
+  - Unterschiedliche Werte für Proposal # realisieren logisches OR mit absteigender Priorität
+- Protocol ID gibt den Protokoll-Identifikator der aktuellen Verhandlung an, z. B. AH oder ESP (für IPsec)
+- SPI Size gibt die Länge des enthaltenen SPI-Wertes an
+- Number of Transforms (Anzahl der Transformationen) gibt an, wie viele Transformationen zu diesem Vorschlag gehören (diese folgen unmittelbar auf die Nutzlast des Vorschlags)
+
+### ISAKMP - Die Transformations-Nutzdaten
+- ![](Assets/NetworkSecurity-ISAKMP-transform-payload.png)
+- Eine Transform-Payload spezifiziert einen bestimmten Sicherheitsmechanismus, auch Transform genannt, der zur Sicherung des Kommunikationskanals verwendet werden soll.
+- Jede in einem Vorschlag aufgeführte Transformation hat eine eindeutige Transform #
+- Jede Transformation wird durch eine Transform-ID eindeutig identifiziert, z.B. 3DES, AES, MD5, SHA-1, etc.
+  - Die Transformations-IDs werden in einem DOI-Dokument angegeben.
+- Die SA-Attribute geben die Attribute an, die für die im Feld Transform ID angegebene Transformation definiert sind.
+
+### ISAKMP - SA-Verhandlung
+- Inhalt des Next Payload-Feldes von SA-, Proposal- und Transform-Payloads:
+  - Das Next-Payload-Feld einer SA-Payload gibt nicht die unmittelbar folgende Proposal-Payload an, da diese implizit ist.
+  - Das Gleiche gilt für Proposal- und Transform-Payloads
+- Die Proposal-Payload gibt der initiierenden Entität die Möglichkeit, der antwortenden Entität die Sicherheitsprotokolle und zugehörigen Sicherheitsmechanismen zur Verwendung mit der auszuhandelnden Sicherheitsassoziation zu präsentieren.
+- Wenn die SA-Etablierung für eine kombinierte Schutzsuite ausgehandelt wird, die aus mehreren Protokollen besteht, muss es mehrere Proposal-Payloads geben, die jeweils die gleiche Proposal-Nummer haben.
+- Diese Vorschläge müssen als eine Einheit betrachtet werden und dürfen nicht durch einen Vorschlag mit einer anderen Vorschlagsnummer getrennt werden.
+- Dieses erste Beispiel zeigt eine ESP- UND AH-Schutzsuite:
+  - Das erste Protokoll wird mit zwei von der vorschlagenden Stelle unterstützten Transformationen dargestellt, ESP mit:
+    - Transformation 1 als 3DES
+    - Umwandlung 2 als AES
+    - Der Responder muss zwischen den beiden für ESP vorgeschlagenen Transformationen wählen.
+  - Das zweite Protokoll ist AH und wird mit einer einzigen Transformation angeboten:
+    - Umwandlung 1 als SHA
+  - Die resultierende Schutzsuite ist entweder
+    - 3DES und SHA, oder
+    - AES und SHA, je nachdem, welche ESP-Transformation vom Responder gewählt wurde
+  - In diesem Fall folgen auf die SA-Nutzdaten die folgenden Nutzdaten:
+    - [Vorschlag 1, ESP, (Transform 1, 3DES, ...), (Transform 2, AES)] [Vorschlag 1, AH, (Transform 1, SHA)]
+  - Bitte beachten Sie, dass dies zu zwei SAs pro Richtung führt!
+- Dieses zweite Beispiel zeigt einen Vorschlag für zwei verschiedene Schutzsuiten:
+  - Die erste Schutzsuite wird vorgestellt mit:
+    - einer Transformation (MD5) für das erste Protokoll (AH), und
+    - eine Umwandlung (3DES) für das zweite Protokoll (ESP)
+  - Die zweite Schutzsuite wird mit zwei Transformationen für ein einziges Protokoll (ESP) vorgestellt:
+    - 3DES, oder
+    - AES
+  - Bitte beachten Sie, dass es nicht möglich ist, festzulegen, dass Transformation 1 und Transformation 2 für eine Instanz einer Protokollspezifikation verwendet werden müssen.
+  - In diesem Fall folgen auf den SA-Payload die folgenden Payloads:
+    - [Vorschlag 1, AH, (Transform 1, MD5, ...)] [Vorschlag 1, ESP, (Transform 1, 3DES, ...)] [Vorschlag 2, ESP, (Transform1, 3DES, ...), (Transform 2, AES, ...)]
+  - Bitte beachten Sie, dass Vorschlag 1 zu zwei SAs pro Richtung führt.
+- Bei der Beantwortung einer Security-Association-Nutzlast muss der Antwortende eine Security-Association-Nutzlast mit dem ausgewählten Vorschlag senden, der aus mehreren Proposal-Nutzlasten und den zugehörigen Transform-Nutzlasten bestehen kann
+- Jede der Proposal-Payloads muss eine einzelne Transform-Payload enthalten, die dem Protokoll zugeordnet ist.
+- Der Antwortende sollte das Feld Proposal # in der Proposal-Payload und das Feld Transform # in jeder Transform-Payload des ausgewählten Vorschlags beibehalten.
+  - Die Beibehaltung der Vorschlags- und Transformationsnummern sollte die Protokollverarbeitung des Initiators beschleunigen, da die Auswahl des Antwortenden nicht mit jeder angebotenen Option verglichen werden muss.
+  - Diese Werte ermöglichen es dem Initiator, den Vergleich direkt und schnell durchzuführen.
+- Der Initiator muss überprüfen, ob die vom Responder empfangene SA-Nutzlast mit einem der ursprünglich gesendeten Vorschläge übereinstimmt
+
+### ISAKMP - Session Key Establishment
+- ISAKMP baut 4 verschiedene Schlüssel mit einem Authentifizierungsaustausch auf:
+  - SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist und als ,,Hauptschlüssel'' dient.
+    - Die Berechnung von SKEYID ist abhängig von der Authentifizierungsmethode
+  - SKEYID_e ist das Schlüsselmaterial, das von der ISAKMP SA zum Schutz der Vertraulichkeit ihrer Nachrichten verwendet wird
+  - SKEYID_a ist das Schlüsselmaterial, das von der ISAKMP SA zur Authentifizierung ihrer Nachrichten verwendet wird
+  - SKEYID_d ist das Verschlüsselungsmaterial, das zur Ableitung von Schlüsseln für Nicht-ISAKMP-Sicherheitsassoziationen verwendet wird.
+
+## IKE - Einführung
+- Während ISAKMP die grundlegenden Datenformate und Verfahren zur Aushandlung beliebiger SAs definiert, spezifiziert der Internet Key Exchange das standardisierte Protokoll zur Aushandlung von IPsec SAs
+- IKE definiert fünf Austauschvorgänge:
+  - Phase-1-Austausch für die Einrichtung einer IKE SA :
+    - Main-Mode-Austausch, der durch 6 ausgetauschte Nachrichten realisiert wird
+    - Aggressive mode exchange, der nur 3 Nachrichten benötigt
+  - Phase 2 Austausch für die Einrichtung von IPsec SAs:
+    - Quick-Mode-Austausch, der mit 3 Nachrichten realisiert wird
+  - Andere Austausche:
+    - Informationsaustausch zur Übermittlung von Status- und Fehlermeldungen
+    - Neuer Gruppenaustausch zur Vereinbarung von privaten Diffie-Hellman-Gruppen
+- Hinweis: Auf den folgenden Folien steht HMAC(K, x | y | ...) für H(K, p 1 , H(K, p 2 , x, y, ...)), wobei p 1 und p 2 Auffüllmuster bezeichnen 
+
+### IKE - Berechnung von IKE-Sitzungsschlüsseln
+- IKE baut vier verschiedene Schlüssel mit einem Authentifizierungsaustausch auf:
+  - SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist, und die als ,,Hauptschlüssel'' dient.
+    - Die Berechnung von SKEYID ist abhängig von der Authentifizierungsmethode
+  - SKEYID_d ist das Keying-Material, das zur Ableitung von Schlüsseln für Nicht-IKE-SAs verwendet wird
+    - SKEYID_d = $HMAC(SKEYID, g^{xy} | CKY-I | CKY-R | 0)$, wobei $g^{xy}$ das gemeinsame Diffie-Hellman-Geheimnis bezeichnet
+  - SKEYID_a ist das Schlüsselmaterial, das von der IKE SA zur Authentifizierung ihrer Nachrichten verwendet wird
+    - SKEYID_a = $HMAC(SKEYID, SKEYID_d | g^{xy} | CKY-I | CKY-R | 1)$
+  - SKEYID_e ist das Schlüsselmaterial, das von der IKE SA zum Schutz der Vertraulichkeit ihrer Nachrichten verwendet wird
+    - SKEYID_e = $HMAC(SKEYID, SKEYID_a | g^{xy} | CKY-I | CKY-R | 2)$
+- Falls erforderlich, werden die Schlüssel nach der folgenden Methode erweitert:
+  - $K=(K_1 | K_2 | ...)$ mit $K_i = HMAC(SKEYID, K_{i-1})$ und $K_0 = 0$
+
+### IKE - Authentifizierungsmethoden
+- Phase 1 IKE-Austausche werden mit Hilfe von zwei Hash-Werten Hash-I und Hash-R authentifiziert, die vom Initiator und vom Responder erstellt werden:
+  - Hash-I = HMAC(SKEYID, gx | gy | CKY-I | CKY-R | SA-Angebot | ID-I)
+  - Hash-R = HMAC(SKEYID, gy | gx | CKY-R | CKY-I | SA-offer | ID-R) wobei gx, gy die ausgetauschten öffentlichen Diffie-Hellman-Werte bezeichnen ID-I, ID-R bezeichnen die Identität des Initiators und des Responders SA-offer bezeichnet die Nutzdaten bezüglich der SA-Verhandlung
+- IKE unterstützt vier verschiedene Methoden der Authentifizierung:
+  - Pre-shared Key:
+    - SKYEID = $HMAC(K_{Initiator}, Responder , r_{Initiator} | r_{Responder})$
+  - Zwei verschiedene Formen der Authentifizierung mit Public-Key-Verschlüsselung:
+    - SKEYID = $HMAC(H(r_{Initiator}, r_{Responder}), CKY-I | CKY-R)
+  - Digitale Unterschrift:
+    - SKEYID = $HMAC((r_{Initiator} | r_{Responder}), g^{xy})$
+    - Da in diesem Fall SKEYID selbst keine Authentifizierung bietet, werden die Werte Hash-I und Hash-R vom Initiator/Responder signiert
+
+### IKE - Main Mode Austausch mit Pre-Shared Key
+- Die folgenden Beschreibungen listen die ausgetauschten ISAKMP- und IKE-Payloads auf, wenn verschiedene ,,Flavors'' der IKE-Authentifizierung durchgeführt werden:
+  - ![](Assets/NetworkSecurity-IKE-exchange-payloads.png)
+  - $N_i, N_r$ bezeichnen $r_{Initiiator}, r_{Responder}$ (IKE-Notation) 
+  - $ID_i, ID_r$ bezeichnen die Identität des Initiators und des Responders 
+  - $KE$ bezeichnet die öffentlichen Werte eines DH-Austausches
+- Bitte beachten Sie, dass Hash-I und Hash-R nicht signiert werden müssen, da sie bereits ,,ein authentisches Geheimnis'' (Pre-Shared Key) enthalten
+
+### IKE - Hauptmodus Austausch mit Signaturen
+- ![](Assets/NetworkSecurity-IKE-exchange-payload-signature.png)
+  - $(m)$ gibt an, dass m optional ist 
+  - $I[m]$ bedeutet, dass I m signiert
+- Bitte beachten Sie, dass Hash-I und Hash-R signiert werden müssen, da sie nichts enthalten, von dem bekannt ist, dass es authentisch ist
+
+### IKE - Main Mode Exchange mit Public Key Encryption
+- ![](Assets/NetworkSecurity-IKE-exchange-public-key.png)
+  - wobei: $\{m\}_{+KI}$ bedeutet, dass m mit dem öffentlichen Schlüssel $+K_I$ verschlüsselt ist
+  - Bitte beachten Sie, dass Hash-I und Hash-R nicht signiert werden müssen, da sie die ausgetauschten Zufallszahlen Ni bzw. Nr ,,enthalten''.
+    - Jede Entität beweist also ihre Authentizität, indem sie die empfangene Zufallszahl ( Ni oder Nr ) mit ihrem privaten Schlüssel entschlüsselt
+- ![](Assets/NetworkSecurity-IKE-exchange-public-key-2.png)
+  - wobei: $\{m\}_{+KI}$ bedeutet, dass m mit dem öffentlichen Schlüssel $+K_I$ verschlüsselt ist 
+  - $\{m\}_{K_i}$ bedeutet, dass m mit dem symmetrischen Schlüssel $K_i$ mit $K_i=H(N_i, CKY-I)$ und $K_r=H(N_r,CKY-R)$ verschlüsselt ist
+  - Bitte beachten Sie, dass alle bisher beschriebenen Schemata einen Schutz der Identität vor Abhörern im Internet bieten, da die IDs und Zertifikate nicht im Klartext gesendet werden:
+  - Die IP-Adressen der ausgetauschten Pakete sind jedoch immer lesbar...
+
+### IKE - Aggressiver Modus Austausch mit Pre-Shared Key
+- ![](Assets/NetworkSecurity-IKE-aggressive-mode.png)
+- Da die Identität des Initiators und des Responders gesendet werden muss, bevor ein Sitzungsschlüssel erstellt werden kann, kann der Austausch im aggressiven Modus keinen Identitätsschutz vor Abhörern bieten
+- Ähnliche Varianten des aggressiven Modus gibt es auch für die Authentifizierung mit:
+  - Digitale Signatur
+  - Verschlüsselung mit öffentlichem Schlüssel
+
+### IKE - Quick Mode Exchange
+- ![](Assets/NetworkSecurity-IKE-quick-mode.png)
+- $Hash1 = HMAC(SKEYID_a, M-ID | SA | Ni | [ | KE ] [ | ID_{ci} | ID_{cr}] )$
+- $Hash2 = HMAC(SKEYID_a, M-ID | N_i | SA | N_r | [ | KE ] [ | ID_{ci} | ID_{cr}] ) 
+- $Hash3 = HMAC(SKEYID_a, 0 | M-ID | N_i | N_r)$
+- Die optionale Einbeziehung der Identitäten $ID_{ci}$ und $ID_{cr}$ ermöglicht es ISAKMP-Entitäten, eine SA im Namen anderer Clients einzurichten (Gateway-Szenario)
+- Die optionalen Schlüsselaustausch-Payloads KE ermöglichen die Durchführung eines neuen DH-Austauschs, wenn perfekte Forward Secrecy gewünscht ist
+- Sitzungsschlüsselmaterial $= HMAC(SKEYID\_d, [ g^{xy} | ] protocol | SPI | N_i | N_r)$
+
+## Weitere Probleme mit IPsec
+- Komprimierung:
+  - Wenn Verschlüsselung verwendet wird, dann können die resultierenden IP-Pakete nicht in der Verbindungsschicht komprimiert werden, z.B. bei einer Verbindung zu einem ISP über Modem
+  - Daher wurde das IP Payload Compression Protocol (PCP) definiert
+  - PCP kann mit IPsec verwendet werden:
+    - In der IPsec-Policy-Definition kann PCP festgelegt werden.
+    - Die IKE SA-Verhandlung ermöglicht die Aufnahme von PCP in die Vorschläge
+- Interoperabilitätsprobleme bei End-to-End-Sicherheit mit Header-Verarbeitung in Zwischenknoten:
+  - Interoperabilität mit Firewalls:
+    - Die Ende-zu-Ende-Verschlüsselung kollidiert mit der Notwendigkeit von Firewalls, die Protokoll-Header der oberen Schichten in IP-Paketen zu prüfen.
+  - Interoperabilität mit Network Address Translation (NAT):
+    - Verschlüsselte Pakete lassen weder eine Analyse noch eine Änderung der Adressen zu.
+    - Authentifizierte Pakete werden verworfen, wenn die Quell- oder Zieladresse geändert wird.
+
+## Schlussfolgerung
+- IPsec ist die Sicherheitsarchitektur der IETF für das Internet-Protokoll
+- Sie bietet die folgenden Sicherheitsdienste für IP-Pakete:
+  - Authentifizierung der Datenherkunft
+  - Schutz vor Wiederholung
+  - Vertraulichkeit
+- Es kann in Endsystemen oder Zwischensystemen realisiert werden:
+  - Implementierung im Endsystem: Integriertes Betriebssystem oder ,,bump in the stack''
+  - Gateway-Implementierung: Integrierter Router oder ,,bump in the wire''
+- Es wurden zwei grundlegende Sicherheitsprotokolle definiert:
+  - Authentifizierungs-Header (AH)
+  - Encapsulating security payload (ESP)
+- SA-Verhandlung und Schlüsselverwaltung werden mit folgenden Protokollen realisiert:
+  - Internet security association key management protocol (ISAKMP)
+  - Internet-Schlüsselaustausch (IKE)
+
+## Neue Wege in der IPsec-Entwicklung
+- Internet-Schlüsselaustausch Version 2
+  - Basierend auf den Erkenntnissen aus IKEv1
+  - Wesentliche Vereinfachungen
+- Netzwerkadressübersetzung (NAT)
+  - Beispiel für Probleme mit NAT und IPsec
+  - NAT-Überwindung
+  - Bound-End-to-End Tunnel Mode (BEET)
+- Konfiguration von großen IPsec-Infrastrukturen
+
+## Internet Key Exchange Protocol Version 2 [RFC5996]
+Zusätzliche Designziele zu IKEv1
+- Konsolidierung von mehreren IKEv1-RFCs (und mehreren Erweiterungen)
+  - Erleichterung für Entwickler und Prüfer
+  - Klärung mehrerer unspezifischer Punkte
+- Vereinfachungen
+  - Anzahl der verschiedenen Schlüsselaustauschverfahren auf eines reduziert
+  - Verschlüsselung wie in ESP
+  - Einfacher Anfrage/Antwort-Mechanismus
+- Verringerung der Latenzzeit
+- Aushandlung von Verkehrsselektoren
+- Graceful Changes, damit bestehende IKEv1-Software aufgerüstet werden kann
+
+### IKEv2 - Schlüsselaustauschverfahren 
+- ![](Assets/NetworkSecurity-IKEv2-exchange-procedure.png) 
+  - $K$ Schlüssel abgeleitet durch $PRF(PRF(N_i || N_r, g^{ir}), N_i || N_r || SPI_i || SPI_r)$
+  - $PRF$ ,,irgendeine'' Pseudozufallsfunktion - in der Regel eine asymmetrische HMAC SIG-Signatur oder MAC über die ersten beiden Nachrichten 
+  - $SAEx$ ein Huckepack- ,,Quick-Mode-Austausch''
+- Nur ein einziger Austauschtyp
+- Vier Nachrichten werden ausgetauscht $(= 2 * RTT)$
+- Initiator löst alle erneuten Übertragungen aus
+
+### IKEv2 - Eigenschaften des Schlüsselaustauschverfahrens
+- Der erste SA-Austausch erfolgt huckepack
+  - Geringere Latenz, da eine RTT eingespart wird
+- Nachricht 4 sollte huckepack mit Nachricht 2 ausgetauscht werden, aber
+  - Nachricht 3 verifiziert, dass Initiator Nachricht 2 erhalten hat (SPI ~ Cookie)
+    - Dient als DoS-Schutz, wenn anschließend rechenintensive Aufgaben durchgeführt werden
+  - Identität des Responders wird erst nach Verifizierung des Initiators offengelegt
+    - Schützt vor dem Scannen nach einer Partei mit einer bestimmten ID
+  - Initiator weiß nicht, wann es sicher ist, Daten zu senden
+    - (Pakete können in falscher Reihenfolge empfangen werden)
+  - Würde eine kompliziertere Strategie zur erneuten Übertragung erfordern
+  - Responder kann nicht über eine Policy für die Child SA entscheiden
+
+### IKEv2 - Zusätzliche Funktionen
+- Zusätzlicher DoS-Schutz
+  - Im Falle eines DoS-Angriffs kann der Responder den Initiator auffordern, ein zustandsloses Cookie zu senden
+  - Fügt dem Austausch 2 zusätzliche Nachrichten hinzu
+- Dead Peer Detection
+  - Regelmäßige IKE-Anfragen, um festzustellen, ob die SA gelöscht werden kann
+- Flexiblere Verhandlungstechniken
+  - Möglichkeit der Angabe: ,,Verwenden Sie eine dieser Chiffren mit einem dieser Authentifizierungsalgorithmen'' (es müssen nicht mehr alle Kombinationen aufgezählt werden)
+  - Verkehrsselektoren können eingegrenzt werden
+    - Initiator: ,,Ich möchte 192.168.0.0/16 für meinen Tunnelmodus verwenden''
+    - Antwortgeber: ,,OK, aber Sie dürfen nur 192.168.78.0/24 verwenden''
+    - Kann verwendet werden, um den Responder dem Initiator einen Adressbereich zuweisen zu lassen (in einfachen Situationen ohne / mit Hilfe von DHCP; siehe auch unten)
+
+## Netzwerk-Adressübersetzung (NAT)
+- Heutzutage ein häufiges Problem: ISP stellt nur eine einzige IP-Adresse zur Verfügung, es sollen aber mehrere Geräte angeschlossen werden
+- Lösung: Ein Router wird verwendet, um mehrere interne (private) Adressen auf eine einzige externe (öffentliche) Adresse abzubilden
+- Häufigster Ansatz (vereinfacht):
+  - Für Pakete, die von der privaten Seite kommen:
+    - Der Router schreibt die TCP/UDP-Quellports auf einen eindeutigen Wert pro IP-Flow um
+    - Speichert den neuen Quellport in einer Tabelle mit der Quelladresse und dem alten Quellport
+    - Ersetzt die Quell-IP-Adresse durch die externe Adresse
+  - Für Pakete, die von der öffentlichen Seite kommen:
+    - Der Router sucht den IP-Fluss nach dem TCP/UDP-Zielport ab
+    - Ersetzt die Zieladresse und den Port durch die alten Werte
+
+### NAT - Ein Beispiel
+- ![](Assets/NetworkSecurity-NAT-example.png)
+- NAT ändert die Quelladresse eines jeden Pakets in eine öffentliche IP-Adresse mit anderen ("umgeschriebenen") Quellports
+
+### Probleme mit NAT und IPsec - NAT-Traversal
+- Probleme:
+  - AH kann per Definition nicht mit NAT verwendet werden
+  - ESP bietet kein ,,wiederbeschreibbares Feld'' (wie Portnummer)
+  - TCP/UDP-Portnummern werden verschlüsselt oder authentifiziert (oder beides)
+- Lösung für ESP: ESP-Pakete in normale UDP-Pakete einkapseln [RFC3948] 
+  - ![](Assets/NetworkSecurity-NAT-encap-ESP.png)
+- UDP-Header enthält nur Portnummern und leere Prüfsumme
+  - Fügt 8 Byte Overhead hinzu
+  - Einziger Zweck: dem NAT-Gerät etwas zum ,,Umschreiben'' geben (um die Empfänger der Pakete in der Antwort unterscheiden zu können)
+  - Port 4500 reserviert für NAT-T (NAT-Traversal)
+- Im Transport-Modus:
+  - Innere UDP/TCP-Prüfsumme hängt von der ursprünglichen Quelladresse ab (Layering-Verletzung in der ursprünglichen TCP/IP-Suite)
+  - Muss wiederhergestellt werden
+- Wann ist NAT-T zu verwenden?
+  - NAT-Situation muss von IKE erkannt werden
+  - Erfolgt durch IKEv1-Erweiterung [RFC3947] und IKEv2
+  - IKE verwendet NAT-T, wenn der IKE-Quellport nicht 500 ist
+  - Funktioniert nicht immer, dann ist eine manuelle Konfiguration erforderlich
+- Timeout-Probleme und Keep-Alives
+  - ESP-Pakete werden nicht periodisch ausgetauscht
+  - NAT-T-Ströme können im Router eine Zeitüberschreitung verursachen
+  - Eingehende Pakete können dann nicht zugestellt werden
+  - Regelmäßige Keep-Alive-Pakete stellen sicher, dass der Router seinen Status beibehält
+  - Einfaches UDP-Paket an Port 4500 mit einem einzigen 0xFF-Oktett
+
+### Probleme mit NAT und IPsec - BEET-Modus
+- Welche Adressen soll Alice verwenden, um Pakete an Bob, Charlie und Dave zu senden? 
+- Weder die externen noch die internen Adressen dürfen eindeutig sein!
+  - Bobs und Charlies Pakete haben beide die gleiche externe Adresse
+  - Bobs und Daves Pakete haben beide dieselbe interne Adresse
+  - ![](Assets/NetworkSecurity-NAT-BEET-mode.png)
+  - Die Verwendung interner oder externer Adressen ist unsicher (Warum?)
+  - Die Unterscheidung erfordert virtuelle Adressen...
+- Virtuelle IP-Adressen zuweisen oder aushandeln
+  - Alice muss jedem ihrer Peers eindeutige virtuelle Adressen zuweisen
+  - Dies kann manuell geschehen, oder
+  - durch DHCP über IKE, oder
+  - durch Aushandlung von Verkehrsselektoren (IKEv2)
+  - L2TP über IPsec ausführen
+- IPsec-Tunnelmodus ist erforderlich
+  - Externer IP-Header trägt entweder eine öffentliche IP-Adresse oder eine private NAT-Adresse
+  - Interner IP Header trägt virtuelle IP-Adresse
+  - Führt zu (mindestens!) 28 Bytes Overhead pro Paket in NAT-Situationen
+  - | IP Header | UDP Header | ESP Header | IP Header | geschützte Daten |
+- Aber eigentlich sind nur Adressfelder im inneren IP-Header erforderlich (alle anderen Felder können vom externen Header abgeleitet werden)
+- Beide virtuellen Adressfelder verwenden immer dieselben Adressen (kein Multiplexing wie in üblichen Tunnelmodusszenarien)
+- Die Beschränkung auf zwei Adressen im Tunnel ermöglicht eine statische Bindung während der IKE-Aushandlung
+- Der Bound-End-to-End-Tunnel (BEET)-Modus [NiMe08] verhält sich semantisch wie eine Tunnelmodus-Assoziation mit einem Verkehrsselektor für einen einzelnen Host (/32)
+- Die übertragenen ESP-Pakete sind äquivalent zu Transport (!)-Modus-Paketen (virtuelle Adressen werden nie in Paketen übertragen)
+- Der innere Header wird durch den ESP-Entkapselungsprozess wiederhergestellt.
+- Unterscheidet zwischen der Erreichbarkeit eines Hosts (externe IP-Adresse) und seiner Identität (virtuelle IP-Adresse)
+- Hosts können nun zwischen verschiedenen Standorten hin- und herwandern und ihre virtuelle IP-Adresse beibehalten (dies ermöglicht zusätzlich eine bessere Unterstützung der Mobilität)
+
+## Konfiguration großer IPsec-Infrastrukturen
+- Kommunikationsinfrastrukturen von Unternehmen und Behörden:
+- Kann komplexe Overlay-Topologien bilden
+  - Verschachtelt
+  - Kreisläufe
+  - Mehrere Sicherheitsgateways pro privatem Netzwerk
+  - Mehrere private Netze pro Gateway
+  - Private Adressbereiche in privaten Netzen
+  - QoS und sicheres IP-Multicast können erforderlich sein
+- Kann bis zu Tausende von Sicherheits-Gateways haben
+- Kann sich dynamisch ändern
+  - Hinzufügen und Entfernen von Sicherheitsgateways
+  - Ausfälle von Verbindungen und Knoten
+  - Denial-of-Service-Angriffe
+  - Mobile Sicherheitsgateways (z. B. für die Kommunikation im Katastrophenfall)
+- Muss natürlich sicher sein ...
+
+## Probleme bei der manuellen Konfiguration der IPsec-Infrastruktur
+- Die IETF hat keine Methode zur automatischen Konfiguration und zum Einsatz von IPsec in großen Szenarien definiert
+- Daher werden Sicherheits-Gateways in der Regel manuell konfiguriert
+  - Die Anzahl der Sicherheitsrichtlinieneinträge wächst quadratisch mit der Anzahl der Sicherheitsgateways
+  - Problem der Skalierbarkeit
+    - Der Administrationsaufwand wächst $\Rightarrow$ Die Kosten steigen
+    - Administratoren machen potenziell mehr Konfigurationsfehler, z.B. vergessen, einen Eintrag aus einem SPD zu löschen oder einen zu großen IP-Bereich zuzulassen, usw. $\Rightarrow$ Mögliche Sicherheitsprobleme
+- Problem der Agilität
+    - Keine dynamische Anpassung der VPN-Topologie
+    - Begrenzte Unterstützung mobiler Sicherheits-Gateways
+
+## Automatische IPsec-Konfiguration - einige Anforderungen
+- Funktionelle Anforderungen
+  - Muss manuelle Eingriffe minimieren
+  - Muss auch komplexe Infrastrukturen unterstützen (verschachtelte Topologien mit privaten Adressbereichen usw.)
+  - Muss nur Unicast verwenden (da Multicast usw. nicht weit verbreitet ist)
+- Nicht-funktionale Anforderungen
+  - Muss robust sein, d. h. stabil auf schwierige Netzbedingungen reagieren
+  - Sie muss sicher sein, insbesondere darf sie nicht schwächer sein als eine manuell konfigurierte IPsec-Infrastruktur
+  - Sie muss in Bezug auf die Anzahl der Sicherheits-Gateways skalierbar sein
+  - Es muss sich schnell an neue Topologien anpassen können.
+
+## Verschiedene Ansätze für die automatische IPsec-Konfiguration
+- IPsec-Richtlinienverteilung über zentrale Server
+- Gruppenverschlüsseltes Transport-VPN (GET)
+- Tunnel-Endpunkt-Erkennung (TED)
+- Dynamisches Mehrpunkt-VPN (DMVPN)
+- Proaktives Multicast-basiertes IPsec-Erkennungsprotokoll
+- Soziales VPN
+- Sicheres OverLay für IPsec-Erkennung (SOLID)
+
+### IPsec-Richtlinienverteilung durch zentrale Server
+- Einfacher, gemeinsamer Ansatz zur Konfiguration einer großen Anzahl von Sicherheits-Gateways
+- Zentraler Policy Server statisch in jedem Gateway konfiguriert
+- Jedes Gateway kontaktiert den Policy Server, um SPD zu aktualisieren
+- Beispiel: Microsoft Active Directory, verschiedene Militärprodukte
+- Einige offensichtliche Probleme:
+  - Administratoren müssen die zentrale Datenbank manuell bearbeiten
+  - Verschachtelte Topologien sind schwer zu realisieren
+  - Skalierbarkeitsprobleme aufgrund von Engpässen
+  - Verfügbarkeit ist schwer zu garantieren (Single Point of Failure)
+  - Dynamische Topologien erfordern, dass neue Richtlinien proaktiv an die Sicherheitsgateways übermittelt werden (auch wenn sie derzeit vielleicht nicht verwendet werden)
+  - Viele Richtlinieneinträge werden höchstwahrscheinlich nie verwendet (kein Verkehr)
+
+### Tunnel Endpoint Discovery (TED)
+- Proprietärer Ansatz von Cisco [Fluh01]
+- Sicherheitsassoziationen werden reaktiv erstellt
+  - Alice sendet Paket an Bob
+  - Gateway A erkennt, dass keine gültige SA vorhanden ist
+  - Verwerfen des Pakets und Senden des IKE-Pakets an Bob
+  - Gateway B fängt IKE-Paket ab
+  - Richtet SA zu Gateway A ein
+  - Nachfolgende Pakete zwischen Alice und Bob können übertragen werden
+- Ziemlich leistungsfähiger, sicherer Ansatz, aber
+  - Routing muss im Transportnetz durchgeführt werden
+  - Keine privaten IP-Adressbereiche
+  - Keine verschachtelten Topologien
+- ![](Assets/NetworkSecurity-TED.png)
+
+### Gruppenverschlüsseltes Transport-VPN (GET)
+- Cisco Produktbranding mehrerer IPsec-Komponenten [Bhai08]
+- Sicherheits-Gateways kontaktieren zentralen IKE-Server
+- IKE-Server verteilt symmetrische Schlüssel (bevorzugt über Multicast)
+- Alle Sicherheitsgateways einer Gruppe verwenden dieselbe SA (einschließlich SPI, Schlüssel)
+- Wiederholungsschutz durch Zeitfenster (1-100 Sekunden)
+  - Sliding-Window-Mechanismus funktioniert nicht, da mehrere Absender denselben SPI verwenden
+- Zusätzliche Probleme mit zentralen Policy-Servern:
+  - schwacher Wiedergabeschutz
+  - Die Kompromittierung eines einzelnen Gateways beeinträchtigt das gesamte VPN
+  - Rekeying durch symmetrischen Austausch $\Rightarrow$ kann nicht von kompromittierten Schlüsseln wiederhergestellt werden
+  - Perfektes Vorwärtsgeheimnis nicht verfügbar
+- Einziger Vorteil: Ermöglicht Multicast-Netzwerkprivatisierung
+- ![](Assets/NetworkSecurity-GET.png)
+
+### Proaktives Multicast-basiertes IPsec-Erkennungsprotokoll
+- Ansatz wurde für militärische Anwendungen entwickelt [Tran06]
+- Sicherheits-Gateways kündigen periodisch private Netzwerke an
+- Erfolgt durch Transportnetzwerk-Multicast
+- Nachrichten werden durch einen vorab geteilten symmetrischen Schlüssel geschützt
+- Vorteile: Unterstützt private Adressbereiche, Multicast innerhalb des VPN
+- Probleme:
+  - Erfordert Transportnetz-Multicast
+  - Verschachtelte Topologien funktionieren nicht
+  - Anzahl der empfangenen Nachrichten kann ziemlich groß sein
+  - Ein kompromittiertes Gateway führt zu einer nicht wiederherstellbaren Kompromittierung des VPN
+  - Replay-Schutz nicht berücksichtigt
+- ![](Assets/NetworkSecurity-proactive-multicast-discovery.png)
+
+### Soziales VPN
+- Akademischer Ansatz [FBJW08]
+- Verwendet Facebook als ,,policy'' Server zum Austausch von IKE Zertifikaten
+  - Man kann mit Freunden kommunizieren
+- Agilität durch Peer-to-Peer-Netzwerk
+  - Schaut in einer verteilten Hash-Tabelle nach der externen IP-Adresse des Ziels
+- Probleme
+  - Keine Gateway-Funktionalität (nur Ende-zu-Ende)
+  - Keine verschachtelten Topologien
+  - Ziemlich großer Paket-Overhead
+  - Schlechte Skalierbarkeit im Falle vieler potentieller Kommunikationspartner
+  - Sicherheit
+    - Vertrauen Sie Facebook?
+    - Wissen Sie, ob die Person in Facebook wirklich die ist, die sie behauptet?
+    - Überhaupt keine Verifizierung möglich
+
+### Dynamisches Mehrpunkt-VPN (DMVPN)
+- Ein weiterer Ansatz von Cisco [Bhai08]
+- VPN ist aufgeteilt in
+  - Statische Kern-Gateways (,,Hubs'')
+  - Dynamische periphere Gateways (,,Spokes'')
+- Hubs können OSPF-Routing zwischen den anderen nutzen
+- Spokes kontaktieren vorkonfigurierte Hubs für den Zugang zum VPN
+- Dynamische ,,Spoke-to-Spoke''-Verbindungen optimieren den Datenfluss 
+- ![](Assets/NetworkSecurity-DMVPN.png)
+
+#### Dynamisches Mehrpunkt-VPN (DMVPN) - Diskussion
+- Vorteile
+  - Ansatz ermöglicht dynamischere Topologien
+  - Kann private Adressen verwenden
+- Nachteilig
+  - Erfordert immer noch erheblichen Konfigurationsaufwand
+    - Kernnetz muss manuell konfiguriert werden
+    - Spokes müssen mit den Adressen der Hubs konfiguriert werden
+    - Macht z.B. einen einfachen Wechsel zu einem neuen ISP unmöglich
+  - Spokes können nicht verschachtelt werden
+  - Spokes können sich nicht zwischen ,,Hubs'' bewegen
+    - Hub verhält sich wie MobileIP Home Agent für Spoke
+  - Ausfall von ,,Hubs'' kritisch für deren ,,Spokes''
+
+### Sicheres OverLay für IPsec-Erkennung (SOLID)
+- Komplexer Ansatz, verspricht einfache Implementierung [RSS10]
+- Sicherheitsgateways bilden ein strukturiertes Overlay-Netzwerk
+  - Verbindet Sicherheitsgateways so, dass das VPN effizient nach einer Zieladresse durchsucht werden kann
+- Erfordert nur sehr wenige proaktiv erstellte IPsec-Verbindungen
+  - Minimale Konnektivität ermöglicht eine reaktive Erkennung von Sicherheitsgateways
+  - Sich bewegende Sicherheitsgateways müssen nicht alle anderen über die aktuelle externe IP-Adresse informieren
+- Drei Aufgaben zu erfüllen
+  - Topologie-Kontrolle
+    - Proaktiver Aufbau einer VPN-Struktur zur schnellen Erkennung
+  - Erkennung von Sicherheitsgateways
+    - Jedes Mal, wenn ein Client-Computer ein Paket sendet und keine gültige SA gefunden wird
+    - Muss das entsprechende Sicherheits-Gateway finden, um reaktiv eine SA zu erstellen
+  - Weiterleitung von Datenpaketen
+    - Suche nach einem effizienten Weg zur Weiterleitung von Paketen durch das Overlay
+
+#### SOLID - Topologie-Kontrolle
+- Mechanismen zur Topologiekontrolle
+  - Kontinuierliche Aktualisierung der VPN-Struktur zur Anpassung an Veränderungen
+- In SOLID werden proaktiv SAs erstellt, um eine künstliche Ringstruktur zu bilden
+- Sicherheitsgateways sind nach inneren Adressen geordnet
+- Gateways, die nicht direkt im Transportnetz kommunizieren können, werden durch virtuelle Pfade verbunden $\Rightarrow$ Verschachtelte Strukturen werden abgeflacht, um eine einfache Erkennung zu ermöglichen
+- ![](Assets/NetworkSecurity-SOLID-topology.png)
+
+#### SOLID - Erkennung
+- Reaktive Erkennung, um ein Sicherheits-Gateway für eine bestimmte Client-IP-Adresse zu finden
+- Suchanfragen werden an das (bereits zugeordnete) Gateway weitergeleitet, dessen innere IP-Adresse der gesuchten IP-Adresse ,,am ähnlichsten'' ist
+  - Ein einfacher Mechanismus stellt sicher, dass das korrekte entsprechende Sicherheits-Gateway gefunden wird
+  - Die Pakete werden entlang der Ringstruktur gesendet
+  - Benötigt $O(n)$ Overlay Hops, um das Ziel zu erreichen (wobei n die Anzahl der Netzwerke in der VPN-Topologie ist)
+- $\Rightarrow$ Kürzere ,,Suchpfade'' erforderlich
+
+#### SOLID - Mehr Topologiekontrolle
+- Erweiterte Topologiekontrolle schafft zusätzliche SAs
+- IP-Adressraum des VPN wird in Bereiche unterteilt
+  - Exponentiell wachsende Größe der Bereiche
+- Zu jedem Bereich wird mindestens eine SA proaktiv von jedem Gateway gehalten
+- Anzahl der zusätzlichen SAs wächst in $O(log\ n)$
+- Aufgrund der Konstruktionstechnik Entdeckung in $O(log\ n)$ Overlay Hops $\Rightarrow$ Ansatz skaliert gut mit Anzahl der Netzwerke
+- ![](Assets/NetworkSecurity-SOLID-topology-control.png)
+
+#### SOLID - Weiterleitung von Datenpaketen
+- Nach der anfänglichen Erkennung müssen die Datenpakete weitergeleitet werden
+- Senden von Daten entlang des Entdeckungspfades möglich
+  - Länge wieder $O(log\ n)$ Overlay-Hops
+  - Zu ineffizient, wenn viele Pakete geroutet werden müssen
+  - Wird nur anfangs verwendet
+- Nachfolgend wird der Pfad optimiert
+  - Optimierung erfolgt, wenn Gateway feststellt, dass es Pakete für zwei Gateways weiterleitet, die sich im gleichen Netz befinden
+  - Führt in zyklusfreien VPNs zu optimalen Routen in Bezug auf die Anzahl der Overlay-Sprünge
+  - Kleine Zyklen können lokal umgangen werden
+
+#### SOLID - Eigenschaften und Ergebnisse
+- Kann komplexe Infrastrukturen innerhalb von Sekunden oder Minuten konfigurieren
+- Erfordert keine manuelle Interaktion
+- Erfordert keine besonderen Eigenschaften des Transportnetzes
+- Robustheit
+  - Kein einzelner Ausfallpunkt
+  - Wenn das Netzwerk aufgeteilt wird, können die Teile unabhängig voneinander arbeiten
+- Keine Schwächung der von Standard-IPsec gebotenen Sicherheit
+- Gute Skalierbarkeit mit der Anzahl der privaten Netze, keine Engpässe
+- Wenn Sicherheitsgateways umziehen, müssen nur zwei SAs wiederhergestellt werden, um die Erreichbarkeit zu gewährleisten
+
+#### SOLID - Simulative Bewertung
+- SOLID kann in OMNeT++ evaluiert werden
+- Ermöglicht Tests von komplexen Szenarien
+
+#### SOLID - Sonstige Forschung
+- SOLID wird in der Gruppe Telematik/Computernetzwerke erforscht
+- Entwicklung von Prototypen
+- Verfügbarkeit
+  - Schutz des wichtigeren Kernnetzes vor DoS-Angriffen
+  - Schaffung eines mehrschichtigen VPN, das bestimmte Verkehrsflüsse zwischen Sicherheits-Gateways verhindert
+- Zugriffskontrolle
+- Robustheit
+  - Proaktive Wiederherstellung bei Netzwerkausfällen
+- Anwendungsschicht-Multicast
+  - Ermöglicht sicheres Multicast über reine Unicast-Netze
+
 # Security protocols of the transport layer
 # Sicherheitsaspekte der mobilen Kommunikation
 # Sicherheit von drahtlosen lokalen Netzen
@@ -2912,3 +3957,22 @@ Techniken zum Aufbau virtueller privater Netze
 - [SMW99a] B. Schneier, Mudge, D. Wagner. _Cryptanalysis of Microsoft's PPTP Authentication Extensions (MSCHAPv2)._ Counterpane Systems, 1999.
 - [FH98a] P. Ferguson, G. Huston. _What is a VPN?_ The Internet Protocol Journal, Cisco Systems. 1998.
 - [ATM99a] ATM Forum. _ATM Security Specification Version 1.0._ AF-SEC-0100.000,
+- [RFC2401] R. Atkinson, S. Kent. Security Architecture for the Internet Protocol. RFC 2401, Internet Engineering Taskforce (IETF), 1998.
+- [RFC2402] R. Atkinson, S. Kent. IP Authentication Header (AH). RFC 2402, IETF, 1998. [RFC2403] C. Madson, R. Glenn. The Use of HMAC-MD5-96 within ESP and AH. RFC 2403, IETF, 1998.
+- [RFC2404] C. Madson, R. Glenn. The Use of HMAC-SHA-1-96 within ESP and AH. RFC 2404, IETF, 1998.
+- [RFC2405] C. Madson, N. Doraswami. The ESP DES-CBC Cipher Algorithm With Explicit IV. RFC 2405, IETF, 1998.
+- [RFC2406] R. Atkinson, S. Kent. IP Encapsulating Security Payload (ESP). RFC 2406, IETF, 1998.
+- [RFC2407] D. Piper. The Internet IP Security Domain of Interpretation for ISAKMP. RFC 2407, IETF, 1998.
+- [RFC2408] D. Maughan, M. Schertler, M. Schneider, J. Turner. Internet Security Association and Key Management Protocol (ISAKMP). RFC 2408, - IETF, 1998.
+- [RFC2409] D. Harkins, D. Carrel. The Internet Key Exchange (IKE). RFC 2409, IETF, 1998.
+- [RFC2857] A. Keromytis, N. Provos. The Use of HMAC-RIPEMD-160-96 within ESP and AH. RFC 2857, IETF, 2000.
+- [RFC3947] T. Kivinen, B. Swander, A. Huttunen, V. Volpe: _Negotiation of NAT-Traversal in the IKE._ RFC 3947, IETF, 2005.
+- [RFC3948] A. Huttunen, B. Swander, V. Volpe, L. DiBurro, M. Stenberg: _UDP Encapsulation of IPsec ESP Packets._ RFC 3948, IETF, 2005.
+- [RFC4306] C. Kaufman: _Internet Key Exchange (IKEv2) Protocol._ RFC 4306, Internet Engineering Taskforce (IETF), 2005.
+- [NiMe08] P. Nikander, J. Melen: _A Bound End-to-End Tunnel (BEET) mode for ESP._ Internet-Draft, IETF Network Working Group, 2008.
+- [Bhai08] Y. Bhaiji: _Network Security Technologies and Solutions_ , Cisco Press, 2008.
+- [Fluh01] S. Fluhrer: _Tunnel Endpoint Discovery._ Expired Internet-Draft, IETF IPSP Working Group, 2001.
+- [Tran06] T.H. Tran: _Proactive Multicast-Based IPSEC Discovery Protocol and Multicast Extension._ Military Communications Conference, 2006.
+- [FBJW08] R. Figueiredo, P. O. Boykin, P. St. Juste, D. Wolinsky: _Social VPNs: Integrating Overlay and Social Networks for Seamless P2P Networking’._ IEEE WETICE/COPS, 2008.
+- [RSS10] M. Rossberg, T. Strufe, G. Schaefer: _Distributed Automatic Configuration of Complex IPsec-Infrastructures._ Journal of Network and Systems Management, Volume 18, Issue 3, 2010.
+- [RSSM09] M. Rossberg, W. Steudel, G.Schaefer, M. Martius: _Eine Software-Architektur zur Konstruktion flexibler IPsec-Infrastrukturen._ BSI 11. Deutscher IT-Sicherheitskongress, 2009.

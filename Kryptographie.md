@@ -15,6 +15,18 @@
         - [AES-Chiffrieralgorithmus](#aes-chiffrieralgorithmus)
         - [Die S-Box von AES:](#die-s-box-von-aes)
         - [AES-Rundenschlüsselberechnung](#aes-rundenschlüsselberechnung)
+    - [Bemerkungen zu randomisierten Algorithmen](#bemerkungen-zu-randomisierten-algorithmen)
+      - [Ressourcenverbrauch](#ressourcenverbrauch)
+      - [Randomisierung bei Straight-Line-Programmen](#randomisierung-bei-straight-line-programmen)
+      - [Prozeduren als Parameter](#prozeduren-als-parameter)
+    - [Sicherheit von Block-Kryptosystemen](#sicherheit-von-block-kryptosystemen)
+- [Uneingeschränkte symmetrische Verschlüsselung](#uneingeschränkte-symmetrische-verschlüsselung)
+  - [Betriebsarten](#betriebsarten)
+    - [ECB-Betriebsart ( ,,Electronic Code Book mode'' )](#ecb-betriebsart--electronic-code-book-mode-)
+    - [CBC-Betriebsart( ,,Cipher Block Chaining mode'' )](#cbc-betriebsart-cipher-block-chaining-mode-)
+    - [R-CBC-Betriebsart( ,,Randomized CBC mode'' )](#r-cbc-betriebsart-randomized-cbc-mode-)
+    - [OFB-Betriebsart( ,,Output Feed Back mode'' )](#ofb-betriebsart-output-feed-back-mode-)
+    - [R-CTR-Betriebsart (,,Randomized CounTeR mode'' )](#r-ctr-betriebsart-randomized-counter-mode-)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -1135,3 +1147,324 @@ Man geht nach dem schon diskutierten grundsätzlichen Ansatz bei Substitutions-P
 
 Aktuelle Lage: 
 Bisher gilt AES als praktisch sicher (insbesondere die 192-Bit- und die 256-Bit-Variante), wenn auch nicht in dem im Folgenden zu besprechenden technischen Sinn. Es wurden einige Angriffe vorgeschlagen, die zu schnellerem ,,Brechen'' führen als dem vollständigen Durchsuchen des Schlüsselraums (nur noch 299 Schlüssel müssen getestet werden... ), aber dies führt nicht zu praktisch durchführbaren Verfahren.
+
+### Bemerkungen zu randomisierten Algorithmen
+Wir benötigen ein Algorithmenmodell, um die Angreifer in Eva zu modellieren. Offensichtlich wird sie alle ihr zur Verfügung stehenden Mittel einsetzen, insbesondere auch Zufallsexperimente (wenn es ihr nützt). Also müssen unsere Algorithmen auch Zufallsexperimente ausführen können. Grundsätzlich werden wir klassische Turingmaschinen bzw. üblichen Pseudocode (für gewöhnliche Computer) verwenden und ihre Laufzeit messen, allerdings mit einigen Änderungen/Erweiterungen/Einschränkungen, wie im Weiteren erläutert wird.
+
+#### Ressourcenverbrauch
+Da wir nicht erwarten können, dass reale Kryptosysteme in einem idealen Sinn wie der informationstheoretischen Sicherheit sicher sind, wollen wir Sicherheit gegenüber einer Angreiferin Eva studieren, die nur beschränkte Ressourcen hat. Welche Ressourcen kommen in Frage? Sicherlich Zeit verbrauch bzw. Anzahl der Rechenoperationen, aber auch andere.
+
+Vorüberlegung: Ein ,,zeiteffizienter'' Angriff (mit Klartextwahl, ,,chosen-plaintext attack'', CPA)
+
+Sei $B=(\{0,1\}^l,\{0,1\}^s,\{0,1}^l,e,d)$ ein Block-Kryptosystem und seien $x_i,y_i\in\{0,1\}^l$ für $1\geq i\geq t$ paarweise verschiedene Klar- bzw. Chiffretexte. Ein Schlüssel $k\in\{0,1\}^s$ ist konsistent mit den Paaren $(x_i,y_i)$, wenn $e(x_i,k)=y_i$ für alle $1\geq i\geq t$ gilt. Für realistische (d.h. praktisch relevante) SPKS gibt es im Fall $t\approx 5$ höchstens einen konsistenten Schlüssel. (Man denke an AES. $t=5$ bedeutet, dass $5*128$ Bit Information über $k$ vorliegen, eventuell redundant, aber $k$ ist nur $128$ Bit lang.)
+
+Wir können also für Eva in Szenario 2 den folgenden Angriff nach dem CPA-Muster planen:
+1. Lasse fünf Klartexte $x_1,...,x_5$ zu $y_1,...,y_5$ verschlüsseln.
+2. ,,Schaue nach'', welcher Schlüssel $k$ mit den Paaren $(x_1,y_1),...,(x_5,y_5)$ konsistent ist (wenigstens einer ist es und es gibt höchstens einen).
+3. Höre Chiffretext $y$ ab und berechne $x=d(y,k)$ aus $y$.
+
+Um in Schritt 2. ,,nachsehen'' zu können, benötigt Eva eine Tabelle mit allen möglichen Chiffretextkombinationen für die fünf Klartexte $x_1,...,x_5$. Dafür gibt es $\geq |K|= 2^s$ Möglichkeiten, nämlich für jeden Schlüssel eine. Die Hashtabelle oder der Suchbaum (oder die entsprechende Struktur in einem Turingmaschinen-Programm) hat Größe $2^s$. Wenn der Programmtext oder die Turingmaschine binäre Suche (oder einen binären Suchbaum) benutzt, dann führt dieser ,,Angriff '' in Zeit $O(log(|K|)) =O(log(2^s)) =O(s)$ zum Klartext $x$.
+
+Dieses Vorgehen ist natürlich unrealistisch, denn niemand kann ein so großes Programm schreiben oder speichern, wenn etwa (wie bei AES) die Zahl der Schlüssel $2^{128}>10^{38}$ beträgt. Um diesen Trick auszuschließen, werden wir den Ressourcenverbrauch eines Algorithmus als Summe von Laufzeit und Länge des Programmcodes (=Größe der Transitionstabelle der Turingmaschine) messen. Die Programmgröße ist eine untere Schranke für die Zeit, die Eva zur Erstellung ihres Programms benötigt. Unser Ressourcenmaß erfasst also die Zeit für die Erstellung und die Zeit für die Ausführung des Algorithmus.
+
+Unsere Algorithmen werden oft mit Kryptosystemen einer festen Blocklänge $l$ und einer fixen Anzahl von Klartext-/Chiffretext-Paaren arbeiten. Damit sind nur endlich viele Eingaben möglich, der Ressourcenverbrauch kann also nicht asymptotisch (,,bei großen Eingaben'') angegeben werden. Daher betrachten wir zunächst Algorithmen mit konstanter Laufzeit. Das führt dazu, dass alle eventuell vorhandenen Schleifen nur konstant oft durchlaufen werden. Damit können wir aber auf Schleifenanweisungen vollständig verzichten. Die resultierenden Programme heißen ,,Straight-Line-Programme''. Man kann sie sich in Pseudocode geschrieben vorstellen (ohne ,,while'' und ,,for'' und ohne Rückwärtssprünge), oder als Turingmaschinenprogramme mit der Eigenschaft, dass nie eine Programmzeile zweimal ausgeführt wird.
+
+#### Randomisierung bei Straight-Line-Programmen
+In unseren Algorithmen wollen wir zusätzlich die Anweisung ,,$y\leftarrow flip(M)$'' erlauben, wobei $M$ eine endliche Menge ist. Die Idee dabei ist, dass der Variable $y$ ein zufälliges Element von $M$ (bzgl. der Gleichverteilung auf $M$) zugewiesen wird. Damit berechnen unsere Algorithmen keine Funktionen, sondern zufällige Werte, die durch eine Wahrscheinlichkeitsverteilung gesteuert werden.
+
+Um den Wahrscheinlichkeitsraum definieren zu können, machen wir die folgenden Annahmen (die keine Einschränkung darstellen):
+1. Bei nacheinander ausgeführten Kommandos der Form $y\leftarrow flip(M)$, mit identischem oder unterschiedlichem $M$, werden immer neue, unabhängige Zufallsexperimente ausgeführt.
+2. Wie eben diskutiert, enthalten unsere Algorithmen keine Schleifen. Wir können daher jedes Ergebnis eines Zufallsexperiments in einer eigenen Variable speichern. Zusätzlich können wir die flip-Kommandos aus dem gesamten Programm, auch den bedingten Anweisungen, herausziehen und sie alle (vorab, auf Vorrat) ausführen. Damit können wir annehmen: Wenn die Anweisung $y\leftarrow flip(M)$ im Programmtext vorkommt, dann wird sie in jedem Durchlauf des Algorithmus (unabhängig von der Eingabe und den Ergebnissen der flip-Anweisungen) genau einmal ausgeführt.
+
+Abkürzung: $flip(l)$ für $flip(\{0,1\}^l)$ (l-facher Münzwurf) und $flip()$ für $flip(1)$, also $flip(\{0,1\})$ (einfacher Münzwurf).
+
+Sei nun A ein randomisierter Algorithmus (also ein Straight-Line-Programm), indem die $flip$-Anweisungen $y_i\leftarrow flip(M_i)$ für $1\geq i\geq r$ vorkommen. Dann verwenden wir als zugrundeliegenden Wahrscheinlichkeitsraum die Menge $M=M_1\times M_2\times...\times M_r$ mit der Gleichverteilung. Dies modelliert die Idee, dass die $r$ Zufallsexperimente jeweils mit der uniformen Verteilung und insgesamt unabhängig voneinander ausgeführt werden.
+
+$I$ sei die Menge der Eingaben, $Z$ sei die Menge der Ausgaben.
+
+Ist $x\in I$ eine Eingabe, so erhalten wir für jedes $m=(m_1,...,m_r)\in M$ genau eine Ausgabe $A^m(x)\in Z$, indem wir in $A$ die Anweisung $y_i\leftarrow flip(M_i)$ durch $y_i\leftarrow m_i$ ersetzen. Auf diese Weise erhalten wir
+- Für jedes $m\in M$ eine Funktion $A^m:I\rightarrow Z,x \rightarrow A^m(x)$, und
+- für jedes $x\in I$ eine Zufallsgröße $A(x):M\rightarrow Z,m\rightarrow A^m(x)$.
+
+Beispiel 2.8 Betrachte den folgenden Algorithmus:
+- $A(x:\{0,1\}^4):\{0,1\}$        // nach dem Doppelpunkt: Typ der Eingabe bzw. Ausgabe
+    - $b_0 \leftarrow flip()$
+    - $b_1 \leftarrow flip()$
+    - $b_2 \leftarrow flip()$
+    - $b_3 \leftarrow flip()$
+    - $if b_0 = 1 \text{ then return } x(0)$
+    - $if b_1 = 1 \text{ then return } x(1)$
+    - $if b_2 = 1 \then{ then return } x(2)$
+    - $if b_3 = 1 \text{ then return } x(3)$
+    - return 1
+
+Dann ist $M=\{0,1\}^4$, und es gilt: $A^{0110}(1101)=1$ und $A^{0010}(1101)=0$. Kompakt: Wenn $b_0 b_1 b_2 b_3$ mit $i$ Nullen und einer $1$ (an Position $i$) beginnt, dann ist die Ausgabe $x(i)$, für $i=0,1,2,3$. Ist $b_0 b_1 b_2 b_3=0000$, so ist die Ausgabe 1. Also gilt: $Pr(A(1101)=0) = Pr(\{w\in\{0,1\}^4 |w_0=w_1=0, w_2=1\}) =(\frac{1}{2})^3 =\frac{1}{8}$ und $Pr(b_1=1) =Pr(\{w\in\{0,1\}^4 |w(1)=1\})=\frac{1}{2}$
+
+Damit erhalten wir auch sinnvolle kombinierte und bedingte Wahrscheinlichkeiten: $Pr(A(1101)=0, b_0=0)= Pr(\{w\in\{0,1\}^4 |w_0=w_1=0, w_2=1\}) =\frac{1}{8}$ und $Pr(A(1101)=0| b_0=0) =\frac{Pr(A(1101)=0, b_0=0)}{Pr(b_0=0)}=\frac{1}{4}$
+
+Wir können auch den Algorithmus $A$ so ändern, dass eine Anweisung $y_i\leftarrow flip(M_i)$ durch $y_i\leftarrow m^{(0)}_i$ ersetzt wird. (Diesen Algorithmus bezeichnen wir dann mit $A(y_i=m^{(0)}_i)$.) Es gilt dann für alle Eingaben $x$ und Ausgaben $z$: $Pr(A(x)=z| y_i=m^{(0)}_i) =Pr(A(y_i=m^{(0)}_i)(x) =z)$. Die verallgemeinerte Notation $A(y_1=m^{(0)}_1,...,y_s=m^{(0)}_s)$ erklärt sich von selbst.
+
+#### Prozeduren als Parameter
+Wir werden Algorithmen $A$ betrachten, die als Eingabe eine Prozedur $B$ (z.B. die Verschlüsselungsfunktion einer Blockchiffre mit fest eingesetzem Schlüssel) erhalten. Diese Prozedur darf nur aufgerufen werden, sie wird nicht als Text in den Rumpf von $A$ eingefügt. Sie könnte aber wiederum zufallsgesteuert sein. Um den Wahrscheinlichkeitsraum von $A$ mit einem solchen Funktionsparameter zu bestimmen, müssen folgende Informationen gegeben sein:
+- $B$,
+- die Anzahl der Aufrufe von $B$ in $A$,
+- welche Aufrufe $y\leftarrow flip(M)$ in $B$ vorkommen.
+
+Wir behandeln dann die Variablen $y$ in verschiedenen Aufrufen von $B$ genau wie die aus einem gewöhnlichen randomisierten Programm (Umbenennen der Variablen, Herausziehen der Zufallsexperimente an den Anfang). In dem resultierenden Wahrscheinlichkeitsraum sind dann die Zufallsexperimente in den verschiedenen Aufrufen von $B$ und die in Teilen von $A$ außerhalb von $B$ unabhängig.
+
+### Sicherheit von Block-Kryptosystemen
+Wir betrachten hier l-Block-Kryptosysteme $B=(X,K,Y,e,d)$ mit $X=Y=\{0,1\}^l$ und $K\subseteq\{0,1\}^s$ für ein $s$. $e$ ist die Verschlüsselungsfunktion und $d$ die Entschlüsselungsfunktion. Wir erinnern uns:
+1. Im Szenario 2 (chosen-plaintext attack,CPA) kann die Angreiferin Eva sich eine ,,geringe Zahl'' von Klartexten verschlüsseln lassen, also hat sie eine Liste von Klartext-Chiffretext-Paaren: $(x_1,y_1),...,(x_r,y_r)$. Nun kann jedenfalls nur ein ,,neuer'' Klartext $x$, also ein $x\in X\{x_1,...,x_r\}$, geheim übertragen werden. Die possibilistische Sicherheit verlangt genau, dass dies möglich ist: Wenn $y\in Y\{y_1,...,y_r\}$ ein neuer gegebener Chiffretext ist, dann gibt es für jeden Klartext $x\in X\{x_1,...,x_r\}$ einen Schlüssel $k$, der $x_i$ zu $y_i$ chiffriert, $1 \geq i\geq r$, und $x$ zu $y$ chiffriert.
+2. Wenn dabei $r$ beliebig groß sein darf, können nach Prop.2.3 nur Substitutionskryptosysteme in diesem Sinne sicher sein. Da sie $|X|!$ Schlüssel haben müssen und daher immense Schlüssellänge (mindestens $|X|log|X|-O(|X|)$ Bits) erfordern, kommen sie in der Praxis nicht in Frage.
+
+Idee eines neuen Sicherheitsbegriffs (für Block-Kryptosysteme): Gegeben sei eine Angreiferin Eva mit beschränkten Berechnungsressourcen. Wir fragen, wie sehr aus Evas Sicht das $l$-Block-Kryptosystem $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ dem Substitutionskryptosystem $S′=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e′,d′)$ (siehe Def.1.9) ähnelt. Ist es ihr mit ,,signifikanter Erfolgswahrscheinlichkeit'' möglich, aufgrund der ihr vorliegenden Information und im Rahmen ihrer Ressourcen, zu unterscheiden, welches der beiden Systeme verwendet wird? Wenn dies nicht der Fall ist, kann das Kryptosystem $B$ als sicher gelten, wie die folgende Überlegung zeigt.
+Wenn Eva aufgrund der ihr vorliegenden Information (2.4) nicht mit nennenswerter Erfolgswahrscheinlichkeit unterscheiden kann, ob sie es mit der Chiffre $e(.,k)$ (für ein zufälliges $k\in K$) oder mit $e′(.,\pi)$ (für ein zufälliges $\pi\in P_{\{0,1\}^l}$) zu tun hat, dann hat sie aus der ihr vorliegenden Information keine nennenswerte Information über die konkrete Chiffree $(.,k)$ gelernt. Insbesondere kann sich  ihre Information über die Klartextverteilung nicht (wesentlich) ändern, wenn ihr ein neuer Chiffretext $y$ vorgelegt wird, da bei $S′=(\{0,1\}^l,P\{0,1}^l,\{0,1\}^l,e′,d′)$ keine solche Änderung eintritt.
+
+Wir modellieren Verfahren, die eine Chiffre benutzen dürfen und dann ,,raten'' sollen, ob es eine Chiffre zu einem BKS $B$ oder eine Zufallspermutation ist, als randomisierte Algorithmen.
+
+Definition 2.9 Ein l-Unterscheider ist ein randomisierter Algorithmus $U(F:\{0,1\}^l\rightarrow\{0,1\}^l):\{0,1\}$, dessen Laufzeit bzw. Ressourcenaufwand durch eine Konstante beschränkt ist.
+
+Das Argument des l-Unterscheiders ist also eine Chiffre $F$. Diese ist als ,,Orakel'' gegeben, das heißt als Prozedur, die nur ausgewertet werden kann, deren Programmtext $U$ aber nicht kennt. Das Programm $U$ kann $F$ endlich oft aufrufen, um sich Paare wie in (2.4) zu besorgen. Danach kann $U$ noch weiter rechnen, um zu einer Entscheidung zu kommen. Das von $U$ gelieferte Ergebnis ist ein Bit.
+
+Am liebsten hätte man folgendes Verhalten, für ein gegebenes Block-Kryptosystem $B$: Programm $U$ sollte 1 liefern, wenn $F$ eine Chiffre $e(.,k)$ zu $B$ ist, und $0$, wenn $F=\pi$ für eine Permutation $\pi\in P\{0,1\}^l$ ist, die keine $B$-Chiffre ist. Das gewünschte Verhalten wird sich bei $U$ natürlich niemals mit absoluter Sicherheit, sondern nur mit mehr oder weniger großer Wahrscheinlichkeit einstellen, je nach Situation.
+
+Beispiel 2.10 Als Beispiel betrachten wir das Vernam-Kryptosystem $B=B_{Vernam}$, siehe Beispiel 1.6. Wir definieren einen l-Unterscheider $U=U_{Vernam}$, der als Parameter eine Funktion $F:\{0,1\}^l\rightarrow\{0,1\}^l$ erhält und Folgendes tut:
+1. $k\leftarrow F(0^l)$
+2. $y\leftarrow F(1^l)$
+3. falls $1^l\oplus_l k=y$, dann gib $1$ aus, sonst $0$.
+
+Dieser Unterscheider benutzt keine Zufallsexperimente, obwohl es ihm erlaubt wäre. Man sieht leicht Folgendes: Wenn $F(.) =e(.,k)$ für die Vernam-Chiffre mit beliebigem Schlüssel $k$, liefert $U_{Vernam}$ immer das Ergebnis 1. Wenn hingegen $F$ eine zufällige Permutation $\pi$ von $\{0,1\}^l$ ist, dann ist die Wahrscheinlichkeit, dass $F(1^l)=1^l\oplus_l F(0^l)$ gilt, genau $\frac{1}{2^{l-1}$, also wird die Ausgabe $1$ nur mit sehr kleiner Wahrscheinlichkeit ausgegeben (wenn $l$ nicht ganz klein ist).
+
+Wir definieren nun ein Spiel (,,game''), mit dem ein beliebiges Block-Kryptosystem $B$ und ein beliebiger Unterscheider $U$ darauf getestet werden, ob $B$ gegenüber $U$ ,,anfällig'' ist oder nicht. (Das Spiel ist ein Gedankenexperiment, es ist nicht algorithmisch.) Die Idee ist folgende: Man entscheidet mit einem Münzwurf (Zufallsbit b), ob $U$ für seine Untersuchungen als $F(.)$ eine zufällige Chiffre $e(.,k)$ von $B$ (,,Realwelt'') oder eine zufällige Permutation $\pi$ von $\{0,1}^l$ (,,Idealwelt'') erhalten soll. Dann rechnet $U$ mit $F$ als Orakel und gibt dann seine Meinung ab, ob er sich in der Realwelt oder in der Idealwelt befindet. U ,,gewinnt'', wenn diese Meinung zutrifft.
+
+Definition 2.11 Sei $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ ein l-Block-Kryptosystem, und sei $U$ ein Unterscheider. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus:
+- $GBU():\{0,1\}$ // kein Argument, Ausgabe ist ein Bit
+1. $b\leftarrow flip(\{0,1\})$
+        - if $b=1$ (,,Realwelt'') then $k\leftarrow flip(K);F\leftarrow e(.,k)$ // Zufallschiffre von B
+        - if $b=0$ (,,Idealwelt'') then $F\leftarrow flip(P\{0,1\}^l)$ // Zufallspermutation
+2. $b′\leftarrow U(F)$  // Der l-Unterscheider versucht herauszubekommen, ob $b=0$ oder $b=1$ gilt.
+3. if $b=b′$ then return 1 else return 0.     // 1 heißt, dass $U$ das richtige Ergebnis hat.
+
+Das verkürzte Experiment/Spiel $S^B_U$ (,,short'') gibt im 3.Schritt einfach $b′$ aus.
+
+Der Wahrscheinlichkeitsraum für die Analyse des Spiels wird über die Zufallsexperimente zur Wahl von b, von k, der Zufallspermutation $\pi$ aus $P_{\{0,1\}^l}$ und die Zufallsexperimente in $U$ gebildet. Die Wahrscheinlichkeit dafür, dass der Unterscheider richtig liegt, ist $Pr(G^B_U=1)$, gemessen in diesem etwas verschachtelten Wahrscheinlichkeitsraum.
+
+Wir erläutern intuitiv, wieso diese Definition eine sehr allgemeine Situation erfasst. Angenommen, Angreiferin Eva kann auf irgendeine algorithmische Weise mit einer gewissen positiven Wahrscheinlichkeit eine ,,nicht triviale Information'' über die Klartexte gewinnen, wenn diese mittels einer zufälligen Chiffre des l-Block-Kryptosystems $B$ verschlüsselt worden sind. Damit kann sie einen Unterscheider mit nichttrivialer Erfolgswahrscheinlichkeit bauen! Sie ruft die Verschlüsselungsfunktion $F$ auf, um einige selbstgewählte Klartexte $x_1,...,x_q$ zu $F(x_1)=y_1,...,F(x_q)=y_q$ zu verschlüsseln. Dann berechnet sie aus $y_1,...,y_q$ ihre ,,nichttriviale Information'' $I_1,...,I_q$ zu den entsprechenden Klartexten und prüft, ob $I_r$ auf $x_r$ zutrifft, für $r=1,...,q$. Gibt es eine gute Übereinstimmung, so geht sie davon aus, dass $F$ aus der ,,Realwelt'' stammt, also eine Chiffre von $B$ ist. Ansonsten vermutet sie, dass $F$ aus der ,,Idealwelt'' stammt, also eine zufällige Permutation ist.
+
+Beispiel 2.12 Für einen l-Bit-String $z$ sei $p(z)=\oplus_{1 \geq i\geq l} z_i$ seine Parität. Nehmen wir an, das Chiffrierverfahren von $N$ ist unvorsichtig geplant und zwar so, dass $p(e(x,k)) =p(x)$ ist für beliebige $x\in X$ und $k\in K$. Bei der Chiffrierung ändert sich also die Parität nicht. (Die Parität ist sicher ,,nichttriviale Information'', auch wenn sie vielleicht nicht unmittelbar nützlich ist.)
+
+$U_{Parität}(F)$:
+1. Wähle Klartexte $x_1,...,x_q$ mit $p(x_1)=...=p(x_q) = 0$.
+2. $y_r\leftarrow F(x_r)$, für $r=1,...,q$.
+3. falls $p(y_1)=...=p(y_q)=0$, dann gib 1 aus, sonst 0.
+
+Wenn wir in der  ,,Realwelt''  sind $(b=1)$, also $F$ eine Chiffre $e(.,k)$ ist, dann ist die Antwort von $U$ immer ,,1'', also korrekt. Wenn wir in der ,,Idealwelt'' sind $(b=0)$, also $F$ eine zufällige Permutation ist, dann ist die Antwort nur mit Wahrscheinlichkeit $\frac{2^{l-1} (2^{l-1} -1)(2^{l-1}-2)...(2^{l-1} -q+ 1)}{2^l (2^l-1)(2^l-2)...(2^l-q+ 1) \geq \frac{1}{2^q}$ falsch. (Alle Werte $F(x_1),...,F(x_q)$ müssen zufällig zu Chiffretexten geführt haben, die Parität 0 haben, von denen es $2^{l-1}$ viele gibt.) Es ergibt sich $Pr(G^B_U= 1)\geq \frac{1{2} (1+1-2^{-q}) =1-2^{-(q+1)}$. Mit der effizienten Berechenbarkeit der ,,nichttrivialen Information'' hat man also einen Unterscheider gefunden, der $Pr(G^B_U=1)$ ,, groß'' macht.
+
+Beispiel: Der folgende triviale l-Unterscheider $U_{trivial}$ erreicht $Pr(G^B_{U_{trivial}}= 1)=\frac{1}{2}$: $b\leftarrow flip(\{0,1\}); return\ b$.
+Daher interessieren wir uns nicht für die Wahrscheinlichkeit $Pr(G^B_U= 1)$ ansich, sondern für den Abstand von $Pr(G^B_U=1)$ zu $Pr(G^B_{U_{trivial}}= 1) =\frac{1}{2}$:
+
+Definition 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$-
+
+Klar ist:
+- Für jeden l-Unterscheider $U$ und jedes l-Block-KS $B$ gilt $-1\geq adv(U,B)\geq 1$.
+- Werte $adv(U,B)<0$ sind uninteressant. (Wenn man einen Unterscheider $U$ mit $adv(U,B)<0$ hat, sollte man in $U$ die Ausgaben $0$ und $1$ vertauschen und erhält einen Unterscheider mit positivem Vorteil.)
+- Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$.
+
+Um den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S〈b= 1〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S〈b= 0〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
+
+Lemma 2.14 $adv(U,B) = suc(U,B)-fail(U)$.
+
+Beweis: $Pr(G^B_U= 1) = Pr(S_U^B=b)$
+- $= Pr(S_U^B= 1,b= 1) + Pr(S_U^B= 0,b= 0)$
+- $= Pr(S_U^B= 1|b= 1)* Pr(b= 1) + Pr(S^B_U= 0|b= 0)*Pr(b= 0)$
+- $=\frac{1}{2}( Pr(S_U^B〈b= 1〉= 1) + Pr(S_U^B〈b= 0〉= 0))$
+- $=\frac{1}{2}( Pr(S_U^B〈b= 1〉= 1) + (1-Pr(S_U^B〈b= 0〉= 1)))$
+- $=\frac{1}{2}( (suc(U,B) + (1-fail(U)))$
+- $=\frac{1}{2}(suc(U,B)-fail(U)) + \frac{1}{2}$
+
+Durch Umstellen ergibt sich die Behauptung.
+
+Unterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
+
+Definition 2.15 Sei $l\in\mathbb{N}$, U ein l-Unterscheider, B ein l-Block-KS. Für $q,t\in\mathbb{N}$ heißt U $(q,t)$-beschränkt, wenn die Laufzeit des Aufrufs von U innerhalb von $G^B_U$ durch t beschränkt ist und dieser Aufruf die Funktion F mit höchstens $q$ verschiedenen Argumenten ausführt.
+
+Beispiel 2.10 (Fortsetzung) Der l-Unterscheider $U_{Vernam}$ wertet die Funktion $F$ an zwei Stellen $0^l$ und $1^l$ aus. Die Laufzeit des Aufrufs von $U$ ist beschränkt durch $c*l$ für eine Konstante $c\geq 1$. Also ist $U_{Vernam}$ $(2,c*l)$-beschränkt.
+
+Definition 2.16 Sei $\epsilon>0$. Dann heißt $B(q,t,\epsilon)$-sicher, wenn für jeden $(q,t)$-beschränkten l-Unterscheider $U$ gilt $adv(U,B)< \epsilon$.
+
+Man kann diese Bedingung auch umgedreht lesen, nämlich so: ,,Um mit Wahrscheinlichkeit größer als $\frac{1}{2}(1 +\epsilon)$ im Experiment $G^B_U$ die richtige Antwort 1 zu erzeugen, braucht ein l-Unterscheider mehr als q Auswertungen oder mehr Laufzeit/Platz als $t$.''  Mit beliebig hohen Rechenzeiten lassen sich praktisch alle Block-Kryptosysteme brechen, selbst mit sehr kleinem $q$.
+
+Beispiel 2.10 (Fortsetzung) Sei $B$ das Vernam-System der Länge $l$. Um den Vorteil von $U_{Vernam}$ bzgl. $B$ zu bestimmen, berechnen wir Erfolg und Misserfolg von $U$: Es gilt offensichtlich $1=Pr(S^B_U〈b= 1〉= 1) = suc(U,B)$.
+
+Es gilt $fail(U) = Pr(S^B_U〈b= 0〉= 1) = Pr(S_U^B= 1|b= 0)$. Das verkürzte Experiment $S_U^B$ gibt 1 aus, wenn der Unterscheider $U$ dies tut. Dieser tut es aber genau dann, wenn $1^l\oplus_l F(0^l) =F(1^l)$ gilt, d.h. $fail(U) = Pr(S_U^B〈b= 0〉= 1) = Pr(1^l\oplus_l F(0^l) =F(1^l)) = \frac{1}{2^l- 1}$.
+
+Damit haben wir aber $adv(U,B) = suc(U,B)-fail(U) = 1-\frac{1}{2^l- 1}=\frac{2^l-2}{2^l-1}\approx 1$.
+
+Das Vernam-System der Länge $l$ ist also nicht $(2,c*l,\frac{2^l- 2}{2^l- 1})$-sicher. Dafür realistische Werte von $l$ (z.B. 128) der Wert $\frac{2^l-2}{2^l-1}$ praktisch 1 ist, muss das Vernam-System im Szenario 2 als unsicher angesehen werden.
+
+Natürlich sieht man auch mit bloßem Auge, dass die Vernam-Chiffre bei mehrfacher Verwendung nicht ,,sicher'' ist, da sie leicht entschlüsselt werden kann. Hier geht es aber um die Formulierung eines Sicherheitskonzepts, das allgemein anwendbar ist. Es ist beruhigend, dass im Fall der Vernam-Chiffre herauskommt, dass sie auch im Sinn dieser Definition unsicher ist.
+
+Am obigen Beispiel eines Block-Kryptosystems, das die Parität von $x$ auf den Chiffretext $e(x,k)$ überträgt, sieht man aber auch, dass das Unterscheiderkonzept sehr empfindlich ist: Obwohl die Information über die Parity klein und harmlos scheint, erklärt es das System für nicht $(q,O(ql), 1-2^{-q})$-sicher, weil die Auswertung der Parität nur Zeit $O(l)$ kostet.
+
+Beispiel 2.17 Es sei $B$ ein l-Block-Kryptosystem. (Man denke an AES.) Wir nehmen (realistisch) an, dass $t$ (etwa $t=6$) Klartext-Chiffretext-Paare $(x_1,y_1),...,(x_t,y_t)$ in $B$ den Schlüssel $k$ der Länge $s=l$ eindeutig bestimmen, für mindestens die Hälfte der Schlüssel (*).
+
+Der l-Unterscheider $U_{brute-force}$ wertet die Funktion F an $t+1$ Stellen $x_1,...,x_t,x$ aus, mit Ergebnissen $y_1,...,y_t,y$. Er probiert alle $2^l$ Schlüssel $k$, um einen zu finden, der $e(x_1,k)=y_1 ,...,e(x_t,k) =y_t$ erfüllt. Wenn kein solches $k$ gefunden wird, gibt $U$ den Wert $0$ aus. 
+Sonst wird getestet, ob $e(x,k)=y$ ist. Falls ja, wird $1$ ausgegeben, sonst $0$.
+
+Das Verhalten lässt sich so beschreiben: In der ,,Realwelt'', wenn $F=e(.,k)$ ist für einen zufälligen Schlüssel $k$, dann findet $U$  dieses $k$ mit Wahrscheinlichkeit größer als $\frac{1}{2}$ (wegen (*)). Dann ist $e(x,k) =F(x)$ nach Wahl von $F$ und $y=F(x)$, weil $y$ so bestimmt wurde.
+Also ist $e(x,k) =y$, also gibt $U$ den Wert 1 aus. In der ,,Idealwelt'' wird entweder kein passendes $k$ gefunden, oder wenn doch, dann ist die Wahrscheinlichkeit, dass $e(x,k) =y$ ist, wo $y$ einzufälliger Wert in $\{0,1}^l-\{y_1,...,y_t\}$ ist, durch $1/(2^l-t)$ beschränkt. Damit ist $adv(U,B) = suc(U,B)-fail(U)\geq \frac{1}{2}-\frac{1}{2^l-t}\approx\frac{1}{2}$.  
+Die Laufzeit des Aufrufs von $U$ ist beschränkt durch $O(|K|) =O(2^l)$.
+
+Daher ist $B$ nicht $(7, O(2^l),\frac{1}{2})$-sicher. Das ist natürlich nicht sehr schlimm, weil die Rechenzeit von $U$ unrealistisch hoch ist.
+
+Schlussbemerkung: Gesucht wäre nun natürlich ein l-Block-Kryptosystem, das $(q,t,\epsilon)$-sicher ist, wobei $q$ und $t$ einigermaßen groß sind und $\epsilon$ möglichst klein ist. Es gibt unter bestimmten Annahmen (,,Existenz von Einwegfunktionen'') theoretisch konstruierbare Systeme, die für große $l$ einigermaßen effiziente (,,polynomiell in l'') Verschlüsselung und Entschlüsselung erlauben und im definierten Sinn für Angreifer mit (im Bezug zu $l$) nicht zu großen Ressourcen (,,polynomiell in l'') $\epsilon$-sicher sind, für recht kleine $\epsilon$ (der Wert $1/\epsilon$ darf polynomiell groß sein). Diese Systeme sind aber praktisch nicht verwendbar. Von praktisch relevanten Systemen wie AES weiß man nicht, für welche Werte sie sicher sind.
+
+# Uneingeschränkte symmetrische Verschlüsselung
+Szenarium 3: Alice möchte Bob mehrere Klartexte beliebiger Länge schicken. Sie verwendet dafür immer denselben Schlüssel. Eva hört die Chiffretexte mit und kann sich einige wenige Klartexte mit dem verwendeten Schlüssel verschlüsseln lassen.
+
+Erweiterungen im Vergleich zu vorher:
+1. Beliebig lange Texte sind erlaubt.
+2. Mehrfaches Senden desselben Textes ist möglich; Eva sollte dies aber nicht erkennen.
+
+Wir müssen die bisher benutzten Konzepte anpassen, um auch das mehrfache Senden derselben Nachricht zu erfassen. Ein grundlegender Ansatz, um mit identischen Botschaften umzugehen, ist Folgendes: Alices Verschlüsselungsalgorithmus ist randomisiert, liefert also zufallsabhängig unterschiedliche Chiffretexte für ein und denselben Klartext. Allerdings ist normalerweise die Anzahl der Zufallsexperimente fest und nicht von der Klartextlänge abhängig, sodass wir wie vorher davon ausgehen können, dass nur ein Experiment am Anfang ausgeführt wird. Auch der Sicherheitsbegriff und die Rechenzeitbeschränkungen müssen verändert werden.
+
+Klartexte und Chiffretexte sind nun endliche Folgen von Bitvektoren (,,Blöcken'') der festen Länge $l$. Die Menge aller dieser Folgen bezeichnen wir mit $(\{0,1\}^l)^*$ oder kürzer mit $\{0,1\}^{l*}$. Es gibt also unendlich viele Klartexte und Chiffretexte. Die Menge der Schlüssel heißt $K$. Der Verschlüsselungsalgorithmus $E$ ist randomisiert und transformiert einen Klartext $x$ und einen Schlüssel $k$ in einen Chiffretext. Der Entschlüsselungsalgorithmus $D$ ist deterministisch und transformiert einen Chiffretext $y$ und einen Schlüssel $k$ in einen Klartext. Sicher muss man den Algorithmen eine Rechenzeit zugestehen, die von der Länge der zu verarbeitenden Texte abhängt. Als effizient werden Algorithmen angesehen, die eine polynomielle Rechenzeit haben. Es muss eine verallgemeinerte Dechiffrierbedingung gelten, die die Randomisierung der Verschlüsselung berücksichtigt.
+
+Definition 3.1 Ein symmetrisches $l$-Kryptoschema ist ein Tupel $S= (K,E,D)$, wobei
+  - $K\subseteq\{0,1\}^s$ eine endliche Menge ist (für ein $s\in\mathbb{N}$),
+  - $E(x:\{0,1\}^{l*},k:K) :\{0,1\}^{l*}$ ein randomisierter Algorithmus und
+  - $D(y:\{0,1\}^{l*},k:K) :\{0,1\}^{l*}$ ein deterministischer Algorithmus 
+sind, so dass gilt:
+- Die Laufzeiten von $E$ und $D$ sind polynomiell beschränkt in der Länge von $x$ bzw. $y$.
+- Für jedes $x\in\{0,1\}^{l*},k\in K$ und jedes $m\in M_1\times...\times M_r$ (die Ausgänge der flip-Anweisungen in $E$) gilt: $D(E^m(x,k),k)=x$ (Dechiffrierbedingung).
+
+Die Elemente von
+- $K$ heißen ,,Schlüssel'' 
+- $\{0,1\}^{l*}$ heißen ,,Klartexte'' bzw. ,,Chiffretexte'', je nachdem, welche Rolle sie gerade spielen.
+
+$E$ ist der Chiffrieralgorithmus, $D$ der Dechiffrieralgorithmus.
+
+Bemerkungen:
+- Zentral: Die Nachrichtenlänge ist unbestimmt.
+- Wir werden immer davon ausgehen, dass der Schlüssel $k$ uniform zufällig aus $K$ gewählt wurde und beiden Parteien bekannt ist. Die Angreiferin Eva kennt $k$ natürlich nicht.
+- Etwas allgemeiner ist es, wenn man den Schlüssel nicht uniform zufällig aus einer Menge wählt, sondern von einem randomisierten Schlüsselerzeugungsalgorithmus $G(s:integer):\{0,1\}^*$ generieren lässt. Konzeptuell besteht zwischen den beiden Situationen aber kein großer Unterschied.
+- Jeder Klar-und jeder Chiffretext ist ein Bitvektor der Länge $l*h$ für ein $h\in\mathbb{N}$. (Um auf ein Vielfaches der Blocklänge zu kommen, muss man die Texte notfalls mit Nullen auffüllen.)
+- Um einen Klartext $x$ zu verschicken, wird der Algorithmus $E$ mit einem neuen, uniform zufällig gewählten Element $m$ abgearbeitet und es wird $E^m(x,k)$ als Chiffretext verschickt. Insbesondere entsteht bei wiederholter Verschlüsselung eines Textes $x$ (mit sehr großer Wahrscheinlichkeit) jedes mal ein anderer Chiffretext.
+- In der Literatur finden sich auch Kryptoschemen, bei denen auch die Dechiffrierung randomisiert ist. Wir betrachten dies hier nicht.
+
+Der Standardansatz zur Konstruktion eines Kryptoschemas besteht darin, von einer Block-chiffre wie in Kapitel 2 auszugehen und sie zu einem Kryptoschema auszubauen. Dies wird im Folgenden beschrieben.
+
+## Betriebsarten
+Symmetrische Kryptoschemen erhält man z.B. aus Blockchiffren. Durch einfache Regeln wird erklärt, wie ein Klartext, der aus einer Folge von Blöcken besteht, zu chiffrieren ist. Für alle folgenden Konstruktionen sei $B=(\{0,1\}^l,K_B,\{0,1\}^l,e_B,d_B)$ ein l-Block-
+Kryptosystem für Blöcke einer Länge $l$. (Man darf sich hier zum Beispiel AES mit $l=128$ vorstellen, oder eine Variante von DES.)
+
+### ECB-Betriebsart ( ,,Electronic Code Book mode'' )
+Dies ist die nächstliegende Methode. Ein Schlüssel ist ein Schlüssel $k$ von $B$. Man verschlüsselt einfach die einzelnen Blöcke von $x$ mit $B$, jedes mal mit demselben Schlüssel $k$.
+
+Definition: Das zu $B$ gehörende $l$-ECB-Kryptoschema $S=ECB(B)=(KB,E,D)$ ist gegeben durch die folgenden Algorithmen:
+- $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$
+    - zerlege $x$ in Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
+    - für $0\geq i < m$ setze $y_i\leftarrow e_B(x_i,k)$;
+    - gib $y=y_0 ...y_{m-1}$ zurück.
+- $D(y:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$
+    - zerlege $y$ in Blöcke der Länge $l:y=y_0 y_1 ...y_{m-1}$;
+    - für $0\geq i < m$ setze $x_i\leftarrow d_B(y_i,k)$;
+    - gib $x=x_0 ...x_{m-1}$ zurück.
+
+Die Verschlüsselung verzichtet auf die Option, Randomisierung zu verwenden. (Sie hat den großen Vorteil, parallel ausführbar zu sein.) Es ist klar, dass die Dechiffrierbedingung erfüllt ist. Jedoch hat dieses Kryptoschema ein ziemlich offensichtliches Problem, nämlich, 
+dass ein Block $x\in\{0,1\}^l$ immer gleich verschlüsselt wird, Eva also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten kann. Zum Beispiel kann sie sofort sehen, ob der Klartext die Form $x=x_1 x_1$, mit $x_1\in\{0,1\}^l$, hat oder nicht.
+
+Das Problem wird augenfällig zum Beispiel bei der Verschlüsselung von Bildern. Ein Bild ist dabei einrechteckiges Schema (eine Matrix) von ,,Pixeln'', denen jeweils ein Farbcode (z.B. 1 Byte) zugeordnet ist. Man könnte dabei die Pixel in Gruppen (quadratische Blöcke oder Zeilensegmente) unterteilen. Das Farbmuster jeder solchen Gruppe liefert einen Klartextblock. Wenn viele Bildteile identisch aussehen, etwa gleich konstant gefärbt sind, ergibt sich jeweils derselbe Klartext für den entsprechenden Block, und damit auch derselbe Chiffretext. Wenn man den Chiffretext bildlich darstellt, ergibt sich leicht ein grober Eindruck des Originalbildes. Als Beispiel betrachte diese Bilder aus Wikipedia: [wikipedia](https://de.wikipedia.org/wiki/Electronic_Code_Book_Mode).
+
+Fazit: Obwohl er so naheliegend ist, sollte der ECB-Modus niemals benutzt werden!
+
+### CBC-Betriebsart( ,,Cipher Block Chaining mode'' )
+Diese Betriebsart weicht dem zentralen Problem von ECB aus, indem man die Blöcke in Runden $i=0, 1 ,...,m-1$ nacheinander verschlüsselt und das Ergebnis einer Runde zur Modifikation des Klartextblocks der nächsten Runde benutzt. Konkret: Es wird nicht $x_i$ mit $B$ verschlüsselt, sondern $x_i\oplus_l y_{i-1}$ (bitweises XOR). Man benötigt dann einen Anfangsvektor $y_{-1}$ für die erste Runde. Dieser ist Teil des Schlüssels des Kryptoschemas (nicht von B), ein Schlüssel des Schemas ist also ein Paar $(k,v)$ mit $k\in K_B$ und $v\in\{0,1\}^l$.
+
+Definition: Das zu $B$ gehörende $l$-CBC-Kryptoschema $S=CBC(B)=(KB\times\{0,1\}^l,E,D)$ ist durch die folgenden Algorithmen gegeben:
+- $E(x:\{0,1\}^{l*},(k,v) :KB\times\{0,1\}^l) :\{0,1\}^{l*}$
+    - zerlege $x$ in Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
+    - $y_{-1} \leftarrow v$;
+    - für $i= 0,...,m-1$ nacheinander: $y_i\leftarrow e_B(x_i\oplus_l y_{i-1},k)$;
+    - gib $y=y_0 ...y_{m-1}$ zurück.
+- $E(x:\{0,1\}^{l*},(k,v) :K_B\times\{0,1\}^l) :\{0,1\}^{l*}$
+    - zerlege $y$ in Blöcke der Länge $l:y=y_0 y_1 ...y_{m-1}$
+    - $y_{-1} \leftarrow v$;
+    - für $i=0,...,m-1$ nacheinander: $x_i\leftarrow d_B(y_i,k)\oplus_l y_{i-1}$;
+    - gib $x=x_0 ...x_{m-1}$ zurück.
+
+Der Vektor $v$ wird Initialisierungsvektor genannt. Man versteht recht gut, was beim Chiffrieren passiert, wenn man sich das Bild auf Seite 104 im Buch von Küsters/Wilke ansieht. Beim Dechiffrieren geht man den umgekehrten Weg: Entschlüssele einen Block $y_i$ mittels B, dann addiere $y_{i-1}$, um den Klartextblock $x_i$ zu erhalten. Es ist klar, dass die Dechiffrierbedingung erfüllt ist.
+
+Interessant ist die folgende Eigenschaft der Entschlüsselung im CBC-Modus: Wenn bei der Übertragung des Chiffretextes ein einzelner Block $y_i$ durch einen Fehler zu $y_i′$ verfälscht wird, dann ist die Entschlüsselung ab Block $y_{i+2}$ trotzdem wieder korrekt.
+
+In diesem Kryptoschema ist der zentrale Nachteil der ECB-Betriebsart verschwunden: Identische Klartextblöcke führen nun praktisch immer zu verschiedenen Chiffretextblöcken. Die Verschlüsselung von $x=x_1 x_1$ mit $x_1\in\{0,1\}^l$ liefert i.a. keinen Chiffretext der Form $y=y_1 y_1$. Die oben erwähnte Wikipedia-Seite zeigt auch, dass bei der Verschlüsselung des Bildes mit CBC keine offensichtlichen Probleme mehr auftauchen.
+
+Ein Problem bleibt aber bestehen: Wird zweimal der Klartext $x$ verschlüsselt, so geschieht dies immer durch denselben Chiffretext $y=E(x,(k,v))$. Dies ist eine Folge der Eigenschaft von CBC, deterministisch zu sein. Auch CBC wird man in der Praxis daher nicht benutzen.
+
+### R-CBC-Betriebsart( ,,Randomized CBC mode'' )
+Um das Problem der identischen Verschlüsselung identischer Klartexte zu beseitigen, muss in die Verschlüsselung eine Zufalls komponente eingebaut werden. Beispielsweise kann man dazu CBC leicht modifizieren. Der Initialisierungsvektor $y_{-1}=v\in\{0,1\}^l$  ist nicht mehr Teil des Schlüssels, sondern wird vom Verschlüsselungsalgorithmus einfach zufällig gewählt, und zwar für jeden Klartext immer aufs Neue. Damit der Empfänger entschlüsseln kann, benötigt er $v$. Daher wird $y_{-1}$ als Zusatzkomponente dem Chiffretext vorangestellt. Damit ist der Chiffretext um einen Block länger als der Klartext, und Eva kennt auch $v=y_{-1}$.
+
+Definition: Das zu $B$ gehörende l-R-CBC-Kryptoschema $S=R-CBC(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+- $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$
+    - setze $y_{-1}= flip(\{0,1\}^l)$;
+    - für $i=0,...,m-1$ nacheinander: $y_i\leftarrow e_B(x_i\oplus_l y_{i-1} ,k)$;
+    - gib $y=y_{-1} y_0 ...y_{m-1}$ zurück. //Länge: $m+1$ Blöcke
+- $D(y:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $y$ in $m+1$ Blöcke der Länge $l:y=y_{-1} y_0 y_1 ...y_{m-1}$
+    - für $i=0,...,m-1$ nacheinander: $x_i\leftarrow d_B(y_i,k)\oplus_l y_{i-1}$;
+    - gib $x=x_0 ...x_{m-1}$ zurück. //Länge: m Blöcke
+
+Es gibt zwei Unterschiede zu CBC:
+1. Für jede Verschlüsselung eines Klartextes wird ein neuer zufälliger Initialisierungsvektor verwendet. Dadurch wird ein Klartext $x$ bei mehrfachem Auftreten mit hoher Wahrscheinlichkeit immer verschieden verschlüsselt.
+2. Der Initialisierungsvektor ist nicht Teil des geheimen Schlüssels, sondern ist dem Angreifer bekannt, da er Teil des Chiffretextes ist. (Intuitiv würde man vielleicht sagen, dass dies ,,die Sicherheit verringert'' .)
+
+Tatsächlich und etwas unerwartet kann man nach einer sorgfältigen Formulierung eines Sicherheitsbegriffs für Kryptoschemen beweisen, dass die Betriebsart R-CBC zu ,,sicheren'' Verfahren führt, wenn die zugrundeliegende Blockchiffre ,,sicher'' ist. (Der Beweis ist 
+aufwendig.)
+
+Warnung, als Beispiel für harmlos erscheinende Modifikationen, die Kryptoschemen unsicher machen:
+1. Man könnte meinen, dass es genügt, bei jeder Verschlüsselung einen neuen Initialisierungsvektor zu benutzen, also zum Beispiel nacheinander $v,v+1,v+2,...$. Dies führt jedoch zu einem unsicheren Kryptoschema.
+2. Um Kommunikation zu sparen, könnte man auf die Idee kommen, dass Alice und Bob sich von einer Kommunikationsrunde zur nächsten den letzten Chiffretextblock merken und ihn bei der nächsten Runde als Initialisierungsvektor benutzen. Dieses Verfahren heißt ,,chained CBC'' und wurde in SSL3.0 und TLS1.0 verwendet. Es stellte sich heraus, dass dieses Verfahren mit einem Angriff mit gewähltem Klartext erfolgreich attackiert werden kann!
+
+### OFB-Betriebsart( ,,Output Feed Back mode'' )
+Wir kommen nun zu zwei Betriebsarten, die einen ganz anderen Ansatz für die Verschlüsselung der einzelnen Blöcke von $x$ verfolgen. Es wird dazu nämlich nicht $B$ mit Schlüssel $k$ benutzt, sondern der Mechanismus des Vernam-Systems (One-Time-Pads, siehe Beispiel 1.6) :$y_i=x_i\oplus_l k_i$, wobei $k_i\in\{0,1\}^l$ ein ,,Rundenschlüssel'' für Block $x_i$ ist. Das Kryptosystem $B$ wird nur dafür benutzt, diese Rundenschlüssel herzustellen, die bei Verschlüsselung und bei Entschlüsselung identisch sind. Die Dechiffrierbedingung folgt dann daraus, dass das Vernam-System korrekt dechiffriert. Der Ansatz führt dazu, dass die Entschlüsselungsfunktiond $B$ des Block-Kryptosystems gar nicht benötigt wird.
+
+Zuerst betrachten wir die Betriebsart ,,Output Feedback''. Dabei wird ein zufälliger Startvektor $v$ aus $\{0,1\}^l$ gewählt. Man setzt $k_{-1}=v$, und konstruiert die Rundenschlüssel $k_0,...,k_{m-1}$ dadurch, dass man iteriert den letzten Rundenschlüssel durch die Verschlüsselungsfunktion von $B$ schickt: $k_i=e_B(k_{i-1}, k)$, für $i=0,1,...,m-1$. (Der Name ''Output Feedback''rührt daher, dass das Ergebnis einer Verschlüsselung durch $e_B$ wieder als Input des nächsten Aufrufs von $e_B$ benutzt wird.) Der Empfänger benötigt $v$, um seinerseits die Rundenschlüssel zu berechnen; daher wird $v$ als $y_{-1}$ dem Chiffretext vorangestellt, wie beim R-CBC-Modus.
+
+Definition: Das zu $B$ gehörende l-OFB-Kryptoschema $S=(K_B,E,D) =OFB(B) =(K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+- $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
+    - $k_{-1} \leftarrow y_{-1} \leftarrow flip(\{0,1\}^l)$;
+    - für $i=0,...,m-1$ nacheinander: $k_i\leftarrow e_B(k_{i-1},k)$ und $y_i\leftarrow x_i\oplus_l k_i$;
+    - gib $y=y_{-1} y_0 ...y_{m-1}$ zurück.
+- $D(y:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $y$ in $m+1$ Blöcke der Länge $l:y=y_{-1} y_0 y_1 ...y_{m-1}$;
+    - $k_{-1} \leftarrow y_{-1}$;
+    - für $i=0,...,m-1$ nacheinander: $k_i\leftarrow e_B(k_{i-1} ,k)$ und $x_i\leftarrow y_i\oplus k_i$;
+    - gib $x=x_0 ...x_{m-1}$ zurück.
+
+Dieses Verfahren hat einen interessanten Vorteil. Oft werden die Blöcke des Chiffretextes beim Empfänger nacheinander eintreffen. Die Hauptarbeit, nämlich die iterierte Verschlüsselung mit $e_B$ zur Ermittlung der Rundenschlüssel $k_i$, kann unabhängig von der Verfügbarkeit der Klartextblöcke erfolgen, sobald $y_{-1}$ eingetroffen ist.
+
+Man kann beweisen, dass die Betriebsarten R-CBC und OFB ,,sicher'' sind, wenn die zugrundeliegende Blockchiffre ,,sicher'' ist. Dazu weiter unten mehr.
+
+### R-CTR-Betriebsart (,,Randomized CounTeR mode'' )
+Dies ist die zweite Betriebsart, bei der das Kryptosystem $B$ nur zur Herstellung von m ,,Rundenschlüsseln'' benutzt wird, mit denen dann die Blöcke per $\oplus_l$ verschlüsselt werden. Anstatt iteriert zu verschlüsseln, was bei OFB eine sequentielle Verarbeitung erzwingt, werden hier die mit $B$ zu verschlüsselnden Strings anders bestimmt. Man fasst $\{0,1\}^l$ als äquivalent zur Zahlenmenge $\{0,1,...,2^{l-1}\}$ auf, interpretiert einen $l$-Bit-String also als Block oder als Zahl, wie es passt. In dieser Menge wählt man  eine Zufallszahl $r$. Man ,,zählt'' von $r$ ausgehend nach oben und berechnet die Rundenschlüssel $k_0,...,k_{m-1}$ durch Verschlüsseln von $r,r+1,...,r+m-1$ (modulo $2^l$ gerechnet) mittelse $B(.,k)$. Rundenschlüssel $k_i$ ist also $e_B((r+i) mod\ 2^l,k)$, und Chiffretextblock $y_i$ ist $k_i\oplus_l x_i$. Interessant ist, dass hier die Berechnung der Rundenschlüssel und die Ver- bzw. Entschlüsselung der Blöcke parallel erfolgen kann, also sehr schnell, falls mehrere Prozessoren zur Verfügung stehen.
+
+Definition: Das zu $B$ gehörende l-R-CTR-Kryptoschema $S=R-CTR(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+- $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
+    - $r\leftarrow flip(\{0,..., 2^l-1\})$;
+    - für $0\geq i < m:y_i\leftarrow e_B((r+i) mod\ 2^l,k)\oplus_l x_i$;
+    - gib $y=r y_0 ...y_{m-1}$ zurück.
+- $D(y: (\{0,1\}^l)+,k:K_B) :\{0,1\}^{l*}$;
+    - zerlege $y$ in $m+1$ Blöcke der Länge $l:y=y_{-1} y_0 y_1 ...y_{m-1}$;
+    - $r\leftarrow y_{-1}$;
+    - für $0\geq i < m:x_i\leftarrow e_B((r+i) mod\ 2^l,k)\oplus_l y_i$;
+    - gib $x=x_0 ...x_{m-1}$ zurück.
+
+Es ist offensichtlich, dass die Dechiffrierbedingung erfüllt ist.
+
+Bemerkungen:
+- Wie bei R-CBC und OFB wird hier ein zufälliger Initialisierungswert $r$ verwendet, der als Teil des Chiffretextes dem Angreifer bekannt ist.
+- Wie bei OFB wird die Entschlüsselungsfunktion $d_B$ gar nicht verwendet, man kann also anstelle der Verschlüsselungsfunktion $e_B$ eine beliebige Funktion $e_B:\{0,1\}^l\times\{0,1\}^l\rightarrow\{0,1\}^l$ benutzen, bei der die ,,Chiffren'' $e_B(.,k)$ nicht einmal injektiv sein müssen.
+- Man kann dieses Kryptoschema auch wie folgt verstehen: Zu einem gegebenen Klartext $x\in\{0,1\}^{lm}$ wird aus einem zufälligen Initialwert $r$ ein langer Bitstring $k′=E_B(r,k) E_B((r+1) mod\ 2^l,k)... E_B((r+m-1) mod\ 2^l,k)$ berechnet und der Klartext $x$ dann mittels Vernamsystem und diesem Schlüssel verschlüsselt. Der Empfänger erhält $r$ und den Chiffretext, kann also ebenfalls $k′$ b erechnen und damit entschlüsseln. Ist $B$ ein sicheres Block-Kryptosystem, so kann ein Angreifer aus $r$ den Vernam-Schlüssel $k′$ nicht so einfach berechnen, da er $k$ nicht kennt. Die R-CTR-Betriebsart liefert also intuitiv einen hohen Grad an Sicherheit.

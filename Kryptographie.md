@@ -27,6 +27,7 @@
     - [R-CBC-Betriebsart( ,,Randomized CBC mode'' )](#r-cbc-betriebsart-randomized-cbc-mode-)
     - [OFB-Betriebsart( ,,Output Feed Back mode'' )](#ofb-betriebsart-output-feed-back-mode-)
     - [R-CTR-Betriebsart (,,Randomized CounTeR mode'' )](#r-ctr-betriebsart-randomized-counter-mode-)
+  - [Sicherheit von symmetrischen Kryptoschemen](#sicherheit-von-symmetrischen-kryptoschemen)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -38,8 +39,8 @@ Literaturempfehlung:
 - David Kahn: The Codebreakers, Scribner, 1996
 
 # Einführung
-_$\kappa\ro\vartheta\pi\tau\delta\zeta$_= kryptos(griech.): verborgen
-_$\gamma\ro\alpha\varphi\epsilon\iota\nu$_ = graphein (griech.): schreiben
+_$\kappa\rho\vartheta\pi\tau\delta\zeta$_= kryptos(griech.): verborgen
+_$\gamma\rho\alpha\varphi\epsilon\iota\nu$_ = graphein (griech.): schreiben
 
 Kryptographie im klassischen Wortsinn betrifft also Methoden,Nachrichten so zu schreiben, dass sie ,,verborgen'' bleiben,das heißt von keinem Unberechtigten (mit)gelesen werden können.Das hier angesprochene ,,Sicherheitsziel'' heißt ,,Vertraulichkeit'' oder ,,Geheimhaltung'' oder Konzelation (concelare(lat.):sorgfältig verbergen, davon englisch: conceal). Verfahren, die dieses Ziel erreichen,heißen Konzelationssysteme.
 
@@ -279,8 +280,8 @@ Merke: Jede Chiffre $e(.,k)$ eines Kryptosystems muss injektiv sein. (Sonst kann
 
 **Beispiel 1.5** $X=K=Y=\{0\},e(0,0)=d(0,0)=0$ (auch $X=\{x\},K=\{k\},Y=\{y\}$). Dies ist das ,,triviale'' minimale Kryptosystem. Dechiffrierbedingung und Surjektivität gelten offensichtlich.
 
-**Beispiel 1.6** Sei $\oplus:\{0,1\}\times\{0,1\}\rightarrwo\{0,1\}$ die Funktion $(b,c)\rightarrow b+c-2bc$ (=b XOR c).
-Für $l>0$ sei $\oplus^l:\{0,1\}^l\times\{0,1\}^l\rightarroq\{0,1\}^l$ die komponentenweise Anwendung von $\oplus=\oplus_l$:
+**Beispiel 1.6** Sei $\oplus:\{0,1\}\times\{0,1\}\rightarrow\{0,1\}$ die Funktion $(b,c)\rightarrow b+c-2bc$ (=b XOR c).
+Für $l>0$ sei $\oplus^l:\{0,1\}^l\times\{0,1\}^l\rightarrow\{0,1\}^l$ die komponentenweise Anwendung von $\oplus=\oplus_l$:
 
 $(b_1,b_2,...,b_l)\oplus_l(c_1,c_2,...,c_l) = (b_1\oplus c_1,b_2\oplus c_2,...,b_l\oplus c_l)$
 
@@ -386,12 +387,12 @@ Bemerkung 1.13 $Pr(A) =\sum_{a\in A} Pr(\{a\})$ , d.h., die Wahrscheinlichkeitsv
 
 Wir schreiben auch für diese Funktion $Pr$ und damit $Pr(a)$ anstelle von $Pr(\{a\})$. Es gilt dann: $Pr(A)=\sum_{a\in A} Pr(a)$, für jedes Ereignis A, und insbesondere $\sum_{a\in\Omega}Pr(a) = 1$.
 
-Sei nun $\Omega$ sogar endlich. Dann ist die uniforme Verteilung (oder Gleichverteilung) die  Wahrscheinlichkeitsverteilung $A\rightarrow\frac{|A|}{|\Omega$|}$, für Ereignisse $A\in P(\Omega)$, mit der Wahrscheinlichkeitsfunktion $a\rightarrow \frac{1}{|\Omega|}$, für $a\in\Omega$.
+Sei nun $\Omega$ sogar endlich. Dann ist die uniforme Verteilung (oder Gleichverteilung) die  Wahrscheinlichkeitsverteilung $A\rightarrow\frac{|A|}{|\Omega|}$, für Ereignisse $A\in P(\Omega)$, mit der Wahrscheinlichkeitsfunktion $a\rightarrow \frac{1}{|\Omega|}$, für $a\in\Omega$.
 
-Lemma 1.14 Sei $(\Omega,Pr)$ ein Wahrscheinlichkeitsraum und seien $A,B\subseteq\Omega$ Ereignisse. Dann gilt $Pr(A\B)\geq Pr(A)-Pr(B)$.
+Lemma 1.14 Sei $(\Omega,Pr)$ ein Wahrscheinlichkeitsraum und seien $A,B\subseteq\Omega$ Ereignisse. Dann gilt $Pr(A\backslash B)\geq Pr(A)-Pr(B)$.
 
 Beweis: Für Ereignisse $C\subseteq D$ gilt stets $Pr(C)=\sum_{a\in C} Pr(a)\leq \sum_{a\in D} Pr(a) = Pr(D)$.
-Daher gilt $Pr(A\B) + Pr(B) = Pr((A\B)\cup B) = Pr(A\cup B)\geq Pr(A)$.
+Daher gilt $Pr(A\backslash B) + Pr(B) = Pr((A\backslash B)\cup B) = Pr(A\cup B)\geq Pr(A)$.
 
 Sei $(\Omega,Pr)$ Wahrscheinlichkeitsraum, B Ereignis mit $Pr(B)> 0$. Definiere $Pr_B:P(\Omega)\rightarrow[0,1],A \rightarrow\frac{Pr(A\cap B)}{Pr(B)}$.
 Dann ist $(\Omega,Pr_B)$ selbst ein Wahrscheinlichkeitsraum, wie man leicht nachrechnet. Intuitiv ist $Pr_B(A)$ die Wahrscheinlichkeit für das Eintreten von $A$, wenn schon bekannt ist, dass $B$ eingetreten ist. Daher nennt man $Pr_B$ die bedingte Wahrscheinlichkeit bzgl. B und schreibt für $Pr_B(A)$ auch $Pr(A|B)$. Aus der Definition folgt die Grundformel $Pr(A\cap B) = Pr(A|B)*Pr(B)$.
@@ -400,7 +401,7 @@ Achtung: die bedingte Wahrscheinlichkeit $Pr(A|B)$ ist nur definiert, wenn $Pr(B
 
 Lemma 1.15 Sei $(\Omega,Pr)$ ein Wahrscheinlichkeitsraum.
 1. (,,Formel von der totalen Wahrscheinlichkeit'') Seien $B_1,...,B_t$ disjunkte Ereignisse mit $Pr(B_1\cup...\cup B_t)=1$. Dann gilt $Pr(A)=\sum_{1\leq s\leq t} Pr(A|B_s)Pr(B_s)$.
-2. Seien $A,B,C$ Ereignisse mit $Pr(B\cap C),Pr(C\B)>0$. Dann gilt $Pr(A|C)=Pr(A\cap B|C) + Pr(A\B|C)= Pr(A|B\cap C)Pr(B|C) + Pr(A|C\B)Pr(\bar{B}|C)$.
+2. Seien $A,B,C$ Ereignisse mit $Pr(B\cap C),Pr(C\backslash B)>0$. Dann gilt $Pr(A|C)=Pr(A\cap B | C) + Pr(A\backslash B|C)= Pr(A|B\cap C)Pr(B|C) + Pr(A|C\backslash B)Pr(\bar{B}|C)$.
 
 Beispiel: In dem Würfel-Wahrscheinlichkeitsraum mit $\Omega=\{1,...,6\}$ und der uniformen Verteilung betrachten wir die Ereignisse $A=\{3,6\}$ (durch 3 teilbare Augenzahl) und $B=\{2,4,6\}$ (gerade Augenzahl). Wir haben: $Pr(A\cap B) = Pr(\{6\})=\frac{1}{6}=\frac{1}{3}*\frac{1}{2}=Pr(A)*Pr(B)$.
 
@@ -1156,7 +1157,7 @@ Da wir nicht erwarten können, dass reale Kryptosysteme in einem idealen Sinn wi
 
 Vorüberlegung: Ein ,,zeiteffizienter'' Angriff (mit Klartextwahl, ,,chosen-plaintext attack'', CPA)
 
-Sei $B=(\{0,1\}^l,\{0,1\}^s,\{0,1}^l,e,d)$ ein Block-Kryptosystem und seien $x_i,y_i\in\{0,1\}^l$ für $1\geq i\geq t$ paarweise verschiedene Klar- bzw. Chiffretexte. Ein Schlüssel $k\in\{0,1\}^s$ ist konsistent mit den Paaren $(x_i,y_i)$, wenn $e(x_i,k)=y_i$ für alle $1\geq i\geq t$ gilt. Für realistische (d.h. praktisch relevante) SPKS gibt es im Fall $t\approx 5$ höchstens einen konsistenten Schlüssel. (Man denke an AES. $t=5$ bedeutet, dass $5*128$ Bit Information über $k$ vorliegen, eventuell redundant, aber $k$ ist nur $128$ Bit lang.)
+Sei $B=(\{0,1\}^l,\{0,1\}^s,\{0,1\}^l,e,d)$ ein Block-Kryptosystem und seien $x_i,y_i\in\{0,1\}^l$ für $1\geq i\geq t$ paarweise verschiedene Klar- bzw. Chiffretexte. Ein Schlüssel $k\in\{0,1\}^s$ ist konsistent mit den Paaren $(x_i,y_i)$, wenn $e(x_i,k)=y_i$ für alle $1\geq i\geq t$ gilt. Für realistische (d.h. praktisch relevante) SPKS gibt es im Fall $t\approx 5$ höchstens einen konsistenten Schlüssel. (Man denke an AES. $t=5$ bedeutet, dass $5*128$ Bit Information über $k$ vorliegen, eventuell redundant, aber $k$ ist nur $128$ Bit lang.)
 
 Wir können also für Eva in Szenario 2 den folgenden Angriff nach dem CPA-Muster planen:
 1. Lasse fünf Klartexte $x_1,...,x_5$ zu $y_1,...,y_5$ verschlüsseln.
@@ -1194,7 +1195,7 @@ Beispiel 2.8 Betrachte den folgenden Algorithmus:
     - $b_3 \leftarrow flip()$
     - $if b_0 = 1 \text{ then return } x(0)$
     - $if b_1 = 1 \text{ then return } x(1)$
-    - $if b_2 = 1 \then{ then return } x(2)$
+    - $if b_2 = 1 \text{ then return } x(2)$
     - $if b_3 = 1 \text{ then return } x(3)$
     - return 1
 
@@ -1218,7 +1219,7 @@ Wir betrachten hier l-Block-Kryptosysteme $B=(X,K,Y,e,d)$ mit $X=Y=\{0,1\}^l$ un
 2. Wenn dabei $r$ beliebig groß sein darf, können nach Prop.2.3 nur Substitutionskryptosysteme in diesem Sinne sicher sein. Da sie $|X|!$ Schlüssel haben müssen und daher immense Schlüssellänge (mindestens $|X|log|X|-O(|X|)$ Bits) erfordern, kommen sie in der Praxis nicht in Frage.
 
 Idee eines neuen Sicherheitsbegriffs (für Block-Kryptosysteme): Gegeben sei eine Angreiferin Eva mit beschränkten Berechnungsressourcen. Wir fragen, wie sehr aus Evas Sicht das $l$-Block-Kryptosystem $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ dem Substitutionskryptosystem $S′=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e′,d′)$ (siehe Def.1.9) ähnelt. Ist es ihr mit ,,signifikanter Erfolgswahrscheinlichkeit'' möglich, aufgrund der ihr vorliegenden Information und im Rahmen ihrer Ressourcen, zu unterscheiden, welches der beiden Systeme verwendet wird? Wenn dies nicht der Fall ist, kann das Kryptosystem $B$ als sicher gelten, wie die folgende Überlegung zeigt.
-Wenn Eva aufgrund der ihr vorliegenden Information (2.4) nicht mit nennenswerter Erfolgswahrscheinlichkeit unterscheiden kann, ob sie es mit der Chiffre $e(.,k)$ (für ein zufälliges $k\in K$) oder mit $e′(.,\pi)$ (für ein zufälliges $\pi\in P_{\{0,1\}^l}$) zu tun hat, dann hat sie aus der ihr vorliegenden Information keine nennenswerte Information über die konkrete Chiffree $(.,k)$ gelernt. Insbesondere kann sich  ihre Information über die Klartextverteilung nicht (wesentlich) ändern, wenn ihr ein neuer Chiffretext $y$ vorgelegt wird, da bei $S′=(\{0,1\}^l,P\{0,1}^l,\{0,1\}^l,e′,d′)$ keine solche Änderung eintritt.
+Wenn Eva aufgrund der ihr vorliegenden Information (2.4) nicht mit nennenswerter Erfolgswahrscheinlichkeit unterscheiden kann, ob sie es mit der Chiffre $e(.,k)$ (für ein zufälliges $k\in K$) oder mit $e′(.,\pi)$ (für ein zufälliges $\pi\in P_{\{0,1\}^l}$) zu tun hat, dann hat sie aus der ihr vorliegenden Information keine nennenswerte Information über die konkrete Chiffree $(.,k)$ gelernt. Insbesondere kann sich  ihre Information über die Klartextverteilung nicht (wesentlich) ändern, wenn ihr ein neuer Chiffretext $y$ vorgelegt wird, da bei $S′=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e′,d′)$ keine solche Änderung eintritt.
 
 Wir modellieren Verfahren, die eine Chiffre benutzen dürfen und dann ,,raten'' sollen, ob es eine Chiffre zu einem BKS $B$ oder eine Zufallspermutation ist, als randomisierte Algorithmen.
 
@@ -1233,9 +1234,9 @@ Beispiel 2.10 Als Beispiel betrachten wir das Vernam-Kryptosystem $B=B_{Vernam}$
 2. $y\leftarrow F(1^l)$
 3. falls $1^l\oplus_l k=y$, dann gib $1$ aus, sonst $0$.
 
-Dieser Unterscheider benutzt keine Zufallsexperimente, obwohl es ihm erlaubt wäre. Man sieht leicht Folgendes: Wenn $F(.) =e(.,k)$ für die Vernam-Chiffre mit beliebigem Schlüssel $k$, liefert $U_{Vernam}$ immer das Ergebnis 1. Wenn hingegen $F$ eine zufällige Permutation $\pi$ von $\{0,1\}^l$ ist, dann ist die Wahrscheinlichkeit, dass $F(1^l)=1^l\oplus_l F(0^l)$ gilt, genau $\frac{1}{2^{l-1}$, also wird die Ausgabe $1$ nur mit sehr kleiner Wahrscheinlichkeit ausgegeben (wenn $l$ nicht ganz klein ist).
+Dieser Unterscheider benutzt keine Zufallsexperimente, obwohl es ihm erlaubt wäre. Man sieht leicht Folgendes: Wenn $F(.) =e(.,k)$ für die Vernam-Chiffre mit beliebigem Schlüssel $k$, liefert $U_{Vernam}$ immer das Ergebnis 1. Wenn hingegen $F$ eine zufällige Permutation $\pi$ von $\{0,1\}^l$ ist, dann ist die Wahrscheinlichkeit, dass $F(1^l)=1^l\oplus_l F(0^l)$ gilt, genau $\frac{1}{2^{l-1}}$, also wird die Ausgabe $1$ nur mit sehr kleiner Wahrscheinlichkeit ausgegeben (wenn $l$ nicht ganz klein ist).
 
-Wir definieren nun ein Spiel (,,game''), mit dem ein beliebiges Block-Kryptosystem $B$ und ein beliebiger Unterscheider $U$ darauf getestet werden, ob $B$ gegenüber $U$ ,,anfällig'' ist oder nicht. (Das Spiel ist ein Gedankenexperiment, es ist nicht algorithmisch.) Die Idee ist folgende: Man entscheidet mit einem Münzwurf (Zufallsbit b), ob $U$ für seine Untersuchungen als $F(.)$ eine zufällige Chiffre $e(.,k)$ von $B$ (,,Realwelt'') oder eine zufällige Permutation $\pi$ von $\{0,1}^l$ (,,Idealwelt'') erhalten soll. Dann rechnet $U$ mit $F$ als Orakel und gibt dann seine Meinung ab, ob er sich in der Realwelt oder in der Idealwelt befindet. U ,,gewinnt'', wenn diese Meinung zutrifft.
+Wir definieren nun ein Spiel (,,game''), mit dem ein beliebiges Block-Kryptosystem $B$ und ein beliebiger Unterscheider $U$ darauf getestet werden, ob $B$ gegenüber $U$ ,,anfällig'' ist oder nicht. (Das Spiel ist ein Gedankenexperiment, es ist nicht algorithmisch.) Die Idee ist folgende: Man entscheidet mit einem Münzwurf (Zufallsbit b), ob $U$ für seine Untersuchungen als $F(.)$ eine zufällige Chiffre $e(.,k)$ von $B$ (,,Realwelt'') oder eine zufällige Permutation $\pi$ von $\{0,1\}^l$ (,,Idealwelt'') erhalten soll. Dann rechnet $U$ mit $F$ als Orakel und gibt dann seine Meinung ab, ob er sich in der Realwelt oder in der Idealwelt befindet. U ,,gewinnt'', wenn diese Meinung zutrifft.
 
 Definition 2.11 Sei $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ ein l-Block-Kryptosystem, und sei $U$ ein Unterscheider. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus:
 - $GBU():\{0,1\}$ // kein Argument, Ausgabe ist ein Bit
@@ -1258,7 +1259,7 @@ $U_{Parität}(F)$:
 2. $y_r\leftarrow F(x_r)$, für $r=1,...,q$.
 3. falls $p(y_1)=...=p(y_q)=0$, dann gib 1 aus, sonst 0.
 
-Wenn wir in der  ,,Realwelt''  sind $(b=1)$, also $F$ eine Chiffre $e(.,k)$ ist, dann ist die Antwort von $U$ immer ,,1'', also korrekt. Wenn wir in der ,,Idealwelt'' sind $(b=0)$, also $F$ eine zufällige Permutation ist, dann ist die Antwort nur mit Wahrscheinlichkeit $\frac{2^{l-1} (2^{l-1} -1)(2^{l-1}-2)...(2^{l-1} -q+ 1)}{2^l (2^l-1)(2^l-2)...(2^l-q+ 1) \geq \frac{1}{2^q}$ falsch. (Alle Werte $F(x_1),...,F(x_q)$ müssen zufällig zu Chiffretexten geführt haben, die Parität 0 haben, von denen es $2^{l-1}$ viele gibt.) Es ergibt sich $Pr(G^B_U= 1)\geq \frac{1{2} (1+1-2^{-q}) =1-2^{-(q+1)}$. Mit der effizienten Berechenbarkeit der ,,nichttrivialen Information'' hat man also einen Unterscheider gefunden, der $Pr(G^B_U=1)$ ,, groß'' macht.
+Wenn wir in der  ,,Realwelt''  sind $(b=1)$, also $F$ eine Chiffre $e(.,k)$ ist, dann ist die Antwort von $U$ immer ,,1'', also korrekt. Wenn wir in der ,,Idealwelt'' sind $(b=0)$, also $F$ eine zufällige Permutation ist, dann ist die Antwort nur mit Wahrscheinlichkeit $\frac{2^{l-1} (2^{l-1} -1)(2^{l-1}-2)...(2^{l-1} -q+ 1)}{2^l (2^l-1)(2^l-2)...(2^l-q+ 1)} \geq \frac{1}{2^q}$ falsch. (Alle Werte $F(x_1),...,F(x_q)$ müssen zufällig zu Chiffretexten geführt haben, die Parität 0 haben, von denen es $2^{l-1}$ viele gibt.) Es ergibt sich $Pr(G^B_U= 1)\geq\frac{1}{2} (1+1-2^{-q}) =1-2^{-(q+1)}$. Mit der effizienten Berechenbarkeit der ,,nichttrivialen Information'' hat man also einen Unterscheider gefunden, der $Pr(G^B_U=1)$ ,, groß'' macht.
 
 Beispiel: Der folgende triviale l-Unterscheider $U_{trivial}$ erreicht $Pr(G^B_{U_{trivial}}= 1)=\frac{1}{2}$: $b\leftarrow flip(\{0,1\}); return\ b$.
 Daher interessieren wir uns nicht für die Wahrscheinlichkeit $Pr(G^B_U= 1)$ ansich, sondern für den Abstand von $Pr(G^B_U=1)$ zu $Pr(G^B_{U_{trivial}}= 1) =\frac{1}{2}$:
@@ -1312,7 +1313,7 @@ Der l-Unterscheider $U_{brute-force}$ wertet die Funktion F an $t+1$ Stellen $x_
 Sonst wird getestet, ob $e(x,k)=y$ ist. Falls ja, wird $1$ ausgegeben, sonst $0$.
 
 Das Verhalten lässt sich so beschreiben: In der ,,Realwelt'', wenn $F=e(.,k)$ ist für einen zufälligen Schlüssel $k$, dann findet $U$  dieses $k$ mit Wahrscheinlichkeit größer als $\frac{1}{2}$ (wegen (*)). Dann ist $e(x,k) =F(x)$ nach Wahl von $F$ und $y=F(x)$, weil $y$ so bestimmt wurde.
-Also ist $e(x,k) =y$, also gibt $U$ den Wert 1 aus. In der ,,Idealwelt'' wird entweder kein passendes $k$ gefunden, oder wenn doch, dann ist die Wahrscheinlichkeit, dass $e(x,k) =y$ ist, wo $y$ einzufälliger Wert in $\{0,1}^l-\{y_1,...,y_t\}$ ist, durch $1/(2^l-t)$ beschränkt. Damit ist $adv(U,B) = suc(U,B)-fail(U)\geq \frac{1}{2}-\frac{1}{2^l-t}\approx\frac{1}{2}$.  
+Also ist $e(x,k) =y$, also gibt $U$ den Wert 1 aus. In der ,,Idealwelt'' wird entweder kein passendes $k$ gefunden, oder wenn doch, dann ist die Wahrscheinlichkeit, dass $e(x,k) =y$ ist, wo $y$ einzufälliger Wert in $\{0,1\}^l-\{y_1,...,y_t\}$ ist, durch $1/(2^l-t)$ beschränkt. Damit ist $adv(U,B) = suc(U,B)-fail(U)\geq \frac{1}{2}-\frac{1}{2^l-t}\approx\frac{1}{2}$.  
 Die Laufzeit des Aufrufs von $U$ ist beschränkt durch $O(|K|) =O(2^l)$.
 
 Daher ist $B$ nicht $(7, O(2^l),\frac{1}{2})$-sicher. Das ist natürlich nicht sehr schlimm, weil die Rechenzeit von $U$ unrealistisch hoch ist.
@@ -1468,3 +1469,101 @@ Bemerkungen:
 - Wie bei R-CBC und OFB wird hier ein zufälliger Initialisierungswert $r$ verwendet, der als Teil des Chiffretextes dem Angreifer bekannt ist.
 - Wie bei OFB wird die Entschlüsselungsfunktion $d_B$ gar nicht verwendet, man kann also anstelle der Verschlüsselungsfunktion $e_B$ eine beliebige Funktion $e_B:\{0,1\}^l\times\{0,1\}^l\rightarrow\{0,1\}^l$ benutzen, bei der die ,,Chiffren'' $e_B(.,k)$ nicht einmal injektiv sein müssen.
 - Man kann dieses Kryptoschema auch wie folgt verstehen: Zu einem gegebenen Klartext $x\in\{0,1\}^{lm}$ wird aus einem zufälligen Initialwert $r$ ein langer Bitstring $k′=E_B(r,k) E_B((r+1) mod\ 2^l,k)... E_B((r+m-1) mod\ 2^l,k)$ berechnet und der Klartext $x$ dann mittels Vernamsystem und diesem Schlüssel verschlüsselt. Der Empfänger erhält $r$ und den Chiffretext, kann also ebenfalls $k′$ b erechnen und damit entschlüsseln. Ist $B$ ein sicheres Block-Kryptosystem, so kann ein Angreifer aus $r$ den Vernam-Schlüssel $k′$ nicht so einfach berechnen, da er $k$ nicht kennt. Die R-CTR-Betriebsart liefert also intuitiv einen hohen Grad an Sicherheit.
+
+## Sicherheit von symmetrischen Kryptoschemen
+Wir werden hier ein Sicherheitsmodell definieren, das es gestattet, Aussagen wie die folgende zu formulieren (und zu beweisen): Wenn B ein ,,sicheres'' l-Block-Kryptosystem ist (bzgl. einer Reihe von Parametern), und das Kryptoschema $S$ wird aus $B$ konstruiert, indem man einen geeigneten Betriebsmodus verwendet, dann ist $S$ ebenfalls ,,sicher'' (bzgl. einer variierten Reihe von Parametern). Ziel ist dabei, Betriebsmodi zu identifizieren, die keine unnötigen neuen Unsicherheitskomponenten ins Spiel bringen, die nicht im Block-KS
+$B$ schon vorhanden waren.
+
+Wir beschränken uns hier auf den Fall, wo Eva begrenzte Ressourcen (Zeit, Orakelaufrufe) hat. Damit müssen wir uns bei Überlegungen zu Kryptoschemen auf das Verhalten auf Klartexten begrenzter Länge und auf feste Rechenzeiten beschränken. Nach dem Kerckhoffs-Prinzip nehmen wir an, dass Eva das Kryptoschema kennt, also zum Beispiel das verwendete Block-Kryptosystem und den Betriebsmodus. Sie kann sich einige Klartexte verschlüsseln lassen (,,known-plaintext attack'') und sieht einen Chiffretext $y$. Ihr Ziel ist, aus $y$ Information über den zugrundeliegenden Klartext $x$ zu gewinnen. Wir können nicht verhindern, dass Eva aus der Länge des Chiffretextes $y$ auf die Länge von $x$ schließt. (Bei allen Betriebsmodi, die wir gesehen haben, ergibt sich die Länge von $x$ direkt aus der Länge von $y$). Abgesehen hiervon soll sie mit hoher Wahrscheinlichkeit ,,keine signifikante Information'' über den Klartext erhalten können.
+
+Wir skizzieren zunächst eine Idee für ein Sicherheitsmodell, das die Fähigkeit, in so einer Situation ,,Information zu ermitteln'', formalisiert. Eva behauptet, sie könne ,,aus $y$ Information über $x$ ermitteln, die über die Länge von $x$ hinausgeht''. Um das zu überprüfen, stellt ihr ein ,,Herausforderer'' Charlie folgende Aufgabe: Eva darf sich zunächst eine Reihe von Klartexten ihrer Wahl verschlüsseln lassen. Dann wählt sie selbst zwei verschiedene, gleichlange Klartexte $z_0$ und $z_1$.  Charlie verschlüsselt einen von diesen; der Chiffretext ist $y$. Eva bekommt $y$. Sie soll herausfinden, ob $y$ von $z_0$ oder von $z_1$ kommt. Für diese Entscheidung darf sie sich weitere Klartexte verschlüsseln lassen und weiter rechnen. Wir betrachten ein Kryptoschema als unsicher, wenn Eva eine signifikant von ,,purem Raten'' abweichende Erfolgswahrscheinlichkeit hat, sie also mit guten Chancen unterscheiden kann, ob $z_0$ oder $z_1$ zu $y$ verschlüsselt wurde.
+
+Wie in Abschnitt 2.4 formulieren wir den Vorgang wieder als Spiel. Gegeben ist also $S=(K,E,D)$. Akteure sind Eva, hier ,,Angreifer'' (engl.: adversary) genannt, und Charlie (,,Herausforderer'' ,engl.: challenger). Die Parameter, mit denen wir die Erfolgschancen von Eva unter Ressourcenbeschränkungen messen, sind der ,,Vorteil'' in Analogie zu Definition 2.13, die Rechenzeit (inklusive Speicherplatz, wie vorher), Anzahl der Orakelaufrufe und Anzahl der bei der Verschlüsselung bearbeiteten Blöcke.
+- Charlie wählt zufällig einen Schlüssel $k$ aus $K$ und legt damit die Chiffre $H=E(.,k)$ fest, die Klartexte aus $\{0,1\}^{l*}$ in Chiffretexte aus $\{0,1\}^{l*}$ transformiert.
+- Eva wählt einige Klartexte und lässt sie sich von Charlie mit $H$ verschlüsseln.
+- Eva wählt zwei Klartexte $z_0$ und $z_1$ gleicher Länge und gibt sie an Charlie.
+- Verdeckt vor Eva: Charlie wirft eine Münze, um zufällig einen der beiden Klartexte zu wählen. Er verschlüsselt ihn mit $H$, das Ergebnis ist $y$. Charlie gibt $y$ an Eva.
+- Eva kann sich weitere Klartexte verschlüsseln lassen und (mit beschränkten Ressourcen) rechnen und muss schließlich sagen (raten?), ob Charlie $z_0$ oder $z_1$ zu $y$ verschlüsselt hat.
+
+Wenn die Wahrscheinlichkeit, dass Eva richtig antwortet, weit von zufälligem Raten abweicht, wollen wir das Kryptoschema als unsicher ansehen.
+
+Man beachte: Unter den vorher oder nachher verschlüsselten Klartexten können auch $z_0$ und $z_1$ sein. Ein deterministisches Kryptoschema, also eines, das zu gegebenem Schlüssel $k$ einen Klartext stets gleich verschlüsselt, ist damit sofort disqualifiziert. Wenn aber bei der Verschlüsselung Randomisierung im Spiel ist, liefern wiederholte Verschlüsselungsanforderungen mit Klartexten $z_0$ und $z_1$ (wahrscheinlich) lauter unterschiedliche Antworten, so dass dieser direkte Weg zur Ermittlung des verschlüsselten Klartextes nicht funktioniert.
+
+Wir beschreiben den Part von Eva in diesem Spiel als Algorithmenpaar. Der erste Algorithmus $AF$ (der ,,Finder'', ,,find'' ) ist für das Erzeugen von $z_0$ und $z_1$ zuständig. Als Argument erhält dieser Teil eine Chiffre $H$, die er im Sinne eines Orakels benutzen kann. Außerdem werden Aufzeichnungen über die angeforderten Verschlüsselungen und ihre Ergebnisse gemacht. Diese Aufzeichnungen sind als Element $v$ einer endlichen Menge $V$ kodiert. Der zweite Algorithmus $AG$ (der ,,Rater'' , ,,guess'' ) ist dafür zuständig, herauszufinden, ob $z_0$ oder $z_1$ verschlüsselt wurde. Dieser Algorithmus bekommt $H$ als Orakel, die Aufzeichnungen $v$ von $AF$ und den Chiffretext $y$ als Input.
+
+Definition 3.2 Ein l-Angreifer $A$ ist ein Paar von randomisierten Algorithmen
+- $AF(H(\{0,1\}^{l*}) :\{0,1\}^{l*}) : (\{0,1\}^l\times\{0,1\}^l)^+\times V$
+- $AG(v:V,H(\{0,1\}^{l*}) :\{0,1\}^{l*},y:\{0,1\}^{l*}) :\{0,1\}$
+
+Hierbei ist $H$ ein randomisierter Algorithmus (und nicht als Funktion zu verstehen).
+
+Der ,,Finder'' AF bekommt also eine Chiffre $H=E(.,k)$ für einen zufälligen Schlüssel $k$ gegeben. (Er darf diese Chiffre nur zum Verschlüsseln benutzen; $k$ kennt er nicht.) Daraus berechnet er zwei verschiedene Klartexte $(z_0,z_1)$ gleicher Länge und ,,Notizen'' $v\in V$. Das Ausgabeformat $(\{0,1\}^l\times\{0,1\}^l)^+$ sagt, dass eine Folge $((z_0^{(0)},z^{(0)}_1),(z_0^{(1)},z_1^{(1)}),...,(z_0^{(m-1)},z_1^{(m-1)}))$ von Blockpaaren ausgegeben werden soll, die wir dann als Paar $(z_0 ,z_1) = ((z^{(0)}_0 ,z_0^{(1)},...,z_0^{(m-1)}),(z_1^{(0)},z^{(1)}_1 ,...,z_1^{(m-1)}))$ von zwei Folgen gleicher Länge lesen. Danach wird zufällig $z_0$ oder $z_1$ zu $y$ verschlüsselt.
+Im zweiten Schritt verwendet der ,,Rater'' $AG$ die Notizen $v$, die Chiffre $H=E(.,k)$ und die ,,Probe'' $y$, um zu bestimmen, ob $z_0$ oder $z_1$ verschlüsselt wurde.
+
+Definition 3.3 Sei $S=(K,E,D)$ ein symmetrisches Kryptoschema, und sei $A=(AF,AG)$ ein l-Angreifer. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus $G^S_A:\{0,1\}:$
+1. $k\leftarrow flip(K)$, $H\leftarrow E(.,k)$ (In diesem Schritt wählt Charlie zufällig eine Chiffre des Kryptoschemas $S$.)
+2. $(z_0, z_1 ,v)\leftarrow AF(H)$ (In dieser Phase berechnet der Finder ein Paar von Klartexten gleicher Länge, von denen er annimmt,ihre Chiffretexte unterscheiden zu können.)
+3. $b\leftarrow flip(\{0,1\})$ und $y\leftarrow E(z_b,k)$ (In dieser Phase wählt Charlie zufällig einen der beiden Klartexte und verschlüsselt ihn zu $y$.)
+4. $b′\leftarrow AG(v,H,y)$ (In dieser Phase versucht der Rater herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde.)
+5. falls $b=b′$, so gib $1$ zurück, sonst $0$. (Charlies Auswertung: Hat $AG$ recht oder nicht?)
+
+Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5.Schritt einfach $b′$ aus.
+
+Dann ist  $Pr(G^S_A = 1)$ die Wahrscheinlichkeit dafür, dass der Angreifer $A$ sich für den korrekten Klartext entscheidet. Der Wahrscheinlichkeitsraum entsteht durch die expliziten Zufallsexperimente in Schritt 1. und 3. in Kombination mit den Zufallsexperimenten, die bei der Verwendung von $H$ ausgeführt werden. Man kann jetzt wie in Abschnitt 2.4 (Sicherheit von l-Block-Kryptosystemen) den Vorteil $adv(A,S) = 2(Pr(G^S_A= 1)-\frac{1}{2})$ und die Größen $suc(A,S) = Pr(S^S_A〈b= 1〉= 1)$ (,,Erfolg'') und $fail(A,S) = Pr(S_A^S〈b= 0〉= 1)$ ( ,,Misserfolg'' ) definieren. Allerdings haben die beiden letzten Werte eine etwas andere Semantik. Der Wert $suc(A,S)$ ist die bedingte Wahrscheinlichkeit, dass richtig erkannt wird, dass $z_1$ verschlüsselt wurde, $fail(A,S)$ ist die bedingte Wahrscheinlichkeit, dass nicht erkannt wird, dass $z_0$ verschlüsselt wurde. Lemma 2.14 gilt wörtlich. Das heißt: $$adv(A,S) = suc(A,S)-fail(A,S)$$.
+
+Wenn ein Angreifer $A$ mit ,,nicht zu großem Rechenaufwand'' einen Vorteil erzielen kann, der deutlich über $0$ liegt, wird man das Kryptoschema als unsicher einstufen.
+
+Beispiel 3.4 Ziel ist es, die ECB-Betriebsart anzugreifen, d.h. sei $S=ECB(B)$ für ein l-Block-Kryptosystem $B$. Wir wollen zeigen, dass es einen l-Angreifer $A$ mit $Pr(G^S_A= 1) = 1$, also $adv(A,S) = 1$, gibt. Dieser ist wie folgt aufgebaut.
+- l-Angreifer $A$ mit $V=\{1\}$ ($V=\{1\}$ bedeutet, dass stets $v=1$ gilt, dass die Aufzeichnung $v$ also keinerlei Information übermittelt.)
+- $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^{2l}; z_1\leftarrow 0^l 1^l;$ Ausgabe: $(z_0,z_1 ,1)$
+- $AG(v,H,y)$ tut Folgendes: falls $y=y_1y_1$ für ein $y_1\in\{0,1\}^l$, gib $0$ aus, sonst $1$.
+
+Im Ablauf des Spiels $G^S_A$ wird der Rater $AG$ mit $y=E(0^{2l},k)=e_B(0^l,k)e_B(0^l,k)$ oder mit $y=E(0^l 1^l,k)=e_B(0^l,k)e_B(1^l,k)$ gestartet. Im ersten Fall ist $y=y_1y_1$ für ein $y_1\in\{0,1\}^l$, im zweiten Fall ist dies nicht so, wegen der Dechiffrierbedingung. Daher gilt $Pr(G^S_A= 1) = 1$, d.h. $adv(A,S) = 1$.
+
+Die Ressourcen, die $A$ benötigt, sind sehr klein: Zwei Aufrufe des Verschlüsselungsverfahrens $e_B$ des Block-Kryptosystems. Wir können schließen, dass es einen effizienten Angreifer $A$ gibt, dem das Sicherheitsmodell Vorteil 1 gibt. Damit gilt das Kryptoschema $ECB(B)$ als komplett unsicher (ganz egal was $$ ist).
+
+Beispiel 3.5 Ziel ist es, die CBC-Betriebsart anzugreifen, d.h. es sei $S=CBC(B)$ für ein Block-Kryptosystem $B$. Das Problem mit dieser Betriebsart ist, dass ein Klartext bei Wiederholung identisch verschlüsselt wird. Um dies auszunutzen, verwenden wir den folgenden l-Angreifer $A$ mit $V=\{0,1\}^l$, der zwei verschiedene Klartexte benutzt, die nur einen Block enthalten:
+- $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^l;v\leftarrow H(z_0);z_1\leftarrow 1^l;$ Ausgabe: $(z_0,z_1,v)$
+- ($A$ merkt sich den Chiffretext zu $x=0^l$.)
+- $AG(v,H,y)$ tut Folgendes: falls $v=y$, so gib $0$ aus, sonst $1$.
+
+Im Ablauf des Spiels $G^S_A$ wird der Rater $AG$ mit $E(0^l,k)$ oder mit $E(1^l,k)$ gestartet. Wegen $e_B(0^l,k)\not=e_B(1^l,k)$ (wegen der Dechiffrierbedingung) gilt also $Pr(G^S_A=1)=1$, d.h. $adv(A,S)=1$.
+
+Dieses Beispiel lässt sich verallgemeinern:
+
+Lemma 3.6 Es gibt einen l-Angreifer $A$, so dass für jedes l-Kryptoschema $S$ mit deterministischer Verschlüsselungsfunktion gilt: $adv(A,S) = 1$.
+
+Wir benutzen einfach den in Beispiel 3.5 beschriebenen Angreifer. Damit zeigt sich, dass das beschriebene Spiel in der Lage ist, alle deterministischen Kryptoschemen als unsicher einzustufen (und damit die intuitive Einschätzung zu bestätigen).
+
+Nun bringen wir die Ressourcen ins Spiel, die der Angreifer benutzen darf. Komponenten dabei sind die Laufzeit des gesamten Experiments, die Anzahl der durchgeführten H-Verschlüsselungen von Chiffretexten und die Anzahl der dabei bearbeiteten Blöcke. ($S$ kann eine beliebige Struktur haben, muss also nicht notwendigerweise auf einem l-Block-Kryptosystem beruhen. Dennoch sind die Klartexte in Blöcke eingeteilt, und die Gesamtlänge aller betrachteten Blöcke ist eine sinnvolle Maßzahl.)
+
+Definition 3.7 Sei $n,q,t,l\in\mathbb{N}$, $A$ ein l-Angreifer, $S$ ein symmetrisches l-Kryptoschema. Dann heißt $A(n,q,t)$-beschränkt, wenn die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist, der Algorithmus $H$ (als Orakel) höchstens $q$ mal aufgerufen wird und bei diesen Aufrufen höchstens $n$ Blöcke verwendet werden.
+
+Sei $\epsilon> 0$. Dann heißt $S(n,q,t,\epsilon)$-sicher, wenn für jeden $(n,q,t)$-beschränkten l-Angreifer $A$ gilt $adv(A,S)\geq\epsilon$.
+
+Nach obigem Lemma gibt es (kleine) Konstanten $c_1,c_2$ und $c_3$, so dass kein deterministisches l-Kryptoschema $(c_1,c_2,c_3,1-\delta)$-sicher ist, für jedes noch so kleine $\delta > 0$.
+
+Wir stellen nun fest, dass man aus sicheren Block-Kryptosystemen mit der R-CTR-Betriebsart sichere Kryptoschemen erhält, wenn man die Parameter richtig wählt, das heißt im Wesentlichen, wenn die Blocklänge genügend groß ist.
+
+Diese ,,relative Sicherheit'' kann man folgendermaßen ,,rückwärts'' ausdrücken: Wenn das Kryptoschema $S=R-CTR(B)$ unsicher ist, es also einen Angreifer mit großem Vorteil $adv(A,S)$ gibt, bei beschränkten Ressourcen, dann ist schon $B$ unsicher, das heißt, es gibt einen Unterscheider $U$ für $B$ mit großem Vorteil $adv(U,B)$, bei beschränkten Ressourcen. Technisch wird dies folgendermaßen formuliert, unter Einbeziehung gewisser Fehlerterme und genauer Benennung der Ressourcenschranken.
+
+Satz 3.8 Es gibt eine kleine Konstante $c$, so dass für alle $t,n,q,l > 0$, alle l-Block-Kryptosysteme $B$ und alle $(n,q,t)$-beschränkten l-Angreifer $A$ ein $(n,t+c(q\ log(q) +n)*l)$-beschränkter l-Unterscheider $U$ existiert, so dass $adv(A,S)\geq 2 *adv(U,B) + \frac{2 qn+n^2}{2^l}$, wobei $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet.
+
+Den Fehlerterm $(2qn+n^2)/2^l$ kann man vernachlässigen, wenn $l$ genügend groß gewählt wird. Die Zahlen $q$ und $n$ entsprechen der Verarbeitung von Blöcken, Werte für $q$ und $n$ von mehr als $1012$ sind also eher unrealistisch. Mit $l=128$ ist $2^l> 3 * 10^{38}$. Damit kann man ohne Weiteres $\frac{2qn+n^2}{2^l} <10^{-14}$ annehmen. Im Wesentlichen besagt der Satz also, dass aus der Existenz eines effizienten l-Angreifers mit einem gewissen Vorteil $a>0$ gegen R-CTR($B$) folgt, dass es einen effizienten l-Unterscheider $U$ mit Vorteil $a/2$ gegen $B$ gibt. Wenn also R-CTR($B$) unsicher ist (nicht $\epsilon$-sicher für relativ großes $\epsilon$), dann muss schon $B$ unsicher gewesen sein (nicht $\epsilon/2$-sicher). Oder noch kürzer: Wenn $B$ ,,sicher'' ist, dann auch R-CTR($B$). Durch die R-CTR-Betriebsart wird keine neue Unsicherheitskomponente ins Spiel gebracht.
+Mit den folgenden Definitionen lässt sich diese Aussage vielleicht noch griffiger formulieren.
+
+Definition 3.9 Die Unsicherheit eines Block-Kryptosystems $B=(X,K,Y,e,d)$ zu Parametern $q,t$ ist $insec(q,t,B) := max\{adv(U,B)|\text{ U ist } (q,t) \text{-beschränkter Unterscheider}\}$. 
+Man beachte: Weil mit $t$ auch die Programmtextlänge beschränkt ist, gibt es nur endlich viele solche Unterscheider. Damit ist das Maximum wohl definiert. Offensichtlich gilt, nach den Definitionen aus Abschnitt 2.4: $B$ ist $(q,t,\epsilon)$-sicher 4\Leftrightarrow insec(q,t,B)\geq\epsilon$.
+
+Analog definiert man: 
+
+Definition 3.10 Die Unsicherheit eines Kryptoschemas $S=(K,E,D)$ zu Parametern $n,q,t$ ist $insec(n,q,t,S):=max\{adv(A,S)|A \text{ ist }(n,q,t)\text{-beschränkter Angreifer}\}$.
+
+Satz 3.8 liest sich dann wie folgt: Wenn $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet, dann gilt für beliebige $n,t,q$: $insec(n,q,t,S)\geq 2 * insec(n,t+c(q\ log(q) +n)*l,B) +\frac{2qn+n^2}{2^l}$.
+
+$S$ ,,erbt'' also die obere Schranke für die Unsicherheit von $B$, bezüglich $n$ Orakelanfragen und einer vergrößerten Rechenzeit von $t+c(q\ log(q) +n)*l$, verschlechtert nur um einen Faktor $2$ und einen additiven Term $\frac{2qn+n^2}{2^l}$. Die Unsicherheit kommt also nicht durch die Verwendung der Betriebsart R-CTR ins Spiel, sondern steckt gegebenenfalls schon in $B$.
+
+Bemerkung: Für die Betriebsarten R-CBC und OFB gelten Aussagen, die zu Satz 3.8 analog sind. Die Beweise sind allerdings noch aufwendiger. Einen vollständigen Beweis von Satz 3.8 findet man in ,,Küsters und Wilke, Moderne Kryptographie'' (S.114, 121), und im Anhang.
+
+Im Buch werden auch die folgenden konkreten Parameter diskutiert: $l=128$. Nehmen wir an, die zugelassene Laufzeit $t$ für den Angreifer ist $2^{60} > 10^{18}$ Rechenschritte (das ist so groß, dass es nicht wirklich realisierbar ist), und wir gestatten $q=2^{30} \approx 10^{9}$ Orakelanfragen, wobei die gesamte betroffene Textlänge $n=2^{36}\approx 64*10^9$ Blöcke ist (etwa $2^{40}$ Byte,also ein Terabyte). Wenn die Konstante aus dem Satz etwa $c=10$ ist, erhalten wir: $$insec(2^{36}, 2^{30}, 2^{60},S)\geq 2*insec(2^{36}, 2^{60}+ 10(30*2^{30}+ 2^{36})* 128 ,B) +\frac{2^{66} + 2^{72}}{2^{128}}$.
+Man sieht, dass der additive Term $\frac{2^{66} +2^{72}}{2^{128}}$ kleiner als $2^{-55}$ ist, und die für den Unterscheider zugelassene Zeitschranke mit $2^{60} + 10(30* 2^{30}+2^{36})*128 < 2^{61}$ kaum größer ist als die für den Angreifer. Wenn man für $insec(2^{36}, 2^{61} ,B)$ eine Schranke $\geq 2^{-55}$ hätte, wäre $insec(2^{36}, 2^{30}, 2^{60},S)$ auch kleiner als $2^{-54}$. (Solche konkreten Schranken sind allerdings für kein konkretes Block-Kryptosystem bewiesen.)

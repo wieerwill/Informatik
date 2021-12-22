@@ -51,8 +51,19 @@ Biosignalverarbeitung
   - [Pegelanpassung](#pegelanpassung)
   - [Abstastung, Aliasing](#abstastung-aliasing)
   - [Digitalisierung](#digitalisierung)
+    - [Prinzipien der AD Wandlung](#prinzipien-der-ad-wandlung)
+    - [Breitbandige Wandler](#breitbandige-wandler)
   - [Telemetrie](#telemetrie)
+    - [Analoge Übertragung](#analoge-übertragung)
+    - [Digitale Übertragung](#digitale-übertragung)
 - [Digitale Filterung](#digitale-filterung)
+  - [IIR-Filter](#iir-filter)
+  - [FIR-Filter](#fir-filter)
+    - [Realisierung digitaler Filter - FIR](#realisierung-digitaler-filter---fir)
+  - [Realisierung digitaler Filter - programm](#realisierung-digitaler-filter---programm)
+    - [Realisierung digitaler Filter - DSP](#realisierung-digitaler-filter---dsp)
+  - [CAD digitaler Filter](#cad-digitaler-filter)
+  - [Adaptive Filter](#adaptive-filter)
 
 # Sensorik
 Im Normalfall werden Sensoren verwendet, die eine physikalische oder chemische Größe in ein elektrisches Signal umwandeln bzw. eine elektrische Größe beeinflussen, die weiter verarbeitet werden können. Eine Umwandlung der Energieform der Biosignale ist notwendig. Selbst bei Sensoren für elektrische Größen ist eine Umwandlung (von Ionenleitung zur Elektronenleitung) nötig.
@@ -746,8 +757,358 @@ Mehrkanalsystem - Simultansampling
   - $X^*(j\omega)=X(j\omega)^{j\omega T_A/N}$
 
 ## Digitalisierung
+### Prinzipien der AD Wandlung
+Einrampenverfahren, Single-Slope-Conversion
+- ![](Assets/Biosignalverarbeitung-Einrampenverfahren.png)
+- Ur steigt aus dem negativen Bereich an, kreuzt es die Null, so wird K1 positiv. Da K2 noch positiv ist, da Ur unterhalb von Ue liegt, öffnet das Äquivalenzgatter = das Tor & und der Zähler beginnt zu zählen.
+- Erreicht Ur den Pegel von Ue, so wird K2 negativ bzw. logisch Null, = schließt und das Tor & geht zu, der Zähler hört auf zu zählen. Der erreichte Zählerstand ist damit proportional der Spannung Ue.
+- Vorteile: Einfach, wenig Aufwand, relativ schnell. Nachteil: stark temperaturabhängig, da Zählgrenzen von Analogwerten bestimmt. Wandelzeit abhängig von der Eingangsspannung.
 
+Zweirampenverfahren, Dual-Slope-Conversion
+- ![](Assets/Biosignalverarbeitung-Zweirampenverfahren.png)
+- In Phase 1 Aufladung durch die Eingangsspannung Ue über konstante Zeit. Damit ist der integrierte Wert proportional zur Ue.
+- In Phase 2 Entladung mit konstanter Referenzspannung Ur bis zum Erreichen von Null. Damit ist die Entladezeit proportional Ue. Die Entladezeit wird digital gezählt, damit ist der Digitalwert am Ende proportional Ue.
+- Vorteil: durch gespiegelte analoge Integration Temperatureinfluß weitgehend reduziert, da durch Auf-und Abintegrieren die Fehlerquellen mit entgegengesetzten Vorzeichen. Gute Genauigkeit von bis zu 16 bit. Nachteil: Wandlerzeit abhängig von Ue, daher nicht konstant.
+
+Sukzessive Approximation
+- ![](Assets/Biosignalverarbeitung-Sukzessive-Approximation.png)
+- Im Wesentlichen eine DA-Wandlung mit vorgeschaltetem Komparator. Macht Sinn, weil DA-Wandler präziser herstellbar als herkömmliche ADC.
+- Prinzip: Das Steuerwerk beginnt mit dem MSB und schaltet die Bits bis zum LSB so lange um, bis die beste Approximation von Ue erreicht wurde, daher sukzessive Appr.
+- Ablauf: ist bei MSB=1 die DAC-Spannung höher als Ue, so wird MSB=0 gesetzt, da der Komparator anzeigt, dass die DAC-Spannung zu hoch war. Ist bei MSB-1=1 die DAC-Spannung niedriger als Ue, so bleibt MSB-1=1 und das nächste Bit folgt. Es wird also sukzessive bis zum LSB nach der besten Annäherung gesucht.
+- Vorteil: DAC technologisch präziser herstellbar als ADC. Konstante Wandlungszeit, daher planbar im Zeitregime. Gute Auflösung (bis 18bit), relativ schnell und preiswert.
+
+Delta-Sigma-Wandlung
+- ![](Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png)
+- Beim Delta-Modulator handelt es sich um einen Ein-Bit-Wandler: Sobald das Eingangssignal x(t) die aufintegrierte bereits digitale Folge xD(t) über/unterschreitet, wird das Bit gesetzt/rückgesetzt. Damit erreicht man, dass das integrierte Binärsignal dem Eingangssignal mit höchstens einer Schrittweite als Fehler folgt.
+- ![](Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-2.png)
+- Im Demodulator müssen die bei der Modulation durchgeführten Schritte invertiert werden: Der Integrator im Modulator wirkt insgesamt wegen der Rückführung differenzierend, so dass im Demodulator integriert werden muss. Wegen der Taktung muss im Demodulator noch ein Tiefpass folgen um das Signal zu glätten.
+- Zwischen dem Modulator und dem Demodulator liegt die Übertragungsstrecke (Telemetrie, Multimedia, usw.). Unter der Annahme, dass sie linear ist, kann die Integration vom Demod nach vorn zum Mod vor den Summierer verlagert werden. Damit können beide Integratoren zu einem hinter dem Summierer zusammengefasst werden. Auf diese Weise entsteht der Delta-Sigma-Wandler (Differenz-Integration-1-Bit-Modulator).
+- ![](Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-3.png)
+- Durch die Vorlagerung des Integrators reduziert sich der Demodulator (signalanalytisch) auf einen Tiefpass.
+- ![](Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-4.png)
+- Diese Grafik zeigt die typischen Zeitverläufe im D-S-Modulator. Wie man bereits an der Blockstruktur erkennen konnte, handelt es sich -wie bei sukzessiver Approximation - um einen rückgekoppelten Kreis mit negativer Rückführung. In Anlehnung an die Regelungstechnik kann man demnach die Funktion so verstehen, dass die Bits im Bitstream so gesetzt werden, dass der Mittelwert des Ausgangs (siehe Integrator im Zeitverlauf) gegen Null bzw. einen Referenzwert läuft. Das digitale Ausgangssignal (Bitstream) ist qualitativ identisch mit eine Pulsbreitenmodulierten Signal, allerdings mit quantisiertem Pulsverhältnis. Das gleitende Mittel eines solchen Signals entspricht dem Originalsignal.
+- Die erforderliche Taktrate ergibt sich aus der gewünschten Auflösung. So z.B. bei einer CD, die mit einer Abtastrate von 44,1kHz arbeitet und mit 16bit digitalisiert, kann der Takt des DS-Wandlers weit über 10MHz liegen (Oversamplingrate von 200).
+
+Flash-Converter, Parallelwandler
+- ![](Assets/Biosignalverarbeitung-Parallelwandler.png)
+- Am anderen Ende der Skala liegen die Flash-Converter. Diese sind sehr schnell, arbeiten weit in den Videobereich von über 100MHz hinein. Das geht natürlich nur auf Kosten der Parallelität, was bedeutet, dass für jede Quantisierungsstufe ein Komparator vorhanden sein muss. Für eine Bitbreite von 8bit werden also 256 Komparatoren benötigt. Dies ist heute integriert machbar aber auch schon die Obergrenze.
+
+### Breitbandige Wandler
+![](Assets/Biosignalverarbeitung-breitbandige-Wandler.png)
+
+| ||
+|---|---|
+Resolution (Bits) | 24 bit
+T-Put Rate | 1kSPS
+Kanäle | 5
+Supply V | Single(+3), Single(+3.3), Single(+5)
+Pwr Diss (max) | 7mW
+Interface | Ser, SPI
+Ain Range | (2Vref/PGA Gain) p-p, Uni (Vref)/(PGA Gain)
+SNR (dB) | 137dB
+Pkg Type | DIP, SOIC, SOP
 
 ## Telemetrie
+### Analoge Übertragung
+- Direkt: verstärktes Signal auf kurze Entfernung, z.B. von der EEG-Brause zum Hauptverstärker
+- Analoge Modulation über Kabel, z.B. EKG über Audiokarte im PC und Internet
+- Analoge Modulation kabellos, z.B. Telemetriedaten von mobilen Patientenmonitoren (WLAN, Bluetooth, IR)
+- ![](Assets/Biosignalverarbeitung-analoge-übertragung.png)
+- Das Prinzip der AM besteht darin, dass ein harmonischer Träger (Begriff der Nachrichtentechnik, das tragende Signal, die tragende elektromagnetische Welle) vom Modulationssignal so beeinflusst wird, dass seine momentane Amplitude dem Pegel des Modulationssignals entspricht.
+  - Mathematisch und bei tiefen Frequenzen auch elektronisch einfach über Multiplikation des Trägers mit dem Modulationssignal realisierbar. Im HF-Bereich zur Ausstrahlung über Antenne über aufwendige Modulationsschaltungen und Leistungsverstärker.
+  - Das AM-Signal ist sehr störungsempfindlich, da Störungen direkt auf die Amplitude wirken, außerdem wird es als elektromagnetische Welle von aktuellen Ausbreitungsbedingungen beeinflusst. Für niedrige Ansprüche auf akustische Qualität akzeptabel z.B. Mittelwellen-Rundfunk oder Kurzwellen-Funk. Für Messtechnik als Trägermedium nicht geeignet. AM kann in ersten Stufen eines mehrkanaligen Systems eingesetzt werden (Untermodulatoren), in den keine Störungen von außen auftreten und welche die notwendige Bandbreite sehr sparsam nutzen im Vergleich zur FM
+- ![](Assets/Biosignalverarbeitung-analoge-übertragung-2.png)
+- Im Spektrum des AM-Signals ist es sichtbar, dass die notwendige Bandbreite doppelt so groß ist wie die des Modulationssignals EKG. Diese ließe sich nochmal halbieren, also auf die ursprüngliche Bandbreite reduzieren, da das informationstragende Spektrum im AM-Signal doppelt vorhanden ist, daher auch die Bezeichnung DSB (double side band). Würde man z.B. die linke Hälfte wegfiltern, bliebe nur das eine zur Informationsübetragung notwendige Band übrig, daher die Bezeichnung SSB (single side band).
+- ![](Assets/Biosignalverarbeitung-analoge-übertragung-3.png)
+- Bei der FM wird die Trägerfrequenz moduliert, d.h. die Momentanfrequenz des FM-Signals hängt vom aktuellen Pegel des Modulationssignals EKG ab. Wie die rechte Grafik zeigt, die Amplitude des FM-Signals ist konstant, die Dichte der Nulldurchgänge nimmt mit dem Pegel des Modulationssignals zu. Rechts ist in Zeitlupe der QRS-Komplex des EKG dargestellt (100ms der ersten Herzaktion aus der linken Grafik). Die hohe Amplitude der R-Zacke erzeugt im FM-Signal hohe Frequenzen (zwischen ca. 15ms und 65ms), während links und rechts der R-Zacke sichtbar tiefere Frequenzen vorliegen.
+- Die FM ist besonders gut für Übertragungen sowohl kabelgebunden als auch kabellos (Telemetrieband 433MHz) geeignet, da sie sehr unempfindlich gegen Amplitudenstörungen ist -die Information ist allein in der Häufigkeit der Nulldurchgänge kodiert.
+- ![](Assets/Biosignalverarbeitung-analoge-übertragung-4.png)
+- Ein wesentlicher Nachteil der FM ist die sehr hohe erforderliche Bandbreite des FM-Signals: diese beträgt das 10 bis 20-fache der Bandbreite des Modulationssignals. Beim EKG können daher Bandbreiten von bis zu 20kHz notwendig sein. Wie die rechte Grafik zeigt, erstreckt sich das Spektrum weit hinter die Nyquistfrequenz (2000Hz) aus, so dass man es vor der Abtastung mit einem Antialiasinftiefpass beschränken bzw. mit einer viel höheren Abtastrate abtasten müsste.
+
+### Digitale Übertragung
+binäre Übertragung, PCM
+- ![](Assets/Biosignalverarbeitung-digitale-übertragung-1.png)
+- Die einfachste binäre Übertragung ist die PCM: nach Begrenzung des Spektrums nach oben bei 3.4 kHz bleibt ein Band von ca. 300 Hz bis 3.4 kHz übrig.
+  - Nach der Abtastung mit 8 ksps liegt also ein zeitdiskretes wertanaloges Signal vor, entspricht der Puls-Amplituden-Modulation.
+  - Nach der AD-Wandlung mit 8 bit und P/S-Wandlung liegt ein serielles, binäres Signal vor, das PCM-Signal.
+  - Das PCM-Signal wird über Leistungsverstärker und Leitungsanpassung auf das Kabel gelegt, z.B. ISDN.
+  - Nicht eingezeichnet ist die Kompression, die die Dynamik des Sprachsignals begrenzt und die Reduktion der Bitbreite und damit der Übertragungskapazität ermöglicht.
+- ![](Assets/Biosignalverarbeitung-digitale-übertragung-2.png)
+- Zur Übertragung über vorhandene Telefonkanäle ist es notwendig, die Pulse (z.B. der PCM) im Übertragungsband zur transportieren. Dazu werden der logischen Nullen und Einsen zwei verschiedene Frequenzen zugeteilt, die im Sender und im Empfänger gleich sind. Nach diesem Prinzip funktionieren die einfachen PC-Kommunikations-Modems.
+- Natürlich kann man auch mehr Frequenzen zuweisen, z.B. mit 16 unterschiedlichen Frequenzen könnte man direkt Hexadezimalzahlen übertragen. Die rechte Grafik zeigt eine solche Alternative mit 16 verschiedenen Frequenzen (horizontal Zeit, vertikal Frequenz, Darstellung als Spektrogramm). Allerdings wurde hier das EKG nicht kodiert, sondern zur Veranschaulichung als 1-aus-16-Wert übertragen.
+
+Klassifikation digitaler Filter nach ihrer Impulsantwort als LTI-System (Linear Time Invariant)
+- IIR (Infinite Impulse Response)
+  - Funktionales Äquivalent zu analogen Filtern
+  - Im allg. nichtlinearer Phasenfrequenzgang
+- FIR (Finite Impulse Response)
+  - Filtertypen realisierbar, die es in der analogen Welt nicht gibt (Hilbert, Allpass, adaptive Filter)
+  - Linearer Phasenfrequenzgang realisierbar
+
+Die Klassifikation nach der Länge der Impulsantwort (IR) orientiert sich allein nach praktischen Gesichtspunkten.
+- Durch die rekursive Struktur der IIR-Filter ist deren Impulsantwort (IR) nicht nur theoretisch, sondern auch praktisch unendlich lang. IIR werden auf Grund ihrer Struktur auch Rekursivfilter genannt. IIR haben eine sehr interessante Eigenschaft: 
+  - Rein theoretisch -und mit entsprechender Genauigkeit vielleicht auch praktisch -wäre damit ein unendlich langer Datenspeicher eines Zeitverlaufs realisierbar, denn der letzte Wert am Filterausgang reicht immer aus, um den Wert am Filtereingang zu berechnen. 
+  - Problematisch ist der i.A. nichtlineare Phasengang, der für Formanalyse unzulässig ist.
+- Selbst FIR-Filter haben theoretisch unendlich lange IR, damit sie aber realisierbar sind, wird diese nach einer bestimmte Länge abgeschnitten und ist damit endlich. Diese Filter werden in der Form eines Koeffizientenvektors realisiert und daher als Transversalfilter bezeichnet. Die Typenbreite der FIR-Filter ist ungleich größer als bei IIR, da mit diesen Filtertypen realisierbar sind, die es in der analogen Welt gar nicht gibt. Mit der Transversalstruktur der FIR ist die Linearität des Phasenganges gewährleistet. Im Vergleich zu IIR-Filtern haben FIR um Größenordnungen mehr Filterkoeffizienten.
 
 # Digitale Filterung
+IIR - Infinite Impulse Response
+- ![](Assets/Biosignalverarbeitung-iir-1.png)
+- $y(t)=g(t)*x(t)=\int_{-\infty}^{\infty} g(\tau)x(t-\tau) d\tau$
+- $Y(j\omega)=G(j\omega)* X(j\omega)$
+- ![Tiefpass 1. Ordnung](Assets/Biosignalverarbeitung-iir-2.png)
+- $g(t)=\frac{1}{\tau}exp(-t/\tau)$
+- $G(j\omega)=\frac{1}{1+j\omega\tau}$
+- Im analogen Zeitbereich ergibt sich der Filterausgang aus der Faltung der Impulsantwort mit dem Eingangssignal. Entsprechend der FT ist dies äquivalent der Multiplikation von Spektren im f-Bereich.
+- Am Beispiel eines TP erster Ordnung soll veranschaulicht werden, wie ein digitaler IIR entworfen werden kann: Die Impulsantwort ist eine fallende e-Funktion, im f-Bereich ein T1-Glied.
+
+## IIR-Filter
+- ![](Assets/Biosignalverarbeitung-iir-3.png)
+  - $q_0=5, q=exp(-T/\tau) = 0,61$
+- zeitdiskret (nach Abtastung)
+  - $g_a(t)=q_0(\delta(t)+q\delta(t-T)+q^2\delta(t-2T)+...)$
+  - $FT\{\delta(t-T)\}=e^{-j\omega T}$
+  - $G_a(j\omega)=q_0(1+qe^{-j\omega T}+ q^2e^{-2j\omega T}...)$
+  - $G_a(j\omega)=q_0\frac{1}{1-qe^{-j\omega T}}$
+  - Z-Transformation $z=e^{j\omega T} \Rightarrow G(z)=q_0\frac{1}{1-qz^{-t}}$ Verzögerung um $T_A$
+- In Anlehnung an die sog. Impulsantwort-Invariant-Technik wird die IR abgetastet, es liegt also zeitdiskrete Version der IR vor. Diese lässt sich als exponentielle Folge beschreiben.
+- Die FT der Zeitverschiebung ist bekannt, damit gibt es ein Äquivalent der Reihe im f-Bereich.
+- Über Näherungsrechnung lässt sich die geometrische Folge im f-Bereich zu einem Quotienten zusammenfassen.
+- Nun wird der Übergang aus zeitanalogem in den zeitdiskreten Bereich vollzogen -über die z-Transformation.
+- Aus Sicht der Realisierung des digitalen Filters ist die z-Transformation besonders anschaulich -der Exponent über z gibt die Anzahl der Einheitsverzögerungen als Vielfaches der Abtastperiode an.
+- Filter der Ordnung N: $G(z)=\frac{k_1}{1-q_1z^{-1}}+\frac{k_2}{1-q_2z^{-1}}+...+\frac{k_N}{1-q_Nz^{-1}}$
+- gemeinsamer Nenner: $G(z)=\frac{b_0+g_1z^{-1}+...+b_mz^{-m}}{1+a_1z^{-1}+a_2z^{-2}+...+a_nz^{-n}}=\frac{Y(z)}{X(z)}$
+- $Y(z)+a_1z^{-1} Y(z)+... =b_0X(z)+b_1z^{-1}X(z)+...$
+- zeitkontinuierlich $y(t)+a_1y(t-T)+... = b_0x(t)+b_1x(t-T)+...$
+- Sequenz: $y(n)=b_0x(n) +b_1x(n-1)+.... -a_1y(n-1)-a_2y(n-2)-...$
+- Nun wird das Vorgehen auf ein beliebiges Filter verallgemeinert: Natürlich sind die IIR im allgemeinen viel komplizierter, als ein TP 1. Ordnung. Jedoch lässt sich jede IR auf eine Summe von abklingenden e-Funktionen zurückführen (siehe Regelung), so dass die Verallgemeinerung nach diesem Schema möglich ist.
+- Bringt man die Formel auf den gemeinsamen Nenner, so kann man sie in Terme für den Eingang x und den Ausgang y trennen.
+- Transformiert man die Formel in den zeitanalogen Bereich zurück, so lässt sich überprüfen, ob die gewünschte Übertragungsfunktion erreicht wurde.
+- Überträgt man die Formel in den zeitdiskreten Bereich, so erhält man eine Rekursionsformel für den Ausgang $y(n)$.
+
+IIR-Filter rekursiv
+- $y(n)=\sum_{i=0}^{N} b_ix(n-i) - \sum_{i=1}{N} a_iy(n-i)$
+- ![Direktstruktur](Assets/Biosignalverarbeitung-iir-rekursiv.png)
+- $y(n)=\sum_{i=0}^N b_ix(n-i) - \sum_{i=1}^N a_iy(n-i) = b_0x(n)+ \sum_{i=1}^N [b_ix(n-i) - a_iy(n-i)]$
+- ![1. kanonische Direktform](Assets/Biosignalverarbeitung-iir-rekursiv-2.png)
+
+Entwurf eines IIR-Filters
+1. Übertragungsfunktion $G(j\omega)$ des Analogfilters
+2. Kontinuierliche Impulsantwort $g(t)$ des Analogfilters
+3. Aus der kontinuierlichen Impulsantwort $g(t)$ abgetastete Impulsantwort $g(nT)$
+4. Aus der Reihe für $g(nT)$ die z-Übertragungsfunktion $G(z)$ des gesuchten IIR-Filters
+5. Aus $G(z)$ durch Rücktransformation in den Zeitbereich die Rekursionsformel für das Ausgangssignal $y(n)$
+
+Entwurf eines IIR-Filter - Beispiel
+```matlab
+% Analoger Tiefpass bei 45 Hz
+[b,a] = butter(3, 2*pi*45, 'low', 's'); % Polynomformel für Butterworth-Tiefpass
+sys = tf(b,a); % Transformation des Polynoms in die Übertragungsfunktion
+
+figure
+impulse(sys) % Impulsantwort der Übertragungsfunktion
+hold $ Bild halten zum Vergleich mit der Matlab-Impuls-Varianz
+
+[bz,az]= impinvar(b,a,250) % Matlab Funktion zur Diskretisierung
+impz(250*bz, az, [], 250) % Darstellung der diskreten Impulsantwort
+
+%Partialbruchzerlegung der analogen Formulierung
+[r,p,k]= residue(b,a)
+
+% Inverse Laplace Transformation für die analoge Impulsantowrt
+% Vereinfachend kann für s=jw ersetzt werden
+gil=(282.7*exp(-282.7*t) + (-141.4-81.6*sqrt(-1))*exp((-141.4+244.8*sqrt(-1))*t) + (-141.4+81.6*sqrt(-1))*exp((-141.4-244.8*sqrt(-1))*t))
+
+% abgetastete Impulsantwort
+tax = (0:15000-1)/250/1000;
+gab = 0.004 * ((282.7 * exp(-287.7 * tax) + (-141.4-81.6 * sqrt(-1))* exp((-141.4+244.8*sqrt(-1))*tax) + (-141.4+81.6*sqrt(-1))* exp((-141.4-244.8*sqrt(-1))*tax)));
+figure
+plot(tax,gab), title('abgetastete Impulsantwort Butterworth 3. Ordnung')
+
+% Polynomdarstellung
+[bg ag] = residue(0.004*[282.7(-141.4-81.6*sqrt(-1))(-141.4+81.6*sqrt(-1))], [exp(-282.7/250) exp((-141.4+244.8*sqrt(-1))/250) exp((-141.4 -244.8 *sqrt(-1))/250)], [0])
+figure
+impz(bg,ag,[],250)
+figure
+freqz(bg,ag)
+```
+
+Eigenschaften von IIR-Filtern
+- IIR-Filter lassen sich aus analogen Filtern direkt herleiten, d.h. IIR-Filter haben einen analogen ,,Prototypen''
+- mit IIR diesselben analogen Filter im digitalen Bereich
+- IIR-Filter haben i.a. keinen linearen Phasenfrequenzgang, Nullphase nur bei gespiegelter Filterung
+
+## FIR-Filter
+- kein rekursiver Anteil: $G(z)=\frac{b_0+b_1z^{-1}+...+b_mz^{-m}}{1}=ßfrac{Y(z)}{X(z)}$
+- zeitdiskrete Realisierung: $Y(z)=b_0X(z)+b_1z^{-1}X(z)+...$
+- analoge Faltung: $y(t)=b_0x(t)+b_1x(t-T)+...$
+- diskrete Faltung: $y(n)=b_0x(n)+b_1x(n-1)+...$
+- Filterkoeffizienten gleich der abgetasteten Impulsantwort: $g(t)=b_0\delta(t)+b_1\delta(t-T)+...+b_L\delta(t-NT)$
+
+$$y(n)=\sum_{i=0}^N b_ix(n-i)$$
+- ![nichtrekursiver (transversaler) Teil](Assets/Biosignalverarbeitung-fir-nichtrekursiv.png)
+
+Entwurf eines FIR-Filters
+1. Definition des Freqzenzgangs $G(j\omega)$ eines idealen analogen Filters
+2. Berechnung der Impulsantwort $g(t)$ des analogen Filters
+3. Abtastung der Impulsantwort $g(nT)$ des idealen FIR-Filters
+4. Definition eines Fenstertyps (Rechteck, Hanning, Hamming) und Begrenzung der Impulsantwort $g(nT)$ durch das Fenster
+5. Verschiebung der Impulsantwort so, dass der Filter kausal wird
+6. Die Filterkoeffizienten $b_i$ sind identisch mit den Werten der begrenzten und verschobenen Impulsantwort
+
+Eigenschaften von FIR-Filtern
+- kein analoges Gegenstück
+- exklusive Übertragungsfunktion (Hilbert, Allpass)
+- Länge und Koeffizienten völlig frei wählbar
+- ideale Filter mit definierbarem Fehler realisierbar
+- linear- und nullphasige Filter realisierbar
+
+- ![](Assets/Biosignalverarbeitung-fir-tiefpass.png)
+- Impulsantwort des idealen Tiefpasses: die ersten 501 Filterkoeffizienten
+  - ![](Assets/Biosignalverarbeitung-fir-tiefpass-2.png)
+- Digitaler Tiefpass der Länge $L=501$
+  - ![](Assets/Biosignalverarbeitung-fir-tiefpass-3.png)
+  - Durch die Beschneidung der IR-Länge weicht die Filtercharakteristik in Abhängigkeit von der tatsächlichen Länge ab. Hier wird die gewünschte Grenzfrequenz mit 501 Filterkoeffizienten noch ganz gut erreicht (bis ca. -40dB).
+- Gibb's Effekt
+  - ![](Assets/Biosignalverarbeitung-gibbs-effekt.png)
+  - Je kürzer die Impulsantwort abgeschnitten wird, umso mehr kommt der sog. Gibb‘s-Effekt zum Tragen. Dieser präsentiert sich damit, dass die Filtercharakteristik immer welliger wird. Im praktischen Einsatz weitgehend akzeptabel.
+
+Phasenfrequenzgang von FIR Filtern
+- ideale Phase identisch Null - nullphasiger Filter, nur off-line, kausales Filter um halbe Länge zeitverschoben
+- konstante Gruppenlaufzeit - lineare Phase, on-line-fähig: $\phi(\omega)=-\omega\tau$
+- definierter Phasenverlauf - Allpass
+- In der echtzeitfähigen Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe Filterlänge, und das unabhängig von der Frequenz(!). Dies wird deutlich, wenn man sich die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang linear ist und es zu keinen Formverzerrungen kommt.
+
+![](Assets/Biosignalverarbeitung-fir-tiefpass-4.png)
+- Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
+- Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
+- Gruppenlaufzeit: $\tau(\omega)=L*T_A=31*T_A$
+- Phasenfrequenzband: $\phi(\omega)=-2\pi*LT_A$
+
+### Realisierung digitaler Filter - FIR
+- ![](Assets/Biosignalverarbeitung-fir-realisierung.png)
+- Die FIR-Impulsantworten sind symmetrisch, während die eine Hälfte immer im zeitnegativen, also im nichtkausalen Bereich liegt. Ein kausales Filter lässt sich nur realisieren, wenn es um die negative Hälfte in den positiven Bereich verschoben wird. Dann erhält man reale Ausgangsdaten, die allerdings zum Eingangssignal um die Zeit verschoben sind, die der halben Filterlänge entspricht. In diesem Beispiel ,,hängen'' die Ausgangsdaten dem Eingang um zwei Samples -zeitlich also um zwei Abtastperioden - hinterher.
+- Anm.: Der Index 1 bei y sagt nur aus, dass es der erste Ausgangswert ist. Auf der Zeitachse liegt er neben dem Index 3 von x. Es mussten also zwei Werte von x hineinlaufen in das Filter, bevor überhaupt der erste Ausgangswert erschien.
+- Die diskrete Faltung ist der Kern der DSP (digitale Signalprozessoren), da im Normalfall in Echtzeit gefiltert werden muss, welches Filter auch immer verwendet wird. Daher haben DSP einen on-chip Multiplikator und Addierer.
+- ![](Assets/Biosignalverarbeitung-fir-realisierung-2.png)
+- ![](Assets/Biosignalverarbeitung-fir-realisierung-3.png)
+- ![](Assets/Biosignalverarbeitung-fir-realisierung-4.png)
+  - Ausgangssignal kürzer um die Filterlänge-1 bei ungerader Anzahl der Filterkoeffizienten
+
+## Realisierung digitaler Filter - programm
+- ![](Assets/Biosignalverarbeitung-fir-realisierung-5.png)
+  - Filterung mit FIR entspricht einer diskreten Faltung, so dass sie sich algorithmisch einfach mit zwei verschachtelten Schleifen realisieren lässt, wie hier mit einem Matlab-Programm gezeigt.
+  - In diesem Beispiel hat die FIR-IR 15 Koeffizienten, das Ausgangssignal wird also um 7 Abtastperioden verschoben sein und um 14 Werte kürzer.
+  - Da beim FIR die Filterkoeffizienten identisch mit der IR sind, erhält man nach der FFT direkt die spektrale Filterfunktion.
+- ![](Assets/Biosignalverarbeitung-fir-realisierung-6.png)
+  - Im Zeitverlauf des weißen Rauschens ist erkennbar, dass das gefilterte Signal (rot) kürzer und nach links verschoben ist. Für einen zeitlichen Vergleich der beiden Signale wäre es notwendig, mit geeigneten Maßnahmen Zeitgleichheit herzustellen, z.B. durch Verschiebung des gefilterten Signals um (die verlorene) halbe Länge nach rechts. Oder durch Auffüllen von jeweils (L-1)/2 Nullen links und rechts des Eingangssignals wird erreicht, dass das gefilterte Signal gleich lang und zeitgleich erscheint.
+  - Der Spektrenvergleich bestätigt, dass es sich hier um einen Tiefpass handelt.
+
+### Realisierung digitaler Filter - DSP
+Zum Vergleich konventioneller CPU und eines DSP soll hier ein Überblick über die Architekturen folgen:
+- ![](Assets/Biosignalverarbeitung-von-neumann.png)
+  - Konventionelle CPU bzw. PCs bauen auf der ältesten, von Neumann -Architektur auf.
+  - Hardwaremäßig vorteilhaft, dass nur ein Speicher benötigt wird, allerdings passiert es in der Programmentwicklung immer wieder, dass man mit nicht korrekt organisierten Daten Programme überschreibt. Passiert dies zufällig, so kann das Debugging zur Lebensaufgabe werden.
+- ![](Assets/Biosignalverarbeitung-harvard.png)
+  - Die Harvard-Architektur löst das Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem können hier Zugriffe parallel erfolgen, womit die Geschwindigkeit enorm gesteigert wird.
+- ![](Assets/Biosignalverarbeitung-super-harvard.png)
+  - Da in der DSV die Algorithmen weitgehend identisch sind, kann die Abfolge der Instruktionen mit guter Wahrscheinlichkeit ,,vorhergesagt'' werden, so dass sich mehrere vorab im instruction cache der CPU befinden, dekodiert und zur Abarbeitung in der pipeline vorbereitet sind. Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern über einen I/O-Controller direkt vom Speicher aus, also mit einer Art DMA. Der Datenspeicher muss natürlich über zwei Zugangsports verfügen, sog. dual-port-RAM.
+- ![](Assets/Biosignalverarbeitung-tiger-super-harvard.png)
+  - Bei der sog. Tiger-Sharc-Architektur (geschütze Marke von AD) werden Daten in zwei Speichern gelagert. Das hat den Vorteil eines parallelen Zugriffs auf Instruktionen und zwei Datenblöcke, da in den Algorithmen der DSV überwiegend zwei Operatoren in einer Instruktion verarbeitet werden. Damit steigt die Rechengeschwindigkeit noch mal enorm.
+  - ![](Assets/Biosignalverarbeitung-ad-tigersharcs.png)
+  - Eine typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
+
+## CAD digitaler Filter
+- ![](Assets/Biosignalverarbeitung-cad-digitaler-filter.png)
+- Die DSPs werden vorwiegend im Assembler programmiert, um die höchstmögliche Geschwindigkeit zu erreichen. Vor allem für Entwicklungszwecke werden jedoch auch höhere Sprachen verwendet, vor allem C und C++, sowie CAD-Pakete, wie z.B. Matlab. Durch die Koordination zwischen Mathworks und TI entstand ein sehr leistungsfähiges und effektives Entwicklungstool, mit dem man von Matlab aus direkt auf die DSP-Boards von TI zugreifen kann.
+- Hier folgt ein Beispiel zu ersten Entwicklungsschritten von Filtern im Akustikbereich: Zunächst wird die Startmelodie von Windows vom Netz gestört, durch Abspielen kann dies überprüft werden.
+- Mit dem fdatool wird zunächst ein IIR-Filter entworfen, eigene Entwürfe sind an dieser Stelle empfehlenswert.
+- die gestörte Melodie wird gefiltert und gespiegelt
+    ```
+    winfilt = filter(b,a,winfufz)
+    sound(winfilt, Fs)
+    ```
+- Ergebnis ist unbefriedigend, Überprüfung des Filters
+    ```
+    figure(1), plot(winfilt)
+    dirac = zeros(1,1000);
+    dirac(1) = 1;
+    iir= filter(b,a,dirac);
+    figure(2),plot(iir)
+    ```
+- Filter ist instabil -> Neuentwurf notwendig
+  - Parameter: Bandstop, Equiripple, FIR; Fs=8000 Hz, Fpass1=30Hz, Fstop1=45Hz, Fstop2=55Hz, Fpass2=70Hz, Apass1=3dB, Astop=40dB, Apass2=3dB
+  - Filterentwurf: b=Vektor der Länge 3553
+  ```
+  winfilt = filter(Num, 1, winfufz)
+  sound(winfilt, Fs)
+  ```
+- Man kann natürlich eigene diskrete Faltung schreiben und verwenden, mit der Matlab-Funktion filter(b,a,x) geht es viele effektiver.
+- Das abgespielte Signal entspricht nicht dem Ziel, undefiniertes Geräusch ist das Ergebnis.
+- Das Filter muss überprüft werden. Im Plot des gefilterten Signals wird schnell deutlich, welches Problem aufgetreten ist: Das Signal verläßt den normalen Wertebereich und sogar auch den Zahlenbereich. Fazit ist, das Filter ist instabil. Selbst wenn das fdatool behauptet, das Filter wäre stabil, so stimmt das nur für den Entwurf. Die Stabilität ist auch eine Frage des gefilterten Signals und wird hier eben nicht gewährleistet. Das Problem in diesem konkreten Fall ist, dass die geforderte Bandsperre sehr schmal und bei sehr niedriger Frequenz im Vergleich zur Abtastrate liegt (Breite 10 Hz bei 50Hz Mittenfrequenz und Abtastrate 22050sps), so dass die relative Frequenz gerade nur 0.0023 und die Bandbreite nur 0.00045 betragen. Bei so niedrigen Werten ist ein Filterentwurf sehr problematisch. Der sicherste Ausweg aus diesem Problem ist ein FIR-Filter, das immer stabil ist, denn es hat keine Rückführung. - Die geforderte Bandsperre wird einigermaßen erfüllt, was aber auf Kosten der Filterlänge geht, die hier mit 1776 Koeffizienten schon beachtlich ist. Durch Abspielen kann man sich überzeugen, dass dieses mal das Ziel erreicht wurde.
+
+![](Assets/Biosignalverarbeitung-netzunterdrückung.png)
+Bei der realisierten Filterlänge von 1776 und der Abtastrate von 22050 kommt es zu einer Verzögerung des gefilterten Signals um 38ms, wie man insbesondere im rechten Bild gut erkennen kann. Im Normalfall bzw. bei geringen Ansprüchen wäre diese Verzögerung akzeptabel. Für zeitkritische Methoden der DSV (z.B. Quellenortung bzw. - verfolgung, Beamforming, adaptive Rauschunterdrückung) wäre das jedoch zu viel, wenn man bedenkt, dass der Schall in der Luft in dieser Zeit 12.m Strecke zurücklegt oder es sich um 38 Perioden einer 1kHz-Schwingung handelt.
+
+## Adaptive Filter
+- ![](Assets/Biosignalverarbeitung-adaptiv-fir.png)
+  - FIR-Filterlänge = $2L+1$
+  - Filterausgang: $y(n)=w(-L)x(n-L)+...+ w(L)x(n+L)= \overline{x}^T \overline{w}$
+  - Modellfunktion, Sollsignal, desired response: $d(n)$
+  - Fehlersignal, error: $e(n)=d(n)-y(n)$
+- Das adaptive Filter ist ein Rückgekoppeltes System mit negativer Rückkopplung, so dass -ähnlich wie bei Regelkreisen -auch Stabilitätsbedingungen eingehalten werden müssen.
+- Die einfachste Variante eines adaptiven Filters (AF) ist ein FIR mit der Länge $2L+1$, das man mathematisch mit einem Vektor w beschreiben kann. Grundsätzlich kann der Eingangsvektor x physisch ein Spaltenvektor sein, dann entsprechend die Filterkoeffizienten der Wichtung von Signalen in parallel liegenden Kanälen, üblich in der spatialen Signalverarbeitung, kommt im nächsten Kapitel. Oder x ist ein Zeilenvektor, d.h. er wird als Analysefenster temporal über ein Signal geschoben, ist also ein Filter im üblichen Sinne der temporalen Filterung. Die physikalische Anordnung ist jedoch für die Herleitung an dieser Stelle irrelevant, im weiteren gehen wir wegen der einheitlichen Schreibweise von einem Spaltenvektor aus, wie üblich in der Signalverarbeitung.
+- Der Ausgang entspricht der Faltung des Filtervektors mit dem Eingangssignal im Punkt n, jeweils L samples nach links und rechts bzw. nach oben und unten.
+- $d(n)$ ist die desired response, regelungstechnisch das Sollsignal oder analytisch das Modell.
+- Aus der Differenz von $d(n)$ und $y(n)$ wird das Errorsignal gebildet, das von einem Adaptionsalgorithmus ausgewertet wird und die Filterkoeffizienten dann von dem Algorithmus so verändert, dass der Fehler gegen Null konvergiert.
+
+- Errorsignal (Zeitindex weggelassen, daher auch spatial gültig): $e=d-y=d-\overline{x}^T \overline{w}$
+- Quadrat des Errorsignals: $e^2=d^2-2d\overline{x}^T\overline{w}+\overline{w}^T\overline{x}\overline{x}^T\overline{w}$
+- Erwartungswert: $F=E\{e^2\}=E\{d^2\}-2E\{d\overline{x}^T\overline{w}\}+E\{\overline{w}^T\overline{x}\overline{x}^T\overline{w}\}$
+- Wiener Filter: $E\{d\overline{x}\}=\overline{w}E\{\overline{x}\overline{x}^T\}$
+  - $\overline{w}=R^{-1}*p$, R = Autokovarianzmatrix, p = Kreuzkovarianzvektor
+  - $W=\frac{p_{xd}}{p_{xx}}$, $p_xd=$ Kreuzleistungsdichte, $p_{xx}=$ Autoleistungsdichte
+- Das Errorsignal ist ein Skalar, ergibt sich aus der Differenz der desired response (auf der Position n) und dem Skalarprodukt des Eingangsvektors mit den Filtervektor (Filterkoeffizienten)
+- Man geht hier vom stationären Fall der Signalstatistik aus, so dass primär nicht der Momentanwert des Errors Null sein soll, sondern seine Energie bzw. Leistung. Dazu wird der Error zunächst quadriert (zweite Potenz ist Maß für Energie bzw. Leistung).
+- Der Erwartungswert des Fehlers F (praktisch der quadratische Mittelwert) soll minimal werden, dann entspricht der Filterausgang der Modellfunktion.
+- Man bildet die erste Ableitung des Fehlers F nach den Filterkoeffizienten (w für weights) und setzt diese gleich Null. Die Lösung dieser Gleichung ergibt das Wiener-oder Optimalfilter.
+- Das Wienerfilter kann im Originalbereich mit Hilfe von Auto-und Kreuzkovarianzen beschrieben werden,
+- oder im Spektralbereich mit Auto-und Kreuzleistungsdichte (siehe Regelungstechnik und Modellbildung)
+
+- Schätzung des Erwartungswertes des Fehlerquadrats: $E\{e^2\}\approx \frac{1}{M}\sum_{i=1}^M e_i^2$
+- Schätzung des Erwartungswertes der Autokorrelationsmatrix: $R=E\{x*x^T\}\approx\begin{pmatrix} x(0)x(0) &...& x(0)x(M-1)\\ ...\\ x(M-1)x(0)& ...& x(M-1)x(M-1)\end{pmatrix}$
+- Schätzung des Erwartungswertes des Kreuzkorrelationsvektors: $p=E\{dx\}\approx dx$
+
+- kontinuierliche Zeit
+  - Kreuzkorrelationsfunktion: $r_{xd}(\tau)=lim_{T\rightarrow\infty}\frac{1}{2T}\int_{-T}^T x(\tau)d(t+\tau)dt$
+  - Autokorrelationsfunktion: $r_{xx}(\tau)=r_{xd}(\tau)|_{d=x}$
+  - Kreuzleistungsdichte: $S_{xd}(f)=\int_{-\infty}^{\infty} r_{xd}(\tau)e^{-i2\pi ft}dt$
+  - Autoleistungsdichte: $S_{xx}(f)=S_{xd}(f)|_{d=x}$
+- diskrete Zeit
+  - Kreuzkorrelationsfunktion: $r_{xd}(m)=\frac{1}{N}\sum_{n=1}^N x(n)d(n+m)$
+  - Autokorrelationsfunktion: $r_{xx}(m)=r_{xd}(m)|_{d=x}$
+  - Kreuzleistungsdichte: $S_{xd}(k)=\frac{1}{M}\sum_{m=0}^{M-1} r_{xd}(m)e^{-i2\pi km}$
+  - Autoleistungsdichte: $S_{xx}(k)=S_{xd}(k)|_{d=x}$
+
+Proleme bei der Realisierung des optimalen Filters
+- Inverse Autokovarianzmatrix - rechentechnisches Problem
+- Leistungsspektrum berechenbar, aber nur im stationären Fall
+- Warum ein unbekanntes Signal filtern, wenn das gesuchte als Sollsignal bekannt ist
+  - Wiener Filter existiert nur theoretisch
+  - Das Wienerfilter zu realisieren ist in der Praxis sehr schwierig. Die Berechnung der inversen Autokovarianzmatrix stößt schon bei niedrigen Rangordnungen (etwa N=10) auf ihre Grenzen.
+  - Das Leistungsspektrum gilt nur für den stationären Fall, den wir bei Biosignalen auch nicht nur annähernd haben.
+  - Schließlich stellt sich die pragmatische Frage: Wenn wir genau wissen, wonach wir suchen -den das muss für die Modellfunktion bekannt sein -warum sollten wird danach dann noch suchen?
+  - Dennoch hat das Wienerfilter für die Filtertheorie grundlegende Bedeutung und kann in modifizierten Varianten auch umgesetzt werden.
+
+Stochastischer Prozess: Ensemble, Sequenz von Zufallsvariablen
+- $X=\{X(n-m),...,X(n),....,X(n+m)\}$
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-stochastik.png)
+- Starke Stationarität: die Verteilungen der Zufallsvariablen sind identisch
+- Die Annahme der starken Stationarität ist zwar für viele Methoden der Signalstatistik notwendig (i.i.d. = independent identically distributed). Sie kann aber pratkisch nicht erfüllt bzw. geprüft werden.
+
+Schwache Stationarität
+- $E\{x_t\}=\mu$
+- $var(x_t)<\infty$
+- $cov(x_{t1}, x_{t2})$
+- Da die Annahme der Gleichheit von Verteilungen der Zufallsgrößen real nicht geprüft werden kann, wird sie auch nicht gefordert. Faktisch müssen nur die Momente erster und zweiter Ordnung zeitlich konstant sein.
+- Dies wiederum ist für die signalanalytische Praxis oft zu wenig, da Momente dritter und vierter Ordnung nicht gleich sein müssen (Schiefe, Exzess).

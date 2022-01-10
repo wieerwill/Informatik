@@ -1450,12 +1450,12 @@ Wie dies geht: Security Engineering
 - Herausforderung: korrekte Durchsetzung von Sicherheitspolitiken
 - Vorgehensweise: Security Engineering
 
-||
-|---|---
-Sicherheitsziele| Welche Sicherheitsanforderungen muss das Betriebssystem erfüllen?
-Sicherheitspolitik| Durch welche Strategien soll es diese erfüllen? ($\rightarrow$ Regelwerk)
-Sicherheitsmechanismen|Wie implementiert das Betriebssystem seine Sicherheitspolitik?
-Sicherheitsarchitektur| Wo implementiert das Betriebssystem seine Sicherheitsmechanismen (und deren Interaktion)?
+|                        |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| Sicherheitsziele       | Welche Sicherheitsanforderungen muss das Betriebssystem erfüllen?                         |
+| Sicherheitspolitik     | Durch welche Strategien soll es diese erfüllen? ($\rightarrow$ Regelwerk)                 |
+| Sicherheitsmechanismen | Wie implementiert das Betriebssystem seine Sicherheitspolitik?                            |
+| Sicherheitsarchitektur | Wo implementiert das Betriebssystem seine Sicherheitsmechanismen (und deren Interaktion)? |
 
 ##### Sicherheitspolitiken und -modelle
 Kritischfür korrekten Entwurf, Spezifikation, Implementierung der Betriebssystem-Sicherheitseigenschaften!
@@ -1491,11 +1491,11 @@ klassifiziert nach Semantik der Politikregeln:
   - Bsp.: ,,Anhand ihres Dateisystempfads bestimmt das Betriebssystem, welcher Nutzer welche Rechte an einer Datei hat.''
 
 ##### Einige Beispiele ...
-|| DAC| MAC
-|---|---|---|
-IBAC |Unixoide,Linux, Windows| Linux AppArmor, Mac OS Seatbelt
-TE |-| SELinuxEnterprise Linux (RHEL), RedHat
-MLS |Windows UAC |SELinux, TrustedBSD
+|      | DAC                     | MAC                                    |
+| ---- | ----------------------- | -------------------------------------- |
+| IBAC | Unixoide,Linux, Windows | Linux AppArmor, Mac OS Seatbelt        |
+| TE   | -                       | SELinuxEnterprise Linux (RHEL), RedHat |
+| MLS  | Windows UAC             | SELinux, TrustedBSD                    |
 
 ... und ein Verdacht
 Eindruck der Effektivität von DAC: ,,[...] so the theory goes. By extension, yes, there may be less malware, but that will depend on whether users keep UAC enabled, which depends on whether developers write software that works with it and that users stop viewing prompts as fast-clicking exercises and actually consider whether an elevation request is legitimate.'' (Jesper M. Johansson, TechNet Magazine)
@@ -1519,12 +1519,12 @@ In der Praxis:
 ```
 
 ##### Modellierung: Zugriffsmatrix
-| acm |paper.pdf |aos-05.pptx |gutachten.tex |worse-engine
-|---|---|---|---|---|
-kühnhauser| rw| - |rw |rx
-schlegel |rw| - |- |rx
-amthor |rw| rw| - |rx
-krause|r|-|-|-
+| acm        | paper.pdf | aos-05.pptx | gutachten.tex | worse-engine |
+| ---------- | --------- | ----------- | ------------- | ------------ |
+| kühnhauser | rw        | -           | rw            | rx           |
+| schlegel   | rw        | -           | -             | rx           |
+| amthor     | rw        | rw          | -             | rx           |
+| krause     | r         | -           | -             | -            |
 
 - acm (access control matrix): Momentaufnahme der globalen Rechteverteilung zu einem definierten ,,Zeitpunkt t''
 - Korrektheitskriterium: Wie kann sich dies nach t möglicherweise ändern...? (HRU-Sicherheitsmodell)[HaRU76]
@@ -1592,11 +1592,11 @@ Autorisierungsinformationen:
 
 #### ACLs: Linux-Implementierung
 Modell einer Unix acm ...
-||lesen |schreiben | ausführen
----|---|---|---|
-Eigentümer (,,u'') | ja |ja |ja
-Rest der Welt (,,o'') |ja |nein| ja
-Gruppe (,,g'') |ja |nein |ja
+|                       | lesen | schreiben | ausführen |
+| --------------------- | ----- | --------- | --------- |
+| Eigentümer (,,u'')    | ja    | ja        | ja        |
+| Rest der Welt (,,o'') | ja    | nein      | ja        |
+| Gruppe (,,g'')        | ja    | nein      | ja        |
 
 - 3 - elementige Liste
 - 3 - elementige Rechtemenge
@@ -1745,7 +1745,7 @@ Access Vector Rules
   allow shell_t passwd_exec_t : file { execute };
   allow passwd_t shadow_t : file { read write };
   ```
-- Semantik: Erlaube( ''allow” ) ...
+- Semantik: Erlaube( ''allow'' ) ...
   - jedem Prozess mit Typ `shell_t`
   - ausführenden Zugriff (benötigt die Berechtigung `{execute}`),
   - auf Dateien (also Objekte der Klassefile)
@@ -1772,7 +1772,7 @@ Lösung: Retypisierung bei Ausführung
   - ✗ Politikentwicklung und -administrationkomplex!
 
 ##### Weitere Informationen zu SELinux
-$\rightarrow$ MAC-Mechanismen à la SELinux sind heutzutage in vielerlei Software bereits zu finden:
+$\rightarrow$ MAC-Mechanismen ala SELinux sind heutzutage in vielerlei Software bereits zu finden:
 - Datenbanksoftware (SEPostgreSQL)
 - Betriebssysteme für mobile Geräte (FlaskDroid)
 - sehr wahrscheinlich: zukünftige, sicherheitsorientierte BS...
@@ -1954,6 +1954,689 @@ Begriff zur Bewertung von Referenzmonitorarchitekturen: TCB ( Trusted Computing 
   - alle Referenzmonitorfunktionen
 
 # Echtzeitfähigkeit
+## Motivation
+Echtzeitbegriff: Was ist ein Echtzeitsystem?
+> Any system in which the time at which output is produced is significant. This is usually because the input corresponds to some movement in the physical world, and the output has to relate to that same movement. The lag from input time to output time must be sufficiently small for acceptable timeliness. (The Oxford DictionaryofComputing)
+
+> A real-time system is any information processing activity or system which has to respond to externally generated input stimuli within a finite and specified period. [Young 1982]
+
+> A real-time system is a system that is required to react to stimuli from the environment (including the passage of physical time) within time intervals dictated by the environment. [Randall et.al. 1995]
+
+
+Spektrum von Echtzeitsystemen:
+1. Regelungssysteme: z.B. eingebettete Systeme (exakter: Steuerungs-, Regelungs-u. Überwachungssysteme = ,,SRÜ''-Systeme)
+2. Endanwender-Rechnersysteme: z.B. Multimediasysteme
+3. Lebewesen: Menschen, Tiere
+
+Beispiel Regelungssystem: ,,Fly-by-Wire''-Fluglage-Regelungssystem (Schema)
+1. Flugzeugbewegung
+2. Sensoren + Einstellmöglichkeiten des Piloten
+3. Echtzeit-Datenverarbeitung (durch Echtzeit-Rechnersystem)
+4. Aktoren setzen Berechnung um
+5. Einstellung von Regelflächen
+6. Aerodynamik und Flug Mechanik führt zu Flugzeugbewegung (1.)
+
+Beispiel Überwachungssysteme
+- Luftraumüberwachung:
+  - Ortsfeste Radarstation
+  - Mobile Radarstation
+  - Tiefflieger-Erfassungsradar
+  - Flugplatzradar Netzfunkstellen
+  - Zentrale
+- Umweltüberwachung: Stickstoffdioxidkonzentration über Europa
+- Vorgeburtliche Gesundheitsüberwachung: Herzschlagsüberwachungssystem für Mutter und Kind
+
+Beispiel Multimediasystem
+- zeitabhängige Datenwiedergabe
+- Bildwiedergabe bei Mediendatenströmen
+- Durchführung der Schritte durch Multimedia-Task binnen $t_{i+1} - t_i$
+- Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische Bildrate (24~48 fps $\rightarrow$ 1/24 ... 1/48 s)
+- $\rightarrow$  Berücksichtigung bei Scheduling, Interruptbehandlung, Speicherverwaltung, ... erforderlich!
+
+Zwischenfazit [Buttazzo97]
+- Murphy‘s General Law: If something can go wrong, it will got wrong.
+- Murphy‘s Constant: Damage to an object is proportional to its value.
+- Johnson‘s First Law: If a system stops working, it will do it at the worst possible time.
+- Sodd‘sSecond Law: Sooner or later, the worst possible combination of circumstances will happen.
+
+Realisierung von Echtzeiteigenschaften: komplex und fragil!
+
+## Terminologie
+bevor wir uns über Echtzeit-Betriebssystemen unterhalten:
+1. Wie ist die Eigenschaft Echtzeit definiert?
+2. Was sind (rechnerbasierte) Echtzeitsysteme?
+3. Wie können Echtzeitanwendungen beschrieben werden?
+4. Welche grundsätzlichen Typen von Echtzeitprozessen gibt es/wodurch werden diese charakterisiert?
+
+Antwortzeit:
+- Alle Definitionen -die zitierten u. andere - betrachten eine ,,responsetime'' (Antwortzeit, Reaktionszeit) als das Zeitintervall, das ein System braucht, um (irgend)eine Ausgabe als Reaktion auf (irgend)eine Eingabe zu erzeugen.
+
+Frist
+- Bei Echtzeitsystemen ist genau dieses $\Delta t$ kritisch, d.h. je nach Art des Systems darf dieses auf keinen Fall zu groß werden.
+- Genauer spezifizierbar wird dies durch Einführung einer Frist (deadline, due time) $d$, die angibt bis zu welchem Zeitpunkt spätestmöglich die Reaktion erfolgt sein muss, bzw. wie groß das Intervall $\Delta t$ maximal sein darf.
+
+Echtzeitfähigkeit und Korrektheit
+- Wird genau dieses maximale Zeitintervall in die Spezifikation eines Systems einbezogen, bedeutet dies, dass ein Echtzeitsystem nur dann korrekt arbeitet, wenn seine Reaktion bis zur spezifizierten Frist erfolgt.
+- Die Frist trennt also korrektes von inkorrektem Verhalten des Systems.
+
+![](Assets/AdvancedOperatingSystems-echtzeitfähigkeit.png)
+
+Harte und weiche Echtzeitsysteme
+- Praktische Anwendungen erfordern oft Unterscheidung in harte und weiche Echtzeitsysteme:
+  - hartes Echtzeitsystem: keine Frist darf jemals überschritten werden (sonst: katastrophale Konsequenzen)
+  - weiches Echtzeitsystem: maßvolles (im spezifizierten Maß) Überschreiten von Fristen tolerierbar
+
+## Charakteristika von Echtzeit-Prozessen
+- reale Echtzeitanwendungen beinhalten periodische oder aperiodische Prozesse (oder Mischung aus beiden)
+- typische Unterscheidung:
+  - Periodische Prozesse
+    - zeitgesteuert (typisch: periodische Sensorauswertung)
+    - oft: kritische Aktivitäten $\rightarrow$ harte Fristen
+  - Aperiodische Prozesse
+    - ereignisgesteuert
+    - Abhängig von Anwendung: harte oder weiche Fristen, ggf. sogar Nicht-Echtzeit
+
+### Periodische Prozesse
+- bei Echtzeit-Anwendungen: häufigster Fall
+- typisch für:
+    1. periodische Analyse von Sensor-Daten (z.B. Umweltüberwachung)
+    2. Aktionsplanung (z.B. automatisierte Montage)
+    3. Erzeugung oder Verarbeitung einzelner Dateneinheiten eines multimedialen Datenstroms
+    4. ...
+- Prozessaktivierung
+  - ereignisgesteuert oder zeitgesteuert
+  - Prozesse, die Eingangsdaten verarbeiten: meist ereignisgesteuert, z.B. wenn neues Datenpaket eingetroffen
+  - Prozesse, die Ausgangsdaten erzeugen: meist zeitgesteuert, z.B. Ansteuerung von Roboteraktoren
+
+Periodische Prozesse
+- Fristen:
+  - hart oder weich (anwendungsabhängig)
+    - innerhalb einer Anwendung sind sowohl Prozesse mit harten oder weichen Fristen möglich
+    - Frist: spätestens am Ende der aktuellen Periode, möglich auch frühere Frist
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png)
+- Modellierung:
+  - unendliche Folge identischer Aktivierungen: Instanzen, aktiviert mit konstanter Rate (Periode)
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png)
+- Aufgaben des Betriebssystems:
+  - WennalleSpezifikationeneingehaltenwerden-muss Betriebssystem garantieren, dass
+      1. zeitgesteuerte periodische Prozesse: mit ihrer spezifizierten Rate aktiviert werden und ihre Frist einhalten können
+      2. ereignisgesteuerte periodische Prozesse: ihre Frist einhalten können
+
+### Aperiodische Prozesse
+- typisch für
+  - unregelmäßig auftretende Ereignisse, z.B.:
+    - Überfahren der Spurgrenzen, Unterschreiten des Sicherheitsabstands $\rightarrow$ Reaktion des Fahrassistenzsystems
+    - Nutzereingaben in Multimediasystemen ($\rightarrow$ Spielkonsole)
+- Prozessaktivierung
+  - ereignisgesteuert
+- Fristen
+  - oft weich(aber anwendungsabhängig)
+- Aufgabendes Betriebssystems
+  - bei Einhaltung der Prozessspezifikationen muss Betriebssystem auch hier für Einhaltung der Fristen sorgen
+- Modellierung
+  - bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png)
+
+### Parameter von Echtzeit-Prozessen
+- ![nach (Buttazzo97) , Bild 2.4, S. 27](Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png)
+- $a_i$: Ankunftszeitpunkt (arrival time); auch r ... request time/release time
+    - Zeitpunkt, zu dem ein Prozess ablauffähig wird
+- $s_i$: Startzeitpunkt (start time)
+    - Zeitpunkt, zu dem ein Prozess mit der Ausführung beginnt
+- $f_i$: Beendigungszeitpunkt (finishing time)
+    - Zeitpunkt, an dem ein Prozess seine Ausführung beendet
+- $d_i$: Frist (deadline, due time)
+  - Zeitpunkt, zu dem ein Prozess seine Ausführung spätestens beenden sollte
+- $C_i$: Bearbeitungszeit(bedarf) (computation time)
+  - Zeitquantum, das Prozessor zur vollständigen Bearbeitung der aktuellen Instanz benötigt (Unterbrechungen nicht eingerechnet)
+- ![](Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png)
+- $L_i$: Unpünktlichkeit (lateness): $L_i= f_i - d_i$
+  - Zeitbetrag, um den ein Prozess früher oder später als seine Frist beendet wird (wenn Prozess vor seiner Frist beendet, hat $L_i$ negativen Wert)
+- $E_i$: Verspätung (exceeding time, tardiness): $E_i= max(0, L_i)$
+  - Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
+- ![](Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png)
+- $X_i$: Spielraum (Laxity, Slacktime): $X_i = d_i - a_i - C_i$
+  - maximales Zeitquantum, um das Ausführung eines Prozesses verzögert werden kann, damit dieser noch bis zu seiner Frist beendet werden kann ($f_i=d_i$)
+- außerdem:
+  - criticality: Parameter zur Beschreibung der Konsequenzen einer Fristüberschreitung (typischerweise ,,hart'' oder ,,weich'')
+  - $V_i$ ...Wert (value): Parameter zum Ausdruck der relativen Wichtigkeit eines Prozesses bezogen auf andere Prozesse der gleichen Anwendung
+
+## Echtzeitfähige Betriebssysteme
+- Hauptfragestellungen
+  1. Was muss BS zu tun, um Echtzeitprozesse zu ermöglichen? Welche Teilprobleme müssen beachtet werden?
+  2. Welche Mechanismen müssen hierfür anders als bei nicht-echtzeitfähigen Betriebssystemen implementiert werden, und wie?
+- Grundlegender Gedanke
+  - Abgeleitet aus den Aufgaben eines Betriebssystems sind folgende Fragestellungenvon Interesse:
+  1. Wie müssen die Ressourcen verwaltet werden? ($\rightarrow$ CPU, Speicher, E/A, ...)
+  2. Sind neue Abstraktionen, Paradigmen (Herangehensweisen) und entsprechende Komponenten erforderlich (oder günstig)?
+- Prozess-Metainformationen
+  1. Frist
+  2. Periodendauer
+  3. abgeleitet davon: Spielraum, Unpünktlichkeit, Verspätung, ...
+  4. im Zusammenhang damit: Prioritätsumkehr, Überlast
+- Ressourcen-Management
+  - Wie müssen Ressourcen verwaltet werden, damit Fristen eingehalten werden können?
+
+Wir betrachten i.F.
+1. Algorithmen, die Rechnersysteme echtzeitfähig machen -einschließlich des Betriebssystems:
+    - grundlegende Algorithmen zum Echtzeitscheduling
+    - Besonderheiten der Interruptbehandlung
+    - Besonderheiten der Speicherverwaltung
+2. Probleme, die behandelt werden müssen, um Echtzeitfähigkeit nicht zu be- oder verhindern:
+    - Prioritätsumkehr
+    - Überlast
+    - Kommunikation-und Synchronisationsprobleme
+  
+### Echtzeitscheduling
+- Scheduling:
+  - Schedulingvon Prozessen/Threads als wichtigster Einflussfaktor auf Zeitverhalten des Gesamtsystems
+- Echtzeit-Scheduling:
+  - benötigt: Scheduling-Algorithmen, die Scheduling unter Berücksichtigung der ( unterschiedlichen ) Fristen der Prozesse durchführen können
+- Fundamentale Algorithmen:
+  - wichtigste Strategien:
+  1. Ratenmonotones Scheduling (RM)
+  2. Earliest Deadline First (EDF)
+  - beide schon 1973 von Liu & Layland ausführlich diskutiert [Liu&Layland73]
+
+Annahmen der Scheduling-Strategien
+- A1: Alle Instanzen eines periodischen Prozesses $t_i$ treten regelmäßig und mit konstanter Rate auf (= werden aktiviert ). Das Zeitintervall $T_i$ zwischen zwei aufeinanderfolgenden Aktivierungen heißt Periode des Prozesses.
+- A2: Alle Instanzen eines periodischen Prozesses $t_i$ haben den gleichen Worst-Case-Rechenzeitbedarf $C_i$.
+- A3: Alle Instanzen eines periodischen Prozesses $t_i$ haben die gleiche relative Frist $D_i$, welche gleich der Periodendauer $T_i$ ist.
+- A4: Alle Prozessesind kausal unabhängig voneinander (d.h. keine Vorrang- und Betriebsmittel-Restriktionen)
+- A5: Kein Prozess kann sich selbst suspendieren, z.B. bei E/A-Operationen.
+- A6: Alle Prozesse werden mit ihrer Aktivierung sofort rechenbereit ( release time = arrival time ).
+- A7: Jeglicher Betriebssystem-Overhead (Kontextwechsel, Scheduler-Rechenzeit) wird vernachlässigt.
+
+A5-7 sind weitere Annahmen des Scheduling Modells
+
+Ratenmonotones Scheduling (RM)
+- Voraussetzung:
+  - periodisches Bereitwerden der Prozesse/Threads, d.h. periodische Prozesse bzw. Threads
+- Strategie RM:
+  - Prozess (Thread) mit höchster Ankunftsrate bekommt höchste statische Priorität (Kriterium: Wie oft pro Zeiteinheit wird Prozess bereit?)
+  - Scheduling-Zeitpunkt: nur einmal zu Beginn (bzw. wenn neuer periodischer Prozess auftritt)
+  - präemptiver Algorithmus
+- ![Darstellung nach (Inf-Handbuch97) Bild 3 S.740](Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png)
+  - Zuteilung eines Prozessors nach RM
+  - $t_1, t_2$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
+  - darunter: Prozessorzuteilung nach RM
+- Optimalität von RM 
+  - Unter allen Verfahren mit festen (statischen)Prioritäten ist RM optimaler Algorithmus in dem Sinne, dass kein anderes Verfahren dieser Klasse eine Prozessmenge einplanen kann, die nicht auch von RM geplant werden kann. [Liu&Layland73]
+- Prozessor-Auslastungsfaktor
+  - Bei gegebener Menge von n periodischen Prozessen gilt: $U=\sum_{i=1}^n \frac{C_i}{T_i}$
+  - mit $\frac{C_i}{T_i}$ Anteil an Prozessorzeit für jeden periodischen Prozess $t_i$
+  - und $U$ Summe der Prozessorzeit zur Ausführung der gesamten Prozessmenge (,,utilization factor'')
+- Prozessorlast
+  - $U$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$  Auslastungsfaktor
+- Planbarkeitsanalyse einer Prozessmenge
+  - im allgemeinen Fall kann RM einen Prozessor nicht zu 100% auslasten
+  - von besonderem Interesse: kleinste obere Grenze des Auslastungsfaktors $U_{lub}$ (lub: ,,least upper bound'')
+- Beispiel für $n=2$
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png)
+  - Obere Grenze des Prozessor-Auslastungsfaktors für zwei periodische Prozesse als Funktion des Verhältnisses ihrer Perioden.
+  - (Abb. nach [Buttazzo97] Bild 4.7, S. 90)
+- Obere Auslastungsgrenze bei RM
+  - nach [Buttazzo97] (S. 89-91) erhält man bei n Prozessen für RM: $U_{lub}=n(2^{\frac{1}{n}}-1)$
+  - für $n\rightarrow\infty$ konvergiert $U_{lub}$ zu $ln\ 2 \approx 0,6931...$
+  - Wird genannter Wert nicht überschritten, sind beliebige Prozessmengen planbar.
+  - (Herleitung siehe [Buttazzo97] , Kap. 4.3.3)
+
+### Earliest Deadline First (EDF)
+- Voraussetzung:
+  - kann sowohl periodische als auch aperiodische Prozesse planen
+- Optimalität:
+  - EDF in Klasse der Schedulingverfahren mit dynamischen Prioritäten: optimaler Algorithmus [Liu&Layland73]
+- Strategie EDF:
+  - Zu jedem Zeitpunkt erhält Prozess mit frühester Frist höchste dynamische Priorität
+  - Scheduling-Zeitpunkt: Bereitwerden eines (beliebigen) Prozesses
+  - präemptiver Algorithmus (keine Verdrängung bei gleichen Prioritäten)
+- Beispiel
+  - ![Darstellung nach (Inf-Handbuch97) Bild 3 S.740](Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png)
+  - Zuteilung eines Prozessors nach EDF
+  - $t_1, t_2$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse
+  - darunter: Prozessorzuteilung nach EDF
+- Planbarkeitsanalyse:
+  - Mit den Regeln $A1 ... A7$ ergibt sich für die obere Schranke des Prozessorauslastungsfaktors: $U_{lub}= 1\rightarrow$ Auslastung bis 100% möglich!
+  - Eine Menge periodischer Prozesse ist demnach mit EDF planbar genau dann wenn: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$ (Prozessor natürlich nicht mehr als 100% auslastbar)
+- Beweis: Obere Auslastungsgrenze bei EDF
+  - Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\Leftrightarrow$: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$
+  - $\Leftarrow$: $U>1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
+  - $\Rightarrow$: Beweis durch Widerspruch. Annahme: $U\leq 1$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt $t_2$, z.B.:
+    - ![](Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png)
+  - Beobachtungen an diesem Schedule:
+    - $exists$ ein längstes, kontinuierliches Rechenintervall $[t_1,t_2]$, in welchem nur Prozessinstanzen mit Fristen $\leq t_2$ rechnen
+    - die Gesamtrechenzeit $C_{bad}$ aller Prozesse in $[t_1,t_2]$ muss die verfügbare Prozessorzeit übersteigen: $C_{bad} > t_2-t_1$ (sonst: keine Fristverletzung an $t_2$)
+    - Anwesenheit in $[t_1,t_2]$ leitet sich davon ab, ob (genauer: wie oft) die Periode eines Prozesses in $t_2-t_1$ passt: $t_i$ in $[t_1,t_2]\Leftrightarrow\lfloor\frac{t_2-t_1}{T_i}\rfloor >0$
+    - Damit ist $C_{bad}$ die Summe der Rechenzeiten aller Prozessinstanzen, die garantiert in $[t_1,t_2]$ sind, mithin: $C_{bad}=\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i$
+    - Im Beispiel: $t_1... t_3$ in $[t_1,t_2]$, folglich: $C_{bad}= 2 C_1 + 1 C_2 + 1 C_3$
+    - Zu zeigen: Beobachtung $C_{bad}> t_2-t_1$ widerspricht Annahme $U\leq 1$. 
+    - Es gilt $\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i\leq\sum_{i=1}^n\frac{t_2-t_1}{T_i}C_i$ wegen Abrundung.
+    - Mit $U=\sum_{i=1}^n\frac{C_i}{T_i}$ folgt daraus $C_{bad}\leq(t_2-t_1)U$
+    - $C_{bad}>t_2-t_1$ entspricht also $(t_2-t_1)U>t_2-t_1$ und somit $U>1$. Widerspruch zur Annahme!
+
+### Vergleich: EDF vs. RM
+![(Abb. nach (Inf-Handbuch97) , Bild 3, S. 740)](Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png)
+
+Zuteilung eines Prozessors nach EDF (dynamisch) bzw. RM (statisch) $t_1,t_2$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse darunter: Prozessorzuteilung nach EDF bzw. RM
+- gut erkennbar: deutliche Unterschiede bei Scheduling mit statischem (RM) vs. dynamischem Algorithmus (EDF).
+
+Vergleich: Anzahl Prozesswechsel
+- Häufigkeit von Prozesswechseln im Beispiel:
+  - RM: 16
+  - EDF: 12
+- Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat (usw.) $\rightarrow$ keine unnötige Verdrängung
+
+Vergleich: 100% Prozessorauslastung
+- EDF: erzeugt auch bei Prozessorauslastung bis 100% (immer) korrekte Schedules
+- RM: kann das im allgemeinen Fall nicht
+- Bedeutung von 100% Prozessorauslastung in der Praxis: Überwiegend müssen Systeme mit harten Echtzeitanforderungen auch weiche Echtzeit- sowie Nicht-Echtzeit-Prozesse unterstützen. Daher: Belegungslücken am Prozessor für die letzteren beiden nutzbar.
+
+Vergleich: Implementierung
+- RM
+  - statisch: jeweils eine Warteschlange pro Priorität:
+  - Einfügen und Entfernen von Tasks: $O(1)$
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png)
+- EDF
+  - dynamisch: balancierter Binärbaum zur Sortierung nach Prioritäten:
+  - Einfügen und Entfernen von Tasks: $O(log\ n)$
+  - ![](Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png)
+
+Scheduling in Multimedia-Anwendungen
+- Konkretisierung des Betrachtungswinkels
+  - RM und EDF wurden entwickelt insbesondere für Echtzeit-Regelsysteme $\rightarrow$ ohne Berücksichtigung von Multimediasystemen
+  - Multimediasysteme $\rightarrow$ andere Probleme, schwächere Annahmen: spezialisierte Scheduling-Algorithmen
+  - gehen meist auch von EDF und/oder RM als Grundlage aus
+- Betrachteter Algorithmus:
+  - Beispielfür spezialisierten Scheduling-Algorithmus:
+    - RC-Algorithmus - entwickelt an University of Texas  
+    - Anpassung von EDF an Charakteristika von Multimedia-Anwendungen
+
+Prozesstypen in Multimedia-Anwendungen
+1. Echte Multimedia-Prozesse
+  - periodische Prozesse: weiche Fristen
+    1. pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf $C$ für jede Instanz (unkomprimierte Audio- und Videodaten)
+    2. pünktliche periodische Prozesse mit unterschiedlichem $C$ einzelner Instanzen (komprimierte Audio- und Videodaten)
+    3. unpünktliche periodische Prozesse:
+       - verspätete Prozesse
+       - verfrühte Prozesse
+  - aperiodische-Prozesse aus Multimedia-Anwendungen: weiche Fristen
+2. Prozesse nebenläufiger Nicht-Multimedia-Anwendungen
+    - interaktive Prozesse : keine Fristen , aber: keine zu langen Antwortzeiten Ansatz (z.B.): maximal tolerierbare Verzögerung
+    - Hintergrund-Prozesse : zeitunkritisch, keine Fristen, aber : dürfen nicht verhungern
+
+Multimediaanwendungen sind ein typisches Beispiel für mögliche Abweichungen der Lastpezifikation $(T_i,C_i)$ eines Echtzeitprozesses!
+
+Problem: Abweichungen von Lastspezifikation
+- gibt Prozessor nicht frei
+- verspätete periodische Prozesse
+
+### RC Algorithmus
+- Ziel
+  - spezifikationstreue Prozesse nicht bestrafen durch Fristüberschreitung aufgrund abweichender Prozesse
+- Idee
+  - grundsätzlich: Schedulingnach frühester Fristaufsteigend (= EDF) $\rightarrow$ für eine vollständig spezifikationstreue Prozessmenge verhält sich RC wie reines EDF
+  - Frist einer Instanz wird dynamisch angepasst:basierend auf derjenigen Periode, in der sie eigentlich sein sollte lt. Spezifikation der Prozessornutzung ($U_i$, hier: ,,Rate''): $U_i=\frac{C_i}{T_i}$
+  - Bsp.: $U_i =\frac{20}{40}=\frac{1}{2}$ ($t_B$ hat spezifizierte Aktivitätsrate von $0,5$ pro Periode)
+
+#### RC Algorithmus: Strategie
+- Variablen
+  - $a_i$: Ankunftszeit der zuletzt bereitgewordenen Instanz von $t_i$
+  - $t_i^{virt}$: virtuelle Zeit in aktueller Periode, die $t_i$ bereits verbraucht hat
+  - $c_i^{virt}$: Netto-Rechenzeit, die $t_i$ in aktueller Periode bereits verbraucht hat
+  - $d_i$: dynamische Frist von $t_i$, nach der sich dessen Priorität berechnet (EDF)
+- Strategie
+  - für eine bereite (lauffähige) Instanz von $t_i$: adaptiere dynamisch $d_i$ basierend auf $t_i^{virt}$
+  - für eine bereit gewordene (neu angekommene oder zuvor blockierte) Instanzvon $t_i$: aktualisiere $t_i^{virt}$ auf akt. Systemzeit $(t)\rightarrow$ etwaiger ''Zeitkredit'' verfällt
+
+#### RC Algorithmus: Berechnung von $t_i^{virt}$
+Beispiel: Situation bei $t=20ms$
+![](Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png)
+
+Da $t_B$ aber noch weiteren Rechenbedarf hat: Situation bei $t=30 ms$
+![](Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png)
+
+#### RC Algorithmus: Adaptionsfunktion
+Für Prozess ti zu jedem Scheduling-Zeitpunkt:
+```cpp
+RC (t_i) {
+  if (t_i. status wurde auf BEREIT gesetzt) {
+    t_i^virt := max( t_i^virt , t ); //kein Zeitkredit -> kein ,,Nachholen'' von verpassten/ungenutzten Perioden
+  } else {
+    c_i^virt := Gesamtprozessorzeit seit letztem Aufruf RC(t_i);
+    t_i^virt := t_i^virt + c_i^virt / U_i ; //Zeitwert, bis zu dem t_i Rechenzeit gemäß seiner Rate U_i erhalten hat
+  }
+  if (t_i. status != BLOCKIERT) {
+    finde k, so dass gilt:
+      a_i + (k - 1) * T_i <= t_i^virt < a_i + k * T_i ; // finde diejenige (aktuelle oder zukünftige) Periode, in der t_i^virt liegt
+    d_i := a_i + k * T_i ; // setze d_i auf deren Periodenende
+  }
+}
+```
+
+#### RC Algorithmus: Scheduling
+Zeitpunkte, zu denen der Scheduler aktiv wird:
+1. aktuell laufender Prozess $t_i$ blockiert:
+    - $RC(t_i)$
+2. Prozesse $t_i..._j$ werden bereit:
+    - $for\ x\in[i,j]: RC(t_x)$
+3. periodischer ,,clock tick'' (SchedulingInterrupt):
+    - $t_i$ := aktuell ausgeführter Prozess
+    - $RC(t_i)$
+
+anschließendes Scheduling (präemptiv) = EDF:
+```cpp
+SCHED := {t_i |t_i.status == BEREIT ⋀ d_i minimal }; // bereite(r) Prozess(e) mit nächster Frist
+if (∃ t_j : t_j.status == LAUFEND) ⋀ ( d_j ≤ d_i )
+  do nothing; // ggf. laufenden Prozess bevorzugen
+else
+  preempt(rnd_member( SCHED )); // sonst: irgendein Prozess mit nächster Frist verdrängt den laufenden
+```
+
+#### Umgang mit abweichenden Prozessen unter RC
+![Abb. nach (Yau+96) , Bild 4, S. 4](Assets/AdvancedOperatingSystems-rc-abweichende-prozesse.png)
+
+#### Resultat
+> Garantie: Prozesse, die sich entsprechend ihrer Spezifikation verhalten, erhalten bis zum Ende jeder spezifizierten Periode ihren spezifizierten Anteil an Prozessorzeit.
+
+Auswirkung auf verschiedene Prozesstypen:
+- ,,pünktliche'' Prozesse: Einhaltung der Frist in jeder Periode garantiert (unabhängig von Verhalten anderer Prozesse)
+- ,,verspätete'' Prozesse: nur aktuelle Periode betrachtet, Nachholen ,,ausgelassener Perioden'' nicht möglich
+- ,,gierige'' Prozesse: Prozessorentzug, sobald andere lauffähige Prozesse frühere Fristen aufweisen
+- nicht-periodische Hintergrundprozesse: pro ,,Periode'' wird spezifizierte Prozessorrate garantiert (z.B. kleine Raten bei großen ,,Periodendauern'' wählen.)
+
+### Umgang mit gemischten Prozessmengen
+- Hintergrund-Scheduling:
+  - Prinzip: ![Abb. nach (Buttazzo97) , Bild 5.2, S.111](Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png)
+  - rechenbereite Prozesse auf 2 Warteschlangen aufgeteilt (einfache Variante eines Mehr-Ebenen-Scheduling )
+  - Warteschlange 1:
+    - alle periodischen Prozesse
+    - mit höchster Priorität mittels RM oder EDF bedient
+  - Warteschlange 2:
+    - alle aperiodischen Prozesse
+    - nur bedient, wenn keine wartenden Prozesse in Warteschlange 1
+
+#### Hintergrund-Scheduling: Vor- und Nachteile
+- Hauptvorteil:
+  - einfache Implementierung
+- Nachteile:
+  - Antwortzeit **aperiodischer Prozesse** kann zu lang werden (insbesondere bei hoher aperiodischer Last) $\rightarrow$ Verhungern möglich!
+  - geeignet nur für relativ zeitunkritische aperiodische Prozesse
+- Beispiel: Hintergrund-Scheduling mit RM
+  - ![Abb. nach (Buttazzo97) , Bild 5.1, S.111](Assets/AdvancedOperatingSystems-hintergrund-scheduling.png)
+
+#### Optimierung: Server-Prozess
+- Scheduling mit Server-Prozessen:
+  - Prinzip: periodisch aktivierter Prozess benutzt zur Ausführung aperiodischer Prozessoranforderungen
+  - Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess:
+    - Periodendauer $T_S$
+    - ,,Prozessorzeitbedarf'' $C_S$; jetzt Kapazitätdes Server-Prozesses
+  - Arbeitsweise Server-Prozess:
+    - geplant mit gleichem Scheduling-Algorithmus wie periodische Prozesse
+    - zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen bedient bis zur Kapazität des Servers
+    - keine aperiodischen Anforderungen: Server suspendiert sich bis Beginn der nächsten Periode (Schedule wird ohne ihn weitergeführt $\rightarrow$ Prozessorzeit für periodische Prozesse)
+    - Kapazitätin jeder Server-Periode neu ''aufgeladen''
+
+#### Beispiel: Server-Prozess mit RM
+![Abb. nach (Buttazzo97) , Bild 5.3, S. 112](Assets/AdvancedOperatingSystems-rm-server-prozess.png)
+
+#### Optimierung: Slack-Stealing
+- Prinzip: Es existiert passiver Prozess ,,slack stealer'' (kein periodischer Server)
+ - versucht so viel Zeit wie möglich für aperiodische Anforderungen zu sammeln
+ - realisiert durch ,,slackstealing''(= Spielraum-Stehlen) bei periodischen Prozessen
+ - letztere auf Zeit-Achse so weit nach hinten geschoben, dass Frist und Beendigungszeitpunkt zusammenfallen
+ - Sinnvoll, da normalerweise Beenden periodischer Prozesse vor ihrer Frist keinerlei Vorteile bringt
+- Resultat: Verbesserung der Antwortzeiten für aperiodische Anforderungen
+- ![](Assets/AdvancedOperatingSystems-slack-stealing.png)
+
+### Prioritätsumkehr
+> Mechanismen zur Synchronisation und Koordination sind häufige Ursachen für kausale Abhängigkeiten zwischen Prozessen!
+
+#### Problem
+- Prinzip _kritischer Abschnitt_ (Grundlagen BS):
+  - Sperrmechanismen stellen wechselseitigen Ausschluss bei der Benutzung exklusiver Betriebsmittel durch nebenläufige Prozesse sicher
+  - Benutzung von exklusiven sowie nichtentziehbaren Betriebsmitteln: kritischer Abschnitt
+  - Folge: Wenn ein Prozess einen kritischen Abschnitt betreten hat, darf er aus diesem nicht verdrängt werden (durch anderen Prozess, der dasselbe Betriebsmittel nutzen will)
+- Konflikt: kritische Abschnitte vs. Echtzeit-Prioritäten
+  - Falls ein weiterer Prozess mit höherer Priorität ablauffähig wird und im gleichen kritischen Abschnitt arbeiten will, muss er warten bis niederpriorisierter Prozess kritischen Abschnitt verlassen hat
+  - (zeitweise) Prioritätsumkehr möglich! d.h. aus einer (Teil-) Menge von Prozessen muss derjenige mit höchster Priorität auf solche mit niedrigerer Priorität warten
+
+#### Ursache der Prioritätsumkehr
+- ![Abb. nach (Buttazzo97) , Bild 7.3, S. 183](Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png)
+- Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem Betriebsmittel
+- $\rightarrow$  unvermeidlich
+
+#### Folgen der Prioritätsumkehr
+- Kritisch bei zusätzlichen Prozessen mittlerer Priorität
+- ![Abb. nach (Buttazzo97) , Bild 7.4, S.184](Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png)
+- Lösung: Priority Inheritance Protocol (PIP)
+
+#### Lösung: Prioritätsvererbung
+- ![Abb. nach [Buttazzo97] , Bild 7.6, S.188]
+- ePrio ... effektive Priorität
+
+### Überlast
+- Definition: kritische Situation - bei der die benötigte Menge an Prozessorzeit die Kapazität des vorhandenen Prozessors übersteigt $(U>1)$
+  - Folge: nicht alle Prozesse können Fristen einhalten
+- Hauptrisiko: kritische Prozesse können Fristen nicht einhalten $\rightarrow$ Gefährdung funktionaler und anderer nichtfkt. Eigenschaften ($\rightarrow$ harte Fristen!)
+- Stichwort: ,,graceful degradation'' (,,würdevolle'' Verschlechterung) statt unkontrollierbarer Situation $\rightarrow$ Wahrung von Determinismus
+
+#### Wichtigkeit eines Prozesses
+- Minimallösung: (lebenswichtig für Echtzeit-System)
+  - Unterscheidung zwischen Zeitbeschränkungen (Fristen) und tatsächlicher Wichtigkeit eines Prozesses für System
+- Allgemein gilt:
+  - Wichtigkeit eines Prozesses ist unabhängig von seiner Periodendauer und irgendwelchen Fristen
+  - z.B. kann ein Prozess trotz späterer Frist viel wichtiger als anderer mit früherer Frist sein.
+  - Beispiel: Bei chemischem Prozess könnte Temperaturauswertung jede 10s wichtiger sein als Aktualisierung graphischer Darstellung an Nutzerkonsole jeweils nach 5s
+
+#### Umgang mit Überlast: alltägliche Analogien
+1. Weglassen weniger wichtiger Aktionen
+    - ohne Frühstück aus dem Haus...
+    - kein Zähneputzen ...
+    - Wichtung vom Problem bzw. Aktivitätsträgern (hier: Personen) abhängig!
+2. Verkürzen von Aktivitäten
+    - Katzenwäsche...
+3. Kombinieren
+    - kein Frühstück + Katzenwäsche + ungekämmt
+
+#### Wichtung von Prozessen
+Behandlung:
+- zusätzlicher Parameter V (Wert) für jeden Prozess/Thread einer Anwendung
+- spezifiziert relative Wichtigkeit eines Prozesses (od. Thread) im Verhältnis zu anderen Prozessen (Threads) der gleichen Anwendung
+- bei Scheduling: V stellt zusätzliche Randbedingung (primär: Priorität aufgrund von Frist, sekundär: Wichtigkeit)
+
+#### Obligatorischer und optionaler Prozessanteil
+- Aufteilung der Gesamtberechnung $(C_{ges})$ eines Prozesses in zwei Phasen
+- einfache Möglichkeit der Nutzung des Konzepts des anpassbaren Prozessorzeitbedarfs
+- Prinzip:
+  - Bearbeitungszeitbedarf eines Prozesses zerlegt in
+    1. obligatorischer Teil (Pflichtteil, $C_{ob}$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis
+    2. optionaler Teil $(C_{opt})$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis
+  - Prinzip in unterschiedlicher Weise verfeinerbar
+- ![](Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png)
+
+### Echtzeit-Interruptbehandlung
+1. Fristüberschreitung durch ungeeignete Interruptbearbeitung
+    - ![](Assets/AdvancedOperatingSystems-interruptbehandlung-fristüberschreitung.png)
+2. Lösung für Echtzeitsysteme ohne Fristüberschreitung
+    - Interrupt wird zunächst nur registriert (deterministischer Zeitaufwand)
+    - tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$  Pop-up Thread
+    - ![](Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png)
+
+### Echtzeit-Speicherverwaltung
+- Prinzip:
+  - Hauptanliegen: auch hier Fristen einhalten
+  - wie bei Interrupt-Bearbeitung und Prioritätsumkehr: unkontrollierbare Verzögerungen der Prozessbearbeitung (= zeitlicher Nichtdeterminismus) vermeiden!
+- Ressourcenzuordnung, deswegen:
+    1. keine Ressourcen-Zuordnung ,,on-demand'' (d.h. in dem Moment, wo sie benötigt werden) sondern ,,Pre-Allokation'' (= Vorab-Zuordnung)
+    2. keine dynamische Ressourcenzuordnung (z.B. Hauptspeicher), sondern Zuordnung maximal benötigter Menge bei Pre-Allokation ($\rightarrow$ BS mit ausschließlich statischer Hauptspeicherallokation: TinyOS)
+
+#### Hauptspeicherverwaltung
+- bei Anwendung existierender Paging-Systeme
+  - durch unkontrolliertes Ein-/Auslagern ,,zeitkritischer'' Seiten (-inhalte): unkontrollierbare Zeitverzögerungen möglich!
+  - Technik hier: ,,Festnageln'' von Seiten im Speicher (Pinning, Memory Locking)
+
+#### Sekundärspeicherverwaltung
+- Beispiel 1: FCFS Festplattenscheduling
+  - Anforderungsreihenfolge = 98, 183, 37, 122, 14, 124, 65, 67
+  - Zuletzt gelesener Block: 53
+  - ![Abb. nach (Silberschatz+91) , S. 347](Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png)
+- Beispiel 2: EDF Festplattenscheduling
+  - Anforderungsreihenfolge $t_1 = 98, 37, 124, 65$
+  - Anforderungsreihenfolge $t_2 = 183, 122, 14, 67$
+  - Zuletzt gelesener Block: 53
+      |       | $a_i$ | $d_i$ |
+      | ----- | ----- | ----- |
+      | $t_1$ | 0     | 3     |
+      | $t_2$ | 0     | 9     |
+  - ![Abb. nach (Silberschatz+91) , S. 347](Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png)
+
+- Primärziel: Wahrung der Echtzeitgarantien
+  - naheliegend: EA-Schedulingnach Fristen $\Rightarrow$ EDF (wie Prozessor)
+  - für Zugriffsreihenfolge auf Datenblöcke: lediglich deren Fristen maßgebend (weitere Regeln existieren nicht!)
+- Resultat bei HDDs:
+  - ineffiziente Bewegungen der Lese-/Schreibköpfe -ähnlich FCFS
+  - nichtdeterministische Positionierzeiten
+  - geringer Durchsatz
+- Fazit:
+  - Echtzeit-Festplattenscheduling $\rightarrow$ Kompromiss zwischen Zeitbeschränkungen und Effizienz
+- bekannte Lösungen:
+  1. Modifikation von EDF
+  2. Kombination von EDF mit anderen Zugriffsstrategien
+
+$\rightarrow$ realisierte Strategien:
+  1. SCAN-EDF (SCAN: Kopfbewegung nur in eine Richtung bis Mitte-/Randzylinder; EDF über alle angefragten Blöcke _in dieser Richtung_ )
+  2. Group Sweeping_ (SCAN mit nach Fristen gruppenweiser Bedienung)
+  3. Mischstrategien
+- Vereinfachung:
+  - o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$ berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist ≫Latenzzeit)
+  - ![Abb. nach (Deitel90) , Bild 12.2, S. 362](Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png)
+
+### Kommunikation und Synchronisation
+- zeitlichen Nichtdeterminismus vermeiden:
+  1. Interprozess-Kommunikation
+    - Minimierung blockierender Kommunikationsoperationen
+    - indirekte Kommunikation $\rightarrow$ CAB zum Geschwindigkeitsausgleich
+    - keine FIFO-Ordnungen (nach Fristen priorisieren)
+    - CAB ... Cyclic Asynchronous Buffer: ![Clark89](Assets/AdvancedOperatingSystems-kommunikation-cab.png)
+  2. Synchronisation
+    - keine FIFO-Ordnungen, z.B. bei Semaphor-Warteschlangen (vgl. o.)
+
+#### Cyclic Asynchronous Buffer (CAB)
+Kommunikation zwischen 1 Sender und n Empfängern:
+- nach erstem Schreibzugriff: garantiert niemals undefinierte Wartezeiten
+durch Blockierung von Sender/Empfänger
+- Lesen/Überschreiben in zyklischer Reihenfolge:
+  - ![](Assets/AdvancedOperatingSystems-kommunikation-zyklisch-cab.png)
+- Implementierung:
+  - MRW: Most-Recently-Written; Zeiger auf jüngstes, durch Sender vollständig geschriebenes Element
+  - LRW: Least-Recently-Written; Zeiger auf ältestes durch Sender geschriebenes Element
+  - Garantien:
+    - sowohl _MRW_ als auch _LRW_ können ausschließlich durch Sender manipuliert werden $\rightarrow$ keine inkonsistenten Zeiger durch konkurrierende Schreibzugriffe!
+    - sowohl _MRW_ als auch _LRW_ zeigen niemals auf ein Element, das gerade geschrieben wird $\rightarrow$ keine inkonsistenten Inhalte durch konkurrierende Schreib-/Lesezugriffe!
+  - Regeln für Sender:
+    - muss **nach** jedem Schreiben _MRW_ auf geschriebenes Element setzen
+    - muss **bevor** _LRW_ geschrieben wird _LRW_ inkrementieren
+  - Regel für Empfänger: muss immer nach Lesen von _MRW_ als nächstes _LRW_ anstelle des Listennachbarn lesen
+- Sender-Regeln:
+  - anschaulich, ohne aktiven Empfänger
+  - ![](Assets/AdvancedOperatingSystems-cab-sender-regel.png)
+- Empfänger-Regel:
+  - anschaulich, ohne aktiven Sender
+  - ![](Assets/AdvancedOperatingSystems-cab-empfänger.png)
+
+Sonderfall 1: Empfänger schneller als Sender
+  - nach Zugriff auf MRW muss auf Lesesequenz bei LRW fortgesetzt werden $\rightarrow$ transparenter Umgang mit nicht-vollem Puffer
+  - Abschwächung der Ordnungsgarantien:Empfänger weiß nur, dass Aktualität der Daten zwischen LRW und MRW liegt
+  - Empfänger (nach min. einem geschriebenen Element) niemals durch leeren Puffer blockiert
+  - ![](Assets/AdvancedOperatingSystems-cab-sonderfall-1.png)
+
+Sonderfall 2: Sender schneller als Empfänger
+  - Schreiben in Puffer grundsätzlich in Reihenfolge der Elemente $\rightarrow$ keine blockierenden Puffergrenzen $\rightarrow$ niemals Blockierung des Senders
+  - keine Vollständigkeitsgarantien:Empfänger kann nicht sicher sein, eine temporal stetige Sequenz zu lesen
+  - $\rightarrow$ Szenarien, in denen Empfänger sowieso nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
+  - ![](Assets/AdvancedOperatingSystems-cab-sonderfall-2.png)
+
+Konkurrierende Zugriffe:
+- ... sind durch Empfänger immer unschädlich (da lesend)
+- ... müssen vom Sender nach Inkrementieren von LRW nicht-blockierend erkannt werden (klassisches Semaphormodell ungeeignet)
+- schnellerer Sender überspringtein gesperrtes Element durch erneutes Inkrementieren von LRW , muss MRW trotzdem nachziehen
+- ![](Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png)
+
+
+## Architekturen und Beispiel-Betriebssysteme
+- Architekturprinzipien:
+  - müssen Echtzeitmechanismen unterstützen; ermöglicht entsprechende Strategien zur Entwicklungs-oder Laufzeit (CPU-Scheduler, EA-Scheduler, IPC ...)
+  - müssen funktional geringe Komplexität aufweisen $\rightarrow$ theoretische und praktische Beherrschung von Nichtdeterminismus
+    - Theoretisch: Modellierung und Analyse (vgl. Annahmen für Scheduling-Planbarkeitsanalyse)
+    - Praktisch: Implementierung (vgl. RC-Scheduler, Prioritätsvererbung)
+- Konsequenzen:
+  - Architekturen für komplementäre NFE:
+    - Sparsamkeit $\rightarrow$ hardwarespezifische Kernelimplementierung
+    - Adaptivität $\rightarrow$ μKernel, Exokernel
+  - zu vermeiden:
+    - starke Hardwareabstraktion $\rightarrow$ Virtualisierungsarchitekturen
+    - Kommunikation und Synchronisationskosten $\rightarrow$ verteilte BS
+    - Hardwareunabhängigkeit und Portabilität $\rightarrow$ vgl. Mach
+
+Auswahl: Beispiel-Betriebssysteme
+- wir kennen schon:
+  - funktional kleine Kernelimplementierung: TinyOS
+  - hardwarespezifischer μKernel: L4-Abkömmlinge 
+  - Mischung aus beidem: RIOT 
+  - Kommerziell bedeutender μKernel: QNX Neutrino
+- weitere Vertreter:
+  - hardwarespezifische Makrokernel: VRTX, VxWorks
+  - μKernel: DRYOS, DROPS
+  - ,,Exokernel'' ...?
+
+VRTX (Versatile Real-Time Executive)
+- Entwickler:
+  - Hunter & Ready
+- Eckdaten:
+  - Makrokernel
+  - war erstes kommerzielles Echtzeitbetriebssystem für eingebettete Systeme
+  - heutige Bedeutung eher historisch
+  - Nachfolger (1993 bis heute): Nucleus RTOS (Siemens)
+- Anwendung:
+  - Eingebettete Systeme in Automobilen(Brems-und ABS-Controller)
+  - Mobiltelefone
+  - Geldautomaten
+- Einsatzgebiete
+  - spektakulär: im Hubble-Weltraumteleskop
+
+VxWorks
+- Entwickler:
+  - Wind River Systems (USA)
+- Eckdaten:
+  - modularer Makrokernel
+  - Konkurrenzprodukt zu VRTX
+  - Erfolgsfaktor: POSIX-konforme API
+  - ähnlich QNX: ,,skalierbarer'' Kernel,zuschneidbarauf Anwendungsdomäne ($\rightarrow$ Adaptivitätsansatz)
+- Anwendung:
+  - eingebettete Systeme:
+  - industrielle Robotersteuerung
+  - Luft-und Raumfahrt
+  - Unterhaltungselektronik
+- Einsatzgebiete
+  - Deep-Impact-Mission zur Untersuchung des Kometen Temple 1
+  - NASA Mars Rover
+  - SpaceX Dragon
+
+DRYOS®
+- Entwickler: Canon Inc.
+- Eckdaten:
+  - Mikrokernel(Größe: 16 kB)
+  - Echtzeit-Middleware (Gerätetreiber $\rightarrow$ Objektive)
+  - Anwendungen: AE-und AF-Steuerung/-Automatik, GUI, Bildbearbeitung, RAW-Konverter, ...
+  - POSIX-kompatible Prozessverwaltung
+- ![Abb.: http://www.canon.com/technology/canon_tech/explanation/dryos.html, Jul. 2016](Assets/AdvancedOperatingSystems-dryos.png)
+
+DROPS (Dresden Real-Time Operating System)
+- Entwickler: TU Dresden, Lehrstuhl Betriebssysteme
+- Eckdaten: Multi-Server-Architektur auf Basis eines L4-Mikrokerns
+- ![Abb. nach (Hamann+97) , S.289](Assets/AdvancedOperatingSystems-drops.png)
+
+
 # Adaptivität
 # Performanz und Parallelität
 # Zusammenfassung
@@ -2020,3 +2703,19 @@ Begriff zur Bewertung von Referenzmonitorarchitekturen: TCB ( Trusted Computing 
 Referenzmonitor:
   - [Ande72] ANDERSON, JAMESP.: Computer Security Technology Planning Study (Nr. ESD-TR-73-51). HanscomAFB, Bedford, MA, USA: Air Force Electronic Systems Division, 1972
   - [Jaeg11] JAEGER, TRENT: Reference Monitor. In: VANTILBORG, H. C. A.; JAJODIA, S.(Hrsg.): Encyclopedia of Cryptography and Security. Boston, MA: Springer US, 2011, S. 1038 - 1040 http://www.cse.psu.edu/~trj1/cse543-s15/docs/refmon.pdf 
+- [Buttazzo97], [Buttazzo2000] Giorgio C. Buttazzo: Hard Real-Time Computing Systems - Predictable Scheduling Algorithms and Applications, Kluwer Academic Publishers Boston / Dordrecht / London, 1997
+- [Burns+89] Alan Burns, Andy Wellings: Real-Time Systems andProgrammingLanguages, Addison-Wesley, 3rd edition 2001
+- [Liu&Layland73] C. L. Liu, James W. Layland: Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, Journal of the ACM, Vol. 20, Nr. 1 (Januar 1973)
+- [Quade+2012] Jürgen Quade, Michael Mächtel: Moderne Realzeitsysteme kompakt -Eine Einführung mit Embedded Linux, dpunkt.verlag, 2012
+- [Liu2000] Jane W. S. Liu: Real-Time Systems, PrenticeHall 2000
+- [Clark89] Dayton Clark: HIC: An Operating System for Hierarchies of Servo Loops, Proceedings of the 1989 International Conference on Robotics and Automation
+- [Deitel90] Harvey M. Deitel: Operating Systems, Addison-Wesley, 1990
+- [Goyal+96] PawanGoyal, XingangGuo, HarrickM. Vin: A HierarchicalCPU Scheduler forMultimedia Operating Systems, OSDI (ACM-Konferenz ,,Operating System Design andImplementation'') 1996
+- [Hamann+97] Claude-Joachim Hamann u.a. [http://os.inf.tu-dresden.de/drops/doc.html](http://os.inf.tu-dresden.de/drops/doc.html)
+- [Sha+90] L. Sha, R. Rajkumar, J. P. Lehoczky: Priority Inheritance Protocols: An Approach to Real-Time Synchronization, IEEE Transactions on Computers, September 1990
+- [Inf-Handbuch97] Peter Rechenberg, Gustav Pomberger (Hrsg.): Informatik-Handbuch, Carl-Hanser-Verlag München Wien, 1997
+- [Schiebe+92] Michael Schiebe (Hrsg.): Real-time Systems -Engineering andApplications, Kluwer Academic Publishers 1992
+- [Silberschatz+91] Abraham Silberschatz, James L. Peterson, Peter B. Galvin: Operating Systems Concepts(3rd edition), Addison-Wesley Publishing Company, 1991
+- [Steinmetz95] Ralf Steinmetz: Analyzing the Multimedia Operating System, IEEE Multimedia, Vol. 2, Nr. 1 (Spring 1995)
+- [Wörn+2005] Heinz Wörn, Uwe Brinkschulte: Echtzeitsysteme - Grundlagen, Funktionsweisen, Anwendungen, Springer-Verlag Berlin Heidelberg 2005
+- [Yau+96] David K. Y. Yau, Simon S. Lam: Adaptive Rate-Controlled Scheduling for Multimedia Applications, Proceedings of the 4th ACM International Multimedia Conference 1996

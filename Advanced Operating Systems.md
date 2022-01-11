@@ -2638,6 +2638,209 @@ DROPS (Dresden Real-Time Operating System)
 
 
 # Adaptivität
+## Motivation
+- als unmittelbar geforderte NFE:
+  - eingebettete Systeme
+  - Systeme in garstiger Umwelt (Meeresgrund, Arktis, Weltraum, ...)
+  - Unterstützung von Cloud-Computing-Anwendungen
+  - Unterstützung von Legacy-Anwendungen
+- Beobachtung: genau diese Anwendungsdomänen fordern typischerweise auch andere wesentliche NFE (s.bisherige Vorlesung ...)
+- $\rightarrow$ Adaptivität als komplementäre NFE zur Förderung von
+  - Robustheit: funktionale Adaptivitätdes BS reduziert Kernelkomplexität ($\rightarrow$  kleiner, nicht adaptiver μKernel)
+  - Sicherheit: wie Robustheit:TCB-Größe $\rightarrow$ Verifizierbarkeit, außerdem: adaptive Reaktion auf Bedrohungen
+  - Echtzeitfähigkeit: adaptive Scheduling-Strategie (vgl. RC), adapt. Überlastbehandlung, adapt. Interruptbehandlungs-und Pinning-Strategien
+  - Performanz: Last-und Hardwareadaptivität
+  - Erweiterbarkeit: adaptive BS liefern oft hinreichende Voraussetzungen der einfachen Erweiterbarkeit von Abstraktionen, Schnittstellen, Hardware-Multiplexing-und -Schutzmechanismen ( Flexibility )
+  - Wartbarkeit: Anpassung des BS an Anwendungen, nicht umgekehrt
+  - Sparsamkeit: Lastadaptivitätvon CPUs, adaptive Auswahl von Datenstrukturen und Kodierungsverfahren
+
+## Adaptivitätsbegriff
+- Adaptability: ,,see Flexibility. '' [Marciniak94]
+- Flexibility:
+  - ,,The ease with which a system or a component can be modified for use in applications or environments other than those for which it was specifically designed.'' (IEEE)
+  - für uns: entspricht Erweiterbarkeit
+- Adaptivität: (unsere Arbeitsdefinition)
+  - Die Fähigkeit eines Systems, sich an ein breites Spektrum verschiedener Anforderungen anpassen zu lassen.
+  - = ... so gebaut zu sein, dass ein breites Spektrum verschiedener nicht funktionaler Eigenschaften unterstützt wird.
+  - letztere: komplementär zur allgemeinen NFE Adaptivität
+
+## Roadmap
+- in diesem Kapitel: gleichzeitig Mechanismen und Architekturkonzepte
+- Adaptivität jeweils anhand komplementärer Eigenschaften dargestellt:
+  - Exokernel: { Adaptivität } ∪ { Performanz, Echtzeitfähigkeit,Wartbarkeit, Sparsamkeit }
+  - Virtualisierung: { Adaptivität } ∪ { Wartbarkeit, Sicherheit, Robustheit }
+  - Container: { Adaptivität } ∪ { Wartbarkeit, Portabilität, Sparsamkeit }
+- Beispielsysteme:
+  - Exokernel-Betriebssysteme: Aegis/ExOS, Nemesis, MirageOS
+  - Virtualisierung: Vmware, VirtualBox, Xen
+  - Containersoftware: Docker
+
+## Exokernelarchitektur
+- Grundfunktion von Betriebssystemen
+  - physische Hardware darstellen als abstrahierte Hardware mit komfortableren Schnittstellen
+  - ![](Assets/AdvancedOperatingSystems-exokernelarchitekturen.png)
+  - Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B.
+    - **Prozesse:** gleiches Zustandsmodell, gleiches Threadmodell
+    - **Dateien:** gleiche Namensraumabstraktion
+    - **Adressräume:** gleiche Speicherverwaltung (VMM, Seitengröße, Paging)
+    - **Interprozesskommunikation:** gleiche Mechanismen für alle Anwendungsprozesse
+- Problem:
+  - Implementierungsspielraumfür Anwendungen wird begrenzt:
+  1. Vorteile domänenspezifischer Optimierungender Hardwarebenutzung können nicht ausgeschöpft werden $\rightarrow$  **Performanz, Sparsamkeit**
+  2. die Implementierung existierender Abstraktionen kann bei veränderten Anforderungen nicht an Anwendungen angepasst werden $\rightarrow$  **Wartbarkeit**
+  3. Hardwarespezifikationen, insbesondere des Zeitverhaltens (E/A, Netzwerk etc.), werden von Effekten des BS-Management überlagert $\rightarrow$  **Echtzeitfähigkeit**
+- Idee von Exokernel-Architekturen:
+  - ![](Assets/AdvancedOperatingSystems-exokernel-architektur.png)
+  - ![Abb. nach (Engler98) , Abb. 1-1, S.12](Assets/AdvancedOperatingSystems-exokernel-beispiel.png)
+ 
+### Exokernelmechanismen
+- Designprinzip von Exokernelmechanismen:
+  - Trennung von Schutz und Abstraktion der Ressourcen
+  - Ressourcen-Schutz und -Multiplexing: verbleibt beim Betriebssystemkernel(dem Exokernel)
+  - Ressourcen-Abstraktion (und deren Management): zentrale Aufgabe der Library-Betriebssysteme
+    - $\rightarrow$ autonome Management-Strategien durch in Anwendungen importierte Funktionalität
+  - Resultat:
+    1. systemweit(durch jeweiliges BS vorgegebene) starre Hardware-Abstraktionen vermieden
+    2. anwendungsdomänenspezifische Abstraktionen sehr einfach realisierbar
+    3. (Wieder-) Verwendung eigener und fremder Managementfunktionalität  wesentlich erleichtert $\rightarrow$ komplementäre NFEn! (Performanz, EZ-Fähigkeit, Sparsamkeit, ...)
+- Funktion des Exokernels:
+  - Prinzip: definiert Low-level-Schnittstelle
+    - ,,low-level'' = so hardwarenah wie möglich, bspw. die logische Schnittstelle eines elektronischen Schaltkreises/ICs ($\rightarrow$ Gerätetreiber $\subseteq$ Library-BS!)
+    - Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht verstehen, wie dieser verwaltet wird $\rightarrow$  Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ...
+  - Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen
+    - Bsp.: Adressraumsemantik, Seitentabellenlayout und -verwaltung, Paging-und Locking-Verfahren, ...
+  - Anwendungsprogrammierer: wählen geeignete Library-Betriebssysteme bzw. schreiben ihre eigenen Exokernelmechanismen
+- prinzipielle Exokernelmechanismen am Beispiel Aegis/ExOS [Engler+95]
+  - Der Exokernel...
+    - _implementiert:_ Multiplexing der Hardware-Ressourcen
+    - _exportiert:_ geschützte Hardware-Ressourcen
+- minimal: drei Arten von Mechanismen
+  1. Secure Binding: erlaubt geschützte Verwendung von Hardware-Ressourcen durch Anwendungen, Behandlung von Ereignissen
+  2. Visible ResourceRevocation: beteiligt Anwendungen am Entzug von Ressourcen mittels (kooperativen) Ressourcen-Entzugsprotokolls
+  3. Abort-Protokoll: erlaubt ExokernelBeendigung von Ressourcenzuordnungen bei unkooperativen Applikationen
+
+### Secure Binding
+- Schutzmechanismus, der Autorisierung ($\rightarrow$ Library-BS)zur Benutzung einer Ressource von tatsächlicher Benutzung ($\rightarrow$ Exokernel) trennt
+- implementiert für den Exokernelerforderliches Zuordnungswissenvon (HW-)Ressource zu Mangement-Code (der im Library-BS implementiert ist)
+- $\rightarrow$ ''Binding'' in Aegis implementiert als Unix-Hardlinkauf Metadatenstruktur zu einem Gerät im Kernelspeicher ( ,,remember: everythingisa file...'' )
+- Zur Implementierung benötigt:
+  - Hardware-Unterstützung zur effizienten Rechteprüfung (insbes. HW-Caching)
+  - Software-Caching von Autorisierungsentscheidungen im Kernel (bei Nutzung durch verschiedene Library-BS)
+  - Downloadingvon Applikationscode in Kernel zur effizienten Durchsetzung (quasi: User-Space-Implementierung von Systemaufrufcode)
+- einfach ausgedrückt: ,,Secure Binding'' erlaubt einem ExokernelSchutz von Ressourcen, ohne deren Semantik verstehen zu müssen.
+
+### Visible Resource Revocation
+- monolithische Betriebssysteme: entziehen Ressourcen ,,unsichtbar'' (invisible), d.h. transparent für Anwendungen
+  - Vorteil: im allgemeinen geringere Latenzzeiten, einfacheres und komfortableres Programmiermodell
+  - Nachteil: Anwendungen(hier: die eingebetteten Library-BS) erhalten keine Kenntnis über Entzug,bspw. aufgrund von Ressourcenknappheit etc.
+  - $\rightarrow$ erforderliches Wissen für Management-Strategien!
+- Exokernel-Betriebssysteme: entziehen(überwiegend) Ressourcen ,,sichtbar''$\rightarrow$ Dialog zwischen Exokernel und Library-BS
+  - Vorteil: effizientes Management durch Library-BS möglich (z.B. Prozessor: nur tatsächlich benötigte Register werden bei Entzug gespeichert)
+  - Nachteil : Performanz bei sehr häufigem Entzug, Verwaltungs-und Fehlerbehandlungsstrategien zwischen verschiedenen Library-BS müssen korrekt und untereinander kompatibelsein...
+  - $\rightarrow$  Abort - Protokoll notwendig, falls dies nicht gegeben ist
+
+### Abort - Protokoll
+- Ressourcenentzug bei unkooperativen Library-Betriebssystemen ( Konflikt mit Anforderung durch andere Anwendung/deren Library-BS: Verweigerung der Rückgabe, zu späte Rückgabe, ...)
+- notwendig aufgrund von Visible Ressource Revocation
+- Dialog:
+  - Exokernel: ,,Bitte Seitenrahmen x freigeben.''
+  - Library-BS: ,,...''
+  - Exokernel: ,,Seitenrahmen x innerhalb von 50 μs freigeben!''
+  - Library-BS: ,,...''
+  - Exokernel: (führt Abort-Protokoll aus)
+  - Library-BS: X (,,Abort'' in diesem Bsp. = Anwendungsprozess terminieren)
+- In der Praxis:
+  - harte Echtzeit-Fristen (,, innerhalb von 50 μs'' ) in den wenigsten Anwendungen berücksichtigt
+    - $\rightarrow$  Abort = lediglich Widerruf aller Secure Bindings der jeweiligen Ressource für die unkooperativeAnwendung, nicht deren Terminierung (= unsichtbarerRessourcenentzug)
+    - $\rightarrow$ anschließend: Informieren des entsprechenden Library-BS
+  - ermöglicht sinnvolle Reaktion des Library-BS (in Library-BS wird ,,Repossession''-Exceptionausgelöst, so dass auf Entzug geeignet reagiert werden kann)
+  - bei zustandsbehafteten Ressourcen ($\rightarrow$ CPU): Exokernelkann diesen Zustand auf Hintergrundspeicher sichern $\rightarrow$ Management-Informationen zum Aufräumen durch Library-BS
+
+### Exokernelperformanz
+- Was macht Exokern-Architekturen adaptiv(er)?
+  - Abstraktionen und Mechanismen des Betriebssystems können den Erfordernissen der Anwendungen angepasst werden
+  - (erwünschtes) Ergebnis: beträchtliche Performanzsteigerungen (vgl. komplementäre Ziel-NFE: Performanz, Echtzeitfähigkeit, Wartbarkeit, Sparsamkeit )
+
+Performanzstudien
+1. Aegis mit Library-BS ExOS (MIT: Dawson Engler, Frans Kaashoek)
+2. Xok mit Library-BS ExOS (MIT)
+3. Nemesis (Pegasus-Projekt, EU)
+4. XOmB (U Pittsburgh)
+5. ...
+ 
+Aegis/ExOSals erweiterte Machbarkeitsstudie [Engler+95]
+1. machbar: sehr effiziente Exokerne
+    - Grundlage: begrenzte Anzahl einfacher Systemaufrufe (Größenordnung ~10) und Kernel-interne Primitiven (,,Pseudo-Maschinenanweisungen''), die enthalten sein müssen
+2. machbar: sicheres Hardware-Multiplexing auf niedriger Abstraktionsebene (,,low-level'') mit geringem Overhead
+3. traditionelle Abstraktionen (VMM, IPC) auf Anwendungsebene effizient implementierbar $\rightarrow$ einfache Erweiterbarkeit, Spezialisierbarkeitbzw. Ersetzbarkeit dieser Abstraktionen
+4. für Anwendungen: hochspezialisierte Implementierungen von Abstraktionen generierbar, die genau auf Funktionalität und Performanz-Anforderungen dieser Anwendung zugeschnitten
+5. geschützte Kontrollflussübergabe: als IPC-Primitive im Aegis-Kernel, 7-mal schnellerals damals beste Implementierung (vgl. [Liedtke95], Kap. 3)
+6. Ausnahmebehandlung bei Aegis: 5-mal schneller als bei damals bester Implementierung
+7. durch Aegis möglich: Flexibilität von ExOS, die mit Mikrokernel-Systemen nicht erreichbar ist:
+    - Bsp. VMM: auf Anwendungsebene implementiert, wo diese sehr einfach mit DSM-Systemen u. Garbage-Kollektoren verknüpfbar
+8. Aegis erlaubt Anwendungen Konstruktion effizienter IPC-Primitiven (∆ μKernel: nicht vertrauenswürdige Anwendungen könnenkeinerlei spezialisierte IPC-Primitiven nutzen, geschweige denn selbst implementieren)
+
+Xok/ExOS
+- praktische Weiterentwicklung von Aegis: Xok
+- für x86-Hardware implementiert
+- Kernel-Aufgaben (wie gehabt): Multiplexing von Festplatte, Speicher, Netzwerkschnittstellen, ...
+- Standard Library-BS (wie bei Aegis): ExOS
+  - ,,Unix as a Library''
+  - Plattform für unmodifizierte Unix-Anwendungen (csh, perl, gcc, telnet, ftp, ...)
+- z.B. Library-BS zum Dateisystem-Management: C-FFS
+  - hochperformant (im Vergleich mit Makrokernel-Dateisystem-Management)
+  - Abstraktionen und Operationen auf Exokernel-Basis (u.a.): Inodes, Verzeichnisse, physische Dateirelokation($\rightarrow$ zusammenhängendes Lesen)
+  - Secure Bindings für Metadaten-Modifikation
+- Forschungsziele:
+  - Aegis: Proof-of-Concept
+  - XOK: Proof-of-Feasibility (Performanz)
+- ![Abb.: (Engler+96)](Assets/AdvancedOperatingSystems-exos.png)
+
+Zwischenfazit: Exokernelarchitektur
+- Ziele:
+  - Performanz, Sparsamkeit: bei genauer Kenntnis der Hardware ermöglicht deren direkte BenutzungAnwendungsentwicklern Effizienzoptimierung
+  - Wartbarkeit: Hardwareabstraktionen sollen flexibel an Anwendungsdomänen anpassbar sein, ohne das BS modifizieren/wechseln zu müssen
+  - Echtzeitfähigkeit: Zeitverhaltendes Gesamtsystems durch direkte Steuerung der Hardware weitestgehend durch (Echtzeit-) Anwendungen kontrollierbar
+- Idee:
+  - User-Space:anwendungsspezifische Hardwareabstraktionen im User-Space implementiert
+  - Kernel-Space:nur Multiplexing und Schutz der HW-Schnittstellen
+  - in der Praxis: kooperativer Ressourcenentzug zwischen Kernel, Lib. OS
+- Ergebnisse:
+  - hochperformanteHardwarebenutzung durch spezialisierte Anwendungen
+  - funktional kleiner Exokernel($\rightarrow$ Sparsamkeit, Korrektheit des Kernelcodes )
+  - flexible Nutzung problemgerechterHW-Abstraktionen ( readymade Lib. OS)
+  - keine Isolation von Anwendungen ($\rightarrow$ Parallelisierbarkeit: teuer und mit schwachen Garantien; $\rightarrow$ Robustheit und Sicherheit der Anwendungen: nicht umsetzbar)
+
+## Virtualisierung
+- Ziele (zur Erinnerung):
+  - Adaptivität
+  - Wartbarkeit, Sicherheit, Robustheit
+  - $\rightarrow$ auf gleicher Hardware mehrere unterschiedliche Betriebssysteme ausführbar machen
+- Idee: ![](Assets/AdvancedOperatingSystems-virtualisierung-idee.png)
+
+Ziele von Virtualisierung
+- Adaptivität: ( ähnlich wie bei Exokernen)
+  - können viele unterschiedliche Betriebssysteme - mit jeweils unterschiedlichen Eigenschaften ausgeführt werden damit können: Gruppen von Anwendungen auf ähnliche Weise jeweils unterschiedliche Abstraktionen etc. zur Verfügung gestellt werden
+- Wartbarkeit:
+  - Anwendungen - die sonst nicht gemeinsam auf gleicher Maschine lauffähig - auf einer phyischenMaschine ausführbar
+  - ökonomische Vorteile: Cloud-Computing, Wartbarkeit von Legacy-Anwendungen
+- Sicherheit:
+  - Isolation von Anwendungs-und Kernelcode durch getrennte Adressräume (wie z.B. bei Mikrokern-Architekturen)
+  - somit möglich:
+    1. Einschränkung der Fehlerausbreitung $\rightarrow$ angreifbare Schwachstellen
+    2. Überwachung der Kommunikation zwischen Teilsystemen
+  - darüber hinaus: Sandboxing (vollständig von logischer Ablaufumgebung isolierte Software, typischerweise Anwendungen $\rightarrow$ siehe z.B. Cloud-Computing)
+- Robustheit:
+  - siehe Sicherheit!
+
+Architekturvarianten - drei unterschiedliche Prinzipien:
+1. Typ-1 - Hypervisor ( früher: VMM - ,,Virtual MachineMonitor'' )
+2. Typ-2 - Hypervisor
+3. Paravirtualisierung
+
+
+
+
 # Performanz und Parallelität
 # Zusammenfassung
 
@@ -2719,3 +2922,20 @@ Referenzmonitor:
 - [Steinmetz95] Ralf Steinmetz: Analyzing the Multimedia Operating System, IEEE Multimedia, Vol. 2, Nr. 1 (Spring 1995)
 - [Wörn+2005] Heinz Wörn, Uwe Brinkschulte: Echtzeitsysteme - Grundlagen, Funktionsweisen, Anwendungen, Springer-Verlag Berlin Heidelberg 2005
 - [Yau+96] David K. Y. Yau, Simon S. Lam: Adaptive Rate-Controlled Scheduling for Multimedia Applications, Proceedings of the 4th ACM International Multimedia Conference 1996
+- Container:
+  - [Merkel14] Dirk Merkel: Docker: Lightweight Linux Containers for Consistent Development and Deployment, Linux Journal, No. 239 (Mar 2014).
+- Adaptivitätsbegriff:
+  - [Marciniak94] John J. Marciniak (Hrsg.): Encyclopedia of Software Engineering, Vol. 1, John Wiley& Sons, 1994
+- Exokernel:
+  - [Engler+95] Dawson R. Engler, M. Frans Kaashoek, James O‘TooleJr.: Exokernel: An Operating System Architecture for Application-Level Resource Management, 15th ACM Symposium on Operating System Principles(SOSP), 1995
+  - [Engler98] Dawson R. Engler: The Exokernel Operating System Architecture, Ph.D. Thesis, Massachusetts Institute ofTechnology, 1998
+  - [Engler+97] M. Frans Kaashoek, Dawson R. Engler, Gregory R. Ganger, Héctor M. Briceño, Russell Hunt, David Mazieres, Thomas Pinckney, Robert Grimm, John Jannotti, Kenneth Mackenzie: Application Performance and Flexibility of Exokernel Systems, 16th ACM Symposium on Operating System Principles(SOSP), 1997
+  - [Engler+96] Dawson R. Engler, M. Frans Kaashoek, Gregory R. Ganger, Héctor M. Briceño, Russell Hunt, David Mazieres, Thomas Pinckney, John Jannotti: Exokernels (Präsentation, online verfügbar unter: https://pdos.csail.mit.edu/exo/exo-slides/sld001.htm)
+- Nemesis:
+  - [Reed+97] Dickon Reed, Robin Fairbairns (Hrsg.): Nemesis, The Kernel - Overview, Technischer Bericht, 1997, (verfügbar unter: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.57.512)
+- MirageOS:
+  - [Scott+13] Anil Madhavapeddy, David J. Scott: Unikernels: Rise of the Virtual Library Operating System, ACM Queue -Distributed Computing, Vol. 11, No. 11 (Nov 2013), https://dl.acm.org/citation.cfm?id=2566628
+- Virtualisierung:
+  - [Popek&Goldberg74] Gerald J. Popek, Robert P. Goldberg: Formal Requirements for Virtualizable Third Generation Architectures, Communications of the ACM, Vol. 17, No.7, 1974
+  - [Adams&Agesen06] Keith Adams, Ole Agesen: A Comparison of Software and Hardware Techniques for x86 Virtualization, 12th Int. Conf. on Architectural Support for Programming Languages and Operating, Systems(ASPLOS XII), 2006
+  - [Agesen+12] Ole Agesen,Jim Mattson,Radu Rugina, Jeffrey Sheldon: Software Techniques for Avoiding Hardware Virtualization Exits, 2012 USENIX Annual Technical Conference (USENIX ATC '12), 2012

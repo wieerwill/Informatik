@@ -206,7 +206,32 @@
       - [SOLID - Eigenschaften und Ergebnisse](#solid---eigenschaften-und-ergebnisse)
       - [SOLID - Simulative Bewertung](#solid---simulative-bewertung)
       - [SOLID - Sonstige Forschung](#solid---sonstige-forschung)
-- [Security protocols of the transport layer](#security-protocols-of-the-transport-layer)
+- [Sicherheitsprotokolle der Transportschicht](#sicherheitsprotokolle-der-transportschicht)
+  - [Anwendungsbereich von Sicherheitsprotokollen der Transportschicht](#anwendungsbereich-von-sicherheitsprotokollen-der-transportschicht)
+  - [Das Secure Socket Layer (SSL) Protokoll](#das-secure-socket-layer-ssl-protokoll)
+  - [SSL-Sicherheitsdienste](#ssl-sicherheitsdienste)
+  - [SSL-Sitzungs- und Verbindungsstatus](#ssl-sitzungs--und-verbindungsstatus)
+  - [Architektur des SSL-Protokolls](#architektur-des-ssl-protokolls)
+  - [SSL-Record-Protokoll](#ssl-record-protokoll)
+  - [Verarbeitung des SSL-Datensatzprotokolls](#verarbeitung-des-ssl-datensatzprotokolls)
+  - [SSL Handshake Protokoll: Einführung](#ssl-handshake-protokoll-einführung)
+  - [SSL Handshake Protokoll: Vollständiger Handshake](#ssl-handshake-protokoll-vollständiger-handshake)
+  - [SSL Handshake Protokoll: Abgekürzter Handshake](#ssl-handshake-protokoll-abgekürzter-handshake)
+  - [SSL-Handshake-Protokoll: Kryptografische Aspekte](#ssl-handshake-protokoll-kryptografische-aspekte)
+  - [SSL Handshake Protokoll: Eine Sicherheitslücke](#ssl-handshake-protokoll-eine-sicherheitslücke)
+  - [SSL-Chiffre-Suiten](#ssl-chiffre-suiten)
+  - [Das Transport Layer Security-Protokoll](#das-transport-layer-security-protokoll)
+  - [Das Datagram Transport Layer Security Protokoll](#das-datagram-transport-layer-security-protokoll)
+  - [Das Secure Shell-Protokoll](#das-secure-shell-protokoll)
+  - [SSH Version 2](#ssh-version-2)
+  - [SSH-Transportprotokoll](#ssh-transportprotokoll)
+  - [SSH-Transportprotokoll Paketformat](#ssh-transportprotokoll-paketformat)
+  - [SSH-Aushandlung, Schlüsselaustausch und Server-Authentifizierung](#ssh-aushandlung-schlüsselaustausch-und-server-authentifizierung)
+  - [SSH-Sitzungsschlüssel-Ableitung](#ssh-sitzungsschlüssel-ableitung)
+  - [SSH-Authentifizierungsprotokoll](#ssh-authentifizierungsprotokoll)
+  - [SSH-Verbindungsprotokoll](#ssh-verbindungsprotokoll)
+  - [SSH-Verbindungsprotokoll II](#ssh-verbindungsprotokoll-ii)
+  - [Schlussfolgerung](#schlussfolgerung-3)
 - [Sicherheitsaspekte der mobilen Kommunikation](#sicherheitsaspekte-der-mobilen-kommunikation)
 - [Sicherheit von drahtlosen lokalen Netzen](#sicherheit-von-drahtlosen-lokalen-netzen)
 - [Sicherheit von GSM- und UMTS-Netzen](#sicherheit-von-gsm--und-umts-netzen)
@@ -3854,7 +3879,475 @@ Zusätzliche Designziele zu IKEv1
 - Anwendungsschicht-Multicast
   - Ermöglicht sicheres Multicast über reine Unicast-Netze
 
-# Security protocols of the transport layer
+# Sicherheitsprotokolle der Transportschicht
+## Anwendungsbereich von Sicherheitsprotokollen der Transportschicht
+- Die Transportschicht sorgt für die Kommunikation zwischen Anwendungsprozessen (anstelle der Kommunikation zwischen Endsystemen) und ihre Hauptaufgaben sind:
+  - Isolierung höherer Protokollschichten von der Technologie, der Struktur und den Unzulänglichkeiten der eingesetzten Kommunikationstechnik
+  - Transparente Übertragung von Nutzdaten
+  - Globale Adressierung von Anwendungsprozessen, unabhängig von Adressen der unteren Schichten (Ethernet-Adressen, Telefonnummern usw.)
+  - Gesamtziel: Bereitstellung eines effizienten und zuverlässigen Dienstes
+- Sicherheitsprotokolle der Transportschicht zielen darauf ab, den Dienst der Transportschicht zu verbessern, indem sie zusätzliche Sicherheitseigenschaften gewährleisten
+  - Da sie in der Regel einen zuverlässigen Transportdienst voraussetzen und darauf aufbauen, stellen sie nach der Terminologie des OSI-Referenzmodells (Open Systems Interconnection) eigentlich Sitzungsschichtprotokolle dar.
+  - Da OSI jedoch nicht mehr ,,en vogue'' ist, werden sie als Sicherheitsprotokolle der Transportschicht bezeichnet
+
+## Das Secure Socket Layer (SSL) Protokoll
+- SSL wurde ursprünglich in erster Linie zum Schutz von HTTP-Sitzungen entwickelt:
+  - In den frühen 1990er Jahren gab es ein ähnliches Protokoll namens S-HTTP
+  - Da jedoch S-HTTP-fähige Browser nicht kostenlos waren und SSL Version 2.0 in den Browsern von Netscape Communications enthalten war, setzte es sich schnell durch.
+  - SSL v.2 enthielt einige Schwachstellen, weshalb die Microsoft Corporation ein konkurrierendes Protokoll namens Private Communication Technology (PCT) entwickelte.
+  - Netscape verbesserte das Protokoll und SSL v.3 wurde zum De-facto-Standardprotokoll für die Sicherung des HTTP-Verkehrs.
+  - Dennoch kann SSL eingesetzt werden, um beliebige Anwendungen zu sichern, die über TCP laufen.
+  - 1996 beschloss die IETF, ein allgemeines Transport Layer Security (TLS) Protokoll zu spezifizieren, das auf SSL basiert
+
+## SSL-Sicherheitsdienste
+- Peer-Entity-Authentifizierung:
+  - Vor jeder Kommunikation zwischen einem Client und einem Server wird ein Authentifizierungsprotokoll ausgeführt, um die Peer-Entitäten zu authentifizieren.
+  - Nach erfolgreichem Abschluss des Authentifizierungsdialogs wird eine SSL-Sitzung zwischen den Peer-Entities aufgebaut.
+- Vertraulichkeit der Benutzerdaten:
+  - Falls beim Aufbau der Sitzung vereinbart, werden die Benutzerdaten verschlüsselt.
+  - Es können verschiedene Verschlüsselungsalgorithmen ausgehandelt werden: RC4, DES, 3DES, IDEA
+- Integrität der Benutzerdaten:
+  - Ein MAC, der auf einer kryptografischen Hash-Funktion basiert, wird an die Benutzerdaten angehängt.
+  - Der MAC wird mit einem ausgehandelten Geheimnis im Präfix-Suffix-Modus errechnet.
+  - Für die MAC-Berechnung kann entweder MD5 oder SHA ausgehandelt werden.
+
+## SSL-Sitzungs- und Verbindungsstatus
+- Sitzungsstatus:
+  - Sitzungskennzeichen: eine vom Server gewählte Bytefolge
+  - Peer-Zertifikat: X.509 v.3 Zertifikat der Gegenstelle (optional)
+  - Komprimierungsmethode: Algorithmus zur Komprimierung der Daten vor der Verschlüsselung
+  - Cipher spec: spezifiziert kryptographische Algorithmen und Parameter
+  - Hauptgeheimnis: ein ausgehandeltes gemeinsames Geheimnis mit einer Länge von 48 Byte
+  - Ist wiederaufnehmbar: ein Kennzeichen, das angibt, ob die Sitzung neue Verbindungen unterstützt
+- Verbindungsstatus:
+  - Server und Client random: von Server und Client gewählte Bytefolgen
+  - Server write MAC secret: wird in MAC-Berechnungen des Servers verwendet
+  - Client write MAC secret: wird bei MAC-Berechnungen durch den Client verwendet
+  - Server-Schreibschlüssel: wird für die Verschlüsselung durch den Server und die Entschlüsselung durch den Client verwendet
+  - Client write key: wird für die Verschlüsselung durch den Client und die Entschlüsselung durch den Server verwendet
+
+## Architektur des SSL-Protokolls
+![](Assets/NetworkSecurity-ssl-protocol-architecture.png)
+- SSL ist als eine mehrschichtige und modulare Protokollarchitektur aufgebaut:
+  - Handshake: Authentifizierung und Aushandlung von Parametern
+  - Change Cipherspec: Signalisierung von Übergängen in der Verschlüsselungsstrategie
+  - Alert: Signalisierung von Fehlerzuständen
+  - Application Data: Schnittstelle für den transparenten Zugriff auf das Record-Protokoll
+  - Aufzeichnung:
+    - Fragmentierung der Nutzdaten in Klartextsätze der Länge $< 2^{14}$
+    - Komprimierung (optional) von Klartextsätzen
+    - Verschlüsselung und Integritätsschutz (beides optional)
+
+## SSL-Record-Protokoll
+![](Assets/NetworkSecurity-SSL-record-protocol.png)
+- Inhaltstyp:
+  - Ändern Cipherspec. (20)
+  - Warnung (21)
+  - Handshake (22)
+  - Anwendungsdaten (23)
+- Version: die Protokollversion von SSL (major = 3, minor = 0)
+- Länge: die Länge der Daten in Bytes, darf nicht größer sein als $2^{14} + 2^{10}$
+
+## Verarbeitung des SSL-Datensatzprotokolls
+- Absendende Seite:
+  - Die Datensatzschicht fragmentiert zunächst die Nutzdaten in Datensätze mit einer maximalen Länge von $2^{14}$ Oktetten, wobei mehrere Nachrichten desselben Inhaltstyps zu einem Datensatz zusammengefasst werden können
+  - Nach der Fragmentierung werden die Daten des Datensatzes komprimiert, der Standardalgorithmus hierfür ist null (~ keine Komprimierung), und er darf die Länge des Datensatzes nicht um mehr als $2^{10}$ Oktette erhöhen
+  - Ein Nachrichtenauthentifizierungscode wird an die Datensatzdaten angehängt:
+    - $MAC = H(MAC_write_secret + pad_2 + H(MAC_write_secret + pad_1 + seqnum + length + data))$
+    - Man beachte, dass seqnum nicht übertragen wird, da es implizit bekannt ist und das zugrundeliegende TCP einen gesicherten Dienst bietet
+  - Die Daten des Datensatzes und der MAC werden mit dem in der aktuellen Chiffriervorschrift definierten Verschlüsselungsalgorithmus verschlüsselt (dies kann ein vorheriges Auffüllen erfordern)
+- Empfängerseite:
+  - Der Datensatz wird entschlüsselt, auf Integrität geprüft, dekomprimiert, de-fragmentiert und an die Anwendung oder das SSL-Protokoll der höheren Schicht übergeben
+
+## SSL Handshake Protokoll: Einführung
+- Das SSL-Handshake-Protokoll wird verwendet, um die Peer-Authentifizierung und die kryptographischen Parameter für eine SSL-Sitzung festzulegen.
+- Eine SSL-Sitzung kann so ausgehandelt werden, dass sie wieder aufgenommen werden kann:
+  - Die Wiederaufnahme und Duplizierung von SSL-Sitzungen ermöglicht die Wiederverwendung des etablierten Sicherheitskontextes.
+  - Dies ist für die Absicherung des HTTP-Verkehrs sehr wichtig, da in der Regel für jedes Element einer Webseite eine eigene TCP-Verbindung aufgebaut wird.
+    - Seit HTTP 1.1 werden persistente TCP-Verbindungen verwendet.
+    - Dennoch ist die Wiederaufnahme von SSL-Sitzungen sehr sinnvoll, da persistente TCP-Verbindungen nach dem Herunterladen aller Elemente, die zu einer Seite gehören, und einer gewissen Zeit der Inaktivität des Benutzers geschlossen werden können.
+  - Bei der Wiederaufnahme / Duplizierung einer bestehenden Sitzung wird ein abgekürzter Handshake durchgeführt
+
+## SSL Handshake Protokoll: Vollständiger Handshake
+| Client              |      | Server               |
+| ------------------- | ---- | -------------------- |
+| ClientHello         | ---> |                      |
+|                     |      | ServerHello          |
+|                     |      | [ServerCertificate]  |
+|                     |      | [CertificateRequest] |
+|                     |      | [ServerKeyExchange]  |
+|                     | <--- | ServerHelloDone      |
+| [ClientCertificate] |      |
+| ClientKeyExchange   |      |
+| [CertificateVerify] |      |
+| ChangeCipherSpec    |      |
+| Finished            | ---> |
+|                     |      | ChangeCipherSpec     |
+|                     | <--- | Finished             |
+
+[...] kennzeichnet optionale Nachrichten
+
+## SSL Handshake Protokoll: Abgekürzter Handshake
+| Client                 |      | Server                 |
+| ---------------------- | ---- | ---------------------- |
+| ClientHello(SessionID) | ---> |
+|                        |      | ServerHello(SessionID) |
+|                        |      | ChangeCipherSpec       |
+|                        | <--- | Finished               |
+| ChangeCipherSpec       |      |
+| Finished               | ---> |
+
+- Die Nachricht "Finished" enthält eine MAC, die entweder auf MD5 oder SHA basiert und das Master-Secret enthält, das zuvor zwischen Client und Server festgelegt wurde.
+- Wenn der Server die Sitzung nicht fortsetzen kann / beschließt, sie nicht fortzusetzen, antwortet er mit den Nachrichten des vollständigen Handshake
+
+## SSL-Handshake-Protokoll: Kryptografische Aspekte
+- SSL unterstützt drei Methoden zur Erstellung von Sitzungsschlüsseln:
+  - RSA: ein Pre-Master-Geheimnis wird vom Client zufällig generiert und mit dem öffentlichen Schlüssel des Servers verschlüsselt an den Server gesendet
+  - Diffie-Hellman: Es wird ein Standard-Diffie-Hellman-Austausch durchgeführt, und das ermittelte gemeinsame Geheimnis wird als Pre-Master-Secret verwendet.
+  - Fortezza: eine unveröffentlichte, von der NSA entwickelte Sicherheitstechnologie, die eine Schlüsselhinterlegung unterstützt und in diesem Kurs nicht behandelt wird
+- Da SSL in erster Linie für die Sicherung des HTTP-Verkehrs entwickelt wurde, ist das ,,Standardanwendungsszenario'' ein Client, der auf einen authentischen Webserver zugreifen möchte:
+  - In diesem Fall sendet der Webserver sein Zertifikat mit dem öffentlichen Schlüssel nach der ServerHello-Nachricht
+  - Das Server-Zertifikat kann die öffentlichen DH-Werte des Servers enthalten oder der Server kann sie in der optionalen ServerKeyExchange-Nachricht senden
+  - Der Client verwendet das Zertifikat des Servers / die empfangenen DH-Werte / seine Fortezza-Karte, um einen RSA- / DH- / Fortezza-basierten Schlüsselaustausch durchzuführen.
+- Das Pre-Master-Secret und die Zufallszahlen, die der Client und der Server in ihren Hallo-Nachrichten angeben, werden verwendet, um das Master-Secret der Länge 48 Byte zu generieren.
+- Berechnung des Master-Geheimnisses:
+  - Master-Geheimnis = 
+      MD5(vor-Master-Geheimnis + SHA('A' + vor-Master-Geheimnis + ClientHello.random + ServerHello.random)) +
+      MD5(Vor-Hauptgeheimnis + SHA('BB' + Vor-Hauptgeheimnis + ClientHello.random + ServerHello.random)) +
+      MD5(pre-master-secret + SHA('CCC' + pre-master-secret + ClientHello.random + ServerHello.random))
+- Die Verwendung von MD5 und SHA zur Generierung des Master-Geheimnisses wird als sicher angesehen, selbst wenn eine der kryptografischen Hash-Funktionen ,,defekt'' ist.
+- Um die Sitzungsschlüssel aus dem Master-Secret zu berechnen, wird in einem ersten Schritt eine ausreichende Menge an Schlüsselmaterial aus dem Master-Secret und den Zufallszahlen von Client und Server erzeugt:
+  - key_block = 
+      MD5(master-secret + SHA('A' + master-secret + ClientHello.random + ServerHello.random)) +
+      MD5(master-secret + SHA('BB' + master-secret + ClientHello.random + ServerHello.random)) +
+      [...]
+- Anschließend wird das Material des Sitzungsschlüssels fortlaufend aus dem key_block entnommen:
+  - client_write_MAC_secret = key_block[1, CipherSpec.hash_size]
+  - server_write_MAC_secret = key_block[i 1 , i 1 + CipherSpec.hash_size - 1]
+  - client_write_key = key_block[i 2 , i 2 + CipherSpec.key_material - 1]
+  - server_write_key = key_block[i 3 , i 3 + CipherSpec.key_material - 1]
+  - client_write_IV = key_block[i 4 , i 4 + CipherSpec.IV_size - 1]
+  - server_write_IV = key_block[i 5 , i 5 + CipherSpec.IV_size - 1]
+- Authentifizierung von und mit dem Pre-Master-Secret:
+  - SSL unterstützt Schlüsselerstellung ohne Authentifizierung (anonym), in diesem Fall können Man-in-the-Middle-Angriffe nicht abgewehrt werden
+  - Bei Verwendung des RSA-basierten Schlüsselaustauschs:
+    - Der Client verschlüsselt das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers, der durch eine Zertifikatskette überprüft werden kann.
+    - Der Client weiß, dass nur der Server das Pre-Master-Secret entschlüsseln kann. Wenn der Server also die fertige Nachricht mit dem Master-Secret sendet, kann der Client die Server-Authentizität ableiten.
+    - Der Server kann aus dem empfangenen Pre-Master-Secret keine Client-Authentizität ableiten.
+    - Wenn Client-Authentizität erforderlich ist, sendet der Client zusätzlich sein Zertifikat und eine CertificateVerify-Nachricht, die eine Signatur über einen Hash (MD5 oder SHA) des Master-Geheimnisses und aller vor der CertificateVerify-Nachricht ausgetauschten Handshake-Nachrichten enthält
+  - Beim DH-Key-Austausch wird die Authentizität aus den DH-Werten abgeleitet, die im Zertifikat des Servers (und des Clients) enthalten und signiert sind
+
+## SSL Handshake Protokoll: Eine Sicherheitslücke
+- 1998 entdeckte D. Bleichenbacher eine Schwachstelle im Verschlüsselungsstandard PKCS #1 (v.1.5), der im SSL-Handshake-Verfahren verwendet wird
+- Wenn der Client das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers verschlüsselt, verwendet er PKCS #1, um es vor der Verschlüsselung zu formatieren:
+  - EM = 0x02 | PS | 0x00 | M
+    - wobei PS eine Auffüllzeichenfolge von mindestens 8 pseudozufällig erzeugten Nicht-Null-Oktetts und M die zu verschlüsselnde Nachricht (= Pre-Master-Secret) bezeichnet
+    - (PS wird verwendet, um eine Zufallskomponente hinzuzufügen und M auf die Modulusgröße des verwendeten Schlüssels aufzufüllen)
+  - Dann wird EM verschlüsselt: $C = E(+K_{Server}, EM)$
+  - Nachdem der Server C entschlüsselt hat, prüft er, ob das erste Oktett gleich 0x ist und ob es ein 0x00-Oktett gibt; wenn diese Prüfung fehlschlägt, antwortet er mit einer Fehlermeldung
+  - Diese Fehlermeldung kann von einem Angreifer genutzt werden, um einen ,,Orakel-Angriff'' zu starten.
+- Ein Orakel-Angriff gegen das SSL-Handshake-Protokoll [BKS98a]:
+  - Betrachten wir einen Angreifer (Eve), der einen SSL-Handshake-Dialog belauscht hat und das Pre-Master-Secret (und damit alle anderen abgeleiteten Geheimnisse), das zwischen Alice (Client) und Bob (Server) ausgetauscht wurde, wiederherstellen möchte
+  - Eve hat die verschlüsselte Nachricht C, die das Pre-Master-Secret enthält, erfolgreich abgehört und möchte nun den Klartext wiederherstellen
+  - Eve generiert eine Reihe zusammenhängender Chiffretexte $C_1 , C_2 , ...$:
+    - $C_i = C\times R_i^e\ mod\ n$, wobei $(e, n)$ der öffentliche Schlüssel von Bob ist
+    - Die $R_i$ werden adaptiv ausgewählt, abhängig von älteren ,,guten'' $R_i$, die von Bob verarbeitet wurden, ohne Fehlermeldungen zu erzeugen (was anzeigt, dass sie zu einer gültigen PKCS-1-Nachricht entschlüsselt wurden)
+    - Die $C_i$ werden an Bob übermittelt, und es werden entsprechend neue $C_i$ erzeugt
+    - Aus dem ,,guten'' $R_i$ leitet Eve bestimmte Bits der entsprechenden Nachricht $M_i= C_i^d = M\times R_i\ mod\ n$ ab, basierend auf der PKCS #1 Verschlüsselungsmethode
+  - Aus den abgeleiteten Bits von $M\times R_i\ mod\ n$ für hinreichend viele $R_i$ kann Eve die Größe des Intervalls reduzieren, das die unbekannte Nachricht M enthalten muss
+  - Im Wesentlichen halbiert jeder ,,gute'' Chiffretext das betreffende Intervall, so dass Eve mit genügend ,,guten'' Chiffretexten in der Lage ist, M
+  - Mit PKCS #1 Version 1.5 (wie ursprünglich in SSL V.3.0 verwendet) wird ungefähr einer von $2^{16}$ bis $2^{18}$ zufällig ausgewählten Chiffretexten ,,gut'' sein.
+  - Typischerweise beträgt die Gesamtzahl der erforderlichen Chiffretexte bei einem $1024$-Bit-Modul etwa $2^{20}$, und dies ist auch die Anzahl der Abfragen an Bob
+  - Nach der Durchführung von etwa 1 Million gefälschter SSL-Handshake-Dialoge (die alle entweder von Bob oder Eve unterbrochen werden) ist Eve also in der Lage, das Pre-Master-Secret und alle abgeleiteten Schlüssel einer zuvor eingerichteten SSL-Sitzung zwischen Alice und Bob wiederherzustellen. Subtile Protokollinteraktionen (hier: SSL und PKCS #1) können zum Versagen eines Sicherheitsprotokolls führen, selbst wenn der grundlegende kryptographische Algorithmus (hier: RSA) selbst nicht gebrochen ist!
+- Gegenmassnahmen:
+  - Regelmäßiger Wechsel der öffentlichen Schlüsselpaare ($\Rightarrow$-Overhead)
+  - Verringerung der Wahrscheinlichkeit, ,,gute'' Chiffriertexte zu erhalten, indem das Format der entschlüsselten Chiffriertexte gründlich überprüft und dem Client ein identisches Verhalten (Fehlermeldung, Zeitverhalten usw.) gezeigt wird
+  - Der Kunde muss den Klartext kennen, bevor er antwortet, ob die Nachricht erfolgreich entschlüsselt werden konnte.
+  - Hinzufügen einer Struktur zum Klartext, z. B. durch Hinzufügen eines Hashwerts zum Klartext:
+    - Achtung: Es ist eine gewisse Vorsicht geboten, um Anfälligkeiten für eine andere Klasse von Angriffen zu vermeiden [Cop96a].
+  - Änderung des Verschlüsselungsprotokolls für öffentliche Schlüssel, d.h. Überarbeitung von PKCS #1:
+    - PKCS #1 Version 2.1 bereitet den Klartext vor der Verschlüsselung mit einer Methode vor, die als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bezeichnet wird, um die PKCS #1 Entschlüsselungsprozedur ,,plaintext aware'' zu machen, was bedeutet, dass es nicht möglich ist, einen gültigen Chiffretext zu konstruieren, ohne den entsprechenden Klartext zu kennen
+
+## SSL-Chiffre-Suiten
+- Kein Schutz (Standard-Suite):
+  - CipherSuite SSL_NULL_WITH_NULL_NULL = { 0x00,0x00 }
+- Der Server stellt einen für die Verschlüsselung geeigneten RSA-Schlüssel bereit:
+  - SSL_RSA_WITH_NULL_MD5 = { 0x00,0x01 }
+  - SSL_RSA_WITH_NULL_SHA = { 0x00,0x02 }
+  - SSL_RSA_EXPORT_WITH_RC4_40_MD5 = { 0x00,0x03 }
+  - SSL_RSA_WITH_RC4_128_MD5 = { 0x00,0x04 }
+  - SSL_RSA_WITH_RC4_128_SHA = { 0x00,0x05 }
+  - SSL_RSA_EXPORT_WITH_RC2_CBC_40_MD5 = { 0x00,0x06 }
+  - SSL_RSA_WITH_IDEA_CBC_SHA = { 0x00,0x07 }
+  - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x08 }
+  - SSL_RSA_WITH_DES_CBC_SHA = { 0x00,0x09 }
+  - SSL_RSA_WITH_3DES_EDE_CBC_SHA = { 0x00,0x0A }
+- Cipher-Suites mit authentifiziertem DH-Schlüssel-Austausch
+  - SSL_DH_DSS_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x0B }
+  - SSL_DH_DSS_WITH_DES_CBC_SHA = { 0x00,0x0C }
+  - SSL_DH_DSS_WITH_3DES_EDE_CBC_SHA = { 0x00,0x0D }
+  - SSL_DH_RSA_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x0E }
+  - SSL_DH_RSA_WITH_DES_CBC_SHA = { 0x00,0x0F }
+  - SSL_DH_RSA_WITH_3DES_EDE_CBC_SHA = { 0x00,0x10 }
+  - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x11 }
+  - SSL_DHE_DSS_WITH_DES_CBC_SHA = { 0x00,0x12 }
+  - SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA = { 0x00,0x13 }
+  - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x14 }
+  - SSL_DHE_RSA_WITH_DES_CBC_SHA = { 0x00,0x15 }
+  - SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA = { 0x00,0x16 }
+
+(DH steht für Suites, bei denen die öffentlichen DH-Werte in einem von einer CA signierten Zertifikat enthalten sind, DHE für Suites, bei denen sie mit einem öffentlichen Schlüssel signiert sind, der von einer CA zertifiziert ist)
+
+- Von der Verwendung der folgenden Chiffriersuiten ohne jegliche Authentifizierung der Entität wird dringend abgeraten, da sie anfällig für Man-in-the-Middle-Angriffe sind:
+  - SSL_DH_anon_EXPORT_WITH_RC4_40_MD5 = { 0x00,0x17 }
+  - SSL_DH_anon_WITH_RC4_128_MD5 = { 0x00,0x18 }
+  - SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA = { 0x00,0x19 }
+  - SSL_DH_anon_WITH_DES_CBC_SHA = { 0x00,0x1A }
+  - SSL_DH_anon_WITH_3DES_EDE_CBC_SHA = { 0x00,0x1B }
+- Die letzte Cipher Suite ist für den Fortezza-Token:
+  - SSL_FORTEZZA_DMS_WITH_NULL_SHA = { 0x00,0x1C }
+  - SSL_FORTEZZA_DMS_WITH_FORTEZZA_CBC_SHA = { 0x00,0x1D }
+
+(Diese Cipher-Suites müssen natürlich nicht auswendig gelernt werden und werden hier nur aufgeführt, um die Flexibilität des SSL-Protokolls zu verdeutlichen)
+
+## Das Transport Layer Security-Protokoll
+- 1996 gründete die IETF eine Arbeitsgruppe zur Definition eines Transport Layer Security (TLS) Protokolls:
+  - Offiziell wurde angekündigt, die Protokolle SSL, SSH und PCT als Input zu nehmen.
+  - Der im Dezember 1996 veröffentlichte Entwurf der TLS V.1.0-Spezifikation war jedoch im Wesentlichen identisch mit der SSL V.3.0-Spezifikation
+- Eigentlich war es von Anfang an die Absicht der Arbeitsgruppe, TLS auf SSL V.3.0 mit den folgenden Änderungen aufzubauen:
+  - Die HMAC-Konstruktion zur Berechnung kryptographischer Hash-Werte sollte anstelle von Hashing im Präfix- und Suffix-Modus übernommen werden.
+  - Die auf Fortezza basierenden Chiffrier-Suiten von SSL sollten entfernt werden, da sie eine unveröffentlichte Technologie enthalten
+  - Ein auf dem DSS (Digital Signature Standard) basierender Dialog zur Authentifizierung und zum Schlüsselaustausch sollte aufgenommen werden.
+  - Das TLS-Record-Protokoll und das Handshake-Protokoll sollten getrennt und in separaten Dokumenten klarer spezifiziert werden, was bisher nicht geschehen ist.
+- Um die Exportfähigkeit von TLS-konformen Produkten zu erreichen, wurde in einigen Chiffriersuiten die Verwendung von Schlüsseln mit einer auf 40 Bit reduzierten Entropie vorgeschrieben.
+  - Von der Verwendung dieser Cipher-Suites wird dringend abgeraten, da sie praktisch keinen Schutz der Vertraulichkeit von Daten bieten.
+- Ab TLS 1.2 (RFC 5246):
+  - Schlüsselaustausch-Algorithmen:
+    - DH oder ECDH Austausch ohne oder mit DSS / RSA / ECDSA Signaturen
+    - DH-Austausch mit zertifizierten öffentlichen DH-Parametern
+    - RSA-basierter Schlüsselaustausch
+    - keine
+  - Verschlüsselungsalgorithmen: AES / 3DES in CBC / CCM /GCM, RC4, null
+  - Hash-Algorithmen: MD5, SHA-1, SHA-256, SHA-384, SHA-512, null
+  - Premaster Secret: Keine MD5/SHA-1 Kombination, sondern nur SHA-256!
+- Was die Protokollfunktionen betrifft, ist TLS im Wesentlichen dasselbe wie SSL
+- Sicherheit:
+  - In SSL 3.0 und TLS 1.0 ist der Initialisierungsvektor eines im CBC-Modus verschlüsselten Datensatzes der letzte Block des vorherigen Datensatzes
+  - Wenn ein Angreifer den Inhalt des vorherigen Datensatzes kontrolliert, kann er einen adaptiven Klartextangriff durchführen, um den Inhalt des nächsten Datensatzes herauszufinden.
+  - Durchführbar für Webverkehr, d. h. Erzeugen von Verkehr mit JavaScript und Beobachten von außen, führt zum sogenannten BEAST-Angriff (Browser Exploit Against SSL/TLS) [RD10].
+  - Auch für VPN-Verkehr machbar
+  - Abgeschwächt durch TLS 1.1, wo explizite IVs verwendet werden
+  - 2009 wurde eine sogenannte TLS-Neuverhandlungsschwachstelle identifiziert
+    - Angreifer können sie nutzen, um einer legitimen Sitzung durch einen Man-in-the-Middle-Angriff Daten voranzustellen (Details in [Zo11])
+    - Die Auswirkungen hängen stark von dem verwendeten Anwendungsprotokoll ab
+  - Bei HTTPS führt dies zu mehreren Ausnutzungsmöglichkeiten, z. B,
+    - Angreifer injeziert: `GET /ebanking/transfer?what=LotsOfMoney&to=eve HTTP/1.1 <crlf> X-Ignore: <no crlf>`
+    - Alice sendet: `GET /ebanking/start.html HTTP/1.1`
+    - Die Anfrage wird in eine valide HTTP Anfrage umgewandelt: `GET /ebanking/transfer?what=LotsOfMoney&to=eve HTTP/1.1 <crlf> X-Ignore: GET /ebanking/start.html HTTP/1.1`
+  - Abgeschwächt durch Identifizierung neu ausgehandelter Sitzungen mit einer anderen ID [RRDO10]
+
+## Das Datagram Transport Layer Security Protokoll
+- TLS bietet sichere Kommunikation über ein zuverlässiges Transportprotokoll
+- DTLS ist so angepasst, dass es über unzuverlässige Transportprotokolle wie z.B. UDP funktioniert
+- Wird zum Schutz verwendet:
+  - Sprach- und Videodaten in Echtzeit, insbesondere Voice-over-IP
+  - Getunnelte TCP-Daten (da TCP über TCP eine schlechte Idee für die Leistung ist)
+- DTLS basiert derzeit auf TLS 1.2, enthält jedoch einige Änderungen:
+  - Bietet
+    - Nachrichtenwiederholungen, um verlorenen Handshake-Paketen entgegenzuwirken
+    - Eigener Fragmentierungsmechanismus, um große Handshake-Pakete zu ermöglichen
+  - Hinzufügen von Sequenznummern, um neu geordnete Datenpakete zu ermöglichen (und Verbot von Stromchiffren, z. B. RC4)
+  - Fügt einen Mechanismus hinzu, um zu erkennen, dass ein Client die ,,Verbindung'' mit denselben Ports neu gestartet hat (z. B. nach einem Anwendungsabsturz)
+  - Fügt einen Wiedergabeschutz durch ein gleitendes Fenster hinzu (wie bei IPsec)
+  - Fügt eine Cookie-basierte DoS-Abwehr hinzu (wie bei IKEv2)
+
+## Das Secure Shell-Protokoll
+- Secure Shell (SSH) Version 1 wurde ursprünglich von Tatu Ylönen an der Universität Helsinki in Finnland entwickelt.
+- Da der Autor auch eine kostenlose Implementierung mit Quellcode zur Verfügung stellte, fand das Protokoll weite Verbreitung im Internet
+- Später wurde die Entwicklung von SSH durch den Autor kommerzialisiert. 
+- Nichtsdestotrotz sind immer noch kostenlose Versionen verfügbar, wobei die am weitesten verbreitete Version OpenSSH ist
+- 1997 wurde eine Spezifikation der Version 2.0 von SSH bei der IETF eingereicht und seitdem in einer Reihe von Internet-Entwürfen verfeinert
+- SSH wurde ursprünglich entwickelt, um einen sicheren Ersatz für die Unix r-Tools (rlogin, rsh, rcp und rdist) zu bieten, und stellt somit ein Protokoll der Anwendungs- oder Sitzungsschicht dar.
+- Da SSH jedoch auch ein allgemeines Sicherheitsprotokoll der Transportschicht enthält und Tunneling-Fähigkeiten bietet, wird es in diesem Kapitel als Sicherheitsprotokoll der Transportschicht behandelt
+
+## SSH Version 2
+- SSH Version 2 ist in mehreren separaten Dokumenten spezifiziert, z.B.:
+  - SSH Protocol Assigned Numbers [LL06]
+  - SSH-Protokollarchitektur [YL06a]
+  - SSH-Authentifizierungsprotokoll [YL06b]
+  - SSH-Transportschichtprotokoll [YL06c]
+  - SSH-Verbindungsprotokoll [YL06d]
+- SSH-Architektur:
+  - SSH verfolgt einen Client-Server-Ansatz
+  - Jeder SSH-Server hat mindestens einen Host-Schlüssel
+  - SSH Version 2 bietet zwei verschiedene Vertrauensmodelle:
+    - Jeder Client hat eine lokale Datenbank, die jeden Hostnamen mit dem entsprechenden öffentlichen Hostschlüssel verknüpft
+    - Die Zuordnung von Hostname zu öffentlichem Schlüssel wird von einer Zertifizierungsstelle zertifiziert, und jeder Client kennt den öffentlichen Schlüssel der Zertifizierungsstelle
+  - Das Protokoll ermöglicht die vollständige Aushandlung von Algorithmen und Formaten für Verschlüsselung, Integrität, Schlüsselaustausch, Komprimierung und öffentliche Schlüssel
+
+## SSH-Transportprotokoll 
+- SSH verwendet ein zuverlässiges Transportprotokoll (normalerweise TCP).
+- Es bietet die folgenden Dienste:
+  - Verschlüsselung von Benutzerdaten
+  - Authentifizierung der Datenherkunft (Integrität)
+  - Server-Authentifizierung (nur Host-Authentifizierung)
+  - Komprimierung der Benutzerdaten vor der Verschlüsselung
+- Unterstützte Algorithmen:
+  - Verschlüsselung:
+    - AES, 3DES, Blowfish, Twofish, Serpent, IDEA und CAST in CBC
+    - AES in GCM [IS09]
+    - Arcfour (,,vermutlich'' kompatibel mit dem ,,unveröffentlichten'' RC4)
+    - keine (nicht empfohlen)
+  - Integrität:
+    - HMAC mit MD5, SHA-1, SHA-256 oder SHA-512
+    - keine (nicht empfohlen)
+  - Schlüsselaustausch:
+    - Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen
+    - ECDH mit mehreren vordefinierten NIST-Gruppen [SG09] (obligatorisch drei Kurven über ℤp)
+    - Öffentlicher Schlüssel: RSA, DSS, ECC (in mehreren Varianten [SG09])
+  - Komprimierung: keine, zlib (siehe RFCs 1950, 1951)
+
+## SSH-Transportprotokoll Paketformat
+![](Assets/NetworkSecurity-ssh-transport-protocol-packet.png)
+- Das Paketformat ist nicht 32-Bit-wortorientiert
+- Felder des Pakets:
+  - Paketlänge: die Länge des Pakets selbst, ohne dieses Längenfeld und den MAC
+  - Padding length: Länge des Padding-Feldes, muss zwischen vier und 255 liegen
+  - Payload: die eigentliche Nutzlast des Pakets, wenn Komprimierung ausgehandelt wurde, wird dieses Feld komprimiert
+  - Padding: dieses Feld besteht aus zufällig ausgewählten Oktetten, um die Nutzlast auf ein ganzzahliges Vielfaches von 8 oder der Blockgröße des Verschlüsselungsalgorithmus aufzufüllen, je nachdem, welcher Wert größer ist
+  - MAC: Wurde die Nachrichtenauthentifizierung ausgehandelt, enthält dieses Feld den MAC des gesamten Pakets ohne das MAC-Feld selbst; soll das Paket verschlüsselt werden, wird der MAC vor der Verschlüsselung wie folgt berechnet
+    - MAC = HMAC(shared_secret, seq_number || unencrypted_packet), wobei seq_number eine 32-Bit-Sequenznummer für jedes Paket bezeichnet
+- Verschlüsselung: wenn Verschlüsselung ausgehandelt wird, wird das gesamte Paket ohne MAC nach der MAC-Berechnung verschlüsselt
+
+## SSH-Aushandlung, Schlüsselaustausch und Server-Authentifizierung
+- Algorithmus-Aushandlung:
+  - Jede Entität sendet ein Paket (bezeichnet als kexinit ) mit einer Spezifikation der von ihr unterstützten Methoden in der Reihenfolge ihrer Präferenz
+  - Beide Entitäten iterieren über die Liste des Clients und wählen den ersten Algorithmus, der auch vom Server unterstützt wird
+  - Diese Methode wird verwendet, um Folgendes auszuhandeln: Server-Host-Schlüssel-Algorithmus (~ Server-Authentifizierung) sowie Verschlüsselungs-, MAC- und Kompressionsalgorithmus
+  - Zusätzlich kann jede Entität ein Schlüsselaustauschpaket entsprechend einer Vermutung über den bevorzugten Schlüsselaustauschalgorithmus der anderen Entität anhängen
+  - Ist eine Vermutung richtig, wird das entsprechende Schlüsselaustauschpaket als erstes Schlüsselaustauschpaket der anderen Entität akzeptiert
+  - Falsche Vermutungen werden ignoriert und neue Schlüsselaustauschpakete werden nach Aushandlung des Algorithmus gesendet
+- Für den Schlüsselaustausch definiert [YL06c] nur eine Methode:
+  - Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen (1024 und 2048 Bit)
+  - Z.B. $p = 2^{1024} -2^{960} - 1 + (2^{64}\times \lfloor 2894 \times \pi + 129093\rfloor); g = 2$
+- Wenn der Schlüsselaustausch mit der vordefinierten DH-Gruppe durchgeführt wird:
+  - Der Client wählt eine Zufallszahl $x$, berechnet $e=g^x\ mod\ p$ und sendet $e$ an den Server
+  - Der Server wählt eine Zufallszahl $y$, errechnet $f=g^y\ mod\ p$
+  - Nach dem Empfang von $e$ berechnet der Server ferner $K=e^y\ mod\ p$ und einen Hash-Wert $h = Hash(version_C, version_S, kexinit_C, kexinit_S, +K_S, e, f, K)$, wobei version und kexinit die Versionsinformationen des Clients und des Servers sowie die anfänglichen Algorithmus-Aushandlungsmeldungen bezeichnen
+  - Der Server signiert h mit seinem privaten Host-Schlüssel - KS und sendet dem Client eine Nachricht mit $(+K_S, f, s)$.
+  - Beim Empfang prüft der Client den Host-Schlüssel $+K_S$, berechnet $K=f^x\ mod\ p$ sowie den Hash-Wert $h$ und prüft dann die Signatur $s$ über $h$
+- Nach diesen Prüfungen kann der Client sicher sein, dass er tatsächlich ein geheimes K mit dem Host ausgehandelt hat, der $-K_S$ kennt.
+- Der Server-Host kann jedoch keine Rückschlüsse auf die Authentizität des Clients ziehen; zu diesem Zweck wird das SSH-Authentifizierungsprotokoll verwendet
+
+## SSH-Sitzungsschlüssel-Ableitung
+- Die Methode des Schlüsselaustauschs ermöglicht es, ein gemeinsames Geheimnis K und den Hash-Wert h zu ermitteln, die zur Ableitung der SSH-Sitzungsschlüssel verwendet werden:
+  - Der Hashwert h des anfänglichen Schlüsselaustauschs wird auch als session_id verwendet
+  - $IV_{Client2Server}$ = Hash(K, h, ,,A'', session_id) // Initialisierungsvektor
+  - $IV_{Server2Client}$ = Hash(K, h, ,,B'', session_id) // Initialisierungsvektor
+  - $EK_{Client2Server}$ = Hash(K, h, ,,C'', session_id) // Verschlüsselungsschlüssel
+  - $EK_{Server2Client}$ = Hash(K, h, ,,D'', session_id) // Chiffrierschlüssel
+  - $IK_{Client2Server}$ = Hash(K, h, ,,E'', session_id) // Integritätsschlüssel
+  - $IK_{Server2Client}$ = Hash(K, h, ,,F'', session_id) // Integritätsschlüssel
+- Die Schlüsseldaten werden am Anfang der Hash-Ausgabe entnommen
+- Wenn mehr Schlüsselbits benötigt werden als von der Hash-Funktion erzeugt werden:
+  - K1 = Hash(K, h, x, session_id) // x = ,,A'', ,,B'', usw.
+  - K2 = Hash(K, h, K1)
+  - K2 = Hash(K, h, K1, K2)
+  - XK = K1 || K2 || ...
+
+## SSH-Authentifizierungsprotokoll
+- Das SSH-Authentifizierungsprotokoll dient zur Überprüfung der Identität des Clients und ist für die Ausführung über das SSH-Transportprotokoll vorgesehen
+- Das Protokoll unterstützt standardmäßig die folgenden Authentifizierungsmethoden:
+  - Öffentlicher Schlüssel: Der Benutzer erzeugt und sendet eine Signatur mit einem öffentlichen Schlüssel pro Benutzer an den Server
+  - $Client\rightarrow Server: E(-K_{Benutzer}, (session\_id, 50, Name_{Benutzer}, Service, ,,publickey'', True, PublicKeyAlgorithmName, +K_{Benutzer}))$
+  - Kennwort: Übertragung eines Kennworts pro Benutzer in der verschlüsselten SSH-Sitzung (das Kennwort wird dem Server im Klartext präsentiert, aber mit Verschlüsselung des SSH-Transportprotokolls übertragen)
+  - Host-basiert: analog zum öffentlichen Schlüssel, aber mit einem öffentlichen Schlüssel pro Host
+  - Keine: wird verwendet, um den Server nach unterstützten Methoden zu fragen und wenn keine Authentifizierung erforderlich ist (der Server antwortet direkt mit einer Erfolgsmeldung)
+- Wenn die Authentifizierungsnachricht des Clients erfolgreich geprüft wurde, antwortet der Server mit einer ssh_msg_userauth_success-Nachricht
+
+## SSH-Verbindungsprotokoll
+- Das SSH-Verbindungsprotokoll läuft auf dem SSH-Transportprotokoll und bietet folgende Dienste:
+  - Interaktive Anmeldesitzungen
+  - Fernausführung von Befehlen
+  - Weitergeleitete TCP/IP-Verbindungen
+  - Weitergeleitete X11-Verbindungen
+- Für jeden der oben genannten Dienste werden ein oder mehrere ,,Kanäle'' eingerichtet, und alle Kanäle werden in eine einzige verschlüsselte und integritätsgeschützte SSH-Transportprotokollverbindung gemultiplext:
+  - Beide Seiten können die Eröffnung eines Kanals beantragen, und die Kanäle werden durch Nummern beim Sender und beim Empfänger gekennzeichnet.
+  - Kanäle sind typisiert, z. B. ,,session'', ,,x11'', ,,forwarded-tcpip'', ,,direct-tcpip'' ...
+  - Kanäle werden durch einen Fenstermechanismus kontrolliert, und es dürfen keine Daten über einen Kanal gesendet werden, bevor ,,window space'' verfügbar ist
+- Öffnen eines Kanals:
+  - Beide Seiten können die Nachricht ssh_msg_channel_open senden, die mit dem Nachrichtencode 90 und den folgenden Parametern signalisiert wird:
+    - Kanaltyp: ist vom Datentyp String, z.B. ,,session'', ,,x11'', etc.
+    - Absenderkanal: ist ein lokaler Bezeichner vom Typ uint32 und wird vom Anforderer dieses Kanals gewählt
+    - initial window size: ist vom Typ uint32 und gibt an, wie viele Bytes an den Initiator gesendet werden dürfen, bevor das Fenster vergrößert werden muss
+    - maximale Paketgröße: ist vom Typ uint32 und legt die maximale Paketgröße fest, die der Initiator für diesen Kanal zu akzeptieren bereit ist
+    - weitere Parameter, die vom Typ des Kanals abhängen, können folgen
+  - Wenn der Empfänger dieser Nachricht die Kanalanfrage nicht annehmen will, antwortet er mit der Nachricht ssh_msg_channel_open_failure (Code 92):
+    - Empfängerkanal: die vom Absender in der Öffnungsanfrage angegebene ID
+    - reason code: ist vom Typ uint32 und gibt den Grund für die Ablehnung an
+    - additional textual information: ist vom Typ string
+    - language tag: ist vom Typ string und entspricht dem RFC 1766
+  - Wenn der Empfänger dieser Nachricht die Kanalanfrage annehmen will, antwortet er mit der Nachricht ssh_msg_channel_open_confirmation (Code 91) und den folgenden Parametern
+    - Empfänger-Kanal: die vom Absender in der Öffnungsanforderung angegebene ID
+    - Absenderkanal: die dem Kanal vom Antwortenden gegebene Kennung
+    - initial window size: ist vom Typ uint32 und gibt an, wie viele Bytes an den Responder gesendet werden können, bevor das Fenster vergrößert werden muss
+    - maximum packet size: ist vom Typ uint32 und legt die maximale Paketgröße fest, die der Responder für diesen Kanal zu akzeptieren bereit ist
+    - weitere Parameter, die vom Kanaltyp abhängen, können folgen
+- Sobald ein Kanal geöffnet ist, sind die folgenden Aktionen möglich:
+  - Datenübertragung (allerdings sollte die empfangende Seite wissen, ,,was mit den Daten zu tun ist'', was eine weitere vorherige Aushandlung erfordern kann)
+  - Kanaltypspezifische Anfragen
+  - Schließung des Kanals
+- Für die Datenübertragung sind die folgenden Nachrichten definiert:
+  - ssh_msg_channel_data: mit den beiden Parametern Empfängerkanal, Daten
+  - ssh_msg_channel_extended_data: erlaubt die zusätzliche Angabe eines Datentypcodes und ist nützlich, um Fehler zu signalisieren, z.B. bei interaktiven Shells
+  - ssh_msg_channel_window_adjust: erlaubt es, das Flusskontrollfenster des Empfängerkanals um die angegebene Anzahl von Bytes zu erweitern
+- Schließen von Kanälen:
+  - Wenn eine Peer-Entität keine Daten mehr an einen Kanal senden will, sollte sie dies der anderen Seite mit der Nachricht ssh_msg_channel_eof signalisieren
+  - Wenn eine der beiden Seiten einen Kanal beenden möchte, sendet sie die Nachricht ssh_msg_channel_close mit dem Parameter recipient channel
+  - Beim Empfang der Nachricht ssh_msg_channel_close muss eine Peer-Entität mit einer ähnlichen Nachricht antworten, es sei denn, sie hat bereits die Schließung dieses Kanals beantragt.
+  - Sowohl nach dem Empfang als auch nach dem Senden der Nachricht ssh_msg_channel_close für einen bestimmten Kanal kann die ID dieses Kanals wiederverwendet werden.
+- Kanaltypspezifische Anfragen erlauben es, bestimmte Eigenschaften eines Kanals anzufordern, z. B. dass die empfangende Seite weiß, wie sie die über diesen Kanal gesendeten Daten verarbeiten soll, und werden mit signalisiert:
+  - ssh_msg_channel_request: mit den Parametern recipient channel, request type (string), want reply (bool) und weiteren anfragespezifischen Parametern
+  - ssh_msg_channel_success: mit dem Parameter recipient channel
+  - ssh_msg_channel_failure: mit dem Parameter recipient channel
+- Beispiel 1 - Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
+  - Zunächst wird ein Kanal vom Typ ,,session'' geöffnet
+  - Ein Pseudo-Terminal wird angefordert, indem eine ssh_msg_channel_request-Nachricht gesendet wird, wobei der Anforderungstyp auf ,,pty-req'' gesetzt wird
+  - Falls erforderlich, können Umgebungsvariablen gesetzt werden, indem ssh_msg_channel_request-Nachrichten mit dem Anforderungstyp ,,env'' gesendet werden.
+  - Dann wird der Start eines Shell-Prozesses über eine ssh_msg_channel_request-Nachricht mit dem Request-Typ ,,shell'' gefordert (dies führt normalerweise zum Start der Standard-Shell für den Benutzer, wie sie in /etc/passwd definiert ist)
+  - Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
+    | SSH Client                                                                 |      | SSH Server                                           |
+    | -------------------------------------------------------------------------- | ---- | ---------------------------------------------------- |
+    | ssh_msg_channel_open (,,session'', 20, 2048, 512)                          | ---> |
+    |                                                                            | <--- | ssh_msg_channel_open_confirmation(20, 31, 1024, 256) |
+    | ssh_msg_channel_request (31, ,,pty-req'', false, ...)                      | ---> |
+    | ssh_msg_channel_request (31, ,,env'', false, ,,home'', ,,/home/username'') | ---> |
+    | ssh_msg_channel_request (31, ,,shell'', true, ...)                         | ---> |
+    |                                                                            | <--- | ssh_msg_channel_success(20)                          |
+
+    [Nutzdatenaustausch findet ab jetzt statt...]
+
+## SSH-Verbindungsprotokoll II
+- Beispiel 2 - Anforderung der X11-Weiterleitung:
+  - Zuerst wird ein Kanal des Typs ,,session'' geöffnet
+  - Die X11-Weiterleitung wird durch Senden einer ssh_msg_channel_request-Nachricht mit dem Anforderungstyp ,,x11-req'' angefordert
+  - Wenn später eine Anwendung auf dem Server gestartet wird, die auf das Terminal des Client-Rechners zugreifen muss (der X11-Server, der auf dem Client-Rechner läuft), wird ein neuer Kanal über ssh_msg_channel_open geöffnet, wobei der Kanaltyp auf ,,x11'' und die IP-Adresse und Portnummer des Absenders als zusätzliche Parameter gesetzt werden
+- Beispiel 3 - Einrichtung einer TCP/IP-Portweiterleitung:
+  - Eine Partei muss die Portweiterleitung von ihrem eigenen Ende in die andere Richtung nicht explizit anfordern. Wenn sie jedoch Verbindungen zu einem Port auf der anderen Seite an ihre eigene Seite weiterleiten lassen möchte, muss sie dies explizit über eine ssh_msg_global_request-Nachricht mit den Parametern ,,tcpip-forward'', want-reply, zu bindende Adresse (,,0.0.0.0'' für jede Quelladresse) und zu bindende Portnummer anfordern (diese Anforderung wird normalerweise vom Client gesendet)
+  - Wenn eine Verbindung zu einem Port kommt, für den eine Weiterleitung angefordert wurde, wird ein neuer Kanal über ssh_msg_channel_open mit dem Typ ,,forwarded-tcpip'' und den Adressen des Ports, der verbunden wurde, sowie des ursprünglichen Quellports als Parameter geöffnet (diese Nachricht wird normalerweise vom Server gesendet)
+  - Wenn eine Verbindung zu einem (Client-)Port kommt, der lokal als weitergeleitet eingestellt ist, wird ein neuer Kanal angefordert, wobei der Typ auf ,,direct-tcpip'' gesetzt wird und die folgenden Adressinformationen in zusätzlichen Parametern angegeben werden:
+    - host to connect, port to connect: Adresse, mit der der Empfänger diesen Kanal verbinden soll
+    - Absender-IP-Adresse, Absender-Port: Quelladresse der Verbindung
+
+## Schlussfolgerung
+- Sowohl SSL, TLS als auch SSH eignen sich für die Sicherung der Internet-Kommunikation in der (oberen) Transportschicht:
+  - Alle drei Sicherheitsprotokolle arbeiten mit einem zuverlässigen Transportdienst, z. B. TCP, und benötigen diesen.
+  - Es gibt eine datagrammorientierte Variante von TLS, genannt DTLS
+  - Obwohl SSH in / oberhalb der Transportschicht arbeitet, ist die Server-Authentifizierung hostbasiert und nicht anwendungsbasiert.
+  - Sicherheitsprotokolle der Transportschicht bieten echten End-to-End-Schutz für Benutzerdaten, die zwischen Anwendungsprozessen ausgetauscht werden.
+  - Außerdem können sie mit der Paketfilterung der heutigen Firewalls zusammenarbeiten.
+  - Die Protokoll-Header-Felder von Protokollen der unteren Schicht können jedoch nicht auf diese Weise geschützt werden, so dass sie keine Gegenmaßnahmen für Bedrohungen der Netzinfrastruktur selbst bieten.
+
 # Sicherheitsaspekte der mobilen Kommunikation
 # Sicherheit von drahtlosen lokalen Netzen
 # Sicherheit von GSM- und UMTS-Netzen
@@ -3976,3 +4469,19 @@ Zusätzliche Designziele zu IKEv1
 - [FBJW08] R. Figueiredo, P. O. Boykin, P. St. Juste, D. Wolinsky: _Social VPNs: Integrating Overlay and Social Networks for Seamless P2P Networking’._ IEEE WETICE/COPS, 2008.
 - [RSS10] M. Rossberg, T. Strufe, G. Schaefer: _Distributed Automatic Configuration of Complex IPsec-Infrastructures._ Journal of Network and Systems Management, Volume 18, Issue 3, 2010.
 - [RSSM09] M. Rossberg, W. Steudel, G.Schaefer, M. Martius: _Eine Software-Architektur zur Konstruktion flexibler IPsec-Infrastrukturen._ BSI 11. Deutscher IT-Sicherheitskongress, 2009.
+- [BKS98a] D. Bleichenbacher, B. Kaliski, J. Staddon. _Recent Results on PKCS #1: RSA Encryption Standard._ RSA Laboratories' Bulletin 7, 1998
+- [Cop96a] D. Coppersmith, M. K. Franklin, J. Patarin, M. K. Reiter. _Low Exponent RSA with Related Messages._ In Advance in Cryptology -- Eurocrypt'96, U. Maurer, Ed., vol. 1070 of Lectures Notes in Computer Science, Springer-Verlag, 1996
+- [FKK96a] A. O. Freier, P. Karlton, P. C. Kocher. _The SSL Protocol Version 3.0._ Netscape Communications Corporation, 1996
+- [DA99] T. Dierks, C. Allen. _The TLS Protocol Version 1.0._ RFC 2246, 1999
+- [DR08] T. Dierks, E. Rescorla. _The Transport Layer Security (TLS) Protocol Version 1.2._ RFC 5246, 2008
+- [RD10] J. Rizzo, T. Duong, Practical Padding Oracle Attacks, 4th USENIX conference on Offensive technologies (WOOT), 2010
+- [RRDO10] E. Rescorla, M. Ray, S. Dispensa, N. Oskov. _Transport Layer Security (TLS) Renegotiation Indication Extension_ , RFC 5746. 2010
+- [Zo11] T. Zoller. _TLS & SSLv3 renegotiation vulnerability._ Technical report, G-SEC. 2011
+- [RM12] E. Rescorla, N. Modadugu. _Datagram Transport Layer Security Version 1.2._ RFC 6347, 2012
+- [LL06] S. Lehtinen, C. Lonvick. _The Secure Shell (SSH) Protocol Assigned Numbers._ RFC 4250, 2006
+- [YL06a] T. Ylonen, C. Lonvick. _The Secure Shell (SSH) Protocol Architecture._ RFC 4251, 2006
+- [YL06b] T. Ylonen, C. Lonvick. _The Secure Shell (SSH) Authentication Protocol._ RFC 4252, 2006
+ -[YL06c] T. Ylonen, C. Lonvick. _The Secure Shell (SSH) Transport Layer Protocol_ , RFC 4253, 2006
+ -[YL06d] T. Ylonen, C. Lonvick. _The Secure Shell (SSH) Connection Protocol._ RFC 4254, 2006
+ -[SG09] D. Stebila, J. Green. _Elliptic Curve Algorithm Integration in the Secure Shell Transport Layer_ , RFC 5656. 2009
+ -[IS09] K. Igoe, J. Solinas. _AES Galois Counter Mode for the Secure Shell Transport Layer Protocol._ RFC 5647. 2009

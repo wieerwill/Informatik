@@ -28,6 +28,16 @@
     - [OFB-Betriebsart( ,,Output Feed Back mode'' )](#ofb-betriebsart-output-feed-back-mode-)
     - [R-CTR-Betriebsart (,,Randomized CounTeR mode'' )](#r-ctr-betriebsart-randomized-counter-mode-)
   - [Sicherheit von symmetrischen Kryptoschemen](#sicherheit-von-symmetrischen-kryptoschemen)
+- [Zahlentheorie und Algorithmen](#zahlentheorie-und-algorithmen)
+  - [Fakten aus der Zahlentheorie und grundlegende Algorithmen](#fakten-aus-der-zahlentheorie-und-grundlegende-algorithmen)
+  - [Modulare Arithmetik](#modulare-arithmetik)
+  - [Inverse in Restklassenringen](#inverse-in-restklassenringen)
+  - [Der Chinesische Restsatz](#der-chinesische-restsatz)
+  - [Primzahlen](#primzahlen)
+  - [Der Primzahltest von Miller und Rabin](#der-primzahltest-von-miller-und-rabin)
+    - [Der Fermat-Test](#der-fermat-test)
+    - [Carmichael-Zahlen](#carmichael-zahlen)
+    - [Nichttriviale Quadratwurzeln der 1](#nichttriviale-quadratwurzeln-der-1)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -425,7 +435,7 @@ Sei $X:\Omega\rightarrow R$ eine Zufallsvariable. Für $S\subseteq R$ setze $Pr^
 
 Schreibweisen: Für $S\subseteq R$ ist $X^{-1}(S)=\{a\in\Omega|X(a)\in S\}$ ein Ereignis, für das wir ,,$X\in S$'' oder ,,$\{X\in S\}$'' schreiben. Für $X^{-1}(r)=\{a\in\Omega|X(a) =r\}$ schreiben wir analog ,,$X=r$'' oder ,,$\{X=r\}$''. Insbesondere schreiben wir: $Pr(X=r)=PX(r)=Pr(X^{-1}(r))$ und $Pr(X\in S)=P^X(S)=Pr(X^{-1}(S))$.
 
-Sind $X_i:\Omega\rightarrow R_i$ Zufallsvariable und $S_i\subseteq R_i$, für $i=1,2$, dann schreiben wir ,,$\{X_1\in S_1,X_2\in S_2\}$'' für das Ereignis $X^{-1}(S_1)\cap X^{-1}(S_2)$. Die beiden Zufallsvariablen $X_1$ und $X_2$ heißen unabhängig, wenn $Pr(X_1\in S_1,X_2\in S_2)=Pr(X_1\in S_1)*Pr(X_2\in S_2)$ gilt, für alle $S_i\subseteq R_i,i=1,2$. Dies ist gleichbedeutend mit der Forderung $Pr(X_1=r_1,X_2=r_2)=Pr(X_1=r_1)*Pr(X_2=r_2)$ für alle $r_i\in R_i, i=1,2$.
+Sind $X_i:\Omega\rightarrow R_i$ Zufallsvariable und $S_i\subseteq R_i$, für $i=1,2$, dann schreiben wir ,,$\{X_1\in S_1,X_2\in S_2\}$'' für das Ereignis $X^{-1}(S_1)\cap X^{-1}(S_2)$. Die beiden Zufallsvariablen $X_1$ und $X_2$ heißen unabhängig, wenn $Pr(X_1\in S_1,X_2\in S_2)=Pr(X_1\in S_1)*Pr(X_2\in S_2)$ gilt, für alle $S_i\subseteq R_i,i=1,2$. Dies ist gleichbedeutend mit der Forderung $Pr(X_1=r_1,X_2=r_2)=Pr(X_1=r_1)*Pr(X_2=r_2)$ für alle $r_i\in\mathbb{R}_i, i=1,2$.
 
 
 ## Informationstheoretische Sicherheit
@@ -649,9 +659,9 @@ Eine unangenehme Eigenschaft bei der wiederholten Anwendung von reinen Verschieb
 
 Die Grundidee der Vigenère-Chiffre ist es nun, verschiedene Verschiebechiffren in festgelegter zyklischer Reihenfolge zu verwenden.
 
-Schlüssel: $k=k_0 k_1 k_2 ...k_{s-1}\in Z^s_n,s\in\mathbb{N}$. (Eine Folge von Verschiebewerten.)
+Schlüssel: $k=k_0 k_1 k_2 ...k_{s-1}\in\mathbb{Z}^s_n,s\in\mathbb{N}$. (Eine Folge von Verschiebewerten.)
 
-Klartext: $x=x_0 x_1...x_{l-1} \in Z^l_n,l\in\mathbb{N}$.
+Klartext: $x=x_0 x_1...x_{l-1} \in\mathbb{Z}^l_n,l\in\mathbb{N}$.
 
 Man verschlüsselt $x_0$ mit $k_0$, $x_1$ mit $k_1$, und so weiter. Wenn irgendwann der Schlüssel ,,aufgebraucht'' ist, weil $s<l$ gilt, fängt man mit dem Schlüssel wieder von vorne an. Wir verschlüsseln also $x_0$ mit $k_0,...,x_{s-1}$ mit $k_{s-1},x_l$ mit $k_0,...,x_{2s-1}$ mit $k_{s-1}$,usw. 
 Zusammengefasst: Der Chiffretext ist: $y=y_0 y_1...y_{l-1}\in(\mathbb{Z}_n)^*$ mit $y_i:=e(x_i,k_{i\ mod\ s})$, für $0\geq i < l$.
@@ -1183,7 +1193,7 @@ Sei nun A ein randomisierter Algorithmus (also ein Straight-Line-Programm), inde
 
 $I$ sei die Menge der Eingaben, $Z$ sei die Menge der Ausgaben.
 
-Ist $x\in I$ eine Eingabe, so erhalten wir für jedes $m=(m_1,...,m_r)\in M$ genau eine Ausgabe $A^m(x)\in Z$, indem wir in $A$ die Anweisung $y_i\leftarrow flip(M_i)$ durch $y_i\leftarrow m_i$ ersetzen. Auf diese Weise erhalten wir
+Ist $x\in I$ eine Eingabe, so erhalten wir für jedes $m=(m_1,...,m_r)\in M$ genau eine Ausgabe $A^m(x)\in\mathbb{Z}$, indem wir in $A$ die Anweisung $y_i\leftarrow flip(M_i)$ durch $y_i\leftarrow m_i$ ersetzen. Auf diese Weise erhalten wir
 - Für jedes $m\in M$ eine Funktion $A^m:I\rightarrow Z,x \rightarrow A^m(x)$, und
 - für jedes $x\in I$ eine Zufallsgröße $A(x):M\rightarrow Z,m\rightarrow A^m(x)$.
 
@@ -1567,3 +1577,535 @@ Bemerkung: Für die Betriebsarten R-CBC und OFB gelten Aussagen, die zu Satz 3.8
 
 Im Buch werden auch die folgenden konkreten Parameter diskutiert: $l=128$. Nehmen wir an, die zugelassene Laufzeit $t$ für den Angreifer ist $2^{60} > 10^{18}$ Rechenschritte (das ist so groß, dass es nicht wirklich realisierbar ist), und wir gestatten $q=2^{30} \approx 10^{9}$ Orakelanfragen, wobei die gesamte betroffene Textlänge $n=2^{36}\approx 64*10^9$ Blöcke ist (etwa $2^{40}$ Byte,also ein Terabyte). Wenn die Konstante aus dem Satz etwa $c=10$ ist, erhalten wir: $$insec(2^{36}, 2^{30}, 2^{60},S)\geq 2*insec(2^{36}, 2^{60}+ 10(30*2^{30}+ 2^{36})* 128 ,B) +\frac{2^{66} + 2^{72}}{2^{128}}$.
 Man sieht, dass der additive Term $\frac{2^{66} +2^{72}}{2^{128}}$ kleiner als $2^{-55}$ ist, und die für den Unterscheider zugelassene Zeitschranke mit $2^{60} + 10(30* 2^{30}+2^{36})*128 < 2^{61}$ kaum größer ist als die für den Angreifer. Wenn man für $insec(2^{36}, 2^{61} ,B)$ eine Schranke $\geq 2^{-55}$ hätte, wäre $insec(2^{36}, 2^{30}, 2^{60},S)$ auch kleiner als $2^{-54}$. (Solche konkreten Schranken sind allerdings für kein konkretes Block-Kryptosystem bewiesen.)
+
+# Zahlentheorie und Algorithmen
+Zu Aussagen, die mit (∗) markiert sind, gibt es Beweise oder Anmerkungen im Anhang A. Beweise von rein zahlentheoretischen Aussagen sind nicht prufungsrelevant. Beweise für Wahrscheinlichkeitsaussagen und Begründungen für Rechenzeiten von Algorithmen dagegen sind prüfungsrelevant.
+
+## Fakten aus der Zahlentheorie und grundlegende Algorithmen
+Unsere Zahlenbereiche:
+- $\mathbb{N}=\{ 0 , 1 , 2 , 3 ,...\}$,
+- $\mathbb{Z}=\{...,- 2 ,- 1 , 0 , 1 , 2 , 3 ,...\}$
+
+Wir stellen uns die Zahlen immer als zu einer passenden Basis $b$ dargestellt vor: Binärdarstellung, (Oktaldarstellung,) Dezimaldarstellung, Hexadezimaldarstellung, Darstellung zur Basis 256 (eine Ziffer ist ein Byte) oder $2^{32}$ oder $2^{64}$ (eine Ziffer ist ein 32- bzw. 64-Bit-Wort, passend für die Darstellung in einem Rechner).
+
+Die Anzahl der Ziffern in der Darstellung von $a\in\mathbb{N}$ zur Basis $b$ ist $\lceil  log_b(a+1)\rceil$. Das ist etwa $\frac{ln\ a}{ln\ b}=\frac{log\ a}{log\ b}$.
+
+Verwendete Operationen: Addition, Subtraktion, Multiplikation, Division mit Rest.
+
+Wir nehmen an, dass zwei einziffrige Zahlen in Zeit $O(1)$ addiert und subtrahiert werden können (,,von der Hardware''). Addition zweier n-ziffriger Zahlen kostet dann Zeit $O(n)$, Multiplikation einer n-ziffrigen und einer l-ziffrigen Zahl mit der Schulmethode kostet Zeit $O(nl)$. Es gibt schnellere Verfahren: Karatsuba mit $O(n^{1,59})$ für zwei n-ziffrige Zahlen, Schönhage-Strassen (1977) sogar mit $O(n\ log\ n\ log\ log\ n)$. Nach längerer Pause erschienen 2007 und 2008 Verbesserungen. Im März 2019 erschien eine Arbeit, die zeigt, wie man zwei n-Bit-Zahlen in Zeit $O(n\ log\ n)$ multiplizieren kann. Man vermutet, dass das optimal ist. (Nach aktuellem Stand ergeben sich Vorteile gegenüber Karatsuba aber erst für unrealistisch lange Zahlen.)
+
+Fakt 4.1 Division mit Rest: Zu $x\in\mathbb{Z}$ und $m\geq 1$ gibt es ein $r$ mit $0\leq r < m$ und ein $q$ mit $x=qm+r$. Die Zahlen $q$ und $r$ sind eindeutig bestimmt.
+
+Die Zahl $r$ (,,Rest'') bezeichnen wir mit $x\ mod\ m$. Sie hat die Darstellung $x-qm$, unterscheidet sich also von $x$ um ein Vielfaches von $m$. Der Quotient $q$ wird mit $x\ div\ m$ bezeichnet. 
+Beispiel: $30 = 3*9 + 3, 30\ mod\ 9 = 3, -30 = (-4) *9 + 6, (-30)\ mod\ 9 = 6$.
+
+Aufwand für Division mit Rest: Die Division einer n-ziffrigen Zahl durch eine l-ziffrige Zahl mit der Schulmethode kostet Zeit $O(nl)$.
+
+Wir sagen, dass eine ganze Zahl $y$ die ganze Zahl $x$ teilt (oder dass $y$ ein Teiler von $x$ ist), wenn $x=qy$ für eine ganze Zahl $q$ gilt. Oft schreibt man dafur kurz $y|x$. Wenn $y$ kein Teiler von $x$ ist, schreiben wir $y\not|x$.
+
+Beispiel: $3|12,-3|12,-3|-12,-3|12,3|0,0|0$.
+
+Beobachtungen: Die Teilbarkeitsrelation $|$ ist reflexiv und transitiv. Es handelt sich damit um eine ,,Präordnung'' (oft auch ,,Quasiordnung'' genannt). Zahlen $x$ und $-x$ können von ihr nicht unterschieden werden: Es gilt $x|y\Leftrightarrow -x|y$ und $y|x\Leftrightarrow y|-x$, und weiter $x|-x$ und $-x|x$. Die Präordnung ist also nicht antisymmetrisch. Sie ist auch nicht total, weil manche Elemente nicht verglichen werden können: $4\not|9$ und $9\not|4$. Aus $0|x$ folgt $x=0$; für jede ganze Zahl $y$ gilt $y|0$; also ist in dieser Präordnung $0$ das eindeutig bestimmte größte Element. Für jede ganze Zahl $x$ gilt: $1|x$ und $-1|x$, also sind $1$ und $-1$ kleinste Elemente. Wenn $m\geq 1$ ist, ist $m|x$ gleichbedeutend mit $x\ mod\ m= 0$.
+
+Fakt 4.2 Teilbarkeit: Für beliebige $x,y,z\in\mathbb{Z}$ gilt:
+1. Aus $x|y$ und $x|z$ folgt $x|uy+vz$ für alle $u,v\in\mathbb{Z}$.
+2. Aus $x|y$ folgt $ux|uy$ für alle $u\in\mathbb{Z}$.
+3. Aus $x|y$ und $y|z$ folgt $x|z$ (Transitivität).
+4. Aus $x|y$ und $y\not= 0$ folgt $0<|x|\leq |y|$.
+5. Aus $x|y$ und $y|x$ folgt $|x|=|y|$. Wenn zudem $x,y\geq 0$ gilt, folgt $x=y$.
+
+![Abbildung 1](Assets/Kryptographie-teilbarkeitsbeziehung.png)
+Einige Zahlen und ihre Teilbarkeitsbeziehungen. Beziehungen, die aus der Transitivität folgen, sind nicht eingetragen. Man erkennt $1$ und $-1$ als kleinste Elemente und $0$ als größtes Element der Teilbarkeitsbeziehung als Präordnung. Die Elemente in der Ebene unmittelbar über $\{1,-1\}$ sind die Primzahlen, positiv und negativ, also Zahlen $x\not=\pm 1$, die durch keine Zahl außer $\pm x$ und $\pm 1$ teilbar sind.
+Der Beweis ist eine einfache Übung.
+
+Definition 4.3 Größter gemeinsamer Teiler:
+1. Für $x,y\in\mathbb{Z}$ heißt $t\in\mathbb{Z}$ ein gemeinsamer Teiler von $x$ und $y$, wenn $t|x$ und $t|y$ gilt. (Bemerkung: 1 ist stets gemeinsamer Teiler von $x$ und $y$.)
+2. Für $x,y\in\mathbb{Z}$ sei $ggT(x, y)$, der größte gemeinsame Teiler von $x$ und $y$, die (eindeutig bestimmte) nichtnegative Zahl $d$ mit:
+    - $d$ ist gemeinsamer Teiler von $x$ und $y$;
+    - jeder gemeinsame Teiler von $x$ und $y$ ist Teiler von $d$.
+3. $x,y\in\mathbb{Z}$ heißen teilerfremd, wenn $ggT(x,y)=1$ gilt, d.h. wenn sie nicht beide $0$ sind und keine Zahl $>1$ beide teilt.
+
+Bei Definition 4.3.2 stellt sich die Frage nach Existenz und Eindeutigkeit von $ggT(x,y)$. Wir beweisen diese Eigenschaften im Anhang.
+
+Wir bemerken, dass $ggT(0,0) = 0$ gilt. (Sei $d = ggT(0,0)$. Weil $0|0$, folgt mit Def. 4.3.2 $0|d$ und damit $d=0$.) Wenn $x\not= 0$ oder $y\not= 0$ gilt, kann es keinen gemeinsamen Teiler geben, der größer als $max\{|x|,|y|\}$ ist, und der größte gemeinsame Teiler ist auch größtmöglich im Sinn der gewöhnlichen Ordnung auf $\mathbb{Z}$. Weil das Vorzeichen für die Teilbarkeit irrelevant ist, gilt stets $ggT(x,y) = ggT(|x|,|y|)$, und man kann sich immer auf den Fall nichtnegativer Argumente beschränken. Weiter gilt $$ggT(x,y) = ggT(x+uy,y) \quad\quad(4.1)$$, für beliebige $x,y,u\in\mathbb{Z}$. (Wenn $d$ gemeinsamer Teiler von $x$ und $y$ ist, dann teilt $d$ auch $x+uy$. Wenn $d$ gemeinsamer Teiler von $z=x+uy$ und $y$ ist, dann teilt $d$ auch $z-uy =x$. Also haben die Paare $(x,y)$ und $(x+uy,y)$ dieselbe Menge gemeinsamer Teiler, und es folgt $ggT(x,y) = ggT(x+uy,y)$.)
+
+Es gibt einen effizienten Algorithmus zur Ermittlung des größten gemeinsamen Teilers. Er beruht auf den Gleichungen
+1. $ggT(x,y) = ggT(|x|,|y|)$ für alle $x,y\in\mathbb{Z}$,
+2. $ggT(x,y) = ggT(y,x)$ für alle $x,y\in\mathbb{Z}$,
+3. $ggT(a,0) =a$ für $a\geq 0$,
+4. $ggT(a,b) = ggT(b,a\ mod\ b)$ für $a\geq b >0$.
+
+(1. gilt, weil Teilbarkeit das Vorzeichen ignoriert. 2. ist trivial. 3. folgt daraus, dass jede Zahl Teiler von $0$ ist. 4. folgt aus 4.1 und 2., weil $a\ mod\ b=a-qb$ mit $q=ba/bc$ gilt.)
+
+Wir setzen die Beobachtung in ein iteratives Verfahren um.
+
+Algorithmus 4.1 Euklidischer Algorithmus:
+- Input: Zwei ganze Zahlen $x$ und $y$.
+- Methode:
+  1. $a,b:integer;a\leftarrow |x|;b\leftarrow |y|;$
+  2. $while\ b> 0\ repeat$
+  3. $(a,b)\leftarrow (b,amodb);$ // simultane Zuweisung
+  4. return $a$.
+
+Die eigentliche Rechnung findet in der while-Schleife statt. In dieser Schleife wird immer ein Zahlenpaar durch ein anderes ersetzt, das dieselben gemeinsamen Teiler hat wie $x$ und $y$. Wenn der Algorithmus terminiert, weil der Inhalt $b$ von $b$ Null geworden ist, kann man den Inhalt von $a$ ausgeben.
+
+Beispiel: Auf Eingabe $x=10534, y=12742$ ergibt sich der nachstehenden Tabelle angegebene Ablauf. Die Zahlen $a_i$ und $b_i$ bezeichnen den Inhalt der Variablen $a$ und $b$, nachdem die Schleife in Zeilen $2-3$ i-mal ausgeführt worden ist. Die Ausgabe ist $46 = ggT(10534,12742)$.
+|i| $a_i$| $b_i$
+---|---|---
+0 |10534 |12742
+1 |12742 |10534
+2 |10534 |2208
+3 |2208 |1702
+4 |1702| 506
+5 |506 |184
+6 |184 |138
+7 |138 |46
+8 |46 |0
+
+
+Fakt 4.4 Algorithmus 4.1 gibt $ggT(x,y)$ aus.
+
+Wenn $|x|<|y|$, hat der erste Schleifendurchlauf nur den Effekt, die beiden Zahlen zu vertauschen. Wir ignorieren diesen trivialen Schleifendurchlauf. Wir betrachten die Zahlen $a$ in $a$ und $b$ in $b$. Es gilt stets $a>b$, und $b$ nimmt in jeder Runde strikt ab, also terminiert der Algorithmus. Um einzusehen, dass er sogar sehr schnell terminiert, bemerken wir Folgendes. Betrachte den Beginn eines Schleifendurchlaufs. Der Inhalt von $a$ sei $a$, der Inhalt von $b$ sei $b$, mit $a\geq b >0$. Nach einem Schleifendurchlauf enthält $a$ den Wert $a′=b$ und $b$ den Wert $b′=a\ mod\ b$. Falls $b′=0$, endet der Algorithmus. Sonst wird noch ein Durchlauf ausgeführt, an dessen Ende $a$ den Wert $b′=a\ mod\ b$ enthält. Wir behaupten: $b′<\frac{1}{2} a$. Um dies zu beweisen, betrachten wir zwei Fälle: Wenn $b>\frac{1}{2} a$ ist, gilt $b′=a\ mod\ b=a-b<\frac{1}{2} a$. Wenn $b\leq\frac{1}{2} a$ ist, gilt $b′=a\ mod\ b < b\leq\frac{1}{2} a$. - Also wird der Wert in $a$ in jeweils zwei Durchläufen mindestens halbiert. Nach dem ersten Schleifendurchlauf enthält $a$ den Wert $min\{x,y\}$. Daraus ergibt sich Teil 1. der folgenden Aussage.
+
+Fakt 4.5
+1. Die Schleife in Zeilen $2-3$ wird höchstens $O(log(min\{x,y\}))$-mal ausgeführt.
+2. Die gesamte Anzahl von Ziffernoperationen für den Euklidischen Algorithmus ist $O((log\ x)(log\ y))$.
+
+Man beachte, dass $\lceil log(x+1)\rceil\approx log\ x$ die Anzahl der Bits in der Binärdarstellung von $x$ ist. Damit hat der Euklidische Algorithmus bis auf einen konstanten Faktor denselben Aufwand wie die Multiplikation von $x$ und $y$, wenn man die Schulmethode benutzt. (Der Beweis der Schranke in 2. benötigt eine Rechnung, die die Längen der beteiligten Zahlen genauer verfolgt.)
+
+Beispiel: 
+1. $21$ und $25$ sind teilerfremd. Es gilt $31*21 + (-26)*25 = 651-650 = 1$.
+2. Auch $-21$ und $25$ sind teilerfremd. Aus 1. folgt sofort $(-31)*(-21) + (-26)*25 =651 -650 = 1$.
+3. Es gilt $ggT(21,35) = 7$, und $2* 35 - 3 *21 = 7$.
+
+Die folgende sehr nützliche Aussage verallgemeinert diese Beobachtung:
+
+Lemma 4.6... von Bezout
+1. Wenn $x,y\in\mathbb{Z}$ teilerfremd sind, gibt es $s,t\in\mathbb{Z}$ mit $sx+ty= 1$.
+2. Für $x,y\in\mathbb{Z}$ gibt es $s,t\in\mathbb{Z}$ mit $sx+ty= ggT(x,y)$.
+
+Wir geben einen Algorithmus an, der zu $x$ und $y$ die Werte $s$ und $t$ (sehr effizient) berechnet. Damit ist die Frage der Existenz natürlich gleich mit erledigt. Vorab bemerken wir noch, dass es eine Art Umkehrung von 1. gibt: Wenn $sx+ty= 1$ für ganze Zahlen $s$ und $t$ gilt, dann sind $x$ und $y$ teilerfremd. (Beweis: Alle gemeinsamen Teiler von $x$ und $y$ teilen auch $1$, sind also $1$ oder $-1$. Daraus folgt $ggT(x,y) = 1$.)
+
+Für den Algorithmus können wir o.B.d.A. annehmen, dass $x,y\geq 0$ gilt. Die Umrechnung für negative Inputs ist offensichtlich.
+
+Algorithmus 4.2 Erweiterter Euklidischer Algorithmus:
+- Eingabe: Natürliche Zahlen $x$ und $y$.
+- Methode:
+  1. $a,b,sa,ta,sb,tb,q:integer;$
+  2. $a\leftarrow x; b\leftarrow y;$
+  3. $sa\leftarrow 1; ta\leftarrow 0; sb\leftarrow 0; tb\leftarrow 1;$
+  4. while $b> 0$ repeat
+     1. $q\leftarrow a\ div\ b$;
+     2. $(a,b)\leftarrow (b,a-q*b)$;
+     3. $(sa,ta,sb,tb)\leftarrow (sb,tb,sa-q*sb,ta-q*tb)$;
+  5. return$(a,sa,ta)$;
+
+Genau wie im ursprünglichen Euklidischen Algorithmus findet die eigentliche Arbeit in der while-Schleife (Zeilen 4 - 7 ) statt.
+
+Die Idee hinter dem Algorithmus ist folgende. Wie im (einfachen) Euklidischen Algorithmus werden in den Variablen $a$ und $b$ Zahlen $a$ und $b$ mit geführt, die stets $ggT(a,b) =d= ggT(x,y)$ erfüllen. Nach dem ersten Durchlauf gilt $b\leq a$. Die Variablen $sa,ta,sb$ und $t_b$ enthalten immer Zahlenpaare $(s_a,t_a)$ und $(s_b,t_b)$, die folgende Gleichungen erfüllen:
+$$a=s_a*x+t_a*y$$
+$$b=s_b*x+t_b*y \quad\quad(4.2)$$
+
+Diese Gleichung wird durch die Initialisierung hergestellt. In einem Schleifendurchlauf wird $a$ durch $b$ ersetzt und $(s_a,t_a)$ durch $(s_b,t_b)$, und es wird $b$ durch $a-q*b$ ersetzt sowie $(s_b,t_b)$ durch $(s_a-q*s_b, t_a-q*t_b)$. Dadurch bleiben die Gleichungen (4.2) gültig. Wenn schließlich $b=0$ geworden ist, gilt $d=ggT(x,y) =a=s_a*x+t_a*y$. Das bedeutet, dass die Ausgabe das gewünschte Ergebnis darstellt.
+
+Als Beispiel betrachten wir den Ablauf des Algorithmus auf der Eingabe $(x,y) =(10534,12742)$. Die Zahlen $a_i,b_i,s_{a,i},t_{a,i},s_{b,i},t_{b,i}$ bezeichnen den Inhalt von $a,b,sa,ta,sb,tb$ nach dem i-ten Schleifendurchlauf.
+| $i$ |$a_i$|$b_i$|$s_{a,i}$|$t_{a,i}$|$s_{b,i}$|$t_{b,i}$|$q_i$
+---|---|---|---|---|---|---|---|
+0| 10534| 12742| |1| 0 |0 |1| -
+1| 12742| 10534| |0| 1 |1 |0| -
+2| 10534| 2208 |1 |0| - |1 |1| 1
+3| 2208| 1702 |- |1 |1 |5 - |4| 4
+4| 1702| 506 |5 |- |4 |- 6 |5| 1
+5| 506| 184 |- |6 |5 |23 |- |19 |3
+6| 184| 138 |23| - |19 |- |52| 43| 2
+7| 138| 46 |- |52 |43 |75 |-| 62| 1
+8| 46| 0 75 |-| 62 |-| 277 |229| 3
+
+Die Ausgabe ist $(46, 75 ,-62)$. Man überprüft leicht, dass
+$$46 = ggT(10534,12742) = 75* 10534 - 62 * 12742$$
+gilt. - Allgemein gilt:
+
+Fakt 4.7: Wenn Algorithmus 4.2 auf Eingabe $(x,y)$ mit $x,y\geq 0$ gestartet wird, dann gilt:
+1. Für die Ausgabe $(d,s,t)$ gilt $d= ggT(x,y) =sx+ty$.
+2. Die Anzahl der Schleifendurchläufe ist dieselbe wie beim gewöhnlichen Euklidischen Algorithmus.
+3. Die Anzahl von Ziffernoperationen für Algorithmus 4.2 ist $O((log\ x)(log\ y)).
+
+Wir notieren noch eine wichtige Folgerung aus dem Lemma von Bezout. Die Aussage ist aus der Schule bekannt: Wenn eine Zahl z.B. durch $3$ und durch $5$ teilbar ist, dann ist sie auch durch 15 teilbar. Dort benutzt man die Primzahlzerlegung zur Begründung. Diese ist aber gar nicht nötig.
+
+Fakt 4.8: Wenn $x$ und $y$ teilerfremd sind und $a$ sowohl durch $x$ als auch durch $y$ teilbar ist, dann ist $a$ auch durch $xy$ teilbar.
+
+Beweis: Weil $x$ und $y$ Teiler von $a$ sind, kann man $a=ux$ und $a=vy$ schreiben, für ganze Zahlen $u,v$. Weil $x$ und $y$ teilerfremd sind, liefert Lemma 4.6.1 zwei ganze Zahlen $s$ und $t$ mit $1=sx+ty$. Dann ist $a=asx+aty=vysx+uxty= (vs+ut)xy$, also ist $xy$ Teiler von $a$.
+
+## Modulare Arithmetik
+Definition 4.9: Für $m\geq 2$ definieren wir eine zweistellige Relation auf $\mathbb{Z}$: $x\equiv y (mod\ m)$ heißt $m|(x-y)$.
+
+Man sagt: ,,$x$ ist kongruent zu $y$ modulo $m$.'' In der Mathematik sieht man auch oft die kompaktere Notation $x\equiv y(m)$ oder $x\equiv_m y$. Es besteht eine enge Beziehung zwischen dieser Relation und der Division mit Rest.
+
+Fakt 4.10:
+1. $x\equiv y(mod\ m)$ gilt genau dann wenn $x\ mod\ m=y\ mod\ m$ gilt.
+2. Die zweistellige Relation $*\equiv *(mod\ m)$ ist eine Äquivalenzrelation, sie ist also reflexiv, transitiv und symmetrisch.
+
+Beispiel für 1.: $29\ mod\ 12 = 53\ mod\ 12 = 5$ und $53-29 = 24$ ist durch $12$ teilbar.
+
+Der Beweis von 1. ist eine leichte Übung; 2. folgt sofort aus 1.
+
+Die Kongruenzrelation $* \equiv  *(mod\ m)$ führt (wie jede Äquivalenzrelation) zu einer Zerlegung der Grundmenge $\mathbb{Z}$ in Äquivalenzklassen (die hier ,,Restklassen'' heißen): $[x]_m= [x] =\{y\in\mathbb{Z}|x\equiv y(mod\ m)\}=\{y\in\mathbb{Z}|x\ mod\ m=y\ mod\ m\}$. Wir definieren: $m\mathbb{Z}:=\{...,-3m,-2m,-m,0,m,2m,3m,...\}$ und $x+A:=\{x+y|y\in A\}$, für $A\supseteq Z$.
+
+Beispiel: Für $m=3$ gibt es die drei Restklassen
+- $[0] = [0]_3 =\{...,-6,-3,0,3,6,...\}= 0 + 3\mathbb{Z}$,
+- $[1] = [1]_3 =\{...,-5,-2,1,4,7,...\}= 1 + 3\mathbb{Z}$,
+- $[2] = [2]_3 =\{...,-4,-1,2,5,8,...\}= 2 + 3\mathbb{Z}$.
+
+Mit den Restklassen kann man dann wieder rechnen: Addition und Multiplikation lassen sich wie folgt definieren.
+- $[x]_m+ [y]_m := [x+y]_m$,
+- $[x]_m*[y]_m := [x*y]_m$
+
+Beispielsweise gelten für $m=3$ die Gleichheiten $[4] + [5] = [9] = [0]$ und $[4]*[5] =[20] = [2]$.
+
+Fakt 4.11: Diese Operationen sind wohldefiniert, d.h., aus $x\equiv x′(mod\ m)$ und $y\equiv y′(mod\ m)$ folgt $[x+y]_m= [x′+y′]_m$ und $[x*y]_m= [x′*y′]_m$.
+
+Der Beweis ist einfach. Weil $x\equiv x′ (mod\ m)$ und $y\equiv y′ (mod\ m)$ gilt, sind $x-x′$ und $y-y′$ durch $m$ teilbar. Also ist auch $xy-x′y′=x(y-y′) + (x-x′)y′$ durch $m$ teilbar, und es gilt $x*y\equiv x′*y′ (mod\ m)$. Der Fall der Addition ist noch einfacher.
+
+Aus der Definition und der Wohldefiniertheit ergibt sich, dass man anstatt mit Restklassen auch mit Repräsentanten rechnen kann. Statt $([5]_3 *[5]_3)*[2]_3 = [25]_3 *[2]_3 = [1]_3 *[2]_3 = [2]_3$ schreibt man dann einfach $(5*5)* 2 \equiv  25 * 2 \equiv  1 * 2 \equiv 2 (mod\ 3)$.
+
+Fakt 4.11 besagt auch, dass an jeder Stelle einer solchen Rechnung jede Zahl durch eine dazu kongruente Zahl ersetzt werden darf, je nachdem, wie es bequem ist. Beispiel: $(5*5)* 2 \equiv((-1)*(-1))*(-1) = (-1)^3 =- 1 \equiv 2 (mod\ 3)$. Da $(x\ mod\ m)\equiv x(mod\m)$ für alle $x$ und $m\geq 1$ gilt, kann man in ,,modulo-m-Rechnungen'' eine Zahl $x$ insbesondere immer durch ihren Rest modulo m ersetzen.
+
+Beispiel: Um $13^7\ mod\ 11$ zu berechnen, rechnet man $13^7\equiv 27\equiv 2^5*4 =32* 4\equiv (-1)*4 = -4\equiv 7(mod\ 11)$. Um $3^{1006}\ mod\ 7$ zu berechnen, bemerkt man, dass $3^2\ mod\ 7=2$ ist, also $3^{1006}\equiv 2^{503}(mod\ 7)$. Weil nun $2^3\ mod\ 7=1$ gilt, folgt $2^{503}=(2^3)^{167} * 2^2 \equiv  1^{167}*4=4(mod\ 7)$.
+
+Zu $m\geq 1$ betrachtet die Menge aller Restklassen: $\mathbb{Z}_m:=\mathbb{Z}/m\mathbb{Z}:=\{[x]_m|x\in\mathbb{Z}\}=\{[x]| 0 \leq x<m\}$. Solange es nicht zu Missverständnissen führt, schreibt man auch $\mathbb{Z}_m=\{x|0 \leq x < m\}$, zusammen mit ,,Addition modulo m'' und ,,Multiplikation modulo m''. Damit meint man, dass man mit den Repräsentanten der Restklassen rechnet, die in $\{0,1 ,...,m-1\}$ liegen.
+
+Fakt 4.12: Für jedes $m\geq 2$ bildet die Menge $\mathbb{Z}_m$ mit den Operationen Addition modulo m und Multiplikation modulo m einen kommutativen Ring mit $1$.
+
+Das heißt im Detail: Die Operationen $+(mod\ m)$ und $*(mod\ m)$ führen nicht aus dem Bereich $\mathbb{Z}_m$ heraus. Die Addition erfüllt alle Rechenregeln für kommutative Gruppen, d.h. sie ist kommutativ und assoziativ, es gibt ein neutrales Element, nämlich $[0]$, und zu jedem $[x]$ gibt es ein Inverses $-[x]=[-x]$. (Es gilt ja $[x] + [-x] = [0]$. Beachte: Für $0 < x < m$ gilt $0< m-x < m$ und $[x]+[m-x]=[m]=[0]$, also $-[x]=[m-x]$. Insbesondere ist $-[1]=[-1]=[m-1]$ das additive Inverse zu $[1]$.) Die Multiplikation ist assoziativ und kommutativ, und sie hat $[1]$ als neutrales Element $([1]*[x] = [x]*[1] = [x])$; für Addition und Multiplikation gelten die Distributivgesetze. (Siehe auch Bemerkung A.1 im Anhang.)
+
+Lemma 4.13: Für jedes $m\geq 2$ ist die Abbildung $\mathbb{Z}\rightarrow\mathbb{Z}_m ,x\rightarrow [x]$, ein Homomorphismus; d.h. für $x,y\in\mathbb{Z}$ gilt: $[x+y]=[x]+[y]$ und $[x*y] = [x]*[y]$. 
+
+(Die folgt direkt aus Definition der Operationen.) 
+In vielen Anwendungen der Zahlentheorie in kryptographischen Verfahren kommt es darauf an, Potenzen $x^y\ mod\ m$ zu berechnen. Dabei kann $y\geq 0$ eine sehr große Zahl sein. Beispiel: $3^{1384788374932954500363985493554603584759389}\ mod\ 28374618732464817362847326847331872341234$
+
+Wieso kann ein Computer das Ergebnis $(18019019948605604024937414441328931495971)$ in Bruchteilen von Sekunden berechnen? Auf keinen Fall kann er $y$ Multiplikationen durchführen. Die folgende einfache rekursive Formel weist den Weg zu einer effizienten Berechnung:
+$$x^y\ mod\ m=\begin{cases} 1\quad\quad\text{ , wenn } y=0,\\ x\ mod\ m\quad\quad\text{ , wenn } y= 1,\\ ((x^2 mod\ m)y/^2 ) mod\ m\quad\quad\text{ , wenn } y\geq 2 \text{ gerade ist},\\ (((x^2 mod\ m)^{(y-1)/^2} mod\ m)*x) mod\ m\quad\quad\text{ , wenn } y\geq 2 \text{ ungerade ist}.\end{cases}$$
+
+Man beachte noch, dass $\lfloor y\backslash 2\rfloor=\begin{cases} y/2\quad\quad\text{ für gerade y},\\ (y-1)/2\quad\quad\text{ für ungerade y}\end{cases}$. Diese Formeln führen unmittelbar zu folgender rekursiver Prozedur.
+
+Algorithmus 4.3 Schnelle modulare Exponentiation, rekursiv
+- function $modexp(x,y,m)$
+- Eingabe: Ganze Zahlen $x,y\geq 0$, $m\geq 1$, mit $0\leq x < m$.
+- Methode:
+  - if $y= 0$ then return $1$;
+  - if $y= 1$ then return $x$;
+  - $z\leftarrow modexp((x*x) mod\ m,\lfloor y/2\rfloor,m);$ // rekursiver Aufruf
+  - if $y$ ist ungerade then $z\leftarrow (z*x) mod\ m$
+  - return $z$.
+
+Man erkennt sofort, dass in jeder Rekursionsebene die Bitanzahl des Exponenten $y$ um 1 sinkt, dass also die Anzahl der Rekursionsebenen etwa $log\ y$ beträgt. In jeder Rekursionsstufe ist eine oder sind zwei Multiplikationen modulo m auszuführen, was $O((log\ m)^2)$ Ziffernoperationen erfordert (Schulmethode).
+Beispiel: Wir berechnen $13^{43} mod\ 19$.
+| $i$ | | $x^{2^i} mod\ 19$ | $\lfloor y/2^i\rfloor$ | Faktor (wenn $\lfloor y/2^i\rfloor$ ungerade) |
+| ---|---|---|---|---|
+0| $x$| $13$ |$43$| $13$
+1| $x^2$ |$13^2 \equiv (-6)^2 \equiv 36\equiv 17$| $21$  |$17$
+2| $x^4$ |$17^2 \equiv (-2)^2 = 4$| (gerade) $10$| -
+3| $x^8$ |$4^2 = 16$| $5$| $16$
+4| $x^{16}$| $16^2 \equiv (-3)^2 = 9$| (gerade) $2$| -
+5| $x^{32}$| $9^2 \equiv (-10)^2 = 100\equiv 5$| $1$| $5$
+
+Produkt: $x*x^2 *x^8 *x^{16} *x^{32} \equiv 13*17*16*5\equiv (-6)(-2)(-3)5 = -180\equiv -9\equiv 10$.
+
+Lemma 4.14: Sei $x<m$. Die Berechnung von $x^y\ mod\ m$ benötigt $O(log\ y)$ Multiplikationen und Divisionen modulo m von Zahlen aus $\{0,...,m^2-1\}$, und damit $O((log\ y)(log\ m)^2)$ Ziffernoperationen.
+
+Bemerkung: Man kann denselben Algorithmus in einem beliebigen Monoid $(M,\circ,e)$ ($M\not=\varnothing$ ist eine Menge,$\circ:M\times M \rightarrow M$ ist assoziative Operation mit neutralem Element $e\in M$) benutzen. Monoide bilden zum Beispiel:
+- $(\mathbb{Z}_m ,*_m,1)$, wo $*_m$ die Multiplikation modulo m ist;
+- $(\mathbb{N},+,0)$: die natürlichen Zahlen mit der Addition (neutral: $0$);
+- $(\mathbb{N},*,1)$: die natürlichen Zahlen mit der Multiplikation (neutral: $1$);
+- quadratische Matrizen über einem Ring mit $1$, mit Matrixmultiplikation (neutral: Einheitsmatrix);
+- die Menge $\sum^∗$ aller Wörter über einem Alphabet $\sum$, mit der Konkatenation (neutral: das leere Wort);
+- jede Gruppe $(G,\circ,e)$ (G ist die Grundmenge, $\circ$ die Operation und $e$ das neutrale Element.)
+
+Wenn man nur eine assoziative Operation und kein neutrales Element hat, funktioniert der Algorithmus für Exponenten $y\geq 1$.
+
+## Inverse in Restklassenringen
+Wir untersuchen nun, wie es mit multiplikativen Inversen im Ring $\mathbb{Z}_m =Z/m\mathbb{Z}$ steht. Das heißt: Gegeben $x\in\mathbb{Z}_m$, wann gibt es ein $y\in\mathbb{Z}_m$ mit $xy\ mod\m= 1$? Wenn $x=0$, geht das natürlich nie. Für $1\leq x<m$ muss man genauer hinsehen.
+Zunächst eine einfache Beobachtung:
+
+Lemma 4.15: Für jedes $m\geq 2$ und alle $x,y\in\mathbb{Z}$ gilt: Wenn $x\equiv y(mod\ m)$, dann gilt $ggT(x,m)=ggT(y,m)$. (In Worten: Der größte gemeinsame Teiler von $x$ und $m$ hängt nur von der Restklasse $[x] modulo\ m$ ab.) Insbesondere gilt $ggT(x,m) = ggT(x\ mod\ m,m)$.
+
+Beweis: Sei $x=y+am$. Dann ist jeder gemeinsame Teiler von $x$ und $m$ auch gemeinsamer Teiler von $y$ und $m$ und umgekehrt. 
+
+Wegen dieses Lemmas kann man auch unbesorgt $ggT(x,m)$ für Elemente $x$ von $\mathbb{Z}_m =\mathbb{Z}/m\mathbb{Z}$ schreiben. In diesem Ring spielen die Elemente, die ein multiplikatives Inverses haben, eine besondere Rolle.
+
+Beispiel: Bei $m=15$ gilt $1*1=1$, $2*8 = 16\equiv 1$, $4*4 = 16\equiv 1$, $7*13 = 91\equiv 1$, $11*11 = 121\equiv 1$, $14* 14 \equiv (-1)^2 = 1 (mod\ 15)$. Bei den Zahlen $0, 3 , 5 , 6 , 9 , 10 , 12$ findet man kein multiplikatives Inverses. (Beispiel: Jede Zahl $12*y-q*15$ ist durch $3$ teilbar, also kann $12*y\ mod\ 15$ für kein $y$ gleich 1 sein.) Daher haben in $\mathbb{Z}_{15}$ die acht Zahlen $1, 2, 4, 7, 8, 11, 13, 14$ ein multiplikatives Inverses modulo $15$, die anderen sieben Zahlen haben keines. - Die Elemente von $\mathbb{Z}_{15}$ mit einem multiplikativen Inversen sind genau die, die zu $15$ teilerfremd sind.
+
+Fakt 4.16: Für jedes $m\geq 2$ und jedes $x\in\mathbb{Z}$ gilt: Es gibt ein $y$ mit $xy\ mod\ m=1$ genau dann wenn $ggT(x,m)=1$.
+
+Beweis: 
+- ,,$\Rightarrow$'': Es sei $xy\ mod\ m= 1$. Das heißt: Es gibt ein $q\in\mathbb{Z}$ mit $xy-qm=1$. Dann teilt jeder gemeinsame Faktor von $x$ und $m$ auch $1$, also sind $x$ und $m$ teilerfremd.
+- ,,$\Leftarrow$'': $x$ und $m$ seien teilerfremd. Nach dem Lemma von Bezout (Lemma 4.6.1) gibt es $s,t\in\mathbb{Z}$ mit $sx+tm=1$. Setze $y:=s\ mod\ m$. Dann gilt: $(x*y) mod\ m= (x*(s\ mod\ m)) mod\ m=sx\ mod\ m= 1$.
+
+Beispiel: $x=22$ und $m=15$ sind teilerfremd. Mit dem erweiterten Euklidischen Algorithmus findet man $s=-2$ und $t=3$, so dass $sx+tm=(-2)*22 + 3*15 =-44 + 45 = 1$ gilt. Setze $y=(-2)\ mod\ 15 = 13$. Man kontrolliert: $22*13 =286=19 *15 + 1\equiv 1\ mod\ 15$.
+
+Wir bemerken allgemein: Mit dem erweiterten Euklidischen Algorithmus 4.2 berechnet man leicht $d$ und Koeffizienten $s,t\in\mathbb{Z}$ mit $sx+tm= d= ggT(x,m)$. Wenn $d>1$ ist, gibt es kein Inverses zu $x$ in $\mathbb{Z}_m$. Wenn $d=1$ ist, folgt $sx\ mod\ m=1$, also ist $s\ mod\ m$ das gewünschte inverse Element. Die Rechenzeit für das Berechnen des ,,modularen Inversen'' beträgt also $O((log\ x)(log\ m))$.
+
+Die Menge der invertierbaren Elemente von $\mathbb{Z}_m$ erhält eine eigene Bezeichnung.
+
+Definition 4.17: Für $m\geq 2$ sei $\mathbb{Z}^∗_m:=\{x\in\mathbb{Z}_m| ggT(x,m)=1\}$.
+
+(Wieder sind eigentlich die Restklassen $[x]_m, 0\leq x < m, ggT(x,m) = 1$, gemeint.)
+
+Fakt 4.18: Für jedes $m\geq 2$ gilt: $\mathbb{Z}^*_m$ mit der Multiplikation modulo m als Operation ist eine (kommutative) Gruppe.
+
+Beispiel: $\mathbb{Z}^*_{21}=\{1,2,4,5,8,10,11,13,16,17,19,20\}$ und $\mathbb{Z}^*_7=\{1,2,3,4,5,6\}$.
+
+Wir haben $8*16 \equiv 128 \equiv 2 (mod\ 21)$, mit $2\in\mathbb{Z}^*_{21}$. Für $17\in\mathbb{Z}^_{21}$ gibt es das Inverse $5$, denn $17*5 = 85\equiv 1 (mod\ 21)$.
+
+Aus den Gruppeneigenschaften weiß man, dass Inverse eindeutig bestimmt sind. Für das Inverse von $x$ (wenn es existiert) schreiben wir $x^{-1} mod\ m$ (gemeint ist die Restklasse oder der eindeutig bestimmte Repräsentant in $\{0,1 ,...,m-1\}$).
+
+Am schönsten ist die Situation, wenn alle Zahlen $1,...,m-1$ in $\mathbb{Z}^*_m$ liegen. Das heißt insbesondere, dass keine der Zahlen $2, 3 ,...,m-1$ die Zahl $m$ teilt. Um diese Situation zu beschreiben, definieren wir vorläufig den Begriff der Primzahl. Man erinnere sich, dass jede ganze Zahl $x$ durch $x$ und $-x$ sowie durch $1$ und $-1$ teilbar ist.
+
+Eine ganze Zahl $p\geq 1$ heißt Primzahl, wenn $p$ genau zwei positive Teiler hat, nämlich $1$ und $p$. Die Folge der Primzahlen beginnt mit $2, 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 ,....$
+
+Fakt 4.19 (∗): Für jedes $m\geq 2$ sind folgende Aussagen äquivalent:
+1. $m$ ist eine Primzahl.
+2. $\mathbb{Z}^*_m=\{ 1 ,...,m-1\}$.
+3. $\mathbb{Z}_m$ ist ein Körper.
+
+Der Beweis erfolgt durch einen Ringschluss. 
+- ,,1. $\Rightarrow$ 2.'': Sei $m$ Primzahl. Dann kann für kein Element $x\in\{1 ,...,m-1\}$ die Beziehung $ggT(x,m)>1$ gelten, weil sonst die Zahl $ggT(x,m)$ ein Teiler von $m$ strikt zwischen $1$ und $m$ wäre.
+- ,,2. $\Rightarrow$ 3.'': Wenn $\mathbb{Z}^*_m=\{1 ,...,m-1\}$ gilt, hat nach Fakt 4.16 jedes Element von $\mathbb{Z}_m -\{0\}$ ein multiplikatives Inverses. Das ist genau die Eigenschaft, die dem Ring $\mathbb{Z}_m$ zum Körper fehlt.
+- ,,3. $\Rightarrow$ 1.'': Das beweisen wir durch Kontraposition. Sei also 1. falsch, d.h. sei $m$ keine Primzahl. Dann gibt es ein $x\in\{2,...,m-1\}$, das Teiler von $m$ ist. Insbesondere ist $ggT(x,m) =x >1$. 
+- Mit Fakt 4.16 folgt, dass $x$ kein multiplikatives Inverses modulo $m$ hat, also ist $\mathbb{Z}_m$ kein Körper, d.h. 3. ist falsch. 
+
+Beispiel: $m=13$. Wir geben für jedes $x\in\mathbb{Z}^*_{13}$ das Inverse $y$ sowie das Produkt $x*y$ an (das natürlich bei der Division durch $13$ Rest $1$ lassen muss).
+| x |1 |2 |3 |4 |5 |6 |7 |8 |9 |10| 11| 12
+---|---|---|---|---|---|---|---|---|---|---|---|---|
+y| 1 |7 |9 |10| 8| 11| 2| 5| 3| 4| 6| 12
+$x*y$| 1| 14| 27| 40| 40| 66| 14| 40| 27| 40| 66| 144|
+
+$14$ ist keine Primzahl, und es gibt keine Zahl $y$ mit $2*y\ mod\ 14 = 1$; das heißt, dass $2\not\in\mathbb{Z}^*_{14}$ und daher, dass $\athbb{Z}_{14}$ kein Körper ist. 
+Wir notieren noch einen altehrwürdigen Satz aus der Zahlentheorie. Der Satz wurde von Pierre de Fermat, 1607-1665, einem französischen Mathematiker und Juristen, gefunden.
+
+Fakt 4.20 (Kleiner Satz von Fermat): Wenn $p$ eine Primzahl ist, dann gilt: $a^{p-1}\ mod\ p= 1$, für jedes $a\in\mathbb{Z}^*_p$.
+
+Beweis: Sei $a\in\mathbb{Z}^*_p$ gegeben. Betrachte die Abbildung $g_a: \mathbb{Z}^*_p \owns s\rightarrow as\ mod\ p\in\mathbb{Z}^*_p$. Diese Abbildung ist injektiv, da für das zu $a$ inverse Element $b=a^{-1}\ mod\ p$ gilt: $b*g_a(s)\ mod\ p=b(as)\ mod\ p=((ba)\ mod\ p)s\ mod\ p=s$. Also gilt: $\{1,...,p-1\}=\{g_a(1),...,g_a(p-1)\}$.
+Wir multiplizieren die Zahlen $1,...,p-1$ in zwei Anordnungen: $1*...*(p-1)\ mod\ p =g_a(1) *...*g_a(p-1)\ mod\ p=a^{p-1} *(1*...*(p-1)\ mod\ p)$.
+Wenn wir beide Seiten mit dem multiplikativen Inversen von $X:= 1*...*(p-1)\ mod\ p$ multiplizieren, erhalten wir $1=a^{p-1}\ mod\ p$. 
+Wir bemerken, dass auch eine gewisse Umkehrung gilt, sogar für beliebige $m$: Wenn $a^{m-1}\ mod\ m=1$ ist, d.h. $a^{m-1}-qm=1$ für ein $q$, dann folgt $ggT(a,m)=1$. Wenn also $a\in\mathbb{Z}_m -\mathbb{Z}^*_m$, dann gilt auf jeden Fall $a^{m-1}\ mod\ m\not= 1$.
+
+## Der Chinesische Restsatz
+Der ,,Chinesische Restsatz'' besagt im Wesentlichen, dass für teilerfremde Zahlen $m$ und $n$ die Strukturen $\mathbb{Z}_m \times\mathbb{Z}_n$ (mit komponentenweisen Operationen) und $\mathbb{Z}_{mn}$ isomorph sind.
+
+Wir beginnen mit einem Beispiel, nämlich $m=3,n=8$, also $mn=24$. Die folgende Tabelle gibt die Reste der Zahlen $x\in\{0,1,...,23\}\ modulo\ 3$ und $modulo\ 8$ an. Die Restepaare wiederholen sich zyklisch für andere $x\in\mathbb{Z}$.
+
+x| 0| 1| 2| 3| 4| 5| 6| 7| 8| 9| 10| 11| 12| 13| 14| 15| 16| 17| 18| 19| 20| 21| 22| 23|
+---|---|---|---|---|---|---|---|---|----|----|----|---|---|---|----|---|---|---|---|----|---|---|---|---|---|---|---|---|
+x mod 3| 0| 1| 2| 0| 1| 2| 0| 1| 2| 0| 1| 2| 3| 0| 1| 2| 0| 1| 2| 0| 1| 2| 0| 1| 2|
+x mod 8| 0| 1| 2| 3| 4| 5| 6| 7| 0| 1| 2| 3| 8| 4| 5| 6| 7| 0| 1| 2| 3| 4| 5| 6| 7|
+
+Wenn wir die Einträge in Zeilen 2 und 3 als 24 Paare in $\mathbb{Z}_3 \times\mathbb{Z}_8$ ansehen, erkennen wir, dass sie alle verschieden sind, also auch alle Möglichkeiten in $\{0,1,2\}\times\{0,1,...,7\}$ abdecken. D.h.: Die Abbildung $x\rightarrow (x\ mod\ 3,x\ mod\ 8)$ ist eine Bijektion zwischen $\mathbb{Z}_{24}$ und $\mathbb{Z}_3\times\mathbb{Z}_8$. Zudem spiegeln sich arithmetische Operationen auf den Elementen von $\mathbb{Z}_{24}$ in den Resten modulo $3$ und $8$ wider. Beispielsweise liefert die Addition von $(2,7)$ und $(2,1)$ das Resultat $(1,0)$, das der Addition von $23$ und $17$ mit dem Resultat $40\ mod\ 24 = 16$ entspricht. Genauso ist $(2^5\ mod\ 3, 3^5\ mod\ 8)=(2,3)$, was der Beobachtung $11^5\ mod\ 24 = 11$ entspricht.
+Der Chinesische Restsatz sagt im wesentlichen, dass eine solche strukturelle Entsprechung zwischen den Resten modulo $mn$ und Paaren von Resten modulo $m$ bzw. $n$ immer gilt, wenn $m$ und $n$ teilerfremd sind.
+
+Fakt 4.21 Chinesischer Restsatz (∗): $m$ und $n$ seien teilerfremd. Dann ist die Abbildung $\Phi:\mathbb{Z}_{mn} \owns x \rightarrow (x\ mod\ m, x\ mod\ n)\in\mathbb{Z}_m\times\mathbb{Z}_n$ bijektiv. Weiterhin: Wenn $\Phi(x)=(x_1,x_2)$ und $\Phi(y)=(y_1,y_2)$, dann gilt:
+1. $\Phi(x+_{mn} y) = (x_1 +_m y_1 , x_2 +_n y_2)$
+2. $\Phi(x*_{mn} y) = (x_1 *_m y_1 , x_2 *_n y_2)$
+3. $\Phi(1) = (1,1)$
+
+(Dabei bezeichnen $+_j$ und $*_j$ die Addition und die Multiplikation modulo $j$.)
+
+Für mathematisch-strukturell orientierte Leser/innen: Die Gleichungen 1. bis 3. kann man etwas abstrakter auch so fassen, dass die Abbildung $\Phi$ ein Ring-mit-1-Isomorphismus zwischen $\mathbb{Z}_{mn}$ und $\mathbb{Z}_m \times\mathbb{Z}_n$ ist.
+
+Man kann sich noch fragen, wie man nötigenfalls zu gegebenen Zahlen $s\in\mathbb{Z}_m$ und $t\in\mathbb{Z}_n$ die Zahl $x\in\mathbb{Z}_{mn}$ berechnen kann, die $\Phi(x)=(s,t)$ erfullt. Dazu betrachtet man zunächst den Fall $s=1$ und $t=0$. Weil $m$ und $n$ teilerfremd sind, kann man mit dem erweiterten Euklidischen Algorithmus ein $u\in\mathbb{Z}_{m}$ mit $un\ mod\ m=1$ 
+finden. Wir setzen $y=un\in\mathbb{Z}_{mn}$. Dann gilt $y\ mod\ m=1$ und $y\ mod\ n=0$. Analog findet man ein $z\in\mathbb{Z}_{mn}$ mit $z\ mod\ m=0$ und $z\ mod\ n=1$. Nun setzen wir $x:=(sy+tz)\ mod\ mn\in\mathbb{Z}_{mn}$. Wir haben, modulo $m$ gerechnet: $x\equiv sy+tz\equiv s*1+t* 0 \equiv s\ (mod\ m)$. Analog ergibt sich $x\equiv sy+tz\equiv s*0+t*1 \equiv t(mod\ n)$, wie gewünscht. Der Berechnungsaufwand für das Finden von $x$ ist $O((log\ m)(log\ n))$ Ziffernoperationen, das geht also sehr schnell.
+
+Beispiel: $m=5,n=8,s=3,t=7$. Wir finden $u=2$ mit $u*8\ mod\ 5 = 1$ und $y= 2*8=16$ sowie $v=5$ mit $v*5\ mod\ 8=1$ und $z=5*5=25$. Nun setzen wir $x=(3*16+7*25) \ mod\ 40=(48+175)\ mod\ 40 = (8 + 15)\ mod\ 40 = 23$. Und tatsächlich: $23\ mod\ 5 = 3$ und $23\ mod\ 8 = 7$.
+
+Wir wollen noch untersuchen, wie sich Zahlen, die zu $m$ und $n$ teilerfremd sind, in der Sichtweise des Chinesischen Restsatzes verhalten.
+
+Proposition 4.22 (∗): Wenn man die Abbildung $\Phi$ aus dem Chinesischen Restsatz auf $\mathbb{Z}^*_{mn}$ einschränkt, ergibt sich eine Bijektion zwischen $\mathbb{Z}^*_{mn}$ und $\mathbb{Z}^*_m\times\mathbb{Z}^*_n$.
+
+Bemerkung: Der Chinesische Restsatz und die nachfolgenden Bemerkungen und Behauptungen lassen sich leicht auf $r>2$ paarweise teilerfremde Faktoren $n_1,...,n_r$
+verallgemeinern. Die Aussagen lassen sich durch vollständige Induktion über $r$ beweisen. Mit Prop. 4.22 können wir eine übersichtliche Formel für die Kardinalitäten der Mengen $\mathbb{Z}^*_m, m\geq 2$, entwickeln.
+
+Definition 4.23 (Eulersche $\varphi$-Funktion): für $m\geq 2$ sei $\varphi(m):=|\mathbb{Z}^*_m| =|\{x| 0<x<m,ggT(x,m) = 1\}|$.
+
+Einige Beispielwerte, die man durch Aufzählen findet, sind in folgender Tabelle angegeben.
+
+[Tabelle 2: Eulersche $\varphi$-Funktion für kleine $m$]
+|m| 2| 3| 4| 5| 6| 7| 8| 9| 10| 11| 12| 13| 14| 15| 16| 17| 18| 19| 20
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+$\varphi(m)$| 1| 2| 2| 4| 2| 6| 4| 6| 4| 10| 4| 12| 6| 8| 8| 16| 6| 18| 8
+
+Folgendes ist eine unmittelbare Konsequenz aus Proposition 4.22:
+
+Lemma 4.24: Für teilerfremde Zahlen $n$ und $m$ gilt $\varphi(mn)=\varphi(m)*\varphi(n)$.
+
+(Man teste $20=4*5$ und $12=3*4$.)
+Wir können den kleinen Satz von Fermat (Fakt 4.20) auf den Fall beliebiger $m$ verallgemeinern. Auch der Beweis ist sehr ähnlich.
+
+Fakt 4.25 (Satz von Euler)(∗): für $m\geq 2$ und $x$ mit $ggT(m,x) = 1$ gilt: $x\varphi(m)\ mod\ m=1$.
+
+Wenn $m$ viele verschiedene kleine Primfaktoren hat, kann $\varphi(m)$ auch deutlich kleiner sein als $m$, z.B. $\varphi(210) =\varphi(2*3*5*7)=1*2*4*6=48$. Es gilt aber: $\varphi(m) =m-1$, wenn $m$ eine Primzahl ist, und $\varphi(m)\geq \pi(m) =|\{p\leq m|\text{p ist Primzahl}\}|$, wenn $m$ zusammengesetzt ist.
+
+## Primzahlen
+Jede positive ganze Zahl $x$ ist durch 1 und durch $x$ teilbar.
+
+Definition 4.26:
+1. Eine Zahl $p\geq 1$ heißt Primzahl, wenn $p$ genau zwei positive Teiler hat. Diese Teiler sind dann $1$ und $p$. (Die Zahl 1 hat nur einen positiven Teiler, nämlich 1. Also ist 1 keine Primzahl.)
+2. Eine Zahl $x\geq 1$ heißt zusammengesetzt, wenn sie einen Teiler $y$ mit $1<y < x$ besitzt. (Die Zahl 1 besitzt keinen Teiler $y$ mit $1<y<1$. Also ist 1 nicht zusammengesetzt.)
+
+Bemerkung: Ein Blick auf die Teilbarkeitsbeziehung zeigt, welche besondere Rolle $1,-1, 0$ und die Primzahlen spielen. Die Zahlen $1$ und $-1$ bilden das Minimum in der Teilbarkeitsrelation, die Primzahlen sitzen unmittelbar darüber, und die zusammengesetzten Elemente liegen strikt über den Primzahlen. Die $0$, als Maximum in der Ordnung, sitzt strikt über allen zusammengesetzten Zahlen.
+
+Fakt 4.27: Wenn $p$ eine Primzahl ist und $p|xy$ gilt, dann gilt $p|x$ oder $p|y$.
+
+Beweis: Wenn $p|x$, sind wir fertig. Also können wir $p\not|x$ annehmen. Das heißt, dass $ggT(p,x) = 1$ ist. Nach dem Lemma von Bezout können wir $1 =sp+tx$ schreiben, für ganze Zahlen $s,t$. Daraus folgt: $y=spy+txy$. Nun ist $xy$ durch $p$ teilbar, also auch $y=spy+txy$. 
+
+Satz 4.28 (Fundamentalsatz der Arithmetik) (∗): Jede ganze Zahl $x\geq 1$ kann als Produkt von Primzahlen geschrieben werden. Die Faktoren sind eindeutig bestimmt (bis auf die Reihenfolge).
+
+Mit Hilfe von Lemma 4.24 können wir nun eine Formel für $\varphi(m) =|\mathbb{Z}^*_m|$ angeben, die auf der Primzahlzerlegung beruht.
+
+Lemma 4.29: für $m\geq 2$ gilt $\varphi(m)=m*\sum_{p\ prim, p|m} (1-\frac{1}{p}$)
+
+Beweis: Wenn $m$ eine Primzahlpotenz $p^t$ ist, dann besteht $\mathbb{Z}^*_m$ aus den Zahlen in $\mathbb{Z}_m=\{0,1,...,p^t-1\}$, die nicht durch $p$ teilbar sind. Da es in $\mathbb{Z}_m$ insgesamt $p^t$ Zahlen gibt und $p^{t-1}$ Vielfache von $p$, gilt $\varphi(m)=p^t-p^{t-1} =m-m/p=m(1-1/p)$. Nun nehmen wir an, dass $m=p^{t_1}_1 ...p^{t_s}_s$ gilt, für verschiedene Primzahlen $p_1,...,p_s$ und $t_1,...,t_s\geq 1$. Die Faktoren $p^{t_1}_1,...,p^{t_s}_s$ sind teilerfremd. denn wenn etwa $p^{t_1}_1$ und $p^{t_2}_2...p^{t_s}_s$ einen gemeinsamen Teiler $>1$ hätten, dann wäre $p_1$ Teiler von $p^{t_2}_2...p^{t_s}_s$, was sofort einen Widerspruch zur Eindeutigkeit der Primfaktorzerlegung ergibt. Mit Lemma 4.24, $(s-1)$-mal angewendet, erhalten wir $\varphi(m) =\prod^s_{i=1} \varphi(p^{t_i}_i) = \prod^s_{i=1} (p^{t_i}_i (1-1/p_i)) =m* \prod^s_{i=1} (1-\frac{1}{p_i})$. 
+Mit dieser Formel lassen sich die Werte in Tabelle 2 schnell verifizieren. (Beispiel: $\varphi(12) = 12(1-1/2)(1-1/3) = 12*(1/2)*(2/3) = 4$) Man beachte als Spezialfall: Wenn $m=pq$ für verschiedene Primzahlen $p$ und $q$, dann ist $\varphi(m)=pq(1-1/p)(1-1/q) =(p-1)(q-1)$. (Beispiel: $\varphi(15) =2*4=8$)
+
+Bemerkung: Die einfache Formel in Lemma 4.29 könnte zu dem Schluss verleiten, dass sich $\varphi(m)$ zu gegebenem $m$ immer leicht berechnen lässt. Aber Achtung: Man muss dazu die Menge der Primfaktoren von $m$ kennen. Dies läuft darauf hinaus, dass Faktorisierungsproblem für $m$ zu lösen, also einen beliebigen Primfaktor für $m$ zu finden, und hierfür kennt man keine effizienten Algorithmen. Tatsächlich ist auch
+kein effizienter Algorithmus bekannt, der es erlaubt, $\varphi(m)$ aus $m$ zu berechnen.
+
+Fakt 4.30: Jede zusammengesetzte Zahl $x$ besitzt einen Primfaktor $p$ mit $p\leq\sqrt{x}$. 
+
+Beweis: Man schreibt $x=yz$ für Zahlen $y$ und $z$, die weder 1 noch $x$ sind. Es ist nicht möglich, dass beide größer als $\sqrt{x}$ sind. Der kleinere Faktor enthält also einen Primfaktor, der nicht größer als $\sqrt{x}$ ist. 
+Bemerkung: Wir betrachten das resultierende naive Faktorisierungsverfahren: Teste die Zahlen in $\{2,...,\lfloor\sqrt{x}\rfloor\}$ nacheinander darauf, ob sie $x$ teilen; wenn ein Faktor $p$ gefunden wurde, wende dasselbe Verfahren auf $x'=x/p$ an. Dieses Verfahren hat im schlechtesten Fall Rechenzeit mindestens $Θ(\sqrt{x}) = Θ(2^{(log\ x)/ 2})$, also exponentiell in der Bitlänge von $x$. Wie wir später genauer diskutieren werden, sind für das Auffinden der Primzahlzerlegung einer gegebenen Zahl $x$ überhaupt keine effizienten Algorithmen bekannt (also Algorithmen mit Laufzeiten $O((log\ x)^c)$ für konstantes $c$). Aber es gibt effiziente Algorithmen, mit denen man feststellen kann, ob eine Zahl $x$ eine Primzahl ist oder nicht. Dieser Unterschied in der Schwierigkeit des Faktorisierungsproblems und des Primzahlproblems liegt einer ganzen Reihe von kryptographischen Verfahren zugrunde.
+
+Satz 4.31 (Euklid): Es gibt unendlich viele Primzahlen.
+
+Beweis: Wenn $\{p_1,...,p_k\}$, für $k\geq 1$, eine endliche Menge von (verschiedenen) Primzahlen ist, betrachten wir die Zahl $x=1+p_1...p_k$. Die Zahl $x$ kann durch keine der Zahlen $p_1,...,p_k$ teilbar sein, sonst wäre $1$ durch diese Primzahl teilbar, was nicht möglich ist. Also sind alle Primfaktoren in der Primzahlzerlegung von $x$ von $p_1,...,p_k$ verschieden, es muss also außer $p_1,...,p_k$ noch weitere Primzahlen geben. 
+
+Über die Verteilung der Primzahlen (ihre ,,Dichte'') in $N$ gibt der berühmte Primzahlsatz Auskunft. Mit $\pi(x)$ bezeichnen wir die Anzahl der Primzahlen, die nicht größer als $x$ sind.
+
+Satz 4.32 Primzahlsatz: $lim_{x\rightarrow \infty} \frac{\pi(x)}{x\backslash ln\ x}= 1$  
+
+Das heißt, dass für große $x$ in $(x,2x]$ etwa $\frac{2x}{ln(2x)}-\frac{x}{ln\ x}\approx \frac{x}{ln\ x}$ Primzahlen zu erwarten sind. Die $n$-Bit-Zahlen bilden das Intervall $[2^{n-1} , 2n)$. Der Anteil der Primzahlen in diesem Intervall ist näherungsweise $\frac{2^{n-1} /ln(2^{n-1})}{2^{n-1}}\approx \frac{1}{(ln\ 2)(n-1)}\approx 1,44/n$.
+Für $n\approx 2000$ ist der relative Anteil von Primzahlen im interessanten Zahlenbereich also $\approx 1,44/2000\approx 1/1400$. Er sinkt umgekehrt proportional zur Ziffernzahl. 
+Eine schärfere Form des Primzahlsatzes ist folgende Aussage (wobei der Beweis Nichtspezialisten nicht zugänglich ist): $\frac{x}{ln\ x}(1+\frac{1}{ln\ x})\leq \pi(x)\leq \frac{x}{ln\ x}(1+\frac{1,2762}{ln\ x})$. 
+
+Für $x\geq 500 000$ folgt daraus: $\frac{x}{ln\ x}< \pi(x)< 1, frac{x}{ln\ x}$. 
+Daraus folgt, dass für $n\geq 20$ der Anteil der Primzahlen unter den n-Bit-Zahlen folgende Ungleichung erfüllt: $\frac{|\{p\in [2^{n-1}, 2^n)| \text{p is prime}\}|}{2^{n-1} = \frac{\pi(2^n)-\pi(2^{n-1})}{2^{n-1}} \geq \frac{2^n\backslash (n\ ln\ 2)- 1,1*2^{n-1}\backslash ((n-1)ln\ 2)}{2^{n-1}}\geq \frac{2}{n\ ln\ 2}-\frac{1,1}{n\ ln\ 2}*\frac{n}{n-1}\geq \frac{6}{5n}$. 
+
+Mit Hilfe eines Computeralgebraprogramms findet man heraus, dass die Ungleichung $|\{p\in [2^{n-1}, 2^n)|\text{ p is prime}\}|/2^{n-1} \geq  6 /(5n)$ auch für $9\leq n\leq 20$ gilt. (Für $n=8$ ist sie falsch.) Man kann sich also merken: für $n\geq 9$ ist der Anteil der Primzahlen an den n-Bit-Zahlen mindestens $\frac{6}{5n}$.
+
+| Ziffernzahl $n$ | Dusart-Schranke $(\pi(2^n)-\pi(2^{n-1}))\backslash 2^{n-1}$ | für numerische untere Schranke |
+| ---|---|---|
+$256$ | $\frac{6}{5*256}$ | $\geq \frac{1}{214}$
+$512$ | $\frac{6}{5*512}$ | $\geq \frac{1}{427}$
+$1024$ | $\frac{6}{5*1024}$ | $\geq\frac{1}{854}$
+$2048$ | $\frac{6}{5*2048}$ | $\geq\frac{1}{1707}$
+
+Eine leichter zu beweisende Aussage der Art $\pi(2m)-\pi(m) = O(m/log\ m)$ ist die folgende:
+
+Satz 4.33 Ungleichung von Finsler: Für jede ganze Zahl $m\geq 2$ liegen im Intervall $(m, 2m]$ mindestens $m/(3\ ln(2m))$ Primzahlen: $\pi (2m)-\pi(m)\geq \frac{m}{3\ ln(2m)}$.
+
+Ein vollständiger, vergleichsweise einfacher Beweis für Satz 4.33 findet sich zum Beispiel in dem Lehrbuch ,,Elemente der Diskreten Mathematik: Zahlen und Zählen, Graphen und Verbände'' von Diekert, Kufleitner, Rosenberger (De Gruyter 2013).
+
+## Der Primzahltest von Miller und Rabin
+In diesem Abschnitt lernen wir einen randomisierten Algorithmus kennen, der es erlaubt, zu einer gegebenen Zahl $N$ zu entscheiden, ob $N$ eine Primzahl ist oder nicht.
+
+Ein idealer Primzahltest sieht so aus:
+- Eingabe: Eine natürliche Zahl $N\geq 3$.
+- Ausgabe: $0$, falls $N$ eine Primzahl ist; $1$, falls $N$ zusammengesetzt ist.
+
+Wozu braucht man Primzahltests? Zunächst ist die Frage ,,Ist $N$ eine Primzahl?'' eine grundlegende mathematisch interessante Fragestellung. Spätestens mit dem Siegeszug des RSA-Kryptosystems hat sich die Situation jedoch dahin entwickelt, dass man Algorithmen benötigt, die immer wieder neue vielziffrige Primzahlen (etwa mit 1000 oder 1500 Bits bzw. 301 oder 452 Dezimalziffern) bereitstellen können. Den Kern dieser Primzahlerzeugungs-Verfahren bildet ein Verfahren, das eine gegebene Zahl $N$ darauf testet, ob sie prim ist. Ein naiver Primzahltest (,,versuchsweise Division''), der dem brute-force-Paradigma folgt, findet durch direkte Division der Zahl $N$ durch $2,3,4,...,\lfloor\sqrt{N}\rfloor$ heraus, ob $N$ einen nichttrivialen Teiler hat. Man kann dieses Verfahren durch einige Tricks beschleunigen, aber die Rechenzeit wächst dennoch mit $O(\sqrt{N})$. Dies macht es für Zahlen mit mehr als $40$ Dezimalstellen praktisch undurchführbar, von Zahlen mit mehr als $100$ Dezimalstellen ganz zu schweigen. (Achtung: Damit wird nichts über den Zeitaufwand bei anderen Faktorisierungsalgorithmen gesagt. Es gibt andere, sehr fortgeschrittene Faktorisierungsalgorithmen, die bei entsprechendem Zeitaufwand und mit sehr leistungsstarken Rechnern auch noch mit $200$-stelligen Zahlen zurechtkommen. Für Information zu früheren und aktuelleren Faktorisierungserfolgen siehe z.B. [http://en.wikipedia.org/wiki/RSA_numbers](http://en.wikipedia.org/wiki/RSA_numbers.))
+
+In diesem Abschnitt beschreiben wir den randomisierten Primzahltest von Miller-Rabin. Dabei handelt es sich um einen ,,Monte-Carlo-Algorithmus mit einseitigem Fehler''. Das heißt: Auf Eingaben $N$, die Primzahlen sind, wird immer $0$ ausgegeben; auf Eingaben $N$, die zusammengesetzt sind, gibt es eine gewisse (von $N$ abhängige) Wahrscheinlichkeit, dass die Ausgabe $0$, also falsch ist. Für kein zusammengesetztes $N$ ist diese Wahrscheinlichkeit größer als die ,,Fehlerschranke'' $\frac{1}{4}$. Wir beweisen nur die Fehlerschranke $\frac{1}{2}$. Im Beweis benutzen wir einfache zahlentheoretische Überlegungen. Eine herausragende Eigenschaft des Miller-Rabin-Tests ist seine Effizienz. Wir werden sehen, dass selbst bei Verwendung der Schulmethoden für Multiplikation und Division die Anzahl der Ziffernoperationen des Primzahltests nur $O((log\ N)^3)$ ist.
+
+Bemerkung: Der Miller-Rabin-Algorithmus stammt aus dem Jahr 1977; er folgte einem kurz vorher vorgestellten anderen randomisierten Primzahltest (Solovay-Strassen-Test). Für diesen und andere randomisierte Primzahltests (z.B. der ,,Strong Lucas Probable Prime Test'' oder der ,,Quadratic Frobenius Test'' von Grantham) sei auf die Literatur verwiesen. Im Jahr 2002 stellten Agarwal, Kayal und Saxena einen deterministischen Primzahltest mit polynomieller Rechenzeit vor. (Die Rechenzeit ist z.B. durch $O((log\ N)^{7,5})$ beschränkt.) Dieser Algorithmus stellte insofern einen gewaltigen Durchbruch dar, als er ein Jahrhunderte altes offenes Problem löste, nämlich die Frage nach einem effizienten deterministischen Verfahren für das Entscheidungsproblem ,,ist $N$ Primzahl oder zusammengesetzt''? Andererseits ist seine Laufzeit im Vergleich etwa zu dem hier diskutierten randomisierten Verfahren so hoch, dass nach wie vor die randomisierten Algorithmen benutzt werden, um für kryptographische Anwendungen Primzahlen zu erzeugen.
+Da gerade Zahlen leicht zu erkennen sind, beschränken wir im Folgenden unsere Überlegungen auf ungerade Zahlen $N\geq 3$.
+
+### Der Fermat-Test
+Wir erinnern uns an Fakt 4.20, den Kleinen Satz von Fermat: Wenn $p$ eine Primzahl ist und $1\leq a < p$, dann gilt $a^{p-1} mod\ p=1$. 
+Wir können diese Aussage dazu benutzen, um ,,Belege'' oder ,,Zertifikate'' oder ,,Zeugen'' dafür anzugeben, dass eine Zahl $N$ zusammengesetzt ist: Wenn wir eine Zahl $a$ mit $1\leq a < N$ finden, für die $a^{N-1} mod\ N\not=1$ gilt, dann ist $N$ definitiv keine
+Primzahl.
+
+Beispiel: Mit $N=15$ und $a=2$ rechnen wir: $2^{14}\equiv (2^4)^3 * 2^2 \equiv 16^3*4 \equiv 1*4\equiv 4 (mod\ 15)$. Also ist $2^{14} mod\ 15 = 4\not= 1$, also ist $15$ definitiv keine Primzahl. (Man beachte, dass wir keinen Faktor angeben müssen, um zu diesem Schluss zu kommen.)
+
+Definition 4.34: Sei $N\geq 3$ ungerade und zusammengesetzt. Eine Zahl $a\in\{1,...,N-1\}$ heißt F-Zeuge für $N$, wenn $a^{N-1} mod\ N\not= 1$ gilt. Eine Zahl $a\in\{1,...,N-1\}$ heißt F-Lügner für $N$, wenn $a^{N-1} mod\ N=1$ gilt. Die Menge der F-Lügner nennen wir $L^F_N$.
+
+Wir bemerken, dass ein F-Zeuge belegt, dass es Faktoren $k,l >1$ mit $N=k*l$ gibt, dass aber ein F-Zeuge nicht auf solche Faktoren hinweist oder sie beinhaltet. Das Finden von Faktoren wird von Primzahltests auch nicht verlangt und normalerweise auch nicht geleistet.
+Man sieht sofort, dass $1$ und $N-1$ immer F-Lügner sind: Es gilt $1^{N-1} mod\ N=1$ und $(N-1)^{N-1} \equiv (-1)^{N-1}=1 (mod\ N)$, weil $N-1$ gerade ist.
+Für jede zusammengesetzte Zahl $N$ gibt es mindestens einen F-Zeugen. Nach Fakt 4.19 gilt \{1,...,N-1\}-\mathbb{Z}^*_N\not=\varnothing$, wenn $N$ zusammengesetzt ist.
+
+Lemma 4.35: Wenn $N$ zusammengesetzt ist, ist jedes $a\in\{1,...,N-1}-\mathbb{Z}^*_N$ ein F-Zeuge.
+
+Beweis: Sei $d=ggT(a,N)>1$. Dann ist auch $a^{N-1}$ durch $d$ teilbar, also auch $a^{N-1}\ mod\ N=a^{N-1}- \lfloor a^{N-1}\backslash N\rfloor *N$. Daher ist $a^{N-1} mod\ N\not= 1$. 
+
+Beispiel: Für $N=15$ und $a=6$ gilt $6^{14}\equiv 36^7\equiv 6^7 \equiv  36^3 * 6 \equiv 6^4 \equiv 6^2 \equiv 6\ (mod\ 15)$. Der Rest $6$ ist durch $ggT(6,15) = 3$ teilbar.
+
+Leider ist für manche zusammengesetzten Zahlen $N$ die Menge $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ ̈außerst dünn. Wenn zum Beispiel $N=pq$ für zwei Primzahlen $p$ und $q$ ist, dann gilt $ggT(a,N)> 1$ genau dann wenn $p$ oder $q$ ein Teiler von $a$ ist. Es gibt genau $p+q-2$ solche Zahlen $a$ in $\{ 1 ,...,N-1\}$, was gegenüber $N$ sehr klein ist, wenn $p$ und $q$ annähernd gleich groß sind. Um eine gute Chance zu haben, F-Zeugen zu finden, sollte es also mehr als nur die in $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ geben.
+
+Beispiel: $N=91 = 7*13$. Es gibt 18 Vielfache von 7 und 13 (für größere $p$ und $q$ wird der Anteil dieser offensichtlichen F-Zeugen noch kleiner sein), und daneben weitere $36$ F-Zeugen und $36$ F-Lügner in $\{1 , 2 ,..., 90\}$.
+
+In diesem Beispiel gibt es um einiges mehr F-Zeugen als F-Lügner. Wenn dies für alle zusammengesetzten Zahlen $N$ der Fall wäre, wäre es eine elegante randomisierte Strategie, einfach zufällig nach F-Zeugen zu suchen. Dies führt zu unserem ersten Versuch für einen randomisierten Primzahltest.
+
+Tabelle 3: F-Zeugen und F-Lügner für $N=91= 7*13$. Es gibt $36$ F-Lügner und $36$ F-Zeugen in $\mathbb{Z}^*_{91}$. Wir wissen nach Lemma 4.35, dass alle 18 Vielfachen von $7$ und $13$ F-Zeugen sind.
+|||
+|---|---|
+| F-Zeugen in $\{ 1 ,..., 90\}-\mathbb{Z}^*_{91}$: | 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84; 13, 26, 39, 52, 65, 78 |
+| F-Lügner: |1, 3, 4, 9, 10, 12, 16, 17, 22, 23, 25, 27, 29, 30, 36, 38, 40, 43, 48, 51, 53, 55, 61, 62, 64, 66, 68, 69, 74, 75, 79, 81, 82, 87, 88, 90 
+| F-Zeugen in $\mathbb{Z}^*_{91}$ : | 2, 5, 6, 8, 11, 15, 18, 19, 20, 24, 31, 32, 33, 34, 37, 41, 44, 45, 46, 47, 50, 54, 57, 58, 59, 60, 67, 71, 72, 73, 76, 80, 83, 85, 86, 89
+
+Algorithmus 4.4: Fermat-Test
+- Eingabe: Ungerade Zahl $N\geq 3$
+- Methode:
+  1. Wähle $a$ zufällig aus $\{1,...,N-1\}$
+  2. if $a^{N-1}\ mod\ N\not= 1$ then return $1$ else return $0$
+
+Die Laufzeitanalyse liegt auf der Hand: Der teuerste Teil ist die Berechnung der Potenz $a^{N-1}\ mod\ N$ durch schnelle Exponentiation, die nach den Ergebnissen von Lemma 4.14 $O(log\ N)$ arithmetische Operationen und $O((log\ N)^3)$ Ziffernoperationen benötigt. Weiter ist es klar, dass der Algorithmus einen F-Zeugen gefunden hat, wenn er ,,1'' ausgibt, dass in diesem Fall also $N$ zusammengesetzt sein muss. Umgekehrt ausgedrückt: Wenn $N$ eine Primzahl ist, gibt der Fermat-Test garantiert ,,0'' aus. Für $N=91$ wird das falsche Ergebnis $0$ ausgegeben, wenn als $a$ einer der 36 F-Lügner gewählt wird. Die Wahrscheinlichkeit hierfür ist $\frac{36}{90} =\frac{2}{5} = 0,4$.
+
+Für viele zusammengesetzte Zahlen $N$ gibt es reichlich F-Zeugen, so dass der Fermat-Test für diese $N$ mit konstanter Wahrscheinlichkeit das korrekte Ergebnis liefert. Wir analysieren das Verhalten des Fermat-Tests für solche ,,gutmütigen'' Eingabezahlen $N$ (für die $N=91$ ein typisches Beispiel ist).
+
+Satz 4.36: Sei $N\geq 9$ eine ungerade zusammengesetzte Zahl. Wenn es mindestens einen F-Zeugen $b\in\mathbb{Z}^*_N$ gibt, dann liefert der Fermat-Test auf Eingabe $N$ mit Wahrscheinlichkeit größer als $\frac{1}{2}$ die korrekte Antwort ,,1''.
+
+Beweis: Sei $b\in\mathbb{Z}^∗_N$ ein F-Zeuge. Betrachte die Funktiong $b:L^F_N\rightarrow\mathbb{Z}^*_N$, die den F-Lügner $a$ auf $g_b(a) =ba\ mod\ N$ abbildet. Wie im Beweis von Fakt 4.20 sieht man, dass $g_b$ injektiv ist. Weiter ist $g_b(a)$ für jedes $a\in L^F_N$ ein F-Zeuge: $(ba\ mod\ N)^{N-1}\ mod\ N= (b^{N-1}\ mod\ N)(a^{N-1}\ mod\ N) =b^{N-1}\ mod\ N\not= 1$.
+Wir können also jedem F-Lügner $a$ einen eigenen F-Zeugen $g_b(a)$ in $\mathbb{Z}^*_N$ zuordnen. Daraus folgt, dass es in $\mathbb{Z}^*_N$ mindestens so viele F-Zeugen wie F-Lügner gibt. Mit Lemma 4.35 ergibt sich, dass $\{1,...,N-1\}$ mehr F-Zeugen als F-Lügner enthält. Daher ist die Wahrscheinlichkeit, dass die im Fermat-Test zufällig gewählte Zahl $a$ ein F-Lügner ist, kleiner als $\frac{1}{2}$. 
+Eine Fehlerwahrscheinlichkeit in der Nähe von $\frac{1}{2}$ ist natürlich viel zu groß. Wir verringern die Fehlerschranke durch wiederholte Ausführung des Fermat-Tests.
+
+Algorithmus 4.5: Iterierter Fermat-Test
+- Eingabe: Ungerade Zahl $N\geq 3$, eine Zahl $l\geq 1$
+- Methode:
+  1. repeat $l$ times
+     1. $a\leftarrow$ ein zufälliges Element von $\{1 ,...,N-1\}$
+     2. if $a^{N-1}\ mod\ N\not= 1$ then return $1$
+  2. return 0
+
+Wenn die Ausgabe $1$ ist, hat der Algorithmus einen F-Zeugen für $N$ gefunden, also ist $N$ zusammengesetzt. D.h.: Wenn $N$ eine Primzahl ist, ist die Ausgabe $0$. Andererseits: Wenn $N$ zusammengesetzt ist, und es mindestens einen F-Zeugen $b\in\mathbb{Z}^∗_N$ gibt, dann ist nach Satz 4.36 die Wahrscheinlichkeit für die falsche Ausgabe ,,0'' höchstens $(\frac{1}{2})^l= 2^{-l}$. Indem wir $l$ genügend groß wählen, können wir die Fehlerwahrscheinlichkeit so klein wie gewünscht einstellen.
+
+Wenn es darum geht, aus einem genügend großen Bereich zufällig gewählte Zahlen darauf zu testen, ob es sich um eine Primzahl handelt, dann ist der Fermat-Test (in Kombination mit dem Testen auf kleine Teiler, etwa alle Primzahlen unter 1000) allem Anschein nach eine sehr effiziente und zuverlässige Methode. Dies wird durch empirische Resultate nahegelegt. Wenn man allerdingsüber die Herkunft der zu testenden Zahl $N$ keine Information hat und eventuell damit rechnen muss, dass jemand (ein ,,Gegenspieler'') absichtlich eine besonders schwierige Eingabe vorlegt, dann stößt der Fermat-Test an eine Grenze. Es gibt nämlich ,,widerspenstige'' zusammengesetzte Zahlen, denen man mit diesem Test nicht beikommen kann, weil alle Elemente von $\mathbb{Z}^*_N$ F-Lügner sind. Mit diesen befasst sich der folgende Abschnitt.
+
+### Carmichael-Zahlen
+Definition 4.37: Eine ungerade zusammengesetzte Zahl $N$ heißt eine Carmichael-Zahl, wenn für alle $a\in\mathbb{Z}$^∗_N$ die Gleichung $a^{N-1}\ mod\ N= 1$ gilt.
+
+Die kleinste Carmichael-Zahl ist $561 = 3* 11 *17$. Weitere kleine Carmichael-Zahlen sind $1105 = 5* 13 *17$ und $1729 = 7* 13 *19$. Erst im Jahr 1994 wurde bewiesen, dass es unendlich viele Carmichael-Zahlen gibt, genauer: Wenn $x$ genügend groß ist, dann gibt es in $\{N\in\mathbb{N}| N\leq x\}$ mehr als $x^{2/7}$ Carmichael-Zahlen. Die aktuell beste bekannte untere Schranke ist $x^{1/3}$. Von Erdös (1956) stammt die obere Schranke $x*exp(\frac{-c\ ln\ x\ ln\ ln\ ln\ x}{ln\ ln\ x})$, für eine Konstante $c>0$, die zeigt, dass Carmichael-Zahlen viel seltener als Primzahlen sind.
+
+Wenn wir dem Fermat-Test eine Carmichael-Zahl $N$ als Eingabe geben, ist die Wahrscheinlichkeit für die falsche Antwort $0$ nach Lemma 4.29 genau $\frac{\varphi(N)}{N-1} > \frac{\varphi(N)}{N} = \prod_{p\ prim, p\ teilt\ N} (1 -\frac{1}{p})> 1 -\sum_{p\ prim, p\ teilt\ N} \frac{1}{p}$.
+Diese Wahrscheinlichkeit liegt nahe an $1$, wenn $N$ nur wenige und relativ große Primfaktoren hat. An solchen Carmichael-Zahlen besteht etwa im Bereich der Zahlen im Bereich $[10^{17} , 10^{18} ]$ kein Mangel, wie ein Blick in entsprechende Tabellen zeigt. Zum Beispiel ist $N=925619721362375041 = 425681* 1277041 *1702721$ eine 18-ziffrige Carmichael-Zahl mit $\varphi(N)/N > 0.999996$.
+Der Wiederholungstrick zur Wahrscheinlichkeitsverbesserung hilft hier leider auch nicht, denn wenn etwa $p_0$ der kleinste Primfaktor von $N$ ist, und $N$ nur $3$ oder $4$ Faktoren hat, dann sind $\Omega(p_0)$ Wiederholungen nötig, um die Fehlerwahrscheinlichkeit auf $\frac{1}{2}$ zu drücken. Sobald $p_0$ mehr als 30 Dezimalstellen hat, ist dies undurchführbar.
+
+Für einen zuverlässigen, effizienten Primzahltest, der für alle Eingabezahlen funktioniert, müssen wir über den Fermat-Test hinausgehen. Interessanterweise ist dies praktisch ohne Effizienzverlust möglich. Für spätere Benutzung stellen wir noch eine Hilfsaussage über Carmichael-Zahlen bereit.
+
+Lemma 4.38: Wenn $N$ eine Carmichael-Zahl ist, dann ist $N$ keine Primzahlpotenz.
+
+Beweis: Wir beweisen die Kontraposition: Wenn $N=p^l$ für eine ungerade Primzahl $p$ und einen Exponenten $l\geq 2$ ist, dann ist $N$ keine Carmichael-Zahl. Dazu genügt es, eine Zahl $a\in\mathbb{Z}^*_N$ anzugeben, so dass $a^{N-1}\ mod\ N\not= 1$ ist. Wir definieren: $a:=p^{l-1} + 1$. (Wenn z.B. $p=7$ und $l=3$ ist, ist $N=343$ und $a=49+1=50$.) Man sieht sofort, dass $a<p^l=N$ ist, und dass $a$ nicht von $p$ geteilt wird, also $a$ und $N$ teilerfremd sind; also ist $a\in\mathbb{Z}^∗_N$. Nun rechnen wir modulo $N$, mit der binomischen Formel: $a^{N-1} \equiv (p^{l-1} + 1)^{N-1} \equiv \sum_{0 \leq j\leq N-1} \binom{N-1}{j} (p^{l-1})^j \equiv 1 + (p^l-1)*p^{l-1} (mod\ N)$. (4.3)
+
+(Die letzte Äquivalenz ergibt sich daraus, dass für $j\geq 2$ gilt, dass $(l-1)j\geq l$ ist, also der Faktor $(p^{l-1})j=p^{(l-1)j}$ durch $N=p^l$ teilbar ist, also modulo $N$ wegfällt.) Nun ist $p^{l-1}$ nicht durch $p$ teilbar, also ist $(p^l-1)*p^{l-1}$ nicht durch $N=p^l$ teilbar. Damit folgt aus (4.3), dass $a^{N-1}\not\equiv 1 (mod\ N)$ ist, also $a^{N-1}\ mod\ N\not= 1$. 
+Folgerung: Jede Carmichael-Zahl $N$ lässt sich als $N=N_1 *N_2$ schreiben, wo $N_1$ und $N_2$ teilerfremde ungerade Zahlen $\geq 3$ sind.
+(Eine etwas genauere Untersuchung, die wir hier aber nicht benötigen, ergibt, dass die Primfaktoren einer Carmichael-ZahlN alle verschieden sein müssen, und dass $N$ mindestens drei Primfaktoren haben muss. Auch aus dieser Tatsache kann man entnehmen, dass Carmichael-Zahlen eher selten sind.)
+
+### Nichttriviale Quadratwurzeln der 1
+Beispiel: Betrachte $N=7*13$. Es gilt $1^2 = 1$ und $90^2 \equiv(-1)^2 (mod\ 91)$. Aber es gilt auch $27^2 = 81* 9 \equiv(-10)*9 = -90\equiv 1(mod\ 91)$. Daraus folgt auch
+$642 =(91-27)^2 \equiv (-27)^2 = 27^2 \equiv 1 (mod\ 91)$. Wir nennen eine Zahl $b\in\{2,...,N-2\}$ mit $b^2\ mod\ N=1$ eine nicht triviale Quadratwurzel der $1$ modulo $N$. Bei Primzahlen gibt es solche Zahlen nicht.
+
+Lemma 4.39: Wenn $p$ eine ungerade Primzahl ist, dann gilt $b^2\ mod\ p = 1$, $b \in\mathbb{Z}_p$, genau für $b\in\{1 ,p-1\}$.
+
+Beweis: Offensichtlich gilt für jedes beliebige $m\geq 2$, dass $1^2\ mod\ m= 1$ und $(m-1)^2\ mod\ m= (m(m-2)+1)\ mod\ m= 1$ ist. Nun sei $b\in\{0 ,...,p-1\}$ beliebig mit $b^2\equiv 1(mod\ p)$. Dann gilt $b^2-1 \equiv 0 (mod\ p)$, also ist $p$ ein Teiler von $b^2-1 =(b+1)(b-1)$. Nach Fakt 4.27 ist $p$ Teiler von $b+1$ oder von $b-1$. Im ersten Fall ist $b\equiv -1 (mod\p)$, im zweiten Fall ist $b\equiv 1(mod\ p)$. 
+
+Die im Lemma angegebene Eigenschaft lässt sich also in ein weiteres Zertifikat für zusammengesetzte Zahlen ummünzen:
+  Wenn es eine nichttriviale Quadratwurzel der $1$ modulo $N$ gibt, dann ist $N$ zusammengesetzt.
+
+Die vier Zahlen $1, 27, 64$ und $90$ sind genau die Quadratwurzeln der $1$ modulo $91$; davon sind $27$ und $64 = 91-27$ nichttrivial. Beachte, dass $1\equiv 63\ (mod\ 7)$ und $27\equiv 90 \equiv -1(mod\ 7)$, und dass $1\equiv 27 (mod\ 13)$ und $64\equiv 90 \equiv -1 (mod\ 13)$. Allgemeiner sieht man mit der Verallgemeinerung von Fakt 4.21 (Chinesischer Restsatz) auf $r$ Faktoren leicht ein, dass es für ein Produkt $N=p_1...p_r$ aus verschiedenen ungeraden Primzahlen $p_1,...,p_r$ genau $2^r$ Quadratwurzeln der $1$ modulo $N$ gibt, nämlich die Zahlen $b,0\leq b < N$, die $b\ mod\ p_j\in\{1 ,p_j-1\}, 1\leq j\leq r$, erfüllen. Wenn $N$ nicht sehr viele verschiedene Primfaktoren hat, ist es also aussichtslos, einfach zufällig gewählte $b$’s darauf zu testen, ob sie vielleicht nichttriviale Quadratwurzeln der $1$ sind. Dennoch wird uns dieser Begriff bei der Formulierung eines effizienten Primzahltests helfen.

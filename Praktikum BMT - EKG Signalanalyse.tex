@@ -65,71 +65,63 @@ Ein Echtzeit-QRS-Erkennungsalgorithmus wird in Simulink unter der Annahme entwic
 
 Das EKG-Signal wird gefiltert, um eine gefensterte Schätzung der Energie im QRS-Frequenzband zu erhalten. Die Erkennungsschwelle wird automatisch auf der Grundlage der mittleren Schätzung der durchschnittlichen QRS-Spitze und der durchschnittlichen Rauschspitze angepasst. Die Filterung erfolgt in folgenden Schritten:
 \begin{itemize}
-    \item FIR-Bandpassfilter mit einem Durchlassbereich von 5 bis 26 Hz
-    \item Ableitung des bandgefilterten Signals
-    \item Bestimmung des Absolutwerts des Signals
-    \item Mittelwertbildung des Absolutwerts über ein 80 ms-Fenster
+    \item Fouriertransformation und Inverse Fouriertransformation um niedrige Frequenzen abzuschneiden
+    \item Bandpassfilter mit einem Durchlassbereich von 5 bis 26 Hz
+    \item Minimalen Abstand zwischen QRS-Spitzen bestimmen
+    \item Bestimmung des Absolutwerts und Mittelwertbildung des Absolutwerts
+    \item Signalspitzen zwischen dem minimalen und maximalen QRS Abstand, die über dem Mittelwert liegen, finden
 \end{itemize}
 
 Die folgenden QRS-Erkennungsregeln beziehen sich auf einen PIC-basierten QRS-Detektor:
 \begin{itemize}
-    \item Alle Peaks, die größeren Peaks um weniger als 196 ms vorausgehen oder folgen, werden ignoriert.
+    \item Alle Peaks, die größeren Peaks um weniger als 250 ms vorausgehen oder folgen, werden ignoriert.
     \item Wenn eine Spitze auftritt, prüfe, ob das Rohsignal sowohl positive als auch negative Steigungen enthält. Wenn dies der Fall ist, melde, dass ein Peak gefunden wurde. Andernfalls handelt es sich um eine Grundlinienverschiebung.
     \item Ist der Peak größer als die Erkennungsschwelle, wird er als QRS-Komplex klassifiziert. Andernfalls wird er als Rauschen eingestuft.
-    \item Wenn innerhalb von $1,5$ R-zu-R-Intervallen kein QRS erkannt wurde, aber eine Spitze vorhanden ist, die größer als die halbe Erkennungsschwelle ist, und diese Spitze mindestens 360 ms auf die vorhergehende Erkennung folgt, wird diese Spitze als QRS-Komplex eingestuft.
+    \item Wenn innerhalb von 1,5 R-zu-R-Intervallen kein QRS erkannt wurde, aber eine Spitze vorhanden ist, die größer als die halbe Erkennungsschwelle ist, und diese Spitze mindestens 360 ms auf die vorhergehende Erkennung folgt, wird diese Spitze als QRS-Komplex eingestuft.
 \end{itemize}
 
 \subsubsection{}
 Entwickeln Sie zu diesem Algorithmus die zugehörige(n) MATLAB-Funktion(en) und bringen Sie den Quelltext schriftlich zum Praktikum mit! Benutzen Sie die gegebene Funktionsschnittstelle:
 \begin{lstlisting}[basicstyle=\tiny, language=matlab]
 function [R_Positionen, Entscheidungssignal, Schwellwertverlauf, Lernphase] = QRS_Detektion (EKG_Signal, fa);
-
-    fs = fa; % 200; % sampling rate or frequency
-    % sze = length(EKG_Signal); % find the length of the data per second
-    %necg = EKG_Signal/max(EKG_Signal); % normalize the maximum value to unity (amplitude)
-    t = [1 : sze]/fs; % sampling rate time
-
-    % compute the undecimated wavelet transform of the 4-level using sym4
-    % this ensures that the length of the signal remains the same
-    wt = modwt(EKG_Signal, 4, 'sym4');  %4-level undecimated DWT using sym4
-    wtrec = zeros(size(wt));
-    % do not need the approximated and high-frequency coefficients d1 and d2; extract d3 and d4
-    wtrec(3:4, :)= wt(3:4,:)
-    % inverse discrete wavelet transform (IDWT), will have a signal that has only the r-peaks
-    y=imodwt(wtrec, 'sym4');  %IDWT with only d3 and d4.
-    y=abs(y).^2;  %magnitude square
-    % find the average of the signal; will be used as the threshold when finding the signal peak
-    avg = mean(y); % getting average of y^2 as threshold
-    [Rpeaks, locs] = findpeaks(y,t, 'MinPeakHeight', 8*avg, 'MinPeakDistance', 50); % finding peaks
-    % find the location of the R-peaks in consideration of the length of the signal. It represents the number of beats
-    nohb = length(locs);   %No. of beats
-    timelimit = length(EKG_Signal)/Fs;  %getting the time function of the signal
-    hbpermin = (nohb*60)/timelimit;   %Getting Beat per minute.
-    disp(strcat('HeartRate= ', num2str(hbpermin)))  %displaying the heartrate
-
-    %displaying ecg signal and detected R-peaks
-    subplot(211)
-    plot(tx, EKG_Signal);
-    xlim([0, timelimit])
-    grid on
-    xlabel('seconds')
-    ylabel('ECG signal')
-
-    % plot filtered signal with detected peaks
-    subplot(212)
-    plot(t,y)
-    grid on
-    xlim([0, length(EKG_Signal)]);
-    hold on
-    plot(locs, Rpeaks, 'ro')
-    xlabel('samples')
-    title(strcat('R peaks found and heartrate: ', num2str(hbpermin)))
-
-    R_Positionen = locs;
-    Entscheidungssignal = y;
-    Schwellwertverlauf = avg;
-    Lernphase = 0; % Bedeutung unklar?
-
+    size = length(EKG_Signal); % Laenge des Signals
+    % fourier transformation
+    signal = fft(EKG_Signal);
+    % entfernen niedriger freqzenzen anhand Laenge und Rate
+    signal(1 : round(size*5/fa))=0;
+    signal(end - round(size*5/fa) : end)=0;
+    % inverse fourier transformation
+    signal=real(ifft(signal));
+    % bandpass fuer 5 bis 26 hz
+    signal=bandpass(signal, [5 26], fa);
+    % skalierung des Signals auf skala 1-10
+    filtersignal=signal/(max(signal)/10);
+    % entfernen aller peaks unterhalb des thresholds 10/2=5
+    for data = 1:1:length(filtersignal)
+        if filtersignal(data) < 5
+            filtersignal(data) = 0;
+        else
+            filtersignal(data)=1;
+        end
+    end
+    % finde alle uebrigen peaks, die ueber dem threshold lagen
+    positions=find(filtersignal);
+    % abstand der ersten beiden peaks
+    distance=positions(2)-positions(1);
+    % setzte den abstand auf das minimum zweier peaks in der reihe aller uebrigen peaks
+    for data=1:1:length(positions)-1
+        if positions(data+1)-positions(data)<distance
+            distance=positions(data+1)-positions(data);
+        end
+    end
+    % Mittel des Signals als Threshold
+    avg = mean(signal) 
+    % Absolute Peaks innerhalb des Zeitfensters finden
+    [RPeaks, positions] = findpeaks(signal, 'MinPeakHeight', 1.5*avg, 'MinPeakDistance', distance, "MaxPeakWidth", 250);
+    R_Positionen = positions;
+    Entscheidungssignal = signal;
+    Schwellwertverlauf = RPeaks;
+    Lernphase = 0; % Bedeutung nicht erklaert
 end
 \end{lstlisting}
 

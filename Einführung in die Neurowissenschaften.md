@@ -557,3 +557,349 @@ Motorische Endplatten: Chemische Synapsen, arbeiten mit Acetylcholin, verbinden 
 - $\rightarrow$ Aktionspot. in Muskelzelle
 - $\rightarrow$ $Ca^{2+}$ -Einstrom
 - $\rightarrow$ Kontraktion
+
+# Zentralnervensystem - Gehirn
+## Orientierung im Nervensystem
+![](Assets/Neurowissenschaften-orientierung-1.png)
+
+![](Assets/Neurowissenschaften-orientierung-2.png)
+
+## Gliederung des Gehirns
+![](Assets/Neurowissenschaften-gehirn-gliederung-1.png)
+
+![](Assets/Neurowissenschaften-gehirn-gliederung-2.png)
+
+![](Assets/Neurowissenschaften-gehirn-gliederung-3.png)
+
+Verbindungen zur Außenwelt
+- 12 Hirnnervenpaare
+- über Rückenmark zum Rest des Körpers
+
+## Hirnnerven
+- Telencephalon
+  - (I) N. olfactorius (sensorisch: Riechen)
+- Diencephalon
+  - (II) N. opticus (sensorisch: Sehen)
+- Mesencephalon
+  - (III) N. oculomotorius (motorisch: Augenmuskeln, Augenlid, Linse, Pupille)
+  - (IV) N. trochlearis (motorisch: Augenmuskeln)
+- Metencephalon (Pons)
+  - (V) N. trigenimus (sensorisch: Gesicht, Nase, Mund, Zunge u.a.; motorisch: Kauen)
+  - (VI) N. abducens (motorisch: Augenmuskeln)
+  - (VII) N. facialis (sensorisch: Geschmack; motorisch: Speicheldrüsen, Mimik)
+- Myencephalon (Medulla oblongata)
+  - (VIII) N. vestibulocochlearis (sensorisch: Gleichgewicht, Hören)
+  - (IX) N. glossopharyngeus (sensorisch: Geschmack, Mittelohr, Rachen (Schluckreflex) u.ä.; motorisch: Speichelfluss)
+  - (X) N. vagus (motorisch (parasympathisch): Eingeweide; motorisch: Kehlkopf und Rachen; sensorisch: Kehlkopf, Rachen, Eingeweide)
+  - (XI) N. accessorius(motorisch: Nackenmuskeln)
+  - (XII) N. hypoglossus (motorisch: Zunge)
+
+### Medulla oblongata (Myencephalon)
+- enthält auf- und absteigende Faserbahnen
+- Kerne der Hirnnerven VIII-XII (z.B. VIII- Hörnerv, X - Vagusnerv)
+- Atem- und Kreislaufzentrum
+  - Erhöhung des intrakranialen Drucks (z.B. durch Blutungen oder Tumore) kann die Medulla komprimieren und zu Koma oder Tod führen!
+  - Menschen können nur mit der Medulla, ohne restliches Gehirn, weiterleben (tiefes Koma, Teilhirntod).
+- Zentren für Nies-, Husten-, Schluck-, Saug- und Brechreflexe
+- Formatio reticularis
+
+### Retikuläre Formation (Formatio reticularis)
+- Die F. reticularis zieht sich durch Medulla, Pons und Mesencephalon/Diencephalon).
+- Netzartige Struktur von Nervenbahnen und Gruppen von diffusen Kernen.
+- Lebenswichtige Funktionen, wie Atmung, Kreislauf, Muskeltonus
+- Abgrenzbare Kerne: Raphe-Kerne (serotonerges System) und Locus caeruleus (noradrenerges System).
+- zeitlichen Koordinierung des gesamten Nervensystems
+- Modulation von Schmerzempfinden und Emotionen, Schlaf-Wach-Rhythmus, Aufmerksamkeit
+
+### Pons (Brücke) - Teil des Metencephalons
+- enthält auf- und absteigende Faserbahnen, die End- und Zwischenhirn mit Cerebellum, Medulla und Rückenmark verbinden
+- Kerne der Hirnnerven V-VII (z.B. V - Trigenimus)
+- bildet zusammen mit Cerebellum das Metencephalon, ist von diesem durch das IV Ventrikel getrennt
+- retikuläre Formation
+
+### Cerebellum (Kleinhirn) - Teil des Metencephalons
+- bildet zusammen mit Pons das Metencephalon, ist von diesem durch das IV Ventrikel getrennt
+- Funktion: Steuerung der Motorik (Koordination, Feinabstimmung, unbewusste Planung); Erlernen von Bewegungsabläufen; kognitive Funktionen.
+
+![](Assets/Neurowissenschaften-cerebellum-aufbau.png)
+
+Cerebellarer Cortex
+- enthält ca. 50% aller zentralen Neuronen
+- fein gefältelt
+- ca. 0.5 mm dick,
+- Fläche 500 cm² $\approx$ 50 - 75% der Cortexfläche
+
+Kleinhirnstiele und Marklager
+- enthält Nervenfasern
+- fein verzweigt
+- Im Marklager, auf jeder Seite 4 Kerne (Nuclei)
+
+Cerebellarer Cortex (Kleinhirnrinde)
+- ![](Assets/Neurowissenschaften-cerebraler-cortex.png)
+- 3 Schichten
+  - Molekulare Schicht
+  - Purkinjezellschicht
+  - Granuläre (Körner-)Schicht
+
+Zellen und Verschaltung
+- Purkinje-Zellen - Zellen mit dem meisten Input (bis 200 000)
+- Körner-Zellen: kleinste und häufigste Neurone im Gehirn ($\frac{3}{4}$ aller Neurone)
+- ![](Assets/Neurowissenschaften-cerebellum-verschaltung.png)
+  - Kletterfaser: aus unterer Olive (Medulla)
+  - Moosfaser: aus Rückenmark und Hirnstamm
+
+Funktionsprinzipien
+- **Feedforward-Verarbeitung:** 
+  - Keine Rückkopplungsschleifen
+  - Output-Signale werden aus Input-Signalen kombiniert
+  - Keine intrinsische dynamische Aktivität
+- **Divergenz und Konvergenz:** 
+  - Input wird zunächst expandiert (Parallelfasern) und dann konvergiert (Purkinje-Zellen)
+  - Dadurch ergeben sich sehr viele Freiheitsgrade bei der Rekombination
+- **Modularität:** 
+  - Es gibt viele ähnliche Module (,,Rekombinationsmatrizen'') mit unterschiedlichem In- und Output
+- **Plastizität:** Synapsen (und damit die ,,Rekombinationsmatrizen'')
+  - sind adjustierbar, sowohl vorübergehend, z.B. durch dopaminerge, serotonerge oder noradrenerge Beeinflussung, als auch dauerhaft (durch Hebb‘sches Lernen, vielleicht mit Hilfe der Kletterfasern)
+
+Funktion
+- Lernen
+  - Implizites Lernen / prozedurales Gedächtnis: in der Übertragungsmatrix des Kleinhirns werden die Details automatisierter Bewegungsabläufe gespeichert, die nicht mehr durch die Willkürmotorik (Großhirn) explizit festgelegt werden müssen.
+  - Assoziatives Lernen: bestimmte sensorische Eindrücke werden mit bestimmtem motorischem Output verbunden (z.B. Lidschlußreflex).
+- Kognition
+  - Genaue Funktion unklar, aber Beteiligung an, zum Beispiel, Sprachverstehen und Sprechen wird vermutet.
+
+Störungen
+- Meist Ataxien, d.h. Störungen in der Bewegungskoordination.
+- Nystagmus (Augenzittern),
+- Rumpfataxie (Unfähigkeit sich im Stehen oder Sitzen aufrecht zu halten),
+- Gangataxie (,,Betrunkenengang''),
+- Dysmetrie (Hand erreicht nicht das Ziel beim Greifen etc.),
+- Tremor,
+- verwaschene oder undeutliche Aussprache,
+- Störungen im fließenden Bewegungsablauf.
+
+### Mesencephalon (Mittelhirn)
+![](Assets/Neurowissenschaften-mittelhirn.png)
+- Wichtige Rolle im auditorischen, visuellen sowie extrapyramidalen motorischen System.
+- enthält auf- und absteigende Faserbahnen, die End- und Zwischenhirn mit Cerebellum, Medulla und Rückenmark verbinden
+- Kerne der Hirnnerven III und IV (Augenbewegungen)
+- retikuläre Formation
+
+Tectum (Mittelhirndach, Vierhügelplatte)
+
+Colliculi superiores
+- Teil der Sehbahn
+- steuern optische Reflexe
+
+Colliculi inferiores
+- Teil der Hörbahn
+
+Tegmentum (Mittelhirnhaube)
+- Nucleus ruber (roter Kern)
+  - Teil des extrapyramidalen motorischen Systems
+  - steuern Muskeltonus und Körperhaltung
+- Kern der Hirnnerven III und IV
+- Aquädukt
+  - Teil des Ventrikelsystems
+- Periaquäduktales Grau
+  - Steuerung von Emotionen
+- Substantia nigra
+  - Teil des extrapyramidalen motorischen Systems
+  - wichtiger Teil des Dopaminsystems
+- retikuläre Formation, diverse auf- und absteigende Fasertrakte
+
+### Diencephalon (Zwischenhirn)
+- ![](Assets/Neurowissenschaften-zwischenhirn.png)
+- Umschließt 3. Ventrikel, im Zentrum des Gehirns
+- Sensorisches Zentrum, Ursprung II. Hirnnerv (N. opticus)
+- besteht aus:
+    - Thalamus (größter Teil)
+    - Epithalamus
+    - Subthalamus
+    - Hypothalamus
+    - Metathalamus
+
+#### Thalamus
+- ,,Eingangskontrolle'' des Großhirns - Umschaltstation sensorischer Information
+- Besteht aus spezifischen und unspezifischen Kernen (Unterscheidung nicht immer eindeutig)
+- Spezifische Kerne: sind jeweils mit einem abgrenzbaren Bereich der Großhirnrinde verbunden und übertragen sensorische und motorische (aus Basalganglien und Kleinhirn) Information an das Großhirn
+- Unspezifische Kerne: modulieren spezifische Thalamuskerne, werden ihrerseits aus den Basalganglien, dem Kleinhirn und der retikulären Formation angesteuert. Wichtigster: N. reticularis
+- ca. Form und Größe einer Walnuss
+
+![](Assets/Neurowissenschaften-thalamus.png)
+- blau: erregend
+- rot: hemmend
+
+Funktion
+- Durchgangsstation für (fast) alle Information, die die Großhirnrinde erreicht
+- Modulation und ,,Gating'' dieser Information in Abhängigkeit von allgemeinen Bedingungen, wie z.B. Aufmerksamkeit
+- Modulation und ,,Gating'' kann Information aus der Peripherie (,,first oder relay'') oder aus anderen Großhirnarealen (,,higher order relay'') betreffen.
+
+#### Hypothalamus
+- Lage: unterhalb des Thalamus zwischen den Großhirnhälften
+    - 2 Hälften, geteilt durch 3. Ventrikel
+- sehr sichere Blutversorgung - kaum Schlaganfälle
+
+Funktionen
+- Regelung der Körpertemperatur (Versuchstiere können nach Zerstörung des Hypothalamus die Körpertemperatur nicht mehr halten)
+- Regelung des Wasser- und Mineralhaushaltes
+- Regelung der Hormonausschüttung der Hypophyse
+- Regelung der physiologischen Reaktion auf Erregungszustände (z.B. Erröten, Schweißausbruch, Herzklopfen)
+- Appetitregelung (Läsion des Hypothalamus kann sowohl zu Appetitlosigkeit, als auch zu unstillbarem Appetit führen; Appetitszügler wirken hier)
+- Steuerung von Schlaf und zirkadianen Rhythmen
+- Beeinflussung von Sexualverhalten, Aggression, Flucht usw
+
+Der Hypothalamus ist das oberste Regulierungszentrum des ANS
+
+![](Assets/Neurowissenschaften-hypothalamus.png)
+
+#### Metathalamus
+Mediale Kniehöcker
+- 4. Neuron der Sehbahn (Input von der Retina)
+- $\rightarrow$  Auditorisches System
+
+Laterale Kniehöcker
+- 4. Neuron der Hörbahn (Input vom Colliculus inf.)
+- $\rightarrow$  Visuelles System
+
+### Endhirn (Telencephalon, Großhirn)
+- Im Menschen: größter Hirnabschnitt
+- Verantwortlich für die komplexesten Funktionen:
+    - Willkürmotorik
+    - Sensorik
+    - Entscheidungsfindung
+    - Sprache
+    - Gedächtnis
+    - Emotionen
+    - usw.
+- Besteht aus:
+    - Großhirnhälften (stark gefurcht und durch Kommisuren verbunden)
+    - Basalganglien (Stammganglien)
+
+#### Großhirnhälften
+- Sulci (Furchen) und Gyri (Windungen)
+- Große Sulci/Gyri in allen Gehirnen wiedererkennbar, aber variabel
+- Kleine Strukturen sehr variabel
+- Grobe Einteilungen in 4 Lappen (Lobi) je Hemisphäre
+- Beide Großhirnhälften sind durch Querbahnen (Kommissuren) verbunden:
+  - Corpus Callosum (Balken)
+  - Commisura anterior
+  - Commisura fornicis
+
+![](Assets/Neurowissenschaften-großgehirnhälften.png)
+
+#### Cerebraler Cortex (Großhirnrinde)
+- bildet die Oberfläche der Großhirnhälften
+- Beim Menschen stark gefaltet (gyrenzephales Gehirn)
+  - andere gyrenzephale Hirne: die meisten Säuger, z.B. Schwein, Schaf, Pferd, Wal
+  - nicht gefaltete (lissenzephale) Hirne z.B. bei Nagern und Vögeln
+- enthält Zellkörper von Nervenzellen, daneben kurze Axone und Gliazellen
+- Oberfläche beim Menschen: ca. $1800 cm^2$
+- Nach histologischem (d.h. zellarchitektonischem) Feinbau Unterscheidung **Allocortex** (3 Schichten) und **Isocortex** (6 Schichten)
+- Entwicklungsgeschichtlich einteilbar in **Paläocortex** , **Archicortex** und **Neocortex**
+
+#### Der Neocortex
+- Cortex allgemein kann in Schichten untergliedert werden, die durch Art und Anzahl von Zellkörpern definiert sind.
+- Der (phylogenetisch junge) Neocortex ist als Isocortex aufgebaut, d.h. er hat 6 abgrenzbare Schichten.
+- Die Ausprägung der Schichten variiert zwischen Hirnarealen ($\rightarrow$  Parzellierung)
+- 90 % der Großhirnoberfläche ist Neo- bzw. Isocortex
+
+#### Archi- und Paläocortex
+- ![Helmer & van Hoesen, Neuroscience & Biobehavioural Reviews, 2006](Assets/Neurowissenschaften-archicortex.png)
+- Aufgebaut als Allocortex, d.h. 3-schichtig
+- Paläocortex (ältester Teil): dunkelgrün
+- Archicortex (jüngerer Teil): blau/lila
+- Übergangszonen zum Neocortex: hellgrün
+- Amygdala: orange
+
+#### Cortex-Parzellierung
+- Die corticale Struktur spiegelt funktionelle Spezialisierung wider
+- Struktur ist gekennzeichnet durch Anordnung und Dichte verschiedener Zelltypen (Zytoarchitektur), Verteilung myelinisierter Faserbahnen (Myeloarchitektur), Verbundenheit (Konnektivität) mit entfernten Teilen des Gehirns, Vorkommen und Verteilung von Neurotransmittern, Neurorezeptoren und anderen Stoffen, und vieles andere mehr
+- Oftmals lassen sich Gebiete (Areale) auf dem Cortex definieren, die strukturell und funktionell relativ homogen und durch scharfe Grenzen voneinander geschieden sind $\rightarrow$  **Parzellierung**
+- Es gibt verschiedene Ebenen der Parzellierung, die zueinander in (evt. hierarchischer) Beziehung stehen.
+
+#### Zytoarchitektonische Parzellierung
+![](Assets/Neurowissenschaften-zytoarchitektonische-parzellierung.png)
+
+### Die Basalganglien (Stammganglien)
+![](Assets/Neurowissenschaften-basalganglien.png)
+- Nucleus caudatus
+- Putamen
+- Globus pallidus
+- Amygdala (Mandelkern)
+
+Wichtig für das Ausführen von Willkürbewegungen (extra-pyramidales motorisches System) zusammen mit Diencepahlon und Mittelhirn
+
+### Der Hippocampus
+- über Fornix (Faserbündel) mit Corpus mammilare des Hyptothalamus verbunden
+- Grenzt rostral an Amygdala und ventral an entorhinalen Cortex
+- Verbindung mit Temporallappen, G. parahioopcamalis, cingulärem Cortex, Amygdala, Hypothalamus, Thalamus und Hirnstamm
+
+### Die Amygdala (Mandelkern)
+- Input von Riechhirn, Temporrallappen, cuingulärem Cortex, Hyptothalamus, Thalamus, Hirnstamm
+- Output zum Hyptothalamus, Thalamus, Frontallappen, Hirnstamm
+- Wichtige Rolle bei Emotionen, insbesondere Angst und Furcht
+
+### Die weiße Masse (Marklager)
+- Enthält Nervenfasern und Glia
+- Assoziationsfasern verbinden Areale derselben Hemisphäre: U-Fasern, kurze Assoziationsfasern, lange Assoziationsfasern (zwischen Lappen)
+- Projektionsfasern verbinden den Cortex mit anderen Strukturen, wie Hirnstamm, Basalganglien oder Rückenmark.
+- Kommissuren verbinden beide Hemisphären (z.B. Corpus callosum)
+
+## Hirnhäute
+![](Assets/Neurowissenschaften-hirnhäute.png)
+- Skalp
+- Schädel
+- Hirnhaut 1: Dura mater
+- Hirnhaut 2: Arachnoidea
+- Subarachnoidalraum (mit Cerebrospinalflüssigkeit und Blutgefäßen)
+- Hirnhaut 3: Pia mater (überzieht Oberfläche von Hirn und Rückenmark)
+- Gehirn Oberfläche (Kortex)
+
+Hirnhäute: Meningen
+
+### Hirnhautentzündung (Meningitis)
+- meist Entzündung der Arachnoidea und der Pia mater (Leptomeningitis)
+- kann durch Bakterien, Viren oder physikalische Einwirkungen (z.B. radioaktive Strahlung) hervorgerufen werden
+- Symptome/Diagnose: Fieber, Übelkeit, Verwirrtheit, schmerzreflektorische Nackenmuskelversteifung beim Versuch den Kopf nach vorn zu beugen, daneben natürlich Liquoruntersuchung
+
+### Blutversorgung des Gehirns
+Zufuhr über
+- innere Halsschlagader (A. carotis)
+    - Blutversorgung des Auges
+    - Versorgung der vorderen und mittleren Hirnarterie (A. cerebri anterior/media) (je 2x)
+- Wirbelschlagader (A. vertebralis) (je 2x)
+    - A. basilaris (nur 1x)
+        - Blutversorgung von Hirnstamm und Kleinhirn
+        - Versorgung der hinteren Hirnarterie (A. cerebri posterior) (2x)
+
+![](Assets/Neurowissenschaften-gehirn-blutversorgung.png)
+- Versorgungsgebiete der vorderen (blau), mittleren (rot) und hinteren (gelb) Hirnarterien.
+- Die 6 Hirnarterien sind an der Hirnbasis durch einen Ring verbunden, dadurch kann ein Verschluss einer der 4 zuführenden Arterien ausgeglichen werden
+
+Venöse Abfluss
+- Venen erreichen Hirnoberfläche und Subarachnoidalraum
+- Über Brückenvenen in venöse Sinus (blutgefüllte Räume in der Dura mater)
+- Abfluss über Vv. jugulares internae
+
+## Das Ventrikelsystem
+![](Assets/Neurowissenschaften-gehirn-ventrikel.png)
+Der Liquor zirkuliert in den 4 Hirnventrikeln und dem Zentralkanal des Rückenmarks sowie im Subarachnoidalraum von Hirn und Rückenmark
+
+Seitenventrikel
+- III. Ventrikel (im Diencephalon)
+- Aquädukt (im Mesencephalon)
+- IV. Ventrikel (im Hirnstamm)
+- Zentralkanal (Rückenmark)
+
+der Liquor (Nervenwasser)
+- Gesamtvolumen: 130-150 ml
+- Wird in den Ventrikeln (durch Kapillargeflechte der Pia mater) mit einer Rate von ca. 30 ml/h gebildet.
+- Resorption über Arachnoidalzotten im Sinus sagittalis superior ins venöse Blut.
+
+Hydrozephalus
+- bei Kleinkindern: durch angeborene Fehlbildung oder Enzaphalitis kann der Liquor nicht abfließen $\rightarrow$ das Gehirn wird komprimiert und Schädelknochen geweitet
+- Therapie: Verbindung zwischen Ventrikel und Subarachnoidalraum durch Katheter
+- Diagnosemethode: Lumbalpunktion
+- Liquor wird zwischen 3 und 5 Lendenwirkel entnommen (dort ist kein Rückenmark mehr)
+- Untersuchung des Nervenwassers auf Leukozyten, Erythozyten oder Bakterien sowie bestimmten Substanzen

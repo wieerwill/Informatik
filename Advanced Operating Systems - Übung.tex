@@ -234,7 +234,7 @@
 
   \question Begriffe
   \begin{parts}
-    \part Was verstehen wir unter einem  ,,Ausfall''? Erläutern Sie, wie es im abstrakten Fehlermodell nach \cite{Algirdas Avižienis, Jean-Claude Laprie, Brian Randell, and Carl E. Landwehr. Basic Concepts and Taxonomy of Dependable and Secure Computing. IEEE Transactions on Dependable and Secure Computing}{Laprie} zu einem Ausfall kommen kann. Wo können demzufolge Betriebssystemmechanismen zum Erreichen von Robustheit ansetzen?
+    \part Was verstehen wir unter einem  ,,Ausfall''? Erläutern Sie, wie es im abstrakten Fehlermodell nach Laprie\footnote{Algirdas Avižienis, Jean-Claude Laprie, Brian Randell, and Carl E. Landwehr. Basic Concepts and Taxonomy of Dependable and Secure Computing. IEEE Transactions on Dependable and Secure Computing} zu einem Ausfall kommen kann. Wo können demzufolge Betriebssystemmechanismen zum Erreichen von Robustheit ansetzen?
     \begin{solution}
     \end{solution}
     \part In Politik und Gesellschaft ist oft vom Datenschutz die Rede, wenn es um die Sicherheitseigenschaften von IT-Systemen geht. Analysieren Sie diesen Begriff aus technischer Sicht: Was verstehen Sie (als Informatiker) unter  ,,Daten'' und deren  ,,Schutz''? Welche Differenzen ergeben sich zum Wortsinn von  ,,Datenschutz''? Welche grundlegenden Sicherheitsziele sind aus Ihrer Sicht damit gemeint?
@@ -314,7 +314,7 @@
     \end{solution}
     \part Überprüfen Sie die Planbarkeit folgender periodischer Prozessmenge durch RM anhand der oberen Schranke des Prozessorauslastungsfaktors ($U_{lub}$):
     \begin{center}
-      \begin{tabular}{|c|c|c|}
+      \begin{tabular}{c|c|c}
                  & $C_i$ & $T_i$ \\\hline
         $\tau_1$ & 2     & 7     \\
         $\tau_2$ & 1     & 10    \\
@@ -357,6 +357,70 @@
   Diskutieren Sie anhand Ihrer Implementierung Voraussetzungen und Besonderheiten eines CAB verglichen mit linearen, endlichen Warteschlangen. Gehen Sie dabei insbesondere auf die Notwendigkeit von Synchronisationsoperationen ein (vgl. klassisches Reader-Writer-Problem) sowie auf die Eignung hinsichtlich echtzeitkritischer Prozesse als Kommunikationspartner.
   \begin{solution}
   \end{solution}
+
+  \question Adaptivität und komplementäre nichtfunktionale Eigenschaften
+  \begin{parts}
+    \part Erklären Sie anhand selbstgewählter Anwendungsbeispiele, warum Adaptivität zur Umsetzung der komplementären nichtfunktionalen Eigenschaften
+    \begin{itemize}
+      \item Echtzeitfähigkeit,
+      \item Robustheit,
+      \item Wartbarkeit und Portabilität
+    \end{itemize} beiträgt.
+    \begin{solution}
+    \end{solution}
+    \part Nennen Sie jeweils eine für diese Eigenschaften geeignete, adaptive Architektur eines Anwendungs-Laufzeitsystems. Ordnen Sie diese in die grundlegende, funktionale Schichtung aus Hardware, Betriebssystem (-kernel), API, User-Space-Ressourcen und Anwendungen ein.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Exokernel und Virtualisierung
+  \begin{parts}
+    \part Ein erklärtes Ziel der Exokernel-Architekturen besteht darin, die im Kernel implementierten Betriebssystemfunktionen so klein und wenig komplex wie möglich zu halten. Warum wurde hierfür ein neues Architekturparadigma geschaffen, anstatt die mit einem ähnlichen Ziel geschaffenen Mikrokernarchitekturen zu nutzen?
+    \begin{solution}
+    \end{solution}
+    \part Wodurch unterscheidet sich ein Paravirtualisierungs-Hypervisor von klassischen Typ-1-Hypervisoren? Welche (über Typ-1-Virtualisierung hinaus gehenden) Ziele verfolgt man dabei, und wo liegen die Kosten dieses Ansatzes?
+    \begin{solution}
+    \end{solution}
+    \part Diskutieren Sie, in wieweit sich die Ideen von TinyOS und MirageOS unterscheiden. Gehen Sie dabei auf Gemeinsamkeiten und Unterschiede in deren Zielen sowie in den für beide Betriebssysteme notwendigen Hard- und Softwarevoraussetzungen ein.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Parallelität in Betriebssystemen
+  \begin{parts}
+    \part Wo liegt der prinzipielle Unterschied zwischen den Parallelisierungstechniken der Superskalarität und Multithreading?
+    \begin{solution}
+    \end{solution}
+    \part Welche prinzipiellen Aufgaben hat ein Betriebssystem bei der Parallelisierung von Anwendungen?
+    \begin{solution}
+    \end{solution}
+    \part Am Beispiel der Linux-Kernels haben wir verschiedene Implementierungen von Locks als Synchronisationsmechanismus kennen gelernt. Dabei waren atomare Einzeloperationen (atomic\_*) die mit Abstand feingranularste, effizienteste und zugleich fehlerunanfälligste Lösung. Warum benutzt man überhaupt andere und komplexere Arten von Locks? Wo liegen deren jeweilige Stärken/Schwächen?
+    \begin{solution}
+    \end{solution}
+    \part Die in der Vorlesung beispielhaft am Linux-Kernel vorgestellten Arten von Locks finden sich in ähnlicher Form auch in anderen monolithischen Betriebssystemen (beispielsweise kennt MacOS die Lock-Arten Mutex, Semaphore und Spinlock). Für Mikrokernarchitekturen hingegen wurde gezeigt, dass bei geschicktem Kerneldesign ein globales Lock (big kernel lock, BKL) den feingranularen Alternativen in puncto Performanz sogar überlegen ist \footnote{Sean Peters, Adrian Danis, Kevin Elphinstone, and Gernot Heiser. For a Microkernel, a Big Lock Is Fine. In Proceedings of the 6th Asia-Pacific Workshop on Systems}. Warum?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Parallelisierbarkeit und Effizienz\\
+  In der Vorlesung haben Sie das Gesetz von Amdahl kennen gelernt, welches die theoretische Verringerung der Berechnungszeit für ein Problem mit gegebenem sequenziellem Anteil $f$ beschreibt. Auf dieser Basis wurde die Beschleunigung (Speedup) $S(n)$ als Quotient aus dem jeweiligen Zeitbedarf voll sequenzieller $(T(1))$ und $n$-fach paralleler Bearbeitung des Problems definiert, also $S(n)=\frac{T(1)}{T(n)}=\frac{1}{f+\frac{1-f}{n}}$. In dieser Aufgabe sollen Sie die Auswirkungen dieses Zusammenhangs auf ein vereinfachtes Problem aus der Praxis untersuchen. Gegeben sei folgendes Szenario:
+
+  \textsf{Ein Unternehmen bietet als Cloud-basierte Dienstleistung die Berechnung großer Datenmengen (z.B. Marktforschungsinformationen) für einen festen Kundenstamm an. Hierfür wurde Hardware für das hauseigene Rechenzentrum ausgewählt und so dimensioniert, dass höchstens x Rechenaufträge pro Zeiteinheit innerhalb der jedem Kunden zugesicherten Latenzen bearbeitet werden können (Durchsatzgarantie). Durch die Einstellung eines branchenerfahrenen Marketingexperten konnte kürzlich die Anzahl der Neukunden jedoch überdurchschnittlich gesteigert werden, so dass für das kommende Geschäftsjahr neue technische Herausforderungen erwartet werden: unter Beibehaltung sämtlicher Durchsatzgarantien muss das Unternehmen nun bis zu 3 x Rechenaufträge pro Zeiteinheit bearbeiten können. Dieses Problem soll durch höhere Parallelisierung gelöst werden.}
+  \begin{parts}
+    \part Bestimmen Sie den Faktor $n$, um den die Hardware des Rechenzentrums leistungsfähiger werden muss, um die Durchsatzgarantien weiter erfüllen zu können (z. B. durch die Ver-$n$-fachung der eingesetzten Prozessoren). Bestimmen Sie hierfür zunächst den erforderlichen Speedup, berechnen Sie dann $n$ unter der Annahme, dass jeder Rechenauftrag einen vertraglich vereinbarten sequenziellen Anteil von 20\% nicht überschreitet.\\
+    Hinweis: Behandeln Sie für diese Aufgabe die Summe aller Rechenaufträge so, als wäre es eine einzige, zu parallelisierende Berechnung.
+    \begin{solution}
+    \end{solution}
+    \part Wie effizient ist der Einsatz der zusätzlichen Prozessoren aus Teilaufgabe 1? Quantifizieren Sie mittels des in der Vorlesung definierten Leistungsmaßes Wirkungsgrad $(E(n))$.
+    \begin{solution}
+    \end{solution}
+    \part Angenommen, Ihre Antwort auf Teilaufgabe 2 erscheint der Unternehmensleitung zu unwirtschaftlich. Als Kompromiss sollen die Durchsatzgarantien - und damit der zu erzielende Speedup - reduziert werden, um einen optimierten Faktor $n_{opt}$ an Prozessoren einzusetzen. Bestimmen Sie $n_{opt}$ sowie $S(n_{opt})$ anhand des Maximums der Beschleunigungseffizenz $\eta_{max}$.
+    \begin{solution}
+    \end{solution}
+    \part Beurteilen Sie, wie realistisch die in den bisherigen Teilaufgaben erzielten Ergebnisse für das gegebene Problem in der Praxis sind. Welche bisher nicht berücksichtigten Aspekte realer Systeme können Speedup sowie Effizienz der Parallelisierung beeinflussen?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
 
 \end{questions}
 \end{document}

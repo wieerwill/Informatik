@@ -2838,8 +2838,111 @@ Architekturvarianten - drei unterschiedliche Prinzipien:
 2. Typ-2 - Hypervisor
 3. Paravirtualisierung
 
+### Typ-1 - Hypervisor
+- ![](Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png)
+- Idee des Typ- 1 - Hypervisors:
+  - Kategorien traditioneller funktionaler Eigenschaften von BS:
+    1. Multiplexing & Schutz der Hardware (ermöglicht Multiprozess-Betrieb)
+    2. abstrahierte Maschine** mit ,,angenehmerer'' Schnittstelle als die reine Hardware (z.B. Dateien, Sockets, Prozesse, ...)
+- Typ- 1 - Hypervisor trennt beide Kategorien:
+  - läuft wie ein Betriebssystem unmittelbar über der Hardware
+  - bewirkt Multiplexing der Hardware, liefert aber keine erweiterte Maschine** an Anwendungsschicht $\rightarrow$  ,,Multi-Betriebssystem-Betrieb''
+- Bietet mehrmals die unmittelbare Hardware-Schnittstelle an, wobei jede Instanz eine virtuelle Maschine jeweils mit den unveränderten Hardware-Eigenschaften darstellt (Kernel u. User Mode, Ein-/Ausgaben usw.).
+- Ursprünge: Time-Sharing an Großrechnern
+  - Standard-BS auf IBM-Großrechner System/360: OS/360
+  - reines Stapelverarbeitungs-Betriebssystem (1960er Jahre)
+  - Nutzer (insbes. Entwickler) strebten interaktive Arbeitsweise an eigenem Terminal an $\rightarrow$  timesharing (MIT, 1962: CTSS)
+    - IBM zog nach: CP/CMS, später VM/370 $\rightarrow$ z/VM
+    - CP: Control Program $\rightarrow$ Typ- 1 - Hypervisor
+    - CMS: ConversationalMonitor System $\rightarrow$ Gast-BS
+  - CP lief auf ,,blanker'' Hardware (Begriff geprägt: ,,bare metal hypervisor'' )
+    - lieferte Menge virtueller Kopiender System/360-Hardware an eigentliches Timesharing-System
+    - je eines solche Kopie pro Nutzer $\rightarrow$ unterschiedliche BS lauffähig (da jede virtuelle Maschine exakte Kopie der Hardware)
+    - in der Praxis: sehr leichtgewichtiges, schnelles Einzelnutzer-BS als Gast $\rightarrow$ CMS (heute wäre das wenig mehr als ein Terminal-Emulator...)
+- heute: Forderungen nach Virtualisierung von Betriebssystemen
+  - seit 1980er: universeller Einsatz des PC für Einzelplatz- und Serveranwendungen $\rightarrow$ veränderte Anforderungen an Virtualisierung
+  - Wartbarkeit: vor allem ökonomische Gründe:
+    1. Anwendungsentwicklung und -bereitstellung: verschiedene Anwendungen in Unternehmen, bisher auf verschiedenen Rechnern mit mehreren (oft verschiedenen) BS, auf einem Rechner entwickeln und betreiben (Lizenzkosten!)
+    2. Administration: einfache Sicherung, Migration virtueller Maschinen
+    3. Legacy-Software
+  - später: Sicherheit, Robustheit $\rightarrow$ Cloud-Computing-Anwendungen
+- ideal hierfür: Typ- 1 - Hypervisor
+  - ✓ Gast-BS angenehm wartbar
+  - ✓ Softwarekosten beherrschbar
+  - ✓ Anwendungen isolierbar
+ 
+Hardware-Voraussetzungen
+- Voraussetzungen zum Einsatz von Typ- 1 - HV
+  - Ziel: Nutzung von Virtualisierung auf PC-Hardware
+  - systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek & Goldberg [Popek&Goldberg74]
+  - Ergebnis:
+    - Gast-BS (welches aus Sicht der CPU im User Mode - also unprivilegiert läuft) muss sicher sein können, dass privilegierte Instruktionen (Maschinencode im Kernel) ausgeführt werden
+    - dies geht nur, wenn tatsächlich der HV diese Instruktionen ausführt!
+    - dies geht nur, wenn CPU bei jeder solchen Instruktion im Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion emuliert!
+- virtualisierbare Prozessoren bis ca. 2006:
+  - ✓ IBM-Architekturen(bekannt: PowerPC, bis 2006 Apple-Standard)
+  - ✗ Intel x86-Architekturen (386, Pentium, teilweise Core i)
+ 
+Privilegierte Instruktionen **ohne** Hypervisor
+- kennen wir schon: Instruktion für Systemaufrufe
+1. User Mode: Anwendung bereitet Befehl und Parameter vor
+2. User Mode: Privilegierte Instruktion (syscall/Trap - Interrupt) $\rightarrow$ CPU veranlasst Kontext-und Privilegierungswechsel, Ziel: BS-Kernel
+3. Kernel Mode: BS-Dispatcher (Einsprungpunkt für Kernel-Kontrollfluss) behandelt Befehl und Parameter, ruft weitere privilegierte Instruktionen auf (z.B. EA-Code)
+- ![](Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png)
 
+Privilegierte Instruktionen mit Typ- 1 - Hypervisor(1)
+- zum Vergleich: Instruktion für Systemaufrufe des Gast-BS
+1. User Mode: Anwendung bereitet Befehl und Parameter vor
+2. User Mode: Trap $\rightarrow$ Kontext-und Privilegierungswechsel, Ziel: Typ-1-HV
+3. Kernel Mode: HV-Dispatcher ruft Dispatcher im Gast-BS auf
+4. User Mode: BS-Dispatcher behandelt Befehl und Parameter, ruft weitere privilegierte Instruktionenauf (z.B. EA-Code) $\rightarrow$ Kontext-und Privilegierungswechsel, Ziel: Typ-1-HV
+5. Kernel Mode: HV führt privilegierte Instruktionen anstelle des Gast-BS aus
+- ![](Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png)
 
+Sensible und privilegierte Instruktionen: Beobachtungen an verschiedenen Maschinenbefehlssätzen: [Popek&Goldberg74]
+- $\exists$ Menge an Maschinenbefehlen, die nur im Kernel Mode ausgeführt werden dürfen (Befehle zur Realisierung von E/A, Manipulation der MMU, ...)
+  - $\rightarrow$ sensible Instruktionen
+- $\exists$ Menge an Maschinenbefehlen, die Wechsel des Privilegierungsmodus auslösen (x86: Trap ), wenn sie im User Mode ausgeführt werden
+  - $\rightarrow$ privilegierte Instruktionen
+- Prozessor ist virtualisierbarfalls (notw. Bed.): sensible Instruktionen $\subseteq$ privilegierte Instruktionen
+- Folge: jeder Maschinenbefehl, der im Nutzermodus nicht erlaubt ist, muss einen Privilegierungswechsel auslösen (z.B. Trap generieren)
+- kritische Instruktionen = sensible Instruktionen \ privilegierte Instruktionen
+  - Befehle, welche diese Bedingung verletzen $\rightarrow$ Existenz im Befehlssatz führt zu nicht-virtualisierbarem Prozessor
+- Beispiele für sensible Instruktionen bei Intel x86:
+  - hlt: Befehlsabarbeitung bis zum nächsten Interrupt stoppen
+  - invlpg: TLB-Eintrag für Seite invalidieren
+  - lidt: IDT (interrupt descriptor table) neu laden
+  - mov auf Steuerregistern
+  - ...
+- Beispiel: Privilegierte Prozessorinstruktionen
+  - Bsp.: write - Systemaufruf
+  - Anwendungsprogramm schreibt String in Puffer eines Ausgabegeräts ohne Nutzung der libc Standard-Bibliothek:
+    `asm ( "int $0x80" ); /* interrupt 80 (trap) */`
+  - Interrupt-Instruktion veranlasst Prozessor zum Kontextwechsel: Kernelcode im privilegierten Modus ausführen
+
+Vergleich: Privilegierte vs. sensible Instruktionen
+- ![](Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png)
+
+Folgen für Virtualisierung
+- privilegierte Instruktionen bei virtualisierbaren Prozessoren
+- bei Ausführung einer privilegierten Instruktion in virtueller Maschine: immer Kontrollflussübergabe an im Kernel-Modus laufende Systemsoftware - hier Typ-1-HV
+- HV kann (anhand des virtuellen Privilegierungsmodus) feststellen:
+  1. ob sensible Anweisung durch Gast-BS
+  2. oder durch Nutzerprogramm (Systemaufruf!) ausgelöst
+- Folgen:
+  1. privilegierte Instruktionen des Gast-Betriebssystems werden ausgeführt $\rightarrow$  ,,trap-and-emulate''
+  2. Einsprung in Betriebssystem, hier also Einsprung in Gast-Betriebssystem $\rightarrow$  Upcall durch HV
+- privilegierte Instruktionen bei nicht virtualisierbaren Prozessoren
+  - solche Instruktionen typischerweise ignoriert!
+ 
+Intel-Architektur ab 386
+- dominant im PC-und Universalrechnersegment ab 1980er
+- keine Unterstützung für Virtualisierung ...
+- kritische Instruktionen im User Mode werden von CPU ignoriert
+- außerdem: in Pentium-Familie konnte Kernel-Code explizit feststellen, ob er im Kernel- oder Nutzermodus läuft $\rightarrow$ Gast-BS trifft (implementierungsabhängig) evtl. fatal fehlerhafte Entscheidungen
+- Diese Architekturprobleme (bekannt seit 1974) wurden 20 Jahre lang im Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen ...
+  - erste virtualisierungsfähige Intel-Prozessorenfamilie (s. [Adams2006] ): VT, VT-x® (2005)
+  - dito für AMD: SVM, AMD-V® (auch 2005)
 
 # Performanz und Parallelität
 # Zusammenfassung

@@ -281,6 +281,82 @@
     \end{solution}
   \end{parts}
 
+  \question Echtzeitsysteme
+  \begin{parts}
+    \part Was ist ein Echtzeitsystem? Wie unterscheiden sich Echtzeit- von Nichtechtzeitsystemen?
+    \begin{solution}
+    \end{solution}
+    \part Ist Performanz (im Sinne einer möglichst kurzen Antwortzeit) ein hinreichendes, notwendiges, oder gar kein Kriterium für Echtzeitfähigkeit?
+    \begin{solution}
+    \end{solution}
+    \part Welche Arten von Fristen kennen Sie? Nennen Sie je eine typische Beispielanwendung.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Echtzeit-Scheduling
+  \begin{parts}
+    \part Ist Round Robin (RR) eine geeignete Strategie zum Echtzeitscheduling? Warum/warum nicht?
+    \begin{solution}
+    \end{solution}
+    \part Würde sich Ihre Antwort auf die vorherige Frage ändern, wenn man RR mit einem Prioritätenschema versieht? Falls ja: unter welchen Bedingungen? Falls nein: begründen Sie.
+    \begin{solution}
+    \end{solution}
+    \part Welchen Parameter müssen Echtzeit-Schedulingstrategien optimieren?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Scheduling periodischer Prozesse
+  \begin{parts}
+    \part Vergleichen Sie die Eigenschaften von EDF und RM: Welche Vorteile (Nachteile?) hat der Einsatz der dynamischen Strategie gegenüber der statischen?
+    \begin{solution}
+    \end{solution}
+    \part Überprüfen Sie die Planbarkeit folgender periodischer Prozessmenge durch RM anhand der oberen Schranke des Prozessorauslastungsfaktors ($U_{lub}$):
+    \begin{center}
+      \begin{tabular}{|c|c|c|}
+                 & $C_i$ & $T_i$ \\\hline
+        $\tau_1$ & 2     & 7     \\
+        $\tau_2$ & 1     & 10    \\
+        $\tau_3$ & 3     & 8
+      \end{tabular}
+    \end{center}
+    \begin{solution}
+    \end{solution}
+    \part Ergänzen Sie die Prozessmenge der vorherigen Teilaufgabe um einen Prozess $\tau_4$ mit $C_4=3$ ,$T_4=20$. Wiederholen Sie die Planbarkeitsanalyse und interpretieren Sie das Ergebnis.
+    \begin{solution}
+    \end{solution}
+    \part Entwickeln Sie für die Prozessmenge aus Teilaufgabe 2 jeweils den Schedule für EDF und RM. Modifizieren Sie anschließend Ihre Lösung, unter Berücksichtigung Ihrer Planbarkeitsanalyse aus Teilaufgabe 3, indem Sie $\tau_4$ aufnehmen.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Prioritätsumkehr: Die unten abgebildeten aperiodischen Prozesse $\tau_1...\tau_3$ sind nach EDF planbar (aufsteigende Pfeile bedeuten Ankunft, absteigende Pfeile Frist eines Prozesses).
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-edf-prioritätsumkehr.png}
+  \end{center}
+  \begin{parts}
+    \part Entwickeln Sie mittels EDF einen Schedule für diese Prozessmenge.
+    \begin{solution}
+    \end{solution}
+    \part Sowohl $\tau_1$ als auch $\tau_3$ möchten denselben kritischen Abschnitt betreten, beispielsweise in denselben Puffer eines Geräteregisters schreiben. Der Eintritt in den kritischen Abschnitt erfolgt bei $\tau_1$ nach 2 Zeiteinheiten (ZE) Rechenzeit, bei $\tau_3$ nach 1 ZE Rechenzeit. Die Verweildauer im kritischen Abschnitt beträgt bei $\tau_1$ 1 ZE, bei $\tau_3$ 4 ZE. Modifizieren Sie den Schedule unter Berücksichtigung der hierdurch entstandenen kausalen Abhängigkeiten. Diskutieren Sie an diesem Beispiel das Problem der Prioritätsumkehr und seine Folgen.
+    \begin{solution}
+    \end{solution}
+    \part Lösen Sie das in Teilaufgabe 2 beschrieben Problem mittels Prioritätsvererbung und modifizieren Sie Ihren Schedule entsprechend.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Cyclic Asynchronous Buffers: Als Datenstruktur für echtzeitkritische Kommunikation, etwa als Alternative zu linearen Message-Queues, werden in Betriebssystemen sog. \texttt{cyclic asynchronous buffers} (CAB, dt. ,,Ringpuffer'') implementiert. Ihre Aufgabe ist es nun, einen solchen CAB der Länge $n$ zu implementieren. Demonstrieren Sie anschließend, über eine kleines (Kommandozeilen-) Programm das Auslesen einer Folge von $>n$ Nachrichten durch
+  \begin{itemize}
+    \item 1 Empfänger, welcher schneller liest als der Sender schreibt
+    \item 1 Empfänger, welcher langsamer liest als der Sender schreibt
+    \item > 1 Empfänger mit unterschiedlichen relativen, optional sogar variablen Geschwindigkeiten.
+  \end{itemize}
+  Um die Anschaulichkeit zu verbessern, benutzen Sie Nachrichtenfolgen der Länge $i*n( i > 1 ,i\in\mathbb{N})$ oder lassen Sie die einzelnen Threads endlos rechnen und interaktiv bzw. mittels Prozessmanagement abbrechen.\\
+  Diskutieren Sie anhand Ihrer Implementierung Voraussetzungen und Besonderheiten eines CAB verglichen mit linearen, endlichen Warteschlangen. Gehen Sie dabei insbesondere auf die Notwendigkeit von Synchronisationsoperationen ein (vgl. klassisches Reader-Writer-Problem) sowie auf die Eignung hinsichtlich echtzeitkritischer Prozesse als Kommunikationspartner.
+  \begin{solution}
+  \end{solution}
 
 \end{questions}
 \end{document}

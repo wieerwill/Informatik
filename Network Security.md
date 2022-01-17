@@ -235,6 +235,23 @@
 - [Sicherheitsaspekte der mobilen Kommunikation](#sicherheitsaspekte-der-mobilen-kommunikation)
   - [Standortdatenschutz in Mobilfunknetzen](#standortdatenschutz-in-mobilfunknetzen)
 - [Sicherheit von drahtlosen lokalen Netzen](#sicherheit-von-drahtlosen-lokalen-netzen)
+  - [IEEE 802.11](#ieee-80211)
+  - [Der zyklische Redundanzcode](#der-zyklische-redundanzcode)
+  - [IEEE 802.11 Entity-Authentifizierung](#ieee-80211-entity-authentifizierung)
+  - [IEEE 802.11's Wired Equivalence Privacy](#ieee-80211s-wired-equivalence-privacy)
+  - [Die Sicherheitsansprüche von IEEE 802.11](#die-sicherheitsansprüche-von-ieee-80211)
+    - [Schwachstelle #1: Die Schlüssel](#schwachstelle-1-die-schlüssel)
+    - [Schwachstelle #2: WEP-Vertraulichkeit ist unsicher](#schwachstelle-2-wep-vertraulichkeit-ist-unsicher)
+    - [Schwachstelle #3: WEP-Datenintegrität ist unsicher](#schwachstelle-3-wep-datenintegrität-ist-unsicher)
+    - [Schwachstelle #4: WEP-Zugangskontrolle ist unsicher](#schwachstelle-4-wep-zugangskontrolle-ist-unsicher)
+    - [Schwachstelle Nr. 5: Schwachstelle in der RC4-Schlüsselberechnung](#schwachstelle-nr-5-schwachstelle-in-der-rc4-schlüsselberechnung)
+  - [Schlussfolgerungen zu den Unzulänglichkeiten von IEEE 802.11](#schlussfolgerungen-zu-den-unzulänglichkeiten-von-ieee-80211)
+  - [Interlude: Sicherheit in öffentlichen WLAN-Hotspots](#interlude-sicherheit-in-öffentlichen-wlan-hotspots)
+  - [Fixing WLAN Security: IEEE 802.11i, WPA und WPA](#fixing-wlan-security-ieee-80211i-wpa-und-wpa)
+  - [WPA-Schlüsselverwaltung](#wpa-schlüsselverwaltung)
+  - [Eine Zwischenlösung: Temporal Key Integrity Protokoll](#eine-zwischenlösung-temporal-key-integrity-protokoll)
+  - [Die langfristige Lösung: AES-basierter WLAN-Schutz](#die-langfristige-lösung-aes-basierter-wlan-schutz)
+  - [Comparison of WEP, TKIP, and CCMP](#comparison-of-wep-tkip-and-ccmp)
 - [Sicherheit von GSM- und UMTS-Netzen](#sicherheit-von-gsm--und-umts-netzen)
 - [References](#references)
 
@@ -4421,6 +4438,309 @@ Zusätzliche Designziele zu IKEv1
   - Dieses Konzept lässt sich auf die mobile Kommunikation übertragen [Müller99a]
 
 # Sicherheit von drahtlosen lokalen Netzen
+## IEEE 802.11
+- IEEE 802.11 [IEEE12] standardisiert die Medienzugriffskontrolle (MAC) und die physikalischen Eigenschaften eines drahtlosen lokalen Netzwerks (LAN).
+- Der Standard umfasst mehrere physikalische Schichteinheiten:
+  - Derzeit zwischen 1-300 Mbit/s
+  - 2,4-GHz-Band und 5-GHz-Band
+  - Viele verschiedene Modulationsverfahren
+- Die Übertragung im lizenzfreien 2,4-GHz-Band impliziert:
+  - Medium-Sharing mit unfreiwilligen 802.11-Geräten
+  - Überlappung von logisch getrennten Wireless LANs
+  - Überlappung mit Nicht-802.11-Geräten
+- Die Medienzugriffskontrolle (MAC) unterstützt sowohl den Betrieb unter Kontrolle eines Access Points als auch zwischen unabhängigen Stationen.
+- In diesem Kurs werden wir uns hauptsächlich auf die (Un-)Sicherheitsaspekte des Standards konzentrieren!
+
+802.11 - Architektur eines Infrastrukturnetzes
+- ![](Assets/NetworkSecurity-802.11-network-architecture.png)
+- Station (STA): Endgerät mit Zugriffsmechanismen auf das drahtlose Medium und Funkkontakt zum Access Point
+- Basic Service Set (BSS): Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
+- Zugangspunkt: Station, die in das drahtlose LAN und das Verteilungssystem integriert ist
+- Portal: Brücke zu anderen (kabelgebundenen) Netzwerken
+- Verteilungssystem: Verbindungsnetz zur Bildung eines logischen Netzes (Extended Service Set, ESS), das auf mehreren BSS basiert
+
+802.11 - Architektur eines Ad-Hoc-Netzes
+- ![](Assets/NetworkSecurity-802.11-ad-hoc-architecture.png)
+- Station (STA): Endgerät mit Zugriffsmechanismen auf das drahtlose Medium
+- Basic Service Set (BSS): Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
+- Ad-Hoc-Netze ermöglichen die direkte Kommunikation zwischen Endsystemen innerhalb einer begrenzten Reichweite
+- Da es keine Infrastruktur gibt, ist keine Kommunikation zwischen verschiedenen BSSs möglich
+
+Sicherheitsdienste von IEEE 802.11
+- Die Sicherheitsdienste von IEEE 802.11 wurden ursprünglich wie folgt realisiert:
+  - Authentifizierungsdienst für Entitäten
+  - Wired Equivalent Privacy (WEP) Mechanismus
+- WEP soll die folgenden Sicherheitsdienste bieten
+  - Vertraulichkeit
+  - Authentifizierung der Datenherkunft / Datenintegrität
+  - Zugangskontrolle in Verbindung mit Schichtenmanagement
+- WEP verwendet die folgenden Algorithmen:
+  - Die RC4-Stromchiffre (siehe Kapitel 3)
+  - Die CRC-Prüfsumme (Cyclic Redundancy Code) zur Fehlererkennung
+
+## Der zyklische Redundanzcode
+- Der zyklische Redundanzcode (CRC) ist ein Fehlererkennungscode
+- Mathematische Grundlage:
+  - Bitstrings werden als Darstellungen von Polynomen mit den Koeffizienten 0 und 1 behandelt $\Rightarrow$ Ein Bitstring, der eine Nachricht M darstellt, wird als M(x) interpretiert
+  - Polynomarithmetik wird modulo 2 durchgeführt $\Rightarrow$ Addition und Subtraktion sind identisch mit XOR
+- CRC-Berechnung für eine Nachricht $M(x)$:
+  - A und B einigen sich auf ein Polynom $G(x)$; üblicherweise ist $G(x)$ standardisiert
+  - Sei $n$ der Grad von $G(x)$, d.h. die Länge von $G(x)$ sei $n+1$
+  - Wenn dann $\frac{M(x)\times 2^n}{G(x)}=Q(x)+\frac{R(x)}{G(x)}$ gilt $\frac{M(x)\times 2^n +R(x)}{G(x)}$ wobei $R(x)$ der Rest von $M(x)$ geteilt durch $G(x)$ ist
+  - Normalerweise wird $R(x)$ vor der Übertragung an $M(x)$ angehängt, und $Q(x)$ ist nicht von Interesse, da es nur geprüft wird, wenn $\frac{M(x)\times 2^n+R(x)}{G(x)}$ mit Rest $0$ dividiert
+- Betrachten wir nun zwei Nachrichten $M_1$ und $M_2$ mit CRCs $R_1$ und $R_2$:
+  - Da $\frac{M_1(x)\times 2^n+R_1(x)}{G(x)}$ und $\frac{M_2(x)\times 2^n+R_2(x)}{G(x)}$ mit dem Rest $0$ teilen, teilt sich auch $\frac{M_1(x)\times 2^n +R_1(x)+M_2(x)\times 2^n +R_2(x)}{G(x)} =\frac{(M_1(x)+M_2(x))\times 2^n +(R_1(x)+R_2(x))}{G(x)}$ teilt mit Rest $0$
+  - $\Rightarrow$ CRC ist linear, d.h. $CRC(M_1 + M_2) = CRC(M_1) + CRC(M_2)$
+- Diese Eigenschaft macht CRC schwach für kryptographische Zwecke!
+
+## IEEE 802.11 Entity-Authentifizierung
+- Ursprünglich gibt es die IEEE 802.11-Authentifizierung in zwei ,,Geschmacksrichtungen'':
+  - Offene System-Authentifizierung: ,,Im Wesentlichen handelt es sich um einen Null-Authentifizierungsalgorithmus.'' (IEEE 802.11)
+  - Shared-Key-Authentifizierung:
+    - Die ,,Shared-Key-Authentifizierung unterstützt die Authentifizierung von STAs entweder als Mitglied derer, die einen gemeinsamen geheimen Schlüssel kennen, oder als Mitglied derer, die ihn nicht kennen.'' (IEEE 802.11, Abschnitt 8.1.2)
+    - Es wird davon ausgegangen, dass der erforderliche geheime, gemeinsam genutzte Schlüssel den teilnehmenden STAs über einen sicheren, von IEEE 802.11 unabhängigen Kanal übermittelt wurde.
+
+IEEE 802.11's Shared Key Authentication Dialog:
+- Die Authentifizierung sollte zwischen Stationen und Zugangspunkten erfolgen und könnte auch zwischen beliebigen Stationen durchgeführt werden.
+- Bei der Authentifizierung fungiert eine Station als Requestor (A) und die andere als Responder (B)
+- Der Authentifizierungsdialog:
+  1. $A \rightarrow B: (Authentifizierung, 1, ID_A)$
+  2. $B \rightarrow A: (Authentifizierung, 2, r_B)$
+  3. $A \rightarrow B: \{Authentifizierung, 3, r_B\}_{K_{A,B}}$
+  4. $B \rightarrow A: (Authentifizierung, 4, erfolgreich)$
+- Die gegenseitige Authentifizierung erfordert zwei unabhängige Protokolldurchläufe, einen in jeder Richtung
+- Aber: ein Angreifer kann sich nach dem Abhören eines Protokolldurchlaufs ausgeben, da er einen gültigen Schlüsselstrom aus den Nachrichten 2 und 3 erhalten kann!
+
+## IEEE 802.11's Wired Equivalence Privacy
+- IEEE 802.11's WEP verwendet RC4 als Pseudo-Zufallsbit-Generator (PRNG):
+  - Für jede zu schützende Nachricht M wird ein 24-Bit-Initialisierungsvektor (IV) mit dem gemeinsamen Schlüssel $K_{BSS}$ verkettet, um den Seed des PRNG zu bilden.
+  - Der Integritätsprüfwert (ICV) von M wird mit CRC berechnet und an die Nachricht angehängt (,,||'')
+  - Die resultierende Nachricht $(M || ICV)$ wird mit dem von $RC4(IV || K_{BSS})$ erzeugten Schlüsselstrom XOR-verknüpft (,,$\oplus$'')
+  - ![](Assets/NetworkSecurity-802.11-wep-encryption.png)
+- Da die IV mit jeder Nachricht im Klartext gesendet wird, kann jeder Empfänger, der $K_{BSS}$ kennt, den entsprechenden Schlüsselstrom zur Entschlüsselung einer Nachricht erzeugen.
+  - Dadurch wird die wichtige Eigenschaft der Selbstsynchronisation von WEP gewährleistet
+  - Der Entschlüsselungsprozess ist im Grunde die Umkehrung der Verschlüsselung:
+  - ![](Assets/NetworkSecurity-802.11-wep-decryption.png)
+
+## Die Sicherheitsansprüche von IEEE 802.11
+- WEP wurde entwickelt, um die folgenden Sicherheitseigenschaften zu gewährleisten:
+  - Vertraulichkeit:
+    - Nur Stationen, die über $K_{BSS}$ verfügen, können mit WEP geschützte Nachrichten lesen
+  - Authentifizierung der Datenherkunft / Datenintegrität:
+    - Böswillige Veränderungen von WEP-geschützten Nachrichten können erkannt werden
+  - Zugriffskontrolle in Verbindung mit Schichtenmanagement:
+    - Wenn in der Schichtenverwaltung so eingestellt, werden nur WEP-geschützte Nachrichten von Empfängern akzeptiert
+    - Somit können Stationen, die $K_{BSS}$ nicht kennen, nicht an solche Empfänger senden
+- Leider trifft keine der obigen Behauptungen zu...
+
+### Schwachstelle #1: Die Schlüssel
+- IEEE 802.11 sieht keine Schlüsselverwaltung vor:
+  - Manuelle Verwaltung ist fehleranfällig und unsicher
+  - Die gemeinsame Verwendung eines Schlüssels für alle Stationen eines BSS führt zu zusätzlichen Sicherheitsproblemen
+  - Als Folge der manuellen Schlüsselverwaltung werden die Schlüssel selten geändert.
+  - Eine weitere Folge ist, dass die ,,Sicherheit'' oft sogar ausgeschaltet ist!
+- Schlüssellänge:
+  - Die im ursprünglichen Standard festgelegte Schlüssellänge von 40 Bit bietet nur geringe Sicherheit
+  - Der Grund dafür war die Exportierbarkeit
+  - Wireless LAN-Karten erlauben oft auch Schlüssel der Länge 104 Bit, aber das macht die Situation nicht besser, wie wir später sehen werden
+
+### Schwachstelle #2: WEP-Vertraulichkeit ist unsicher
+- Selbst mit gut verteilten und langen Schlüsseln ist WEP unsicher
+- Der Grund dafür ist die Wiederverwendung des Schlüsselstroms:
+  - Erinnern Sie sich, dass die Verschlüsselung mit jeder Nachricht neu synchronisiert wird, indem eine IV der Länge 24 Bit an $K_{BSS}$ angehängt und der PRNG neu initialisiert wird
+  - Betrachten wir zwei Klartexte M 1 und M 2, die mit demselben IV 1 verschlüsselt wurden:
+    - $C_1 = P_1 \oplus RC4 (IV_1 , K_{BSS})$
+    - $C_2 = P_2 \oplus RC4 (IV_1 , K_{BSS})$ dann:
+    - $C_1 \oplus C_2 = (P_1 \oplus RC4 (IV_1, K_{BSS})) \oplus (P_2\oplus RC4 (IV_1 , K_{BSS})) = P_1 \oplus P_2$
+  - Wenn also ein Angreifer z.B. $P_1$ und $C_1$ kennt, kann er $P_2$ aus $C_2$ wiederherstellen, ohne den Schlüssel $K_{BSS}$ zu kennen.
+    - Kryptographen nennen dies einen Angriff mit bekanntem Klartext
+- Wie oft kommt die Wiederverwendung des Schlüsselstroms vor?
+  - In der Praxis recht häufig, da viele Implementierungen die IV schlecht wählen
+  - Selbst bei optimaler Wahl, da die IV-Länge 24 Bit beträgt, wird eine stark ausgelastete Basisstation eines 11-Mbit/s-WLAN den verfügbaren Speicherplatz in einem halben Tag erschöpfen
+
+### Schwachstelle #3: WEP-Datenintegrität ist unsicher
+- Erinnern Sie sich, dass CRC eine lineare Funktion ist und RC4 ebenfalls linear ist
+- Nehmen wir an, A sendet eine verschlüsselte Nachricht an B, die von einem Angreifer E abgefangen wird:
+  - $A \rightarrow B: (IV, C) mit C = RC4(IV, K_{BSS}) \oplus (M, CRC(M))$
+- Der Angreifer E kann einen neuen Chiffretext $C'$ konstruieren, der zu einer Nachricht $M'$ mit einer gültigen Prüfsumme $CRC(M')$ entschlüsselt wird:
+  - E wählt eine beliebige Nachricht $\delta$ mit der gleichen Länge
+  - $C' = C \oplus (\delta, CRC(\delta)) = RC4(IV, K_{BSS}) \oplus (M, CRC(M)) \oplus (\delta, CRC(\delta))$
+  - $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M) \oplus CRC(\delta))$
+  - $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M \oplus \delta))$
+  - $= RC4(IV, K_{BSS}) \oplus (M', CRC(M'))$
+  - Man beachte, dass $E$ $M'$ nicht kennt, da es $M$ nicht kennt.
+  - Dennoch führt ein ,,1'' an Position $n$ in $\delta$ zu einem umgedrehten Bit an Position n in $M'$, so dass E kontrollierte Änderungen an $M$ vornehmen kann
+  - $\Rightarrow$ Datenherkunftsauthentifizierung / Datenintegrität von WEP ist unsicher!
+
+### Schwachstelle #4: WEP-Zugangskontrolle ist unsicher
+- Erinnern Sie sich, dass die Integritätsfunktion ohne einen Schlüssel berechnet wird
+- Betrachten wir einen Angreifer, der ein Klartext-Chiffretext-Paar in Erfahrung bringt:
+  - Da der Angreifer $M$ und $C=RC4(IV, K_{BSS})\oplus (M, CRC(M))$ kennt, kann er den zur Erzeugung von $C$ verwendeten Schlüsselstrom berechnen
+  - Wenn $E$ später eine Nachricht $M'$ senden will, kann er $C' = RC4(IV, K_{BSS})\oplus (M', CRC(M'))$ berechnen und die Nachricht $(IV, C')$ senden.
+  - Da die Wiederverwendung alter IV-Werte möglich ist, ohne beim Empfänger einen Alarm auszulösen, handelt es sich um eine gültige Nachricht
+  - Eine ,,Anwendung'' für diesen Angriff ist die unbefugte Nutzung von Netzwerkressourcen:
+    - Der Angreifer sendet IP-Pakete, die für das Internet bestimmt sind, an den Zugangspunkt, der sie entsprechend weiterleitet und dem Angreifer freien Zugang zum Internet gewährt
+- $\Rightarrow$ WEP Access Control kann mit bekanntem Klartext umgangen werden
+
+### Schwachstelle Nr. 5: Schwachstelle in der RC4-Schlüsselberechnung
+- Anfang August 2001 wurde ein weiterer Angriff auf WEP entdeckt:
+  - Der gemeinsame Schlüssel kann in weniger als 15 Minuten wiederhergestellt werden, vorausgesetzt, dass etwa 4 bis 6 Millionen Pakete wiederhergestellt wurden.
+  - Bei dem Angriff handelt es sich um einen Angriff mit verwandten Schlüsseln, bei dem die Verwendung von RC4 durch WEP ausgenutzt wird:
+    - RC4 ist anfällig für die Ableitung von Bits eines Schlüssels, wenn:
+      - viele Nachrichten mit einem Schlüsselstrom verschlüsselt werden, der aus einem variablen Initialisierungsvektor und einem festen Schlüssel erzeugt wird, und
+      - die Initialisierungsvektoren und der Klartext der ersten beiden Oktette für die verschlüsselten Nachrichten bekannt sind
+    - Die IV für den Schlüsselstrom wird mit jedem Paket im Klartext übertragen.
+    - Die ersten beiden Oktette eines verschlüsselten Datenpakets können erraten werden
+  - Der Angriff ist in [SMF01a] und [SIR01a] beschrieben und wurde später so verfeinert, dass er noch schneller funktioniert [TWP07].
+  - R. Rivest kommentiert dies [Riv01a]: ,,Diejenigen, die die RC4-basierten WEP- oder WEP2-Protokolle verwenden, um die Vertraulichkeit ihrer 802.11-Kommunikation zu gewährleisten, sollten diese Protokolle als gebrochen betrachten [...]''
+
+## Schlussfolgerungen zu den Unzulänglichkeiten von IEEE 802.11
+- Das ursprüngliche IEEE 802.11 bietet keine ausreichende Sicherheit:
+  - Fehlende Schlüsselverwaltung macht die Nutzung der Sicherheitsmechanismen mühsam und führt dazu, dass die Schlüssel selten gewechselt werden oder sogar die Sicherheit ausgeschaltet ist
+  - Sowohl die Entity-Authentifizierung als auch die Verschlüsselung beruhen auf einem Schlüssel, der von allen Stationen eines Basisdienstes gemeinsam genutzt wird
+  - Unsicheres Protokoll zur Entitätsauthentifizierung
+  - Wiederverwendung des Schlüsselstroms ermöglicht Angriffe mit bekanntem Klartext
+  - Lineare Integritätsfunktion ermöglicht die Fälschung von ICVs
+  - Unverschlüsselte Integritätsfunktion ermöglicht die Umgehung der Zugangskontrolle durch Erstellung gültiger Nachrichten aus einem bekannten Klartext-Chiffretext-Paar
+  - Schwachstelle in der RC4-Schlüsselplanung ermöglicht die Kryptoanalyse von Schlüsseln
+- Selbst mit IEEE 802.1X und individuellen Schlüsseln bleibt das Protokoll schwach
+- Einige vorgeschlagene Gegenmaßnahmen:
+  - Platzieren Sie Ihr IEEE 802.11 Netzwerk außerhalb Ihrer Internet Firewall
+  - Vertrauen Sie keinem Host, der über IEEE 802.11 verbunden ist.
+  - Verwenden Sie zusätzlich andere Sicherheitsprotokolle, z. B. PPTP, L2TP, IPSec, SSH, ...
+
+## Interlude: Sicherheit in öffentlichen WLAN-Hotspots
+Welche Sicherheit können Sie in einem öffentlichen WLAN-Hotspot erwarten?
+- Bei den meisten Hotspots: Leider fast keine!
+- Wenn Sie außer der Eingabe eines Benutzernamens und eines Passworts auf einer Webseite keine weiteren Sicherheitsparameter konfigurieren müssen, können Sie Folgendes erwarten:
+  - Der Hotspot-Betreiber prüft Ihre Authentizität bei der Anmeldung (oft mit SSL geschützt, um das Abhören Ihres Passworts zu verhindern)
+  - Nur authentifizierte Clients erhalten den Dienst, da die Paketfilterung den Zugriff auf die Anmeldeseite nur bei erfolgreicher Authentifizierung zulässt.
+  - Nach Überprüfung der Anmeldeauthentifizierung: keine weiteren Sicherheitsmaßnahmen
+  - Kein Schutz für Ihre Benutzerdaten:
+    - Alles kann abgefangen und manipuliert werden
+    - Sie können zwar eigene Maßnahmen ergreifen, z.B. VPN oder SSL, aber die Konfiguration ist oft mühsam oder wird vom Kommunikationspartner gar nicht unterstützt und die Leistung wird durch zusätzlichen (pro-Paket-) Overhead beeinträchtigt
+  - Plus: Ihre Sitzung kann durch die Verwendung Ihrer MAC- und IP-Adressen gestohlen werden!
+- Konsequenz: bessere WLAN-Sicherheit ist dringend erforderlich
+
+## Fixing WLAN Security: IEEE 802.11i, WPA und WPA
+- Umfang: Definition der Interaktion zwischen 802.1X und 802.11 Standards
+- TGi definiert zwei Klassen von Sicherheitsalgorithmen für 802.11:
+  - Pre-RSN Sicherheitsnetzwerk (\rightarrow WEP)
+  - Robustes Sicherheitsnetzwerk (RSN)
+- Die RSN-Sicherheit besteht aus zwei grundlegenden Teilsystemen:
+  - Mechanismen zum Schutz der Daten:
+    - TKIP - schnelles Re-Keying, um WEP für ein Minimum an Datenschutz zu verbessern (Marketingname WPA)
+    - AES-Verschlüsselung - robuster Datenschutz für lange Zeit (Marketingname WPA2)
+- Verwaltung von Sicherheitsvereinbarungen:
+  - Unternehmensmodus - basierend auf 802.1X
+  - Persönlicher Modus - basierend auf Pre-Shared Keys
+
+(das meiste Material über 802.11i ist aus [WM02a] entnommen)
+
+## WPA-Schlüsselverwaltung
+- Im Gegensatz zum ursprünglichen 802.11: paarweise Schlüssel zwischen STA und BS, zusätzliche Gruppenschlüssel für Multi- und Broadcast-Pakete sowie Station-to-Station-Link (STSL)-Schlüssel
+- Das erste Geheimnis: der 256 Bit Pairwise Master Key (PMK)
+  - Unternehmensmodus: Verwendet 802.1X-Authentifizierung und installiert einen neuen Schlüssel, der BS und Client bekannt ist, z. B. durch EAP-TTLS
+  - Persönlicher Modus: Verwendet einen Pre-Shared Key (PSK), der dem BS und vielen STAs bekannt ist.
+    - Explizit durch 64 zufällige Hex-Zeichen oder implizit durch ein Passwort gegeben
+    - Wenn Passwort: PMK = PBKDF2(Passwort, SSID, 4096, 256)
+    - Wobei PBKDF2 die passwortbasierte Schlüsselableitungsfunktion 2 aus [RFC2898] mit einer Salz-SSID und einer Ausgangslänge von 256 Bit ist
+    - impliziert 2 * 4096 Berechnungen von HMAC-SHA1, um Brute-Force zu verlangsamen
+- PMK ist ein Vertrauensanker für die Authentifizierung per EAPOL (EAP over LAN) Handshake, wird aber nie direkt verwendet...
+- Für aktuelle kryptographische Protokolle wird ein kurzzeitiger 512 Bit Pairwise Transient Key (PTK) wie folgt generiert
+  - $PTK = PRF(PMK, ,,Paarweise Schlüsselerweiterung'', min(Addr_{BS}, Addr_{STA}) || max(Addr_{BS}, Addr_{STA}) || min(r_{BS}, r_{STA}) || max(r_{BS}, r_{STA}))$
+  - Dabei ist $PRF(K, A, B)$ die verkettete Ausgabe von $HMAC-SHA1(K, A || '0' || B || i)$ über einen laufenden Index i
+- Der PTK wird aufgeteilt in:
+  - EAPOL-Schlüssel-Bestätigungsschlüssel (KCK, erste 128 Bits),
+    - Wird zum Schutz der Integrität von EAPOL-Nachrichten verwendet
+    - Durch HMAC-MD5 (veraltet), HMAC-SHA1-128, AES-128-CMAC
+  - EAPOL Key Encryption Key (KEK, zweite 128 Bits),
+    - Wird zur Verschlüsselung neuer Schlüssel in EAPOL-Nachrichten verwendet
+    - Mit RC4 (veraltet), AES im Key Wrap Mode [RFC3394]
+  - Ein Temporal Key (TK) zum Schutz des Datenverkehrs (ab Bit 256)!
+- Initialer Dialog mit BS:
+  - EAPOL (EAP over LAN) 4-Wege-Handshake wird verwendet, um
+    - Überprüfung der gegenseitigen Kenntnis des PMK
+    - Initiiert durch BS, um Schlüssel zu installieren (gruppenweise und paarweise)
+  - Vereinfachter Handshake funktioniert wie folgt:
+    1. $BS\rightarrow STA: (1, r_{BS} , PMKID, install\ new\ PTK)$
+    2. $STA BS: (2, r_{STA}, MAC_{KCK})$
+    3. $BS STA: (3, r_{BS}, MAC_{KCK}, \{TK\}_{KEK})$
+    4. $STA BS: (4, r_{STA}, MAC_{KCK})$
+  - Wobei PMKID den PMK identifiziert: obere 128 Bit von $HMAC-SHA-256(PMK, "PMK Name" || Addr_{BS} || Addr_{STA} )$
+
+## Eine Zwischenlösung: Temporal Key Integrity Protokoll
+- Ziele des Entwurfs:
+  - Schnelle Lösung für das bestehende WEP-Problem, betreibt WEP als Unterkomponente
+  - Kann in Software implementiert werden, nutzt vorhandene WEP-Hardware wieder
+  - Anforderungen an vorhandene AP-Hardware:
+    - 33 oder 25 MHz ARM7 oder i486, die bereits vor TKIP mit 90% CPU-Auslastung laufen
+    - Nur als Software/Firmware-Upgrade gedacht
+    - Keine unangemessene Beeinträchtigung der Leistung
+- Wichtigste Konzepte:
+  - Nachrichtenintegritätscode (MIC)
+  - Gegenmaßnahmen im Falle von MIC-Fehlern
+  - Sequenzzähler
+  - Dynamische Schlüsselverwaltung (Re-Keying)
+  - Schlüsselmischung
+- TKIP erfüllt die Kriterien für einen guten Standard: alle sind damit unzufrieden...
+- ![](Assets/NetworkSecurity-tkip-mpdu-data-format.png)
+
+Message Integrity Code Funktion Michael
+- Schützt vor Fälschungen:
+  - Muss billig sein: CPU-Budget 5 Anweisungen / Byte
+  - Leider schwach: ein $2^{29}$ Nachrichtenangriff existiert
+  - Wird über MSDUs berechnet, während WEP über MPDUs läuft
+  - Verwendet zwei 64-Bit-Schlüssel, einen in jeder Verbindungsrichtung
+  - Erfordert Gegenmaßnahmen:
+    - Rekey on active attack (nur wenige Fehlalarme, da CRC zuerst geprüft wird)
+    - Ratenbegrenzung auf eine Neuverschlüsselung pro Minute
+  - ![](Assets/NetworkSecurity-tkip-rekey.png)
+
+Wiederholungsschutz und RC4-Schlüsselplanung
+- Replay-Schutz:
+  - Zurücksetzen der Paket-Sequenz # auf 0 bei Wiederholung
+  - Erhöhen der Sequenz # um 1 bei jedem Paket
+  - Verwerfen aller Pakete, die außerhalb der Sequenz empfangen werden
+- Umgehen Sie die Schwächen der WEP-Verschlüsselung:
+  - Erstellen Sie einen besseren paketweisen Verschlüsselungsschlüssel, indem Sie Angriffe mit schwachen Schlüsseln verhindern und WEP IV und paketweisen Schlüssel dekorrelieren
+  - muss auf vorhandener Hardware effizient sein
+- ![](Assets/NetworkSecurity-tkip-replay-protection.png)
+
+TKIP-Verarbeitung beim Sender
+- ![](Assets/NetworkSecurity-tkip-processing.png)
+
+TKIP-Verarbeitung auf der Empfängerseite
+- ![](Assets/NetworkSecurity-tkip-receiver.png)
+
+## Die langfristige Lösung: AES-basierter WLAN-Schutz
+- Zählermodus mit CBC-MAC (CCMP):
+  - Obligatorisch zu implementieren: die langfristige Lösung
+  - Ein völlig neues Protokoll mit wenigen Zugeständnissen an WEP
+  - Bietet: Datenvertraulichkeit, Authentifizierung der Datenherkunft, Schutz vor Wiederholungen
+  - Basiert auf AES in Counter Mode Encryption mit CBC-MAC (CCM)
+    - Verwendung von CBC-MAC zur Berechnung einer MIC für den Klartext-Header, die Länge des Klartext-Headers und die Nutzdaten
+    - Verwenden Sie den CTR-Modus, um die Payload mit den Zählerwerten 1, 2, 3, ... zu verschlüsseln.
+    - Verwenden Sie den CTR-Modus, um die MIC mit dem Zählerwert 0 zu verschlüsseln.
+  - AES-Overhead erfordert neue AP-Hardware
+  - Der AES-Overhead erfordert möglicherweise neue STA-Hardware für Handheld-Geräte, aber theoretisch nicht für PCs (dies erhöht jedoch die CPU-Last und den Energieverbrauch), praktisch aufgrund fehlender Treiber für beide
+- ![AES-CCMP: Rahmenformat](Assets/NetworkSecurity-aes-ccmp-frame-format.png)
+
+## Comparison of WEP, TKIP, and CCMP
+|            | WEP             | TKIP        | CCMP                           |
+| ---------- | --------------- | ----------- | ------------------------------ |
+| Cipher     | RC4             | RC4         | AES                            |
+| Key Size   | 40 or 104 bits  | 104 bits    | 128 bits encrypt, 64 bit auth. |
+| Key Life   | 24-bit IV, wrap | 48-bit IV   | 48-bit IV                      |
+| Packet Key | Concat.         | Mixing Fnc. | Not Needed                     |
+| Integrity  |                 |             |                                |
+| Data       | CRC-32          | Michael     | CCM                            |
+| Header     | None            | Michael     | CCM                            |
+| Replay     | None            | Use IV      | Use IV                         |
+| Key Mgmt.  | None            | EAP-based   | EAP-based                      |
+
+TKIP ist derzeit veraltet, AES wird empfohlen.
+
 # Sicherheit von GSM- und UMTS-Netzen
 
 # References
@@ -4557,3 +4877,12 @@ Zusätzliche Designziele zu IKEv1
  -[SG09] D. Stebila, J. Green. _Elliptic Curve Algorithm Integration in the Secure Shell Transport Layer_ , RFC 5656. 2009
  -[IS09] K. Igoe, J. Solinas. _AES Galois Counter Mode for the Secure Shell Transport Layer Protocol._ RFC 5647. 2009
 - [Müller99a] G. Müller, K. Rannenberg (Ed.). _Multilateral Security in Communications._ Addison-Wesley-Longman, 1999
+- [BGW01a] N. Borisov, I. Goldberg, D. Wagner. Intercepting Mobile Communications: The Insecurity of 802.11. 7th ACM SIGMOBILE Annual International Conference on Mobile Computing and Networking (MOBICOM), Rome, Italy, July 2001
+- [FMS01a] S. Fluhrer, I. Mantin, A. Shamir. Weaknesses in the Key Scheduling Algorithm of RC4. Eighth Annual Workshop on Selected Areas in Cryptography, August 2001
+[IEEE12] IEEE. Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications. IEEE Std 802.11-2012, The Institute of Electrical and Electronics Engineers (IEEE), 2012
+- [Riv01a] R. Rivest. RSA Security Response to Weaknesses in Key Scheduling Algorithm of RC4. http://www.rsa.com/rsalabs/technotes/wep.html, 2001
+- [SIR01a] A. Stubblefield, J. Ioannidis, A. D. Rubin. Using the Fluhrer, Mantin, and Shamir Attack to Break WEP. AT&T Labs Technical Report TD-4ZCPZZ, August 2001
+- [TWP07] E. Tews, R. P. Weinmann, A. Pyshkin. Breaking 104 bit WEP in less than 60 seconds. Information Security Applications, 188-202, 2007
+- [WM02a] N. C. Winget, T. Moore, D. Stanley, J. Walker. IEEE 802.11i Overview. NIST 802.11 Wireless LAN Security Workshop, Falls Church, Virginia, December 4-5, 2002
+- [RFC2898]B. Kaliski. PKCS #5: Password-Based Cryptography Specification Version 2.0. IETF Request for Comments 2898, 2000
+- [RFC3394]J. Schaad, R. Housley. Advanced Encryption Standard (AES) Key Wrap Algorithm. IETF Request for Comments 3394, 2002

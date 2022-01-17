@@ -233,6 +233,7 @@
   - [SSH-Verbindungsprotokoll II](#ssh-verbindungsprotokoll-ii)
   - [Schlussfolgerung](#schlussfolgerung-3)
 - [Sicherheitsaspekte der mobilen Kommunikation](#sicherheitsaspekte-der-mobilen-kommunikation)
+  - [Standortdatenschutz in Mobilfunknetzen](#standortdatenschutz-in-mobilfunknetzen)
 - [Sicherheit von drahtlosen lokalen Netzen](#sicherheit-von-drahtlosen-lokalen-netzen)
 - [Sicherheit von GSM- und UMTS-Netzen](#sicherheit-von-gsm--und-umts-netzen)
 - [References](#references)
@@ -4349,6 +4350,76 @@ Zusätzliche Designziele zu IKEv1
   - Die Protokoll-Header-Felder von Protokollen der unteren Schicht können jedoch nicht auf diese Weise geschützt werden, so dass sie keine Gegenmaßnahmen für Bedrohungen der Netzinfrastruktur selbst bieten.
 
 # Sicherheitsaspekte der mobilen Kommunikation
+- Die mobile Kommunikation ist mit den gleichen Bedrohungen konfrontiert wie ihr stationäres Pendant:
+  - Maskerade, Abhören, Verletzung von Berechtigungen, Verlust oder Veränderung von übertragenen Informationen, Ablehnung von Kommunikationsakten, Fälschung von Informationen, Sabotage
+  - Es müssen also ähnliche Maßnahmen wie in Festnetzen ergriffen werden.
+- Es gibt jedoch einige spezifische Probleme, die sich aus der Mobilität von Benutzern und/oder Geräten ergeben:
+  - Einige bereits bestehende Bedrohungen werden noch gefährlicher:
+    - Die drahtlose Kommunikation ist für Abhörmaßnahmen leichter zugänglich.
+    - Das Fehlen einer physischen Verbindung macht den Zugang zu Diensten einfacher
+  - Einige neue Schwierigkeiten bei der Realisierung von Sicherheitsdiensten:
+    - Die Authentifizierung muss neu eingerichtet werden, wenn das mobile Gerät umzieht.
+    - Die Schlüsselverwaltung wird schwieriger, da die Identitäten der Peers nicht im Voraus festgelegt werden können.
+  - Eine völlig neue Bedrohung:
+    - Der Standort eines Geräts/Nutzers wird zu einer wichtigeren Information, die abzuhören und damit zu schützen sich lohnt
+
+## Standortdatenschutz in Mobilfunknetzen
+- In den heutigen Mobilfunknetzen gibt es keinen angemessenen Schutz des Standortes:
+  - GSM / UMTS / LTE:
+    - Aktive Angreifer können IMSIs auf der Luftschnittstelle sammeln
+    - Die Betreiber des besuchten Netzes können den Standort der Nutzer teilweise verfolgen.
+    - Die Betreiber des Heimatnetzes können den Standort des Nutzers vollständig verfolgen.
+    - Zumindest kommunizierende Endsysteme können den Standort eines mobilen Geräts jedoch nicht in Erfahrung bringen
+- Drahtloses LAN:
+    - Kein Datenschutz für den Standort, da die (weltweit eindeutige) MAC-Adresse in jedem MAC-Frame immer im Klartext enthalten ist
+- Das grundlegende Problem des Datenschutzes:
+  - Ein mobiles Gerät sollte erreichbar sein
+  - Keine (einzelne) Entität im Netz sollte in der Lage sein, den Standort eines mobilen Geräts zu verfolgen
+- Einige grundlegende Ansätze zur Lösung dieses Problems [Müller99a]:
+  - Broadcast von Nachrichten:
+    - Jede Nachricht wird an jeden möglichen Empfänger gesendet
+    - Wenn Vertraulichkeit erforderlich ist, wird die Nachricht asymmetrisch verschlüsselt
+    - Dieser Ansatz ist nicht gut skalierbar für große Netzwerke / hohe Last
+  - Temporäre Pseudonyme:
+    - Mobile Geräte verwenden Pseudonyme, die regelmäßig gewechselt werden
+    - Um das mobile Gerät zu erreichen, ist jedoch eine Abbildungsinstanz erforderlich, die die Geschichte der Pseudonyme des Mobiltelefons verfolgen kann.
+  - Gemischte Netzwerke:
+    - Nachrichten werden über verschiedene Entitäten (Mixes) geleitet und jede Entität kann nur einen Teil der Nachrichtenroute erfahren (siehe unten)
+- Adressierungsschemata für standortbezogenen Datenschutz mit Broadcast:
+  - Explizite Adressen:
+    - Jede Entität, die eine explizite Adresse "sieht", kann die adressierte Entität bestimmen
+  - Implizite Adressen:
+    - Eine implizite Adresse identifiziert kein bestimmtes Gerät oder einen bestimmten Ort, sondern benennt lediglich eine Einheit, ohne dass dem Namen eine weitere Bedeutung beigemessen wird.
+    - Sichtbare implizite Adressen:
+      - Entitäten, die mehrere Vorkommen einer Adresse sehen, können auf Gleichheit prüfen
+    - Unsichtbare implizite Adressen:
+      - Nur die adressierte Einheit kann die Gleichheit der Adresse überprüfen.
+      - Dies erfordert Operationen mit öffentlichen Schlüsseln: $ImplAddr_A =\{r_B, r_A\}_{+K_A}$ wobei $r_A$ von der adressierten Entität gewählt wird und $r_B$ ein Zufallswert ist, der von einer Entität $B$ erzeugt wird, die unsichtbar auf die Entität $A$ verweisen will
+- Vorübergehende Pseudonyme:
+  - Der Standort eines Gerätes A wird nicht mehr mit seiner Kennung $ID_A$, sondern mit einem wechselnden Pseudonym $P_A(t)$ gespeichert.
+    - Beispiel: VLRs in GSM kennen und speichern möglicherweise nur die TMSI (die eine Art temporäres Pseudonym ist)
+  - Die Zuordnung einer IDA zum aktuellen Pseudonym $P_A(t)$ wird in einem vertrauenswürdigen Gerät gespeichert
+    - Beispiel: GSM HLRs könnten als vertrauenswürdige Geräte realisiert werden
+  - Wenn ein eingehender Anruf an den aktuellen Standort von Gerät A weitergeleitet werden muss:
+    - Der Netzbetreiber von Gerät A fragt das vertrauenswürdige Gerät nach dem aktuellen Pseudonym $P_A(t)$
+    - Das Netz leitet den Anruf dann an den aktuellen Standort von A weiter, indem es das temporäre Pseudonym in einer Standortdatenbank nachschlägt.
+    - Es ist wichtig, dass die Einrichtungen, die einen Anruf weiterleiten, nichts über die ursprüngliche Adresse der Rufaufbau-Nachricht erfahren können ($\rightarrow$ implizite Adressen)
+    - Die Verwendung von Mischungen (siehe unten) kann einen zusätzlichen Schutz gegen Angriffe von kolludierenden Netzeinheiten bieten
+- Kommunikations-Mixe:
+  - Das Konzept wurde 1981 von D. Chaum für nicht zurückverfolgbare E-Mail-Kommunikation erfunden
+  - Ein Mix verbirgt die Kommunikationsbeziehungen zwischen Absendern und Empfängern:
+    - Er puffert eingehende Nachrichten, die asymmetrisch verschlüsselt sind, so dass nur der Mix sie entschlüsseln kann.
+    - Er verändert das "Aussehen" von Nachrichten, indem er sie entschlüsselt
+    - Er ändert die Reihenfolge der Nachrichten und leitet sie in Stapeln weiter.
+    - Wenn jedoch der Mix kompromittiert wird, kann ein Angreifer "alles" erfahren.
+  - Die Sicherheit kann durch kaskadierende Mixe erhöht werden.
+  - Beispiel: A sendet eine Nachricht m an B über zwei Mixe M1 und M2
+    - $A\rightarrow M1: \{r_1 ,\{r_2 ,\{r_3 , m\}_{+K_B}\}_{+K_{M2}}\}_{+K_{M1}}$
+    - $M1\rightarrow M2:\{r_2 ,\{r_3 , m\}_{+K_B}\}_{+K{M2}}$
+    - $M2\rightarrow B: \{r_3 , m\}_{+K_B}$
+    - Es ist wichtig, dass die Mischungen "genug" Nachrichten verarbeiten
+  - Dieses Konzept lässt sich auf die mobile Kommunikation übertragen [Müller99a]
+
 # Sicherheit von drahtlosen lokalen Netzen
 # Sicherheit von GSM- und UMTS-Netzen
 
@@ -4485,3 +4556,4 @@ Zusätzliche Designziele zu IKEv1
  -[YL06d] T. Ylonen, C. Lonvick. _The Secure Shell (SSH) Connection Protocol._ RFC 4254, 2006
  -[SG09] D. Stebila, J. Green. _Elliptic Curve Algorithm Integration in the Secure Shell Transport Layer_ , RFC 5656. 2009
  -[IS09] K. Igoe, J. Solinas. _AES Galois Counter Mode for the Secure Shell Transport Layer Protocol._ RFC 5647. 2009
+- [Müller99a] G. Müller, K. Rannenberg (Ed.). _Multilateral Security in Communications._ Addison-Wesley-Longman, 1999

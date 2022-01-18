@@ -1,5 +1,6 @@
 # Informatik - TU Ilmenau
 Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesungen an der TU Ilmenau
+
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
 
 - [Advanced Operating Systems](Advanced%20Operating%20Systems.md)
@@ -21,8 +22,9 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
   - [Fragenkatalog](Datenbanksysteme%20-%20Fragen.md)
   - [Cheatsheet](Datenbanksysteme%20-%20Cheatsheet.pdf)
 - [Einführung in die Medizinische Informatik](Einführung%20in%20die%20Medizinische%20Informatik.md)
-- [Einfürhung in die Neurowissenschaften](Einführung%20in%20die%20Neurowissenschaften.md)
+- [Einführung in die Neurowissenschaften](Einführung%20in%20die%20Neurowissenschaften.md)
 - [Grundlagen der Biosignalverarbeitung](Grundlagen%20der%20Biosignalverarbeitung.md)
+  - [Cheatsheet](Grundlagen%20der%20Biosignalverarbeitung.pdf)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [GudS - Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [GudS - Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)

@@ -796,17 +796,17 @@ Flash-Converter, Parallelwandler
 ### Breitbandige Wandler
 ![](Assets/Biosignalverarbeitung-breitbandige-Wandler.png)
 
-| ||
-|---|---|
-Resolution (Bits) | 24 bit
-T-Put Rate | 1kSPS
-Kanäle | 5
-Supply V | Single(+3), Single(+3.3), Single(+5)
-Pwr Diss (max) | 7mW
-Interface | Ser, SPI
-Ain Range | (2Vref/PGA Gain) p-p, Uni (Vref)/(PGA Gain)
-SNR (dB) | 137dB
-Pkg Type | DIP, SOIC, SOP
+|                   |                                             |
+| ----------------- | ------------------------------------------- |
+| Resolution (Bits) | 24 bit                                      |
+| T-Put Rate        | 1kSPS                                       |
+| Kanäle            | 5                                           |
+| Supply V          | Single(+3), Single(+3.3), Single(+5)        |
+| Pwr Diss (max)    | 7mW                                         |
+| Interface         | Ser, SPI                                    |
+| Ain Range         | (2Vref/PGA Gain) p-p, Uni (Vref)/(PGA Gain) |
+| SNR (dB)          | 137dB                                       |
+| Pkg Type          | DIP, SOIC, SOP                              |
 
 ## Telemetrie
 ### Analoge Übertragung
@@ -1112,3 +1112,86 @@ Schwache Stationarität
 - $cov(x_{t1}, x_{t2})$
 - Da die Annahme der Gleichheit von Verteilungen der Zufallsgrößen real nicht geprüft werden kann, wird sie auch nicht gefordert. Faktisch müssen nur die Momente erster und zweiter Ordnung zeitlich konstant sein.
 - Dies wiederum ist für die signalanalytische Praxis oft zu wenig, da Momente dritter und vierter Ordnung nicht gleich sein müssen (Schiefe, Exzess).
+
+Praktikable Koeffizientenberechnung - LMS
+- alternativer Weg zum Fehlerminimum - über den Gradienten: $\Delta_j=\frac{\delta F(\bar{w})}{\delta \bar{w}}|_{w=w_j}$
+- Schätzung des Gradienten über den aktuellen Wert: $\hat{\Delta}_j=\frac{\delta(e_j^2(\bar{w}))}{\delta \bar{w}}|_{w=w_j} =we_j \frac{\delta e_j}{\delta \bar{w}}|_{w=w_j}=-2e_j \bar{x}_j$
+- Rekursionsformel für Filterkoeffizienten $\bar{w}_{j+1}=\bar{w}_j + 2\mu e_j \bar{x}_j$
+- $\mu$: Adoptionskonstante; $\lambda_{max}$: größter Eigenwert der Autokovarianzmatrix; $\frac{1}{\lambda_{max}}>\mu >0$
+- praktisch, Obergrenze gegeben durch Signalenergie: $\frac{1}{\sum_{j=0}^N x^2(j)}>\mu >0$
+- Die Fehlerfunktion $F(w)$ ist eine ($2L+1$ -dimensionale) Parabel, deren Minimum der Optimallösung entspricht. Es gibt mehrere Wege, dieses Minimum zu erreichen. An dieser Stelle leiten wir die Optimallösung mit Hilfe des sehr anschaulichen LMS-Algorithmus her (LMS - Least-Mean-Square, Methode der kleinsten Quadrate).
+- Da der Weg zum Optimum über die inverse Autokovarianzmatrix und über die Leistungsdichten verbaut ist, nähern wir uns dem Minimum der Parabel mit Hilfe des Gradienten iterativ. Der Gradient ist mathematisch über die partiellen Ableitungen der Parameter definiert. Das stößt in der Praxis -vor allem bei der Online-Analyse -bald an Grenzen, da der Erwartungswert über längere Zeit ermittelt werden müsste.
+- Daher schätzt man den Gradienten aus dem aktuellen Fehler, faktisch lässt man also die Mittelwertbildung weg. Das kann man unter der Annahme der Stationarität machen. Der geschätzte Gradient ergibt sich dann allein aus dem Produkt des Fehlers und des Eingangsvektors.
+- Nun kann man den Gradienten dazu nutzen, mit hinreichend kleinen, durch die Adaptionskonstante bestimmten, Schritten auf das Minimum zu konvergieren.
+- Die Stabilitätsbedingung ergibt sich aus dem größten Eigenwert der Autokovarianzmatrix. In der Praxis wird die wesentlich einfacher zu berechnende Signalenergie verwendet, die größer ist als der Eigenwert und damit die Stabilität auch hinreichend sicher gewährleistet.
+
+Reale Aufname: IPG, periodische Störung, Rauschen
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png)
+- Ein reales IPG wurde nachträglich mit additiven simulierten Störungen (50 Hz, 75 Hz, Rauschen) stark gestört (Amplitude der Harmonischen $A=1$, Effektivwert des Rauschens 20).
+- Eine Modellfunktion liegt daher vor.
+- Das gefilterte Signal erreicht relativ schnell die Qualität des Originals.
+- Basiert auf der Übung 5.4 des Buches Biosignalverarbeitung/Elektrische Biosignale in der Medizintechnik
+
+Adaptiver Muster-Filter
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-aufbau.png)
+- $x(n)$: reales Signal
+- $e(n)$: Fehler
+- $d(n)$: ungestörtes Muster (woher?)
+- $y(n)$: Filterausgang
+- Funktion: Im Ausgang $y(n)$ erscheinen diejenigen Signalanteile von $x(n)$, die gut mit $d(n)$ korrelieren
+- Im stationären Fall und nach erfolgter Konvergenz kann man davon ausgehen, dass der Filterausgang diejenigen Anteile von $x(n)$ enthält, die mit $d(n)$ gut korrelieren. Das funktioniert natürlich nur, wenn man das Mustersignal ganz genau kennt und vorgeben kann.
+- Woher aber sollen wir das Mustersignal nehmen, wenn es ja gestört und verrauscht am Filtereingang vorliegt? Fazit ist, ein solches Filter ist nicht realisierbar bzw. macht keinen Sinn, wenn das Muster vorliegt.
+
+Adaptiver Noise Canceller -  ein praktikables adaptives Filter
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-noise-canceller.png)
+- $ref$: Rauschreferenz
+- $err$: Signal
+- $prim$: Signal + Rauschen
+- $out$: Rauschen
+- In der praktischen Analyse ist es sehr oft so, dass man zwar kein Mustersignal hat, dafür aber eine Rauschreferenz, d.h. genügend Information über das Störsignal ohne Anteile des gewünschten Signals. Die Aufgabe jetzt heißt also, wenn wir schon kein Mustersignal haben, dann können wir versuchen, die Störung zu beseitigen, wenn wir sie kennen. Im Idealfall ist die Störung eliminiert und das gewünschte Signal bleibt übrig.
+- Hierzu werden die Filteranschlüsse umfunktioniert: Der Filtereingang wird zur Rauschreferenz, hier wird die vorliegende Störung eingespeist, die allerdings keine Anteile des gewünschten Signals enthalten darf. Dies ist aber bei technischen Störungen bei Biosignalverarbeitung kein wesentliches Problem.
+- Der Eingang für Mustersignal wird zum Primäreingang, in den das gestörte aber noch unbekannte Wunschsignal eingespeist wird.
+- Entsprechend dem Funktionsprinzip erscheint am Filterausgang der Teil vom Referenzeingang, der gut mit dem Primärsignal korreliert -die Störung, in diesem Beispiel die Netzstörung. Da aber das Primärsignal mit dem Referenzsignal nicht korreliert, muss das gesuchte Signal als Rest -als Errorsignal -übrig bleiben. Demzufolge ist der eigentliche Ausgang eines ANC das ursprüngliche Errorsignal.
+- Man kann folgende Überlegung anstellen: Am Filterausgang liegen die Signalanteile vom Filtereingang an, die gut mit dem Primäreingang korrelieren. Das Filter stellt sich relativ langsam auf die Optimallösung ein, denn es geht vom stationären Prozess aus und konvergiert auf das Optimum mit der Adaptionskonstante tau zu. Wenn man nun des gestörte Signal auf den primären Eingang legt und auf den Referenzeingang statt der Rauschreferenz -die nicht immer verfügbar ist -das gleiche, jedoch zeitlich verschobenes Signal, so ändert sich die Lage für die stationäre und gut korrelierende Störung nicht -sie ist in beiden, dem Referenz-und dem Primäreingang enthalten. Demzufolge wird sie auch am Ausgang des Filters -wie mit Rauschreferenz erscheinen. Also wird sich die Störung aus dem Errorsignal wie mit Referenz wegfiltern und übrig bleibt das gewünschte Signal, auch ohne die Notwendigkeit, eine Störungsreferenz bereitstellen zu müssen. Das funktioniert natürlich nur so lange, wie zeitverschobene Anteile des gewünschten Signals miteinander bei der konkreten Zeitverschiebung unkorreliert sind, daher kommt der Wahl des Zeitversatzes entscheidende Bedeutung zu. Allerdings ist es nicht möglich, streng mathematisch oder pauschal eine gute Verschiebung anzugeben. Diese wird -wie auch die Adaptionskonstante -eher nach empirischen Gesichtspunkten (,,nach Gefühl'') eingestellt.
+
+Adaption des ANC vom IPG
+- IPG gestört periodisch und stochastisch (50Hz, 75 Hz, Rauschen)
+- Startwert für Gewichte $w(50)$ und $w(52)$ mit $L=101$ bei $(0,0)$
+- Variabilität höher bei größerer Adaptionskonstante
+- Variabilität niedriger bei kleinerer Adaptionskonstante
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-adaption-anc.png)
+- Verläufe der Gewichte des Signals 
+  - ![](Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png)
+- Zeitverlauf
+  - ![](Assets/Biosignalverarbeitung-adaptiver-filter-zeitverlauf-anc.png)
+
+Beispiel:
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-ekg+netz.png)
+- Der ANC enthält nach abgeschlossener Konvergenz die Impulsantwort des optimalen Filters. Im Falle einer Netzstörung ist es also ein sehr schmaler Bandpass bei der Netzfrequenz bzw. die Impulsantwort ist identisch der Harmonischen der Netzfrequenz.
+
+Beispiel
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-ekg-abdominal.png)
+- $\mu=0,02$, $L=101$
+- Der ANC wurde zur Trennung des fötalen EKG (fEKG) vom maternalen mEKG. Zur Gewinnung des fEKG wird das abdominale EKG (aEKG, vom Bauch) benötigt, das mEKG wird konventionell an Extremitäten abgeleitet. Das fEKG (untere Grafik) ist nur schlecht erkennbar und vom mEKG selbst nach zahlreichen empirischen zweidimensionalen Optimierungen der Filterlänge und der Adaptionskonstante noch immer stark gestört. Die Ursache liegt darin, dass beide Signale (Störung und gestörtes Signal) stark instationär sind, die für die Konvergenz zur optimalen Lösung notwendige Bedingung der Stationarität mindestens eines Signalanteils ist hier nicht erfüllt.
+
+EKG mit Matched Filter
+- ![](Assets/Biosignalverarbeitung-adaptive-filter-match-filter.png)
+- In bestimmten Messsituationen (Ruhe EKG vor Fahrradergometrie) liegt eine Musterfunktion (Template) vor.
+- Für signalanalytische korrekte Detektion/Filterung müssen Signal (EKG) sowie Template (Muster) weißes Spektrum haben
+- Zum Prewhitening wird LMS mit binärem Gradienten verwendet. Die selben Filterkoeffizienten filtern auch das Template für das MF
+- Lineare Prädikation: $x_p[k]=a_1x[k-1]+a_2x[k-2]+...+a_nx[k-n]$
+- Residualfehler ist weiß: $x_{err}[k]=x[k]-x_p[k]$
+- Robuster LMS mit binärem Gradienten: $w[k+1]=w[k]+\mu*sng(e[k]x[k])$
+
+![](Assets/Biosignalverarbeitung-adaptiver-filter-ekg-roh-weiß.png)
+- Da Biosignale relativ tieffrequente Signale sind (Energiemaximum zwischen 10 Hz und 100 Hz), führt Prewhitening zur relativen Anhebung der hochfrequenten Anteile (grüne Kurve oben) sowie des breitbandigen Rauschens.
+- Wegen der relativen Anhebung hochfrequenten Anteile haben Prewhitener implizit einen Hochpass-Charakter. Dies kann man gut im Vergleich der blauen (Original) und der grünen Kurven erkennen: Die tieffrequenten Anteile (,,langsame Wellen'') sind nach Prewhitening deutlich reduziert.
+
+Template nach QRS
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-qrs.png)
+- QRS Template wird aus den letzten 9 detektierten Komplexen berechnet
+- das Template wird mit dem adaptiven Filter gefiltert, mit dem das EKG geweißt wurde
+- mit dem geweißten Template wird das geweißte EKG gefiltert
+- ![](Assets/Biosignalverarbeitung-adaptiver-filter-ekg-mtchfit.png)
+- Durch das Prewhitening und nach dem MF (matched filter) ist die Signalform des Biosignals zum Teil stark verändert. Daher eignet sich das MF nur zur Detektion von Biosignalkomponenten, nicht aber zur diagnostischen Kurvenvermessung.
+- Das MF ist der empfindlichste und sicherste Detektor von bekannten Mustern.

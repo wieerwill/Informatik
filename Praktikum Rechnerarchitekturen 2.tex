@@ -60,14 +60,91 @@ Simulative Untersuchung der Ausführung von Maschinenbefehlen in unterschiedlich
 Untersuchen Sie die in der Praktikumsumgebung bereits vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen! Beobachten Sie den Programmablauf und machen Sie sich mit der Bedienung vertraut! Schauen Sie sich vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an (hier können Sie auch Änderungen vornehmen) und interpretieren Sie das Verhalten während der Simulation dementsprechend!
 
 \subsection*{Aufgabe 2}
-Untersuchen Sie die Befehlsfolgen der Übungsaufgaben A4 und B2 mit mindestens je drei unterschiedlichen Simulationsläufen! Die benutzten Pipelinestrukturen und Parametereinstellungen wählen Sie selbst aus. Vergleichen Sie die Ergebnisse mit den Lösungen aus der Übung und suchen Sie Erklärungen für eventuelle Unterschiede!
+Untersuchen Sie die Befehlsfolgen A4 und B2 mit mindestens je drei unterschiedlichen Simulationsläufen! Die benutzten Pipelinestrukturen und Parametereinstellungen wählen Sie selbst aus. Vergleichen Sie die Ergebnisse mit den Lösungen aus der Übung und suchen Sie Erklärungen für eventuelle Unterschiede!
+
+Code A4
+\begin{lstlisting}[basicstyle=\tiny]
+lw      $t2, 4($t1)
+addiu   $t3, $zero, 65
+addu    $t5, $zero, $t2
+sub     $t4, $t3, $t5
+add     $t2, $t5, $t3
+\end{lstlisting}
+
+Code B2
+\begin{lstlisting}[basicstyle=\tiny]
+# addition der inhalte von 4 aufeinander folgenden speicherzellen, beginnend mit adresse 0x12345678 ...
+# $t2 enthalte bereits den wert 0x12340000
+    addi    $t0, $zero, 4           # max. zaehlerwert t0 = 4
+    addi    $t2, $t2, 0x5678        # adressregister t2 = startadresse
+    addi    $t3, $zero, 0           # zaehlerregister t3 = 0
+    addi    $t1, $zero, 0           # ergebnisregister t1 = 0
+loop:    lw      $t4, ($t2)         # tempregister t4 <- wert laden
+    add     $t1, $t1, $t4           # summieren
+    addi    $t2, $t2, 4             # adresse um 4 erhöhen
+    addi    $t3, $t3, 1             # zaehler +1
+    bne     $t3, $t0, loop          # loop für zaehler != 4
+\end{lstlisting}
 
 \subsection*{Aufgabe 3}
 Ändern Sie nun eine der vorgegebenen Pipelinestrukturen ab, indem Sie z.B. die Anzahl der parallelen Pipelines verändern. Orientieren Sie sich zuvor über den Inhalt des „Baukastens“. Untersuchen Sie mit den oben verwendeten Befehlsfolgen die Auswirkungen auf die Simulationsergebnisse! Variieren Sie dabei die Parameter und interpretieren Sie die Ergebnisse!
 
 \subsection*{Zusatzaufgaben}
 \subsubsection*{Z1}
-Untersuchen Sie weitere Befehlsfolgen, z.B. aus den Aufgaben A5, A6, A7, B1 oder nach eigenen Entwürfen!
+Untersuchen Sie weitere Befehlsfolgen, z.B. aus A5, A6, A7, B1 oder nach eigenen Entwürfen!
+
+Code A5
+\begin{lstlisting}[basicstyle=\tiny]
+    addiu   $t1, $zero, 3       #$t1:=3
+    addiu   $t2, $zero, 0       #$t2:=0
+loop: addu  $t2, $t2, $t1       #$t2:=$t2+$t1
+    addiu   $t1, $t1, -1        #$t1:=$t1-1
+    bnez    $t1, loop           #branch loop (if $t1<>0)
+    or      $t3, $zero, $t1     #$t3:=$t1
+    sll     $t4, $t1, 2         #$t4:=$t1 << 2
+    and     $t5, $t1, $t5       #$t5:=$t5 AND $t1
+    or      $t6, $t1, $t6       #$t6:=$t6 OR $t1
+\end{lstlisting}
+
+Code A6
+\begin{lstlisting}[basicstyle=\tiny]
+        addiu   $t1, $zero, 100
+loop1:  addiu   $t2, $zero, 100
+loop2:  addiu   $t2, $t2, -1
+        ...
+        ...
+        bnez    $t2, loop2
+        addiu   $t1, $t1, -1
+        bne     $t1, 1, loop1
+\end{lstlisting}
+
+Code A7
+\begin{lstlisting}[basicstyle=\tiny]
+        addiu   $t1, $zero, 991
+loop:   ...
+        addu    $t2, $zero, $t1
+        and     $t2, $t2, 0x08
+        bnez $t2, next
+        ...
+next:   ...
+        addiu $t1, $t1, -1
+        bne
+        $t1, -1, loop
+\end{lstlisting}
+
+Code B1
+\begin{lstlisting}[basicstyle=\tiny]
+add     $t5, $zero, $t2
+add     $t4, $t6, $t5
+add     $t3, $t7, $t3
+lw      $t0, ($t3)
+add     $t7, $zero, $t2
+add     $t1, $t6, $t0
+sw      $t5, ($t1)
+sub     $t2, $t5, $t6
+addi    $t4, $zero, 0
+addi    $t3, $t3, 1
+\end{lstlisting}
 
 \subsubsection*{Z2}
 Nehmen Sie weitere Änderungen an Parametern und Pipelinestrukturen vor!
@@ -173,11 +250,9 @@ Alternativ können Sie auch die PWM-Betriebsarten der Timer/Counter-Baugruppen a
 \subsubsection*{Schritt b: Helligkeitseinstellung mit Tastern}
 Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werten Sie dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
 
-\subsubsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
+\subsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
 Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. In Absprache mit dem Betreuer können Sie andere Aufgabenteile weglassen, falls Sie die Zusatzaufgabe unter Einbeziehung umfangreicher eigener Ideen in Angriff nehmen wollen.
 
-\subsubsection*{Schritt c}
-Fortlaufendes Auf- und Abdimmen
 Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu müssen Sie einen Mechanismus implementieren, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
 Realisieren Sie weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind.
 Realisieren Sie eine Umschaltung zwischen unterschiedlichen Lichteffekten.

@@ -1,5 +1,26 @@
 Einführung in die Neurowissenschaft
 
+> Hinweis: Die Vorlesungsunterlagen dieses Seminars enthält insbesondere Bilder von Dritten, deren Copyright nicht beachtet wurde. Diese wurden entfernt. Vielen Dank für den Hinweis. Dadurch ist diese Zusammenfassung unvollständig und spiegelt nicht die Vorlesung wieder! 
+> Hilfreich: Für diese Vorlesung gibt es einen Fragenkatalog, der das notwendige Wissen wiederspiegelt.
+
+
+Gliederung
+1. Einführung
+2. Mikroanatomische und physiologische Grundlagen
+3. Aufbau des Zentralnervensystems Gehirn
+4. Aufbau des Zentralnervensystems Rückenmark
+5. Neurologische Erkrankungen und Hirnschäden
+6. Sensomotorische Systeme
+7. Visuelles System
+8. Audiotorisches und vestibuläres System
+9. Olfaktorisches, gustatorisches und neurohomronelles System
+10. Neuroendokrinologisches und neurohormonelles System
+11. Autonomes Nervensytem, Hunger/essen, Schlaf/zirkadiane Rythmen
+12. Kognitive Funktionen: Gedächtnis/Emotionen
+13. Kognitive Funktionen: Sprache
+14. Psychatrische Störungen
+
+
 # Einführung
 ## Was ist Neurowissenschaft?
 Die Neurowissenschaft untersucht den Aufbau , die Funktion sowie die phylogenetische und ontogenetische Entwicklung des Nervensystems auf systemischer, zellulärer und molekularer Ebene. Damit sind die strukturellen Grundlagen und die physiologischen Mechanismen aller Leistungen des Nervensystems, einschließlich höherer kognitiver Funktionen, Gegenstand dieser Wissenschaft.

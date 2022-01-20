@@ -11,7 +11,6 @@ Neurowissenschaft / die Neurowissenschaften
 - Biopsychologie: untersucht biologische Basis psychologischer Prozesse
 
 (Das ist eine der möglichen Einteilungen!)
-
 ## Beziehung zu anderen Lehrveranstaltungen
 - Anatomie & Physiologie
   - Allgemeine biologische Grundlagen
@@ -43,19 +42,9 @@ Zentrales Nervensystem (Gehirn und Rückenmark)
     - $\leftrightarrow$ Autonomes Nervensystem (Afferenzen, symp. u. parasymp. Efferenzen)
     - $\leftrightarrow$ Andere Organsysteme
 
-## Zentrales Nervensystem
-- ![](Assets/Neurowissenschaften-Nervensystem-mensch.png)
-- ![](Assets/Neurowissenschaften-Nervensystem-frosch.png)
-- ![](Assets/Neurowissenschaften-Nervensystem-insekt.png)
-
 ## Sensomotorisches Nervensystem
 - Efferenzen - vom ZNS zu Muskeln und Drüsen
 - Afferenzen - von Sinnesrezeptoren zum ZNS
-
-## Autonomes Nervensystem
-(auch vegetativ oder viszeral)
-
-![](Assets/Neurowissenschaften-autonomes-nervensystem.png)
 
 ## Zellen
 Neuronen (Nervenzellen)
@@ -74,9 +63,6 @@ Glia (im Hirn Anzahl etwa gleich der Anzahl der Neuronen)
 - Bildung von Markscheiden (Isolation der Axone)
 
 ## Gewebe
-Zentralnervensystem
-- ![](Assets/Neurowissenschaften-Gewebe.png)
-
 Peripheres Nervensystem
 - Ganglien, Plexus (Neuron. Zellkörper + Glia)
 - Nerven (Nervenfasern + Glia)
@@ -85,7 +71,6 @@ Peripheres Nervensystem
 ## Zellen
 - $75...100*10^{12}$ im Körper: Protoplasma, umgeben von Zellmembran
 - Zusammenschluss zu Geweben und Organen
-- ![Birbaumer/Schmidt, Biologische Psychologie, Seite 12- 22](Assets/Neurowissenschaften-Zellorganellen.png)
 
 1. Nucleolus
 2. Zellkern
@@ -111,10 +96,8 @@ Peripheres Nervensystem
 
 ## Zellen im Nervensystem
 - Nervengewebe
-  - ![](Assets/Neurowissenschaften-nervensystem-nervengewebe.png)
   - besteht aus Neuronen und Glia
 - Neuronen
-  - ![](Assets/Neurowissenschaften-nervensystem-neuronen.png)
   - erregbare Zellen
   - verbunden durch Nervenfasern
   - Kommunikation über Synapsen
@@ -123,7 +106,6 @@ Peripheres Nervensystem
   - Cortex: $16*10^9$
   - Azevedo et al. J. Comp. Neurol. 2009; abweichend in Birbaumer/Schmidt
 - Glia
-  - ![](Assets/Neurowissenschaften-nervensystem-glia.png)
   - Stützung/Ernährung/Homöostase
   - Bildung von Myelinscheiden
   - Beiträge zur Informationsverarbeitung
@@ -132,8 +114,6 @@ Peripheres Nervensystem
 
 ## Neuronen
 ### grundsätzlicher Aufbau
-![](Assets/Neurowissenschaften-Neuron-aufbau.png)
-
 - Synapsen: Kontaktstellen zwischen Neuronen und anderen Neuronen oder Muskel/Drüsenzellen
 - Zellmembran: Semipermeable Membran um das Neuron (Lipid-Doppelschicht - guter elektrischer Isolator)
 - Axonshügel: Kegelförmiger Übergang zwischen Zellkörper und Axon
@@ -143,9 +123,7 @@ Peripheres Nervensystem
 - Ranviersche Schnürringe: Einschnürungen zwischen myelinisierten Abschnitten des Axons.Synapsen: Kontaktstellen zwischen Neuronen und anderen Neuronen oder Muskel/Drüsenzellen
 
 ### morphologische Vielfalt
-![](Assets/Neurowissenschaften-neuronen-morphologische-vielfalt.png)
-
-- Soma: $\O 5-100 \mu m$
+- Soma: $\oslash 5-100 \mu m$
 - Dendriten: Länge einige $100\mu m$
 - Axon: wenige $\mu m$ bis mehrere Meter. Kann stark verzweigt sein.
 
@@ -198,7 +176,7 @@ unmyelinisierte Axone
 Aktionspotentiale breiten sich entlang von Axonen, in der Regel vom Axonshügel zur Synapse, aus.
 - Warum nicht über Soma und Dendriten? Na+ Kanäle gibt es in der Regel nur am Axonshügel und Axon.
 - Warum nur in eine Richtung? Na+ haben eine Refraktärzeit, die das Zurücklaufen der Welle verhindert.
-- Ausbreitungsgeschwindigkeit hängt quadratisch von der Axonsdicke ab: $\O 1 \mu m\rightarrow 1 m/s; \O 2 \mu m\rightarrow 4 m/s$
+- Ausbreitungsgeschwindigkeit hängt quadratisch von der Axonsdicke ab: $\oslash 1 \mu m\rightarrow 1 m/s; \oslash 2 \mu m\rightarrow 4 m/s$
 
 saltatorische Erregungsleitung
 - Durchmesser des Axons: je größer der Durchmesser, desto schneller die Ausbreitung
@@ -207,7 +185,6 @@ saltatorische Erregungsleitung
 - ![](Assets/Neurowissenschaften-axon.png)
 
 ## Myelinscheiden
-- ![](Assets/Neurowissenschaften-myelinscheiden.png)
 - gebildet von Oligodendrozyten im Gehirn und Rückenmark und von Schwann-Zellen in der Peripherie
 - markhaltige (10...120 m/sek) und marklose (0,3...3 m/sek) Fasern
 
@@ -288,8 +265,6 @@ Räumlicher Aufbau
 - Membran
 - Zytosol
 
-![](Assets/Neurowissenschaften-elektrische-synapsen.png)
-
 ## Neurotransmitter
 Neurotransmitter sind Substanzen, die an (chemischen) Synapsen ausgeschüttet werden und andere Zellen (Neuronen, Muskelzellen, etc.) spezifisch beeinflussen.
 
@@ -316,7 +291,7 @@ Metabotrope Rezeptoren
 ## Die Catecholamine: Dopamin, Epinephrin, Norepinephrin
 - sind Produkte eines gemeinsamen Biosyntheseweges (aus Tyrosin/Phenylanalin über L-Dopa)
 - sind chemisch eng miteinander verwandt (gemeinsames Merkmal: Catecholring)
-    - ![](Assets/Neurowissenschaften-Catechol.png)
+- ![](Assets/Neurowissenschaften-Catechol.png)
 
 ## Das dopaminerge System
 Dopamin: erregender oder hemmender Neurotransmitter
@@ -334,8 +309,6 @@ Dopaminbahnen:
 3. Tubero-hypophyseales System: Projektionen von Hypothalamus zu Hypophyse
     - Hormonausschüttung
 
-![](Assets/Neurowissenschaften-dopaminerge-system.png)
-
 ## Das noradrenerge System
 Norepinethrin/Noradrenalin: Neurotransmitter im ZNS u. Sympathikus
 
@@ -344,16 +317,13 @@ Rezeptoren (=Adrenalin): $\alpha_1$ , $\alpha_2$ , $\beta_1$ , $\beta_2$ , $\bet
 - noradrenerge Neuronen im Hirnstamm, besonders im Locus Caeruleus
 - Projektionen auf sympatische Neurone im Rückenmark, sowie in Hypothalamus, Thalamus, Cerebellum, limbisches System und Cortex
 - Aufmerksamkeitssteigerung, führt zu vermehrter Erregung, Angst, Vigilanz; sympathische Aktivität
-- 
-![](Assets/Neurowissenschaften-noradrenerge-system.png)
 
 ## Die Indolamine: Serotonin
 - Auch 5-Hydroxytryptamin (5-HT)
 - Ausgangssubstanz Tryptophan
 - Wird auch über die Nahrung aufgenommen: Walnüssen, Bananen, Tomaten, Kakao etc.
 - Chemisches Merkmal: Indol-Doppelring
-
-![](Assets/Neurowissenschaften-serotonin.png)
+- ![](Assets/Neurowissenschaften-serotonin.png)
 
 ## Das serotonerge System
 Serotonin: Neurotransmitter im gesamten Nervensystem
@@ -364,8 +334,6 @@ Mindestens 14 verschiedene Rezeptoren - vielfältige Wirkungen im gesamten Nerve
 - serotonerge Neuronen im Hirnstamm, in den Raphé-Kernen
 - Projektionen ähnlich universell wie beim noradrenergen System
 - Funktionen vielfältig, insbesondere allgemeine Stimmung
-
-![](Assets/Neurowissenschaften-serotonerge-system.png)
 
 ## Aminosäuren: Glutamat, Aspartat, Glyzin, GABA
 - Im Kontrast zu Acetylcholin und Aminen, die i.d.R. nur in bestimmten Neuronen hergestellt werden können, sind Aminosäuren universelle zelluläre Bestandteile
@@ -533,7 +501,6 @@ Schwann-Zelle
 - Beteiligt an Nervenregeneration
 
 Periphere Nerven
-- ![](Assets/Neurowissenschaften-periphere-nerven.png)
 - ![2004-2005 B. Schwaller, Departementde Médecine, Division d'Histologie de l'Université de Fribourg , Pérolles, CH-1705 Fribourg, Suisse](Assets/Neurowissenschaften-periphere-nerven-2.png)
   1. Nervenfaszikel
   2. Epineurum
@@ -549,9 +516,6 @@ Periphere Nerven
 
 ## Synaptische Verbindung zu Effektoren
 Motorische Endplatten: Chemische Synapsen, arbeiten mit Acetylcholin, verbinden Neuronen und Muskelfasern.
-
-![](Assets/Neurowissenschaften-motorische-endplatte.png)
-
 - ionotrop: $Ca^{2+}$ , K+, Na+
 - Depolarisation
 - $\rightarrow$ Aktionspot. in Muskelzelle
@@ -565,12 +529,6 @@ Motorische Endplatten: Chemische Synapsen, arbeiten mit Acetylcholin, verbinden 
 ![](Assets/Neurowissenschaften-orientierung-2.png)
 
 ## Gliederung des Gehirns
-![](Assets/Neurowissenschaften-gehirn-gliederung-1.png)
-
-![](Assets/Neurowissenschaften-gehirn-gliederung-2.png)
-
-![](Assets/Neurowissenschaften-gehirn-gliederung-3.png)
-
 Verbindungen zur Außenwelt
 - 12 Hirnnervenpaare
 - über Rückenmark zum Rest des Körpers
@@ -621,8 +579,6 @@ Verbindungen zur Außenwelt
 - bildet zusammen mit Pons das Metencephalon, ist von diesem durch das IV Ventrikel getrennt
 - Funktion: Steuerung der Motorik (Koordination, Feinabstimmung, unbewusste Planung); Erlernen von Bewegungsabläufen; kognitive Funktionen.
 
-![](Assets/Neurowissenschaften-cerebellum-aufbau.png)
-
 Cerebellarer Cortex
 - enthält ca. 50% aller zentralen Neuronen
 - fein gefältelt
@@ -635,7 +591,6 @@ Kleinhirnstiele und Marklager
 - Im Marklager, auf jeder Seite 4 Kerne (Nuclei)
 
 Cerebellarer Cortex (Kleinhirnrinde)
-- ![](Assets/Neurowissenschaften-cerebraler-cortex.png)
 - 3 Schichten
   - Molekulare Schicht
   - Purkinjezellschicht
@@ -644,7 +599,6 @@ Cerebellarer Cortex (Kleinhirnrinde)
 Zellen und Verschaltung
 - Purkinje-Zellen - Zellen mit dem meisten Input (bis 200 000)
 - Körner-Zellen: kleinste und häufigste Neurone im Gehirn ($\frac{3}{4}$ aller Neurone)
-- ![](Assets/Neurowissenschaften-cerebellum-verschaltung.png)
   - Kletterfaser: aus unterer Olive (Medulla)
   - Moosfaser: aus Rückenmark und Hirnstamm
 
@@ -679,7 +633,6 @@ Störungen
 - Störungen im fließenden Bewegungsablauf.
 
 ### Mesencephalon (Mittelhirn)
-![](Assets/Neurowissenschaften-mittelhirn.png)
 - Wichtige Rolle im auditorischen, visuellen sowie extrapyramidalen motorischen System.
 - enthält auf- und absteigende Faserbahnen, die End- und Zwischenhirn mit Cerebellum, Medulla und Rückenmark verbinden
 - Kerne der Hirnnerven III und IV (Augenbewegungen)
@@ -709,7 +662,6 @@ Tegmentum (Mittelhirnhaube)
 - retikuläre Formation, diverse auf- und absteigende Fasertrakte
 
 ### Diencephalon (Zwischenhirn)
-- ![](Assets/Neurowissenschaften-zwischenhirn.png)
 - Umschließt 3. Ventrikel, im Zentrum des Gehirns
 - Sensorisches Zentrum, Ursprung II. Hirnnerv (N. opticus)
 - besteht aus:
@@ -725,10 +677,6 @@ Tegmentum (Mittelhirnhaube)
 - Spezifische Kerne: sind jeweils mit einem abgrenzbaren Bereich der Großhirnrinde verbunden und übertragen sensorische und motorische (aus Basalganglien und Kleinhirn) Information an das Großhirn
 - Unspezifische Kerne: modulieren spezifische Thalamuskerne, werden ihrerseits aus den Basalganglien, dem Kleinhirn und der retikulären Formation angesteuert. Wichtigster: N. reticularis
 - ca. Form und Größe einer Walnuss
-
-![](Assets/Neurowissenschaften-thalamus.png)
-- blau: erregend
-- rot: hemmend
 
 Funktion
 - Durchgangsstation für (fast) alle Information, die die Großhirnrinde erreicht
@@ -750,8 +698,6 @@ Funktionen
 - Beeinflussung von Sexualverhalten, Aggression, Flucht usw
 
 Der Hypothalamus ist das oberste Regulierungszentrum des ANS
-
-![](Assets/Neurowissenschaften-hypothalamus.png)
 
 #### Metathalamus
 Mediale Kniehöcker
@@ -786,7 +732,6 @@ Laterale Kniehöcker
   - Commisura anterior
   - Commisura fornicis
 
-![](Assets/Neurowissenschaften-großgehirnhälften.png)
 
 #### Cerebraler Cortex (Großhirnrinde)
 - bildet die Oberfläche der Großhirnhälften
@@ -818,11 +763,7 @@ Laterale Kniehöcker
 - Oftmals lassen sich Gebiete (Areale) auf dem Cortex definieren, die strukturell und funktionell relativ homogen und durch scharfe Grenzen voneinander geschieden sind $\rightarrow$  **Parzellierung**
 - Es gibt verschiedene Ebenen der Parzellierung, die zueinander in (evt. hierarchischer) Beziehung stehen.
 
-#### Zytoarchitektonische Parzellierung
-![](Assets/Neurowissenschaften-zytoarchitektonische-parzellierung.png)
-
 ### Die Basalganglien (Stammganglien)
-![](Assets/Neurowissenschaften-basalganglien.png)
 - Nucleus caudatus
 - Putamen
 - Globus pallidus
@@ -847,7 +788,6 @@ Wichtig für das Ausführen von Willkürbewegungen (extra-pyramidales motorische
 - Kommissuren verbinden beide Hemisphären (z.B. Corpus callosum)
 
 ## Hirnhäute
-![](Assets/Neurowissenschaften-hirnhäute.png)
 - Skalp
 - Schädel
 - Hirnhaut 1: Dura mater
@@ -873,7 +813,6 @@ Zufuhr über
         - Blutversorgung von Hirnstamm und Kleinhirn
         - Versorgung der hinteren Hirnarterie (A. cerebri posterior) (2x)
 
-![](Assets/Neurowissenschaften-gehirn-blutversorgung.png)
 - Versorgungsgebiete der vorderen (blau), mittleren (rot) und hinteren (gelb) Hirnarterien.
 - Die 6 Hirnarterien sind an der Hirnbasis durch einen Ring verbunden, dadurch kann ein Verschluss einer der 4 zuführenden Arterien ausgeglichen werden
 
@@ -883,7 +822,6 @@ Venöse Abfluss
 - Abfluss über Vv. jugulares internae
 
 ## Das Ventrikelsystem
-![](Assets/Neurowissenschaften-gehirn-ventrikel.png)
 Der Liquor zirkuliert in den 4 Hirnventrikeln und dem Zentralkanal des Rückenmarks sowie im Subarachnoidalraum von Hirn und Rückenmark
 
 Seitenventrikel

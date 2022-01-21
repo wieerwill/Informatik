@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage[iso,german]{isodate} %his package provides commands to switch between different date formats
 \usepackage{hyperref}
+\usepackage{mdwlist} %less space for lists
 \usepackage{listings}
 \lstset{
   literate={ö}{{\"o}}1
@@ -57,7 +58,41 @@
 Simulative Untersuchung der Ausführung von Maschinenbefehlen in unterschiedlichen Pipeline-Architekturen
 
 \subsection*{Aufgabe 1}
-Untersuchen Sie die in der Praktikumsumgebung bereits vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen! Beobachten Sie den Programmablauf und machen Sie sich mit der Bedienung vertraut! Schauen Sie sich vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an (hier können Sie auch Änderungen vornehmen) und interpretieren Sie das Verhalten während der Simulation dementsprechend!
+Untersuchen die vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen Standard-Pipeline, Superskalar-in-Order und Superskalar-out-of-Order. Beobachte den Programmablauf und machen dich mit der Bedienung vertraut! Schauen vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an (hier können auch Änderungen vorgenommen werden) und interpretiere das Verhalten während der Simulation.
+
+Code A1b
+\begin{lstlisting}[basicstyle=\tiny]
+        addiu   $t1, $zero, 11
+        addiu   $t2, $zero, 0
+loop:   addu  $t2, $t2, $t1
+        addiu   $t1, $t1, -1
+        bnez    $t1, loop
+\end{lstlisting}
+Alle Strukturen mit Result-Forwarding und 2-Bit Vorhersage.
+
+\textbf{Beobachtung}:
+\begin{itemize*}
+    \item Standard Pipeline
+    \begin{itemize*}
+        \item Takte: 43
+        \item Befehle: 39
+        \item Befehle pro Takt: 0,81
+        \item Sprünge: 11
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 29
+        \item Befehle: 44
+        \item Befehle pro Takt: 1,21
+        \item Sprünge: 11
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 20
+        \item Befehle: 58
+        \item Sprünge: 12
+    \end{itemize*}
+\end{itemize*}
 
 \subsection*{Aufgabe 2}
 Untersuchen Sie die Befehlsfolgen A4 und B2 mit mindestens je drei unterschiedlichen Simulationsläufen! Die benutzten Pipelinestrukturen und Parametereinstellungen wählen Sie selbst aus. Vergleichen Sie die Ergebnisse mit den Lösungen aus der Übung und suchen Sie Erklärungen für eventuelle Unterschiede!
@@ -70,6 +105,26 @@ addu    $t5, $zero, $t2
 sub     $t4, $t3, $t5
 add     $t2, $t5, $t3
 \end{lstlisting}
+
+\textbf{Beobachtung}:
+\begin{itemize*}
+    \item Standard Pipeline
+    \begin{itemize*}
+        \item Takte: 11
+        \item Befehle: 5
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 8
+        \item Befehle: 5
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-61330.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 8
+        \item Befehle: 5
+    \end{itemize*}
+\end{itemize*}
 
 Code B2
 \begin{lstlisting}[basicstyle=\tiny]
@@ -86,8 +141,119 @@ loop:    lw      $t4, ($t2)         # tempregister t4 <- wert laden
     bne     $t3, $t0, loop          # loop für zaehler != 4
 \end{lstlisting}
 
+\textbf{Beobachtung}:
+2 Bit Vorhersage
+\begin{itemize*}
+    \item Standard Pipeline
+    \begin{itemize*}
+        \item Takte: 40
+        \item Befehle: 28
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-62418.jpg}
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 31
+        \item Befehle: 32
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-62729.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 27
+        \item Befehle: 80
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-63122.jpg}
+    \end{itemize*}
+\end{itemize*}
+
+1 Bit Vorhersage
+\begin{itemize*}
+    \item Standard Pipeline
+    \begin{itemize*}
+        \item Takte: 40
+        \item Befehle: 28
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 31
+        \item Befehle: 32
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-64222.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 27
+        \item Befehle: 80
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-64400.jpg}
+    \end{itemize*}
+\end{itemize*}
+
+
+0 Bit Vorhersage
+\begin{itemize*}
+    \item Standard Pipeline
+    \begin{itemize*}
+        \item Takte: 48
+        \item Befehle: 24
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-63915.jpg}
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 37
+        \item Befehle: 24
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-63642.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 4 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 33
+        \item Befehle: 24
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-63323.jpg}
+    \end{itemize*}
+\end{itemize*}
+
+
+Superskalar In-Order Pipeline ohne Result Forwarding (4 EX Einheiten)
+\begin{itemize*}
+    \item Takte: 57
+    \item Befehle: 32
+    \item \includegraphics[width=.4\linewidth]{Assets/RA2-73350.jpg}
+\end{itemize*}
+
+
 \subsection*{Aufgabe 3}
 Ändern Sie nun eine der vorgegebenen Pipelinestrukturen ab, indem Sie z.B. die Anzahl der parallelen Pipelines verändern. Orientieren Sie sich zuvor über den Inhalt des „Baukastens“. Untersuchen Sie mit den oben verwendeten Befehlsfolgen die Auswirkungen auf die Simulationsergebnisse! Variieren Sie dabei die Parameter und interpretieren Sie die Ergebnisse!
+
+\textbf{Beobachtung}: jeweils mit 2 Bit Vorhersage und Result Forwarding
+\begin{itemize*}
+    \item Superskalar In-Order Pipeline (3 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 32
+        \item Befehle: 31
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-65225.jpg}
+    \end{itemize*}
+    \item Superskalar In-Order Pipeline (2 EX Einheiten)
+    \begin{itemize*}
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-65346.jpg}
+        \item Takte: 34
+        \item Befehle: 30
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-65517.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 3 EX Einheiten)
+    \begin{itemize*}
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-65743.jpg}
+        \item Takte: 28
+        \item Befehle: 62
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-70806.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 2 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 30
+        \item Befehle: 46
+        \item \includegraphics[width=.4\linewidth]{Assets/RA2-70953.jpg}
+    \end{itemize*}
+    \item Superskalar Out-of-Order ( 9 EX Einheiten)
+    \begin{itemize*}
+        \item Takte: 27
+        \item Befehle: 165
+    \end{itemize*}
+\end{itemize*}
 
 \subsection*{Zusatzaufgaben}
 \subsubsection*{Z1}
@@ -152,7 +318,7 @@ Nehmen Sie weitere Änderungen an Parametern und Pipelinestrukturen vor!
 \subsubsection*{Z3}
 Versuchen Sie Befehlsfolgen zu finden, die die strukturellen Ressourcen besonders gut ausnutzen oder die Wirksamkeit bestimmter Methoden (wie z.B. Sprungvorhersagen) besonders gut sichtbar werden lassen!
 
-
+\newpage
 \section*{Versuch M: Mikrocontroller}
 Assemblerprogrammierung mit dem 8-Bit-Mikrocontroller ATtiny25
 

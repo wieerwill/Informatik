@@ -596,68 +596,73 @@ Verhindere das Prellen der Tasten durch Software um doppelte Tastendrücke zu ve
 anf:
         CALL wmatr              ; Tasten abfragen
         CALL ziff               ; Ziffern abfragen
-        CALL anz                ; Ausgabe auf Anzeige
         JMP anf
-matr:
-        MOV ECX, 50000h         ; Entprelltimer
-t:      DEC ECX
-        JNZ t 
-        IN AL, 5Ah              ; Zeile einlesen
-        MOV BL, AL              ; in Register B sichern
-        SHL BL, 4               ; Bits nach oben schieben
-        IN AL, 5Bh              ; Spalte einlesen
-        OR BL, AL               ; Spalten & Zeilen in Byte zusammenfassen
-        RET
 wmatr:
-        CALL matr               ; Tasten abfragen
-        JNZ wmatr               ; weiter wenn keine Taste gedrueckt
-w2:     CALL matr               ; Taste abfragen
-        JZ w2                   ; weiter wenn Taste gedrueckt
+        CALL matr
+        CMP BH, 0h
+        JNZ wmatr
+lp:     CALL matr
+        CMP BH, 0h              ; Entprelltimer
+        JZ lp
         RET
-ziff:
-        CMP BL, 17h
+matr:
+        MOV ECX, 5000h               
+t:      DEC ECX
+        JNZ t
+        MOV AL, 01h
+        OUT 5Ah, AL
+        IN AL, 5Bh
+        MOV BL, AL
+z0:
+        CMP BL, 01h
         JNC z1
         MOV BH, 3Fh
         RET
-z1:     CMP BL, 18h
+z1:     CMP BL, 02h
         JNC z2
         MOV BH, 03h
         RET
-z2:     CMP BL, 20h
+z2:     CMP BL, 04h
         JNC z3
         MOV BH, 6Dh
         RET
-z3:     CMP BL, 24h
-        JNC z4
+z3:     CMP BL, 08h
+        JNC w2
         MOV BH, 67h
         RET
-z4:     CMP BL, 33h
+w2:     MOV AL, 02h
+        OUT 5Ah, AL
+        IN AL, 5Bh
+        MOV BL, AL
+z4:     CMP BL, 01h
         JNC z5
         MOV BH, 53h
         RET
-z5:     CMP BL, 34h
+z5:     CMP BL, 02h
         JNC z6
         MOV BH, 76h
         RET
-z6:     CMP BL, 36h
+z6:     CMP BL, 04h
         JNC z7
         MOV BH, 7Eh
         RET
-z7:     CMP BL, 40h
-        JNC z8
+z7:     CMP BL, 08h
+        JNC w3
         MOV BH, 23h
         RET
-z8:     CMP BL, 65h
+w3:     MOV AL, 04h
+        OUT 5Ah, AL
+        IN AL, 5Bh
+        MOV BL, AL
+z8:     CMP BL, 01h
         JNC z9
         MOV BH, 7Fh
         RET
-z9:     CMP BL, 66h
+z9:     CMP BL, 02h
         JNC zq
         MOV BH, 77h
         RET
-zq:     CMP BL, 77h
-        JNC z1
-        MOV BH, 04h
+zq:     MOV BH, 0h
         RET
 anz:
         MOV AL, BH

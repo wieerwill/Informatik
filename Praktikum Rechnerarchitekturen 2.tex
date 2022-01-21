@@ -323,11 +323,10 @@ Versuche Befehlsfolgen zu finden, die die strukturellen Ressourcen besonders gut
 Assemblerprogrammierung mit dem 8-Bit-Mikrocontroller ATtiny25
 
 \subsection*{Aufgabe 1: Ein- und Ausschalten der LED}
-In dieser Teilaufgabe soll die LED über die beiden Taster ein-, aus- und umgeschaltet werden. Dazu
-ist eine funktionierende Teillösung vorgegeben, welche Sie anschließend erweitern sollen.
+Die LED soll über die beiden Taster ein-, aus- und umgeschaltet werden. Dazu ist eine funktionierende Teillösung vorgegeben, welche erweitert werden soll.
 
 \subsubsection*{Schritt a: Start der Entwicklungsumgebung}
-Geben Sie das folgende Programm ein. Es soll die vorhandenen Befehle ersetzen.
+Gebe das folgende Programm ein. Es soll die vorhandenen Befehle ersetzen.
 \begin{lstlisting}[basicstyle=\tiny]
 .INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
 .DEVICE ATtiny25            // Festlegen des Controllertyps
@@ -347,19 +346,47 @@ lo1:
 \subsubsection*{Schritt b: Manuelle Farbwechsel der LED}
 Das Programm soll jetzt so erweitert werden, dass die LED mit den beiden Tastern zwischen zwei Leuchtfarben umgeschaltet werden kann.
 \begin{lstlisting}[basicstyle=\tiny]
+.INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
+.DEVICE ATtiny25            // Festlegen des Controllertyps
+anf:
+    ldir    16,0x07
+    out     DDRB,r16        // Port B: Richtungseinstellung
+    ldi     r16,0x18
+    out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
+lo1:
+    sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    rjmp    lo1             // Sprung zum Schleifenbeginn
+
+    ...
 \end{lstlisting}
 
-Verändern Sie das Programm nun so, dass durch abwechselndes Drücken der beiden Taster eine Sequenz von mindestens sechs unterschiedlichen Leuchtvarianten der LED durchgeschaltet werden kann.
+Verändere das Programm nun so, dass durch abwechselndes Drücken der beiden Taster eine Sequenz von mindestens sechs unterschiedlichen Leuchtvarianten der LED durchgeschaltet werden kann.
 \begin{lstlisting}[basicstyle=\tiny]
+.INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
+.DEVICE ATtiny25            // Festlegen des Controllertyps
+anf:
+    ldir    16,0x07
+    out     DDRB,r16        // Port B: Richtungseinstellung
+    ldi     r16,0x18
+    out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
+lo1:
+    sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    rjmp    lo1             // Sprung zum Schleifenbeginn
+
+    ....
 \end{lstlisting}
 
 \subsection*{Aufgabe 2: Blinken der LED}
-In dieser Teilaufgabe soll das Programm die LED fortlaufend blinken lassen. Diese Funktion wird mit einem Zähler/Zeitgeber-Interrupt realisiert.
+Das Programm soll die LED fortlaufend blinken lassen. Diese Funktion wird mit einem Zähler/Zeitgeber-Interrupt realisiert.
 
 \subsubsection*{Schritt a: Einfaches Blinken}
-Die Aufgabe besteht nun darin, die LED periodisch ein- und auszuschalten, so dass sich eine Frequenz von etwa 2 Hz ergibt. Das Umschalten der LED soll in der Interruptserviceroutine eines Zähler/Zeitgeber-Interrupts erfolgen. Dafür soll Timer/Counter 0 so initialisiert werden, dass er Interrupts mit einer Folgefrequenz von etwa 4 Hz auslöst.
-
-Stützen Sie sich dazu auf das folgende Programmfragment:
+Die Aufgabe besteht nun darin, die LED periodisch ein- und auszuschalten, so dass sich eine Frequenz von etwa 2 Hz ergibt. Das Umschalten der LED soll in der Interruptserviceroutine eines Zähler/Zeitgeber-Interrupts erfolgen. Dafür soll Timer/Counter 0 so initialisiert werden, dass er Interrupts mit einer Folgefrequenz von etwa 4 Hz auslöst. Stütze dich dazu auf das folgende Programmfragment:
 \begin{lstlisting}[basicstyle=\tiny]
 // Interrupttabelle (muss vor dem ersten ausführbaren Befehl stehen):
 tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
@@ -394,35 +421,77 @@ i_11: in    r25,SREG    // Flags retten (weitere Rettungen nach Bedarf)
     reti                // Routine beenden
 \end{lstlisting}
 
-Die Hintergrundschleife bleibt zunächst leer. Entwickeln und testen Sie das Programm für diese Aufgabe.
+Die Hintergrundschleife bleibt zunächst leer. Entwickle und teste das Programm für diese Aufgabe.
+
+\begin{lstlisting}[basicstyle=\tiny]
+.INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
+.DEVICE ATtiny25            // Festlegen des Controllertyps
+
+// Interrupttabelle (muss vor dem ersten ausführbaren Befehl stehen):
+tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    reti
+    rjmp    i_11 // Timer 0 Compare A Interrupt (Interrupt 11)
+    reti
+    reti
+    reti
+    reti    // Tabellenende (Interrupt 15)
+
+// Initialisierungsteil und Hintergrundprogramm:
+anf: 
+    ldir    16,0x07
+    out     DDRB,r16        // Port B: Richtungseinstellung
+    ldi     r16,0x18
+    out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
+     [...]  // Weitere Initialisierungen
+     [...]  // Initialisierung von Timer/Counter 0 (Empfehlung:
+            // Betriebsart CTC, Vergleichsregister A nutzen)
+    sei     // Globale Interruptfreigabe
+    ldi r16,0x10
+    out TIMSK,r16   // Freigabe von Interrupt 11 (Timer 0 Compare A)
+lo1:
+    sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    rjmp    lo1             // Sprung zum Schleifenbeginn
+lo2: rjmp   lo2     // Leere Hintergrundschleife
+
+// Interruptserviceroutine:
+i_11: in    r25,SREG    // Flags retten (weitere Rettungen nach Bedarf)
+    [...]               // Inhalt der Routine
+    out     SREG,r25    // Flags restaurieren
+    reti                // Routine beenden
+\end{lstlisting}
 
 \subsubsection*{Schritt b: Erweitertes Blinken}
-Bauen Sie in die Hintergrundschleife eine Abfrage von TASTER1 und TASTER2 ein. Durch Drücken von TASTER1 soll die Blinkfrequenz verdreifacht werden, durch TASTER2 wird sie auf den ursprünglichen Wert zurückgestellt.
-Testen Sie diese Funktion. Der Vorgang soll sich beliebig wiederholen lassen.
-Stellen Sie das Programm nun so um, dass die beiden Blinkfrequenzen deutlich langsamer sind: Etwa 1,0 Hz und etwa 0,5 Hz. Beachten Sie, dass der Zählumfang des Timer/Counter dafür nicht ausreicht, auch nicht mit dem größten Vorteiler. Sie müssen das Programm also in der Struktur verändern.
-Erweitern Sie das Programm so, dass eine Sequenz aus mindestens vier unterschiedlichen Leuchtzuständen durchlaufen wird. Sie können dabei nach Belieben auch komplexere Abläufe realisieren.
+Baue in die Hintergrundschleife eine Abfrage von TASTER1 und TASTER2 ein. Durch Drücken von TASTER1 soll die Blinkfrequenz verdreifacht werden, durch TASTER2 wird sie auf den ursprünglichen Wert zurückgestellt. Teste diese Funktion. Der Vorgang soll sich beliebig wiederholen lassen.
 
-Optional: Stellen Sie die Tasterabfrage auf Interruptbetrieb um. Hierfür bietet sich der ,,Pin Change Interrupt'' an. Beachten Sie, dass wegen des Prellens der Taster ein einzelner Tastendruck eine ganze Serie von Interrupts auslösen kann.
+Stelle das Programm nun so um, dass die beiden Blinkfrequenzen deutlich langsamer sind: Etwa 1,0 Hz und etwa 0,5 Hz. Beachte, dass der Zählumfang des Timer/Counter dafür nicht ausreicht, auch nicht mit dem größten Vorteiler. Das Programm muss also in der Struktur verändert werden. Erweiterr das Programm so, dass eine Sequenz aus mindestens vier unterschiedlichen Leuchtzuständen durchlaufen wird.
 
-Optional: Realisieren Sie eine Entprellung der Taster. Dazu ist nach jeder erkannten Änderung des Zustands eines Tasters eine Wartezeit von z.B. 0,2 s nötig, während derer weitere Zustandswechsel dieses Tasters ignoriert werden. Auf der Grundlage entprellter Taster können Sie erweiterte Umschaltfunktionen implementieren, bei denen auch das mehrmalige Drücken desselben Tasters eine Rolle spielt.
 
 \subsection*{Aufgabe 3: Einfaches Dimmen der LED mittels PWM}
-In dieser Aufgabe soll die Helligkeit der LED mittels PWM (pulse width modulation, Pulsbreitenmodulation) auf wählbare Zwischenwerte eingestellt werden.
+Stelle die Helligkeit der LED mittels PWM (pulse width modulation, Pulsbreitenmodulation) auf wählbare Zwischenwerte ein.
 
 \subsubsection*{Schritt a: Einfache Helligkeitseinstellung}
-Zunächst soll die LED (nur eine Farbe) auf eine beliebige, aber konstante Helligkeit eingestellt werden können. Realisieren Sie dazu eine PWM-Ausgabe mit 256 Helligkeitsstufen, wobei Sie die Zeitintervalle wahlweise mittels Zählschleifen oder mittels Timer/Counter-Interrupt generieren. Den Helligkeitswert können Sie über ein Universalregister vorgeben, in welches Sie im Debugger bei gestopptem Programm jeweils unterschiedliche Werte eintragen.
-Alternativ können Sie auch die PWM-Betriebsarten der Timer/Counter-Baugruppen ausprobieren, soweit es die Hardwarekonfiguration zulässt. Empfohlen wird die Betriebsart ,,Fast PWM'' mit normaler Zählung.
+Zunächst soll die LED (nur eine Farbe) auf eine beliebige, aber konstante Helligkeit eingestellt werden können. Realisiere dazu eine PWM-Ausgabe mit 256 Helligkeitsstufen, wobei die Zeitintervalle wahlweise mittels Zählschleifen oder mittels Timer/Counter-Interrupt generiert werden. Den Helligkeitswert können über ein Universalregister vorgegeben werdeb, in welches im Debugger bei gestopptem Programm jeweils unterschiedliche Werte eintragen werden können.
+Alternativ können auch die PWM-Betriebsarten der Timer/Counter-Baugruppen ausprobiert werden, soweit es die Hardwarekonfiguration zulässt. Empfohlen wird die Betriebsart ,,Fast PWM'' mit normaler Zählung.
 
 \subsubsection*{Schritt b: Helligkeitseinstellung mit Tastern}
-Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werten Sie dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
+Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werte dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
 
 \subsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
-Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. In Absprache mit dem Betreuer können Sie andere Aufgabenteile weglassen, falls Sie die Zusatzaufgabe unter Einbeziehung umfangreicher eigener Ideen in Angriff nehmen wollen.
-
-Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu müssen Sie einen Mechanismus implementieren, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
-Realisieren Sie weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind.
-Realisieren Sie eine Umschaltung zwischen unterschiedlichen Lichteffekten.
-Realisieren Sie weitergehende Funktionen nach eigenen Ideen.
+Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu muss einen Mechanismus implementiert werden, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
+Realisiere weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind. 
+Realisiere eine Umschaltung zwischen unterschiedlichen Lichteffekten. 
+Realisiere weitergehende Funktionen nach eigenen Ideen.
 
 \end{document}
 

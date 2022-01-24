@@ -42,6 +42,14 @@
     - [Fehlerschranke für den Miller-Rabin-Test](#fehlerschranke-für-den-miller-rabin-test)
   - [Die Erzeugung von (zufälligen) Primzahlen](#die-erzeugung-von-zufälligen-primzahlen)
   - [Beweise und Bemerkungen zu Kapitel 4](#beweise-und-bemerkungen-zu-kapitel-4)
+- [Asymmetrische Verschlüsselung: RSA & Co.](#asymmetrische-verschlüsselung-rsa--co)
+  - [Das RSA-Kryptosystem (,,Vorlesungs-Version'')](#das-rsa-kryptosystem-vorlesungs-version)
+    - [Schlüsselerzeugung](#schlüsselerzeugung)
+    - [Verschlüsselung](#verschlüsselung)
+    - [Entschlüsselung](#entschlüsselung)
+  - [Asymmetrische Kryptoschemen, Sicherheitsbegriff](#asymmetrische-kryptoschemen-sicherheitsbegriff)
+    - [Asymmetrische Kryptoschemen](#asymmetrische-kryptoschemen)
+    - [Sicherheit von asymmetrischen Kryptoschemen](#sicherheit-von-asymmetrischen-kryptoschemen)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -145,9 +153,7 @@ Der Nachteil ist offensichtlich: Wer den Trick kannte, konnte jede Nachricht mit
 
 Eine einfache ,,Verbesserung'' dieses sehr primitiven Ansatzes ist Folgendes: Verschiebe zyklisch um eine andere Anzahl von Buchstaben als 3. Für eine Verschiebung um $k=9$ Positionen ergibt sich:
     A B C D E F G H I K L M N O P Q R S T V X
-    K L M N O P Q R S T V X A B C D E F G H I
-
-Um hier die Verschlüsselung und die Entschlüsselung durchzuführen, musste man als ,,Schlüssel''  nur das Bild von A kennen (im Beispiel K), alternativ die Verschiebeweite k
+    K L M N O P Q R S T V X A B C D E F G H Iüm hier die Verschlüsselung und die Entschlüsselung durchzuführen, musste man als ,,Schlüssel''  nur das Bild von A kennen (im Beispiel K), alternativ die Verschiebeweite k
 als Zahl. Es gibt dann 21 Schlüssel (wobei zunächst ,,A'' oder Verschiebeweite 0 zunächst ziemlich sinnlos erscheint).Diese Methode heißt Verschiebechiffre.
 
 Eine ziemlich naheliegende Verallgemeinerung von Verschiebechiffren ist auf den ersten Blick viel mächtiger: Sie sagt, dass das Bild eines Buchstabens ein ganz beliebiger anderer Buchstabe sein soll. Dabei müssen natürlich verschiedene Buchstaben auf verschiedene Buchstaben abgebildet werden. Es er gibt sich eine ,,Substitutionschiffre'' ,die durch eine Tabelle mit ganz beliebiger Buchstabenanordnung gegeben ist. Beispiel:
@@ -370,9 +376,7 @@ Folgerung: Bei possibilistischer Sicherheit und Klartexten und Schlüsseln, die 
 
 gegeben. Dann ist $S=(X,K,Y,e,d)$ ein possibilistisch sicheres Kryptosystem. Fängt Eva den Chiffretext $e(x,k) =A$ ab, so nimmt sie an, dass $x=a$ ,,wahrscheinlicher'' ist als $x=b$. 
 Das ist zum Beispiel dann sinnvoll, wenn die Schlüssel $0,1,2$ dieselbe Wahrscheinlichkeit haben.
-(Das Kerckhoffs-Prinzip würde sagen, dass Eva auch die verwendete Wahrscheinlichkeitsverteilung auf $K$ kennt.)
-
-Um formal auszudrücken, warum dieses Kryptosystem nicht ,,sicher'' ist, wenn Schlüssel $0,1$ und $2$ gleichwahrscheinlich sind, beziehungsweise um einen passenden Sicherheitsbegriff überhaupt zu formulieren, benötigen wir etwas Wahrscheinlichkeitsrechnung.
+(Das Kerckhoffs-Prinzip würde sagen, dass Eva auch die verwendete Wahrscheinlichkeitsverteilung auf $K$ kennt.)üm formal auszudrücken, warum dieses Kryptosystem nicht ,,sicher'' ist, wenn Schlüssel $0,1$ und $2$ gleichwahrscheinlich sind, beziehungsweise um einen passenden Sicherheitsbegriff überhaupt zu formulieren, benötigen wir etwas Wahrscheinlichkeitsrechnung.
 
 ## Wiederholung: Elementare Wahrscheinlichkeitsrechnung
 Die in dieser Vorlesung benötigten Konzepte aus der Wahrscheinlichkeitsrechnung wurden in den Veranstaltungen ,,Grundlagen und Diskrete Strukturen'' und ,,Stochastik für Informatiker'' im Prinzip behandelt.Wir erinnern hier kurz an die für unsere Zwecke wichtigen Konzepte und legen Notation fest.
@@ -580,9 +584,7 @@ Nun betrachten wir allgemeinere Situationen, und fragen auch nach informationsth
 Technisch hilfreich sind die folgenden Größen, die nur von der Verschlüsselungsfunktion und der Schlüsselverteilung abhängen (nicht von irgendeiner Klartextverteilung): $P^x(y):=\sum_{k\in K, e(x,k)=y} Pr(k)$, für $x\in X,y\in Y$ (1.1). 
 Man beobachtet sofort die folgenden Gleichungen, die aus der Unabhängigkeit der Verteilungen $Pr_X$ und $Pr_K$ folgen:
 - Für alle $x\in X:Pr(x,y) = Pr(x)*P^x(y)$. (1.2)
-- Wenn $Pr(x)> 0$:$Pr(y|x) = \frac{Pr(x,y)}{Pr(x)}=P^x(y)$. (1.3)
-
-Umgekehrt wie bei der Definition der informationstheoretischen Sicherheit stellt man sich hier vor, dass ein Klartext x gegeben ist und man fragt nach der resultierenden Verteilung auf den Chiffretexten.
+- Wenn $Pr(x)> 0$:$Pr(y|x) = \frac{Pr(x,y)}{Pr(x)}=P^x(y)$. (1.3)ümgekehrt wie bei der Definition der informationstheoretischen Sicherheit stellt man sich hier vor, dass ein Klartext x gegeben ist und man fragt nach der resultierenden Verteilung auf den Chiffretexten.
 Das nächste Lemma besagt, dass man die Wahrscheinlichkeiten aktiver Klartexte beliebig ändern kann (auch auf 0, also sie weglassen), ohne dass eine bestehende informationstheoretische Sicherheit zerstört wird.
 
 Lemma 1.30 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und seien $Pr_X$ und $Pr′_X$ Klartextverteilungen mit $Pr′_X(x)>0\Rightarrow Pr_X(x)>0$. Dann gilt: Ist $V$ informationstheoretisch sicher bzgl. $Pr_X$, so ist V informationstheoretisch sicher bzgl. $Pr′_X$.
@@ -633,9 +635,7 @@ Es liegt nahe, zu versuchen, mit nur einem Schlüsselbuchstaben oder mit einem k
 ### Die Vigenère-Chiffre und Angriffe bei bekannter Schlüssellänge
 Es ist bequem, anstelle von Buchstaben mit Zahlen zu rechnen. Mit $Z_n$ bezeichnen wir den Ring $\mathbb{Z}/n\mathbb{Z}$, also (etwas vereinfachend gesagt) den Ring der Zahlen $\{0,1,...,n-1\}$ mit Addition und Multiplikation modulo n als Operationen.
 
-Definition: Eine Verschiebechiffre ist ein Kryptosystem $S=(Z_n,Z_n,Z_n,e,d)$ mit $e(x,k)=(x+k) mod\ n$. (Offensichtlich ist dann $d(y,k)=(y-k)mod\ n$.)
-
-Unser zentrales Beispiel ist der Fall $n=26$, also $X=Y=K=\{0,1,2,...,25\}$. Wir identifizieren die Elemente dieser Menge mit den Buchstaben $a,...,z$ (bei X) bzw. $A,...,Z$ (bei K und Y). Die Konvention ist nach wie vor, Klartextbuchstaben klein und Schlüsselbuchstaben und Chiffretextbuchstaben groß zu schreiben.
+Definition: Eine Verschiebechiffre ist ein Kryptosystem $S=(Z_n,Z_n,Z_n,e,d)$ mit $e(x,k)=(x+k) mod\ n$. (Offensichtlich ist dann $d(y,k)=(y-k)mod\ n$.)ünser zentrales Beispiel ist der Fall $n=26$, also $X=Y=K=\{0,1,2,...,25\}$. Wir identifizieren die Elemente dieser Menge mit den Buchstaben $a,...,z$ (bei X) bzw. $A,...,Z$ (bei K und Y). Die Konvention ist nach wie vor, Klartextbuchstaben klein und Schlüsselbuchstaben und Chiffretextbuchstaben groß zu schreiben.
 
 Die einfachste Methode ist folgende Version der Cäsar-Chiffre: Wähle einen Schlüssel k aus $K=\{0,1,...,25\}=\{A,...,Z\}$ zufällig. Um ,,Texte'' (d.h. Wörterüber $\mathbb{Z}_n$) zu verschlüsseln, wird S buchstabenweise angewandt: Aus $x_0 x_1...x_{l-1}$ wird $e(x_0,k)e(x_1,k)...e(x_{l-1},k)$.
 
@@ -1176,18 +1176,12 @@ Sei $B=(\{0,1\}^l,\{0,1\}^s,\{0,1\}^l,e,d)$ ein Block-Kryptosystem und seien $x_
 Wir können also für Eva in Szenario 2 den folgenden Angriff nach dem CPA-Muster planen:
 1. Lasse fünf Klartexte $x_1,...,x_5$ zu $y_1,...,y_5$ verschlüsseln.
 2. ,,Schaue nach'', welcher Schlüssel $k$ mit den Paaren $(x_1,y_1),...,(x_5,y_5)$ konsistent ist (wenigstens einer ist es und es gibt höchstens einen).
-3. Höre Chiffretext $y$ ab und berechne $x=d(y,k)$ aus $y$.
+3. Höre Chiffretext $y$ ab und berechne $x=d(y,k)$ aus $y$.üm in Schritt 2. ,,nachsehen'' zu können, benötigt Eva eine Tabelle mit allen möglichen Chiffretextkombinationen für die fünf Klartexte $x_1,...,x_5$. Dafür gibt es $\geq |K|= 2^s$ Möglichkeiten, nämlich für jeden Schlüssel eine. Die Hashtabelle oder der Suchbaum (oder die entsprechende Struktur in einem Turingmaschinen-Programm) hat Größe $2^s$. Wenn der Programmtext oder die Turingmaschine binäre Suche (oder einen binären Suchbaum) benutzt, dann führt dieser ,,Angriff '' in Zeit $O(log(|K|)) =O(log(2^s)) =O(s)$ zum Klartext $x$.
 
-Um in Schritt 2. ,,nachsehen'' zu können, benötigt Eva eine Tabelle mit allen möglichen Chiffretextkombinationen für die fünf Klartexte $x_1,...,x_5$. Dafür gibt es $\geq |K|= 2^s$ Möglichkeiten, nämlich für jeden Schlüssel eine. Die Hashtabelle oder der Suchbaum (oder die entsprechende Struktur in einem Turingmaschinen-Programm) hat Größe $2^s$. Wenn der Programmtext oder die Turingmaschine binäre Suche (oder einen binären Suchbaum) benutzt, dann führt dieser ,,Angriff '' in Zeit $O(log(|K|)) =O(log(2^s)) =O(s)$ zum Klartext $x$.
-
-Dieses Vorgehen ist natürlich unrealistisch, denn niemand kann ein so großes Programm schreiben oder speichern, wenn etwa (wie bei AES) die Zahl der Schlüssel $2^{128}>10^{38}$ beträgt. Um diesen Trick auszuschließen, werden wir den Ressourcenverbrauch eines Algorithmus als Summe von Laufzeit und Länge des Programmcodes (=Größe der Transitionstabelle der Turingmaschine) messen. Die Programmgröße ist eine untere Schranke für die Zeit, die Eva zur Erstellung ihres Programms benötigt. Unser Ressourcenmaß erfasst also die Zeit für die Erstellung und die Zeit für die Ausführung des Algorithmus.
-
-Unsere Algorithmen werden oft mit Kryptosystemen einer festen Blocklänge $l$ und einer fixen Anzahl von Klartext-/Chiffretext-Paaren arbeiten. Damit sind nur endlich viele Eingaben möglich, der Ressourcenverbrauch kann also nicht asymptotisch (,,bei großen Eingaben'') angegeben werden. Daher betrachten wir zunächst Algorithmen mit konstanter Laufzeit. Das führt dazu, dass alle eventuell vorhandenen Schleifen nur konstant oft durchlaufen werden. Damit können wir aber auf Schleifenanweisungen vollständig verzichten. Die resultierenden Programme heißen ,,Straight-Line-Programme''. Man kann sie sich in Pseudocode geschrieben vorstellen (ohne ,,while'' und ,,for'' und ohne Rückwärtssprünge), oder als Turingmaschinenprogramme mit der Eigenschaft, dass nie eine Programmzeile zweimal ausgeführt wird.
+Dieses Vorgehen ist natürlich unrealistisch, denn niemand kann ein so großes Programm schreiben oder speichern, wenn etwa (wie bei AES) die Zahl der Schlüssel $2^{128}>10^{38}$ beträgt. Um diesen Trick auszuschließen, werden wir den Ressourcenverbrauch eines Algorithmus als Summe von Laufzeit und Länge des Programmcodes (=Größe der Transitionstabelle der Turingmaschine) messen. Die Programmgröße ist eine untere Schranke für die Zeit, die Eva zur Erstellung ihres Programms benötigt. Unser Ressourcenmaß erfasst also die Zeit für die Erstellung und die Zeit für die Ausführung des Algorithmus.ünsere Algorithmen werden oft mit Kryptosystemen einer festen Blocklänge $l$ und einer fixen Anzahl von Klartext-/Chiffretext-Paaren arbeiten. Damit sind nur endlich viele Eingaben möglich, der Ressourcenverbrauch kann also nicht asymptotisch (,,bei großen Eingaben'') angegeben werden. Daher betrachten wir zunächst Algorithmen mit konstanter Laufzeit. Das führt dazu, dass alle eventuell vorhandenen Schleifen nur konstant oft durchlaufen werden. Damit können wir aber auf Schleifenanweisungen vollständig verzichten. Die resultierenden Programme heißen ,,Straight-Line-Programme''. Man kann sie sich in Pseudocode geschrieben vorstellen (ohne ,,while'' und ,,for'' und ohne Rückwärtssprünge), oder als Turingmaschinenprogramme mit der Eigenschaft, dass nie eine Programmzeile zweimal ausgeführt wird.
 
 #### Randomisierung bei Straight-Line-Programmen
-In unseren Algorithmen wollen wir zusätzlich die Anweisung ,,$y\leftarrow flip(M)$'' erlauben, wobei $M$ eine endliche Menge ist. Die Idee dabei ist, dass der Variable $y$ ein zufälliges Element von $M$ (bzgl. der Gleichverteilung auf $M$) zugewiesen wird. Damit berechnen unsere Algorithmen keine Funktionen, sondern zufällige Werte, die durch eine Wahrscheinlichkeitsverteilung gesteuert werden.
-
-Um den Wahrscheinlichkeitsraum definieren zu können, machen wir die folgenden Annahmen (die keine Einschränkung darstellen):
+In unseren Algorithmen wollen wir zusätzlich die Anweisung ,,$y\leftarrow flip(M)$'' erlauben, wobei $M$ eine endliche Menge ist. Die Idee dabei ist, dass der Variable $y$ ein zufälliges Element von $M$ (bzgl. der Gleichverteilung auf $M$) zugewiesen wird. Damit berechnen unsere Algorithmen keine Funktionen, sondern zufällige Werte, die durch eine Wahrscheinlichkeitsverteilung gesteuert werden.üm den Wahrscheinlichkeitsraum definieren zu können, machen wir die folgenden Annahmen (die keine Einschränkung darstellen):
 1. Bei nacheinander ausgeführten Kommandos der Form $y\leftarrow flip(M)$, mit identischem oder unterschiedlichem $M$, werden immer neue, unabhängige Zufallsexperimente ausgeführt.
 2. Wie eben diskutiert, enthalten unsere Algorithmen keine Schleifen. Wir können daher jedes Ergebnis eines Zufallsexperiments in einer eigenen Variable speichern. Zusätzlich können wir die flip-Kommandos aus dem gesamten Programm, auch den bedingten Anweisungen, herausziehen und sie alle (vorab, auf Vorrat) ausführen. Damit können wir annehmen: Wenn die Anweisung $y\leftarrow flip(M)$ im Programmtext vorkommt, dann wird sie in jedem Durchlauf des Algorithmus (unabhängig von der Eingabe und den Ergebnissen der flip-Anweisungen) genau einmal ausgeführt.
 
@@ -1283,9 +1277,7 @@ Definition 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil 
 Klar ist:
 - Für jeden l-Unterscheider $U$ und jedes l-Block-KS $B$ gilt $-1\geq adv(U,B)\geq 1$.
 - Werte $adv(U,B)<0$ sind uninteressant. (Wenn man einen Unterscheider $U$ mit $adv(U,B)<0$ hat, sollte man in $U$ die Ausgaben $0$ und $1$ vertauschen und erhält einen Unterscheider mit positivem Vorteil.)
-- Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$.
-
-Um den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S〈b= 1〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S〈b= 0〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
+- Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$.üm den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S〈b= 1〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S〈b= 0〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
 
 Lemma 2.14 $adv(U,B) = suc(U,B)-fail(U)$.
 
@@ -1297,9 +1289,7 @@ Beweis: $Pr(G^B_U= 1) = Pr(S_U^B=b)$
 - $=\frac{1}{2}( (suc(U,B) + (1-fail(U)))$
 - $=\frac{1}{2}(suc(U,B)-fail(U)) + \frac{1}{2}$
 
-Durch Umstellen ergibt sich die Behauptung.
-
-Unterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
+Durch Umstellen ergibt sich die Behauptung.ünterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
 
 Definition 2.15 Sei $l\in\mathbb{N}$, U ein l-Unterscheider, B ein l-Block-KS. Für $q,t\in\mathbb{N}$ heißt U $(q,t)$-beschränkt, wenn die Laufzeit des Aufrufs von U innerhalb von $G^B_U$ durch t beschränkt ist und dieser Aufruf die Funktion F mit höchstens $q$ verschiedenen Argumenten ausführt.
 
@@ -1605,7 +1595,7 @@ Beispiel: $30 = 3*9 + 3, 30\ mod\ 9 = 3, -30 = (-4) *9 + 6, (-30)\ mod\ 9 = 6$.
 
 Aufwand für Division mit Rest: Die Division einer n-ziffrigen Zahl durch eine l-ziffrige Zahl mit der Schulmethode kostet Zeit $O(nl)$.
 
-Wir sagen, dass eine ganze Zahl $y$ die ganze Zahl $x$ teilt (oder dass $y$ ein Teiler von $x$ ist), wenn $x=qy$ für eine ganze Zahl $q$ gilt. Oft schreibt man dafur kurz $y|x$. Wenn $y$ kein Teiler von $x$ ist, schreiben wir $y\not|x$.
+Wir sagen, dass eine ganze Zahl $y$ die ganze Zahl $x$ teilt (oder dass $y$ ein Teiler von $x$ ist), wenn $x=qy$ für eine ganze Zahl $q$ gilt. Oft schreibt man dafür kurz $y|x$. Wenn $y$ kein Teiler von $x$ ist, schreiben wir $y\not|x$.
 
 Beispiel: $3|12,-3|12,-3|-12,-3|12,3|0,0|0$.
 
@@ -2041,7 +2031,7 @@ Beweis: Sei $d=ggT(a,N)>1$. Dann ist auch $a^{N-1}$ durch $d$ teilbar, also auch
 
 Beispiel: Für $N=15$ und $a=6$ gilt $6^{14}\equiv 36^7\equiv 6^7 \equiv  36^3 * 6 \equiv 6^4 \equiv 6^2 \equiv 6\ (mod\ 15)$. Der Rest $6$ ist durch $ggT(6,15) = 3$ teilbar.
 
-Leider ist für manche zusammengesetzten Zahlen $N$ die Menge $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ ̈außerst dünn. Wenn zum Beispiel $N=pq$ für zwei Primzahlen $p$ und $q$ ist, dann gilt $ggT(a,N)> 1$ genau dann wenn $p$ oder $q$ ein Teiler von $a$ ist. Es gibt genau $p+q-2$ solche Zahlen $a$ in $\{ 1 ,...,N-1\}$, was gegenüber $N$ sehr klein ist, wenn $p$ und $q$ annähernd gleich groß sind. Um eine gute Chance zu haben, F-Zeugen zu finden, sollte es also mehr als nur die in $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ geben.
+Leider ist für manche zusammengesetzten Zahlen $N$ die Menge $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ äußerst dünn. Wenn zum Beispiel $N=pq$ für zwei Primzahlen $p$ und $q$ ist, dann gilt $ggT(a,N)> 1$ genau dann wenn $p$ oder $q$ ein Teiler von $a$ ist. Es gibt genau $p+q-2$ solche Zahlen $a$ in $\{ 1 ,...,N-1\}$, was gegenüber $N$ sehr klein ist, wenn $p$ und $q$ annähernd gleich groß sind. Um eine gute Chance zu haben, F-Zeugen zu finden, sollte es also mehr als nur die in $\{1 ,...,N-1\}-\mathbb{Z}^*_N$ geben.
 
 Beispiel: $N=91 = 7*13$. Es gibt 18 Vielfache von 7 und 13 (für größere $p$ und $q$ wird der Anteil dieser offensichtlichen F-Zeugen noch kleiner sein), und daneben weitere $36$ F-Zeugen und $36$ F-Lügner in $\{1 , 2 ,..., 90\}$.
 
@@ -2295,7 +2285,7 @@ Algorithmus 4.8: GetPrime - Randomisierte Primzahlerzeugung
   - until IterMiRa(N,$l$) = 0; // Algorithmus 4.7
   - return $N$.
 
-Die Ausgabe ist korrekt, wenn der Algorithmus eine Primzahl zurückgibt, ein Fehler tritt auf, wenn eine zusammengesetzte Zahl zurückgegeben wird. Auf den ersten Blick könnte man meinen (aufgrund von Proposition 4.44), dass die Fehlerwahrscheinlichkeit höchstens $1/4^l$ ist - eben die Fehlerwahrscheinlichkeit des iterierten MiRa-Tests. Wir werden sehen, dass wir auf der Basis der Analyse des Miller-Rabin-Tests nur ein etwas schwächeres Ergebnis bekommen. (Tatsächlich ist die Fehlerwahrscheinlichkeit durch $1/4^l$ beschränkt, für (von $l$ abhängig) genügend großen. Dies kann man aber nur durch fortgeschrittene zahlentheoretische Untersuchungen ̈uber die erwartete Wahrscheinlichkeit, dass eine zufällige ungerade zusammengesetzte Zahl den $l$-fach iterierten MiRa-Test übersteht, beweisen [P. Beauchemin, G. Brassard, C. Cr ́epeau, C. Goutier, C. Pomerance: The generation of random numbers that are probably prime.J. Cryptology 1 (1): 53-64 (1988)].)
+Die Ausgabe ist korrekt, wenn der Algorithmus eine Primzahl zurückgibt, ein Fehler tritt auf, wenn eine zusammengesetzte Zahl zurückgegeben wird. Auf den ersten Blick könnte man meinen (aufgrund von Proposition 4.44), dass die Fehlerwahrscheinlichkeit höchstens $1/4^l$ ist - eben die Fehlerwahrscheinlichkeit des iterierten MiRa-Tests. Wir werden sehen, dass wir auf der Basis der Analyse des Miller-Rabin-Tests nur ein etwas schwächeres Ergebnis bekommen. (Tatsächlich ist die Fehlerwahrscheinlichkeit durch $1/4^l$ beschränkt, für (von $l$ abhängig) genügend großen. Dies kann man aber nur durch fortgeschrittene zahlentheoretische Untersuchungen über die erwartete Wahrscheinlichkeit, dass eine zufällige ungerade zusammengesetzte Zahl den $l$-fach iterierten MiRa-Test übersteht, beweisen [P. Beauchemin, G. Brassard, C. Cr ́epeau, C. Goutier, C. Pomerance: The generation of random numbers that are probably prime.J. Cryptology 1 (1): 53-64 (1988)].)
 
 Wir definieren: $Prim_n:=\{p\in [2^{n-1}, 2^n)| \text{p ist Primzahl}\}$.
 
@@ -2320,3 +2310,170 @@ Beweis der Existenz und der Eindeutigkeit des größten gemeinsamen Teilers $ggT
   - 2. Fall: $a >0$. Wir wählen $d=a$. Dann gilt (i), weil $a$ Teiler von $a$ und von 0 ist, und es gilt (ii), weil jeder gemeinsame Teiler von $a$ und 0 auf jeden Fall Teiler von $a$ ist.
 - *Induktionsschritt*: $b>0$. Setze $q:=a\ div\ b$ und $r:=a-qb=a\ mod\ b$ und $(a′,b′):=(b,r)$. Dann ist $b′=r < b=a′$. Nun haben $a$ und $b$ genau dieselben gemeinsamen Teiler wie $a′$ und $b′$. (Aus $t|a$ und $t|b$ folgt $t|(a-qb)$, also $t|a′$, und aus $t|a′$ und $t|b′$ folgt $t|r+qb$, also $t|a$.) Nach I.V. existiert $d= ggT(a′,b′)$, und dieses $d$ ist dann auch größter gemeinsamer Teiler von $a$ und $b$.
 
+
+# Asymmetrische Verschlüsselung: RSA & Co.
+## Das RSA-Kryptosystem (,,Vorlesungs-Version'')
+RSA: Erfunden von Ronald L. Rivest, Adi Shamir und Leonard Adleman, 1977. Ein ähnliches Verfahren wurde (von J. H. Ellis, C. C. Cocks und M. J. Williamson) bereits Anfang der 1970er Jahre in den Government Communications Headquarters, der Kryptologie-Abteilung des britischen Geheimdienstes, entwickelt, aber nicht veröffentlicht.
+
+Vorsicht: In der hier zunächst vorgestellten einfachen/naiven Version ist RSA unsicher. Es müssen Modifikationen und Einschränkungen vorgenommen werden, um ein
+sicheres Verfahren zu erhalten. Gute Referenz hierfür: Baumann, Franz, Pfitzmann, Kryptographische Systeme, Springer Vieweg 2014, S. 231ff.
+
+Wir betrachten ein einfaches Kommunikationsszenario. Die Teilnehmer sind Alice und Bob. Alice möchte an Bob eine Nachricht schicken. Dies soll über einen offen zugänglichen Kanal (E-Mail, ein Webportal) geschehen. Dieser Kanal wird von Eva mitgelesen. Alice und Bob wollen vermeiden, dass Eva den Inhalt der Nachricht erfährt. Wenn auch Bob an Alice Nachrichten schicken möchte, müssen die Aktionen auch mit vertauschten Rollen ausgeführt werden.
+Die Menge $X$ der möglichen Nachrichten kann als Teilmenge von $\{0,1\}^*$ aufgefasst werden. Wir möchten vermeiden, dass sich Alice und Bob vor der Kommunikation auf einen gemeinsamen Schlüssel einigen müssen. Stattdessen wird ein Schlüsselpaar $(k,\hat{k})$ verwendet. Die erste Komponente $k$ heißt der öffentliche Schlüssel von Bob und wird von Bob allen zugänglich gemacht, etwa über seine Webseite oder als Anhang von E-Mails. Die zweite Komponente $\hat{k}$ heißt der private Schlüssel von Bob und ist nur ihm bekannt. Die Menge der Schlüsselpaare $(k,\hat{k})$, die zusammengehören, nennen wir die Schlüsselmenge $K$. 
+
+Definition 5.1: Ein Public-Key-Kryptosystem $(X,Y,K,E,D)$ hat 5 Komponenten:
+- Klartextmenge $X$ (endlich),
+- Chiffretextmenge $Y$ (endlich),
+- Schlüsselmenge $K$, wobei $K\supseteq K_{pub} \times K_{priv} für Mengen $K_{pub}$ und $K_{priv}$,
+- Verschlüsselungsfunktion $E:X\times K_{pub} \rightarrow Y$,
+- Entschlüsselungsfunktion $D:Y\times K_{priv} \rightarrow X$,
+- wobei die folgende Dechiffrierbedingung gilt: $D(E(x,k), \hat{k}) =x$, für alle $x\in X,(k,\hat{k})\in K$.
+
+Um ein solches System benutzen zu können, benötigt man noch ein Verfahren, um Schlüsselpaare $(k,\hat{k})$ zu erzeugen. Dieses Verfahren heißt $G$, ist randomisiert und wird von Bob angestoßen, dem auch das Ergebnis mitgeteilt wird. Dies ist notwendig, da die Ausgabe von $G$ den geheimen Schlüsselteil $\hat{k}$ enthält. Nach Erzeugung des Paars $(k,\hat{k})$ gibt Bob $k$ bekannt und speichert $\hat{k}$ geheim ab. Wenn Alice Bob eine Nachricht $x\in X$ schicken will, berechnet sie $y=E(x,k)$ und schickt $y$. Wenn Bob einen Chiffretext $y$ empfängt, berechnet er $z=D(y,\hat{k})$. Nach der Dechiffrierbedingung ist dies wieder $x$.
+
+Das RSA-System in seiner puren Form benutzt Klartext- und Chiffretextmenge $X=Y=[N]$, für eine feste Zahl $N$. Ab hier nehmen wir stets an, dass der Klartext $x$ selbst eine Zahl in $X = X_N= [N]$ ist. Dann ist $Y = Y_N= [N]$ die Menge der möglichen Chiffretexte.
+
+Das (randomisierte) Verfahren $G$ zur Erzeugung von Schlüsselpaaren $(k,\hat{k})$ aus $K_{pub} \times K_{priv}$ hat üblicherweise einen Parameter $l$, die Schlüssellänge. Den Wertebereich von $G$, also die Menge aller möglichen Schlüsselpaare $(k,\hat{k})$, wollen wir $K$ nennen. Dabei ist $k$ Bobs ,,öffentlicher Schlüssel'', der öffentlich zugänglich ist (zum Beispiel in einem allgemein zugänglichen ,,Schlüsselbuch'' oder auf Bobs Webseite) und $\hat{k}$ ist sein ,,privater Schlüssel'', den nur er kennt. Alice (und andere Teilnehmer, die Bob eine Nachricht schicken wollen) verwendet $k$ zur Verschlüsselung, Bob verwendet $\hat{k}$ zur Entschlüsselung.
+
+Es gibt einen (eventuell randomisierten) Verschlüsselungsalgorithmus $E$, der aus $x\in X$ und dem öffentlichen Schlüssel $k$ den Chiffretext $y\in Y$ berechnet, sowie einen (deterministischen) Entschlüsselungsalgorithmus $D$, der aus $y\in Y$ und dem privaten Schlüssel $\hat{k}$ den entschlüsselten Text $z\in X$ berechnet. Abstrakt haben wir zwei Funktionen $E: (x,k)\rightarrow y\in Y$, wobei $x\in X$ und $k$ erste Komponente eines Schlüsselpaars $(k,\hat{k})\in K$ mit zugeordneter Zahl $N$ ist, und $D:(y,\hat{k})\rightarrow z\in X$, wobei $y\in Y$ und $\hat{k}$ zweite Komponente eines Schlüsselpaars $(k,\hat{k})\in K$ mit zugeordneter Zahl $N$ ist.
+
+Typischerweise sind die Funktionen $E$ und $D$ allgemein bekannt; das einzige Geheimnis im Verfahren steckt im privaten Schlüssel $\hat{k}$.
+
+Korrektheit/Dechiffrierbedingung: Es gilt: $D(E(x,k), \hat{k}) =x$, für $x\in X$ und $(k,\hat{k})\in K$.
+
+Sicherheit: Es soll verhindert werden, dass Eva aus dem Chiffretext $y$ und dem öffentlichen Schlüssel $k$ ,,relevante Informationen''über den Klartext $x$ gewinnen kann. Hierbei wird üblicherweise angenommen, dass sie nur ,,begrenzten Rechenaufwand'' betreiben kann.
+
+### Schlüsselerzeugung
+Wir beschreiben den Erzeugungsprozess $G$. Dieser Vorgang wird von Bob selbst oder einer Sicherheitsagentur (,,trust center'') durchgefuhrt. Die Schlüssellänge ist festzulegen (etwa $l= 1024, 2048$ oder $4096$ Bits). Danach werden zwei (zufällige, verschiedene) Primzahlen $p$ und $q$ bestimmt, deren Bitlänge die Hälfte der Schlüssellänge ist.
+Hierzu kann man im Prinzip wie in Abschnitt 4.7 beschrieben vorgehen. Nun wird das Produkt $N=pq$ berechnet. Die Zahl $N$ hat $l$ oder $l-1$ Bits. Weiter wird $\varphi(N) = (p-1)(q-1)$ berechnet. Es wird eine Zahl $e\in\{3,...,\varphi(N)-1\}$ mit $ggT(e,\varphi(N)) = 1$ gewählt. (Überprüfung mittels des erweiterten Euklidischen Algorithmus (Algorithmus 4.2), Rechenzeit $O(l^3)$.) Dann wird das multiplikative Inverse $d<\varphi(N) modulo\ \varphi(N)$ von $e$ bestimmt, so dass also $ed\ mod\ \varphi(N) = 1$ gilt. (Man beachte, dass nur ungerade $e$ in Frage kommen, weil $\varphi(N)$ gerade ist. Man weiß, dass die Anzahl der geeigneten Werte $e$ mindestens $\frac{\varphi(N)}{log(\varphi(N))}$ ist, so dass die erwartete Anzahl von Versuchen $O(log(\varphi(N)))=O(logN)$ ist.)
+
+Bob erhält aus seiner Rechnung $N$, $e$ und $d$. Aus diesen wird das Schlüsselpaar $(k,\hat{k})$ gebildet:
+- Der öffentliche Schlüssel $k$ ist das Paar $(N,e)$. Dieser wird bekanntgegeben.
+- Der geheime Schlüssel $\hat{k}$ ist $(N,d)$. (Natürlich ist nur der Teil $d$ wirklich geheim.)
+
+Der erwartete Berechnungsaufwand für die Schlüsselerzeugung ist $O((log\ N)^4) =O(l^4)$, weil dies die Kosten der Primzahlerzeugung sind (siehe Abschnitt 4.7); die Kosten für das Finden von $e$ sind geringer.
+
+### Verschlüsselung
+- Gegeben: Klartext $x$. 
+- Benötigt: Öffentlicher Schlüssel $k= (N,e)$.
+
+Verschlüsselung von $x\in X= [N]: y=E(x,(N,e)) :=x^e\ mod\ N$. (Zu berechnen mit schneller Exponentiation, Rechenzeit $O((log\ N)^3) =O(l^3)$.)
+
+### Entschlüsselung
+- Gegeben: Chiffretext $y$. 
+- Benötigt: Privater Schlüssel $\hat{k}= (N,d)$.
+
+$z=D(y,(N,d)) :=y^d\ mod\ N$. (Zu berechnen mit schneller Exponentiation, Rechenzeit $O((log\ N)^3) =O(l^3)$.)
+
+Nach den Potenzrechenregeln, die auch für die modulare Arithmetik gelten, ist $z=(x^e\ mod\ N)^d\ mod\ N=x^{ed}\ mod\ N$. Die Korrektheit der Entschlüsselung beruht auf folgendem Satz.
+
+Satz 5.2: Korrektheit/Dechiffrierbedingung von RSA: Wenn $ed\ mod\ \varphi(N) = 1$ gilt, dann haben wir $x^{ed}\ mod\ N=x$, für alle $x\in [N]$.
+
+Beweis: Weil $x$ und $x^{ed}\ mod\ N$ beide in $[N]$ liegen, also der Betrag ihrer Differenz kleiner als $N$ ist, genügt es zu zeigen, dass $x^{ed} \equiv x(mod\ N)$ gilt, d.h. dass $N$ Teiler von $x^{ed}-x$ ist.
+Dies weisen wir im Folgenden nach. Betrachte die Primfaktoren $p$ und $q$ von $N$. Da $ed\equiv 1 (mod\ \varphi(N))$ und $\varphi(N) = (p-1)(q-1)$ gilt, haben wir $ed=k(p-1)(q-1) + 1$ für eine Zahl $k\in\mathbb{N}$, also $x^{ed}-x= (x^{k(p-1)(q-1)} -1)*x$.
+Behauptung: $p$ teilt $x^{ed}-x$. - Wenn $x$ durch $p$ teilbar ist, ist dies klar. Wir können also annehmen, dass $p$ kein Teiler von $x$ ist, dass also $x$ und $p$ teilerfremd sind. Nach dem kleinen Satz von Fermat (Fakt 4.27) gilt $x^{p-1}\ mod\ p= 1$, also auch $x^{k(p-1)(q-1)}\ mod\ p= (x^{(p-1)})^{k(q-1)}\ mod\ p= 1$.
+Dies bedeutet, dass $p$ ein Teiler von $x^{k(p-1)(q-1)}-1$ ist, also auch ein Teiler von $x^{ed}-x$.
+Die Behauptung gilt naturlich genauso für $q$: Auch $q$ ist ein Teiler von $x^{ed}-x$. Da $p$ und $q$ teilerfremd sind, folgt aus Fakt 4.8, dass $N=pq$ Teiler von $x^{ed}-x$ ist, wie gewünscht.
+
+Beispiel:
+- Schlüsselerzeugung: $N= 55 = 5*11$.
+- $\varphi(N) = 4*10 = 40$.
+- $e= 3, ggT(3,40) = 1, d=e^{-1}\ mod\ 40 = 27$, weil $3*27 = 81\equiv 1 (mod\ 40)$ gilt.
+- Also: $k= (55,3)$, $\hat{k}= (55,27)$.
+- Sei der Klartext $x=9$ gegeben.
+- Verschlüsselung: $y= 9^3\ mod\ 55 = 729\ mod\ 55 = 14$.
+- Entschlüsselung: Wir rechnen modulo 55: $y^{27}\equiv (14^2 * 14)^9 \equiv (31*14)^9 \equiv 434^9 \equiv ((-6)^3)^3 \equiv 4^3 \equiv 64 \equiv 9\ (mod\ 55)$.
+
+RSA, unsichere Version, insgesamt
+- Bob erzeugt einen Schlüsselsatz $(k, \hat{k}) = ((N,e),(N,d))$.
+- Er veröffentlicht $(N,e)$ und hält $d$ geheim.
+- Wenn Alice $(x_1,...,x_r)\in [N]^r$ an Bob schicken will, verschlüsselt sie $y_i:=x^e_i\ mod\ N, für $i=1,...,r$, und sendet $(y_1,...,y_r)$ an Bob. 
+- Dieser entschlüsselt $z_i:=y^d_i\ mod\ N$, für $i=1,...,r$, und erhält $(z_1,...,z_r) = (x_1,...,x_r)$.
+
+## Asymmetrische Kryptoschemen, Sicherheitsbegriff
+Wir betrachten die Situation asymmetrisch verschlüsselter Kommunikation allgemein, also für beliebig lange Klartexte, und formulieren ein Sicherheitskonzept. Der Einfachheit halber nehmen wir als Menge $Y$ der Chiffretexte die Menge aller Binärstrings an.
+
+Szenarium 4: Alice möchte Bob vertrauliche Nachrichten beliebiger Länge über einen abhörbaren Übertragungsweg zukommen lassen. Alice und Bob besitzen keinen gemeinsamen Schlüssel.
+
+### Asymmetrische Kryptoschemen
+Definition 5.3: Ein asymmetrisches Kryptoschema ist ein Tupel $S= (X,K,G,E,D)$, wobei
+- $X,K\supseteq K_{pub} \times K_{priv}$ Mengen,
+- $G():K_{pub} \times K_{priv}$ ein randomisierter Algorithmus,
+- $E(x:X,k:K_{pub}):\{0,1\}^*$ ein randomisierter Algorithmus und
+- $D(y:\{0,1\}^*,k:K_{priv}):\{0,1\}^*$ ein deterministischer Algorithmus sind, 
+- so dass gelten
+  - die (erwartete) Laufzeit von $$ ist beschränkt durch eine Konstante,
+  - die Laufzeiten von $$ und $D$ sind polynomiell beschränkt in der Länge von $x$ bzw. $y$,
+  - für jedes $x\in X,k\in K_{pub}$, jede Ausgabe $(k,\hat{k})$ von $$ und jedes $m\in\{0,1\}^{p(|x|)} (die Ausgänge der flip-Anweisungen in $E$, für ein Polynom $p(n)$) gilt: $D(E^m (x,k), \hat{k}) =x$.
+
+Begriffe
+- Die Elemente von X heißen ,,Klartexte'', die Menge der ,,Chiffretexte'' ist $\{0,1\}^*$.
+- Die Elemente von $K_{pub}$ heißen ,,Öffentliche Schlüssel'', die von $K_{priv}$ ,,private Schlüssel'', mit $K\supseteq K_{pub} \times K_{priv}$ bezeichnen wir die Menge der Schlüsselpaare, die $G$ möglicherweise ausgibt.
+- $G$ ist der ,,Schlüsselgenerierungsalgorithmus''. Er hat im Prinzip kein Argument, eventuell gibt es verschiedene Varianten, die von einem ,,Sicherheitsparameter'' $l$ abhängen.
+- $E$ ist der ,,Verschlüsselungs-'' und $D$ der ,,Entschlüsselungsalgorithmus''.
+
+Beispiel: Die Erweiterung des RSA-Schemas auf Strings beliebiger Länge durch Anwendung auf Blöcke der Länge $w\leq log\ N$, wie oben beschrieben, liefert ein Kryptoschema. Die Frage ist, wie gut dieses Kryptoschema ist.
+
+### Sicherheit von asymmetrischen Kryptoschemen
+Definition 5.4: Ein Angreifer $A$ auf ein asymmetrisches Kryptoschema $S= (X,K,G,E,D)$ ist ein Paar zufallsgesteuerter Algorithmen $AF(k:K_{pub}):(\{0,1\}\times\{0,1\})+\times V$, $AG(v:V,k:K_{pub}, y:\{0,1\}^*) :\{0,1\}$
+
+Die Idee ist wie folgt: Der Finder $AF$ bekommt einen öffentlichen Schlüssel $k$. Daraus berechnet er zwei verschiedene Klartexte $(z_0,z_1)$ gleicher Länge und ,,Notizen'' $v\in V$. Danach wird zufällig $z_0$ oder $z_1$ zu $y$ verschlüsselt. Im zweiten Schritt verwendet der Rater $AG$ die Zwischeninformation $v$, den öffentlichen Schlüssel $k$ und die ,,Probe'' $y$, um zu bestimmen, ob $z_0$ oder $z_1$ verschlüsselt wurde.
+
+Definition 5.5: Sei $S=(X,K,G,E,D)$ ein asymmetrisches Kryptoschema und $A=(AF,AG)$ ein Angreifer. Das zugehörige Experiment oder Spiel ist der folgende Algorithmus $G^S_A:\{0,1\}$:
+1. $(k,\hat{k})\leftarrow G()$ (ein Schlüsselpaar des Kryptoschemas $S$ wird gewählt)
+2. $(z_0,z_1,v)\leftarrow AF(k)$ (der Finder berechnet ein Paar von Klartexten gleicher Länge, von denen er annimmt, ihre Chiffretexte unterscheiden zu können)
+3. $b\leftarrow flip()$ und $y\leftarrow E(z_b,k)$ (einer der Klartexte wird zuyverschlüsselt)
+4. $b′\leftarrow AG(v,k,y)$ (der Rater versucht herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde)
+5. falls $b=b′$, so gib $1$ zurück, sonst $0$.
+- Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5. Schritt einfach $b′$ aus.
+
+Dann ist $Pr(G^S_A= 1)$ die Wahrscheinlichkeit dafür, dass der Angreifer $A$ den korrekten Klartext erkennt. Man kann jetzt wie in Abschnitt 2.4 (Sicherheit von $l$-Blockkryptosystemen) den Vorteil $adv(A,S) = 2 Pr(G^S_A = 1)- 1$, den ,,Erfolg'' $suc(A,S) = Pr(G^S_A〈b = 1〉 = 1)$ und den ,,Misserfolg'' $fail(A,S) =Pr(G^S_A〈b= 0〉= 1)$ definieren. Lemma 2.16 gilt dann wörtlich.
+
+Beispiel 5.6: Sei $S=(X,K,G,E,D)$ ein asymmetrisches Kryptoschema, in dem der Verschlüsselungsalgorithmus $E$ deterministisch ist. Wir betrachten den folgenden Angreifer $A$ mit $V=\{0,1\}^*$. Seien $z_0$ und $z_1$ verschiedene Elemente von $X$:
+- $AF(k:K_{pub}) : (\{0,1\}\times\{0,1\})^+\times V$ 
+  - $v\leftarrow E(z_0,k);return(z_0,z_1,v)$
+- $AG(v:V,k:K_{pub},y:\{0,1\}^*):\{0,1\}$ 
+  - if $v=y$ then return 0 else return 1.
+- Im Ablauf des Spiels $G^S_A$ wird der Rater $AG$ also mit $E(z_0,k)$ oder mit $E(z_1,k)$ gestartet. Wegen $E(z_0,k)\not=E(z_1,k)$ gilt $Pr(G^S_A=1)=1$, d.h. $adv(A,S)=1$.
+
+Dieses Beispiel lässt sich verallgemeinern:
+
+Lemma 5.7: Für jedes deterministische asymmetrische Kryptoschema $S$ gibt es einen Angreifer $A$ mit $adv(A,S) = 1$.
+
+Definition 5.8: Sei $t\in\mathbb{N}$, $A$ ein Angreifer auf ein asymmetrisches Kryptoschema $S$. Dann heißt $A$ $t$-beschränkt, wenn die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist.
+Sei $\epsilon >0$. Dann heißt $S(t,\epsilon)$-sicher, wenn für jeden $t$-beschränkten Angreifer $A$ gilt $adv(A,S)\leq \epsilon$.
+
+Nach obigem Lemma gibt es für jedes deterministische asymmetrische Kryptoschema $S$ eine kleine Konstante $t$, so dass $S$ für kein $\epsilon >0 (t,\epsilon)$-sicher ist. Da die Verschlüsselung von RSA deterministisch ist, ist dieses Verfahren nach Lemma 5.7 nicht sicher.
+
+Zur Übung entwerfe man einen Angreifer $A$ gegen das RSA-System für die Situation, wo die Klartexte $(x_1,x_2)$ nur aus zwei Blöcken in $[N]$ bestehen. Dabei soll $A$ das Spiel mit Wahrscheinlichkeit $1$ gewinnen und die Notizenmenge $V$ soll trivial sein, also $V=\{0\}$, so dass $A$ sich gar keine Notizen machen kann.
+
+Betrachten wir nun konkret das RSA-System mit nur einem Block, also $X=[N]$. Kann Eva aus Kenntnis von $y=x^e\ mod\ N$, $e$ und $N$ irgendeine konkrete Information über $x$ ermitteln?
+
+Definition 5.9:
+1. Das ,,Legendre-Symbol'' gibt an, ob $a\in\mathbb{Z}$ modulo einer Primzahl $p$ ein Quadrat ist. Für $p>2$ prim und $a\in\mathbb{Z}$ setze $L_p(a) =\begin{cases} 0 \quad\text{ falls } p|a \\ 1 \quad\text{ falls } p\not|a, \exists b:b^2 \equiv a (mod\ p) \\ -1 \quad\text{ falls } p\not|a, \lnot\exists b:b^2 \equiv a (mod\ p)\end{cases}$.
+2. Das ,,Jacobi-Symbol'' verallgemeinert dies auf Moduli $N$, die nicht notwendig Primzahlen sind. Für $N>2$ ungerade mit Primzahlzerlegung $N=\prod_{1\leq i\leq r} p^{alpha_i}_i$ und $a\in\mathbb{Z}$ setze $J_N(a) =\prod_{1 \leq i\leq r} L_{p_i}(a)^{\alpha_i}$
+
+Beobachtungen und Beispiele:
+- Weil $4^2\ mod\ 7 = 2$, gilt $L_7(2) = 1$. Weiter gilt $L_7(21) = 0$ und $L_7(5) =-1$, weil $1,2,4$ die einzigen Quadrate modulo $7$ sind.
+- $J_N(a) = 0$ genau dann, wenn $ggT(a,N)>1$.
+- Wenn $p\not|a$ und $p$ ist ein Primfaktor, der in $N$ mit geradem Exponenten vorkommt, dann ist der Beitrag von $p$ zu $J_N(a)$ der Faktor 1, spielt also keine Rolle.
+- Wenn $ggT(a,N) = 1$, dann ist $J_N(a) = (-1)^{#{i\leq r|\text{a ist Nichtquadrat modulo } p_i}$.
+
+Das Legendre-Symbol ist leicht mit schneller modularer Exponentiation zu berechnen.
+
+Fakt 5.10 Euler-Kriterium: $L_p(a) =a^{(p-1)/ 2}mod\ p$ für alle $a\in\mathbb{Z}$ und Primzahlen $p>2$. 
+
+Überraschenderweise lässt sich auch das Jacobi-Symbol $J_N(a)$ effizient berechnen, selbst wenn man die Primzahlzerlegung von $N$ nicht kennt.
+
+Fakt 5.11: Für $a\geq 1$ und ungerade $N\geq 3$ lässt sich $J_N(a)$ in Zeit $O((log\ N+log\ a)^3)$ berechnen (ohne $N$ zu faktorisieren!).
+
+(Man benutzt einen klassischen Satz aus der Zahlentheorie, nämlich das quadratische Reziprozitätsgesetz, das auf Gauß zurückgeht. Damit erhält man eine Berechnung, deren Rekursionsschema dem des Euklidischen Algorithmus ähnelt. Details: Buch von Küsters/Wilke.)
+
+Lemma 5.12: Seien $p,q >2 prim,N=pq,e\in\mathbb{Z}^*_{\varphi(N)}$. Dann gilt $J_N(x^e\ mod\ N) =J_N(x)$ für alle $x\in\mathbb{Z}$.
+
+Beweis: $L_p(x^e\ mod\ N)\equiv_p (x^e\ mod\ N)^{\frac{p-1}{2}} \equiv_p x^{e\frac{p-1}{2}} \equiv_p (x^{\frac{p-1}{2}}\ mod\ p)^e \equiv_p (L_p(x)^e =L_p(x)$
+denn $e$ ist ungerade und damit $L_p(x^e\ mod\ N) =L_p(x)$. Analog gilt $L_q(x^e\ mod\ N) =L_q(x)$.
+Also: $J_N(x^e\ mod\ N) =L_p(x^e\ mod\ N)*L_q(x^e\ mod\ N) =L_p(x)*L_q(x) =J_N(x)$.
+
+Das heißt: $J_N(E(x,(N,e))) =J_N(x)$. Der Chiffretext zu $x$ erbt eine nichttriviale Eigenschaft von $x$, nämlich den Wert des Jacobi-Symbols. Da sich das Jacobi-Symbol effizient berechnen lässt, erhält man sofort einen effizienten Angreifer. Wie? Der Finder berechnet zwei Klartexte $z_0$ und $z_1$ mit $J_N(z_0) = 1$ und $J_N(z_1) = -1$. Aus dem Jacobisymbol $J_N(y)$ der Probe kann er schließen, welcher der beiden Klartexte verschlüsselt wurde. Es folgt erneut: RSA ist nicht sicher im Sinn des Tests in Abschnitt 5.2.2.
+Man könnte versuchen, diesem ,,kleinen'' Problem zu entkommen, indem man nur Klartexte $x\in [N]$ mit $J_N(x) = 1$ zulässt. Allerdings wird dadurch die Menge der Bitstrings, die Klartexte sein dürfen, auf etwas unübersichtliche Weise eingeschränkt.

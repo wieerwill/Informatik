@@ -38,6 +38,10 @@
     - [Der Fermat-Test](#der-fermat-test)
     - [Carmichael-Zahlen](#carmichael-zahlen)
     - [Nichttriviale Quadratwurzeln der 1](#nichttriviale-quadratwurzeln-der-1)
+    - [Der Miller-Rabin-Test](#der-miller-rabin-test)
+    - [Fehlerschranke für den Miller-Rabin-Test](#fehlerschranke-für-den-miller-rabin-test)
+  - [Die Erzeugung von (zufälligen) Primzahlen](#die-erzeugung-von-zufälligen-primzahlen)
+  - [Beweise und Bemerkungen zu Kapitel 4](#beweise-und-bemerkungen-zu-kapitel-4)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -1579,7 +1583,7 @@ Im Buch werden auch die folgenden konkreten Parameter diskutiert: $l=128$. Nehme
 Man sieht, dass der additive Term $\frac{2^{66} +2^{72}}{2^{128}}$ kleiner als $2^{-55}$ ist, und die für den Unterscheider zugelassene Zeitschranke mit $2^{60} + 10(30* 2^{30}+2^{36})*128 < 2^{61}$ kaum größer ist als die für den Angreifer. Wenn man für $insec(2^{36}, 2^{61} ,B)$ eine Schranke $\geq 2^{-55}$ hätte, wäre $insec(2^{36}, 2^{30}, 2^{60},S)$ auch kleiner als $2^{-54}$. (Solche konkreten Schranken sind allerdings für kein konkretes Block-Kryptosystem bewiesen.)
 
 # Zahlentheorie und Algorithmen
-Zu Aussagen, die mit (∗) markiert sind, gibt es Beweise oder Anmerkungen im Anhang A. Beweise von rein zahlentheoretischen Aussagen sind nicht prufungsrelevant. Beweise für Wahrscheinlichkeitsaussagen und Begründungen für Rechenzeiten von Algorithmen dagegen sind prüfungsrelevant.
+Zu Aussagen, die mit (*) markiert sind, gibt es Beweise oder Anmerkungen im Anhang A. Beweise von rein zahlentheoretischen Aussagen sind nicht prufungsrelevant. Beweise für Wahrscheinlichkeitsaussagen und Begründungen für Rechenzeiten von Algorithmen dagegen sind prüfungsrelevant.
 
 ## Fakten aus der Zahlentheorie und grundlegende Algorithmen
 Unsere Zahlenbereiche:
@@ -1818,7 +1822,7 @@ Bemerkung: Man kann denselben Algorithmus in einem beliebigen Monoid $(M,\circ,e
 - $(\mathbb{N},+,0)$: die natürlichen Zahlen mit der Addition (neutral: $0$);
 - $(\mathbb{N},*,1)$: die natürlichen Zahlen mit der Multiplikation (neutral: $1$);
 - quadratische Matrizen über einem Ring mit $1$, mit Matrixmultiplikation (neutral: Einheitsmatrix);
-- die Menge $\sum^∗$ aller Wörter über einem Alphabet $\sum$, mit der Konkatenation (neutral: das leere Wort);
+- die Menge $\sum^*$ aller Wörter über einem Alphabet $\sum$, mit der Konkatenation (neutral: das leere Wort);
 - jede Gruppe $(G,\circ,e)$ (G ist die Grundmenge, $\circ$ die Operation und $e$ das neutrale Element.)
 
 Wenn man nur eine assoziative Operation und kein neutrales Element hat, funktioniert der Algorithmus für Exponenten $y\geq 1$.
@@ -1847,7 +1851,7 @@ Wir bemerken allgemein: Mit dem erweiterten Euklidischen Algorithmus 4.2 berechn
 
 Die Menge der invertierbaren Elemente von $\mathbb{Z}_m$ erhält eine eigene Bezeichnung.
 
-Definition 4.17: Für $m\geq 2$ sei $\mathbb{Z}^∗_m:=\{x\in\mathbb{Z}_m| ggT(x,m)=1\}$.
+Definition 4.17: Für $m\geq 2$ sei $\mathbb{Z}^*_m:=\{x\in\mathbb{Z}_m| ggT(x,m)=1\}$.
 
 (Wieder sind eigentlich die Restklassen $[x]_m, 0\leq x < m, ggT(x,m) = 1$, gemeint.)
 
@@ -1863,7 +1867,7 @@ Am schönsten ist die Situation, wenn alle Zahlen $1,...,m-1$ in $\mathbb{Z}^*_m
 
 Eine ganze Zahl $p\geq 1$ heißt Primzahl, wenn $p$ genau zwei positive Teiler hat, nämlich $1$ und $p$. Die Folge der Primzahlen beginnt mit $2, 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 ,....$
 
-Fakt 4.19 (∗): Für jedes $m\geq 2$ sind folgende Aussagen äquivalent:
+Fakt 4.19 (*): Für jedes $m\geq 2$ sind folgende Aussagen äquivalent:
 1. $m$ ist eine Primzahl.
 2. $\mathbb{Z}^*_m=\{ 1 ,...,m-1\}$.
 3. $\mathbb{Z}_m$ ist ein Körper.
@@ -1903,7 +1907,7 @@ x mod 8| 0| 1| 2| 3| 4| 5| 6| 7| 0| 1| 2| 3| 8| 4| 5| 6| 7| 0| 1| 2| 3| 4| 5| 6|
 Wenn wir die Einträge in Zeilen 2 und 3 als 24 Paare in $\mathbb{Z}_3 \times\mathbb{Z}_8$ ansehen, erkennen wir, dass sie alle verschieden sind, also auch alle Möglichkeiten in $\{0,1,2\}\times\{0,1,...,7\}$ abdecken. D.h.: Die Abbildung $x\rightarrow (x\ mod\ 3,x\ mod\ 8)$ ist eine Bijektion zwischen $\mathbb{Z}_{24}$ und $\mathbb{Z}_3\times\mathbb{Z}_8$. Zudem spiegeln sich arithmetische Operationen auf den Elementen von $\mathbb{Z}_{24}$ in den Resten modulo $3$ und $8$ wider. Beispielsweise liefert die Addition von $(2,7)$ und $(2,1)$ das Resultat $(1,0)$, das der Addition von $23$ und $17$ mit dem Resultat $40\ mod\ 24 = 16$ entspricht. Genauso ist $(2^5\ mod\ 3, 3^5\ mod\ 8)=(2,3)$, was der Beobachtung $11^5\ mod\ 24 = 11$ entspricht.
 Der Chinesische Restsatz sagt im wesentlichen, dass eine solche strukturelle Entsprechung zwischen den Resten modulo $mn$ und Paaren von Resten modulo $m$ bzw. $n$ immer gilt, wenn $m$ und $n$ teilerfremd sind.
 
-Fakt 4.21 Chinesischer Restsatz (∗): $m$ und $n$ seien teilerfremd. Dann ist die Abbildung $\Phi:\mathbb{Z}_{mn} \owns x \rightarrow (x\ mod\ m, x\ mod\ n)\in\mathbb{Z}_m\times\mathbb{Z}_n$ bijektiv. Weiterhin: Wenn $\Phi(x)=(x_1,x_2)$ und $\Phi(y)=(y_1,y_2)$, dann gilt:
+Fakt 4.21 Chinesischer Restsatz (*): $m$ und $n$ seien teilerfremd. Dann ist die Abbildung $\Phi:\mathbb{Z}_{mn} \owns x \rightarrow (x\ mod\ m, x\ mod\ n)\in\mathbb{Z}_m\times\mathbb{Z}_n$ bijektiv. Weiterhin: Wenn $\Phi(x)=(x_1,x_2)$ und $\Phi(y)=(y_1,y_2)$, dann gilt:
 1. $\Phi(x+_{mn} y) = (x_1 +_m y_1 , x_2 +_n y_2)$
 2. $\Phi(x*_{mn} y) = (x_1 *_m y_1 , x_2 *_n y_2)$
 3. $\Phi(1) = (1,1)$
@@ -1919,7 +1923,7 @@ Beispiel: $m=5,n=8,s=3,t=7$. Wir finden $u=2$ mit $u*8\ mod\ 5 = 1$ und $y= 2*8=
 
 Wir wollen noch untersuchen, wie sich Zahlen, die zu $m$ und $n$ teilerfremd sind, in der Sichtweise des Chinesischen Restsatzes verhalten.
 
-Proposition 4.22 (∗): Wenn man die Abbildung $\Phi$ aus dem Chinesischen Restsatz auf $\mathbb{Z}^*_{mn}$ einschränkt, ergibt sich eine Bijektion zwischen $\mathbb{Z}^*_{mn}$ und $\mathbb{Z}^*_m\times\mathbb{Z}^*_n$.
+Proposition 4.22 (*): Wenn man die Abbildung $\Phi$ aus dem Chinesischen Restsatz auf $\mathbb{Z}^*_{mn}$ einschränkt, ergibt sich eine Bijektion zwischen $\mathbb{Z}^*_{mn}$ und $\mathbb{Z}^*_m\times\mathbb{Z}^*_n$.
 
 Bemerkung: Der Chinesische Restsatz und die nachfolgenden Bemerkungen und Behauptungen lassen sich leicht auf $r>2$ paarweise teilerfremde Faktoren $n_1,...,n_r$
 verallgemeinern. Die Aussagen lassen sich durch vollständige Induktion über $r$ beweisen. Mit Prop. 4.22 können wir eine übersichtliche Formel für die Kardinalitäten der Mengen $\mathbb{Z}^*_m, m\geq 2$, entwickeln.
@@ -1940,7 +1944,7 @@ Lemma 4.24: Für teilerfremde Zahlen $n$ und $m$ gilt $\varphi(mn)=\varphi(m)*\v
 (Man teste $20=4*5$ und $12=3*4$.)
 Wir können den kleinen Satz von Fermat (Fakt 4.20) auf den Fall beliebiger $m$ verallgemeinern. Auch der Beweis ist sehr ähnlich.
 
-Fakt 4.25 (Satz von Euler)(∗): für $m\geq 2$ und $x$ mit $ggT(m,x) = 1$ gilt: $x\varphi(m)\ mod\ m=1$.
+Fakt 4.25 (Satz von Euler)(*): für $m\geq 2$ und $x$ mit $ggT(m,x) = 1$ gilt: $x\varphi(m)\ mod\ m=1$.
 
 Wenn $m$ viele verschiedene kleine Primfaktoren hat, kann $\varphi(m)$ auch deutlich kleiner sein als $m$, z.B. $\varphi(210) =\varphi(2*3*5*7)=1*2*4*6=48$. Es gilt aber: $\varphi(m) =m-1$, wenn $m$ eine Primzahl ist, und $\varphi(m)\geq \pi(m) =|\{p\leq m|\text{p ist Primzahl}\}|$, wenn $m$ zusammengesetzt ist.
 
@@ -1957,7 +1961,7 @@ Fakt 4.27: Wenn $p$ eine Primzahl ist und $p|xy$ gilt, dann gilt $p|x$ oder $p|y
 
 Beweis: Wenn $p|x$, sind wir fertig. Also können wir $p\not|x$ annehmen. Das heißt, dass $ggT(p,x) = 1$ ist. Nach dem Lemma von Bezout können wir $1 =sp+tx$ schreiben, für ganze Zahlen $s,t$. Daraus folgt: $y=spy+txy$. Nun ist $xy$ durch $p$ teilbar, also auch $y=spy+txy$. 
 
-Satz 4.28 (Fundamentalsatz der Arithmetik) (∗): Jede ganze Zahl $x\geq 1$ kann als Produkt von Primzahlen geschrieben werden. Die Faktoren sind eindeutig bestimmt (bis auf die Reihenfolge).
+Satz 4.28 (Fundamentalsatz der Arithmetik) (*): Jede ganze Zahl $x\geq 1$ kann als Produkt von Primzahlen geschrieben werden. Die Faktoren sind eindeutig bestimmt (bis auf die Reihenfolge).
 
 Mit Hilfe von Lemma 4.24 können wir nun eine Formel für $\varphi(m) =|\mathbb{Z}^*_m|$ angeben, die auf der Primzahlzerlegung beruht.
 
@@ -2062,7 +2066,7 @@ Für viele zusammengesetzte Zahlen $N$ gibt es reichlich F-Zeugen, so dass der F
 
 Satz 4.36: Sei $N\geq 9$ eine ungerade zusammengesetzte Zahl. Wenn es mindestens einen F-Zeugen $b\in\mathbb{Z}^*_N$ gibt, dann liefert der Fermat-Test auf Eingabe $N$ mit Wahrscheinlichkeit größer als $\frac{1}{2}$ die korrekte Antwort ,,1''.
 
-Beweis: Sei $b\in\mathbb{Z}^∗_N$ ein F-Zeuge. Betrachte die Funktiong $b:L^F_N\rightarrow\mathbb{Z}^*_N$, die den F-Lügner $a$ auf $g_b(a) =ba\ mod\ N$ abbildet. Wie im Beweis von Fakt 4.20 sieht man, dass $g_b$ injektiv ist. Weiter ist $g_b(a)$ für jedes $a\in L^F_N$ ein F-Zeuge: $(ba\ mod\ N)^{N-1}\ mod\ N= (b^{N-1}\ mod\ N)(a^{N-1}\ mod\ N) =b^{N-1}\ mod\ N\not= 1$.
+Beweis: Sei $b\in\mathbb{Z}^*_N$ ein F-Zeuge. Betrachte die Funktiong $b:L^F_N\rightarrow\mathbb{Z}^*_N$, die den F-Lügner $a$ auf $g_b(a) =ba\ mod\ N$ abbildet. Wie im Beweis von Fakt 4.20 sieht man, dass $g_b$ injektiv ist. Weiter ist $g_b(a)$ für jedes $a\in L^F_N$ ein F-Zeuge: $(ba\ mod\ N)^{N-1}\ mod\ N= (b^{N-1}\ mod\ N)(a^{N-1}\ mod\ N) =b^{N-1}\ mod\ N\not= 1$.
 Wir können also jedem F-Lügner $a$ einen eigenen F-Zeugen $g_b(a)$ in $\mathbb{Z}^*_N$ zuordnen. Daraus folgt, dass es in $\mathbb{Z}^*_N$ mindestens so viele F-Zeugen wie F-Lügner gibt. Mit Lemma 4.35 ergibt sich, dass $\{1,...,N-1\}$ mehr F-Zeugen als F-Lügner enthält. Daher ist die Wahrscheinlichkeit, dass die im Fermat-Test zufällig gewählte Zahl $a$ ein F-Lügner ist, kleiner als $\frac{1}{2}$. 
 Eine Fehlerwahrscheinlichkeit in der Nähe von $\frac{1}{2}$ ist natürlich viel zu groß. Wir verringern die Fehlerschranke durch wiederholte Ausführung des Fermat-Tests.
 
@@ -2074,12 +2078,12 @@ Algorithmus 4.5: Iterierter Fermat-Test
      2. if $a^{N-1}\ mod\ N\not= 1$ then return $1$
   2. return 0
 
-Wenn die Ausgabe $1$ ist, hat der Algorithmus einen F-Zeugen für $N$ gefunden, also ist $N$ zusammengesetzt. D.h.: Wenn $N$ eine Primzahl ist, ist die Ausgabe $0$. Andererseits: Wenn $N$ zusammengesetzt ist, und es mindestens einen F-Zeugen $b\in\mathbb{Z}^∗_N$ gibt, dann ist nach Satz 4.36 die Wahrscheinlichkeit für die falsche Ausgabe ,,0'' höchstens $(\frac{1}{2})^l= 2^{-l}$. Indem wir $l$ genügend groß wählen, können wir die Fehlerwahrscheinlichkeit so klein wie gewünscht einstellen.
+Wenn die Ausgabe $1$ ist, hat der Algorithmus einen F-Zeugen für $N$ gefunden, also ist $N$ zusammengesetzt. D.h.: Wenn $N$ eine Primzahl ist, ist die Ausgabe $0$. Andererseits: Wenn $N$ zusammengesetzt ist, und es mindestens einen F-Zeugen $b\in\mathbb{Z}^*_N$ gibt, dann ist nach Satz 4.36 die Wahrscheinlichkeit für die falsche Ausgabe ,,0'' höchstens $(\frac{1}{2})^l= 2^{-l}$. Indem wir $l$ genügend groß wählen, können wir die Fehlerwahrscheinlichkeit so klein wie gewünscht einstellen.
 
 Wenn es darum geht, aus einem genügend großen Bereich zufällig gewählte Zahlen darauf zu testen, ob es sich um eine Primzahl handelt, dann ist der Fermat-Test (in Kombination mit dem Testen auf kleine Teiler, etwa alle Primzahlen unter 1000) allem Anschein nach eine sehr effiziente und zuverlässige Methode. Dies wird durch empirische Resultate nahegelegt. Wenn man allerdingsüber die Herkunft der zu testenden Zahl $N$ keine Information hat und eventuell damit rechnen muss, dass jemand (ein ,,Gegenspieler'') absichtlich eine besonders schwierige Eingabe vorlegt, dann stößt der Fermat-Test an eine Grenze. Es gibt nämlich ,,widerspenstige'' zusammengesetzte Zahlen, denen man mit diesem Test nicht beikommen kann, weil alle Elemente von $\mathbb{Z}^*_N$ F-Lügner sind. Mit diesen befasst sich der folgende Abschnitt.
 
 ### Carmichael-Zahlen
-Definition 4.37: Eine ungerade zusammengesetzte Zahl $N$ heißt eine Carmichael-Zahl, wenn für alle $a\in\mathbb{Z}$^∗_N$ die Gleichung $a^{N-1}\ mod\ N= 1$ gilt.
+Definition 4.37: Eine ungerade zusammengesetzte Zahl $N$ heißt eine Carmichael-Zahl, wenn für alle $a\in\mathbb{Z}$^*_N$ die Gleichung $a^{N-1}\ mod\ N= 1$ gilt.
 
 Die kleinste Carmichael-Zahl ist $561 = 3* 11 *17$. Weitere kleine Carmichael-Zahlen sind $1105 = 5* 13 *17$ und $1729 = 7* 13 *19$. Erst im Jahr 1994 wurde bewiesen, dass es unendlich viele Carmichael-Zahlen gibt, genauer: Wenn $x$ genügend groß ist, dann gibt es in $\{N\in\mathbb{N}| N\leq x\}$ mehr als $x^{2/7}$ Carmichael-Zahlen. Die aktuell beste bekannte untere Schranke ist $x^{1/3}$. Von Erdös (1956) stammt die obere Schranke $x*exp(\frac{-c\ ln\ x\ ln\ ln\ ln\ x}{ln\ ln\ x})$, für eine Konstante $c>0$, die zeigt, dass Carmichael-Zahlen viel seltener als Primzahlen sind.
 
@@ -2091,7 +2095,7 @@ Für einen zuverlässigen, effizienten Primzahltest, der für alle Eingabezahlen
 
 Lemma 4.38: Wenn $N$ eine Carmichael-Zahl ist, dann ist $N$ keine Primzahlpotenz.
 
-Beweis: Wir beweisen die Kontraposition: Wenn $N=p^l$ für eine ungerade Primzahl $p$ und einen Exponenten $l\geq 2$ ist, dann ist $N$ keine Carmichael-Zahl. Dazu genügt es, eine Zahl $a\in\mathbb{Z}^*_N$ anzugeben, so dass $a^{N-1}\ mod\ N\not= 1$ ist. Wir definieren: $a:=p^{l-1} + 1$. (Wenn z.B. $p=7$ und $l=3$ ist, ist $N=343$ und $a=49+1=50$.) Man sieht sofort, dass $a<p^l=N$ ist, und dass $a$ nicht von $p$ geteilt wird, also $a$ und $N$ teilerfremd sind; also ist $a\in\mathbb{Z}^∗_N$. Nun rechnen wir modulo $N$, mit der binomischen Formel: $a^{N-1} \equiv (p^{l-1} + 1)^{N-1} \equiv \sum_{0 \leq j\leq N-1} \binom{N-1}{j} (p^{l-1})^j \equiv 1 + (p^l-1)*p^{l-1} (mod\ N)$. (4.3)
+Beweis: Wir beweisen die Kontraposition: Wenn $N=p^l$ für eine ungerade Primzahl $p$ und einen Exponenten $l\geq 2$ ist, dann ist $N$ keine Carmichael-Zahl. Dazu genügt es, eine Zahl $a\in\mathbb{Z}^*_N$ anzugeben, so dass $a^{N-1}\ mod\ N\not= 1$ ist. Wir definieren: $a:=p^{l-1} + 1$. (Wenn z.B. $p=7$ und $l=3$ ist, ist $N=343$ und $a=49+1=50$.) Man sieht sofort, dass $a<p^l=N$ ist, und dass $a$ nicht von $p$ geteilt wird, also $a$ und $N$ teilerfremd sind; also ist $a\in\mathbb{Z}^*_N$. Nun rechnen wir modulo $N$, mit der binomischen Formel: $a^{N-1} \equiv (p^{l-1} + 1)^{N-1} \equiv \sum_{0 \leq j\leq N-1} \binom{N-1}{j} (p^{l-1})^j \equiv 1 + (p^l-1)*p^{l-1} (mod\ N)$. (4.3)
 
 (Die letzte Äquivalenz ergibt sich daraus, dass für $j\geq 2$ gilt, dass $(l-1)j\geq l$ ist, also der Faktor $(p^{l-1})j=p^{(l-1)j}$ durch $N=p^l$ teilbar ist, also modulo $N$ wegfällt.) Nun ist $p^{l-1}$ nicht durch $p$ teilbar, also ist $(p^l-1)*p^{l-1}$ nicht durch $N=p^l$ teilbar. Damit folgt aus (4.3), dass $a^{N-1}\not\equiv 1 (mod\ N)$ ist, also $a^{N-1}\ mod\ N\not= 1$. 
 Folgerung: Jede Carmichael-Zahl $N$ lässt sich als $N=N_1 *N_2$ schreiben, wo $N_1$ und $N_2$ teilerfremde ungerade Zahlen $\geq 3$ sind.
@@ -2109,3 +2113,210 @@ Die im Lemma angegebene Eigenschaft lässt sich also in ein weiteres Zertifikat 
   Wenn es eine nichttriviale Quadratwurzel der $1$ modulo $N$ gibt, dann ist $N$ zusammengesetzt.
 
 Die vier Zahlen $1, 27, 64$ und $90$ sind genau die Quadratwurzeln der $1$ modulo $91$; davon sind $27$ und $64 = 91-27$ nichttrivial. Beachte, dass $1\equiv 63\ (mod\ 7)$ und $27\equiv 90 \equiv -1(mod\ 7)$, und dass $1\equiv 27 (mod\ 13)$ und $64\equiv 90 \equiv -1 (mod\ 13)$. Allgemeiner sieht man mit der Verallgemeinerung von Fakt 4.21 (Chinesischer Restsatz) auf $r$ Faktoren leicht ein, dass es für ein Produkt $N=p_1...p_r$ aus verschiedenen ungeraden Primzahlen $p_1,...,p_r$ genau $2^r$ Quadratwurzeln der $1$ modulo $N$ gibt, nämlich die Zahlen $b,0\leq b < N$, die $b\ mod\ p_j\in\{1 ,p_j-1\}, 1\leq j\leq r$, erfüllen. Wenn $N$ nicht sehr viele verschiedene Primfaktoren hat, ist es also aussichtslos, einfach zufällig gewählte $b$’s darauf zu testen, ob sie vielleicht nichttriviale Quadratwurzeln der $1$ sind. Dennoch wird uns dieser Begriff bei der Formulierung eines effizienten Primzahltests helfen.
+
+### Der Miller-Rabin-Test
+Wir kehren nochmals zum Fermat-Test zurück und sehen uns die dort durchgeführte Exponentiation $a^{N-1}\ mod\N$ etwas genauer an. Die Zahl $N-1$ ist gerade, daher kann man sie als $N-1=u*2^k$ schreiben, für eine ungerade Zahl $u$ und ein $k\geq 1$. Dann gilt $a^{N-1} \equiv (a^u\ mod\ N)^{2^k}\ mod\ N$, und wir können $a^{N-1}\ mod\ N$ mit $k+1$ Zwischenschritten berechnen: Mit
+  $b_0 =a^u\ mod\ N$
+  $b_1 =b^2_0\ mod\ N=a^{u*2}\ mod\ N$,
+  $b_2 =b^2_1\ mod\ N=a^{u*2^2}\ mod\ N$,
+  ...
+  $b_i=b^2_{i-1}\ mod\ N=a^{u*2^i}\ mod\ N$,
+  ...
+  $b_k=b^2_{k-1}\ mod\ N=a^{u*2^k}\ mod\ N$
+ist $b_k=a^{N-1}\ mod\ N$. Beispielsweise erhalten wir für $N=325 = 5^2 *13$ den Wert $N-1 = 324 = 81* 22$. In Tabelle 4 berechnen wir $a^{81} ,a^{162}$ und $a^{324}$, alle modulo $325$, für verschiedene a.
+
+Tabelle 4: Potenzen $a^{N-1}\ mod\ N$ mit Zwischenschritten, $N=325$. (Die ,,Fälle'' werden weiter unten erklärt.
+|a| $b_0 =a^{81}$ | $b_1=a^{162}$| $b_2=a^{324}$ | F-Z.? | MR-Z.? | Fall
+---|---|---|---|---|---|---
+126| 1| 1| 1||| 1
+49| 324| 1| 1||| 2a
+7| 307| 324| 1||| 2b
+2| 252| 129| 66| $\times$ | $\times$| 3
+15 |200 |25 |300| $\times$| $\times$| 3
+224| 274| 1| 1|| $\times$ |4a
+201| 226| 51| 1|| $\times$| 4b
+
+Die Grundidee des Miller-Rabin-Tests ist nun, diese verlangsamte Berechnung der Potenz $a^{N-1}\ mod\ N$ auszuführen und dabei nach nichttrivialen Quadratwurzeln der $1$ Ausschau zu halten.
+
+Im Beispiel sehen wir, dass $2$ ein F-Zeuge für $325$ ist, der in $\mathbb{Z}^*_{325}$ liegt, und dass $15$ ein F-Zeuge ist, der nicht in $\mathbb{Z}^*_{325}$ liegt. Dagegen sind $126$, $49$, $7$, $224$ und $201$ F-Lügner für $325$. Wenn wir aber $224^{324}\ mod\ 325$ mit zwei Zwischenschritten berechnen, dann entdecken wir, dass $274$ eine nichttriviale Quadratwurzel der $1$ ist, was beweist, dass $325$ keine Primzahl ist. Ähnlich liefert die Berechnung mit Basis $201$, dass $51$ eine nichttriviale Quadratwurzel der $1$ ist. Die entsprechenden Berechnungen mit $49$ und $7$ dagegen liefern keine weiteren Informationen, weil $49^{81} \equiv -1 (mod\ 325)$ und $7^{162} \equiv 32^{162} \equiv -1 (mod\ 325)$ gilt. Auch die Berechnung der Potenzen von $126$ liefert keine nichttriviale Quadratwurzel der $1$, weil $126^{81}\ mod\ 325 = 1$ gilt.
+
+Wie kann die Folge $b_0,...,b_k$ überhaupt aussehen? Wenn $b_i=1$ oder $b_i=N-1$ gilt, dann sind $b_{i+1},...,b_k$ alle gleich $1$. Daher beginnt die Folge $b_0,...,b_k$ mit einer (eventuell leeren) Folge von Elementen $\not\in\{1,N-1\}$ und endet mit einer (eventuell leeren) Folge von Einsen. Diese beiden Teile können von einem Eintrag $N-1$ getrennt sein oder nicht.
+
+Die möglichen Muster sind in Tabelle 5 angegeben. Dabei steht ,,*'' für ein Element $\not\in\{1,N-1\}$. Wir unterscheiden vier Fälle (mit Unterfällen).
+- Fall 1: $b_0 = 1$. - Dann ist $b_1 =...=b_k= 1$.
+- Fall 2: Die Folge endet mit $b_k= 1$, und vor der ersten $1$ in der Folge steht eine $N-1$. 
+  - Fall 2a: $b_0 =N-1$
+  - Fall 2b: $b_i=N-1$ für ein $i\in\{1,...,k-1\}$
+- Fall 3: Die Folge endet mit $b_k\not= 1$. - Dann ist $N$ zusammengesetzt, weil $a$ ein F-Zeuge für $N$ ist. In $b_0,...,b_{k-1}$ können $1$ und $N-1$ nicht vorkommen.
+- Fall 4: Die Folge endet mit $b_k=1$, aber $b_0\not= 1$ und in $b_0,...,b_{k-1}$ kommt $N-1$ nicht vor. - Dann gibt es ein $i\in\{1,...,k\}$ mit $b_{i-1}\not\in\{1,N-1\}$ und $b_i=1$. Das heißt, dass $b_{i-1}$ eine nichttriviale Quadratwurzel der $1$ ist. Also ist $N$ zusammengesetzt.
+  - Fall 4a: $i<k$
+  - Fall 4b: $i=k$
+
+In Tabelle 4 findet man konkrete Beispiele für das Eintreten aller Fälle für die zusammengesetzte Zahl $N=325$.
+
+Tabelle 5: Potenzen $a^{N-1}\ mod\ N$ berechnet mit Zwischenschritten, mögliche Fälle.
+|$b_0$| $b_1$ | ...| | | | ... | $b_{k-1}$ | $b_k$ | Fall | F-Z.?  | MR-Z.?
+---|---|---|---|---|---|---|---|---|---|---|---
+1| 1| ...| 1| 1| 1| ... |1 |1 |1
+N-1| 1| ...| 1| 1| 1| ...| 1| 1| 2a
+*| *| ...| * |N-1| 1| ...| 1| 1| 2b
+* |*| ...| *| *| *| ... |*| $\not= 1$| 3 |$\times$| $\times$
+* |* |...| * |1| 1| ... |1| 1| 4a ||$\times$
+*| *| ...| * |*| *| ... |*| 1| 4b|| $\times$
+
+Wir beobachten: Wenn $N$ eine Primzahl ist, dann gilt nach dem kleinen Satz von Fermat für jedes $a$ die Gleichung $b_k=a^{N-1}\ mod\ N=1$. Weiter kann es nach Lemma 4.39 nicht passieren, dass $b_{i-1}\not=N-1$ und $b_i=1$ ist. Also können für eine Primzahl $N$ nur Fälle $1$ und $2$ vorkommen. Umgekehrt findet man im Beispiel $N=17$, dass $a=1$ zu Fall $1$, $a=16$ zu Fall 2a, und $a=2$ bzw. $a=3$ zu Fall 2b mit $b_2=16$ bzw. $b_3=16$ führt. Um bei Primzahlen keine falschen Ergebnisse zu erzeugen, müssen wir also in den Fällen 1 und 2 den Wert 0 ausgeben. In den Fällen 3 und 4 hingegen stellt die Zahl $a$ (mit ihren Potenzen $b_0,...,b_k$) einen Beleg dafür dar, dass $N$ keine Primzahl ist: Im Fall 3 ist $a$ ein F-Zeuge, im Fall 4 ist $b_{i-1}$ eine nichttriviale Quadratwurzel der $1$, und das kann nur passieren, wenn $N$ zusammengesetzt ist. Hier können wir also 1 ausgeben.
+
+Das ist auch schon der ganze Algorithmus von Miller und Rabin, abstrakt formuliert: Wähle $a$ aus $\{1,...,N-1\}$ zufällig. Finde heraus, ob Fall 1 oder 2 eintritt (dann ist die Ausgabe 0) oder Fall 3 oder 4 eintritt (dann ist die Ausgabe 1).
+
+Betrachten von Tabelle 5 zeigt sofort, dass Fall 1 oder 2 genau dann eintritt, wenn Folgendes gilt: $b_0=1$ oder in der Folge $b_0,...,b_{k-1}$ zu $a$ kommt $N-1$ vor. (4.4) (Das letzte Folgenglied $b_k$ spielt keine Rolle für die Unterscheidung.) Dies führt zu folgender Definition in Analogie zu der der F-Zeugen und F-Lügner.
+
+Definition 4.40: Sei $N\geq 3$ ungerade und zusammengesetzt. Wir schreiben $N-1=u*2^k$, für $u$ ungerade, $k\geq 1$. Eine Zahl $a, 1\leq a < N$, heißt ein MR-Zeuge für $N$, wenn (4.4) nicht gilt, d. h. $a^u\not\equiv 1$ und $a^{u*2^i}\not\equiv N-1 (mod\ N)$ für alle $i$ mit $0\leq i < k$ (Fälle 3 und 4). Eine Zahl $a, 1\leq a < N$, heißt ein MR-Lügner für N, wenn (4.4) gilt, $a^u\equiv 1$ oder $a^{u*2^i}\equiv N-1 (mod\ N)$ für ein $i$ mit $0\leq i < k$ (Fälle 1 und 2). Die Menge der MR-Lügner nennen wir $L^{MR}_N$.
+
+Aus der obigen Diskussion der möglichen Fälle folgt sofort:
+
+Lemma 4.41: Sei $N\geq 3$ ungerade.
+1. $a$ ist F-Zeuge für $N \Rightarrow a$ ist MR-Zeuge für $N$ (Fall 3).
+2. Wenn $N$ eine Primzahl ist, dann gilt (4.4) für alle $a<N$.
+
+Im Jahr 1976 stellte Gary M. Miller einen deterministischen Algorithmus vor, der auf der Idee beruhte, die Folge $b_0,...,b_k$ zu betrachten. Er testete die kleinsten $O((log\ N)^2)$ Elemente $a\in\{2,3,...,N-1\}$ auf die Eigenschaft, MR-Zeugen zu sein. Der Algorithmus hat polynomielle Laufzeit und liefert das korrekte Ergebnis, wenn die ,,erweiterte Riemannsche Vermutung (ERH)'' stimmt, eine berühmte Vermutung aus der Zahlentheorie, die bis heute unbewiesen ist. Um 1980 schlugen Michael Rabin und (unabhängig) Louis Monier vor, Millers Algorithmus so zu modifizieren, dass die zu testende Zahl $a$ zufällig gewählt wird, und bewiesen, dass dieser Algorithmus konstante Fehlerwahrscheinlichkeit hat. Der Algorithmus heißt heute allgemein der Miller-Rabin-Test.
+
+Der Test selbst ist leicht und sehr effizient durchführbar: Man wählt $a$ zufällig und berechnet zunächst $b_0=a^u\ mod\ N$ und testet, ob $b_0\in\{1,N-1\}$ ist. Falls ja, trifft Fall 1 bzw. Fall 2a zu, die Ausgabe ist $0$. Falls nein, berechnet man durch iteriertes Quadrieren nacheinander die Werte $b_1,b_2,...,$ bis
+- entweder der Wert $N-1$ auftaucht (Fall 2b, Ausgabe 0)
+- oder der Wert $1$ auftaucht (Fall 4a, $a$ ist MR-Zeuge, Ausgabe 1)
+- oder $b_1,...,b_{k-1}$ berechnet worden sind, ohne dass Werte $N-1$ oder $1$ vorgekommen sind (Fall 3, $a$ ist F-Zeuge, oder 4b, $a$ ist MR-Zeuge, Ausgabe 1).
+
+In Pseudocode sieht das Verfahren dann folgendermaßen aus. Im Unterschied zur bisherigen Beschreibung wird nur eine Variable $b$ benutzt, die nacheinander die Werte $b_0,b_1,...$ aufnimmt.
+
+Algorithmus 4.6 Der Miller-Rabin-Primzahltest
+- Eingabe: Eine ungerade Zahl $N\geq 3$
+- Methode:
+  - Bestimme $$ ungerade und $k\geq 1$ mit $N-1 =u*2^k$
+  - wähle zufällig ein $a$ aus $\{1 ,...,N-1\}$
+  - $b \leftarrow a^u\ mod\ N$ // mit schnellem Potenzieren
+  - if $b\in\{1,N-1\}$ then return $0$; // Fall 1 oder 2a
+  - for $j$ from $1$ to $k-1$ do //,,wiederhole (k-1)-mal''
+    - $b\leftarrow b^2\ mod\ N$
+    - if $b=N-1$ then return $0$ // Fall 2b
+    - if $b=1$ then return $1$ // Fall 4a
+  - return $1$ // Fall 3 oder 4b
+
+Wie steht es mit der Rechenzeit des Algorithmus? Man benötigt höchstens $log\ N$ Divisionen durch 2, um $u$ und $k$ zu finden (Zeile 1). Wenn man benutzt, dass $N$ normalerweise in Binärdarstellung gegeben sein wird, ist die Sache noch einfacher: $k$ ist die Zahl der Nullen, mit der die Binärdarstellung von $N-1$ aufhört, $u$ ist die Zahl, die aus der Binärdarstellung von $N$ durch Weglassen dieser letzten Nullen entsteht. Die Berechnung von $a^u\ mod\ N$ mit schneller Exponentiation in Zeile 3 benötigt $O(log\ N)$ arithmetische Operationen und $O((log\ N)^3)$ Ziffernoperationen (mit der Schulmethode für Multiplikation und Division). Die Schleife in Zeilen 5-8 wird höchstens $(k-1)$-mal durchlaufen; offenbar ist $k\leq log\ N$. In jedem Durchlauf ist die Multiplikation modulo N die teuerste Operation. Insgesamt benutzt der Algorithmus $O(log\ N)$ arithmetische Operationen auf Zahlen, die kleiner als $N^2$ sind, und $O((log\ N)^3)$ Ziffernoperationen. Wenn man die Rechenzeit mit der des Fermat-Tests vergleicht, stellt man fest, dass die Rechenwege etwas unterschiedlich sind, aber dieselbe Anzahl von Multiplikationen modulo N anfallen. Nur werden beim Miller-Rabin-Test ,,unterwegs'' noch einige Zwischenergebnisse darauf getestet, ob sie gleich $1$ oder gleich $N-1$ sind. Dies verursacht aber kaum Mehraufwand.
+Nun wenden wir uns dem Ein-/Ausgabeverhalten des Miller-Rabin-Tests zu.
+
+Lemma 4.42: Wenn $N$ eine Primzahl ist, gibt der MR-Test $0$ aus.
+
+Beweis: Wir haben oben schon festgestellt, dass Ausgabe 1 genau dann erfolgt, wenn die zufällig gewählte Zahl $a$ ein MR-Zeuge ist. Nach Lemma 4.41(b) gibt es nur dann
+MR-Zeugen, wenn $N$ zusammengesetzt ist. 
+
+### Fehlerschranke für den Miller-Rabin-Test
+Wir müssen nun noch die Fehlerwahrscheinlichkeit des Miller-Rabin-Tests für den Fall analysieren, dassN eine zusammengesetzte (ungerade) Zahl ist. Dies wird also für diesen Abschnitt angenommen.
+
+Wir beweisen, dass die Wahrscheinlichkeit, dass der Miller-Rabin-Test die (unerwünschte) Antwort $0$ gibt, kleiner als $\frac{1}{2}$ ist. Dazu wollen wir ähnlich vorgehen wie bei der Analyse des Fermat-Tests für Nicht-Carmichael-Zahlen (Beweis von Satz 4.36). Dort haben wir gezeigt, dass die F-Lügner für solche $N$ höchstens die Hälfte von $\mathbb{Z}^*_N$ ausmachen.
+
+Wenn $N$ keine Carmichael-Zahl ist, ist dies leicht: Nach Lemma 4.41(a) gilt $L^{MR}_N \supseteq L^F_N$, und wir können den Beweis von Satz 4.36 verwenden.
+
+Der folgende Beweis ist nicht prüfungsrelevant.
+
+Es bleibt der Fall, dass $N$ eine Carmichael-Zahl ist. Unser Plan ist, eine Menge $B_N$ mit $L^{MR}_N \supseteq B_N \supseteq \mathbb{Z}^*_N$ zu definieren, die höchstens die Hälfte der Elemente von $\mathbb{Z}^*_N$ enthält. Weil $u$ ungerade ist, gilt $(N-1)^{u*2^0} \equiv (N-1)^u\equiv (-1)^u= -1 \equiv N-1 (mod\ N)$. Sei $i_0$ das größte $i\in\{0,1,...,k\}$ mit der Eigenschaft, dass es einen MR-Lügner $a_#$ mit $a_#^{u*2^i} mod\ N =N-1$ gibt. (Wir werden dieses $a_#$ weiter unten nochmals benutzen.) Weil $N$ eine Carmichael-Zahl ist, gilt $a^{u*2^k} mod\ N=a^{N-1} mod\ N= 1$ für alle $a\in\mathbb{Z}^*_N$, und daher $0\leq i_0 < k$. Wir definieren: $B_N:=\{a\in\mathbb{Z}^*_N | a^{u*2^{i_0}} mod\ N\in\{1,N-1\}\}$. (4.5)
+Zur Veranschaulichung betrachte man Tabelle 6. In der dort angegebenen Matrix entspricht jede Zeile einem der $\varphi(N)$ Elemente von $\mathbb{Z}^*_N$, beginnend mit $a_1 = 1$ und $a_2=-1 \equiv N-1$. In der Zeile für $a$ ist die von $a$ erzeugte Folge $b_0,...,b_k$ eingetragen. Dass $N$ eine Carmichael-Zahl ist, drückt sich dadurch aus, dass alle Einträge in der $b_k$-Spalte gleich 1 sind. Der Eintrag für $a_2=-1$ in der $b_0$-Spalte ist $N-1$. Spalte $i_0$ ist die am weitesten rechts stehende Spalte, in der es einen Eintrag $-1 \equiv N-1$ gibt, und $a_#$ ist ein Element von $\mathbb{Z}^*_N$, das zu diesem Eintrag führt. Die Menge $B_N$ besteht aus den Elementen von $\mathbb{Z}^*_N$, die in Spalte $i_0$ Eintrag $1$ oder $N-1$ haben. 
+
+Tabelle 6: Sicht auf $B_N$ als Teilmenge von $\mathbb{Z}^*_N$
+| $a$              | $b_0$ | $b_1$       | ...  |                   | $b_{i_0}$       |                   | ... | $b_{k-1}$       | $b_k$ |
+| ---------------- | ----- | ----------- | ---- | ----------------- | --------------- | ----------------- | --- | --------------- | ----- |
+| $a_1=1$          | 1     | 1           | ...  | 1                 | 1               | 1                 | ... | 1               | 1     |
+| $a_2=N-1$        | $N-1$ |              1    | ...               | 1               | 1                 | 1   | ...             | 1     | 1|
+| $a_3$            | *     | *           | ...  | *                 | $N-1$           | 1                 | ... | 1               | 1     |
+| $a_4$            | *     | *           | ...  | $N-1$             | 1               | 1                 | ... | 1               | 1     |
+|                  |       |             |      |                   |                 |                   |     | 1               | 1     | 
+| $a$              | $a^u$ | $a^{u*2^1}$ | ...  | $a^{u*2^{i_0-1}}$ | $a^{u*2^{i_0}}$ | $a^{u*2^{i_0+1}}$ | ... | $a^{u*2^{k-1}}$ | 1     |
+|                  |       |             |      |                   |                 |                   |     |                 ||
+| $a_#$            | *     | *           | ...  | *                 | $N-1$           | 1                 | ... | 1               | 1     |
+|                  |       |             |      |                   |                 |                   |     |                 ||
+| $a_?$            | $*?$  | ...         | $*?$ | $*?$              | ...             | ...               | ... | 1               ||
+|                  |       |             |      |                   |                 |                   |     |                 ||
+| $a_{\varphi(N)}$ | ?     | ?           | ...  | ?                 | ?               | ?                 | ... | ?               | 1     |
+
+
+Wir werden zeigen, dass diese Menge $B_N$ die gewünschten Eigenschaften hat.
+
+Lemma 4.43:
+1. $L^{MR}_N \supseteq B_N$
+2. $B_N \not\subseteq \mathbb{Z}^*_N$
+3. $|B_N|\leq \frac{1}{2} | \mathbb{Z}^*_N|$, also $Pr_{a\in\{1,...,N-1\}$ ($a$ ist MR-Lügner) $<\frac{1}{2}$
+
+Beweis: Teil 1. ist nur die Überprüfung, dass die Definition technisch sinnvoll ist. Der eigentlich interessante Teil ist 2.; Teil 3. ist dann Routine.
+1. Sei $a$ ein beliebiger MR-Lügner.
+  - Fall 1: $a^u\ mod\ N = 1$. - Dann ist auch $a^{u*2^{i_0}} mod\ N = 1$, und daher gilt $a\in B_N$. (Die Zeile zu $a$ in Abb. 6 sieht aus wie die von $a_1=1$.)
+  - Fall2: $a^{u*2^i} mod\ N=N-1$ für ein $i<k$ - Dann ist $0\leq i\leq i_0$ nach der Definition von $i_0$. Wenn $i=i_0$ ist, haben wir direkt $a\in B_N$ (Beispiel in Tab. 6: $a_3$ oder $a_#$); wenn $i<i_0$ ist, dann gilt $a^{u*2^{i_0}} mod\ N= (a^{u*2^i} mod\ N)^{2^{i_0-i} mod\ N= (-1)^{2^{i_0 -i} mod\ N= 1$, also ebenfalls $a\in B_N$ (Beispiel in Tab. 6: $a_2$ oder $a_4$).
+2. Dass $B_N\supseteq \mathbb{Z}^*_N$ gilt, folgt aus der Definition. Wir müssen also nur zeigen, dass $\mathbb{Z}^*_N - B_N\not=\varnothing$ gilt. Wir benutzen die in Lemma 4.38 beobachtete Eigenschaft von Carmichael-Zahlen, keine Primzahlpotenz zu sein. Nach diesem Lemma können wir $N=N_1 *N_2$ schreiben, für teilerfremde ungerade Zahlen $N_1,N_2\geq 3$. Im Folgenden werden die Eigenschaften aus dem Chinesischen Restsatz (Fakt 4.21) benutzen.
+     - Die grobe Idee der Konstruktion ist folgende: Wir haben das Element $1$ mit $1^{u*2^{i_0}}$ mod\ N= 1$ und das Element $a_#$ mit $a^{u*2^{i_0}} \equiv -1 (mod\ N)$. Aus diesen beiden Elementen ,,basteln'' wir mit Hilfe des Chinesischen Restsatzes ein $b\in\mathbb{Z}^*_N$, das sich modulo $N_1$ wie $1$ und modulo $N_2$ wie $a_#$ verhält. Es wird sich zeigen, dass $b^{u*2^{i_0}} mod\ N \not\in\{1 ,N-1\}$ gilt, also $b\not\in B_N$ ist.
+    - Wir führen diese Idee jetzt formal durch. Sei $x_2=a_#\ mod\ N_2$. Nach dem Chinesischen Restsatz (Fakt 4.21) gibt es eine eindeutig bestimmte Zahl $b\in\{0,1,...,N- 1\}$, die $b\equiv 1(mod\ N_1)$ und $b\equiv x_2(mod\ N_2)$ (4.6) erfüllt. (Es folgt $b\equiv a_#(mod\ N_2)$.) Wir zeigen, dass $b$ in $\mathbb{Z}^*_N-B_N$ liegt.
+    - Wir notieren, dass für beliebige $x,y\in\mathbb{Z}$ gilt: $x\equiv x′(mod\ N)\Rightarrow x\equiv x′(mod\ N_i)$, für $i=1,2$. (4.7)
+    - (Wenn $x-x′$ durch $N$ teilbar ist, dann auch durch $N_1$ und $N_2$.)
+    - Beh. 1: $b\in\mathbb{Z}^*_N$.
+      - Bew.: Offensichtlich gilt $b^{N-1} \equiv 1^{N-1} \equiv 1 (mod\ N_1)$. Weiter haben wir, modulo $N_2$ gerechnet: $b^{N-1} \equiv a^{N-1}_# \equiv ((a^{N-1}_#) mod\ N)\equiv 1 (mod\ N_2)$.
+      - Wegen der Eindeutigkeitsaussage im Chinesischen Restsatz folgt daraus $b^{N-1} \equiv 1(mod\ N)$. Nach Lemma 4.35 folgt $b\in\mathbb{Z}^*_N$.
+    - Beh. 2: $b\not\in B_N$.
+      - Bew.: Indirekt. Annahme: $b\in B_N$, d.h. $b^{u*2^{i_0}} \equiv 1 (mod\ N)$ oder $b^{u*2^{i_0}} \equiv -1 (mod\ N)$.
+      - 1. Fall: $b^{u*2^{i_0}} \equiv 1 (mod\ N)$. - Mit (4.7) folgt $b^{u*2^{i_0}} \equiv 1 (mod\ N_2)$. Andererseits gilt $b^{u*2^{i_0}} \equiv x^{u*2^{i_0}}_2 \equiv a^{u*2^{i_0}}_# \equiv (a^{u*2^{i_0}}_# mod\ N)\equiv N-1 \equiv -1 (mod\ N_2)$, also $2\equiv 0 (mod\ N_2)$, ein Widerspruch, weil $N_2 \geq 3$ ist.
+      - 2. Fall: $b^{u*2^{i_0}} \equiv  -1 (mod\ N)$. - Mit (4.7) folgt $b^{u*2^{i_0}} \equiv -1(mod\ N_1)$. Andererseits gilt $b^{u*2^{i_0}} \equiv 1^{u*2^{i_0}} \equiv 1 (mod\ N_1)$, also $2\equiv 0 (mod\ N_1)$, ebenfalls ein Widerspruch.
+3. Wir verwenden die in 2. konstruierte Zahl $b\in\mathbb{Z}^*_N-B_N$. Wie im Beweis von Satz 4.36 betrachtet man die injektive Funktion $g_b:B_N \of a\rightarrow ba\ mod\ N \in\mathbb{Z}^*_N$. Es gilt $g_b(a)\not\in B_N$ für jedes $a\in B_N$, denn $g_b(a)^{u*2^{i_0}} mod\ N= (b^{u*2^{i_0}} mod\ N)(a^{u*2^{i_0}}) mod\ N\in\{b^{u*2^{i_0}} mod\ N, (N-b^{u*2^{i_0}}) mod\ N\}$, und die letzte Menge ist disjunkt zu $\{1 ,N-1\}$. Man erhält sofort $|B_N|\leq \frac{1}{2} | \mathbb{Z}^*_N|$. 
+
+Ab hier wieder prüfungsrelevant.
+
+Wir haben also eine Schranke von $\frac{1}{2}$ für die Irrtumswahrscheinlichkeit im Miller-Rabin-Algorithmus bewiesen. Eine etwas kompliziertere Analyse zeigt, dass sogar die Fehlerschranke $\frac{1}{4}$ gilt; man kann auch zeigen, dass es zusammengesetzte Zahlen $N$ gibt (zum Beispiel $703 = 19*37$), bei denen eine Fehlerwahrscheinlichkeit von fast $\frac{1}{4}$ tatsächlich auftritt. Durchl-fache Wiederholung, ebenso wie in Algorithmus 4.5, kann man die Fehlerschranke auf $4^{-l}$ reduzieren. Wir kürzen den Miller-Rabin-Test mit ,,MiRa-Test'' ab. Man beachte, dass bei jedem neuen Aufruf eine neue Zufallszahlagewählt wird.
+
+Algorithmus 4.7 Iterierter MR-Test
+- Eingabe: Ungerade Zahl $N\geq 3$, eine Zahl $l\geq 1$.
+- Methode:
+  - repeat l times
+  - if MiRa-Test(N) = 1 then return 1;
+  - return 0;
+
+Diesen Test wollen wir kurz IterMiRa(N,l) nennen. - Wir erhalten zusammenfassend:
+
+Proposition 4.44: Algorithmus 4.7 benötigt $O(l*log\ N)$ arithmetische Operationen auf Zahlen, die kleiner als $N^2$ sind, und $O(l*(log\ N)^3)$ Ziffernoperationen. Wenn $N$ eine Primzahl ist, ist die Ausgabe $0$, wenn $N$ zusammengesetzt ist, ist die Wahrscheinlichkeit, dass $0$ ausgegeben wird, kleiner als $4^{-l}$. 
+
+## Die Erzeugung von (zufälligen) Primzahlen
+Für kryptographische Anwendungen (zum Beispiel für die Erzeugung von Schlüsselpaaren für das RSA-Public-Key-Kryptosystem) werden vielziffrige Primzahlen benötigt. Eine typische Aufgabe in diesem Zusammenhang lautet: ,,Finde eine zufällige Primzahl mit $n$ Bits!''
+
+Das heißt: Gesucht ist eine zufällige Primzahl in $[2^{n-1}, 2^n)$. Dabei hängt $n$ von der Anwendung ab; wir können uns z.B. $n=1024$ oder $n=2048$ vorstellen.
+
+Man erinnere sich an den Primzahlsatz und an die Dusart-Schranke am Ende von Abschnitt 4.5, die besagt, dass es für $n\geq 9$ in diesem Intervall mindestens $(6/5)*
+2^{n-1}/n$ Primzahlen gibt.
+
+Ein naheliegender Ansatz zur Erzeugung einer zufälligen n-Bit-Primzahl ist dann folgender: Man wählt wiederholt eine (ungerade) Zahl $N$ aus $[2^{n-1}, 2^n)$ zufällig und wendet auf sie den (iterierten) Miller-Rabin-Test an. Dies wiederholt man, bis eine Zahl gefunden wurde, die die Ausgabe $0$ liefert.
+
+Algorithmus 4.8: GetPrime - Randomisierte Primzahlerzeugung
+- Eingabe: Bitanzahl $n\geq 9$, Zahl $l\geq 1$ // Zuverlässigkeitsparameter
+- Methode:
+  - repeat
+    - $N\leftarrow$ zufällige ungerade Zahl in $[2^{n-1}, 2^n)$;
+  - until IterMiRa(N,$l$) = 0; // Algorithmus 4.7
+  - return $N$.
+
+Die Ausgabe ist korrekt, wenn der Algorithmus eine Primzahl zurückgibt, ein Fehler tritt auf, wenn eine zusammengesetzte Zahl zurückgegeben wird. Auf den ersten Blick könnte man meinen (aufgrund von Proposition 4.44), dass die Fehlerwahrscheinlichkeit höchstens $1/4^l$ ist - eben die Fehlerwahrscheinlichkeit des iterierten MiRa-Tests. Wir werden sehen, dass wir auf der Basis der Analyse des Miller-Rabin-Tests nur ein etwas schwächeres Ergebnis bekommen. (Tatsächlich ist die Fehlerwahrscheinlichkeit durch $1/4^l$ beschränkt, für (von $l$ abhängig) genügend großen. Dies kann man aber nur durch fortgeschrittene zahlentheoretische Untersuchungen ̈uber die erwartete Wahrscheinlichkeit, dass eine zufällige ungerade zusammengesetzte Zahl den $l$-fach iterierten MiRa-Test übersteht, beweisen [P. Beauchemin, G. Brassard, C. Cr ́epeau, C. Goutier, C. Pomerance: The generation of random numbers that are probably prime.J. Cryptology 1 (1): 53-64 (1988)].)
+
+Wir definieren: $Prim_n:=\{p\in [2^{n-1}, 2^n)| \text{p ist Primzahl}\}$.
+
+Satz 4.45: Bei der Anwendung von Algorithmus 4.8 auf $n\geq 9$ gilt:
+1. Wenn das Ergebnis eine Primzahl ist, hat jede Primzahl in $[2^{n-1}, 2^n)$ dieselbe Wahrscheinlichkeit, als Ergebnis zu erscheinen.
+2. $Pr(GetPrime(n,l)\not\in Prim_n)\leq \frac{5n}{12*4^l}=O(\frac{n}{4^l})$. ( Nicht $1/4^l$, wie naiv vermutet.)
+3. Die erwartete Rundenzahl ist $O(n)$, der erwartete Rechenaufwand ist $O(n^2)$ arithmetische Operationen und $O(n^4)$ Ziffernoperationen.
+
+Beweis: 
+1. Eine Primzahl wird als Resultat genau dann geliefert, wenn keine zusammengesetzte Zahl fälschlicherweise vom Miller-Rabin-Test akzeptiert wird, bevor (in Zeile 2 ) die erste echte Primzahl gewählt wird. Jede der Primzahlen in $[2^{n-1}, 2^n)$ hat dieselbe Wahrscheinlichkeit, diese erste gewählte Primzahl zu sein.
+2. $Pr(GetPrime(n,l)\not\in Prim_n)= Pr(\exists i\geq 1 :\text{ in Runden j=1,...,i-1 wird eine zusammengesetzte Zahl N gewählt und erkannt}\wedge\text{in Runde i wird zusammengesetzte Zahl N gewählt und der iterierte MiRa-Test auf N liefert 0})$ $\leq\sum_{i\geq 1} (1 -\frac{|Prim_n|}{2^{n-2}})^{i-1}*\frac{1}{4^l} = \frac{2^{n-2}}{|Prim_n|} *\frac{1}{4^l} \leq \frac{2^{n-2}}{\frac{6}{5} *2^{n-1} /n}*\frac{1}{4^l} = \frac{5n}{12 * 4^l}$. Wir haben benutzt, dass es in $[2^{n-1}, 2^n)$ genau $2^{n-2}$ ungerade Zahlen gibt.
+3. Da man in jeder Runde mit Wahrscheinlichkeit mindestens $\frac{|Prim_n|}{2^{n-2}}$ eine Primzahl wählt, ist die erwartete Rundenzahl nicht größer als $\frac{2^{n-2}}{|Prim_n|} \leq \frac{5n}{12}.  
+
+Bemerkung: Bei der Erzeugung zufälliger n-Bit-Primzahlen für kryptographische Zwecke wird man aus Effizienzgründen nicht unseren Algorithmus anwenden, der $Θ(n^2)$ Multiplikationen benötigt, sondern eine Kombination zweier verschiedener Primzahltests (z. B. Miller-Rabin und ,,Lucas Strong Probable Prime Test'') mit sehr wenigen Iterationen und einem Test auf Teilbarkeit durch sehr kleine Primteiler. Dies erfordert nur $O(n)$ Multiplikationen. Die Dichte der zusammengesetzten Zahlen, die von einem solchen Test nicht erkannt werden, ist als sehr gering einzuschätzen. Über eine interessante experimentelle Untersuchung hierzu berichtet die kurze Notiz http://people.csail.mit.edu/rivest/Rivest-FindingFourMillionLargeRandomPrimes.ps von Ron Rivest (bekannt von ,,RSA'' und von ,,Cormen, Leiserson, Rivest und Stein'').
+
+## Beweise und Bemerkungen zu Kapitel 4
+Beweis der Existenz und der Eindeutigkeit des größten gemeinsamen Teilers $ggT(x,y)$ zweier Zahlen (Definition 4.3.2):
+- *Eindeutigkeit*: Wenn in 2. $d$ und $d′$ beide (i) und (ii) erfüllen und nichtnegativ sind, dann folgt $d|d′$ und $d′|d$, also $d=d′$ nach Fakt 4.2.5.
+- *Existenz*: Weil $t$ gemeinsamer Teiler von $x$ und $y$ ist genau dann wenn $t$ gemeinsamer Teiler von $a=|x|$ und $b=|y|$ ist, und weil offenbar das Vertauschen von $x$ und $y$ nichts ändert, können wir uns auf den Fall $x=a\geq y=b\geq 0$ beschränken. Wir zeigen durch Induktion über $b=min\{a,b\}$, dass $ggT(a,b)$ existiert.
+- *Induktionsanfang*: $b=0$. 
+  - 1. Fall: $a= 0$. Dann ist jede Zahl $t$ ein gemeinsamer Teiler von $a$ und $b$. Wir wählen $d=0$. Dann gilt (i), weil $0$ Teiler von $0$ ist, und (ii), weil jede Zahl $t$ die Zahl $0$ teilt. ($0$ ist ,,größter'' gemeinsamer Teiler von 0 und 0 im Sinn der Quasiordnung ,,Teilbarkeit''. Hier ist 0 das größte Element überhaupt.)
+  - 2. Fall: $a >0$. Wir wählen $d=a$. Dann gilt (i), weil $a$ Teiler von $a$ und von 0 ist, und es gilt (ii), weil jeder gemeinsame Teiler von $a$ und 0 auf jeden Fall Teiler von $a$ ist.
+- *Induktionsschritt*: $b>0$. Setze $q:=a\ div\ b$ und $r:=a-qb=a\ mod\ b$ und $(a′,b′):=(b,r)$. Dann ist $b′=r < b=a′$. Nun haben $a$ und $b$ genau dieselben gemeinsamen Teiler wie $a′$ und $b′$. (Aus $t|a$ und $t|b$ folgt $t|(a-qb)$, also $t|a′$, und aus $t|a′$ und $t|b′$ folgt $t|r+qb$, also $t|a$.) Nach I.V. existiert $d= ggT(a′,b′)$, und dieses $d$ ist dann auch größter gemeinsamer Teiler von $a$ und $b$.
+

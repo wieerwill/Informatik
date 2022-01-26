@@ -58,7 +58,7 @@
 Simulative Untersuchung der Ausführung von Maschinenbefehlen in unterschiedlichen Pipeline-Architekturen
 
 \subsection*{Aufgabe 1}
-Untersuche die vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen Standard-Pipeline, Superskalar-in-Order und Superskalar-out-of-Order. Beobachte den Programmablauf und machen dich mit der Bedienung vertraut! Schauen vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an (hier können auch Änderungen vorgenommen werden) und interpretiere das Verhalten während der Simulation.
+Untersuche die vorbereitete Befehlsfolge mit den drei vorgegebenen Grundstrukturen Standard-Pipeline, Superskalar-in-Order und Superskalar-out-of-Order. Beobachte den Programmablauf und machen dich mit der Bedienung vertraut! Schauen vor dem Simulationsstart auch die Parametereinstellungen für Sprungvorhersage und Result Forwarding an  und interpretiere das Verhalten während der Simulation.
 
 Code A1b
 \begin{lstlisting}[basicstyle=\tiny]
@@ -94,6 +94,7 @@ Alle Strukturen mit Result-Forwarding und 2-Bit Vorhersage.
     \end{itemize*}
 \end{itemize*}
 
+\newpage
 \subsection*{Aufgabe 2}
 Untersuche die Befehlsfolgen A4 und B2 mit mindestens je drei unterschiedlichen Simulationsläufen! Wähle die benutzten Pipelinestrukturen und Parametereinstellungen selbst aus. Vergleiche die Ergebnisse mit den Lösungen aus der Übung und suche Erklärungen für eventuelle Unterschiede!
 
@@ -216,7 +217,7 @@ Superskalar In-Order Pipeline ohne Result Forwarding (4 EX Einheiten)
     \item \includegraphics[width=.4\linewidth]{Assets/RA2-73350.jpg}
 \end{itemize*}
 
-
+\newpage
 \subsection*{Aufgabe 3}
 Änderne nun eine der vorgegebenen Pipelinestrukturen ab, z.B. die Anzahl der parallelen Pipelines verändern. Orientiere dich zuvor über den Inhalt des ,,Baukastens''. Untersuche mit den oben verwendeten Befehlsfolgen die Auswirkungen auf die Simulationsergebnisse! Variiere dabei die Parameter und interpretiere die Ergebnisse!
 
@@ -255,6 +256,7 @@ Superskalar In-Order Pipeline ohne Result Forwarding (4 EX Einheiten)
     \end{itemize*}
 \end{itemize*}
 
+\newpage
 \subsection*{Zusatzaufgaben}
 \subsubsection*{Z1}
 Untersuche weitere Befehlsfolgen, z.B. aus A5, A6, A7, B1 oder nach eigenen Entwürfen!
@@ -331,7 +333,7 @@ Gebe das folgende Programm ein. Es soll die vorhandenen Befehle ersetzen.
 .INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
 .DEVICE ATtiny25            // Festlegen des Controllertyps
 anf:
-    ldir    16,0x07
+    ldi     r16,0x07
     out     DDRB,r16        // Port B: Richtungseinstellung
     ldi     r16,0x18
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
@@ -349,18 +351,24 @@ Das Programm soll jetzt so erweitert werden, dass die LED mit den beiden Tastern
 .INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
 .DEVICE ATtiny25            // Festlegen des Controllertyps
 anf:
-    ldir    16,0x07
+    ldi     r16,0x07
     out     DDRB,r16        // Port B: Richtungseinstellung
     ldi     r16,0x18
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
 lo1:
     sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
-    sbi     PORTB,0         // Einschalten der LED (blau)
+    jmp     blue
     sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
-    cbi     PORTB,0         // Ausschalten der LED (blau)
+    jmp     green
     rjmp    lo1             // Sprung zum Schleifenbeginn
-
-    ...
+blue:
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    cbi     PORTB,1         // Ausschalten der LED (grün)
+    rjmp    lo1
+green:
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    sbi     PORTB,1         // Einschalten der LED (grün)
+    rjmp    lo1
 \end{lstlisting}
 
 Verändere das Programm nun so, dass durch abwechselndes Drücken der beiden Taster eine Sequenz von mindestens sechs unterschiedlichen Leuchtvarianten der LED durchgeschaltet werden kann.
@@ -368,25 +376,75 @@ Verändere das Programm nun so, dass durch abwechselndes Drücken der beiden Tas
 .INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
 .DEVICE ATtiny25            // Festlegen des Controllertyps
 anf:
-    ldir    16,0x07
+    ldi     r16,0x07
     out     DDRB,r16        // Port B: Richtungseinstellung
     ldi     r16,0x18
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
+    ldi     r17,0x01        // Zähler
 lo1:
     sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
-    sbi     PORTB,0         // Einschalten der LED (blau)
+    rjmp    up
     sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
-    cbi     PORTB,0         // Ausschalten der LED (blau)
+    rjmp    down
     rjmp    lo1             // Sprung zum Schleifenbeginn
-
-    ....
+up:
+    inc     r17
+    cmp     r17, 0x07
+    jnz     blue
+    ldi     r17, 0x00
+    rjmp    blue
+down:
+    dec     r17
+    cmp     r17, 0x00
+    jnz     blue
+    ldi     r17, 0x06
+blue:
+    cmp     r17, 0x01
+    jnz     cyan
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    cbi     PORTB,1         // Ausschalten der LED (grün)
+    cbi     PORTB,2         // Ausschalten der LED (rot)
+    rjmp    lo1
+cyan:
+    cmp     r17, 0x02
+    jnz     green
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    sbi     PORTB,1         // Einschalten der LED (grün)
+    cbi     PORTB,2         // Ausschalten der LED (rot)
+    rjmp    lo1
+green:
+    cmp     r17, 0x03
+    jnz     yellow
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    sbi     PORTB,1         // Einschalten der LED (grün)
+    cbi     PORTB,2         // Ausschalten der LED (rot)
+    rjmp    lo1
+yellow:
+    cmp     r17, 0x04
+    jnz     red
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    sbi     PORTB,1         // Einschalten der LED (grün)
+    sbi     PORTB,2         // Einschalten der LED (rot)
+    rjmp    lo1
+red:
+    cmp     r17, 0x05
+    jnz     violett
+    cbi     PORTB,0         // Ausschalten der LED (blau)
+    cbi     PORTB,1         // Ausschalten der LED (grün)
+    sbi     PORTB,2         // Einschalten der LED (rot)
+    rjmp    lo1
+violett:
+    sbi     PORTB,0         // Einschalten der LED (blau)
+    cbi     PORTB,1         // Ausschalten der LED (grün)
+    sbi     PORTB,2         // Einschalten der LED (rot)
+    rjmp    lo1
 \end{lstlisting}
 
 \subsection*{Aufgabe 2: Blinken der LED}
 Das Programm soll die LED fortlaufend blinken lassen. Diese Funktion wird mit einem Zähler/Zeitgeber-Interrupt realisiert.
 
 \subsubsection*{Schritt a: Einfaches Blinken}
-Die Aufgabe besteht nun darin, die LED periodisch ein- und auszuschalten, so dass sich eine Frequenz von etwa 2 Hz ergibt. Das Umschalten der LED soll in der Interruptserviceroutine eines Zähler/Zeitgeber-Interrupts erfolgen. Dafür soll Timer/Counter 0 so initialisiert werden, dass er Interrupts mit einer Folgefrequenz von etwa 4 Hz auslöst. Stütze dich dazu auf das folgende Programmfragment:
+Die Aufgabe besteht nun darin, die LED periodisch ein- und auszuschalten, so dass sich eine Frequenz von etwa 2 Hz ergibt. Das Umschalten der LED soll in der Interruptserviceroutine eines Zähler/Zeitgeber-Interrupts erfolgen. Dafür soll Timer/Counter 0 so initialisiert werden, dass er Interrupts mit einer Folgefrequenz von etwa 4 Hz auslöst.
 \begin{lstlisting}[basicstyle=\tiny]
 // Interrupttabelle (muss vor dem ersten ausführbaren Befehl stehen):
 tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
@@ -422,11 +480,9 @@ i_11: in    r25,SREG    // Flags retten (weitere Rettungen nach Bedarf)
 \end{lstlisting}
 
 Die Hintergrundschleife bleibt zunächst leer. Entwickle und teste das Programm für diese Aufgabe.
-
 \begin{lstlisting}[basicstyle=\tiny]
 .INCLUDE "tn25def.inc"      // Einfügen von Symbolen, u.a. für I/O-Register
 .DEVICE ATtiny25            // Festlegen des Controllertyps
-
 // Interrupttabelle (muss vor dem ersten ausführbaren Befehl stehen):
 tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
     reti
@@ -438,60 +494,307 @@ tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
     reti
     reti
     reti
-    rjmp    i_11 // Timer 0 Compare A Interrupt (Interrupt 11)
+    rjmp    timer_compare // Timer 0 Compare A Interrupt (Interrupt 11)
     reti
     reti
     reti
     reti    // Tabellenende (Interrupt 15)
+    
+    // Initialisierungsteil und Hintergrundprogramm:
+anf: [...]  // Weitere Initialisierungen
+    // Initialisierung von Timer/Counter 0
+    ldi     r16, high( 40000 - 1 )
+    out     OCR1AH, r16
+    ldi     r16, low( 40000 - 1 )
+    out     OCR1AL, r16
+    // CTC Modus einschalten, Vorteiler auf 1
+    ldi     r16, ( 1 << WGM12 ) | ( 1 << CS10 )
+    out     TCCR1B, r16
+    // OCIE1A: Interrupt bei Timer Compare
+    ldi     r16, 1 << OCIE1A  
+    out     TIMSK, r16
+    
+    sei     // Globale Interruptfreigabe
+    //ldi r16,0x10
+    //out TIMSK,r16   // Freigabe von Interrupt 11 (Timer 0 Compare A)
 
-// Initialisierungsteil und Hintergrundprogramm:
-anf: 
-    ldir    16,0x07
-    out     DDRB,r16        // Port B: Richtungseinstellung
+    ldi     r16,0x07
+    out     DDRB,r16    // Port B: Richtungseinstellung
     ldi     r16,0x18
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
-     [...]  // Weitere Initialisierungen
-     [...]  // Initialisierung von Timer/Counter 0 (Empfehlung:
-            // Betriebsart CTC, Vergleichsregister A nutzen)
-    sei     // Globale Interruptfreigabe
-    ldi r16,0x10
-    out TIMSK,r16   // Freigabe von Interrupt 11 (Timer 0 Compare A)
-lo1:
-    sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
-    sbi     PORTB,0         // Einschalten der LED (blau)
-    sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
-    cbi     PORTB,0         // Ausschalten der LED (blau)
-    rjmp    lo1             // Sprung zum Schleifenbeginn
-lo2: rjmp   lo2     // Leere Hintergrundschleife
 
-// Interruptserviceroutine:
-i_11: in    r25,SREG    // Flags retten (weitere Rettungen nach Bedarf)
-    [...]               // Inhalt der Routine
+    ldi     r17, 0x00 // Zähler
+lo2: 
+    rjmp   lo2     // Leere Hintergrundschleife
+    
+    // Interruptserviceroutine:
+timer_compare: 
+    in      r25,SREG      // Flags retten (weitere Rettungen nach Bedarf)
+    inc     r17
+    cmp     r17, 0x02
+    jnz     on
+off:
+    ldi     r17, 0x00
+    cbi     PORTB,0     // Ausschalten der LED (blau)
+    rjmp    close
+on:
+    sbi     PORTB,0     // Einschalten der LED (blau)
+close:
     out     SREG,r25    // Flags restaurieren
     reti                // Routine beenden
+\end{lstlisting}
+
+Alternativ
+\begin{lstlisting}[basicstyle=\tiny]    
+init:
+    ; Modus 14: 
+    ldi      r17, 1<<COM1A1 | 1<<WGM11
+    out      TCCR1A, r17
+    ldi      r17, 1<<WGM13 | 1<<WGM12 | 1<<CS12
+    out      TCCR1B, r17
+    
+    ldi      r17, 0x6F
+    out      ICR1H, r17
+    ldi      r17, 0xFF
+    out      ICR1L, r17
+    
+    ; der Compare Wert
+    ldi      r17, 0x3F
+    out      OCR1AH, r17
+    ldi      r17, 0xFF
+    out      OCR1AL, r17
+     
+    ; Den Pin OC1A auf Ausgang schalten
+    ldi      r17, 0x02
+    out      DDRB, r17
+main:
+    rjmp     main
+\end{lstlisting}
+
+Alternativ
+\begin{lstlisting}[basicstyle=\tiny]
+init:
+    LDI r16, 0x07    
+    STS DDRB, r16
+    LDI r17, 0x18
+    OUT PORTB, r17
+    LDI r16, 0x00
+    STS TCCR1A, r16  
+    RET
+main: 
+    LDI r16, 0xF0
+    STS TCNT1H, r16
+    LDI r16, 0xBC
+    STS TCNT1L, r16
+    LDI r16, 0x05
+    STS TCCR1B, r16   
+loop:  LDS R0, TIFR1    
+    SBRS R0, 0       
+    RJMP loop         
+    LDI r16, 0x00
+    STS TCCR1B, r16  
+    LDI r16, 0x01
+    STS TIFR1, r16   
+    COM r17          
+    STS PORTB, r17   
+    RET
 \end{lstlisting}
 
 \subsubsection*{Schritt b: Erweitertes Blinken}
 Baue in die Hintergrundschleife eine Abfrage von TASTER1 und TASTER2 ein. Durch Drücken von TASTER1 soll die Blinkfrequenz verdreifacht werden, durch TASTER2 wird sie auf den ursprünglichen Wert zurückgestellt. Teste diese Funktion. Der Vorgang soll sich beliebig wiederholen lassen.
 
-Stelle das Programm nun so um, dass die beiden Blinkfrequenzen deutlich langsamer sind: Etwa 1,0 Hz und etwa 0,5 Hz. Beachte, dass der Zählumfang des Timer/Counter dafür nicht ausreicht, auch nicht mit dem größten Vorteiler. Das Programm muss also in der Struktur verändert werden. Erweiterr das Programm so, dass eine Sequenz aus mindestens vier unterschiedlichen Leuchtzuständen durchlaufen wird.
+Stelle das Programm nun so um, dass die beiden Blinkfrequenzen deutlich langsamer sind: Etwa 1,0 Hz und etwa 0,5 Hz. Beachte, dass der Zählumfang des Timer/Counter dafür nicht ausreicht, auch nicht mit dem größten Vorteiler. Das Programm muss also in der Struktur verändert werden. Erweitere das Programm so, dass eine Sequenz aus mindestens vier unterschiedlichen Leuchtzuständen durchlaufen wird.
 
+$$Verzoegerungswert = 2^{16}-\frac{frequenz \times delaytime}{prescaler}$$
+16-Bit Wert in zwei 8-Bit teilen und in TCNT1H und TCNT1L laden
+
+\begin{lstlisting}[basicstyle=\tiny]
+init:
+    LDI r16, 0x07 
+    OUT DDRB, r16
+    LDI r17, 0x18
+    OUT PORTB, r17
+    LDI r16, 0x00
+    STS TCCR1A, r16   ; alle bits von TCCR1A auf 0
+    RET
+main: 
+    LDI r16, 0xF0
+    STS TCNT1H, r16     ; timer high register
+    LDI r16, 0xBC 
+    STS TCNT1L, r16     ; timer low register
+    LDI r16, 0x05
+    STS TCCR1B, r16     ; use 1024 prescalar
+loop:  LDS R0, TIFR1     ; TIFR1 in R0 laden
+    SBRS R0, 0        ; skippen falls overflow
+    RJMP loop         ; schleife bis overflow
+    LDI r16, 0x00
+    STS TCCR1B, r16   ; stoppe Timer/Counter1
+    LDI r16, 0x01
+    STS TIFR1, r16    ; overflow zurücksetzten
+    COM r17           ; complement r17 
+    STS PORTB, r17    ; toggle LED
+    sbis PINB, PB4    ; skip folgebefehl wenn nicht gedrückt 
+    rjmp t1
+    sbis PINB, PB3    ; skip folgebefehl wenn nicht gedrückt
+    rjmp t2
+    RJMP loop
+t1: 
+    LDI r16, 0xFB
+    STS TCNT1H, r16     ; timer high register
+    LDI r16, 0x6C 
+    STS TCNT1L, r16     ; timer low register
+    RJMP loop
+t2:
+    LDI r16, 0xF0
+    STS TCNT1H, r16     ; timer high register
+    LDI r16, 0xBC 
+    STS TCNT1L, r16     ; timer low register
+    RJMP loop
+\end{lstlisting}
 
 \subsection*{Aufgabe 3: Einfaches Dimmen der LED mittels PWM}
 Stelle die Helligkeit der LED mittels PWM (pulse width modulation, Pulsbreitenmodulation) auf wählbare Zwischenwerte ein.
 
 \subsubsection*{Schritt a: Einfache Helligkeitseinstellung}
-Zunächst soll die LED (nur eine Farbe) auf eine beliebige, aber konstante Helligkeit eingestellt werden können. Realisiere dazu eine PWM-Ausgabe mit 256 Helligkeitsstufen, wobei die Zeitintervalle wahlweise mittels Zählschleifen oder mittels Timer/Counter-Interrupt generiert werden. Den Helligkeitswert können über ein Universalregister vorgegeben werdeb, in welches im Debugger bei gestopptem Programm jeweils unterschiedliche Werte eintragen werden können.
+Zunächst soll die LED (nur eine Farbe) auf eine beliebige, aber konstante Helligkeit eingestellt werden können. Realisiere dazu eine PWM-Ausgabe mit 256 Helligkeitsstufen, wobei die Zeitintervalle wahlweise mittels Zählschleifen oder mittels Timer/Counter-Interrupt generiert werden. Der Helligkeitswert kann über ein Universalregister vorgegeben werden, in welches im Debugger bei gestopptem Programm jeweils unterschiedliche Werte eintragen werden.
 Alternativ können auch die PWM-Betriebsarten der Timer/Counter-Baugruppen ausprobiert werden, soweit es die Hardwarekonfiguration zulässt. Empfohlen wird die Betriebsart ,,Fast PWM'' mit normaler Zählung.
+\begin{lstlisting}[basicstyle=\tiny]
+init:
+    ldi r16,0xff            
+    out DDRB,r16
+    cbi PORTB,0      
+    ldi r17, 25             ; r17 ist helligkeitswert
+l1:     
+    sbi PORTB, 0            ; LED an
+    mov r16, r17            ; R16 kontrolliert länge des delay (= r17)
+    rcall delay
+    cbi PORTB, 0            ; LED aus
+    ldi r16, 255
+    sub r16, r17            ; R16 kontrolliert länge des delay  (= 255 - r17)
+    rcall delay
+    rjmp l1
+; Delay for (R16 * 4) microseconds
+delay:  
+    tst r16                 ; R16 = 0? (no delay)
+    breq dly4
+dly2:       
+    ldi r24,low(16)
+    ldi r25,high(16)
+dly3:       
+    sbiw r24,1              ; 2 cycles
+    brne dly3               ; 2 cycles
+    dec r16
+    brne dly2
+dly4:       
+    ret  
+\end{lstlisting}
+
 
 \subsubsection*{Schritt b: Helligkeitseinstellung mit Tastern}
 Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werte dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
 
+\begin{lstlisting}[basicstyle=\tiny]
+init:
+    ldi r16,0x07            ; Port B Richtungseinstellung
+    out DDRB,r16
+    ldi r16, 0x18
+    out PORTB, r16          ; Pull Up für Taster
+    cbi PORTB, 0            ; LED aus  
+    ldi r17, 25             ; r17 ist helligkeits wert
+l1:     
+    sbi PORTB, 0            ; LED an
+    mov r16, r17            ; R16 kontrolliert länge des delay (= r17)
+    rcall delay             
+    cbi PORTB, 0            ; LED aus
+    ldi r16, 255
+    sub r16, r17            ; R16 kontrolliert länge des delay  (= 255 - r17)
+    rcall delay             
+    sbis PINB, PB4
+    inc r17
+    sbis PINB, PB3
+    dec r17
+    rjmp l1
+; Delay for (R16 * 4) microseconds
+delay:  
+    tst r16                 ; R16 = 0? (no delay)
+    breq dly4
+dly2:       
+    ldi r24,low(16)
+    ldi r25,high(16)
+dly3:       
+    sbiw r24,1              ; 2 cycles
+    brne dly3               ; 2 cycles
+    dec r16
+    brne dly2
+dly4:       
+    ret
+\end{lstlisting}
+
+\newpage
 \subsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
 Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu muss einen Mechanismus implementiert werden, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
-Realisiere weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind. 
-Realisiere eine Umschaltung zwischen unterschiedlichen Lichteffekten. 
+Realisiere weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind.
+Realisiere eine Umschaltung zwischen unterschiedlichen Lichteffekten.
 Realisiere weitergehende Funktionen nach eigenen Ideen.
+
+\begin{lstlisting}[basicstyle=\tiny]
+init:
+    ldi r16,0xff            
+    out DDRB,r16
+    cbi PORTB,0             
+
+; LED von low zu high
+dopwm:      
+    ldi r17,25              
+l1:         
+    ldi r18, 0x01           ; R18 zählt PWM cycles
+l2:         
+    cbi PORTB,0            
+    mov r16,r17         
+    rcall delay      
+    sbi PORTB,0           
+    ldi r16,255
+    sub r16,r17             
+    rcall delay        
+    dec r18                 
+    brne l2
+    inc r17                 ; helligkeit erhöhen
+    brne l1
+
+; LED von high zu low
+    ldi r17,255             
+l3:         
+    ldi r18, 0x01          
+l4:         
+    cbi PORTB,0             
+    mov r16,r17             
+    rcall delay        
+    sbi PORTB,0             
+    ldi r16,255
+    sub r16,r17             
+    rcall delay         
+    dec r18                
+    brne l4
+    dec r17                 ; helligkeit runter
+    cpi r17,25   
+    brne l3
+    rjmp dopwm  
+
+; Delay for (R16 * 4) microseconds
+delay:  
+    tst r16                 
+    breq dly4
+dly2:       
+    ldi r24,low(16)
+    ldi r25,high(16)
+dly3:       
+    sbiw r24,1              ; 2 cycles
+    brne dly3               ; 2 cycles
+    dec r16
+    brne dly2
+dly4:       
+    ret    
+\end{lstlisting}
 
 \end{document}
 

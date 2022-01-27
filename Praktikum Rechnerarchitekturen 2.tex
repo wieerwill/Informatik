@@ -357,9 +357,9 @@ anf:
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
 lo1:
     sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
-    jmp     blue
+    rjmp     blue
     sbis    PINB,PB3        // Abfrage TASTER2, Skip Folgebefehl wenn nicht gedrückt
-    jmp     green
+    rjmp     green
     rjmp    lo1             // Sprung zum Schleifenbeginn
 blue:
     sbi     PORTB,0         // Einschalten der LED (blau)
@@ -381,6 +381,7 @@ anf:
     ldi     r16,0x18
     out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
     ldi     r17,0x01        // Zähler
+    ldi     r18,0x01        // Vergleicher
 lo1:
     sbis    PINB,PB4        // Abfrage TASTER1, Skip Folgebefehl wenn nicht gedrückt
     rjmp    up
@@ -389,46 +390,53 @@ lo1:
     rjmp    lo1             // Sprung zum Schleifenbeginn
 up:
     inc     r17
-    cmp     r17, 0x07
-    jnz     blue
+    ldi     r18, 0x01
+    cp      r17, r18
+    brne    blue
     ldi     r17, 0x00
     rjmp    blue
 down:
     dec     r17
-    cmp     r17, 0x00
-    jnz     blue
+    ldi     r18, 0x00
+    cp      r17, r18
+    brne    blue
     ldi     r17, 0x06
 blue:
-    cmp     r17, 0x01
-    jnz     cyan
+    ldi     r18, 0x01
+    cp      r17, r18
+    brne    cyan
     sbi     PORTB,0         // Einschalten der LED (blau)
     cbi     PORTB,1         // Ausschalten der LED (grün)
     cbi     PORTB,2         // Ausschalten der LED (rot)
     rjmp    lo1
 cyan:
-    cmp     r17, 0x02
-    jnz     green
+    ldi     r18, 0x02
+    cp      r17, r18
+    brne    green
     sbi     PORTB,0         // Einschalten der LED (blau)
     sbi     PORTB,1         // Einschalten der LED (grün)
     cbi     PORTB,2         // Ausschalten der LED (rot)
     rjmp    lo1
 green:
-    cmp     r17, 0x03
-    jnz     yellow
+    ldi     r18, 0x01
+    cp      r17, r18
+    brne    yellow
     cbi     PORTB,0         // Ausschalten der LED (blau)
     sbi     PORTB,1         // Einschalten der LED (grün)
     cbi     PORTB,2         // Ausschalten der LED (rot)
     rjmp    lo1
 yellow:
-    cmp     r17, 0x04
-    jnz     red
+    ldi     r18, 0x01
+    cp      r17, r18
+    brne    red
     cbi     PORTB,0         // Ausschalten der LED (blau)
     sbi     PORTB,1         // Einschalten der LED (grün)
     sbi     PORTB,2         // Einschalten der LED (rot)
     rjmp    lo1
 red:
-    cmp     r17, 0x05
-    jnz     violett
+    ldi     r18, 0x01
+    cp      r17, r18
+    brne    violett
     cbi     PORTB,0         // Ausschalten der LED (blau)
     cbi     PORTB,1         // Ausschalten der LED (grün)
     sbi     PORTB,2         // Einschalten der LED (rot)
@@ -440,6 +448,9 @@ violett:
     rjmp    lo1
 \end{lstlisting}
 
+Hinweis zur Verbesserung: das Prellen der Taster wird nicht berücksichtigt. Baue z.B. einen Delay ein.
+
+\newpage
 \subsection*{Aufgabe 2: Blinken der LED}
 Das Programm soll die LED fortlaufend blinken lassen. Diese Funktion wird mit einem Zähler/Zeitgeber-Interrupt realisiert.
 
@@ -494,110 +505,76 @@ tab: rjmp   anf // Programmstart nach Reset ("Interrupt" 1)
     reti
     reti
     reti
-    rjmp    timer_compare // Timer 0 Compare A Interrupt (Interrupt 11)
+    rjmp    i_11 // Timer 0 Compare A Interrupt (Interrupt 11)
     reti
     reti
     reti
     reti    // Tabellenende (Interrupt 15)
     
     // Initialisierungsteil und Hintergrundprogramm:
-anf: [...]  // Weitere Initialisierungen
-    // Initialisierung von Timer/Counter 0
-    ldi     r16, high( 40000 - 1 )
-    out     OCR1AH, r16
-    ldi     r16, low( 40000 - 1 )
-    out     OCR1AL, r16
-    // CTC Modus einschalten, Vorteiler auf 1
-    ldi     r16, ( 1 << WGM12 ) | ( 1 << CS10 )
-    out     TCCR1B, r16
-    // OCIE1A: Interrupt bei Timer Compare
-    ldi     r16, 1 << OCIE1A  
-    out     TIMSK, r16
+anf: 
+    ; LED config
+    ldi r16,0x07
+    out DDRB,r16    // Port B: Richtungseinstellung
+    ldi r16,0x18
+    out PORTB,r16   // Port B: Pull-up für Taster-Eingänge aktivieren
+    ; timer config
+    ldi r16, 0x00
+    out TCCR0A, r16
+    ldi r16, (1<<CS00)|(1<<CS02)
+    out TCCR0B, r16
+    sei 
+    ldi r16, 0  
+    out TCNT0, r16
+    ldi r16, 0x10
+    out TIMSK, r16
+    ldi r17, 0x00
+    ldi r18, 0x00
     
-    sei     // Globale Interruptfreigabe
-    //ldi r16,0x10
-    //out TIMSK,r16   // Freigabe von Interrupt 11 (Timer 0 Compare A)
-
-    ldi     r16,0x07
-    out     DDRB,r16    // Port B: Richtungseinstellung
-    ldi     r16,0x18
-    out     PORTB,r16       // Port B: Pull-up für Taster-Eingänge aktivieren
-
-    ldi     r17, 0x00 // Zähler
 lo2: 
     rjmp   lo2     // Leere Hintergrundschleife
-    
-    // Interruptserviceroutine:
-timer_compare: 
-    in      r25,SREG      // Flags retten (weitere Rettungen nach Bedarf)
-    inc     r17
-    cmp     r17, 0x02
-    jnz     on
-off:
-    ldi     r17, 0x00
-    cbi     PORTB,0     // Ausschalten der LED (blau)
-    rjmp    close
-on:
-    sbi     PORTB,0     // Einschalten der LED (blau)
-close:
-    out     SREG,r25    // Flags restaurieren
-    reti                // Routine beenden
+i_11:
+    in  r25, SREG
+    cp r17, r18
+    brne ledon
+    ldi r17, 0x01
+    cbi PORTB, 0
+    rjmp end
+ledon:
+    ldi r17, 0x00
+    sbi PORTB, 0
+end:
+    out SREG, r25 
+    reti
 \end{lstlisting}
 
 Alternativ
 \begin{lstlisting}[basicstyle=\tiny]    
-init:
-    ; Modus 14: 
-    ldi      r17, 1<<COM1A1 | 1<<WGM11
-    out      TCCR1A, r17
-    ldi      r17, 1<<WGM13 | 1<<WGM12 | 1<<CS12
-    out      TCCR1B, r17
-    
-    ldi      r17, 0x6F
-    out      ICR1H, r17
-    ldi      r17, 0xFF
-    out      ICR1L, r17
-    
-    ; der Compare Wert
-    ldi      r17, 0x3F
-    out      OCR1AH, r17
-    ldi      r17, 0xFF
-    out      OCR1AL, r17
-     
-    ; Den Pin OC1A auf Ausgang schalten
-    ldi      r17, 0x02
-    out      DDRB, r17
-main:
-    rjmp     main
-\end{lstlisting}
-
-Alternativ
-\begin{lstlisting}[basicstyle=\tiny]
-init:
-    LDI r16, 0x07    
-    STS DDRB, r16
-    LDI r17, 0x18
-    OUT PORTB, r17
-    LDI r16, 0x00
-    STS TCCR1A, r16  
-    RET
-main: 
-    LDI r16, 0xF0
-    STS TCNT1H, r16
-    LDI r16, 0xBC
-    STS TCNT1L, r16
-    LDI r16, 0x05
-    STS TCCR1B, r16   
-loop:  LDS R0, TIFR1    
-    SBRS R0, 0       
-    RJMP loop         
-    LDI r16, 0x00
-    STS TCCR1B, r16  
-    LDI r16, 0x01
-    STS TIFR1, r16   
-    COM r17          
-    STS PORTB, r17   
-    RET
+.equ wait = 5000
+    ldi r25, HIGH(wait)
+    ldi r24, low(wait)
+    ; LED config
+    ldi r16,0x07
+    out DDRB,r16    ; Port B: Richtungseinstellung
+    ldi r16,0x18
+    out PORTB,r16   ; Port B: Pull-up für Taster-Eingänge aktivieren
+    ldi r17, 0x00
+    ldi r18, 0x00
+loop:
+    sbiw r24, 1 ; 16-bit Register dezimieren
+    brne loop
+    cp r17, r18
+    brne ledon
+    ldi r17, 0x01
+    cbi PORTB, 0
+    rjmp end
+ledon:
+    ldi r17, 0x00
+    sbi PORTB, 0
+end: 
+    ldi r25, HIGH(wait)
+    ldi r24, LOW(wait)
+    rjmp loop
 \end{lstlisting}
 
 \subsubsection*{Schritt b: Erweitertes Blinken}
@@ -652,6 +629,7 @@ t2:
     RJMP loop
 \end{lstlisting}
 
+\newpage
 \subsection*{Aufgabe 3: Einfaches Dimmen der LED mittels PWM}
 Stelle die Helligkeit der LED mittels PWM (pulse width modulation, Pulsbreitenmodulation) auf wählbare Zwischenwerte ein.
 
@@ -689,7 +667,7 @@ dly4:
     ret  
 \end{lstlisting}
 
-
+\newpage
 \subsubsection*{Schritt b: Helligkeitseinstellung mit Tastern}
 Nun sollen die beiden Taster als Bedienelemente zum Auf- und Abdimmen verwendet werden. Werte dabei die Dauer der Tastendrücke aus, nicht deren Anzahl. Die Helligkeit soll bei gedrückt gehaltenem Taster stetig zu- oder abnehmen. Bei losgelassenen Tastern soll die Helligkeit konstant bleiben.
 
@@ -733,8 +711,6 @@ dly4:
 \newpage
 \subsection*{Zusatzaufgabe: Fortlaufendes Auf- und Abdimmen der LEDs}
 Diese Aufgabe soll als Anregung für weiterführende Experimente nach eigenen Ideen dienen. Die Helligkeit der LED soll in einer geeigneten Geschwindigkeit stetig herauf- und heruntergeregelt werden, so dass ein ,,weiches Blinken'' entsteht. Dazu muss einen Mechanismus implementiert werden, der den Helligkeitswert nach einem geeigneten Zeitschema verändert.
-Realisiere weitere Lichteffekte dieser Art, bei denen nun auch mehrere Leuchtfarben beteiligt sind.
-Realisiere eine Umschaltung zwischen unterschiedlichen Lichteffekten.
 Realisiere weitergehende Funktionen nach eigenen Ideen.
 
 \begin{lstlisting}[basicstyle=\tiny]

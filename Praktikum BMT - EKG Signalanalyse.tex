@@ -570,8 +570,6 @@ Nach den Spitzen des HF-Leistungsspektrums wurde das EKG vermutlich während der
 
 \newpage
 \section{Anhang: Überarbeiteter Code}
-Die Störsignale können in zwei Kategorien eingeteilt werden: stochastische und deterministische Signale.
-
 \begin{lstlisting}[basicstyle=\scriptsize, language=matlab]
 function [R_Positionen, Entscheidungssignal, Schwellwertverlauf, Lernphase] 
 = QRS_Detektion (EKG_Signal, fa);
@@ -609,7 +607,7 @@ function [R_Positionen, Entscheidungssignal, Schwellwertverlauf, Lernphase]
     end
     
     % Mittel der Signalamplitude als Threshold
-    avg = max(signal)/2; 
+    avg = (max(signal)/5)*4; 
     
     % Absolute Peaks innerhalb des Zeitfensters finden
     [RPeaks, positions] = findpeaks(signal, 'MinPeakHeight', avg, 

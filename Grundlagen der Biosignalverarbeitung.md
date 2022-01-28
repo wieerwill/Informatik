@@ -106,8 +106,8 @@ Dehnmessstreifen (DMS)
   - Signaldynamik abhängig von Masse und Technologie
 
 Grundlage ist der piezoresestive Widerstandseffekt: Durch Zug/Druck nimmt der elektrische Widerstand zu/ab
-- $R=\ro\frac{l}{A}=\ro\frac{4l}{d^2\pi}$, $\ro$ spez. Widerstand, $l$ Drahtlänge, $d$ Drahtdurchmesser
-- $R+\delta R=(\ro+\delta\ro)\frac{4(l+\delta l)}{(d-\delta d)^2\pi}$; davon ist $(l+\delta l)$ relevant für die Dehnungsmessung
+- $R=\rho\frac{l}{A}=\rho\frac{4l}{d^2\pi}$, $\rho$ spez. Widerstand, $l$ Drahtlänge, $d$ Drahtdurchmesser
+- $R+\delta R=(\rho+\delta\rho)\frac{4(l+\delta l)}{(d-\delta d)^2\pi}$; davon ist $(l+\delta l)$ relevant für die Dehnungsmessung
 
 
 Die Widerstandsänderung ist linear abhängig von der Temperaturabhängigkeit des spez. Widerstandes, jedoch nicht linear abhängig von der mechanisch bedingten Änderung der
@@ -150,7 +150,7 @@ Einen großen Teil der Netzstörung bilden die elektrostatischen (kapazitiv eing
 ## Durchfluss, Volumen
 - Massendurchfluss
   - $\dot m=\frac{dm}{dt}$
-  - $[\dot m]=\frac{kg}{h};\frac{g}{s}
+  - $[\dot m]=\frac{kg}{h};\frac{g}{s}$
   - industriell relevante Größe, z.B. Kraftstoffe, Luftverbrauch im Motor
 - Volumendurchfluss
   - $\dot V=\frac{dV}{dt}$
@@ -478,7 +478,7 @@ Das Halbleiterrauschen (1/f) erreicht bei etwa 10Hz den Pegel des weißen (Wider
 ### Frequenzgang
 Linearer Phasenfrequenzgang: Keine Formverzerrung
 - Gruppenlaufzeit: $d(f)=const.$
-- Phasenfrequenzgang: $\phi(f)=\int 
+- Phasenfrequenzgang: $\phi(f)=\int d(f)df=\varphi_0*f$
 
 Die wichtigste Eigenschaft der Biosignale, die von Medizinern diagnostisch genutzt wird, ist ihre Signalform. Daher lautet eine der grundlegenden Anforderungen an die Messtechnik und die BSA, dass die Signalform nicht verfälscht werden darf. Das bedeutet, dass sowohl im analogen als auch im digitalen Teil des Messsystems die Gruppenlaufzeit konstant sein muss. Daraus lässt sich die Forderung herleiten, dass der Phasengang linear sein muss, zumindest im Übertragungsbereich.
 
@@ -939,7 +939,7 @@ Eigenschaften von IIR-Filtern
 - IIR-Filter haben i.a. keinen linearen Phasenfrequenzgang, Nullphase nur bei gespiegelter Filterung
 
 ## FIR-Filter
-- kein rekursiver Anteil: $G(z)=\frac{b_0+b_1z^{-1}+...+b_mz^{-m}}{1}=ßfrac{Y(z)}{X(z)}$
+- kein rekursiver Anteil: $G(z)=\frac{b_0+b_1z^{-1}+...+b_mz^{-m}}{1}=\frac{Y(z)}{X(z)}$
 - zeitdiskrete Realisierung: $Y(z)=b_0X(z)+b_1z^{-1}X(z)+...$
 - analoge Faltung: $y(t)=b_0x(t)+b_1x(t-T)+...$
 - diskrete Faltung: $y(n)=b_0x(n)+b_1x(n-1)+...$

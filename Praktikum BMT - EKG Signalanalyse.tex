@@ -48,7 +48,7 @@
 \author{Teilnehmer: Robert Jeutter \& Leonard Seifert}
 \date{
     Datum Versuchsdurchführung: \quad 14.01.22\\
-    Datum Protokollabgabe: \quad 25.01.22
+    Datum Protokollabgabe: \quad 28.01.22
 }
 \maketitle  %Erstellt das Titelblatt wie oben definiert
 
@@ -56,6 +56,15 @@
 \pagestyle{fancy}
 \fancyhead[R]{Praktikumsbericht: EKG-Signalanalyse}
 \pagenumbering{arabic}
+\newpage
+
+% === Einverstaendniserklaerung ================================================
+\vspace*{8cm}
+
+Erklärung:
+
+\noindent ,,Hiermit versichern wir, dass wir dieses Praktikum selbständig vorbereitet, mit dem Praktikumsleiter durchgeführt und selbständig nachbereitet haben und nur die angegebenen Quellen und Hilfsmittel verwendet haben.''
+
 \newpage
 
 \section{Vorbereitungsaufgaben}
@@ -66,12 +75,12 @@ Bei der EKG Signaldetektion enthält das auszuwertende Signal neben dem gewünsc
 
 Eines der bekannten niedrigfrequenten Signale entsteht durch die Atmung und bildet sich als Drift in dem Signal ab. Dieser Fehler kann mit einem Hochpass behoben werden, der die niederfrequenten Signale entfernt.
 
-Desweiteren nutzen wir den bekannten Frequenzbereich des QRS Komplexes zwischen 5-30 Hz mithilfe eines Bandpasses, um die Störsignale außerhalb dieses Bereiches im Vergleich zu unserem gewünschten Signal abzuschwächen.
+Desweiteren nutzen wir den bekannten Frequenzbereich in dem der größte Energieanteil des QRS Komplexes liegt zwischen 5-26 Hz mithilfe eines Bandpasses, um die Störsignale außerhalb dieses Bereiches im Vergleich zu unserem gewünschten Signal abzuschwächen.
 
 Das Ergebnis der Vorverarbeitung soll ein driftarmes und von größeren deterministischen Störsignalen befreites Signal liefern.
 
 \subsection{QRS-Detektion}
-\texttt{Entwickelung einens Algorithmus zur adaptiven QRS-Detektion. 250 ms Zeitvorlauf sollen dabei nicht überschritten werden}
+\texttt{Entwickelung einens Algorithmus zur adaptiven QRS-Detektion. 250 ms Zeit-\\vorlauf sollen dabei nicht überschritten werden}
 
 \begin{enumerate}
     \item Hochpass zur Driftkompensation
@@ -80,7 +89,7 @@ Das Ergebnis der Vorverarbeitung soll ein driftarmes und von größeren determin
               \item entfernen niedriger Frequenzen
               \item Rücktransformation mit Inverser Fouriertransformation
           \end{enumerate}
-    \item Bandpass zur Beschränkung auf niederfrequente Biosignale zwischen 5 und 26 Hz
+    \item Bandpass zur Beschränkung auf niederfrequente Biosignale zwischen 5-26 Hz
     \item Minimale Distanz zwischen Peaks der R-Spitzen ermitteln
           \begin{enumerate}
               \item Kopie des Signal erstellen zur verlustfreien Bearbeitung
@@ -185,7 +194,7 @@ Diese Aufgabe entfiel, da das Praktikum über Webex stattfand. Die EKG Signale f
     \end{minipage}
 \end{figure}
 
-Die Funktionswerte werden in den vorgefertigten Cabrera-Kreis eingetragen um den Lagetyp zu bestimmen.
+Die Funktionswerte werden in den, aus der Praktikumsanleitung vorgefertigten, Cabrera-Kreis eingetragen um den Lagetyp zu bestimmen.
 Zur Umrechnung von mV in cm wenden wir den Maßstab [1mV:2cm] an. Aus der Vektoraddition der Schnittpunkte zweier Kanäle lässt sich die Herzachse in Grad messen.
 Die Lagetypbestimmung ist in Abbildung \ref{Lagetypbestimmung} zu sehen.
 
@@ -233,7 +242,7 @@ Das Ergebnis ist ein nicht verwertbares Signal, da zu Beginn eine Verzerrung auf
     \begin{minipage}[t]{0.5\linewidth}
         Um das Rauschen ohne Signalverzerrung umzusetzten wird in Abbildung \ref{db100v2} von Kanal 2 auf Kanal 3 ein Notch Filter angewendet. Die Filterung von Kanal 1 auf Kanal 2 bleibt bestehen.
 
-        Der Notch Filter entfernt das 50Hz Rauschen zuverlässig. Die Verzerrung zu Beginn des Signals blieb jedoch bestehen.
+        Der Notch Filter entfernt das 50Hz Rauschen zuverlässig. Die Verzerrung der Form des Signals blieb jedoch bestehen.
     \end{minipage}
 \end{figure}
 \begin{figure}[ht]
@@ -273,8 +282,8 @@ Das Ergebnis ist ein nicht verwertbares Signal, da zu Beginn eine Verzerrung auf
         \label{db100v5}
     \end{minipage}%
     \begin{minipage}[t]{0.5\linewidth}
-        Von Kanal 1 auf Kanal 2 wir ein einseitiger FIR-Bandpass mit $fu=2$ und $fo=30$ Hertz 5. Ordnung eingesetzt.
-        Von Kanal 3 auf Kanal 3 wird der Notch Filter erneut eingesetzt und in Abbildung \ref{db100v5} sichtbar.
+        Von Kanal 1 auf Kanal 2 wir ein einseitiger FIR-Bandpass mit $fu=2$ und $fo=30$ Hz 5. Ordnung eingesetzt.
+        Von Kanal 2 auf Kanal 3 wird der Notch Filter erneut eingesetzt und in Abbildung \ref{db100v5} sichtbar.
 
         %warum kommt es am anfang zu niedrigen werten? hinweis blockdiagramm mit struktureinheiten
         Zu Beginn des Ausgangssignals kommt es zu niedrigen Werten. Das liegt daran, dass in jedem Arbeitsschnitt die letzten ~250ms in dem FIR Filter zur Berechnung der Filterantwort herangezogen werden.
@@ -350,7 +359,7 @@ Der Code der QRS Detektion aus den Vorbereitungsaufgaben wurde in das Programm e
     \begin{minipage}[t]{0.5\linewidth}
         Abbildung \ref{qrsdb100} zeigt den gesamten Verlauf des EKG Signals mit der QRS Detektion. Im unteren Bildteil wird die Fehlerzahl der Falsch-Positiven und Falsch-Negativen Detektionen und ein Prozentwert der Fehlerquote angezeigt.
 
-        Der Fehler in dieser Detektion ist sehr hoch. Viele Signale wurden als R-Zacke erkannt, was auf einen zu niedrigen Threshold hinweist. Durch den niedrigen zeitlichen Anteil der R-Spitze im Vergleich zur Dauer des Restsignals liegt der Gesamtmittelwert sehr niedrig. Der Matlab Code musste deswegen angepasst werden.
+        Der Fehler in dieser Detektion ist sehr hoch. Viele Teile des Signals wurden fälschlich als R-Zacke erkannt, was auf einen zu niedrigen Threshold hinweist. Durch den niedrigen zeitlichen Anteil der R-Spitze im Vergleich zur Dauer des Restsignals liegt der Gesamtmittelwert sehr niedrig. Der Matlab Code musste deswegen angepasst werden.
 
         %Db100: Bild
         % hohe Fehlerrate, zu viele Signale werden als False Positiv erkannt
@@ -398,7 +407,7 @@ Der Code der QRS Detektion aus den Vorbereitungsaufgaben wurde in das Programm e
 \end{figure}
 
 \cleardoublepage
-Der vorgeschlagene Matlab Algorithmus konnte durch modifikation des Threshold verbessert werden aber passt sich nicht dynamisch verändernden Amplituden an.
+Der vorgeschlagene Matlab Algorithmus konnte durch Modifikation des Threshold verbessert werden aber passt sich nicht dynamisch verändernden Amplituden an.
 
 Mögliche Adaptionen der QRS Erkennung zur verbesserten Detektion:
 \begin{itemize}
@@ -419,7 +428,7 @@ Das Diagramm ,,Herzfrequenz nach Interpolation'' darunter zeigt den zeitlichen V
 
 Das ,,HF Leistungsspektrum'' zeigt die Wahrscheinlichkeitsdichte unterschiedlicher auftretender Frequenzen über den gesamten Zeitverlauf. Durch Ausprägung markanter Formen können pathologische Veränderungen erkannt werden.
 
-Der Scatter- und Phasendiagramm sind weitere Darstellungsformen für die Variabilität. Je weiter verstreut die Punkte, welche die aufeinanderfolgenden Abstände der R-Spitzen darstellen, liegen desto größer ist die HRV. Im gesunden Fall erwarten wir eine elliptische Form des Streudiagramms; andere Ausprägungen können beispielsweise auf Herzrythmusstörungen hinweisen.
+Das Scatter- und Phasendiagramm sind weitere Darstellungsformen für die Variabilität. Je weiter verstreut die Punkte, welche die aufeinanderfolgenden Abstände der R-Spitzen darstellen, liegen desto größer ist die HRV. Im gesunden Fall erwarten wir eine elliptische Form des Streudiagramms; andere Ausprägungen können beispielsweise auf Herzrythmusstörungen hinweisen.
 
 Das Histogramm ist das letzte Diagramm der GUI. Die gemessenen R-Spitzen-Abstände werden in feste Zeitbereiche gegliedert und als Balken über die prozentuale Häufigkeit des bestimmten Wertes dargestellt. Die Anzahl der Balken ist abhängig von der Variabilität des Probanden. Im gesunden Fall erwarten wir grob die Form einer Gaußkurve. Andere Formen können auf pathologische Veränderungen oder weitere äußere Einflüsse während der Messung (Bsp. starke Atmung) hinweisen.
 
@@ -435,11 +444,11 @@ Das Histogramm ist das letzte Diagramm der GUI. Die gemessenen R-Spitzen-Abstän
 
         Das Diagramm nach Interpolation zeigt kleine Amplitudenänderungen bei großer Signalanzahl.
 
-        Im HF-Leistungsspektrum sind drei markante Spitzen ersichtlich. Diese entsprechen den aus der Praktikumsanleitung (S.24) beschriebenen thermoregulatorischen Vorgängen im sehr niederfrequenten (VLF) Bereich, Blutdruckwellen III. Ordnung im niederfrequenten (LF) Bereich und Einflüsse der Atmung im hochfrequenten (HF) Bereich.
+        Im HF-Leistungsspektrum sind drei markante Spitzen ersichtlich. Diese entsprechen den in der Praktikumsanleitung (S.24) beschriebenen thermoregulatorischen Vorgängen im sehr niederfrequenten (VLF) Bereich, Blutdruckwellen III. Ordnung im niederfrequenten (LF) Bereich und Einflüsse der Atmung im hochfrequenten (HF) Bereich.
 
-        Der Scatter-Plot und Phasen-Plot zeigen eine gering verteilte Anordnung und etwa eine elliptische Form.
+        Der Scatter-Plot und Phasen-Plot zeigen eine gering gestreute Anordnung und eine etwa elliptische Form.
 
-        Im Histogramm erkennt man die erwartete Gauße Kurvenform.
+        Im Histogramm erkennt man die erwartete gaußsche Glockenkurvenform.
 
         Die Diagramme zeigen alle die erwarteten und in der Literatur beschriebenen Eigenschaften und weisen auf einen gesunden Probanden hin.
 
@@ -461,7 +470,7 @@ Das Histogramm ist das letzte Diagramm der GUI. Die gemessenen R-Spitzen-Abstän
 
         Im HF-Leistungsspektrum ist eine markante Spitzen im niederfrequenten (LF) Bereich zu sehen. Diese entspricht der erwarteten Ausprägung durch starke Atmung. Jedoch aufgrund der langsamen Atmung in den niederfrequenten (LF) Bereich verschoben.
 
-        Der Scatter-Plot und Phasen-Plot zeigen eine elliptische Ausprägung bei größerer Verteilung der Datenpunkte.
+        Der Scatter-Plot und Phasen-Plot zeigen eine elliptische Ausprägung bei breitere Streuung der Datenpunkte.
 
         Im Histogramm erkennt man zwei ausprägungen der erwarteten Gaußkurven, die einander teilweise überlagern; entsprechend der Ein- und Ausatemphasen.
 
@@ -538,21 +547,23 @@ Zu beachten ist die verkürzte Laufzeit des Datensatzes in \ref{zwickau} von ~18
     \end{minipage}
 \end{figure}
 
-Ein Vergleich mit...
-
+Ein Vergleich mit den HRV-Analysen in Abbildungen \ref{phaseruhe}, \ref{phaseresp} und \ref{phasesteh2} zeit deutlich erkennbare Unterschiede auf, die für eine Diagnose des Probanden genutzt werden können. 
+Alle Diagramme in Abbildung \ref{zwickau}zeigen eine sehr kleine Verteilung und Herzfrequenzvariabilität. Die Herzrate ist sehr gleichmäßig. Über die Verteilung im Phasen-Diagramm sind sehr enge R-Spitzen-Abstände zu sehen. Diese deuten ohne Vorwissen der Erkrankung auf ein Problem mit dem Nervensystem hin. Die Ausformung des Histogramms und Scatter-Diagramms weisen zusätzlich auf eine mögliche Herzrythmusstörungen hin. 
+Nach den Spitzen des HF-Leistungsspektrums wurde das EKG vermutlich während der Respirationsphase aufgenommen.
 
 \newpage
 \section{Quellen}
 \begin{itemize}
-    \item Vorlesung ,,Grundlagen der Biosignalverarbeitung'' von Prof. Husar
-    \item Praktikumsanleitung EKG Signalanalyse, Herr Heppner
-    \item \href{https://eleceng.dit.ie/dorran/matlab/resources/Matlab%20Signal%20Processing%20Examples.pdf}{eleceng.dit.ie}, Matlab Beispiele
-    \item \href{https://biomedicalsignalandimage.blogspot.com/2016/02/matlab-code-to-plot-ecg-signal.html}{biomedicalsignalandimage.blogspot.com}, Matlab EKG Beispiel
-    \item \href{https://github.com/Aburas98/MATLAB/}{GitHub.com/Aburas98}, Matlab EKG Beispiele
-    \item \href{https://www.section.io/engineering-education/electrocardiograms-qrs-peak-and-heart-rate-detection-using-dwt-in-matlab/}{section.io}, QRS Detektion Beispiel
-    \item \href{https://de.mathworks.com/help/dsp/ug/real-time-ecg-qrs-detection.html}{Mathworks.com}, EKG Analyse
-    \item Karl Dirk Kammeyer: Digitale Signalverarbeitung. 6. Auflage. Teubner, 2006, ISBN 3-8351-0072-6.
-    \item \href{https://www.netdoktor.de/krankheiten/polyneuropathie/}{Netdoktor.de}, Polyneuropathie
+    \item Prof. Dr.-Ing. habil. Peter Husar, Vorlesung ,,Grundlagen der Biosignalverarbeitung'', TU Ilmenau, 2021
+    \item M.Sc. Marc-Patrick Heppner, Praktikumsanleitung ,,EKG Signalanalyse'', TU Ilmenau, 2021
+    \item Univ.-Prof. Dr.-Ing. Martin Haardt, Vorlesung ,,Signale und Systeme 1'', TU Ilmenau, 2019 
+    \item \href{https://eleceng.dit.ie/dorran/matlab/resources/Matlab%20Signal%20Processing%20Examples.pdf}{eleceng.dit.ie}, Matlab Beispiele, Abgerufen 11.01.2021
+    \item \href{https://biomedicalsignalandimage.blogspot.com/2016/02/matlab-code-to-plot-ecg-signal.html}{biomedicalsignalandimage.blogspot.com}, Matlab EKG Beispiel, Abgerufen 11.01.2021
+    \item \href{https://github.com/Aburas98/MATLAB/}{GitHub.com/Aburas98}, Matlab EKG Beispiele, Abgerufen 04.01.2021
+    \item \href{https://www.section.io/engineering-education/electrocardiograms-qrs-peak-and-heart-rate-detection-using-dwt-in-matlab/}{section.io}, QRS Detektion Beispiel, Abgerufen 11.01.2021
+    \item \href{https://de.mathworks.com/help/dsp/ug/real-time-ecg-qrs-detection.html}{Mathworks.com}, EKG Analyse, Abgerufen 04.01.2021
+    \item \href{https://www.netdoktor.de/krankheiten/polyneuropathie/}{Netdoktor.de}, Polyneuropathie, Abgerufen 25.01.2021
+    \item Karl Dirk Kammeyer: Digitale Signalverarbeitung. 6. Auflage. Teubner, 2006, ISBN 3-8351-0072-6
 \end{itemize}
 
 \listoffigures

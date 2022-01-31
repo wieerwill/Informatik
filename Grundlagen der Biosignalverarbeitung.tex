@@ -704,139 +704,139 @@
     \item Einkopplung der Gleichtaktstörung immer unsymmetrisch
     \item unmöglich, im Messkreis Symmetrie herzustellen
     \item Gleichtaktanteil der Störung unterdrückt aber zur Differenz gewordene Anteil am Ausgang besteht
-    \end{itemize*}
+  \end{itemize*}
 
   \subsubsection{Differenz- und Gleichtaktverhalten}\label{differenz--und-gleichtaktverhalten}
- % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt.png}
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt.png}
   \begin{itemize*}
     \item $SNR_{in} = \frac{U_{d_in}}{U_{g_in}}=\frac{1mV}{10V}=10^{-4}\approx -80dB$
     \item $V\_g$: Gleichtaktstörung (Netz)
     \item $V\_d$: Nutzsignal (EKG)
-    \item Heute werden Differenzverstärker meistens als integrierte analoge Schaltungen mit OPVs eingesetzt. Da der Ausgang massefrei ist, folgt eine zweite Stufe zur Differenzbildung (IC3), die am Ausgang eine -wie üblich -massebezogene Spannung liefert. Diese Anordnung wird als Instrumentationsverstärker bezeichnet (instrumenation amplifier) und ist auch integriert verfügbar.
-    \item Am Eingang liegt eine realistische Situation vor: Das gewünschte Signal hat den Pegel von 1mV (EKG), die Netzstörung erreicht (auch mehr als) 10V. Daher ist der SNR am Eingang sehr niedrig, -80dB.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt2.png}
+    \item meistens als integrierte analoge Schaltungen mit OPVs eingesetzt
+    \item Ausgang massefrei, daher zweite Stufe zur Differenzbildung (IC3) zu Ausgang massebezogene Spannung
+    \item Anordnung ist Instrumentationsverstärker (instrumenation amplifier)
+    \item Eingang (realistisch) Signapegel von 1mV (EKG), Netzstörung 10V, SNR sehr niedrig, -80dB
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt2.png}
     \item $CMRR=\frac{U_{d_out}}{U_{g_out}}*\frac{U_{g_in}}{U_{d_in}}=\frac{200mV}{20mV} *\frac{10V}{1mV}=10^5 \approx 100dB$
-    \item Führt man mit dem Ausgangssignal des Verstärkers Spektralanalyse durch, so stellt man fest, dass die Netzstörung am Ausgang 20mV beträgt, während das gewünschte Signal 200mV erreicht, also der SNR am Ausgang ist 10 bzw. 20dB. Da der SNR am Eingang - 80dB betrug, wurde eine SNR-Verbesserung von 100dB erreicht. Diese Verbesserung ist auf die Gleichtaktunterdrückung selbst bei Asymmetrie am Eingang zurückzuführen, so dass in diesem Fall das CMRR identisch der SNR-Verbesserung ist. (Common-Mode Rejection Ratio, Gleichtaktunterdrückung, muss in der Medizintechnik laut Katalog mindestens 100dB, besser 120dB erreichen).
+    \item CMRR: Common-Mode Rejection Ratio, Gleichtaktunterdrückung
+    \item mit Ausgangssignal des Verstärkers Spektralanalyse
+    \item Netzstörung am Ausgang 20mV, gewünschte Signal 200mV, SNR am Ausgang ist 10/20dB
+    % Da der SNR am Eingang - 80dB betrug, wurde eine SNR-Verbesserung von 100dB erreicht. Diese Verbesserung ist auf die Gleichtaktunterdrückung selbst bei Asymmetrie am Eingang zurückzuführen, so dass in diesem Fall das CMRR identisch der SNR-Verbesserung ist. (Common-Mode Rejection Ratio, Gleichtaktunterdrückung, muss in der Medizintechnik laut Katalog mindestens 100dB, besser 120dB erreichen).
   \end{itemize*}
 
-  \subsection{Instrumentationsverstärker}\label{instrumentationsverstärker}
-
-  Der Instrumentationsverstärker (IV) ist ein mehrstufiger Verstärker, von
-  dem in der medizinischen Messtechnik ein hoher Eingangswiderstand
-  (besser als 100MOhm) und eine hohe CMRR (besser 100dB) gefordert wird.
+  \subsection{Instrumentationsverstärker (V)}\label{instrumentationsverstärker}
+  ein mehrstufiger Verstärker, von dem in der medizinischen Messtechnik ein hoher Eingangswiderstand (besser als 100 MOhm) und eine hohe CMRR (besser 100dB) gefordert wird
 
   \subsubsection{Mehrstufiger Verstärker}\label{mehrstufiger-verstärker}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-mehrstufiger-verstärker.png}
-    \item Die erste Stufe ist der Eingangs-Differenzverstärker mit massefreiem Ausgang; die Ausgangsspannung ergibt sich aus der Differenz der Ausgangsspannungen von IC1 und IC2. Die zweite Stufe verstärkt zusätzlich und bezieht die verstärkte Spannung auf Masse, so dass am Ausgang massebezogene, verstärkte Eingangsdifferenz vorliegt.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-mehrstufiger-verstärker.png}
+    \item erste Stufe ist Eingangs-Differenzverstärker mit massefreiem Ausgang %die Ausgangsspannung ergibt sich aus der Differenz der Ausgangsspannungen von IC1 und IC2
+    \item zweite Stufe verstärkt zusätzlich und bezieht die verstärkte Spannung auf Masse, so dass am Ausgang massebezogene, verstärkte Eingangsdifferenz vorliegt
     \item V1: $u_{ad}=A*u_{ed}+B*u_{eg}$, $u_{ag}=C*u_{eg}+D+u_{ed}$,
     \begin{itemize*}
       \item $A/B=F$: Diskriminationsfaktor
       \item $A/C=H$: Rejektionsfaktor
     \end{itemize*}
-    \item V2:
+    \item V2: $u_a=V_d u_{ed}+\frac{V_d}{CMR}u_{eg}=V_d(A u_{ed}+\frac{A}{F} u_{eg})+\frac{V_d}{CMR}\frac{A}{H} u_{eg}$
     \begin{itemize*}
-      \item $u_a=V_d u_{ed}+\frac{V_d}{CMR}u_{eg}=V_d(A u_{ed}+\frac{A}{F} u_{eg})+\frac{V_d}{CMR}\frac{A}{H} u_{eg}$
       \item $u_a|_{u_{ed}=0} = V_d A(\frac{1}{F}+\frac{1}{CMR*H}) u_{eg}$
       \item die gesamt-Gleichtaktunterdrückung eines mehrstufigen Verstärkers ist abhängig im Wesentlichen von der ersten (Eingangs-) Stufe
     \end{itemize*}
-    \item Berechnet man die Ausgangsspannung in Abhängigkeit von der Eingangs-Gleichtaktspannung und von den Verstärkerparametern, so zeigt sich, dass für den CMRR die erste Stufe (wie auch bei anderen Parametern, z.B. Eigenrauschen) entscheidend ist, die folgenden Stufen sind unwesentlich beteiligt. Daher wird in der ersten Stufe der höchste Entwicklungsaufwand getrieben.
+    %\item Berechnet man die Ausgangsspannung in Abhängigkeit von der Eingangs-Gleichtaktspannung und von den Verstärkerparametern, so zeigt sich, dass für den CMRR die erste Stufe entscheidend ist, die folgenden Stufen sind unwesentlich beteiligt. Daher wird in der ersten Stufe der höchste Entwicklungsaufwand getrieben.
   \end{itemize*}
 
   \subsubsection{Hoher Eingangswiderstand}\label{hoher-eingangswiderstand}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hoher-eingangswiderstand.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hoher-eingangswiderstand.png}
     \item $R^{(1)}_{ed}=2R_D+R_C\approx 2R_D$
     \item $R^{(2)}_{ed}=R_1+R_3 << R_D$
-    \item Theoretisch würde zur Ableitung von Biosignalen die zweite Stufe allein reichen, denn sie selbst verstärkt die Differenzspannung an ihrem Eingang (R1 und R3). Allerdings ist der Eingangswiderstand der zweiten Stufe für Biosignale viel zu niedrig. Eine zusätzliche Stufe mit hohem Eingangswiderstand ist daher notwendig, die außerdem noch wesentlich zur Verstärkung beiträgt.
+    \item Eingangswiderstand der zweiten Stufe für Biosignale viel zu niedrig
+    \item zusätzliche Stufe mit hohem Eingangswiderstand notwendig zur Verstärkung
   \end{itemize*}
 
   \subsubsection{Hohe Gleichtaktunterdrückung}\label{hohe-gleichtaktunterdruxfcckung}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hohe-gleichtaktunterdrückung.png}
-    \item rot: OPs integriert
-    \item blau: Widerstände getrimmt
-    \item Gute Eigenschaften sind nur mit integrierter Technologie und getrimmten Widerständen erreichbar. Daher werden bis auf einige speziellen Ausnahmen ausschließlich integrierte IV eingesetzt.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hohe-gleichtaktunterdrückung.png}
+    %\item rot: OPs integriert
+    %\item blau: Widerstände getrimmt
+    \item Gute Eigenschaften nur mit integrierter Technologie und getrimmten Widerständen erreichbar
+    \item bis auf einige speziellen Ausnahmen ausschließlich integrierte IV eingesetzt
   \end{itemize*}
 
   \subsection{Isolationsverstärker}\label{isolationsverstärker}
-
-  Aus Sicherheitsgründen bzw. wegen zu hoher Spannungen ist es in der
-  Medizin, aber auch z.B. in der Leistungselektronik, oft notwendig, den
-  Messkreis von der Umgebung galvanisch zu trennen, ihn also bezugsfrei
-  schweben zu lassen (floating circuit).
-
-  \subsubsection{Funktionsprinzip}\label{funktionsprinzip-1}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Isolationsverstäker.png}
-    \item Das Prinzip ist einfach: Alle Signalverbindungen und die Stromversorgung werden getrennt und entweder optisch oder transformatorisch über eine Isolationsbarriere realisiert. Da Biosignale sehr tieffrequent sind, müssen sie für die Übertragung moduliert bzw. demoduliert werden. Der Hardwareaufwand steigt enorm. Dennoch stehen heute bereits integrierte Isolationsverstärker zur Verfügung.
+    \item aus Sicherheitsgründen bzw. wegen zu hoher Spannungen
+    \item Messkreis von Umgebung galvanisch zu trennen
+    \item also bezugsfrei schweben zu lassen (floating circuit)
   \end{itemize*}
 
-  \subsubsection{Galvanische Trennung und ihre Auswirkung}\label{galvanische-trennung-und-ihre-auswirkung}
-
+  Funktionsprinzip
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Galvanische-trennung.png}
-    \item Durch die galvanische Trennung wird die Patientensicherheit enorm verbessert. Allerdings werden aus Sicht der Biosignalanalyse keine Verbesserungen erreicht, die Signaleingenschaften werden u.U. sogar noch schlechter. Der Grund sind die immer vorhandenen Streukapazitäten, die natürlich auch nach der galvanischen Trennung immer noch vorhanden sind und so Störungen in den Messkreis einkoppeln. Der notwendige Modem erzeugt weitere Störungen und Verzerrungen des gewünschten Signals.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Isolationsverstäker.png}
+    \item alle Signalverbindungen und Stromversorgung werden getrennt
+    \item entweder optisch oder transformatorisch über Isolationsbarriere realisiert
+    \item Biosignale sehr tieffrequent, müssen für Übertragung moduliert werden
+    \item Hardwareaufwand steigt enorm, integrierte Isolationsverstärker stehen zur Verfügung
   \end{itemize*}
 
-  \subsubsection{Datenübertragung, Modulation und Demodulation}\label{datenuxfcbertragung-modulation-und-demodulation}
-
+  Galvanische Trennung und ihre Auswirkung
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-AD289.png}
-    \item Realisierungsbeispiel von Analog Devices.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Galvanische-trennung.png}
+    \item Patientensicherheit enorm verbessert
+    \item Signaleingenschaften u.U. schlechter (Streukapazitäten)
+    \item notwendiger Modem erzeugt weitere Störungen und Verzerrungen des gewünschten Signals
   \end{itemize*}
+
+  %\subsubsection{Datenübertragung, Modulation und Demodulation}\label{datenuxfcbertragung-modulation-und-demodulation}
+  %\begin{itemize*}
+  %  \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-AD289.png}
+  %  \item Realisierungsbeispiel von Analog Devices.
+  %\end{itemize*}
 
   \subsection{Guardingtechnik}\label{guardingtechnik}
-
-  \subsubsection{Funktionsprinzip}\label{funktionsprinzip-2}
-
+  Funktionsprinzip
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding.png}
-    \item Eine wirkungsvolle Massnahme zur Störungsreduktion ist die Abschirmung der Messkabel, die in der Medizin bis zu zwei Metern Länge haben können (EKG) und damit gute aber unterwünschte Antennen realisieren. Der Schirm und das Messkabel bilden eine relativ große Kapazität von bis zu 100pF. Die Impedanz dieser Kapazität liegt parallel zum Eingangswiderstand des Verstärkers (untere Grafik) und reduziert diesen erheblich, wie man an den Verläufen des Messtromes erkennen kann: Während ohne Schirmung der Messstrom 100nA beträgt, steigt er auf 300nA bei Schirmung an, der Eingangswiderstand wurde also auf ein Drittel seines ursprünglichen Wertes reduziert und das ist inakzeptabel.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding2.png}
-    \item Prinzip: Die Eingangsspannung wird über den Impedanzwandler an den Schirm gelegt. Die Schirmkapazität ist zwar immer noch vorhanden, über ihr liegt aber keine Spannungsdifferenz mehr an, also fließt auch kein Strom. Damit erscheint die Impedanz der Schirmkapazität vom Eingang her theoretisch unendlich groß, praktisch nah dran. Früher als Bootstrap-Prinzip bekannt.
-    \item Die Impedanz der Kapazität wurde dynamisch idealerweise beseitigt, ist also theoretisch von den Eingangsklemmen nicht sichtbar. Die Kapazität ist aber nach wie vor physisch vorhanden! Diese Tatsache ist für bestimmte Fragestellungen sehr wichtig, z.B. Analyse bei implusartigen Störungen, bei den der Verstärker es natürlich dynamisch nicht schafft, den Impuls in Echtzeit auf den Schirm zu führen.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding.png}
+    \item wirkungsvolle Massnahme zur Störungsreduktion ist Abschirmung der Messkabel
+    \item Schirm und Messkabel bilden relativ große Kapazität von bis zu 100pF
+    \item Impedanz der Kapazität parallel zum Eingangswiderstand des Verstärkers und reduziert diesen %Während ohne Schirmung der Messstrom 100nA beträgt, steigt er auf 300nA bei Schirmung an, der Eingangswiderstand wurde also auf ein Drittel seines ursprünglichen Wertes reduziert und das ist inakzeptabel.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding2.png}
+    \item Eingangsspannung über Impedanzwandler an Schirm gelegt
+    \item Schirmkapazität ist immer noch da aber keine Spannungsdifferenz mehr %$ also fließt auch kein Strom. Damit erscheint die Impedanz der Schirmkapazität vom Eingang her theoretisch unendlich groß, praktisch nah dran. Früher als Bootstrap-Prinzip bekannt.
+    \item Impedanz der Kapazität dynamisch idealerweise beseitigt, theoretisch von Eingangsklemmen nicht sichtbar % Die Kapazität ist aber nach wie vor physisch vorhanden! Diese Tatsache ist für bestimmte Fragestellungen sehr wichtig, z.B. Analyse bei implusartigen Störungen, bei den der Verstärker es natürlich dynamisch nicht schafft, den Impuls in Echtzeit auf den Schirm zu führen.
   \end{itemize*}
 
-  \subsubsection{Realisierung}\label{realisierung}
-
+  Realisierung
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding-real.png}
-    \item Schaltungstechnisch lässt sich Guarding mit einem zusätzlichen OPV (IC4) im IV realisieren. In diesem Fall wird nicht jeder Kanal einzeln, sondern alle mit dem Gleichtaktsignal belegt. Das spart Hardware und ist ausreichend, denn kritisch ist der Gleichtakt-Eingangswiderstand, während der Differenz-Eingangswiderstand nicht von Bedeutung ist.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding-real.png}
+    \item mit zusätzlichen OPV (IC4) im IV realisieren
+    \item nicht jeder Kanal einzeln, sondern alle mit dem Gleichtaktsignal belegt
+    \item spart Hardware und ist ausreichend
+    \item kritisch ist Gleichtakt-Eingangswiderstand, Differenz-Eingangswiderstand nicht
   \end{itemize*}
 
   \subsection{Aktive Elektroden}\label{aktive-elektroden}
-
-  \subsubsection{Funktionsprinzip}\label{funktionsprinzip-3}
-
+  Funktionsprinzip
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-aktive-elektroden.png}
-    \item Lösungsansatz: Verstärkung und Digitalisierung direkt auf Elektrode. Datenübertragung robust gegen Störungen, da binär
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-aktive-elektroden.png}
+    \item Lösungsansatz: Verstärkung und Digitalisierung direkt auf Elektrode
+    \item Datenübertragung robust gegen Störungen, da binär
     \item Problem: Zuführung des Bezugspotentials notwendig
   \end{itemize*}
 
-  \subsubsection{Störungsresistenz}\label{störungsresistenz}
-
+  Störungsresistenz
   \begin{itemize*}
-    \item Aktive Elektroden technologisch aufwendig, haben aber Vorteile bei Störungen, die direkt auf die Messanordnung wirken
-    \begin{itemize*}
-      \item Elektrode: Drift der Polarisationsspannung kompensierbar
-      \item Kabel: unempfindlich gegen kapazitiv, induktiv und HF-eingekoppelte Störungen
-      \item Verstärkereingang: durch kürzste Wege zum Sensor keine direkte Beeinträchtigung der Eingangskreise
-      \item Unsymmetrie: lässt sich in Rückkopplung computergesteuert reduzieren bzw. eliminieren
-    \end{itemize*}
-    \item die Übertragung ist digital, daher störungsresistent und distanzunabhängig
+    \item technologisch aufwendig aber Vorteile bei Störungen%, die direkt auf die Messanordnung wirken
+    \item Elektrode: Drift der Polarisationsspannung kompensierbar
+    \item Kabel: unempfindlich gegen kapazitiv, induktiv und HF-eingekoppelte Störungen
+    \item Verstärkereingang: durch kürzste Wege zum Sensor keine direkte Beeinträchtigung der Eingangskreise
+    \item Unsymmetrie: lässt sich in Rückkopplung computergesteuert reduzieren bzw. eliminieren
+    \item Übertragung digital $\rightarrow$ störungsresistent und distanzunabhängig
   \end{itemize*}
 
-  \subsubsection{Gleichtaktunterdrückung}\label{gleichtaktunterdruxfcckung}
-
-  Die unter 2.4.1 hergeleitete Gleichtaktunterdrückung gilt nicht
-  pauschal, bei aktiven Elektroden ist Differenzierung notwendig
-
+  Gleichtaktunterdrückung:
+  %Die unter 2.4.1 hergeleitete Gleichtaktunterdrückung gilt nicht pauschal, 
+  bei aktiven Elektroden ist Differenzierung notwendig
   \begin{itemize*}
     \item Aktive Elektroden meistens mit Verstärkung $V=1$
     \item daher CMR rechnerisch gleich 1, theoretisch zu niedrig
@@ -845,64 +845,53 @@
   \end{itemize*}
 
   \subsection{Analoge Filter}\label{analoge-filter}
-
-  Das Unterscheidungskriterium ist, ob ein aktives Bauelement im Filter
-  eingesetzt wird, d.h. ob es die Filtercharakteristik direkt beeinflusst.
-  Dies ist der Fall bei allen rückgekoppelten Filtern mit Transistoren
-  oder Operationsverstärkern. Dagegen ist ein Filter (z.B. RC-Tiefpass 1.
-  Ordnung), dem ein OV als Impedanzwandler folgt, kein aktives Filter.
+  %Das Unterscheidungskriterium ist, ob ein aktives Bauelement im Filter eingesetzt wird, d.h. ob es die Filtercharakteristik direkt beeinflusst.
+  %Dies ist der Fall bei allen rückgekoppelten Filtern mit Transistoren oder Operationsverstärkern.
+  Filter (z.B. RC-Tiefpass) dem ein OV als Impedanzwandler folgt ist kein aktives Filter $\rightarrow$ passives Filter
 
   \subsubsection{Passive Filter}\label{passive-filter}
-
-  \paragraph{Grundlagen der Filtertheorie}\label{grundlagen-der-filtertheorie}
-
+  Grundlagen der Filtertheorie
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie.png}
     \item Bei spektralen Filtern werden folgende Parameter verwendet, um die Filtercharakteristik zu beschreiben:
     \begin{itemize*}
-      \item Die Eckfrequenz, oder Grenzfrequenz: Frequenz $F\_\{pass\}$, bei der der Durchlassbereich in die Filterflanke übergeht und bei der die Übertragung um 3dB bzw. auf 70\% der Übertragung vom Durchlassbereiche abgesunken ist.
-      \item Die Sperrfrequenz $F\_\{stop\}$, bei der die geforderte Dämpfung im Sperrbereich erreicht wird. Übergangsband Fstop-Fpass, auch transition band, ist der Übergangsbereich vom Durchlass-in das Sperrband, auch Filterflanke genannt. \item Steilheit ist Maß für die Filterflanke in dB/Hz. Grundsätzlich gilt, je steiler, umso besser. Hängt hauptsächlich von der Filterordnung ab.
-      \item Welligkeit im Durchlassbereich Apass gibt an, im welchen Bereich die Übertragung im Durchlassbereich schwankt. Üblich ist weniger als 1dB, um 3dB ist für niedrige Ansprüche ausreichend.
-      \item Minimale Dämpfung Astop gibt die garantierte Dämpfung an. Hängt hauptsächlich von der Filterordnung ab.
-      \item Fs/2 ist die halbe Abtastrate oder die Nyquistfrequenz.
+      \item Eckfrequenz/Grenzfrequenz: $F_{pass}$ der Durchlassbereich in die Filterflanke übergeht und Übertragung um 3dB/70\% vom Durchlassbereiche abgesunken
+      \item Sperrfrequenz $F_{stop}$, geforderte Dämpfung im Sperrbereich erreicht
+      \item Übergangsband/Filterflanke $F_{stop}-F_{pass}$, Übergangsbereich vom Durchlass- in das Sperrband
+      \item Steilheit ist Maß für die Filterflanke in dB/Hz. Grundsätzlich gilt, je steiler, umso besser% Hängt hauptsächlich von der Filterordnung ab.
+      \item Welligkeit im Durchlassbereich $A_{pass}$, im welchen Bereich die Übertragung im Durchlassbereich schwankt% Üblich ist weniger als 1dB, um 3dB ist für niedrige Ansprüche ausreichend.
+      \item Minimale Dämpfung $A_{stop}$, die garantierte Dämpfung % Hängt hauptsächlich von der Filterordnung ab.
+      \item $F_{s/2}$ ist halbe Abtastrate oder Nyquistfrequenz
     \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie2.png}
-    \item Die Filtertheorie unterscheidet vier Grundtypen, siehe oben. Die Filtertheorie bietet ein Instrumentarium zum Entwurf von Filtern, vor allem aber für den nachrichtentechnischen Bereich, d.h. L-C-Kombinationen, also schwingfähige Systeme. Im Spektralbereich der Biosignale werden fast ausschließlich RC-Filter verwendet. Die Vorgehensweise beim klassischen Filterentwurf ist über die Schaltungsanalyse, also faktisch in einem Iterationsverfahren: Grundbausteine der spektralen Filter sind bekannt und mit diesen versucht man die gewünschte Charakteristik iterativ durch hinzufügen von Elementen und anschließender Analyse zu erreichen. Im analogen Bereich ist es kaum möglich, eine Filtercharakteristik vorzugeben und nach irgendeiner Methode die Schaltung als Ergebnis zu erhalten, der Entwurf ist daher sehr intuitiv und routineorientiert. Die Schaltungssynthese reduziert sich dann lediglich auf die Entnormung der Modelle auf konkrete Bauelemente.
-    \begin{itemize*}
-      \item Übertragungsfunktion $G(j\omega)=\frac{U_2(j\omega)}{U_1(j\omega)}=| G(j\omega)|*e^{j\omega\phi}$
-      \item Amplitudenfrequenzgang $|G(j\omega)|=\sqrt{Re{G(j\omega)}^2 +Im{G(j\omega)}^2}$
-      \item Phasenfrequenzgang $\phi(\omega)=arctan\frac{IM{G(j\omega)}}{Re{G(j\omega)}}$
-      \item Grenzfrequenz $\omega_g=\frac{1}{RC}$
-    \end{itemize*}
-    \item Üblicherweise werden die Filter über ihre Übertragungsfunktion beschrieben, wobei auch äquivalente Beschreibungen möglich sind -Impulsantwort im digitalen Bereich, Pole-Nullstellen-Diagramme, seltener Zustandsgleichungen.
-    \item Aus Sicht der BSA sind entscheidend die Beschreibungen über den Amplituden- und Phasenfrequenzgang.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie2.png}
+    %\item Die Filtertheorie unterscheidet vier Grundtypen, siehe oben. Die Filtertheorie bietet ein Instrumentarium zum Entwurf von Filtern, vor allem aber für den nachrichtentechnischen Bereich, d.h. L-C-Kombinationen, also schwingfähige Systeme. Im Spektralbereich der Biosignale werden fast ausschließlich RC-Filter verwendet. Die Vorgehensweise beim klassischen Filterentwurf ist über die Schaltungsanalyse, also faktisch in einem Iterationsverfahren: Grundbausteine der spektralen Filter sind bekannt und mit diesen versucht man die gewünschte Charakteristik iterativ durch hinzufügen von Elementen und anschließender Analyse zu erreichen. Im analogen Bereich ist es kaum möglich, eine Filtercharakteristik vorzugeben und nach irgendeiner Methode die Schaltung als Ergebnis zu erhalten, der Entwurf ist daher sehr intuitiv und routineorientiert. Die Schaltungssynthese reduziert sich dann lediglich auf die Entnormung der Modelle auf konkrete Bauelemente.
+    \item Übertragungsfunktion $G(j\omega)=\frac{U_2(j\omega)}{U_1(j\omega)}=| G(j\omega)|*e^{j\omega\phi}$
+    \item Amplitudenfrequenzgang $|G(j\omega)|=\sqrt{Re{G(j\omega)}^2 +Im{G(j\omega)}^2}$
+    \item Phasenfrequenzgang $\phi(\omega)=arctan\frac{IM{G(j\omega)}}{Re{G(j\omega)}}$
+    \item Grenzfrequenz $\omega_g=\frac{1}{RC}$
+    \item Filter üblich über Übertragungsfunktion beschrieben%, wobei auch äquivalente Beschreibungen möglich sind -Impulsantwort im digitalen Bereich, Pole-Nullstellen-Diagramme, seltener Zustandsgleichungen.
+    \item für BSA entscheidend Beschreibungen über Amplituden- und Phasenfrequenzgang
   \end{itemize*}
 
   \paragraph{Filterentwurf}\label{filterentwurf}
-
+  
+  passive Bauelemente
   \begin{itemize*}
-    \item passive Bauelemente
-    \begin{itemize*}
-      \item R,C,L
-      \item mechanische Resonatoren
-      \item Quarzfilter
-      \item akustische Oberflächenwellenfilter
-    \end{itemize*}
+    \item R,C,L, Quarzfilter
+    \item mechanische Resonatoren
+    \item akustische Oberflächenwellenfilter
     \item im spektralen Bereich der Biosignale (0...1kHz) nur R und C
-    \item Als Bauelemente zum Filterbau kommen neben R,C und L weitere Alternativen in Frage, die vor allem auf der mechanischen bzw. geometrischen Stabilität der schwingenden Anordnung aufbauen: piezokeramische und Quarzfilter oder akustische OWF.
-    \item Im Spektralbereich der Biosignale kommen jedoch nur R-C-Kombinationen in Frage.
-    \item Beispiele: oben ein zweikreisiger Parallelschwingkreis, der zur Schmalbandfilterung in der Nachrichtentechnik eingesetzt wird. Unten ein Phasenschiebernetzwerk, z.B. in einem RC-Generator.
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf.png}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf2.png}
-    \end{itemize*}
+    \item alternativ vor allem auf mechanischen/geometrischen Stabilität der schwingenden Anordnung aufbauend: piezokeramische, Quarzfilter, akustische OWF
+    \item im Spektralbereich der Biosignale nur R-C-Kombinationen
+    %\item Beispiele: oben ein zweikreisiger Parallelschwingkreis, der zur Schmalbandfilterung in der Nachrichtentechnik eingesetzt wird. Unten ein Phasenschiebernetzwerk, z.B. in einem RC-Generator.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf2.png}
   \end{itemize*}
 
   \subsubsection{Aktive Filter}\label{aktive-filter}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiefpass-2.ordnung.png}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hochpass-2.ordnung.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiefpass-2.ordnung.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hochpass-2.ordnung.png}
     \item $R_{0a}=(\epsilon-1)R_0$, $u_a=\epsilon*u_e$ $\Rightarrow$ Filtertyp mit $R_0$ einstellbar
     \begin{tabular}{l|l|l|l}
                  & Bessel  & Butterworth & Tschebyscheff (1,5dB) \\\hline

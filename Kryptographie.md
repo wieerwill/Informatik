@@ -50,6 +50,18 @@
   - [Asymmetrische Kryptoschemen, Sicherheitsbegriff](#asymmetrische-kryptoschemen-sicherheitsbegriff)
     - [Asymmetrische Kryptoschemen](#asymmetrische-kryptoschemen)
     - [Sicherheit von asymmetrischen Kryptoschemen](#sicherheit-von-asymmetrischen-kryptoschemen)
+  - [Weitere Bemerkungen zur Sicherheit und effizienten Verwendung von RSA](#weitere-bemerkungen-zur-sicherheit-und-effizienten-verwendung-von-rsa)
+    - [Äquivalenz ,,d bekannt'' zu ,,N faktorisieren''](#äquivalenz-d-bekannt-zu-n-faktorisieren)
+    - [Bemerkungen zum Faktorisierungsproblem, allgemein](#bemerkungen-zum-faktorisierungsproblem-allgemein)
+    - [Zufallskomponente](#zufallskomponente)
+    - [Effizienzverbesserungen](#effizienzverbesserungen)
+    - [Das Rabin-Kryptosystem](#das-rabin-kryptosystem)
+  - [Diskrete Logarithmen und Anwendungen](#diskrete-logarithmen-und-anwendungen)
+    - [Diskrete Logarithmen](#diskrete-logarithmen)
+    - [Diffie-Hellman-Schlüsselaustausch](#diffie-hellman-schlüsselaustausch)
+    - [Das ElGamal-Kryptosystem](#das-elgamal-kryptosystem)
+    - [Berechnung diskreter Logarithmen](#berechnung-diskreter-logarithmen)
+    - [Elliptische Kurvenuber endlichen Körpern](#elliptische-kurvenuber-endlichen-körpern)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -1644,17 +1656,17 @@ Algorithmus 4.1 Euklidischer Algorithmus:
 Die eigentliche Rechnung findet in der while-Schleife statt. In dieser Schleife wird immer ein Zahlenpaar durch ein anderes ersetzt, das dieselben gemeinsamen Teiler hat wie $x$ und $y$. Wenn der Algorithmus terminiert, weil der Inhalt $b$ von $b$ Null geworden ist, kann man den Inhalt von $a$ ausgeben.
 
 Beispiel: Auf Eingabe $x=10534, y=12742$ ergibt sich der nachstehenden Tabelle angegebene Ablauf. Die Zahlen $a_i$ und $b_i$ bezeichnen den Inhalt der Variablen $a$ und $b$, nachdem die Schleife in Zeilen $2-3$ i-mal ausgeführt worden ist. Die Ausgabe ist $46 = ggT(10534,12742)$.
-|i| $a_i$| $b_i$
----|---|---
-0 |10534 |12742
-1 |12742 |10534
-2 |10534 |2208
-3 |2208 |1702
-4 |1702| 506
-5 |506 |184
-6 |184 |138
-7 |138 |46
-8 |46 |0
+| i   | $a_i$ | $b_i$ |
+| --- | ----- | ----- |
+| 0   | 10534 | 12742 |
+| 1   | 12742 | 10534 |
+| 2   | 10534 | 2208  |
+| 3   | 2208  | 1702  |
+| 4   | 1702  | 506   |
+| 5   | 506   | 184   |
+| 6   | 184   | 138   |
+| 7   | 138   | 46    |
+| 8   | 46    | 0     |
 
 
 Fakt 4.4 Algorithmus 4.1 gibt $ggT(x,y)$ aus.
@@ -1703,17 +1715,17 @@ $$b=s_b*x+t_b*y \quad\quad(4.2)$$
 Diese Gleichung wird durch die Initialisierung hergestellt. In einem Schleifendurchlauf wird $a$ durch $b$ ersetzt und $(s_a,t_a)$ durch $(s_b,t_b)$, und es wird $b$ durch $a-q*b$ ersetzt sowie $(s_b,t_b)$ durch $(s_a-q*s_b, t_a-q*t_b)$. Dadurch bleiben die Gleichungen (4.2) gültig. Wenn schließlich $b=0$ geworden ist, gilt $d=ggT(x,y) =a=s_a*x+t_a*y$. Das bedeutet, dass die Ausgabe das gewünschte Ergebnis darstellt.
 
 Als Beispiel betrachten wir den Ablauf des Algorithmus auf der Eingabe $(x,y) =(10534,12742)$. Die Zahlen $a_i,b_i,s_{a,i},t_{a,i},s_{b,i},t_{b,i}$ bezeichnen den Inhalt von $a,b,sa,ta,sb,tb$ nach dem i-ten Schleifendurchlauf.
-| $i$ |$a_i$|$b_i$|$s_{a,i}$|$t_{a,i}$|$s_{b,i}$|$t_{b,i}$|$q_i$
----|---|---|---|---|---|---|---|
-0| 10534| 12742| |1| 0 |0 |1| -
-1| 12742| 10534| |0| 1 |1 |0| -
-2| 10534| 2208 |1 |0| - |1 |1| 1
-3| 2208| 1702 |- |1 |1 |5 - |4| 4
-4| 1702| 506 |5 |- |4 |- 6 |5| 1
-5| 506| 184 |- |6 |5 |23 |- |19 |3
-6| 184| 138 |23| - |19 |- |52| 43| 2
-7| 138| 46 |- |52 |43 |75 |-| 62| 1
-8| 46| 0 75 |-| 62 |-| 277 |229| 3
+| $i$ | $a_i$ | $b_i$ | $s_{a,i}$ | $t_{a,i}$ | $s_{b,i}$ | $t_{b,i}$ | $q_i$ |
+| --- | ----- | ----- | --------- | --------- | --------- | --------- | ----- |
+| 0   | 10534 | 12742 |           | 1         | 0         | 0         | 1     | -  |
+| 1   | 12742 | 10534 |           | 0         | 1         | 1         | 0     | -  |
+| 2   | 10534 | 2208  | 1         | 0         | -         | 1         | 1     | 1  |
+| 3   | 2208  | 1702  | -         | 1         | 1         | 5 -       | 4     | 4  |
+| 4   | 1702  | 506   | 5         | -         | 4         | - 6       | 5     | 1  |
+| 5   | 506   | 184   | -         | 6         | 5         | 23        | -     | 19 | 3 |
+| 6   | 184   | 138   | 23        | -         | 19        | -         | 52    | 43 | 2 |
+| 7   | 138   | 46    | -         | 52        | 43        | 75        | -     | 62 | 1 |
+| 8   | 46    | 0 75  | -         | 62        | -         | 277       | 229   | 3  |
 
 Die Ausgabe ist $(46, 75 ,-62)$. Man überprüft leicht, dass
 $$46 = ggT(10534,12742) = 75* 10534 - 62 * 12742$$
@@ -1794,14 +1806,14 @@ Algorithmus 4.3 Schnelle modulare Exponentiation, rekursiv
 
 Man erkennt sofort, dass in jeder Rekursionsebene die Bitanzahl des Exponenten $y$ um 1 sinkt, dass also die Anzahl der Rekursionsebenen etwa $log\ y$ beträgt. In jeder Rekursionsstufe ist eine oder sind zwei Multiplikationen modulo m auszuführen, was $O((log\ m)^2)$ Ziffernoperationen erfordert (Schulmethode).
 Beispiel: Wir berechnen $13^{43} mod\ 19$.
-| $i$ | | $x^{2^i} mod\ 19$ | $\lfloor y/2^i\rfloor$ | Faktor (wenn $\lfloor y/2^i\rfloor$ ungerade) |
-| ---|---|---|---|---|
-0| $x$| $13$ |$43$| $13$
-1| $x^2$ |$13^2 \equiv (-6)^2 \equiv 36\equiv 17$| $21$  |$17$
-2| $x^4$ |$17^2 \equiv (-2)^2 = 4$| (gerade) $10$| -
-3| $x^8$ |$4^2 = 16$| $5$| $16$
-4| $x^{16}$| $16^2 \equiv (-3)^2 = 9$| (gerade) $2$| -
-5| $x^{32}$| $9^2 \equiv (-10)^2 = 100\equiv 5$| $1$| $5$
+| $i$ |          | $x^{2^i} mod\ 19$                       | $\lfloor y/2^i\rfloor$ | Faktor (wenn $\lfloor y/2^i\rfloor$ ungerade) |
+| --- | -------- | --------------------------------------- | ---------------------- | --------------------------------------------- |
+| 0   | $x$      | $13$                                    | $43$                   | $13$                                          |
+| 1   | $x^2$    | $13^2 \equiv (-6)^2 \equiv 36\equiv 17$ | $21$                   | $17$                                          |
+| 2   | $x^4$    | $17^2 \equiv (-2)^2 = 4$                | (gerade) $10$          | -                                             |
+| 3   | $x^8$    | $4^2 = 16$                              | $5$                    | $16$                                          |
+| 4   | $x^{16}$ | $16^2 \equiv (-3)^2 = 9$                | (gerade) $2$           | -                                             |
+| 5   | $x^{32}$ | $9^2 \equiv (-10)^2 = 100\equiv 5$      | $1$                    | $5$                                           |
 
 Produkt: $x*x^2 *x^8 *x^{16} *x^{32} \equiv 13*17*16*5\equiv (-6)(-2)(-3)5 = -180\equiv -9\equiv 10$.
 
@@ -1869,10 +1881,10 @@ Der Beweis erfolgt durch einen Ringschluss.
 - Mit Fakt 4.16 folgt, dass $x$ kein multiplikatives Inverses modulo $m$ hat, also ist $\mathbb{Z}_m$ kein Körper, d.h. 3. ist falsch. 
 
 Beispiel: $m=13$. Wir geben für jedes $x\in\mathbb{Z}^*_{13}$ das Inverse $y$ sowie das Produkt $x*y$ an (das natürlich bei der Division durch $13$ Rest $1$ lassen muss).
-| x |1 |2 |3 |4 |5 |6 |7 |8 |9 |10| 11| 12
----|---|---|---|---|---|---|---|---|---|---|---|---|
-y| 1 |7 |9 |10| 8| 11| 2| 5| 3| 4| 6| 12
-$x*y$| 1| 14| 27| 40| 40| 66| 14| 40| 27| 40| 66| 144|
+| x     | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| y     | 1   | 7   | 9   | 10  | 8   | 11  | 2   | 5   | 3   | 4   | 6   | 12  |
+| $x*y$ | 1   | 14  | 27  | 40  | 40  | 66  | 14  | 40  | 27  | 40  | 66  | 144 |
 
 $14$ ist keine Primzahl, und es gibt keine Zahl $y$ mit $2*y\ mod\ 14 = 1$; das heißt, dass $2\not\in\mathbb{Z}^*_{14}$ und daher, dass $\athbb{Z}_{14}$ kein Körper ist. 
 Wir notieren noch einen altehrwürdigen Satz aus der Zahlentheorie. Der Satz wurde von Pierre de Fermat, 1607-1665, einem französischen Mathematiker und Juristen, gefunden.
@@ -1889,10 +1901,10 @@ Der ,,Chinesische Restsatz'' besagt im Wesentlichen, dass für teilerfremde Zahl
 
 Wir beginnen mit einem Beispiel, nämlich $m=3,n=8$, also $mn=24$. Die folgende Tabelle gibt die Reste der Zahlen $x\in\{0,1,...,23\}\ modulo\ 3$ und $modulo\ 8$ an. Die Restepaare wiederholen sich zyklisch für andere $x\in\mathbb{Z}$.
 
-x| 0| 1| 2| 3| 4| 5| 6| 7| 8| 9| 10| 11| 12| 13| 14| 15| 16| 17| 18| 19| 20| 21| 22| 23|
----|---|---|---|---|---|---|---|---|----|----|----|---|---|---|----|---|---|---|---|----|---|---|---|---|---|---|---|---|
-x mod 3| 0| 1| 2| 0| 1| 2| 0| 1| 2| 0| 1| 2| 3| 0| 1| 2| 0| 1| 2| 0| 1| 2| 0| 1| 2|
-x mod 8| 0| 1| 2| 3| 4| 5| 6| 7| 0| 1| 2| 3| 8| 4| 5| 6| 7| 0| 1| 2| 3| 4| 5| 6| 7|
+| x   | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  | 21  | 22  | 23  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |||  |  |
+| x mod 3 | 0   | 1   | 2   | 0   | 1   | 2   | 0   | 1   | 2   | 0   | 1   | 2   | 3   | 0   | 1   | 2   | 0   | 1   | 2   | 0   | 1   | 2   | 0   | 1   | 2   |
+| x mod 8 | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 0   | 1   | 2   | 3   | 8   | 4   | 5   | 6   | 7   | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   |
 
 Wenn wir die Einträge in Zeilen 2 und 3 als 24 Paare in $\mathbb{Z}_3 \times\mathbb{Z}_8$ ansehen, erkennen wir, dass sie alle verschieden sind, also auch alle Möglichkeiten in $\{0,1,2\}\times\{0,1,...,7\}$ abdecken. D.h.: Die Abbildung $x\rightarrow (x\ mod\ 3,x\ mod\ 8)$ ist eine Bijektion zwischen $\mathbb{Z}_{24}$ und $\mathbb{Z}_3\times\mathbb{Z}_8$. Zudem spiegeln sich arithmetische Operationen auf den Elementen von $\mathbb{Z}_{24}$ in den Resten modulo $3$ und $8$ wider. Beispielsweise liefert die Addition von $(2,7)$ und $(2,1)$ das Resultat $(1,0)$, das der Addition von $23$ und $17$ mit dem Resultat $40\ mod\ 24 = 16$ entspricht. Genauso ist $(2^5\ mod\ 3, 3^5\ mod\ 8)=(2,3)$, was der Beobachtung $11^5\ mod\ 24 = 11$ entspricht.
 Der Chinesische Restsatz sagt im wesentlichen, dass eine solche strukturelle Entsprechung zwischen den Resten modulo $mn$ und Paaren von Resten modulo $m$ bzw. $n$ immer gilt, wenn $m$ und $n$ teilerfremd sind.
@@ -1923,9 +1935,9 @@ Definition 4.23 (Eulersche $\varphi$-Funktion): für $m\geq 2$ sei $\varphi(m):=
 Einige Beispielwerte, die man durch Aufzählen findet, sind in folgender Tabelle angegeben.
 
 [Tabelle 2: Eulersche $\varphi$-Funktion für kleine $m$]
-|m| 2| 3| 4| 5| 6| 7| 8| 9| 10| 11| 12| 13| 14| 15| 16| 17| 18| 19| 20
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-$\varphi(m)$| 1| 2| 2| 4| 2| 6| 4| 6| 4| 10| 4| 12| 6| 8| 8| 16| 6| 18| 8
+| m   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- ||  |
+| $\varphi(m)$ | 1   | 2   | 2   | 4   | 2   | 6   | 4   | 6   | 4   | 10  | 4   | 12  | 6   | 8   | 8   | 16  | 6   | 18  | 8   |
 
 Folgendes ist eine unmittelbare Konsequenz aus Proposition 4.22:
 
@@ -1986,11 +1998,11 @@ Daraus folgt, dass für $n\geq 20$ der Anteil der Primzahlen unter den n-Bit-Zah
 Mit Hilfe eines Computeralgebraprogramms findet man heraus, dass die Ungleichung $|\{p\in [2^{n-1}, 2^n)|\text{ p is prime}\}|/2^{n-1} \geq  6 /(5n)$ auch für $9\leq n\leq 20$ gilt. (Für $n=8$ ist sie falsch.) Man kann sich also merken: für $n\geq 9$ ist der Anteil der Primzahlen an den n-Bit-Zahlen mindestens $\frac{6}{5n}$.
 
 | Ziffernzahl $n$ | Dusart-Schranke $(\pi(2^n)-\pi(2^{n-1}))\backslash 2^{n-1}$ | für numerische untere Schranke |
-| ---|---|---|
-$256$ | $\frac{6}{5*256}$ | $\geq \frac{1}{214}$
-$512$ | $\frac{6}{5*512}$ | $\geq \frac{1}{427}$
-$1024$ | $\frac{6}{5*1024}$ | $\geq\frac{1}{854}$
-$2048$ | $\frac{6}{5*2048}$ | $\geq\frac{1}{1707}$
+| --------------- | ----------------------------------------------------------- | ------------------------------ |
+| $256$           | $\frac{6}{5*256}$                                           | $\geq \frac{1}{214}$           |
+| $512$           | $\frac{6}{5*512}$                                           | $\geq \frac{1}{427}$           |
+| $1024$          | $\frac{6}{5*1024}$                                          | $\geq\frac{1}{854}$            |
+| $2048$          | $\frac{6}{5*2048}$                                          | $\geq\frac{1}{1707}$           |
 
 Eine leichter zu beweisende Aussage der Art $\pi(2m)-\pi(m) = O(m/log\ m)$ ist die folgende:
 
@@ -2038,11 +2050,11 @@ Beispiel: $N=91 = 7*13$. Es gibt 18 Vielfache von 7 und 13 (für größere $p$ u
 In diesem Beispiel gibt es um einiges mehr F-Zeugen als F-Lügner. Wenn dies für alle zusammengesetzten Zahlen $N$ der Fall wäre, wäre es eine elegante randomisierte Strategie, einfach zufällig nach F-Zeugen zu suchen. Dies führt zu unserem ersten Versuch für einen randomisierten Primzahltest.
 
 Tabelle 3: F-Zeugen und F-Lügner für $N=91= 7*13$. Es gibt $36$ F-Lügner und $36$ F-Zeugen in $\mathbb{Z}^*_{91}$. Wir wissen nach Lemma 4.35, dass alle 18 Vielfachen von $7$ und $13$ F-Zeugen sind.
-|||
-|---|---|
-| F-Zeugen in $\{ 1 ,..., 90\}-\mathbb{Z}^*_{91}$: | 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84; 13, 26, 39, 52, 65, 78 |
-| F-Lügner: |1, 3, 4, 9, 10, 12, 16, 17, 22, 23, 25, 27, 29, 30, 36, 38, 40, 43, 48, 51, 53, 55, 61, 62, 64, 66, 68, 69, 74, 75, 79, 81, 82, 87, 88, 90 
-| F-Zeugen in $\mathbb{Z}^*_{91}$ : | 2, 5, 6, 8, 11, 15, 18, 19, 20, 24, 31, 32, 33, 34, 37, 41, 44, 45, 46, 47, 50, 54, 57, 58, 59, 60, 67, 71, 72, 73, 76, 80, 83, 85, 86, 89
+|                                                  |                                                                                                                                            |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| F-Zeugen in $\{ 1 ,..., 90\}-\mathbb{Z}^*_{91}$: | 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84; 13, 26, 39, 52, 65, 78                                                                      |
+| F-Lügner:                                        | 1, 3, 4, 9, 10, 12, 16, 17, 22, 23, 25, 27, 29, 30, 36, 38, 40, 43, 48, 51, 53, 55, 61, 62, 64, 66, 68, 69, 74, 75, 79, 81, 82, 87, 88, 90 |
+| F-Zeugen in $\mathbb{Z}^*_{91}$ :                | 2, 5, 6, 8, 11, 15, 18, 19, 20, 24, 31, 32, 33, 34, 37, 41, 44, 45, 46, 47, 50, 54, 57, 58, 59, 60, 67, 71, 72, 73, 76, 80, 83, 85, 86, 89 |
 
 Algorithmus 4.4: Fermat-Test
 - Eingabe: Ungerade Zahl $N\geq 3$
@@ -2116,15 +2128,15 @@ Wir kehren nochmals zum Fermat-Test zurück und sehen uns die dort durchgeführt
 ist $b_k=a^{N-1}\ mod\ N$. Beispielsweise erhalten wir für $N=325 = 5^2 *13$ den Wert $N-1 = 324 = 81* 22$. In Tabelle 4 berechnen wir $a^{81} ,a^{162}$ und $a^{324}$, alle modulo $325$, für verschiedene a.
 
 Tabelle 4: Potenzen $a^{N-1}\ mod\ N$ mit Zwischenschritten, $N=325$. (Die ,,Fälle'' werden weiter unten erklärt.
-|a| $b_0 =a^{81}$ | $b_1=a^{162}$| $b_2=a^{324}$ | F-Z.? | MR-Z.? | Fall
----|---|---|---|---|---|---
-126| 1| 1| 1||| 1
-49| 324| 1| 1||| 2a
-7| 307| 324| 1||| 2b
-2| 252| 129| 66| $\times$ | $\times$| 3
-15 |200 |25 |300| $\times$| $\times$| 3
-224| 274| 1| 1|| $\times$ |4a
-201| 226| 51| 1|| $\times$| 4b
+| a   | $b_0 =a^{81}$ | $b_1=a^{162}$ | $b_2=a^{324}$ | F-Z.?    | MR-Z.?   | Fall |
+| --- | ------------- | ------------- | ------------- | -------- | -------- | ---- |
+| 126 | 1             | 1             | 1             |          |          | 1    |
+| 49  | 324           | 1             | 1             |          |          | 2a   |
+| 7   | 307           | 324           | 1             |          |          | 2b   |
+| 2   | 252           | 129           | 66            | $\times$ | $\times$ | 3    |
+| 15  | 200           | 25            | 300           | $\times$ | $\times$ | 3    |
+| 224 | 274           | 1             | 1             |          | $\times$ | 4a   |
+| 201 | 226           | 51            | 1             |          | $\times$ | 4b   |
 
 Die Grundidee des Miller-Rabin-Tests ist nun, diese verlangsamte Berechnung der Potenz $a^{N-1}\ mod\ N$ auszuführen und dabei nach nichttrivialen Quadratwurzeln der $1$ Ausschau zu halten.
 
@@ -2145,14 +2157,14 @@ Die möglichen Muster sind in Tabelle 5 angegeben. Dabei steht ,,*'' für ein El
 In Tabelle 4 findet man konkrete Beispiele für das Eintreten aller Fälle für die zusammengesetzte Zahl $N=325$.
 
 Tabelle 5: Potenzen $a^{N-1}\ mod\ N$ berechnet mit Zwischenschritten, mögliche Fälle.
-|$b_0$| $b_1$ | ...| | | | ... | $b_{k-1}$ | $b_k$ | Fall | F-Z.?  | MR-Z.?
----|---|---|---|---|---|---|---|---|---|---|---
-1| 1| ...| 1| 1| 1| ... |1 |1 |1
-N-1| 1| ...| 1| 1| 1| ...| 1| 1| 2a
-*| *| ...| * |N-1| 1| ...| 1| 1| 2b
-* |*| ...| *| *| *| ... |*| $\not= 1$| 3 |$\times$| $\times$
-* |* |...| * |1| 1| ... |1| 1| 4a ||$\times$
-*| *| ...| * |*| *| ... |*| 1| 4b|| $\times$
+| $b_0$ | $b_1$ | ... |     |     |     | ... | $b_{k-1}$ | $b_k$     | Fall | F-Z.?    | MR-Z.?   |
+| ----- | ----- | --- | --- | --- | --- | --- | --------- | --------- | ---- | -------- | -------- |
+| 1     | 1     | ... | 1   | 1   | 1   | ... | 1         | 1         | 1    |
+| N-1   | 1     | ... | 1   | 1   | 1   | ... | 1         | 1         | 2a   |
+| *     | *     | ... | *   | N-1 | 1   | ... | 1         | 1         | 2b   |
+| *     | *     | ... | *   | *   | *   | ... | *         | $\not= 1$ | 3    | $\times$ | $\times$ |
+| *     | *     | ... | *   | 1   | 1   | ... | 1         | 1         | 4a   |          | $\times$ |
+| *     | *     | ... | *   | *   | *   | ... | *         | 1         | 4b   |          | $\times$ |
 
 Wir beobachten: Wenn $N$ eine Primzahl ist, dann gilt nach dem kleinen Satz von Fermat für jedes $a$ die Gleichung $b_k=a^{N-1}\ mod\ N=1$. Weiter kann es nach Lemma 4.39 nicht passieren, dass $b_{i-1}\not=N-1$ und $b_i=1$ ist. Also können für eine Primzahl $N$ nur Fälle $1$ und $2$ vorkommen. Umgekehrt findet man im Beispiel $N=17$, dass $a=1$ zu Fall $1$, $a=16$ zu Fall 2a, und $a=2$ bzw. $a=3$ zu Fall 2b mit $b_2=16$ bzw. $b_3=16$ führt. Um bei Primzahlen keine falschen Ergebnisse zu erzeugen, müssen wir also in den Fällen 1 und 2 den Wert 0 ausgeben. In den Fällen 3 und 4 hingegen stellt die Zahl $a$ (mit ihren Potenzen $b_0,...,b_k$) einen Beleg dafür dar, dass $N$ keine Primzahl ist: Im Fall 3 ist $a$ ein F-Zeuge, im Fall 4 ist $b_{i-1}$ eine nichttriviale Quadratwurzel der $1$, und das kann nur passieren, wenn $N$ zusammengesetzt ist. Hier können wir also 1 ausgeben.
 
@@ -2214,16 +2226,16 @@ Tabelle 6: Sicht auf $B_N$ als Teilmenge von $\mathbb{Z}^*_N$
 | $a$              | $b_0$ | $b_1$       | ...  |                   | $b_{i_0}$       |                   | ... | $b_{k-1}$       | $b_k$ |
 | ---------------- | ----- | ----------- | ---- | ----------------- | --------------- | ----------------- | --- | --------------- | ----- |
 | $a_1=1$          | 1     | 1           | ...  | 1                 | 1               | 1                 | ... | 1               | 1     |
-| $a_2=N-1$        | $N-1$ |              1    | ...               | 1               | 1                 | 1   | ...             | 1     | 1|
+| $a_2=N-1$        | $N-1$ | 1           | ...  | 1                 | 1               | 1                 | ... | 1               | 1     |
 | $a_3$            | *     | *           | ...  | *                 | $N-1$           | 1                 | ... | 1               | 1     |
 | $a_4$            | *     | *           | ...  | $N-1$             | 1               | 1                 | ... | 1               | 1     |
-|                  |       |             |      |                   |                 |                   |     | 1               | 1     | 
+|                  |       |             |      |                   |                 |                   |     | 1               | 1     |
 | $a$              | $a^u$ | $a^{u*2^1}$ | ...  | $a^{u*2^{i_0-1}}$ | $a^{u*2^{i_0}}$ | $a^{u*2^{i_0+1}}$ | ... | $a^{u*2^{k-1}}$ | 1     |
-|                  |       |             |      |                   |                 |                   |     |                 ||
+|                  |       |             |      |                   |                 |                   |     |                 |       |
 | $a_#$            | *     | *           | ...  | *                 | $N-1$           | 1                 | ... | 1               | 1     |
-|                  |       |             |      |                   |                 |                   |     |                 ||
-| $a_?$            | $*?$  | ...         | $*?$ | $*?$              | ...             | ...               | ... | 1               ||
-|                  |       |             |      |                   |                 |                   |     |                 ||
+|                  |       |             |      |                   |                 |                   |     |                 |       |
+| $a_?$            | $*?$  | ...         | $*?$ | $*?$              | ...             | ...               | ... | 1               |       |
+|                  |       |             |      |                   |                 |                   |     |                 |       |
 | $a_{\varphi(N)}$ | ?     | ?           | ...  | ?                 | ?               | ?                 | ... | ?               | 1     |
 
 
@@ -2477,3 +2489,315 @@ Also: $J_N(x^e\ mod\ N) =L_p(x^e\ mod\ N)*L_q(x^e\ mod\ N) =L_p(x)*L_q(x) =J_N(x
 
 Das heißt: $J_N(E(x,(N,e))) =J_N(x)$. Der Chiffretext zu $x$ erbt eine nichttriviale Eigenschaft von $x$, nämlich den Wert des Jacobi-Symbols. Da sich das Jacobi-Symbol effizient berechnen lässt, erhält man sofort einen effizienten Angreifer. Wie? Der Finder berechnet zwei Klartexte $z_0$ und $z_1$ mit $J_N(z_0) = 1$ und $J_N(z_1) = -1$. Aus dem Jacobisymbol $J_N(y)$ der Probe kann er schließen, welcher der beiden Klartexte verschlüsselt wurde. Es folgt erneut: RSA ist nicht sicher im Sinn des Tests in Abschnitt 5.2.2.
 Man könnte versuchen, diesem ,,kleinen'' Problem zu entkommen, indem man nur Klartexte $x\in [N]$ mit $J_N(x) = 1$ zulässt. Allerdings wird dadurch die Menge der Bitstrings, die Klartexte sein dürfen, auf etwas unübersichtliche Weise eingeschränkt.
+
+
+## Weitere Bemerkungen zur Sicherheit und effizienten Verwendung von RSA
+Der Einwand, dass man das Jacobisymbol des Klartextes ermitteln kann, ist vielleicht eine Schwäche von RSA, die man als praktisch geringfügig einschätzen kann. Viel schlimmer ist es, wenn man aus $y$ und $(e,N)$ den kompletten Klartext $x$ ermitteln kann. Es ist kein Verfahren bekannt, das dies in der allgemeinen Situation effizient bewerkstelligt. Wir beschreiben hier (informal) Begründungen dafür, dass die naheliegendsten Angriffe vermutlich nicht effizient durchführbar sind, und Maßnahmen, die RSA zu einem (praktisch, vermutet) sicheren System machen.
+
+### Äquivalenz ,,d bekannt'' zu ,,N faktorisieren''
+Wenn Eva die Zahl $N$ effizient in ihre Faktoren $p$ und $q$ zerlegen kann, kann sie natürlich sofort $\varphi(N)$ und $d$ berechnen und damit sämtliche mit $k=(e,N)$ verschlüsselten Nachrichten lesen. Nach aktuellem Stand sind Faktorisierungsverfahren nicht effizient genug, um Zahlen mit einigen hundert Dezimalstellen zuverlässig effizient zu faktorisieren.
+Eine scheinbar schwächere Anforderung ist, dass Eva den Wert $\varphi(N)$ berechnen kann, denn dann kann sie auch $d$ berechnen (mit dem erweiterten Euklidischen Algorithmus) und direkt entschlüsseln.
+Ganz allgemein ist der RSA-Schlüssel $(k,\hat{k}) = ((e,N),(d,N))$ vollständig gebrochen, wenn Eva $d$ ermitteln kann, nur aus der Kenntnis von $(e,N)$. Ist dies vielleicht ,,leichter'' als die Faktorisierung von $N$? Man kann Folgendes zeigen: Aus $N$, $e$ und $d$ lassen sich mit einem randomisierten Verfahren effizient die Faktoren $p$ und $q$ berechnen.
+Das heißt: Das vollständige Brechen eines RSA-Schlüssels durch Ermittlung von $d$ ist in etwa genauso schwierig wie die Faktorisierung von $N$.
+
+Wir skizzieren die entsprechenden überlegungen.
+
+Satz: Es gibt einen randomisierten Polynomialzeitalgorithmus, der aus $e$, $d$ und $N$ die Primfaktoren $p$ und $q$ von $N$ berechnet.
+
+Skizze des Vorgehens in diesem Algorithmus: Wir schreiben $ed-1 = 2^k u$ für eine ungerade Zahl $u$ und $k\geq 1$. (Beachte, dass $e$ und $d$ ungerade sein müssen, weil sie teilerfremd zu $\varphi(N) = (p-1)(q-1)$ sind, einer geraden Zahl.) Definiere: $ord_p(b) = min\{w|b^w\ mod\ p= 1\}$, für $b\ mod\ p\not= 0$, analog $ord_q(b)$, für $b\ mod\ q\not= 0$. Dies ist die ,,Ordnung'' von $b\ mod\ p$ in der multiplikativen Gruppe $\mathbb{Z}^*_p$ bzw. $b\ mod\ q$ in $\mathbb{Z}^*_q$.
+
+Lemma 1: $p\not| a\Rightarrow ord_p(a^u)\in\{2^0, 2^1,...,2^k\}$. 
+Beweis des Lemmas: Wenn $p|a$, ist nichts zu zeigen. Sonst benutze, dass es ein $s$ mit s\varphi(N) =ed-1$ gibt. Dann gilt $(a^u)^{2^k}\equiv a^{s(p-1)(q-1)}\equiv (a^{p-1})^{s(q-1)}\equiv 1 (mod\ p)$ nach dem kleinen Satz von Fermat. Also ist (das gilt immer in Gruppen) die Ordnung von $a^u$ ein Teiler von $2^k$. Dies beweist das Lemma.
+
+Lemma 2: Wenn $p\not| a$ und $q\not| a$ und $ord_p(a^u)\not= ord_q(a^u)$, dann gibt es ein $i\leq k$ mit $ggT(N,(a^{u2^i}-1) mod\ N)\in\{p,q\}$.
+Beweis des Lemmas: O.B.d.A.: $ord_p(a^u)>ord_q(a^u) = 2^i$, mit $i<k$. Dann: $a^{u2^i} = (a^u)^{ord_q(a^u)} \equiv 1 (mod\ q)$, also $q|a^{u2^i}- 1$, aber $a^{u2^i}= (a^u)^{2^i} \not\equiv 1 (mod\ p)$, also $p\not| a^{u2^i}- 1$.
+Daraus folgt sofort $ggT(N,(a^{u 2^i}-1) mod\ N) = ggT(N,(a^u)^{2^i}-1) =q$. Das beweist das Lemma.
+
+Algorithmus: Wähle $a$ aus $\{1,... ,N-1\}$ zufällig. Prüfe, ob $ggT(N, a)>1$. Falls ja, ist $ggT(a, N)$ ein Primfaktor von $N$. Sonst berechne $ggT(N, a^{u 2^i}-1\ mod\ N)$, für $i=0,1,... , k$. Falls einer dieser Werte $>1$ ist, ist er ein Primfaktor von $N$. Was noch fehlt: Satz $|\{a\in\{1,...,N-1\}|ord_p(a^u)\not= ord_q(a^u)\}|\geq\frac{1}{2}\varphi(N)$. Der Satz, für dessen Beweis wir auf das Buch von Baumann, Franz, Pfitzmann verweisen, besagt, dass der Algorithmus mit Wahrscheinlichkeit mindestens $\frac{1}{2}$ erfolgreich einen Primfaktor von $N$ findet.
+Konsequenz aus diesen Überlegungen: Wenn $d$ bekannt wird, darf man den Modulus $N$ keinesfalls weiter verwenden.
+Im Wesentlichen ist also das vollständige Brechen des Systemsäquivalent dazu, $N$ in seine Faktoren zu zerlegen. Das Faktorisierungsproblem gilt bislang als im Allgemeinen schwierig und für das Produkt $N$ von zwei zufälligen Primzahlen mit 512 Bits (oder 1024 Bits) als praktisch nicht lösbar.
+Man beachte aber: Den geheimen Schlüssel $d$ zu finden muss nicht die einzige Möglichkeit sein, aus $N,e$ und $y$ partielle Information über $x$ zu gewinnen, wie man am Jacobi-Symbol sieht.
+
+### Bemerkungen zum Faktorisierungsproblem, allgemein
+Nach wie vor gibt es keinen Polynomialzeitalgorithmus, der beliebige zusammengesetzte Zahlen $N$ in ihre Primfaktoren zerlegen kann (äquivalent: in polynomieller
+Zeit einen nichttrivialen Faktor von $N$ bestimmen kann). Allerdings gab es in den letzten Jahrzehnten auch gewaltige Fortschritte bei der Entwicklung immer besserer Verfahren.
+- Pollards $(p-1)$-Methode (klassisch): Führt zu schneller Ermittlung eines Faktors von $N$, wenn für einen Primfaktor $p$ von $N$ gilt, dass $p-1$ nur kleine Primfaktoren hat.
+- Pollards $ρ$-Methode (klassisch): Führt zur Ermittlung eines Faktors von $N$ in Zeit $O(\sqrt{p})$, wo $p$ ein Primfaktor von $N$ ist. Da $N$ immer einen Primfaktor in $O(\sqrt{n})$ hat, ist die Rechenzeit im schlechtesten Fall in $O(\sqrt[4]{n}) =O(2^{(log\ N)/ 4)})$. Schnell zum Ziel kommt man also, wenn $N$ einen kleinen Primfaktor $p$ hat. (Die oben angegebenen Vorschriften zur Wahl von $p$ und $q$ vermeiden diese Situation.)
+- Quadratisches Sieb (Pomerance, 1981): Rechenzeit $O(e^{sqrt{(ln\ N)(ln\ ln\ N)}})$.
+- Faktorisierung mit Elliptischen Kurven (Hendrik W. Lenstra, 1987): Rechenzeit $O(e^{(1+o(1)) \sqrt{(ln\ p)(ln\ ln\ p)}})$, wo $p$ der kleinste Primteiler von $N$ ist.
+- Zahlkörpersieb (um 1990, zwei Varianten): Die schnellsten heute bekannten Faktorisierungsverfahren. Die anfallenden Rechnungen können auf vielen Rechnern parallel durchgeführt werden. Die Gesamtrechenzeit ist beschränkt durch $O(e^{C(ln\ N)^{\frac{1}{3}} (ln\ ln\ N)^{\frac{2}{3}}})$, für eine Konstante $C$. An der Verbesserung der Verfahren wird laufend gearbeitet.
+
+Der Rechenaufwand für die Faktorisierung auch nur 260-stelliger Zahlen in Dezimaldarstellung ist heute noch so immens, dass diese Art von Angriff auf das RSA-System noch nicht als ernsthafte Bedrohung angesehen wird. Das BSI (Bundesamt für Sicherheit in der Informationstechnik) empfiehlt für RSA-Anwendungen Schlüssellängen von 2000 Bits oder etwa 600 Dezimalziffern (bzw. 3000 Bits oder 900 Dezimalziffern, wenn auch Entwicklungen der nächsten Jahre mit einkalkuliert werden sollen.)
+Wenn sich $p$ und $q$ nur geringfügig unterscheiden, lässt sich $N$ effizient faktorisieren. Man sollte also darauf achten, dass $p$ und $q$ in nicht mehr als etwa den ersten 20 Binärstellen übereinstimmen. Bei zufälliger Wahl wird dies mit sehr hoher Wahrscheinlichkeit eintreten.
+
+Es gibt ein RSA-spezifisches Angriffsverfahren (,,Iteration''), das effizient funktioniert, wenn $p-1$ und $q-1$ kleine Primfaktoren haben. Bei der Wahl von $p$ und $q$ ist also auch darauf zu achten, dass dies nicht der Fall ist (s. Buch von Buchmann).
+
+### Zufallskomponente
+In der Praxis wird der Klartext $x\in\{0,1\}^w$ mit $w<\lfloor log\ N\rfloor$ durch Anhängen eines zufälligen Bitstrings $r$ auf Länge $\lfloor log\ N\rfloor$ gebracht und das Wort $x\circ r$ (Konkatenation von $x$ und $r$) wie beschrieben verschlüsselt. Die Zufallskomponentermacht den Verschlüsselungsalgorithmus $E$ zu einem randomisierten Verfahren. Der Empfänger muss natürlich ebenfalls die Länge $w$ kennen, um nach der Entschlüsselung aus $x\circ r$ die eigentliche Botschaft $x$ zu ermitteln. Dieses Vorgehen hat auch den Vorteil, dass selbst bei mehrmaligem Versenden derselben Botschaft (oder Wiederholung von Blöcken) unterschiedliche Chiffretexte entstehen und zum Beispiel die Parität der Anzahl der 1-Bits in $x\circ r$ sowie das letzte Bit von $x\circ r$ rein zufällig sind und keine Information über $x$ liefern. Auch das Problem mit dem Jacobisymbol wird damit entschärft, da $J_N(x\circ r)$ vermutlich einigermaßen zufällig sein wird. Zudem wird in realen Anwendungen noch eine ,,kryptographische Hashfunktion'' $h$ auf $x\circ r$ angewendet und der neue Klartext $x′=x\circ r\circ h(x\circ r)$ mit dem RSA-System verschlüsselt. Bob entschlüsselt zu $z\circ t\circ w$ und akzeptiert die Nachricht $z$ nur, wenn $h(z\circ t)=w$ ist. Vorteil hiervon: Manipulationen an der Nachricht werden erkannt, die Nachrichten-Integrität
+ist gesichert. (Es bleibt das Problem sicherzustellen, dass die Nachricht tatsächlich von Alice gesendet worden ist.)
+
+### Effizienzverbesserungen
+1. Wahl des Verschlüsselungsschlüssels $e$:
+Mitunter wird vorgeschlagen, $e=3$ zu wählen, weil dann die Verschlüsselung besonders effizient vor sich geht. (Man benötigt nur zwei Multiplikationen modulo N.) Es gibt aber einen Angriff, der den Klartextxeffizient ermitteln kann, wenn drei Chiffretexte für $x$ mit verschiedenenöffentlichen Schlüsseln $(N_1,3),(N_2,3),(N_3,3)$ vorliegen. (Dies kann passieren, wenn Alice dieselbe Nachricht ohne Zufallskomponente an drei verschiedene Empfänger mit verschiedenen RSA-Schlüsseln schickt.)
+Diesem Problem entgeht man, indem man etwa $e=2^{16}+1$ wählt. Auch in diesem Fall ist die Verschlüsselung billiger als im allgemeinen Fall, da man mit 17 Multiplikationen modulo N auskommt.
+
+2. Empfänger rechnet modulo $p$ und $q$, um Rechenzeit zu sparen: Da Bob $d$ kennt, können wir auch annehmen, dass er sogar die Faktoren $p$ und $q$ kennt. Dies kann zu einer Beschleunigung der Berechnung von $z=y^d\ mod\ N$ benutzt werden, wie folgt: Bob berechnet $z_p=y^d\ mod\ p$ und $z_q=y^d\ mod\ q$. Aus diesen beiden Zahlen bestimmt er mit dem Chinesischen Restsatz $z\in [N]$ mit $z\equiv z_p (mod\ p)$ und $z\equiv z_q(mod\ q)$. Dieses Vorgehen spart Rechenaufwand, da die Exponentiationen nur mit Zahlen der halben Länge durchgeführt werden müssen und die Anwendung des Chinesischen Restsatzes auf den erweiterten Euklidischen Algorithmus hinauslaufen, der eine deutlich kleinere Rechenzeit als eine Exponentiation hat.
+Eine Überschlagsrechnung ergibt, dass sich durch dieses Vorgehen der Rechenaufwand für die Entschlüsselung etwa um den Faktor 4 verringert. (Man beachte, dass dies die im vorherigen Abschnitt diskutierte Erweiterung des Klartextes um einen Zufallsstring und einen Hashwert kompensiert.)
+
+### Das Rabin-Kryptosystem
+Es ist nicht bekannt, ob das Problem, RSA-verSchlüsselte Botschaften unberechtigterweise zu entschlüsseln, äquivalent zum Faktorisierungsproblem ist. Wir betrachten hier noch das Rabin-Verschlüsselungsverfahren, bei dem dies der Fall ist. Auch beim Rabin-Verfahren handelt es sich um ein Public-Key-Kryptosystem. 
+
+*Schlüsselerzeugung* (Bob oder Trust Center): Wähle zwei verschiedene zufällige große Primzahlen $p$ und $q$ mit $p\equiv q\equiv 3 (mod\ 4)$, also Primzahlen, die um 1 kleiner als ein Vielfaches von 4 sind. Berechne $N=pq$. Der öffentliche Schlüssel ist $k=N$; der geheime Schlüssel ist $\hat{k}= (p,q)$.
+
+*Verschlüsselung* eines Blocks, der eine Zahl $x<N$ ist: $y:=x^2\ mod\ N$.
+
+*Entschlüsselung* eines Chiffretextes $y<N$: Wir müssen Quadratwurzeln von y modulo N berechnen, das sind Zahlen b mit $b^2 mod\ N=y$. Wir kennen die Faktoren $p$ und $q$. Berechne Quadratwurzeln getrennt modulo $p$ und modulo $q$: $r:=y^{(p+1)/4} mod\ p$ und $s:=y^{(q+1)/4} mod\ q$. 
+Weil $r^2\ mod\ p =((x^2\ mod\ N)^{(p+1)/4})^2\ mod\ p=x^{p+1}\ mod\ p=(x^p *x) mod\ p = x^2\ mod\ p$ (wir haben den kleinen Satz von Fermat in der Version ,,$x^p\equiv x(mod\ p)$ für alle $x$'' benutzt), gilt $r^2-x^2\equiv (r-x)(r+x)\equiv 0 (mod\ p)$. Das heißt, dass entweder $r\equiv x(mod\ p)$ oder $p-r\equiv x(mod\ p)$ gilt.
+Genauso sieht man, dass $s\equiv x(mod\ q)$ oder $q-s\equiv x(mod\ q)$ gilt.
+Mit der konstruktiven Variante des chinesischen Restsatzes (Bemerkung nach Fakt 4.28) können wir nun vier Zahlen $z_1,...,z_4 \in [N]$ berechnen, die die folgenden Kongruenzen erfullen:
+1. $z_1 \equiv r (mod\ p)$ und $z_1 \equiv s (mod\ q)$
+2. $z_2 \equiv r (mod\ p)$ und $z_2 \equiv q-s (mod\ q)$
+3. $z_3 \equiv p-r (mod\ p)$ und $z_3 \equiv s (mod\ q)$
+4. $z_4 \equiv p-r (mod\ p)$ und $z_4 \equiv q-s (mod\ q)$
+
+Wegen der obigen Überlegung ist $x\in\{z_1,...,z_4\}$. Wir wählen eine dieser vier Möglichkeiten. (Man kann Vorkehrungen treffen, dass ,,sinnvolle'' Blöcke $x$ leicht zu erkennen sind. Beispielsweise könnte man den Block $x$ mit einer bestimmten Bitfolge wie 10000 abschließen. Es ist dann nicht anzunehmen, dass die Binärdarstellung einer der anderen Möglichkeiten zufällig ebenso endet.)
+Welcher Rechenaufwand ist nötig? Für die Verschlüsselung muss nur eine Quadrierung modulo $N$ durchgeführt werden; sie kostet nur Zeit $O((log\ N)^2)$. Die Entschlüsselung erfordert eine Exponentiation modulo $p$ und eine modulo $q$ und mehrere Anwendungen des erweiterten Euklidischen Algorithmus - insgesamt Zeit $O((log\ N)^3)$.
+
+*Sicherheit*: Wir nehmen an, Eva hätte ein effizientes Verfahren $B$, mit dem sie alle Chiffretexte zum öffentlichen Schlüssel $N$ entschlüsseln kann. Wir zeigen, dass sie dann auch $N$ faktorisieren kann. (Solange man annimmt, dass dies ein schwieriges Problem ist, kann auch die Annahme, dass Eva Verfahren $B$ hat, als unwahrscheinlich gelten.)
+Eva geht so vor: Sie wählt eine Zahl $x$ aus $[N]$ zufällig. Wenn $ggT(x,N)>1$, ist sie fertig, denn dieser größte gemeinsame Teiler ist entweder $p$ oder $q$. Andernfalls berechnet sie $y=x^2\ mod\ N$. Dann wendet sie ihr Entschlüsselungsverfahren an und berechnet ein $z=B(y)$ mit $z^2 \equiv y\ mod\ N$. Dieses $z$ hängt wohlgemerkt nicht von $x$, sondern nur von $y$ ab. Es gilt $x^2\equiv z^2
+(mod\ N)$. Wie oben gesehen gibt es vier Möglichkeiten:
+1. $x\equiv z (mod\ p)$ und $x\equiv z (mod\ q)$
+2. $x\equiv z (mod\ p)$ und $x\equiv -z (mod\ q)$
+3. $x\equiv -z (mod\ p)$ und $x\equiv z (mod\ q)$
+4. $x\equiv -z (mod\ p)$ und $x\equiv -z (mod\ q)$
+
+Welche dieser Möglichkeiten die richtige ist, hängt vom Zufall ab, der die Auswahl von $x$ steuert. Jede der 4 Quadratwurzeln von $y$ hat dieselbe Wahrscheinlichkeit $1/4$, als $x$ gewählt worden zu sein.
+
+1. Fall: $x=z$, Misserfolg.
+2. Fall: $0<|x-z|< N$ und $x-z$ durch $p$ teilbar, woraus $ggT(x-z,N) =p$ folgt: Erfolg!
+3. Fall: $0<|x-z|< N$ und durch $q$ teilbar, woraus $ggT(x-z,N) =q$ folgt: Erfolg!
+4. Fall: $x+z=N$, also $x-z\equiv 2x(mod\ N)$. Weil $2x$ teilerfremd zu $N$ ist, ergibt sich $ggT(x-z,N)=1$, Misserfolg.
+
+Eva muss also nur $ggT(x-z,N)$ berechnen! Damit gelingt es ihr mit Wahrscheinlichkeit $1/2$, die Faktoren von $N$ zu ermitteln. Durch l-fache Wiederholung desselben Experiments lässt sich die Erfolgswahrscheinlichkeit auf $1-\frac{1}{2^l}$ erhöhen.
+
+## Diskrete Logarithmen und Anwendungen
+### Diskrete Logarithmen
+Wir betrachten eine endliche zyklische Gruppe $(G,\circ,e)$ (multiplikativ geschrieben) mit einem erzeugenden Element $g$. Das bedeutet : $G=\{g^0=e,g^1=g,g^2,...,g^{|G|- 1}\}$. Sei $N=|G|$ die Größe (,,Ordnung'') dieser Gruppe. Dann haben wir: 
+- Die Exponentiationsabbildung $exp_g:\{0,1,...,N-1\}\rightarrow G, a\rightarrow g^a$, ist eine Bijektion (sogar ein Gruppenisomorphismus zwischen $(\mathbb{Z}_N,+,0)$ und $(G,\circ,e)$).
+- Die Umkehrfunktion $log_g:G\rightarrow\{0,1,...,N-1\},g^a\rightarrow a$, heißt der diskrete Logarithmus zur Basis $g$.
+- Das DL-Problem für $G$ und $g$ bezeichnet die Aufgabe, zu gegebenem $h\in G$ den Exponenten $a=log_g (h) \in\{0,1,...,N-1\}$ zu berechnen, also den Exponenten $a$ mit $g^a=h$.
+
+Für alle kryptographischen Verfahren, die mit zyklischen Gruppen arbeiten, müssen die Gruppenelemente eine explizite Darstellung haben, auf denen die Gruppenoperationen $\circ$ und $^{-1}$ effizient ausführbar sind.
+Dann ist auch die Exponentiation $a\rightarrow h^a$ effizient ausführbar (mit $\leq 2 log\ a$ Gruppenoperationen), mittels einer Variante der schnellen modularen Exponentiation. Das DL-Problem darf jedoch keinen (bekannten) effizienten Algorithmus haben.
+Als Gruppen $G$ kommen u.a. in Frage:
+- Für Primzahlen $p$: Die multiplikative Gruppe $\mathbb{Z}^*_p$ mit Grundmenge $\{1,...,p-1\}$ und Multiplikation modulo $p$ als Operation. Die Ordnung (d.h. die Größe) dieser Gruppe ist bekanntermaßen $N=p-1$. Siehe die folgende Tabelle. Es ist ein recht einfacher Fakt aus der Zahlentheorie, dass diese Gruppe für jede Primzahlpzyklisch ist, also ein erzeugendes Element $g$ hat. Die Gruppenoperationen sind effizient ausführbar: Die Gruppenoperation $\circ$ ist die Multiplikation modulo $p$; das neutrale Element ist die 1; zu gegebenem $h\in G$ kann man $h^{-1}$ mit dem erweiterten Euklidischen Algorithmus berechnen. Für $p$ mit 2048 Bits oder mehr, wobei $p-1$ einen ,,großen'' Primteiler enthält, gilt das DL-Problem als praktisch nicht lösbar (für ,,allgemeine'' $a$).
+- Die multiplikative Gruppe eines beliebigen endlichen Körpers, z. B. $GF(2^k)$. Es muss nur sichergestellt sein, dass die Multiplikation im Körper effizient ausführbar ist. Hierfür benötigt man ein irreduzibles Polynom von Grad $k$ und man muss Implementierungen von Polynommultiplikation und -Division haben. Für das Bilden von Inversen kann man den Potenzierungstrick benutzen oder den erweiterten Euklidischen Algorithmus für Polynome. Schließlich muss ein erzeugendes Element der multiplikativen Gruppe $GF(2^k)^*$ bekannt sein. (Die Kardinalität der Gruppe sollte mindestens $2^{2000}$ sein.)
+- Zyklische Untergruppen von ,,elliptischen Kurven'' über endlichen Körpern. (Hier genügen Körperelemente mit einer Bitlänge von 256 Bits.)
+
+Tabelle: Die multiplikative Gruppe $\mathbb{Z}^*_{11}$ für $p=11$ mit erzeugendem Element $g=2$. Die erzeugenden Elemente sind mit $*$ markiert. Sie entsprechen den Potenzen $g^a$ mit $ggT(a,10) = 1$.
+
+| a     | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $2^a$ | 1   | 2   | 4   | 8   | 5   | 10  | 9   | 7   | 3   | 6   |
+|       |     | *   |     | *   |     |     |     | *   |     | *   |
+
+Für kryptographische Anwendungen ungeeignetist dagegen die bekannteste zyklische Gruppe $(\mathbb{Z}_N,+,0)$. Hier ist die Gruppenoperation die Addition modulo $N$; die Potenz $g^a$ für $a\in\mathbb{Z}$ entspricht dem Element $a*g\ mod\ N$. Die erzeugenden Elemente sind gerade die Elemente von $\mathbb{Z}^*_N$. Wenn $g\in\mathbb{Z}^*_N$ ist, dann besteht das DL-Problem für $g$ in folgendem: Gegeben $h=g^a$ (in der Gruppe gerechnet, das ist also $h=a*g\ mod\ N)$, finde $a$. Dies ist mit dem erweiterten Euklidischen Algorithmus leicht möglich: finde $g-1\ mod\ N$, berechne $h*g^{-1}\ mod\ N$. Das DL-Problem in dieser Gruppe ist also effizient lösbar.
+Wenn eine zyklische Gruppe $G$ mit effizienten Operationen gefunden worden ist, muss man immer noch ein erzeugendes Element finden. Das ist unter Umständen nicht ganz einfach. Wir wissen:
+- Eine zyklische Gruppe $G=〈g〉$ mit $|G|=N$ hat genau $\varphi(N) = |\mathbb{Z}^*_N|$ viele erzeugende Elemente, nämlich die Elemente $g^a$ mit $a\in\mathbb{Z}^*_N$.
+
+Das bedeutet, dass ein Anteil von $\varphi(N)/N$ der Elemente von $G$ erzeugende Elemente sind. Aus Kapitel 4 wissen wir, dass $\varphi(N)/N=\prod_{p\ ist\ prim, p|N}(1-\frac{1}{p})$ gilt. Man kann zeigen, dass dies $\Omega(1/log\ log\ N)$ ist. Wir können also analog zum Vorgehen bei der Primzahlerzeugung ein erzeugendes Element finden, wenn wir folgende Operationen zur Verfügung haben:
+1. zufälliges Wählen eines Elements von $G$
+2. Test, ob $h\in G$ ein erzeugendes Element ist oder nicht
+
+Jedoch setzen alle bekannten effizienten Verfahren für den Test ,,Ist $h$ erzeugendes Element?'' voraus, dass man die Primfaktoren von $N=|G|$ kennt.
+Für den Fall $G=\mathbb{Z}^*_p$ ist die Situation so: Für große zufällige Primzahlen $p$ (512, 1024 oder 2048 Bits) ist die Primfaktorzerlegung von $N=p-1$ normalerweise nicht leicht zu ermitteln. Ein Ausweg ist, gezielt nach Primzahlen $p$ zu suchen, für die $p-1$ eine übersichtliche Primfaktorzerlegung hat. Besonders angenehm ist die Situation, wenn $p=2q+1$ für eine Primzahl $q$ ist.
+In dieser Situation gibt es genau $q-1=(p-3)/2$ erzeugende Elemente und man kann ein $x\in G$ durch schnelle Exponentiation darauf testen, ob es ein erzeugendes Element ist. Man erhält direkt ein randomisiertes Verfahren, das nach durchschnittlich zwei Tests ein erzeugendes Element gefunden hat.
+Alle im Folgenden beschriebenen kryptographischen Verfahren werden unsicher, wenn man in der verwendeten Gruppe das DL-Problem effizient lösen kann. Bei der Verwendung solcher Verfahren muss man also unbedingt darauf achten, keine Gruppen zu benutzen, bei denen praktikable Verfahren für das DL-Problem bekannt sind. 
+Für das Folgende nehmen wir an, dass die verwendete Gruppe diesen Mindestanforderungen genügt.
+
+### Diffie-Hellman-Schlüsselaustausch
+Sei $G$ eine zyklische Gruppe mit Erzeuger $g$ und sei $(X,G,Y,e,d)$ ein symmetrisches Kryptosystem wie in Kapiteln 1 und 2 oder $(G,E,D)$ ein symmetrisches Kryptoschema wie in Kapitel 3. (Das heißt, dass die Elemente von $G$ die Schlüssel sind.) Nehmen wir an, Alice und Bob möchten per Kommunikationüber einen öffentlich (insbesondere von Eva) einsehbaren Kanal einen gemeinsamen, geheimen, zufälligen Schlüssel $k\in G$ festlegen. Das Diffie-Hellman-Schlüsselaustausch-Protokoll macht dies möglich!
+Die Idee dabei ist, dass $k=g^{ab}$ ist, wo nur Alice $a$ kennt und nur Bob $b$. Über den öffentlichen Kanal laufen die Gruppenelemente $g^a$ und $g^b$. Eva hat also das Problem, aus $g^a$ und $g^b$ den Wert $g^{ab}$ zu berechnen. (Das ist das sogenannte DH-Problem,
+benannt nach W. Diffie und M. E. Hellman, die das Schlüsselaustauschverfahren 1976 vorgeschlagen haben.) Wenn Eva das DL-Problem lösen könnte, wäre dies leicht. Andere Möglichkeiten, das DH-Problem effizient zu lösen, ohne einen effizienten Algorithmus für das DL-Problem, sind prinzipiell denkbar, aber nicht bekannt. 
+
+*Protokoll ,,Diffie-Hellman-Schlüsselaustausch''*
+- Voraussetzung: Alice and Bob kennen $G,|G|$ und $g$.
+1. Alice wählt $a\in\{2 ,...,|G|- 2\}$ zufällig, und sendet $A=g^a$ an Bob.
+2. Bob wählt $b\in\{2 ,...,|G|-2\}$ zufällig, und sendet $B=g^b$ an Alice.
+3. Alice berechnet $B^a= (g^b)^a=g^{ab}=k$.
+4. Bob berechnet $A^b= (g^a)^b=g^{ab}=k$.
+
+Dabei wird benutzt, dass die Multiplikation der Exponenten $a$ und $b$ kommutativ ist. Alice und Bob kennen nun $k$; Eva kennt nur $A$ und $B$, sowie (nach dem Kerckhoffs-Prinzip) $G$ und $|G|$.
+
+Achtung! Das DH-Protokoll in der hier vorgestellten Form wird völlig unsicher, wenn Eva den Kommunikationskanal nicht nur abhört, sondern aktiv eingreifen kann. 
+
+,,Man-in-the-middle-attack'': Eva fängt alle Nachrichten von Alice an Bob und umgekehrt ab und modifiziert sie.
+
+Schlüsselvereinbarung: Alice sendet $A=g^a$. Eva fängt $A$ ab, wählt selbst eine Zufallszahl $a′$ und schickt $A′=g^{a′}$ an Bob. Dieser nimmt an, $A′$ käme von Alice. Sein $B=g^b$ wird ebenfalls von Eva abgefangen und durch $B′=g^{b′}$ ersetzt, für ein von Eva gewähltes $b′$. Alice nimmt an, $B′$ käme von Bob.
+
+Senden eines Chiffretextes: Wenn Alice Nachricht $x$ an Bob schicken möchte, verwendet sie Schlüssel $k′= (B′)^a=g^{ab'}$ und sendet $y′=E(x,k′)$. Eva fängt dies ab und entschlüsselt mittels $k′=A^{b′}$. Sie kennt nun $x$, berechnet $k′′=B^{a′}$ und schickt $E(x,k′′)$ an Bob. Dieser entschlüsselt mittels $k′′= (A′)^b$, und erhält wieder $x$.
+
+Um das DH-Protokoll gegen solche Angriffe abzusichern, muss man andere Protokolle (sog. Authentifizierungsprotokolle) benutzen, die es ermöglichen herauszufinden, ob der Absender einer Nachricht tatsächlich der gewünschte Partner (Alice bzw. Bob) ist.
+
+### Das ElGamal-Kryptosystem
+Das ElGamal-Kryptosystem steht in engem Zusammenhang mit dem DH-Schlüsselaustausch. Wie RSA ist auch dieses System ein Public-Key-Kryptosystem. Seine Sicherheit beruht nicht auf der (vermuteten) Schwierigkeit des Faktorisierungsproblems wie RSA, sondern auf der (vermuteten) Schwierigkeit des DL-Problems bzw. des DH-Problems.
+
+*Erzeugung* des Schlüssels (Bob oder Trust-Center im Auftrag von Bob): Es wird eine zyklische Gruppe $(G,\circ,e)$ mit einem erzeugenden Element $g$ benötigt, sowie $N=|G|$, so dass das zugehörige DH-Problem schwer zu lösen ist. Ein Element $b$ wird zufällig aus $\{2 ,...,|G|-2\}$ gewählt, und es wird mittels schneller Exponentiation $B=g^b$ berechnet. Der öffentliche Schlüssel ist $k_{pub}= (G,g,B)$, der geheime Schlüssel ist $b$ bzw. $k_{priv}=(G,g,b)$.
+
+*Verschlüsselung*: Wir nehmen an, dass die Menge der möglichen Botschaften (Binärstrings) eine Teilmenge von $G$ ist. Um eine Botschaft $x\in G$ zu verschlüsseln, wählt Alice eine Zufallszahl $a$ aus $\{2,...,|G|-2\}$ und berechnet $A=g^a$. Weiter berechnet sie $y:=B^a \circ x$. Der Chiffretext ist $(A,y)$.
+
+Kommentar: Der Rechenaufwand liegt im Wesentlichen in den zwei schnellen Exponentiationen. RSA benötigt eine schnelle Exponentiation. Man erkennt die Komponenten $A$ und $B$ aus dem Diffie-Hellman-Schlüsselaustausch wieder. Der Wert $B^a$ ist $k=g^{ab}$, der Wert $y$ ist $k\circ x$.
+
+*Entschlüsselung*: Bob kennt die Gruppe $G$ und $g$, sowie $A$ und $y$ (von Alice) sowie seinen geheimen Schlüssel $b$. Er berechnet $A^b= (g^a)^b=k$. Dann berechnet er das Gruppenelement $z=k^{-1}\circ y$, mit Hilfe der effizienten Invertierung und Gruppenoperation in $G$.
+
+*Beobachtung*: $z=x$. (Das ist klar: $z=k^{-1}\circ y=k^{-1}\circ(k\circ x) =x$)
+
+Kommentar: Der Rechenaufwand der Entschlüsselung liegt im Wesentlichen in der schnellen Exponentiation und der Invertierung von $k$.
+
+*Sicherheit*: Man kann sichuberlegen, dass für eine Angreiferin Eva und eine Gruppe G mit erzeugendem Element $g$ folgende Situationen äquivalent sind:
+1. Eva kann alle mit dem ElGamal-Verfahren bzgl. $G$ und $g$ verschlüsselten Nachrichten effizient entschlüsseln, also aus $B$, $A$ und $y$ die Nachricht $x$ berechnen, die zum Chiffretext $(A,y)$ geführt hat.
+2. Eva kann das DH-Problem für $G$ lösen.
+
+Wenn Eva diskrete Logarithmen bezüglich $G$ und $g$ berechnen kann, gelten natürlich 1. und 2. Wir beweisen die Äquivalenz.
+
+- ,,1.$\Rightarrow$2.'': Eva hat $B=g^b$ und $A=g^a$ vorliegen und möchte $k=g^{ab}$ bestimmen. Sie wendet ihr Entschlüsselungsverfahren auf $B$, $A$ und $y=1$ an. Es ergibt sich ein Wert $x$ mit $g^{ab}\circ x=k\circ x=y=1$. Es gilt also $x=k^{-1}$, und Eva kann $k$ durch Invertierung von $x$ in $G$ berechnen.
+- ,,2.\Rightarrow$1.'': Eva hat $B=g^b$,$A=g^a$,$y=g^{ab}\circ x$ vorliegen. Weil sie das DH-Problem lösen kann, kann sie $k=g^{ab}$ berechnen und damit natürlich $x=k^{-1}\circ y$ bestimmen.
+
+Unterschiede zwischen RSA und ElGamal:
+- RSA in der puren Form benötigt einen Chiffretext $y=x^e\ mod\ N$, der die gleiche Bitlänge hat wie der Klartext $x$. ElGamal hat einen doppelt so langen Chiffretext $(B,y)$.
+- ElGamal ist erzwungenermaßen randomisiert. Daher führt die wiederholte Verschlüsselung desselben Klartextes $x$ stets zu unterschiedlichen Chiffretexten, weil der Schlüssel $k$ zufällig ist.
+
+Allerdings gibt es die Empfehlung, beim Arbeiten mit RSA den Klartext $x$ durch das Anhängen eines nicht ganz kurzen Zufallsstrings zu
+randomisieren. Wenn dieser angehängte Zufallsstring die gleiche Länge wie $x$ hat, ist der Chiffretext genauso lang wie bei ElGamal.
+
+### Berechnung diskreter Logarithmen
+Wie schwierig ist das ,,DL-Problem''?
+
+Geg.: Zyklische Gruppe $(G,\circ,e),|G|=N,$ mit erzeugendem Element $g$.
+
+Input: $h\in G$
+
+Gesucht: $a$ mit $0\leq a<N$, das $g^a=h$ erfüllt.
+
+Trivialer Algorithmus: ,,Enumeration'' 
+Für $a=0,1,2 ,...$ teste, ob $g^a=h$ gilt. Man benötigt bis zu $N$ schnelle Exponentiationen. In kryptographischen Anwendungen wird $a$ zufällig gewählt. Die Wahrscheinlichkeit, dass $a\leq 2^{log\ N-k}$ ist etwa $2^{-k}$. Für $k= 80$ ist dies $2^{-80}< 10^{-24}$, also winzig. Wenn $N\geq 2^{200}$, ist mit überwältigender Wahrscheinlichkeit $a\geq 2^{120}> 10^{36}$, und an eine Ausführung von ,,Enumeration'' ist nicht zu denken.
+
+Babystep-Giantstep-Algorithmus von Shanks: 
+Wähle $m=\lceil \sqrt{N}\rceil$. Der gesuchte Exponent $a$ hat eine Zerlegung $a=bm+c$, für $0\leq c < m$ und passendes $b\leq a/m < N/m\leq \sqrt{N}$. 
+- Es gilt: $h=g^a=g^{bm+c}=g^{bm} \circ g^c$, also $g^{-c}=h^{-1}\circ g^{bm}$.
+- Gesucht: $b$ und $c$.
+- Algorithmus: Berechne alle Potenzen $g^{bm}$, $0\leq b < N/m$, und speichere $h^{-1}\circ g^{bm}$ (als Schlüssel) mit Wert $b$ in einer Hashtabelle $T$, Umfang $2N/m\leq 2\sqrt{N}$. Berechne $g^{-c}$, für $c=0,1,...,m-1$ und suche $g^{-c}$ in $T$. Wenn gefunden, gilt $h^{-1} \circ g^{bm}=g^{-c}$, also $h=g^{bm+c}$.
+- Rechenzeit: $O(\sqrt{N})$ (erwartet) für Tabellenaufbau und $O(\sqrt{N})$ (erwartet) für die Suche, zusammen $O(\sqrt{N})$. 
+- Platzbedarf: $O(\sqrt{N})$
+- Wenn $N=2^{200}$, ist $\sqrt{N}= 2^{100}> 10^{30}$. Selbst wenn man nur in dem unwahrscheinlichen Fall $a\leq 2^{160}$ erfolgreich sein möchte, muss man Tabellengröße $2^{80}> 10^{24}$ veranschlagen. Auch dies ist nicht durchführbar.
+
+Pollards $ρ$-Algorithmus für DL 
+Idee: Definiere eine Folge $(x_i,a_i,b_i),i= 0,1,2,...,$ in $G\times\mathbb{Z}_N\times\mathbb{Z}_N$, so dass $x_i=F(x_{i-1})$ gilt, für eine als zufällig geltende Funktion $F:G\rightarrow G$. Dann verhalten sich die ersten Komponenten $x_i$ wie zufällige Elemente in $G$, solange noch keine Wiederholung in der Folge $(Z_i)_{i=0, 1 , 2 ,...}$ aufgetreten ist. Nach dem Geburtstagsparadoxon weiß man, dass für eine genügend große Konstante $K$ die Wahrscheinlichkeit, dass $K\sqrt{N}$ zufällig gewählte Elemente von $G$ alle verschieden sind, sehr klein ist. Wir erwarten also nach $O(\sqrt{N})$ Schritten die Wiederholung eines Elements, also $i_0< j_0=O(\sqrt{N})$ mit $x_{i_0}= x_{j_0}$. Danach wiederholt sich die Folge: $x_{i_0 +1}= F(x_{i_0}) =F(x_{j_0}) = x_{j_0 +1}$, usw., also gilt $x_i=x_{i+kl}$ für alle $i\geq i_0$ und alle $k\geq 1$, wenn man $l=j_0 -i_0$ definiert. Man kann das Verhalten der Folge wie folgt zeichnen: $x_0,...,x_{i0}$ als gerade Linie ohne Wiederholung, daran angehängt $x_{i0},...,x_{j0}=x_{i0}$ als Kreis. Dies gibt die Form ,,$ρ$'', wie beim griechischen Buchstaben ,,rho''. Wenn man es nun noch schafft, aus zwei Indizes $i < j$ mit $x_i=x_j$ den gesuchten Exponenten $a$ mit $h=g^a$ auszurechnen, ist man fertig.
+Um den Algorithmus auszuführen, muss man scheinbar $x_0,x_1,...,x_{j0-1}$ speichern, was wieder zu Speicherplatzbedarf $Θ(\sqrt{N})$ führen würde. Es gibt nun einen Trick, mit dessen Hilfe man nur Platz $O(1)$ benötigt. Man beobachtet die Doppelfolge $((x_i,x_{2i}))_{i=0, 1 , 2 ,...}$ und wartet, bis $x_i= x_{2i}$ gilt. Gibt es solche $i$? Ja, denn für jedes $i\geq i_0$, für das $2i-i=i$ durch $l=j_0-i_0$ teilbar ist, ist $x_{2i}=x_{i+kl}$ für ein $k>0$, also $x_{2i}=x_i$. Zwischen $i_0$ und $j_0$ liegt auf jeden Fall ein solches $i$. Nun müssen wir noch $F$ definieren. Dazu betrachten wir erweiterte Elemente $(x,b,c)\in G\times\mathbb{Z}_N \times\mathbb{Z}_N$, die die Gleichung $x=g^b \circ h^c$ erfüllen. Das Starttripel ist $(g^{b0},b_0,0)$ für ein zufällig gewähltes $b_0$. Die Gruppe $G$ muss in etwa drei gleich große disjunkte Teilmengen $S_1,S_2,S_3$ aufgeteilt sein, etwa über die letzten 10 Bits der Darstellung der Elemente. Dann definieren wir die Schrittfunktion wie folgt:
+$$f(x,b,c) =\begin{cases} (h\circ x,b,c+1)\,\quad\text{ falls }x\in S_1\\ (x^2, 2b, 2c),\quad\text{ falls }x\in S_2\\ (g\circ x,b+1,c),\quad\text{ falls } x\in S_3 \end{cases}$$
+Beachte, dass mit $(x,b,c)$ auch $f(x,b,c)$ die geforderte Gleichung erfüllt. Die Funktion $F$ ist einfach die Einschränkung von $f$ auf die erste Komponente.
+Nun berechnen wir in Runden $Y_i= (x_i,b_i,c_i)$ und $Z_i= (x_{2i},b_{2i},c_{2i})$, für $i=0,1,2,....$ (Es ist $Y_0=Z_0=(g^{b0},b_0,0)$ für $b_0$ zufällig und $Y_i=f(Y_{i-1})$ und $Z_{2i}=f(f(Z_{i-1}))$.)
+
+Dies wird so lange durchgeführt, bis zum ersten Mal $x_i=x_{2i}$ gilt. Dann haben wir: $g^{b_{2i}} h^{c_{2i}}=g^{b_i} h^{c_i}$, also $g^{b_{2i}+ac_{2i}}=g^{b_i+ac_i}$. Weil $g$ Ordnung $N$ hat, folgt $b_{2i} +ac_{2i}\equiv b_i+ac_i (mod\ N)$, das heißt $a(c_{2i}-c_i)\equiv b_i-b_{2i} (mod\ N)$.
+Falls nun $ggT(c_{2i}-c_i,N) = 1$ ist, können wir mit $a= (b_i-b_{2i})(c_{2i}-c_i)^{-1}\ mod\ N$ den gesuchten Exponenten berechnen.
+Die Rechenzeit ist $O(\sqrt{N})$, wenn man unterstellt, dass die Abbildung $F:x_{i-1}\rightarrow x_i$ rein zufällig ist. (In der Praxis bestätigt sich diese Vorstellung.) 
+Weitere Algorithmen für das DL-Problem:
+- Pohlig-Hellman-Algorithmus. Dieser Algorithmus benötigt die Primfaktorzerlegung von $N=|G|$. Seine Rechenzeit ist $O(\sum_{1 \leq i\leq k} e_i(log|G|+\sqrt{p_i}) + (log\ |G|)^2)$, wenn $|G|$ die Primfaktorzerlegung $p^{e_1}_1... p^{e_k}_k$ hat. Dieser Algorithmus ist also effizient, wenn $|G|$ nur eher kleine Primfaktoren hat. Wenn man also mit $G$ arbeiten will, muss $N=|G|$ mindestens einen ,,großen'' Primfaktor enthalten, damit nicht der Pohlig-Hellman-Algorithmus das DL-Problem effizient löst.
+- Indexkalkül. Dieser Algorithmus ist nur für die multiplikative Gruppe $GF(q)^*$ in endlichem Körper $GF(q)$ anwendbar.
+- Zahlkörpersieb. Ebenso nur für $GF(q)^*$ (mit ähnlichen subexponentiellen Rechenzeiten wie bei dem gleichnamigen Algorithmus bei der Faktorisierung). 
+
+Letzteres ist eine allgemeine Beobachtung: DL in $GF(q)^*$ scheint nicht viel schwieriger zu sein als das Faktorisierungsproblem für Zahlen in der Größenordnung von $q$.
+
+### Elliptische Kurvenuber endlichen Körpern
+Elliptische Kurven (,,elliptic curves'', ,,EC'') sind mathematische Strukturen, die eine moderne, attraktive Methode zur Erzeugung endlicher zyklischer Gruppen zur Verwendung in der Kryptographie liefern. Der Ansatz wurde 1985 unabhängig von den amerikanischen Mathematikern Neal Koblitz (\*1948) und Victor S. Miller (\*1947) vorgeschlagen. Der große Vorteil des Verfahrens ist, dass die unter gewissen Umständen schnellen DL-Verfahren für $GF(q)^*$, nämlich Indexkalkül und Zahlkörpersieb, nicht anwendbar sind. Die benötigte Gruppengröße, um ,,Sicherheit'' im praktischen Sinn zu garantieren, ist deutlich kleiner als die bei der zyklischen Gruppe $GF(q)^*$. Dies führt zu Gruppenelementen mit kleinerer Darstellungsgröße und daher effizienterer Verfahren für Verschlüsselung und Entschlüsselung. 
+(Übliche Längen im Jahr 2016: Bestehende Verfahren benutzen 160 Bits, Planung bis 2030: 224 oder 256 Bits. Ein System, das $\mathbb{Z}^*_p$ für eine 256-Bit-Primzahl $p$ benutzt, gilt als äußerst sicher. Andere endliche Körper kommen ebenfalls in Frage. Vorsicht bei $GF(2^k)^*$! Man benötigt andere Formeln als die unten diskutierten!)
+
+Wir geben nur eine Beschreibung der Verfahren. Für mathematischen Hintergrund sei auf die Literatur verwiesen, z.B. A. Werner, Elliptische Kurven in der Kryptographie, Springer 2002, oder Diekert, Kufleitner, Rosenberger, Diskrete algebraische Methoden, de Gruyter 2013.
+
+Als anschaulichen Hintergrund, nicht zur Anwendung in der Kryptographie, betrachten wir zunächst Elliptische Kurven in $\mathbb{R}^2$. Gegeben seien Koeffizienten $A, B$ in $\mathbb{R}$, die die Ungleichung $4A^3+ 27B^3 \not= 0$ erfüllen. (Diese Bedingung hat zur Folge, dass die Funktion $x\rightarrow x^3+Ax+B$ keine Mehrfachnullstellen hat, weder im Reellen noch im Komplexen. Dabei heißt $a\in C$ eine Mehrfachnullstelle, wenn man $x^3+Ax+B= (x-b)(x-a)^2$ schreiben kann, für ein $b\in C$.) Betrachte die Menge $\{(x,y)\in\mathbb{R}^2| y^2=x^3+Ax+B\}$.
+Diese bildet eine ,,Kurve'' in $\mathbb{R}^2$. Verschiedene Formen sind möglich. Die ,,Kurve'' kann auch mehrere Komponenten haben. Man beobachtet allgemein: Die Punktmenge ist symmetrisch bezüglich der x-Achse; die ,,Gestalt'' hängt von der Lage der Nullstellen von $x\rightarrow x^3+Ax+B$ ab. Veranschaulichung für $(A,B)\in\{(- 1 ,-1),(- 1 ,0),(- 1 ,1)\}$ später. Da Doppelnullstellen ausgeschlossen sind, gibt es eine oder drei Nullstellen.
+Solche Kurven, eventuell ergänzt um einen Punkt $O$, nennt man Elliptische Kurven in $\mathbb{R}^2$.
+
+Unsere eigentliche Konstruktion benutzt nicht $\mathbb{R}$, sondern endliche Körper $\mathbb{Z}_p$ für eine Primzahl $p>3$. Wir rechnen ab hier in einem solchen Körper, für festes $p$; die Operationen $+$ und $*$ sind immer als Addition und Multiplikation modulo $p$ zu interpretieren.
+
+Definition 5.13: Sei $p >3$ eine Primzahl, seien $A,B\in\mathbb{Z}_p$ mit $4A^3+ 27B^3 \not= 0$. Die elliptische Kurve $E_{A,B}$ besteht aus der Menge aller Lösungen $(x,y)\in\mathbb{Z}^2_p$ der Gleichung $y^2=x^3+Ax+B$ sowie einem zusätzlichen Punkt $O$ (genannt ,,der unendliche Punkt'').
+Wenn man für $\mathbb{Z}_p$ die Repräsentanten $-\frac{p-1}{2},..., 0 , ...,\frac{p-1}{2}$ benutzt, beobachtet man wiederum die Symmetrie entlang der x-Achse, sonst gibt es kein erkennbares Muster.
+
+Beispiel: $\mathbb{Z}_7$. Setze $f(x)=x^3+ 3x+ 3$ (in $\mathbb{Z}_7$) und betrachte $E_{3,3}=\{(x,y)\in\mathbb{Z}^2_7 | f(x)=y^2\}\cup \{O\}$. Damit $(x,y)$ zu $E_{3,3}$ gehört, muss $f(x)$ ein Quadrat sein. Allgemein weiß man, dass es in $\mathbb{Z}_p$ genau $\frac{p-1}{2}$ Quadrate gibt. Jedes $f(x)$, das von $0$ verschieden und ein Quadrat ist, führt zu zwei Punkten auf der elliptischen Kurve. Weiter gibt es für jedes $x$ mit $f(x) = 0$ einen Punkt auf der Kurve. Man rechnet aus:
+
+| x        | 0   | 1     | 2   | 3     | 4     | 5   | 6   |
+| -------- | --- | ----- | --- | ----- | ----- | --- | --- |
+| f(x)     | 3   | 0     | 3   | 4     | 2     | 3   | 6   |
+| Quadrat? | -   | X     | -   | X     | X     | -   | -   |
+| Wurzeln  |     | 0     |     | 2, 5  | 3, 4  |     |
+| Punkte   |     | (1,0) |     | (3,2) | (4,3) |
+|          |     |       |     | (3,5) | (4,4) |     |
+
+Um auf dieser Menge eine Gruppenstruktur festzulegen, benötigen wir ,,Geraden'' in $\mathbb{Z}^2_p$. Dies sind Punktmengen $\{(x,y)|y=ax+b\}$ für $a,b\in\mathbb{Z}_p$ oder $\{(x,y)|x=b\}\cup\{O\}$ (,,senkrechte Geraden''). Man stellt nun (durch Unterscheiden verschiedener Fälle) Folgendes fest: Wenn eine Gerade eine elliptische Kurve $E=E_{A,B}$ in mindestens einem Punkt schneidet, dann sogar in drei Punkten, die aber nicht notwendigerweise verschieden sein müssen. (Das liegt an der Anzahl der Nullstellen von $x^3+Ax+B$. Veranschaulichung im Reellen!)
+Wenn zwei der betrachteten Schnittpunkte zusammenfallen, ist die Gerade eine Tangente in diesem Punkt; bei senkrechten Geraden gilt der unendliche Punkt als einer der Schnittpunkte oder gar als drei zusammenfallende Schnittpunkte.
+Die Operation $\circ$ kann dann anschaulich wie folgt beschrieben werden (man verwendet wieder für einen Moment die Bilder im $\mathbb{R}^2$): Gegeben seien Punkte $P$ und $Q$ auf der elliptischen Kurve, beide von $O$ verschieden. Man legt eine Gerade durch $P$ und $Q$ (wenn sie identisch sind, eine Parallele zur Kurve in $P$) und bestimmt den dritten Punkt $R$ im Schnitt von Kurve und Gerade. Wenn $R=O$ ist, ist $P\circ Q=O$, wenn $R= (x,y)\not=O$, dann ist $P\circ Q=\overline{R}= (x,-y)$ (Spiegelung an der x-Achse).
+Weiter definiert man: $P\circ O=O\circ P=P$ für alle Punkte $P$.
+
+Es ergeben sich (mit einigem Rechnen) die folgenden Formeln. Diese werden dann wörtlich auch als Definition für eine Operation $\circ$ in einer elliptischen Kurve über $\mathbb{Z}_p$ benutzt.
+- $O+O=O,$
+- $O+ (x,y) = (x,y) +O$ für alle $(x,y)\in\mathbb{Z}^2_p$,
+- $(x_1,y_1) + (x_2,y_2) =\begin{cases} O,\quad\text{ falls } x_1=x_2 \text{ und } y_1=-y_2 \\ (x_3,y_3),\quad\text{ sonst,}\end{cases}$
+
+wobei $(x_3,y_3)$ folgendermaßen berechnet wird: $x_3=\lambda^2-x_1-x_2$, $y_3=\lambda(x_1-x_3)-y_1$ mit $\lambda=\begin{cases} (y_2-y_1)/(x_2-x_1),\quad\text{ falls } (x_1,y_1)\not= (x_2,y_2)\\ (3x^2_1+A)/(2y_1),\quad\text{ falls } (x_1,y_1) = (x_2,y_2)\end{cases}$.
+Der erste Fall bezieht sich auf den dritten Schnittpunkt einer Geraden durch zwei Punkte; der zweite auf den Tangentenfall.
+
+Satz 5.14: Mit dieser Operation $\circ$ bildet $E_{A,B}$ eine kommutative Gruppe.
+
+Man beweist dies durch Nachrechnen. Der Nachweis der Assoziativität ist etwas mühselig. Das zu $(x,y)$ inverse Element ist $(x,-y)$, das zu $O$ inverse Element ist $O$.
+
+Notation: Die Gruppenoperation in Gruppen zu elliptischen Kurven wird additiv geschrieben, also mit $+$ bezeichnet. Das Inverse von $P$ heißt $-P$. Die wiederholte Verknüpfung eines Elementes mit sich selbst ist dann eine Multiplikation mit $a\in\mathbb{Z}$, etwa $2P, 3P,...$. 
+Beispiel: Wenn $P=(x,0)$, dann gilt $P=-P$ und $2P=O$.
+
+Wir benötigen zyklische Untergruppen von $E_{A,B}$. Damit eine solche Gruppe ein schwieriges DL-Problem hat, muss sie natürlich groß sein, also muss auch $E_{A,B}$ groß sein. Wenn die Funktion $f(x) =x^3+Ax+B$ wie eine zufällige Funktion wirkt, wird sie für etwa die Hälfte der $x$ einen Wert haben, der ein Quadrat ist, und alle diese Werte (außer der $0$) führen zu zwei Punkten auf der Kurve. Nullstellen ergeben einen Punkt. Wir erwarten daher, dass $E_{A,B}$ etwa $p$ Elemente hat, und Folgendes sollte nicht zu sehr überraschen.
+
+Fakt 5.15 Hasse-Schranke: Sei $E$ elliptische Kurve über $\mathbb{Z}_p$. Dann gilt $p+ 1- 2\sqrt{p}\leq |E|\leq p+1 + 2\sqrt{p}$.
+
+Es gibt einen ,,effizienten'' Algorithmen zur Ermittlung der Gruppenordnung $N=|E|$ der höchstens $O((log\ p)^6)$ Gruppenoperationen benötigt. Wenn wir Glück haben, ist $N$ eine Primzahl; dann ist jedes Element von $E-\{O\}$ ein erzeugendes Element. Ein Standardverfahren ist, die Wahl von $A$ und $B$ so lange wiederholen, bis $N=|E_{A,B}|$ eine Primzahl $q$ ist. Dann wird ein Element $P$ aus $E-\{O\}$ zufällig gewählt und $(p,A,B,N,P)$ an den Kunden abgeliefert. Mit $p$ und $A$ kann man die Gruppenoperationen implementieren, mit $P$ und $N$ zusätzlich kann man den Diffie-Hellman-Schlüsselaustausch und das ElGamal-Kryptoschema umsetzen.
+Standardverfahren für das DL-Problem (Pollards $ρ$-Algorithmus, Pohlig-Hellman) funktionieren auch für Gruppen, die zu elliptischen Kurven gehören, nicht aber die viel schnelleren Verfahren wie Indexkalkül oder Zahlkörpersieb. Dies führt dazu, dass man annimmt, dass in EC-basierten Gruppen das DL-Problem (noch) schwieriger zu lösen ist als in $\mathbb{Z}^*_p$, so dass man mit kleineren Zahlbereichen arbeiten kann, was Verschlüsselung und Entschlüsselung wieder effizienter macht.
+
+*Effizienter Einsatz*: Wenn man versucht, das ElGamal-Kryptosystem auf der Basis einer elliptischen KurveEumzusetzen, gibt es das Problem, dass die Elemente  von $E$ in $\mathbb{Z}^2_p$ eher dünn sind, so dass die Menge $E$ oder auch die Menge der x-
+Koordinaten von Punkten in $E$ als Klartextmenge schlecht geeignet ist. Wie soll man also gewöhnliche Nachrichten auf Punkte auf der Kurve abbilden? Es gibt ein reales kryptographisches Verfahren, das zeigt, wie man diese Schwierigkeit umgeht: ,,Elliptic Curve Integrated Encryption Scheme (ECIES)''. Es beruht darauf, nur für die Manipulationen auf der Schlüsselseite die Gruppe $E$ zu benutzen, und die eigentliche Verschlüsselung in $\mathbb{Z}^*_p$ auszuführen. Das reale ECIES-Verfahren integriert noch ein symmetrisches Verschlüsselungsverfahren und ,,message authentication'' (ein ganz anderes kryptographisches Elementarwerkzeug). Wir geben hier nur den Kern an, der ein asymmetrisches Kryptosystem darstellt. Es gibt Anklänge an das ElGamal-Kryptosystem, aber Unterschiede im Detail.
+Mit eingebaut ist ein Verfahren, das Elemente von $E-\{O\}$ kompakt darstellt: Anstelle von $(x,y)\in\mathbb{Z}^2_p$ speichern wir $x$ und ein Bit $b$. Im Allgemeinen gibt es keinen oder zwei Punkte auf $E_{A,B}$ mit erster Koordinate $x$ (außer bei den Nullstellen von $f$). Wenn $f(x)=x^3+Ax+B\not= 0$ ein Quadrat in $\mathbb{Z}_p$ ist, gibt es zwei passende Werte $y_1$ und $y_2$ mit $y_1+y_2=p$, von denen einer gerade und einer ungerade ist. Diese beiden Situationen werden durch $b$ unterschieden.
+
+$$Point-Compress: E-\{O\}\rightarrow\mathbb{Z}_p \times\{0,1\},(x,y)\rightarrow (x,y\ mod\ 2)$$
+
+Dies ist eine injektive Funktion. Die Umkehrfunktion Point-Decompress benötigt die Funktion ,,Quadratwurzel modulo $p$'', die effizient berechnet werden kann, wenn $p+1$ durch $4$ teilbar ist, siehe ,,Entschlüsselung beim Rabin-Kryptosystem''. Daher verwendet man in der EC-Kryptographie vorzugsweise solche Primzahlen. Wenn man eine (und damit beide) Quadratwurzeln von $f(x)$ berechnet hat, wählt man als $y$ die gerade/ungerade davon, je nachdem ob $b=0$ oder $b=1$ ist, und gibt $(x,y)$ aus.
+
+*Simplified ECIES* 
+Gegeben (und allen Beteiligten bekannt): Elliptische Kurve $E=E_{A,B}$ über $\mathbb{Z}_p$ (also $p,A,B$), zyklische Untergruppe $G=〈P〉$ mit erzeugendem Element $P$, Kardinalität $N=|G|$, wobei $N$ eine Primzahl ist. Wir unterdrücken diese Angaben im Folgenden.
+(Sie sind aber Teil des öffentlichen Schlüssels und natürlich auch dem Empfänger Bob bekannt.)
+
+*Klartextmenge*: $X=\mathbb{Z}^*_p$.
+
+*Chiffretextmenge*: $Y=(\mathbb{Z}_p \times\{0,1\})\times\mathbb{Z}^*_p$. 
+- (Paare aus: (komprimiertes) Element von $G$ und Element von $\mathbb{Z}^*_p$). 
+- Öffentliche Schlüssel: $K_{pub}=G$. Private Schlüssel: $K_{priv}=\mathbb{Z}_N$.
+- Schlüsselmenge: $K=\{(Q,b)|Q\in K_{pub} = G,b\in K_{priv} =\mathbb{Z}_N,Q=bP\}$.
+
+*Schlüsselerzeugung*: (Gegeben sind $E$ [also $p,A,B$], $P$, $N$.)
+- Wähle $b\in\mathbb{Z}_N$ zufällig und berechne $Q=bP$ (schnelle Exponentiation).
+- Schlüssel:$(Q,b)$.
+- Der öffentliche Schlüssel ist $k_{pub}=Q$.
+- Der private Schlüssel ist $k_{priv}=b$.
+  
+*Verschlüsselungsfunktion* $E:X\times G\rightarrow Y$, als randomisierter Algorithmus.
+- Gegeben: Klartext $x\in\mathbb{Z}^*_p$.
+- Öffentlicher Schlüssel $Q\in G$.
+- Wähle zufällig $a\in\mathbb{Z}_N$ und berechne $(k,y) =aQ$ mit $k\in\mathbb{Z}^*_p$. //(Falls $k=0$, wähle neues $a$.)
+- Berechne $E^a (x,Q)\leftarrow (Point-Compress(aP),x*k\ mod\ p) =: (y′,y′′);$ das Paar $(y′,y′′)\in(\mathbb{Z}_p\times\{0,1\})\times\mathbb{Z}^*_p$ ist der Chiffretext.
+
+Bemerkung: $k\in\mathbb{Z}^*_p$, die erste Komponente eines Punktes in $G$, wird durch eine Operation in $G$ erstellt, und dann wie beim One-Time-Pad (oder beim Vernam-System) benutzt, wobei diese Verschlüsselung durch Multiplikation in $\mathbb{Z}^*_p$ ausgeführt wird.
+
+*Entschlüsselungsfunktion* $D:Y\times\mathbb{Z}_N \rightarrow X$, als (deterministischer) Algorithmus.
+- Gegeben: Chiffretext $y=(y′,y′′)$ mit $y′\in\mathbb{Z}_p\times\{0,1\}$ und $y′′\in\mathbb{Z}^*_p$. Privater Schlüssel $b$.
+- Berechne $(x_1,y_1)\leftarrow Point-Decompress (y′)$ //nun gilt $(x_1,y_1) =aP$
+- $(x_0,y_0)\leftarrow b(x_1,y_1)$ (in $G$, nun gilt $(x_0,y_0) = (ba)P=a(bP) =aQ= (k,y))$, und schließlich in $\mathbb{Z}^*_p$
+- $D((y′,y′′),b)\leftarrow y′′*(x_0)^{-1}\ mod\ p$.
+
+Behauptung: Wenn $Q=bP$, dann gilt $D(E^a (x,Q),b) =x$, für jedes $x\in X$ und jedes $a$, für das $(k,y) =aQ\in\mathbb{Z}^*_p \times\mathbb{Z}_N$. (Dies gilt nach den Anmerkungen in der Beschreibung von $E$ und $D$.)
+

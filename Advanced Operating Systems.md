@@ -3198,6 +3198,191 @@ MirageOS + Xen
 - ![](Assets/AdvancedOperatingSystems-docker.png)
 
 # Performanz und Parallelität
+## Motivation
+- Performanz: Wer hätte gern einen schnell(er)en Rechner...?
+- Wer braucht schnelle Rechner:
+  - Hochleistungsrechnen, HPC (,,high performancecomputing'')
+    - wissenschaftliches Rechnen(z.B. Modellsimulation natürlicher Prozesse, Radioteleskop-Datenverarbeitung)
+    - Datenvisualisierung(z.B. Analysen großer Netzwerke)
+    - Datenorganisation-und speicherung(z.B. Kundendatenverarbeitung zur Personalisierung von Werbeaktivitäten, Bürgerdatenverarbeitung zur Personalisierung von Geheimdienstaktivitäten)
+  - nicht disjunkt dazu: kommerzielle Anwendungen
+    - ,,Big Data'': Dienstleistungen für Kunden, die o. g. Probleme auf gigantischen Eingabedatenmengen zu lösen haben (Software wie Apache Hadoop )
+    - Wettervorhersage
+  - anspruchsvolle Multimedia- Anwendungen
+    - Animationsfilme
+    - VR-Rendering
+
+## Performanzbegriff
+- Performance: The degree to which a system or component accomplishes its designated functions within given constraints, such as speed, accuracy, or memory usage. (IEEE)
+- Performanz im engeren Sinne dieses Kapitels: Minimierung der für korrekte Funktion (= Lösung eines Berechnungsproblems) zur Verfügung stehenden Zeit.
+- oder technischer: Maximierung der Anzahl pro Zeiteinheit abgeschlossener Berechnungen.
+
+## Roadmap
+- Grundlegende Erkenntnis: Performanz geht nicht (mehr) ohne Parallelität $\rightarrow$ Hochleistungsrechnen = hochparalleles Rechnen
+- daher in diesem Kapitel: Anforderungen hochparallelen Rechnens an ...
+  - Hardware: Prozessorarchitekturen
+  - Systemsoftware: Betriebssystemmechanismen
+  - Anwendungssoftware: Parallelisierbarkeitvon Problemen
+- BS-Architekturen anhand von Beispielsystemen:
+  - Multikernel: Barrelfish
+  - verteilte Betriebssysteme
+
+## Hardware-Voraussetzungen
+- Entwicklungstendenzen der Rechnerhardware:
+  - Multicore-Prozessoren: seit ca. 2006 (in größerem Umfang)
+  - Warum neues Paradigma für Prozessoren? bei CPU-Taktfrequenz ≫4 GHz: z.Zt. physikalische Grenze, u.a. nicht mehr sinnvoll handhabbare Abwärme
+  - Damit weiterhin:
+    1. Anzahl der Kerne wächst nicht linear
+    2. Taktfrequenz wächst asymptotisch, nimmt nur noch marginal zu
+
+## Performanz durch Parallelisierung ...
+Folgerungen
+1. weitere Performanz-Steigerung von Anwendungen: primär durch Parallelität (aggressiverer) Multi-Threaded-Anwendungen
+2. erforderlich: Betriebssystem-Unterstützung $\rightarrow$ Scheduling, Sychronisation
+3. weiterhin erforderlich: Formulierungsmöglichkeiten (Sprachen), Compiler, verteilte Algorithmen ... $\rightarrow$ hier nicht im Fokus
+
+## ... auf Prozessorebene
+Vorteile von Multicore-Prozessoren
+1. möglich wird: **Parallelarbeit auf Chip-Ebene** $\rightarrow$ Vermeidung der Plagen paralleler verteilter Systeme
+2. bei geeigneter Architektur: Erkenntnisse und Software aus Gebiet verteilter Systeme als Grundlage verwendbar
+3. durch gemeinsame Caches (architekturabhängig): schnellere Kommunikation (speicherbasiert), billigere Migration von Aktivitäten kann möglich sein
+4. höhere Energieeffizienz: mehr Rechenleistung pro Chipfläche, geringere elektrische Leistungsaufnahme $\rightarrow$ weniger Gesamtabwärme, z.T. einzelne Kerne abschaltbar (vgl. Sparsamkeit , mobile Geräte)
+5. Baugröße: geringeres physisches Volumen
+
+Nachteile von Multicore-Prozessoren
+1. durch gemeinsam genutzte Caches und Busstrukturen: Engpässe (Bottlenecks) möglich
+2. zur Vermeidung thermischer Zerstörungen: Lastausgleich zwingend erforderlich! (Ziel: ausgeglichene Lastverteilung auf einzelnen Kernen)
+3. zum optimalen Einsatz zwingend erforderlich:
+    1. Entwicklung Hardwarearchitektur
+    2. zusätzlich: Entwicklung geeigneter Systemsoftware
+    3. zusätzlich: Entwicklung geeigneter Anwendungssoftware
+
+### Multicore-Prozessoren
+- Sprechweise in der Literatur gelegentlich unübersichtlich...
+- daher: Terminologie und Abkürzungen:
+  - MC ...multicore(processor)
+  - CMP ...chip-level multiprocessing, hochintegrierte Bauweise für ,,MC''
+  - SMC ...symmetric multicore $\rightarrow$  SMP ... symmetric multi-processing
+  - AMC ...asymmetric (auch: heterogeneous ) multicore $\rightarrow$  AMP ... asymmetric multi-processing
+  - UP ...uni-processing , Synonym zu singlecore(SC) oder uniprocessor
+
+Architekturen von Multicore-Prozessoren
+- A. Netzwerkbasiertes Design
+  - Prozessorkerne des Chips u. ihre lokalen Speicher (oder Caches): durch Netzwerkstruktur verbunden
+  - damit: größte Ähnlichkeit zu traditionellen verteilten Systemen
+  - Verwendung: bei Vielzahl von Prozessorkernen (Skalierbarkeit!)
+  - Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
+  - ![](Assets/AdvancedOperatingSystems-multicore-prozessoren.png)
+- B. Hierarchisches Design
+  - mehrere Prozessor-Kerne teilen sich mehrere baumartig angeordnete Caches
+  - meistens:
+    - jeder Prozessorkern hat eigenen L1-Cache
+    - L2-Cache, Zugriff auf (externen) Hauptspeicher u. Großteil der Busse aber geteilt
+  - Verwendung: typischerweise Serverkonfigurationen
+  - Beispiele:
+    - IBM Power
+    - Intel Core 2, Core i
+    - Sun UltraSPARCT1 (Niagara)
+  - ![](Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png)
+- C. Pipeline-Design
+  - Daten durch mehrere Prozessor-Kerne schrittweise verarbeitet
+  - durch letzten Prozessor: Ablage im Speichersystem
+  - Verwendung:
+    - Graphikchips
+    - (hochspezialisierte) Netzwerkprozessoren
+  - Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
+  - ![](Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png)
+
+Symmetrische u. asymmetrische Multicore-Prozessoren
+- symmetrische Multicore-Prozessoren (SMC)
+  - alle Kerne identisch, d.h. gleiche Architektur und gleiche Fähigkeiten
+  - Beispiele:
+    - Intel Core 2 Duo
+    - Intel Core 2 Quad
+    - ParallaxPropeller
+-  asymmetrische MC-Prozessoren (AMC)
+  - Multicore-Architektur, jedoch mit Kernen unterschiedlicher Architektur und/oder unterschiedlichen Fähigkeiten
+  - Beispiel: Kilocore:
+    - 1 Allzweck-Prozessor (PowerPC)
+    - + 256 od. 1024 Datenverarbeitungsprozessoren
+
+### Superskalare Prozessoren
+- Bekannt aus Rechnerarchitektur: Pipelining
+  - parallele Abarbeitung von Teilen eines Maschinenbefehls in Pipeline-Stufen
+  - ermöglicht durch verschiedene Funktionseinheiten eines Prozessors für verschiedene Stufen:
+    - Control Unit (CU)
+    - ArithmeticLogicUnit (ALU)
+    - Float Point Unit (FPU)
+    - Memory Management Unit (MMU)
+    - Cache
+  - sowie mehrere Pipeline-Register
+- superskalare Prozessoren: solche, bei denen zur Bearbeitung einer Pipeling-Stufe erforderlichen Funktionseinheiten n-fach vorliegen
+- Ziel:
+  - Skalarprozessor (mit Pipelining): 1 Befehl pro Takt (vollständig) bearbeitet
+  - Superskalarprozessor: bis zu n Befehle pro Taktbearbeitet
+- Verbereitung heute: universell (bis hin zu allen Desktop-Prozessorfamilien)
+
+## Parallelisierung in Betriebssystemen
+- Basis für alle Parallelarbeit aus BS-Sicht: Multithreading
+- wir erinnern uns ...:
+  - Kernel-Level-Threads (KLTs): BS implementiert Threads $\rightarrow$ Scheduler kann mehrere Threads nebenläufig planen $\rightarrow$ Parallelität möglich
+  - User-Level-Threads (ULTs): Anwendung implementiert Threads $\rightarrow$ keine Parallelität möglich!
+- grundlegend für echt paralleles Multithreading:
+  - parallelisierungsfähige Hardware
+  - kausal unabhängige Threads
+  - passendes (und korrekt eingesetztes!) Programmiermodell, insbesondere Synchronisation!
+  - $\rightarrow$  Programmierer + Compiler
+
+Vorläufiges Fazit:
+- BS-Abstraktionen müssen Parallelität unterstützen (Abstraktion nebenläufiger Aktivitäten: KLTs)
+- BS muss Synchronisationsmechanismen implementieren
+
+### Synchronisations- und Sperrmechanismen
+- Synchronisationsmechanismen zur Nutzung
+  - ... durch Anwendungen $\rightarrow$ Teil der API
+  - ... durch den Kernel (z.B. Implementierung Prozessmanagement, E/A, ...)
+- Aufgabe: Verhinderung konkurrierender Zugriffe auf logische oder physische Ressourcen
+  - Vermeidung von raceconditions
+  - Herstellung einer korrekten Ordnung entsprechend Kommunikationssemantik (z.B. ,,Schreiben vor Lesen'')
+- (alt-) bekanntes Bsp.: Reader-Writer-Problem
+
+Erinnerung: Reader-Writer-Problem
+- Begriffe: (bekannt)
+  - wechselseitiger Ausschluss ( mutual exclusion)
+  - kritischer Abschnitt (critical section)
+- Synchronisationsprobleme:
+  - Wie verhindern wir ein write in vollen Puffer?
+  - Wie verhindern wir ein read aus leerem Puffer?
+  - Wie verhindern wir, dass auf ein Element während des read durch ein gleichzeitiges write zugegriffen wird? (Oder umgekehrt?)
+
+Sperrmechanismen ( Locks )
+- Wechselseitiger Ausschluss ...
+  - ... ist in nebenläufigen Systemen zwingend erforderlich
+  - ... ist in echt parallelen Systemen allgegenwärtig
+  - ... skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$ (monolithischer) Kernel-Code!
+- Mechanismen in Betriebssystemen: Locks
+- Arten von Locks am Beispiel Linux:
+  - Big Kernel Lock (BKL)
+    - historisch (1996-2011): lockkernel(); ... unlockkernel();
+    - ineffizient durch massiv gestiegene Komplexität des Kernels
+  - atomic-Operationen
+  - Spinlocks
+  - Semaphore (Spezialform: Reader/Writer Locks)
+
+atomic*
+- Bausteine der komplexeren Sperrmechanismen:
+  - Granularität: einzelne Integer- (oder sogar Bit-) Operation
+  - Performanz: mittels Assembler implementiert, nutzt Atomaritäts garantiender CPU ( TSL - Anweisungen: ,,test-set-lock'' )
+- Benutzung:
+  ```cpp
+  atomic_t x;
+  atomic_set(&x, 42);
+  int y = atomic_read(&x);
+  ```
+  - `atomic_*` Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
+  - keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
+  - definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$ unnötiges Sperren sehr preiswert
+
 # Zusammenfassung
 
 
@@ -3295,3 +3480,10 @@ Referenzmonitor:
   - [Popek&Goldberg74] Gerald J. Popek, Robert P. Goldberg: Formal Requirements for Virtualizable Third Generation Architectures, Communications of the ACM, Vol. 17, No.7, 1974
   - [Adams&Agesen06] Keith Adams, Ole Agesen: A Comparison of Software and Hardware Techniques for x86 Virtualization, 12th Int. Conf. on Architectural Support for Programming Languages and Operating, Systems(ASPLOS XII), 2006
   - [Agesen+12] Ole Agesen,Jim Mattson,Radu Rugina, Jeffrey Sheldon: Software Techniques for Avoiding Hardware Virtualization Exits, 2012 USENIX Annual Technical Conference (USENIX ATC '12), 2012
+- Parallelisierbarkeit:
+  - [Heiss94] Hans-Ulrich Heiss: Prozessorzuteilung in Parallelrechnern, B.I. Wissenschaftsverlag: Mannheim, Leipzig, Wien, Zürich, 1994, ISBN: 3-411-17061-1
+  - [Keckler+2009] Stephen W. Keckler: Multicore Processors and Systems, Springer Science+BusinessMedia, LLC 2009, ISBN 978-1-4419-0263-4
+- Barrelfish:
+  - [Baumann+2009b] Andrew Baumann et al.: The Multikernel: A newOS architecture for scalable multicoresystems, Proceedings ACM SOSP (Symposium on Operating System Principles) 2009
+- Amoeba:
+  - [Tanenbaum+91] AndrewS. Tanenbaum, M. Frans Kaashoek, Robbertvan Renesse, Henri E. Bal: The Amoeba Distributed Operating System - A Status Report Elsevier Computer Communications, Vol. 14, No.6, 1991, S. 324 – 335

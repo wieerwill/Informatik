@@ -2872,7 +2872,7 @@ Architekturvarianten - drei unterschiedliche Prinzipien:
   - ✓ Anwendungen isolierbar
  
 Hardware-Voraussetzungen
-- Voraussetzungen zum Einsatz von Typ- 1 - HV
+- Voraussetzungen zum Einsatz von Typ-1-HV
   - Ziel: Nutzung von Virtualisierung auf PC-Hardware
   - systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek & Goldberg [Popek&Goldberg74]
   - Ergebnis:
@@ -2943,6 +2943,259 @@ Intel-Architektur ab 386
 - Diese Architekturprobleme (bekannt seit 1974) wurden 20 Jahre lang im Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen ...
   - erste virtualisierungsfähige Intel-Prozessorenfamilie (s. [Adams2006] ): VT, VT-x® (2005)
   - dito für AMD: SVM, AMD-V® (auch 2005)
+
+Forschungsarbeit 1990er Jahre
+- verschiedene akademische Projekte zur Virtualisierung bisher nicht virtualisierbarer Prozessoren
+- erstes und vermutlich bekanntestes: DISCO- Projekt der University of Stanford
+- Resultat: letztlich VMware (heute kommerziell) und Typ-2-Hypervisors...
+
+### Typ-2-Hypervisor
+![](Assets/AdvancedOperatingSystems-typ-2-hypervisor.png)
+
+Virtualisierung ohne Hardwareunterstützung:
+- keine Möglichkeit, trap-and-emulate zu nutzen
+- keine Möglichkeit, um
+  1. korrekt (bei sensiblen Instruktionen im Gast-Kernel) den Privilegierungsmodus zu wechseln
+  2. den korrekten Code im HV auszuführen
+
+Übersetzungsstrategie in Software:
+- vollständige Übersetzung des Maschinencodes, der in VM ausgeführt wird, in Maschinencode, der im HV ausgeführt wird
+- praktische Forderung: HV sollte selbst abstrahierte HW-Schnittstelle zur Ausführung des (komplexen!) Übersetzungscodes zur Verfügung haben (z.B. Nutzung von Gerätetreibern)
+- $\rightarrow$ Typ-2-HV als Kompromiss:
+  - korrekte Ausführung von virtualisierter Software auf virtualisierter HW
+  - beherrschbare Komplexität der Implementierung
+
+aus Nutzersicht
+- läuft als gewöhnlicher Nutzer-Prozess auf Host-Betriebssystem (z.B. Windows oder Linux)
+- VMware bedienbarwie physischer Rechner (bspw. erwartet Bootmedium in virtueller Repräsentation eines physischen Laufwerks)
+- persistente Daten des Gast-BS auf virtuellem Speichermedium ( tatsächlich: Image-Datei aus Sicht des Host-Betriebssystems)
+
+Mechanismus: Code-Inspektion
+- Bei Ausführung eines Binärprogramms in der virtuellen Maschine (egal ob Bootloader, Gast-BS-Kernel, Anwendungsprogramm): zunächst inspiziert Typ-2-HV den Code nach Basisblöcken
+  - Basisblock: Befehlsfolge, die mit privilegierten Befehlen oder solchen Befehlen abgeschlossen ist, die den Kontrollfluss ändern (sichtbar an Manipulation des Programm-Zählers eip), z.B. jmp, call, ret.
+- Basisblöcke werden nach sensiblen Instruktionen abgesucht
+- diese werden jeweils durchAufruf einer HV-Prozedur ersetzt, die jeweilige Instruktion behandelt
+- gleiche Verfahrensweise mit letzter Instruktion eines Basis-Blocks
+
+Mechanismus: Binary Translation (Binärcodeübersetzung)
+- modifizierter Basisblock: wird innerhalbdes HVin Cachegespeichert und ausgeführt
+- Basisblock ohne sensible Instruktionen: läuft unter Typ-2-HV exakt so schnell wie unmittelbar auf Hardware (weil er auch tatsächlich unmittelbar auf der Hardware läuft, nur eben im HV-Kontext)
+- sensible Instruktionen: nach dargestellter Methode abgefangen und emuliert $\rightarrow$ dabei hilft jetzt das Host-BS (z.B. durch eigene Systemaufrufe, Gerätetreiberschnittstellen)
+
+Mechanismus: Caching von Basisblöcken
+- HV nutzt zwei parallel arbeitende Module (Host-BS-Threads!):
+  - Translator: Code-Inspektion, Binary Translation
+  - Dispatcher: Basisblock-Ausführung
+- zusätzliche Datenstruktur: Basisblock-Cache
+- Dispatcher: sucht Basisblock mit jeweils nächster auszuführender Befehlsadresse im Cache; falls miss $\rightarrow$ suspendieren (zugunsten Translator)
+- Translator: schreibt Basisblöcke in Basisblock-Cache
+- Annahme: irgendwann ist Großteil des Programms im Cache, dieses läuft dann mit nahezu Original-Geschwindigkeit (theoretisch)
+
+Performanzmessungen
+- zeigen gemischtes Bild: Typ2-HV keinesfalls so schlecht, wie einst erwartet wurde
+- qualitativer Vergleich mit virtualisierbarer Hardware (Typ1-Hypervisor):
+- „trap-and-emulate,,: erzeugt Vielzahl von Traps $\rightarrow$ Kontextwechsel zwischen jeweiliger VM und HV
+- insbesondere bei Vielzahl an VMs sehr teuer: CPU-Caches, TLBs, Heuristiken zur spekulativen Ausführung werden verschmutzt
+- wenn andererseits sensible Instruktionen durch Aufruf von VMware-Prozeduren innerhalb des ausführenden Programms ersetzt: keine Kontextwechsel-Overheads
+
+Studie: (von Vmware) [Adams&Agesen06]
+- last-und anwendungsabhängig kann Softwarelösung sogar Hardwarelösung übertreffen
+- Folge: viele moderne Typ1-HV benutzen aus Performanzgründen ebenfalls Binary Translation
+
+### Paravirtualisierung
+Funktionsprinzip
+- ... unterscheidet sich prinzipiell von Typ-1/2-Hypervisor
+- wesentlich: Quellcode des Gast-Betriebssystems modifiziert
+- sensible Instruktionen: durch Hypervisor-Calls ersetzt
+- Folge: Gast-Betriebssystem arbeitet jetzt vollständig wie Nutzerprogramm, welches Systemaufrufe zum Betriebssystem (hier dem Hypervisor) ausführt
+- dazu:
+  - Hypervisor: muss geeignetes Interface definieren (HV-Calls)
+  - $\rightarrow$ Menge von Prozedur-Aufrufen zur Benutzung durch Gast-Betriebssystem
+  - bilden eine HV-API als Schnittstelle für Gast-Betriebssysteme (nicht für Nutzerprogramme!)
+- mehr dazu: Xen
+
+Verwandtschaft mit Mikrokernel-Architekturen
+- Geht man vom Typ-1-HV noch einen Schritt weiter ...
+  - und entfernt alle sensiblen Instruktionen aus Gast-Betriebssystem ...
+  - und ersetzt diese durch Hypervisor-Aufrufe, um Systemdienste wie E/A zu benutzen, ...
+  - hat man praktisch den Hypervisor in Mikrokernel transformiert.
+- ... und genau das wird auch schon gemacht: $L^4$Linux (TU Dresden)
+  - Basis: stringente $L^4\mu$ Kernel-Implementierung (Typ-1-HV-artiger Funktionsumfang)
+  - Anwendungslaufzeitumgebung: paravirtualisierter Linux-Kernel als Serverprozess
+  - Ziele: Isolation (Sicherheit, Robustheit), Echtzeitfähigkeit durch direktere HW-Interaktion (vergleichbar Exokernel-Ziel)
+
+Zwischenfazit Virtualisierung
+- Ziele: Adaptivität komplementär zu...
+  - Wartbarkeit : ökonomischer Betrieb von Cloud-und Legacy-Anwendungen ohne dedizierte Hardware
+  - Sicherheit : sicherheitskritische Anwendungen können vollständig von nichtvertrauenswürdigen Anwendungen (und untereinander) isoliert werden
+  - Robustheit : Fehler in VMs (= Anwendungsdomänen) können nicht andere VMs beeinträchtigen
+- Idee: drei gängige Prinzipien:
+  - Typ-1-HV: unmittelbares HW-Multiplexing, trap-and-emulate
+  - Typ-2-HV: HW-Multiplexing auf Basis eines Host-OS, binarytranslation
+  - Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt $\mu$Kern
+- Ergebnisse:
+  - ✓ VMs mit individuell anpassbarer Laufzeitumgebung
+  - ✓ isolierteVMs
+  - ✓ kontrollierbare VM-Interaktion (untereinander und mit HW)
+  - ✗ keine hardwarespezifischen Optimierungen aus VM heraus möglich $\rightarrow$ Performanz, Echtzeitfähigkeit, Sparsamkeit!
+
+## Container
+Ziele:
+- Adaptivität , im Dienste von ...
+- ... Wartbarkeit: einfachen Entwicklung, Installation, Rekonfiguration durch Kapselung von
+  - Anwendungsprogrammen
+  - + durch sie benutzte Bibliotheken
+  - + Instanzen bestimmter BS-Ressourcen
+- ... Portabilität: Betrieb von Anwendungen, die lediglich von einem bestimmten BS-Kernel abhängig sind (nämlich ein solcher, der Container unterstützt); insbesondere hinsichtlich:
+  - Abhängigkeitskonflikten (Anwendungen und Bibliotheken)
+  - fehlenden Abhängigkeiten (Anwendungen und Bibliotheken)
+  - Versions-und Namenskonflikten
+- ... Sparsamkeit: problemgerechtes „Packen,, von Anwendungen in Container $\rightarrow$ Reduktion an Overhead: selten (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
+
+Idee:
+- private Sichten (Container) bilden = private User-Space-Instanzen für
+verschiedene Anwendungsprogramme
+- Kontrolle dieser Container i.S.v. Multiplexing, Unabhängigkeit und API: BS-Kernel
+- somit keine Form der BS-Virtualisierung, eher: „User-Space-Virtualisierung,,
+
+![](Assets/AdvancedOperatingSystems-container.png)
+
+Anwendungsfälle für Container
+- Anwendungsentwicklung:
+  - konfliktfreies Entwickeln und Testen unterschiedlicher Software, für unterschiedliche Zielkonfigurationen BS-User-Space
+- Anwendungsbetrieb und -administration:
+  - Entschärfung von „dependency hell,,
+  - einfache Migration, einfaches Backup von Anwendungen ohne den (bei Virtualisierungsimages als Ballast auftretenden) BS-Kernel
+  - einfache Verteilung generischer Container für bestimmte Aufgaben
+  - = Kombinationen von Anwendungen
+- Anwendungsisolation? $\rightarrow$ Docker
+
+Zwischenfazit: Container
+- Ziele: Adaptivität komplementär zu...
+  - Wartbarkeit : Vermeidung von Administrationskosten für Laufzeitumgebung von Anwendungen
+  - Portabilität : Vereinfachung von Abhängigkeitsverwaltung
+  - Sparsamkeit : Optimierung der Speicher-und Verwaltungskosten für Laufzeitumgebung von Anwendungen
+- Idee:
+  - unabhängige User-Space-Instanz für jeden einzelnen Container
+  - Aufgaben des Kernels: Unterstützung der Containersoftware bei Multiplexing und Herstellung der Unabhängigkeitdieser Instanzen
+- Ergebnisse:
+  - ✓ vereinfachte Anwendungsentwicklung
+  - ✓ vereinfachter Anwendungsbetrieb
+  - ✗ Infrastruktur nötig über (lokale) Containersoftware hinaus, um Containern zweckgerecht bereitzustellen und zu warten
+  - ✗ keine vollständige Isolationmöglich
+ 
+Beispielsysteme (Auswahl)
+- Virtualisierung: VMware, VirtualBox
+- Paravirtualisierung: Xen
+- Exokernel: Nemesis, MirageOS, RustyHermit
+- Container: Docker, LupineLinux
+
+### Hypervisor
+#### VMware
+- " ... ist Unternehmenin PaloAlto, Kalifornien (USA)
+- gegründet 1998 von 5 Informatikern
+- stellt verschiedene Virtualisierungs-Softwareprodukte her:
+  1. VMware Workstation
+      - war erstes Produkt von VMware (1999)
+      - mehrere unabhängige Instanzen von x86- bzw. x86-64-Betriebssystemen auf einer Hardware betreibbar
+  2. VMware Fusion: ähnliches Produkt für Intel Mac-Plattformen
+  3. VMware Player: (eingestellte) Freeware für nichtkommerziellen Gebrauch
+  4. VMware Server (eingestellte Freeware, ehem. GSX Server)
+  5. VMware vSphere (ESXi)
+      - Produkte 1 ... 3: für Desktop-Systeme
+      - Produkte 4 ... 5: für Server-Systeme
+      - Produkte 1 ... 4: Typ-2-Hypervisor
+- bei VMware-Installation: spezielle vm- Treiber in Host-Betriebssystem eingefügt
+- diese ermöglichen: direkten Hardware-Zugriff
+- durch Laden der Treiber: entsteht ,,Virtualisierungsschicht'' (VMware-Sprechweise)
+
+- ![Host Guest Architektur](Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png)
+- ![Bare Metal Architektur](Assets/AdvancedOperatingSystems-vmware-bare-metal.png)
+  - Typ1- Hypervisor- Architektur
+  - Anwendung nur bei VMware ESXi
+- ![](Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png)
+  - Entsprechende Produkte in Vorbereitung
+
+#### VirtualBox
+- Virtualisierungs-Software für x86- bzw. x86-64-Betriebssysteme für Industrie und ,,Hausgebrauch'' (ursprünglich: Innotek , dann Sun , jetzt Oracle )
+- frei verfügbare professionelle Lösung, als Open Source Software unter GNU General Public License(GPL) version 2. ...
+- (gegenwärtig) lauffähig auf Windows, Linux, Macintosh und Solaris Hosts
+- unterstützt große Anzahl von Gast-Betriebssystemen: Windows (NT 4.0, 2000, XP, Server 2003, Vista, Windows 7), DOS/Windows 3.x, Linux (2.4 and 2.6), Solaris and OpenSolaris , OS/2 , and OpenBSD u.a.
+- reiner Typ-2-Hypervisor
+
+### Paravirutalisierung: Xen
+- entstanden als Forschungsprojekt der University of Cambridge (UK), dann XenSource Inc., danach Citrix, jetzt: Linux Foundation (,,self-governing'')
+- frei verfügbar als Open Source Software unter GNU General Public License (GPL)
+- lauffähig auf Prozessoren der Typen x86, x86-64, PowerPC, ARM, MIPS
+- unterstützt große Anzahl von Gast-Betriebssystemen: FreeBSD, GNU/Hurd/Mach, Linux, MINIX, NetBSD, Netware, OpenSolaris, OZONE, Plan 9
+- ,,Built for the cloud before it was called cloud.'' (Russel Pavlicek, Citrix)
+- bekannt für Paravirtualisierung
+- unterstützt heute auch andere Virtualisierungs-Prinzipien
+
+Xen : Architektur
+- Gast-BSe laufen in Xen Domänen (,,$dom_i$'', analog $VM_i$)
+- es existiert genau eine, obligatorische, vertrauenswürdige Domäne: $dom_0$
+- Aufgaben (Details umseitig):
+  - Bereitstellen und Verwalten der virtualisierten Hardware für andere Domänen (Hypervisor-API, Scheduling-Politiken für Hardware-Multiplexing)
+  - Hardwareverwaltung/-kommunikation für paravirtualisierte Gast-BSe (Gerätetreiber)
+  - Interaktionskontrolle (Sicherheitspolitiken)
+- $dom_0$ im Detail: ein separates, hochkritisch administriertes, vertrauenswürdiges BS mit eben solchen Anwendungen (bzw. Kernelmodulen) zur Verwaltung des gesamten virtualisierten Systems
+  - es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
+  - ![](Assets/AdvancedOperatingSystems-Xen-architektur.png)
+
+Xen : Sicherheit
+- Sicherheitsmechanismusin Xen: Xen Security Modules (XSM)
+- illustriert, wie (Para-) Typ-1-Virtualisierung von BS die NFE Sicherheit unterstützt
+- PDP: Teil des vertrauenswürdigen BS in $dom_0$, PEPs: XSMs im Hypervisor
+- Beispiel: Zugriff auf Hardware
+  - Sicherheitspolitik-Integration, Administration, Auswertung: $dom_0$
+  - ![](Assets/AdvancedOperatingSystems-Xen-sicherheit.png)
+- Beispiel: Inter-Domänen-Kommunikation
+  - Interaktionskontrolle (Aufgaben wie oben): $dom_0$
+  - Beispiel: [VisorFlow](https://www.flyn.org/projects/VisorFlow/)
+  - selber XSM kontrolliert Kommunikation für zwei Domänen
+
+### Exokernel
+Nemesis
+- Betriebssystemaus EU-Verbundprojekt „Pegasus,, zur Realisierung eines verteilten multimediafähigen Systems (1. Version: 1994/95)
+- Entwurfsprinzipien:
+  1. Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
+  2. Realisierung als sog. vertikal strukturiertes Betriebssystem:
+      - weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip)
+      - Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen (neu)
+- ![Reed+97](Assets/AdvancedOperatingSystems-Nemesis-struktur.png)
+
+MirageOS + Xen
+- Spezialfall: Exokernel als paravirtualisiertes BS auf Xen
+- Ziele : Wartbarkeit (Herkunft: Virtualisierungsarchitekturen ...)
+  - ökonomischer HW-Einsatz
+  - Unterstützung einfacher Anwendungsentwicklung
+  - nicht explizit: Unterstützung von Legacy-Anwendungen!
+- Idee: ,,Unikernel'' $\rightarrow$ eine Anwendung, eine API, ein Kernel
+- umfangreiche Dokumentation, Tutorials, ... $\rightarrow$ [ausprobieren](https://mirage.io/wiki/learning)
+- Unikernel - Idee
+  - Architekturprinzip: ![](Assets/AdvancedOperatingSystems-unikernel-architektur.png)
+  - in MirageOS: ![](Assets/AdvancedOperatingSystems-mirageOs-architektur.png) 
+- Ergebnis: Kombination von Vorteilen zweier Welten
+  - Virtualisierungs vorteile: Sicherheit, Robustheit ($\rightarrow$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne $dom_0$)
+  - Exokernelvorteile: Wartbarkeit, Sparsamkeit
+  - nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... ($\rightarrow$ Performanz und Echzeitfähigkeit )
+
+### Container: Docker
+- Idee: Container für einfache Wartbarkeit von Linux-Anwendungsprogrammen ...
+  - ... entwickeln
+  - ... testen
+  - ... konfigurieren
+  - ... portieren $\rightarrow$ Portabilität
+- Besonderheit: Container können - unabhängig von ihrem Einsatzzweck - wie Software-Repositories benutzt, verwaltet, aktualisiert, verteilt ... werden
+- Management von Containers: Docker Client $\rightarrow$ leichtgewichtiger Ansatz zur Nutzung der Wartbarkeitsvorteile von Virtualisierung
+- Forsetzung unter der OCI (Open Container Initiative)
+  - ,,Docker does a nice job [...] for a focused purpose, namely the lightweight packaging and deployment of applications.'' (Dirk Merkel, Linux Journal)
+- Implementierung der Containertechnik basierend auf Linux-Kernelfunktionen:
+  - Linux Containers (LXC): BS-Unterstützung für Containermanagement
+  - cgroups: Accounting/Beschränkung der Ressourcenzuordnung
+  - union mounting: Funktion zur logischen Reorganisation hierarchischer Dateisysteme
+- ![](Assets/AdvancedOperatingSystems-docker.png)
 
 # Performanz und Parallelität
 # Zusammenfassung

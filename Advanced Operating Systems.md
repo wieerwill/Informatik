@@ -2994,7 +2994,7 @@ Mechanismus: Caching von Basisblöcken
 Performanzmessungen
 - zeigen gemischtes Bild: Typ2-HV keinesfalls so schlecht, wie einst erwartet wurde
 - qualitativer Vergleich mit virtualisierbarer Hardware (Typ1-Hypervisor):
-- „trap-and-emulate,,: erzeugt Vielzahl von Traps $\rightarrow$ Kontextwechsel zwischen jeweiliger VM und HV
+- ,,trap-and-emulate,,: erzeugt Vielzahl von Traps $\rightarrow$ Kontextwechsel zwischen jeweiliger VM und HV
 - insbesondere bei Vielzahl an VMs sehr teuer: CPU-Caches, TLBs, Heuristiken zur spekulativen Ausführung werden verschmutzt
 - wenn andererseits sensible Instruktionen durch Aufruf von VMware-Prozeduren innerhalb des ausführenden Programms ersetzt: keine Kontextwechsel-Overheads
 
@@ -3050,13 +3050,13 @@ Ziele:
   - Abhängigkeitskonflikten (Anwendungen und Bibliotheken)
   - fehlenden Abhängigkeiten (Anwendungen und Bibliotheken)
   - Versions-und Namenskonflikten
-- ... Sparsamkeit: problemgerechtes „Packen,, von Anwendungen in Container $\rightarrow$ Reduktion an Overhead: selten (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
+- ... Sparsamkeit: problemgerechtes ,,Packen,, von Anwendungen in Container $\rightarrow$ Reduktion an Overhead: selten (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
 
 Idee:
 - private Sichten (Container) bilden = private User-Space-Instanzen für
 verschiedene Anwendungsprogramme
 - Kontrolle dieser Container i.S.v. Multiplexing, Unabhängigkeit und API: BS-Kernel
-- somit keine Form der BS-Virtualisierung, eher: „User-Space-Virtualisierung,,
+- somit keine Form der BS-Virtualisierung, eher: ,,User-Space-Virtualisierung,,
 
 ![](Assets/AdvancedOperatingSystems-container.png)
 
@@ -3064,7 +3064,7 @@ Anwendungsfälle für Container
 - Anwendungsentwicklung:
   - konfliktfreies Entwickeln und Testen unterschiedlicher Software, für unterschiedliche Zielkonfigurationen BS-User-Space
 - Anwendungsbetrieb und -administration:
-  - Entschärfung von „dependency hell,,
+  - Entschärfung von ,,dependency hell,,
   - einfache Migration, einfaches Backup von Anwendungen ohne den (bei Virtualisierungsimages als Ballast auftretenden) BS-Kernel
   - einfache Verteilung generischer Container für bestimmte Aufgaben
   - = Kombinationen von Anwendungen
@@ -3157,7 +3157,7 @@ Xen : Sicherheit
 
 ### Exokernel
 Nemesis
-- Betriebssystemaus EU-Verbundprojekt „Pegasus,, zur Realisierung eines verteilten multimediafähigen Systems (1. Version: 1994/95)
+- Betriebssystemaus EU-Verbundprojekt ,,Pegasus,, zur Realisierung eines verteilten multimediafähigen Systems (1. Version: 1994/95)
 - Entwurfsprinzipien:
   1. Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
   2. Realisierung als sog. vertikal strukturiertes Betriebssystem:
@@ -3384,6 +3384,220 @@ atomic*
   - definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$ unnötiges Sperren sehr preiswert
 
 # Zusammenfassung
+## Funktionale und nichtfunktionale Eigenschaften
+- Funktionale Eigenschaften: beschreiben, was ein (Software)-Produkt tun soll
+- Nichtfunktionale Eigenschaften: beschreiben, wie funktionale Eigenschaften realisiert werden, also welche sonstigen Eigenschaftendas Produkt haben soll ... unterteilbar in:
+    1. Laufzeiteigenschaften (zur Laufzeit sichtbar)
+    2. Evolutionseigenschaften (beim Betrieb sichtbar: Erweiterung, Wartung, Test usw.)
+
+Roadmap (... von Betriebssystemen)
+- Sparsamkeit und Effizienz
+- Robustheit und Verfügbarkeit
+- Sicherheit
+- Echtzeitfähigkeit
+- Adaptivität
+- Performanzund Parallelität
+
+## Sparsamkeit und Effizienz
+- Sparsamkeit: Die Eigenschaft eines Systems, seine Funktion mit minimalem Ressourcenverbrauch auszuüben.
+- Effizienz: Der Grad, zu welchem ein System oder eine seiner Komponenten seine Funktion mit minimalem Ressourcenverbrauch ausübt. $\rightarrow$ Ausnutzungsgrad begrenzter Ressourcen
+- Die jeweils betrachtete(n) Ressource(n) muss /(müssen) dabei spezifiziert sein!
+- sinnvolle Möglichkeiten bei Betriebssystemen:
+  1. Sparsamer Umgang mit Energie , z.B. energieeffizientes Scheduling
+  2. Sparsamer Umgang mit Speicherplatz (Speichereffizienz)
+  3. Sparsamer Umgang mit Prozessorzeit
+  4. ...
+
+Sparsamkeit mit Energie
+- Sparsamkeit mit Energie als heute extrem wichtigen Ressource, mit nochmals gesteigerter Bedeutung bei mobilen bzw. vollständig autonomen Geräten Maßnahmen:
+1. Hardware-Ebene: momentan nicht oder nicht mit maximaler Leistung benötigte Ressourcen in energiesparenden Modus bringen: abschalten, Standby, Betrieb mit verringertem Energieverbrauch ( abwägen gegen verminderte Leistung). (Geeignete Hardware wurde/wird ggf. erst entwickelt)
+2. Software-Ebene: neue Komponenten entwickeln, die in der Lage sein müssen:
+    - Bedingungenzu erkennen, unter denen ein energiesparender Modus möglich ist;
+    - Steuerungs-Algorithmen für Hardwarebetrieb so zu gestalten, dass Hardware-Ressourcen möglichst lange in einem energiesparenden Modus betrieben werden.
+    - Energie-Verwaltungsstrategien: energieeffizientes Scheduling zur Vermeidung von Unfairness und Prioritätsumkehr
+    - Beispiele: energieeffizientes Magnetfestplatten-Prefetching, energiebewusstes RR-Scheduling
+
+Sparsamkeit mit Speicherplatz
+- Betrachtet: Sparsamkeit mit Speicherplatz mit besonderer Wichtigkeit für physisch beschränkte, eingebettete und autonome Geräte 
+- Maßnahmen Hauptspeicherauslastung:
+  1. Algorithmus und Strategie z.B.:
+      - Speicherplatz sparende Algorithmen zur Realisierung gleicher Strategien
+  2. Speicherverwaltung von Betriebssystemen:
+      - physische vs. virtuelle Speicherverwaltung
+      - speichereffiziente Ressourcenverwaltung
+      - Speicherbedarfdes Kernels
+      - direkte Speicherverwaltungskosten
+- Maßnahmen Hintergrundspeicherauslastung:
+  1. Speicherbedarf des Betriebssystem-Images
+  2. dynamische SharedLibraries
+  3. VMM-Auslagerungsbereich
+  4. Modularität und Adaptivität des Betriebssystem-Images
+- Nicht betrachtet: Sparsamkeit mit Prozessorzeit $\rightarrow$ 99% Überschneidung mit NFE Performanz
+
+## Robustheit und Verfügbarkeit
+- Robustheit: Zuverlässigkeit unter Anwesenheit externer Ausfälle
+- fault, aktiviert $\rightarrow$ error, breitet sich aus $\rightarrow$ failure
+
+Robustheit
+- Erhöhung der Robustheit durch Isolation:
+  - Maßnahmen zur Verhinderung der Fehlerausbreitung:
+  1. Adressraumisolation: Mikrokernarchitekturen,
+  2. kryptografische HW-Unterstützung: Intel SGX und
+  3. Virtualisierungsarchitekturen
+- Erhöhung der Robustheit durch Behandlung von Ausfällen: Micro-Reboots
+
+Vorbedingung für Robustheit: Korrektheit
+- Korrektheit: Eigenschaft eines Systems sich gemäß seiner Spezifikation zu verhalten (unter der Annahme, dass bei dieser keine Fehler gemacht wurden).
+- Maßnahmen (nur angesprochen):
+1. diverse Software-Tests:
+    - können nur Fehler aufspüren, aber keine Fehlerfreiheit garantieren!
+2. Verifizierung:
+    - Durch umfangreichen mathematischen Apparat wird Korrektheit der Software bewiesen.
+    - Aufgrund der Komplexität ist Größe verifizierbarer Systeme (bisher?) begrenzt.
+    - Betriebssystem-Beispiel: verifizierter Mikrokern seL
+
+Verfügbarkeit
+- Verfügbarkeit: Der Anteil an Laufzeit eines Systems, in dem dieses seine spezifizierte Leistung erbringt.
+- angesprochen: Hochverfügbare Systeme
+- Maßnahmen zur Erhöhung der Verfügbarkeit:
+  1. Robustheitsmaßnahmen
+  2. Redundanz
+  3. Redundanz
+  4. Redundanz
+  5. Ausfallmanagement
+
+## Sicherheit
+- Sicherheit (IT-Security): Schutz eines Systems gegen Schäden durch zielgerichtete Angriffe, insbesondere in Bezug auf die Informationen, die es speichert, verarbeitet und kommuniziert.
+- Sicherheitsziele:
+  1. Vertraulichkeit (Confidentiality) 
+  2. Integrität (Integrity) 
+  3. Verfügbarkeit (Availability) 
+  4. Authentizität (Authenticity) 
+  5. Verbindlichkeit (Non-repudiability)
+
+Security Engineering
+- Sicherheitsziele $\rightarrow$ Sicherheitspolitik $\rightarrow$ Sicherheitsarchitektur $\rightarrow$ Sicherheitsmechanismen
+- Sicherheitspolitik: Regeln zum Erreichen eines Sicherheitsziels.
+  - hierzu formale Sicherheitsmodelle:
+  - IBAC, TE, MLS
+  - DAC, MAC
+- Sicherheitsmechanismen: Implementierung der Durchsetzung einer Sicherheitspolitik.
+  - Zugriffssteuerungslisten(ACLs)
+  - SELinux
+- Sicherheitsarchitektur: Platzierung, Struktur und Interaktion von Sicherheitsmechanismen.
+  - wesentlich: Referenzmonitorprinzipien
+  - RM1: Unumgehbarkeit $\rightarrow$ vollständiges Finden aller Schnittstellen
+  - RM2: Manipulationssicherheit $\rightarrow$ Sicherheit einerSicherheitspolitik selbst
+  - RM3: Verifizierbarkeit $\rightarrow$ wohlstrukturierte und per Designkleine TCBs
+
+## Echtzeitfähigkeit
+- Echtzeitfähigkeit: Fähigkeit eines Systems auf eine Eingabe innerhalb eines spezifizierten Zeitintervalls eine korrekte Reaktion hervorzubringen.
+- Maximum dieses relativen Zeitintervalls: Frist d
+1. echtzeitfähige Scheduling-Algorithmen für Prozessoren
+    - zentral: garantierte Einhaltung von Fristen
+    - wichtige Probleme: Prioritätsumkehr, Überlast, kausale Abhängigkeit
+2. echtzeitfähige Interrupt-Behandlung
+    - zweiteilig:asynchron registrieren, geplant bearbeiten
+3. echtzeitfähige Speicherverwaltung
+    - Primärspeicherverwaltung, VMM (Pinning)
+    - Sekundärspeicherverwaltung, Festplattenscheduling
+
+## Adaptivität
+- Adaptivität: Eigenschaft eines Systems, so gebaut zu sein, dass es ein gegebenes (breites) Spektrum nichtfunktionaler Eigenschaften unterstützt.
+- Beobachtung: Adaptivität i.d.R. als komplementär und synergetisch zu anderen NFE:
+  - Sparsamkeit
+  - Robustheit
+  - Sicherheit
+  - Echzeitfähigkeit
+  - Performanz
+  - Wartbarkeit und Portierbarkeit
+
+Adaptive Systemarchitekturen
+- Zielstellungen:
+  - Exokernel: { Adaptivität } ∪ { Performanz, Echtzeitfähigkeit, Wartbarkeit, Sparsamkeit }
+  - Virtualisierung: { Adaptivität } ∪ { Wartbarkeit, Sicherheit, Robustheit }
+  - Container: { Adaptivität } ∪ { Wartbarkeit, Portabilität, Sparsamkeit }
+
+## Performanz und Parallelität
+- Performanz (wie hier besprochen): Eigenschaft eines Systems, die für korrekte Funktion (= Berechnung) benötigte Zeit zu minimieren.
+- hier betrachtet: Kurze Antwort-und Reaktionszeiten
+  1. vor allen Dingen: Parallelisierung auf Betriebssystemebene zur weiteren Steigerung der Performanz/Ausnutzung von Multicore-Prozessoren(da Steigerung der Prozessortaktfrequenz kaum noch möglich)
+  2. weiterhin: Parallelisierung auf Anwendungsebene zur Verringerung der Antwortzeiten von Anwendungen und Grenzen der Parallelisierbarkeit(für Anwendungen auf einem Multicore-Betriebssystem).
+
+Mechanismen, Architekturen, Grenzen der Parallelisierung
+- Hardware:
+  - Multicore-Prozessoren
+  - Superskalarität
+- Betriebssystem:
+  - Multithreading(KLTs) und Scheduling
+  - Synchronisation und Kommunikation
+  - Lastangleichung
+- Anwendung(sprogrammierer):
+  - Parallelisierbarkeiteines Problems
+  - optimaler Prozessoreneinsatz, Effizienz
+
+## Synergetische und konträre Eigenschaften
+- Normalerweise:
+  - Eine nichtfunktionale Eigenschaft bei IT-Systemen meist nicht ausreichend
+  - Beispiel: Was nützt ein Echtzeit-Betriebssystem - z.B. innerhalb einer Flugzeugsteuerung - wenn es nicht auch verlässlich arbeitet?
+- In diesem Zusammenhang interessant:
+  - Welche nichtfunktionalen Eigenschaften mit Maßnahmen erreichbar, die in gleiche Richtung zielen, bei welchen wirken Maßnahmen eher gegenläufig?
+  - Erstere sollen synergetische, die zweiten konträre (also in Widerspruch zueinander stehende) nichtfunktionale Eigenschaften genannt werden.
+  - Zusammenhang nicht immer eindeutig und offensichtlich, wie z.B. bei: ,,Sicherheit kostet Zeit.'' (d.h. Performanz und Sicherheit sind nichtsynergetische Eigenschaften)
+
+## Notwendige NFE-Paarungen
+- Motivation: Anwendungen (damit auch Betriebssysteme) für bestimmte Einsatzgebiete brauchen oft mehrere nichtfunktionale Eigenschaften gleichzeitig - unabhängig davon, ob sich diese synergetisch oder nichtsynergetisch zueinander verhalten.
+- Beispiele:
+  - Echtzeit und Verlässlichkeit: ,,SRÜ''-Systeme an potentiell gefährlichen Einsatzgebieten (Atomkraftwerk, Flugzeugsteuerung, Hinderniserkennung an Fahrzeugen, ...)
+  - Echtzeit und Sparsamkeit: Teil der eingebetteten Systeme
+  - Robustheit und Sparsamkeit: unter entsprechenden Umweltbedingungen eingesetzte autonome Systeme, z.B. smart-dust-Systeme
+
+
+Überblick: NFE und Architekturkonzepte
+
+||Makrokernel| Mikrokernel |Exokernel| Virtualisierung| Multikernel
+|---|---|---|---|---|---
+|Energieeffizienz||| (✓) |✗ |✗
+|Speichereffizienz |✗| (✓) |(✓) ||✗
+|Robustheit| ✗| ✓| ✗| ✓
+|Verfügbarkeit |✗| (✓)|| (✓)| (✓)
+|Korrektheit| ✗| ✓| ✗| ✗| (✓)
+|Sicherheit |✗| ✓| ✗| ✓
+|Echtzeitfähigkeit| (✓)| (✓)| ✓| ✗| ✗
+|Adaptivität| ✗| (✓)| ✓| ✓| (✓)
+|Wartbarkeit| ✓|| ✓| ✓
+|Performanz| (✓)| ✗| ✓| ✗| ✓
+
+- ✓ ... Zieleigenschaft
+- ( ✓ ) ... synergetische Eigenschaft
+- ✗ ... konträre Eigenschaft
+- Leere Zellen: keine pauschale Aussage möglich.
+
+Fazit: Breites und offenes Forschungsfeld $\rightarrow$  werden Sie aktiv!
+
+# Prüfungsschwerpunkte
+- Basiswissen: Allgemeines zu NFEn, NFE-Ziele (Anwendungsbsp.), Probleme und deren Lösungskonzepte (Strategien, Mechanismen, Architekturen)!
+  - zu jeder NFE: Konzepte und Strategien der Mechanismen (Idee), relevante System-Architekturen (Idee, Vor-und Nachteile)
+  - z.B.: Warum Sicherheit? Wo? Welche BS-Probleme sind zur Herstellung von Sicherheitseigenschaften zu lösen? Durch welche Konzepte (z.B. Zugriffssteuerungsmechanismen, Referenzmonitor-Arch.) ist dies möglich?
+- Basiswissen plus (= für gute Noten):
+  - Mechanismen: prinzipieller Ablauf von Algorithmen, praktische Eigenheiten/Implementierungsprobleme
+  - Beispiel-BSe(Idee, ggf. deren Aufbau)
+  - Vergleichende Bewertung synergetischer und konträrer NFE anhand ihrer jeweils relevanten Mechanismen und Architekturen (Stoffquerschnitt) 
+- Tipp: Übungsstoff zu 90% aus diesen beiden Schwerpunktklassen
+- Spezialwissen (= für supergute Noten):
+  - Sparsamkeit: Implementierung energiebewusstes RR
+  - Robustheit: Details zur L4-Abstraktion von hierarchischen Adressräumen
+  - Sicherheit: TCBs, ACL-Implementierung, HRU- und BLP Sicherheitsmodelle, SELinux: grundlegende Politiksemantik
+  - Echtzeit: RC Algorithmus über die ,,Idee'' hinausgehend , Strategien zur Sekundärspeicherverwaltung, Formeln fur $U_{lub}$
+  - Adaptivität: Details zur ExOS, XoK
+  - Performanz: BKLs in $\mu$Kernels, Formeln zur Parallelisierbarkeit
+- Zusatzwissen (= für‘s Leben, nicht für die Prüfung):
+  - Sparsamkeit: Hardware-Maßnahmen, Details zu DPM und DVS
+  - Robustheit: Verfügbarkeitsklassen in Zahlen
+  - Sicherheit: Syntax zur Definition der SELinux-Politik, Benutzung von SGX-Enclaves
+  - Echtzeit: Beweis: Obere Auslastungsgrenze bei EDF
+  - Adaptivität: Assembler-Beispiel zur sensiblen Instruktionen
+  - Performanz: Berechnung des Optimums der Beschleunigungseffizienz, Plan 9
 
 
 # Literatur

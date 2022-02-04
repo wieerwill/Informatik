@@ -251,9 +251,17 @@
   - [WPA-Schlüsselverwaltung](#wpa-schlüsselverwaltung)
   - [Eine Zwischenlösung: Temporal Key Integrity Protokoll](#eine-zwischenlösung-temporal-key-integrity-protokoll)
   - [Die langfristige Lösung: AES-basierter WLAN-Schutz](#die-langfristige-lösung-aes-basierter-wlan-schutz)
-  - [Comparison of WEP, TKIP, and CCMP](#comparison-of-wep-tkip-and-ccmp)
+  - [Vergleich WEP, TKIP und CCMP](#vergleich-wep-tkip-und-ccmp)
 - [Sicherheit von GSM- und UMTS-Netzen](#sicherheit-von-gsm--und-umts-netzen)
-- [References](#references)
+  - [GSM-Übersicht](#gsm-übersicht)
+  - [General Packet Radio Service (GPRS)](#general-packet-radio-service-gprs)
+  - [UMTS Sicherheits Architektur](#umts-sicherheits-architektur)
+    - [Aktueller Stand der UMTS-Sicherheitsarchitektur](#aktueller-stand-der-umts-sicherheitsarchitektur)
+    - [UMTS-Netzzugangssicherheitsdienste](#umts-netzzugangssicherheitsdienste)
+    - [Überblick über den UMTS-Authentifizierungsmechanismus](#überblick-über-den-umts-authentifizierungsmechanismus)
+    - [Schlussfolgerungen zur Sicherheit in UMTS Release'99](#schlussfolgerungen-zur-sicherheit-in-umts-release99)
+  - [Sicherheit in LTE-Netzen](#sicherheit-in-lte-netzen)
+- [Referenzen](#referenzen)
 
 
 # Einleitung
@@ -4726,7 +4734,7 @@ TKIP-Verarbeitung auf der Empfängerseite
   - Der AES-Overhead erfordert möglicherweise neue STA-Hardware für Handheld-Geräte, aber theoretisch nicht für PCs (dies erhöht jedoch die CPU-Last und den Energieverbrauch), praktisch aufgrund fehlender Treiber für beide
 - ![AES-CCMP: Rahmenformat](Assets/NetworkSecurity-aes-ccmp-frame-format.png)
 
-## Comparison of WEP, TKIP, and CCMP
+## Vergleich WEP, TKIP und CCMP
 |            | WEP             | TKIP        | CCMP                           |
 | ---------- | --------------- | ----------- | ------------------------------ |
 | Cipher     | RC4             | RC4         | AES                            |
@@ -4742,8 +4750,242 @@ TKIP-Verarbeitung auf der Empfängerseite
 TKIP ist derzeit veraltet, AES wird empfohlen.
 
 # Sicherheit von GSM- und UMTS-Netzen
+## GSM-Übersicht
+- Die GSM-Normen:
+  - Akronym:
+    - früher: Groupe Spéciale Mobile (gegründet 1982)
+    - jetzt: Globales System für mobile Kommunikation
+  - Gesamteuropäische Norm (ETSI)
+  - Gleichzeitige Einführung wesentlicher Dienste in drei Phasen (1991, 1994, 1996) durch die europäischen Telekommunikationsverwaltungen (Deutschland: D1 und D2) $\rightarrow$ nahtloses Roaming innerhalb Europas möglich
+  - Heute nutzen viele Anbieter in der ganzen Welt GSM (mehr als 130 Länder in Asien, Afrika, Europa, Australien, Amerika)
+- Merkmale:
+  - Echte mobile, drahtlose Kommunikation mit Unterstützung für Sprache und Daten
+  - Weltweite Konnektivität und internationale Mobilität mit eindeutigen Adressen
+  - Sicherheitsfunktionen:
+    - Vertraulichkeit auf der Luftschnittstelle
+    - Zugangskontrolle und Benutzerauthentifizierung
+- GSM bietet die folgenden Sicherheitsfunktionen [ETSI93a, ETSI94a]:
+  - Vertraulichkeit der Identität des Teilnehmers:
+    - Schutz vor einem Eindringling, der versucht zu identifizieren, welcher Teilnehmer eine bestimmte Ressource auf dem Funkpfad benutzt (z.B. Verkehrskanal oder Signalisierungsressourcen), indem er den Signalisierungsaustausch auf dem Funkpfad abhört
+    - Vertraulichkeit für Signalisierungs- und Benutzerdaten
+    - Schutz gegen die Rückverfolgung des Standorts eines Teilnehmers
+  - Authentifizierung der Identität des Teilnehmers: Schutz des Netzes vor unbefugter Nutzung
+  - Vertraulichkeit des Signalisierungsinformations-Elements: Geheimhaltung von Signalisierungsdaten auf der Funkstrecke
+  - Vertraulichkeit der Benutzerdaten: Geheimhaltung von Nutzdaten auf der Funkstrecke
+  - Es werden jedoch nur Lauschangriffe auf die Funkverbindung zwischen dem Mobiltelefon und den Basisstationen berücksichtigt!
 
-# References
+Einige GSM-Abkürzungen
+|        |                                             |
+| ------ | ------------------------------------------- |
+| AuC    | Authentication center                       |
+| BSC    | Basisstations-Controller                    |
+| BTS    | Basis-Transceiver-Station                   |
+| IMSI   | Internationale mobile Teilnehmerkennung     |
+| HLR    | Heimatstandortregister                      |
+| LAI    | Standortbereichskennung                     |
+| MS     | Mobile Station (z. B. ein Mobiltelefon)     |
+| MSC    | Mobile Vermittlungsstelle                   |
+| MSISDN | Mobile subscriber international ISDN number |
+| TMSI   | Temporäre mobile Teilnehmerkennung          |
+| VLR    | Register für Besucherstandorte              |
+
+![GSM Authentication](Assets/NetworkSecurity-gsm-authentication.png)
+
+![GSM Authentication](Assets/NetworkSecurity-gsm-authentication-2.png)
+- $K_i$: Authentifizierungsschlüssel des einzelnen Teilnehmers 
+- $SRES$: Signierte Antwort
+
+Der grundlegende (anfängliche) Authentifizierungsdialog:
+1. $MS \rightarrow VLR: (IMSI_{MS})$
+2. $VLR \rightarrow AuC: (IMSI_{MS})$
+3. $AuC \rightarrow VLR: (IMSI_{MS}, K_{BSC,MS}, R_{AUC}, SRES_{AUC})$
+4. $VLR \rightarrow MS: (R_{AUC:1})$
+5. $MS \rightarrow VLR: (SRES_{AUC:1})$
+6. $VLR \rightarrow MS: (LAI_1 , TMSI_{MS:1})$
+
+- Bemerkungen:
+  - $SRES_{AUC} = A3(K_{AUC,MS}, R_{AUC});$ A3 ist ein Algorithmus
+  - $K_{BSC,MS} = A8(K_{AUC,MS}, R_{AUC});$ A8 ist ein Algorithmus
+  - $R_{AUC}, SRES_{AUC}$ sind Arrays mit mehreren Werten
+- Dialog zur Wiederauthentifizierung mit demselben VLR:
+  1. $MS \rightarrow VLR: (LAI_1 , TMSI_{MS:n})$
+  2. $VLR \rightarrow MS: (R_{AUC:i})$
+  3. $MS \rightarrow VLR: (SRES_{AUC:i})$
+  4. $VLR \rightarrow MS: (LAI_1, TMSI_{MS:n+1})$
+- Bemerkungen:
+  - Die Standortbereichskennung $LAI_1$ ermöglicht die Erkennung eines MS ,,coming in'' aus einem anderen Bereich
+  - Nach erfolgreicher Authentifizierung wird eine neue temporäre mobile Teilnehmeridentität $TMSI_{MS:n+1}$ zugewiesen
+- Re-Authentifizierungsdialog mit Übergabe an das neue $VLR_2$:
+  1. $MS \rightarrow VLR_2: (LAI_1, TMSI_{MS:n})$
+  2. $VLR_2$Rechtspfeil VLR_1: (LAI_1, TMSI_{MS:n})$
+  3. $VLR_1 \rightarrow VLR_2: (TMSI_{MS:n}, IMSI_{MS}, K_{BSC,MS}, R_{AUC}, SRES_{AUC})$
+  4. $VLR_2 \rightarrow MS: (R_{AUC:i})$
+  5. $MS \rightarrow VLR_2: (SRES_{AUC:i})$
+  6. $VLR_2 \rightarrow MS: (LAI_2, TMSI_{MS:n+1})$
+- Bemerkungen:
+  - Nur unbenutzte $R_{AUC}, ...$ werden an $VLR_2$ übertragen
+  - Dieses Schema kann nicht verwendet werden, und es ist ein Anfangsdialog erforderlich:
+    - Wenn $TMSI_{MS:n}$ bei $VLR_1$ nicht verfügbar ist, oder
+    - wenn $VLR_2$ nicht in der Lage ist, $VLR_1$ zu kontaktieren
+  - Wenn $VLR_1$ und $VLR_2$ zu verschiedenen Netzbetreibern gehören, kann der Handover nicht durchgeführt werden und die Verbindung wird unterbrochen
+- Nur das Mobiltelefon authentifiziert sich gegenüber dem Netz
+- Die Authentifizierung basiert auf einem Challenge-Response-Verfahren:
+  - Das AuC im Heimatnetz erzeugt Challenge-Response-Paare
+  - Der MSC/VLR im besuchten Netz prüft diese
+  - Challenge-Response-Vektoren werden ungeschützt im Signalisierungsnetz übertragen
+- Die permanente Identifikation des Mobiltelefons (IMSI) wird nur dann über die Funkverbindung gesendet, wenn dies unvermeidlich ist:
+  - Dies ermöglicht einen teilweisen Schutz des Standorts.
+  - Da die IMSI manchmal im Klartext gesendet wird, ist es dennoch möglich, den Standort einiger Einheiten zu erfahren
+  - Ein Angreifer könnte sich als Basisstation ausgeben und die Handys ausdrücklich auffordern, ihre IMSI zu senden!
+- Grundsätzlich besteht Vertrauen zwischen allen Betreibern!
+
+## General Packet Radio Service (GPRS)
+- GPRS (General Packet Radio Service, allgemeiner Paketfunkdienst):
+  - Datenübertragung in GSM-Netzen auf der Basis von Paketvermittlung
+  - Nutzung freier Slots der Funkkanäle nur bei sendebereiten Datenpaketen (z.B. 115 kbit/s bei temporärer Nutzung von 8 Slots)
+- GPRS-Netzelemente:
+  - GGSN (Gateway GPRS Support Node): Interworking-Einheit zwischen GPRS und PDN (Packet Data Network)
+  - SGSN (Serving GPRS Support Node): Unterstützt die MS (Standort, Abrechnung, Sicherheit, entspricht im Grunde dem MSC)
+  - GR (GPRS Register): Verwaltet Benutzeradressen (entspricht HLR)
+
+(allgemeine GPRS-Beschreibung entnommen aus [Sch03a])
+
+
+![GPRS Logical Architecture](Assets/NetworkSecurity-gprs-logical-architecture.png)
+
+![GPRS Protocol Architecture (Transmission Plane)](Assets/NetworkSecurity-gprs-protocol-architecture.png)
+- SNDCP: Subnetwork Dependent Convergence Protocol
+- GTP: GPRS Tunnelling Protocol
+
+GPRS-Sicherheit
+- Sicherheitsziele:
+  - Schutz vor unbefugter Nutzung des GPRS-Dienstes (Authentifizierung)
+  - Gewährleistung der Vertraulichkeit der Benutzeridentität (temporäre Identifizierung und Verschlüsselung)
+  - Gewährleistung der Vertraulichkeit von Benutzerdaten (Verschlüsselung)
+- Realisierung von Sicherheitsdiensten:
+  - Die Authentifizierung ist grundsätzlich identisch mit der GSM-Authentifizierung:
+    - SGSN ist die Peer-Entität
+    - Zwei separate temporäre Identitäten werden für GSM/GPRS verwendet
+    - Nach erfolgreicher Authentifizierung wird die Verschlüsselung eingeschaltet
+  - Die Vertraulichkeit der Benutzeridentität ist ähnlich wie bei GSM:
+    - Die meiste Zeit wird nur die Paket-TMSI (P-TMSI) über die Luft gesendet.
+    - Optional können P-TMSI ,,Signaturen'' zwischen MS und SGSN verwendet werden, um die Re-Authentifizierung zu beschleunigen
+  - Die Vertraulichkeit der Benutzerdaten wird zwischen MS und SGSN realisiert:
+    - Unterschied zu GSM, wo nur zwischen MS und BTS verschlüsselt wird
+    - Die Verschlüsselung wird in der LLC-Protokollschicht realisiert
+
+![GPRS Handover Execution](Assets/NetworkSecurity-gprs-handover-execution.png)
+- GPRS unterstützt ein ,,optimiertes Handover'' einschließlich Re-Authentifizierung (dies könnte jedoch eine Schwäche der P-TMSI ,,Signatur'' verhindern)
+
+## UMTS Sicherheits Architektur
+![](Assets/NetworkSecurity-umts-security-architecture.png)
+1. Netzzugangssicherheit: Schutz vor Angriffen auf die Funkschnittstelle
+2. Sicherheit der Netzdomäne: Schutz vor Angriffen auf das drahtgebundene Netz
+3. Sicherheit der Benutzerdomäne: sicherer Zugang zu den Mobilstationen
+4. Sicherheit der Anwendungsdomäne: sicherer Nachrichtenaustausch für Anwendungen
+5. Sichtbarkeit und Konfigurierbarkeit der Sicherheit: Information des Benutzers über den sicheren Betrieb
+
+### Aktueller Stand der UMTS-Sicherheitsarchitektur
+- Sicherheit beim Netzzugang: Derzeit der am weitesten entwickelte Teil der UMTS-Sicherheit (siehe unten)
+- Netzbereichssicherheit: Dieser Teil ist größtenteils noch ausbaufähig (in Spezifikationen bis Release 5)
+- Sicherheit der Benutzerdomäne:
+  - Verlangt grundsätzlich, dass sich der Benutzer gegenüber seinem User Services Identity Module (USIM) authentifiziert, z.B. durch Eingabe einer PIN
+  - Optional kann ein Terminal die Authentifizierung des USIM verlangen.
+- Anwendungsbereichssicherheit:
+  - Definiert ein Sicherheitsprotokoll, das zwischen den auf dem Endgerät/USIM laufenden Anwendungen und einem System im Netz verwendet wird (3GPP TS 23.048)
+  - Liegt etwas außerhalb des Bereichs der Mobilfunksicherheit
+- Sichtbarkeit und Konfigurierbarkeit der Sicherheit: Definiert Anforderungen, damit der Benutzer die Kontrolle über die Sicherheitsmerkmale hat
+- Im Folgenden konzentrieren wir uns auf die Netzzugangssicherheit
+
+### UMTS-Netzzugangssicherheitsdienste
+- Vertraulichkeit der Benutzeridentität:
+  - Vertraulichkeit der Benutzeridentität: die Eigenschaft, dass die permanente Benutzeridentität (IMSI) eines Benutzers, dem ein Dienst bereitgestellt wird, auf der Funkzugangsverbindung nicht abgehört werden kann
+  - Vertraulichkeit des Benutzerstandorts: die Eigenschaft, dass die Anwesenheit oder die Ankunft eines Benutzers in einem bestimmten Gebiet nicht durch Abhören der Funkzugangsverbindung ermittelt werden kann
+  - Unverfolgbarkeit des Benutzers: die Eigenschaft, dass ein Eindringling durch Abhören der Funkzugangsverbindung nicht ableiten kann, ob verschiedene Dienste an denselben Benutzer geliefert werden
+- Authentifizierung der Entität:
+  - Benutzerauthentifizierung: die Eigenschaft, dass das dienende Netz die Identität des Benutzers bestätigt
+  - Netzauthentifizierung: die Eigenschaft, dass der Benutzer bestätigt, dass er mit einem dienenden Netz verbunden ist, das von dem HE des Benutzers autorisiert ist, ihm Dienste zu liefern; dies schließt die Garantie ein, dass diese Autorisierung aktuell ist.
+- Vertraulichkeit:
+  - Vereinbarung über den Chiffrieralgorithmus: die Eigenschaft, dass der MS und der SN den Algorithmus, den sie später verwenden sollen, sicher aushandeln können
+  - Chiffrierschlüssel-Vereinbarung: die Eigenschaft, dass der MS und der SN sich auf einen Chiffrierschlüssel einigen, den sie später verwenden können
+  - Vertraulichkeit der Nutzdaten: die Eigenschaft, dass Nutzdaten an der Funkzugangsschnittstelle nicht abgehört werden können
+  - Vertraulichkeit der Signalisierungsdaten: die Eigenschaft, dass Signalisierungsdaten auf der Funkzugangsschnittstelle nicht abgehört werden können
+- Integrität der Daten:
+  - Vereinbarung eines Integritätsalgorithmus
+  - Integritätsschlüssel-Vereinbarung
+  - Datenintegrität und Ursprungsauthentifizierung von Signalisierungsdaten: die Eigenschaft, dass die empfangende Einheit (MS oder SN) in der Lage ist, zu überprüfen, dass Signalisierungsdaten seit dem Versand durch die sendende Einheit (SN oder MS) nicht auf unautorisierte Weise verändert wurden und dass der Datenursprung der empfangenen Signalisierungsdaten tatsächlich der behauptete ist
+
+Einige UMTS-Authentifizierungsabkürzungen
+
+|      |                                    |
+| ---- | ---------------------------------- |
+| AK   | Anonymitätsschlüssel               |
+| AMF  | Authentifizierungs-Management-Feld |
+| AUTN | Authentifizierungs-Token           |
+| AV   | Authentifizierungsvektor           |
+| CK   | Cipher Key                         |
+| HE   | Heimatumgebung                     |
+| IK   | Integritätsschlüssel               |
+| RAND | Zufällige Herausforderung          |
+| SQN  | Sequenznummer                      |
+| SN   | Dienendes Netzwerk                 |
+| USIM | Benutzerdienste-Identitätsmodul    |
+| XRES | Erwartete Antwort                  |
+
+### Überblick über den UMTS-Authentifizierungsmechanismus
+- ![authentication mechanism](Assets/NetworkSecurity-umts-authentication-mechanism.png)
+- ![authentication vectors](Assets/NetworkSecurity-umts-authentication-vectors.png)
+  - Der HE/AuC beginnt mit der Erzeugung einer neuen Sequenznummer SQN und einer unvorhersehbaren Herausforderung RAND
+    - Für jeden Benutzer führt die HE/AuC einen Zähler $SQN_{HE}$
+  - Ein Authentifizierungs- und Schlüsselverwaltungsfeld AMF ist im Authentifizierungs-Token jedes Authentifizierungsvektors enthalten.
+  - Anschließend werden die folgenden Werte berechnet:
+    - ein Nachrichtenauthentifizierungscode $MAC = f1_K(SQN || RAND || AMF)$, wobei f1 eine Nachrichtenauthentifizierungsfunktion ist
+    - eine erwartete Antwort $XRES = f2_K(RAND)$, wobei f2 eine (möglicherweise verkürzte) Nachrichtenauthentifizierungsfunktion ist
+    - ein Chiffrierschlüssel $CK = f3_K(RAND)$, wobei f3 eine Schlüsselerzeugungsfunktion ist
+    - ein Integritätsschlüssel $IK = f4_K(RAND)$, wobei f4 eine Schlüsselerzeugungsfunktion ist
+    - ein Anonymitätsschlüssel $AK = f5_K(RAND)$, wobei f5 eine Schlüsselerzeugungsfunktion ist
+  - Schließlich wird das Authentifizierungstoken $AUTN = SQN \oplus AK || AMF || MAC$ konstruiert
+- ![](Assets/NetworkSecurity-umts-user-authentication-usim.png)
+  - Nach Erhalt von RAND und AUTN berechnet das USIM:
+  - berechnet es den Anonymitätsschlüssel $AK = f5_K (RAND)$
+  - ruft die Sequenznummer $SQN = (SQN \oplus AK) \oplus AK$ ab
+  - errechnet $XMAC = f1_K (SQN || RAND || AMF)$ und
+  - vergleicht dies mit MAC, das in AUTN enthalten ist
+  - Wenn sie unterschiedlich sind, sendet der Benutzer die Ablehnung der Benutzerauthentifizierung mit Angabe der Ursache an den VLR/SGSN zurück, und der Benutzer bricht das Verfahren ab.
+  - Wenn die MAC korrekt ist, prüft das USIM, ob die empfangene Sequenznummer SQN im richtigen Bereich liegt:
+    - Liegt die Sequenznummer nicht im korrekten Bereich, sendet das USIM einen Synchronisationsfehler an den VLR/SGSN zurück, einschließlich eines entsprechenden Parameters, und bricht das Verfahren ab.
+  - Wenn die Sequenznummer im korrekten Bereich liegt, berechnet das USIM:
+    - die Authentifizierungsantwort $RES = f2_K(RAND)$
+    - den Chiffrierschlüssel $CK = f3_K(RAND)$ und den Integritätsschlüssel $IK = f4_K(RAND)$
+
+### Schlussfolgerungen zur Sicherheit in UMTS Release'99
+- Die Sicherheit von UMTS Release '99 ist der Sicherheit von GSM sehr ähnlich:
+  - Der Heimat-AUC generiert Challenge-Response-Vektoren
+  - Die Challenge-Response-Vektoren werden ungeschützt über das Signalisierungsnetz an ein besuchtes Netz übertragen, das die Authentizität eines Handys überprüfen muss.
+  - Anders als bei GSM authentifiziert sich das Netz auch gegenüber dem Mobiltelefon
+  - Die IMSI, die einen Benutzer eindeutig identifiziert:
+    - wird immer noch dem besuchten Netz offenbart
+    - kann immer noch von einem Angreifer, der sich als Basisstation ausgibt, abgefragt werden, da es in diesem Fall keine Netzauthentifizierung gibt!
+  - Das Sicherheitsmodell setzt weiterhin Vertrauen zwischen allen Netzbetreibern voraus
+  - Vertraulichkeit ist nur auf der Funkstrecke gegeben
+- Zusammenfassend lässt sich sagen, dass UMTS Release'99 genauso sicher sein soll wie ein unsicheres Festnetz
+
+## Sicherheit in LTE-Netzen
+- Eine Weiterentwicklung von UMTS, so dass viele der Sicherheitskonzepte gleich geblieben sind
+  - Das Protokoll zur Authentifizierung und Schlüsselvereinbarung (AKA) ist im Wesentlichen dasselbe wie bei UMTS.
+  - Allerdings wird ein Master Key KASME abgeleitet, der dann zur Ableitung von Integritäts- und Verschlüsselungsschlüsseln verwendet wird
+- Bemerkenswerte Unterschiede:
+  - GSM-SIMs dürfen nicht mehr auf das Netz zugreifen
+  - KASUMI wird nicht mehr verwendet, stattdessen werden SNOW, AES oder ZUC (ein chinesischer Stream Cipher, der für LTE entwickelt wurde) eingesetzt
+  - Das zugehörige Festnetz (Evolved Packet Core genannt) ist vollständig paketvermittelt und normalerweise durch IPsec und IKEv2 geschützt.
+  - Heim-eNBs
+- Allerdings oft neue Namen für sehr ähnliche Dinge, z.B.,
+  - Anstelle der TMSI wird eine Globally Unique Temporary Identity (GUTI) verwendet, die aus Folgendem besteht:
+    - Einer PLMN-ID, MMEI und einer M-TMSI
+    - Damit werden das Public Land Mobile Network (PLMN), die Mobility Management Entity (MME), vergleichbar mit der MSC in GSM/UMTS, und das mobile Gerät (M-TMSI) identifiziert
+
+
+# Referenzen
 - [AES01a] National Institute of Standards and Technology - Specification for the Advanced Encryption Standard (AES)
 - [DR97a] J. Daemen, V. Rijmen - AES Proposal: Rijndael http://csrc.nist.gov/encryption/aes/rijndael/Rijndael.pdf
 - [FMS01a] S. Fluhrer, I. Mantin, A. Shamir - Weaknesses in the Key Scheduling Algorithm of RC4. Eighth Annual Workshop on Selected Areas in Cryptography
@@ -4886,3 +5128,11 @@ TKIP ist derzeit veraltet, AES wird empfohlen.
 - [WM02a] N. C. Winget, T. Moore, D. Stanley, J. Walker. IEEE 802.11i Overview. NIST 802.11 Wireless LAN Security Workshop, Falls Church, Virginia, December 4-5, 2002
 - [RFC2898]B. Kaliski. PKCS #5: Password-Based Cryptography Specification Version 2.0. IETF Request for Comments 2898, 2000
 - [RFC3394]J. Schaad, R. Housley. Advanced Encryption Standard (AES) Key Wrap Algorithm. IETF Request for Comments 3394, 2002
+- [3GPP00a] 3GPP. 3G Security: Security Architecture (Release 1999). 3rd Generation Partnership Project, Technical Specification Group Services and System Aspects, 2000
+- [3GPP02a] 3GPP. 3G Security: Security Architecture (Release 5), 2002
+- [3GPP02b] 3GPP. Security Mechanisms for the (U)SIM application toolkit, December 2002
+- [ETSI93a] ETSI TC-GSM. GSM Security Aspects (GSM 02.09). Recommendation GSM, European Telecommunications Standards Institute (ETSI), 1993
+- [ETSI94a] ETSI TC-SMG. European Digital Cellular Telecommunications System (Phase 2): Security Related Network Functions (GSM 03.20). ETS 300 534, European Telecommunications Standards Institute (ETSI), 1994
+- [Les02a] Lescuyer, P. UMTS – Grundlagen, Architektur und Standard. dpunkt.verlag, 2002
+- [Sch03a] J. Schiller. Mobile Communications - The Course. [http://www.inf.fu-berlin.de/inst/ag-tech/resources/mobilecommunications.htm](http://www.inf.fu-berlin.de/inst/ag-tech/resources/mobilecommunications.htm)
+- [Sch03b] J. Schiller. Mobile Communications. second edition, Addison-Wesley, 2003

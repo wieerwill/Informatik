@@ -3555,18 +3555,18 @@ Mechanismen, Architekturen, Grenzen der Parallelisierung
 
 Überblick: NFE und Architekturkonzepte
 
-||Makrokernel| Mikrokernel |Exokernel| Virtualisierung| Multikernel
-|---|---|---|---|---|---
-|Energieeffizienz||| (✓) |✗ |✗
-|Speichereffizienz |✗| (✓) |(✓) ||✗
-|Robustheit| ✗| ✓| ✗| ✓
-|Verfügbarkeit |✗| (✓)|| (✓)| (✓)
-|Korrektheit| ✗| ✓| ✗| ✗| (✓)
-|Sicherheit |✗| ✓| ✗| ✓
-|Echtzeitfähigkeit| (✓)| (✓)| ✓| ✗| ✗
-|Adaptivität| ✗| (✓)| ✓| ✓| (✓)
-|Wartbarkeit| ✓|| ✓| ✓
-|Performanz| (✓)| ✗| ✓| ✗| ✓
+|                   | Makrokernel | Mikrokernel | Exokernel | Virtualisierung | Multikernel |
+| ----------------- | ----------- | ----------- | --------- | --------------- | ----------- |
+| Energieeffizienz  |             |             | (✓)       | ✗               | ✗           |
+| Speichereffizienz | ✗           | (✓)         | (✓)       |                 | ✗           |
+| Robustheit        | ✗           | ✓           | ✗         | ✓               |             |
+| Verfügbarkeit     | ✗           | (✓)         |           | (✓)             | (✓)         |
+| Korrektheit       | ✗           | ✓           | ✗         | ✗               | (✓)         |
+| Sicherheit        | ✗           | ✓           | ✗         | ✓               |             |
+| Echtzeitfähigkeit | (✓)         | (✓)         | ✓         | ✗               | ✗           |
+| Adaptivität       | ✗           | (✓)         | ✓         | ✓               | (✓)         |
+| Wartbarkeit       | ✓           |             | ✓         | ✓               |             |
+| Performanz        | (✓)         | ✗           | ✓         | ✗               | ✓           |
 
 - ✓ ... Zieleigenschaft
 - ( ✓ ) ... synergetische Eigenschaft

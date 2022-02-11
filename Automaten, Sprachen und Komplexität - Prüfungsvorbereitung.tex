@@ -20,6 +20,8 @@
 \usepackage{hyperref}
 \usepackage{pgfplots}
 \usepackage{bussproofs}
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
 %\renewcommand{\solutiontitle}{\noindent}
 \SolutionEmphasis{\small}
 \geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
@@ -128,9 +130,9 @@
     \part Sei $L\supseteq \sum^*$ eine Sprache. Dann sind äquivalent: 1) L ist regulär (d.h. wird von einem DFA akzeptiert), 2)..., 3)...
     \begin{solution}
       \begin{enumerate}
-      \item L ist regulär (d.h. von einem DFA akzeptiert)
-      \item L wird von einem NFA akzeptiert
-      \item L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
+        \item L ist regulär (d.h. von einem DFA akzeptiert)
+        \item L wird von einem NFA akzeptiert
+        \item L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
       \end{enumerate}
     \end{solution}
 
@@ -155,10 +157,51 @@
 
   \question Konstruktionen der Automatentheorie
   \begin{parts}
-    \part Betrachte den NFA X (Bild wird noch erstellt). Berechne einen DFA Y mit $L(X)=L(Y)$.
+    \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q0) [state, initial, initial text = {}] {1};
+        \node (q1) [state, above right = of q0] {2};
+        \node (q2) [state, accepting, below right = of q1] {3};
+
+        \path [-stealth, thick]
+        (q0) edge node {b} (q1)
+        (q0) edge node {a} (q2)
+        (q0) edge [loop above] node {b}()
+        (q1) edge node {a} (q2)
+        (q1) edge [loop above] node {a}()
+        (q2) edge [bend left] node {b} (q0)
+        (q2) edge [bend left] node {a} (q1)
+        (q2) edge [loop above] node {b}();
+      \end{tikzpicture}
+    \end{center}
+
     \begin{solution}
     \end{solution}
-    \part Betrachte den DFA X (Bild wird noch erstellt). Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \part Betrachte den folgenden DFA X (Bild wird noch erstellt). Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, accepting, right = of q1] {2};
+        \node (q3) [state, accepting, right = of q2] {3};
+        \node (q4) [state, below = of q1] {4};
+        \node (q5) [state, accepting, right = of q4] {5};
+        \node (q6) [state, right = of q5] {6};
+
+        \path [-stealth, thick]
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q4)
+        (q2) edge node {a} (q3)
+        (q2) edge node {b} (q5)
+        (q3) edge node {b} (q5)
+        (q3) edge [loop above] node {a}()
+        (q4) edge node {a} (q2)
+        (q4) edge [loop left] node {b}()
+        (q5) edge node {a,b} (q6)
+        (q6) edge node {a} (q3)
+        (q6) edge [loop right] node {b}();
+      \end{tikzpicture}
+    \end{center}
     \begin{solution}
     \end{solution}
   \end{parts}

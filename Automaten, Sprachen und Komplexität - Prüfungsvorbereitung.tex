@@ -96,15 +96,30 @@
   \begin{parts}
     \part Eine Regel $(l\rightarrow r)$ einer Grammatik $G=(V,\sum,P,S)$ heißt rechtslinear, falls ...
     \begin{solution}
+      immer das an der am weitesten rechts stehende Nicht-Terminal in ein Terminal umgewandelt wird.
+      Dazu muss $l\in V$ und $r\in \sum V\cup {\epsilon}$.
     \end{solution}
+
     \part Ein NFA ist ein Tupel $M=(...)$
     \begin{solution}
+      ein nichtdeterministischer endlicher Automat $M$ ist ein 5-Tupel $M=(Z,\sum,S,\delta,E)$ mit
+      \begin{itemize}
+        \item $Z$ ist eine endliche Menge von Zuständen
+        \item $\sum$ ist das Eingabealphabet
+        \item $S\subseteq Z$ die Menge der Startzustände (können mehrere sein)
+        \item $\delta: Z \times \sum \rightarrow P(Z)$ ist die (Menge der) Überführungs/Übergangsfunktion
+        \item $E\subseteq Z$ die Menge der Endzustände
+      \end{itemize}
     \end{solution}
+
     \part Die von einem PDA $M=(Z,\sum, \Gamma, \delta, z_0, \#)$ akzeptierten Sprache ist $L(M)=...$
     \begin{solution}
+      $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
     \end{solution}
+
     \part Sei $M=(Z,\sum,z_0,\delta, E)$ ein DFA. Die Zustände $z,z'\in Z$ heißen erkennungsäquivalent, wenn
     \begin{solution}
+      Zwei Zustände $z,z'\in Z$ heißen erkennungsäquivalent ($z\equiv z'$) wenn für jedes Wort $w\in \sum^*$ gilt: $\hat{\sigma}(z,w)\in E \leftrightarrow \hat{\sigma}(z',w)\in E$.
     \end{solution}
   \end{parts}
 
@@ -112,12 +127,29 @@
   \begin{parts}
     \part Sei $L\supseteq \sum^*$ eine Sprache. Dann sind äquivalent: 1) L ist regulär (d.h. wird von einem DFA akzeptiert), 2)..., 3)...
     \begin{solution}
+      \begin{enumerate}
+      \item L ist regulär (d.h. von einem DFA akzeptiert)
+      \item L wird von einem NFA akzeptiert
+      \item L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
+      \end{enumerate}
     \end{solution}
+
     \part Der Satz von Myhill-Nerode besagt,...
     \begin{solution}
+      Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$ (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat).
     \end{solution}
+
     \part Das Pumping-Lemma für kontextfreie Sprachen ...
     \begin{solution}
+      Man versucht auszunutzen, daß eine kontextfreie Sprache von einer Grammatik mit endlich vielen Nichtterminalen erzeugt werden muss. Das bedeutet auch: wenn ein Ableitungsbaum ausreichend tief ist, so gibt es einen Ast, der ein Nichtterminal mehrfach enthält. Die durch diese zwei Vorkommen bestimmten Teilbäume werden ,,gepumpt''.
+
+      Wenn $L$ eine kontextfreie Sprache ist, dann gibt es $n>= 1$ derart, dass für alle $z$ in $L$ mit $|z| >= n$ gilt: es gibt Wörter $u, v , w , x, y$ in SUM mit
+      \begin{enumerate}
+        \item $z = uvwxy$,
+        \item $|vwx| <= n$,
+        \item $|vx| >= 1$ und
+        \item $uv^i  wx^i y \in L$ für alle $i >= 0$
+      \end{enumerate}
     \end{solution}
   \end{parts}
 
@@ -181,6 +213,11 @@
     \end{solution}
     \part Der Satz von Rice lautet...
     \begin{solution}
+      dass es unmöglich ist, eine beliebige nicht-triviale Eigenschaft der erzeugten Funktion einer Turing-Maschine (oder eines Algorithmus in einem anderen Berechenbarkeitsmodell) algorithmisch zu entscheiden.
+
+      Es sei $\mathcal{P}$ die Menge aller partiellen Turing-berechenbaren Funktionen und $\mathcal{S}\subsetneq\mathcal{P}$ eine nicht-leere, echte Teilmenge davon. Außerdem sei eine effektive Nummerierung vorausgesetzt, die einer natürlichen Zahl $n\in\mathbb{N}$ die dadurch codierte Turing-Maschine $M_{n}$ zuordnet. Dann ist die Menge $\mathcal{C}(\mathcal{S})=\{n\mid \text{die von } M_n \text{ berechnete Funktion liegt in }\mathcal{S}\}$ nicht entscheidbar.
+
+      ,,Sei U eine nicht-triviale Eigenschaft der partiellen berechenbaren Funktionen, dann ist die Sprache $L_U=\{⟨M⟩\mid \text{ M berechnet } f\in U\}$ nicht entscheidbar.''
     \end{solution}
   \end{parts}
 
@@ -208,23 +245,32 @@
   \begin{parts}
     \part EXPSPACE ? EXPTIME
     \begin{solution}
+      EXPSPACE $\geq$ EXPTIME
     \end{solution}
     \part NP ? P
     \begin{solution}
-    \end{solution}
-    \part NPSPACE ? EXPTIME
-    \begin{solution}
+      NP $\geq$ P
     \end{solution}
     \part NP ? NPSPACE
     \begin{solution}
+      NP $\leq$ NPSPACE
     \end{solution}
     \part NPSPACE ? PSPACE
     \begin{solution}
+      NPSPACE $=$ PSPACE
     \end{solution}
   \end{parts}
 
-  \question NP-vollständiges Problem: Gebe zwei NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
+  \question NP-vollständiges Problem: Gebe (mind. zwei) NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
   \begin{solution}
+
+    Hamilton Kreis
+    \begin{itemize}
+      \item Eingabe: Graph(V,E)
+      \item Frage: Kann der Graph so durchlaufen werden, dass jeder Knoten genau ein mal besucht/abgelaufen wird?
+    \end{itemize}
+
+
   \end{solution}
 \end{questions}
 \end{document}

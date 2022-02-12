@@ -102,9 +102,13 @@
       Dazu muss $l\in V$ und $r\in \sum V\cup {\epsilon}$.
     \end{solution}
 
-    \part Die Menge $Reg(\sum)$ der regulären Ausdrücke über dem Alphabet ist... 
+    \part Die Menge $Reg(\sum)$ der regulären Ausdrücke über dem Alphabet ist...
     \begin{solution}
-      
+      ist die kleinste Menge mit folgenden Eigenschaften:
+      \begin{itemize}
+        \item $\varnothing \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+        \item Wenn $\alpha, \beta \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+      \end{itemize}
     \end{solution}
 
     \part Ein NFA ist ein Tupel $M=(...)$
@@ -121,7 +125,9 @@
 
     \part Die von einem NFA $M=(Z,\sum,S,\delta, E)$ akzeptierte Sprache ist $L(M)=...$ (ohne Definition der Mehr-Schritt Übergangsfunktion $\delta$)
     \begin{solution}
-      
+      $L(M)={w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset}$
+
+      (Das Wort wird akzeptiert wenn es mindestens einen Pfad vom Anfangs in den Endzustand gibt)
     \end{solution}
 
     \part Die von einem PDA $M=(Z,\sum, \Gamma, \delta, z_0, \#)$ akzeptierten Sprache ist $L(M)=...$
@@ -129,9 +135,9 @@
       $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
     \end{solution}
 
-    \part Sei $L$ eine Sprache. Für $x,y\in\sum^*$ gilt $xE_L y$ genau dann, wenn ... ($R_L$ ist die Myhill-Nerode-Äquivalenz zu L)
+    \part Sei $L$ eine Sprache. Für $x,y\in\sum^*$ gilt $xR_L y$ genau dann, wenn ... ($R_L$ ist die Myhill-Nerode-Äquivalenz zu L)
     \begin{solution}
-      
+      wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt
     \end{solution}
 
     \part Sei $M=(Z,\sum,z_0,\delta, E)$ ein DFA. Die Zustände $z,z'\in Z$ heißen erkennungsäquivalent, wenn
@@ -153,22 +159,26 @@
 
     \part Die Klasse der regulären Sprachen ist unter anderem abgeschlossen unter folgenden drei Operationen:
     \begin{solution}
-      
+      \begin{itemize}
+        \item Vereinigung $L=L_0\cup L_1$
+        \item Verkettung $L=L_0L_1$
+        \item Abschluss $L=L_0^*$
+      \end{itemize}
     \end{solution}
 
     \part Sei $\sum$ ein Alphabet. Die Anzahl der Grammatiken über $\sum$ ist ... und die Anzahl der Sprachen über $\sum$ ist ... .
     \begin{solution}
-      
+
     \end{solution}
 
     \part Unter anderem sind folgende (mind. drei) Probleme für kontextfreie Sprachen entscheidbar:
     \begin{solution}
-      
+
     \end{solution}
 
     \part Die Klasse der Kontextfreien Sprachen ist abgeschlossen unter den Operationen 1)... und 2)... . Sie ist aber nicht abgeschlossen unter 3)... und 4)... .
     \begin{solution}
-      
+
     \end{solution}
 
     \part Der Satz von Myhill-Nerode besagt,...
@@ -210,27 +220,76 @@
       \end{tikzpicture}
     \end{center}
     \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q3) [state, accepting, right = of q1] {3};
+          \node (q12) [state, above = of q1] {\{1,2\}};
+          \node (q123) [state, accepting, right = of q12] {\{1,2,3\}};
+
+          \path [-stealth, thick]
+          (q1) edge node {a} (q12)
+          (q1) edge node {b} (q3)
+          (q12) edge [loop above] node {b}()
+          (q12) edge [bend left] node {a} (q123)
+          (q123) edge [bend left] node {a} (q12)
+          (q123) edge [loop above] node {b}()
+          (q3) edge node {a} (q123)
+          (q3) edge [loop right] node {b}()
+
+          ;
+        \end{tikzpicture}
+      \end{center}
     \end{solution}
 
     \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
     \begin{center}
       \begin{tikzpicture}[node distance = 3cm, on grid, auto]
-        \node (q0) [state, initial, initial text = {}] {1};
-        \node (q1) [state, above right = of q0] {2};
-        \node (q2) [state, accepting, below right = of q1] {3};
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, above right = of q1] {2};
+        \node (q3) [state, accepting, below right = of q2] {3};
 
         \path [-stealth, thick]
-        (q0) edge node {b} (q1)
-        (q0) edge node {a} (q2)
-        (q0) edge [loop above] node {b}()
-        (q1) edge node {a} (q2)
-        (q1) edge [loop above] node {a}()
-        (q2) edge [bend left] node {b} (q0)
-        (q2) edge [bend left] node {a} (q1)
-        (q2) edge [loop above] node {b}();
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q3)
+        (q1) edge [loop above] node {b}()
+        (q2) edge node {a} (q3)
+        (q2) edge [loop above] node {a}()
+        (q3) edge [bend left] node {b} (q1)
+        (q3) edge [bend left] node {a} (q2)
+        (q3) edge [loop above] node {b}();
       \end{tikzpicture}
     \end{center}
     \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q2) [state, right = of q12] {2};
+          \node (q3) [state, accepting, right = of q1] {3};
+          \node (q12) [state, above = of q1] {\{1,2\}};
+          \node (q13) [state, accepting, right = of q3] {\{1,3\}};
+          \node (q23) [state, accepting, right = of q123] {\{2,3\}};
+          \node (q123) [state, accepting, above right = of q12] {\{1,2,3\}};
+
+          \path [-stealth, thick]
+          (q1) edge node {a} (q3)
+          (q1) edge node {b} (q12)
+          (q2) edge node {a} (q23)
+          (q2) edge [loop left] node {b}()
+          (q3) edge node {a} (q2)
+          (q3) edge node {b} (q13)
+          (q12) edge node {a} (q123)
+          (q12) edge [loop above] node {b}()
+          (q13) edge [bend left] node {a} (q3)
+          (q13) edge node {b} (q123)
+          (q23) edge [loop above] node {a}()
+          (q23) edge node {b} (q13)
+          (q123) edge node {a} (q23)
+          (q123) edge [loop above] node {b}()
+
+          ;
+        \end{tikzpicture}
+      \end{center}
     \end{solution}
 
     \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
@@ -258,6 +317,17 @@
       \end{tikzpicture}
     \end{center}
     \begin{solution}
+      * erster Schritt, (*) zweiter Schritt
+
+      \begin{tabular}{c|c|c|c|c|c}
+        2 & *                     \\\hline
+        3 & *   & *               \\\hline
+        4 & (*) & * & *           \\\hline
+        5 & *   & * & * & *       \\\hline
+        6 & (*) & * & * & (*) & * \\\hline
+          & 1   & 2 & 3 & 4   & 5
+      \end{tabular}
+
     \end{solution}
 
 
@@ -276,7 +346,7 @@
         (q1) edge node {a} (q5)
         (q2) edge [loop above] node {b}()
         (q2) edge node {a} (q3)
-        (q3) edge node {a} (q5)
+        (q3) edge [bend left] node {a} (q5)
         (q3) edge node {b} (q6)
         (q4) edge node {a} (q1)
         (q4) edge node {b} (q5)
@@ -334,7 +404,7 @@
     \begin{solution}
     \end{solution}
 
-    \part Seien $A\supseteq \sum^*$ und B$\supseteq \Gamma^*$. Eine Reduktion von A auf B ist ... 
+    \part Seien $A\supseteq \sum^*$ und B$\supseteq \Gamma^*$. Eine Reduktion von A auf B ist ...
     \begin{solution}
     \end{solution}
 
@@ -342,18 +412,18 @@
     \begin{solution}
     \end{solution}
 
-    \part Sei $f:N\rightarrow N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine $M$ gibt mit ... 
+    \part Sei $f:N\rightarrow N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine $M$ gibt mit ...
     \begin{solution}
     \end{solution}
   \end{parts}
 
   \question Sätze der Berechnbarkeitstheorie: Vervollständige die folgenden Aussagen
   \begin{parts}
-    \part Zu jeder Mehrband-Turingmaschine $M$ gibt es ... 
+    \part Zu jeder Mehrband-Turingmaschine $M$ gibt es ...
     \begin{solution}
     \end{solution}
 
-    \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)... 
+    \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)...
     \begin{solution}
     \end{solution}
 
@@ -377,11 +447,11 @@
     \begin{solution}
     \end{solution}
 
-    \part Gebe ein Loop Programm an, das die Funktion $f:\mathbb{N}\rightarrow \mathbb{N}$ mit $f(n_1,n_2)=2n_1n_2$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen. 
+    \part Gebe ein Loop Programm an, das die Funktion $f:\mathbb{N}\rightarrow \mathbb{N}$ mit $f(n_1,n_2)=2n_1n_2$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
     \begin{solution}
     \end{solution}
 
-    \part Gebe ein GoTo Programm an, das die Funktion $g:\mathbb{N}\rightarrow\mathbb{N}$ mit $g(n_1,n_2)=|n_1-n_2|$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen. 
+    \part Gebe ein GoTo Programm an, das die Funktion $g:\mathbb{N}\rightarrow\mathbb{N}$ mit $g(n_1,n_2)=|n_1-n_2|$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
     \begin{solution}
     \end{solution}
 

@@ -102,6 +102,11 @@
       Dazu muss $l\in V$ und $r\in \sum V\cup {\epsilon}$.
     \end{solution}
 
+    \part Die Menge $Reg(\sum)$ der regulären Ausdrücke über dem Alphabet ist... 
+    \begin{solution}
+      
+    \end{solution}
+
     \part Ein NFA ist ein Tupel $M=(...)$
     \begin{solution}
       ein nichtdeterministischer endlicher Automat $M$ ist ein 5-Tupel $M=(Z,\sum,S,\delta,E)$ mit
@@ -114,9 +119,19 @@
       \end{itemize}
     \end{solution}
 
+    \part Die von einem NFA $M=(Z,\sum,S,\delta, E)$ akzeptierte Sprache ist $L(M)=...$ (ohne Definition der Mehr-Schritt Übergangsfunktion $\delta$)
+    \begin{solution}
+      
+    \end{solution}
+
     \part Die von einem PDA $M=(Z,\sum, \Gamma, \delta, z_0, \#)$ akzeptierten Sprache ist $L(M)=...$
     \begin{solution}
       $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
+    \end{solution}
+
+    \part Sei $L$ eine Sprache. Für $x,y\in\sum^*$ gilt $xE_L y$ genau dann, wenn ... ($R_L$ ist die Myhill-Nerode-Äquivalenz zu L)
+    \begin{solution}
+      
     \end{solution}
 
     \part Sei $M=(Z,\sum,z_0,\delta, E)$ ein DFA. Die Zustände $z,z'\in Z$ heißen erkennungsäquivalent, wenn
@@ -134,6 +149,26 @@
         \item L wird von einem NFA akzeptiert
         \item L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
       \end{enumerate}
+    \end{solution}
+
+    \part Die Klasse der regulären Sprachen ist unter anderem abgeschlossen unter folgenden drei Operationen:
+    \begin{solution}
+      
+    \end{solution}
+
+    \part Sei $\sum$ ein Alphabet. Die Anzahl der Grammatiken über $\sum$ ist ... und die Anzahl der Sprachen über $\sum$ ist ... .
+    \begin{solution}
+      
+    \end{solution}
+
+    \part Unter anderem sind folgende (mind. drei) Probleme für kontextfreie Sprachen entscheidbar:
+    \begin{solution}
+      
+    \end{solution}
+
+    \part Die Klasse der Kontextfreien Sprachen ist abgeschlossen unter den Operationen 1)... und 2)... . Sie ist aber nicht abgeschlossen unter 3)... und 4)... .
+    \begin{solution}
+      
     \end{solution}
 
     \part Der Satz von Myhill-Nerode besagt,...
@@ -157,6 +192,26 @@
 
   \question Konstruktionen der Automatentheorie
   \begin{parts}
+
+    \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, above right = of q1] {2};
+        \node (q3) [state, accepting, below right = of q2] {3};
+
+        \path [-stealth, thick]
+        (q1) edge node {a} (q2)
+        (q1) edge node {b} (q3)
+        (q1) edge [loop above] node {a}()
+        (q2) edge node {a} (q3)
+        (q2) edge [loop above] node {b}()
+        (q3) edge [bend left] node {a} (q2);
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+    \end{solution}
+
     \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
     \begin{center}
       \begin{tikzpicture}[node distance = 3cm, on grid, auto]
@@ -175,10 +230,10 @@
         (q2) edge [loop above] node {b}();
       \end{tikzpicture}
     \end{center}
-
     \begin{solution}
     \end{solution}
-    \part Betrachte den folgenden DFA X (Bild wird noch erstellt). Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
     \begin{center}
       \begin{tikzpicture}[node distance = 3cm, on grid, auto]
         \node (q1) [state, initial, initial text = {}] {1};
@@ -200,6 +255,35 @@
         (q5) edge node {a,b} (q6)
         (q6) edge node {a} (q3)
         (q6) edge [loop right] node {b}();
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+    \end{solution}
+
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, accepting, initial, initial text = {}] {1};
+        \node (q2) [state, accepting, right = of q1] {2};
+        \node (q3) [state, right = of q2] {3};
+        \node (q4) [state, accepting, below = of q1] {4};
+        \node (q5) [state, right = of q4] {5};
+        \node (q6) [state, accepting, right = of q5] {6};
+
+        \path [-stealth, thick]
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q5)
+        (q2) edge [loop above] node {b}()
+        (q2) edge node {a} (q3)
+        (q3) edge node {a} (q5)
+        (q3) edge node {b} (q6)
+        (q4) edge node {a} (q1)
+        (q4) edge node {b} (q5)
+        (q5) edge [bend left] node {a} (q3)
+        (q5) edge [bend left] node {b} (q4)
+        (q6) edge [bend left] node {a} (q2)
+        (q6) edge node {b} (q5);
       \end{tikzpicture}
     \end{center}
     \begin{solution}
@@ -241,19 +325,42 @@
     \part Ein While Programm ist von der Form...
     \begin{solution}
     \end{solution}
+
+    \part Eine Turingmaschine ist ein 7-Tupel $M=(Z,\sum,\Gamma,\delta,z_0,\Box, E)$, wobei...
+    \begin{solution}
+    \end{solution}
+
     \part Die von einer Turingmaschine $M$ akzeptierte Sprache ist $L(M)=...$
     \begin{solution}
     \end{solution}
+
+    \part Seien $A\supseteq \sum^*$ und B$\supseteq \Gamma^*$. Eine Reduktion von A auf B ist ... 
+    \begin{solution}
+    \end{solution}
+
     \part Eine Sprache $L$ heißt rekursiv aufzählbar, falls ...
+    \begin{solution}
+    \end{solution}
+
+    \part Sei $f:N\rightarrow N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine $M$ gibt mit ... 
     \begin{solution}
     \end{solution}
   \end{parts}
 
   \question Sätze der Berechnbarkeitstheorie: Vervollständige die folgenden Aussagen
   \begin{parts}
+    \part Zu jeder Mehrband-Turingmaschine $M$ gibt es ... 
+    \begin{solution}
+    \end{solution}
+
+    \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)... 
+    \begin{solution}
+    \end{solution}
+
     \part Sei $L\subseteq \sum^*$ eine Sprache. Sind $L$ und $\sum^*\backslash L$ semi-entscheidbar, dann...
     \begin{solution}
     \end{solution}
+
     \part Der Satz von Rice lautet...
     \begin{solution}
       dass es unmöglich ist, eine beliebige nicht-triviale Eigenschaft der erzeugten Funktion einer Turing-Maschine (oder eines Algorithmus in einem anderen Berechenbarkeitsmodell) algorithmisch zu entscheiden.
@@ -269,6 +376,15 @@
     \part Gebe ein Loop-Programm an, das die Funktion $n\rightarrow n^2-n$ berechnet
     \begin{solution}
     \end{solution}
+
+    \part Gebe ein Loop Programm an, das die Funktion $f:\mathbb{N}\rightarrow \mathbb{N}$ mit $f(n_1,n_2)=2n_1n_2$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen. 
+    \begin{solution}
+    \end{solution}
+
+    \part Gebe ein GoTo Programm an, das die Funktion $g:\mathbb{N}\rightarrow\mathbb{N}$ mit $g(n_1,n_2)=|n_1-n_2|$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen. 
+    \begin{solution}
+    \end{solution}
+
     \part Gebe eine deterministische Turingmaschine $M$ für das Eingabealphabet $\{0,1\}$ an, das folgende Funktion berechnet: Für Eingabe $a_1a_2...a_{n-1}a_n$ berechnet M die Ausgabe $a_na_1...a_{n-1}$ (letzte Symbol der Eingabe an erste Stelle).
     \begin{solution}
     \end{solution}
@@ -304,6 +420,10 @@
     \end{solution}
   \end{parts}
 
+  \question Unentscheidbare Probleme: Gebe (mind vier) unterscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar).
+  \begin{solution}
+  \end{solution}
+
   \question NP-vollständiges Problem: Gebe (mind. zwei) NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
   \begin{solution}
 
@@ -315,5 +435,16 @@
 
 
   \end{solution}
+
+  \question Polynomialzeitreduktion: Betrachte das Problem 4C, also die Menge der ungerichteten Graphen die sich mit vier Farben färben lassen.
+  \begin{parts}
+    \part Gebe eine Polynomialzeitreduktion von 3C auf 4C an.
+    \begin{solution}
+    \end{solution}
+
+    \part Zeige, dass wenn $4C\in P$, dann gilt $P=NP$.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
 \end{questions}
 \end{document}

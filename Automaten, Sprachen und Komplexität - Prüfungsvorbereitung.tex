@@ -317,17 +317,20 @@
       \end{tikzpicture}
     \end{center}
     \begin{solution}
-      * erster Schritt, (*) zweiter Schritt
+      * erster Schritt: Paare mit mind. einem Endzustand markieren,
+      (*) zweiter Schritt: leere Paare die in Endzustandspaar überführen markieren,
+      dritter Schritt: unmarkierte Paare verschmelzen
 
       \begin{tabular}{c|c|c|c|c|c}
-        2 & *                     \\\hline
-        3 & *   & *               \\\hline
-        4 & (*) & * & *           \\\hline
-        5 & *   & * & * & *       \\\hline
+        2 & *                     \\
+        3 & *   & *               \\
+        4 & (*) & * & *           \\
+        5 & *   & * & * & *       \\
         6 & (*) & * & * & (*) & * \\\hline
           & 1   & 2 & 3 & 4   & 5
       \end{tabular}
 
+      Keine unmarkierten Paare $\rightarrow$ nicht minimierbar bzw schon minimal
     \end{solution}
 
 
@@ -357,6 +360,14 @@
       \end{tikzpicture}
     \end{center}
     \begin{solution}
+      \begin{tabular}{c|c|c|c|c|c}
+        2 & *                   \\
+        3 & * & *               \\
+        4 & * & * &             \\
+        5 & * & * & (*) & *     \\
+        6 & * & * & *   & * & * \\\hline
+          & 1 & 2 & 3   & 4 & 5
+      \end{tabular}
     \end{solution}
   \end{parts}
 
@@ -381,12 +392,111 @@
   \begin{parts}
     \part Sei $G$ die kontextfreie Grammatik mit Startsymbol S und der Regelmenge $S\rightarrow AB$, $A\rightarrow aBS|a$ und $B\rightarrow bBa|b|\epsilon$. Überführe G in eine äquivalente Grammatik in Chomsky Normalform.
     \begin{solution}
+      Chomsky Normalform hat auf rechter Ableitungsseite nur ein Terminal oder zwei Nicht-Terminale
+      \begin{enumerate}
+        \item Startzustand \\$S\rightarrow AB$, $A\rightarrow aBS|a$, $B\rightarrow bBa|b|\epsilon$
+        \item $\epsilon$-Regel: Menge $M=\{B\}$ der $epsilon$ Terminal-Überführungen kompensieren; \\
+              $S\rightarrow AB|A$, $A\rightarrow aBS|a|aS$, $B\rightarrow bBa|b|ba$
+        \item Kettenregel: Menge $M=\{(S,A), (S,S), (A,A), (B,B)\}$ von Ketten (Ableitungen auf ein Nicht-Terminal)\\
+              $S\rightarrow AB|aBS|a|aS$, $A\rightarrow aBS|a|aS$, $B\rightarrow bBa|b|ba$
+        \item Terminale und Nicht-Terminal trennen: \\ $S\rightarrow AB|CBS|C|CS$, $A\rightarrow CBS|C|CS$, $B\rightarrow DBC|b|DC$, $C\rightarrow a$, $D\rightarrow b$
+        \item Längen verkürzen: \\$S\rightarrow AB|CX|C|CS$, $A\rightarrow CX|C|CS$, $B\rightarrow DY|b|DC$, $C\rightarrow a$, $D\rightarrow b$, $X\rightarrow BS$, $Y\rightarrow BC$
+      \end{enumerate}
     \end{solution}
-    \part Sei $G'$ die kontextfreie Grammatik mit Startsymbol $S$ und der Regelmenge $S\rightarrow AB$, $A\rightarrow CD|CF$, $F\rightarrow AD$, $B\rightarrow c|EB$, $C\rightarrow a$, $D\rightarrow b$, $E\rightarrow c$. Entscheide mit dem CYK-Algorithmus, ob die Wörter $w_1=aaabbbcc$ oder $w_2=aaabbccc$ von $G'$ erzeugt werden.
+
+    \part Sei $G'$ die kontextfreie Grammatik mit Startsymbol $S$ und der Regelmenge \\\begin{center}
+      $S\rightarrow AB$, $A\rightarrow CD|CF$, $F\rightarrow AD$, $B\rightarrow c|EB$, $C\rightarrow a$, $D\rightarrow b$, $E\rightarrow c$ \\\end{center} Entscheide mit dem CYK-Algorithmus, ob die Wörter $w_1=aaabbbcc$ oder $w_2=aaabbccc$ von $G'$ erzeugt werden.
     \begin{solution}
+
+      $w_1=aaabbbcc$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        a & a & a & b & b & b & c   & c   \\\hline
+        C & C & C & D & D & D & B,E & B,E \\
+          &   & A &   &   &   & B         \\
+          &   & F &   &   &               \\
+          & A &   &   &                   \\
+          & F &   &                       \\
+        A &   &                           \\
+        S &                               \\
+        S
+      \end{tabular}
+      $\Rightarrow w_1$ wird von $G'$ erzeugt
+
+      $w_2=aaabbccc$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        a & a & a & b & b & c   & c   & c   \\\hline
+        C & C & C & D & D & B,E & B,E & B,E \\
+          &   & A &   &   & B   & B         \\
+          &   & F &   &   & B               \\
+          & A &   &   &                     \\
+          & F &   &                         \\
+        A &   &                             \\
+        S &                                 \\
+      \end{tabular}
+      $\Rightarrow w_2$ wird nicht von $G'$ erzeugt
     \end{solution}
+
     \part Gebe für die Wörter aus b), die von $G'$ erzeugt werden, den Ableitungsbaum an.
     \begin{solution}
+
+      $w_1=aaabbbcc$
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state] {S};
+
+          \node (q2) [state, below left = of q1] {A};
+          \node (q3) [state, below right=2cm and 5cm = of q1] {B};
+          \node (q4) [state, below left = of q3] {E};
+          \node (q6) [below = of q4] {c};
+          \node (q5) [state, below right = of q3] {B};
+          \node (q7) [below = of q5] {c};
+          \node (q8) [state, below left = of q2] {C};
+          \node (q9) [below = of q8] {a};
+          \node (q10) [state, below right = of q2] {F};
+          \node (q11) [state, below left = of q10] {A};
+          \node (q12) [state, below right = of q10] {D};
+          \node (q13) [below = of q12] {b};
+          \node (q14) [state, below left = of q11] {C};
+          \node (q15) [below = of q14] {a};
+          \node (q16) [state, below right = of q11] {F};
+          \node (q17) [state, below left = of q16] {A};
+          \node (q18) [state, below right = of q16] {D};
+          \node (q19) [below = of q18] {b};
+          \node (q20) [state, below left = of q17] {C};
+          \node (q21) [state, below right = of q17] {D};
+          \node (q22) [below = of q20] {a};
+          \node (q23) [below = of q21] {b};
+
+          \path [-stealth, thick]
+          (q1) edge (q2)
+          (q1) edge (q3)
+          (q2) edge (q8)
+          (q2) edge (q10)
+          (q3) edge (q4)
+          (q3) edge (q5)
+          (q4) edge (q6)
+          (q5) edge (q7)
+          (q8) edge (q9)
+          (q10) edge (q11)
+          (q10) edge (q12)
+          (q11) edge (q14)
+          (q11) edge (q16)
+          (q12) edge (q13)
+          (q14) edge (q15)
+          (q16) edge (q17)
+          (q16) edge (q18)
+          (q17) edge (q20)
+          (q17) edge (q21)
+          (q18) edge (q19)
+          (q20) edge (q22)
+          (q21) edge (q23)
+          ;
+        \end{tikzpicture}
+      \end{center}
+
+      %$w_2=aaabbccc$
     \end{solution}
   \end{parts}
 
@@ -394,26 +504,63 @@
   \begin{parts}
     \part Ein While Programm ist von der Form...
     \begin{solution}
+      \begin{itemize}
+        \item $x_i=c, x_i=x_j+c, x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$ (Wertzuweisung) oder
+        \item $P_1,P_2$, wobei $P_1$ und $P_2$ bereits While Programme sind (sequentielle Komposition) oder
+        \item while $x_i\not = 0$ do P end, wobei P ein While Programm ist und $i\geq 1$.
+      \end{itemize}
+    \end{solution}
+
+    \part Ein Loop-Programm ist von der Form
+    \begin{solution}
+      \begin{itemize}
+        \item $x_i := c, x_i := x_j + c, x_i := x_j \div c$ mit $c\in\{0, 1\}$ und $i, j$ (Wertzuweisung) oder
+        \item $P_1 ; P_2$, wobei $P_1$ und $P_2$ Loop-Programme sind (sequentielle Komposition) oder
+        \item loop $x_i$ do P end, wobei P ein Loop-Programm ist und $i_1$.
+      \end{itemize}
     \end{solution}
 
     \part Eine Turingmaschine ist ein 7-Tupel $M=(Z,\sum,\Gamma,\delta,z_0,\Box, E)$, wobei...
     \begin{solution}
+      \begin{itemize}
+        \item 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$
+        \item $\sum$ das Eingabealphabet
+        \item $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
+        \item $z_0\in Z$ der Startzustand,
+        \item $\delta:Z\times\Phi\rightarrow(Z\times\Phi\times\{L,N,R\})$ die Überführungsfunktion
+        \item $\Box\in\Phi/\sum$ das Leerzeichen oder Blank und
+        \item $E\subseteq Z$ die Menge der Endzustände ist
+      \end{itemize}
     \end{solution}
 
     \part Die von einer Turingmaschine $M$ akzeptierte Sprache ist $L(M)=...$
     \begin{solution}
+      $L(M)=\{ w\in\sum^* | \text{es gibt akzeptierte Haltekonfiguration mit } z_0w\Box\vdash_M^* k\}$.
     \end{solution}
 
-    \part Seien $A\supseteq \sum^*$ und B$\supseteq \Gamma^*$. Eine Reduktion von A auf B ist ...
+    \part Seien $A\subseteq \sum^*$ und B$\subseteq \Gamma^*$. Eine Reduktion von A auf B ist ...
     \begin{solution}
+      Eine Reduktion von A auf B ist eine totale und berechenbare Funktion $f:\sum^*\rightarrow\Gamma^*$, so dass für alle $w\in\sum^*$ gilt: $w\in A\leftrightarrow f(x)\in B$. A heißt auf B reduzierbar (in Zeichen $A\leq B$), falls es eine Reduktion von A auf B gibt.
     \end{solution}
 
     \part Eine Sprache $L$ heißt rekursiv aufzählbar, falls ...
     \begin{solution}
+      \begin{itemize}
+        \item L ist semi-entscheidbar
+        \item L wird von einer Turing-Maschine akzeptiert
+        \item L ist vom Typ 0 (d.h. von Grammatik erzeugt)
+        \item L ist Bild berechenbarer partiellen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist Bild berechenbarer totalen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist Definitionsbereich einer berechenbaren partiellen Funktion $\sum^*\rightarrow\sum^*$
+      \end{itemize}
     \end{solution}
 
     \part Sei $f:N\rightarrow N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine $M$ gibt mit ...
     \begin{solution}
+      \begin{itemize}
+        \item M berechnet die charakteristische Funktion von L.
+        \item Für jede Eingabe $w\in\sum^*$ erreicht M von der Startkonfiguration $z_0 w\Box$ aus nach höchstens $f(|w|)$ Rechenschritten eine akzeptierende Haltekonfiguration (und gibt 0 oder 1 aus, je nachdem ob $w\not\in L$ oder $w\in L$ gilt).
+      \end{itemize}
     \end{solution}
   \end{parts}
 
@@ -421,6 +568,11 @@
   \begin{parts}
     \part Zu jeder Mehrband-Turingmaschine $M$ gibt es ...
     \begin{solution}
+      eine Turingmaschine M' die diesselbe Funktion löst
+      \begin{itemize}
+        \item Simulation mittels Einband-Turingmaschine durch Erweiterung des Alphabets: Wir fassen die übereinanderliegenden Bandeinträge zu einem Feld zusammen und markieren die Kopfpositionen auf jedem Band durch $\ast$.
+        \item Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Phi\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopf anwesend ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
+      \end{itemize}
     \end{solution}
 
     \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)...
@@ -445,18 +597,58 @@
   \begin{parts}
     \part Gebe ein Loop-Programm an, das die Funktion $n\rightarrow n^2-n$ berechnet
     \begin{solution}
+      \begin{lstlisting}
+      h= 1
+      for(i= 0; i < 2; i++) do {
+        h= h * n
+      }
+      h= h - 1;
+      return h
+      \end{lstlisting}
     \end{solution}
 
     \part Gebe ein Loop Programm an, das die Funktion $f:\mathbb{N}\rightarrow \mathbb{N}$ mit $f(n_1,n_2)=2n_1n_2$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
     \begin{solution}
+      \begin{lstlisting}
+        h= 1
+        for (i=0; i<2; i++) do {
+          h = h * n_i
+        }
+        h = 2 * h
+        return h
+      \end{lstlisting}
     \end{solution}
 
     \part Gebe ein GoTo Programm an, das die Funktion $g:\mathbb{N}\rightarrow\mathbb{N}$ mit $g(n_1,n_2)=|n_1-n_2|$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
     \begin{solution}
+      \begin{lstlisting}
+        start: 
+          h = n_1 - n_2
+          if h > 0:
+            goto end 
+          h = -h
+        end: 
+          return h
+      \end{lstlisting}
     \end{solution}
 
     \part Gebe eine deterministische Turingmaschine $M$ für das Eingabealphabet $\{0,1\}$ an, das folgende Funktion berechnet: Für Eingabe $a_1a_2...a_{n-1}a_n$ berechnet M die Ausgabe $a_na_1...a_{n-1}$ (letzte Symbol der Eingabe an erste Stelle).
     \begin{solution}
+      $\sum=\{0,1\}$
+      
+      $z_0$ Zahlenende finden: $\delta(z_0,0)=(z_0,0,R), \delta(z_0,1)=(z_0,1,R), \delta(z_0,\Box)=(z_1,\Box,L)$
+
+      $z_1$ letzte Zahl löschen: $\delta(z_1,0)=(z_2,\Box,L), \delta(z_1,1)=(z_3,\Box,L), \delta(z_1,\Box)=(z_2,\Box,N)$
+
+      $z_2$ zurück zum Anfang bei $a_n=0$: $\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_4,\Box,R)$
+
+      $z_3$ zurück zum Anfang bei $a_n=1$: $\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_5,\Box,N)$
+
+      $z_4$ $a_n=0$ an Anfang schreiben: $\delta(z_4,\Box)=(z_e,0,N)$
+
+      $z_5$ $a_n=1$ an Anfang schreiben: $\delta(z_4,\Box)=(z_e,1,N)$
+
+      $z_e$ Endzustand: $\delta(z_e, 0)=(z_e,0,N), \delta(z_e,1)=(z_e,1,N), \delta(z_e,\Box)?(z_e,\Box,N)$
     \end{solution}
   \end{parts}
 
@@ -492,6 +684,18 @@
 
   \question Unentscheidbare Probleme: Gebe (mind vier) unterscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar).
   \begin{solution}
+    
+    das spezielle Halteproblem
+
+    das allgemeine Halteproblem
+
+    das Halteproblem auf leerem Band
+
+    das allgemeine Wortproblem $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$
+
+    Posts Korrespondenzproblem
+
+    das Schnitt- und verwandte Probleme über kontextfreie Sprachen
   \end{solution}
 
   \question NP-vollständiges Problem: Gebe (mind. zwei) NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
@@ -502,7 +706,6 @@
       \item Eingabe: Graph(V,E)
       \item Frage: Kann der Graph so durchlaufen werden, dass jeder Knoten genau ein mal besucht/abgelaufen wird?
     \end{itemize}
-
 
   \end{solution}
 

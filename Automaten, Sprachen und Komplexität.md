@@ -807,7 +807,7 @@ Abkürzungen: PDA (pushdown automaton) oder NPDA (nondeterministic pushown autom
 
 > Definition: Seien $\gamma\in\Gamma^*, A_1B_1,...,B_k\in\Gamma, w, w'\in\sum^*$ und $z,z'\in Z$. Dann gilt $(z,w,A\gamma)\rightarrow (z',w', B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum \cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
 
-> Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z $\text{mit} (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
+> Definition: Sei M ein PDA. Dann ist die von M **akzeptierte Sprache**: $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z \text{mit} (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
 
 Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$:
 - seien $\gamma\in\Gamma, A,B_1...B_2\in\Gamma, w,w'\in\sum^*, z,z'\in Z$. Dann gilt $(z,w,A\gamma)\vdash (z',w',B_1...B_{k\gamma})$ genau dann, wenn es $a\in\sum\cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
@@ -959,7 +959,7 @@ es folgt
 - Es gibt kontextfreie Sprachen, die nicht deterministisch kontextfrei sind.
 
 ## das Pumping Lemma für kontextfreie Sprachen
-Idee: Man versucht auszunutzen, daß eine kontextfreie Sprache von einer Grammatik mit endlich vielen Nichtterminalen erzeugt werden muss. Das bedeutet auch: wenn ein Ableitungsbaum ausreichend tief ist, so gibt es einen Ast, der ein Nichtterminal mehrfach enthält. Die durch diese zwei Vorkommen bestimmten Teilbäume werden wir „pumpen“.
+Idee: Man versucht auszunutzen, daß eine kontextfreie Sprache von einer Grammatik mit endlich vielen Nichtterminalen erzeugt werden muss. Das bedeutet auch: wenn ein Ableitungsbaum ausreichend tief ist, so gibt es einen Ast, der ein Nichtterminal mehrfach enthält. Die durch diese zwei Vorkommen bestimmten Teilbäume werden wir ,,pumpen''.
 
 Pumping Lemma (Bar-Hillel, Perles, Shamir ’61):
 ```

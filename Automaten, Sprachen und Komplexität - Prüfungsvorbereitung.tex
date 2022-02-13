@@ -22,7 +22,7 @@
 \usepackage{bussproofs}
 \usepackage{tikz}
 \usetikzlibrary{automata, arrows.meta, positioning}
-%\renewcommand{\solutiontitle}{\noindent}
+\renewcommand{\solutiontitle}{\noindent\textbf{Antwort}: }
 \SolutionEmphasis{\small}
 \geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
 
@@ -168,22 +168,47 @@
 
     \part Sei $\sum$ ein Alphabet. Die Anzahl der Grammatiken über $\sum$ ist ... und die Anzahl der Sprachen über $\sum$ ist ... .
     \begin{solution}
-
+      Für jedes Alphabet ist die Menge der Grammatiken abzählbar unendlich und die Anzahl der Sprachen überabzählbar.
     \end{solution}
 
     \part Unter anderem sind folgende (mind. drei) Probleme für kontextfreie Sprachen entscheidbar:
     \begin{solution}
-
+      Wortproblem, Leerheitsproblem, Äquivalenzproblem
     \end{solution}
 
     \part Die Klasse der Kontextfreien Sprachen ist abgeschlossen unter den Operationen 1)... und 2)... . Sie ist aber nicht abgeschlossen unter 3)... und 4)... .
     \begin{solution}
-
+      Abgeschlossen unter 
+      \begin{itemize}
+        \item Vereinigung $(L_1,L_2\ regulär \Rightarrow L_1\cup L_2\ regulär)$
+        \item Produkt/Konkatenation $(L_1, L_2\ regulär \Rightarrow L_1 L_2\ regulär)$
+        \item Stern-Operation $(L\ regulär \rightarrow L^*\ regulär)$
+      \end{itemize}
+      Nicht abgschlossen unter 
+      \begin{itemize}
+        \item Schnitt $(L_1,L_2\ regulär \Rightarrow L_1\cap L_2\ regulär)$
+        \item Komplement $(L\ regulär \Rightarrow \sum^*\backslash L\ regulär)$
+        \item es gibt kontextfreie Sprachen, die nicht deterministisch kontextfrei sind
+      \end{itemize}
     \end{solution}
+
+    \part Die Klasse der regulären Sprachen ist abgeschlossen unter ... 
+    \begin{solution}
+      \begin{itemize}
+        \item Vereinigung $(L_1,L_2\ regulär \Rightarrow L_1\cup L_2\ regulär)$
+        \item Schnitt $(L_1,L_2\ regulär \Rightarrow L_1\cap L_2\ regulär)$
+        \item Komplement $(L\ regulär \Rightarrow \sum^*\backslash L\ regulär)$
+        \item Produkt/Konkatenation $(L_1, L_2\ regulär \Rightarrow L_1 L_2\ regulär)$
+        \item Stern-Operation $(L\ regulär \rightarrow L^*\ regulär)$
+      \end{itemize}
+    \end{solution}
+
 
     \part Der Satz von Myhill-Nerode besagt,...
     \begin{solution}
-      Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$ (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat).
+      Sei L eine Sprache. L ist regulär $\Leftrightarrow index(R_L)< \infty$ 
+      
+      (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat).
     \end{solution}
 
     \part Das Pumping-Lemma für kontextfreie Sprachen ...
@@ -295,6 +320,57 @@
     \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
     \begin{center}
       \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q0) [state, accepting, initial, initial text = {}] {0};
+        \node (q1) [state, below right = of q0] {1};
+        \node (q2) [state, below left = of q0] {2};
+        \node (q3) [state, accepting, above right = of q0] {3};
+        \node (q4) [state, above left = of q0] {4};
+
+        \path [-stealth, thick]
+        (q0) edge node {a} (q3)
+        (q0) edge [bend left] node {b} (q2)
+        (q1) edge node {a,b} (q0)
+        (q2) edge [bend left] node {a,b} (q0)
+        (q3) edge node {a} (q4)
+        (q3) edge node {b} (q1)
+        (q4) edge node {a,b} (q0);
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+      \begin{enumerate}
+        \item Stelle eine Tabelle aller ungeordneten Zustandspaare $\{z, z'\}$ mit $z\not = z'$ auf.
+        \item Markiere * alle Paare $\{z, z'\}$ mit $z\in E$ und $z'\not\in E$.
+        \item Markiere (*) ein beliebiges unmarkiertes Paar $\{z, z'\}$, für das es ein $a\in\sum$ gibt, so dass $\{\delta(z,a),\delta(z',a)\}$ bereits markiert ist (falls dies möglich ist).
+        \item Wiederhole den vorherigen Schritt, bis sich keine Änderung in der Tabelle mehr ergibt.
+        \item Unmarkierte Paare werden verschmolzen
+      \end{enumerate}
+
+      \begin{tabular}{c|c|c|c|c}
+        1 & *                   \\
+        2 & *   &               \\
+        3 & (*) & (*) & (*)     \\
+        4 & *   &     & *   & * \\\hline
+          & 0   & 1   & 2   & 3
+      \end{tabular}
+
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q0) [state, accepting, initial, initial text = {}] {0};
+          \node (q3) [state, accepting, below right = of q0] {3};
+          \node (q124) [state, below left = of q0] {124};
+
+          \path [-stealth, thick]
+          (q0) edge node {a} (q3)
+          (q0) edge [bend left] node {b} (q124)
+          (q3) edge node {a,b} (q124)
+          (q124) edge [bend left] node {a,b} (q0);
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
         \node (q1) [state, initial, initial text = {}] {1};
         \node (q2) [state, accepting, right = of q1] {2};
         \node (q3) [state, accepting, right = of q2] {3};
@@ -317,22 +393,34 @@
       \end{tikzpicture}
     \end{center}
     \begin{solution}
-      * erster Schritt: Paare mit mind. einem Endzustand markieren,
-      (*) zweiter Schritt: leere Paare die in Endzustandspaar überführen markieren,
-      dritter Schritt: unmarkierte Paare verschmelzen
 
       \begin{tabular}{c|c|c|c|c|c}
-        2 & *                     \\
-        3 & *   & *               \\
-        4 & (*) & * & *           \\
-        5 & *   & * & * & *       \\
-        6 & (*) & * & * & (*) & * \\\hline
-          & 1   & 2 & 3 & 4   & 5
+        2 & *                       \\
+        3 & *   &                   \\
+        4 & (*) & *   & *           \\
+        5 & *   & (*) & (*) & *     \\
+        6 & (*) & *   & *   &   & * \\\hline
+          & 1   & 2   & 3   & 4 & 5
       \end{tabular}
 
-      Keine unmarkierten Paare $\rightarrow$ nicht minimierbar bzw schon minimal
-    \end{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q23) [state, accepting, right = of q1] {2,3};
+          \node (q46) [state, below = of q1] {4,6};
+          \node (q5) [state, accepting, right = of q4] {5};
 
+          \path [-stealth, thick]
+          (q1) edge node {b} (q23)
+          (q1) edge node {a} (q46)
+          (q23) edge [loop right] node {a}()
+          (q23) edge node {b} (q5)
+          (q46) edge node {a} (q23)
+          (q46) edge [loop left] node {b}()
+          (q5) edge node {a,b} (q46);
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
 
     \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
     \begin{center}
@@ -361,13 +449,30 @@
     \end{center}
     \begin{solution}
       \begin{tabular}{c|c|c|c|c|c}
-        2 & *                   \\
-        3 & * & *               \\
-        4 & * & * &             \\
-        5 & * & * & (*) & *     \\
-        6 & * & * & *   & * & * \\\hline
-          & 1 & 2 & 3   & 4 & 5
+        2 &                       \\
+        3 & *   & *               \\
+        4 & (*) & (*) & *         \\
+        5 & *   & *   &   & *     \\
+        6 & (*) & (*) & * &   & * \\\hline
+          & 1   & 2   & 3 & 4 & 5
       \end{tabular}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q12) [state, accepting, initial, initial text = {}] {1,2};
+          \node (q35) [state, below right = of q12] {3,5};
+          \node (q46) [state, accepting, above right = of q12] {4,6};
+
+          \path [-stealth, thick]
+          (q12) edge node {a} (q35)
+          (q12) edge [loop above] node {b}()
+          (q35) edge [loop right] node {a} ()
+          (q35) edge [bend right] node {b} (q46)
+          (q46) edge [bend left] node {a} (q12)
+          (q46) edge node {b} (q35);
+        \end{tikzpicture}
+      \end{center}
+
+
     \end{solution}
   \end{parts}
 
@@ -523,12 +628,12 @@
     \part Eine Turingmaschine ist ein 7-Tupel $M=(Z,\sum,\Gamma,\delta,z_0,\Box, E)$, wobei...
     \begin{solution}
       \begin{itemize}
-        \item 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$
+        \item 7-Tupel $M=(Z,\sum, \Gamma, \delta, z_o, \Box, E)$
         \item $\sum$ das Eingabealphabet
-        \item $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
+        \item $\Gamma$ mit $\Gamma\supseteq\sum$ und $\Gamma\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
         \item $z_0\in Z$ der Startzustand,
-        \item $\delta:Z\times\Phi\rightarrow(Z\times\Phi\times\{L,N,R\})$ die Überführungsfunktion
-        \item $\Box\in\Phi/\sum$ das Leerzeichen oder Blank und
+        \item $\delta:Z\times\Gamma\rightarrow(Z\times\Gamma\times\{L,N,R\})$ die Überführungsfunktion
+        \item $\Box\in\Gamma/\sum$ das Leerzeichen oder Blank und
         \item $E\subseteq Z$ die Menge der Endzustände ist
       \end{itemize}
     \end{solution}
@@ -536,6 +641,16 @@
     \part Die von einer Turingmaschine $M$ akzeptierte Sprache ist $L(M)=...$
     \begin{solution}
       $L(M)=\{ w\in\sum^* | \text{es gibt akzeptierte Haltekonfiguration mit } z_0w\Box\vdash_M^* k\}$.
+    \end{solution}
+
+    \part Gödels Vermutung lautet,...
+    \begin{solution}
+      Eine partielle Funktion $\mathbb{N}^k \rightarrow \mathbb{N}$ ist genau dann intuitiv berechenbar, wenn sie $\mu$-rekursiv ist.
+    \end{solution}
+
+    \part Wann ist eine Sprache semi-entscheidbar?
+    \begin{solution}
+      Eine Sprache ist genau dann semi-entscheidbar, wenn sie von einer nichtdeterministischen Turingmaschine akzeptiert wird.
     \end{solution}
 
     \part Seien $A\subseteq \sum^*$ und B$\subseteq \Gamma^*$. Eine Reduktion von A auf B ist ...
@@ -571,7 +686,7 @@
       eine Turingmaschine M' die diesselbe Funktion löst
       \begin{itemize}
         \item Simulation mittels Einband-Turingmaschine durch Erweiterung des Alphabets: Wir fassen die übereinanderliegenden Bandeinträge zu einem Feld zusammen und markieren die Kopfpositionen auf jedem Band durch $\ast$.
-        \item Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Phi\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopf anwesend ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
+        \item Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Gamma\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopf anwesend ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
       \end{itemize}
     \end{solution}
 
@@ -635,7 +750,7 @@
     \part Gebe eine deterministische Turingmaschine $M$ für das Eingabealphabet $\{0,1\}$ an, das folgende Funktion berechnet: Für Eingabe $a_1a_2...a_{n-1}a_n$ berechnet M die Ausgabe $a_na_1...a_{n-1}$ (letzte Symbol der Eingabe an erste Stelle).
     \begin{solution}
       $\sum=\{0,1\}$
-      
+
       $z_0$ Zahlenende finden: $\delta(z_0,0)=(z_0,0,R), \delta(z_0,1)=(z_0,1,R), \delta(z_0,\Box)=(z_1,\Box,L)$
 
       $z_1$ letzte Zahl löschen: $\delta(z_1,0)=(z_2,\Box,L), \delta(z_1,1)=(z_3,\Box,L), \delta(z_1,\Box)=(z_2,\Box,N)$
@@ -682,32 +797,103 @@
     \end{solution}
   \end{parts}
 
-  \question Unentscheidbare Probleme: Gebe (mind vier) unterscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar).
-  \begin{solution}
-    
-    das spezielle Halteproblem
+  \question Komplexitätsklassen. Bringe in die richtige Reihenfolge:
+  \begin{parts}
+    \part EXPSPACE, PSPACE, 2EXPTIME, EXPTIME, P
+    \begin{solution}
+      $P \subseteq PSPACE\subseteq EXPTIME\subseteq EXPSPACE\subseteq 2EXPTIME$
+    \end{solution}
 
-    das allgemeine Halteproblem
+    \part PSPACE, EXPSPACE,2EXPSPACE, NEXPTIME, 2NEXPTIME, NP
+    \begin{solution}
+      $NP \subseteq PSPACE, NEXPTIME \subseteq EXPSPACE, 2NEXPTIME \subseteq 2EXPSPACE$
+    \end{solution}
 
-    das Halteproblem auf leerem Band
+    \part NP, P, EXPTIME, NEXPTIME, PSPACE, NPSPACE, NEXPSPACE, EXPSPACE
+    \begin{solution}
+      $P\leq NP \leq PSPACE = NPSPACE \leq EXPTIME \leq NEXPTIME \leq EXPSPACE = NEXPSPACE $
+    \end{solution}
+  \end{parts}
 
-    das allgemeine Wortproblem $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$
+  \question Unentscheidbare Probleme:
+  \begin{parts}
+    \part Gebe entscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
+    \begin{solution}
+      \begin{itemize}
+        \item Wortproblem: Gilt $w\in L(M)$ für eine gegebene reguläre Sprache $L$ und $w\in\sum^*$
+        \item Leerheitsproblem: Gilt $L(M)=\varnothing$ für eine gegebene reguläre Sprache $L$
+        \item Endlichkeitsproblem: Ist eine gegebene reguläre Sprache endlich?
+        \item Schnittproblem: Gilt $L_1\cap L_2 =\varnothing$ für gegebene reguläre $L_1,L_2$?
+        \item Inklusionsproblem: Gilt $L_1\subseteq L_2$ für gegebene reguläre $L_1,L_2$?
+        \item Äquivalenzproblem: Gilt $L_1=L_2$ für gegebene reguläre $L_1,L_2$?
+      \end{itemize}
+    \end{solution}
 
-    Posts Korrespondenzproblem
+    \part Gebe unterscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
+    \begin{solution}
+      \begin{itemize}
+        \item allgemeine Halteproblem: Das Halteproblem ist die Menge aller Paare $(M, x)$, wobei $M$ eine TM ist und $x\in\{0,1\}^*$, so dass $M$ bei Eingabe von $x$ hält. $H=\{ w\# w \mid w\in L_{TM}, x\in\{0,1\}^*, M_w \text{ angesetzt auf x hält} \}$
+        \item spezielle Halteproblem: $K=\{w\in L_{TM}\mid M_w \text{ angesetzt auf w hält}\}$
+        \item Halteproblem auf leerem Band: $H_0=\{w\in L_{TM} \mid M_w\text{ hält angesetzt auf ein leeres Band}\}$
+        \item allgemeine Wortproblem:  $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$
+        \item Posts Korrespondenzproblem: PCP ist die Menge der Korrespondenzsysteme (endliche Folge von Paaren), die eine Lösung besitzen
+        \item Schnittproblem: $\{(G_1, G_2) \mid G_1,G_2\text{ kontextfreie Grammatiken }, L(G_1)\cap L(G_2)=\varnothing\}$
+        \item Regularitätsproblem für PDA: $Reg_{PDA}=\{P\mid P\ PDA\text{ mit } L(P) \text{ regulär}\}$
+        \item Inklusionsproblem DPDA: $\{(P_1, P_2) \mid P_1, P_2 \text{ DPDAs mit } L(P_1)\subseteq L(P_2)$
+        \item Universalitätsproblem: $\{P\ PDA \mid L(P)=\sum^*\}$
+        \item Äquivalenzproblem PDA: $\{(P_1, P_2) \mid P_1,P_2 \text{ PDAs mit } L(P_1) = L(P_2)$
+      \end{itemize}
+    \end{solution}
+  \end{parts}
 
-    das Schnitt- und verwandte Probleme über kontextfreie Sprachen
-  \end{solution}
+  \question NP-Vollständigkeit
+  \begin{parts}
+    \part Eine Sprache $B$ ist NP-vollständig, falls ...
+    \begin{solution}
+      Eine Sprache ist NP-vollständig, falls sie zu NP gehört und NP-hart ist.
 
-  \question NP-vollständiges Problem: Gebe (mind. zwei) NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
-  \begin{solution}
+      Eine Sprache $B$ ist NP-hart, falls für alle $A\in NP$ gilt: $A\leq_P B$ (A ist mindestens so schwer wie jedes Problem in NP).
 
-    Hamilton Kreis
-    \begin{itemize}
-      \item Eingabe: Graph(V,E)
-      \item Frage: Kann der Graph so durchlaufen werden, dass jeder Knoten genau ein mal besucht/abgelaufen wird?
-    \end{itemize}
+      Wenn $B$ NP-vollständig ist, dann gilt: $P = NP \Leftrightarrow B\in P$.
+    \end{solution}
 
-  \end{solution}
+    \part Gebe NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
+    \begin{solution}
+
+      Gerichteter Hamiltonkreis?
+      \begin{itemize}
+        \item Eingabe: gerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\subseteq V\times V$
+        \item Frage: Besitzt der Graph $G$ einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, daß jeder Knoten genau einmal besucht wird?
+      \end{itemize}
+
+      Ungerichteter Hamiltonkreis
+      \begin{itemize}
+        \item Eingabe: ungerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\subseteq\binom{V}{2}=\{X\subseteq V\mid |X|=2\}$.
+        \item Frage: Kann ein ungerichteter Graph so durchlaufen werden, dass jeder Knoten genau ein mal besucht wird?
+      \end{itemize}
+
+      3-Färbbarkeit
+      \begin{itemize}
+        \item Eingabe: ungerichteter Graph(V,E)
+        \item Frage: Gibt es einen ungerichteten Graphen, deren Knoten sich mit drei Farben färben lassen, so dass benachbarte Knoten unterschiedliche Farben haben
+        \item Frage (alternativ): Gibt es Zuordnung von $k$ verschiedenen Farben zu Knoten in $V$, so dass keine zwei benachbarten Knoten $v_1, v_2$ dieselbe Farbe haben?
+      \end{itemize}
+
+      3-SAT
+      \begin{itemize}
+        \item Ist eine aussagenlogische Formel in konjunktiver Normalform mit $\geq 3$ Literalen pro Klausel erfüllbar?
+        \item Eingabe: eine aussagenlogische Formel $\varphi$ in konjunktiver Normalform mit höchstens drei Literalen pro Klausel.
+        \item Frage: Hat $\varphi$ eine erfüllende Belegung?
+      \end{itemize}
+
+      Travelling Salesman Problem
+      \begin{itemize}
+        \item eine $n\times n$-Matrix $M=(M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
+        \item FRAGE: Gibt es eine Tour durch alle Städte, die maximal die Länge $d$ hat?
+      \end{itemize}
+
+    \end{solution}
+  \end{parts}
 
   \question Polynomialzeitreduktion: Betrachte das Problem 4C, also die Menge der ungerichteten Graphen die sich mit vier Farben färben lassen.
   \begin{parts}

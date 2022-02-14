@@ -125,7 +125,7 @@
 
     \part Die von einem NFA $M=(Z,\sum,S,\delta, E)$ akzeptierte Sprache ist $L(M)=...$ (ohne Definition der Mehr-Schritt Übergangsfunktion $\delta$)
     \begin{solution}
-      $L(M)={w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset}$
+      $L(M)=\{w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset\}$
 
       (Das Wort wird akzeptiert wenn es mindestens einen Pfad vom Anfangs in den Endzustand gibt)
     \end{solution}
@@ -157,12 +157,14 @@
       \end{enumerate}
     \end{solution}
 
-    \part Die Klasse der regulären Sprachen ist unter anderem abgeschlossen unter folgenden drei Operationen:
+    \part Die Klasse der regulären Sprachen ist unter anderem abgeschlossen unter folgenden Operationen:
     \begin{solution}
       \begin{itemize}
-        \item Vereinigung $L=L_0\cup L_1$
-        \item Verkettung $L=L_0L_1$
-        \item Abschluss $L=L_0^*$
+        \item Vereinigung $(L_1,L_2\text{ regulär } \Rightarrow L_1\cup L_2\text{ regulär })$
+        \item Schnitt $(L_1,L_2\text{ regulär } \Rightarrow L_1\cap L_2\text{ regulär })$
+        \item Komplement $(L\text{ regulär } \Rightarrow \sum^*\backslash L\text{ regulär })$
+        \item Produkt/Konkatenation $(L_1, L_2\text{ regulär } \Rightarrow L_1 L_2\text{ regulär })$
+        \item Abschluss/Stern-Operation $(L\text{ regulär } \rightarrow L^*\text{ regulär })$
       \end{itemize}
     \end{solution}
 
@@ -180,29 +182,17 @@
     \begin{solution}
       Abgeschlossen unter 
       \begin{itemize}
-        \item Vereinigung $(L_1,L_2\ regulär \Rightarrow L_1\cup L_2\ regulär)$
-        \item Produkt/Konkatenation $(L_1, L_2\ regulär \Rightarrow L_1 L_2\ regulär)$
-        \item Stern-Operation $(L\ regulär \rightarrow L^*\ regulär)$
+        \item Vereinigung $(L_1,L_2 \Rightarrow L_1\cup L_2)$
+        \item Produkt/Konkatenation $(L_1, L_2 \Rightarrow L_1 L_2)$
+        \item Stern-Operation $(L \rightarrow L^*)$
       \end{itemize}
       Nicht abgschlossen unter 
       \begin{itemize}
-        \item Schnitt $(L_1,L_2\ regulär \Rightarrow L_1\cap L_2\ regulär)$
-        \item Komplement $(L\ regulär \Rightarrow \sum^*\backslash L\ regulär)$
+        \item Schnitt $(L_1,L_2 \Rightarrow L_1\cap L_2)$
+        \item Komplement $(L \Rightarrow \sum^*\backslash L)$
         \item es gibt kontextfreie Sprachen, die nicht deterministisch kontextfrei sind
       \end{itemize}
     \end{solution}
-
-    \part Die Klasse der regulären Sprachen ist abgeschlossen unter ... 
-    \begin{solution}
-      \begin{itemize}
-        \item Vereinigung $(L_1,L_2\ regulär \Rightarrow L_1\cup L_2\ regulär)$
-        \item Schnitt $(L_1,L_2\ regulär \Rightarrow L_1\cap L_2\ regulär)$
-        \item Komplement $(L\ regulär \Rightarrow \sum^*\backslash L\ regulär)$
-        \item Produkt/Konkatenation $(L_1, L_2\ regulär \Rightarrow L_1 L_2\ regulär)$
-        \item Stern-Operation $(L\ regulär \rightarrow L^*\ regulär)$
-      \end{itemize}
-    \end{solution}
-
 
     \part Der Satz von Myhill-Nerode besagt,...
     \begin{solution}
@@ -357,7 +347,7 @@
         \begin{tikzpicture}[node distance = 3cm, on grid, auto]
           \node (q0) [state, accepting, initial, initial text = {}] {0};
           \node (q3) [state, accepting, below right = of q0] {3};
-          \node (q124) [state, below left = of q0] {124};
+          \node (q124) [state, below left = of q0] {1,2,4};
 
           \path [-stealth, thick]
           (q0) edge node {a} (q3)
@@ -692,6 +682,12 @@
 
     \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)...
     \begin{solution}
+      \begin{enumerate}
+        \item $f$ ist Turing berechenbar 
+        \item $f$ ist $\mu$ rekursiv 
+        \item $f$ ist rekursiv aufzählbar
+        \item $f$ ist von Menschen berechenbar
+      \end{enumerate}
     \end{solution}
 
     \part Sei $L\subseteq \sum^*$ eine Sprache. Sind $L$ und $\sum^*\backslash L$ semi-entscheidbar, dann...
@@ -757,13 +753,13 @@
 
       $z_2$ zurück zum Anfang bei $a_n=0$: $\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_4,\Box,R)$
 
-      $z_3$ zurück zum Anfang bei $a_n=1$: $\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_5,\Box,N)$
+      $z_3$ zurück zum Anfang bei $a_n=1$: $\delta(z_3,0)=(z_3,0,L), \delta(z_3,1)=(z_3,1,L), \delta(z_3,\Box)=(z_5,\Box,N)$
 
       $z_4$ $a_n=0$ an Anfang schreiben: $\delta(z_4,\Box)=(z_e,0,N)$
 
-      $z_5$ $a_n=1$ an Anfang schreiben: $\delta(z_4,\Box)=(z_e,1,N)$
+      $z_5$ $a_n=1$ an Anfang schreiben: $\delta(z_5,\Box)=(z_e,1,N)$
 
-      $z_e$ Endzustand: $\delta(z_e, 0)=(z_e,0,N), \delta(z_e,1)=(z_e,1,N), \delta(z_e,\Box)?(z_e,\Box,N)$
+      $z_e$ Endzustand: $\delta(z_e, 0)=(z_e,0,N), \delta(z_e,1)=(z_e,1,N), \delta(z_e,\Box)=(z_e,\Box,N)$
     \end{solution}
   \end{parts}
 
@@ -811,7 +807,7 @@
 
     \part NP, P, EXPTIME, NEXPTIME, PSPACE, NPSPACE, NEXPSPACE, EXPSPACE
     \begin{solution}
-      $P\leq NP \leq PSPACE = NPSPACE \leq EXPTIME \leq NEXPTIME \leq EXPSPACE = NEXPSPACE $
+      $P\leq NP \leq PSPACE, NPSPACE \leq EXPTIME \leq NEXPTIME \leq EXPSPACE, NEXPSPACE $
     \end{solution}
   \end{parts}
 
@@ -820,22 +816,21 @@
     \part Gebe entscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
     \begin{solution}
       \begin{itemize}
-        \item Wortproblem: Gilt $w\in L(M)$ für eine gegebene reguläre Sprache $L$ und $w\in\sum^*$
-        \item Leerheitsproblem: Gilt $L(M)=\varnothing$ für eine gegebene reguläre Sprache $L$
-        \item Endlichkeitsproblem: Ist eine gegebene reguläre Sprache endlich?
-        \item Schnittproblem: Gilt $L_1\cap L_2 =\varnothing$ für gegebene reguläre $L_1,L_2$?
-        \item Inklusionsproblem: Gilt $L_1\subseteq L_2$ für gegebene reguläre $L_1,L_2$?
-        \item Äquivalenzproblem: Gilt $L_1=L_2$ für gegebene reguläre $L_1,L_2$?
+        \item Wortproblem: Gilt $w\in L(M)$ für eine gegebene Sprache $L$ und $w\in\sum^*$
+        \item Leerheitsproblem: Gilt $L(M)=\varnothing$ für eine gegebene Sprache $L$
+        \item Endlichkeitsproblem: Ist eine gegebene Sprache endlich?
+        \item Schnittproblem: Gilt $L_1\cap L_2 =\varnothing$ für gegebene $L_1,L_2$?
+        \item Inklusionsproblem: Gilt $L_1\subseteq L_2$ für gegebene $L_1,L_2$?
+        \item Äquivalenzproblem: Gilt $L_1=L_2$ für gegebene $L_1,L_2$?
       \end{itemize}
     \end{solution}
 
-    \part Gebe unterscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
+    \part Gebe unentscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
     \begin{solution}
       \begin{itemize}
         \item allgemeine Halteproblem: Das Halteproblem ist die Menge aller Paare $(M, x)$, wobei $M$ eine TM ist und $x\in\{0,1\}^*$, so dass $M$ bei Eingabe von $x$ hält. $H=\{ w\# w \mid w\in L_{TM}, x\in\{0,1\}^*, M_w \text{ angesetzt auf x hält} \}$
         \item spezielle Halteproblem: $K=\{w\in L_{TM}\mid M_w \text{ angesetzt auf w hält}\}$
         \item Halteproblem auf leerem Band: $H_0=\{w\in L_{TM} \mid M_w\text{ hält angesetzt auf ein leeres Band}\}$
-        \item allgemeine Wortproblem:  $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$
         \item Posts Korrespondenzproblem: PCP ist die Menge der Korrespondenzsysteme (endliche Folge von Paaren), die eine Lösung besitzen
         \item Schnittproblem: $\{(G_1, G_2) \mid G_1,G_2\text{ kontextfreie Grammatiken }, L(G_1)\cap L(G_2)=\varnothing\}$
         \item Regularitätsproblem für PDA: $Reg_{PDA}=\{P\mid P\ PDA\text{ mit } L(P) \text{ regulär}\}$
@@ -888,7 +883,7 @@
 
       Travelling Salesman Problem
       \begin{itemize}
-        \item eine $n\times n$-Matrix $M=(M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
+        \item Eingabe: eine $n\times n$-Matrix $M=(M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
         \item FRAGE: Gibt es eine Tour durch alle Städte, die maximal die Länge $d$ hat?
       \end{itemize}
 

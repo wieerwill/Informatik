@@ -20,6 +20,8 @@
 \usepackage{hyperref}
 \usepackage{pgfplots}
 \usepackage{bussproofs}
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
 \renewcommand{\solutiontitle}{\noindent\textbf{Antwort}: }
 \SolutionEmphasis{\small}
 \geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
@@ -90,16 +92,98 @@
   Aufgaben aus dieser Vorlage stammen aus der Vorlesung \textit{Grundlagen und diskrete Strukturen} und wurden zu Übungszwecken verändert oder anders formuliert! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
 \end{myboxii}
 
+Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschriebenes A4-Blatt mit Formeln und Ergebnissen aus der Vorlesung.
+
 %##########################################
 \begin{questions}
-  \question ...
+  \question
   \begin{parts}
-    \part ...
+    \part Untersuche, welche der folgenden aussagenlogischen Ausdrücke logisch äquivalent sind. Begründe die Entscheidung.\\\begin{center}
+      $\varphi=p\rightarrow (q\wedge\overline{r})$, $\psi=(p\rightarrow q)\wedge(r\rightarrow\overline{p})$, $y=(\overline{p}\vee q)\leftrightarrow r$ \end{center}
     \begin{solution}
-      ...
     \end{solution}
 
+    \part Negiere die Aussage: $\forall S\in\mathbb{R}\exists m\in\mathbb{N} \forall n\in\mathbb{N}: n>m\Rightarrow a_n>S$
+    \begin{solution}
+    \end{solution}
+
+    \part Negiere die Aussage: ,,In jeder GudS-Klausur gibt es mindestens eine Aufgabe, die von niemandem richtig gelöst wird''
+    \begin{solution}
+    \end{solution}
   \end{parts}
 
+  \question Es seien $f,g:\mathbb{N}\rightarrow\mathbb{N}$ zwei Funktionen. Auf der Menge $\mathbb{N}$ der natürlichen Zahlen wird wie folgt eine Relation definiert: $a \sim b \leftrightarrow f(a)-f(b)=g(a)-g(b)$. Weise nach, dass $\sim$ eine Äquivalenzrelation ist. Für den konkreten Fall $f(x)=x^2+1$ und $g(x)=2x$ bestimme man die Äquivalenzklasse $[2]_{\backslash\sim}$
+  \begin{solution}
+  \end{solution}
+
+  \question
+  \begin{parts}
+    \part Bestimme mit Hilfe des euklidischen Algorithmus ganze Zahlen $a,b$, für die gilt $1=a*100+b*23$
+    \begin{solution}
+    \end{solution}
+
+    \part Untersuche, ob es ein multiplikativ inverses Element zu $\overline{23}$ in $\mathbb{Z}_{100}$ gibt und bestimme dieses gegebenfalls. Gebe außerdem ein nicht invertierbares Element außer $\overline{0}$ in $\mathbb{Z}_{100}$ an.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Gegeben sei die Menge $G=\{ \begin{pmatrix} 1&a&b\\0&1&c\\0&0&1 \end{pmatrix} \in\mathbb{R}^{(3,3)}\mid a,b,c\in\mathbb{R}\}$. Zeige, dass $G$ eine Gruppe bezüglich der Matrizenmultiplikation ist. Rechengesetze der Matrizenmultiplikation dürfen vorausgesetzt werden. Ist die Gruppe kommutativ? (ohne Beweis)
+  \begin{solution}
+  \end{solution}
+
+  \question Markus ist politikinteressiert und möchte gerne Bundeskanzler werden. Er überlegt aber noch welcher Partei er beitritt. Er hat zwei Parteien $A$ und $B$, die ihm gefallen, könnte aber auch eine eigene Partei $C$ gründen. Die Chancen bei den nächsten Wahlen als Spitzenkandidat aufgestellt zu werden schätzt er auf $10\%$ bei Partei $A$, auf $20\%$ bei Partei $B$ und $100\%$ bei Partei $C$. Die Chance, dass die jeweilige Partei mit ihm an der Spitze die Wahl gewinnt liegt bei $60\%$, $45\%$ bzw. $2\%$.
+  \begin{parts}
+    \part Für welche Partei sollte er sich entscheiden, um mit maximaler Wahrscheinlichkeit Bundeskanzler zu werden?
+    \begin{solution}
+
+    \end{solution}
+
+    \part Markus lässt die Würfel entscheiden. Bei $1$ tritt er Partei $A$ bei, bei $2$ oder $3$ Partei $B$ und bei $4,5$ oder $6$ gründet er Partei $C$. Markus wird tatsächlich Bundeskanzler. Mit welcher Wahrscheinlichkeit hat er dann Partei $C$ gegründet.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Gegeben sei folgender Graph: 
+  \begin{center}
+    \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+      \node (A) [state] {A};
+      \node (B) [state, left = of A] {B};
+      \node (C) [state, above left = of A] {C};
+      \node (D) [state, above right = of A] {D};
+      \node (E) [state, below left = of A] {E};
+      \node (F) [state, above = of A] {F};
+      \node (G) [state, below right = of A] {G};
+      \node (H) [state, right = of A] {H};
+      \node (I) [state, below = of A] {I};
+
+      \path [thick]
+      (A) edge (F)
+      (A) edge (D)
+      (A) edge (H)
+      (A) edge (G)
+      (A) edge (C)
+      (B) edge (C)
+      (B) edge (E)
+      (C) edge (F)
+      (C) edge (E)
+      (D) edge (H)
+      (E) edge (I)
+      (G) edge (I)
+      ;
+    \end{tikzpicture}
+  \end{center}
+  \begin{parts}
+    \part Gebe einen Tiefensuchbaum mit Startecke $A$ für den Graphen an.
+    \begin{solution}
+    \end{solution}
+
+    \part Gebe einen Breitensuchbaum mit Startecke $A$ für den Graphen an.
+    \begin{solution}
+    \end{solution}
+
+    \part Zeige, dass für jede natürliche Zahl $k\leq 1$ gilt: Jeder Baum, der eine Ecke vom Grad $k$ enthält, hat mindestens $k$ Blätter.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
 \end{questions}
 \end{document}

@@ -101,14 +101,55 @@ Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschrie
     \part Untersuche, welche der folgenden aussagenlogischen Ausdrücke logisch äquivalent sind. Begründe die Entscheidung.\\\begin{center}
       $\varphi=p\rightarrow (q\wedge\overline{r})$, $\psi=(p\rightarrow q)\wedge(r\rightarrow\overline{p})$, $y=(\overline{p}\vee q)\leftrightarrow r$ \end{center}
     \begin{solution}
+
+      $\varphi=p\rightarrow (q\wedge\overline{r})$
+      \begin{tabular}{c|c|c|c|c}
+        $p$ & $q$ & $r$ & $q\wedge\overline{r}$ & $p\rightarrow(q\wedge\overline{r})$ \\\hline
+        0   & 0   & 0   & 0                     & 1                                   \\
+        0   & 0   & 1   & 0                     & 1                                   \\
+        0   & 1   & 0   & 1                     & 1                                   \\
+        0   & 1   & 1   & 0                     & 1                                   \\
+        1   & 0   & 0   & 0                     & 0                                   \\
+        1   & 0   & 1   & 1                     & 1                                   \\
+        1   & 1   & 0   & 1                     & 1                                   \\
+        1   & 1   & 1   & 0                     & 0
+      \end{tabular}
+
+      $\psi=(p\rightarrow q)\wedge(r\rightarrow\overline{p})$
+      \begin{tabular}{c|c|c|c|c|c}
+        $p$ & $q$ & $r$ & $p\rightarrow q$ & $r\rightarrow\overline{p}$ & $(p\rightarrow q)\wedge(r\rightarrow\overline{p})$ \\\hline
+        0   & 0   & 0   & 1                & 1                          & 1                                                  \\
+        0   & 0   & 1   & 1                & 0                          & 0                                                  \\
+        0   & 1   & 0   & 1                & 1                          & 1                                                  \\
+        0   & 1   & 1   & 1                & 0                          & 0                                                  \\
+        1   & 0   & 0   & 0                & 1                          & 0                                                  \\
+        1   & 0   & 1   & 0                & 1                          & 0                                                  \\
+        1   & 1   & 0   & 1                & 0                          & 0                                                  \\
+        1   & 1   & 1   & 1                & 1                          & 1
+      \end{tabular}
+
+      $y=(\overline{p}\vee q)\leftrightarrow r$
+      \begin{tabular}{c|c|c|c|c}
+        $p$ & $q$ & $r$ & $\overline{p}\vee q$ & $(\overline{p}\vee q)\leftrightarrow r$ \\\hline
+        0   & 0   & 0   & 0                    & 1                                       \\
+        0   & 0   & 1   & 0                    & 0                                       \\
+        0   & 1   & 0   & 1                    & 0                                       \\
+        0   & 1   & 1   & 1                    & 1                                       \\
+        1   & 0   & 0   & 0                    & 1                                       \\
+        1   & 0   & 1   & 0                    & 0                                       \\
+        1   & 1   & 0   & 0                    & 1                                       \\
+        1   & 1   & 1   & 0                    & 0
+      \end{tabular}
     \end{solution}
 
     \part Negiere die Aussage: $\forall S\in\mathbb{R}\exists m\in\mathbb{N} \forall n\in\mathbb{N}: n>m\Rightarrow a_n>S$
     \begin{solution}
+      $\exists S\in\mathbb{R}\exists m\in\mathbb{N} \forall n\in\mathbb{N}: n>m\Rightarrow a_n < S$
     \end{solution}
 
     \part Negiere die Aussage: ,,In jeder GudS-Klausur gibt es mindestens eine Aufgabe, die von niemandem richtig gelöst wird''
     \begin{solution}
+      ,,Es gibt eine GudS-Klausur in der jemand jede Aufgabe richtig löst.''
     \end{solution}
   \end{parts}
 
@@ -120,6 +161,34 @@ Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschrie
   \begin{parts}
     \part Bestimme mit Hilfe des euklidischen Algorithmus ganze Zahlen $a,b$, für die gilt $1=a*100+b*23$
     \begin{solution}
+      $ggT(a,b)= a*x+b*y$
+
+      $\downarrow$: $b_i\rightarrow a_{i+1}$, $r_i\rightarrow b_{i+1}$
+
+      $\uparrow$: $x_i=y_{i+1}$, $y_i=x_{i+1}-q_i*y_{i+1}$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c|c}
+        i & a   & b  & q (Teiler) & r(est) & x  & y   & Nebenrechnung $\downarrow$ & Nebenrechnung $\uparrow$          \\\hline
+        1 & 100 & 23 & 4          & 8      & 3  & -13 & $100-23*4 = 8$             & $100*3 + 23*(-1-4*3)= 300-299= 1$ \\
+        2 & 23  & 8  & 2          & 7      & -1 & 3   & $23-2*8=7$                 & $23*-1 + 8*(1-2*(-1))=1$          \\
+        3 & 8   & 7  & 1          & 1      & 1  & -1  & $8-1+7=1$                  & $8*1 + 7*(0-1*1)=1$               \\
+        4 & 7   & 1  & 7          & 0      & 0  & 1   & $7-7*1=0$                  & $7*0+1*1 = 1$
+      \end{tabular}
+
+      Lösung: $a=3$, $b=-13$
+    \end{solution}
+
+    \part Bestimme mit Hilfe des euklidischen Algorithmus ganze Zahlen $a,b$, für die gilt $1=a*23+b*17$
+    \begin{solution}
+      \begin{tabular}{c|c|c|c|c|c|c}
+        i & a  & b  & q & r & x  & y           \\\hline
+        1 & 23 & 17 & 1 & 6 & 3  & $-1-1*3=-4$ \\
+        2 & 17 & 6  & 2 & 5 & -1 & $1-2*-1=3$  \\
+        3 & 6  & 5  & 1 & 1 & 1  & $0-1*1=-1$  \\
+        4 & 5  & 1  & 5 & 0 & 0  & 1
+      \end{tabular}
+
+      Lösung: $1=-3*23 -4*17 = 69-68 = 1$
     \end{solution}
 
     \part Untersuche, ob es ein multiplikativ inverses Element zu $\overline{23}$ in $\mathbb{Z}_{100}$ gibt und bestimme dieses gegebenfalls. Gebe außerdem ein nicht invertierbares Element außer $\overline{0}$ in $\mathbb{Z}_{100}$ an.
@@ -143,7 +212,7 @@ Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschrie
     \end{solution}
   \end{parts}
 
-  \question Gegeben sei folgender Graph: 
+  \question Gegeben sei folgender Graph:
   \begin{center}
     \begin{tikzpicture}[node distance = 3cm, on grid, auto]
       \node (A) [state] {A};

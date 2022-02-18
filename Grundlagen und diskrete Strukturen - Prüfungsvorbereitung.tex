@@ -193,6 +193,23 @@ Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschrie
 
     \part Untersuche, ob es ein multiplikativ inverses Element zu $\overline{23}$ in $\mathbb{Z}_{100}$ gibt und bestimme dieses gegebenfalls. Gebe außerdem ein nicht invertierbares Element außer $\overline{0}$ in $\mathbb{Z}_{100}$ an.
     \begin{solution}
+      multiplikativ inverses: $a^{-1}*a=1$
+
+      die multiplikative Gruppe $\mathbb{Z}_n$ besteht aus den Elementen von $\mathbb{Z}_n$ die teilerfremd zu $n$ sind. Für jedes $a\in\mathbb{Z}_n^*$ gilt $ggt(a,n)=1$ und lässt sich als $1=a*x + n*y$ darstellen $\quad\Rightarrow\quad a^{-1} \equiv y(mod\ n)$
+
+      \begin{tabular}{c|c|c|c|c|c|c}
+        i & a   & b  & q & r & x  & y   \\\hline
+        1 & 100 & 23 & 4 & 8 & 3  & -13 \\
+        2 & 23  & 8  & 2 & 7 & -1 & 3   \\
+        3 & 8   & 7  & 1 & 1 & 1  & -1  \\
+        4 & 7   & 1  & 7 & 0 & 0  & 1
+      \end{tabular}
+
+      $1=100 * 3 - 23 * 13 \Rightarrow \overline{23}= -13 (mod\ 100)$
+
+      Alternativ: $a^{-1}*a=1 \rightarrow a^{-1}=1\backslash a \Rightarrow a^{-1}=\frac{1}{23}$
+
+
     \end{solution}
   \end{parts}
 
@@ -244,10 +261,58 @@ Erlaubte Hilfsmittel: eine math. Formelsammlung/Nachschlagwerk, ein handbeschrie
   \begin{parts}
     \part Gebe einen Tiefensuchbaum mit Startecke $A$ für den Graphen an.
     \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 1.5cm, on grid, auto]
+          \node (A) [state] {A};
+          \node (C) [state, below left = of A] {C};
+          \node (D) [state, below right = of A] {D};
+          \node (H) [state, below = of D] {H};
+          \node (B) [state, below left= of C] {B};
+          \node (E) [state, below = of B] {E};
+          \node (I) [state, below = of E] {I};
+          \node (G) [state, below = of I] {G};
+          \node (F) [state, below right = of C] {F};
+
+          \path [thick]
+          (A) edge (D)
+          (A) edge (C)
+          (B) edge (C)
+          (B) edge (E)
+          (C) edge (F)
+          (D) edge (H)
+          (E) edge (I)
+          (G) edge (I)
+          ;
+        \end{tikzpicture}
+      \end{center}
     \end{solution}
 
     \part Gebe einen Breitensuchbaum mit Startecke $A$ für den Graphen an.
     \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 1cm, on grid, auto]
+          \node (A) [state] {A};
+          \node (C) [state, below left = 2cm and 3cm of A] {C};
+          \node (D) [state, below right = 2cm and 2cm of A] {D};
+          \node (F) [state, below left = 2cm and 2cm of A] {F};
+          \node (G) [state, below left= 2cm and 1cm of A] {G};
+          \node (H) [state, below right = 2cm and 1cm of A] {H};
+          \node (B) [state, below left = 1cm and 1cm of C] {B};
+          \node (E) [state, below right= 1cm and 1cm of C] {E};
+          \node (I) [state, below = of G] {I};
+
+          \path [thick]
+          (A) edge (F)
+          (A) edge (D)
+          (A) edge (H)
+          (A) edge (G)
+          (A) edge (C)
+          (C) edge (B)
+          (C) edge (E)
+          (G) edge (I)
+          ;
+        \end{tikzpicture}
+      \end{center}
     \end{solution}
 
     \part Zeige, dass für jede natürliche Zahl $k\leq 1$ gilt: Jeder Baum, der eine Ecke vom Grad $k$ enthält, hat mindestens $k$ Blätter.

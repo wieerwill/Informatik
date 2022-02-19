@@ -122,239 +122,92 @@
 
 \raggedright
 \begin{multicols}{3}\scriptsize % multicol parameters % These lengths are set only within the two main columns %\setlength{\columnseprule}{0.25pt} \setlength{\premulticols}{1pt} \setlength{\postmulticols}{1pt} \setlength{\multicolsep}{1pt} \setlength{\columnsep}{2pt} 
-    \section{Einführung}
-    Betriebssysteme stecken nicht nur in Einzelplatzrechnern, sondern z.B. auch in:
 
+    \subsection{Funktionale und nichtfunktionale Eigenschaften}
     \begin{itemize*}
-        \item Informationssystemen
+        \item Anforderungen (Requirements): Funktionale und nichtfunktionale Eigenschaften (eines Produkts, z.B. Softwaresystems) entstehen durch Erfüllung von funktionalen und nichtfunktionalen Anforderungen
+        \item funktionale Eigenschaft: was ein Produkt tun soll
+        \item nichtfunktionale Eigenschaft (NFE): wie ein Produkt dies tun soll
+        \item andere Bezeichnungen nichtfunktionaler Eigenschaften
         \begin{itemize*}
-            \item Gesundheitswesen
-            \item Finanzdienstleister
+            \item Qualitäten bzw. Qualitätsattribute (eines Software-Produkts)
+            \item Non-functional requirements/properties
+            \item Constraints
+            \item Quality of service(QoS) requirements
         \end{itemize*}
-        \item
-        Verkehrsmanagement-Systemen
-        \begin{itemize*}
-            \item Eisenbahn
-            \item Flugwesen
-        \end{itemize*}
-        \item
-        Kommunikationssystemen
-        \begin{itemize*}
-            \item Mobilfunk
-            \item Raumfahrt
-        \end{itemize*}
-        \item
-        eingebettetenSystemen
-        \begin{itemize*}
-            \item Multimedia
-            \item Fahrzeugsysteme
-            \item Sensornetze
-        \end{itemize*}
-        \item
-        ... $\rightarrow$  verschiedenste Anforderungen!
+        \item im Englischen: nichtfunktionale Eigenschaften eines Systems etc. informell auch als seine ,,ilities'' bezeichnet
+        \item im Deutschen: (,,itäten'', ,,barkeiten'', ... möglich)
     \end{itemize*}
-
-    Konsequenz: Spezialbetriebssysteme für Anforderungen wie ...
-
-    \begin{itemize*}
-        \item
-        Robustheit
-        \item
-        Echtzeitfähigkeit
-        \item
-        Energieeffizienz
-        \item
-        Sicherheit
-        \item
-        Adaptivität
-        \item
-        ...
-    \end{itemize*}
-
-    Gegenstand dieser Vorlesung: Konstruktionsrichtlinien für solche
-    ,,High-End Betriebssysteme''
-
-
-    \subsection{Funktionale und nichtfunktionale
-        Eigenschaften}
-
-    \begin{itemize*}
-        \item
-        Beispiel: Autokauf ,,Mit unserem Fahrzeug können Sie einkaufen
-        fahren!''
-        \item
-        Beispiel: Handykauf ,,Mit unserem Telefon können Sie Ihre Freunde und
-        Familie anrufen!''
-        \item
-        Anforderungen (Requirements)
-        \begin{itemize*}
-            \item Funktionale und nichtfunktionale Eigenschaften (eines Produkts, z.B. Softwaresystems) entstehen durch Erfüllung von funktionalen und nichtfunktionalen Anforderungen
-        \end{itemize*}
-        \item
-        funktionale Eigenschaft
-        \begin{itemize*}
-            \item legt fest, was ein Produkt tun soll.
-            \item Bsp Handykauf: Das Produkt soll Telefongespräche ermöglichen.
-        \end{itemize*}
-        \item
-        eine nichtfunktionale Eigenschaft (NFE)
-        \begin{itemize*}
-            \item legt fest, wie es dies tun soll, also welche sonstigen Eigenschaften das Produkt haben soll.
-            \item Bsp Handykauf: Das Produkt soll klein, leicht, energiesparend, strahlungsarm, umweltfreundlich,... sein.
-        \end{itemize*}
-        \item
-        andere Bezeichnungen nichtfunktionaler Eigenschaften
-        \begin{itemize*}
-            \item Qualitäten bzw. Qualitätsattribute (eines Software-Produkts): \begin{itemize*} \item   Nichtfunktionale Anforderungen bzw. Eigenschaften eines   Software-Systems bzw. -Produkts oft auch als seine Qualitäten   bezeichnet. \item   einzelne realisierte Eigenschaft ist demzufolge ein   Qualitätsattribut (quality property) dieses Systems bzw. Produkts. \end{itemize*}
-            \item Weitere in der Literatur zu findende Begriffe in diesem Zusammenhang: \begin{itemize*} \item   Non-functionalrequirements/properties \item   Constraints \item   Quality ofservice(QoS) requirements \item   u.a. \end{itemize*}
-        \end{itemize*}
-        \item
-        ,,\textasciitilde ilities''
-        \begin{itemize*}
-            \item im Englischen: nichtfunktionale Eigenschaften eines Systems etc. informell auch als seine ,,ilities'' bezeichnet, hergeleitet von Begriffen wie \begin{itemize*} \item   Stability \item   Portability \item   ... \end{itemize*}
-            \item im Deutschen: ( ,,itäten'',,,barkeiten'', ... möglich aber sprachästhetisch fragenswert) \begin{itemize*} \item   Portab-ilität , Skalier-barkeit, aber: Offen-heit , Performanz,   ... \end{itemize*}
-        \end{itemize*}
-    \end{itemize*}
-
-
-    \subsection{Konsequenzen für
-        Betriebssysteme}
-
 
     \subsubsection{Hardwarebasis}
-
-    Einst: Einprozessor-Systeme
-
-    Heute:
-
     \begin{itemize*}
-        \item
-        Mehrprozessor-Systeme
-        \item
-        hochparallele Systeme
-        \item
-        neue Synchronisationsmechanismen erforderlich
-        \item
-        $\rightarrow$  unterschiedliche Hardware und deren
-        Multiplexing aufgrund unterschiedlicher nichtfunktionaler
-        Eigenschaften
+        \item Einst: Einprozessor-Systeme
+        \item Heute: Mehrprozessor-/hochparallele Systeme
+        \item neue Synchronisationsmechanismen erforderlich
+        \item $\rightarrow$ unterschiedliche Hardware und deren Multiplexing aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
     \end{itemize*}
 
-
     \subsubsection{Betriebssystemarchitektur}
-
-    Einst: Monolithische und Makrokernel-Architekturen
-
-    Heute:
-
     \begin{itemize*}
-        \item
-        Mikrokernel(-basierte) Architekturen
-        \item
-        Exokernelbasierte Architekturen ( Library-Betriebssysteme )
-        \item
-        Virtualisierungsarchitekturen
-        \item
-        Multikernel-Architekturen
-        \item
-        $\rightarrow$  unterschiedliche Architekturen aufgrund
+        \item Einst: Monolithische und Makrokernel-Architekturen
+        \item Heute: Mikrokernel(-basierte) Architekturen
+        \item Exokernelbasierte Architekturen ( Library-Betriebssysteme )
+        \item Virtualisierungsarchitekturen
+        \item Multikernel-Architekturen
+        \item $\rightarrow$ unterschiedliche Architekturen aufgrund
         unterschiedlicher nichtfunktionaler Eigenschaften
     \end{itemize*}
 
-
     \subsubsection{Ressourcenverwaltung}
-
-    Einst: sog. Batch-Betriebssysteme: Stapelverarbeitung von Jobs (FIFO,
-    Zeitgarantie: irgendwann)
-
-    Heute:
-
     \begin{itemize*}
-        \item
-        Echtzeitgarantien für Multimedia und Safety-kritische Anwendungen
-        (Unterhaltung, Luft-und Raumfahrt, autonomes Fahren)
-        \item
-        echtzeitfähige Scheduler, Hauptspeicherverwaltung, Ereignismanagement,
-        Umgangmit Überlast und Prioritätsumkehr ...
-        \item
-        $\rightarrow$  unterschiedliche Ressourcenverwaltung
-        aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item Einst: Batch-Betriebssysteme, Stapelverarbeitung von Jobs (FIFO)
+        \item Heute: Echtzeitgarantien für Multimedia und Safety-kritische Anwendungen
+        \item echtzeitfähige Scheduler, Hauptspeicherverwaltung, Ereignismanagement, Umgang mit Überlast und Prioritätsumkehr ...
+        \item $\rightarrow$ unterschiedliche Ressourcenverwaltung aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
     \end{itemize*}
-
 
     \subsubsection{Betriebssystemabstraktionen}
-
     \begin{itemize*}
-        \item
-        zusätzliche Abstraktionen und deren Verwaltung ...
+        \item zusätzliche Abstraktionen und deren Verwaltung zur ...
         \begin{itemize*}
-            \item ... zur Reservierung von Ressourcen (\$\textbackslash rightarrow\$ eingebettete Systeme)
-            \item ... zur Realisierung von QoS-Anforderungen (\$\textbackslash rightarrow\$ Multimediasysteme)
-            \item ... zur Erhöhung der Ausfallsicherheit (\$\textbackslash rightarrow\$ verfügbarkeitskritische Systeme)
-            \item ... zum Schutz vor Angriffen und Missbrauch (\$\textbackslash rightarrow\$ sicherheitskritische Systeme)
-            \item ... zum flexiblen und modularen Anpassen des Betriebssystems (\$\textbackslash rightarrow\$ hochadaptive Systeme)
+            \item Reservierung von Ressourcen ( $\rightarrow$ eingebettete Systeme)
+            \item Realisierung von QoS-Anforderungen ( $\rightarrow$ Multimediasysteme)
+            \item Erhöhung der Ausfallsicherheit ( $\rightarrow$ verfügbarkeitskritische Systeme)
+            \item Schutz vor Angriffen und Missbrauch ( $\rightarrow$ sicherheitskritische Systeme)
+            \item flexiblen und modularen Anpassen des Betriebssystems ( $\rightarrow$ hochadaptive Systeme)
         \end{itemize*}
-        \item
-        $\rightarrow$  höchst diverse Abstraktionen von
-        Hardware aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item $\rightarrow$ höchst diverse Abstraktionen von Hardware aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
     \end{itemize*}
 
-
-    \subsubsection{Betriebssysteme als
-        Softwareprodukte}
-
+    \subsubsection{Betriebssysteme als Softwareprodukte}
     \begin{itemize*}
-        \item
-        Betriebssystem:
+        \item Betriebssystem:
         \begin{itemize*}
-            \item eine endliche Menge von Quellcode, indiziert durch Zeilennummern: MACOSX = \$\{0, 1, 2, ..., 4399822, ...\}\$
-            \item ein komplexes Softwareprodukt ...welches insbesondere allgemeinen Qualitätsanforderungen an den Lebenszyklusvon Softwareprodukten unterliegt!
+            \item eine endliche Menge von Quellcode
+            \item ein komplexes Softwareprodukt
         \end{itemize*}
-        \item
-        an jedes Softwareprodukt gibt es Anforderungen an seine Nutzung und
-        Pflege $\rightarrow$  Evolutionseigenschaften
-        \item
-        diese können für Betriebssysteme höchst speziell sein
-        (Korrektheitsverifikation, Wartung, Erweiterung, ...)
-        \item
-        $\rightarrow$  spezielle Anforderungen an das
-        Softwareprodukt Betriebssystem aufgrund unterschiedlicher
-        nichtfunktionaler Eigenschaften
+        \item Anforderungen an Nutzung und Pflege $\rightarrow$ Evolutionseigenschaften
+        \item können für Betriebssysteme höchst speziell sein (Korrektheitsverifikation, Wartung, Erweiterung, ...)
+        \item $\rightarrow$ spezielle Anforderungen an das Softwareprodukt Betriebssystem aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
     \end{itemize*}
-
 
     \subsection{NFE von Betriebssystemen}
-
-    Funktionale Eigenschaften (= Funktionen, Aufgaben) ... von
-    Betriebssystemen:
-
+    Funktionale Eigenschaften (= Funktionen, Aufgaben) ...
     \begin{itemize*}
-        \item
-        Betriebssysteme: sehr komplexe Softwareprodukte
-        \item
-        Ein Grund hierfür: besitzen Reihe von differenzierten Aufgaben - also
-        funktionale Eigenschaften
+        \item Betriebssysteme: sehr komplexe Softwareprodukte
+        \item Ein Grund hierfür: besitzen Reihe von differenzierten Aufgaben - also funktionale Eigenschaften
     \end{itemize*}
 
     Grundlegende funktionale Eigenschaften von Betriebssystemen:
-
     \begin{enumerate*}
-        \item
-        \textbf{Hardware-Abstraktion} (Anwendungen/Programmierern eine
-        angenehme Ablaufumgebung auf Basis der Hardware bereitstellen)
-        \item
-        \textbf{Hardware-Multiplexing} (gemeinsame Ablaufumgebung zeitlich
-        oder logisch getrennt einzelnen Anwendungen zuteilen)
-        \item
-        \textbf{Hardware-Schutz} (gemeinsame Ablaufumgebung gegen Fehler und
-        Manipulation durch Anwendungen schützen)
+        \item \textbf{Hardware-Abstraktion} (Anwendungen/Programmierern eine angenehme Ablaufumgebung auf Basis der Hardware bereitstellen)
+        \item \textbf{Hardware-Multiplexing} (gemeinsame Ablaufumgebung zeitlich oder logisch getrennt einzelnen Anwendungen zuteilen)
+        \item \textbf{Hardware-Schutz} (gemeinsame Ablaufumgebung gegen Fehler und Manipulation durch Anwendungen schützen)
     \end{enumerate*}
 
     Nichtfunktionale Eigenschaften (Auswahl) von Betriebssystemen:
-
     \begin{itemize*}
-        \item
-        Laufzeiteigenschaften
+        \item Laufzeiteigenschaften
         \begin{itemize*}
             \item Sparsamkeit und Effizienz
             \item Robustheit
@@ -364,8 +217,7 @@
             \item Adaptivität
             \item Performanz
         \end{itemize*}
-        \item
-        Evolutionseigenschaften
+        \item Evolutionseigenschaften
         \begin{itemize*}
             \item Wartbarkeit
             \item Portierbarkeit
@@ -375,72 +227,42 @@
     \end{itemize*}
 
     Klassifizierung: Nichtfunktionale Eigenschaften unterteilbar in:
-
     \begin{enumerate*}
-        \item
-        Laufzeiteigenschaften (execution qualities)
+        \item Laufzeiteigenschaften (execution qualities)
         \begin{itemize*}
             \item zur Laufzeit eines Systems beobachtbar
             \item Beispiele: ,,security'' (Sicherheit), ,,usability'' (Benutzbarkeit), ,,performance'' (Performanz), ...
         \end{itemize*}
-        \item
-        Evolutionseigenschaften (evolution qualities)
+        \item Evolutionseigenschaften (evolution qualities)
         \begin{itemize*}
             \item charakterisieren (Weiter-) Entwicklung- und Betrieb eines Systems
             \item Beispiele: ,,testability'' (Testbarkeit), ,,extensibility'' (Erweiterbarkeit) usw.
         \end{itemize*}
+        \item liegen in statischer Struktur eines Softwaresystems begründet
     \end{enumerate*}
 
-    \begin{itemize*}
-        \item
-        liegen in statischer Struktur eines Softwaresystems begründet
-    \end{itemize*}
-
-
     \subsection{Inhalte der Vorlesung}
-
     Auswahl sehr häufiger NFE von Betriebssystemen:
-
     \begin{itemize*}
-        \item
-        Sparsamkeit und Effizienz
-        \item
-        Robustheit
-        \item
-        Verfügbarkeit
-        \item
-        Sicherheit (Security)
-        \item
-        Echtzeitfähigkeit
-        \item
-        Adaptivität
-        \item
-        Performanz
+        \item Sparsamkeit und Effizienz
+        \item Robustheit
+        \item Verfügbarkeit
+        \item Sicherheit (Security)
+        \item Echtzeitfähigkeit
+        \item Adaptivität
+        \item Performanz
     \end{itemize*}
 
-    Diskussion jeder Eigenschaft: (Bsp.: Echtzeitfähigkeit)
-
+    Diskussion jeder Eigenschaft
     \begin{itemize*}
-        \item
-        Motivation, Anwendungsgebiete, Begriffsdefinition(en) (Bsp.:
-        Multimedia- und eingebettete Systeme)
-        \item
-        Mechanismen und Abstraktionen des Betriebssystems (Bsp.: Fristen,
-        Deadline-Scheduler)
-        \item
-        unterstützende Betriebssystem-Architekturkonzepte (Bsp.: Mikrokernel)
-        \item
-        ein typisches Beispiel-Betriebssystem (Bsp.: QNX)
-        \item
-        Literaturliste
+        \item Motivation, Anwendungsgebiete, Begriffsdefinition
+        \item Mechanismen und Abstraktionen des Betriebssystems
+        \item unterstützende Betriebssystem-Architekturkonzepte
+        \item ein typisches Beispiel-Betriebssystem
     \end{itemize*}
-
 
     \section{Sparsamkeit und Effizienz}
-
-
     \subsection{Motivation}
-
     Sparsamkeit (Arbeitsdefinition): Die Eigenschaft eines Systems, seine
     Funktion mit minimalem Ressourcenverbrauchauszuüben.
 
@@ -599,7 +421,7 @@
     \begin{itemize*}
         \item
         Aufgabe: Erzeugen kurzer, intensiver Zugriffsmuster
-        $\rightarrow$  lange Inaktivitätsintervalle (für alle
+        $\rightarrow$ lange Inaktivitätsintervalle (für alle
         Geräte mit geringem Energieverbrauch im Ruhezustand)
         \item
         Beobachtung bei HDD-Geräten: i.A. vier Zustände mit absteigendem
@@ -641,7 +463,7 @@
         \end{itemize*}
         \item
         Folge: Inaktivitätsintervalle überwiegend sehr kurz
-        $\rightarrow$  Energieeffizienz ...?
+        $\rightarrow$ Energieeffizienz ...?
         \item
         Zugriffsoperation: (durch Anwendung)
         \begin{itemize*}
@@ -652,7 +474,7 @@
         \begin{itemize*}
             \item fetch(x) ... hole Block x nach einem access(x) von Festplatte
             \item prefetch(x) ... hole Block x ohne access(x) von Festplatte
-            \item beide Operationen schreiben x in einen freien Platz des Festplattencaches; falls dieser voll ist ersetzen sie einen der Einträge gemäß fester Regeln $\rightarrow$  Teil der (Pre-) Fetching-Strategie
+            \item beide Operationen schreiben x in einen freien Platz des Festplattencaches; falls dieser voll ist ersetzen sie einen der Einträge gemäß fester Regeln $\rightarrow$ Teil der (Pre-) Fetching-Strategie
         \end{itemize*}
         \item
         Beispiel für solche Strategien: Anwendung ...
@@ -667,16 +489,16 @@
         \begin{itemize*}
             \item Fetch-on-demand-Strategie (kein vorausschauendes Lesen)
             \item Strategie entsprechend Prefetching- Regeln nach Cao et al. {[}CFKL95{]} (= traditionelle Disk-Prefetching- Strategie)
-            \item traditionelle Prefetching-Strategie: bestimmt \begin{itemize*} \item   wann ein Datenblock von der Platte zu holen ist (HW-Zustand aktiv   ) \item   welcher Block zu holen ist \item   welcher Block zu ersetzen ist \end{itemize*}
-            \item Regeln für diese Strategie: \begin{enumerate*}  \item   Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten   Block im Referenzstrom in den Cache bringen, der noch nicht dort   ist. \item   Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte   der Block überschrieben werden, der am spätesten in der Zukunft   wieder benötigt wird. \item   ,,Richte keinen Schaden an'': Überschreibe niemals Block A um   Block B zu holen, wenn A vor B benötigt wird. \item   Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus,   wenn dieses schon vorher hätte ausgeführt werden können. \end{enumerate*}
+            \item traditionelle Prefetching-Strategie: bestimmt \begin{itemize*} \item wann ein Datenblock von der Platte zu holen ist (HW-Zustand aktiv ) \item welcher Block zu holen ist \item welcher Block zu ersetzen ist \end{itemize*}
+            \item Regeln für diese Strategie: \begin{enumerate*} \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist. \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird. \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird. \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können. \end{enumerate*}
         \end{itemize*}
         \item
         Energieeffizientes Prefetching
         \begin{itemize*}
             \item Optimale Ersetzungsstrategie und 3 unterschiedliche Prefetching-Strategien:
-            \item Fetch-on-demand-Strategie: \begin{itemize*} \item   Laufzeit: 66 ZE für access(A) ... access(F) , 7 Cache-Misses \item   Disk-Idle-Zeit: 6 Intervalle zu je 10 ZE \end{itemize*}
-            \item Strategie entsprechend Prefetching-Regeln {[}CFKL95{]} (traditionelle Disk-Prefetching-Strategie): \begin{itemize*} \item   Laufzeit: 61 ZE für access(A) ... access(F) , 1 Cache-Miss \item   Disk-Idle-Zeit: 5 Intervalle zu je 9 ZE und 1 Intervall zu 8 ZE (=   53 ZE) \end{itemize*}
-            \item Energieeffiziente Prefetching-Strategie, die versucht Länge der Disk-Idle-Intervalle zu maximieren: \begin{itemize*} \item   gleiche Laufzeit und gleiche Anzahl Cache-Misses wie   traditionelles Prefetching \item   Disk-Idle-Zeit: 2 Intervalle zu 27 bzw. 28 ZE (= 55 ZE) \end{itemize*}
+            \item Fetch-on-demand-Strategie: \begin{itemize*} \item Laufzeit: 66 ZE für access(A) ... access(F) , 7 Cache-Misses \item Disk-Idle-Zeit: 6 Intervalle zu je 10 ZE \end{itemize*}
+            \item Strategie entsprechend Prefetching-Regeln {[}CFKL95{]} (traditionelle Disk-Prefetching-Strategie): \begin{itemize*} \item Laufzeit: 61 ZE für access(A) ... access(F) , 1 Cache-Miss \item Disk-Idle-Zeit: 5 Intervalle zu je 9 ZE und 1 Intervall zu 8 ZE (= 53 ZE) \end{itemize*}
+            \item Energieeffiziente Prefetching-Strategie, die versucht Länge der Disk-Idle-Intervalle zu maximieren: \begin{itemize*} \item gleiche Laufzeit und gleiche Anzahl Cache-Misses wie traditionelles Prefetching \item Disk-Idle-Zeit: 2 Intervalle zu 27 bzw. 28 ZE (= 55 ZE) \end{itemize*}
         \end{itemize*}
         \item
         Auswertung: Regeln für energieeffiziente Prefetching-Strategie nach
@@ -769,7 +591,7 @@
         Energiebedarf baulich bedingter Leckströme
         \item
         Fortschreitende Hardware-Miniaturisierung
-        \$\textbackslash Rightarrow\$ zunehmender Anteil von
+        $\rightarrow$ zunehmender Anteil von
         \$P\_\{leakage\}\$ an P
         \item
         Beispielhafte Größenordnungen zum Einsparpotenzial: \textbar{}
@@ -793,11 +615,11 @@
         \item
         Nutzererwartung: wichtigstes Kriterium zur (subjektiven) Bewertung von
         auf einem Rechner aktiven Anwendungen durch Nutzer
-        $\rightarrow$  Nutzerwartung bestimmt Nutzererfahrung
+        $\rightarrow$ Nutzerwartung bestimmt Nutzererfahrung
         \item
         Typ einer Anwendung
         \begin{itemize*}
-            \item entscheidet über jeweilige Nutzererwartung \begin{enumerate*}  \item   Hintergrundanwendung (z.B. Compiler); von Interesse:   Gesamt-Bearbeitungsdauer, Durchsatz \item   Echtzeitanwendung(z.B. Video-Player, MP3-Player); von Interesse:   ,,flüssiges'' Abspielen von Video oder Musik \item   Interaktive Anwendung (z.B. Webbrowser); von Interesse:   Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen   Nutzer-Aktion und Rechner-Reaktion \end{enumerate*}
+            \item entscheidet über jeweilige Nutzererwartung \begin{enumerate*} \item Hintergrundanwendung (z.B. Compiler); von Interesse: Gesamt-Bearbeitungsdauer, Durchsatz \item Echtzeitanwendung(z.B. Video-Player, MP3-Player); von Interesse: ,,flüssiges'' Abspielen von Video oder Musik \item Interaktive Anwendung (z.B. Webbrowser); von Interesse: Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen Nutzer-Aktion und Rechner-Reaktion \end{enumerate*}
             \item Insbesondere kritisch: Echtzeitanwendungen, interaktive Anwendungen
         \end{itemize*}
     \end{itemize*}
@@ -825,8 +647,8 @@
     \begin{itemize*}
         \item
         bietet Regelspielraum für Hardwareparameter (
-        $\rightarrow$  Schaltleistung)
-        $\rightarrow$  Versorgungsspannung, Taktfrequenz
+        $\rightarrow$ Schaltleistung)
+        $\rightarrow$ Versorgungsspannung, Taktfrequenz
         \item
         Betriebssystemmechanismen zum energieeffizienten Prozessormanagement
         müssen mit Nutzererfahrung(jeweils erforderlicher Reaktivität)
@@ -855,7 +677,7 @@
         \item Problem 1: Unfaire Energieverteilung
         \begin{itemize*}
             \item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall)ab einem oberen Schwellwert \$E\_\{max\}\$
-            \item Problem: energieintensive Threads behindern alle nachfolgenden Threads trotz gleicher Priorität $\rightarrow$  Fairnessmaß von RR (gleiche Zeitscheibenlänge T ) untergraben
+            \item Problem: energieintensive Threads behindern alle nachfolgenden Threads trotz gleicher Priorität $\rightarrow$ Fairnessmaß von RR (gleiche Zeitscheibenlänge T ) untergraben
             %\begin{itemize*} 
             \item %\includegraphics{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
             %\end{itemize*}
@@ -882,9 +704,9 @@
         Strategie 1: faire Energieverteilung (einheitliche Energielimits)
         \begin{itemize*}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
             \item \$1\textbackslash leq i\textbackslash leq 4: E\_i\^{}\{limit\} = P\_\{limit\}* T\$
-            \item (Abweichungen = Wichtung der Prozesse $\rightarrow$  bedingte Fairness)
+            \item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
         \end{itemize*}
     \end{itemize*}
 
@@ -899,7 +721,7 @@
         Wartezeiten kurzer, energieintensiver Threads
         \begin{itemize*}
             \item Lösung im Einzelfall: Wichtung per \$E\_i\^{}\{limit\}\$
-            \item globale Reaktivität ( $\rightarrow$  Nutzererfahrung bei interaktiven Systemen) ...?
+            \item globale Reaktivität ( $\rightarrow$ Nutzererfahrung bei interaktiven Systemen) ...?
         \end{itemize*}
         \item
         Strategie 2: maximale Reaktivität ( $\rightarrow$
@@ -937,7 +759,7 @@
         \item
         Datenstrukturen?
         \begin{itemize*}
-            \item ... im Scheduler $\rightarrow$  Warteschlange(n)?
+            \item ... im Scheduler $\rightarrow$ Warteschlange(n)?
             \item ... im Prozessdeskriptor?
         \end{itemize*}
         \item
@@ -945,8 +767,8 @@
         \item
         Pro:
         \begin{itemize*}
-            \item Optimierung der Energieverteilung nach anwendungsspezifischen Schedulingzielen( $\rightarrow$  Strategien)
-            \item Berücksichtigung von prozessspezifischen Energieverbrauchsmustern möglich:fördert Skalierbarkeit i.S.v. Lastadaptivität, indirekt auch Usability ( $\rightarrow$  Nutzererfahrung)
+            \item Optimierung der Energieverteilung nach anwendungsspezifischen Schedulingzielen( $\rightarrow$ Strategien)
+            \item Berücksichtigung von prozessspezifischen Energieverbrauchsmustern möglich:fördert Skalierbarkeit i.S.v. Lastadaptivität, indirekt auch Usability ( $\rightarrow$ Nutzererfahrung)
         \end{itemize*}
         \item
         Kontra:
@@ -956,13 +778,13 @@
         \end{itemize*}
         \item
         \textbf{generelle Alternative:} energieintensive Prozesse verlangsamen
-        $\rightarrow$  Regelung der CPU-Leistungsparameter
+        $\rightarrow$ Regelung der CPU-Leistungsparameter
         (Versorgungsspannung) (auch komplementär zum Schedulingals Maßnahme
         nach Energielimit-Überschreitung)
         \item
         Beispiel: Synergie nichtfunktionaler Eigenschaften
         \begin{itemize*}
-            \item Performanz nur möglich durch Parallelität $\rightarrow$  Multicore-Hardware
+            \item Performanz nur möglich durch Parallelität $\rightarrow$ Multicore-Hardware
             \item Multicore-Hardware nur möglich mit Lastausgleich und Lastverteilungauf mehrere CPUs
             \item dies erfordert ebenfalls Verteilungsstrategien: ,,Energy-aware Scheduling'' (Linux-Strategie zur Prozessorallokation -nicht zeitlichem Multiplexing!)
         \end{itemize*}
@@ -1035,7 +857,7 @@
         Ziel: Unterstützung von DPM-Strategien durch Maßnahmen auf Ebene von
         Compiler, Betriebssystem und Applikationen:
         \begin{itemize*}
-            \item \textbf{Compiler} \begin{itemize*} \item   kann Informationen zur Betriebssystem-Unterstützung bezüglich   Spannungs-Einstellung in Anwendungs-Code einstreuen, \item   damit zur Laufzeit Informationen über jeweilige Arbeitslast   verfügbar \end{itemize*}
+            \item \textbf{Compiler} \begin{itemize*} \item kann Informationen zur Betriebssystem-Unterstützung bezüglich Spannungs-Einstellung in Anwendungs-Code einstreuen, \item damit zur Laufzeit Informationen über jeweilige Arbeitslast verfügbar \end{itemize*}
         \end{itemize*}
         \item
         \textbf{Betriebssystem (prädiktives Energiemanagement)}
@@ -1050,7 +872,7 @@
             \item können Informationen über jeweils für sie notwendige Performanz liefern
         \end{itemize*}
         \item
-        $\rightarrow$  Kombination mit
+        $\rightarrow$ Kombination mit
         energieefizientemScheduling!
     \end{itemize*}
 
@@ -1068,8 +890,8 @@
         Maße zur Konkretisierung:
         \begin{itemize*}
             \item zeitliche Dimension: Maximum vs. Summe genutzten Speichers?
-            \item physischer Speicherverwaltung? $\rightarrow$  Belegungsanteil pAR
-            \item virtuelle Speicherverwaltung? $\rightarrow$  Belegungsanteil vAR
+            \item physischer Speicherverwaltung? $\rightarrow$ Belegungsanteil pAR
+            \item virtuelle Speicherverwaltung? $\rightarrow$ Belegungsanteil vAR
         \end{itemize*}
         \item
         Konsequenzen für Ressourcenverwaltung durch BS:
@@ -1118,12 +940,12 @@
         Lösung:
         \begin{itemize*}
             \item Seitenrahmengröße verringern
-            \item Tradeoff: dichter belegte vAR $\rightarrow$  größere Datenstrukturen für Seitentabellen!
+            \item Tradeoff: dichter belegte vAR $\rightarrow$ größere Datenstrukturen für Seitentabellen!
         \end{itemize*}
         \item
         direkter Einfluss des Betriebssystems auf Hauptspeicherbelegung:
         \begin{itemize*}
-            \item $\rightarrow$  Speicherbedarf des Kernels
+            \item $\rightarrow$ Speicherbedarf des Kernels
             \item statische(Minimal-) Größe des Kernels (Anweisungen + Daten)
             \item dynamischeSpeicherreservierung durch Kernel
             \item bei Makrokernel: Speicherbedarf von Gerätecontrollern (Treibern)!
@@ -1134,7 +956,7 @@
 
     \begin{itemize*}
         \item
-        VMM: Seitentabellengröße $\rightarrow$  Mehrstufigkeit
+        VMM: Seitentabellengröße $\rightarrow$ Mehrstufigkeit
         \item
         Metainformationen über laufende Programme: Größe von
         Taskkontrollblöcken( Prozess-/Threaddeskriptoren ...)
@@ -1152,18 +974,18 @@
     %\begin{Highlighting}[]
     %\CommentTok{// Process Control Block (PCB)}
     %\KeywordTok{struct}\NormalTok{ pcb \{}
-    %  \DataTypeTok{char}\NormalTok{ name[MAXLEN +}\DecValTok{1}\NormalTok{]; }\CommentTok{// process name}
-    %\NormalTok{  proc (*addr)(); }\CommentTok{// first instruction}
-    %  \DataTypeTok{int}\NormalTok{ type; }\CommentTok{// process type}
-    %  \DataTypeTok{int}\NormalTok{ state; }\CommentTok{// process state}
-    %  \DataTypeTok{long}\NormalTok{ dline; }\CommentTok{// absolute deadline}
-    %  \DataTypeTok{int}\NormalTok{ period; }\CommentTok{// period}
-    %  \DataTypeTok{int}\NormalTok{ prt; }\CommentTok{// priority}
-    %  \DataTypeTok{int}\NormalTok{ wcet; }\CommentTok{// worst{-}case execution time}
-    %  \DataTypeTok{float}\NormalTok{ util; }\CommentTok{// processor utilization}
-    %  \DataTypeTok{int}\NormalTok{ *context;}
-    %\NormalTok{  proc next;}
-    %\NormalTok{  proc prev;}
+    % \DataTypeTok{char}\NormalTok{ name[MAXLEN +}\DecValTok{1}\NormalTok{]; }\CommentTok{// process name}
+    %\NormalTok{ proc (*addr)(); }\CommentTok{// first instruction}
+    % \DataTypeTok{int}\NormalTok{ type; }\CommentTok{// process type}
+    % \DataTypeTok{int}\NormalTok{ state; }\CommentTok{// process state}
+    % \DataTypeTok{long}\NormalTok{ dline; }\CommentTok{// absolute deadline}
+    % \DataTypeTok{int}\NormalTok{ period; }\CommentTok{// period}
+    % \DataTypeTok{int}\NormalTok{ prt; }\CommentTok{// priority}
+    % \DataTypeTok{int}\NormalTok{ wcet; }\CommentTok{// worst{-}case execution time}
+    % \DataTypeTok{float}\NormalTok{ util; }\CommentTok{// processor utilization}
+    % \DataTypeTok{int}\NormalTok{ *context;}
+    %\NormalTok{ proc next;}
+    %\NormalTok{ proc prev;}
     %\NormalTok{\};}
     %\end{Highlighting}
     %\end{Shaded}
@@ -1176,106 +998,106 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\KeywordTok{struct}\NormalTok{ task\_struct \{}
-    %  \AttributeTok{volatile} \DataTypeTok{long}\NormalTok{ state; }\CommentTok{/* {-} 1 unrunnable, 0 runnable, \textgreater{}0 stopped */}
-    %  \DataTypeTok{void}\NormalTok{ *stack;}
-    %  \DataTypeTok{atomic\_t}\NormalTok{ usage;}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ flags; }\CommentTok{/* per process flags, defined below */}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ ptrace;}
+    % \AttributeTok{volatile} \DataTypeTok{long}\NormalTok{ state; }\CommentTok{/* {-} 1 unrunnable, 0 runnable, \textgreater{}0 stopped */}
+    % \DataTypeTok{void}\NormalTok{ *stack;}
+    % \DataTypeTok{atomic\_t}\NormalTok{ usage;}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ flags; }\CommentTok{/* per process flags, defined below */}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ ptrace;}
     %\PreprocessorTok{\#ifdef CONFIG\_SMP}
-    %  \KeywordTok{struct}\NormalTok{ llist\_node wake\_entry;}
-    %  \DataTypeTok{int}\NormalTok{ on\_cpu;}
+    % \KeywordTok{struct}\NormalTok{ llist\_node wake\_entry;}
+    % \DataTypeTok{int}\NormalTok{ on\_cpu;}
     %\PreprocessorTok{\#endif}
-    %  \DataTypeTok{int}\NormalTok{ on\_rq;}
+    % \DataTypeTok{int}\NormalTok{ on\_rq;}
     %\CommentTok{// SCHEDULING INFORMATION}
-    %  \DataTypeTok{int}\NormalTok{ prio, static\_prio, normal\_prio;}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ rt\_priority;}
-    %  \AttributeTok{const} \KeywordTok{struct}\NormalTok{ sched\_class *sched\_class;}
+    % \DataTypeTok{int}\NormalTok{ prio, static\_prio, normal\_prio;}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ rt\_priority;}
+    % \AttributeTok{const} \KeywordTok{struct}\NormalTok{ sched\_class *sched\_class;}
     %\CommentTok{// Scheduling Entity}
-    %  \KeywordTok{struct}\NormalTok{ sched\_entity se;}
-    %  \KeywordTok{struct}\NormalTok{ sched\_rt\_entity rt;}
+    % \KeywordTok{struct}\NormalTok{ sched\_entity se;}
+    % \KeywordTok{struct}\NormalTok{ sched\_rt\_entity rt;}
     %\PreprocessorTok{\#ifdef CONFIG\_CGROUP\_SCHED}
-    %  \KeywordTok{struct}\NormalTok{ task\_group *sched\_task\_group;}
+    % \KeywordTok{struct}\NormalTok{ task\_group *sched\_task\_group;}
     %\PreprocessorTok{\#endif}
     %\PreprocessorTok{\#ifdef CONFIG\_PREEMPT\_NOTIFIERS}
-    %  \KeywordTok{struct}\NormalTok{ hlist\_head preempt\_notifiers; }\CommentTok{/* list of struct preempt\_notifier */}
+    % \KeywordTok{struct}\NormalTok{ hlist\_head preempt\_notifiers; }\CommentTok{/* list of struct preempt\_notifier */}
     %\PreprocessorTok{\#endif}
-    %  \DataTypeTok{unsigned} \DataTypeTok{char}\NormalTok{ fpu\_counter;}
+    % \DataTypeTok{unsigned} \DataTypeTok{char}\NormalTok{ fpu\_counter;}
     %\PreprocessorTok{\#ifdef CONFIG\_BLK\_DEV\_IO\_TRACE}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ btrace\_seq;}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ btrace\_seq;}
     %\PreprocessorTok{\#endif}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ policy;}
-    %  \DataTypeTok{cpumask\_t}\NormalTok{ cpus\_allowed;}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ policy;}
+    % \DataTypeTok{cpumask\_t}\NormalTok{ cpus\_allowed;}
     %\PreprocessorTok{\#ifdef CONFIG\_PREEMPT\_RCU}
-    %  \DataTypeTok{int}\NormalTok{ rcu\_read\_lock\_nesting;}
-    %  \DataTypeTok{char}\NormalTok{ rcu\_read\_unlock\_special;}
-    %  \KeywordTok{struct}\NormalTok{ list\_head rcu\_node\_entry;}
-    %  \KeywordTok{struct}\NormalTok{ rcu\_node *rcu\_blocked\_node;}
+    % \DataTypeTok{int}\NormalTok{ rcu\_read\_lock\_nesting;}
+    % \DataTypeTok{char}\NormalTok{ rcu\_read\_unlock\_special;}
+    % \KeywordTok{struct}\NormalTok{ list\_head rcu\_node\_entry;}
+    % \KeywordTok{struct}\NormalTok{ rcu\_node *rcu\_blocked\_node;}
     %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG\_TREE\_PREEMPT\_RCU */}
     %\PreprocessorTok{\#ifdef CONFIG\_RCU\_BOOST}
-    %  \KeywordTok{struct}\NormalTok{ rt\_mutex *rcu\_boost\_mutex;}
+    % \KeywordTok{struct}\NormalTok{ rt\_mutex *rcu\_boost\_mutex;}
     %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG\_RCU\_BOOST */}
     %\PreprocessorTok{\#if defined(CONFIG\_SCHEDSTATS) || defined(CONFIG\_TASK\_DELAY\_ACCT)}
-    %  \KeywordTok{struct}\NormalTok{ sched\_info sched\_info;}
+    % \KeywordTok{struct}\NormalTok{ sched\_info sched\_info;}
     %\PreprocessorTok{\#endif}
-    %  \KeywordTok{struct}\NormalTok{ list\_head tasks;}
+    % \KeywordTok{struct}\NormalTok{ list\_head tasks;}
     %\PreprocessorTok{\#ifdef CONFIG\_SMP}
-    %  \KeywordTok{struct}\NormalTok{ plist\_node pushable\_tasks;}
+    % \KeywordTok{struct}\NormalTok{ plist\_node pushable\_tasks;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{// virtual address space reference}
-    %  \KeywordTok{struct}\NormalTok{ mm\_struct *mm, *active\_mm;}
+    % \KeywordTok{struct}\NormalTok{ mm\_struct *mm, *active\_mm;}
     %\PreprocessorTok{\#ifdef CONFIG\_COMPAT\_BRK}
-    %  \DataTypeTok{unsigned}\NormalTok{ brk\_randomized:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ brk\_randomized:}\DecValTok{1}\NormalTok{;}
     %\PreprocessorTok{\#endif}
     %\PreprocessorTok{\#if defined(SPLIT\_RSS\_COUNTING)}
-    %  \KeywordTok{struct}\NormalTok{ task\_rss\_stat rss\_stat;}
+    % \KeywordTok{struct}\NormalTok{ task\_rss\_stat rss\_stat;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{/* task state */}
-    %  \DataTypeTok{int}\NormalTok{ exit\_state;}
-    %  \DataTypeTok{int}\NormalTok{ exit\_code, exit\_signal;}
-    %  \DataTypeTok{int}\NormalTok{ pdeath\_signal; }\CommentTok{/* The signal sent when the parent dies */}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ jobctl; }\CommentTok{/* JOBCTL\_*, siglock protected */}
-    %  \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ personality;}
-    %  \DataTypeTok{unsigned}\NormalTok{ did\_exec:}\DecValTok{1}\NormalTok{;}
-    %  \DataTypeTok{unsigned}\NormalTok{ in\_execve:}\DecValTok{1}\NormalTok{;}\CommentTok{/* Tell the LSMs that the process is doing an * execve */}
-    %  \DataTypeTok{unsigned}\NormalTok{ in\_iowait:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{int}\NormalTok{ exit\_state;}
+    % \DataTypeTok{int}\NormalTok{ exit\_code, exit\_signal;}
+    % \DataTypeTok{int}\NormalTok{ pdeath\_signal; }\CommentTok{/* The signal sent when the parent dies */}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ jobctl; }\CommentTok{/* JOBCTL\_*, siglock protected */}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ personality;}
+    % \DataTypeTok{unsigned}\NormalTok{ did\_exec:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ in\_execve:}\DecValTok{1}\NormalTok{;}\CommentTok{/* Tell the LSMs that the process is doing an * execve */}
+    % \DataTypeTok{unsigned}\NormalTok{ in\_iowait:}\DecValTok{1}\NormalTok{;}
     %\CommentTok{/* Revert to default priority/policy when forking */}
-    %  \DataTypeTok{unsigned}\NormalTok{ sched\_reset\_on\_fork:}\DecValTok{1}\NormalTok{;}
-    %  \DataTypeTok{unsigned}\NormalTok{ sched\_contributes\_to\_load:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ sched\_reset\_on\_fork:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ sched\_contributes\_to\_load:}\DecValTok{1}\NormalTok{;}
     %\PreprocessorTok{\#ifdef CONFIG\_GENERIC\_HARDIRQS}
     %\CommentTok{/* IRQ handler threads */}
-    %  \DataTypeTok{unsigned}\NormalTok{ irq\_thread;}
+    % \DataTypeTok{unsigned}\NormalTok{ irq\_thread;}
     %\PreprocessorTok{\#endif}
-    %  \DataTypeTok{pid\_t}\NormalTok{ pid;}
-    %  \DataTypeTok{pid\_t}\NormalTok{ tgid;}
+    % \DataTypeTok{pid\_t}\NormalTok{ pid;}
+    % \DataTypeTok{pid\_t}\NormalTok{ tgid;}
     %\PreprocessorTok{\#ifdef CONFIG\_CC\_STACKPROTECTOR}
     %\CommentTok{/* Canary value for the {-}fstack{-}protector gcc feature */}
-    %  \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ stack\_canary;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ stack\_canary;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{// Relatives}
-    %  \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *real\_parent; }\CommentTok{/* real parent process */}
-    %  \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *parent; }\CommentTok{/* recipient of SIGCHLD, wait4() reports */}
+    % \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *real\_parent; }\CommentTok{/* real parent process */}
+    % \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *parent; }\CommentTok{/* recipient of SIGCHLD, wait4() reports */}
     %\CommentTok{/* children/sibling forms the list of my natural children */}
-    %  \KeywordTok{struct}\NormalTok{ list\_head children; }\CommentTok{/* list of my children */}
-    %  \KeywordTok{struct}\NormalTok{ list\_head sibling; }\CommentTok{/* linkage in my parent\textquotesingle{}s children list */}
-    %  \KeywordTok{struct}\NormalTok{ task\_struct *group\_leader; }\CommentTok{/* threadgroup leader */}
-    %  \KeywordTok{struct}\NormalTok{ list\_head ptraced;}
-    %  \KeywordTok{struct}\NormalTok{ list\_head ptrace\_entry;}
+    % \KeywordTok{struct}\NormalTok{ list\_head children; }\CommentTok{/* list of my children */}
+    % \KeywordTok{struct}\NormalTok{ list\_head sibling; }\CommentTok{/* linkage in my parent\textquotesingle{}s children list */}
+    % \KeywordTok{struct}\NormalTok{ task\_struct *group\_leader; }\CommentTok{/* threadgroup leader */}
+    % \KeywordTok{struct}\NormalTok{ list\_head ptraced;}
+    % \KeywordTok{struct}\NormalTok{ list\_head ptrace\_entry;}
     %\CommentTok{/* PID/PID hash table linkage. */}
-    %  \KeywordTok{struct}\NormalTok{ pid\_link pids[PIDTYPE\_MAX];}
-    %  \KeywordTok{struct}\NormalTok{ list\_head thread\_group;}
-    %  \KeywordTok{struct}\NormalTok{ completion *vfork\_done; }\CommentTok{/* for vfork() */}
-    %  \DataTypeTok{int}\NormalTok{ \_\_user *set\_child\_tid;}
+    % \KeywordTok{struct}\NormalTok{ pid\_link pids[PIDTYPE\_MAX];}
+    % \KeywordTok{struct}\NormalTok{ list\_head thread\_group;}
+    % \KeywordTok{struct}\NormalTok{ completion *vfork\_done; }\CommentTok{/* for vfork() */}
+    % \DataTypeTok{int}\NormalTok{ \_\_user *set\_child\_tid;}
     %\NormalTok{...}
-    %  \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ timer\_slack\_ns;}
-    %  \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ default\_timer\_slack\_ns;}
-    %  \KeywordTok{struct}\NormalTok{ list\_head *scm\_work\_list;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ timer\_slack\_ns;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ default\_timer\_slack\_ns;}
+    % \KeywordTok{struct}\NormalTok{ list\_head *scm\_work\_list;}
     %\PreprocessorTok{\#ifdef CONFIG\_FUNCTION\_GRAPH\_TRACER}
     %\CommentTok{/* Index of current stored address in ret\_stack */}
-    %  \DataTypeTok{int}\NormalTok{ curr\_ret\_stack;}
+    % \DataTypeTok{int}\NormalTok{ curr\_ret\_stack;}
     %\CommentTok{/* Stack of return addresses for return function tracing */}
-    %  \KeywordTok{struct}\NormalTok{ ftrace\_ret\_stack *ret\_stack;}
+    % \KeywordTok{struct}\NormalTok{ ftrace\_ret\_stack *ret\_stack;}
     %\CommentTok{/* time stamp for last schedule */}
-    %  \DataTypeTok{unsigned} \DataTypeTok{long} \DataTypeTok{long}\NormalTok{ ftrace\_timestamp;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long} \DataTypeTok{long}\NormalTok{ ftrace\_timestamp;}
     %\NormalTok{...}
     %\end{Highlighting}
     %\end{Shaded}
@@ -1303,7 +1125,7 @@
         \item
         Adaptivität (zur Kompilier-und Laufzeit) des Kernels: gezielte
         Anpassung an sich ändernde Umgebungsbedingungen möglich
-        (\$\textbackslash rightarrow\$ Cassini-Huygens-Mission)
+        ( $\rightarrow$ Cassini-Huygens-Mission)
     \end{itemize*}
 
 
@@ -1395,20 +1217,20 @@
         \item
         Makrokernel:
         \begin{itemize*}
-            \item \cmark  vglw. geringe Kosten von Kernelcode (Energie, Speicher)
-            \item \cmark  VMM nicht zwingend erforderlich
-            \item \cmark  Multitasking (\$\textbackslash rightarrow\$ Prozessmanagement!)nicht zwingend erforderlich
-            \item \xmark  Kernel (inkl. Treibern) jederzeit im Speicher
-            \item \xmark  Robustheit, Sicherheit, Adaptivität
+            \item \cmark vglw. geringe Kosten von Kernelcode (Energie, Speicher)
+            \item \cmark VMM nicht zwingend erforderlich
+            \item \cmark Multitasking ( $\rightarrow$ Prozessmanagement!)nicht zwingend erforderlich
+            \item \xmark Kernel (inkl. Treibern) jederzeit im Speicher
+            \item \xmark Robustheit, Sicherheit, Adaptivität
         \end{itemize*}
         \item
         Mikrokernel:
         \begin{itemize*}
-            \item \cmark  Robustheit, Sicherheit, Adaptivität
-            \item \cmark  Kernelspeicherbedarf gering, Serverprozesse nur wenn benötigt (\$\textbackslash rightarrow\$ Adaptivität)
-            \item \xmark  hohe IPC-Kosten von Serverprozessen
-            \item \xmark  Kontextwechselkosten von Serverprozessen
-            \item \xmark  VMM, Multitasking i.d.R. erforderlich
+            \item \cmark Robustheit, Sicherheit, Adaptivität
+            \item \cmark Kernelspeicherbedarf gering, Serverprozesse nur wenn benötigt ( $\rightarrow$ Adaptivität)
+            \item \xmark hohe IPC-Kosten von Serverprozessen
+            \item \xmark Kontextwechselkosten von Serverprozessen
+            \item \xmark VMM, Multitasking i.d.R. erforderlich
         \end{itemize*}
     \end{itemize*}
 
@@ -1424,7 +1246,7 @@
         \item ,,TinyOS'' ist ein quelloffenes, BSD-lizenziertes Betriebssystem
         \item das für drahtlose Geräte mit geringem Stromverbrauch, wie sie in
         \begin{itemize*}
-            \item Sensornetzwerke, (\$\textbackslash rightarrow\$ Smart Dust)
+            \item Sensornetzwerke, ( $\rightarrow$ Smart Dust)
             \item Allgegenwärtiges Computing,
             \item Personal Area Networks,
             \item intelligente Gebäude,
@@ -1435,17 +1257,17 @@
         \begin{itemize*}
             \item grundsätzlich: monolithisch (Makrokernel) mit Besonderheiten:
             \item keine klare Trennung zwischen der Implementierung von Anwendungen und BS (wohl aber von deren funktionalen Aufgaben!)
-            \item $\rightarrow$  zur Laufzeit: 1 Anwendung + Kernel
+            \item $\rightarrow$ zur Laufzeit: 1 Anwendung + Kernel
         \end{itemize*}
         \item
         Mechanismen:
         \begin{itemize*}
             \item kein Multithreading, keine echte Parallelität
-            \item $\rightarrow$  keine Synchronisation zwischen Tasks
-            \item $\rightarrow$  keine Kontextwechsel bei Taskwechsel
+            \item $\rightarrow$ keine Synchronisation zwischen Tasks
+            \item $\rightarrow$ keine Kontextwechsel bei Taskwechsel
             \item Multitasking realisiert durch Programmiermodell
             \item nicht-präemptives FIFO-Scheduling
-            \item kein Paging\$\textbackslash rightarrow\$ keine Seitentabellen, keine MMU
+            \item kein Paging $\rightarrow$ keine Seitentabellen, keine MMU
         \end{itemize*}
         \item
         in Zahlen:
@@ -1458,7 +1280,7 @@
         Programmiermodell:
         \begin{itemize*}
             \item BS und Anwendung werden als Ganzes übersetzt: statische Optimierungen durch Compilermöglich (Laufzeit, Speicherbedarf)
-            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel \begin{itemize*} \item   $\rightarrow$  command: API-Aufruf, z.B.   EA-Operation (vglb. Systemaufruf) \item   $\rightarrow$  event: Reaktion auf diesen durch   Anwendung \end{itemize*}
+            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel \begin{itemize*} \item $\rightarrow$ command: API-Aufruf, z.B. EA-Operation (vglb. Systemaufruf) \item $\rightarrow$ event: Reaktion auf diesen durch Anwendung \end{itemize*}
             \item sowohl commands als auch events : asynchron
         \end{itemize*}
     \end{itemize*}
@@ -1467,13 +1289,13 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{interface Timer \{}
-    %\NormalTok{  command }\DataTypeTok{result\_t}\NormalTok{ start(}\DataTypeTok{char}\NormalTok{ type, }\DataTypeTok{uint32\_t}\NormalTok{ interval);}
-    %\NormalTok{  command }\DataTypeTok{result\_t}\NormalTok{ stop();}
-    %\NormalTok{  event }\DataTypeTok{result\_t}\NormalTok{ fired();}
+    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ start(}\DataTypeTok{char}\NormalTok{ type, }\DataTypeTok{uint32\_t}\NormalTok{ interval);}
+    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ stop();}
+    %\NormalTok{ event }\DataTypeTok{result\_t}\NormalTok{ fired();}
     %%\NormalTok{\}}
     %\NormalTok{interface SendMsg \{}
-    %\NormalTok{  command }\DataTypeTok{result\_t}\NormalTok{ send(}\DataTypeTok{uint16\_t}\NormalTok{ address, }\DataTypeTok{uint8\_t}\NormalTok{ length, TOS\_MsgPtr msg);}
-    %\NormalTok{  event }\DataTypeTok{result\_t}\NormalTok{ sendDone(TOS\_MsgPtr msg, }\DataTypeTok{result\_t}\NormalTok{ success);}
+    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ send(}\DataTypeTok{uint16\_t}\NormalTok{ address, }\DataTypeTok{uint8\_t}\NormalTok{ length, TOS\_MsgPtr msg);}
+    %\NormalTok{ event }\DataTypeTok{result\_t}\NormalTok{ sendDone(TOS\_MsgPtr msg, }\DataTypeTok{result\_t}\NormalTok{ success);}
     %\NormalTok{\}}
     %\end{Highlighting}
     %\end{Shaded}
@@ -1506,10 +1328,10 @@
             \item halbwegs: Mikrokernel
             \item energiesparendeKernelfunktionalität:
             \begin{itemize*}
-                \item   minimale Algorithmenkomplexität
-                \item   vereinfachtes Threadkonzept $\rightarrow$  keine   Kontextsicherung erforderlich
-                \item   keine dynamische Speicherallokation
-                \item   energiesparende Hardwarezustände vom Scheduler ausgelöst (inaktive CPU)
+                \item minimale Algorithmenkomplexität
+                \item vereinfachtes Threadkonzept $\rightarrow$ keine Kontextsicherung erforderlich
+                \item keine dynamische Speicherallokation
+                \item energiesparende Hardwarezustände vom Scheduler ausgelöst (inaktive CPU)
             \end{itemize*}
             \item Mikrokerneldesign unterstützt komplementäre NFE: Adaptivität, Erweiterbarkeit
             \item Kosten: IPC (hier gering!)
@@ -1613,7 +1435,7 @@
         \item
         1., 4. \& 5. auch Untereigenschaften von IT-Sicherheit (security)
         \item
-        $\rightarrow$  nicht für alle Anwendungen sind alle
+        $\rightarrow$ nicht für alle Anwendungen sind alle
         Untereigenschaften erforderlich
     \end{itemize*}
 
@@ -1640,8 +1462,8 @@
 
     \begin{itemize*}
         \item
-        Fehler $\rightarrow$  fehlerhafter Zustand
-        $\rightarrow$  Ausfall
+        Fehler $\rightarrow$ fehlerhafter Zustand
+        $\rightarrow$ Ausfall
         \item
         grundlegende Definitionen dieser Begriffe (ausführlich: {[}ALRL04,
         AvLR04{]} ):
@@ -1661,9 +1483,9 @@
         \item
         Umgang mit ...
         \begin{itemize*}
-            \item faults: \begin{itemize*} \item   Korrektheit testen \item   Korrektheit beweisen(\$\textbackslash rightarrow\$ formale   Verifikation) \end{itemize*}
-            \item errors: \begin{itemize*} \item   Maskierung, Redundanz \item   Isolationvon Subsystemen \item   $\rightarrow$  Isolationsmechanismen \end{itemize*}
-            \item failures: \begin{itemize*} \item   Ausfallverhalten (neben korrektem Verhalten) spezifizieren \item   Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen... \item   $\rightarrow$  Micro-Reboots \end{itemize*}
+            \item faults: \begin{itemize*} \item Korrektheit testen \item Korrektheit beweisen( $\rightarrow$ formale Verifikation) \end{itemize*}
+            \item errors: \begin{itemize*} \item Maskierung, Redundanz \item Isolationvon Subsystemen \item $\rightarrow$ Isolationsmechanismen \end{itemize*}
+            \item failures: \begin{itemize*} \item Ausfallverhalten (neben korrektem Verhalten) spezifizieren \item Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen... \item $\rightarrow$ Micro-Reboots \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -1685,7 +1507,7 @@
             \item fault : Programmierfehler im Gerätetreiber
             \item externer Zustand des Treibers (oder des Dateisystems, Schedulers, E/A, IPC, ...) $\subseteq$ interner Zustand des Kernels
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-treiber-kernel.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-treiber-kernel.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -1707,7 +1529,7 @@
         Auswirkung: fehlerhafter interner Zustand eines weiteren
         Kernel-Subsystems (z.B. error des Dateisystems)
         \item
-        $\rightarrow$  Robustheit: Isolationsmechanismen
+        $\rightarrow$ Robustheit: Isolationsmechanismen
         \item
         %\includegraphics{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
     \end{itemize*}
@@ -1801,13 +1623,13 @@
         Modularer Makrokernel:
         \item
         alle Kernelfunktionen in Moduleunterteilt (z.B. verschiedene
-        Dateisystemtypen) $\rightarrow$  Erweiterbarkeit,
+        Dateisystemtypen) $\rightarrow$ Erweiterbarkeit,
         Wartbarkeit, Portierbarkeit
         \item
         klar definierte Modulschnittstellen(z.B. virtualfilesystem, VFS )
         \item
         Module zur Kernellaufzeit dynamisch einbindbar
-        (\$\textbackslash rightarrow\$ Adaptivität)
+        ( $\rightarrow$ Adaptivität)
     \end{itemize*}
 
 
@@ -1818,23 +1640,23 @@
         \item
         strukturierte Programmierung:
         \item
-        \cmark  Wartbarkeit
+        \cmark Wartbarkeit
         \item
-        \cmark  Portierbarkeit
+        \cmark Portierbarkeit
         \item
-        \cmark  Erweiterbarkeit
+        \cmark Erweiterbarkeit
         \item
         O (begrenzt) Adaptivität
         \item
         O (begrenzt) Schutz gegen statische Programmierfehler: nur durch
         Compiler (z.B. C private, public)
         \item
-        \xmark  kein Schutz gegen dynamische Fehler
+        \xmark kein Schutz gegen dynamische Fehler
         \item
-        $\rightarrow$  Robustheit...?
+        $\rightarrow$ Robustheit...?
         \item
         nächstes Ziel: Schutz gegen Laufzeitfehler...
-        $\rightarrow$  Laufzeitmechanismen
+        $\rightarrow$ Laufzeitmechanismen
     \end{itemize*}
 
 
@@ -1867,9 +1689,9 @@
         \item
         Robustheit: Was haben wir von privaten vAR?
         \begin{itemize*}
-            \item \cmark  nichtvertrauenswürdiger (i.S.v. potenziell nicht korrekter) Code kann keine beliebigen physischen Adressen schreiben (er erreicht sie ja nicht mal...)
-            \item \cmark  Kommunikation zwischen nvw. Code (z.B. Anwendungstasks) muss durch IPC-Mechanismen explizit hergestellt werden (u.U. auch shared memory) \begin{itemize*} \item   $\rightarrow$  Überwachung und Validierung zur   Laufzeit möglich \end{itemize*}
-            \item \cmark  Kontrollfluss begrenzen: Funktionsaufrufe können i.A. (Ausnahme: RPC) keine AR-Grenzen überschreiten \begin{itemize*} \item   $\rightarrow$  BS-Zugriffssteuerungkann nicht durch   Taskfehler ausgehebelt werden \item   $\rightarrow$  unabsichtliche   Terminierungsfehler(unendliche Rekursion) erschwert ... \end{itemize*}
+            \item \cmark nichtvertrauenswürdiger (i.S.v. potenziell nicht korrekter) Code kann keine beliebigen physischen Adressen schreiben (er erreicht sie ja nicht mal...)
+            \item \cmark Kommunikation zwischen nvw. Code (z.B. Anwendungstasks) muss durch IPC-Mechanismen explizit hergestellt werden (u.U. auch shared memory) \begin{itemize*} \item $\rightarrow$ Überwachung und Validierung zur Laufzeit möglich \end{itemize*}
+            \item \cmark Kontrollfluss begrenzen: Funktionsaufrufe können i.A. (Ausnahme: RPC) keine AR-Grenzen überschreiten \begin{itemize*} \item $\rightarrow$ BS-Zugriffssteuerungkann nicht durch Taskfehler ausgehebelt werden \item $\rightarrow$ unabsichtliche Terminierungsfehler(unendliche Rekursion) erschwert ... \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -1883,13 +1705,13 @@
         \begin{itemize*}
             \item gibt es schon so lange wie VMM
             \item gab es lange nur auf Anwendungsebene
-            \item $\rightarrow$  keine Isolation zwischen Fehlern innerhalb des Kernels!
+            \item $\rightarrow$ keine Isolation zwischen Fehlern innerhalb des Kernels!
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png}
         \end{itemize*}
         \item
         nächstes Ziel: Schutz gegen Kernelfehler (Gerätetreiber)...
-        $\rightarrow$  BS-Architektur
+        $\rightarrow$ BS-Architektur
     \end{itemize*}
 
 
@@ -1900,19 +1722,19 @@
         \begin{itemize*}
             \item Strukturierungskonzept:
             \begin{itemize*}
-                \item   strenger durchgesetzt durch konsequente Isolation voneinander   unabhängiger Kernel-Subsysteme
-                \item   zur Laufzeit durchgesetzt $\rightarrow$  Reaktion   auf fehlerhafte Zustände möglich!
+                \item strenger durchgesetzt durch konsequente Isolation voneinander unabhängiger Kernel-Subsysteme
+                \item zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich!
             \end{itemize*}
             \item zusätzlich zu vertikaler Strukturierung des Kernels: horizontale Strukturierungeingeführt
             \begin{itemize*}
-                \item   $\rightarrow$  funktionale Einheiten: vertikal   (Schichten)
-                \item   $\rightarrow$  isolierteEinheiten: horizontal   (private vAR)
+                \item $\rightarrow$ funktionale Einheiten: vertikal (Schichten)
+                \item $\rightarrow$ isolierteEinheiten: horizontal (private vAR)
             \end{itemize*}
         \end{itemize*}
         \item
         Idee:
         \begin{itemize*}
-            \item Kernel (alle BS-Funktionalität) $\rightarrow$  $\mu$Kernel (minimale BS-Funktionalität)
+            \item Kernel (alle BS-Funktionalität) $\rightarrow$ $\mu$Kernel (minimale BS-Funktionalität)
             \item Rest (insbes. Treiber): ,,gewöhnliche'' Anwendungsprozesse mit Adressraumisolation
             \item Kommunikation: botschaftenbasierteIPC (auch client-server operating system )
             \item Nomenklatur: Mikrokernelund Serverprozesse
@@ -1942,7 +1764,7 @@
             \item Ablauf eines Systemaufrufs
             \item schwarz: unprivilegierteInstruktionen
             \item blau:privilegierte Instruktionen
-            \item rot:Übergang zwischen beidem ($\mu$Kern $\rightarrow$  Kontextwechsel!)
+            \item rot:Übergang zwischen beidem ($\mu$Kern $\rightarrow$ Kontextwechsel!)
         \end{itemize*}
     \end{itemize*}
 
@@ -1954,16 +1776,16 @@
         \item
         = Gewinn durch Adressraumisolation innerhalb des Kernels
         \begin{itemize*}
-            \item \cmark  kein nichtvertrauenswürdiger Code im kernelspace , der dort beliebige physische Adressen manipulieren kann
-            \item \cmark  Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$  Überwachung und Validierung zur Laufzeit
-            \item \cmark  Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
+            \item \cmark kein nichtvertrauenswürdiger Code im kernelspace , der dort beliebige physische Adressen manipulieren kann
+            \item \cmark Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
+            \item \cmark Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
         \end{itemize*}
         \item
         Neu:
         \begin{itemize*}
-            \item \cmark  nvw. BS-Code muss nicht mehr im kernelspace (höchste Prozessorprivilegierung) laufen
-            \item \cmark  verbleibender Kernel (dessen Korrektheit wir annehmen): klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
-            \item \cmark  daneben: Adaptivitätdurch konsequentere Modularisierung des Kernels gesteigert
+            \item \cmark nvw. BS-Code muss nicht mehr im kernelspace (höchste Prozessorprivilegierung) laufen
+            \item \cmark verbleibender Kernel (dessen Korrektheit wir annehmen): klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
+            \item \cmark daneben: Adaptivitätdurch konsequentere Modularisierung des Kernels gesteigert
         \end{itemize*}
     \end{itemize*}
 
@@ -2024,7 +1846,7 @@
         mehrere unterschiedliche Emulatoren gleichzeitig lauffähig
         \begin{itemize*}
             \item Emulation außerhalb des Kernels
-            \item jeder Emulator: \begin{itemize*} \item   Komponente im Adressraum des Applikationsprogramms \item   1...n Server, die unabhängig von Applikationsprogramm laufen \end{itemize*}
+            \item jeder Emulator: \begin{itemize*} \item Komponente im Adressraum des Applikationsprogramms \item 1...n Server, die unabhängig von Applikationsprogramm laufen \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -2048,7 +1870,7 @@
         IPC-und E/A-Dienste, einschließlich Gerätetreiber
     \end{enumerate*}
 
-    unterstützte Abstraktionen (\$\textbackslash rightarrow\$ API,
+    unterstützte Abstraktionen ( $\rightarrow$ API,
     Systemaufrufe):
 
     \begin{enumerate*}
@@ -2079,7 +1901,7 @@
             \item Messung mit verschiedenen Botschaftenlängen( x - Werte)
             \item ohne Nutzdaten (0 Byte Botschaftenlänge): 115 $\mu$s (Tendenz unfreundlich ...)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
         \end{itemize*}
         \item
         Bewertung aus heutiger Sicht:
@@ -2087,7 +1909,7 @@
             \item funktional komplex
             \item 153 Systemaufrufe
             \item mehrere Schnittstellen, parallele Implementierungen für eine Funktion
-            \item $\rightarrow$  Adaptivität (Auswahl durch Programmierer)
+            \item $\rightarrow$ Adaptivität (Auswahl durch Programmierer)
         \end{itemize*}
         \item
         Fazit:
@@ -2109,18 +1931,18 @@
         \item
         Folgen für Performanz und Programmierkomfort: {[}Heis19{]}
         \item
-        \xmark  ,,complex''
+        \xmark ,,complex''
         \item
-        \xmark  ,,inflexible''
+        \xmark ,,inflexible''
         \item
-        \xmark  ,,slow''
+        \xmark ,,slow''
         \item
         wir wissen etwas über Kosten: IPC-Performanz, Kernelabstraktionen
         \item
         wir wissen noch nichts über guten $\mu$Kern-Funktionsumfangund gute
         Schnittstellen...
         \item
-        $\rightarrow$  nächstes Ziel!
+        $\rightarrow$ nächstes Ziel!
     \end{itemize*}
 
 
@@ -2139,7 +1961,7 @@
 
             \item falsche Abstraktionen
             \item unperformanteKernelimplementierung
-            \item prozessorunabhängige Implementierung \begin{itemize*} \item   Letzteres: effizienzschädliche Eigenschaft eines Mikrokernels \item   Neuimplementierung eines (konzeptionell sauberen!) $\mu$-Kerns kaum   teurer als Portierung auf andere Prozessorarchitektur \end{itemize*}
+            \item prozessorunabhängige Implementierung \begin{itemize*} \item Letzteres: effizienzschädliche Eigenschaft eines Mikrokernels \item Neuimplementierung eines (konzeptionell sauberen!) $\mu$-Kerns kaum teurer als Portierung auf andere Prozessorarchitektur \end{itemize*}
         \end{enumerate*}
     \end{itemize*}
 
@@ -2186,9 +2008,9 @@
         Was gehört in einen Mikrokern?
         \begin{itemize*}
             \item Liedtke: Unterscheidung zwischen Konzepten und deren Implementierung
-            \item bestimmende Anforderungen an beide: \begin{itemize*} \item   Konzeptsicht $\rightarrow$  Funktionalität, \item   Implementierungssicht $\rightarrow$  Performanz \end{itemize*}
-            \item $\rightarrow$  1. $\mu$Kernel-Generation: Konzept durch Performanzentscheidungen aufgeweicht
-            \item $\rightarrow$  Effekt in der Praxis genau gegenteilig: schlechte (IPC-) Performanz!
+            \item bestimmende Anforderungen an beide: \begin{itemize*} \item Konzeptsicht $\rightarrow$ Funktionalität, \item Implementierungssicht $\rightarrow$ Performanz \end{itemize*}
+            \item $\rightarrow$ 1. $\mu$Kernel-Generation: Konzept durch Performanzentscheidungen aufgeweicht
+            \item $\rightarrow$ Effekt in der Praxis genau gegenteilig: schlechte (IPC-) Performanz!
         \end{itemize*}
     \end{itemize*}
 
@@ -2204,14 +2026,14 @@
 
     \begin{itemize*}
         \item
-        $\rightarrow$  Annahmen hinsichtlich der funktionalen
+        $\rightarrow$ Annahmen hinsichtlich der funktionalen
         Anforderungen:
     \end{itemize*}
 
     \begin{enumerate*}
         \item
         System interaktive und nicht vollständig vertrauenswürdige
-        Applikationen unterstützen (\$\textbackslash rightarrow\$ HW-Schutz,
+        Applikationen unterstützen ( $\rightarrow$ HW-Schutz,
         -Multiplexing),
         \item
         Hardware mit virtueller Speicherverwaltung und Paging
@@ -2254,7 +2076,7 @@
         Idee: abstrakte Speicherverwaltung
         \begin{itemize*}
             \item rekursive Konstruktion und Verwaltung der Adressräume auf Benutzer-(Server-)Ebene
-            \item Mikrokernel stellt dafür genau drei Operationen bereit: \begin{enumerate*}  \item   grant(x) - Server \$S\$ überträgt Seite \$x\$ seines AR in AR von   Empfänger \$S`\$ \item   map(x) - Server \$S\$ bildet Seite \$x\$ seines AR in AR von   Empfänger \$S`\$ ab \item   flush(x) - Server \$S\$ entfernt (flusht) Seite x seines AR aus   allen fremden AR \end{enumerate*}
+            \item Mikrokernel stellt dafür genau drei Operationen bereit: \begin{enumerate*} \item grant(x) - Server \$S\$ überträgt Seite \$x\$ seines AR in AR von Empfänger \$S`\$ \item map(x) - Server \$S\$ bildet Seite \$x\$ seines AR in AR von Empfänger \$S`\$ ab \item flush(x) - Server \$S\$ entfernt (flusht) Seite x seines AR aus allen fremden AR \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -2268,7 +2090,7 @@
             \item Realspeicher: Ur-Adressraum, vom $\mu$Kernel verwaltet
             \item Speicherverwaltung(en), Paging usw.: vollständig außerhalb des $\mu$-Kernels realisiert
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-adressraumhierarchie.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-adressraumhierarchie.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -2279,14 +2101,14 @@
         Thread
         \begin{itemize*}
             \item innerhalb eines Adressraumesablaufende Aktivität
-            \item $\rightarrow$  Adressraumzuordnung ist essenziell für Threadkonzept (Code + Daten) \begin{itemize*} \item   Bindung an Adressraum: dynamisch oder fest \item   Änderung einer dynamischen Zuordnung: darf nur unter   vertrauenswürdiger Kontrolle erfolgen (sonst: fremde Adressräume   les- und korrumpierbar) \end{itemize*}
+            \item $\rightarrow$ Adressraumzuordnung ist essenziell für Threadkonzept (Code + Daten) \begin{itemize*} \item Bindung an Adressraum: dynamisch oder fest \item Änderung einer dynamischen Zuordnung: darf nur unter vertrauenswürdiger Kontrolle erfolgen (sonst: fremde Adressräume les- und korrumpierbar) \end{itemize*}
         \end{itemize*}
         \item
         Designentscheidung
         \begin{itemize*}
-            \item $\rightarrow$  Autonomieprinzip
-            \item $\rightarrow$  Konsequenz: Adressraumisolation
-            \item $\rightarrow$  entscheidender Grund zur Realisierung des Thread-Konzepts innerhalb des Mikrokernels
+            \item $\rightarrow$ Autonomieprinzip
+            \item $\rightarrow$ Konsequenz: Adressraumisolation
+            \item $\rightarrow$ entscheidender Grund zur Realisierung des Thread-Konzepts innerhalb des Mikrokernels
         \end{itemize*}
     \end{itemize*}
 
@@ -2297,14 +2119,14 @@
         Interprozess-Kommunikation
         \begin{itemize*}
             \item Kommunikation über Adressraumgrenzen: vertrauenswürdig kontrollierte Aufhebung der Isolation
-            \item $\rightarrow$  essenziell für (sinnvolles) Multitasking und -threading
+            \item $\rightarrow$ essenziell für (sinnvolles) Multitasking und -threading
         \end{itemize*}
         \item
         Designentscheidung
         \begin{itemize*}
-            \item $\rightarrow$  Integritätsprinzip
-            \item $\rightarrow$  wir haben schon: vertrauenswürdige Adressraumisolation im $\mu$Kernel
-            \item $\rightarrow$  grundlegendes IPC-Konzepts innerhalb des Mikrokernels (flexibel und dynamisch durch Server erweiterbar, analog Adressraumhierarchie)
+            \item $\rightarrow$ Integritätsprinzip
+            \item $\rightarrow$ wir haben schon: vertrauenswürdige Adressraumisolation im $\mu$Kernel
+            \item $\rightarrow$ grundlegendes IPC-Konzepts innerhalb des Mikrokernels (flexibel und dynamisch durch Server erweiterbar, analog Adressraumhierarchie)
         \end{itemize*}
     \end{itemize*}
 
@@ -2315,14 +2137,14 @@
         Thread-und Ressourcenbezeichner
         \begin{itemize*}
             \item müssen vertrauenswürdig vergeben (authentisch und i.A. persistent) und verwaltet(eindeutig und korrekt referenzierbar)werden
-            \item $\rightarrow$  essenziell für (sinnvolles) Multitasking und -threading
-            \item $\rightarrow$  essenziell für vertrauenswürdige Kernel-und Server-Schnittstellen
+            \item $\rightarrow$ essenziell für (sinnvolles) Multitasking und -threading
+            \item $\rightarrow$ essenziell für vertrauenswürdige Kernel-und Server-Schnittstellen
         \end{itemize*}
         \item
         Designentscheidung
         \begin{itemize*}
-            \item $\rightarrow$  Integritätsprinzip
-            \item $\rightarrow$  ID-Konzept innerhalb des Mikrokernels (wiederum: durch Server erweiterbar)
+            \item $\rightarrow$ Integritätsprinzip
+            \item $\rightarrow$ ID-Konzept innerhalb des Mikrokernels (wiederum: durch Server erweiterbar)
         \end{itemize*}
     \end{itemize*}
 
@@ -2346,7 +2168,7 @@
         \item
         Wahl der geeigneten Abstraktionen:
         \begin{itemize*}
-            \item kritischfür Verifizierbarkeit ( $\rightarrow$  Robustheit), Adaptivität und optimierte Performanz des Mikrokerns
+            \item kritischfür Verifizierbarkeit ( $\rightarrow$ Robustheit), Adaptivität und optimierte Performanz des Mikrokerns
         \end{itemize*}
         \item
         Bisherigen $\mu$-Kernel-Abstraktionskonzepte:
@@ -2360,7 +2182,7 @@
         Konsequenzen für Mikrokernel-Implementierung
         \begin{itemize*}
             \item müssen für jeden Prozessortyp neu implementiert werden
-            \item sind deshalb prinzipiell nicht portierbar $\rightarrow$  L3-und L4-Prototypen by J. Liedtke: 99\% Assemblercode
+            \item sind deshalb prinzipiell nicht portierbar $\rightarrow$ L3-und L4-Prototypen by J. Liedtke: 99\% Assemblercode
         \end{itemize*}
         \item
         innerhalb eines Mikrokernels sind
@@ -2380,7 +2202,7 @@
         \begin{itemize*}
             \item Mikrokernelmit akzeptabler Performanz: hardwarespezifische Implementierung minimalerforderlicher, vom Prozessortyp unabhängiger Abstraktionen
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-l4-ipc-performance.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-l4-ipc-performance.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -2433,17 +2255,17 @@
         \item
         Was haben wir gewonnen?
         \item
-        \cmark  Adressraumisolation für sämtlichen nichtvertrauenswürdigen Code
+        \cmark Adressraumisolation für sämtlichen nichtvertrauenswürdigen Code
         \item
-        \cmark  keine privilegierten Instruktionen in nvw. Code (Serverprozesse)
+        \cmark keine privilegierten Instruktionen in nvw. Code (Serverprozesse)
         \item
-        \cmark  geringe Größe (potenziell: Verifizierbarkeit) des Kernels
+        \cmark geringe Größe (potenziell: Verifizierbarkeit) des Kernels
         \item
-        \cmark  neben Robustheit: Modularitätund Adaptivitätdes Kernels
+        \cmark neben Robustheit: Modularitätund Adaptivitätdes Kernels
         \item
         Und was noch nicht?
         \begin{itemize*}
-            \item \xmark  Behandlung von Ausfällen ( $\rightarrow$  abstürzende Gerätetreiber ...)
+            \item \xmark Behandlung von Ausfällen ( $\rightarrow$ abstürzende Gerätetreiber ...)
         \end{itemize*}
     \end{itemize*}
 
@@ -2458,10 +2280,10 @@
         \item
         Anwendungsfehler sind es nicht
         \item
-        $\rightarrow$  kleiner Kernel = geringeres Risiko von
+        $\rightarrow$ kleiner Kernel = geringeres Risiko von
         Systemausfällen
         \item
-        $\rightarrow$  durch BS-Code in Serverprozessen:
+        $\rightarrow$ durch BS-Code in Serverprozessen:
         verbleibendes Risiko unabhängiger Teilausfälle von BS-Funktionalität
         (z.B. FS, Treiberprozesse, GUI, ...)
         \item
@@ -2472,7 +2294,7 @@
         = Mechanismen zur Behandlung Anwendungs-, Server- und
         Gerätetreiberfehlen
         \item
-        $\rightarrow$  Micro-Reboots
+        $\rightarrow$ Micro-Reboots
     \end{itemize*}
 
     Ansatz
@@ -2492,16 +2314,16 @@
         wir wollen:
         \item
         Systemausfälle verhindern durch Vermeidung von errors im Kernel
-        $\rightarrow$  höchste Priorität
+        $\rightarrow$ höchste Priorität
         \item
         Treiber-und Serverausfälle minimieren durch Verbergen ihrer
-        Auswirkungen $\rightarrow$  nachgeordnete Priorität
+        Auswirkungen $\rightarrow$ nachgeordnete Priorität
         (Best-Effort-Prinzip)
         \item
         Idee:
         \begin{itemize*}
-            \item Systemausfälle $\rightarrow$  $\mu$Kernel
-            \item Treiber-und Serverausfälle $\rightarrow$  Neustart durch spezialisierten Serverprozess
+            \item Systemausfälle $\rightarrow$ $\mu$Kernel
+            \item Treiber-und Serverausfälle $\rightarrow$ Neustart durch spezialisierten Serverprozess
         \end{itemize*}
     \end{itemize*}
 
@@ -2541,7 +2363,7 @@
         \item
         robustes Betriebssystems
         \item
-        $\rightarrow$  Schutz gegen Sichtbarwerden von
+        $\rightarrow$ Schutz gegen Sichtbarwerden von
         Fehlern(= Ausfälle) für Nutzer
         \item
         Fokus auf Anwendungsdomänen: Endanwender-Einzelplatzrechner (Desktop,
@@ -2560,9 +2382,9 @@
         Kommunikationsschnittstellen ...
         \begin{itemize*}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-minix-architektur.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-minix-architektur.png}
             \item ... für Anwendungen (weiß): Systemaufrufe im POSIX-Standard
-            \item ... für Serverprozesse (grau): \begin{itemize*} \item   untereinander: IPC (botschaftenbasiert) \item   mit Kernel: spezielle MINIX-API (kernel calls), für   Anwendungsprozesse gesperrt \end{itemize*}
+            \item ... für Serverprozesse (grau): \begin{itemize*} \item untereinander: IPC (botschaftenbasiert) \item mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt \end{itemize*}
         \end{itemize*}
         \item
         Betriebssystem-Serverprozesse:
@@ -2575,7 +2397,7 @@
         \item
         Netzwerkmanagement (Net)
         \item
-        Reincarnation Server (RS) $\rightarrow$  Micro-Reboots
+        Reincarnation Server (RS) $\rightarrow$ Micro-Reboots
         jeglicher Serverprozesse
         \item
         (u. a.) ...
@@ -2593,7 +2415,7 @@
         \item
         Implementierungstechnik für Micro-Reboots:
         \item
-        Prozesse zum Systemstart ( $\rightarrow$  Kernel
+        Prozesse zum Systemstart ( $\rightarrow$ Kernel
         Image): system, clock, init, rs
         \begin{itemize*}
             \item system, clock: Kernelprogramm
@@ -2632,13 +2454,13 @@
         \item
         Beziehung:
         \begin{itemize*}
-            \item Verbesserung von Robustheit \$\textbackslash Rightarrow\$ Verbesserung von Verfügbarkeit
+            \item Verbesserung von Robustheit $\rightarrow$ Verbesserung von Verfügbarkeit
             \item Robustheitsmaßnahmen hinreichend , nicht notwendig (hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
         \end{itemize*}
         \item
         eine weitere komplementäre NFE:
         \begin{itemize*}
-            \item Robustheit \$\textbackslash Rightarrow\$ Sicherheit (security)
+            \item Robustheit $\rightarrow$ Sicherheit (security)
         \end{itemize*}
     \end{itemize*}
 
@@ -2702,7 +2524,7 @@
         \item
         (begrenzt) dynamische Micro-Rebootsmöglich
         \item
-        $\rightarrow$  Maximierung der Uptime des Gesamtsystems
+        $\rightarrow$ Maximierung der Uptime des Gesamtsystems
     \end{itemize*}
 
     Hochverfügbarkeitsmechanismen:
@@ -2711,7 +2533,7 @@
         \item
         ,,High-Avalability-Manager'': Laufzeit-Monitor, der Systemdienste oder
         Anwendungsprozesse überwacht und neustartet
-        $\rightarrow$  $\mu$Reboot-Server
+        $\rightarrow$ $\mu$Reboot-Server
         \item
         ,,High-Availability-Client-Libraries'': Funktionen zur transparenten
         automatischen Reboot für ausgefallene Server-Verbindungen
@@ -2848,7 +2670,7 @@
         \item
         illegitime Ressourcennutzung, Ziel i.d.R.: hocheffektive Folgeangriffe
         \item
-        Manipulationvon Inhalten (\$\textbackslash rightarrow\$
+        Manipulationvon Inhalten ( $\rightarrow$
         Desinformation)
     \end{itemize*}
 
@@ -2861,9 +2683,9 @@
     \begin{itemize*}
         \item
         Verlust der Kontrolle über kritisches Wissen
-        (\$\textbackslash rightarrow\$ Risikotechnologien)
+        ( $\rightarrow$ Risikotechnologien)
         \item
-        immense wirtschaftliche Schäden (\$\textbackslash rightarrow\$
+        immense wirtschaftliche Schäden ( $\rightarrow$
         Technologieführer, Patentinhaber)
         \item
         z.B. Diebstahl von industriellem Know-How
@@ -2892,7 +2714,7 @@
         Registrierkassen)
         \item
         Erpressung von ausgewählten (oder schlicht großen ) Zielgruppen durch
-        vollendete, reversible Sabotage (\$\textbackslash rightarrow\$
+        vollendete, reversible Sabotage ( $\rightarrow$
         Verschlüsselung von Endanwenderinformationen)
     \end{itemize*}
 
@@ -2932,8 +2754,8 @@
         Anwendungen) modifiziert, um Administratorrechte zu erlangen
         \begin{itemize*}
             \item Administrator-bzw. Rootrechte: ermöglichen Zugriff auf alle Funktionen und Dienste eines Betriebssystems
-            \item Angreifer erlangt vollständige Kontrolle des Systems und kann \begin{itemize*} \item   Dateien (Programme) hinzufügen bzw. ändern \item   Prozesse überwachen \item   über die Netzverbindungen senden und empfangen \item   bei all dem Hintertüren für Durchführung und Verschleierung   zukünftiger Angriffe platziere \end{itemize*}
-            \item Ziele eines Rootkits: \begin{itemize*} \item   seine Existenz verbergen \item   zu verbergen, welche Veränderungen vorgenommen wurden \item   vollständige und irreversible Kontrolle über BS zu erlangen \end{itemize*}
+            \item Angreifer erlangt vollständige Kontrolle des Systems und kann \begin{itemize*} \item Dateien (Programme) hinzufügen bzw. ändern \item Prozesse überwachen \item über die Netzverbindungen senden und empfangen \item bei all dem Hintertüren für Durchführung und Verschleierung zukünftiger Angriffe platziere \end{itemize*}
+            \item Ziele eines Rootkits: \begin{itemize*} \item seine Existenz verbergen \item zu verbergen, welche Veränderungen vorgenommen wurden \item vollständige und irreversible Kontrolle über BS zu erlangen \end{itemize*}
         \end{itemize*}
         \item
         Ein erfolgreicher Root-Kit-Angriff ...
@@ -3008,7 +2830,7 @@
         \item
         physisch, organisatorisch, infrastrukturell
         \item
-        menschlich (\$\textbackslash rightarrow\$ Erpressung,
+        menschlich ( $\rightarrow$ Erpressung,
         socialengineering )
     \end{itemize*}
 
@@ -3027,7 +2849,7 @@
 
     Beides führt zu operationellen Risiken beim Betrieb eines IT-Systems
 
-    \$\textbackslash rightarrow\$ Aufgabe der Betriebssystemsicherheit:
+    $\rightarrow$ Aufgabe der Betriebssystemsicherheit:
     Auswirkungen operationeller Risiken reduzieren (wo diese nicht vermieden
     werden können...)
 
@@ -3050,7 +2872,7 @@
     \textbar{} \textbar{} Sicherheitsziele \textbar{} Welche
     Sicherheitsanforderungen muss das Betriebssystem erfüllen? \textbar{}
     \textbar{} Sicherheitspolitik \textbar{} Durch welche Strategien soll es
-    diese erfüllen? (\$\textbackslash rightarrow\$ Regelwerk) \textbar{}
+    diese erfüllen? ( $\rightarrow$ Regelwerk) \textbar{}
     \textbar{} Sicherheitsmechanismen \textbar{} Wie implementiert das
     Betriebssystem seine Sicherheitspolitik? \textbar{} \textbar{}
     Sicherheitsarchitektur \textbar{} Wo implementiert das Betriebssystem
@@ -3181,7 +3003,7 @@
         jedes Objekt hat einen Eigentümer
         \item
         Eigentümer legen Zugriffsrechte an Objekten fest
-        (\$\textbackslash rightarrow\$ DAC)
+        ( $\rightarrow$ DAC)
         \item
         es gibt drei Zugriffsrechte: read, write, execute
         \item
@@ -3243,9 +3065,9 @@
         Änderungsbeispiel: kühnhauser nimmt krause in Gruppe vsbs auf ...
         \item
         Rechteausbreitung ( privilegeescalation ), hier verursacht durch eine
-        legale Nutzeraktion (\$\textbackslash rightarrow\$ DAC)
+        legale Nutzeraktion ( $\rightarrow$ DAC)
         \begin{itemize*}
-            \item (Sicherheitseigenschaft: HRU Safety , $\rightarrow$  ,,Systemsicherheit'')
+            \item (Sicherheitseigenschaft: HRU Safety , $\rightarrow$ ,,Systemsicherheit'')
         \end{itemize*}
     \end{itemize*}
 
@@ -3271,10 +3093,10 @@
         \item
         sämtliche DAC-Zugriffsrechte (die gibt es auch) müssen mit einer
         Hierarchie der Integritätsklassen konsistent sein
-        (\$\textbackslash rightarrow\$ ein bisschen MAC)
+        ( $\rightarrow$ ein bisschen MAC)
         \item
         Nutzer können diese Konsistenzanforderung selektiv außer Kraft setzen
-        (\$\textbackslash rightarrow\$ DAC)
+        ( $\rightarrow$ DAC)
     \end{itemize*}
 
 
@@ -3293,7 +3115,7 @@
         Integrität (Biba-Sicherheitsmodell) {[}Biba77{]}
         \item
         wird genutzt, um legale Informationsflüsse zwischen Subjekten und
-        Objekten zu modellieren $\rightarrow$  Schutz vor
+        Objekten zu modellieren $\rightarrow$ Schutz vor
         illegalem Überschreiben
         \item
         leitet Zugriffsrechte aus Informationsflüssen ab:
@@ -3320,7 +3142,7 @@
         {[}BeLa76{]}
         \item
         elevation-Mechanismus: verändert nach Nutzeranfrage
-        (\$\textbackslash rightarrow\$ DAC) sowohl acm als auch
+        ( $\rightarrow$ DAC) sowohl acm als auch
         \$\textbackslash leq\textbackslash rightarrow\$ konsistenzerhaltend?
         \item
         andere BS-Operationen: verändern unmittelbar nur acm (z.B. mittels
@@ -3338,7 +3160,7 @@
         Sicherheitsmechanismen: Datenstrukturen und Algorithmen, welche die
         Sicherheitseigenschaften eines Betriebssystems implementieren.
         \begin{itemize*}
-            \item $\rightarrow$  Sicherheitsmechanismen benötigt man zur Herstellung jeglicher Sicherheitseigenschaften (auch jener, die in unseren Modellen implizit angenommen werden!)
+            \item $\rightarrow$ Sicherheitsmechanismen benötigt man zur Herstellung jeglicher Sicherheitseigenschaften (auch jener, die in unseren Modellen implizit angenommen werden!)
             \item Nutzerauthentisierung ( login - Dientsprogramm, Passwort-Hashing, ...)
             \item Autorisierungsinformationen (Metainformationen über Rechte, MLS-Klassen, TE-Typen, ...)
             \item Autorisierungsmechanismen (Rechteprüfung, Politikadministration, ...)
@@ -3356,13 +3178,13 @@
     \begin{itemize*}
         \item
         müssen Subjekte (Nutzer) bzw. Objekte (Dateien, Sockets ...) mit
-        Rechten assoziieren $\rightarrow$  Implementierung der
+        Rechten assoziieren $\rightarrow$ Implementierung der
         Zugriffsmatrix ( acm ), diese ist:
         \begin{itemize*}
-            \item groß (\$\textbackslash rightarrow\$ Dateianzahl auf Fileserver)
+            \item groß ( $\rightarrow$ Dateianzahl auf Fileserver)
             \item dünn besetzt
             \item in Größe und Inhalt dynamisch veränderlich
-            \item $\rightarrow$  effiziente Datenstruktur?
+            \item $\rightarrow$ effiziente Datenstruktur?
         \end{itemize*}
         \item
         Lösung: verteilte Implementierung der acm als Spaltenvektoren, deren
@@ -3407,7 +3229,7 @@
         \item
         3 - elementige Rechtemenge
         \item
-        $\rightarrow$  9 Bits
+        $\rightarrow$ 9 Bits
         \item
         dessen Implementierung kodiert in 16-Bit-Wort: 1 1 1 1 0 1 1 0 1
         \item
@@ -3417,10 +3239,10 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{$ }\FunctionTok{ls}\NormalTok{ {-}alF}
-    %\ExtensionTok{drwxr{-}xr{-}x}\NormalTok{  2 amthor amthor 4096    2017{-}11{-}16 12:01 ./}
-    %\ExtensionTok{drwxr{-}xr{-}x}\NormalTok{ 31 amthor amthor 4096    2017{-}11{-}07 12:42 ../}
-    %\ExtensionTok{{-}rw{-}rw{-}r{-}{-}}\NormalTok{  1 amthor vsbs   397032  2017{-}11{-}19 12:12 paper.pdf}
-    %\ExtensionTok{{-}rw{-}{-}{-}{-}{-}{-}{-}}\NormalTok{  1 amthor amthor 120064  2017{-}02{-}07 07:56 draft.tex}
+    %\ExtensionTok{drwxr{-}xr{-}x}\NormalTok{ 2 amthor amthor 4096 2017{-}11{-}16 12:01 ./}
+    %\ExtensionTok{drwxr{-}xr{-}x}\NormalTok{ 31 amthor amthor 4096 2017{-}11{-}07 12:42 ../}
+    %\ExtensionTok{{-}rw{-}rw{-}r{-}{-}}\NormalTok{ 1 amthor vsbs 397032 2017{-}11{-}19 12:12 paper.pdf}
+    %\ExtensionTok{{-}rw{-}{-}{-}{-}{-}{-}{-}}\NormalTok{ 1 amthor amthor 120064 2017{-}02{-}07 07:56 draft.tex}
     %\end{Highlighting}
     %\end{Shaded}
 
@@ -3449,7 +3271,7 @@
     \begin{itemize*}
         \item
         jeder Nutzer wird durch Eintrag in einer Systemdatei ( /etc/group )
-        einer oder mehreren Gruppen zugeordnet(\$\textbackslash rightarrow\$
+        einer oder mehreren Gruppen zugeordnet( $\rightarrow$
         ACL: ,, g '' Rechte)
     \end{itemize*}
 
@@ -3481,7 +3303,7 @@
             \item Nachteile ggü. zentral implementierter Matrix? (DAC vs. MAC, Administration, Analyse ...)
         \end{itemize*}
         \item
-        $\rightarrow$  Übung 2
+        $\rightarrow$ Übung 2
     \end{itemize*}
 
 
@@ -3519,7 +3341,7 @@
         \item
         Nutzer können (i.A.) jedoch keine Prozess-UIDs manipulieren
         \item
-        $\rightarrow$  und genau so sollte es gem.
+        $\rightarrow$ und genau so sollte es gem.
         Unix-Sicherheitspolitik auch sein!
     \end{itemize*}
 
@@ -3529,7 +3351,7 @@
         \item
         Unix-Philosophie ,, everythingisa file '': BS-Ressourcen wie Sockets,
         IPC-Instanzen, E/A-Gerätehandler als Datei repräsentiert
-        $\rightarrow$  identische Schutzmechanismen zum
+        $\rightarrow$ identische Schutzmechanismen zum
         regulären Dateisystem
         \item
         somit: Autorisierungsmechanismen zur Begrenzung des Zugriffs auf
@@ -3561,7 +3383,7 @@
         Programmeigentümers (im Bsp.: root ) seine Rechte bestimmt
         \item
         Technik: eine von UID abweichende Prozess-Metainformation
-        (\$\textbackslash rightarrow\$ PCB) effektive UID (eUID) wird
+        ( $\rightarrow$ PCB) effektive UID (eUID) wird
         tatsächlich zur Autorisierung genutzt
         \item
         \texttt{-rws\ rws\ r-x\ 1\ root\ root\ 2\ 2011-10-01\ 16:00\ print}
@@ -3632,7 +3454,7 @@
         Idee SELinux: Sicherheitspolitikals eigene BS-Abstraktion
         \begin{itemize*}
             \item zentrale Datenstruktur für Regeln, die erlaubte Zugriffe auf ein SELinux-System definiert
-            \item erlaubt Modifikation und Anpassung an verschiedene Sicherheitsanforderungen $\rightarrow$  NFE Adaptivität ...
+            \item erlaubt Modifikation und Anpassung an verschiedene Sicherheitsanforderungen $\rightarrow$ NFE Adaptivität ...
         \end{itemize*}
     \end{itemize*}
 
@@ -3645,7 +3467,7 @@
         \item
         Auswertung der Sicherheitspolitik: Security- Server , implementiert
         als Linux-Kernelmodul(Technik: LSM, Linux Security Module );
-        $\rightarrow$  entscheidet über alle Zugriffe auf alle
+        $\rightarrow$ entscheidet über alle Zugriffe auf alle
         Objekte
         \item
         Durchsetzung der Sicherheitspolitik : LSM Hooks (generische
@@ -3728,7 +3550,7 @@
     \subparagraph{Autorisierungsregeln}
 
     ... werden systemweit festgelegt in dessen Sicherheitspolitik
-    (\$\textbackslash rightarrow\$ MAC):
+    ( $\rightarrow$ MAC):
 
     Access Vector Rules
 
@@ -3766,7 +3588,7 @@
         \item
         Prozess wechselt in einen aufgabenspezifischen Typ \texttt{passwd\_t}
         \item
-        $\rightarrow$  massiv verringertes
+        $\rightarrow$ massiv verringertes
         Missbrauchspotenzial!
         \item
         %\includegraphics{Assets/AdvancedOperatingSystems-passwd-lösung2.png}
@@ -3784,15 +3606,15 @@
         \begin{itemize*}
             \item Einschränkung von erlaubten Typtransitionen (Welches Programm darf mit welchem Typ ausgeführt werden?)
             \item weitere Abstraktionsschicht: rollenbasierte Regeln (RBAC)
-            \item $\rightarrow$  Schutz gegen nicht vertrauenswürdige Nutzer (vs. nvw. Software)
+            \item $\rightarrow$ Schutz gegen nicht vertrauenswürdige Nutzer (vs. nvw. Software)
         \end{itemize*}
         \item
         Ergebnis:
         \begin{itemize*}
-            \item \cmark  extrem feingranulare, anwendungsspezifische Sicherheitspolitik zur Vermeidung von privilege escalation Angriffen
-            \item \cmark  obligatorische Durchsetzung (\$\textbackslash rightarrow\$ MAC, zusätzlich zu Standard-Unix-DAC)
+            \item \cmark extrem feingranulare, anwendungsspezifische Sicherheitspolitik zur Vermeidung von privilege escalation Angriffen
+            \item \cmark obligatorische Durchsetzung ( $\rightarrow$ MAC, zusätzlich zu Standard-Unix-DAC)
             \item O Softwareentwicklung: Legacy-Linux-Anwendungen laufen ohne Einschränkung, jedoch
-            \item \xmark  Politikentwicklung und -administrationkomplex!
+            \item \xmark Politikentwicklung und -administrationkomplex!
         \end{itemize*}
     \end{itemize*}
 
@@ -3800,7 +3622,7 @@
     \subparagraph{Weitere Informationen zu
         SELinux}
 
-    \$\textbackslash rightarrow\$ MAC-Mechanismen ala SELinux sind
+    $\rightarrow$ MAC-Mechanismen ala SELinux sind
     heutzutage in vielerlei Software bereits zu finden:
 
     \begin{itemize*}
@@ -3827,7 +3649,7 @@
         \begin{itemize*}
             \item all die obigen...
             \item kryptografische Hardwareunterstützung: Intel SGX Enclaves
-            \item sprachbasiert: \begin{itemize*} \item   streng typisierte Sprachen und \emph{managed code} : Microsoft   Singularity {[}HLAA05{]} \item   speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel):   \href{https://www.redox-os.org/}{RedoxOS} \end{itemize*}
+            \item sprachbasiert: \begin{itemize*} \item streng typisierte Sprachen und \emph{managed code} : Microsoft Singularity {[}HLAA05{]} \item speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel): \href{https://www.redox-os.org/}{RedoxOS} \end{itemize*}
             \item isolierte Laufzeitumgebungen: Virtualisierung (Kap. 6)
         \end{itemize*}
     \end{itemize*}
@@ -3842,7 +3664,7 @@
         Ziel: Schutz von sicherheitskritischen Anwendungen durch vollständige,
         hardwarebasierte Isolation
         \item
-        $\rightarrow$  strenggenommen kein BS-Mechanismus:
+        $\rightarrow$ strenggenommen kein BS-Mechanismus:
         Anwendungen müssen dem BS nicht mehr vertrauen! (AR-Schutz, Wechsel
         von Privilegierungsebenen, ...)
         \item
@@ -3870,9 +3692,9 @@
         \item
         Enclaves: Erzeugung
         \begin{itemize*}
-            \item Erzeugen: App. $\rightarrow$  Syscall $\rightarrow$  BS-Instruktion an CPU (ECREATE)
-            \item Seiten hinzufügen: App. $\rightarrow$  Syscall $\rightarrow$  BS-Instruktion an CPU (EADD) \begin{itemize*} \item   Metainformationen für jede hinzugefügte Seite als Teil der   EPC-Datenstruktur (u.a.: Enklave - ID, Zugriffsrechte,   vAR-Adresse) \end{itemize*}
-            \item Initialisieren: App. $\rightarrow$  Syscall $\rightarrow$  BS-Instruktion an CPU (EINIT) \begin{itemize*} \item   finalisiert gesamten Speicherinhalt für diese Enclave \item   CPU erzeugt Hashwert = eindeutige Signatur des Enclave -   Speicherinhalts \item   falls BS bis zu diesem Punkt gegen Integrität der Anwendung   verstoßen hat: durch Vergleich mit von dritter Seite generiertem   Hashwert feststellbar! \end{itemize*}
+            \item Erzeugen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (ECREATE)
+            \item Seiten hinzufügen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (EADD) \begin{itemize*} \item Metainformationen für jede hinzugefügte Seite als Teil der EPC-Datenstruktur (u.a.: Enklave - ID, Zugriffsrechte, vAR-Adresse) \end{itemize*}
+            \item Initialisieren: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (EINIT) \begin{itemize*} \item finalisiert gesamten Speicherinhalt für diese Enclave \item CPU erzeugt Hashwert = eindeutige Signatur des Enclave - Speicherinhalts \item falls BS bis zu diesem Punkt gegen Integrität der Anwendung verstoßen hat: durch Vergleich mit von dritter Seite generiertem Hashwert feststellbar! \end{itemize*}
         \end{itemize*}
         \item
         Enclave - Zustandsmodell (vereinfacht) :
@@ -3880,12 +3702,12 @@
         %\item \includegraphics{Assets/AdvancedOperatingSystems-SGX-enclaves-model.png}
         %\end{itemize*}
         \item
-        Zugriff: App. $\rightarrow$  CPU-Instruktionen in User
+        Zugriff: App. $\rightarrow$ CPU-Instruktionen in User
         Mode (EENTER, EEXIT)
         \begin{itemize*}
             \item CPU erfordert, dass EPC-Seiten in vARder zugreifenden Task
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -3903,11 +3725,11 @@
         \item
         Konzept hardwarebasierter Isolation ...
         \begin{itemize*}
-            \item \cmark  liefert erstmals die Möglichkeit zur Durchsetzung von Sicherheitspolitiken auf Anwendungsebene
+            \item \cmark liefert erstmals die Möglichkeit zur Durchsetzung von Sicherheitspolitiken auf Anwendungsebene
             \item O setzt Vertrauen in korrekte (und nicht böswillige) Hardwarevoraus
             \item O Dokumentation und Entwicklerunterstützung (im Ausbau ...)
-            \item \xmark  schützt mittels Enclaves einzelne Anwendungen, aber nicht das System
-            \item \xmark  steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. $\mu$Kernel...): \begin{itemize*} \item   Performanz {[}WeAK18{]} \item   Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93   MiBnutzbar) \item   $\rightarrow$  komplementäre NFE:   Speichereffizienz! \end{itemize*}
+            \item \xmark schützt mittels Enclaves einzelne Anwendungen, aber nicht das System
+            \item \xmark steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. $\mu$Kernel...): \begin{itemize*} \item Performanz {[}WeAK18{]} \item Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93 MiBnutzbar) \item $\rightarrow$ komplementäre NFE: Speichereffizienz! \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -3924,7 +3746,7 @@
             \item Verstehen des Referenzmonitorprinzips
             \item frühe Forschungen zu Betriebssystemsicherheit in 1970er-1980er Jahren durch US-Verteidigungsministerium
             \item Schlüsselveröffentlichung: Anderson-Report(1972){[}Ande72{]}
-            \item $\rightarrow$  fundamentalen Eigenschaften zur Charakterisierung von Sicherheitsarchitekturen
+            \item $\rightarrow$ fundamentalen Eigenschaften zur Charakterisierung von Sicherheitsarchitekturen
         \end{itemize*}
         \item
         Begriffe des Referenzmonitorprinzips kennen wir schon:
@@ -3941,15 +3763,15 @@
         \item
         Idee:
         \begin{itemize*}
-            \item $\rightarrow$  sämtliche Autorisierungsentscheidungen durch einen zentralen (abstrakten) Mechanismus = Referenzmonitor
-            \item Bewertet jeden Zugriffsversuch eines Subjekts auf Objekt durch Anwendung einer Sicherheitspolitik (security policy) \begin{itemize*} \item   $\rightarrow$  vgl. SELinux \end{itemize*}
+            \item $\rightarrow$ sämtliche Autorisierungsentscheidungen durch einen zentralen (abstrakten) Mechanismus = Referenzmonitor
+            \item Bewertet jeden Zugriffsversuch eines Subjekts auf Objekt durch Anwendung einer Sicherheitspolitik (security policy) \begin{itemize*} \item $\rightarrow$ vgl. SELinux \end{itemize*}
             \item somit: Architekturbeschreibung, wie Zugriffe auf Ressourcen (z.B. Dateien) auf solche Zugriffe, die Sicherheitspolitik erlaubt, eingeschränkt werden
         \end{itemize*}
         \item
         Autorisierungsentscheidungen
         \begin{itemize*}
             \item basieren auf sicherheitsrelevanten Eigenschaften jedes Subjekts und jedes Objekts
-            \item einige Beispiele kennen wir schon: \begin{itemize*} \item   Nutzname, Unix-Gruppe \item   Prozess-ID, INode-Nummer \item   SELinux-Typ \end{itemize*}
+            \item einige Beispiele kennen wir schon: \begin{itemize*} \item Nutzname, Unix-Gruppe \item Prozess-ID, INode-Nummer \item SELinux-Typ \end{itemize*}
         \end{itemize*}
         \item
         Architekturkomponenten in a nutshell:
@@ -3965,18 +3787,18 @@
         \item
         (RM 1) bei sämtlichen Subjekt/Objekt-Interaktionen involviert sind
         \begin{itemize*}
-            \item $\rightarrow$  Unumgehbarkeit ( total mediation )
+            \item $\rightarrow$ Unumgehbarkeit ( total mediation )
         \end{itemize*}
         \item
         (RM 2) geschützt sind vor unautorisierter Manipulation
         \begin{itemize*}
-            \item $\rightarrow$  Manipulationssicherheit ( tamperproofness )
+            \item $\rightarrow$ Manipulationssicherheit ( tamperproofness )
         \end{itemize*}
         \item
         (RM 3) hinreichend klein und wohlstrukturiert sind, um formalen
         Analysemethoden zugänglich zu sein
         \begin{itemize*}
-            \item $\rightarrow$  Verifizierbarkeit ( verifyability )
+            \item $\rightarrow$ Verifizierbarkeit ( verifyability )
         \end{itemize*}
     \end{itemize*}
 
@@ -4062,8 +3884,8 @@
         Objektmanager: implementiert in allen BS-Dienstenmittels,, Linux
         Security Module Framework ''
         \begin{itemize*}
-            \item jedes Subsystemvon SELinux , das zuständig für \begin{enumerate*}  \item   Erzeugung neuer Objekte \item   Zugriff auf existierende Objekte \end{enumerate*}
-            \item Beispiele: \begin{enumerate*}  \item   Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse) \item   Dateisystem (behandelte Objekte: hauptsächlich Dateien) \item   Networking/Socket-Subsystem (behandelte Objekte: {[}verschiedene   Typen von{]} Sockets) \item   u.a. \end{enumerate*}
+            \item jedes Subsystemvon SELinux , das zuständig für \begin{enumerate*} \item Erzeugung neuer Objekte \item Zugriff auf existierende Objekte \end{enumerate*}
+            \item Beispiele: \begin{enumerate*} \item Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse) \item Dateisystem (behandelte Objekte: hauptsächlich Dateien) \item Networking/Socket-Subsystem (behandelte Objekte: {[}verschiedene Typen von{]} Sockets) \item u.a. \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -4090,8 +3912,8 @@
         Durch Analyse von Linux - Dateisystem und zugehöriger API wurden zu
         überwachenden Objektklassen identifiziert:
         \begin{itemize*}
-            \item ergibt sich unmittelbar aus Linux-API: \begin{itemize*} \item   Dateien \item   Verzeichnisse \item   Pipes \end{itemize*}
-            \item feingranularere Objektklassen für durch Dateien repräsentierte Objekte (Unix-Prinzip: ,,everythingisa file''!): \begin{itemize*} \item   reguläre Dateien \item   symbolische Links \item   zeichenorientierte Geräte \item   blockorientierte Geräte \item   FIFOs \item   Unix-Domain Sockets (lokale Sockets) \end{itemize*}
+            \item ergibt sich unmittelbar aus Linux-API: \begin{itemize*} \item Dateien \item Verzeichnisse \item Pipes \end{itemize*}
+            \item feingranularere Objektklassen für durch Dateien repräsentierte Objekte (Unix-Prinzip: ,,everythingisa file''!): \begin{itemize*} \item reguläre Dateien \item symbolische Links \item zeichenorientierte Geräte \item blockorientierte Geräte \item FIFOs \item Unix-Domain Sockets (lokale Sockets) \end{itemize*}
         \end{itemize*}
         \item
         Permissions (Zugriffsrechte)
@@ -4102,7 +3924,7 @@
         Permissions: abgeleitet aus Dienstleistungen, die Linux-Dateisystem
         anbietet
         \item
-        $\rightarrow$  Objektklassen gruppieren verschiedene
+        $\rightarrow$ Objektklassen gruppieren verschiedene
         Arten von Zugriffsoperationen auf verschiende Arten von Objekten
         \item
         z.B. Permissions für alle ,,Datei''-Objektklassen (Auswahl ...): read,
@@ -4232,10 +4054,10 @@
         t\_i\$
         \item
         Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische
-        Bildrate (24\textasciitilde48 fps $\rightarrow$  1/24
+        Bildrate (24\textasciitilde48 fps $\rightarrow$ 1/24
         ... 1/48 s)
         \item
-        $\rightarrow$  Berücksichtigung bei Scheduling,
+        $\rightarrow$ Berücksichtigung bei Scheduling,
         Interruptbehandlung, Speicherverwaltung, ... erforderlich!
     \end{itemize*}
 
@@ -4334,8 +4156,8 @@
         \item
         typische Unterscheidung:
         \begin{itemize*}
-            \item Periodische Prozesse \begin{itemize*} \item   zeitgesteuert (typisch: periodische Sensorauswertung) \item   oft: kritische Aktivitäten $\rightarrow$  harte   Fristen \end{itemize*}
-            \item Aperiodische Prozesse \begin{itemize*} \item   ereignisgesteuert \item   Abhängig von Anwendung: harte oder weiche Fristen, ggf. sogar   Nicht-Echtzeit \end{itemize*}
+            \item Periodische Prozesse \begin{itemize*} \item zeitgesteuert (typisch: periodische Sensorauswertung) \item oft: kritische Aktivitäten $\rightarrow$ harte Fristen \end{itemize*}
+            \item Aperiodische Prozesse \begin{itemize*} \item ereignisgesteuert \item Abhängig von Anwendung: harte oder weiche Fristen, ggf. sogar Nicht-Echtzeit \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -4369,21 +4191,21 @@
         \item
         Fristen:
         \begin{itemize*}
-            \item hart oder weich (anwendungsabhängig) \begin{itemize*} \item   innerhalb einer Anwendung sind sowohl Prozesse mit harten oder   weichen Fristen möglich \item   Frist: spätestens am Ende der aktuellen Periode, möglich auch   frühere Frist \end{itemize*}
+            \item hart oder weich (anwendungsabhängig) \begin{itemize*} \item innerhalb einer Anwendung sind sowohl Prozesse mit harten oder weichen Fristen möglich \item Frist: spätestens am Ende der aktuellen Periode, möglich auch frühere Frist \end{itemize*}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
         \end{itemize*}
         \item
         Modellierung:
         \begin{itemize*}
             \item unendliche Folge identischer Aktivierungen: Instanzen, aktiviert mit konstanter Rate (Periode)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
         \end{itemize*}
         \item
         Aufgaben des Betriebssystems:
         \begin{itemize*}
-            \item WennalleSpezifikationeneingehaltenwerden-muss Betriebssystem garantieren, dass \begin{enumerate*}  \item   zeitgesteuerte periodische Prozesse: mit ihrer spezifizierten Rate   aktiviert werden und ihre Frist einhalten können \item   ereignisgesteuerte periodische Prozesse: ihre Frist einhalten   können \end{enumerate*}
+            \item WennalleSpezifikationeneingehaltenwerden-muss Betriebssystem garantieren, dass \begin{enumerate*} \item zeitgesteuerte periodische Prozesse: mit ihrer spezifizierten Rate aktiviert werden und ihre Frist einhalten können \item ereignisgesteuerte periodische Prozesse: ihre Frist einhalten können \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -4394,7 +4216,7 @@
         \item
         typisch für
         \begin{itemize*}
-            \item unregelmäßig auftretende Ereignisse, z.B.: \begin{itemize*} \item   Überfahren der Spurgrenzen, Unterschreiten des Sicherheitsabstands   $\rightarrow$  Reaktion des Fahrassistenzsystems \item   Nutzereingaben in Multimediasystemen   (\$\textbackslash rightarrow\$ Spielkonsole) \end{itemize*}
+            \item unregelmäßig auftretende Ereignisse, z.B.: \begin{itemize*} \item Überfahren der Spurgrenzen, Unterschreiten des Sicherheitsabstands $\rightarrow$ Reaktion des Fahrassistenzsystems \item Nutzereingaben in Multimediasystemen ( $\rightarrow$ Spielkonsole) \end{itemize*}
         \end{itemize*}
         \item
         Prozessaktivierung
@@ -4416,7 +4238,7 @@
         \begin{itemize*}
             \item bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -4500,7 +4322,7 @@
         \end{itemize*}
         \begin{enumerate*}
 
-            \item Wie müssen die Ressourcen verwaltet werden? (\$\textbackslash rightarrow\$ CPU, Speicher, E/A, ...)
+            \item Wie müssen die Ressourcen verwaltet werden? ( $\rightarrow$ CPU, Speicher, E/A, ...)
             \item Sind neue Abstraktionen, Paradigmen (Herangehensweisen) und entsprechende Komponenten erforderlich (oder günstig)?
         \end{enumerate*}
         \item
@@ -4637,7 +4459,7 @@
         \item
         Prozessorlast
         \begin{itemize*}
-            \item \$U\$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$  Auslastungsfaktor
+            \item \$U\$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$ Auslastungsfaktor
         \end{itemize*}
         \item
         Planbarkeitsanalyse einer Prozessmenge
@@ -4649,7 +4471,7 @@
         Beispiel für \$n=2\$
         \begin{itemize*}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
             \item Obere Grenze des Prozessor-Auslastungsfaktors für zwei periodische Prozesse als Funktion des Verhältnisses ihrer Perioden.
             \item (Abb. nach {[}Buttazzo97{]} Bild 4.7, S. 90)
         \end{itemize*}
@@ -4694,21 +4516,21 @@
         \end{itemize*}
         \item Beweis: Obere Auslastungsgrenze bei EDF
         \begin{itemize*}
-            \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar \$\textbackslash Leftrightarrow\$: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\textbackslash leq 1\$
-            \item \$\textbackslash Leftarrow\$: \$U\textgreater1\$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
-            \item \$\textbackslash Rightarrow\$: Beweis durch Widerspruch. Annahme: \$U\textbackslash leq 1\$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt \$t\_2\$, z.B.:
+            \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\leftrightarrow$: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\textbackslash leq 1\$
+            \item $\leftarrow$: \$U\textgreater1\$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
+            \item $\rightarrow$: Beweis durch Widerspruch. Annahme: \$U\textbackslash leq 1\$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt \$t\_2\$, z.B.:
             %\begin{itemize*} \item \includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png} \end{itemize*}
             \item Beobachtungen an diesem Schedule:
             \begin{itemize*}
-                \item   \$exists\$ ein längstes, kontinuierliches Rechenintervall   \${[}t\_1,t\_2{]}\$, in welchem nur Prozessinstanzen mit Fristen   \$\textbackslash leq t\_2\$ rechnen
-                \item   die Gesamtrechenzeit \$C\_\{bad\}\$ aller Prozesse in   \${[}t\_1,t\_2{]}\$ muss die verfügbare Prozessorzeit übersteigen:   \$C\_\{bad\} \textgreater{} t\_2-t\_1\$ (sonst: keine   Fristverletzung an \$t\_2\$)
-                \item   Anwesenheit in \${[}t\_1,t\_2{]}\$ leitet sich davon ab, ob   (genauer: wie oft) die Periode eines Prozesses in \$t\_2-t\_1\$   passt: \$t\_i\$ in   \${[}t\_1,t\_2{]}\textbackslash Leftrightarrow\textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor   \textgreater0\$
-                \item   Damit ist \$C\_\{bad\}\$ die Summe der Rechenzeiten aller   Prozessinstanzen, die garantiert in \${[}t\_1,t\_2{]}\$ sind,   mithin: \$C\_\{bad\}=\textbackslash sum\_\{i=1\}\^{}n   \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor   C\_i\$
-                \item   Im Beispiel: \$t\_1... t\_3\$ in \${[}t\_1,t\_2{]}\$, folglich:   \$C\_\{bad\}= 2 C\_1 + 1 C\_2 + 1 C\_3\$
-                \item   Zu zeigen: Beobachtung \$C\_\{bad\}\textgreater{} t\_2-t\_1\$   widerspricht Annahme \$U\textbackslash leq 1\$.
-                \item   Es gilt \$\textbackslash sum\_\{i=1\}\^{}n   \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor   C\_i\textbackslash leq\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{t\_2-t\_1\}\{T\_i\}C\_i\$   wegen Abrundung.
-                \item   Mit   \$U=\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{C\_i\}\{T\_i\}\$   folgt daraus \$C\_\{bad\}\textbackslash leq(t\_2-t\_1)U\$
-                \item   \$C\_\{bad\}\textgreater t\_2-t\_1\$ entspricht also   \$(t\_2-t\_1)U\textgreater t\_2-t\_1\$ und somit   \$U\textgreater1\$. Widerspruch zur Annahme!
+                \item \$exists\$ ein längstes, kontinuierliches Rechenintervall \${[}t\_1,t\_2{]}\$, in welchem nur Prozessinstanzen mit Fristen \$\textbackslash leq t\_2\$ rechnen
+                \item die Gesamtrechenzeit \$C\_\{bad\}\$ aller Prozesse in \${[}t\_1,t\_2{]}\$ muss die verfügbare Prozessorzeit übersteigen: \$C\_\{bad\} \textgreater{} t\_2-t\_1\$ (sonst: keine Fristverletzung an \$t\_2\$)
+                \item Anwesenheit in \${[}t\_1,t\_2{]}\$ leitet sich davon ab, ob (genauer: wie oft) die Periode eines Prozesses in \$t\_2-t\_1\$ passt: \$t\_i\$ in \${[}t\_1,t\_2{]}\textbackslash Leftrightarrow\textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor \textgreater0\$
+                \item Damit ist \$C\_\{bad\}\$ die Summe der Rechenzeiten aller Prozessinstanzen, die garantiert in \${[}t\_1,t\_2{]}\$ sind, mithin: \$C\_\{bad\}=\textbackslash sum\_\{i=1\}\^{}n \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor C\_i\$
+                \item Im Beispiel: \$t\_1... t\_3\$ in \${[}t\_1,t\_2{]}\$, folglich: \$C\_\{bad\}= 2 C\_1 + 1 C\_2 + 1 C\_3\$
+                \item Zu zeigen: Beobachtung \$C\_\{bad\}\textgreater{} t\_2-t\_1\$ widerspricht Annahme \$U\textbackslash leq 1\$.
+                \item Es gilt \$\textbackslash sum\_\{i=1\}\^{}n \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor C\_i\textbackslash leq\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{t\_2-t\_1\}\{T\_i\}C\_i\$ wegen Abrundung.
+                \item Mit \$U=\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{C\_i\}\{T\_i\}\$ folgt daraus \$C\_\{bad\}\textbackslash leq(t\_2-t\_1)U\$
+                \item \$C\_\{bad\}\textgreater t\_2-t\_1\$ entspricht also \$(t\_2-t\_1)U\textgreater t\_2-t\_1\$ und somit \$U\textgreater1\$. Widerspruch zur Annahme!
             \end{itemize*}
         \end{itemize*}
     \end{itemize*}
@@ -4739,7 +4561,7 @@
         \item
         Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von
         \$t\_2\$ die gleiche Priorität wie Instanz A von \$t\_1\$ hat (usw.)
-        $\rightarrow$  keine unnötige Verdrängung
+        $\rightarrow$ keine unnötige Verdrängung
     \end{itemize*}
 
     Vergleich: 100\% Prozessorauslastung
@@ -4766,7 +4588,7 @@
             \item statisch: jeweils eine Warteschlange pro Priorität:
             \item Einfügen und Entfernen von Tasks: \$O(1)\$
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
         \end{itemize*}
         \item
         EDF
@@ -4774,7 +4596,7 @@
             \item dynamisch: balancierter Binärbaum zur Sortierung nach Prioritäten:
             \item Einfügen und Entfernen von Tasks: \$O(log\textbackslash{} n)\$
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -4784,14 +4606,14 @@
         \item
         Konkretisierung des Betrachtungswinkels
         \begin{itemize*}
-            \item RM und EDF wurden entwickelt insbesondere für Echtzeit-Regelsysteme $\rightarrow$  ohne Berücksichtigung von Multimediasystemen
-            \item Multimediasysteme $\rightarrow$  andere Probleme, schwächere Annahmen: spezialisierte Scheduling-Algorithmen
+            \item RM und EDF wurden entwickelt insbesondere für Echtzeit-Regelsysteme $\rightarrow$ ohne Berücksichtigung von Multimediasystemen
+            \item Multimediasysteme $\rightarrow$ andere Probleme, schwächere Annahmen: spezialisierte Scheduling-Algorithmen
             \item gehen meist auch von EDF und/oder RM als Grundlage aus
         \end{itemize*}
         \item
         Betrachteter Algorithmus:
         \begin{itemize*}
-            \item Beispielfür spezialisierten Scheduling-Algorithmus: \begin{itemize*} \item   RC-Algorithmus - entwickelt an University of Texas \item   Anpassung von EDF an Charakteristika von Multimedia-Anwendungen \end{itemize*}
+            \item Beispielfür spezialisierten Scheduling-Algorithmus: \begin{itemize*} \item RC-Algorithmus - entwickelt an University of Texas \item Anpassung von EDF an Charakteristika von Multimedia-Anwendungen \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -4809,7 +4631,7 @@
 
             \item pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf \$C\$ für jede Instanz (unkomprimierte Audio- und Videodaten)
             \item pünktliche periodische Prozesse mit unterschiedlichem \$C\$ einzelner Instanzen (komprimierte Audio- und Videodaten)
-            \item unpünktliche periodische Prozesse: \begin{itemize*} \item   verspätete Prozesse \item   verfrühte Prozesse \end{itemize*}
+            \item unpünktliche periodische Prozesse: \begin{itemize*} \item verspätete Prozesse \item verfrühte Prozesse \end{itemize*}
         \end{enumerate*}
         \item
         aperiodische-Prozesse aus Multimedia-Anwendungen: weiche Fristen
@@ -4850,7 +4672,7 @@
         \item
         Idee
         \begin{itemize*}
-            \item grundsätzlich: Schedulingnach frühester Fristaufsteigend (= EDF) $\rightarrow$  für eine vollständig spezifikationstreue Prozessmenge verhält sich RC wie reines EDF
+            \item grundsätzlich: Schedulingnach frühester Fristaufsteigend (= EDF) $\rightarrow$ für eine vollständig spezifikationstreue Prozessmenge verhält sich RC wie reines EDF
             \item Frist einer Instanz wird dynamisch angepasst:basierend auf derjenigen Periode, in der sie eigentlich sein sollte lt. Spezifikation der Prozessornutzung (\$U\_i\$, hier: ,,Rate''): \$U\_i=\textbackslash frac\{C\_i\}\{T\_i\}\$
             \item Bsp.: \$U\_i =\textbackslash frac\{20\}\{40\}=\textbackslash frac\{1\}\{2\}\$ (\$t\_B\$ hat spezifizierte Aktivitätsrate von \$0,5\$ pro Periode)
         \end{itemize*}
@@ -4896,17 +4718,17 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{RC (t\_i) \{}
-    %  \ControlFlowTok{if}\NormalTok{ (t\_i. status wurde auf BEREIT gesetzt) \{}
-    %\NormalTok{    t\_i\^{}virt := max( t\_i\^{}virt , t ); }\CommentTok{//kein Zeitkredit {-}\textgreater{} kein ,,Nachholen\textquotesingle{}\textquotesingle{} von verpassten/ungenutzten Perioden}
-    %\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
-    %\NormalTok{    c\_i\^{}virt := Gesamtprozessorzeit seit letztem Aufruf RC(t\_i);}
-    %\NormalTok{    t\_i\^{}virt := t\_i\^{}virt + c\_i\^{}virt / U\_i ; }\CommentTok{//Zeitwert, bis zu dem t\_i Rechenzeit gemäß seiner Rate U\_i erhalten hat}
-    %\NormalTok{  \}}
-    %  \ControlFlowTok{if}\NormalTok{ (t\_i. status != BLOCKIERT) \{}
-    %\NormalTok{    finde k, so dass gilt:}
-    %\NormalTok{      a\_i + (k {-} }\DecValTok{1}\NormalTok{) * T\_i \textless{}= t\_i\^{}virt \textless{} a\_i + k * T\_i ; }\CommentTok{// finde diejenige (aktuelle oder zukünftige) Periode, in der t\_i\^{}virt liegt}
-    %\NormalTok{    d\_i := a\_i + k * T\_i ; }\CommentTok{// setze d\_i auf deren Periodenende}
-    %\NormalTok{  \}}
+    % \ControlFlowTok{if}\NormalTok{ (t\_i. status wurde auf BEREIT gesetzt) \{}
+    %\NormalTok{ t\_i\^{}virt := max( t\_i\^{}virt , t ); }\CommentTok{//kein Zeitkredit {-}\textgreater{} kein ,,Nachholen\textquotesingle{}\textquotesingle{} von verpassten/ungenutzten Perioden}
+    %\NormalTok{ \} }\ControlFlowTok{else}\NormalTok{ \{}
+    %\NormalTok{ c\_i\^{}virt := Gesamtprozessorzeit seit letztem Aufruf RC(t\_i);}
+    %\NormalTok{ t\_i\^{}virt := t\_i\^{}virt + c\_i\^{}virt / U\_i ; }\CommentTok{//Zeitwert, bis zu dem t\_i Rechenzeit gemäß seiner Rate U\_i erhalten hat}
+    %\NormalTok{ \}}
+    % \ControlFlowTok{if}\NormalTok{ (t\_i. status != BLOCKIERT) \{}
+    %\NormalTok{ finde k, so dass gilt:}
+    %\NormalTok{ a\_i + (k {-} }\DecValTok{1}\NormalTok{) * T\_i \textless{}= t\_i\^{}virt \textless{} a\_i + k * T\_i ; }\CommentTok{// finde diejenige (aktuelle oder zukünftige) Periode, in der t\_i\^{}virt liegt}
+    %\NormalTok{ d\_i := a\_i + k * T\_i ; }\CommentTok{// setze d\_i auf deren Periodenende}
+    %\NormalTok{ \}}
     %\NormalTok{\}}
     %\end{Highlighting}
     %\end{Shaded}
@@ -4941,9 +4763,9 @@
     %\begin{Highlighting}[]
     %\NormalTok{SCHED := \{t\_i |t\_i.status == BEREIT ⋀ d\_i minimal \}; }\CommentTok{// bereite(r) Prozess(e) mit nächster Frist}
     %\ControlFlowTok{if}\NormalTok{ (∃ t\_j : t\_j.status == LAUFEND) ⋀ ( d\_j ≤ d\_i )}
-    %  \ControlFlowTok{do}\NormalTok{ nothing; }\CommentTok{// ggf. laufenden Prozess bevorzugen}
+    % \ControlFlowTok{do}\NormalTok{ nothing; }\CommentTok{// ggf. laufenden Prozess bevorzugen}
     %\ControlFlowTok{else}
-    %\NormalTok{  preempt(rnd\_member( SCHED )); }\CommentTok{// sonst: irgendein Prozess mit nächster Frist verdrängt den laufenden}
+    %\NormalTok{ preempt(rnd\_member( SCHED )); }\CommentTok{// sonst: irgendein Prozess mit nächster Frist verdrängt den laufenden}
     %\end{Highlighting}
     %\end{Shaded}
 
@@ -4990,8 +4812,8 @@
         \begin{itemize*}
             \item Prinzip: %\includegraphics{Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png}
             \item rechenbereite Prozesse auf 2 Warteschlangen aufgeteilt (einfache Variante eines Mehr-Ebenen-Scheduling )
-            \item Warteschlange 1: \begin{itemize*} \item   alle periodischen Prozesse \item   mit höchster Priorität mittels RM oder EDF bedient \end{itemize*}
-            \item Warteschlange 2: \begin{itemize*} \item   alle aperiodischen Prozesse \item   nur bedient, wenn keine wartenden Prozesse in Warteschlange 1 \end{itemize*}
+            \item Warteschlange 1: \begin{itemize*} \item alle periodischen Prozesse \item mit höchster Priorität mittels RM oder EDF bedient \end{itemize*}
+            \item Warteschlange 2: \begin{itemize*} \item alle aperiodischen Prozesse \item nur bedient, wenn keine wartenden Prozesse in Warteschlange 1 \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -5008,7 +4830,7 @@
         \item
         Nachteile:
         \begin{itemize*}
-            \item Antwortzeit \textbf{aperiodischer Prozesse} kann zu lang werden (insbesondere bei hoher aperiodischer Last) $\rightarrow$  Verhungern möglich!
+            \item Antwortzeit \textbf{aperiodischer Prozesse} kann zu lang werden (insbesondere bei hoher aperiodischer Last) $\rightarrow$ Verhungern möglich!
             \item geeignet nur für relativ zeitunkritische aperiodische Prozesse
         \end{itemize*}
         \item
@@ -5027,8 +4849,8 @@
         Scheduling mit Server-Prozessen:
         \begin{itemize*}
             \item Prinzip: periodisch aktivierter Prozess benutzt zur Ausführung aperiodischer Prozessoranforderungen
-            \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess: \begin{itemize*} \item   Periodendauer \$T\_S\$ \item   ,,Prozessorzeitbedarf'' \$C\_S\$; jetzt Kapazitätdes   Server-Prozesses \end{itemize*}
-            \item Arbeitsweise Server-Prozess: \begin{itemize*} \item   geplant mit gleichem Scheduling-Algorithmus wie periodische   Prozesse \item   zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen   bedient bis zur Kapazität des Servers \item   keine aperiodischen Anforderungen: Server suspendiert sich bis   Beginn der nächsten Periode (Schedule wird ohne ihn weitergeführt   $\rightarrow$  Prozessorzeit für periodische   Prozesse) \item   Kapazitätin jeder Server-Periode neu ''aufgeladen'' \end{itemize*}
+            \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess: \begin{itemize*} \item Periodendauer \$T\_S\$ \item ,,Prozessorzeitbedarf'' \$C\_S\$; jetzt Kapazitätdes Server-Prozesses \end{itemize*}
+            \item Arbeitsweise Server-Prozess: \begin{itemize*} \item geplant mit gleichem Scheduling-Algorithmus wie periodische Prozesse \item zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen bedient bis zur Kapazität des Servers \item keine aperiodischen Anforderungen: Server suspendiert sich bis Beginn der nächsten Periode (Schedule wird ohne ihn weitergeführt $\rightarrow$ Prozessorzeit für periodische Prozesse) \item Kapazitätin jeder Server-Periode neu ''aufgeladen'' \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -5103,7 +4925,7 @@
         Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem
         Betriebsmittel
         \item
-        $\rightarrow$  unvermeidlich
+        $\rightarrow$ unvermeidlich
     \end{itemize*}
 
 
@@ -5143,8 +4965,8 @@
         \end{itemize*}
         \item
         Hauptrisiko: kritische Prozesse können Fristen nicht einhalten
-        $\rightarrow$  Gefährdung funktionaler und anderer
-        nichtfkt. Eigenschaften (\$\textbackslash rightarrow\$ harte Fristen!)
+        $\rightarrow$ Gefährdung funktionaler und anderer
+        nichtfkt. Eigenschaften ( $\rightarrow$ harte Fristen!)
         \item
         Stichwort: ,,graceful degradation'' (,,würdevolle'' Verschlechterung)
         statt unkontrollierbarer Situation $\rightarrow$
@@ -5225,7 +5047,7 @@
         \item
         Prinzip:
         \begin{itemize*}
-            \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*}  \item   obligatorischer Teil (Pflichtteil, \$C\_\{ob\}\$): muss unbedingt   u. immer ausgeführt werden $\rightarrow$  liefert   bedingt akzeptables Ergebnis \item   optionaler Teil \$(C\_\{opt\})\$: nur bei ausreichender   Prozessorkapazität ausgeführt $\rightarrow$    verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
+            \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*} \item obligatorischer Teil (Pflichtteil, \$C\_\{ob\}\$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis \item optionaler Teil \$(C\_\{opt\})\$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
             \item Prinzip in unterschiedlicher Weise verfeinerbar
         \end{itemize*}
         \item
@@ -5245,9 +5067,9 @@
         Lösung für Echtzeitsysteme ohne Fristüberschreitung
         \begin{itemize*}
             \item Interrupt wird zunächst nur registriert (deterministischer Zeitaufwand)
-            \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$  Pop-up Thread
+            \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$ Pop-up Thread
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
         \end{itemize*}
     \end{enumerate*}
 
@@ -5266,7 +5088,7 @@
         \begin{enumerate*}
 
             \item keine Ressourcen-Zuordnung ,,on-demand'' (d.h. in dem Moment, wo sie benötigt werden) sondern ,,Pre-Allokation'' (= Vorab-Zuordnung)
-            \item keine dynamische Ressourcenzuordnung (z.B. Hauptspeicher), sondern Zuordnung maximal benötigter Menge bei Pre-Allokation (\$\textbackslash rightarrow\$ BS mit ausschließlich statischer Hauptspeicherallokation: TinyOS)
+            \item keine dynamische Ressourcenzuordnung (z.B. Hauptspeicher), sondern Zuordnung maximal benötigter Menge bei Pre-Allokation ( $\rightarrow$ BS mit ausschließlich statischer Hauptspeicherallokation: TinyOS)
         \end{enumerate*}
     \end{itemize*}
 
@@ -5292,7 +5114,7 @@
             \item Anforderungsreihenfolge = 98, 183, 37, 122, 14, 124, 65, 67
             \item Zuletzt gelesener Block: 53
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
         \end{itemize*}
         \item
         Beispiel 2: EDF Festplattenscheduling
@@ -5301,12 +5123,12 @@
             \item Anforderungsreihenfolge \$t\_2 = 183, 122, 14, 67\$
             \item Zuletzt gelesener Block: 53 \textbar{} \textbar{} \$a\_i\$ \textbar{} \$d\_i\$ \textbar{} \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} \textbar{} \$t\_1\$ \textbar{} 0 \textbar{} 3 \textbar{} \textbar{} \$t\_2\$ \textbar{} 0 \textbar{} 9 \textbar{}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
         \end{itemize*}
         \item
         Primärziel: Wahrung der Echtzeitgarantien
         \begin{itemize*}
-            \item naheliegend: EA-Schedulingnach Fristen \$\textbackslash Rightarrow\$ EDF (wie Prozessor)
+            \item naheliegend: EA-Schedulingnach Fristen $\rightarrow$ EDF (wie Prozessor)
             \item für Zugriffsreihenfolge auf Datenblöcke: lediglich deren Fristen maßgebend (weitere Regeln existieren nicht!)
         \end{itemize*}
         \item
@@ -5319,7 +5141,7 @@
         \item
         Fazit:
         \begin{itemize*}
-            \item Echtzeit-Festplattenscheduling $\rightarrow$  Kompromiss zwischen Zeitbeschränkungen und Effizienz
+            \item Echtzeit-Festplattenscheduling $\rightarrow$ Kompromiss zwischen Zeitbeschränkungen und Effizienz
         \end{itemize*}
         \item
         bekannte Lösungen:
@@ -5330,7 +5152,7 @@
         \end{enumerate*}
     \end{itemize*}
 
-    \$\textbackslash rightarrow\$ realisierte Strategien:
+    $\rightarrow$ realisierte Strategien:
 
     \begin{enumerate*}
         \item
@@ -5347,9 +5169,9 @@
         \item
         Vereinfachung:
         \begin{itemize*}
-            \item o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$  berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist $>>$ Latenzzeit)
+            \item o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$ berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist $>>$ Latenzzeit)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -5366,7 +5188,7 @@
         \end{enumerate*}
         \begin{itemize*}
             \item Minimierung blockierender Kommunikationsoperationen
-            \item indirekte Kommunikation $\rightarrow$  CAB zum Geschwindigkeitsausgleich
+            \item indirekte Kommunikation $\rightarrow$ CAB zum Geschwindigkeitsausgleich
             \item keine FIFO-Ordnungen (nach Fristen priorisieren)
             \item CAB ... Cyclic Asynchronous Buffer: %\includegraphics{Assets/AdvancedOperatingSystems-kommunikation-cab.png}
         \end{itemize*}
@@ -5400,8 +5222,8 @@
         \begin{itemize*}
             \item MRW: Most-Recently-Written; Zeiger auf jüngstes, durch Sender vollständig geschriebenes Element
             \item LRW: Least-Recently-Written; Zeiger auf ältestes durch Sender geschriebenes Element
-            \item Garantien: \begin{itemize*} \item   sowohl \emph{MRW} als auch \emph{LRW} können ausschließlich durch   Sender manipuliert werden $\rightarrow$  keine   inkonsistenten Zeiger durch konkurrierende Schreibzugriffe! \item   sowohl \emph{MRW} als auch \emph{LRW} zeigen niemals auf ein   Element, das gerade geschrieben wird $\rightarrow$    keine inkonsistenten Inhalte durch konkurrierende   Schreib-/Lesezugriffe! \end{itemize*}
-            \item Regeln für Sender: \begin{itemize*} \item   muss \textbf{nach} jedem Schreiben \emph{MRW} auf geschriebenes   Element setzen \item   muss \textbf{bevor} \emph{LRW} geschrieben wird \emph{LRW}   inkrementieren \end{itemize*}
+            \item Garantien: \begin{itemize*} \item sowohl \emph{MRW} als auch \emph{LRW} können ausschließlich durch Sender manipuliert werden $\rightarrow$ keine inkonsistenten Zeiger durch konkurrierende Schreibzugriffe! \item sowohl \emph{MRW} als auch \emph{LRW} zeigen niemals auf ein Element, das gerade geschrieben wird $\rightarrow$ keine inkonsistenten Inhalte durch konkurrierende Schreib-/Lesezugriffe! \end{itemize*}
+            \item Regeln für Sender: \begin{itemize*} \item muss \textbf{nach} jedem Schreiben \emph{MRW} auf geschriebenes Element setzen \item muss \textbf{bevor} \emph{LRW} geschrieben wird \emph{LRW} inkrementieren \end{itemize*}
             \item Regel für Empfänger: muss immer nach Lesen von \emph{MRW} als nächstes \emph{LRW} anstelle des Listennachbarn lesen
         \end{itemize*}
         \item
@@ -5409,14 +5231,14 @@
         \begin{itemize*}
             \item anschaulich, ohne aktiven Empfänger
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
         \end{itemize*}
         \item
         Empfänger-Regel:
         \begin{itemize*}
             \item anschaulich, ohne aktiven Sender
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-cab-empfänger.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-cab-empfänger.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -5425,7 +5247,7 @@
     \begin{itemize*}
         \item
         nach Zugriff auf MRW muss auf Lesesequenz bei LRW fortgesetzt werden
-        $\rightarrow$  transparenter Umgang mit nicht-vollem
+        $\rightarrow$ transparenter Umgang mit nicht-vollem
         Puffer
         \item
         Abschwächung der Ordnungsgarantien:Empfänger weiß nur, dass Aktualität
@@ -5442,13 +5264,13 @@
     \begin{itemize*}
         \item
         Schreiben in Puffer grundsätzlich in Reihenfolge der Elemente
-        $\rightarrow$  keine blockierenden Puffergrenzen
-        $\rightarrow$  niemals Blockierung des Senders
+        $\rightarrow$ keine blockierenden Puffergrenzen
+        $\rightarrow$ niemals Blockierung des Senders
         \item
         keine Vollständigkeitsgarantien:Empfänger kann nicht sicher sein, eine
         temporal stetige Sequenz zu lesen
         \item
-        $\rightarrow$  Szenarien, in denen Empfänger sowieso
+        $\rightarrow$ Szenarien, in denen Empfänger sowieso
         nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
         \item
         %\includegraphics{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
@@ -5478,13 +5300,13 @@
         Architekturprinzipien:
         \begin{itemize*}
             \item müssen Echtzeitmechanismen unterstützen; ermöglicht entsprechende Strategien zur Entwicklungs-oder Laufzeit (CPU-Scheduler, EA-Scheduler, IPC ...)
-            \item müssen funktional geringe Komplexität aufweisen $\rightarrow$  theoretische und praktische Beherrschung von Nichtdeterminismus \begin{itemize*} \item   Theoretisch: Modellierung und Analyse (vgl. Annahmen für   Scheduling-Planbarkeitsanalyse) \item   Praktisch: Implementierung (vgl. RC-Scheduler,   Prioritätsvererbung) \end{itemize*}
+            \item müssen funktional geringe Komplexität aufweisen $\rightarrow$ theoretische und praktische Beherrschung von Nichtdeterminismus \begin{itemize*} \item Theoretisch: Modellierung und Analyse (vgl. Annahmen für Scheduling-Planbarkeitsanalyse) \item Praktisch: Implementierung (vgl. RC-Scheduler, Prioritätsvererbung) \end{itemize*}
         \end{itemize*}
         \item
         Konsequenzen:
         \begin{itemize*}
-            \item Architekturen für komplementäre NFE: \begin{itemize*} \item   Sparsamkeit $\rightarrow$  hardwarespezifische   Kernelimplementierung \item   Adaptivität $\rightarrow$  $\mu$Kernel, Exokernel \end{itemize*}
-            \item zu vermeiden: \begin{itemize*} \item   starke Hardwareabstraktion $\rightarrow$    Virtualisierungsarchitekturen \item   Kommunikation und Synchronisationskosten   $\rightarrow$  verteilte BS \item   Hardwareunabhängigkeit und Portabilität   $\rightarrow$  vgl. Mach \end{itemize*}
+            \item Architekturen für komplementäre NFE: \begin{itemize*} \item Sparsamkeit $\rightarrow$ hardwarespezifische Kernelimplementierung \item Adaptivität $\rightarrow$ $\mu$Kernel, Exokernel \end{itemize*}
+            \item zu vermeiden: \begin{itemize*} \item starke Hardwareabstraktion $\rightarrow$ Virtualisierungsarchitekturen \item Kommunikation und Synchronisationskosten $\rightarrow$ verteilte BS \item Hardwareunabhängigkeit und Portabilität $\rightarrow$ vgl. Mach \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -5552,7 +5374,7 @@
             \item modularer Makrokernel
             \item Konkurrenzprodukt zu VRTX
             \item Erfolgsfaktor: POSIX-konforme API
-            \item ähnlich QNX: ,,skalierbarer'' Kernel,zuschneidbarauf Anwendungsdomäne (\$\textbackslash rightarrow\$ Adaptivitätsansatz)
+            \item ähnlich QNX: ,,skalierbarer'' Kernel,zuschneidbarauf Anwendungsdomäne ( $\rightarrow$ Adaptivitätsansatz)
         \end{itemize*}
         \item
         Anwendung:
@@ -5580,7 +5402,7 @@
         Eckdaten:
         \begin{itemize*}
             \item Mikrokernel(Größe: 16 kB)
-            \item Echtzeit-Middleware (Gerätetreiber $\rightarrow$  Objektive)
+            \item Echtzeit-Middleware (Gerätetreiber $\rightarrow$ Objektive)
             \item Anwendungen: AE-und AF-Steuerung/-Automatik, GUI, Bildbearbeitung, RAW-Konverter, ...
             \item POSIX-kompatible Prozessverwaltung
         \end{itemize*}
@@ -5618,11 +5440,11 @@
         Beobachtung: genau diese Anwendungsdomänen fordern typischerweise auch
         andere wesentliche NFE (s.bisherige Vorlesung ...)
         \item
-        $\rightarrow$  Adaptivität als komplementäre NFE zur
+        $\rightarrow$ Adaptivität als komplementäre NFE zur
         Förderung von
         \begin{itemize*}
-            \item Robustheit: funktionale Adaptivitätdes BS reduziert Kernelkomplexität (\$\textbackslash rightarrow\$ kleiner, nicht adaptiver $\mu$Kernel)
-            \item Sicherheit: wie Robustheit:TCB-Größe $\rightarrow$  Verifizierbarkeit, außerdem: adaptive Reaktion auf Bedrohungen
+            \item Robustheit: funktionale Adaptivitätdes BS reduziert Kernelkomplexität ( $\rightarrow$ kleiner, nicht adaptiver $\mu$Kernel)
+            \item Sicherheit: wie Robustheit:TCB-Größe $\rightarrow$ Verifizierbarkeit, außerdem: adaptive Reaktion auf Bedrohungen
             \item Echtzeitfähigkeit: adaptive Scheduling-Strategie (vgl. RC), adapt. Überlastbehandlung, adapt. Interruptbehandlungs-und Pinning-Strategien
             \item Performanz: Last-und Hardwareadaptivität
             \item Erweiterbarkeit: adaptive BS liefern oft hinreichende Voraussetzungen der einfachen Erweiterbarkeit von Abstraktionen, Schnittstellen, Hardware-Multiplexing-und -Schutzmechanismen ( Flexibility )
@@ -5683,8 +5505,8 @@
         \begin{itemize*}
             \item physische Hardware darstellen als abstrahierte Hardware mit komfortableren Schnittstellen
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
-            \item Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B. \begin{itemize*} \item   \textbf{Prozesse:} gleiches Zustandsmodell, gleiches Threadmodell \item   \textbf{Dateien:} gleiche Namensraumabstraktion \item   \textbf{Adressräume:} gleiche Speicherverwaltung (VMM,   Seitengröße, Paging) \item   \textbf{Interprozesskommunikation:} gleiche Mechanismen für alle   Anwendungsprozesse \end{itemize*}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
+            \item Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B. \begin{itemize*} \item \textbf{Prozesse:} gleiches Zustandsmodell, gleiches Threadmodell \item \textbf{Dateien:} gleiche Namensraumabstraktion \item \textbf{Adressräume:} gleiche Speicherverwaltung (VMM, Seitengröße, Paging) \item \textbf{Interprozesskommunikation:} gleiche Mechanismen für alle Anwendungsprozesse \end{itemize*}
         \end{itemize*}
         \item
         Problem:
@@ -5693,9 +5515,9 @@
         \end{itemize*}
         \begin{enumerate*}
 
-            \item Vorteile domänenspezifischer Optimierungender Hardwarebenutzung können nicht ausgeschöpft werden $\rightarrow$  \textbf{Performanz, Sparsamkeit}
-            \item die Implementierung existierender Abstraktionen kann bei veränderten Anforderungen nicht an Anwendungen angepasst werden $\rightarrow$  \textbf{Wartbarkeit}
-            \item Hardwarespezifikationen, insbesondere des Zeitverhaltens (E/A, Netzwerk etc.), werden von Effekten des BS-Management überlagert $\rightarrow$  \textbf{Echtzeitfähigkeit}
+            \item Vorteile domänenspezifischer Optimierungender Hardwarebenutzung können nicht ausgeschöpft werden $\rightarrow$ \textbf{Performanz, Sparsamkeit}
+            \item die Implementierung existierender Abstraktionen kann bei veränderten Anforderungen nicht an Anwendungen angepasst werden $\rightarrow$ \textbf{Wartbarkeit}
+            \item Hardwarespezifikationen, insbesondere des Zeitverhaltens (E/A, Netzwerk etc.), werden von Effekten des BS-Management überlagert $\rightarrow$ \textbf{Echtzeitfähigkeit}
         \end{enumerate*}
         \item
         Idee von Exokernel-Architekturen:
@@ -5714,21 +5536,21 @@
         \begin{itemize*}
             \item Trennung von Schutz und Abstraktion der Ressourcen
             \item Ressourcen-Schutz und -Multiplexing: verbleibt beim Betriebssystemkernel(dem Exokernel)
-            \item Ressourcen-Abstraktion (und deren Management): zentrale Aufgabe der Library-Betriebssysteme \begin{itemize*} \item   $\rightarrow$  autonome Management-Strategien durch   in Anwendungen importierte Funktionalität \end{itemize*}
-            \item Resultat: \begin{enumerate*}  \item   systemweit(durch jeweiliges BS vorgegebene) starre   Hardware-Abstraktionen vermieden \item   anwendungsdomänenspezifische Abstraktionen sehr einfach   realisierbar \item   (Wieder-) Verwendung eigener und fremder Managementfunktionalität   wesentlich erleichtert $\rightarrow$  komplementäre   NFEn! (Performanz, EZ-Fähigkeit, Sparsamkeit, ...) \end{enumerate*}
+            \item Ressourcen-Abstraktion (und deren Management): zentrale Aufgabe der Library-Betriebssysteme \begin{itemize*} \item $\rightarrow$ autonome Management-Strategien durch in Anwendungen importierte Funktionalität \end{itemize*}
+            \item Resultat: \begin{enumerate*} \item systemweit(durch jeweiliges BS vorgegebene) starre Hardware-Abstraktionen vermieden \item anwendungsdomänenspezifische Abstraktionen sehr einfach realisierbar \item (Wieder-) Verwendung eigener und fremder Managementfunktionalität wesentlich erleichtert $\rightarrow$ komplementäre NFEn! (Performanz, EZ-Fähigkeit, Sparsamkeit, ...) \end{enumerate*}
         \end{itemize*}
         \item
         Funktion des Exokernels:
         \begin{itemize*}
-            \item Prinzip: definiert Low-level-Schnittstelle \begin{itemize*} \item   ,,low-level'' = so hardwarenah wie möglich, bspw. die logische   Schnittstelle eines elektronischen Schaltkreises/ICs   (\$\textbackslash rightarrow\$ Gerätetreiber   \$\textbackslash subseteq\$ Library-BS!) \item   Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht   verstehen, wie dieser verwaltet wird $\rightarrow$    Adressierung ermöglichen ohne Informationen über Seiten, Segmente,   Paging-Attribute, ... \end{itemize*}
-            \item Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen \begin{itemize*} \item   Bsp.: Adressraumsemantik, Seitentabellenlayout und -verwaltung,   Paging-und Locking-Verfahren, ... \end{itemize*}
+            \item Prinzip: definiert Low-level-Schnittstelle \begin{itemize*} \item ,,low-level'' = so hardwarenah wie möglich, bspw. die logische Schnittstelle eines elektronischen Schaltkreises/ICs ( $\rightarrow$ Gerätetreiber \$\textbackslash subseteq\$ Library-BS!) \item Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht verstehen, wie dieser verwaltet wird $\rightarrow$ Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ... \end{itemize*}
+            \item Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen \begin{itemize*} \item Bsp.: Adressraumsemantik, Seitentabellenlayout und -verwaltung, Paging-und Locking-Verfahren, ... \end{itemize*}
             \item Anwendungsprogrammierer: wählen geeignete Library-Betriebssysteme bzw. schreiben ihre eigenen Exokernelmechanismen
         \end{itemize*}
         \item
         prinzipielle Exokernelmechanismen am Beispiel Aegis/ExOS
         {[}Engler+95{]}
         \begin{itemize*}
-            \item Der Exokernel... \begin{itemize*} \item   \emph{implementiert:} Multiplexing der Hardware-Ressourcen \item   \emph{exportiert:} geschützte Hardware-Ressourcen \end{itemize*}
+            \item Der Exokernel... \begin{itemize*} \item \emph{implementiert:} Multiplexing der Hardware-Ressourcen \item \emph{exportiert:} geschützte Hardware-Ressourcen \end{itemize*}
         \end{itemize*}
         \item
         minimal: drei Arten von Mechanismen
@@ -5745,14 +5567,14 @@
 
     \begin{itemize*}
         \item
-        Schutzmechanismus, der Autorisierung (\$\textbackslash rightarrow\$
+        Schutzmechanismus, der Autorisierung ( $\rightarrow$
         Library-BS)zur Benutzung einer Ressource von tatsächlicher Benutzung
-        (\$\textbackslash rightarrow\$ Exokernel) trennt
+        ( $\rightarrow$ Exokernel) trennt
         \item
         implementiert für den Exokernelerforderliches Zuordnungswissenvon
         (HW-)Ressource zu Mangement-Code (der im Library-BS implementiert ist)
         \item
-        $\rightarrow$  ''Binding'' in Aegis implementiert als
+        $\rightarrow$ ''Binding'' in Aegis implementiert als
         Unix-Hardlinkauf Metadatenstruktur zu einem Gerät im Kernelspeicher (
         ,,remember: everythingisa file...'' )
         \item
@@ -5778,16 +5600,16 @@
         \begin{itemize*}
             \item Vorteil: im allgemeinen geringere Latenzzeiten, einfacheres und komfortableres Programmiermodell
             \item Nachteil: Anwendungen(hier: die eingebetteten Library-BS) erhalten keine Kenntnis über Entzug,bspw. aufgrund von Ressourcenknappheit etc.
-            \item $\rightarrow$  erforderliches Wissen für Management-Strategien!
+            \item $\rightarrow$ erforderliches Wissen für Management-Strategien!
         \end{itemize*}
         \item
         Exokernel-Betriebssysteme: entziehen(überwiegend) Ressourcen
-        ,,sichtbar''\$\textbackslash rightarrow\$ Dialog zwischen Exokernel
+        ,,sichtbar'' $\rightarrow$ Dialog zwischen Exokernel
         und Library-BS
         \begin{itemize*}
             \item Vorteil: effizientes Management durch Library-BS möglich (z.B. Prozessor: nur tatsächlich benötigte Register werden bei Entzug gespeichert)
             \item Nachteil : Performanz bei sehr häufigem Entzug, Verwaltungs-und Fehlerbehandlungsstrategien zwischen verschiedenen Library-BS müssen korrekt und untereinander kompatibelsein...
-            \item $\rightarrow$  Abort - Protokoll notwendig, falls dies nicht gegeben ist
+            \item $\rightarrow$ Abort - Protokoll notwendig, falls dies nicht gegeben ist
         \end{itemize*}
     \end{itemize*}
 
@@ -5814,9 +5636,9 @@
         \item
         In der Praxis:
         \begin{itemize*}
-            \item harte Echtzeit-Fristen (,, innerhalb von 50 $\mu$s'' ) in den wenigsten Anwendungen berücksichtigt \begin{itemize*} \item   $\rightarrow$  Abort = lediglich Widerruf aller   Secure Bindings der jeweiligen Ressource für die   unkooperativeAnwendung, nicht deren Terminierung (=   unsichtbarerRessourcenentzug) \item   $\rightarrow$  anschließend: Informieren des   entsprechenden Library-BS \end{itemize*}
+            \item harte Echtzeit-Fristen (,, innerhalb von 50 $\mu$s'' ) in den wenigsten Anwendungen berücksichtigt \begin{itemize*} \item $\rightarrow$ Abort = lediglich Widerruf aller Secure Bindings der jeweiligen Ressource für die unkooperativeAnwendung, nicht deren Terminierung (= unsichtbarerRessourcenentzug) \item $\rightarrow$ anschließend: Informieren des entsprechenden Library-BS \end{itemize*}
             \item ermöglicht sinnvolle Reaktion des Library-BS (in Library-BS wird ,,Repossession''-Exceptionausgelöst, so dass auf Entzug geeignet reagiert werden kann)
-            \item bei zustandsbehafteten Ressourcen (\$\textbackslash rightarrow\$ CPU): Exokernelkann diesen Zustand auf Hintergrundspeicher sichern $\rightarrow$  Management-Informationen zum Aufräumen durch Library-BS
+            \item bei zustandsbehafteten Ressourcen ( $\rightarrow$ CPU): Exokernelkann diesen Zustand auf Hintergrundspeicher sichern $\rightarrow$ Management-Informationen zum Aufräumen durch Library-BS
         \end{itemize*}
     \end{itemize*}
 
@@ -5860,7 +5682,7 @@
         Abstraktionsebene (,,low-level'') mit geringem Overhead
         \item
         traditionelle Abstraktionen (VMM, IPC) auf Anwendungsebene effizient
-        implementierbar $\rightarrow$  einfache
+        implementierbar $\rightarrow$ einfache
         Erweiterbarkeit, Spezialisierbarkeitbzw. Ersetzbarkeit dieser
         Abstraktionen
         \item
@@ -5904,7 +5726,7 @@
         z.B. Library-BS zum Dateisystem-Management: C-FFS
         \begin{itemize*}
             \item hochperformant (im Vergleich mit Makrokernel-Dateisystem-Management)
-            \item Abstraktionen und Operationen auf Exokernel-Basis (u.a.): Inodes, Verzeichnisse, physische Dateirelokation(\$\textbackslash rightarrow\$ zusammenhängendes Lesen)
+            \item Abstraktionen und Operationen auf Exokernel-Basis (u.a.): Inodes, Verzeichnisse, physische Dateirelokation( $\rightarrow$ zusammenhängendes Lesen)
             \item Secure Bindings für Metadaten-Modifikation
         \end{itemize*}
         \item
@@ -5938,9 +5760,9 @@
         Ergebnisse:
         \begin{itemize*}
             \item hochperformanteHardwarebenutzung durch spezialisierte Anwendungen
-            \item funktional kleiner Exokernel(\$\textbackslash rightarrow\$ Sparsamkeit, Korrektheit des Kernelcodes )
+            \item funktional kleiner Exokernel( $\rightarrow$ Sparsamkeit, Korrektheit des Kernelcodes )
             \item flexible Nutzung problemgerechterHW-Abstraktionen ( readymade Lib. OS)
-            \item keine Isolation von Anwendungen (\$\textbackslash rightarrow\$ Parallelisierbarkeit: teuer und mit schwachen Garantien; $\rightarrow$  Robustheit und Sicherheit der Anwendungen: nicht umsetzbar)
+            \item keine Isolation von Anwendungen ( $\rightarrow$ Parallelisierbarkeit: teuer und mit schwachen Garantien; $\rightarrow$ Robustheit und Sicherheit der Anwendungen: nicht umsetzbar)
         \end{itemize*}
     \end{itemize*}
 
@@ -5953,7 +5775,7 @@
         \begin{itemize*}
             \item Adaptivität
             \item Wartbarkeit, Sicherheit, Robustheit
-            \item $\rightarrow$  auf gleicher Hardware mehrere unterschiedliche Betriebssysteme ausführbar machen
+            \item $\rightarrow$ auf gleicher Hardware mehrere unterschiedliche Betriebssysteme ausführbar machen
         \end{itemize*}
         \item
         Idee:
@@ -5978,8 +5800,8 @@
         Sicherheit:
         \begin{itemize*}
             \item Isolation von Anwendungs-und Kernelcode durch getrennte Adressräume (wie z.B. bei Mikrokern-Architekturen)
-            \item somit möglich: \begin{enumerate*}  \item   Einschränkung der Fehlerausbreitung $\rightarrow$    angreifbare Schwachstellen \item   Überwachung der Kommunikation zwischen Teilsystemen \end{enumerate*}
-            \item darüber hinaus: Sandboxing (vollständig von logischer Ablaufumgebung isolierte Software, typischerweise Anwendungen $\rightarrow$  siehe z.B. Cloud-Computing)
+            \item somit möglich: \begin{enumerate*} \item Einschränkung der Fehlerausbreitung $\rightarrow$ angreifbare Schwachstellen \item Überwachung der Kommunikation zwischen Teilsystemen \end{enumerate*}
+            \item darüber hinaus: Sandboxing (vollständig von logischer Ablaufumgebung isolierte Software, typischerweise Anwendungen $\rightarrow$ siehe z.B. Cloud-Computing)
         \end{itemize*}
         \item
         Robustheit:
@@ -6008,13 +5830,13 @@
         \item
         Idee des Typ- 1 - Hypervisors:
         \begin{itemize*}
-            \item Kategorien traditioneller funktionaler Eigenschaften von BS: \begin{enumerate*}  \item   Multiplexing \& Schutz der Hardware (ermöglicht   Multiprozess-Betrieb) \item   abstrahierte Maschine** mit ,,angenehmerer'' Schnittstelle als die   reine Hardware (z.B. Dateien, Sockets, Prozesse, ...) \end{enumerate*}
+            \item Kategorien traditioneller funktionaler Eigenschaften von BS: \begin{enumerate*} \item Multiplexing \& Schutz der Hardware (ermöglicht Multiprozess-Betrieb) \item abstrahierte Maschine** mit ,,angenehmerer'' Schnittstelle als die reine Hardware (z.B. Dateien, Sockets, Prozesse, ...) \end{enumerate*}
         \end{itemize*}
         \item
         Typ- 1 - Hypervisor trennt beide Kategorien:
         \begin{itemize*}
             \item läuft wie ein Betriebssystem unmittelbar über der Hardware
-            \item bewirkt Multiplexing der Hardware, liefert aber keine erweiterte Maschine** an Anwendungsschicht $\rightarrow$  ,,Multi-Betriebssystem-Betrieb''
+            \item bewirkt Multiplexing der Hardware, liefert aber keine erweiterte Maschine** an Anwendungsschicht $\rightarrow$ ,,Multi-Betriebssystem-Betrieb''
         \end{itemize*}
         \item
         Bietet mehrmals die unmittelbare Hardware-Schnittstelle an, wobei jede
@@ -6026,22 +5848,22 @@
         \begin{itemize*}
             \item Standard-BS auf IBM-Großrechner System/360: OS/360
             \item reines Stapelverarbeitungs-Betriebssystem (1960er Jahre)
-            \item Nutzer (insbes. Entwickler) strebten interaktive Arbeitsweise an eigenem Terminal an $\rightarrow$  timesharing (MIT, 1962: CTSS) \begin{itemize*} \item   IBM zog nach: CP/CMS, später VM/370 $\rightarrow$    z/VM \item   CP: Control Program $\rightarrow$  Typ- 1 -   Hypervisor \item   CMS: ConversationalMonitor System $\rightarrow$    Gast-BS \end{itemize*}
-            \item CP lief auf ,,blanker'' Hardware (Begriff geprägt: ,,bare metal hypervisor'' ) \begin{itemize*} \item   lieferte Menge virtueller Kopiender System/360-Hardware an   eigentliches Timesharing-System \item   je eines solche Kopie pro Nutzer $\rightarrow$    unterschiedliche BS lauffähig (da jede virtuelle Maschine exakte   Kopie der Hardware) \item   in der Praxis: sehr leichtgewichtiges, schnelles Einzelnutzer-BS   als Gast $\rightarrow$  CMS (heute wäre das wenig   mehr als ein Terminal-Emulator...) \end{itemize*}
+            \item Nutzer (insbes. Entwickler) strebten interaktive Arbeitsweise an eigenem Terminal an $\rightarrow$ timesharing (MIT, 1962: CTSS) \begin{itemize*} \item IBM zog nach: CP/CMS, später VM/370 $\rightarrow$ z/VM \item CP: Control Program $\rightarrow$ Typ- 1 - Hypervisor \item CMS: ConversationalMonitor System $\rightarrow$ Gast-BS \end{itemize*}
+            \item CP lief auf ,,blanker'' Hardware (Begriff geprägt: ,,bare metal hypervisor'' ) \begin{itemize*} \item lieferte Menge virtueller Kopiender System/360-Hardware an eigentliches Timesharing-System \item je eines solche Kopie pro Nutzer $\rightarrow$ unterschiedliche BS lauffähig (da jede virtuelle Maschine exakte Kopie der Hardware) \item in der Praxis: sehr leichtgewichtiges, schnelles Einzelnutzer-BS als Gast $\rightarrow$ CMS (heute wäre das wenig mehr als ein Terminal-Emulator...) \end{itemize*}
         \end{itemize*}
         \item
         heute: Forderungen nach Virtualisierung von Betriebssystemen
         \begin{itemize*}
-            \item seit 1980er: universeller Einsatz des PC für Einzelplatz- und Serveranwendungen $\rightarrow$  veränderte Anforderungen an Virtualisierung
-            \item Wartbarkeit: vor allem ökonomische Gründe: \begin{enumerate*}  \item   Anwendungsentwicklung und -bereitstellung: verschiedene   Anwendungen in Unternehmen, bisher auf verschiedenen Rechnern mit   mehreren (oft verschiedenen) BS, auf einem Rechner entwickeln und   betreiben (Lizenzkosten!) \item   Administration: einfache Sicherung, Migration virtueller Maschinen \item   Legacy-Software \end{enumerate*}
-            \item später: Sicherheit, Robustheit $\rightarrow$  Cloud-Computing-Anwendungen
+            \item seit 1980er: universeller Einsatz des PC für Einzelplatz- und Serveranwendungen $\rightarrow$ veränderte Anforderungen an Virtualisierung
+            \item Wartbarkeit: vor allem ökonomische Gründe: \begin{enumerate*} \item Anwendungsentwicklung und -bereitstellung: verschiedene Anwendungen in Unternehmen, bisher auf verschiedenen Rechnern mit mehreren (oft verschiedenen) BS, auf einem Rechner entwickeln und betreiben (Lizenzkosten!) \item Administration: einfache Sicherung, Migration virtueller Maschinen \item Legacy-Software \end{enumerate*}
+            \item später: Sicherheit, Robustheit $\rightarrow$ Cloud-Computing-Anwendungen
         \end{itemize*}
         \item
         ideal hierfür: Typ- 1 - Hypervisor
         \begin{itemize*}
-            \item \cmark  Gast-BS angenehm wartbar
-            \item \cmark  Softwarekosten beherrschbar
-            \item \cmark  Anwendungen isolierbar
+            \item \cmark Gast-BS angenehm wartbar
+            \item \cmark Softwarekosten beherrschbar
+            \item \cmark Anwendungen isolierbar
         \end{itemize*}
     \end{itemize*}
 
@@ -6053,13 +5875,13 @@
         \begin{itemize*}
             \item Ziel: Nutzung von Virtualisierung auf PC-Hardware
             \item systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek \& Goldberg {[}Popek\&Goldberg74{]}
-            \item Ergebnis: \begin{itemize*} \item   Gast-BS (welches aus Sicht der CPU im User Mode - also   unprivilegiert läuft) muss sicher sein können, dass privilegierte   Instruktionen (Maschinencode im Kernel) ausgeführt werden \item   dies geht nur, wenn tatsächlich der HV diese Instruktionen   ausführt! \item   dies geht nur, wenn CPU bei jeder solchen Instruktion im   Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion   emuliert! \end{itemize*}
+            \item Ergebnis: \begin{itemize*} \item Gast-BS (welches aus Sicht der CPU im User Mode - also unprivilegiert läuft) muss sicher sein können, dass privilegierte Instruktionen (Maschinencode im Kernel) ausgeführt werden \item dies geht nur, wenn tatsächlich der HV diese Instruktionen ausführt! \item dies geht nur, wenn CPU bei jeder solchen Instruktion im Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion emuliert! \end{itemize*}
         \end{itemize*}
         \item
         virtualisierbare Prozessoren bis ca. 2006:
         \begin{itemize*}
-            \item \cmark  IBM-Architekturen(bekannt: PowerPC, bis 2006 Apple-Standard)
-            \item \xmark  Intel x86-Architekturen (386, Pentium, teilweise Core i)
+            \item \cmark IBM-Architekturen(bekannt: PowerPC, bis 2006 Apple-Standard)
+            \item \xmark Intel x86-Architekturen (386, Pentium, teilweise Core i)
         \end{itemize*}
     \end{itemize*}
 
@@ -6075,7 +5897,7 @@
         User Mode: Anwendung bereitet Befehl und Parameter vor
         \item
         User Mode: Privilegierte Instruktion (syscall/Trap - Interrupt)
-        $\rightarrow$  CPU veranlasst Kontext-und
+        $\rightarrow$ CPU veranlasst Kontext-und
         Privilegierungswechsel, Ziel: BS-Kernel
         \item
         Kernel Mode: BS-Dispatcher (Einsprungpunkt für Kernel-Kontrollfluss)
@@ -6099,14 +5921,14 @@
         \item
         User Mode: Anwendung bereitet Befehl und Parameter vor
         \item
-        User Mode: Trap $\rightarrow$  Kontext-und
+        User Mode: Trap $\rightarrow$ Kontext-und
         Privilegierungswechsel, Ziel: Typ-1-HV
         \item
         Kernel Mode: HV-Dispatcher ruft Dispatcher im Gast-BS auf
         \item
         User Mode: BS-Dispatcher behandelt Befehl und Parameter, ruft weitere
         privilegierte Instruktionenauf (z.B. EA-Code)
-        $\rightarrow$  Kontext-und Privilegierungswechsel,
+        $\rightarrow$ Kontext-und Privilegierungswechsel,
         Ziel: Typ-1-HV
         \item
         Kernel Mode: HV führt privilegierte Instruktionen anstelle des Gast-BS
@@ -6127,14 +5949,14 @@
         Kernel Mode ausgeführt werden dürfen (Befehle zur Realisierung von
         E/A, Manipulation der MMU, ...)
         \begin{itemize*}
-            \item $\rightarrow$  sensible Instruktionen
+            \item $\rightarrow$ sensible Instruktionen
         \end{itemize*}
         \item
         \$\textbackslash exists\$ Menge an Maschinenbefehlen, die Wechsel des
         Privilegierungsmodus auslösen (x86: Trap ), wenn sie im User Mode
         ausgeführt werden
         \begin{itemize*}
-            \item $\rightarrow$  privilegierte Instruktionen
+            \item $\rightarrow$ privilegierte Instruktionen
         \end{itemize*}
         \item
         Prozessor ist virtualisierbarfalls (notw. Bed.): sensible
@@ -6146,7 +5968,7 @@
         kritische Instruktionen = sensible Instruktionen \textbackslash{}
         privilegierte Instruktionen
         \begin{itemize*}
-            \item Befehle, welche diese Bedingung verletzen $\rightarrow$  Existenz im Befehlssatz führt zu nicht-virtualisierbarem Prozessor
+            \item Befehle, welche diese Bedingung verletzen $\rightarrow$ Existenz im Befehlssatz führt zu nicht-virtualisierbarem Prozessor
         \end{itemize*}
         \item
         Beispiele für sensible Instruktionen bei Intel x86:
@@ -6193,8 +6015,8 @@
         Folgen:
         \begin{enumerate*}
 
-            \item privilegierte Instruktionen des Gast-Betriebssystems werden ausgeführt $\rightarrow$  ,,trap-and-emulate''
-            \item Einsprung in Betriebssystem, hier also Einsprung in Gast-Betriebssystem $\rightarrow$  Upcall durch HV
+            \item privilegierte Instruktionen des Gast-Betriebssystems werden ausgeführt $\rightarrow$ ,,trap-and-emulate''
+            \item Einsprung in Betriebssystem, hier also Einsprung in Gast-Betriebssystem $\rightarrow$ Upcall durch HV
         \end{enumerate*}
         \item
         privilegierte Instruktionen bei nicht virtualisierbaren Prozessoren
@@ -6271,7 +6093,7 @@
         zur Ausführung des (komplexen!) Übersetzungscodes zur Verfügung haben
         (z.B. Nutzung von Gerätetreibern)
         \item
-        $\rightarrow$  Typ-2-HV als Kompromiss:
+        $\rightarrow$ Typ-2-HV als Kompromiss:
         \begin{itemize*}
             \item korrekte Ausführung von virtualisierter Software auf virtualisierter HW
             \item beherrschbare Komplexität der Implementierung
@@ -6323,7 +6145,7 @@
         unmittelbar auf der Hardware läuft, nur eben im HV-Kontext)
         \item
         sensible Instruktionen: nach dargestellter Methode abgefangen und
-        emuliert $\rightarrow$  dabei hilft jetzt das Host-BS
+        emuliert $\rightarrow$ dabei hilft jetzt das Host-BS
         (z.B. durch eigene Systemaufrufe, Gerätetreiberschnittstellen)
     \end{itemize*}
 
@@ -6360,7 +6182,7 @@
         (Typ1-Hypervisor):
         \item
         ,,trap-and-emulate,,: erzeugt Vielzahl von Traps
-        $\rightarrow$  Kontextwechsel zwischen jeweiliger VM
+        $\rightarrow$ Kontextwechsel zwischen jeweiliger VM
         und HV
         \item
         insbesondere bei Vielzahl an VMs sehr teuer: CPU-Caches, TLBs,
@@ -6402,7 +6224,7 @@
         dazu:
         \begin{itemize*}
             \item Hypervisor: muss geeignetes Interface definieren (HV-Calls)
-            \item $\rightarrow$  Menge von Prozedur-Aufrufen zur Benutzung durch Gast-Betriebssystem
+            \item $\rightarrow$ Menge von Prozedur-Aufrufen zur Benutzung durch Gast-Betriebssystem
             \item bilden eine HV-API als Schnittstelle für Gast-Betriebssysteme (nicht für Nutzerprogramme!)
         \end{itemize*}
         \item
@@ -6444,15 +6266,15 @@
         \begin{itemize*}
             \item Typ-1-HV: unmittelbares HW-Multiplexing, trap-and-emulate
             \item Typ-2-HV: HW-Multiplexing auf Basis eines Host-OS, binarytranslation
-            \item Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$  HV ähnelt \$\textbackslash mu\$Kern
+            \item Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt \$\textbackslash mu\$Kern
         \end{itemize*}
         \item
         Ergebnisse:
         \begin{itemize*}
-            \item \cmark  VMs mit individuell anpassbarer Laufzeitumgebung
-            \item \cmark  isolierteVMs
-            \item \cmark  kontrollierbare VM-Interaktion (untereinander und mit HW)
-            \item \xmark  keine hardwarespezifischen Optimierungen aus VM heraus möglich $\rightarrow$  Performanz, Echtzeitfähigkeit, Sparsamkeit!
+            \item \cmark VMs mit individuell anpassbarer Laufzeitumgebung
+            \item \cmark isolierteVMs
+            \item \cmark kontrollierbare VM-Interaktion (untereinander und mit HW)
+            \item \xmark keine hardwarespezifischen Optimierungen aus VM heraus möglich $\rightarrow$ Performanz, Echtzeitfähigkeit, Sparsamkeit!
         \end{itemize*}
     \end{itemize*}
 
@@ -6469,8 +6291,8 @@
         durch Kapselung von
         \begin{itemize*}
             \item Anwendungsprogrammen
-            \item \begin{itemize*} \item   durch sie benutzte Bibliotheken \end{itemize*}
-            \item \begin{itemize*} \item   Instanzen bestimmter BS-Ressourcen \end{itemize*}
+            \item \begin{itemize*} \item durch sie benutzte Bibliotheken \end{itemize*}
+            \item \begin{itemize*} \item Instanzen bestimmter BS-Ressourcen \end{itemize*}
         \end{itemize*}
         \item
         ... Portabilität: Betrieb von Anwendungen, die lediglich von einem
@@ -6483,7 +6305,7 @@
         \end{itemize*}
         \item
         ... Sparsamkeit: problemgerechtes ,,Packen,, von Anwendungen in
-        Container $\rightarrow$  Reduktion an Overhead: selten
+        Container $\rightarrow$ Reduktion an Overhead: selten
         (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
     \end{itemize*}
 
@@ -6520,7 +6342,7 @@
             \item = Kombinationen von Anwendungen
         \end{itemize*}
         \item
-        Anwendungsisolation? $\rightarrow$  Docker
+        Anwendungsisolation? $\rightarrow$ Docker
     \end{itemize*}
 
     Zwischenfazit: Container
@@ -6542,10 +6364,10 @@
         \item
         Ergebnisse:
         \begin{itemize*}
-            \item \cmark  vereinfachte Anwendungsentwicklung
-            \item \cmark  vereinfachter Anwendungsbetrieb
-            \item \xmark  Infrastruktur nötig über (lokale) Containersoftware hinaus, um Containern zweckgerecht bereitzustellen und zu warten
-            \item \xmark  keine vollständige Isolationmöglich
+            \item \cmark vereinfachte Anwendungsentwicklung
+            \item \cmark vereinfachter Anwendungsbetrieb
+            \item \xmark Infrastruktur nötig über (lokale) Containersoftware hinaus, um Containern zweckgerecht bereitzustellen und zu warten
+            \item \xmark keine vollständige Isolationmöglich
         \end{itemize*}
     \end{itemize*}
 
@@ -6577,11 +6399,11 @@
         stellt verschiedene Virtualisierungs-Softwareprodukte her:
         \begin{enumerate*}
 
-            \item VMware Workstation \begin{itemize*} \item   war erstes Produkt von VMware (1999) \item   mehrere unabhängige Instanzen von x86- bzw.   x86-64-Betriebssystemen auf einer Hardware betreibbar \end{itemize*}
+            \item VMware Workstation \begin{itemize*} \item war erstes Produkt von VMware (1999) \item mehrere unabhängige Instanzen von x86- bzw. x86-64-Betriebssystemen auf einer Hardware betreibbar \end{itemize*}
             \item VMware Fusion: ähnliches Produkt für Intel Mac-Plattformen
             \item VMware Player: (eingestellte) Freeware für nichtkommerziellen Gebrauch
             \item VMware Server (eingestellte Freeware, ehem. GSX Server)
-            \item VMware vSphere (ESXi) \begin{itemize*} \item   Produkte 1 ... 3: für Desktop-Systeme \item   Produkte 4 ... 5: für Server-Systeme \item   Produkte 1 ... 4: Typ-2-Hypervisor \end{itemize*}
+            \item VMware vSphere (ESXi) \begin{itemize*} \item Produkte 1 ... 3: für Desktop-Systeme \item Produkte 4 ... 5: für Server-Systeme \item Produkte 1 ... 4: Typ-2-Hypervisor \end{itemize*}
         \end{enumerate*}
         \item
         bei VMware-Installation: spezielle vm- Treiber in Host-Betriebssystem
@@ -6676,7 +6498,7 @@
         \begin{itemize*}
             \item es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-Xen-architektur.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-Xen-architektur.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -6696,7 +6518,7 @@
         \begin{itemize*}
             \item Sicherheitspolitik-Integration, Administration, Auswertung: \$dom\_0\$
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
         \end{itemize*}
         \item
         Beispiel: Inter-Domänen-Kommunikation
@@ -6721,7 +6543,7 @@
         \begin{enumerate*}
 
             \item Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
-            \item Realisierung als sog. vertikal strukturiertes Betriebssystem: \begin{itemize*} \item   weitaus meiste Betriebssystem-Funktionalität innerhalb der   Anwendungen ausgeführt (= Exokernel-Prinzip) \item   Echtzeitanforderungen durch Multimedia   $\rightarrow$  Vermeidung von   Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer   zeitlicher Verzögerungen (neu) \end{itemize*}
+            \item Realisierung als sog. vertikal strukturiertes Betriebssystem: \begin{itemize*} \item weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip) \item Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen (neu) \end{itemize*}
         \end{enumerate*}
         \item
         %\includegraphics{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
@@ -6740,7 +6562,7 @@
             \item nicht explizit: Unterstützung von Legacy-Anwendungen!
         \end{itemize*}
         \item
-        Idee: ,,Unikernel'' $\rightarrow$  eine Anwendung, eine
+        Idee: ,,Unikernel'' $\rightarrow$ eine Anwendung, eine
         API, ein Kernel
         \item
         umfangreiche Dokumentation, Tutorials, ...
@@ -6755,9 +6577,9 @@
         \item
         Ergebnis: Kombination von Vorteilen zweier Welten
         \begin{itemize*}
-            \item Virtualisierungs vorteile: Sicherheit, Robustheit (\$\textbackslash rightarrow\$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne \$dom\_0\$)
+            \item Virtualisierungs vorteile: Sicherheit, Robustheit ( $\rightarrow$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne \$dom\_0\$)
             \item Exokernelvorteile: Wartbarkeit, Sparsamkeit
-            \item nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... (\$\textbackslash rightarrow\$ Performanz und Echzeitfähigkeit )
+            \item nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... ( $\rightarrow$ Performanz und Echzeitfähigkeit )
         \end{itemize*}
     \end{itemize*}
 
@@ -6772,7 +6594,7 @@
             \item ... entwickeln
             \item ... testen
             \item ... konfigurieren
-            \item ... portieren $\rightarrow$  Portabilität
+            \item ... portieren $\rightarrow$ Portabilität
         \end{itemize*}
         \item
         Besonderheit: Container können - unabhängig von ihrem Einsatzzweck -
@@ -6812,9 +6634,9 @@
         \item
         Wer braucht schnelle Rechner:
         \begin{itemize*}
-            \item Hochleistungsrechnen, HPC (,,high performancecomputing'') \begin{itemize*} \item   wissenschaftliches Rechnen(z.B. Modellsimulation natürlicher   Prozesse, Radioteleskop-Datenverarbeitung) \item   Datenvisualisierung(z.B. Analysen großer Netzwerke) \item   Datenorganisation-und speicherung(z.B. Kundendatenverarbeitung zur   Personalisierung von Werbeaktivitäten, Bürgerdatenverarbeitung zur   Personalisierung von Geheimdienstaktivitäten) \end{itemize*}
-            \item nicht disjunkt dazu: kommerzielle Anwendungen \begin{itemize*} \item   ,,Big Data'': Dienstleistungen für Kunden, die o. g. Probleme auf   gigantischen Eingabedatenmengen zu lösen haben (Software wie   Apache Hadoop ) \item   Wettervorhersage \end{itemize*}
-            \item anspruchsvolle Multimedia- Anwendungen \begin{itemize*} \item   Animationsfilme \item   VR-Rendering \end{itemize*}
+            \item Hochleistungsrechnen, HPC (,,high performancecomputing'') \begin{itemize*} \item wissenschaftliches Rechnen(z.B. Modellsimulation natürlicher Prozesse, Radioteleskop-Datenverarbeitung) \item Datenvisualisierung(z.B. Analysen großer Netzwerke) \item Datenorganisation-und speicherung(z.B. Kundendatenverarbeitung zur Personalisierung von Werbeaktivitäten, Bürgerdatenverarbeitung zur Personalisierung von Geheimdienstaktivitäten) \end{itemize*}
+            \item nicht disjunkt dazu: kommerzielle Anwendungen \begin{itemize*} \item ,,Big Data'': Dienstleistungen für Kunden, die o. g. Probleme auf gigantischen Eingabedatenmengen zu lösen haben (Software wie Apache Hadoop ) \item Wettervorhersage \end{itemize*}
+            \item anspruchsvolle Multimedia- Anwendungen \begin{itemize*} \item Animationsfilme \item VR-Rendering \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -6841,7 +6663,7 @@
     \begin{itemize*}
         \item
         Grundlegende Erkenntnis: Performanz geht nicht (mehr) ohne
-        Parallelität $\rightarrow$  Hochleistungsrechnen =
+        Parallelität $\rightarrow$ Hochleistungsrechnen =
         hochparalleles Rechnen
         \item
         daher in diesem Kapitel: Anforderungen hochparallelen Rechnens an ...
@@ -6867,7 +6689,7 @@
         \begin{itemize*}
             \item Multicore-Prozessoren: seit ca. 2006 (in größerem Umfang)
             \item Warum neues Paradigma für Prozessoren? bei CPU-Taktfrequenz $>>$ 4 GHz: z.Zt. physikalische Grenze, u.a. nicht mehr sinnvoll handhabbare Abwärme
-            \item Damit weiterhin: \begin{enumerate*}  \item   Anzahl der Kerne wächst nicht linear \item   Taktfrequenz wächst asymptotisch, nimmt nur noch marginal zu \end{enumerate*}
+            \item Damit weiterhin: \begin{enumerate*} \item Anzahl der Kerne wächst nicht linear \item Taktfrequenz wächst asymptotisch, nimmt nur noch marginal zu \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -6883,10 +6705,10 @@
         Parallelität (aggressiverer) Multi-Threaded-Anwendungen
         \item
         erforderlich: Betriebssystem-Unterstützung
-        $\rightarrow$  Scheduling, Sychronisation
+        $\rightarrow$ Scheduling, Sychronisation
         \item
         weiterhin erforderlich: Formulierungsmöglichkeiten (Sprachen),
-        Compiler, verteilte Algorithmen ... $\rightarrow$  hier
+        Compiler, verteilte Algorithmen ... $\rightarrow$ hier
         nicht im Fokus
     \end{enumerate*}
 
@@ -6898,7 +6720,7 @@
     \begin{enumerate*}
         \item
         möglich wird: \textbf{Parallelarbeit auf Chip-Ebene}
-        $\rightarrow$  Vermeidung der Plagen paralleler
+        $\rightarrow$ Vermeidung der Plagen paralleler
         verteilter Systeme
         \item
         bei geeigneter Architektur: Erkenntnisse und Software aus Gebiet
@@ -6909,7 +6731,7 @@
         kann möglich sein
         \item
         höhere Energieeffizienz: mehr Rechenleistung pro Chipfläche, geringere
-        elektrische Leistungsaufnahme $\rightarrow$  weniger
+        elektrische Leistungsaufnahme $\rightarrow$ weniger
         Gesamtabwärme, z.T. einzelne Kerne abschaltbar (vgl. Sparsamkeit ,
         mobile Geräte)
         \item
@@ -6947,8 +6769,8 @@
         \begin{itemize*}
             \item MC ...multicore(processor)
             \item CMP ...chip-level multiprocessing, hochintegrierte Bauweise für ,,MC''
-            \item SMC ...symmetric multicore $\rightarrow$  SMP ... symmetric multi-processing
-            \item AMC ...asymmetric (auch: heterogeneous ) multicore $\rightarrow$  AMP ... asymmetric multi-processing
+            \item SMC ...symmetric multicore $\rightarrow$ SMP ... symmetric multi-processing
+            \item AMC ...asymmetric (auch: heterogeneous ) multicore $\rightarrow$ AMP ... asymmetric multi-processing
             \item UP ...uni-processing , Synonym zu singlecore(SC) oder uniprocessor
         \end{itemize*}
     \end{itemize*}
@@ -6964,27 +6786,27 @@
             \item Verwendung: bei Vielzahl von Prozessorkernen (Skalierbarkeit!)
             \item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
         \end{itemize*}
         \item
         B. Hierarchisches Design
         \begin{itemize*}
             \item mehrere Prozessor-Kerne teilen sich mehrere baumartig angeordnete Caches
-            \item meistens: \begin{itemize*} \item   jeder Prozessorkern hat eigenen L1-Cache \item   L2-Cache, Zugriff auf (externen) Hauptspeicher u. Großteil der   Busse aber geteilt \end{itemize*}
+            \item meistens: \begin{itemize*} \item jeder Prozessorkern hat eigenen L1-Cache \item L2-Cache, Zugriff auf (externen) Hauptspeicher u. Großteil der Busse aber geteilt \end{itemize*}
             \item Verwendung: typischerweise Serverkonfigurationen
-            \item Beispiele: \begin{itemize*} \item   IBM Power \item   Intel Core 2, Core i \item   Sun UltraSPARCT1 (Niagara) \end{itemize*}
+            \item Beispiele: \begin{itemize*} \item IBM Power \item Intel Core 2, Core i \item Sun UltraSPARCT1 (Niagara) \end{itemize*}
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
         \end{itemize*}
         \item
         C. Pipeline-Design
         \begin{itemize*}
             \item Daten durch mehrere Prozessor-Kerne schrittweise verarbeitet
             \item durch letzten Prozessor: Ablage im Speichersystem
-            \item Verwendung: \begin{itemize*} \item   Graphikchips \item   (hochspezialisierte) Netzwerkprozessoren \end{itemize*}
+            \item Verwendung: \begin{itemize*} \item Graphikchips \item (hochspezialisierte) Netzwerkprozessoren \end{itemize*}
             \item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
             %\item
-            %    %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
+            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -6995,7 +6817,7 @@
         symmetrische Multicore-Prozessoren (SMC)
         \begin{itemize*}
             \item alle Kerne identisch, d.h. gleiche Architektur und gleiche Fähigkeiten
-            \item Beispiele: \begin{itemize*} \item   Intel Core 2 Duo \item   Intel Core 2 Quad \item   ParallaxPropeller \end{itemize*}
+            \item Beispiele: \begin{itemize*} \item Intel Core 2 Duo \item Intel Core 2 Quad \item ParallaxPropeller \end{itemize*}
         \end{itemize*}
         \item
         asymmetrische MC-Prozessoren (AMC)
@@ -7006,7 +6828,7 @@
         Beispiel: Kilocore:
         \begin{itemize*}
             \item 1 Allzweck-Prozessor (PowerPC)
-            \item \begin{itemize*} \item   256 od. 1024 Datenverarbeitungsprozessoren \end{itemize*}
+            \item \begin{itemize*} \item 256 od. 1024 Datenverarbeitungsprozessoren \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -7019,7 +6841,7 @@
         Bekannt aus Rechnerarchitektur: Pipelining
         \begin{itemize*}
             \item parallele Abarbeitung von Teilen eines Maschinenbefehls in Pipeline-Stufen
-            \item ermöglicht durch verschiedene Funktionseinheiten eines Prozessors für verschiedene Stufen: \begin{itemize*} \item   Control Unit (CU) \item   ArithmeticLogicUnit (ALU) \item   Float Point Unit (FPU) \item   Memory Management Unit (MMU) \item   Cache \end{itemize*}
+            \item ermöglicht durch verschiedene Funktionseinheiten eines Prozessors für verschiedene Stufen: \begin{itemize*} \item Control Unit (CU) \item ArithmeticLogicUnit (ALU) \item Float Point Unit (FPU) \item Memory Management Unit (MMU) \item Cache \end{itemize*}
             \item sowie mehrere Pipeline-Register
         \end{itemize*}
         \item
@@ -7046,8 +6868,8 @@
         \item
         wir erinnern uns ...:
         \begin{itemize*}
-            \item Kernel-Level-Threads (KLTs): BS implementiert Threads $\rightarrow$  Scheduler kann mehrere Threads nebenläufig planen $\rightarrow$  Parallelität möglich
-            \item User-Level-Threads (ULTs): Anwendung implementiert Threads $\rightarrow$  keine Parallelität möglich!
+            \item Kernel-Level-Threads (KLTs): BS implementiert Threads $\rightarrow$ Scheduler kann mehrere Threads nebenläufig planen $\rightarrow$ Parallelität möglich
+            \item User-Level-Threads (ULTs): Anwendung implementiert Threads $\rightarrow$ keine Parallelität möglich!
         \end{itemize*}
         \item
         grundlegend für echt paralleles Multithreading:
@@ -7055,7 +6877,7 @@
             \item parallelisierungsfähige Hardware
             \item kausal unabhängige Threads
             \item passendes (und korrekt eingesetztes!) Programmiermodell, insbesondere Synchronisation!
-            \item $\rightarrow$  Programmierer + Compiler
+            \item $\rightarrow$ Programmierer + Compiler
         \end{itemize*}
     \end{itemize*}
 
@@ -7077,7 +6899,7 @@
         \item
         Synchronisationsmechanismen zur Nutzung
         \begin{itemize*}
-            \item ... durch Anwendungen $\rightarrow$  Teil der API
+            \item ... durch Anwendungen $\rightarrow$ Teil der API
             \item ... durch den Kernel (z.B. Implementierung Prozessmanagement, E/A, ...)
         \end{itemize*}
         \item
@@ -7117,14 +6939,14 @@
         \begin{itemize*}
             \item ... ist in nebenläufigen Systemen zwingend erforderlich
             \item ... ist in echt parallelen Systemen allgegenwärtig
-            \item ... skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$  (monolithischer) Kernel-Code!
+            \item ... skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$ (monolithischer) Kernel-Code!
         \end{itemize*}
         \item
         Mechanismen in Betriebssystemen: Locks
         \item
         Arten von Locks am Beispiel Linux:
         \begin{itemize*}
-            \item Big Kernel Lock (BKL) \begin{itemize*} \item   historisch (1996-2011): lockkernel(); ... unlockkernel(); \item   ineffizient durch massiv gestiegene Komplexität des Kernels \end{itemize*}
+            \item Big Kernel Lock (BKL) \begin{itemize*} \item historisch (1996-2011): lockkernel(); ... unlockkernel(); \item ineffizient durch massiv gestiegene Komplexität des Kernels \end{itemize*}
             \item atomic-Operationen
             \item Spinlocks
             \item Semaphore (Spezialform: Reader/Writer Locks)
@@ -7152,8 +6974,8 @@
         %\end{Shaded}
         \begin{itemize*}
             \item \texttt{atomic\_*} Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
-            \item keine explizite Lock-Datenstruktur $\rightarrow$  Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
-            \item definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$  unnötiges Sperren sehr preiswert
+            \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
+            \item definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$ unnötiges Sperren sehr preiswert
         \end{itemize*}
     \end{itemize*}
 
@@ -7207,7 +7029,7 @@
         \item
         Effizienz: Der Grad, zu welchem ein System oder eine seiner
         Komponenten seine Funktion mit minimalem Ressourcenverbrauch ausübt.
-        $\rightarrow$  Ausnutzungsgrad begrenzter Ressourcen
+        $\rightarrow$ Ausnutzungsgrad begrenzter Ressourcen
         \item
         Die jeweils betrachtete(n) Ressource(n) muss /(müssen) dabei
         spezifiziert sein!
@@ -7259,8 +7081,8 @@
         Maßnahmen Hauptspeicherauslastung:
         \begin{enumerate*}
 
-            \item Algorithmus und Strategie z.B.: \begin{itemize*} \item   Speicherplatz sparende Algorithmen zur Realisierung gleicher   Strategien \end{itemize*}
-            \item Speicherverwaltung von Betriebssystemen: \begin{itemize*} \item   physische vs. virtuelle Speicherverwaltung \item   speichereffiziente Ressourcenverwaltung \item   Speicherbedarfdes Kernels \item   direkte Speicherverwaltungskosten \end{itemize*}
+            \item Algorithmus und Strategie z.B.: \begin{itemize*} \item Speicherplatz sparende Algorithmen zur Realisierung gleicher Strategien \end{itemize*}
+            \item Speicherverwaltung von Betriebssystemen: \begin{itemize*} \item physische vs. virtuelle Speicherverwaltung \item speichereffiziente Ressourcenverwaltung \item Speicherbedarfdes Kernels \item direkte Speicherverwaltungskosten \end{itemize*}
         \end{enumerate*}
         \item
         Maßnahmen Hintergrundspeicherauslastung:
@@ -7273,7 +7095,7 @@
         \end{enumerate*}
         \item
         Nicht betrachtet: Sparsamkeit mit Prozessorzeit
-        $\rightarrow$  99\% Überschneidung mit NFE Performanz
+        $\rightarrow$ 99\% Überschneidung mit NFE Performanz
     \end{itemize*}
 
 
@@ -7284,8 +7106,8 @@
         \item
         Robustheit: Zuverlässigkeit unter Anwesenheit externer Ausfälle
         \item
-        fault, aktiviert $\rightarrow$  error, breitet sich aus
-        $\rightarrow$  failure
+        fault, aktiviert $\rightarrow$ error, breitet sich aus
+        $\rightarrow$ failure
     \end{itemize*}
 
     Robustheit
@@ -7376,9 +7198,9 @@
 
     \begin{itemize*}
         \item
-        Sicherheitsziele $\rightarrow$  Sicherheitspolitik
-        $\rightarrow$  Sicherheitsarchitektur
-        $\rightarrow$  Sicherheitsmechanismen
+        Sicherheitsziele $\rightarrow$ Sicherheitspolitik
+        $\rightarrow$ Sicherheitsarchitektur
+        $\rightarrow$ Sicherheitsmechanismen
         \item
         Sicherheitspolitik: Regeln zum Erreichen eines Sicherheitsziels.
         \begin{itemize*}
@@ -7398,9 +7220,9 @@
         Sicherheitsmechanismen.
         \begin{itemize*}
             \item wesentlich: Referenzmonitorprinzipien
-            \item RM1: Unumgehbarkeit $\rightarrow$  vollständiges Finden aller Schnittstellen
-            \item RM2: Manipulationssicherheit $\rightarrow$  Sicherheit einerSicherheitspolitik selbst
-            \item RM3: Verifizierbarkeit $\rightarrow$  wohlstrukturierte und per Designkleine TCBs
+            \item RM1: Unumgehbarkeit $\rightarrow$ vollständiges Finden aller Schnittstellen
+            \item RM2: Manipulationssicherheit $\rightarrow$ Sicherheit einerSicherheitspolitik selbst
+            \item RM3: Verifizierbarkeit $\rightarrow$ wohlstrukturierte und per Designkleine TCBs
         \end{itemize*}
     \end{itemize*}
 
@@ -7556,26 +7378,26 @@
     %Multikernel\tabularnewline
     %\midrule
     %\endhead
-    %Energieeffizienz & & & (\cmark ) & \xmark  & \xmark \tabularnewline
-    %Speichereffizienz & \xmark  & (\cmark ) & (\cmark ) & & \xmark \tabularnewline
-    %Robustheit & \xmark  & \cmark  & \xmark  & \cmark  &\tabularnewline
-    %Verfügbarkeit & \xmark  & (\cmark ) & & (\cmark ) & (\cmark )\tabularnewline
-    %Korrektheit & \xmark  & \cmark  & \xmark  & \xmark  & (\cmark )\tabularnewline
-    %Sicherheit & \xmark  & \cmark  & \xmark  & \cmark  &\tabularnewline
-    %Echtzeitfähigkeit & (\cmark ) & (\cmark ) & \cmark  & \xmark  & \xmark \tabularnewline
-    %Adaptivität & \xmark  & (\cmark ) & \cmark  & \cmark  & (\cmark )\tabularnewline
-    %Wartbarkeit & \cmark  & & \cmark  & \cmark  &\tabularnewline
-    %Performanz & (\cmark ) & \xmark  & \cmark  & \xmark  & \cmark \tabularnewline
+    %Energieeffizienz & & & (\cmark ) & \xmark & \xmark \tabularnewline
+    %Speichereffizienz & \xmark & (\cmark ) & (\cmark ) & & \xmark \tabularnewline
+    %Robustheit & \xmark & \cmark & \xmark & \cmark &\tabularnewline
+    %Verfügbarkeit & \xmark & (\cmark ) & & (\cmark ) & (\cmark )\tabularnewline
+    %Korrektheit & \xmark & \cmark & \xmark & \xmark & (\cmark )\tabularnewline
+    %Sicherheit & \xmark & \cmark & \xmark & \cmark &\tabularnewline
+    %Echtzeitfähigkeit & (\cmark ) & (\cmark ) & \cmark & \xmark & \xmark \tabularnewline
+    %Adaptivität & \xmark & (\cmark ) & \cmark & \cmark & (\cmark )\tabularnewline
+    %Wartbarkeit & \cmark & & \cmark & \cmark &\tabularnewline
+    %Performanz & (\cmark ) & \xmark & \cmark & \xmark & \cmark \tabularnewline
     %\bottomrule
     %\end{longtable}
 
     \begin{itemize*}
         \item
-        \cmark  ... Zieleigenschaft
+        \cmark ... Zieleigenschaft
         \item
-        ( \cmark  ) ... synergetische Eigenschaft
+        ( \cmark ) ... synergetische Eigenschaft
         \item
-        \xmark  ... konträre Eigenschaft
+        \xmark ... konträre Eigenschaft
         \item
         Leere Zellen: keine pauschale Aussage möglich.
     \end{itemize*}

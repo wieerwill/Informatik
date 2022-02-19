@@ -125,335 +125,146 @@
 
     \subsection{Funktionale und nichtfunktionale Eigenschaften}
     \begin{itemize*}
-        \item Anforderungen (Requirements): Funktionale und nichtfunktionale Eigenschaften (eines Produkts, z.B. Softwaresystems) entstehen durch Erfüllung von funktionalen und nichtfunktionalen Anforderungen
+        \item Requirements: (nicht-)Funktionale Eigenschaften entstehen durch Erfüllung von (nicht-)funktionalen Anforderungen
         \item funktionale Eigenschaft: was ein Produkt tun soll
         \item nichtfunktionale Eigenschaft (NFE): wie ein Produkt dies tun soll
-        \item andere Bezeichnungen nichtfunktionaler Eigenschaften
-        \begin{itemize*}
-            \item Qualitäten bzw. Qualitätsattribute (eines Software-Produkts)
-            \item Non-functional requirements/properties
-            \item Constraints
-            \item Quality of service(QoS) requirements
+        \item andere Bezeichnungen NFE:  Qualitäten, Quality of Service
         \end{itemize*}
-        \item im Englischen: nichtfunktionale Eigenschaften eines Systems etc. informell auch als seine ,,ilities'' bezeichnet
-        \item im Deutschen: (,,itäten'', ,,barkeiten'', ... möglich)
-    \end{itemize*}
 
     \subsubsection{Hardwarebasis}
     \begin{itemize*}
         \item Einst: Einprozessor-Systeme
         \item Heute: Mehrprozessor-/hochparallele Systeme
         \item neue Synchronisationsmechanismen erforderlich
-        \item $\rightarrow$ unterschiedliche Hardware und deren Multiplexing aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item $\rightarrow$ unterschiedliche Hardware und deren Multiplexing
     \end{itemize*}
 
     \subsubsection{Betriebssystemarchitektur}
     \begin{itemize*}
         \item Einst: Monolithische und Makrokernel-Architekturen
         \item Heute: Mikrokernel(-basierte) Architekturen
-        \item Exokernelbasierte Architekturen ( Library-Betriebssysteme )
+        \item Exokernelbasierte Architekturen (Library-Betriebssysteme)
         \item Virtualisierungsarchitekturen
         \item Multikernel-Architekturen
-        \item $\rightarrow$ unterschiedliche Architekturen aufgrund
-        unterschiedlicher nichtfunktionaler Eigenschaften
+        \item $\rightarrow$ unterschiedliche Architekturen
     \end{itemize*}
 
     \subsubsection{Ressourcenverwaltung}
     \begin{itemize*}
-        \item Einst: Batch-Betriebssysteme, Stapelverarbeitung von Jobs (FIFO)
-        \item Heute: Echtzeitgarantien für Multimedia und Safety-kritische Anwendungen
-        \item echtzeitfähige Scheduler, Hauptspeicherverwaltung, Ereignismanagement, Umgang mit Überlast und Prioritätsumkehr ...
-        \item $\rightarrow$ unterschiedliche Ressourcenverwaltung aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item Einst: Batch-Betriebssysteme, Stapelverarbeitung (FIFO)
+        \item Heute: Echtzeitgarantien für Multimedia und Sicherheit
+        \item echtzeitfähige Scheduler, Hauptspeicherverwaltung, Ereignismanagement, Umgang mit Überlast/Prioritätsumkehr ...
+        \item $\rightarrow$ unterschiedliche Ressourcenverwaltung
     \end{itemize*}
 
     \subsubsection{Betriebssystemabstraktionen}
     \begin{itemize*}
-        \item zusätzliche Abstraktionen und deren Verwaltung zur ...
-        \begin{itemize*}
-            \item Reservierung von Ressourcen ( $\rightarrow$ eingebettete Systeme)
-            \item Realisierung von QoS-Anforderungen ( $\rightarrow$ Multimediasysteme)
-            \item Erhöhung der Ausfallsicherheit ( $\rightarrow$ verfügbarkeitskritische Systeme)
-            \item Schutz vor Angriffen und Missbrauch ( $\rightarrow$ sicherheitskritische Systeme)
-            \item flexiblen und modularen Anpassen des Betriebssystems ( $\rightarrow$ hochadaptive Systeme)
-        \end{itemize*}
-        \item $\rightarrow$ höchst diverse Abstraktionen von Hardware aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item Reservierung von Ressourcen ( $\rightarrow$ eingebettete Systeme)
+        \item Realisierung von QoS-Anforderungen ( $\rightarrow$ Multimediasysteme)
+        \item Erhöhung der Ausfallsicherheit ( $\rightarrow$ verfügbarkeitskritisch)
+        \item Schutz vor Angriffen und Missbrauch ( $\rightarrow$ sicherheitskritisch)
+        \item flexiblen und modularen Anpassen des BS ( $\rightarrow$ hochadaptiv)
+        \item $\rightarrow$ höchst diverse Abstraktionen von Hardware
     \end{itemize*}
 
     \subsubsection{Betriebssysteme als Softwareprodukte}
     \begin{itemize*}
-        \item Betriebssystem:
-        \begin{itemize*}
-            \item eine endliche Menge von Quellcode
-            \item ein komplexes Softwareprodukt
-        \end{itemize*}
+        \item Betriebssystem: endliche Menge von Quellcode
+        \item besitzen differenzierte Aufgaben $\rightarrow$ funktionale Eigenschaften
         \item Anforderungen an Nutzung und Pflege $\rightarrow$ Evolutionseigenschaften
-        \item können für Betriebssysteme höchst speziell sein (Korrektheitsverifikation, Wartung, Erweiterung, ...)
-        \item $\rightarrow$ spezielle Anforderungen an das Softwareprodukt Betriebssystem aufgrund unterschiedlicher nichtfunktionaler Eigenschaften
+        \item können für Betriebssysteme höchst speziell sein
+        \item $\rightarrow$ spezielle Anforderungen an das Softwareprodukt BS
     \end{itemize*}
 
-    \subsection{NFE von Betriebssystemen}
-    Funktionale Eigenschaften (= Funktionen, Aufgaben) ...
-    \begin{itemize*}
-        \item Betriebssysteme: sehr komplexe Softwareprodukte
-        \item Ein Grund hierfür: besitzen Reihe von differenzierten Aufgaben - also funktionale Eigenschaften
-    \end{itemize*}
-
-    Grundlegende funktionale Eigenschaften von Betriebssystemen:
-    \begin{enumerate*}
-        \item \textbf{Hardware-Abstraktion} (Anwendungen/Programmierern eine angenehme Ablaufumgebung auf Basis der Hardware bereitstellen)
-        \item \textbf{Hardware-Multiplexing} (gemeinsame Ablaufumgebung zeitlich oder logisch getrennt einzelnen Anwendungen zuteilen)
-        \item \textbf{Hardware-Schutz} (gemeinsame Ablaufumgebung gegen Fehler und Manipulation durch Anwendungen schützen)
-    \end{enumerate*}
+    Grundlegende funktionale Eigenschaften von BS: Hardware-
+    \begin{description*}
+        \item[Abstraktion] Ablaufumgebung auf Basis der Hardware bereitstellen
+        \item[Multiplexing] Ablaufumgebung zeitlich/logisch getrennt einzelnen Anwendungen zuteilen
+        \item[Schutz] gemeinsame Ablaufumgebung gegen Fehler und Manipulation
+    \end{description*}
 
     Nichtfunktionale Eigenschaften (Auswahl) von Betriebssystemen:
     \begin{itemize*}
-        \item Laufzeiteigenschaften
+        \item Laufzeiteigenschaften: zur Laufzeit eines Systems beobachtbar
         \begin{itemize*}
             \item Sparsamkeit und Effizienz
-            \item Robustheit
-            \item Verfügbarkeit
+            \item Robustheit, Verfügbarkeit
             \item Sicherheit (Security)
-            \item Echtzeitfähigkeit
-            \item Adaptivität
-            \item Performanz
+            \item Echtzeitfähigkeit, Adaptivität, Performanz
         \end{itemize*}
-        \item Evolutionseigenschaften
+        \item Evolutionseigenschaften: charakterisieren (Weiter-) Entwicklung- und Betrieb eines Systems
         \begin{itemize*}
-            \item Wartbarkeit
-            \item Portierbarkeit
-            \item Offenheit
-            \item Erweiterbarkeit
+            \item Wartbarkeit, Portierbarkeit
+            \item Offenheit, Erweiterbarkeit
         \end{itemize*}
-    \end{itemize*}
-
-    Klassifizierung: Nichtfunktionale Eigenschaften unterteilbar in:
-    \begin{enumerate*}
-        \item Laufzeiteigenschaften (execution qualities)
-        \begin{itemize*}
-            \item zur Laufzeit eines Systems beobachtbar
-            \item Beispiele: ,,security'' (Sicherheit), ,,usability'' (Benutzbarkeit), ,,performance'' (Performanz), ...
-        \end{itemize*}
-        \item Evolutionseigenschaften (evolution qualities)
-        \begin{itemize*}
-            \item charakterisieren (Weiter-) Entwicklung- und Betrieb eines Systems
-            \item Beispiele: ,,testability'' (Testbarkeit), ,,extensibility'' (Erweiterbarkeit) usw.
-        \end{itemize*}
-        \item liegen in statischer Struktur eines Softwaresystems begründet
-    \end{enumerate*}
-
-    \subsection{Inhalte der Vorlesung}
-    Auswahl sehr häufiger NFE von Betriebssystemen:
-    \begin{itemize*}
-        \item Sparsamkeit und Effizienz
-        \item Robustheit
-        \item Verfügbarkeit
-        \item Sicherheit (Security)
-        \item Echtzeitfähigkeit
-        \item Adaptivität
-        \item Performanz
-    \end{itemize*}
-
-    Diskussion jeder Eigenschaft
-    \begin{itemize*}
-        \item Motivation, Anwendungsgebiete, Begriffsdefinition
-        \item Mechanismen und Abstraktionen des Betriebssystems
-        \item unterstützende Betriebssystem-Architekturkonzepte
-        \item ein typisches Beispiel-Betriebssystem
     \end{itemize*}
 
     \section{Sparsamkeit und Effizienz}
     \subsection{Motivation}
     Sparsamkeit (Arbeitsdefinition): Die Eigenschaft eines Systems, seine
-    Funktion mit minimalem Ressourcenverbrauchauszuüben.
-
-    Hintergrund: sparsamer Umgang mit einem oder mehreren Ressourcentypen =
-    präziser: Effizienz bei Nutzung dieser Ressourcen
+    Funktion mit minimalem Ressourcenverbrauch auszuüben $\rightarrow$ Effizienz bei Nutzung der Ressourcen
 
     Effizienz: Der Grad, zu welchem ein System oder eine seiner Komponenten
     seine Funktion mit minimalem Ressourcenverbrauch ausübt. (IEEE)
 
-    Entwurfsentscheidungen für BS:
-
-    \begin{enumerate*}
-        \item
-        Wie muss bestimmter Ressourcentyp verwaltet werden, um Einsparungen zu
-        erzielen?
-        \item
-        Welche Erweiterungen/Modifikationen des Betriebssystems (z.B. neue
-        Funktionen, Komponenten, ...) sind hierfür notwendig?
-    \end{enumerate*}
-
-    Konkretisierung: Ressource, welche sparsam verwendet wird.
-
     Beispiele:
-
     \begin{itemize*}
-        \item
-        mobile Geräte: Sparsamkeit mit Energie
-        \item
-        kleine Geräte, eingebettete Systeme:
-        \begin{itemize*}
+        \item mobile Geräte: Sparsamkeit mit Energie
             \item Sparsamkeit mit weiteren Ressourcen, z.B. Speicherplatz
             \item Betriebssystem (Kernel + User Space): geringer Speicherbedarf
             \item optimale Speicherverwaltung durch Betriebssystem zur Laufzeit
-        \end{itemize*}
-        \item
-        Hardwareoptimierungen im Sinne der Sparsamkeit:
-        \begin{itemize*}
             \item Baugrößenoptimierung(Platinen-und Peripheriegerätegröße)
             \item Kostenoptimierung(kleine Caches, keine MMU, ...)
-            \item massiv reduzierte HW-Schnittstellen (E/A-Geräte, Peripherie, Netzwerk)
+            \item massiv reduzierte HW-Schnittstellen (E/A-Geräte, Peripherie)
         \end{itemize*}
-    \end{itemize*}
 
-    Mobile und eingebettete Systeme (eine kleine Auswahl)
-
+    Mobile und eingebettete Systeme (kleine Auswahl)
     \begin{itemize*}
-        \item
-        mobile Rechner-Endgeräte
-        \begin{itemize*}
-            \item Smartphone, Smartwatch
-            \item Laptop-/Tablet-PC
-        \end{itemize*}
-        \item
-        Weltraumfahrt und -erkundung
-        \item
-        Automobile
-        \begin{itemize*}
-            \item Steuerung von Motor-und Bremssystemen
-            \item Fahrsicherheit
-            \item Insasseninformation (und -unterhaltung)
-            \item (teil-) autonomes Fahren
-        \end{itemize*}
-        \item
-        verteilte Sensornetze (WSN)
-        \item
-        Chipkarten
-        \item
-        Multimedia-und Unterhaltungselektronik
-        \begin{itemize*}
-            \item eBookReader
-            \item Spielkonsolen
-            \item Digitalkameras
-        \end{itemize*}
+        \item        mobile Rechner-Endgeräte
+        \item        Weltraumfahrt und -erkundung
+        \item        Automobile
+        \item        verteilte Sensornetze (WSN)
+        \item        Chipkarten
+        \item        Multimedia-und Unterhaltungselektronik
     \end{itemize*}
-
-    Beispiel: Weltraumerkundung
-
-    \begin{itemize*}
-        \item
-        Cassini-Huygens (1997-2017)
-        \begin{itemize*}
-            \item Radionuklidbatterien statt Solarzellen
-            \item Massenspeicher: SSDs statt Magnetbänder
-        \end{itemize*}
-        \item
-        Rosetta (2004-2016)
-        \begin{itemize*}
-            \item 31 Monate im Energiesparmodus
-        \end{itemize*}
-        \item
-        Opportunity (2003-2019)
-        \begin{itemize*}
-            \item geplante Missionsdauer: 90 d
-            \item Missionsdauer insgesamt: \textgreater\textgreater{} 5000 d
-        \end{itemize*}
-        \item
-        Hayabusa (2003-2010)
-        \begin{itemize*}
-            \item Beschädigung der Energieversorgung
-            \item Energiesparmodus: um 3 Jahre verzögerte Rückkehr
-        \end{itemize*}
-        \item
-        Voyager 1 (1977 bis heute)
-        \begin{itemize*}
-            \item erste Flugphase: periodisch 20 Monate Standby, 20 Stunden Messungen
-            \item liefert seit 40 Jahren Daten
-        \end{itemize*}
-    \end{itemize*}
-
 
     \subsection{Energieeffizienz}
-
-    Hardwaremaßnahmen
-
-    \begin{itemize*}
-        \item
-        zeitweiliges Abschalten/Herunterschalten momentan nicht benötigter
-        Ressourcen, wie
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \item
-        Laufwerke: CD/DVD, ..., Festplatte
-        \item
-        Hauptspeicherelemente
-        \item
-        (integrierte/externe) Peripherie: Monitor, E/A-Geräte, ...
-    \end{enumerate*}
+    Hardwaremaßnahmen: zeitweiliges Abschalten/Herunterschalten momentan nicht benötigter Ressourcen
 
     Betriebssystemmechanismen
-
     \begin{enumerate*}
-        \item
-        Dateisystem-E/A:energieeffizientes Festplatten-Prefetching(2.2.1)
-        \item
-        CPU-Scheduling: energieeffizientes Scheduling(2.2.2)
-        \item
-        Speicherverwaltung:minimale Leistungsaufnahme durchSpeicherzugriffe
-        mittels Lokalitätsoptimierung {[}DGMB07{]}
-        \item
-        Netzwerk:energiebewusstes Routing
-        \item
-        Verteiltes Rechnen auf Multicore-Prozessoren: temperaturabhängige
-        Lastverteilung
-        \item
-        ...
+        \item        Dateisystem-E/A:energieeffizientes Festplatten-Prefetching(2.2.1)
+        \item        CPU-Scheduling: energieeffizientes Scheduling(2.2.2)
+        \item        Speicherverwaltung:minimale Leistungsaufnahme durch Speicherzugriffe        mittels Lokalitätsoptimierung {[}DGMB07{]}
+        \item        Netzwerk:energiebewusstes Routing
+        \item        Verteiltes Rechnen auf Multicore-Prozessoren: temperaturabhängige        Lastverteilung
     \end{enumerate*}
 
-
-    \subsubsection{Energieeffiziente
-        Dateizugriffe}
-
-    Hardwarebedingungen: Magnetplatten (HDD), Netzwerkgeräte, DRAM-ICs,...
-    sparen nur bei relativ langen Inaktivitätsintervallen Energie.
+    \subsubsection{Energieeffiziente Dateizugriffe}
+    Hardwarebedingungen: HDD, Netzwerkgeräte, ... sparen nur bei relativ langen Inaktivitätsintervallen Energie.
 
     \begin{itemize*}
-        \item
-        Aufgabe: Erzeugen kurzer, intensiver Zugriffsmuster
-        $\rightarrow$ lange Inaktivitätsintervalle (für alle
-        Geräte mit geringem Energieverbrauch im Ruhezustand)
-        \item
-        Beobachtung bei HDD-Geräten: i.A. vier Zustände mit absteigendem
-        Energieverbrauch:
+        \item Aufgabe: Erzeugen kurzer, intensiver Zugriffsmuster $\rightarrow$ lange Inaktivitätsintervalle (für alle Geräte mit geringem Energieverbrauch im Ruhezustand)
+        \item Beobachtung bei HDD-Geräten: i.A. vier Zustände mit absteigendem Energieverbrauch:
         \begin{enumerate*}
-
             \item Aktiv: einziger Arbeitszustand
             \item Idle (Leerlauf): Platte rotiert, aber Plattenelektronik teilweise abgeschaltet
             \item Standby: Rotation abgeschaltet
             \item Sleep: gesamte restliche Elektronik abgeschaltet
         \end{enumerate*}
-        \item
-        ähnliche, noch stärker differenzierte Zustände bei DRAM (vgl.
-        {[}DGMB07{]} )
+        \item  ähnliche, noch stärker differenzierte Zustände bei DRAM
     \end{itemize*}
 
     Energiezustände beim Betrieb von Festplatten:
-
     \begin{itemize*}
-        \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-energiezustände-festplatte.png}
-        \item
-        Schlussfolgerung: durch geringe Verlängerungen des idle - Intervalls
-        kann signifikant der Energieverbrauch reduziert werden.
+        \item        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiezustände-festplatte.png}
+        \item        Schlussfolgerung: durch geringe Verlängerungen des idle - Intervalls kann signifikant der Energieverbrauch reduziert werden.
     \end{itemize*}
-
 
     \paragraph{Prefetching-Mechanismus}
 
     \begin{itemize*}
-        \item
-        Prefetching (,,Speichervorgriff'', vorausschauendes Lesen) \& Caching
+        \item Prefetching (,,Speichervorgriff'', vorausschauendes Lesen) \& Caching
         \begin{itemize*}
             \item Standard-Praxis bei moderner Datei-E/A
             \item Voraussetzung: Vorwissen über benötigte Folge von zukünftigen Datenblockreferenzen (z.B. Blockadressen für bestimmte Dateien, gewonnen durch Aufzeichnung früherer Zugriffsmuster beim Start von Anwendungen -Linux: readahead syscall)
@@ -461,50 +272,64 @@
             \item Idee: Vorziehen möglichst vieler E/A-Anforderungen an Festplatte + zeitlich gleichmäßige Verteilung der verbleibenden
             \item Umsetzung: Caching (Zwischenspeichern) dieser vorausschauend gelesenen Blöcke in ungenutzten Hauptspeicherseitenrahmen ( pagecache )
         \end{itemize*}
-        \item
-        Folge: Inaktivitätsintervalle überwiegend sehr kurz
-        $\rightarrow$ Energieeffizienz ...?
-        \item
-        Zugriffsoperation: (durch Anwendung)
+        \item Folge: Inaktivitätsintervalle überwiegend sehr kurz $\rightarrow$ Energieeffizienz ...?
+        \item Zugriffsoperation: (durch Anwendung)
         \begin{itemize*}
             \item access(x) ... greife (lesend/schreibend) auf den Inhalt von Festplattenblock x im Page Cache zu
         \end{itemize*}
-        \item
-        Festplattenoperationen:
+        \item Festplattenoperationen:
         \begin{itemize*}
             \item fetch(x) ... hole Block x nach einem access(x) von Festplatte
             \item prefetch(x) ... hole Block x ohne access(x) von Festplatte
             \item beide Operationen schreiben x in einen freien Platz des Festplattencaches; falls dieser voll ist ersetzen sie einen der Einträge gemäß fester Regeln $\rightarrow$ Teil der (Pre-) Fetching-Strategie
         \end{itemize*}
-        \item
-        Beispiel für solche Strategien: Anwendung ...
+        \item Beispiel für solche Strategien: Anwendung ...
         \begin{itemize*}
             \item mit Datenblock-Referenzstrom A, B, C, D, E, F, G, ...
             \item mit konstanter Zugriffsdauer: 10 Zeiteinheiten je Blockzugriff
             \item Cache-Kapazität: 3 Datenblöcke
             \item Zeit zum Holen eines Blocks bei Cache-Miss: 1 Zeiteinheit
         \end{itemize*}
-        \item
-        Beispiel: Traditionelles Prefetching
+        \item Beispiel: Traditionelles Prefetching
         \begin{itemize*}
             \item Fetch-on-demand-Strategie (kein vorausschauendes Lesen)
             \item Strategie entsprechend Prefetching- Regeln nach Cao et al. {[}CFKL95{]} (= traditionelle Disk-Prefetching- Strategie)
-            \item traditionelle Prefetching-Strategie: bestimmt \begin{itemize*} \item wann ein Datenblock von der Platte zu holen ist (HW-Zustand aktiv ) \item welcher Block zu holen ist \item welcher Block zu ersetzen ist \end{itemize*}
-            \item Regeln für diese Strategie: \begin{enumerate*} \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist. \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird. \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird. \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können. \end{enumerate*}
+            \item traditionelle Prefetching-Strategie: bestimmt 
+            \begin{itemize*} 
+                \item wann ein Datenblock von der Platte zu holen ist (HW-Zustand aktiv ) 
+                \item welcher Block zu holen ist 
+                \item welcher Block zu ersetzen ist 
+            \end{itemize*}
+            \item Regeln für diese Strategie: 
+            \begin{enumerate*} 
+                \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist. 
+                \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird. 
+                \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird. 
+                \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können. 
+            \end{enumerate*}
         \end{itemize*}
         \item
         Energieeffizientes Prefetching
         \begin{itemize*}
             \item Optimale Ersetzungsstrategie und 3 unterschiedliche Prefetching-Strategien:
-            \item Fetch-on-demand-Strategie: \begin{itemize*} \item Laufzeit: 66 ZE für access(A) ... access(F) , 7 Cache-Misses \item Disk-Idle-Zeit: 6 Intervalle zu je 10 ZE \end{itemize*}
-            \item Strategie entsprechend Prefetching-Regeln {[}CFKL95{]} (traditionelle Disk-Prefetching-Strategie): \begin{itemize*} \item Laufzeit: 61 ZE für access(A) ... access(F) , 1 Cache-Miss \item Disk-Idle-Zeit: 5 Intervalle zu je 9 ZE und 1 Intervall zu 8 ZE (= 53 ZE) \end{itemize*}
-            \item Energieeffiziente Prefetching-Strategie, die versucht Länge der Disk-Idle-Intervalle zu maximieren: \begin{itemize*} \item gleiche Laufzeit und gleiche Anzahl Cache-Misses wie traditionelles Prefetching \item Disk-Idle-Zeit: 2 Intervalle zu 27 bzw. 28 ZE (= 55 ZE) \end{itemize*}
+            \item Fetch-on-demand-Strategie: 
+            \begin{itemize*} 
+                \item Laufzeit: 66 ZE für access(A) ... access(F) , 7 Cache-Misses 
+                \item Disk-Idle-Zeit: 6 Intervalle zu je 10 ZE 
+            \end{itemize*}
+            \item Strategie entsprechend Prefetching-Regeln {[}CFKL95{]} (traditionelle Disk-Prefetching-Strategie): 
+            \begin{itemize*} 
+                \item Laufzeit: 61 ZE für access(A) ... access(F) , 1 Cache-Miss 
+                \item Disk-Idle-Zeit: 5 Intervalle zu je 9 ZE und 1 Intervall zu 8 ZE (= 53 ZE) 
+            \end{itemize*}
+            \item Energieeffiziente Prefetching-Strategie, die versucht Länge der Disk-Idle-Intervalle zu maximieren: 
+            \begin{itemize*} 
+                \item gleiche Laufzeit und gleiche Anzahl Cache-Misses wie traditionelles Prefetching 
+                \item Disk-Idle-Zeit: 2 Intervalle zu 27 bzw. 28 ZE (= 55 ZE) 
+            \end{itemize*}
         \end{itemize*}
-        \item
-        Auswertung: Regeln für energieeffiziente Prefetching-Strategie nach
-        Papathanasiou elal.: {[}PaSc04{]}
+        \item Auswertung: Regeln für energieeffiziente Prefetching-Strategie nach Papathanasiou elal.: {[}PaSc04{]}
         \begin{enumerate*}
-
             \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist.
             \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird.
             \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird.
@@ -516,21 +341,12 @@
     Allgemeine Schlussfolgerungen
 
     \begin{enumerate*}
-        \item
-        Hardware-Spezifikation nutzen: Modi, in denen wenig Energie verbraucht
-        wird
-        \item
-        Entwicklung von Strategien, die langen Aufenthalt in energiesparenden
-        Modi ermöglichen , und dabei Leistungsparameter in vertretbarem Umfang
-        reduzieren
-        \item
-        Implementieren dieser Strategien in Betriebssystemmechanismen zur
-        Ressourcenverwaltung
+        \item Hardware-Spezifikation nutzen: Modi, in denen wenig Energie verbraucht wird
+        \item Entwicklung von Strategien, die langen Aufenthalt in energiesparenden Modi ermöglichen , und dabei Leistungsparameter in vertretbarem Umfang reduzieren
+        \item Implementieren dieser Strategien in Betriebssystemmechanismen zur Ressourcenverwaltung
     \end{enumerate*}
 
-
-    \subsubsection{Energieeffizientes
-        Prozessormanagement}
+    \subsubsection{Energieeffizientes Prozessormanagement}
 
     Hardware-Gegebenheiten
 
@@ -679,12 +495,12 @@
             \item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall)ab einem oberen Schwellwert \$E\_\{max\}\$
             \item Problem: energieintensive Threads behindern alle nachfolgenden Threads trotz gleicher Priorität $\rightarrow$ Fairnessmaß von RR (gleiche Zeitscheibenlänge T ) untergraben
             %\begin{itemize*} 
-            \item %\includegraphics{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
+            \item %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
             %\end{itemize*}
             \item Problem 2: energieintensive Threads niedrigerer Priorität behindern
             später ankommende Threads höherer Priorität
             %\begin{itemize*}
-            %\item \includegraphics{Assets/AdvancedOperatingSystems-prioritätsumkehr.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr.png}
             %\end{itemize*}
         \end{itemize*}
     \end{itemize*}
@@ -704,7 +520,7 @@
         Strategie 1: faire Energieverteilung (einheitliche Energielimits)
         \begin{itemize*}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
             \item \$1\textbackslash leq i\textbackslash leq 4: E\_i\^{}\{limit\} = P\_\{limit\}* T\$
             \item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
         \end{itemize*}
@@ -727,7 +543,7 @@
         Strategie 2: maximale Reaktivität ( $\rightarrow$
         klassisches RR)
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -743,7 +559,7 @@
         \item
         Strategie 3: Reaktivität, dann faire Energieverteilung
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-energiebewisstes-rr-2.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewisstes-rr-2.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -913,14 +729,14 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-speicherverwaltung.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-speicherverwaltung.png}
     \end{itemize*}
 
     Problem: externe Fragmentierung
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-externe-fragmentierung.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-externe-fragmentierung.png}
         \item
         Lösungen:
         \begin{itemize*}
@@ -935,7 +751,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-interne-fragmentierung.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interne-fragmentierung.png}
         \item
         Lösung:
         \begin{itemize*}
@@ -1168,7 +984,7 @@
     \subsubsection{Makrokernel (monolithischer
         Kernel)}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-makrokernel.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernel.png}
 
     \begin{itemize*}
         \item
@@ -1190,7 +1006,7 @@
 
     \subsubsection{Mikrokernel}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-mikrokernel.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mikrokernel.png}
 
     \begin{itemize*}
         \item
@@ -1473,7 +1289,7 @@
             \item Fehler ( fault ): Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-fehler.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-fehler.png}
     \end{itemize*}
 
 
@@ -1507,7 +1323,7 @@
             \item fault : Programmierfehler im Gerätetreiber
             \item externer Zustand des Treibers (oder des Dateisystems, Schedulers, E/A, IPC, ...) $\subseteq$ interner Zustand des Kernels
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-treiber-kernel.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -1531,7 +1347,7 @@
         \item
         $\rightarrow$ Robustheit: Isolationsmechanismen
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
     \end{itemize*}
 
 
@@ -1592,7 +1408,7 @@
         \item
         ... jedenfalls fast: Ablauf eines Systemaufrufs (Erinnerung)
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-systemaufruf.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-systemaufruf.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -1604,7 +1420,7 @@
         \item
         Resultat: schwach strukturierter (monolithischer) Makrokernel
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
         \begin{itemize*}
             \item nach {[}TaWo05{]}, S. 45
         \end{itemize*}
@@ -1667,12 +1483,12 @@
         zur Erinnerung: private virtuelle Adressräume zweier Tasks
         (\$i\textbackslash not= j\$)
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-private-virtuelle-adressräume.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-private-virtuelle-adressräume.png}
         %\end{itemize*}
         \item
         private virtuelle vs. physischer Adresse
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-virtuelle-vs-physische-adresse.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtuelle-vs-physische-adresse.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -1707,7 +1523,7 @@
             \item gab es lange nur auf Anwendungsebene
             \item $\rightarrow$ keine Isolation zwischen Fehlern innerhalb des Kernels!
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png}
         \end{itemize*}
         \item
         nächstes Ziel: Schutz gegen Kernelfehler (Gerätetreiber)...
@@ -1747,7 +1563,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
         \item
         minimale Kernelfunktionalität:
         \item
@@ -1759,7 +1575,7 @@
         \item
         ,,Wir haben 100 Leute gefragt...'': Wie entscheide ich das?
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
         \begin{itemize*}
             \item Ablauf eines Systemaufrufs
             \item schwarz: unprivilegierteInstruktionen
@@ -1854,7 +1670,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-mach-server.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-server.png}
         \item
         Emulation von UNIX-Systemen mittels Mach-Serverprozessen
     \end{itemize*}
@@ -1893,7 +1709,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-mach-architektur.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-architektur.png}
         \item
         Systemaufrufkosten:
         \begin{itemize*}
@@ -1901,7 +1717,7 @@
             \item Messung mit verschiedenen Botschaftenlängen( x - Werte)
             \item ohne Nutzdaten (0 Byte Botschaftenlänge): 115 $\mu$s (Tendenz unfreundlich ...)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
         \end{itemize*}
         \item
         Bewertung aus heutiger Sicht:
@@ -1988,9 +1804,9 @@
         %\midrule
         %\endhead
         %Eg Mach {[}87{]} & Eg L4 {[}95{]} & seL4 {[}09{]}\tabularnewline
-        %\includegraphics{Assets/AdvancedOperatingSystems-l4-first-g.png} &
-        %\includegraphics{Assets/AdvancedOperatingSystems-L4-second-g.png} &
-        %\includegraphics{Assets/AdvancedOperatingSystems-l4-third-g.png}\tabularnewline
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-first-g.png} &
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-L4-second-g.png} &
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-third-g.png}\tabularnewline
         %180 syscalls & \textasciitilde7 syscalls & \textasciitilde3
         %syscalls\tabularnewline
         %100 kLOC & \textasciitilde10 kLOC & 9 kLOC\tabularnewline
@@ -2090,7 +1906,7 @@
             \item Realspeicher: Ur-Adressraum, vom $\mu$Kernel verwaltet
             \item Speicherverwaltung(en), Paging usw.: vollständig außerhalb des $\mu$-Kernels realisiert
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-adressraumhierarchie.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-adressraumhierarchie.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -2202,7 +2018,7 @@
         \begin{itemize*}
             \item Mikrokernelmit akzeptabler Performanz: hardwarespezifische Implementierung minimalerforderlicher, vom Prozessortyp unabhängiger Abstraktionen
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-l4-ipc-performance.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-ipc-performance.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -2214,7 +2030,7 @@
         \item
         L4 heute: Spezifikation eines Mikrokernels (nicht Implementierung)
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-l4-family.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-family.png}
         \item
         Einige Weiterentwicklungen:
         \item
@@ -2331,7 +2147,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
         \item
         schwarz: ausfallfreie Kommunikation
         \item
@@ -2344,7 +2160,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
         \item
         schwarz: ausfallfreie Kommunikation
         \item
@@ -2382,14 +2198,14 @@
         Kommunikationsschnittstellen ...
         \begin{itemize*}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-minix-architektur.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur.png}
             \item ... für Anwendungen (weiß): Systemaufrufe im POSIX-Standard
             \item ... für Serverprozesse (grau): \begin{itemize*} \item untereinander: IPC (botschaftenbasiert) \item mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt \end{itemize*}
         \end{itemize*}
         \item
         Betriebssystem-Serverprozesse:
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
         \item
         Dateisystem (FS)
         \item
@@ -2423,7 +2239,7 @@
             \item rs: Fork sämtlicher BS-Serverprozesse, einschließlich Gerätetreiber
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-minix-reincarnation-server.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-reincarnation-server.png}
     \end{itemize*}
 
     MINIX: Ausprobieren
@@ -2475,7 +2291,7 @@
         Der Anteil an Laufzeit eines Systems, in dem dieses seine
         spezifizierte Leistung erbringt.
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png}
         \item
         Availability= Total Uptime/ Total Lifetime= MTTF / (MTTF + MTTR)
         \begin{itemize*}
@@ -2594,7 +2410,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
     \end{itemize*}
 
 
@@ -3129,7 +2945,7 @@
     \subparagraph{DAC-Modellierung:
         Zugriffsmatrix}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-dac-zugriffsmatrix.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dac-zugriffsmatrix.png}
 
 
     \subparagraph{Modellkorrektheit:
@@ -3326,7 +3142,7 @@
         ( exec*() )
         \item
         Vererbungsprinzip:
-        %\includegraphics{Assets/AdvancedOperatingSystems-acl-vererbungsprinzip.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-acl-vererbungsprinzip.png}
     \end{itemize*}
 
 
@@ -3426,12 +3242,12 @@
         \item
         Problem: privilegierter Zugriff durch unprivilegierte Anwendung
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-passwd-problem.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-passwd-problem.png}
         %\end{itemize*}
         \item
         Standard Linux Lösung:
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-passwd-lösung.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-passwd-lösung.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -3477,9 +3293,9 @@
         zur Laufzeit in Security Server installiert werden
     \end{itemize*}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-selinux-security-server.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-selinux-security-server.png}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-selinux-sicherheitspolitik-installieren.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-selinux-sicherheitspolitik-installieren.png}
 
 
     \subparagraph{SELinux-Sicherheitspolitik}
@@ -3519,7 +3335,7 @@
         \item
         Rechte delegation durch Retypisierung(vgl. Unix-SUID!)
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-selinux-retypisierung.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-selinux-retypisierung.png}
     \end{itemize*}
 
 
@@ -3591,7 +3407,7 @@
         $\rightarrow$ massiv verringertes
         Missbrauchspotenzial!
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-passwd-lösung2.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-passwd-lösung2.png}
     \end{itemize*}
 
 
@@ -3688,7 +3504,7 @@
         \item
         Prozessor (und nur dieser) ver-und entschlüsselt EPC-Seiten
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-SGX-enclaves.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves.png}
         \item
         Enclaves: Erzeugung
         \begin{itemize*}
@@ -3699,7 +3515,7 @@
         \item
         Enclave - Zustandsmodell (vereinfacht) :
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-SGX-enclaves-model.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves-model.png}
         %\end{itemize*}
         \item
         Zugriff: App. $\rightarrow$ CPU-Instruktionen in User
@@ -3707,7 +3523,7 @@
         \begin{itemize*}
             \item CPU erfordert, dass EPC-Seiten in vARder zugreifenden Task
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -3776,7 +3592,7 @@
         \item
         Architekturkomponenten in a nutshell:
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-Referenzmonitorprinzip.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Referenzmonitorprinzip.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -3870,7 +3686,7 @@
 
     ( Flask - Architekturmodell)
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-referenzmonitor-flask.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-referenzmonitor-flask.png}
 
 
     \subparagraph{SELinux-Architektur: Security
@@ -4131,7 +3947,7 @@
         Die Frist trennt also korrektes von inkorrektem Verhalten des Systems.
     \end{itemize*}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeitfähigkeit.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeitfähigkeit.png}
 
     Harte und weiche Echtzeitsysteme
 
@@ -4193,14 +4009,14 @@
         \begin{itemize*}
             \item hart oder weich (anwendungsabhängig) \begin{itemize*} \item innerhalb einer Anwendung sind sowohl Prozesse mit harten oder weichen Fristen möglich \item Frist: spätestens am Ende der aktuellen Periode, möglich auch frühere Frist \end{itemize*}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
         \end{itemize*}
         \item
         Modellierung:
         \begin{itemize*}
             \item unendliche Folge identischer Aktivierungen: Instanzen, aktiviert mit konstanter Rate (Periode)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
         \end{itemize*}
         \item
         Aufgaben des Betriebssystems:
@@ -4238,7 +4054,7 @@
         \begin{itemize*}
             \item bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -4248,7 +4064,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
         \item
         \$a\_i\$: Ankunftszeitpunkt (arrival time); auch r ... request
         time/release time
@@ -4276,7 +4092,7 @@
             \item Zeitquantum, das Prozessor zur vollständigen Bearbeitung der aktuellen Instanz benötigt (Unterbrechungen nicht eingerechnet)
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
         \item
         \$L\_i\$: Unpünktlichkeit (lateness): \$L\_i= f\_i - d\_i\$
         \begin{itemize*}
@@ -4289,7 +4105,7 @@
             \item Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
         \item
         \$X\_i\$: Spielraum (Laxity, Slacktime): \$X\_i = d\_i - a\_i - C\_i\$
         \begin{itemize*}
@@ -4438,7 +4254,7 @@
             \item präemptiver Algorithmus
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
         \begin{itemize*}
             \item Zuteilung eines Prozessors nach RM
             \item \$t\_1, t\_2\$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
@@ -4471,7 +4287,7 @@
         Beispiel für \$n=2\$
         \begin{itemize*}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
             \item Obere Grenze des Prozessor-Auslastungsfaktors für zwei periodische Prozesse als Funktion des Verhältnisses ihrer Perioden.
             \item (Abb. nach {[}Buttazzo97{]} Bild 4.7, S. 90)
         \end{itemize*}
@@ -4504,7 +4320,7 @@
         \end{itemize*}
         \item Beispiel
         \begin{itemize*}
-            %\item \includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png}
             \item Zuteilung eines Prozessors nach EDF
             \item \$t\_1, t\_2\$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse
             \item darunter: Prozessorzuteilung nach EDF
@@ -4519,7 +4335,7 @@
             \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\leftrightarrow$: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\textbackslash leq 1\$
             \item $\leftarrow$: \$U\textgreater1\$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
             \item $\rightarrow$: Beweis durch Widerspruch. Annahme: \$U\textbackslash leq 1\$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt \$t\_2\$, z.B.:
-            %\begin{itemize*} \item \includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png} \end{itemize*}
+            %\begin{itemize*} \item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png} \end{itemize*}
             \item Beobachtungen an diesem Schedule:
             \begin{itemize*}
                 \item \$exists\$ ein längstes, kontinuierliches Rechenintervall \${[}t\_1,t\_2{]}\$, in welchem nur Prozessinstanzen mit Fristen \$\textbackslash leq t\_2\$ rechnen
@@ -4537,7 +4353,7 @@
 
 
     \subsubsection{Vergleich: EDF vs. RM}
-    %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
 
     Zuteilung eines Prozessors nach EDF (dynamisch) bzw. RM (statisch)
     \$t\_1,t\_2\$: Anforderungen nach Prozessorzeit durch zwei periodische
@@ -4588,7 +4404,7 @@
             \item statisch: jeweils eine Warteschlange pro Priorität:
             \item Einfügen und Entfernen von Tasks: \$O(1)\$
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
         \end{itemize*}
         \item
         EDF
@@ -4596,7 +4412,7 @@
             \item dynamisch: balancierter Binärbaum zur Sortierung nach Prioritäten:
             \item Einfügen und Entfernen von Tasks: \$O(log\textbackslash{} n)\$
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -4703,11 +4519,11 @@
     \$t\_i\^{}\{virt\}\$}
 
     Beispiel: Situation bei \$t=20ms\$
-    %\includegraphics{Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png}
 
     Da \$t\_B\$ aber noch weiteren Rechenbedarf hat: Situation bei \$t=30
     ms\$
-    %\includegraphics{Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png}
 
 
     \paragraph{RC Algorithmus:
@@ -4773,7 +4589,7 @@
     \paragraph{Umgang mit abweichenden Prozessen unter
         RC}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-rc-abweichende-prozesse.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-abweichende-prozesse.png}
 
 
     \paragraph{Resultat}
@@ -4810,7 +4626,7 @@
         \item
         Hintergrund-Scheduling:
         \begin{itemize*}
-            \item Prinzip: %\includegraphics{Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png}
+            \item Prinzip: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png}
             \item rechenbereite Prozesse auf 2 Warteschlangen aufgeteilt (einfache Variante eines Mehr-Ebenen-Scheduling )
             \item Warteschlange 1: \begin{itemize*} \item alle periodischen Prozesse \item mit höchster Priorität mittels RM oder EDF bedient \end{itemize*}
             \item Warteschlange 2: \begin{itemize*} \item alle aperiodischen Prozesse \item nur bedient, wenn keine wartenden Prozesse in Warteschlange 1 \end{itemize*}
@@ -4836,7 +4652,7 @@
         \item
         Beispiel: Hintergrund-Scheduling mit RM
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-hintergrund-scheduling.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-hintergrund-scheduling.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -4858,7 +4674,7 @@
     \paragraph{Beispiel: Server-Prozess mit
         RM}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-rm-server-prozess.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rm-server-prozess.png}
 
 
     \paragraph{Optimierung:
@@ -4884,7 +4700,7 @@
         Resultat: Verbesserung der Antwortzeiten für aperiodische
         Anforderungen
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-slack-stealing.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-slack-stealing.png}
     \end{itemize*}
 
 
@@ -4920,7 +4736,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
         \item
         Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem
         Betriebsmittel
@@ -4936,7 +4752,7 @@
         \item
         Kritisch bei zusätzlichen Prozessen mittlerer Priorität
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
         \item
         Lösung: Priority Inheritance Protocol (PIP)
     \end{itemize*}
@@ -5051,7 +4867,7 @@
             \item Prinzip in unterschiedlicher Weise verfeinerbar
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png}
     \end{itemize*}
 
 
@@ -5061,7 +4877,7 @@
         \item
         Fristüberschreitung durch ungeeignete Interruptbearbeitung
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-interruptbehandlung-fristüberschreitung.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-fristüberschreitung.png}
         %\end{itemize*}
         \item
         Lösung für Echtzeitsysteme ohne Fristüberschreitung
@@ -5069,7 +4885,7 @@
             \item Interrupt wird zunächst nur registriert (deterministischer Zeitaufwand)
             \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$ Pop-up Thread
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
         \end{itemize*}
     \end{enumerate*}
 
@@ -5114,7 +4930,7 @@
             \item Anforderungsreihenfolge = 98, 183, 37, 122, 14, 124, 65, 67
             \item Zuletzt gelesener Block: 53
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
         \end{itemize*}
         \item
         Beispiel 2: EDF Festplattenscheduling
@@ -5123,7 +4939,7 @@
             \item Anforderungsreihenfolge \$t\_2 = 183, 122, 14, 67\$
             \item Zuletzt gelesener Block: 53 \textbar{} \textbar{} \$a\_i\$ \textbar{} \$d\_i\$ \textbar{} \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} \textbar{} \$t\_1\$ \textbar{} 0 \textbar{} 3 \textbar{} \textbar{} \$t\_2\$ \textbar{} 0 \textbar{} 9 \textbar{}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
         \end{itemize*}
         \item
         Primärziel: Wahrung der Echtzeitgarantien
@@ -5171,7 +4987,7 @@
         \begin{itemize*}
             \item o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$ berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist $>>$ Latenzzeit)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -5190,7 +5006,7 @@
             \item Minimierung blockierender Kommunikationsoperationen
             \item indirekte Kommunikation $\rightarrow$ CAB zum Geschwindigkeitsausgleich
             \item keine FIFO-Ordnungen (nach Fristen priorisieren)
-            \item CAB ... Cyclic Asynchronous Buffer: %\includegraphics{Assets/AdvancedOperatingSystems-kommunikation-cab.png}
+            \item CAB ... Cyclic Asynchronous Buffer: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-kommunikation-cab.png}
         \end{itemize*}
         \begin{enumerate*}
 
@@ -5215,7 +5031,7 @@
         \item
         Lesen/Überschreiben in zyklischer Reihenfolge:
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-kommunikation-zyklisch-cab.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-kommunikation-zyklisch-cab.png}
         %\end{itemize*}
         \item
         Implementierung:
@@ -5231,14 +5047,14 @@
         \begin{itemize*}
             \item anschaulich, ohne aktiven Empfänger
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
         \end{itemize*}
         \item
         Empfänger-Regel:
         \begin{itemize*}
             \item anschaulich, ohne aktiven Sender
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-cab-empfänger.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-empfänger.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -5256,7 +5072,7 @@
         Empfänger (nach min. einem geschriebenen Element) niemals durch leeren
         Puffer blockiert
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-cab-sonderfall-1.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-1.png}
     \end{itemize*}
 
     Sonderfall 2: Sender schneller als Empfänger
@@ -5273,7 +5089,7 @@
         $\rightarrow$ Szenarien, in denen Empfänger sowieso
         nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
     \end{itemize*}
 
     Konkurrierende Zugriffe:
@@ -5288,7 +5104,7 @@
         schnellerer Sender überspringtein gesperrtes Element durch erneutes
         Inkrementieren von LRW , muss MRW trotzdem nachziehen
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png}
     \end{itemize*}
 
 
@@ -5407,7 +5223,7 @@
             \item POSIX-kompatible Prozessverwaltung
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-dryos.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dryos.png}
     \end{itemize*}
 
     DROPS (Dresden Real-Time Operating System)
@@ -5418,7 +5234,7 @@
         \item
         Eckdaten: Multi-Server-Architektur auf Basis eines L4-Mikrokerns
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-drops.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
     \end{itemize*}
 
 
@@ -5505,7 +5321,7 @@
         \begin{itemize*}
             \item physische Hardware darstellen als abstrahierte Hardware mit komfortableren Schnittstellen
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
             \item Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B. \begin{itemize*} \item \textbf{Prozesse:} gleiches Zustandsmodell, gleiches Threadmodell \item \textbf{Dateien:} gleiche Namensraumabstraktion \item \textbf{Adressräume:} gleiche Speicherverwaltung (VMM, Seitengröße, Paging) \item \textbf{Interprozesskommunikation:} gleiche Mechanismen für alle Anwendungsprozesse \end{itemize*}
         \end{itemize*}
         \item
@@ -5522,8 +5338,8 @@
         \item
         Idee von Exokernel-Architekturen:
         %\begin{itemize*}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-exokernel-architektur.png}
-        %\item \includegraphics{Assets/AdvancedOperatingSystems-exokernel-beispiel.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernel-architektur.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernel-beispiel.png}
         %\end{itemize*}
     \end{itemize*}
 
@@ -5736,7 +5552,7 @@
             \item XOK: Proof-of-Feasibility (Performanz)
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-exos.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exos.png}
     \end{itemize*}
 
     Zwischenfazit: Exokernelarchitektur
@@ -5779,7 +5595,7 @@
         \end{itemize*}
         \item
         Idee:
-        %\includegraphics{Assets/AdvancedOperatingSystems-virtualisierung-idee.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-idee.png}
     \end{itemize*}
 
     Ziele von Virtualisierung
@@ -5826,7 +5642,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png}
         \item
         Idee des Typ- 1 - Hypervisors:
         \begin{itemize*}
@@ -5907,7 +5723,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png}
     \end{itemize*}
 
     Privilegierte Instruktionen mit Typ- 1 - Hypervisor(1)
@@ -5937,7 +5753,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png}
     \end{itemize*}
 
     Sensible und privilegierte Instruktionen: Beobachtungen an verschiedenen
@@ -5992,7 +5808,7 @@
 
     \begin{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png}
     \end{itemize*}
 
     Folgen für Virtualisierung
@@ -6066,7 +5882,7 @@
 
     \subsubsection{Typ-2-Hypervisor}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-typ-2-hypervisor.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-typ-2-hypervisor.png}
 
     Virtualisierung ohne Hardwareunterstützung:
 
@@ -6323,7 +6139,7 @@
         ,,User-Space-Virtualisierung,,
     \end{itemize*}
 
-    %\includegraphics{Assets/AdvancedOperatingSystems-container.png}
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-container.png}
 
     Anwendungsfälle für Container
 
@@ -6414,15 +6230,15 @@
         durch Laden der Treiber: entsteht ,,Virtualisierungsschicht''
         (VMware-Sprechweise)
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-vmware-bare-metal.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-bare-metal.png}
         \begin{itemize*}
             \item Typ1- Hypervisor- Architektur
             \item Anwendung nur bei VMware ESXi
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png}
         \begin{itemize*}
             \item Entsprechende Produkte in Vorbereitung
         \end{itemize*}
@@ -6498,7 +6314,7 @@
         \begin{itemize*}
             \item es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-Xen-architektur.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-architektur.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -6518,7 +6334,7 @@
         \begin{itemize*}
             \item Sicherheitspolitik-Integration, Administration, Auswertung: \$dom\_0\$
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
         \end{itemize*}
         \item
         Beispiel: Inter-Domänen-Kommunikation
@@ -6546,7 +6362,7 @@
             \item Realisierung als sog. vertikal strukturiertes Betriebssystem: \begin{itemize*} \item weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip) \item Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen (neu) \end{itemize*}
         \end{enumerate*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
     \end{itemize*}
 
     MirageOS + Xen
@@ -6571,8 +6387,8 @@
         \item
         Unikernel - Idee
         \begin{itemize*}
-            \item Architekturprinzip: %\includegraphics{Assets/AdvancedOperatingSystems-unikernel-architektur.png}
-            \item in MirageOS: %\includegraphics{Assets/AdvancedOperatingSystems-mirageOs-architektur.png}
+            \item Architekturprinzip: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-unikernel-architektur.png}
+            \item in MirageOS: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mirageOs-architektur.png}
         \end{itemize*}
         \item
         Ergebnis: Kombination von Vorteilen zweier Welten
@@ -6618,7 +6434,7 @@
             \item union mounting: Funktion zur logischen Reorganisation hierarchischer Dateisysteme
         \end{itemize*}
         \item
-        %\includegraphics{Assets/AdvancedOperatingSystems-docker.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
     \end{itemize*}
 
 
@@ -6786,7 +6602,7 @@
             \item Verwendung: bei Vielzahl von Prozessorkernen (Skalierbarkeit!)
             \item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
         \end{itemize*}
         \item
         B. Hierarchisches Design
@@ -6796,7 +6612,7 @@
             \item Verwendung: typischerweise Serverkonfigurationen
             \item Beispiele: \begin{itemize*} \item IBM Power \item Intel Core 2, Core i \item Sun UltraSPARCT1 (Niagara) \end{itemize*}
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
         \end{itemize*}
         \item
         C. Pipeline-Design
@@ -6806,7 +6622,7 @@
             \item Verwendung: \begin{itemize*} \item Graphikchips \item (hochspezialisierte) Netzwerkprozessoren \end{itemize*}
             \item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
             %\item
-            % %\includegraphics{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
+            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
         \end{itemize*}
     \end{itemize*}
 

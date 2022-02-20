@@ -311,14 +311,13 @@
     \subsubsection{Energieeffizientes Prozessormanagement}
     Hardware-Gegebenheiten
     \begin{itemize*}
-        \item z.Zt. meistgenutzte Halbleitertechnologie für Prozessor-Hardware: CMOS
-        ( Complementary Metal Oxide Semiconductor)
+        \item z.Zt. meistgenutzte Halbleitertechnologie für Prozessor-Hardware: CMOS ( Complementary Metal Oxide Semiconductor)
         \item
-        Komponenten für Energieverbrauch: \$P = P\_\{switching\} +
-        P\_\{leakage\} + ...\$
+        Komponenten für Energieverbrauch: $P = P_{switching} +
+        P_{leakage} + ...$
         \begin{itemize*}
-            \item \$P\_\{switching\}\$: für Schaltvorgänge notwendige Leistung
-            \item \$P\_\{leakage\}\$: Verlustleistung durch verschiedene Leckströme
+            \item $P_{switching}$: für Schaltvorgänge notwendige Leistung
+            \item $P_{leakage}$: Verlustleistung durch verschiedene Leckströme
             \item ...: weitere Einflussgrößen (technologiespezifisch)
         \end{itemize*}
     \end{itemize*}
@@ -327,7 +326,7 @@
     \paragraph{Hardwareseitige
         Maßnahmen}
 
-    Schaltleistung: \$P\_\{switching\}\$
+    Schaltleistung: $P_{switching}$
 
     \begin{itemize*}
         \item
@@ -359,7 +358,7 @@
         \end{itemize*}
     \end{itemize*}
 
-    Verlustleistung: \$P\_\{leakage\}\$
+    Verlustleistung: $P_{leakage}$
 
     \begin{itemize*}
         \item
@@ -367,11 +366,11 @@
         \item
         Fortschreitende Hardware-Miniaturisierung
         $\rightarrow$ zunehmender Anteil von
-        \$P\_\{leakage\}\$ an P
+        $P_{leakage}$ an P
         \item
         Beispielhafte Größenordnungen zum Einsparpotenzial: \textbar{}
         Schaltkreismaße \textbar{} Versorgungsspannung \textbar{}
-        \$P\_\{leakage\}/P\$ \textbar{} \textbar{}
+        $P_{leakage}/P$ \textbar{} \textbar{}
         -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
         -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
         -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{} \textbar{} 180
@@ -451,7 +450,7 @@
         \item Beispiel: Round Robin (RR) mit Prioritäten (Hoch, Mittel, Niedrig)
         \item Problem 1: Unfaire Energieverteilung
         \begin{itemize*}
-            \item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall)ab einem oberen Schwellwert \$E\_\{max\}\$
+            \item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall)ab einem oberen Schwellwert $E_{max}$
             \item Problem: energieintensive Threads behindern alle nachfolgenden Threads trotz gleicher Priorität $\rightarrow$ Fairnessmaß von RR (gleiche Zeitscheibenlänge T ) untergraben
             %\begin{itemize*} 
             %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
@@ -470,17 +469,17 @@
         \item
         Begriffe:
         \begin{itemize*}
-            \item \$E\_i\^{}\{budget\}\$ ... Energiebudget von \$t\_i\$
-            \item \$E\_i\^{}\{limit\}\$ ... Energielimit von \$t\_i\$
-            \item \$P\_\{limit\}\$ ... Leistungslimit: maximale Leistungsaufnahme {[}Energie/Zeit{]}
-            \item \$T\$ ... resultierende Zeitscheibenlänge
+            \item $E_i^{budget}$ ... Energiebudget von $t_i$
+            \item $E_i^{limit}$ ... Energielimit von $t_i$
+            \item $P_{limit}$ ... Leistungslimit: maximale Leistungsaufnahme [Energie/Zeit]
+            \item $T$ ... resultierende Zeitscheibenlänge
         \end{itemize*}
         \item
         Strategie 1: faire Energieverteilung (einheitliche Energielimits)
         \begin{itemize*}
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
-            \item \$1\textbackslash leq i\textbackslash leq 4: E\_i\^{}\{limit\} = P\_\{limit\}* T\$
+            \item $1\leq i\leq 4: E_i^{limit} = P_{limit}* T$
             \item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
         \end{itemize*}
     \end{itemize*}
@@ -495,7 +494,7 @@
         Problem: lange, wenig energieintensive Threads verzögern Antwort-und
         Wartezeiten kurzer, energieintensiver Threads
         \begin{itemize*}
-            \item Lösung im Einzelfall: Wichtung per \$E\_i\^{}\{limit\}\$
+            \item Lösung im Einzelfall: Wichtung per $E_i^{limit}$
             \item globale Reaktivität ( $\rightarrow$ Nutzererfahrung bei interaktiven Systemen) ...?
         \end{itemize*}
         \item
@@ -772,107 +771,107 @@
 
     %\begin{Shaded}
     %\begin{Highlighting}[]
-    %\KeywordTok{struct}\NormalTok{ task\_struct \{}
+    %\KeywordTok{struct}\NormalTok{ task_struct \{}
     % \AttributeTok{volatile} \DataTypeTok{long}\NormalTok{ state; }\CommentTok{/* {-} 1 unrunnable, 0 runnable, \textgreater{}0 stopped */}
     % \DataTypeTok{void}\NormalTok{ *stack;}
-    % \DataTypeTok{atomic\_t}\NormalTok{ usage;}
+    % \DataTypeTok{atomic_t}\NormalTok{ usage;}
     % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ flags; }\CommentTok{/* per process flags, defined below */}
     % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ ptrace;}
-    %\PreprocessorTok{\#ifdef CONFIG\_SMP}
-    % \KeywordTok{struct}\NormalTok{ llist\_node wake\_entry;}
-    % \DataTypeTok{int}\NormalTok{ on\_cpu;}
+    %\PreprocessorTok{\#ifdef CONFIG_SMP}
+    % \KeywordTok{struct}\NormalTok{ llist_node wake_entry;}
+    % \DataTypeTok{int}\NormalTok{ on_cpu;}
     %\PreprocessorTok{\#endif}
-    % \DataTypeTok{int}\NormalTok{ on\_rq;}
+    % \DataTypeTok{int}\NormalTok{ on_rq;}
     %\CommentTok{// SCHEDULING INFORMATION}
-    % \DataTypeTok{int}\NormalTok{ prio, static\_prio, normal\_prio;}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ rt\_priority;}
-    % \AttributeTok{const} \KeywordTok{struct}\NormalTok{ sched\_class *sched\_class;}
+    % \DataTypeTok{int}\NormalTok{ prio, static_prio, normal_prio;}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ rt_priority;}
+    % \AttributeTok{const} \KeywordTok{struct}\NormalTok{ sched_class *sched_class;}
     %\CommentTok{// Scheduling Entity}
-    % \KeywordTok{struct}\NormalTok{ sched\_entity se;}
-    % \KeywordTok{struct}\NormalTok{ sched\_rt\_entity rt;}
-    %\PreprocessorTok{\#ifdef CONFIG\_CGROUP\_SCHED}
-    % \KeywordTok{struct}\NormalTok{ task\_group *sched\_task\_group;}
+    % \KeywordTok{struct}\NormalTok{ sched_entity se;}
+    % \KeywordTok{struct}\NormalTok{ sched_rt_entity rt;}
+    %\PreprocessorTok{\#ifdef CONFIG_CGROUP_SCHED}
+    % \KeywordTok{struct}\NormalTok{ task_group *sched_task_group;}
     %\PreprocessorTok{\#endif}
-    %\PreprocessorTok{\#ifdef CONFIG\_PREEMPT\_NOTIFIERS}
-    % \KeywordTok{struct}\NormalTok{ hlist\_head preempt\_notifiers; }\CommentTok{/* list of struct preempt\_notifier */}
+    %\PreprocessorTok{\#ifdef CONFIG_PREEMPT_NOTIFIERS}
+    % \KeywordTok{struct}\NormalTok{ hlist_head preempt_notifiers; }\CommentTok{/* list of struct preempt_notifier */}
     %\PreprocessorTok{\#endif}
-    % \DataTypeTok{unsigned} \DataTypeTok{char}\NormalTok{ fpu\_counter;}
-    %\PreprocessorTok{\#ifdef CONFIG\_BLK\_DEV\_IO\_TRACE}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ btrace\_seq;}
+    % \DataTypeTok{unsigned} \DataTypeTok{char}\NormalTok{ fpu_counter;}
+    %\PreprocessorTok{\#ifdef CONFIG_BLK_DEV_IO_TRACE}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ btrace_seq;}
     %\PreprocessorTok{\#endif}
     % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ policy;}
-    % \DataTypeTok{cpumask\_t}\NormalTok{ cpus\_allowed;}
-    %\PreprocessorTok{\#ifdef CONFIG\_PREEMPT\_RCU}
-    % \DataTypeTok{int}\NormalTok{ rcu\_read\_lock\_nesting;}
-    % \DataTypeTok{char}\NormalTok{ rcu\_read\_unlock\_special;}
-    % \KeywordTok{struct}\NormalTok{ list\_head rcu\_node\_entry;}
-    % \KeywordTok{struct}\NormalTok{ rcu\_node *rcu\_blocked\_node;}
-    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG\_TREE\_PREEMPT\_RCU */}
-    %\PreprocessorTok{\#ifdef CONFIG\_RCU\_BOOST}
-    % \KeywordTok{struct}\NormalTok{ rt\_mutex *rcu\_boost\_mutex;}
-    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG\_RCU\_BOOST */}
-    %\PreprocessorTok{\#if defined(CONFIG\_SCHEDSTATS) || defined(CONFIG\_TASK\_DELAY\_ACCT)}
-    % \KeywordTok{struct}\NormalTok{ sched\_info sched\_info;}
+    % \DataTypeTok{cpumask_t}\NormalTok{ cpus_allowed;}
+    %\PreprocessorTok{\#ifdef CONFIG_PREEMPT_RCU}
+    % \DataTypeTok{int}\NormalTok{ rcu_read_lock_nesting;}
+    % \DataTypeTok{char}\NormalTok{ rcu_read_unlock_special;}
+    % \KeywordTok{struct}\NormalTok{ list_head rcu_node_entry;}
+    % \KeywordTok{struct}\NormalTok{ rcu_node *rcu_blocked_node;}
+    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG_TREE_PREEMPT_RCU */}
+    %\PreprocessorTok{\#ifdef CONFIG_RCU_BOOST}
+    % \KeywordTok{struct}\NormalTok{ rt_mutex *rcu_boost_mutex;}
+    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG_RCU_BOOST */}
+    %\PreprocessorTok{\#if defined(CONFIG_SCHEDSTATS) || defined(CONFIG_TASK_DELAY_ACCT)}
+    % \KeywordTok{struct}\NormalTok{ sched_info sched_info;}
     %\PreprocessorTok{\#endif}
-    % \KeywordTok{struct}\NormalTok{ list\_head tasks;}
-    %\PreprocessorTok{\#ifdef CONFIG\_SMP}
-    % \KeywordTok{struct}\NormalTok{ plist\_node pushable\_tasks;}
+    % \KeywordTok{struct}\NormalTok{ list_head tasks;}
+    %\PreprocessorTok{\#ifdef CONFIG_SMP}
+    % \KeywordTok{struct}\NormalTok{ plist_node pushable_tasks;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{// virtual address space reference}
-    % \KeywordTok{struct}\NormalTok{ mm\_struct *mm, *active\_mm;}
-    %\PreprocessorTok{\#ifdef CONFIG\_COMPAT\_BRK}
-    % \DataTypeTok{unsigned}\NormalTok{ brk\_randomized:}\DecValTok{1}\NormalTok{;}
+    % \KeywordTok{struct}\NormalTok{ mm_struct *mm, *active_mm;}
+    %\PreprocessorTok{\#ifdef CONFIG_COMPAT_BRK}
+    % \DataTypeTok{unsigned}\NormalTok{ brk_randomized:}\DecValTok{1}\NormalTok{;}
     %\PreprocessorTok{\#endif}
-    %\PreprocessorTok{\#if defined(SPLIT\_RSS\_COUNTING)}
-    % \KeywordTok{struct}\NormalTok{ task\_rss\_stat rss\_stat;}
+    %\PreprocessorTok{\#if defined(SPLIT_RSS_COUNTING)}
+    % \KeywordTok{struct}\NormalTok{ task_rss_stat rss_stat;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{/* task state */}
-    % \DataTypeTok{int}\NormalTok{ exit\_state;}
-    % \DataTypeTok{int}\NormalTok{ exit\_code, exit\_signal;}
-    % \DataTypeTok{int}\NormalTok{ pdeath\_signal; }\CommentTok{/* The signal sent when the parent dies */}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ jobctl; }\CommentTok{/* JOBCTL\_*, siglock protected */}
+    % \DataTypeTok{int}\NormalTok{ exit_state;}
+    % \DataTypeTok{int}\NormalTok{ exit_code, exit_signal;}
+    % \DataTypeTok{int}\NormalTok{ pdeath_signal; }\CommentTok{/* The signal sent when the parent dies */}
+    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ jobctl; }\CommentTok{/* JOBCTL_*, siglock protected */}
     % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ personality;}
-    % \DataTypeTok{unsigned}\NormalTok{ did\_exec:}\DecValTok{1}\NormalTok{;}
-    % \DataTypeTok{unsigned}\NormalTok{ in\_execve:}\DecValTok{1}\NormalTok{;}\CommentTok{/* Tell the LSMs that the process is doing an * execve */}
-    % \DataTypeTok{unsigned}\NormalTok{ in\_iowait:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ did_exec:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ in_execve:}\DecValTok{1}\NormalTok{;}\CommentTok{/* Tell the LSMs that the process is doing an * execve */}
+    % \DataTypeTok{unsigned}\NormalTok{ in_iowait:}\DecValTok{1}\NormalTok{;}
     %\CommentTok{/* Revert to default priority/policy when forking */}
-    % \DataTypeTok{unsigned}\NormalTok{ sched\_reset\_on\_fork:}\DecValTok{1}\NormalTok{;}
-    % \DataTypeTok{unsigned}\NormalTok{ sched\_contributes\_to\_load:}\DecValTok{1}\NormalTok{;}
-    %\PreprocessorTok{\#ifdef CONFIG\_GENERIC\_HARDIRQS}
+    % \DataTypeTok{unsigned}\NormalTok{ sched_reset_on_fork:}\DecValTok{1}\NormalTok{;}
+    % \DataTypeTok{unsigned}\NormalTok{ sched_contributes_to_load:}\DecValTok{1}\NormalTok{;}
+    %\PreprocessorTok{\#ifdef CONFIG_GENERIC_HARDIRQS}
     %\CommentTok{/* IRQ handler threads */}
-    % \DataTypeTok{unsigned}\NormalTok{ irq\_thread;}
+    % \DataTypeTok{unsigned}\NormalTok{ irq_thread;}
     %\PreprocessorTok{\#endif}
-    % \DataTypeTok{pid\_t}\NormalTok{ pid;}
-    % \DataTypeTok{pid\_t}\NormalTok{ tgid;}
-    %\PreprocessorTok{\#ifdef CONFIG\_CC\_STACKPROTECTOR}
+    % \DataTypeTok{pid_t}\NormalTok{ pid;}
+    % \DataTypeTok{pid_t}\NormalTok{ tgid;}
+    %\PreprocessorTok{\#ifdef CONFIG_CC_STACKPROTECTOR}
     %\CommentTok{/* Canary value for the {-}fstack{-}protector gcc feature */}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ stack\_canary;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ stack_canary;}
     %\PreprocessorTok{\#endif}
     %\CommentTok{// Relatives}
-    % \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *real\_parent; }\CommentTok{/* real parent process */}
-    % \KeywordTok{struct}\NormalTok{ task\_struct \_\_rcu *parent; }\CommentTok{/* recipient of SIGCHLD, wait4() reports */}
+    % \KeywordTok{struct}\NormalTok{ task_struct __rcu *real_parent; }\CommentTok{/* real parent process */}
+    % \KeywordTok{struct}\NormalTok{ task_struct __rcu *parent; }\CommentTok{/* recipient of SIGCHLD, wait4() reports */}
     %\CommentTok{/* children/sibling forms the list of my natural children */}
-    % \KeywordTok{struct}\NormalTok{ list\_head children; }\CommentTok{/* list of my children */}
-    % \KeywordTok{struct}\NormalTok{ list\_head sibling; }\CommentTok{/* linkage in my parent\textquotesingle{}s children list */}
-    % \KeywordTok{struct}\NormalTok{ task\_struct *group\_leader; }\CommentTok{/* threadgroup leader */}
-    % \KeywordTok{struct}\NormalTok{ list\_head ptraced;}
-    % \KeywordTok{struct}\NormalTok{ list\_head ptrace\_entry;}
+    % \KeywordTok{struct}\NormalTok{ list_head children; }\CommentTok{/* list of my children */}
+    % \KeywordTok{struct}\NormalTok{ list_head sibling; }\CommentTok{/* linkage in my parent\textquotesingle{}s children list */}
+    % \KeywordTok{struct}\NormalTok{ task_struct *group_leader; }\CommentTok{/* threadgroup leader */}
+    % \KeywordTok{struct}\NormalTok{ list_head ptraced;}
+    % \KeywordTok{struct}\NormalTok{ list_head ptrace_entry;}
     %\CommentTok{/* PID/PID hash table linkage. */}
-    % \KeywordTok{struct}\NormalTok{ pid\_link pids[PIDTYPE\_MAX];}
-    % \KeywordTok{struct}\NormalTok{ list\_head thread\_group;}
-    % \KeywordTok{struct}\NormalTok{ completion *vfork\_done; }\CommentTok{/* for vfork() */}
-    % \DataTypeTok{int}\NormalTok{ \_\_user *set\_child\_tid;}
+    % \KeywordTok{struct}\NormalTok{ pid_link pids[PIDTYPE_MAX];}
+    % \KeywordTok{struct}\NormalTok{ list_head thread_group;}
+    % \KeywordTok{struct}\NormalTok{ completion *vfork_done; }\CommentTok{/* for vfork() */}
+    % \DataTypeTok{int}\NormalTok{ __user *set_child_tid;}
     %\NormalTok{...}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ timer\_slack\_ns;}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ default\_timer\_slack\_ns;}
-    % \KeywordTok{struct}\NormalTok{ list\_head *scm\_work\_list;}
-    %\PreprocessorTok{\#ifdef CONFIG\_FUNCTION\_GRAPH\_TRACER}
-    %\CommentTok{/* Index of current stored address in ret\_stack */}
-    % \DataTypeTok{int}\NormalTok{ curr\_ret\_stack;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ timer_slack_ns;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ default_timer_slack_ns;}
+    % \KeywordTok{struct}\NormalTok{ list_head *scm_work_list;}
+    %\PreprocessorTok{\#ifdef CONFIG_FUNCTION_GRAPH_TRACER}
+    %\CommentTok{/* Index of current stored address in ret_stack */}
+    % \DataTypeTok{int}\NormalTok{ curr_ret_stack;}
     %\CommentTok{/* Stack of return addresses for return function tracing */}
-    % \KeywordTok{struct}\NormalTok{ ftrace\_ret\_stack *ret\_stack;}
+    % \KeywordTok{struct}\NormalTok{ ftrace_ret_stack *ret_stack;}
     %\CommentTok{/* time stamp for last schedule */}
-    % \DataTypeTok{unsigned} \DataTypeTok{long} \DataTypeTok{long}\NormalTok{ ftrace\_timestamp;}
+    % \DataTypeTok{unsigned} \DataTypeTok{long} \DataTypeTok{long}\NormalTok{ ftrace_timestamp;}
     %\NormalTok{...}
     %\end{Highlighting}
     %\end{Shaded}
@@ -912,7 +911,7 @@
         \item
         ... typische Einsatzgebiete sparsamer BS: eingebettete Systeme
         \item
-        eingebettetes System: (nach {[}Manl94{]} )
+        eingebettetes System: (nach [Manl94] )
         \begin{itemize*}
             \item Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient,physisch eingebunden ist.
             \item Wesentlicher Bestandteil dieses größeren Systems hinsichtlich seiner Entwicklung, technischer Ausstattung sowie seines Betriebs.
@@ -1064,13 +1063,13 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{interface Timer \{}
-    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ start(}\DataTypeTok{char}\NormalTok{ type, }\DataTypeTok{uint32\_t}\NormalTok{ interval);}
-    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ stop();}
-    %\NormalTok{ event }\DataTypeTok{result\_t}\NormalTok{ fired();}
+    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ start(}\DataTypeTok{char}\NormalTok{ type, }\DataTypeTok{uint32_t}\NormalTok{ interval);}
+    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ stop();}
+    %\NormalTok{ event }\DataTypeTok{result_t}\NormalTok{ fired();}
     %%\NormalTok{\}}
     %\NormalTok{interface SendMsg \{}
-    %\NormalTok{ command }\DataTypeTok{result\_t}\NormalTok{ send(}\DataTypeTok{uint16\_t}\NormalTok{ address, }\DataTypeTok{uint8\_t}\NormalTok{ length, TOS\_MsgPtr msg);}
-    %\NormalTok{ event }\DataTypeTok{result\_t}\NormalTok{ sendDone(TOS\_MsgPtr msg, }\DataTypeTok{result\_t}\NormalTok{ success);}
+    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ send(}\DataTypeTok{uint16_t}\NormalTok{ address, }\DataTypeTok{uint8_t}\NormalTok{ length, TOS_MsgPtr msg);}
+    %\NormalTok{ event }\DataTypeTok{result_t}\NormalTok{ sendDone(TOS_MsgPtr msg, }\DataTypeTok{result_t}\NormalTok{ success);}
     %\NormalTok{\}}
     %\end{Highlighting}
     %\end{Shaded}
@@ -1079,7 +1078,7 @@
 
     \subsubsection{RIOT}
 
-    {[}RIOT-Homepage: http://www.riot-os.org{]}
+    [RIOT-Homepage: http://www.riot-os.org]
 
     \begin{itemize*}
         \item
@@ -1192,7 +1191,7 @@
         \item
         Verlässlichkeit, Zuverlässigkeit (dependability)
         \item
-        übergeordnete Eigenschaft eines Systems {[}ALRL04{]}
+        übergeordnete Eigenschaft eines Systems [ALRL04]
         \item
         Fähigkeit, eine Leistungzu erbringen, der man berechtigterweise
         vertrauen kann
@@ -1240,8 +1239,8 @@
         Fehler $\rightarrow$ fehlerhafter Zustand
         $\rightarrow$ Ausfall
         \item
-        grundlegende Definitionen dieser Begriffe (ausführlich: {[}ALRL04,
-        AvLR04{]} ):
+        grundlegende Definitionen dieser Begriffe (ausführlich: [ALRL04,
+        AvLR04] ):
         \begin{itemize*}
             \item Ausfall (failure): liegt vor, wenn tatsächliche Leistung(en), die ein System erbringt, von als korrekt spezifizierter Leistung abweichen
             \item fehlerhafter Zustand ( error ): notwendige Ursacheeines Ausfalls (nicht jeder error muss zu failure führen)
@@ -1292,7 +1291,7 @@
 
     \begin{itemize*}
         \item
-        Wirkungskette: -{[}X{]} Treiber-Programmierfehler (fault) -{[}X{]}
+        Wirkungskette: -[X] Treiber-Programmierfehler (fault) -[X]
         fehlerhafter interner Zustand des Treibers (error)
         \begin{itemize*}
             \item Ausbreitung dieses Fehlers ( failure des Treibers)
@@ -1381,7 +1380,7 @@
         \item
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
         \begin{itemize*}
-            \item nach {[}TaWo05{]}, S. 45
+            \item nach [TaWo05], S. 45
         \end{itemize*}
         \item
         Weiterentwicklung:
@@ -1440,7 +1439,7 @@
     \begin{itemize*}
         \item
         zur Erinnerung: private virtuelle Adressräume zweier Tasks
-        (\$i\textbackslash not= j\$)
+        ($i\not= j$)
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-private-virtuelle-adressräume.png}
         %\end{itemize*}
@@ -1704,7 +1703,7 @@
         \item
         Umsetzung: Designkriterienweitgehend unbekannt
         \item
-        Folgen für Performanz und Programmierkomfort: {[}Heis19{]}
+        Folgen für Performanz und Programmierkomfort: [Heis19]
         \item
         \xmark ,,complex''
         \item
@@ -1728,7 +1727,7 @@
         Made in Germany:
         \begin{itemize*}
             \item Jochen Liedtke (GMD, ,,Gesellschaft für Mathematik und Datenverarbeitung''), Betriebssystemgruppe (u.a.): J. Liedtke, H. Härtig, W. E. Kühnhauser
-            \item Symposium on Operating Systems Principles 1995 (SOSP '95): ,,On $\mu$-Kernel Construction'' {[}Lied95{]}
+            \item Symposium on Operating Systems Principles 1995 (SOSP '95): ,,On $\mu$-Kernel Construction'' [Lied95]
         \end{itemize*}
         \item
         Analyse des Mach-Kernels:
@@ -1762,15 +1761,15 @@
         %First generation & Second Generation & Third generation\tabularnewline
         %\midrule
         %\endhead
-        %Eg Mach {[}87{]} & Eg L4 {[}95{]} & seL4 {[}09{]}\tabularnewline
+        %Eg Mach [87] & Eg L4 [95] & seL4 [09]\tabularnewline
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-first-g.png} &
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-L4-second-g.png} &
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-third-g.png}\tabularnewline
         %180 syscalls & \textasciitilde7 syscalls & \textasciitilde3
         %syscalls\tabularnewline
         %100 kLOC & \textasciitilde10 kLOC & 9 kLOC\tabularnewline
-        %100 \$\textbackslash mu s\$ IPC & \textasciitilde1 \$\textbackslash mu
-        %s\$ IPC & \$0,2-1 \textbackslash mu s\$ IPC\tabularnewline
+        %100 $\mu s$ IPC & \textasciitilde1 $\mu
+        %s$ IPC & $0,2-1 \mu s$ IPC\tabularnewline
         %\bottomrule
         %\end{longtable}
     \end{itemize*}
@@ -1794,7 +1793,7 @@
         precisely, a concept is tolerated inside the $\mu$-kernel only if moving it
         outside the kernel, i.e. permitting competing implementations, would
         prevent the implementation of the systems`s required functionality .''
-        {[}Jochen Liedtke{]}
+        [Jochen Liedtke]
     \end{quote}
 
     Designprinzipien für Mikrokernel-Konzept:
@@ -1822,8 +1821,8 @@
         können, dass es von keinem anderen Subsystem gestört oder korrumpiert
         werden kann.''
         \item
-        Integrität: ,,Subsystem (Server) \$S\_1\$ muss sich auf Garantien von
-        \$S\_2\$ verlassen können. D.h. beide Subsysteme müssen miteinander
+        Integrität: ,,Subsystem (Server) $S_1$ muss sich auf Garantien von
+        $S_2$ verlassen können. D.h. beide Subsysteme müssen miteinander
         kommunizieren können, ohne dass ein drittes Subsystem diese
         Kommunikation stören, fälschen oder abhören kann.''
     \end{enumerate*}
@@ -1851,7 +1850,7 @@
         Idee: abstrakte Speicherverwaltung
         \begin{itemize*}
             \item rekursive Konstruktion und Verwaltung der Adressräume auf Benutzer-(Server-)Ebene
-            \item Mikrokernel stellt dafür genau drei Operationen bereit: \begin{enumerate*} \item grant(x) - Server \$S\$ überträgt Seite \$x\$ seines AR in AR von Empfänger \$S`\$ \item map(x) - Server \$S\$ bildet Seite \$x\$ seines AR in AR von Empfänger \$S`\$ ab \item flush(x) - Server \$S\$ entfernt (flusht) Seite x seines AR aus allen fremden AR \end{enumerate*}
+            \item Mikrokernel stellt dafür genau drei Operationen bereit: \begin{enumerate*} \item grant(x) - Server $S$ überträgt Seite $x$ seines AR in AR von Empfänger $S`$ \item map(x) - Server $S$ bildet Seite $x$ seines AR in AR von Empfänger $S`$ ab \item flush(x) - Server $S$ entfernt (flusht) Seite x seines AR aus allen fremden AR \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -2382,7 +2381,7 @@
     ebenfalls als Informationen zu verstehen.)
 
     Cave! Insbesondere für Sicherheitsziele gilt: Daten
-    \$\textbackslash not=\$ Informationen
+    $\not=$ Informationen
 
     Sicherheitsziele: sukzessive Konkretisierungen dieser Allgemeinformel
     hinsichtlich anwendungsspezifischer Anforderungen
@@ -2756,15 +2755,15 @@
     %\bottomrule
     %\end{longtable}
 
-    ... und ein Verdacht Eindruck der Effektivität von DAC: ,,{[}...{]} so
+    ... und ein Verdacht Eindruck der Effektivität von DAC: ,,[...] so
     the theory goes. By extension, yes, there may be less malware, but that
     will depend on whether users keep UAC enabled, which depends on whether
     developers write software that works with it and that users stop viewing
     prompts as fast-clicking exercises and actually consider whether an
     elevation request is legitimate.'' (Jesper M. Johansson, TechNet
     Magazine)
-    {[}https://technet.microsoft.com/en-us/library/2007.09.securitywatch.aspx,
-    Stand: 10.11.2017{]}
+    [https://technet.microsoft.com/en-us/library/2007.09.securitywatch.aspx,
+    Stand: 10.11.2017]
 
 
     \subsubsection{Traditionell: DAC, IBAC}
@@ -2828,7 +2827,7 @@
         Rechteverteilung zu einem definierten ,,Zeitpunkt t''
         \item
         Korrektheitskriterium: Wie kann sich dies nach t möglicherweise
-        ändern...? (HRU-Sicherheitsmodell){[}HaRU76{]}
+        ändern...? (HRU-Sicherheitsmodell)[HaRU76]
     \end{itemize*}
 
 
@@ -2878,16 +2877,16 @@
     \subparagraph{MAC-Modellierung:
         Klassenhierarchie}
 
-    Beispiel: Modelliert durch Relation \$\textbackslash leq\$: gleich oder
+    Beispiel: Modelliert durch Relation $\leq$: gleich oder
     kritischer als
 
-    \$\textbackslash leq=\{( High , Medium ), ( High , Low ), ( Medium , Low
-    ), ( High , High ), ( Medium , Medium ), ( Low , Low )\}\$
+    $\leq=\{( High , Medium ), ( High , Low ), ( Medium , Low
+    ), ( High , High ), ( Medium , Medium ), ( Low , Low )\}$
 
     \begin{itemize*}
         \item
         repräsentiert Kritikalität hinsichtlich des Sicherheitsziels
-        Integrität (Biba-Sicherheitsmodell) {[}Biba77{]}
+        Integrität (Biba-Sicherheitsmodell) [Biba77]
         \item
         wird genutzt, um legale Informationsflüsse zwischen Subjekten und
         Objekten zu modellieren $\rightarrow$ Schutz vor
@@ -2913,12 +2912,12 @@
     \begin{itemize*}
         \item
         Korrektheitskriterium: Garantiert die Politik, dass acm mit
-        \$\textbackslash leq\$ jederzeit konsistent ist? ( BLP Security )
-        {[}BeLa76{]}
+        $\leq$ jederzeit konsistent ist? ( BLP Security )
+        [BeLa76]
         \item
         elevation-Mechanismus: verändert nach Nutzeranfrage
         ( $\rightarrow$ DAC) sowohl acm als auch
-        \$\textbackslash leq\textbackslash rightarrow\$ konsistenzerhaltend?
+        $\leq\rightarrow$ konsistenzerhaltend?
         \item
         andere BS-Operationen: verändern unmittelbar nur acm (z.B. mittels
         Dateisystemmanagement) $\rightarrow$
@@ -3216,7 +3215,7 @@
         \item
         Ursprung
         \begin{itemize*}
-            \item Anfang 2000er Jahre: sicherheitsfokussiertes Betriebssystemprojekt für US-amerikanische NSA {[}LoSm01{]}
+            \item Anfang 2000er Jahre: sicherheitsfokussiertes Betriebssystemprojekt für US-amerikanische NSA [LoSm01]
             \item Implementierung des (eigentlich)$\mu$Kernel-Architekturkonzepts Flask
             \item heute: Open Source, Teil des mainline Linux Kernels
         \end{itemize*}
@@ -3306,9 +3305,9 @@
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{$ }\FunctionTok{ps}\NormalTok{ {-}Z}
-    %\ExtensionTok{cox}\NormalTok{:doctor\_r:shell\_t:s0{-}s0:c0.c255 4056 pts/2 00:00:00 bash}
+    %\ExtensionTok{cox}\NormalTok{:doctor_r:shell_t:s0{-}s0:c0.c255 4056 pts/2 00:00:00 bash}
     %\NormalTok{$ }\FunctionTok{ls}\NormalTok{ {-}Z /etc/shadow}
-    %\ExtensionTok{system\_u}\NormalTok{:object\_r:shadow\_t:s0 /etc/shadow}
+    %\ExtensionTok{system_u}\NormalTok{:object_r:shadow_t:s0 /etc/shadow}
     %\end{Highlighting}
     %\end{Shaded}
 
@@ -3337,15 +3336,15 @@
 
         %\begin{Shaded}
         %\begin{Highlighting}[]
-        %\ExtensionTok{allow}\NormalTok{ shell\_t passwd\_exec\_t : file \{ execute \};}
-        %\ExtensionTok{allow}\NormalTok{ passwd\_t shadow\_t : file \{ read write \};}
+        %\ExtensionTok{allow}\NormalTok{ shell_t passwd_exec_t : file \{ execute \};}
+        %\ExtensionTok{allow}\NormalTok{ passwd_t shadow_t : file \{ read write \};}
         %\end{Highlighting}
         %\end{Shaded}
         \item
         Semantik: Erlaube( ''allow'' ) ...
         \begin{itemize*}
             \item jedem Prozess mit Typ \texttt{shell\_t}
-            \item ausführenden Zugriff (benötigt die Berechtigung \texttt{\{execute\}}),
+            \item ausführenden Zugriff (benötigt die Berechtigung \texttt{execute}),
             \item auf Dateien (also Objekte der Klassefile)
             \item mit Typ \texttt{passwd\_exec\_t}.
         \end{itemize*}
@@ -3424,7 +3423,7 @@
         \begin{itemize*}
             \item all die obigen...
             \item kryptografische Hardwareunterstützung: Intel SGX Enclaves
-            \item sprachbasiert: \begin{itemize*} \item streng typisierte Sprachen und \emph{managed code} : Microsoft Singularity {[}HLAA05{]} \item speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel): \href{https://www.redox-os.org/}{RedoxOS} \end{itemize*}
+            \item sprachbasiert: \begin{itemize*} \item streng typisierte Sprachen und \emph{managed code} : Microsoft Singularity [HLAA05] \item speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel): \href{https://www.redox-os.org/}{RedoxOS} \end{itemize*}
             \item isolierte Laufzeitumgebungen: Virtualisierung (Kap. 6)
         \end{itemize*}
     \end{itemize*}
@@ -3434,7 +3433,7 @@
 
     \begin{itemize*}
         \item
-        SGX: Software Guard Extensions {[}CoDe16{]}
+        SGX: Software Guard Extensions [CoDe16]
         \item
         Ziel: Schutz von sicherheitskritischen Anwendungen durch vollständige,
         hardwarebasierte Isolation
@@ -3504,7 +3503,7 @@
             \item O setzt Vertrauen in korrekte (und nicht böswillige) Hardwarevoraus
             \item O Dokumentation und Entwicklerunterstützung (im Ausbau ...)
             \item \xmark schützt mittels Enclaves einzelne Anwendungen, aber nicht das System
-            \item \xmark steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. $\mu$Kernel...): \begin{itemize*} \item Performanz {[}WeAK18{]} \item Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93 MiBnutzbar) \item $\rightarrow$ komplementäre NFE: Speichereffizienz! \end{itemize*}
+            \item \xmark steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. $\mu$Kernel...): \begin{itemize*} \item Performanz [WeAK18] \item Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93 MiBnutzbar) \item $\rightarrow$ komplementäre NFE: Speichereffizienz! \end{itemize*}
         \end{itemize*}
     \end{itemize*}
 
@@ -3520,7 +3519,7 @@
         \begin{itemize*}
             \item Verstehen des Referenzmonitorprinzips
             \item frühe Forschungen zu Betriebssystemsicherheit in 1970er-1980er Jahren durch US-Verteidigungsministerium
-            \item Schlüsselveröffentlichung: Anderson-Report(1972){[}Ande72{]}
+            \item Schlüsselveröffentlichung: Anderson-Report(1972)[Ande72]
             \item $\rightarrow$ fundamentalen Eigenschaften zur Charakterisierung von Sicherheitsarchitekturen
         \end{itemize*}
         \item
@@ -3582,7 +3581,7 @@
         Betriebssystemen}
 
     Nahezu alle Betriebssysteme implementieren irgendeine Form eines
-    Referenzmonitors {[}Jaeg11{]} und können über Begriffe, wie
+    Referenzmonitors [Jaeg11] und können über Begriffe, wie
 
     \begin{itemize*}
         \item
@@ -3660,7 +3659,7 @@
         Security Module Framework ''
         \begin{itemize*}
             \item jedes Subsystemvon SELinux , das zuständig für \begin{enumerate*} \item Erzeugung neuer Objekte \item Zugriff auf existierende Objekte \end{enumerate*}
-            \item Beispiele: \begin{enumerate*} \item Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse) \item Dateisystem (behandelte Objekte: hauptsächlich Dateien) \item Networking/Socket-Subsystem (behandelte Objekte: {[}verschiedene Typen von{]} Sockets) \item u.a. \end{enumerate*}
+            \item Beispiele: \begin{enumerate*} \item Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse) \item Dateisystem (behandelte Objekte: hauptsächlich Dateien) \item Networking/Socket-Subsystem (behandelte Objekte: [verschiedene Typen von] Sockets) \item u.a. \end{enumerate*}
         \end{itemize*}
     \end{itemize*}
 
@@ -3759,13 +3758,13 @@
     \begin{quote}
         A real-time system is any information processing activity or system
         which has to respond to externally generated input stimuli within a
-        finite and specified period. {[}Young 1982{]}
+        finite and specified period. [Young 1982]
     \end{quote}
 
     \begin{quote}
         A real-time system is a system that is required to react to stimuli from
         the environment (including the passage of physical time) within time
-        intervals dictated by the environment. {[}Randall et.al. 1995{]}
+        intervals dictated by the environment. [Randall et.al. 1995]
     \end{quote}
 
     Spektrum von Echtzeitsystemen:
@@ -3825,8 +3824,8 @@
         \item
         Bildwiedergabe bei Mediendatenströmen
         \item
-        Durchführung der Schritte durch Multimedia-Task binnen \$t\_\{i+1\} -
-        t\_i\$
+        Durchführung der Schritte durch Multimedia-Task binnen $t_{i+1} -
+        t_i$
         \item
         Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische
         Bildrate (24\textasciitilde48 fps $\rightarrow$ 1/24
@@ -3836,7 +3835,7 @@
         Interruptbehandlung, Speicherverwaltung, ... erforderlich!
     \end{itemize*}
 
-    Zwischenfazit {[}Buttazzo97{]}
+    Zwischenfazit [Buttazzo97]
 
     \begin{itemize*}
         \item
@@ -3884,14 +3883,14 @@
 
     \begin{itemize*}
         \item
-        Bei Echtzeitsystemen ist genau dieses \$\textbackslash Delta t\$
+        Bei Echtzeitsystemen ist genau dieses $\Delta t$
         kritisch, d.h. je nach Art des Systems darf dieses auf keinen Fall zu
         groß werden.
         \item
         Genauer spezifizierbar wird dies durch Einführung einer Frist
-        (deadline, due time) \$d\$, die angibt bis zu welchem Zeitpunkt
+        (deadline, due time) $d$, die angibt bis zu welchem Zeitpunkt
         spätestmöglich die Reaktion erfolgt sein muss, bzw. wie groß das
-        Intervall \$\textbackslash Delta t\$ maximal sein darf.
+        Intervall $\Delta t$ maximal sein darf.
     \end{itemize*}
 
     Echtzeitfähigkeit und Korrektheit
@@ -4025,56 +4024,56 @@
         \item
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
         \item
-        \$a\_i\$: Ankunftszeitpunkt (arrival time); auch r ... request
+        $a_i$: Ankunftszeitpunkt (arrival time); auch r ... request
         time/release time
         \begin{itemize*}
             \item Zeitpunkt, zu dem ein Prozess ablauffähig wird
         \end{itemize*}
         \item
-        \$s\_i\$: Startzeitpunkt (start time)
+        $s_i$: Startzeitpunkt (start time)
         \begin{itemize*}
             \item Zeitpunkt, zu dem ein Prozess mit der Ausführung beginnt
         \end{itemize*}
         \item
-        \$f\_i\$: Beendigungszeitpunkt (finishing time)
+        $f_i$: Beendigungszeitpunkt (finishing time)
         \begin{itemize*}
             \item Zeitpunkt, an dem ein Prozess seine Ausführung beendet
         \end{itemize*}
         \item
-        \$d\_i\$: Frist (deadline, due time)
+        $d_i$: Frist (deadline, due time)
         \begin{itemize*}
             \item Zeitpunkt, zu dem ein Prozess seine Ausführung spätestens beenden sollte
         \end{itemize*}
         \item
-        \$C\_i\$: Bearbeitungszeit(bedarf) (computation time)
+        $C_i$: Bearbeitungszeit(bedarf) (computation time)
         \begin{itemize*}
             \item Zeitquantum, das Prozessor zur vollständigen Bearbeitung der aktuellen Instanz benötigt (Unterbrechungen nicht eingerechnet)
         \end{itemize*}
         \item
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
         \item
-        \$L\_i\$: Unpünktlichkeit (lateness): \$L\_i= f\_i - d\_i\$
+        $L_i$: Unpünktlichkeit (lateness): $L_i= f_i - d_i$
         \begin{itemize*}
-            \item Zeitbetrag, um den ein Prozess früher oder später als seine Frist beendet wird (wenn Prozess vor seiner Frist beendet, hat \$L\_i\$ negativen Wert)
+            \item Zeitbetrag, um den ein Prozess früher oder später als seine Frist beendet wird (wenn Prozess vor seiner Frist beendet, hat $L_i$ negativen Wert)
         \end{itemize*}
         \item
-        \$E\_i\$: Verspätung (exceeding time, tardiness): \$E\_i= max(0,
-        L\_i)\$
+        $E_i$: Verspätung (exceeding time, tardiness): $E_i= max(0,
+        L_i)$
         \begin{itemize*}
             \item Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
         \end{itemize*}
         \item
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
         \item
-        \$X\_i\$: Spielraum (Laxity, Slacktime): \$X\_i = d\_i - a\_i - C\_i\$
+        $X_i$: Spielraum (Laxity, Slacktime): $X_i = d_i - a_i - C_i$
         \begin{itemize*}
-            \item maximales Zeitquantum, um das Ausführung eines Prozesses verzögert werden kann, damit dieser noch bis zu seiner Frist beendet werden kann (\$f\_i=d\_i\$)
+            \item maximales Zeitquantum, um das Ausführung eines Prozesses verzögert werden kann, damit dieser noch bis zu seiner Frist beendet werden kann ($f_i=d_i$)
         \end{itemize*}
         \item
         außerdem:
         \begin{itemize*}
             \item criticality: Parameter zur Beschreibung der Konsequenzen einer Fristüberschreitung (typischerweise ,,hart'' oder ,,weich'')
-            \item \$V\_i\$ ...Wert (value): Parameter zum Ausdruck der relativen Wichtigkeit eines Prozesses bezogen auf andere Prozesse der gleichen Anwendung
+            \item $V_i$ ...Wert (value): Parameter zum Ausdruck der relativen Wichtigkeit eines Prozesses bezogen auf andere Prozesse der gleichen Anwendung
         \end{itemize*}
     \end{itemize*}
 
@@ -4162,7 +4161,7 @@
             \item Earliest Deadline First (EDF)
         \end{enumerate*}
         \begin{itemize*}
-            \item beide schon 1973 von Liu \& Layland ausführlich diskutiert {[}Liu\&Layland73{]}
+            \item beide schon 1973 von Liu \& Layland ausführlich diskutiert [Liu\&Layland73]
         \end{itemize*}
     \end{itemize*}
 
@@ -4170,17 +4169,17 @@
 
     \begin{itemize*}
         \item
-        A1: Alle Instanzen eines periodischen Prozesses \$t\_i\$ treten
+        A1: Alle Instanzen eines periodischen Prozesses $t_i$ treten
         regelmäßig und mit konstanter Rate auf (= werden aktiviert ). Das
-        Zeitintervall \$T\_i\$ zwischen zwei aufeinanderfolgenden
+        Zeitintervall $T_i$ zwischen zwei aufeinanderfolgenden
         Aktivierungen heißt Periode des Prozesses.
         \item
-        A2: Alle Instanzen eines periodischen Prozesses \$t\_i\$ haben den
-        gleichen Worst-Case-Rechenzeitbedarf \$C\_i\$.
+        A2: Alle Instanzen eines periodischen Prozesses $t_i$ haben den
+        gleichen Worst-Case-Rechenzeitbedarf $C_i$.
         \item
-        A3: Alle Instanzen eines periodischen Prozesses \$t\_i\$ haben die
-        gleiche relative Frist \$D\_i\$, welche gleich der Periodendauer
-        \$T\_i\$ ist.
+        A3: Alle Instanzen eines periodischen Prozesses $t_i$ haben die
+        gleiche relative Frist $D_i$, welche gleich der Periodendauer
+        $T_i$ ist.
         \item
         A4: Alle Prozessesind kausal unabhängig voneinander (d.h. keine
         Vorrang- und Betriebsmittel-Restriktionen)
@@ -4216,47 +4215,47 @@
         %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
         \begin{itemize*}
             \item Zuteilung eines Prozessors nach RM
-            \item \$t\_1, t\_2\$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
+            \item $t_1, t_2$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
             \item darunter: Prozessorzuteilung nach RM
         \end{itemize*}
         \item
         Optimalität von RM
         \begin{itemize*}
-            \item Unter allen Verfahren mit festen (statischen)Prioritäten ist RM optimaler Algorithmus in dem Sinne, dass kein anderes Verfahren dieser Klasse eine Prozessmenge einplanen kann, die nicht auch von RM geplant werden kann. {[}Liu\&Layland73{]}
+            \item Unter allen Verfahren mit festen (statischen)Prioritäten ist RM optimaler Algorithmus in dem Sinne, dass kein anderes Verfahren dieser Klasse eine Prozessmenge einplanen kann, die nicht auch von RM geplant werden kann. [Liu\&Layland73]
         \end{itemize*}
         \item
         Prozessor-Auslastungsfaktor
         \begin{itemize*}
-            \item Bei gegebener Menge von n periodischen Prozessen gilt: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\$
-            \item mit \$\textbackslash frac\{C\_i\}\{T\_i\}\$ Anteil an Prozessorzeit für jeden periodischen Prozess \$t\_i\$
-            \item und \$U\$ Summe der Prozessorzeit zur Ausführung der gesamten Prozessmenge (,,utilization factor'')
+            \item Bei gegebener Menge von n periodischen Prozessen gilt: $U=\sum_{i=1}^n  \frac{C_i}{T_i}$
+            \item mit $\frac{C_i}{T_i}$ Anteil an Prozessorzeit für jeden periodischen Prozess $t_i$
+            \item und $U$ Summe der Prozessorzeit zur Ausführung der gesamten Prozessmenge (,,utilization factor'')
         \end{itemize*}
         \item
         Prozessorlast
         \begin{itemize*}
-            \item \$U\$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$ Auslastungsfaktor
+            \item $U$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$ Auslastungsfaktor
         \end{itemize*}
         \item
         Planbarkeitsanalyse einer Prozessmenge
         \begin{itemize*}
             \item im allgemeinen Fall kann RM einen Prozessor nicht zu 100\% auslasten
-            \item von besonderem Interesse: kleinste obere Grenze des Auslastungsfaktors \$U\_\{lub\}\$ (lub: ,,least upper bound'')
+            \item von besonderem Interesse: kleinste obere Grenze des Auslastungsfaktors $U_{lub}$ (lub: ,,least upper bound'')
         \end{itemize*}
         \item
-        Beispiel für \$n=2\$
+        Beispiel für $n=2$
         \begin{itemize*}
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
             \item Obere Grenze des Prozessor-Auslastungsfaktors für zwei periodische Prozesse als Funktion des Verhältnisses ihrer Perioden.
-            \item (Abb. nach {[}Buttazzo97{]} Bild 4.7, S. 90)
+            \item (Abb. nach [Buttazzo97] Bild 4.7, S. 90)
         \end{itemize*}
         \item
         Obere Auslastungsgrenze bei RM
         \begin{itemize*}
-            \item nach {[}Buttazzo97{]} (S. 89-91) erhält man bei n Prozessen für RM: \$U\_\{lub\}=n(2\^{}\{\textbackslash frac\{1\}\{n\}\}-1)\$
-            \item für \$n\textbackslash rightarrow\textbackslash infty\$ konvergiert \$U\_\{lub\}\$ zu \$ln\textbackslash{} 2 \textbackslash approx 0,6931...\$
+            \item nach [Buttazzo97] (S. 89-91) erhält man bei n Prozessen für RM: $U_{lub}=n(2^{\frac{1}{n}}-1)$
+            \item für $n\rightarrow\infty$ konvergiert $U_{lub}$ zu $ln\ 2 \approx 0,6931...$
             \item Wird genannter Wert nicht überschritten, sind beliebige Prozessmengen planbar.
-            \item (Herleitung siehe {[}Buttazzo97{]} , Kap. 4.3.3)
+            \item (Herleitung siehe [Buttazzo97] , Kap. 4.3.3)
         \end{itemize*}
     \end{itemize*}
 
@@ -4269,7 +4268,7 @@
         \end{itemize*}
         \item Optimalität:
         \begin{itemize*}
-            \item EDF in Klasse der Schedulingverfahren mit dynamischen Prioritäten: optimaler Algorithmus {[}Liu\&Layland73{]}
+            \item EDF in Klasse der Schedulingverfahren mit dynamischen Prioritäten: optimaler Algorithmus [Liu\&Layland73]
         \end{itemize*}
         \item Strategie EDF:
         \begin{itemize*}
@@ -4281,31 +4280,31 @@
         \begin{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png}
             \item Zuteilung eines Prozessors nach EDF
-            \item \$t\_1, t\_2\$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse
+            \item $t_1, t_2$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse
             \item darunter: Prozessorzuteilung nach EDF
         \end{itemize*}
         \item Planbarkeitsanalyse:
         \begin{itemize*}
-            \item Mit den Regeln \$A1 ... A7\$ ergibt sich für die obere Schranke des Prozessorauslastungsfaktors: \$U\_\{lub\}= 1\textbackslash rightarrow\$ Auslastung bis 100\% möglich!
-            \item Eine Menge periodischer Prozesse ist demnach mit EDF planbar genau dann wenn: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\textbackslash leq 1\$ (Prozessor natürlich nicht mehr als 100\% auslastbar)
+            \item Mit den Regeln $A1 ... A7$ ergibt sich für die obere Schranke des Prozessorauslastungsfaktors: $U_{lub}= 1\rightarrow$ Auslastung bis 100\% möglich!
+            \item Eine Menge periodischer Prozesse ist demnach mit EDF planbar genau dann wenn: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$ (Prozessor natürlich nicht mehr als 100\% auslastbar)
         \end{itemize*}
         \item Beweis: Obere Auslastungsgrenze bei EDF
         \begin{itemize*}
-            \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\leftrightarrow$: \$U=\textbackslash sum\_\{i=1\}\^{}n \textbackslash frac\{C\_i\}\{T\_i\}\textbackslash leq 1\$
-            \item $\leftarrow$: \$U\textgreater1\$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
-            \item $\rightarrow$: Beweis durch Widerspruch. Annahme: \$U\textbackslash leq 1\$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt \$t\_2\$, z.B.:
+            \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\leftrightarrow$: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$
+            \item $\leftarrow$: $U\textgreater1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
+            \item $\rightarrow$: Beweis durch Widerspruch. Annahme: $U\leq 1$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt $t_2$, z.B.:
             %\begin{itemize*} \item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png} \end{itemize*}
             \item Beobachtungen an diesem Schedule:
             \begin{itemize*}
-                \item \$exists\$ ein längstes, kontinuierliches Rechenintervall \${[}t\_1,t\_2{]}\$, in welchem nur Prozessinstanzen mit Fristen \$\textbackslash leq t\_2\$ rechnen
-                \item die Gesamtrechenzeit \$C\_\{bad\}\$ aller Prozesse in \${[}t\_1,t\_2{]}\$ muss die verfügbare Prozessorzeit übersteigen: \$C\_\{bad\} \textgreater{} t\_2-t\_1\$ (sonst: keine Fristverletzung an \$t\_2\$)
-                \item Anwesenheit in \${[}t\_1,t\_2{]}\$ leitet sich davon ab, ob (genauer: wie oft) die Periode eines Prozesses in \$t\_2-t\_1\$ passt: \$t\_i\$ in \${[}t\_1,t\_2{]}\textbackslash Leftrightarrow\textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor \textgreater0\$
-                \item Damit ist \$C\_\{bad\}\$ die Summe der Rechenzeiten aller Prozessinstanzen, die garantiert in \${[}t\_1,t\_2{]}\$ sind, mithin: \$C\_\{bad\}=\textbackslash sum\_\{i=1\}\^{}n \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor C\_i\$
-                \item Im Beispiel: \$t\_1... t\_3\$ in \${[}t\_1,t\_2{]}\$, folglich: \$C\_\{bad\}= 2 C\_1 + 1 C\_2 + 1 C\_3\$
-                \item Zu zeigen: Beobachtung \$C\_\{bad\}\textgreater{} t\_2-t\_1\$ widerspricht Annahme \$U\textbackslash leq 1\$.
-                \item Es gilt \$\textbackslash sum\_\{i=1\}\^{}n \textbackslash lfloor\textbackslash frac\{t\_2-t\_1\}\{T\_i\}\textbackslash rfloor C\_i\textbackslash leq\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{t\_2-t\_1\}\{T\_i\}C\_i\$ wegen Abrundung.
-                \item Mit \$U=\textbackslash sum\_\{i=1\}\^{}n\textbackslash frac\{C\_i\}\{T\_i\}\$ folgt daraus \$C\_\{bad\}\textbackslash leq(t\_2-t\_1)U\$
-                \item \$C\_\{bad\}\textgreater t\_2-t\_1\$ entspricht also \$(t\_2-t\_1)U\textgreater t\_2-t\_1\$ und somit \$U\textgreater1\$. Widerspruch zur Annahme!
+                \item $exists$ ein längstes, kontinuierliches Rechenintervall $[t_1,t_2]$, in welchem nur Prozessinstanzen mit Fristen $\leq t_2$ rechnen
+                \item die Gesamtrechenzeit $C_{bad}$ aller Prozesse in $[t_1,t_2]$ muss die verfügbare Prozessorzeit übersteigen: $C_{bad} \textgreater{} t_2-t_1$ (sonst: keine Fristverletzung an $t_2$)
+                \item Anwesenheit in $[t_1,t_2]$ leitet sich davon ab, ob (genauer: wie oft) die Periode eines Prozesses in $t_2-t_1$ passt: $t_i$ in $[t_1,t_2]\Leftrightarrow\lfloor\frac{t_2-t_1}{T_i}\rfloor \textgreater0$
+                \item Damit ist $C_{bad}$ die Summe der Rechenzeiten aller Prozessinstanzen, die garantiert in $[t_1,t_2]$ sind, mithin: $C_{bad}=\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i$
+                \item Im Beispiel: $t_1... t_3$ in $[t_1,t_2]$, folglich: $C_{bad}= 2 C_1 + 1 C_2 + 1 C_3$
+                \item Zu zeigen: Beobachtung $C_{bad}\textgreater{} t_2-t_1$ widerspricht Annahme $U\leq 1$.
+                \item Es gilt $\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i\leq\sum_{i=1}^n\frac{t_2-t_1}{T_i}C_i$ wegen Abrundung.
+                \item Mit $U=\sum_{i=1}^n \frac{C_i}{T_i}$ folgt daraus $C_{bad}\leq(t_2-t_1)U$
+                \item $C_{bad}\textgreater t_2-t_1$ entspricht also $(t_2-t_1)U\textgreater t_2-t_1$ und somit $U\textgreater1$. Widerspruch zur Annahme!
             \end{itemize*}
         \end{itemize*}
     \end{itemize*}
@@ -4315,7 +4314,7 @@
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
 
     Zuteilung eines Prozessors nach EDF (dynamisch) bzw. RM (statisch)
-    \$t\_1,t\_2\$: Anforderungen nach Prozessorzeit durch zwei periodische
+    $t_1,t_2$: Anforderungen nach Prozessorzeit durch zwei periodische
     Prozesse darunter: Prozessorzuteilung nach EDF bzw. RM
 
     \begin{itemize*}
@@ -4335,7 +4334,7 @@
         \end{itemize*}
         \item
         Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von
-        \$t\_2\$ die gleiche Priorität wie Instanz A von \$t\_1\$ hat (usw.)
+        $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat (usw.)
         $\rightarrow$ keine unnötige Verdrängung
     \end{itemize*}
 
@@ -4361,7 +4360,7 @@
         RM
         \begin{itemize*}
             \item statisch: jeweils eine Warteschlange pro Priorität:
-            \item Einfügen und Entfernen von Tasks: \$O(1)\$
+            \item Einfügen und Entfernen von Tasks: $O(1)$
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
         \end{itemize*}
@@ -4369,7 +4368,7 @@
         EDF
         \begin{itemize*}
             \item dynamisch: balancierter Binärbaum zur Sortierung nach Prioritäten:
-            \item Einfügen und Entfernen von Tasks: \$O(log\textbackslash{} n)\$
+            \item Einfügen und Entfernen von Tasks: $O(log\ n)$
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
         \end{itemize*}
@@ -4404,8 +4403,8 @@
         periodische Prozesse: weiche Fristen
         \begin{enumerate*}
 
-            \item pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf \$C\$ für jede Instanz (unkomprimierte Audio- und Videodaten)
-            \item pünktliche periodische Prozesse mit unterschiedlichem \$C\$ einzelner Instanzen (komprimierte Audio- und Videodaten)
+            \item pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf $C$ für jede Instanz (unkomprimierte Audio- und Videodaten)
+            \item pünktliche periodische Prozesse mit unterschiedlichem $C$ einzelner Instanzen (komprimierte Audio- und Videodaten)
             \item unpünktliche periodische Prozesse: \begin{itemize*} \item verspätete Prozesse \item verfrühte Prozesse \end{itemize*}
         \end{enumerate*}
         \item
@@ -4423,7 +4422,7 @@
     \end{enumerate*}
 
     Multimediaanwendungen sind ein typisches Beispiel für mögliche
-    Abweichungen der Lastpezifikation \$(T\_i,C\_i)\$ eines
+    Abweichungen der Lastpezifikation $(T_i,C_i)$ eines
     Echtzeitprozesses!
 
     Problem: Abweichungen von Lastspezifikation
@@ -4448,8 +4447,8 @@
         Idee
         \begin{itemize*}
             \item grundsätzlich: Schedulingnach frühester Fristaufsteigend (= EDF) $\rightarrow$ für eine vollständig spezifikationstreue Prozessmenge verhält sich RC wie reines EDF
-            \item Frist einer Instanz wird dynamisch angepasst:basierend auf derjenigen Periode, in der sie eigentlich sein sollte lt. Spezifikation der Prozessornutzung (\$U\_i\$, hier: ,,Rate''): \$U\_i=\textbackslash frac\{C\_i\}\{T\_i\}\$
-            \item Bsp.: \$U\_i =\textbackslash frac\{20\}\{40\}=\textbackslash frac\{1\}\{2\}\$ (\$t\_B\$ hat spezifizierte Aktivitätsrate von \$0,5\$ pro Periode)
+            \item Frist einer Instanz wird dynamisch angepasst:basierend auf derjenigen Periode, in der sie eigentlich sein sollte lt. Spezifikation der Prozessornutzung ($U_i$, hier: ,,Rate''): $U_i=\frac{C_i}{T_i}$
+            \item Bsp.: $U_i =\frac{20}{40}=\frac{1}{2}$ ($t_B$ hat spezifizierte Aktivitätsrate von $0,5$ pro Periode)
         \end{itemize*}
     \end{itemize*}
 
@@ -4460,28 +4459,27 @@
         \item
         Variablen
         \begin{itemize*}
-            \item \$a\_i\$: Ankunftszeit der zuletzt bereitgewordenen Instanz von \$t\_i\$
-            \item \$t\_i\^{}\{virt\}\$: virtuelle Zeit in aktueller Periode, die \$t\_i\$ bereits verbraucht hat
-            \item \$c\_i\^{}\{virt\}\$: Netto-Rechenzeit, die \$t\_i\$ in aktueller Periode bereits verbraucht hat
-            \item \$d\_i\$: dynamische Frist von \$t\_i\$, nach der sich dessen Priorität berechnet (EDF)
+            \item $a_i$: Ankunftszeit der zuletzt bereitgewordenen Instanz von $t_i$
+            \item $t_i^{virt}$: virtuelle Zeit in aktueller Periode, die $t_i$ bereits verbraucht hat
+            \item $c_i^{virt}$: Netto-Rechenzeit, die $t_i$ in aktueller Periode bereits verbraucht hat
+            \item $d_i$: dynamische Frist von $t_i$, nach der sich dessen Priorität berechnet (EDF)
         \end{itemize*}
         \item
         Strategie
         \begin{itemize*}
-            \item für eine bereite (lauffähige) Instanz von \$t\_i\$: adaptiere dynamisch \$d\_i\$ basierend auf \$t\_i\^{}\{virt\}\$
-            \item für eine bereit gewordene (neu angekommene oder zuvor blockierte) Instanzvon \$t\_i\$: aktualisiere \$t\_i\^{}\{virt\}\$ auf akt. Systemzeit \$(t)\textbackslash rightarrow\$ etwaiger ''Zeitkredit'' verfällt
+            \item für eine bereite (lauffähige) Instanz von $t_i$: adaptiere dynamisch $d_i$ basierend auf $t_i^{virt}$
+            \item für eine bereit gewordene (neu angekommene oder zuvor blockierte) Instanzvon $t_i$: aktualisiere $t_i^{virt}$ auf akt. Systemzeit $(t)\rightarrow$ etwaiger ''Zeitkredit'' verfällt
         \end{itemize*}
     \end{itemize*}
 
 
-    \paragraph{RC Algorithmus: Berechnung von
-    \$t\_i\^{}\{virt\}\$}
+    \paragraph{RC Algorithmus: Berechnung von $t_i^{virt}$}
 
-    Beispiel: Situation bei \$t=20ms\$
+    Beispiel: Situation bei $t=20ms$
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png}
 
-    Da \$t\_B\$ aber noch weiteren Rechenbedarf hat: Situation bei \$t=30
-    ms\$
+    Da $t_B$ aber noch weiteren Rechenbedarf hat: Situation bei $t=30
+    ms$
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png}
 
 
@@ -4492,17 +4490,17 @@
 
     %\begin{Shaded}
     %\begin{Highlighting}[]
-    %\NormalTok{RC (t\_i) \{}
-    % \ControlFlowTok{if}\NormalTok{ (t\_i. status wurde auf BEREIT gesetzt) \{}
-    %\NormalTok{ t\_i\^{}virt := max( t\_i\^{}virt , t ); }\CommentTok{//kein Zeitkredit {-}\textgreater{} kein ,,Nachholen\textquotesingle{}\textquotesingle{} von verpassten/ungenutzten Perioden}
+    %\NormalTok{RC (t_i) \{}
+    % \ControlFlowTok{if}\NormalTok{ (t_i. status wurde auf BEREIT gesetzt) \{}
+    %\NormalTok{ t_i^virt := max( t_i^virt , t ); }\CommentTok{//kein Zeitkredit {-}\textgreater{} kein ,,Nachholen\textquotesingle{}\textquotesingle{} von verpassten/ungenutzten Perioden}
     %\NormalTok{ \} }\ControlFlowTok{else}\NormalTok{ \{}
-    %\NormalTok{ c\_i\^{}virt := Gesamtprozessorzeit seit letztem Aufruf RC(t\_i);}
-    %\NormalTok{ t\_i\^{}virt := t\_i\^{}virt + c\_i\^{}virt / U\_i ; }\CommentTok{//Zeitwert, bis zu dem t\_i Rechenzeit gemäß seiner Rate U\_i erhalten hat}
+    %\NormalTok{ c_i^virt := Gesamtprozessorzeit seit letztem Aufruf RC(t_i);}
+    %\NormalTok{ t_i^virt := t_i^virt + c_i^virt / U_i ; }\CommentTok{//Zeitwert, bis zu dem t_i Rechenzeit gemäß seiner Rate U_i erhalten hat}
     %\NormalTok{ \}}
-    % \ControlFlowTok{if}\NormalTok{ (t\_i. status != BLOCKIERT) \{}
+    % \ControlFlowTok{if}\NormalTok{ (t_i. status != BLOCKIERT) \{}
     %\NormalTok{ finde k, so dass gilt:}
-    %\NormalTok{ a\_i + (k {-} }\DecValTok{1}\NormalTok{) * T\_i \textless{}= t\_i\^{}virt \textless{} a\_i + k * T\_i ; }\CommentTok{// finde diejenige (aktuelle oder zukünftige) Periode, in der t\_i\^{}virt liegt}
-    %\NormalTok{ d\_i := a\_i + k * T\_i ; }\CommentTok{// setze d\_i auf deren Periodenende}
+    %\NormalTok{ a_i + (k {-} }\DecValTok{1}\NormalTok{) * T_i \textless{}= t_i^virt \textless{} a_i + k * T_i ; }\CommentTok{// finde diejenige (aktuelle oder zukünftige) Periode, in der t_i^virt liegt}
+    %\NormalTok{ d_i := a_i + k * T_i ; }\CommentTok{// setze d_i auf deren Periodenende}
     %\NormalTok{ \}}
     %\NormalTok{\}}
     %\end{Highlighting}
@@ -4515,20 +4513,20 @@
 
     \begin{enumerate*}
         \item
-        aktuell laufender Prozess \$t\_i\$ blockiert:
+        aktuell laufender Prozess $t_i$ blockiert:
         \begin{itemize*}
-            \item \$RC(t\_i)\$
+            \item $RC(t_i)$
         \end{itemize*}
         \item
-        Prozesse \$t\_i...\_j\$ werden bereit:
+        Prozesse $t_i..._j$ werden bereit:
         \begin{itemize*}
-            \item \$for\textbackslash{} x\textbackslash in{[}i,j{]}: RC(t\_x)\$
+            \item $for\ x\in[i,j]: RC(t_x)$
         \end{itemize*}
         \item
         periodischer ,,clock tick'' (SchedulingInterrupt):
         \begin{itemize*}
-            \item \$t\_i\$ := aktuell ausgeführter Prozess
-            \item \$RC(t\_i)\$
+            \item $t_i$ := aktuell ausgeführter Prozess
+            \item $RC(t_i)$
         \end{itemize*}
     \end{enumerate*}
 
@@ -4536,11 +4534,11 @@
 
     %\begin{Shaded}
     %\begin{Highlighting}[]
-    %\NormalTok{SCHED := \{t\_i |t\_i.status == BEREIT ⋀ d\_i minimal \}; }\CommentTok{// bereite(r) Prozess(e) mit nächster Frist}
-    %\ControlFlowTok{if}\NormalTok{ (∃ t\_j : t\_j.status == LAUFEND) ⋀ ( d\_j ≤ d\_i )}
+    %\NormalTok{SCHED := \{t_i |t_i.status == BEREIT ⋀ d_i minimal \}; }\CommentTok{// bereite(r) Prozess(e) mit nächster Frist}
+    %\ControlFlowTok{if}\NormalTok{ (∃ t_j : t_j.status == LAUFEND) ⋀ ( d_j ≤ d_i )}
     % \ControlFlowTok{do}\NormalTok{ nothing; }\CommentTok{// ggf. laufenden Prozess bevorzugen}
     %\ControlFlowTok{else}
-    %\NormalTok{ preempt(rnd\_member( SCHED )); }\CommentTok{// sonst: irgendein Prozess mit nächster Frist verdrängt den laufenden}
+    %\NormalTok{ preempt(rnd_member( SCHED )); }\CommentTok{// sonst: irgendein Prozess mit nächster Frist verdrängt den laufenden}
     %\end{Highlighting}
     %\end{Shaded}
 
@@ -4624,7 +4622,7 @@
         Scheduling mit Server-Prozessen:
         \begin{itemize*}
             \item Prinzip: periodisch aktivierter Prozess benutzt zur Ausführung aperiodischer Prozessoranforderungen
-            \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess: \begin{itemize*} \item Periodendauer \$T\_S\$ \item ,,Prozessorzeitbedarf'' \$C\_S\$; jetzt Kapazitätdes Server-Prozesses \end{itemize*}
+            \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess: \begin{itemize*} \item Periodendauer $T_S$ \item ,,Prozessorzeitbedarf'' $C_S$; jetzt Kapazitätdes Server-Prozesses \end{itemize*}
             \item Arbeitsweise Server-Prozess: \begin{itemize*} \item geplant mit gleichem Scheduling-Algorithmus wie periodische Prozesse \item zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen bedient bis zur Kapazität des Servers \item keine aperiodischen Anforderungen: Server suspendiert sich bis Beginn der nächsten Periode (Schedule wird ohne ihn weitergeführt $\rightarrow$ Prozessorzeit für periodische Prozesse) \item Kapazitätin jeder Server-Periode neu ''aufgeladen'' \end{itemize*}
         \end{itemize*}
     \end{itemize*}
@@ -4722,7 +4720,7 @@
 
     \begin{itemize*}
         \item
-        !{[}Abb. nach {[}Buttazzo97{]} , Bild 7.6, S.188{]}
+        ![Abb. nach [Buttazzo97] , Bild 7.6, S.188]
         \item
         ePrio ... effektive Priorität
     \end{itemize*}
@@ -4734,7 +4732,7 @@
         \item
         Definition: kritische Situation - bei der die benötigte Menge an
         Prozessorzeit die Kapazität des vorhandenen Prozessors übersteigt
-        \$(U\textgreater1)\$
+        $(U\textgreater1)$
         \begin{itemize*}
             \item Folge: nicht alle Prozesse können Fristen einhalten
         \end{itemize*}
@@ -4814,7 +4812,7 @@
 
     \begin{itemize*}
         \item
-        Aufteilung der Gesamtberechnung \$(C\_\{ges\})\$ eines Prozesses in
+        Aufteilung der Gesamtberechnung $(C_{ges})$ eines Prozesses in
         zwei Phasen
         \item
         einfache Möglichkeit der Nutzung des Konzepts des anpassbaren
@@ -4822,7 +4820,7 @@
         \item
         Prinzip:
         \begin{itemize*}
-            \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*} \item obligatorischer Teil (Pflichtteil, \$C\_\{ob\}\$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis \item optionaler Teil \$(C\_\{opt\})\$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
+            \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*} \item obligatorischer Teil (Pflichtteil, $C_{ob}$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis \item optionaler Teil $(C_{opt})$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
             \item Prinzip in unterschiedlicher Weise verfeinerbar
         \end{itemize*}
         \item
@@ -4894,9 +4892,9 @@
         \item
         Beispiel 2: EDF Festplattenscheduling
         \begin{itemize*}
-            \item Anforderungsreihenfolge \$t\_1 = 98, 37, 124, 65\$
-            \item Anforderungsreihenfolge \$t\_2 = 183, 122, 14, 67\$
-            \item Zuletzt gelesener Block: 53 \textbar{} \textbar{} \$a\_i\$ \textbar{} \$d\_i\$ \textbar{} \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} \textbar{} \$t\_1\$ \textbar{} 0 \textbar{} 3 \textbar{} \textbar{} \$t\_2\$ \textbar{} 0 \textbar{} 9 \textbar{}
+            \item Anforderungsreihenfolge $t_1 = 98, 37, 124, 65$
+            \item Anforderungsreihenfolge $t_2 = 183, 122, 14, 67$
+            \item Zuletzt gelesener Block: 53 \textbar{} \textbar{} $a_i$ \textbar{} $d_i$ \textbar{} \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} \textbar{} $t_1$ \textbar{} 0 \textbar{} 3 \textbar{} \textbar{} $t_2$ \textbar{} 0 \textbar{} 9 \textbar{}
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
         \end{itemize*}
@@ -4935,7 +4933,7 @@
         Mitte-/Randzylinder; EDF über alle angefragten Blöcke \emph{in dieser
             Richtung} )
         \item
-        Group Sweeping\_ (SCAN mit nach Fristen gruppenweiser Bedienung)
+        Group Sweeping (SCAN mit nach Fristen gruppenweiser Bedienung)
         \item
         Mischstrategien
     \end{enumerate*}
@@ -5233,7 +5231,7 @@
 
     \begin{itemize*}
         \item
-        Adaptability: ,,see Flexibility. '' {[}Marciniak94{]}
+        Adaptability: ,,see Flexibility. '' [Marciniak94]
         \item
         Flexibility:
         \begin{itemize*}
@@ -5317,13 +5315,13 @@
         \item
         Funktion des Exokernels:
         \begin{itemize*}
-            \item Prinzip: definiert Low-level-Schnittstelle \begin{itemize*} \item ,,low-level'' = so hardwarenah wie möglich, bspw. die logische Schnittstelle eines elektronischen Schaltkreises/ICs ( $\rightarrow$ Gerätetreiber \$\textbackslash subseteq\$ Library-BS!) \item Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht verstehen, wie dieser verwaltet wird $\rightarrow$ Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ... \end{itemize*}
+            \item Prinzip: definiert Low-level-Schnittstelle \begin{itemize*} \item ,,low-level'' = so hardwarenah wie möglich, bspw. die logische Schnittstelle eines elektronischen Schaltkreises/ICs ( $\rightarrow$ Gerätetreiber $\subseteq$ Library-BS!) \item Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht verstehen, wie dieser verwaltet wird $\rightarrow$ Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ... \end{itemize*}
             \item Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen \begin{itemize*} \item Bsp.: Adressraumsemantik, Seitentabellenlayout und -verwaltung, Paging-und Locking-Verfahren, ... \end{itemize*}
             \item Anwendungsprogrammierer: wählen geeignete Library-Betriebssysteme bzw. schreiben ihre eigenen Exokernelmechanismen
         \end{itemize*}
         \item
         prinzipielle Exokernelmechanismen am Beispiel Aegis/ExOS
-        {[}Engler+95{]}
+        [Engler+95]
         \begin{itemize*}
             \item Der Exokernel... \begin{itemize*} \item \emph{implementiert:} Multiplexing der Hardware-Ressourcen \item \emph{exportiert:} geschützte Hardware-Ressourcen \end{itemize*}
         \end{itemize*}
@@ -5444,7 +5442,7 @@
         ...
     \end{enumerate*}
 
-    Aegis/ExOSals erweiterte Machbarkeitsstudie {[}Engler+95{]}
+    Aegis/ExOSals erweiterte Machbarkeitsstudie [Engler+95]
 
     \begin{enumerate*}
         \item
@@ -5466,7 +5464,7 @@
         Performanz-Anforderungen dieser Anwendung zugeschnitten
         \item
         geschützte Kontrollflussübergabe: als IPC-Primitive im Aegis-Kernel,
-        7-mal schnellerals damals beste Implementierung (vgl. {[}Liedtke95{]},
+        7-mal schnellerals damals beste Implementierung (vgl. [Liedtke95],
         Kap. 3)
         \item
         Ausnahmebehandlung bei Aegis: 5-mal schneller als bei damals bester
@@ -5649,7 +5647,7 @@
         Voraussetzungen zum Einsatz von Typ-1-HV
         \begin{itemize*}
             \item Ziel: Nutzung von Virtualisierung auf PC-Hardware
-            \item systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek \& Goldberg {[}Popek\&Goldberg74{]}
+            \item systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek \& Goldberg [Popek\&Goldberg74]
             \item Ergebnis: \begin{itemize*} \item Gast-BS (welches aus Sicht der CPU im User Mode - also unprivilegiert läuft) muss sicher sein können, dass privilegierte Instruktionen (Maschinencode im Kernel) ausgeführt werden \item dies geht nur, wenn tatsächlich der HV diese Instruktionen ausführt! \item dies geht nur, wenn CPU bei jeder solchen Instruktion im Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion emuliert! \end{itemize*}
         \end{itemize*}
         \item
@@ -5716,18 +5714,18 @@
     \end{itemize*}
 
     Sensible und privilegierte Instruktionen: Beobachtungen an verschiedenen
-    Maschinenbefehlssätzen: {[}Popek\&Goldberg74{]}
+    Maschinenbefehlssätzen: [Popek\&Goldberg74]
 
     \begin{itemize*}
         \item
-        \$\textbackslash exists\$ Menge an Maschinenbefehlen, die nur im
+        $\exists$ Menge an Maschinenbefehlen, die nur im
         Kernel Mode ausgeführt werden dürfen (Befehle zur Realisierung von
         E/A, Manipulation der MMU, ...)
         \begin{itemize*}
             \item $\rightarrow$ sensible Instruktionen
         \end{itemize*}
         \item
-        \$\textbackslash exists\$ Menge an Maschinenbefehlen, die Wechsel des
+        $\exists$ Menge an Maschinenbefehlen, die Wechsel des
         Privilegierungsmodus auslösen (x86: Trap ), wenn sie im User Mode
         ausgeführt werden
         \begin{itemize*}
@@ -5735,7 +5733,7 @@
         \end{itemize*}
         \item
         Prozessor ist virtualisierbarfalls (notw. Bed.): sensible
-        Instruktionen \$\textbackslash subseteq\$ privilegierte Instruktionen
+        Instruktionen $\subseteq$ privilegierte Instruktionen
         \item
         Folge: jeder Maschinenbefehl, der im Nutzermodus nicht erlaubt ist,
         muss einen Privilegierungswechsel auslösen (z.B. Trap generieren)
@@ -5819,7 +5817,7 @@
         Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen
         ...
         \begin{itemize*}
-            \item erste virtualisierungsfähige Intel-Prozessorenfamilie (s. {[}Adams2006{]} ): VT, VT-x® (2005)
+            \item erste virtualisierungsfähige Intel-Prozessorenfamilie (s. [Adams2006] ): VT, VT-x® (2005)
             \item dito für AMD: SVM, AMD-V® (auch 2005)
         \end{itemize*}
     \end{itemize*}
@@ -5968,7 +5966,7 @@
         Kontextwechsel-Overheads
     \end{itemize*}
 
-    Studie: (von Vmware) {[}Adams\&Agesen06{]}
+    Studie: (von Vmware) [Adams\&Agesen06]
 
     \begin{itemize*}
         \item
@@ -6017,10 +6015,10 @@
             \item hat man praktisch den Hypervisor in Mikrokernel transformiert.
         \end{itemize*}
         \item
-        ... und genau das wird auch schon gemacht: \$L\^{}4\$Linux (TU
+        ... und genau das wird auch schon gemacht: $L^4$Linux (TU
         Dresden)
         \begin{itemize*}
-            \item Basis: stringente \$L\^{}4\textbackslash mu\$ Kernel-Implementierung (Typ-1-HV-artiger Funktionsumfang)
+            \item Basis: stringente $L^4\mu$ Kernel-Implementierung (Typ-1-HV-artiger Funktionsumfang)
             \item Anwendungslaufzeitumgebung: paravirtualisierter Linux-Kernel als Serverprozess
             \item Ziele: Isolation (Sicherheit, Robustheit), Echtzeitfähigkeit durch direktere HW-Interaktion (vergleichbar Exokernel-Ziel)
         \end{itemize*}
@@ -6041,7 +6039,7 @@
         \begin{itemize*}
             \item Typ-1-HV: unmittelbares HW-Multiplexing, trap-and-emulate
             \item Typ-2-HV: HW-Multiplexing auf Basis eines Host-OS, binarytranslation
-            \item Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt \$\textbackslash mu\$Kern
+            \item Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt $\mu$Kern
         \end{itemize*}
         \item
         Ergebnisse:
@@ -6255,10 +6253,10 @@
 
     \begin{itemize*}
         \item
-        Gast-BSe laufen in Xen Domänen (,,\$dom\_i\$'', analog \$VM\_i\$)
+        Gast-BSe laufen in Xen Domänen (,,$dom_i$'', analog $VM_i$)
         \item
         es existiert genau eine, obligatorische, vertrauenswürdige Domäne:
-        \$dom\_0\$
+        $dom_0$
         \item
         Aufgaben (Details umseitig):
         \begin{itemize*}
@@ -6267,7 +6265,7 @@
             \item Interaktionskontrolle (Sicherheitspolitiken)
         \end{itemize*}
         \item
-        \$dom\_0\$ im Detail: ein separates, hochkritisch administriertes,
+        $dom_0$ im Detail: ein separates, hochkritisch administriertes,
         vertrauenswürdiges BS mit eben solchen Anwendungen (bzw.
         Kernelmodulen) zur Verwaltung des gesamten virtualisierten Systems
         \begin{itemize*}
@@ -6286,19 +6284,19 @@
         illustriert, wie (Para-) Typ-1-Virtualisierung von BS die NFE
         Sicherheit unterstützt
         \item
-        PDP: Teil des vertrauenswürdigen BS in \$dom\_0\$, PEPs: XSMs im
+        PDP: Teil des vertrauenswürdigen BS in $dom_0$, PEPs: XSMs im
         Hypervisor
         \item
         Beispiel: Zugriff auf Hardware
         \begin{itemize*}
-            \item Sicherheitspolitik-Integration, Administration, Auswertung: \$dom\_0\$
+            \item Sicherheitspolitik-Integration, Administration, Auswertung: $dom_0$
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
         \end{itemize*}
         \item
         Beispiel: Inter-Domänen-Kommunikation
         \begin{itemize*}
-            \item Interaktionskontrolle (Aufgaben wie oben): \$dom\_0\$
+            \item Interaktionskontrolle (Aufgaben wie oben): $dom_0$
             \item Beispiel: \href{https://www.flyn.org/projects/VisorFlow/}{VisorFlow}
             \item selber XSM kontrolliert Kommunikation für zwei Domänen
         \end{itemize*}
@@ -6352,7 +6350,7 @@
         \item
         Ergebnis: Kombination von Vorteilen zweier Welten
         \begin{itemize*}
-            \item Virtualisierungs vorteile: Sicherheit, Robustheit ( $\rightarrow$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne \$dom\_0\$)
+            \item Virtualisierungs vorteile: Sicherheit, Robustheit ( $\rightarrow$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne $dom_0$)
             \item Exokernelvorteile: Wartbarkeit, Sparsamkeit
             \item nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... ( $\rightarrow$ Performanz und Echzeitfähigkeit )
         \end{itemize*}
@@ -6382,7 +6380,7 @@
         \item
         Forsetzung unter der OCI (Open Container Initiative)
         \begin{itemize*}
-            \item ,,Docker does a nice job {[}...{]} for a focused purpose, namely the lightweight packaging and deployment of applications.'' (Dirk Merkel, Linux Journal)
+            \item ,,Docker does a nice job [...] for a focused purpose, namely the lightweight packaging and deployment of applications.'' (Dirk Merkel, Linux Journal)
         \end{itemize*}
         \item
         Implementierung der Containertechnik basierend auf
@@ -6742,9 +6740,9 @@
 
         %\begin{Shaded}
         %\begin{Highlighting}[]
-        %\DataTypeTok{atomic\_t}\NormalTok{ x;}
-        %\NormalTok{atomic\_set(\&x, }\DecValTok{42}\NormalTok{);}
-        %\DataTypeTok{int}\NormalTok{ y = atomic\_read(\&x);}
+        %\DataTypeTok{atomic_t}\NormalTok{ x;}
+        %\NormalTok{atomic_set(\&x, }\DecValTok{42}\NormalTok{);}
+        %\DataTypeTok{int}\NormalTok{ y = atomic_read(\&x);}
         %\end{Highlighting}
         %\end{Shaded}
         \begin{itemize*}

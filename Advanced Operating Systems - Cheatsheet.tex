@@ -283,23 +283,23 @@
                 \item welcher Block zu ersetzen ist
             \end{itemize*}
         \end{itemize*}
-            \begin{enumerate*}
-                \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
-                \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
-                \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
-                \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können
-            \end{enumerate*}
+        \begin{enumerate*}
+            \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
+            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
+            \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
+            \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können
+        \end{enumerate*}
         \item Energieeffizientes Prefetching
         \begin{itemize*}
             \item versucht Länge der Disk-Idle-Intervalle zu maximieren
         \end{itemize*}
-            \begin{enumerate*}
-                \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
-                \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
-                \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
-                \item Maximiere Zugriffsfolgen: Führe immer dann nach einem \emph{fetch}/\emph{prefetch} ein weiteres \emph{prefetch} aus, wenn Blöcke für eine Ersetzung geeignet sind
-                \item Beachte Idle-Zeiten: Unterbrich nur dann eine Inaktivitätsperiode durch ein \emph{prefetch}, falls dieses sofort ausgeführt werden muss, um Cache-Miss zu vermeiden
-            \end{enumerate*}
+        \begin{enumerate*}
+            \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
+            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
+            \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
+            \item Maximiere Zugriffsfolgen: Führe immer dann nach einem \emph{fetch}/\emph{prefetch} ein weiteres \emph{prefetch} aus, wenn Blöcke für eine Ersetzung geeignet sind
+            \item Beachte Idle-Zeiten: Unterbrich nur dann eine Inaktivitätsperiode durch ein \emph{prefetch}, falls dieses sofort ausgeführt werden muss, um Cache-Miss zu vermeiden
+        \end{enumerate*}
     \end{itemize*}
     Allgemeine Schlussfolgerungen
     \begin{enumerate*}
@@ -309,350 +309,173 @@
     \end{enumerate*}
 
     \subsubsection{Energieeffizientes Prozessormanagement}
-    Hardware-Gegebenheiten
     \begin{itemize*}
-        \item z.Zt. meistgenutzte Halbleitertechnologie für Prozessor-Hardware: CMOS ( Complementary Metal Oxide Semiconductor)
-        \item
-        Komponenten für Energieverbrauch: $P = P_{switching} +
-        P_{leakage} + ...$
+        \item CMOS z.Zt. meistgenutzte Halbleitertechnologie für Prozessor
+        \item Komponenten für Energieverbrauch $P = P_{switch} + P_{leak} + ...$
         \begin{itemize*}
-            \item $P_{switching}$: für Schaltvorgänge notwendige Leistung
-            \item $P_{leakage}$: Verlustleistung durch verschiedene Leckströme
+            \item $P_{switch}$: für Schaltvorgänge notwendige Leistung
+            \item $P_{leak}$: Verlustleistung durch verschiedene Leckströme
             \item ...: weitere Einflussgrößen (technologiespezifisch)
         \end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{Hardwareseitige
-        Maßnahmen}
-
     Schaltleistung: $P_{switching}$
-
     \begin{itemize*}
-        \item
-        Energiebedarf kapazitiver Lade-u. Entladevorgänge während des
-        Schaltens
-        \item
-        für momentane CMOS-Technologie i.A. dominanter Anteil am
-        Energieverbrauch
-        \item
-        Einsparpotenzial: Verringerung von
+        \item Energiebedarf kapaz. Lade-/Entladevorgänge während Schaltens
+        \item für momentane CMOS dominanter Anteil am Energieverbrauch
+        \item Einsparpotenzial: Verringerung von Versorgungsspannung (quadratische Abhängigkeit!) und Taktfrequenz
+        \item[$\rightarrow$] längere Schaltvorgänge, größere Latenz zwischen Schaltvorgängen
+        \item[$\Rightarrow$] Energieeinsparung nur mit Qualitätseinbußen
+        \begin{itemize*}
+            \item Anpassung des Lastprofils (Zeit-Last? Fristen kritisch?)
+            \item Beeinträchtigung der Nutzererfahrung (Reaktivität?)
+        \end{itemize*}
+    \end{itemize*}
+
+    Verlustleistung: $P_{leak}$
+    \begin{itemize*}
+        \item Energiebedarf baulich bedingter Leckströme
+        \item Hardware-Miniaturisierung $\rightarrow$ zunehmender Anteil $P_{leak}$ an P
+        \item[$\Rightarrow$] Leckströme kritisch für energiesparenden Hardwareentwurf
+    \end{itemize*}
+
+    Regelspielraum: Nutzererfahrung
+    \begin{itemize*}
+        \item Nutzererwartung: wichtigstes Kriterium zur Bewertung von auf einem Rechner aktiven Anwendungen durch Nutzer $\rightarrow$ Nutzererwartung bestimmt Nutzererfahrung
+        \item Typ einer Anwendung entscheidet über jeweilige Nutzererwartung
         \begin{enumerate*}
-
-            \item Versorgungsspannung (quadratische Abhängigkeit!)
-            \item Taktfrequenz
+            \item Hintergrund (z.B. Compiler): Gesamt-Bearbeitungsdauer, Durchsatz
+            \item Echtzeit (z.B. Video-Player): ,,flüssiges'' Abspielen von Video oder Musik
+            \item Interaktiv (z.B. Webbrowser): Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen Nutzer-Aktion und Rechner-Reaktion
         \end{enumerate*}
-        \item
-        Folgen:
+        \item Insbesondere kritisch: Echtzeit-/interaktive Anwendungen
+        \item Reaktivität: Reaktion von Anwendungen; abhängig z.B. von
         \begin{enumerate*}
-
-            \item längere Schaltvorgänge
-            \item größere Latenzzwischen Schaltvorgängen
+            \item \textbf{Hardware} an sich
+            \item \textbf{Energieversorgung} der Hardware (z.B. Spannungspegel)
+            \item \textbf{Software-Gegebenheiten} (z.B. Scheduling, Management)
         \end{enumerate*}
-        \item
-        Konsequenz: Energieeinsparung nur mit Qualitätseinbußen(direkt o.
-        indirekt) möglich
+        \item Zwischenfazit: Nutzererfahrung
         \begin{itemize*}
-            \item Anpassung des Lastprofils ( Zeit-Last-Kurve? Fristen kritisch? )
-            \item Beeinträchtigung der Nutzererfahrung( Reaktivität kritisch? Nutzungsprofil? )
+            \item bietet Regelspielraum für Hardwareparameter
+            \item Betriebssystemmechanismen zum energieeffizienten Prozessormanagement  müssen mit Nutzererfahrung(jeweils erforderlicher Reaktivität)
+            ausbalanciert werden
         \end{itemize*}
     \end{itemize*}
 
-    Verlustleistung: $P_{leakage}$
-
+    \subsubsection{Energieeffizientes Scheduling}
     \begin{itemize*}
-        \item
-        Energiebedarf baulich bedingter Leckströme
-        \item
-        Fortschreitende Hardware-Miniaturisierung
-        $\rightarrow$ zunehmender Anteil von
-        $P_{leakage}$ an P
-        \item
-        Beispielhafte Größenordnungen zum Einsparpotenzial: \textbar{}
-        Schaltkreismaße \textbar{} Versorgungsspannung \textbar{}
-        $P_{leakage}/P$ \textbar{} \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{} \textbar{} 180
-        nm \textbar{} 2,5 V \textbar{} 0, \textbar{} \textbar{} 70 nm
-        \textbar{} 0,7 V \textbar{} 0, \textbar{} \textbar{} 22 nm \textbar{}
-        0,4 V \textbar{} \textgreater{} 0,5 \textbar{}
-        \item
-        Konsequenz: Leckströme kritisch für energiesparenden Hardwareentwurf
-    \end{itemize*}
-
-
-    \paragraph{Regelspielraum:
-        Nutzererfahrung}
-
-    \begin{itemize*}
-        \item
-        Nutzererwartung: wichtigstes Kriterium zur (subjektiven) Bewertung von
-        auf einem Rechner aktiven Anwendungen durch Nutzer
-        $\rightarrow$ Nutzerwartung bestimmt Nutzererfahrung
-        \item
-        Typ einer Anwendung
-        \begin{itemize*}
-            \item entscheidet über jeweilige Nutzererwartung \begin{enumerate*} \item Hintergrundanwendung (z.B. Compiler); von Interesse: Gesamt-Bearbeitungsdauer, Durchsatz \item Echtzeitanwendung(z.B. Video-Player, MP3-Player); von Interesse: ,,flüssiges'' Abspielen von Video oder Musik \item Interaktive Anwendung (z.B. Webbrowser); von Interesse: Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen Nutzer-Aktion und Rechner-Reaktion \end{enumerate*}
-            \item Insbesondere kritisch: Echtzeitanwendungen, interaktive Anwendungen
-        \end{itemize*}
-    \end{itemize*}
-
-    Reaktivität
-
-    \begin{itemize*}
-        \item
-        Reaktion von Anwendungen
-        \begin{itemize*}
-            \item abhängig von sog. Reaktivität des Rechnersystems $\approx$ durchschnittliche Zeitdauer, mit der Reaktion eines Rechners auf eine (Benutzerinter-) Aktion erfolgt
-        \end{itemize*}
-        \item
-        Reaktivität: von Reihe von Faktoren abhängig, z.B.:
-        \begin{enumerate*}
-
-            \item von \textbf{Hardware} an sich
-            \item von \textbf{Energieversorgung} der Hardware (wichtig z.B. Spannungspegel an verschiedenen Stellen)
-            \item von \textbf{Software-Gegebenheiten} (z.B. Prozess-Scheduling, Speichermanagement, Magnetplatten-E/A-Scheduling, Vorgänge im Fenstersystem, Arten des Ressourcen-Sharing usw.)
-        \end{enumerate*}
-    \end{itemize*}
-
-    Zwischenfazit: Nutzererfahrung
-
-    \begin{itemize*}
-        \item
-        bietet Regelspielraum für Hardwareparameter (
-        $\rightarrow$ Schaltleistung)
-        $\rightarrow$ Versorgungsspannung, Taktfrequenz
-        \item
-        Betriebssystemmechanismen zum energieeffizienten Prozessormanagement
-        müssen mit Nutzererfahrung(jeweils erforderlicher Reaktivität)
-        ausbalanciert werden (wie solche Mechanismen wirken: 2.2.3)
-        \item
-        Schnittstelle zu anderen NFE:
-        \begin{itemize*}
-            \item Echtzeitfähigkeit
-            \item Performanz
-            \item Usability
-            \item ...
-        \end{itemize*}
-    \end{itemize*}
-
-
-    \paragraph{Energieeffizientes Scheduling}
-    \begin{itemize*}
-        \item so weit besprochen: Beschränkung des durchschnittlichen Energieverbrauchs eines Prozessors
-        \item offene Frage zum Ressourcenmultiplexing: Energieverbrauch eines Threads/Prozesses?
-        \item Scheduling-Probleme beim Energiesparen:
-        \begin{enumerate*}
-            \item Fairness (der Energieverteilung)?
-            \item Prioritätsumkehr?
-        \end{enumerate*}
-        \item Beispiel: Round Robin (RR) mit Prioritäten (Hoch, Mittel, Niedrig)
-        \item Problem 1: Unfaire Energieverteilung
-        \begin{itemize*}
-            \item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall)ab einem oberen Schwellwert $E_{max}$
-            \item Problem: energieintensive Threads behindern alle nachfolgenden Threads trotz gleicher Priorität $\rightarrow$ Fairnessmaß von RR (gleiche Zeitscheibenlänge T ) untergraben
-            %\begin{itemize*} 
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
-            %\end{itemize*}
-            \item Problem 2: energieintensive Threads niedrigerer Priorität behindern
-            später ankommende Threads höherer Priorität
-            %\begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr.png}
-            %\end{itemize*}
-        \end{itemize*}
-    \end{itemize*}
-
-    Energiebewusstes RR: Fairness
-
-    \begin{itemize*}
-        \item
-        Begriffe:
+        \item Scheduling-Probleme beim Energiesparen: Fairness \& Prioritätsumkehr
+        \item Beispiel: Round Robin (RR) mit Prioritäten
         \begin{itemize*}
             \item $E_i^{budget}$ ... Energiebudget von $t_i$
             \item $E_i^{limit}$ ... Energielimit von $t_i$
-            \item $P_{limit}$ ... Leistungslimit: maximale Leistungsaufnahme [Energie/Zeit]
+            \item $P_{limit}$ ... maximale Leistungsaufnahme [Energie/Zeit]
             \item $T$ ... resultierende Zeitscheibenlänge
         \end{itemize*}
-        \item
-        Strategie 1: faire Energieverteilung (einheitliche Energielimits)
+        \item Problem 1: Unfaire Energieverteilung
+        %\item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall) ab einem oberen Schwellwert $E_{max}$
+        \item Problem 2: energieintensive Threads behindern nachfolgende Threads gleicher Priorität
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
+        \item Problem 3: energieintensive Threads niedrigerer Priorität behindern spätere Threads höherer Priorität
+        %\begin{itemize*}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr.png}
+        %\end{itemize*}
+        \item RR Strategie 1: faire Energieverteilung (einheitliche Energielimits)
         \begin{itemize*}
-            %\item
-            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
             \item $1\leq i\leq 4: E_i^{limit} = P_{limit}* T$
-            \item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
+            %\item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
         \end{itemize*}
-    \end{itemize*}
-
-    Energiebewusstes RR: Reaktivität
-
-    \begin{itemize*}
-        \item
-        faire bzw. gewichtete Aufteilung begrenzter Energie optimiert
-        Energieeffizienz
-        \item
-        Problem: lange, wenig energieintensive Threads verzögern Antwort-und
-        Wartezeiten kurzer, energieintensiver Threads
+        \item faire bzw. gewichtete Aufteilung begrenzter Energie optimiert Energieeffizienz
+        \item Problem: lange, wenig energieintensive Threads verzögern Antwort-und Wartezeiten kurzer, energieintensiver Threads
         \begin{itemize*}
             \item Lösung im Einzelfall: Wichtung per $E_i^{limit}$
-            \item globale Reaktivität ( $\rightarrow$ Nutzererfahrung bei interaktiven Systemen) ...?
+            \item globale Reaktivität $\rightarrow$ Nutzererfahrung?
         \end{itemize*}
-        \item
-        Strategie 2: maximale Reaktivität ( $\rightarrow$
-        klassisches RR)
+        \item RR Strategie 2: maximale Reaktivität ( $\rightarrow$ klassisches RR)
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
         %\end{itemize*}
-    \end{itemize*}
-
-    Energiebewusstes RR: Reaktivität und Fairness
-
-    \begin{itemize*}
-        \item
-        Problem: sparsame Threads werden bestraft durch Verfallen des
-        ungenutzten Energiebudgets
-        \item
-        Idee: Ansparen von Energiebudgets $\rightarrow$
-        mehrfache Ausführung eines Threads innerhalb einer Scheduling-Periode
-        \item
-        Strategie 3: Reaktivität, dann faire Energieverteilung
+        \item Problem: sparsame Threads werden bestraft durch Verfallen des ungenutzten Energiebudgets
+        \item Idee: Ansparen von Energiebudgets $\rightarrow$ mehrfache Ausführung eines Threads innerhalb einer Scheduling-Periode
+        \item RR Strategie 3: Reaktivität, dann faire Energieverteilung
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewisstes-rr-2.png}
         %\end{itemize*}
     \end{itemize*}
-
-    \subparagraph{Implementierungsfragen}
+    Implementierungsfragen
     \begin{itemize*}
-        \item
-        Scheduling-Zeitpunkte?
+        \item Kosten ggü. klassischem RR? (durch Prioritäten...?)
+        \item Scheduling-Zeitpunkte?
         \begin{itemize*}
-            \item welche Accounting-Operationen (Buchführung über Budget)?
+            \item welche Accounting-Operationen (Buchführung)?
             \item wann Accounting-Operationen?
             \item wann Verdrängung?
         \end{itemize*}
-        \item
-        Datenstrukturen?
+        \item Datenstrukturen?
         \begin{itemize*}
             \item ... im Scheduler $\rightarrow$ Warteschlange(n)?
             \item ... im Prozessdeskriptor?
         \end{itemize*}
-        \item
-        Kosten ggü. klassischem RR? (durch Prioritäten...?)
-        \item
-        Pro:
+        \item Pro
         \begin{itemize*}
-            \item Optimierung der Energieverteilung nach anwendungsspezifischen Schedulingzielen( $\rightarrow$ Strategien)
-            \item Berücksichtigung von prozessspezifischen Energieverbrauchsmustern möglich:fördert Skalierbarkeit i.S.v. Lastadaptivität, indirekt auch Usability ( $\rightarrow$ Nutzererfahrung)
+            \item Optimierung der Energieverteilung nach Schedulingzielen
+            \item Berücksichtigung prozessspezifischer Verbrauchsmuster
         \end{itemize*}
-        \item
-        Kontra:
+        \item Kontra
         \begin{itemize*}
-            \item zusätzliche sekundäre Kosten: Energiebedarf des Schedulers, Energiebedarf zusätzlicher Kontextwechsel, Implementierungskosten (Rechenzeit, Speicher)
-            \item Voraussetzung hardwareseitig: Monitoring des Energieverbrauchs (erforderliche/realisierbare Granularität...? sonst: Extrapolation?)
+            \item sekundäre Kosten: Energiebedarf des Schedulers, Kontextwechsel, Implementierungskosten
+            \item Voraussetzung: Monitoring des Energieverbrauchs
         \end{itemize*}
-        \item
-        \textbf{generelle Alternative:} energieintensive Prozesse verlangsamen
-        $\rightarrow$ Regelung der CPU-Leistungsparameter
-        (Versorgungsspannung) (auch komplementär zum Schedulingals Maßnahme
-        nach Energielimit-Überschreitung)
-        \item
-        Beispiel: Synergie nichtfunktionaler Eigenschaften
-        \begin{itemize*}
-            \item Performanz nur möglich durch Parallelität $\rightarrow$ Multicore-Hardware
-            \item Multicore-Hardware nur möglich mit Lastausgleich und Lastverteilungauf mehrere CPUs
-            \item dies erfordert ebenfalls Verteilungsstrategien: ,,Energy-aware Scheduling'' (Linux-Strategie zur Prozessorallokation -nicht zeitlichem Multiplexing!)
-        \end{itemize*}
+        \item \textbf{Alternative:} energieintensive Prozesse verlangsamen $\rightarrow$ Regelung der CPU-Leistungsparameter
     \end{itemize*}
 
-
-    \subsubsection{Systemglobale
-        Energieeinsparungsmaßnahmen}
-
+    \subsubsection{Systemglobale Energieeinsparungsmaßnahmen}
     \begin{itemize*}
-        \item
-        Traditionelle Betriebssysteme: Entwurf so, dass zu jedem Zeitpunkt
-        Spitzen-Performanzangestrebt
-        \item
-        Beobachtungen:
+        \item Traditionelle: zu jedem Zeitpunkt Spitzen-Performanz angestrebt
         \begin{itemize*}
             \item viele Anwendungen benötigen keine Spitzen-Performanz
-            \item viele Hardware-Komponenten verbringen Zeit in Leerlaufsituationen bzw. in Situationen, wo keine Spitzen-Performanz erforderlich
+            \item viel Hardware-Zeit in Leerlaufsituationen bzw. keine Spitzen-Performanz erforderlich
         \end{itemize*}
-        \item
-        Konsequenz (besonders für mobile Systeme) :
+        \item Konsequenz (besonders für mobile Systeme)
         \begin{itemize*}
-            \item Hardware mit Niedrigenergiezuständen(Prozessoren und Magnetplattenlaufwerke, aber auch DRAM, Netzwerkschnittstellen, Displays, ...)
-            \item somit kann Betriebssystem \textbf{Energie-Management} realisieren
-        \end{itemize*}
-    \end{itemize*}
-
-
-    \paragraph{Hardwaretechnologien}
-
-    \begin{itemize*}
-        \item
-        DPM: Dynamic Power Management
-        \begin{itemize*}
-            \item versetzt leerlaufende/unbenutzte Hardware-Komponenten selektiv in Zustände mit niedrigem Energieverbrauch
-            \item Zustandsübergänge durch Power-Manager (in Hardware) gesteuert, dem bestimmte \emph{DPM-} Strategie (Firmware) zugrunde liegt, um gutes Verhältnis zwischen Performanz/Reaktivität und Energieeinsparung zu erzielen
-        \end{itemize*}
-        \item
-        DVS: Dynamic Voltage Scaling
-        \begin{itemize*}
-            \item effizientes Verfahren zur dynamischen Regulierungvon Taktfrequenz gemeinsammit Versorgungsspannung
-            \item Nutzung quadratischer Abhängigkeitder dynamischen Leistung von Versorgungsspannung
-            \item Steuerung/Strategien: Softwareunterstützungnotwendig!
+            \item Hardware mit Niedrigenergiezuständen
+            \item Betriebssystem kann \textbf{Energie-Management} realisieren
         \end{itemize*}
     \end{itemize*}
 
-    Dynamisches Energiemanagement (DPM)- Strategien (Klassen) bestimmt, wann
-    und wie lange eine Hardware-Komponente sich in Energiesparmodusbefinden
-    sollte
-
+    \subsubsection{Hardwaretechnologien}
+    DPM: Dynamic Power Management
     \begin{itemize*}
-        \item
-        Greedy: Hardware-Komponente sofort nach Erreichen des Leerlaufs in
-        Energiesparmodus, ,,Aufwecken'' durch neue Anforderung
-        \item
-        Time-out: Energiesparmodus erst nachdem ein definiertes Intervall im
-        Leerlauf, ,,Aufwecken'' wie bei Greedy-Strategien
-        \item
-        Vorhersage: Energiesparmodus sofort nach Erreichen des Leerlaufs, wenn
-        Heuristik vorhersagt,dass Kosten gerechtfertigt
-        \item
-        Stochastisch: Energiesparmodus auf Grundlage eines stochastischen
-        Modells
+        \item versetzt leerlaufende Hardware selektiv in Zustände mit niedrigem Energieverbrauch
+        \item Zustandsübergänge durch Power-Manager gesteuert, bestimmte \emph{DPM-}Strategie (Firmware) zugrunde, um gutes Verhältnis zwischen Performanz/Reaktivität und Energieeinsparung zu erzielen
+        \item bestimmt, wann und wie lange eine Hardware in Energiesparmodus
     \end{itemize*}
+    \begin{description*}
+        \item[Greedy] Hardware-Komponente sofort nach Erreichen des Leerlaufs in Energiesparmodus, ,,Aufwecken'' durch neue Anforderung
+        \item[Time-out] Energiesparmodus erst nachdem ein definiertes Intervall im Leerlauf, ,,Aufwecken'' wie bei Greedy-Strategien
+        \item[Vorhersage] Energiesparmodus sofort nach Erreichen des Leerlaufs, wenn Heuristik vorhersagt,dass Kosten gerechtfertigt
+        \item[Stochastisch] Energiesparmodus auf Grundlage stochastischen Modells
+    \end{description*}
 
-    Spannungsskalierung (DVS)
-
+    DVS: Dynamic Voltage Scaling
     \begin{itemize*}
-        \item
-        Ziel: Unterstützung von DPM-Strategien durch Maßnahmen auf Ebene von
-        Compiler, Betriebssystem und Applikationen:
+        \item effizientes Verfahren zur dynamischen Regulierung von Taktfrequenz gemeinsam mit Versorgungsspannung
+        \item Nutzung quadratischer Abhängigkeit der dynamischen Leistung von Versorgungsspannung
+        \item Steuerung/Strategien: Softwareunterstützung notwendig
+        \item Ziel: Unterstützung von DPM-Strategien durch Maßnahmen auf Ebene von Compiler, Betriebssystem und Applikationen
+        \item \textbf{Betriebssystem} (prädiktives Energiemanagement)
         \begin{itemize*}
-            \item \textbf{Compiler} \begin{itemize*} \item kann Informationen zur Betriebssystem-Unterstützung bezüglich Spannungs-Einstellung in Anwendungs-Code einstreuen, \item damit zur Laufzeit Informationen über jeweilige Arbeitslast verfügbar \end{itemize*}
-        \end{itemize*}
-        \item
-        \textbf{Betriebssystem (prädiktives Energiemanagement)}
-        \begin{itemize*}
-            \item kann Benutzung verschiedener Ressourcen (Prozessor usw.) beobachten
+            \item kann Benutzung verschiedener Ressourcen beobachten
             \item kann darüber Vorhersagen tätigen
             \item kann notwendigen Performanzbereich bestimmen
         \end{itemize*}
-        \item
-        \textbf{Anwendungen}
-        \begin{itemize*}
-            \item können Informationen über jeweils für sie notwendige Performanz liefern
-        \end{itemize*}
-        \item
-        $\rightarrow$ Kombination mit
-        energieefizientemScheduling!
+        \item \textbf{Anwendungen} können Informationen über jeweils für sie notwendige Performanz liefern
+        \item $\rightarrow$ Kombination mit energieefizientem Scheduling
     \end{itemize*}
 
-
     \subsection{Speichereffizienz}
-
     \begin{itemize*}
         \item
         ... heißt: Auslastung des verfügbaren Speichers
@@ -1387,12 +1210,12 @@
         \item
         Schichtendifferenzierung ( layered operating system )
         \item
-        Modularisierung (Bsp.: Linux-Kernel) \textbar{} Kernelcode \textbar{}
-        \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
-        \textbar{} \textbar{} VFS \textbar{} \textbar{} IPC, Dateisystem
-        \textbar{} \textbar{} Scheduler, VMM \textbar{} \textbar{} Dispatcher,
-        Gerätetreiber \textbar{}
+        Modularisierung (Bsp.: Linux-Kernel) | Kernelcode |
+        |
+        -------------------------
+        | | VFS | | IPC, Dateisystem
+        | | Scheduler, VMM | | Dispatcher,
+        Gerätetreiber |
         \item
         Modularer Makrokernel:
         \item
@@ -2257,19 +2080,19 @@
             \item MTTF: Mean Time to Failure ... Erwartungswert für TTF
         \end{itemize*}
         \item
-        einige Verfügbarkeitsklassen: \textbar{} Verfügbarkeit \textbar{}
-        Ausfallzeit pro Jahr \textbar{} Ausfallzeit pro Woche \textbar{}
-        \textbar{} -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
-        \textbar{} \textbar{} 90\% \textbar{} \textgreater{} 1 Monat
-        \textbar{} ca. 17 Stunden \textbar{} \textbar{} 99\% \textbar{} ca. 4
-        Tage \textbar{} ca. 2 Stunden \textbar{} \textbar{} 99,9\% \textbar{}
-        ca. 9 Stunden \textbar{} ca. 10 Minuten \textbar{} \textbar{} 99,99\%
-        \textbar{} ca. 1 Stunde \textbar{} ca. 1 Minute \textbar{} \textbar{}
-        99,999\% \textbar{} ca. 5 Minuten \textbar{} ca. 6 Sekunden \textbar{}
-        \textbar{} 99,9999\% \textbar{} ca. 2 Sekunden \textbar{}
-        \textless\textless{} 1 Sekunde \textbar{}
+        einige Verfügbarkeitsklassen: | Verfügbarkeit |
+        Ausfallzeit pro Jahr | Ausfallzeit pro Woche |
+        | ------------- |
+        -------------------- |
+        ---------------------
+        | | 90\% | \textgreater{} 1 Monat
+        | ca. 17 Stunden | | 99\% | ca. 4
+        Tage | ca. 2 Stunden | | 99,9\% |
+        ca. 9 Stunden | ca. 10 Minuten | | 99,99\%
+        | ca. 1 Stunde | ca. 1 Minute | |
+        99,999\% | ca. 5 Minuten | ca. 6 Sekunden |
+        | 99,9999\% | ca. 2 Sekunden |
+        \textless\textless{} 1 Sekunde |
         \item
         Hochverfügbarkeitsbereich (gefeierte ,,five nines'' availability)
         \item
@@ -2639,18 +2462,18 @@
         Vorgehensweise: Security Engineering
     \end{itemize*}
 
-    \textbar{} \textbar{} \textbar{}
-    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
-    \textbar{}
-    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
-    \textbar{} \textbar{} Sicherheitsziele \textbar{} Welche
-    Sicherheitsanforderungen muss das Betriebssystem erfüllen? \textbar{}
-    \textbar{} Sicherheitspolitik \textbar{} Durch welche Strategien soll es
-    diese erfüllen? ( $\rightarrow$ Regelwerk) \textbar{}
-    \textbar{} Sicherheitsmechanismen \textbar{} Wie implementiert das
-    Betriebssystem seine Sicherheitspolitik? \textbar{} \textbar{}
-    Sicherheitsarchitektur \textbar{} Wo implementiert das Betriebssystem
-    seine Sicherheitsmechanismen (und deren Interaktion)? \textbar{}
+    | | |
+    ----------------------
+    |
+    -----------------------------------------------------------------------------------------
+    | | Sicherheitsziele | Welche
+    Sicherheitsanforderungen muss das Betriebssystem erfüllen? |
+    | Sicherheitspolitik | Durch welche Strategien soll es
+    diese erfüllen? ( $\rightarrow$ Regelwerk) |
+    | Sicherheitsmechanismen | Wie implementiert das
+    Betriebssystem seine Sicherheitspolitik? | |
+    Sicherheitsarchitektur | Wo implementiert das Betriebssystem
+    seine Sicherheitsmechanismen (und deren Interaktion)? |
 
 
     \subparagraph{Sicherheitspolitiken und
@@ -2763,7 +2586,7 @@
     elevation request is legitimate.'' (Jesper M. Johansson, TechNet
     Magazine)
     [https://technet.microsoft.com/en-us/library/2007.09.securitywatch.aspx,
-    Stand: 10.11.2017]
+            Stand: 10.11.2017]
 
 
     \subsubsection{Traditionell: DAC, IBAC}
@@ -2881,7 +2704,7 @@
     kritischer als
 
     $\leq=\{( High , Medium ), ( High , Low ), ( Medium , Low
-    ), ( High , High ), ( Medium , Medium ), ( Low , Low )\}$
+        ), ( High , High ), ( Medium , Medium ), ( Low , Low )\}$
 
     \begin{itemize*}
         \item
@@ -2987,15 +2810,15 @@
     \paragraph{ACLs:
         Linux-Implementierung}
 
-    Modell einer Unix acm ... \textbar{} \textbar{} lesen \textbar{}
-    schreiben \textbar{} ausführen \textbar{} \textbar{}
-    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-    -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/-\/-\/-\/-\/- \textbar{}
-    -\/-\/-\/-\/-\/-\/-\/-\/- \textbar{} \textbar{} Eigentümer (,,u'')
-    \textbar{} ja \textbar{} ja \textbar{} ja \textbar{} \textbar{} Rest der
-    Welt (,,o'') \textbar{} ja \textbar{} nein \textbar{} ja \textbar{}
-    \textbar{} Gruppe (,,g'') \textbar{} ja \textbar{} nein \textbar{} ja
-    \textbar{}
+    Modell einer Unix acm ... | | lesen |
+    schreiben | ausführen | |
+    --------------------- |
+    ----- | --------- |
+    --------- | | Eigentümer (,,u'')
+    | ja | ja | ja | | Rest der
+    Welt (,,o'') | ja | nein | ja |
+    | Gruppe (,,g'') | ja | nein | ja
+    |
 
     \begin{itemize*}
         \item
@@ -3135,7 +2958,7 @@
         dazu muss
         \begin{itemize*}
             \item \emph{root} bzw. zweckgebundener Nutzer Eigentümer des Druckers sein
-            \item ACL als \texttt{rw-\ -\/-\/-\ -\/-\/-} gesetzt sein
+            \item ACL als \texttt{rw-\ ---\ ---} gesetzt sein
         \end{itemize*}
     \end{itemize*}
 
@@ -3610,7 +3433,7 @@
         Objekte (verschiedene Systemressourcen, genutzt für Speicherung,
         Kommunikation: Dateien, Directories, Sockets, SharedMemory usw.)
         \begin{itemize*}
-            \item haben ACLs (,,rwxrw-\/-\/-\/-'')
+            \item haben ACLs (,,rwxrw----'')
         \end{itemize*}
         \item
         Regeln der Sicherheitspolitik, die durch den Referenzmonitor (hier
@@ -3825,7 +3648,7 @@
         Bildwiedergabe bei Mediendatenströmen
         \item
         Durchführung der Schritte durch Multimedia-Task binnen $t_{i+1} -
-        t_i$
+            t_i$
         \item
         Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische
         Bildrate (24\textasciitilde48 fps $\rightarrow$ 1/24
@@ -4058,7 +3881,7 @@
         \end{itemize*}
         \item
         $E_i$: Verspätung (exceeding time, tardiness): $E_i= max(0,
-        L_i)$
+            L_i)$
         \begin{itemize*}
             \item Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
         \end{itemize*}
@@ -4479,7 +4302,7 @@
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png}
 
     Da $t_B$ aber noch weiteren Rechenbedarf hat: Situation bei $t=30
-    ms$
+        ms$
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png}
 
 
@@ -4894,7 +4717,7 @@
         \begin{itemize*}
             \item Anforderungsreihenfolge $t_1 = 98, 37, 124, 65$
             \item Anforderungsreihenfolge $t_2 = 183, 122, 14, 67$
-            \item Zuletzt gelesener Block: 53 \textbar{} \textbar{} $a_i$ \textbar{} $d_i$ \textbar{} \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} -\/-\/-\/-\/- \textbar{} \textbar{} $t_1$ \textbar{} 0 \textbar{} 3 \textbar{} \textbar{} $t_2$ \textbar{} 0 \textbar{} 9 \textbar{}
+            \item Zuletzt gelesener Block: 53 | | $a_i$ | $d_i$ | | ----- | ----- | ----- | | $t_1$ | 0 | 3 | | $t_2$ | 0 | 9 |
             %\item
             % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
         \end{itemize*}

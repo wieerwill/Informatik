@@ -652,15 +652,15 @@
         \item Programmiermodell:
         \begin{itemize*}
             \item BS+Anwendung als Ganzes übersetzt: statische Optimierungen durch Compiler (Laufzeit, Speicherbedarf)
-            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel 
-            \begin{itemize*} 
+            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel
+            \begin{itemize*}
                 \item command: API-Aufruf, z.B. EA-Operation
-                \item event: Reaktion auf diesen durch Anwendung 
+                \item event: Reaktion auf diesen durch Anwendung
             \end{itemize*}
             \item sowohl commands als auch events : asynchron
         \end{itemize*}
     \end{itemize*}
-    
+
     \subsubsection{BS: RIOT}
     \begin{itemize*}
         \item sparsames BS,optimiert für anspruchsvollere Anwendungen
@@ -691,48 +691,20 @@
     \end{itemize*}
 
     \section{Robustheit und Verfügbarkeit}
-
-
-    \subsection{Motivation}
-
+    Motivation
     \begin{itemize*}
-        \item
-        allgemein: verlässlichkeitskritischeAnwendungsszenarien
-        \item
-        Forschung in garstiger Umwelt
-        \item
-        Weltraumerkundung
-        \item
-        hochsicherheitskritische Systeme:
-        \begin{itemize*}
-            \item Rechenzentren von Finanzdienstleistern
-            \item Rechenzentren von Cloud-Dienstleistern
-        \end{itemize*}
-        \item
-        hochverfügbare System:
-        \begin{itemize*}
-            \item all das bereits genannte
-            \item öffentliche Infrastruktur(Strom, Fernwärme, ...)
-        \end{itemize*}
-        \item
-        HPC (high performancecomputing)
+        \item allgemein: verlässlichkeitskritische Anwendungsszenarien
+        \item Forschung in garstiger Umwelt (Weltraum)
+        \item hochsicherheitskritische Systeme (Finanz, Cloud Dienste)
+        \item hochverfügbare System (öffentliche Infrastruktur, Strom)
+        \item HPC (high performance computing)
     \end{itemize*}
 
-
-    \subsection{Allgemeine Begriffe}
-
+    Allgemeine Begriffe
     \begin{itemize*}
-        \item
-        Verlässlichkeit, Zuverlässigkeit (dependability)
-        \item
-        übergeordnete Eigenschaft eines Systems [ALRL04]
-        \item
-        Fähigkeit, eine Leistungzu erbringen, der man berechtigterweise
-        vertrauen kann
-        \item
-        Taxonomie: umfasst entsprechend Definition die Untereigenschaften
+        \item Verlässlichkeit: Fähigkeit, eine Leistung zu erbringen, der man berechtigterweise vertrauen kann
+        \item Untereigenschaften
         \begin{enumerate*}
-
             \item Verfügbarkeit (availability)
             \item Robustheit (robustness, reliability
             \item (Funktions-) Sicherheit (safety)
@@ -740,480 +712,227 @@
             \item Integrität (integrity)
             \item Wartbarkeit (maintainability) (vgl.: evolutionäre Eigenschaften)
         \end{enumerate*}
-        \item
-        1., 4. \& 5. auch Untereigenschaften von IT-Sicherheit (security)
-        \item
-        $\rightarrow$ nicht für alle Anwendungen sind alle
-        Untereigenschaften erforderlich
+        \item[$\rightarrow$] nicht für alle Anwendungen sind alle Untereigenschaften erforderlich
     \end{itemize*}
-
 
     \subsubsection{Robustheitsbegriff}
-
     \begin{itemize*}
-        \item
-        Teil der primären Untereigenschaften von Verlässlichkeit: Robustheit
-        (robustness, reliability)
-        \item
-        Ausfall: beobachtbare Verminderung der Leistung, die ein System
-        tatsächlich erbringt, gegenüber seiner als korrekt spezifizierten
-        Leistung
-        \item
-        Robustheit: Verlässlichkeit unter Anwesenheit externer Ausfälle (=
-        Ausfälle, deren Ursache außerhalb des betrachteten Systems liegt)
-        \item
-        im Folgenden: kurze Systematik der Ausfälle ...
+        \item Untereigenschaften von Verlässlichkeit: Robustheit (reliability)
+        \item Ausfall: beobachtbare Verminderung der Leistung eines Systems, gegenüber seiner als korrekt spezifizierten Leistung
+        \item Robustheit: Verlässlichkeit unter Anwesenheit externer Ausfälle (= Ursache außerhalb des betrachteten Systems)
     \end{itemize*}
 
-
-    \subsubsection{Fehler und Ausfälle ...}
-
+    \subsubsection{Fehler, Ausfälle und ihre Vermeidung}
     \begin{itemize*}
-        \item
-        Fehler $\rightarrow$ fehlerhafter Zustand
-        $\rightarrow$ Ausfall
-        \item
-        grundlegende Definitionen dieser Begriffe (ausführlich: [ALRL04,
-        AvLR04] ):
-        \begin{itemize*}
-            \item Ausfall (failure): liegt vor, wenn tatsächliche Leistung(en), die ein System erbringt, von als korrekt spezifizierter Leistung abweichen
-            \item fehlerhafter Zustand ( error ): notwendige Ursacheeines Ausfalls (nicht jeder error muss zu failure führen)
-            \item Fehler ( fault ): Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
-        \end{itemize*}
+        \item Fehler $\rightarrow$ fehlerhafter Zustand $\rightarrow$ Ausfall
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-fehler.png}
     \end{itemize*}
-
-
-    \subsubsection{... und ihre Vermeidung}
-
-    \begin{itemize*}
-        \item
-        Umgang mit ...
+    \begin{description*}
+        \item[Ausfall] (failure) liegt vor, wenn tatsächliche Leistung(en), die ein System erbringt, von als korrekt spezifizierter Leistung abweichen
         \begin{itemize*}
-            \item faults: \begin{itemize*} \item Korrektheit testen \item Korrektheit beweisen( $\rightarrow$ formale Verifikation) \end{itemize*}
-            \item errors: \begin{itemize*} \item Maskierung, Redundanz \item Isolationvon Subsystemen \item $\rightarrow$ Isolationsmechanismen \end{itemize*}
-            \item failures: \begin{itemize*} \item Ausfallverhalten (neben korrektem Verhalten) spezifizieren \item Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen... \item $\rightarrow$ Micro-Reboots \end{itemize*}
+            \item Korrektheit testen/beweisen( $\rightarrow$ formale Verifikation)
         \end{itemize*}
-    \end{itemize*}
-
+        \item[fehlerhafter Zustand] (error) notwendige Ursache eines Ausfalls (nicht jeder error muss zu failure führen)
+        \begin{itemize*}
+            \item Maskierung, Redundanz
+            \item Isolation von Subsystemen
+            \item $\rightarrow$ Isolationsmechanismen
+        \end{itemize*}
+        \item[Fehler] (fault) Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
+        \begin{itemize*}
+            \item Ausfallverhalten spezifizieren
+            \item Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen...
+            \item $\rightarrow$ Micro-Reboots
+        \end{itemize*}
+    \end{description*}
 
     \subsection{Fehlerhafter Zustand}
-
+    interner und externer Zustand (internal \& external state)
     \begin{itemize*}
-        \item
-        interner und externer Zustand (internal \& external state)
-        \begin{itemize*}
-            \item externer Zustand (einer Systems oder Subsystems): der Teil des Gesamtzustands, der an externer Schnittstelle (also für das umgebende (Sub-) System) sichtbar wird
-            \item interner Zustand: restlicher Teilzustand
-            \item (tatsächlich) erbrachte Leistung: zeitliche Folge externer Zustände
-        \end{itemize*}
-        \item
-        Beispiele für das System ( Betriebssystem-) Kernel :
-        \begin{itemize*}
-            \item Subsysteme: Dateisystem, Scheduler, E/A, IPC, ..., Gerätetreiber
-            \item fault : Programmierfehler im Gerätetreiber
-            \item externer Zustand des Treibers (oder des Dateisystems, Schedulers, E/A, IPC, ...) $\subseteq$ interner Zustand des Kernels
-            %\item
-            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel.png}
-        \end{itemize*}
+        \item externer Zustand: der Teil des Gesamtzustands, der an externer Schnittstelle sichtbar wird
+        \item interner Zustand: restlicher Teilzustand
+        \item erbrachte Leistung: zeitliche Folge externer Zustände
     \end{itemize*}
-
-
-    \subsubsection{Fehlerausbreitung und (externer)
-        Ausfall}
-
+    Fehlerausbreitung und (externer) Ausfall
     \begin{itemize*}
-        \item
-        Wirkungskette: -[X] Treiber-Programmierfehler (fault) -[X]
-        fehlerhafter interner Zustand des Treibers (error)
+        \item Wirkungskette: Treiber-Programmierfehler (fault) $\rightarrow$ fehlerhafter interner Zustand des Treibers (error)
         \begin{itemize*}
-            \item Ausbreitung dieses Fehlers ( failure des Treibers)
-            \item = fehlerhafter externer Zustand des Treibers
-            \item = fehlerhafter interner Zustand des Kernels( error )
-            \item = Kernelausfall!( failure )
+            \item Ausbreitung dieses Fehlers (failure des Treibers)
+            \item[$\Rightarrow$] fehlerhafter externer Zustand des Treibers
+            \item[$\Rightarrow$] fehlerhafter interner Zustand des Kernels (error)
+            \item[$\Rightarrow$] Kernelausfall (failure)
         \end{itemize*}
-        \item[$\boxtimes$]
-        Auswirkung: fehlerhafter interner Zustand eines weiteren
-        Kernel-Subsystems (z.B. error des Dateisystems)
-        \item
-        $\rightarrow$ Robustheit: Isolationsmechanismen
+        \item Auswirkung: fehlerhafter Zustand weiterer Kernel-Subsysteme
+        \item $\rightarrow$ Robustheit: Isolationsmechanismen
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
     \end{itemize*}
 
-
     \subsection{Isolationsmechanismen}
-
     \begin{itemize*}
-        \item
-        im Folgenden: Isolationsmechanismen für robuste Betriebssysteme
+        \item Isolationsmechanismen für robuste Betriebssysteme
         \begin{itemize*}
             \item durch strukturierte Programmierung
             \item durch Adressraumisolation
         \end{itemize*}
-        \item
-        es gibt noch mehr: Isolationsmechanismen für sichere Betriebssysteme
+        \item noch mehr für sichere Betriebssysteme
         \begin{itemize*}
-            \item all die obigen...
             \item durch kryptografische Hardwareunterstützung: Enclaves
             \item durch streng typisierte Sprachen und managed code
             \item durch isolierte Laufzeitumgebungen: Virtualisierung
         \end{itemize*}
     \end{itemize*}
 
-
-    \subsubsection{Strukturierte
-        Programmierung}
-
+    \subsubsection{Strukturierte Programmierung}
     Monolithisches BS... in historischer Reinform:
-
     \begin{itemize*}
-        \item
-        Anwendungen
-        \item
-        Kernel
-        \item
-        gesamte BS-Funktionalität
-        \item
-        programmiert als Sammlung von Prozeduren
-        \item
-        jede darf jede davon aufrufen
-        \item
-        keine Modularisierung
-        \item
-        keine definierten internen Schnittstellen
+        \item Anwendungen, Kernel, gesamte BS-Funktionalität
+        \item programmiert als Sammlung von Prozeduren
+        \item jede darf jede davon aufrufen, keine Modularisierung
+        \item keine definierten internen Schnittstellen
     \end{itemize*}
 
-
-    \paragraph{Monolithisches Prinzip}
-
+    Monolithisches Prinzip
     \begin{itemize*}
-        \item
-        Ziel: Isolation zwischen Anwendungen und Betriebssystem
-        \item
-        Mechanismus: Prozessor-Privilegierungsebenen ( user space und kernel
-        space )
-        \item
-        Konsequenz für Strukturierung des Kernels: Es gibt keine
-        Strukturierung des Kernels ...
-        \item
-        ... jedenfalls fast: Ablauf eines Systemaufrufs (Erinnerung)
-        %\begin{itemize*}
+        \item Ziel: Isolation zwischen Anwendungen und Betriebssystem
+        \item Mechanismus: Prozessor-Privilegierungsebenen (user/kernelspace)
+        \item Konsequenz: fast keine Strukturierung des Kernels
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-systemaufruf.png}
-        %\end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{Strukturierte
-        Makrokernarchitektur}
-
+    Strukturierte Makrokernarchitektur
     \begin{itemize*}
-        \item
-        Resultat: schwach strukturierter (monolithischer) Makrokernel
+        \item schwach strukturierter (monolithischer) Makrokernel
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
-        \begin{itemize*}
-            \item nach [TaWo05], S. 45
-        \end{itemize*}
-        \item
-        Weiterentwicklung:
-        \item
-        Schichtendifferenzierung ( layered operating system )
-        \item
-        Modularisierung (Bsp.: Linux-Kernel) | Kernelcode |
-        |
-        -------------------------
-        | | VFS | | IPC, Dateisystem
-        | | Scheduler, VMM | | Dispatcher,
-        Gerätetreiber |
-        \item
-        Modularer Makrokernel:
-        \item
-        alle Kernelfunktionen in Moduleunterteilt (z.B. verschiedene
-        Dateisystemtypen) $\rightarrow$ Erweiterbarkeit,
-        Wartbarkeit, Portierbarkeit
-        \item
-        klar definierte Modulschnittstellen(z.B. virtualfilesystem, VFS )
-        \item
-        Module zur Kernellaufzeit dynamisch einbindbar
-        ( $\rightarrow$ Adaptivität)
+        \item[$\Rightarrow$] Schichtendifferenzierung ( layered operating system )
+        \item Modularisierung
     \end{itemize*}
-
-
-    \paragraph{Fehlerausbreitung beim
-        Makrokernel}
-
+    Modularer Makrokernel
     \begin{itemize*}
-        \item
-        strukturierte Programmierung:
-        \item
-        \cmark Wartbarkeit
-        \item
-        \cmark Portierbarkeit
-        \item
-        \cmark Erweiterbarkeit
-        \item
-        O (begrenzt) Adaptivität
-        \item
-        O (begrenzt) Schutz gegen statische Programmierfehler: nur durch
-        Compiler (z.B. C private, public)
-        \item
-        \xmark kein Schutz gegen dynamische Fehler
-        \item
-        $\rightarrow$ Robustheit...?
-        \item
-        nächstes Ziel: Schutz gegen Laufzeitfehler...
-        $\rightarrow$ Laufzeitmechanismen
+        \item Kernelfunktionen in Module unterteilt $\rightarrow$ Erweiter-/Portierbarkeit
+        \item klar definierte Modulschnittstellen
+        \item Module zur Kernellaufzeit dynamisch einbindbar (Adaptivität)
     \end{itemize*}
 
+    \paragraph{Fehlerausbreitung beim Makrokernel}
+    \begin{itemize*}
+        \item[\cmark] Wartbarkeit
+        \item[\cmark] Portierbarkeit
+        \item[\cmark] Erweiterbarkeit
+        \item (begrenzt) Adaptivität
+        \item Schutz gegen statische Programmierfehler nur durch Compiler
+        \item[\xmark] kein Schutz gegen dynamische Fehler
+    \end{itemize*}
 
     \subsubsection{Adressraumisolation}
-
+    Private virtuelle Adressräume und Fehlerausbreitung
     \begin{itemize*}
-        \item
-        zur Erinnerung: private virtuelle Adressräume zweier Tasks
-        ($i\not= j$)
-        %\begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-private-virtuelle-adressräume.png}
-        %\end{itemize*}
-        \item
-        private virtuelle vs. physischer Adresse
+        \item private virtuelle Adressräume zweier Tasks ($i\not= j$)
+        %\item private virtuelle vs. physischer Adresse
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtuelle-vs-physische-adresse.png}
         %\end{itemize*}
+        \item korrekte private vAR: kollisionsfreie Seitenabbildung
+        \item Magie in Hardware: MMU (BS steuert und verwaltet...)
     \end{itemize*}
-
-
-    \paragraph{Private virtuelle Adressräume und
-        Fehlerausbreitung}
-
+    Robustheit: Vorteil von privaten vAR?
     \begin{itemize*}
-        \item
-        korrekte private vAR \textasciitilde{} kollisionsfreie
-        Seitenabbildung!
-        \item
-        Magie in Hardware: MMU (BS steuert und verwaltet...)
-        \item
-        Robustheit: Was haben wir von privaten vAR?
+        \item[\cmark] nichtvertrauenswürdiger Code kann keine beliebigen physischen Adressen schreiben
+        \item[\cmark] Kommunikation zwischen nvw. Code muss durch IPC-Mechanismen explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit möglich
+        \item[\cmark] Kontrollfluss begrenzen: Funktionsaufrufe können i.A. keine AR-Grenzen überschreiten
         \begin{itemize*}
-            \item \cmark nichtvertrauenswürdiger (i.S.v. potenziell nicht korrekter) Code kann keine beliebigen physischen Adressen schreiben (er erreicht sie ja nicht mal...)
-            \item \cmark Kommunikation zwischen nvw. Code (z.B. Anwendungstasks) muss durch IPC-Mechanismen explizit hergestellt werden (u.U. auch shared memory) \begin{itemize*} \item $\rightarrow$ Überwachung und Validierung zur Laufzeit möglich \end{itemize*}
-            \item \cmark Kontrollfluss begrenzen: Funktionsaufrufe können i.A. (Ausnahme: RPC) keine AR-Grenzen überschreiten \begin{itemize*} \item $\rightarrow$ BS-Zugriffssteuerungkann nicht durch Taskfehler ausgehebelt werden \item $\rightarrow$ unabsichtliche Terminierungsfehler(unendliche Rekursion) erschwert ... \end{itemize*}
+            \item $\rightarrow$ BS-Zugriffssteuerung kann nicht durch Taskfehler ausgehebelt werden
+            \item $\rightarrow$ unabsichtliche Terminierungsfehler(unendliche Rekursion) erschwert ...
         \end{itemize*}
+        \item keine Isolation zwischen Fehlern innerhalb des Kernels
     \end{itemize*}
-
-
-    \paragraph{Was das für den Kernel
-        bedeutet}
-
-    \begin{itemize*}
-        \item
-        private virtuelle Adressräume
-        \begin{itemize*}
-            \item gibt es schon so lange wie VMM
-            \item gab es lange nur auf Anwendungsebene
-            \item $\rightarrow$ keine Isolation zwischen Fehlern innerhalb des Kernels!
-            %\item
-            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtuelle-kernel-adressräume.png}
-        \end{itemize*}
-        \item
-        nächstes Ziel: Schutz gegen Kernelfehler (Gerätetreiber)...
-        $\rightarrow$ BS-Architektur
-    \end{itemize*}
-
 
     \subsection{Mikrokernelarchitektur}
-
+    Fortschritt ggü. Makrokernel
     \begin{itemize*}
-        \item Fortschritt ggü. Makrokernel:
+        \item Strukturierungskonzept
         \begin{itemize*}
-            \item Strukturierungskonzept:
-            \begin{itemize*}
-                \item strenger durchgesetzt durch konsequente Isolation voneinander unabhängiger Kernel-Subsysteme
-                \item zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich!
-            \end{itemize*}
-            \item zusätzlich zu vertikaler Strukturierung des Kernels: horizontale Strukturierungeingeführt
-            \begin{itemize*}
-                \item $\rightarrow$ funktionale Einheiten: vertikal (Schichten)
-                \item $\rightarrow$ isolierteEinheiten: horizontal (private vAR)
-            \end{itemize*}
+            \item strenger durchgesetzt durch konsequente Isolation voneinander unabhängiger Kernel-Subsysteme
+            \item zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich!
         \end{itemize*}
-        \item
-        Idee:
+        \item zusätzlich zu vertikaler Strukturierung des Kernels: horizontale Strukturierung eingeführt
         \begin{itemize*}
-            \item Kernel (alle BS-Funktionalität) $\rightarrow$ $\mu$Kernel (minimale BS-Funktionalität)
-            \item Rest (insbes. Treiber): ,,gewöhnliche'' Anwendungsprozesse mit Adressraumisolation
-            \item Kommunikation: botschaftenbasierteIPC (auch client-server operating system )
-            \item Nomenklatur: Mikrokernelund Serverprozesse
+            \item[$\rightarrow$] funktionale Einheiten: vertikal (Schichten)
+            \item[$\rightarrow$] isolierte Einheiten: horizontal (private vAR)
         \end{itemize*}
+        \item[$\Rightarrow$] Kernel (alle BS-Funktionalität) $\rightarrow$ $\mu$Kernel (minimale BS-Funk.)
+        \item Rest: ,,gewöhnliche'' Anwendungsprozesse mit AR-isolation
+        \item Kommunikation: botschaftenbasierte IPC (client-server OS)
+        \item Nomenklatur: Mikrokernel und Serverprozesse
     \end{itemize*}
 
-
-    \subsubsection{Modularer Makrokernel vs.
-        Mikrokernel}
-
+    \subsubsection{Modularer Makrokernel vs. Mikrokernel}
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
-        \item
-        minimale Kernelfunktionalität:
-        \item
-        keine Dienste, nur allgemeine Schnittstellenfür diese
-        \item
-        keine Strategien, nur grundlegende Mechanismenzur Ressourcenverwaltung
-        \item
-        neues Problem: minimales Mikrokerneldesign
-        \item
-        ,,Wir haben 100 Leute gefragt...'': Wie entscheide ich das?
+        \item minimale Kernelfunktionalität:
+        \item keine Dienste, nur allgemeine Schnittstellenfür diese
+        \item keine Strategien, nur grundlegende Mechanismen zur Ressourcenverwaltung
+        \item neues Problem: minimales Mikrokerneldesign
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
-        \begin{itemize*}
-            \item Ablauf eines Systemaufrufs
-            \item schwarz: unprivilegierteInstruktionen
-            \item blau:privilegierte Instruktionen
-            \item rot:Übergang zwischen beidem ($\mu$Kern $\rightarrow$ Kontextwechsel!)
-        \end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{Robustheit von
-        Mikrokernen}
-
+    \paragraph{Robustheit von Mikrokernen}
     \begin{itemize*}
-        \item
-        = Gewinn durch Adressraumisolation innerhalb des Kernels
-        \begin{itemize*}
-            \item \cmark kein nichtvertrauenswürdiger Code im kernelspace , der dort beliebige physische Adressen manipulieren kann
-            \item \cmark Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
-            \item \cmark Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
-        \end{itemize*}
-        \item
-        Neu:
-        \begin{itemize*}
-            \item \cmark nvw. BS-Code muss nicht mehr im kernelspace (höchste Prozessorprivilegierung) laufen
-            \item \cmark verbleibender Kernel (dessen Korrektheit wir annehmen): klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
-            \item \cmark daneben: Adaptivitätdurch konsequentere Modularisierung des Kernels gesteigert
-        \end{itemize*}
+        \item = Gewinn durch Adressraumisolation innerhalb des Kernels
+        \item[\cmark] kein nichtvertrauenswürdiger Code im Kernelspace, der dort beliebige physische Adressen manipulieren kann
+        \item[\cmark] Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
+        \item[\cmark] Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
+        \item Neu:
+        \item[\cmark] nvw. BS-Code muss nicht mehr im Kernelspace laufen
+        \item[\cmark] verbleibender Kernel: klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
+        \item[\cmark] daneben: Adaptivität durch konsequentere Modularisierung des Kernels gesteigert
     \end{itemize*}
 
-
-    \subsubsection{Mach}
-
+    \subsubsection{Mikrokernel: Mach}
     \begin{itemize*}
-        \item
-        Mikrokernel-Design: Erster Versuch
-        \begin{itemize*}
-            \item Carnegie Mellon University (CMU), School of Computer Science 1985 - 1994
-        \end{itemize*}
-        \item
-        ein wenig Historie
-        \begin{itemize*}
-            \item UNIX (Bell Labs) - K. Thompson, D. Ritchie
-            \item BSD (U Berkeley) - W. Joy
-            \item System V - W. Joy
-            \item Mach (CMU) - R. Rashid
-            \item MINIX - A. Tanenbaum
-            \item NeXTSTEP (NeXT) - S. Jobs
-            \item Linux - L. Torvalds
-            \item GNU Hurd (FSF) - R. Stallman
-            \item Mac OS X (Apple) - S. Jobs
-        \end{itemize*}
-    \end{itemize*}
-
-
-    \paragraph{Mach: Ziele}
-
-    Entstehung
-
-    \begin{itemize*}
-        \item
-        Grundlage:
-        \begin{itemize*}
-            \item 1975: Aleph(BS des ,,Rochester Intelligent Gateway''), U Rochester
-            \item 1979/81: Accent (verteiltes BS), CMU
-        \end{itemize*}
-        \item
-        gefördert durch militärische Geldgeber:
-        \begin{itemize*}
-            \item DARPA: Defense AdvancedResearch Projects Agency
-            \item SCI: Strategic Computing Initiative
-        \end{itemize*}
-    \end{itemize*}
-
-    Ziele
-
-    \begin{itemize*}
-        \item
-        Mach 3.0 (Richard Rashid, 1989): einer der ersten praktisch nutzbaren
-        $\mu$Kerne
-        \item
-        Ziel: API-Emulation($\not =$ Virtualisierung!)von UNIX und -Derivaten auf
-        unterschiedlichen Prozessorarchitekturen
-        \item
-        mehrere unterschiedliche Emulatoren gleichzeitig lauffähig
+        \item 1975: Aleph (BS des ,,Rochester Intelligent Gateway'')
+        \item 1979/81: Accent (verteiltes BS), CMU
+        \item Mach 3.0 (1989): einer der ersten praktisch nutzbaren $\mu$Kerne
+        \item Ziel: API-Emulation ($\not=$ Virtualisierung) von UNIX und -Derivaten auf unterschiedlichen Prozessorarchitekturen
+        \item mehrere unterschiedliche Emulatoren gleichzeitig lauffähig
         \begin{itemize*}
             \item Emulation außerhalb des Kernels
-            \item jeder Emulator: \begin{itemize*} \item Komponente im Adressraum des Applikationsprogramms \item 1...n Server, die unabhängig von Applikationsprogramm laufen \end{itemize*}
+            \item Komponente im Adressraum des Applikationsprogramms
+            \item $1...n$ Server, unabhängig von Applikationsprogramm
         \end{itemize*}
-    \end{itemize*}
-
-    Mach-Server zur Emulation
-
-    \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-server.png}
-        \item
-        Emulation von UNIX-Systemen mittels Mach-Serverprozessen
     \end{itemize*}
 
     $\mu$Kernel-Funktionen
-
     \begin{enumerate*}
-        \item
-        Prozessverwaltung
-        \item
-        Speicherverwaltung
-        \item
-        IPC-und E/A-Dienste, einschließlich Gerätetreiber
+        \item Prozessverwaltung
+        \item Speicherverwaltung
+        \item IPC-und E/A-Dienste, einschließlich Gerätetreiber
     \end{enumerate*}
 
-    unterstützte Abstraktionen ( $\rightarrow$ API,
-    Systemaufrufe):
-
+    unterstützte Abstraktionen ( $\rightarrow$ API, Systemaufrufe):
     \begin{enumerate*}
-        \item
-        Prozesse
-        \item
-        Threads
-        \item
-        Speicherobjekte
-        \item
-        Ports (generisches, ortstransparentes Adressierungskonzept; vgl. UNIX
-        ,,everything is a file'')
-        \item
-        Botschaften
-        \item
-        ... (sekundäre, von den obigen genutzte Abstraktionen)
+        \item Prozesse, Threads, Speicherobjekte
+        \item Ports (generisches, ortstransparentes Adressierungskonzept)
+        \item Botschaften, ... (sekundäre, von den obigen genutzte Abstraktionen)
     \end{enumerate*}
 
     Architektur
-
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-architektur.png}
-        \item
-        Systemaufrufkosten:
+        \item Systemaufrufkosten:
         \begin{itemize*}
             \item IPC-Benchmark (1995): i486 Prozessor, 50 MHz
             \item Messung mit verschiedenen Botschaftenlängen( x - Werte)
             \item ohne Nutzdaten (0 Byte Botschaftenlänge): 115 $\mu$s (Tendenz unfreundlich ...)
-            %\item
-            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
         \end{itemize*}
-        \item
-        Bewertung aus heutiger Sicht:
+        \item Bewertung aus heutiger Sicht:
         \begin{itemize*}
             \item funktional komplex
             \item 153 Systemaufrufe
             \item mehrere Schnittstellen, parallele Implementierungen für eine Funktion
             \item $\rightarrow$ Adaptivität (Auswahl durch Programmierer)
         \end{itemize*}
-        \item
-        Fazit:
+        \item Fazit:
         \begin{itemize*}
             \item zukunftsweisender Ansatz
             \item langsame und ineffiziente Implementierung
@@ -1221,89 +940,39 @@
     \end{itemize*}
 
     Lessons Learned
-
     \begin{itemize*}
-        \item
-        erster Versuch:
-        \item
-        Idee des Mikrokernelsbekannt
-        \item
-        Umsetzung: Designkriterienweitgehend unbekannt
-        \item
-        Folgen für Performanz und Programmierkomfort: [Heis19]
-        \item
-        \xmark ,,complex''
-        \item
-        \xmark ,,inflexible''
-        \item
-        \xmark ,,slow''
-        \item
-        wir wissen etwas über Kosten: IPC-Performanz, Kernelabstraktionen
-        \item
-        wir wissen noch nichts über guten $\mu$Kern-Funktionsumfangund gute
-        Schnittstellen...
-        \item
-        $\rightarrow$ nächstes Ziel!
+        \item Umsetzung: Designkriterien weitgehend unbekannt
+        \item Folgen für Performanz und Programmierkomfort: [Heis19]
+        \item[\xmark] ,,complex'', ,,inflexible'', ,,slow''
+        \item wissen etwas über Kosten: IPC-Performanz, Kernelabstraktionen
+        \item wissen nichts über guten $\mu$Kern-Funktionsumfang und gute Schnittstellen
     \end{itemize*}
-
 
     \subsubsection{L4}
-
-    \begin{itemize*}
-        \item
-        Made in Germany:
-        \begin{itemize*}
-            \item Jochen Liedtke (GMD, ,,Gesellschaft für Mathematik und Datenverarbeitung''), Betriebssystemgruppe (u.a.): J. Liedtke, H. Härtig, W. E. Kühnhauser
-            \item Symposium on Operating Systems Principles 1995 (SOSP '95): ,,On $\mu$-Kernel Construction'' [Lied95]
-        \end{itemize*}
-        \item
-        Analyse des Mach-Kernels:
+   Analyse des Mach-Kernels:
         \begin{enumerate*}
-
             \item falsche Abstraktionen
             \item unperformanteKernelimplementierung
-            \item prozessorunabhängige Implementierung \begin{itemize*} \item Letzteres: effizienzschädliche Eigenschaft eines Mikrokernels \item Neuimplementierung eines (konzeptionell sauberen!) $\mu$-Kerns kaum teurer als Portierung auf andere Prozessorarchitektur \end{itemize*}
+            \item prozessorunabhängige Implementierung
         \end{enumerate*}
-    \end{itemize*}
 
     L3 und L4
-
     \begin{itemize*}
-        \item
-        Mikrokerne der 2. Generation
-        \item
-        zunächst L3, insbesondere Nachfolger L4: erste Mikrokerne der 2.
-        Generation
-        \item
-        vollständige Überarbeitung des Mikrokernkonzepts: wesentliche Probleme
-        der 1. Generation (z.B. Mach) vermieden
-        \item
-        Bsp.: durchschnittliche Performanz von User-Mode IPC in L3 ggü. Mach:
-        Faktor 22 zugunsten L3
-        \begin{itemize*}
-            \item heute: verschiedene Weiterentwicklungen von L4 (bezeichnet heute Familie ähnlicher Mikrokerne)
-        \end{itemize*}
-        %\begin{longtable}[]{@{}lll@{}}
-        %\toprule
-        %First generation & Second Generation & Third generation\tabularnewline
-        %\midrule
-        %\endhead
-        %Eg Mach [87] & Eg L4 [95] & seL4 [09]\tabularnewline
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-first-g.png} &
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-L4-second-g.png} &
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-third-g.png}\tabularnewline
-        %180 syscalls & \textasciitilde7 syscalls & \textasciitilde3
-        %syscalls\tabularnewline
-        %100 kLOC & \textasciitilde10 kLOC & 9 kLOC\tabularnewline
-        %100 $\mu s$ IPC & \textasciitilde1 $\mu
-        %s$ IPC & $0,2-1 \mu s$ IPC\tabularnewline
-        %\bottomrule
-        %\end{longtable}
+        \item Mikrokerne der 2. Generation
+        \item vollständige Überarbeitung des Mikrokernkonzepts
     \end{itemize*}
+        \begin{tabular}{c|c|c}
+            First generation                                                                      & Second Generation    & Third generation  \\\hline
+            Eg Mach                                                                               & Eg L4                & seL4              \\
+            \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-l4-first-g.png}  &
+            \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-L4-second-g.png} &
+            \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-l4-third-g.png}                                             \\
+            180 syscalls                                                                          & $\sim$ 7 syscalls    & $\sim$ 3 syscalls \\
+            100 kLOC                                                                              & $\sim$ 10 kLOC       & 9 kLOC            \\
+            100 $\mu s$ IPC                                                                       & $\sim$ 1 $\mu s$ IPC & $0,2-1 \mu s$ IPC
+        \end{tabular}
 
-
-    \paragraph{Mikrokernel-Designprinzipien}
-
+    \subsubsection{Mikrokernel - Designprinzipien}
     \begin{itemize*}
         \item
         Was gehört in einen Mikrokern?
@@ -2262,13 +1931,13 @@
 
     %\begin{longtable}[]{@{}lll@{}}
     %\toprule
-    %& DAC & MAC\tabularnewline
+    %& DAC & MAC\\
     %\midrule
     %\endhead
     %IBAC & Unixoide,Linux, Windows & Linux AppArmor, Mac OS
-    %Seatbelt\tabularnewline
-    %TE & - & SELinuxEnterprise Linux (RHEL), RedHat\tabularnewline
-    %MLS & Windows UAC & SELinux, TrustedBSD\tabularnewline
+    %Seatbelt\\
+    %TE & - & SELinuxEnterprise Linux (RHEL), RedHat\\
+    %MLS & Windows UAC & SELinux, TrustedBSD\\
     %\bottomrule
     %\end{longtable}
 
@@ -2328,13 +1997,13 @@
     %\begin{longtable}[]{@{}lllll@{}}
     %\toprule
     %acm & paper.pdf & aos-05.pptx & gutachten.tex &
-    %worse-engine\tabularnewline
+    %worse-engine\\
     %\midrule
     %\endhead
-    %kühnhauser & rw & - & rw & rx\tabularnewline
-    %schlegel & rw & - & - & rx\tabularnewline
-    %amthor & rw & rw & - & rx\tabularnewline
-    %krause & r & - & - & -\tabularnewline
+    %kühnhauser & rw & - & rw & rx\\
+    %schlegel & rw & - & - & rx\\
+    %amthor & rw & rw & - & rx\\
+    %krause & r & - & - & -\\
     %\bottomrule
     %\end{longtable}
 
@@ -3342,7 +3011,7 @@
             t_i$
         \item
         Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische
-        Bildrate (24\textasciitilde48 fps $\rightarrow$ 1/24
+        Bildrate (24~48 fps $\rightarrow$ 1/24
         ... 1/48 s)
         \item
         $\rightarrow$ Berücksichtigung bei Scheduling,
@@ -4949,7 +4618,7 @@
         \item
         machbar: sehr effiziente Exokerne
         \begin{itemize*}
-            \item Grundlage: begrenzte Anzahl einfacher Systemaufrufe (Größenordnung \textasciitilde10) und Kernel-interne Primitiven (,,Pseudo-Maschinenanweisungen''), die enthalten sein müssen
+            \item Grundlage: begrenzte Anzahl einfacher Systemaufrufe (Größenordnung ~10) und Kernel-interne Primitiven (,,Pseudo-Maschinenanweisungen''), die enthalten sein müssen
         \end{itemize*}
         \item
         machbar: sicheres Hardware-Multiplexing auf niedriger
@@ -6635,19 +6304,19 @@
     %\begin{longtable}[]{@{}llllll@{}}
     %\toprule
     %& Makrokernel & Mikrokernel & Exokernel & Virtualisierung &
-    %Multikernel\tabularnewline
+    %Multikernel\\
     %\midrule
     %\endhead
-    %Energieeffizienz & & & (\cmark ) & \xmark & \xmark \tabularnewline
-    %Speichereffizienz & \xmark & (\cmark ) & (\cmark ) & & \xmark \tabularnewline
-    %Robustheit & \xmark & \cmark & \xmark & \cmark &\tabularnewline
-    %Verfügbarkeit & \xmark & (\cmark ) & & (\cmark ) & (\cmark )\tabularnewline
-    %Korrektheit & \xmark & \cmark & \xmark & \xmark & (\cmark )\tabularnewline
-    %Sicherheit & \xmark & \cmark & \xmark & \cmark &\tabularnewline
-    %Echtzeitfähigkeit & (\cmark ) & (\cmark ) & \cmark & \xmark & \xmark \tabularnewline
-    %Adaptivität & \xmark & (\cmark ) & \cmark & \cmark & (\cmark )\tabularnewline
-    %Wartbarkeit & \cmark & & \cmark & \cmark &\tabularnewline
-    %Performanz & (\cmark ) & \xmark & \cmark & \xmark & \cmark \tabularnewline
+    %Energieeffizienz & & & (\cmark ) & \xmark & \xmark \\
+    %Speichereffizienz & \xmark & (\cmark ) & (\cmark ) & & \xmark \\
+    %Robustheit & \xmark & \cmark & \xmark & \cmark &\\
+    %Verfügbarkeit & \xmark & (\cmark ) & & (\cmark ) & (\cmark )\\
+    %Korrektheit & \xmark & \cmark & \xmark & \xmark & (\cmark )\\
+    %Sicherheit & \xmark & \cmark & \xmark & \cmark &\\
+    %Echtzeitfähigkeit & (\cmark ) & (\cmark ) & \cmark & \xmark & \xmark \\
+    %Adaptivität & \xmark & (\cmark ) & \cmark & \cmark & (\cmark )\\
+    %Wartbarkeit & \cmark & & \cmark & \cmark &\\
+    %Performanz & (\cmark ) & \xmark & \cmark & \xmark & \cmark \\
     %\bottomrule
     %\end{longtable}
 

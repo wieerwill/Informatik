@@ -477,453 +477,198 @@
 
     \subsection{Speichereffizienz}
     \begin{itemize*}
-        \item
-        ... heißt: Auslastung des verfügbaren Speichers
+        \item  ... heißt: Auslastung des verfügbaren Speichers
+        \item oft implizit: Hauptspeicherauslastung (memoryfootprint)
+        \item für kleine/mobile Systeme: Hintergrundspeicherauslastung
+        \item Maße zur Konkretisierung:
         \begin{itemize*}
-            \item oft implizit: Hauptspeicherauslastung (memoryfootprint)
-            \item besonders für kleine/mobile Systeme: Hintergrundspeicherauslastung
-        \end{itemize*}
-        \item
-        Maße zur Konkretisierung:
-        \begin{itemize*}
-            \item zeitliche Dimension: Maximum vs. Summe genutzten Speichers?
+            \item zeitlich: Maximum vs. Summe genutzten Speichers?
             \item physischer Speicherverwaltung? $\rightarrow$ Belegungsanteil pAR
             \item virtuelle Speicherverwaltung? $\rightarrow$ Belegungsanteil vAR
         \end{itemize*}
-        \item
-        Konsequenzen für Ressourcenverwaltung durch BS:
+        \item Konsequenzen für Ressourcenverwaltung durch BS
         \begin{itemize*}
             \item Taskverwaltung (Accounting, Multiplexing, Fairness, ...)
-            \item Programmiermodell, API (besonders: dynamische Speicherreservierung)
-            \item Sinnfrage und ggf. Strategien virtueller Speicherverwaltung (VMM)
+            \item Programmiermodell, API (dynamische Speicherreservierung)
+            \item Sinnfrage und Strategien virtueller Speicherverwaltung (VMM)
         \end{itemize*}
-        \item
-        Konsequenzen für Betriebssystem selbst:
+        \item Konsequenzen für Betriebssystem selbst
         \begin{itemize*}
-            \item minimaler Speicherbedarfdurch Kernel
-            \item minimale Speicherverwaltungskosten (durch obige Aufgaben)
+            \item minimaler Speicherbedarf durch Kernel
+            \item minimale Speicherverwaltungskosten (obiger Aufgaben)
         \end{itemize*}
     \end{itemize*}
 
 
     \subsubsection{Hauptspeicherauslastung}
-
-    \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-speicherverwaltung.png}
-    \end{itemize*}
-
+    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-speicherverwaltung.png}
     Problem: externe Fragmentierung
-
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-externe-fragmentierung.png}
-        \item
-        Lösungen:
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-externe-fragmentierung.png}
+        \item Lösungen
         \begin{itemize*}
             \item First Fit, Best Fit, WorstFit, Buddy
             \item Relokation
         \end{itemize*}
-        \item
-        Kompromissloser Weg: kein Multitasking!
+        \item Kompromissloser Weg: kein Multitasking
     \end{itemize*}
 
     Problem: interne Fragmentierung
-
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interne-fragmentierung.png}
-        \item
-        Lösung:
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interne-fragmentierung.png}
+        \item Lösung
         \begin{itemize*}
             \item Seitenrahmengröße verringern
-            \item Tradeoff: dichter belegte vAR $\rightarrow$ größere Datenstrukturen für Seitentabellen!
+            \item Tradeoff: dichter belegte vAR $\rightarrow$ größere Datenstrukturen für Seitentabellen
         \end{itemize*}
-        \item
-        direkter Einfluss des Betriebssystems auf Hauptspeicherbelegung:
+        \item direkter Einfluss des Betriebssystems auf Hauptspeicherbelegung
         \begin{itemize*}
             \item $\rightarrow$ Speicherbedarf des Kernels
-            \item statische(Minimal-) Größe des Kernels (Anweisungen + Daten)
-            \item dynamischeSpeicherreservierung durch Kernel
-            \item bei Makrokernel: Speicherbedarf von Gerätecontrollern (Treibern)!
+            \item statische (min) Größe des Kernels (Anweisungen+Daten)
+            \item dynamische Speicherreservierung durch Kernel
+            \item bei Makrokernel: Speicherbedarf von Gerätecontrollern
         \end{itemize*}
     \end{itemize*}
 
     weitere Einflussfaktoren: Speicherverwaltungskosten
-
     \begin{itemize*}
-        \item
-        VMM: Seitentabellengröße $\rightarrow$ Mehrstufigkeit
-        \item
-        Metainformationen über laufende Programme: Größe von
-        Taskkontrollblöcken( Prozess-/Threaddeskriptoren ...)
-        \item
-        dynamische Speicherreservierung durch Tasks
+        \item VMM: Seitentabellengröße $\rightarrow$ Mehrstufigkeit
+        \item Metainformationen über laufende Programme: Größe von Taskkontrollblöcken (Prozess-/Threaddeskriptoren ...)
+        \item dynamische Speicherreservierung durch Tasks
     \end{itemize*}
-
-
-    \subparagraph{Beispiel 1: sparsam}
-
-    Prozesskontrollblock (PCB, Metadatenstruktur des Prozessdeskriptors)
-    eines kleinen Echtzeit-Kernels (,,DICK''):
-
-    %\begin{Shaded}
-    %\begin{Highlighting}[]
-    %\CommentTok{// Process Control Block (PCB)}
-    %\KeywordTok{struct}\NormalTok{ pcb \{}
-    % \DataTypeTok{char}\NormalTok{ name[MAXLEN +}\DecValTok{1}\NormalTok{]; }\CommentTok{// process name}
-    %\NormalTok{ proc (*addr)(); }\CommentTok{// first instruction}
-    % \DataTypeTok{int}\NormalTok{ type; }\CommentTok{// process type}
-    % \DataTypeTok{int}\NormalTok{ state; }\CommentTok{// process state}
-    % \DataTypeTok{long}\NormalTok{ dline; }\CommentTok{// absolute deadline}
-    % \DataTypeTok{int}\NormalTok{ period; }\CommentTok{// period}
-    % \DataTypeTok{int}\NormalTok{ prt; }\CommentTok{// priority}
-    % \DataTypeTok{int}\NormalTok{ wcet; }\CommentTok{// worst{-}case execution time}
-    % \DataTypeTok{float}\NormalTok{ util; }\CommentTok{// processor utilization}
-    % \DataTypeTok{int}\NormalTok{ *context;}
-    %\NormalTok{ proc next;}
-    %\NormalTok{ proc prev;}
-    %\NormalTok{\};}
-    %\end{Highlighting}
-    %\end{Shaded}
-
-
-    \subparagraph{Beispiel 2: eher nicht sparsam}
-
-    Linux Prozesskontrollblock (taskstruct):
-
-    %\begin{Shaded}
-    %\begin{Highlighting}[]
-    %\KeywordTok{struct}\NormalTok{ task_struct \{}
-    % \AttributeTok{volatile} \DataTypeTok{long}\NormalTok{ state; }\CommentTok{/* {-} 1 unrunnable, 0 runnable, \textgreater{}0 stopped */}
-    % \DataTypeTok{void}\NormalTok{ *stack;}
-    % \DataTypeTok{atomic_t}\NormalTok{ usage;}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ flags; }\CommentTok{/* per process flags, defined below */}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ ptrace;}
-    %\PreprocessorTok{\#ifdef CONFIG_SMP}
-    % \KeywordTok{struct}\NormalTok{ llist_node wake_entry;}
-    % \DataTypeTok{int}\NormalTok{ on_cpu;}
-    %\PreprocessorTok{\#endif}
-    % \DataTypeTok{int}\NormalTok{ on_rq;}
-    %\CommentTok{// SCHEDULING INFORMATION}
-    % \DataTypeTok{int}\NormalTok{ prio, static_prio, normal_prio;}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ rt_priority;}
-    % \AttributeTok{const} \KeywordTok{struct}\NormalTok{ sched_class *sched_class;}
-    %\CommentTok{// Scheduling Entity}
-    % \KeywordTok{struct}\NormalTok{ sched_entity se;}
-    % \KeywordTok{struct}\NormalTok{ sched_rt_entity rt;}
-    %\PreprocessorTok{\#ifdef CONFIG_CGROUP_SCHED}
-    % \KeywordTok{struct}\NormalTok{ task_group *sched_task_group;}
-    %\PreprocessorTok{\#endif}
-    %\PreprocessorTok{\#ifdef CONFIG_PREEMPT_NOTIFIERS}
-    % \KeywordTok{struct}\NormalTok{ hlist_head preempt_notifiers; }\CommentTok{/* list of struct preempt_notifier */}
-    %\PreprocessorTok{\#endif}
-    % \DataTypeTok{unsigned} \DataTypeTok{char}\NormalTok{ fpu_counter;}
-    %\PreprocessorTok{\#ifdef CONFIG_BLK_DEV_IO_TRACE}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ btrace_seq;}
-    %\PreprocessorTok{\#endif}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ policy;}
-    % \DataTypeTok{cpumask_t}\NormalTok{ cpus_allowed;}
-    %\PreprocessorTok{\#ifdef CONFIG_PREEMPT_RCU}
-    % \DataTypeTok{int}\NormalTok{ rcu_read_lock_nesting;}
-    % \DataTypeTok{char}\NormalTok{ rcu_read_unlock_special;}
-    % \KeywordTok{struct}\NormalTok{ list_head rcu_node_entry;}
-    % \KeywordTok{struct}\NormalTok{ rcu_node *rcu_blocked_node;}
-    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG_TREE_PREEMPT_RCU */}
-    %\PreprocessorTok{\#ifdef CONFIG_RCU_BOOST}
-    % \KeywordTok{struct}\NormalTok{ rt_mutex *rcu_boost_mutex;}
-    %\PreprocessorTok{\#endif }\CommentTok{/* \#ifdef CONFIG_RCU_BOOST */}
-    %\PreprocessorTok{\#if defined(CONFIG_SCHEDSTATS) || defined(CONFIG_TASK_DELAY_ACCT)}
-    % \KeywordTok{struct}\NormalTok{ sched_info sched_info;}
-    %\PreprocessorTok{\#endif}
-    % \KeywordTok{struct}\NormalTok{ list_head tasks;}
-    %\PreprocessorTok{\#ifdef CONFIG_SMP}
-    % \KeywordTok{struct}\NormalTok{ plist_node pushable_tasks;}
-    %\PreprocessorTok{\#endif}
-    %\CommentTok{// virtual address space reference}
-    % \KeywordTok{struct}\NormalTok{ mm_struct *mm, *active_mm;}
-    %\PreprocessorTok{\#ifdef CONFIG_COMPAT_BRK}
-    % \DataTypeTok{unsigned}\NormalTok{ brk_randomized:}\DecValTok{1}\NormalTok{;}
-    %\PreprocessorTok{\#endif}
-    %\PreprocessorTok{\#if defined(SPLIT_RSS_COUNTING)}
-    % \KeywordTok{struct}\NormalTok{ task_rss_stat rss_stat;}
-    %\PreprocessorTok{\#endif}
-    %\CommentTok{/* task state */}
-    % \DataTypeTok{int}\NormalTok{ exit_state;}
-    % \DataTypeTok{int}\NormalTok{ exit_code, exit_signal;}
-    % \DataTypeTok{int}\NormalTok{ pdeath_signal; }\CommentTok{/* The signal sent when the parent dies */}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ jobctl; }\CommentTok{/* JOBCTL_*, siglock protected */}
-    % \DataTypeTok{unsigned} \DataTypeTok{int}\NormalTok{ personality;}
-    % \DataTypeTok{unsigned}\NormalTok{ did_exec:}\DecValTok{1}\NormalTok{;}
-    % \DataTypeTok{unsigned}\NormalTok{ in_execve:}\DecValTok{1}\NormalTok{;}\CommentTok{/* Tell the LSMs that the process is doing an * execve */}
-    % \DataTypeTok{unsigned}\NormalTok{ in_iowait:}\DecValTok{1}\NormalTok{;}
-    %\CommentTok{/* Revert to default priority/policy when forking */}
-    % \DataTypeTok{unsigned}\NormalTok{ sched_reset_on_fork:}\DecValTok{1}\NormalTok{;}
-    % \DataTypeTok{unsigned}\NormalTok{ sched_contributes_to_load:}\DecValTok{1}\NormalTok{;}
-    %\PreprocessorTok{\#ifdef CONFIG_GENERIC_HARDIRQS}
-    %\CommentTok{/* IRQ handler threads */}
-    % \DataTypeTok{unsigned}\NormalTok{ irq_thread;}
-    %\PreprocessorTok{\#endif}
-    % \DataTypeTok{pid_t}\NormalTok{ pid;}
-    % \DataTypeTok{pid_t}\NormalTok{ tgid;}
-    %\PreprocessorTok{\#ifdef CONFIG_CC_STACKPROTECTOR}
-    %\CommentTok{/* Canary value for the {-}fstack{-}protector gcc feature */}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ stack_canary;}
-    %\PreprocessorTok{\#endif}
-    %\CommentTok{// Relatives}
-    % \KeywordTok{struct}\NormalTok{ task_struct __rcu *real_parent; }\CommentTok{/* real parent process */}
-    % \KeywordTok{struct}\NormalTok{ task_struct __rcu *parent; }\CommentTok{/* recipient of SIGCHLD, wait4() reports */}
-    %\CommentTok{/* children/sibling forms the list of my natural children */}
-    % \KeywordTok{struct}\NormalTok{ list_head children; }\CommentTok{/* list of my children */}
-    % \KeywordTok{struct}\NormalTok{ list_head sibling; }\CommentTok{/* linkage in my parent\textquotesingle{}s children list */}
-    % \KeywordTok{struct}\NormalTok{ task_struct *group_leader; }\CommentTok{/* threadgroup leader */}
-    % \KeywordTok{struct}\NormalTok{ list_head ptraced;}
-    % \KeywordTok{struct}\NormalTok{ list_head ptrace_entry;}
-    %\CommentTok{/* PID/PID hash table linkage. */}
-    % \KeywordTok{struct}\NormalTok{ pid_link pids[PIDTYPE_MAX];}
-    % \KeywordTok{struct}\NormalTok{ list_head thread_group;}
-    % \KeywordTok{struct}\NormalTok{ completion *vfork_done; }\CommentTok{/* for vfork() */}
-    % \DataTypeTok{int}\NormalTok{ __user *set_child_tid;}
-    %\NormalTok{...}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ timer_slack_ns;}
-    % \DataTypeTok{unsigned} \DataTypeTok{long}\NormalTok{ default_timer_slack_ns;}
-    % \KeywordTok{struct}\NormalTok{ list_head *scm_work_list;}
-    %\PreprocessorTok{\#ifdef CONFIG_FUNCTION_GRAPH_TRACER}
-    %\CommentTok{/* Index of current stored address in ret_stack */}
-    % \DataTypeTok{int}\NormalTok{ curr_ret_stack;}
-    %\CommentTok{/* Stack of return addresses for return function tracing */}
-    % \KeywordTok{struct}\NormalTok{ ftrace_ret_stack *ret_stack;}
-    %\CommentTok{/* time stamp for last schedule */}
-    % \DataTypeTok{unsigned} \DataTypeTok{long} \DataTypeTok{long}\NormalTok{ ftrace_timestamp;}
-    %\NormalTok{...}
-    %\end{Highlighting}
-    %\end{Shaded}
-
 
     \subsubsection{Hintergrundspeicherauslastung}
-
-    Einflussfaktoren des Betriebssystems:
-
+    Einflussfaktoren des Betriebssystems
     \begin{itemize*}
-        \item
-        statische Größe des Kernel-Images, welches beim Bootstrapping gelesen
-        wird
-        \item
-        statische Größe von Programm-Images (Standards wie ELF)
-        \item
-        statisches vs. dynamisches Einbinden von Bibliotheken: Größe von
-        Programmdateien
-        \item
-        VMM: Größe des Auslagerungsbereichs (inkl. Teilen der Seitentabelle!)
-        für Anwendungen
-        \item
-        Modularisierung (zur Kompilierzeit) des Kernels: gezielte Anpassung an
-        Einsatzdomäne möglich
-        \item
-        Adaptivität (zur Kompilier-und Laufzeit) des Kernels: gezielte
-        Anpassung an sich ändernde Umgebungsbedingungen möglich
-        ( $\rightarrow$ Cassini-Huygens-Mission)
+        \item statische Größe des Kernel-Images, beim Bootstrapping gelesen
+        \item statische Größe von Programm-Images (Standards wie ELF)
+        \item statisches vs. dynamisches Einbinden von Bibliotheken
+        \item VMM: Größe des Auslagerungsbereichs (inkl. Teilen der Seitentabelle) für Anwendungen
+        \item Modularisierung (zur Kompilierzeit) des Kernels: gezielte Anpassung an Einsatzdomäne möglich
+        \item Adaptivität (zur Kompilier-und Laufzeit) des Kernels: gezielte Anpassung an sich ändernde Umgebungsbedingungen möglich
     \end{itemize*}
-
 
     \subsection{Architekturentscheidungen}
-
     \begin{itemize*}
-        \item
-        bisher betrachtete Mechanismen: allgemein für alle BS gültig
-        \item
-        ... typische Einsatzgebiete sparsamer BS: eingebettete Systeme
-        \item
-        eingebettetes System: (nach [Manl94] )
+        \item typische Einsatzgebiete sparsamer BS: eingebettete Systeme
+        \item eingebettetes System
         \begin{itemize*}
-            \item Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient,physisch eingebunden ist.
-            \item Wesentlicher Bestandteil dieses größeren Systems hinsichtlich seiner Entwicklung, technischer Ausstattung sowie seines Betriebs.
-            \item Liefert Ausgaben in Form von (menschenlesbaren)Informationen, (maschinenlesbaren)Daten zur Weiterverarbeitung und Steuersignalen.
+            \item Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient, physisch eingebunden ist
+            \item Wesentlicher Bestandteil dieses größeren Systems
+            \item Liefert Ausgaben in Form von Informationen/Daten
         \end{itemize*}
-        \item
-        BS für eingebettete Systeme: spezielle, anwendungsspezifische
-        Ausprägung der Aufgaben eines ,,klassischen'' Universal-BS
+        \item spezielle, anwendungsspezifische Ausprägung der Aufgaben
         \begin{itemize*}
-            \item reduzierter Umfang von HW-Abstraktion, generell: hardwarenähere Ablaufumgebung
-            \item begrenzte (extrem: gar keine) Notwendigkeit von HW-Multiplexing \& -Schutz
+            \item reduzierter Umfang von HW-Abstraktion, hardwarenähere Ablaufumgebung
+            \item begrenzte Notwendigkeit von HW-Multiplexing \& Schutz
         \end{itemize*}
-        \item
-        daher eng verwandte NFE: Adaptivitätvon sparsamen BS
-        \item
-        sparsame Betriebssysteme:
+        \item eng verwandte NFE: Adaptivität von sparsamen BS
+        \item sparsame Betriebssysteme:
         \begin{itemize*}
-            \item energieeffizient \textasciitilde{} geringe Architekturanforderungen an energieintensive Hardware (besonders CPU, MMU, Netzwerk)
-            \item speichereffizient \textasciitilde{} Auskommen mit kleinen Datenstrukturen (memory footprint)
+            \item energieeffizient: geringe Architekturanforderungen an energieintensive Hardware
+            \item speichereffizient: Auskommen mit kleinen Datenstrukturen
         \end{itemize*}
-        \item
-        Konsequenz: geringe logische Komplexität des Betriebssystemkerns
-        \item
-        sekundär: Adaptivität des Betriebssystemkerns
+        \item Konsequenz: geringe logische Komplexität des Betriebssystemkerns
+        \item sekundär: Adaptivität des Betriebssystemkerns
     \end{itemize*}
 
-
-    \subsubsection{Makrokernel (monolithischer
-        Kernel)}
-
+    \subsubsection{Makrokernel (monolithischer Kernel)}
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernel.png}
-
     \begin{itemize*}
-        \item
-        User Space:
+        \item User Space:
         \begin{itemize*}
             \item Anwendungstasks
-            \item CPU im unprivilegiertenModus (Unix ,,Ringe'' 1...3)
-            \item Isolation von Tasks durch Programmiermodell(z.B. Namespaces) oder VMM(private vAR)
+            \item CPU im unprivilegierten Modus (Unix ,,Ringe'' 1...3)
+            \item Isolation von Tasks durch Programmiermodell/VMM
         \end{itemize*}
-        \item
-        Kernel Space:
+        \item Kernel Space:
         \begin{itemize*}
-            \item Kernelund Gerätecontroller (Treiber)
+            \item Kernel und Gerätecontroller (Treiber)
             \item CPU im privilegierten Modus (Unix ,,Ring'' 0)
-            \item keine Isolation (VMM: Kernel wird in alle vAR eingeblendet)
+            \item keine Isolation
+        \end{itemize*}
+        \item Vergleich
+        \begin{itemize*}
+            \item[\cmark] vglw. geringe Kosten von Kernelcode (Energie, Speicher)
+            \item[\cmark] VMM nicht zwingend erforderlich
+            \item[\cmark] Multitasking nicht zwingend erforderlich
+            \item[\xmark] Kernel (inkl. Treibern) jederzeit im Speicher
+            \item[\xmark] Robustheit, Sicherheit, Adaptivität
         \end{itemize*}
     \end{itemize*}
 
-
     \subsubsection{Mikrokernel}
-
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mikrokernel.png}
-
     \begin{itemize*}
-        \item
-        User Space:
+        \item User Space:
         \begin{itemize*}
-            \item Anwendungstasks, Kernel-und Treiber tasks ( Serverprozesse, grau)
-            \item CPU im unprivilegiertenModus
+            \item Anwendungstasks, Kernel- und Treibertasks
+            \item CPU im unprivilegierten Modus
             \item Isolation von Tasks durch VMM
         \end{itemize*}
-        \item
-        Kernel Space:
+        \item Kernel Space:
         \begin{itemize*}
-            \item funktional minimaler Kernel($\mu$Kernel)
+            \item funktional minimaler Kernel ($\mu$Kernel)
             \item CPU im privilegierten Modus
             \item keine Isolation (Kernel wird in alle vAR eingeblendet)
         \end{itemize*}
-    \end{itemize*}
-
-
-    \subsubsection{Architekturkonzepte im
-        Vergleich}
-
-    \begin{itemize*}
-        \item
-        Makrokernel:
+        \item Vergleich
         \begin{itemize*}
-            \item \cmark vglw. geringe Kosten von Kernelcode (Energie, Speicher)
-            \item \cmark VMM nicht zwingend erforderlich
-            \item \cmark Multitasking ( $\rightarrow$ Prozessmanagement!)nicht zwingend erforderlich
-            \item \xmark Kernel (inkl. Treibern) jederzeit im Speicher
-            \item \xmark Robustheit, Sicherheit, Adaptivität
-        \end{itemize*}
-        \item
-        Mikrokernel:
-        \begin{itemize*}
-            \item \cmark Robustheit, Sicherheit, Adaptivität
-            \item \cmark Kernelspeicherbedarf gering, Serverprozesse nur wenn benötigt ( $\rightarrow$ Adaptivität)
-            \item \xmark hohe IPC-Kosten von Serverprozessen
-            \item \xmark Kontextwechselkosten von Serverprozessen
-            \item \xmark VMM, Multitasking i.d.R. erforderlich
+            \item[\cmark] Robustheit, Sicherheit, Adaptivität
+            \item[\cmark] Kernelspeicherbedarf gering, Serverprozesse nur wenn benötigt ( $\rightarrow$ Adaptivität)
+            \item[\xmark] hohe IPC-Kosten von Serverprozessen
+            \item[\xmark] Kontextwechselkosten von Serverprozessen
+            \item[\xmark] VMM, Multitasking i.d.R. erforderlich
         \end{itemize*}
     \end{itemize*}
 
-
-    \subsection{Beispiel-Betriebssysteme}
-
-
-    \subsubsection{TinyOS}
-
+    \subsubsection{BS: TinyOS}
     \begin{itemize*}
         \item Beispiel für sparsame BS im Bereich eingebetteter Systeme
         \item verbreitete Anwendung: verteilte Sensornetze (WSN)
         \item ,,TinyOS'' ist ein quelloffenes, BSD-lizenziertes Betriebssystem
-        \item das für drahtlose Geräte mit geringem Stromverbrauch, wie sie in
+        \item für drahtlose Geräte mit geringem Stromverbrauch
+        \item Architektur
         \begin{itemize*}
-            \item Sensornetzwerke, ( $\rightarrow$ Smart Dust)
-            \item Allgegenwärtiges Computing,
-            \item Personal Area Networks,
-            \item intelligente Gebäude,
-            \item und intelligente Zähler.
+            \item monolithisch (Makrokernel) mit Besonderheiten:
+            \item keine klare Trennung zwischen der Implementierung von Anwendungen und BS (aber von funktionalen Aufgaben)
+            \item[$\rightarrow$] zur Laufzeit: 1 Anwendung + Kernel
         \end{itemize*}
-        \item
-        Architektur:
-        \begin{itemize*}
-            \item grundsätzlich: monolithisch (Makrokernel) mit Besonderheiten:
-            \item keine klare Trennung zwischen der Implementierung von Anwendungen und BS (wohl aber von deren funktionalen Aufgaben!)
-            \item $\rightarrow$ zur Laufzeit: 1 Anwendung + Kernel
-        \end{itemize*}
-        \item
-        Mechanismen:
+        \item Mechanismen:
         \begin{itemize*}
             \item kein Multithreading, keine echte Parallelität
-            \item $\rightarrow$ keine Synchronisation zwischen Tasks
-            \item $\rightarrow$ keine Kontextwechsel bei Taskwechsel
+            \item[$\rightarrow$] keine Synchronisation zwischen Tasks
+            \item[$\rightarrow$] keine Kontextwechsel bei Taskwechsel
             \item Multitasking realisiert durch Programmiermodell
             \item nicht-präemptives FIFO-Scheduling
             \item kein Paging $\rightarrow$ keine Seitentabellen, keine MMU
         \end{itemize*}
-        \item
-        in Zahlen:
+        \item in Zahlen:
         \begin{itemize*}
             \item Kernelgröße: 400 Byte
-            \item Kernelimagegröße: 1 - 4 kByte
-            \item Anwendungsgröße: typisch ca. 15 kB, Datenbankanwendung: 64 kB
+            \item Kernelimagegröße: 1-4 kByte
+            \item Anwendungsgröße: typisch ca. 15 kB, DB: 64 kB
         \end{itemize*}
-        \item
-        Programmiermodell:
+        \item Programmiermodell:
         \begin{itemize*}
-            \item BS und Anwendung werden als Ganzes übersetzt: statische Optimierungen durch Compilermöglich (Laufzeit, Speicherbedarf)
-            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel \begin{itemize*} \item $\rightarrow$ command: API-Aufruf, z.B. EA-Operation (vglb. Systemaufruf) \item $\rightarrow$ event: Reaktion auf diesen durch Anwendung \end{itemize*}
+            \item BS+Anwendung als Ganzes übersetzt: statische Optimierungen durch Compiler (Laufzeit, Speicherbedarf)
+            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel 
+            \begin{itemize*} 
+                \item command: API-Aufruf, z.B. EA-Operation
+                \item event: Reaktion auf diesen durch Anwendung 
+            \end{itemize*}
             \item sowohl commands als auch events : asynchron
         \end{itemize*}
     \end{itemize*}
-    Beispieldeklaration:
-
-    %\begin{Shaded}
-    %\begin{Highlighting}[]
-    %\NormalTok{interface Timer \{}
-    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ start(}\DataTypeTok{char}\NormalTok{ type, }\DataTypeTok{uint32_t}\NormalTok{ interval);}
-    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ stop();}
-    %\NormalTok{ event }\DataTypeTok{result_t}\NormalTok{ fired();}
-    %%\NormalTok{\}}
-    %\NormalTok{interface SendMsg \{}
-    %\NormalTok{ command }\DataTypeTok{result_t}\NormalTok{ send(}\DataTypeTok{uint16_t}\NormalTok{ address, }\DataTypeTok{uint8_t}\NormalTok{ length, TOS_MsgPtr msg);}
-    %\NormalTok{ event }\DataTypeTok{result_t}\NormalTok{ sendDone(TOS_MsgPtr msg, }\DataTypeTok{result_t}\NormalTok{ success);}
-    %\NormalTok{\}}
-    %\end{Highlighting}
-    %\end{Shaded}
-    %\end{itemize*}
-
-
-    \subsubsection{RIOT}
-
-    [RIOT-Homepage: http://www.riot-os.org]
-
+    
+    \subsubsection{BS: RIOT}
     \begin{itemize*}
-        \item
-        ebenfalls sparsames BS,optimiert für anspruchsvollere Anwendungen
-        (breiteres Spektrum)
-        \item
-        ,,RIOT ist ein Open-Source-Mikrokernel-basiertes Betriebssystem, das
-        speziell für die Anforderungen von Internet-of-Things-Geräten (IoT)
-        und anderen eingebetteten Geräten entwickelt wurde.''
-        \begin{itemize*}
-            \item Smartdevices,
-            \item intelligentes Zuhause, intelligente Zähler,
-            \item eingebettete Unterhaltungssysteme
-            \item persönliche Gesundheitsgeräte,
-            \item intelligentes Fahren,
-            \item Geräte zur Verfolgung und Überwachung der Logistik.
-        \end{itemize*}
-        \item
-        Architektur:
+        \item sparsames BS,optimiert für anspruchsvollere Anwendungen
+        \item Open-Source-Mikrokernel-basiertes Betriebssystem für IoT
+        \item Architektur
         \begin{itemize*}
             \item halbwegs: Mikrokernel
-            \item energiesparendeKernelfunktionalität:
+            \item energiesparende Kernelfunktionalität
             \begin{itemize*}
                 \item minimale Algorithmenkomplexität
                 \item vereinfachtes Threadkonzept $\rightarrow$ keine Kontextsicherung erforderlich
@@ -931,55 +676,21 @@
                 \item energiesparende Hardwarezustände vom Scheduler ausgelöst (inaktive CPU)
             \end{itemize*}
             \item Mikrokerneldesign unterstützt komplementäre NFE: Adaptivität, Erweiterbarkeit
-            \item Kosten: IPC (hier gering!)
+            \item Kosten: IPC (hier gering)
         \end{itemize*}
-        \item
-        Mechanismen:
+        \item Mechanismen:
         \begin{itemize*}
             \item Multithreading-Programmiermodell
             \item modulare Implementierung von Dateisystemen, Scheduler, Netzwerkstack
         \end{itemize*}
-        \item
-        in Zahlen:
+        \item in Zahlen:
         \begin{itemize*}
             \item Kernelgröße: 1,5 kByte
             \item Kernelimagegröße: 5 kByte
         \end{itemize*}
     \end{itemize*}
 
-    Implementierung
-
-    \begin{itemize*}
-        \item
-        ... kann sich jeder mal ansehen (keine spezielle Hardware, beliebige
-        Linux-Distribution, FreeBSD, macOSX mit git ):
-
-        %\begin{Shaded}
-        %\begin{Highlighting}[]
-        %\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone git://github.com/RIOT{-}OS/RIOT.git}
-        %\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ RIOT}
-        %\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ examples/default/}
-        %\NormalTok{$ }\FunctionTok{make}\NormalTok{ all}
-        %\NormalTok{$ }\FunctionTok{make}\NormalTok{ term}
-        %\end{Highlighting}
-        %\end{Shaded}
-        \item
-        startet interaktive Instanz von RIOT als ein Prozess des Host-BS
-        \item
-        Verzeichnis RIOT: Quellenzur Kompilierung des Kernels, mitgelieferte
-        Bibliotheken, Gerätetreiber, Beispielanwendungen; z.B.:
-        \begin{itemize*}
-            \item RIOT/core/include/thread.h: Threadmodell, Threaddeskriptor
-            \item RIOT/core/include/sched.h,
-            \item RIOT/core/sched.c: Implementierung des (einfachen) Schedulers
-        \end{itemize*}
-        \item
-        weitere Infos: riot-os.org/api
-    \end{itemize*}
-
-
-    \section{Robustheit und
-      Verfügbarkeit}
+    \section{Robustheit und Verfügbarkeit}
 
 
     \subsection{Motivation}
@@ -1069,8 +780,7 @@
             \item fehlerhafter Zustand ( error ): notwendige Ursacheeines Ausfalls (nicht jeder error muss zu failure führen)
             \item Fehler ( fault ): Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-fehler.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-fehler.png}
     \end{itemize*}
 
 
@@ -1127,8 +837,7 @@
         Kernel-Subsystems (z.B. error des Dateisystems)
         \item
         $\rightarrow$ Robustheit: Isolationsmechanismen
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-treiber-kernel-fehler.png}
     \end{itemize*}
 
 
@@ -1200,8 +909,7 @@
     \begin{itemize*}
         \item
         Resultat: schwach strukturierter (monolithischer) Makrokernel
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernelarchitektur.png}
         \begin{itemize*}
             \item nach [TaWo05], S. 45
         \end{itemize*}
@@ -1343,8 +1051,7 @@
         Mikrokernel}
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
         \item
         minimale Kernelfunktionalität:
         \item
@@ -1355,8 +1062,7 @@
         neues Problem: minimales Mikrokerneldesign
         \item
         ,,Wir haben 100 Leute gefragt...'': Wie entscheide ich das?
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
         \begin{itemize*}
             \item Ablauf eines Systemaufrufs
             \item schwarz: unprivilegierteInstruktionen
@@ -1450,8 +1156,7 @@
     Mach-Server zur Emulation
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-server.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-server.png}
         \item
         Emulation von UNIX-Systemen mittels Mach-Serverprozessen
     \end{itemize*}
@@ -1489,8 +1194,7 @@
     Architektur
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-architektur.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-architektur.png}
         \item
         Systemaufrufkosten:
         \begin{itemize*}
@@ -1810,8 +1514,7 @@
         nach Tod von J. Liedtke (2001) auf Basis von L4 zahlreiche moderne BS
         \item
         L4 heute: Spezifikation eines Mikrokernels (nicht Implementierung)
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-family.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-family.png}
         \item
         Einige Weiterentwicklungen:
         \item
@@ -1927,8 +1630,7 @@
     Beispiel: Ethernet-Treiberausfall
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
         \item
         schwarz: ausfallfreie Kommunikation
         \item
@@ -1940,8 +1642,7 @@
     Beispiel: Dateisystem-Serverausfall
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
         \item
         schwarz: ausfallfreie Kommunikation
         \item
@@ -1985,8 +1686,7 @@
         \end{itemize*}
         \item
         Betriebssystem-Serverprozesse:
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
         \item
         Dateisystem (FS)
         \item
@@ -2019,8 +1719,7 @@
             \item init: Bootstrapping (Initialisierung von rs und anderer BS-Serverprozesse), Fork der Login-Shell (und damit sämtlicher Anwendungsprozesse)
             \item rs: Fork sämtlicher BS-Serverprozesse, einschließlich Gerätetreiber
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-reincarnation-server.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-reincarnation-server.png}
     \end{itemize*}
 
     MINIX: Ausprobieren
@@ -2071,8 +1770,7 @@
         \item
         Der Anteil an Laufzeit eines Systems, in dem dieses seine
         spezifizierte Leistung erbringt.
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png}
         \item
         Availability= Total Uptime/ Total Lifetime= MTTF / (MTTF + MTTR)
         \begin{itemize*}
@@ -2188,11 +1886,7 @@
     \end{enumerate*}
 
     Eine (unvollständige) Taxonomie:
-
-    \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
-    \end{itemize*}
+    %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
 
 
     \subsection{Sicherheitsziele}
@@ -3115,8 +2809,7 @@
         \end{itemize*}
         \item
         Rechte delegation durch Retypisierung(vgl. Unix-SUID!)
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-selinux-retypisierung.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-selinux-retypisierung.png}
     \end{itemize*}
 
 
@@ -3187,8 +2880,7 @@
         \item
         $\rightarrow$ massiv verringertes
         Missbrauchspotenzial!
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-passwd-lösung2.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-passwd-lösung2.png}
     \end{itemize*}
 
 
@@ -3284,8 +2976,7 @@
         Daten) einer Task: Enclave Page Cache (EPC)
         \item
         Prozessor (und nur dieser) ver-und entschlüsselt EPC-Seiten
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves.png}
         \item
         Enclaves: Erzeugung
         \begin{itemize*}
@@ -3844,8 +3535,7 @@
         Echtzeit-Prozessen}
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
         \item
         $a_i$: Ankunftszeitpunkt (arrival time); auch r ... request
         time/release time
@@ -3872,8 +3562,7 @@
         \begin{itemize*}
             \item Zeitquantum, das Prozessor zur vollständigen Bearbeitung der aktuellen Instanz benötigt (Unterbrechungen nicht eingerechnet)
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
         \item
         $L_i$: Unpünktlichkeit (lateness): $L_i= f_i - d_i$
         \begin{itemize*}
@@ -3885,8 +3574,7 @@
         \begin{itemize*}
             \item Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
         \item
         $X_i$: Spielraum (Laxity, Slacktime): $X_i = d_i - a_i - C_i$
         \begin{itemize*}
@@ -4034,8 +3722,7 @@
             \item Scheduling-Zeitpunkt: nur einmal zu Beginn (bzw. wenn neuer periodischer Prozess auftritt)
             \item präemptiver Algorithmus
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
         \begin{itemize*}
             \item Zuteilung eines Prozessors nach RM
             \item $t_1, t_2$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
@@ -4479,8 +4166,7 @@
         \item
         Resultat: Verbesserung der Antwortzeiten für aperiodische
         Anforderungen
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-slack-stealing.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-slack-stealing.png}
     \end{itemize*}
 
 
@@ -4515,8 +4201,7 @@
         Prioritätsumkehr}
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
         \item
         Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem
         Betriebsmittel
@@ -4531,8 +4216,7 @@
     \begin{itemize*}
         \item
         Kritisch bei zusätzlichen Prozessen mittlerer Priorität
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
         \item
         Lösung: Priority Inheritance Protocol (PIP)
     \end{itemize*}
@@ -4646,8 +4330,7 @@
             \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*} \item obligatorischer Teil (Pflichtteil, $C_{ob}$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis \item optionaler Teil $(C_{opt})$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
             \item Prinzip in unterschiedlicher Weise verfeinerbar
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png}
     \end{itemize*}
 
 
@@ -4851,8 +4534,7 @@
         \item
         Empfänger (nach min. einem geschriebenen Element) niemals durch leeren
         Puffer blockiert
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-1.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-1.png}
     \end{itemize*}
 
     Sonderfall 2: Sender schneller als Empfänger
@@ -4868,8 +4550,7 @@
         \item
         $\rightarrow$ Szenarien, in denen Empfänger sowieso
         nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
     \end{itemize*}
 
     Konkurrierende Zugriffe:
@@ -4883,8 +4564,7 @@
         \item
         schnellerer Sender überspringtein gesperrtes Element durch erneutes
         Inkrementieren von LRW , muss MRW trotzdem nachziehen
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png}
     \end{itemize*}
 
 
@@ -5002,8 +4682,7 @@
             \item Anwendungen: AE-und AF-Steuerung/-Automatik, GUI, Bildbearbeitung, RAW-Konverter, ...
             \item POSIX-kompatible Prozessverwaltung
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dryos.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dryos.png}
     \end{itemize*}
 
     DROPS (Dresden Real-Time Operating System)
@@ -5013,8 +4692,7 @@
         Entwickler: TU Dresden, Lehrstuhl Betriebssysteme
         \item
         Eckdaten: Multi-Server-Architektur auf Basis eines L4-Mikrokerns
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
     \end{itemize*}
 
 
@@ -5331,8 +5009,7 @@
             \item Aegis: Proof-of-Concept
             \item XOK: Proof-of-Feasibility (Performanz)
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exos.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exos.png}
     \end{itemize*}
 
     Zwischenfazit: Exokernelarchitektur
@@ -5421,8 +5098,7 @@
     \subsubsection{Typ-1 - Hypervisor}
 
     \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png}
         \item
         Idee des Typ- 1 - Hypervisors:
         \begin{itemize*}
@@ -5501,10 +5177,7 @@
         Instruktionen auf (z.B. EA-Code)
     \end{enumerate*}
 
-    \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png}
-    \end{itemize*}
+    % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png}
 
     Privilegierte Instruktionen mit Typ- 1 - Hypervisor(1)
 
@@ -5531,10 +5204,8 @@
         aus
     \end{enumerate*}
 
-    \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png}
-    \end{itemize*}
+    % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png}
+
 
     Sensible und privilegierte Instruktionen: Beobachtungen an verschiedenen
     Maschinenbefehlssätzen: [Popek\&Goldberg74]
@@ -5586,10 +5257,8 @@
 
     Vergleich: Privilegierte vs. sensible Instruktionen
 
-    \begin{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png}
-    \end{itemize*}
+    % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png}
+
 
     Folgen für Virtualisierung
 
@@ -6009,16 +5678,13 @@
         \item
         durch Laden der Treiber: entsteht ,,Virtualisierungsschicht''
         (VMware-Sprechweise)
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-bare-metal.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-bare-metal.png}
         \begin{itemize*}
             \item Typ1- Hypervisor- Architektur
             \item Anwendung nur bei VMware ESXi
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png}
         \begin{itemize*}
             \item Entsprechende Produkte in Vorbereitung
         \end{itemize*}
@@ -6141,8 +5807,7 @@
             \item Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
             \item Realisierung als sog. vertikal strukturiertes Betriebssystem: \begin{itemize*} \item weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip) \item Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen (neu) \end{itemize*}
         \end{enumerate*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
     \end{itemize*}
 
     MirageOS + Xen
@@ -6213,8 +5878,7 @@
             \item cgroups: Accounting/Beschränkung der Ressourcenzuordnung
             \item union mounting: Funktion zur logischen Reorganisation hierarchischer Dateisysteme
         \end{itemize*}
-        \item
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
     \end{itemize*}
 
 

@@ -1317,9 +1317,9 @@
     \item konstante Gruppenlaufzeit - lineare Phase, on-line-fähig: $\phi(\omega)=-\omega\tau$
     \item definierter Phasenverlauf - Allpass
     \item In echtzeitfähiger Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe Filterlänge unabhängig von Frequenz%. Dies wird deutlich, wenn man sich die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang linear ist und es zu keinen Formverzerrungen kommt.
-  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-4.png}
-  %  \item Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
-  %  \item Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
+    % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-4.png}
+    %  \item Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
+    %  \item Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
     \item Gruppenlaufzeit: $\tau(\omega)=L\emph{T\_A=31}T\_A$
     \item Phasenfrequenzband: $\phi(\omega)=-2\pi*LT\_A$
   \end{itemize*}
@@ -1351,36 +1351,35 @@
   \begin{center}
     \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiger-super-harvard.png}
   \end{center}
-    \begin{itemize*}
+  \begin{itemize*}
     %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-von-neumann.png}
     %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-harvard.png}
-   %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-super-harvard.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-super-harvard.png}
     %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ad-tigersharcs.png}
-      \item Konventionelle CPU auf von Neumann-Architektur
-      \item ein Speicher hardwaremäßig vorteilhaft; Überschreibungsprobleme
-      \item Harvard-Architektur löst Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem erfolgen Zugriffe parallel $\rightarrow$ Geschwindigkeit enorm gesteigert
-      \item Algorithmen der DSV häufig identisch $\rightarrow$ Abfolge der Instruktionen gut vorhergesagt $\rightarrow$ mehrere vorab im instruction cache der CPU befinden, dekodiert und in pipeline vorbereitet 
-      \item über I/O-Controller direkt vom Speicher Daten mit Außwenwelt organisieren %Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern 
-      \item Tiger-Sharc-Architektur lagert Daten in zwei Speichern. Vorteil parallelen Zugriffs auf Instruktionen und zwei Datenblöcke $\rightarrow$ Rechengeschwindigkeit steigt enorm
-      %\item typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
-    \end{itemize*}
+    \item Konventionelle CPU auf von Neumann-Architektur
+    \item ein Speicher hardwaremäßig vorteilhaft; Überschreibungsprobleme
+    \item Harvard-Architektur löst Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem erfolgen Zugriffe parallel $\rightarrow$ Geschwindigkeit enorm gesteigert
+    \item Algorithmen der DSV häufig identisch $\rightarrow$ Abfolge der Instruktionen gut vorhergesagt $\rightarrow$ mehrere vorab im instruction cache der CPU befinden, dekodiert und in pipeline vorbereitet
+    \item über I/O-Controller direkt vom Speicher Daten mit Außwenwelt organisieren %Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern 
+    \item Tiger-Sharc-Architektur lagert Daten in zwei Speichern. Vorteil parallelen Zugriffs auf Instruktionen und zwei Datenblöcke $\rightarrow$ Rechengeschwindigkeit steigt enorm
+    %\item typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
+  \end{itemize*}
 
   \subsection{Adaptive Filter}\label{adaptive-filter}
-
+  \begin{center}
+    \includegraphics[width=.45\linewidth]{Assets/Biosignalverarbeitung-adaptiv-fir.png}
+  \end{center}
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiv-fir.png}
-    \begin{itemize*}
-      \item FIR-Filterlänge = $2L+1$
-      \item Filterausgang: $y(n)=w(-L)x(n-L)+...+ w(L)x(n+L)= \overline{x}^T \overline{w}$
-      \item Modellfunktion, Sollsignal, desired response: $d(n)$
-      \item Fehlersignal, error: $e(n)=d(n)-y(n)$
-    \end{itemize*}
-    \item Das adaptive Filter ist ein Rückgekoppeltes System mit negativer Rückkopplung, so dass -ähnlich wie bei Regelkreisen -auch Stabilitätsbedingungen eingehalten werden müssen.
-    \item Die einfachste Variante eines adaptiven Filters (AF) ist ein FIR mit der Länge $2L+1$, das man mathematisch mit einem Vektor w beschreiben kann. Grundsätzlich kann der Eingangsvektor x physisch ein Spaltenvektor sein, dann entsprechend die Filterkoeffizienten der Wichtung von Signalen in parallel liegenden Kanälen, üblich in der spatialen Signalverarbeitung, kommt im nächsten Kapitel. Oder x ist ein Zeilenvektor, d.h. er wird als Analysefenster temporal über ein Signal geschoben, ist also ein Filter im üblichen Sinne der temporalen Filterung. Die physikalische Anordnung ist jedoch für die Herleitung an dieser Stelle irrelevant, im weiteren gehen wir wegen der einheitlichen Schreibweise von einem Spaltenvektor aus, wie üblich in der Signalverarbeitung.
-    \item Der Ausgang entspricht der Faltung des Filtervektors mit dem Eingangssignal im Punkt n, jeweils L samples nach links und rechts bzw. nach oben und unten.
-    \item $d(n)$ ist die desired response, regelungstechnisch das Sollsignal oder analytisch das Modell.
-    \item Aus der Differenz von $d(n)$ und $y(n)$ wird das Errorsignal gebildet, das von einem Adaptionsalgorithmus ausgewertet wird und die Filterkoeffizienten dann von dem Algorithmus so verändert, dass der Fehler gegen Null konvergiert.
-    \item Errorsignal (Zeitindex weggelassen, daher auch spatial gültig): $e=d-y=d-\overline{x}^T \overline{w}$
+    \item FIR-Filterlänge = $2L+1$
+    \item Filterausgang: $y(n)=w(-L)x(n-L)+...+ w(L)x(n+L)= \overline{x}^T \overline{w}$
+    \item Modellfunktion, Sollsignal, desired response: $d(n)$
+    \item Fehlersignal F, error: $e(n)=d(n)-y(n)$
+    \item adaptive Filter ist Rückgekoppeltes System mit negativer Rückkopplung, so dass Stabilitätsbedingungen eingehalten werden
+    \item einfachste Variante: FIR mit Länge $2L+1$% Grundsätzlich kann der Eingangsvektor x physisch ein Spaltenvektor sein, dann entsprechend die Filterkoeffizienten der Wichtung von Signalen in parallel liegenden Kanälen, üblich in der spatialen Signalverarbeitung, kommt im nächsten Kapitel. Oder x ist ein Zeilenvektor, d.h. er wird als Analysefenster temporal über ein Signal geschoben, ist also ein Filter im üblichen Sinne der temporalen Filterung. Die physikalische Anordnung ist jedoch für die Herleitung an dieser Stelle irrelevant, im weiteren gehen wir wegen der einheitlichen Schreibweise von einem Spaltenvektor aus, wie üblich in der Signalverarbeitung.
+    \item Ausgang entspricht Faltung des Filtervektors mit Eingangssignal im Punkt n, jeweils L samples nach links und rechts bzw. nach oben und unten
+    \item $d(n)$ ist regelungstechnisch Sollsignal oder analytisch Modell
+    \item aus Differenz von $d(n)$ und $y(n)$ wird Errorsignal gebildet, das von Adaptionsalgorithmus ausgewertet und Filterkoeffizienten vom Algorithmus so verändert, dass Fehler gegen Null konvergiert
+    \item Errorsignal (spatial gültig): $e=d-y=d-\overline{x}^T \overline{w}$
     \item Quadrat des Errorsignals: $e^2=d^2-2d\overline{x}^T\overline{w}+\overline{w}^T\overline{x}\overline{x}^T\overline{w}$
     \item Erwartungswert: $F=E\{e^2\}=E\{d^2\}-2E\{d\overline{x}^T\overline{w}\}+E\{\overline{w}^T\overline{x}\overline{x}^T\overline{w}\}$
     \item Wiener Filter: $E\{d\overline{x}\}=\overline{w}E\{\overline{x}\overline{x}^T\}$
@@ -1388,15 +1387,15 @@
       \item $\overline{w}=R^{-1}*p$, R = Autokovarianzmatrix, p = Kreuzkovarianzvektor
       \item $W=\frac{p_{xd}}{p_{xx}}$, $p_{xd}=$ Kreuzleistungsdichte, $p_{xx}=$ Autoleistungsdichte
     \end{itemize*}
-    \item Das Errorsignal ist ein Skalar, ergibt sich aus der Differenz der desired response (auf der Position n) und dem Skalarprodukt des Eingangsvektors mit den Filtervektor (Filterkoeffizienten)
-    \item Man geht hier vom stationären Fall der Signalstatistik aus, so dass primär nicht der Momentanwert des Errors Null sein soll, sondern seine Energie bzw. Leistung. Dazu wird der Error zunächst quadriert (zweite Potenz ist Maß für Energie bzw. Leistung).
-    \item Der Erwartungswert des Fehlers F (praktisch der quadratische Mittelwert) soll minimal werden, dann entspricht der Filterausgang der Modellfunktion.
-    \item Man bildet die erste Ableitung des Fehlers F nach den Filterkoeffizienten (w für weights) und setzt diese gleich Null. Die Lösung dieser Gleichung ergibt das Wiener-oder Optimalfilter.
-    \item Das Wienerfilter kann im Originalbereich mit Hilfe von Auto-und Kreuzkovarianzen beschrieben werden,
-    \item oder im Spektralbereich mit Auto-und Kreuzleistungsdichte (siehe Regelungstechnik und Modellbildung)
-    \item Schätzung des Erwartungswertes des Fehlerquadrats: $E\{e^2\}\approx \frac{1}{M}\sum_{i=1}^M e_i^2$
-    \item Schätzung des Erwartungswertes der Autokorrelationsmatrix: $R=E\{x*x^T\}\approx\begin{pmatrix} x(0)x(0) &...& x(0)x(M-1)\\ ...\\ x(M-1)x(0)& ...& x(M-1)x(M-1)\end{pmatrix}$
-    \item Schätzung des Erwartungswertes des Kreuzkorrelationsvektors: $p=E\{dx\}\approx dx$
+    \item Errorsignal ist Skalar aus Differenz $d(n)$ und Skalarprodukt des Eingangsvektors mit Filtervektor (Filterkoeffizienten)
+    \item stationärer Fall der Signalstatistik$\rightarrow$ primär nicht Momentanwert des Errors Null, sondern seine Energie/Leistung. Dazu wird Error quadriert% (zweite Potenz ist Maß für Energie bzw. Leistung).
+    \item Erwartungswert des Fehlers ($\sim$quadratische Mittelwert) soll minimal werden, dann entspricht der Filterausgang der Modellfunktion
+    \item Wiener/Optimalfilter: erste Ableitung des Fehlers nach Filterkoeffizienten und setzt diese gleich Null
+    \item Wienerfilter im Originalbereich mit Hilfe von Auto-und Kreuzkovarianzen beschrieben
+    \item oder im Spektralbereich mit Auto-und Kreuzleistungsdichte
+    \item Schätzung des Fehlerquadrats: $E\{e^2\}\approx \frac{1}{M}\sum_{i=1}^M e_i^2$
+    \item Schätzung der Autokorrelationsmatrix: $R=E\{x*x^T\}\approx\begin{pmatrix} x(0)x(0) &...& x(0)x(M-1)\\ ...\\ x(M-1)x(0)& ...& x(M-1)x(M-1)\end{pmatrix}$
+    \item Schätzung des Kreuzkorrelationsvektors: $p=E\{dx\}\approx dx$
     \item kontinuierliche Zeit
     \begin{itemize*}
       \item Kreuzkorrelationsfunktion: $r_{xd}(\tau)=lim_{T\rightarrow\infty}\frac{1}{2T}\int_{-T}^T x(\tau)d(t+\tau)dt$
@@ -1414,154 +1413,106 @@
   \end{itemize*}
 
   Proleme bei der Realisierung des optimalen Filters
-
   \begin{itemize*}
     \item Inverse Autokovarianzmatrix - rechentechnisches Problem
-    \item Leistungsspektrum berechenbar, aber nur im stationären Fall
-    \item Warum ein unbekanntes Signal filtern, wenn das gesuchte als Sollsignal bekannt ist
-    \begin{itemize*}
-      \item Wiener Filter existiert nur theoretisch
-      \item Das Wienerfilter zu realisieren ist in der Praxis sehr schwierig. Die Berechnung der inversen Autokovarianzmatrix stößt schon bei niedrigen Rangordnungen (etwa N=10) auf ihre Grenzen.
-      \item Das Leistungsspektrum gilt nur für den stationären Fall, den wir bei Biosignalen auch nicht nur annähernd haben.
-      \item Schließlich stellt sich die pragmatische Frage: Wenn wir genau wissen, wonach wir suchen -den das muss für die Modellfunktion bekannt sein -warum sollten wird danach dann noch suchen?
-      \item Dennoch hat das Wienerfilter für die Filtertheorie grundlegende Bedeutung und kann in modifizierten Varianten auch umgesetzt werden.
-    \end{itemize*}
+    \item Leistungsspektrum berechenbar aber nur im stationären Fall
+    \item Warum unbekanntes Signal filtern, wenn gesuchte als Sollsignal bekannt
+    \item Wiener Filter existiert nur theoretisch
+    \item Wienerfilter realisieren in Praxis sehr schwierig. (inversen Autokovarianzmatrix)% stößt schon bei niedrigen Rangordnungen (etwa N=10) auf ihre Grenzen.
+    \item Leistungsspektrum gilt nur für stationären Fall, bei Biosignalen nicht annähernd
+    \item Wienerfilter für Filtertheorie grundlegende Bedeutung und kann in modifizierten Varianten umgesetzt werden
   \end{itemize*}
 
   Stochastischer Prozess: Ensemble, Sequenz von Zufallsvariablen
-
   \begin{itemize*}
     \item $X=\{X(n-m),...,X(n),....,X(n+m)\}$
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-stochastik.png}
-    \item Starke Stationarität: die Verteilungen der Zufallsvariablen sind identisch
-    \item Die Annahme der starken Stationarität ist zwar für viele Methoden der Signalstatistik notwendig (i.i.d. = independent identically distributed). Sie kann aber pratkisch nicht erfüllt bzw. geprüft werden.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-stochastik.png}
+    \item Starke Stationarität: Verteilungen der Zufallsvariablen identisch
+    \item Annahme der starken Stationarität für viele Methoden der Signalstatistik notwendig % (i.i.d. = independent identically distributed). Sie 
+    kann aber pratkisch nicht erfüllt/geprüft werden
   \end{itemize*}
 
   Schwache Stationarität
-
   \begin{itemize*}
-    \item $E\{x_t\}=\mu$
-    \item $var(x_t)<\infty$
-    \item $cov(x_{t1}, x_{t2})$
-    \item Da die Annahme der Gleichheit von Verteilungen der Zufallsgrößen real nicht geprüft werden kann, wird sie auch nicht gefordert. Faktisch müssen nur die Momente erster und zweiter Ordnung zeitlich konstant sein.
-    \item Dies wiederum ist für die signalanalytische Praxis oft zu wenig, da Momente dritter und vierter Ordnung nicht gleich sein müssen (Schiefe, Exzess).
+    \item $E\{x_t\}=\mu$, $var(x_t)<\infty$, $cov(x_{t1}, x_{t2})$
+    \item Annahme der Gleichheit von Verteilungen der Zufallsgrößen nicht gefordert
+    \item nur Momente erster und zweiter Ordnung müsen zeitlich konstant sein
+    \item für signalanalytische Praxis oft zu wenig, da Momente dritter und vierter Ordnung nicht gleich sein müssen% (Schiefe, Exzess).
   \end{itemize*}
 
   Praktikable Koeffizientenberechnung - LMS
-
   \begin{itemize*}
-    \item alternativer Weg zum Fehlerminimum - über den Gradienten: $\Delta_j=\frac{\delta F(\bar{w})}{\delta \bar{w}}|_{w=w_j}$
-    \item Schätzung des Gradienten über den aktuellen Wert: $\hat{\Delta}_j=\frac{\delta(e_j^2(\bar{w}))}{\delta \bar{w}}|_{w=w_j} =we_j \frac{\delta e_j}{\delta \bar{w}}|_{w=w_j}=-2e_j \bar{x}_j$
+    \item alternativer Weg zum Fehlerminimum über Gradienten: $\Delta_j=\frac{\delta F(\bar{w})}{\delta \bar{w}}|_{w=w_j}$
+    \item Schätzung des Gradienten über aktuellen Wert: $\hat{\Delta}_j=\frac{\delta(e_j^2(\bar{w}))}{\delta \bar{w}}|_{w=w_j} =we_j \frac{\delta e_j}{\delta \bar{w}}|_{w=w_j}=-2e_j \bar{x}_j$
     \item Rekursionsformel für Filterkoeffizienten $\bar{w}_{j+1}=\bar{w}_j + 2\mu e_j \bar{x}_j$
     \item $\mu$: Adoptionskonstante; $\lambda\_\{max\}$: größter Eigenwert der Autokovarianzmatrix; $\frac{1}{\lambda_{max}}>\mu >0$
-    \item praktisch, Obergrenze gegeben durch Signalenergie: $\frac{1}{\sum_{j=0}^N x^2(j)}>\mu >0$
-    \item Die Fehlerfunktion $F(w)$ ist eine ($2L+1$ -dimensionale) Parabel, deren Minimum der Optimallösung entspricht. Es gibt mehrere Wege, dieses Minimum zu erreichen. An dieser Stelle leiten wir die Optimallösung mit Hilfe des sehr anschaulichen LMS-Algorithmus her (LMS - Least-Mean-Square, Methode der kleinsten Quadrate).
-    \item Da der Weg zum Optimum über die inverse Autokovarianzmatrix und über die Leistungsdichten verbaut ist, nähern wir uns dem Minimum der Parabel mit Hilfe des Gradienten iterativ. Der Gradient ist mathematisch über die partiellen Ableitungen der Parameter definiert. Das stößt in der Praxis -vor allem bei der Online-Analyse -bald an Grenzen, da der Erwartungswert über längere Zeit ermittelt werden müsste.
-    \item Daher schätzt man den Gradienten aus dem aktuellen Fehler, faktisch lässt man also die Mittelwertbildung weg. Das kann man unter der Annahme der Stationarität machen. Der geschätzte Gradient ergibt sich dann allein aus dem Produkt des Fehlers und des Eingangsvektors.
-    \item Nun kann man den Gradienten dazu nutzen, mit hinreichend kleinen, durch die Adaptionskonstante bestimmten, Schritten auf das Minimum zu konvergieren.
-    \item Die Stabilitätsbedingung ergibt sich aus dem größten Eigenwert der Autokovarianzmatrix. In der Praxis wird die wesentlich einfacher zu berechnende Signalenergie verwendet, die größer ist als der Eigenwert und damit die Stabilität auch hinreichend sicher gewährleistet.
+    \item Obergrenze durch Signalenergie: $\frac{1}{\sum_{j=0}^N x^2(j)}>\mu >0$
+    \item Fehlerfunktion $F(w)$ ist ($2L+1$ -dimensionale) Parabel, deren Minimum der Optimallösung entspricht%. Es gibt mehrere Wege, dieses Minimum zu erreichen. An dieser Stelle leiten wir die Optimallösung mit Hilfe des sehr anschaulichen LMS-Algorithmus her (LMS - Least-Mean-Square, Methode der kleinsten Quadrate).
+    \item Weg zum Optimum über inverse Autokovarianzmatrix und Leistungsdichten verbaut, Näherung des Minimum der Parabel mit Hilfe des Gradienten iterativ%. Der Gradient ist mathematisch über die partiellen Ableitungen der Parameter definiert. Das stößt in der Praxis -vor allem bei der Online-Analyse -bald an Grenzen, da der Erwartungswert über längere Zeit ermittelt werden müsste.
+    \item Gradienten aus aktuellen Fehler schätzen, Mittelwertbildung weglassen, unter Annahme der Stationarität. Geschätzter Gradient aus Produkt des Fehlers und Eingangsvektors
+    \item Gradienten nutzen, durch Adaptionskonstante bestimmten Schritten auf Minimum zu konvergieren
+    \item Stabilitätsbedingung durch größten Eigenwert der Autokovarianzmatrix. In Praxis wird einfachere Signalenergie verwendet%, die größer ist als der Eigenwert und damit die Stabilität auch hinreichend sicher gewährleistet.
   \end{itemize*}
 
-  Reale Aufname: IPG, periodische Störung, Rauschen
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png}
-    \item Ein reales IPG wurde nachträglich mit additiven simulierten Störungen (50 Hz, 75 Hz, Rauschen) stark gestört (Amplitude der Harmonischen $A=1$, Effektivwert des Rauschens 20).
-    \item Eine Modellfunktion liegt daher vor.
-    \item Das gefilterte Signal erreicht relativ schnell die Qualität des Originals.
-    \item Basiert auf der Übung 5.4 des Buches Biosignalverarbeitung/Elektrische Biosignale in der Medizintechnik
-  \end{itemize*}
+  %Reale Aufname: IPG, periodische Störung, Rauschen
+  %\begin{itemize*}
+  %  \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png}
+  %  \item Ein reales IPG wurde nachträglich mit additiven simulierten Störungen (50 Hz, 75 Hz, Rauschen) stark gestört (Amplitude der %Harmonischen $A=1$, Effektivwert des Rauschens 20).
+  %  \item Eine Modellfunktion liegt daher vor.
+  %  \item Das gefilterte Signal erreicht relativ schnell die Qualität des Originals.
+  %  \item Basiert auf der Übung 5.4 des Buches Biosignalverarbeitung/Elektrische Biosignale in der Medizintechnik
+  %\end{itemize*}
 
   Adaptiver Muster-Filter
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-aufbau.png}
-    \item $x(n)$: reales Signal
-    \item $e(n)$: Fehler
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-aufbau.png}
+    \item $x(n)$: reales Signal, $e(n)$: Fehler, $y(n)$: Filterausgang
     \item $d(n)$: ungestörtes Muster (woher?)
-    \item $y(n)$: Filterausgang
     \item Funktion: Im Ausgang $y(n)$ erscheinen diejenigen Signalanteile von $x(n)$, die gut mit $d(n)$ korrelieren
-    \item Im stationären Fall und nach erfolgter Konvergenz kann man davon ausgehen, dass der Filterausgang diejenigen Anteile von $x(n)$ enthält, die mit $d(n)$ gut korrelieren. Das funktioniert natürlich nur, wenn man das Mustersignal ganz genau kennt und vorgeben kann.
-    \item Woher aber sollen wir das Mustersignal nehmen, wenn es ja gestört und verrauscht am Filtereingang vorliegt? Fazit ist, ein solches Filter ist nicht realisierbar bzw. macht keinen Sinn, wenn das Muster vorliegt.
+    \item Im stationären Fall und nach erfolgter Konvergenz$\rightarrow$ Filterausgang enthält die Anteile von $x(n)$, die mit $d(n)$ gut korrelieren (nur wenn Mustersignal bekannt und vorgegeben)
+    \item Fazit: nicht realisierbar/Sinnvoll, wenn Muster vorliegt
   \end{itemize*}
 
   Adaptiver Noise Canceller - ein praktikables adaptives Filter
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-noise-canceller.png}
-    \item $ref$: Rauschreferenz
-    \item $err$: Signal
-    \item $prim$: Signal + Rauschen
-    \item $out$: Rauschen
-    \item In der praktischen Analyse ist es sehr oft so, dass man zwar kein Mustersignal hat, dafür aber eine Rauschreferenz, d.h. genügend Information über das Störsignal ohne Anteile des gewünschten Signals. Die Aufgabe jetzt heißt also, wenn wir schon kein Mustersignal haben, dann können wir versuchen, die Störung zu beseitigen, wenn wir sie kennen. Im Idealfall ist die Störung eliminiert und das gewünschte Signal bleibt übrig.
-    \item Hierzu werden die Filteranschlüsse umfunktioniert: Der Filtereingang wird zur Rauschreferenz, hier wird die vorliegende Störung eingespeist, die allerdings keine Anteile des gewünschten Signals enthalten darf. Dies ist aber bei technischen Störungen bei Biosignalverarbeitung kein wesentliches Problem.
-    \item Der Eingang für Mustersignal wird zum Primäreingang, in den das gestörte aber noch unbekannte Wunschsignal eingespeist wird.
-    \item Entsprechend dem Funktionsprinzip erscheint am Filterausgang der Teil vom Referenzeingang, der gut mit dem Primärsignal korreliert -die Störung, in diesem Beispiel die Netzstörung. Da aber das Primärsignal mit dem Referenzsignal nicht korreliert, muss das gesuchte Signal als Rest -als Errorsignal -übrig bleiben. Demzufolge ist der eigentliche Ausgang eines ANC das ursprüngliche Errorsignal.
-    \item Man kann folgende Überlegung anstellen: Am Filterausgang liegen die Signalanteile vom Filtereingang an, die gut mit dem Primäreingang korrelieren. Das Filter stellt sich relativ langsam auf die Optimallösung ein, denn es geht vom stationären Prozess aus und konvergiert auf das Optimum mit der Adaptionskonstante tau zu. Wenn man nun des gestörte Signal auf den primären Eingang legt und auf den Referenzeingang statt der Rauschreferenz -die nicht immer verfügbar ist -das gleiche, jedoch zeitlich verschobenes Signal, so ändert sich die Lage für die stationäre und gut korrelierende Störung nicht -sie ist in beiden, dem Referenz-und dem Primäreingang enthalten. Demzufolge wird sie auch am Ausgang des Filters -wie mit Rauschreferenz erscheinen. Also wird sich die Störung aus dem Errorsignal wie mit Referenz wegfiltern und übrig bleibt das gewünschte Signal, auch ohne die Notwendigkeit, eine Störungsreferenz bereitstellen zu müssen. Das funktioniert natürlich nur so lange, wie zeitverschobene Anteile des gewünschten Signals miteinander bei der konkreten Zeitverschiebung unkorreliert sind, daher kommt der Wahl des Zeitversatzes entscheidende Bedeutung zu. Allerdings ist es nicht möglich, streng mathematisch oder pauschal eine gute Verschiebung anzugeben. Diese wird -wie auch die Adaptionskonstante -eher nach empirischen Gesichtspunkten (,,nach Gefühl'') eingestellt.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-noise-canceller.png}
+    \item $x(n)$: Rauschreferenz, $e(n)$: Signal, $y(n)$: Rauschen
+    \item $d(n)$: Signal + Rauschen
+    \item kein Mustersignal aber Rauschreferenz vorleigend
+    \item Störung beseitigen, wenn diese bekannt %Im Idealfall ist die Störung eliminiert und das gewünschte Signal bleibt übrig.
+    \item Filteranschlüsse umfunktioniert: Filtereingang wird Rauschreferenz ohne Anteile des gewünschten Signals%, hier wird die vorliegende Störung eingespeist, die allerdings keine Anteile des gewünschten Signals enthalten darf. Dies ist aber bei technischen Störungen bei Biosignalverarbeitung kein wesentliches Problem.
+    %\item Der Eingang für Mustersignal wird zum Primäreingang, in den das gestörte aber noch unbekannte Wunschsignal eingespeist wird.
+    \item am Filterausgang, Störung=Signal das gut mit Primärsignal korreliert %-die Störung, in diesem Beispiel die Netzstörung. Da aber das Primärsignal mit dem Referenzsignal nicht korreliert, muss das gesuchte Signal als Rest -als Errorsignal -übrig bleiben. Demzufolge ist der eigentliche Ausgang eines ANC das ursprüngliche Errorsignal.
+    \item Am Filterausgang liegen die Signalanteile vom Filtereingang an, die gut mit dem Primäreingang korrelieren.
+    \item Filter stellt sich relativ langsam auf Optimallösung ein, da stationärer Prozess und konvergiert auf Optimum mit Adaptionskonstante tau
+    \item Lage für stationäre und korrelierende Störung ändert sich nicht %Wenn man nun des gestörte Signal auf den primären Eingang legt und auf den Referenzeingang statt der Rauschreferenz -die nicht immer verfügbar ist -das gleiche, jedoch zeitlich verschobenes Signal, so ändert sich die Lage für die stationäre und gut korrelierende Störung nicht -sie ist in beiden, dem Referenz-und dem Primäreingang enthalten. Demzufolge wird sie auch am Ausgang des Filters -wie mit Rauschreferenz erscheinen. 
+    \item Störung aus Errorsignal wie mit Referenz wegfiltern und übrig bleibt gewünschtes Signal% auch ohne die Notwendigkeit, eine Störungsreferenz bereitstellen zu müssen. 
+    \item funktioniert nur so lange, wie zeitverschobene Anteile des gewünschten Signals miteinander bei der konkreten Zeitverschiebung unkorreliert sind%, daher kommt der Wahl des Zeitversatzes entscheidende Bedeutung zu. 
+    \item nicht immer möglich gute Verschiebung anzugeben; wird empirisch eingestellt
   \end{itemize*}
 
-  Adaption des ANC vom IPG
-
+  EKG mit MF (Matched Filter)
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptive-filter-match-filter.png}
+  \end{center}
   \begin{itemize*}
-    \item IPG gestört periodisch und stochastisch (50Hz, 75 Hz, Rauschen)
-    \item Startwert für Gewichte $w(50)$ und $w(52)$ mit $L=101$ bei $(0,0)$
-    \item Variabilität höher bei größerer Adaptionskonstante
-    \item Variabilität niedriger bei kleinerer Adaptionskonstante
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-adaption-anc.png}
-    \item Verläufe der Gewichte des Signals
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png}
-    \end{itemize*}
-    \item Zeitverlauf
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-zeitverlauf-anc.png}
-    \end{itemize*}
-  \end{itemize*}
-
-  Beispiel:
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg+netz.png}
-    \item Der ANC enthält nach abgeschlossener Konvergenz die Impulsantwort des optimalen Filters. Im Falle einer Netzstörung ist es also ein sehr schmaler Bandpass bei der Netzfrequenz bzw. die Impulsantwort ist identisch der Harmonischen der Netzfrequenz.
-  \end{itemize*}
-
-  Beispiel
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-abdominal.png}
-    \item $\mu=0,02$, $L=101$
-    \item Der ANC wurde zur Trennung des fötalen EKG (fEKG) vom maternalen mEKG. Zur Gewinnung des fEKG wird das abdominale EKG (aEKG, vom Bauch) benötigt, das mEKG wird konventionell an Extremitäten abgeleitet. Das fEKG (untere Grafik) ist nur schlecht erkennbar und vom mEKG selbst nach zahlreichen empirischen zweidimensionalen Optimierungen der Filterlänge und der Adaptionskonstante noch immer stark gestört. Die Ursache liegt darin, dass beide Signale (Störung und gestörtes Signal) stark instationär sind, die für die Konvergenz zur optimalen Lösung notwendige Bedingung der Stationarität mindestens eines Signalanteils ist hier nicht erfüllt.
-  \end{itemize*}
-
-  EKG mit Matched Filter
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptive-filter-match-filter.png}
-    \item In bestimmten Messsituationen (Ruhe EKG vor Fahrradergometrie) liegt eine Musterfunktion (Template) vor.
+    \item In bestimmten Messsituationen (Ruhe EKG vor Ergometrie) liegt Musterfunktion/Template vor
     \item Für signalanalytische korrekte Detektion/Filterung müssen Signal (EKG) sowie Template (Muster) weißes Spektrum haben
     \item Zum Prewhitening wird LMS mit binärem Gradienten verwendet. Die selben Filterkoeffizienten filtern auch das Template für das MF
     \item Lineare Prädikation: $x_p[k]=a_1x[k-1]+a_2x[k-2]+...+a_nx[k-n]$
     \item Residualfehler ist weiß: $x_{err}[k]=x[k]-x_p[k]$
     \item Robuster LMS mit binärem Gradienten: $w[k+1]=w[k]+\mu*sng(e[k]x[k])$
-  \end{itemize*}
+    %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-roh-weiß.png}
+    \item Da Biosignale relativ tieffrequente Signale sind (10-100 Hz), führt Prewhitening zur relativen Anhebung der hochfrequenten Anteile sowie breitbandigen Rauschens
+    \item Wegen relativer Anhebung hochfrequenter Anteile haben Prewhitener implizit Hochpass-Charakter. Tieffrequenten Anteile (,,langsame Wellen'') nach Prewhitening deutlich reduziert
 
-  \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-roh-weiß.png}
-
-  \begin{itemize*}
-    \item Da Biosignale relativ tieffrequente Signale sind (Energiemaximum zwischen 10 Hz und 100 Hz), führt Prewhitening zur relativen Anhebung der hochfrequenten Anteile (grüne Kurve oben) sowie des breitbandigen Rauschens.
-    \item Wegen der relativen Anhebung hochfrequenten Anteile haben Prewhitener implizit einen Hochpass-Charakter. Dies kann man gut im Vergleich der blauen (Original) und der grünen Kurven erkennen: Die tieffrequenten Anteile (,,langsame Wellen'') sind nach Prewhitening deutlich reduziert.
-  \end{itemize*}
-
-  Template nach QRS
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-qrs.png}
-    \item QRS Template wird aus den letzten 9 detektierten Komplexen berechnet
-    \item das Template wird mit dem adaptiven Filter gefiltert, mit dem das EKG geweißt wurde
-    \item mit dem geweißten Template wird das geweißte EKG gefiltert
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-mtchfit.png}
-    \item Durch das Prewhitening und nach dem MF (matched filter) ist die Signalform des Biosignals zum Teil stark verändert. Daher eignet sich das MF nur zur Detektion von Biosignalkomponenten, nicht aber zur diagnostischen Kurvenvermessung.
-    \item Das MF ist der empfindlichste und sicherste Detektor von bekannten Mustern.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-qrs.png}
+    %\item QRS Template wird aus den letzten 9 detektierten Komplexen berechnet
+    %\item das Template wird mit dem adaptiven Filter gefiltert, mit dem das EKG geweißt wurde
+    %\item mit dem geweißten Template wird das geweißte EKG gefiltert
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-mtchfit.png}
+    \item Durch Prewhitening und nach MF ist Signalform des Biosignals zum Teil stark verändert$\Rightarrow$ MF eignet sich nur zur Detektion von Biosignalkomponenten, nicht zur diagnostischen Kurvenvermessung
+    \item MF ist empfindlichster und sicherster Detektor von bekannten Mustern
   \end{itemize*}
 
 \end{multicols}

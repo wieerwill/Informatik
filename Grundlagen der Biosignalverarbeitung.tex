@@ -1077,10 +1077,10 @@
   \end{itemize*}
 
   Delta-Sigma-Wandlung
-\begin{center}
-  %\includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png}
-  \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandler.png}
-\end{center}
+  \begin{center}
+    %\includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandler.png}
+  \end{center}
   \begin{itemize*}
     \item Ein-Bit-Wandler: Sobald Eingangssignal $x(t)$ aufintegrierte digitale Folge $xD(t)$ über/unterschreitet, wird Bit gesetzt/rückgesetzt
     \item das integrierte Binärsignal folgt Eingangssignal mit höchstens einer Schrittweite als Fehler
@@ -1099,82 +1099,79 @@
     \includegraphics[width=.8\linewidth]{Assets/Biosignalverarbeitung-Parallelwandler.png}
     \columnbreak
 
-     Am anderen Ende der Skala Flash-Converter: sind sehr schnell, arbeiten weit in Videobereich von über 100MHz hinein.
+    Am anderen Ende der Skala Flash-Converter: sind sehr schnell, arbeiten weit in Videobereich von über 100MHz hinein.
 
-     Geht nur auf Kosten der Parallelität $\rightarrow$ für jede Quantisierungsstufe muss Komparator vorhanden sein.
-     
-     Für Bitbreite von 8bit werden 256 Komparatoren benötigt, ist integriert machbar aber Obergrenze.
+    Geht nur auf Kosten der Parallelität $\rightarrow$ für jede Quantisierungsstufe muss Komparator vorhanden sein.
+
+    Für Bitbreite von 8bit werden 256 Komparatoren benötigt, ist integriert machbar aber Obergrenze.
   \end{multicols*}
 
   \subsection{Telemetrie}\label{telemetrie}
   \subsubsection{Analoge Übertragung}\label{analoge-uxfcbertragung}
   \begin{itemize*}
-    \item Direkt: verstärktes Signal auf kurze Entfernung, z.B. von der EEG-Brause zum Hauptverstärker
-    \item Analoge Modulation über Kabel, z.B. EKG über Audiokarte im PC und Internet
-    \item Analoge Modulation kabellos, z.B. Telemetriedaten von mobilen Patientenmonitoren (WLAN, Bluetooth, IR)
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung.png}
-    \item Das Prinzip der AM besteht darin, dass ein harmonischer Träger (Begriff der Nachrichtentechnik, das tragende Signal, die tragende elektromagnetische Welle) vom Modulationssignal so beeinflusst wird, dass seine momentane Amplitude dem Pegel des Modulationssignals entspricht.
+    \item Direkt: verstärktes Signal auf kurze Entfernung
+    \item Analoge Modulation über Kabel, z.B. EKG zu PC-Audiokarte
+    \item Analoge Modulation kabellos, z.B. WLAN, Bluetooth, IR
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung.png}
+    \item Prinzip: harmonischer Träger vom Modulationssignal beeinflusst, so dass momentane Amplitude dem Pegel des Modulationssignals entspricht
     \begin{itemize*}
-      \item Mathematisch und bei tiefen Frequenzen auch elektronisch einfach über Multiplikation des Trägers mit dem Modulationssignal realisierbar. Im HF-Bereich zur Ausstrahlung über Antenne über aufwendige Modulationsschaltungen und Leistungsverstärker.
-      \item Das AM-Signal ist sehr störungsempfindlich, da Störungen direkt auf die Amplitude wirken, außerdem wird es als elektromagnetische Welle von aktuellen Ausbreitungsbedingungen beeinflusst. Für niedrige Ansprüche auf akustische Qualität akzeptabel z.B. Mittelwellen-Rundfunk oder Kurzwellen-Funk. Für Messtechnik als Trägermedium nicht geeignet. AM kann in ersten Stufen eines mehrkanaligen Systems eingesetzt werden (Untermodulatoren), in den keine Störungen von außen auftreten und welche die notwendige Bandbreite sehr sparsam nutzen im Vergleich zur FM
+      \item Mathematisch und bei tiefen Frequenzen einfach über Multiplikation des Trägers mit dem Modulationssignal realisierbar
+      \item im HF-Bereich über aufwendige Modulationsschaltungen und Leistungsverstärker
+      \item AM-Signal sehr störungsempfindlich, Störungen wirken direkt auf Amplitude und durch elektromagnetische Welle von Ausbreitungsbedingungen beeinflusst
+      \item niedrige Ansprüche: akustische Qualität akzeptabel z.B. Mittelwellen-/Kurzwellen-Funk
+      \item Messtechnik: AM kann in ersten Stufen eines mehrkanaligen Systems eingesetzt werden (Untermodulatoren), in dem keine Störungen von außen auftreten und welche notwendige Bandbreite sehr sparsam nutzen im Vergleich zur FM
     \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-2.png}
-    \item Im Spektrum des AM-Signals ist es sichtbar, dass die notwendige Bandbreite doppelt so groß ist wie die des Modulationssignals EKG. Diese ließe sich nochmal halbieren, also auf die ursprüngliche Bandbreite reduzieren, da das informationstragende Spektrum im AM-Signal doppelt vorhanden ist, daher auch die Bezeichnung DSB (double side band). Würde man z.B. die linke Hälfte wegfiltern, bliebe nur das eine zur Informationsübetragung notwendige Band übrig, daher die Bezeichnung SSB (single side band).
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-3.png}
-    \item Bei der FM wird die Trägerfrequenz moduliert, d.h. die Momentanfrequenz des FM-Signals hängt vom aktuellen Pegel des Modulationssignals EKG ab. Wie die rechte Grafik zeigt, die Amplitude des FM-Signals ist konstant, die Dichte der Nulldurchgänge nimmt mit dem Pegel des Modulationssignals zu. Rechts ist in Zeitlupe der QRS-Komplex des EKG dargestellt (100ms der ersten Herzaktion aus der linken Grafik). Die hohe Amplitude der R-Zacke erzeugt im FM-Signal hohe Frequenzen (zwischen ca. 15ms und 65ms), während links und rechts der R-Zacke sichtbar tiefere Frequenzen vorliegen.
-    \item Die FM ist besonders gut für Übertragungen sowohl kabelgebunden als auch kabellos (Telemetrieband 433MHz) geeignet, da sie sehr unempfindlich gegen Amplitudenstörungen ist -die Information ist allein in der Häufigkeit der Nulldurchgänge kodiert.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-4.png}
-    \item Ein wesentlicher Nachteil der FM ist die sehr hohe erforderliche Bandbreite des FM-Signals: diese beträgt das 10 bis 20-fache der Bandbreite des Modulationssignals. Beim EKG können daher Bandbreiten von bis zu 20kHz notwendig sein. Wie die rechte Grafik zeigt, erstreckt sich das Spektrum weit hinter die Nyquistfrequenz (2000Hz) aus, so dass man es vor der Abtastung mit einem Antialiasinftiefpass beschränken bzw. mit einer viel höheren Abtastrate abtasten müsste.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-2.png}
+    \item Spektrum des AM-Signals: notwendige Bandbreite doppelt so groß wie Modulationssignals EKG. Diese ließe sich nochmal halbieren, also auf die ursprüngliche Bandbreite reduzieren, da das informationstragende Spektrum im AM-Signal doppelt vorhanden ist, daher auch die Bezeichnung DSB (double side band). Würde man z.B. die linke Hälfte wegfiltern, bliebe nur das eine zur Informationsübetragung notwendige Band übrig, daher die Bezeichnung SSB (single side band)
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-3.png}
+    \item Bei FM wird Trägerfrequenz moduliert, d.h. Momentanfrequenz des FM-Signals hängt vom aktuellen Pegel des Modulationssignals EKG ab. Die Amplitude des FM-Signals ist konstant, die Dichte der Nulldurchgänge nimmt mit dem Pegel des Modulationssignals zu. Die hohe Amplitude der R-Zacke erzeugt im FM-Signal hohe Frequenzen (zwischen ca. 15ms und 65ms), während links und rechts der R-Zacke sichtbar tiefere Frequenzen vorliegen
+    \item FM besonders gut für Übertragungen kabelgebunden/kabellos (Band 433MHz) geeignet, da sehr unempfindlich gegen Amplitudenstörungen
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-4.png}
+    \item FM Nachteil ist sehr hohe erforderliche Bandbreite des FM-Signals: diese beträgt das 10 bis 20-fache der Bandbreite des Modulationssignals. Beim EKG können daher Bandbreiten von bis zu 20kHz notwendig sein. Spektrum erstreckt sich weit hinter Nyquistfrequenz (2000Hz), so dass es vor Abtastung mit einem Antialiasingtiefpass beschränken bzw. mit einer viel höheren Abtastrate abtasten müsste
   \end{itemize*}
 
   \subsubsection{Digitale Übertragung}\label{digitale-uxfcbertragung}
-
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-1.png}
+  \end{center}
   binäre Übertragung, PCM
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-1.png}
-    \item Die einfachste binäre Übertragung ist die PCM: nach Begrenzung des Spektrums nach oben bei 3.4 kHz bleibt ein Band von ca. 300 Hz bis 3.4 kHz übrig.
+    \item PCM ist einfachste binäre Übertragung: nach Begrenzung des Spektrums bleibt ein Band von ca. 300 Hz bis 3.4 kHz
     \begin{itemize*}
-      \item Nach der Abtastung mit 8 ksps liegt also ein zeitdiskretes wertanaloges Signal vor, entspricht der Puls-Amplituden-Modulation.
-      \item Nach der AD-Wandlung mit 8 bit und P/S-Wandlung liegt ein serielles, binäres Signal vor, das PCM-Signal.
-      \item Das PCM-Signal wird über Leistungsverstärker und Leitungsanpassung auf das Kabel gelegt, z.B. ISDN.
-      \item Nicht eingezeichnet ist die Kompression, die die Dynamik des Sprachsignals begrenzt und die Reduktion der Bitbreite und damit der Übertragungskapazität ermöglicht.
+      \item Nach Abtastung mit 8 ksps liegt zeitdiskretes wertanaloges Signal vor, entspricht Puls-Amplituden-Modulation
+      \item Nach AD-Wandlung mit 8 bit und P/S-Wandlung liegt serielles, binäres Signal vor: das PCM-Signal
+      \item Das PCM-Signal wird über Leistungsverstärker und Leitungsanpassung auf Kabel gelegt
+      \item Nicht eingezeichnet ist Kompression, die Dynamik des Sprachsignals begrenzt und Reduktion der Bitbreite und Übertragungskapazität ermöglicht
     \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-2.png}
-    \item Zur Übertragung über vorhandene Telefonkanäle ist es notwendig, die Pulse (z.B. der PCM) im Übertragungsband zur transportieren. Dazu werden der logischen Nullen und Einsen zwei verschiedene Frequenzen zugeteilt, die im Sender und im Empfänger gleich sind. Nach diesem Prinzip funktionieren die einfachen PC-Kommunikations-Modems.
-    \item Natürlich kann man auch mehr Frequenzen zuweisen, z.B. mit 16 unterschiedlichen Frequenzen könnte man direkt Hexadezimalzahlen übertragen. Die rechte Grafik zeigt eine solche Alternative mit 16 verschiedenen Frequenzen (horizontal Zeit, vertikal Frequenz, Darstellung als Spektrogramm). Allerdings wurde hier das EKG nicht kodiert, sondern zur Veranschaulichung als 1-aus-16-Wert übertragen.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-2.png}
+    \item Zur Übertragung über (Telefon-)Kanäle ist es notwendig, die Pulse im Übertragungsband zur transportieren. Dazu werden logische Nullen und Einsen zwei verschiedenen Frequenzen zugeteilt, die im Sender und Empfänger gleich sind
+    \item mehr Frequenzen möglich, z.B. mit 16 Frequenzen kann man direkt Hexadezimalzahlen übertragen
   \end{itemize*}
 
-  Klassifikation digitaler Filter nach ihrer Impulsantwort als LTI-System
-  (Linear Time Invariant)
-
+  Klassifikation nach Impulsantwort als LTI-System (Linear Time Invariant)
   \begin{itemize*}
-    \item IIR (Infinite Impulse Response)
+    \item IIR: Infinite Impulse Response
     \begin{itemize*}
       \item Funktionales Äquivalent zu analogen Filtern
       \item Im allg. nichtlinearer Phasenfrequenzgang
+      \item Durch rekursive Struktur ist Impulsantwort unendlich lang
+      \item IIR werden auf Grund ihrer Struktur auch Rekursivfilter genannt
+      \item unendlich langer Datenspeicher eines Zeitverlaufs realisierbar, denn der letzte Wert am Filterausgang reicht immer aus, um den Wert am Filtereingang zu berechnen
+      \item Problematisch ist i.A. nichtlineare Phasengang, der für Formanalyse unzulässig ist
     \end{itemize*}
-    \item FIR (Finite Impulse Response)
+    \item FIR: Finite Impulse Response
     \begin{itemize*}
       \item Filtertypen realisierbar, die es in der analogen Welt nicht gibt (Hilbert, Allpass, adaptive Filter)
       \item Linearer Phasenfrequenzgang realisierbar
+      \item theoretisch unendlich lange IR, für realisierbarkeit nach bestimmter Länge abgeschnitten und damit endlich
+      \item in Form eines Koeffizientenvektors realisiert und daher als Transversalfilter bezeichnet
+      \item Typenbreite ungleich größer als bei IIR, da mit Filtertypen realisierbar, die es in der analogen Welt gar nicht gibt
+      \item mit Transversalstruktur ist Linearität des Phasenganges gewährleistet
+      \item im Vergleich zu IIR-Filtern haben FIR um Größenordnungen mehr Filterkoeffizienten
     \end{itemize*}
-  \end{itemize*}
-
-  Die Klassifikation nach der Länge der Impulsantwort (IR) orientiert sich
-  allein nach praktischen Gesichtspunkten.
-
-  \begin{itemize*}
-    \item Durch die rekursive Struktur der IIR-Filter ist deren Impulsantwort (IR) nicht nur theoretisch, sondern auch praktisch unendlich lang. IIR werden auf Grund ihrer Struktur auch Rekursivfilter genannt. IIR haben eine sehr interessante Eigenschaft:
-    \begin{itemize*}
-      \item Rein theoretisch -und mit entsprechender Genauigkeit vielleicht auch praktisch -wäre damit ein unendlich langer Datenspeicher eines Zeitverlaufs realisierbar, denn der letzte Wert am Filterausgang reicht immer aus, um den Wert am Filtereingang zu berechnen.
-      \item Problematisch ist der i.A. nichtlineare Phasengang, der für Formanalyse unzulässig ist.
-    \end{itemize*}
-    \item Selbst FIR-Filter haben theoretisch unendlich lange IR, damit sie aber realisierbar sind, wird diese nach einer bestimmte Länge abgeschnitten und ist damit endlich. Diese Filter werden in der Form eines Koeffizientenvektors realisiert und daher als Transversalfilter bezeichnet. Die Typenbreite der FIR-Filter ist ungleich größer als bei IIR, da mit diesen Filtertypen realisierbar sind, die es in der analogen Welt gar nicht gibt. Mit der Transversalstruktur der FIR ist die Linearität des Phasenganges gewährleistet. Im Vergleich zu IIR-Filtern haben FIR um Größenordnungen mehr Filterkoeffizienten.
   \end{itemize*}
 
   \section{Digitale Filterung}\label{digitale-filterung}
-
   IIR - Infinite Impulse Response
 
   \begin{itemize*}

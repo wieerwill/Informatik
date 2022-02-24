@@ -1173,282 +1173,197 @@
 
   \section{Digitale Filterung}\label{digitale-filterung}
   IIR - Infinite Impulse Response
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-1.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-1.png}
     \item $y(t)=g(t)*x(t)=\int_{-\infty}^{\infty} g(\tau)x(t-\tau) d\tau$
     \item $Y(j\omega)=G(j\omega)* X(j\omega)$
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-2.png}
-    \item $g(t)=\frac\{1\}\{\tau\}exp(-t/\tau)$
-    \item $G(j\omega)=\frac\{1\}\{1+j\omega\tau\}$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-2.png}
+    \item $g(t)=\frac{1}{\tau}exp(-t/\tau)$
+    \item $G(j\omega)=\frac{1}{1+j\omega\tau}$
     \item Im analogen Zeitbereich ergibt sich der Filterausgang aus der Faltung der Impulsantwort mit dem Eingangssignal. Entsprechend der FT ist dies äquivalent der Multiplikation von Spektren im f-Bereich.
-    \item Am Beispiel eines TP erster Ordnung soll veranschaulicht werden, wie ein digitaler IIR entworfen werden kann: Die Impulsantwort ist eine fallende e-Funktion, im f-Bereich ein T1-Glied.
+    \item Die Impulsantwort ist eine fallende e-Funktion, im f-Bereich ein T1-Glied.
   \end{itemize*}
 
   \subsection{IIR-Filter}\label{iir-filter}
-
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-3.png}
-    \begin{itemize*}
-      \item $q\_0=5, q=exp(-T/\tau) = 0,61$
-    \end{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-3.png} $q\_0=5, q=exp(-T/\tau) = 0,61$
     \item zeitdiskret (nach Abtastung)
     \begin{itemize*}
       \item $g_a(t)=q_0(\delta(t)+q\delta(t-T)+q^2\delta(t-2T)+...)$
       \item $FT\{\delta(t-T)\}=e^{-j\omega T}$
       \item $G_a(j\omega)=q_0(1+qe^{-j\omega T}+ q^2e^{-2j\omega T}...)$
       \item $G_a(j\omega)=q_0\frac{1}{1-qe^{-j\omega T}}$
-      \item Z-Transformation $z=e^{j\omega T} \Rightarrow G(z)=q_0\frac{1}{1-qz^{-t}}$ Verzögerung um $T_A$
+      \item Z-Transformation $z=e^{j\omega T} \Rightarrow G(z)=q_0\frac{1}{1-qz^{-t}}$
+      \item Verzögerung um $T_A$
     \end{itemize*}
-    \item In Anlehnung an die sog. Impulsantwort-Invariant-Technik wird die IR abgetastet, es liegt also zeitdiskrete Version der IR vor. Diese lässt sich als exponentielle Folge beschreiben.
-    \item Die FT der Zeitverschiebung ist bekannt, damit gibt es ein Äquivalent der Reihe im f-Bereich.
-    \item Über Näherungsrechnung lässt sich die geometrische Folge im f-Bereich zu einem Quotienten zusammenfassen.
-    \item Nun wird der Übergang aus zeitanalogem in den zeitdiskreten Bereich vollzogen -über die z-Transformation.
-    \item Aus Sicht der Realisierung des digitalen Filters ist die z-Transformation besonders anschaulich -der Exponent über z gibt die Anzahl der Einheitsverzögerungen als Vielfaches der Abtastperiode an.
+    \item Anlehnung an Impulsantwort-Invariant-Technik wird IR abgetastet $\rightarrow$ zeitdiskrete Version der IR, diese lässt sich als exponentielle Folge beschreiben
+    \item FT der Zeitverschiebung ist bekannt $\rightarrow$ Äquivalent der Reihe im f-Bereich
+    \item Über Näherungsrechnung geometrische Folge im f-Bereich zu einem Quotienten zusammenfassen
+    \item z-Transformation: Übergang aus zeitanalogem in zeitdiskreten Bereich
+    \item Exponent über z gibt Anzahl der Einheitsverzögerungen als Vielfaches der Abtastperiode an
     \item Filter der Ordnung N: $G(z)=\frac{k_1}{1-q_1z^{-1}}+\frac{k_2}{1-q_2z^{-1}}+...+\frac{k_N}{1-q_Nz^{-1}}$
     \item gemeinsamer Nenner: $G(z)=\frac{b_0+g_1z^{-1}+...+b_mz^{-m}}{1+a_1z^{-1}+a_2z^{-2}+...+a_nz^{-n}}=\frac{Y(z)}{X(z)}$
     \item $Y(z)+a_1z^{-1} Y(z)+... =b_0X(z)+b_1z^{-1}X(z)+...$
     \item zeitkontinuierlich $y(t)+a_1y(t-T)+... = b_0x(t)+b_1x(t-T)+...$
-    \item Sequenz: $y(n)=b_0x(n) +b_1x(n-1)+.... -a_1y(n-1)-a_2y(n-2)-...$
-    \item Nun wird das Vorgehen auf ein beliebiges Filter verallgemeinert: Natürlich sind die IIR im allgemeinen viel komplizierter, als ein TP 1. Ordnung. Jedoch lässt sich jede IR auf eine Summe von abklingenden e-Funktionen zurückführen (siehe Regelung), so dass die Verallgemeinerung nach diesem Schema möglich ist.
-    \item Bringt man die Formel auf den gemeinsamen Nenner, so kann man sie in Terme für den Eingang x und den Ausgang y trennen.
-    \item Transformiert man die Formel in den zeitanalogen Bereich zurück, so lässt sich überprüfen, ob die gewünschte Übertragungsfunktion erreicht wurde.
-    \item Überträgt man die Formel in den zeitdiskreten Bereich, so erhält man eine Rekursionsformel für den Ausgang $y(n)$.
+    \item Sequenz: $y(n)=b_0x(n) +b_1x(n-1)+.... -a_1y(n-1)-...$
+    \item auf beliebiges Filter verallgemeinert: IIR allg. viel komplizierter als TP 1 Ordnung, lässt sich auf Summe von abklingenden e-Funktionen zurückführen
+    \item Formel auf gemeinsamen Nenner$\rightarrow$ in Terme für Eingang x und Ausgang y trennen
+    \item Rücktransformation in zeitanalogen Bereich zur Überprüfung der gewünschten Übertragungsfunktion
+    \item Übertragung in zeitdiskreten Bereich $\rightarrow$ Rekursionsformel für Ausgang $y(n)$
   \end{itemize*}
 
   IIR-Filter rekursiv
-
+  \begin{center}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv-2.png}
+  \end{center}
   \begin{itemize*}
-    \item $y(n)=\sum_{i=0}^{N} b_ix(n-i) - \sum_{i=1}{N} a_iy(n-i)$
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv.png}
-    \item $y(n)=\sum_{i=0}^N b_ix(n-i) - \sum_{i=1}^N a_iy(n-i) = b_0x(n)+ \sum_{i=1}^N [b_ix(n-i) - a_iy(n-i)]$
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv-2.png}
+    \item links: $y(n)=\sum_{i=0}^{N} b_ix(n-i) - \sum_{i=1}{N} a_iy(n-i)$
+    \item rechts: $y(n)=\sum_{i=0}^N b_ix(n-i) - \sum_{i=1}^N a_iy(n-i) = b_0x(n)+ \sum_{i=1}^N [b_ix(n-i) - a_iy(n-i)]$
   \end{itemize*}
 
   Entwurf eines IIR-Filters
-
   \begin{enumerate*}
-    \def\labelenumi{\arabic{enumi}.}
     \item Übertragungsfunktion $G(j\omega)$ des Analogfilters
     \item Kontinuierliche Impulsantwort $g(t)$ des Analogfilters
-    \item Aus der kontinuierlichen Impulsantwort $g(t)$ abgetastete Impulsantwort $g(nT)$
-    \item Aus der Reihe für $g(nT)$ die z-Übertragungsfunktion $G(z)$ des gesuchten IIR-Filters
-    \item Aus $G(z)$ durch Rücktransformation in den Zeitbereich die Rekursionsformel für das Ausgangssignal $y(n)$
+    \item abgetastete Impulsantwort $g(nT)$ aus Impulsantwort $g(t)$
+    \item aus Reihe für $g(nT)$ z-Übertragungsfunktion $G(z)$ des IIR
+    \item aus $G(z)$ durch Rücktransformation in Zeitbereich die Rekursionsformel für Ausgangssignal $y(n)$
   \end{enumerate*}
 
-  Entwurf eines IIR-Filter - Beispiel
-  \begin{lstlisting}[language=matlab]
- % Analoger Tiefpass bei 45 Hz
- [b,a] = butter(3, 2*pi*45, 'low', 's'); % Polynomformel fuer Butterworth-Tiefpass
- sys = tf(b,a); % Transformation des Polynoms in die Uebertragungsfunktion
- 
- figure
- impulse(sys) % Impulsantwort der Uebertragungsfunktion
- hold $ Bild halten zum Vergleich mit der Matlab-Impuls-Varianz
- 
- [bz,az]= impinvar(b,a,250) % Matlab Funktion zur Diskretisierung
- impz(250*bz, az, [], 250) % Darstellung der diskreten Impulsantwort
- 
- %Partialbruchzerlegung der analogen Formulierung
- [r,p,k]= residue(b,a)
- 
- % Inverse Laplace Transformation fuer die analoge Impulsantowrt
- % Vereinfachend kann fuer s=jw ersetzt werden
- gil=(282.7*exp(-282.7*t) + (-141.4-81.6*sqrt(-1))*exp((-141.4+244.8*sqrt(-1))*t) + (-141.4+81.6*sqrt(-1))*exp((-141.4-244.8*sqrt(-1))*t))
- 
- % abgetastete Impulsantwort
- tax = (0:15000-1)/250/1000;
- gab = 0.004 * ((282.7 * exp(-287.7 * tax) + (-141.4-81.6 * sqrt(-1))* exp((-141.4+244.8*sqrt(-1))*tax) + (-141.4+81.6*sqrt(-1))* exp((-141.4-244.8*sqrt(-1))*tax)));
- figure
- plot(tax,gab), title('abgetastete Impulsantwort Butterworth 3. Ordnung')
- 
- % Polynomdarstellung
- [bg ag] = residue(0.004*[282.7(-141.4-81.6*sqrt(-1))(-141.4+81.6*sqrt(-1))], [exp(-282.7/250) exp((-141.4+244.8*sqrt(-1))/250) exp((-141.4 -244.8 *sqrt(-1))/250)], [0])
- figure
- impz(bg,ag,[],250)
- figure
- freqz(bg,ag) 
- \end{lstlisting}
+  %  Entwurf eines IIR-Filter - Beispiel
+  %  \begin{lstlisting}[language=matlab]
+  % % Analoger Tiefpass bei 45 Hz
+  % [b,a] = butter(3, 2*pi*45, 'low', 's'); % Polynomformel fuer Butterworth-Tiefpass
+  % sys = tf(b,a); % Transformation des Polynoms in die Uebertragungsfunktion
+  % 
+  % figure
+  % impulse(sys) % Impulsantwort der Uebertragungsfunktion
+  % hold $ Bild halten zum Vergleich mit der Matlab-Impuls-Varianz
+  % 
+  % [bz,az]= impinvar(b,a,250) % Matlab Funktion zur Diskretisierung
+  % impz(250*bz, az, [], 250) % Darstellung der diskreten Impulsantwort
+  % 
+  % %Partialbruchzerlegung der analogen Formulierung
+  % [r,p,k]= residue(b,a)
+  % 
+  % % Inverse Laplace Transformation fuer die analoge Impulsantowrt
+  % % Vereinfachend kann fuer s=jw ersetzt werden
+  % gil=(282.7*exp(-282.7*t) + (-141.4-81.6*sqrt(-1))*exp((-141.4+244.8*sqrt(-1))*t) + (-141.4+81.6*sqrt(-1))*exp((-141.4-244.8*sqrt(-1))*t))
+  % 
+  % % abgetastete Impulsantwort
+  % tax = (0:15000-1)/250/1000;
+  % gab = 0.004 * ((282.7 * exp(-287.7 * tax) + (-141.4-81.6 * sqrt(-1))* exp((-141.4+244.8*sqrt(-1))*tax) + (-141.4+81.6*sqrt(-1))* exp((-141.4-244.8*sqrt(-1))*tax)));
+  % figure
+  % plot(tax,gab), title('abgetastete Impulsantwort Butterworth 3. Ordnung')
+  % 
+  % % Polynomdarstellung
+  % [bg ag] = residue(0.004*[282.7(-141.4-81.6*sqrt(-1))(-141.4+81.6*sqrt(-1))], [exp(-282.7/250) exp((-141.4+244.8*sqrt(-1))/250) exp((-141.4 -244.8 *sqrt(-1))/250)], [0])
+  % figure
+  % impz(bg,ag,[],250)
+  % figure
+  % freqz(bg,ag) 
+  % \end{lstlisting}
 
   Eigenschaften von IIR-Filtern
-
   \begin{itemize*}
-    \item IIR-Filter lassen sich aus analogen Filtern direkt herleiten, d.h. IIR-Filter haben einen analogen ,,Prototypen''
-    \item mit IIR diesselben analogen Filter im digitalen Bereich
-    \item IIR-Filter haben i.a. keinen linearen Phasenfrequenzgang, Nullphase nur bei gespiegelter Filterung
+    \item aus analogen Filtern direkt herleiten (analoge ,,Prototypen'')
+    \item diesselben analogen Filter im digitalen Bereich
+    \item keinen linearen Phasenfrequenzgang
+    \item Nullphase nur bei gespiegelter Filterung
   \end{itemize*}
 
   \subsection{FIR-Filter}\label{fir-filter}
-
   \begin{itemize*}
     \item kein rekursiver Anteil: $G(z)=\frac{b_0+b_1z^{-1}+...+b_mz^{-m}}{1}=\frac{Y(z)}{X(z)}$
     \item zeitdiskrete Realisierung: $Y(z)=b_0X(z)+b_1z^{-1}X(z)+...$
     \item analoge Faltung: $y(t)=b_0x(t)+b_1x(t-T)+...$
     \item diskrete Faltung: $y(n)=b_0x(n)+b_1x(n-1)+...$
     \item Filterkoeffizienten gleich der abgetasteten Impulsantwort: $g(t)=b_0\delta(t)+b_1\delta(t-T)+...+b_L\delta(t-NT)$
+    \item $y(n)=\sum_{i=0}^N b_ix(n-i)$
   \end{itemize*}
-
-  $$y(n)=\sum_{i=0}^N b_ix(n-i)$$
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-nichtrekursiv.png}
-  \end{itemize*}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-nichtrekursiv.png}
 
   Entwurf eines FIR-Filters
-
   \begin{enumerate*}
-    \def\labelenumi{\arabic{enumi}.}
     \item Definition des Freqzenzgangs $G(j\omega)$ eines idealen analogen Filters
     \item Berechnung der Impulsantwort $g(t)$ des analogen Filters
     \item Abtastung der Impulsantwort $g(nT)$ des idealen FIR-Filters
-    \item Definition eines Fenstertyps (Rechteck, Hanning, Hamming) und Begrenzung der Impulsantwort $g(nT)$ durch das Fenster
-    \item Verschiebung der Impulsantwort so, dass der Filter kausal wird
+    \item Definition eines Fenstertyps (Rechteck, Hanning, Hamming) und Begrenzung der Impulsantwort $g(nT)$ durch Fenster
+    \item Verschiebung der Impulsantwort so, dass Filter kausal wird
     \item Die Filterkoeffizienten $b\_i$ sind identisch mit den Werten der begrenzten und verschobenen Impulsantwort
   \end{enumerate*}
 
   Eigenschaften von FIR-Filtern
-
   \begin{itemize*}
     \item kein analoges Gegenstück
     \item exklusive Übertragungsfunktion (Hilbert, Allpass)
     \item Länge und Koeffizienten völlig frei wählbar
     \item ideale Filter mit definierbarem Fehler realisierbar
     \item linear- und nullphasige Filter realisierbar
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass.png}
-    \item Impulsantwort des idealen Tiefpasses: die ersten 501 Filterkoeffizienten
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-2.png}
-    \end{itemize*}
-    \item Digitaler Tiefpass der Länge $L=501$
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-3.png}
-      \item Durch die Beschneidung der IR-Länge weicht die Filtercharakteristik in Abhängigkeit von der tatsächlichen Länge ab. Hier wird die gewünschte Grenzfrequenz mit 501 Filterkoeffizienten noch ganz gut erreicht (bis ca. -40dB).
-    \end{itemize*}
-    \item Gibb's Effekt
-    \begin{itemize*}
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gibbs-effekt.png}
-      \item Je kürzer die Impulsantwort abgeschnitten wird, umso mehr kommt der sog. Gibb`s-Effekt zum Tragen. Dieser präsentiert sich damit, dass die Filtercharakteristik immer welliger wird. Im praktischen Einsatz weitgehend akzeptabel.
-    \end{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass.png}
+    %\item Impulsantwort des idealen Tiefpasses: erste 501 Filterkoeffizienten
+    % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-2.png}
+    %\item Digitaler Tiefpass der Länge $L=501$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-3.png}
+    \item Durch die Beschneidung der IR-Länge weicht Filtercharakteristik in Abhängigkeit von tatsächlichen Länge ab
+    \item Gibb's Effekt: Je kürzer Impulsantwort abgeschnitten, umso mehr Gibb`s-Effekt$\rightarrow$ Filtercharakteristik wird immer welliger. Im praktischen Einsatz weitgehend akzeptabel
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gibbs-effekt.png}
   \end{itemize*}
 
   Phasenfrequenzgang von FIR Filtern
-
   \begin{itemize*}
     \item ideale Phase identisch Null - nullphasiger Filter, nur off-line, kausales Filter um halbe Länge zeitverschoben
     \item konstante Gruppenlaufzeit - lineare Phase, on-line-fähig: $\phi(\omega)=-\omega\tau$
     \item definierter Phasenverlauf - Allpass
-    \item In der echtzeitfähigen Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe Filterlänge, und das unabhängig von der Frequenz(!). Dies wird deutlich, wenn man sich die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang linear ist und es zu keinen Formverzerrungen kommt.
-  \end{itemize*}
-
-  \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-4.png}
-
-  \begin{itemize*}
-    \item Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
-    \item Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
+    \item In echtzeitfähiger Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe Filterlänge unabhängig von Frequenz%. Dies wird deutlich, wenn man sich die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang linear ist und es zu keinen Formverzerrungen kommt.
+  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-4.png}
+  %  \item Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
+  %  \item Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
     \item Gruppenlaufzeit: $\tau(\omega)=L\emph{T\_A=31}T\_A$
     \item Phasenfrequenzband: $\phi(\omega)=-2\pi*LT\_A$
   \end{itemize*}
 
-
-  \subsubsection{Realisierung digitaler Filter - FIR}\label{realisierung-digitaler-filter---fir}
+  FIR Realisierung
   \begin{itemize*}
     \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung.png}
-    \item Die FIR-Impulsantworten sind symmetrisch, während die eine Hälfte immer im zeitnegativen, also im nichtkausalen Bereich liegt. Ein kausales Filter lässt sich nur realisieren, wenn es um die negative Hälfte in den positiven Bereich verschoben wird. Dann erhält man reale Ausgangsdaten, die allerdings zum Eingangssignal um die Zeit verschoben sind, die der halben Filterlänge entspricht. In diesem Beispiel ,,hängen'' die Ausgangsdaten dem Eingang um zwei Samples -zeitlich also um zwei Abtastperioden - hinterher.
-    \item Anm.: Der Index 1 bei y sagt nur aus, dass es der erste Ausgangswert ist. Auf der Zeitachse liegt er neben dem Index 3 von x. Es mussten also zwei Werte von x hineinlaufen in das Filter, bevor überhaupt der erste Ausgangswert erschien.
-    \item Die diskrete Faltung ist der Kern der DSP (digitale Signalprozessoren), da im Normalfall in Echtzeit gefiltert werden muss, welches Filter auch immer verwendet wird. Daher haben DSP einen on-chip Multiplikator und Addierer.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-2.png}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-3.png}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-4.png}
-    \begin{itemize*}
-      \item Ausgangssignal kürzer um die Filterlänge-1 bei ungerader Anzahl der Filterkoeffizienten
-    \end{itemize*}
+    \item FIR-Impulsantworten symmetrisch, während die eine Hälfte immer im zeitnegativen, also im nichtkausalen Bereich liegt%. Ein kausales Filter lässt sich nur realisieren, wenn es um die negative Hälfte in den positiven Bereich verschoben wird. Dann erhält man reale Ausgangsdaten, die allerdings zum Eingangssignal um die Zeit verschoben sind, die der halben Filterlänge entspricht. In diesem Beispiel ,,hängen'' die Ausgangsdaten dem Eingang um zwei Samples -zeitlich also um zwei Abtastperioden - hinterher.
+    %\item Anm.: Der Index 1 bei y sagt nur aus, dass es der erste Ausgangswert ist. Auf der Zeitachse liegt er neben dem Index 3 von x. Es mussten also zwei Werte von x hineinlaufen in das Filter, bevor überhaupt der erste Ausgangswert erschien.
+    \item diskrete Faltung ist Kern der DSP, da im Normalfall in Echtzeit gefiltert werden muss, welches Filter auch immer verwendet wird
+    \item DSP oft on-chip Multiplikator und Addierer
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-2.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-3.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-4.png}
+    \item Ausgangssignal um Filterlänge-1 kürzer bei ungerader Anzahl der Filterkoeffizienten
   \end{itemize*}
 
-  \subsection{Realisierung digitaler Filter - programm}\label{realisierung-digitaler-filter---programm}
+  %FIR Programm
+  %\begin{itemize*}
+  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-5.png}
+  % \item Filterung mit FIR entspricht einer diskreten Faltung, so dass sie sich algorithmisch einfach mit zwei verschachtelten Schleifen realisieren lässt
+  % \item Da beim FIR die Filterkoeffizienten identisch mit der IR sind, erhält man nach der FFT direkt die spektrale Filterfunktion
+  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-6.png}
+  % \item Im Zeitverlauf des weißen Rauschens ist erkennbar, dass das gefilterte Signal (rot) kürzer und nach links verschoben ist. Für einen zeitlichen Vergleich der beiden Signale wäre es notwendig, mit geeigneten Maßnahmen Zeitgleichheit herzustellen, z.B. durch Verschiebung des gefilterten Signals um (die verlorene) halbe Länge nach rechts. Oder durch Auffüllen von jeweils (L-1)/2 Nullen links und rechts des Eingangssignals wird erreicht, dass das gefilterte Signal gleich lang und zeitgleich erscheint.
+  % \item Der Spektrenvergleich bestätigt, dass es sich hier um einen Tiefpass handelt.
+  %\end{itemize*}
 
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-5.png}
+  \subsubsection{DSP - Überblick über Architekturen}
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiger-super-harvard.png}
+  \end{center}
     \begin{itemize*}
-      \item Filterung mit FIR entspricht einer diskreten Faltung, so dass sie sich algorithmisch einfach mit zwei verschachtelten Schleifen realisieren lässt, wie hier mit einem Matlab-Programm gezeigt.
-      \item In diesem Beispiel hat die FIR-IR 15 Koeffizienten, das Ausgangssignal wird also um 7 Abtastperioden verschoben sein und um 14 Werte kürzer.
-      \item Da beim FIR die Filterkoeffizienten identisch mit der IR sind, erhält man nach der FFT direkt die spektrale Filterfunktion.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-von-neumann.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-harvard.png}
+   %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-super-harvard.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ad-tigersharcs.png}
+      \item Konventionelle CPU auf von Neumann-Architektur
+      \item ein Speicher hardwaremäßig vorteilhaft; Überschreibungsprobleme
+      \item Harvard-Architektur löst Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem erfolgen Zugriffe parallel $\rightarrow$ Geschwindigkeit enorm gesteigert
+      \item Algorithmen der DSV häufig identisch $\rightarrow$ Abfolge der Instruktionen gut vorhergesagt $\rightarrow$ mehrere vorab im instruction cache der CPU befinden, dekodiert und in pipeline vorbereitet 
+      \item über I/O-Controller direkt vom Speicher Daten mit Außwenwelt organisieren %Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern 
+      \item Tiger-Sharc-Architektur lagert Daten in zwei Speichern. Vorteil parallelen Zugriffs auf Instruktionen und zwei Datenblöcke $\rightarrow$ Rechengeschwindigkeit steigt enorm
+      %\item typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
     \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-6.png}
-    \begin{itemize*}
-      \item Im Zeitverlauf des weißen Rauschens ist erkennbar, dass das gefilterte Signal (rot) kürzer und nach links verschoben ist. Für einen zeitlichen Vergleich der beiden Signale wäre es notwendig, mit geeigneten Maßnahmen Zeitgleichheit herzustellen, z.B. durch Verschiebung des gefilterten Signals um (die verlorene) halbe Länge nach rechts. Oder durch Auffüllen von jeweils (L-1)/2 Nullen links und rechts des Eingangssignals wird erreicht, dass das gefilterte Signal gleich lang und zeitgleich erscheint.
-      \item Der Spektrenvergleich bestätigt, dass es sich hier um einen Tiefpass handelt.
-    \end{itemize*}
-  \end{itemize*}
-
-  \subsubsection{Realisierung digitaler Filter - DSP}\label{realisierung-digitaler-filter---dsp}
-
-  Zum Vergleich konventioneller CPU und eines DSP soll hier ein Überblick
-  über die Architekturen folgen:
-
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-von-neumann.png}
-    \begin{itemize*}
-      \item Konventionelle CPU bzw. PCs bauen auf der ältesten, von Neumann -Architektur auf.
-      \item Hardwaremäßig vorteilhaft, dass nur ein Speicher benötigt wird, allerdings passiert es in der Programmentwicklung immer wieder, dass man mit nicht korrekt organisierten Daten Programme überschreibt. Passiert dies zufällig, so kann das Debugging zur Lebensaufgabe werden.
-    \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-harvard.png}
-    \begin{itemize*}
-      \item Die Harvard-Architektur löst das Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem können hier Zugriffe parallel erfolgen, womit die Geschwindigkeit enorm gesteigert wird.
-    \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-super-harvard.png}
-    \begin{itemize*}
-      \item Da in der DSV die Algorithmen weitgehend identisch sind, kann die Abfolge der Instruktionen mit guter Wahrscheinlichkeit ,,vorhergesagt'' werden, so dass sich mehrere vorab im instruction cache der CPU befinden, dekodiert und zur Abarbeitung in der pipeline vorbereitet sind. Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern über einen I/O-Controller direkt vom Speicher aus, also mit einer Art DMA. Der Datenspeicher muss natürlich über zwei Zugangsports verfügen, sog. dual-port-RAM.
-    \end{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiger-super-harvard.png}
-    \begin{itemize*}
-      \item Bei der sog. Tiger-Sharc-Architektur (geschütze Marke von AD) werden Daten in zwei Speichern gelagert. Das hat den Vorteil eines parallelen Zugriffs auf Instruktionen und zwei Datenblöcke, da in den Algorithmen der DSV überwiegend zwei Operatoren in einer Instruktion verarbeitet werden. Damit steigt die Rechengeschwindigkeit noch mal enorm.
-      \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ad-tigersharcs.png}
-      \item Eine typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
-    \end{itemize*}
-  \end{itemize*}
-
-  \subsection{CAD digitaler Filter}\label{cad-digitaler-filter}
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-cad-digitaler-filter.png}
-    \item Die DSPs werden vorwiegend im Assembler programmiert, um die höchstmögliche Geschwindigkeit zu erreichen. Vor allem für Entwicklungszwecke werden jedoch auch höhere Sprachen verwendet, vor allem C und C++, sowie CAD-Pakete, wie z.B. Matlab. Durch die Koordination zwischen Mathworks und TI entstand ein sehr leistungsfähiges und effektives Entwicklungstool, mit dem man von Matlab aus direkt auf die DSP-Boards von TI zugreifen kann.
-    \item Hier folgt ein Beispiel zu ersten Entwicklungsschritten von Filtern im Akustikbereich: Zunächst wird die Startmelodie von Windows vom Netz gestört, durch Abspielen kann dies überprüft werden.
-    \item Mit dem fdatool wird zunächst ein IIR-Filter entworfen, eigene Entwürfe sind an dieser Stelle empfehlenswert.
-    \item die gestörte Melodie wird gefiltert und gespiegelt
-    \begin{verbatim}
-winfilt = filter(b,a,winfufz)
-sound(winfilt, Fs)
-\end{verbatim}
-    \item Ergebnis ist unbefriedigend, Überprüfung des Filters
-    \begin{verbatim}
-figure(1), plot(winfilt)
-dirac = zeros(1,1000);
-dirac(1) = 1;
-iir= filter(b,a,dirac);
-figure(2),plot(iir)
-\end{verbatim}
-    \item Filter ist instabil -\textgreater{} Neuentwurf notwendig
-    \begin{itemize*}
-      \item Parameter: Bandstop, Equiripple, FIR; Fs=8000 Hz, Fpass1=30Hz, Fstop1=45Hz, Fstop2=55Hz, Fpass2=70Hz, Apass1=3dB, Astop=40dB, Apass2=3dB
-      \item Filterentwurf: b=Vektor der Länge 3553
-    \end{itemize*}
-    \begin{verbatim}
-winfilt = filter(Num, 1, winfufz)
-sound(winfilt, Fs)
-\end{verbatim}
-    \item Man kann natürlich eigene diskrete Faltung schreiben und verwenden, mit der Matlab-Funktion filter(b,a,x) geht es viele effektiver.
-    \item Das abgespielte Signal entspricht nicht dem Ziel, undefiniertes Geräusch ist das Ergebnis.
-    \item Das Filter muss überprüft werden. Im Plot des gefilterten Signals wird schnell deutlich, welches Problem aufgetreten ist: Das Signal verläßt den normalen Wertebereich und sogar auch den Zahlenbereich. Fazit ist, das Filter ist instabil. Selbst wenn das fdatool behauptet, das Filter wäre stabil, so stimmt das nur für den Entwurf. Die Stabilität ist auch eine Frage des gefilterten Signals und wird hier eben nicht gewährleistet. Das Problem in diesem konkreten Fall ist, dass die geforderte Bandsperre sehr schmal und bei sehr niedriger Frequenz im Vergleich zur Abtastrate liegt (Breite 10 Hz bei 50Hz Mittenfrequenz und Abtastrate 22050sps), so dass die relative Frequenz gerade nur 0.0023 und die Bandbreite nur 0.00045 betragen. Bei so niedrigen Werten ist ein Filterentwurf sehr problematisch. Der sicherste Ausweg aus diesem Problem ist ein FIR-Filter, das immer stabil ist, denn es hat keine Rückführung. - Die geforderte Bandsperre wird einigermaßen erfüllt, was aber auf Kosten der Filterlänge geht, die hier mit 1776 Koeffizienten schon beachtlich ist. Durch Abspielen kann man sich überzeugen, dass dieses mal das Ziel erreicht wurde.
-  \end{itemize*}
-
-  \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-netzunterdrückung.png} Bei
-  der realisierten Filterlänge von 1776 und der Abtastrate von 22050 kommt
-  es zu einer Verzögerung des gefilterten Signals um 38ms, wie man
-  insbesondere im rechten Bild gut erkennen kann. Im Normalfall bzw. bei
-  geringen Ansprüchen wäre diese Verzögerung akzeptabel. Für zeitkritische
-  Methoden der DSV (z.B. Quellenortung bzw. - verfolgung, Beamforming,
-  adaptive Rauschunterdrückung) wäre das jedoch zu viel, wenn man bedenkt,
-  dass der Schall in der Luft in dieser Zeit 12.m Strecke zurücklegt oder
-  es sich um 38 Perioden einer 1kHz-Schwingung handelt.
 
   \subsection{Adaptive Filter}\label{adaptive-filter}
 

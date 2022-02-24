@@ -1029,13 +1029,13 @@
     \item Signalanalytisch problematisch: Aus Signalsequenz wird Simultansignal über Laufzeitkorrektur in der FFT zurückgerechnet. Bei zeitkritischen Vorgängen ist dies zu verwerfen, da die durch die sequentielle Abtastung verlorengegangenen Signalteile durch Rückrechnung nicht mehr zu retten sind
     \item parallele (links) vs sequentielle (rechts) Abtastung
     \begin{center}
-    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme.png}
-    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme3.png}
+      \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme.png}
+      \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme3.png}
     \end{center}
     \item simultan (links) vs versetzte (rechts) Kanäle\\
     \begin{center}
-    \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme2.png}
-    \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme4.png}
+      \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme2.png}
+      \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme4.png}
     \end{center}
     \item Versatz der Kanäle um $T_A/N$
     \item Rechnerische Korrektur der Abtastzeit (nicht-online-fähig) $X^*(j\omega)=X(j\omega)^{j\omega T_A/N}$
@@ -1043,75 +1043,71 @@
 
   \subsection{Digitalisierung}\label{digitalisierung}
   \subsubsection{Prinzipien der AD Wandlung}\label{prinzipien-der-ad-wandlung}
+  \begin{center}
+    Einrampen- (links) vs Zweirampenverfahren (rechts)
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Einrampenverfahren.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Zweirampenverfahren.png}
+  \end{center}
 
   Einrampenverfahren, Single-Slope-Conversion
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Einrampenverfahren.png}
-    \item Ur steigt aus dem negativen Bereich an, kreuzt es die Null, so wird K1 positiv. Da K2 noch positiv ist, da Ur unterhalb von Ue liegt, öffnet das Äquivalenzgatter = das Tor \& und der Zähler beginnt zu zählen.
-    \item Erreicht Ur den Pegel von Ue, so wird K2 negativ bzw. logisch Null, = schließt und das Tor \& geht zu, der Zähler hört auf zu zählen. Der erreichte Zählerstand ist damit proportional der Spannung Ue.
-    \item Vorteile: Einfach, wenig Aufwand, relativ schnell. Nachteil: stark temperaturabhängig, da Zählgrenzen von Analogwerten bestimmt. Wandelzeit abhängig von der Eingangsspannung.
+    \item $U_r$ steigt aus negativen Bereich, kreuzt die Null so wird K1 positiv. Da K2 positiv, $U_r$ unterhalb von $U_e$, öffnet Äquivalenzgatter (=Tor) \& und Zähler beginnt zu zählen
+    \item Erreicht $U_r$ Pegel von $U_e$, wird K2 negativ/null (=schließt) und Tor geht zu, Zähler hört auf zu zählen. Erreichte Zählerstand ist proportional der Spannung $U_e$
+    \item Vorteile: einfach, wenig Aufwand, relativ schnell
+    \item Nachteil: stark temperaturabhängig (Zählgrenzen von Analogwerten bestimmt), Wandelzeit abhängig von der Eingangsspannung
   \end{itemize*}
 
   Zweirampenverfahren, Dual-Slope-Conversion
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Zweirampenverfahren.png}
-    \item In Phase 1 Aufladung durch die Eingangsspannung Ue über konstante Zeit. Damit ist der integrierte Wert proportional zur Ue.
-    \item In Phase 2 Entladung mit konstanter Referenzspannung Ur bis zum Erreichen von Null. Damit ist die Entladezeit proportional Ue. Die Entladezeit wird digital gezählt, damit ist der Digitalwert am Ende proportional Ue.
-    \item Vorteil: durch gespiegelte analoge Integration Temperatureinfluß weitgehend reduziert, da durch Auf-und Abintegrieren die Fehlerquellen mit entgegengesetzten Vorzeichen. Gute Genauigkeit von bis zu 16 bit. Nachteil: Wandlerzeit abhängig von Ue, daher nicht konstant.
+    \item Phase 1: Aufladung durch Eingangsspannung $U_e$ über konstante Zeit. Damit ist integrierte Wert proportional zur Ue
+    \item Phase 2: Entladung mit konstanter Referenzspannung $U_r$ bis zum Erreichen von Null. Entladezeit proportional $U_e$. Entladezeit wird digital gezählt, damit ist Digitalwert am Ende proportional $U_e$
+    \item Vorteil: Temperatureinfluß reduziert (gespiegelte analoge Integration), Fehlerquellen mit entgegengesetzten Vorzeichen (Auf-und Abintegrieren); Gute Genauigkeit bis 16 bit
+    \item Nachteil: Wandlerzeit abhängig von $U_e$, daher nicht konstant
   \end{itemize*}
 
   Sukzessive Approximation
-
+  \begin{center}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Sukzessive-Approximation.png}
+  \end{center}
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Sukzessive-Approximation.png}
-    \item Im Wesentlichen eine DA-Wandlung mit vorgeschaltetem Komparator. Macht Sinn, weil DA-Wandler präziser herstellbar als herkömmliche ADC.
-    \item Prinzip: Das Steuerwerk beginnt mit dem MSB und schaltet die Bits bis zum LSB so lange um, bis die beste Approximation von Ue erreicht wurde, daher sukzessive Appr.
-    \item Ablauf: ist bei MSB=1 die DAC-Spannung höher als Ue, so wird MSB=0 gesetzt, da der Komparator anzeigt, dass die DAC-Spannung zu hoch war. Ist bei MSB-1=1 die DAC-Spannung niedriger als Ue, so bleibt MSB-1=1 und das nächste Bit folgt. Es wird also sukzessive bis zum LSB nach der besten Annäherung gesucht.
-    \item Vorteil: DAC technologisch präziser herstellbar als ADC. Konstante Wandlungszeit, daher planbar im Zeitregime. Gute Auflösung (bis 18bit), relativ schnell und preiswert.
+    \item DA-Wandlung mit vorgeschaltetem Komparator; DA-Wandler präziser herstellbar als herkömmliche ADC
+    \item Prinzip: Steuerwerk beginnt mit MSB und schaltet Bits bis LSB um, bis beste Approximation von $U_e$ erreicht
+    \item Ablauf: ist bei $MSB=1$ DAC-Spannung höher als $U_e$ $\rightarrow MSB=0$, da Komparator anzeigt, dass DAC-Spannung zu hoch. Ist bei $MSB-1=1$ DAC-Spannung niedriger als $U_e$, bleibt $MSB-1=1$ und nächstes Bit folgt. Sukzessive bis LSB nach bester Annäherung gesucht
+    \item Vorteil: DAC technologisch präziser herstellbar als ADC, Konstante Wandlungszeit, planbar im Zeitregime, Gute Auflösung (bis 18bit), relativ schnell und preiswert
   \end{itemize*}
 
   Delta-Sigma-Wandlung
-
+\begin{center}
+  %\includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png}
+  \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandler.png}
+\end{center}
   \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png}
-    \item Beim Delta-Modulator handelt es sich um einen Ein-Bit-Wandler: Sobald das Eingangssignal x(t) die aufintegrierte bereits digitale Folge xD(t) über/unterschreitet, wird das Bit gesetzt/rückgesetzt. Damit erreicht man, dass das integrierte Binärsignal dem Eingangssignal mit höchstens einer Schrittweite als Fehler folgt.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-2.png}
-    \item Im Demodulator müssen die bei der Modulation durchgeführten Schritte invertiert werden: Der Integrator im Modulator wirkt insgesamt wegen der Rückführung differenzierend, so dass im Demodulator integriert werden muss. Wegen der Taktung muss im Demodulator noch ein Tiefpass folgen um das Signal zu glätten.
-    \item Zwischen dem Modulator und dem Demodulator liegt die Übertragungsstrecke (Telemetrie, Multimedia, usw.). Unter der Annahme, dass sie linear ist, kann die Integration vom Demod nach vorn zum Mod vor den Summierer verlagert werden. Damit können beide Integratoren zu einem hinter dem Summierer zusammengefasst werden. Auf diese Weise entsteht der Delta-Sigma-Wandler (Differenz-Integration-1-Bit-Modulator).
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-3.png}
-    \item Durch die Vorlagerung des Integrators reduziert sich der Demodulator (signalanalytisch) auf einen Tiefpass.
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-4.png}
-    \item Diese Grafik zeigt die typischen Zeitverläufe im D-S-Modulator. Wie man bereits an der Blockstruktur erkennen konnte, handelt es sich -wie bei sukzessiver Approximation - um einen rückgekoppelten Kreis mit negativer Rückführung. In Anlehnung an die Regelungstechnik kann man demnach die Funktion so verstehen, dass die Bits im Bitstream so gesetzt werden, dass der Mittelwert des Ausgangs (siehe Integrator im Zeitverlauf) gegen Null bzw. einen Referenzwert läuft. Das digitale Ausgangssignal (Bitstream) ist qualitativ identisch mit eine Pulsbreitenmodulierten Signal, allerdings mit quantisiertem Pulsverhältnis. Das gleitende Mittel eines solchen Signals entspricht dem Originalsignal.
-    \item Die erforderliche Taktrate ergibt sich aus der gewünschten Auflösung. So z.B. bei einer CD, die mit einer Abtastrate von 44,1kHz arbeitet und mit 16bit digitalisiert, kann der Takt des DS-Wandlers weit über 10MHz liegen (Oversamplingrate von 200).
+    \item Ein-Bit-Wandler: Sobald Eingangssignal $x(t)$ aufintegrierte digitale Folge $xD(t)$ über/unterschreitet, wird Bit gesetzt/rückgesetzt
+    \item das integrierte Binärsignal folgt Eingangssignal mit höchstens einer Schrittweite als Fehler
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-2.png}
+    \item Im Demodulator müssen die bei Modulation durchgeführten Schritte invertiert werden: Integrator im Modulator wirkt insgesamt wegen Rückführung differenzierend, im Demodulator muss integriert werden. Wegen Taktung muss im Demodulator Tiefpass folgen um Signal zu glätten
+    \item Zwischen Modulator und Demodulator liegt Übertragungsstrecke. Unter linearer Annahme, kann Integration vom Demod zum Mod vor Summierer verlagert werden. Beide Integratoren zu einem hinter Summierer zusammengefasst. Es entsteht Delta-Sigma-Wandler (Differenz-Integration-1-Bit-Modulator).
+    \item Durch Vorlagerung des Integrators reduziert sich Demodulator (signalanalytisch) auf Tiefpass
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-4.png}
+    %\item Diese Grafik zeigt die typischen Zeitverläufe im D-S-Modulator. Wie man bereits an der Blockstruktur erkennen konnte, handelt es sich -wie bei sukzessiver Approximation - um einen rückgekoppelten Kreis mit negativer Rückführung. In Anlehnung an die Regelungstechnik kann man demnach die Funktion so verstehen, dass die Bits im Bitstream so gesetzt werden, dass der Mittelwert des Ausgangs (siehe Integrator im Zeitverlauf) gegen Null bzw. einen Referenzwert läuft. Das digitale Ausgangssignal (Bitstream) ist qualitativ identisch mit eine Pulsbreitenmodulierten Signal, allerdings mit quantisiertem Pulsverhältnis. Das gleitende Mittel eines solchen Signals entspricht dem Originalsignal.
+    \item erforderliche Taktrate aus gewünschter Auflösung. z.B. Abtastrate 44,1kHz $\rightarrow$ 16bit digitalisiert %, kann der Takt des DS-Wandlers weit über 10MHz liegen 
+    (Oversamplingrate von 200)
   \end{itemize*}
 
   Flash-Converter, Parallelwandler
+  \begin{multicols*}{2}
+    \includegraphics[width=.8\linewidth]{Assets/Biosignalverarbeitung-Parallelwandler.png}
+    \columnbreak
 
-  \begin{itemize*}
-    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Parallelwandler.png}
-    \item Am anderen Ende der Skala liegen die Flash-Converter. Diese sind sehr schnell, arbeiten weit in den Videobereich von über 100MHz hinein. Das geht natürlich nur auf Kosten der Parallelität, was bedeutet, dass für jede Quantisierungsstufe ein Komparator vorhanden sein muss. Für eine Bitbreite von 8bit werden also 256 Komparatoren benötigt. Dies ist heute integriert machbar aber auch schon die Obergrenze.
-  \end{itemize*}
+     Am anderen Ende der Skala Flash-Converter: sind sehr schnell, arbeiten weit in Videobereich von über 100MHz hinein.
 
-  \subsubsection{Breitbandige Wandler}\label{breitbandige-wandler}
-
-  \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-breitbandige-Wandler.png}
-
-  \begin{tabular}{l|l}
-    Resolution (Bits) & 24 bit                                      \\
-    T-Put Rate        & 1kSPS                                       \\
-    Kanäle            & 5                                           \\
-    Supply V          & Single(+3), Single(+3.3), Single(+5)        \\
-    Pwr Diss (max)    & 7mW                                         \\
-    Interface         & Ser, SPI                                    \\
-    Ain Range         & (2Vref/PGA Gain) p-p, Uni (Vref)/(PGA Gain) \\
-    SNR (dB)          & 137dB                                       \\
-    Pkg Type          & DIP, SOIC, SOP                              \\
-  \end{tabular}
+     Geht nur auf Kosten der Parallelität $\rightarrow$ für jede Quantisierungsstufe muss Komparator vorhanden sein.
+     
+     Für Bitbreite von 8bit werden 256 Komparatoren benötigt, ist integriert machbar aber Obergrenze.
+  \end{multicols*}
 
   \subsection{Telemetrie}\label{telemetrie}
-
   \subsubsection{Analoge Übertragung}\label{analoge-uxfcbertragung}
-
   \begin{itemize*}
     \item Direkt: verstärktes Signal auf kurze Entfernung, z.B. von der EEG-Brause zum Hauptverstärker
     \item Analoge Modulation über Kabel, z.B. EKG über Audiokarte im PC und Internet

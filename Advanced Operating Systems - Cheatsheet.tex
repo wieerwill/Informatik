@@ -1239,316 +1239,130 @@
     \end{description*}
 
     \section{Sicherheit}
-
-
-    \subsection{Motivation}
-
-    Medienberichte zu IT-Sicherheitsvorfällen:
-
-    \begin{itemize*}
-        \item
-        27.-28.11.2016: Ausfälle von über 900.000 Kundenanschlüssen der
-        Deutschen Telekom
-        \begin{itemize*}
-            \item Bundesamt für Sicherheit in der Informationstechnik (BSI): weltweiter Angriff auf ausgewählte Fernverwaltungsports von DSL-Routern, um angegriffene Geräte mit Schadsoftware zu infizieren
-            \item Angreiferziel: Missbrauch der Hardware für eigentliche Angriffe (Botnet)
-        \end{itemize*}
-        \item
-        15.05.-06.06.2019: Ransomware-Angriff zur Erpressung der Heise
-        Verlagsgruppe
-        \begin{itemize*}
-            \item Infektion eines Rechners im lokalen Netz durch Malware in eMail-Anhang (Trojaner)
-            \item Täuschung des Nutzers: Schadcode mit Administratorrechten ausgeführt (Spezialfall von Malware: \emph{Root Kit})
-            \item Malwareziel: Verschlüsselungvon Nutzerdaten
-            \item Angreiferziel: Erspressungvon Lösegeld für Entschlüsselung
-        \end{itemize*}
-    \end{itemize*}
-
-    Was sichere Betriebssysteme erreichen können ... und was nicht:
-    \href{https://www.youtube.com/watch?v=opRMrEfAIiI\&t=}{youtube}
-
-
-    \subsection{Terminologie}
-
-    Achtung zwei unterschiedliche ,,Sicherheiten''
-
-    \begin{enumerate*}
-        \item
-        Security (IT-Sicherheit, Informationssicherheit)
+    Terminologie
+    \begin{description*}
+        \item[Security] IT-Sicherheit, Informationssicherheit
         \begin{itemize*}
             \item Ziel: Schutz \textbf{des} Rechnersystems
-            \item hier besprochen
-            \item Systemsicherheit
+            \item Systemsicherheit, hier besprochen
         \end{itemize*}
-        \item
-        Safety (Funktionale Sicherheit, Betriebssicherheit)
+        \item[Safety] Funktionale Sicherheit, Betriebssicherheit
         \begin{itemize*}
             \item Ziel: Schutz \textbf{vor} einem Rechnersystem
             \item an dieser Stelle nicht besprochen
         \end{itemize*}
-    \end{enumerate*}
-
-    Eine (unvollständige) Taxonomie:
-    %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
-
+    \end{description*}
+    %Eine (unvollständige) Taxonomie: \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sicherheit-taxonomie.png}
 
     \subsection{Sicherheitsziele}
-
-    Allgemeines Ziel von IT-Sicherheit i.S.v. Security ... ein Rechnersystem
-    sicher zu machen gegen Schäden durch zielgerichtete Angriffe,
-    insbesondere in Bezug auf die Informationen, die in solchen Systemen
-    gespeichert, verarbeitet und übertragen werden. (Programme sind somit
-    ebenfalls als Informationen zu verstehen.)
-
-    Cave! Insbesondere für Sicherheitsziele gilt: Daten
-    $\not=$ Informationen
-
-    Sicherheitsziele: sukzessive Konkretisierungen dieser Allgemeinformel
-    hinsichtlich anwendungsspezifischer Anforderungen
-
-
-    \subparagraph{Abstrakte Ziele:}
-
-    \begin{enumerate*}
-        \item
-        Vertraulichkeit (Confidentiality)
-        \item
-        Integrität (Integrity)
-        \item
-        Verfügbarkeit (Availability)
-        \item
-        Authentizität (Authenticity)
-        \item
-        Verbindlichkeit = Nichtabstreitbarkeit (Non-repudiability)
-    \end{enumerate*}
-
-    Abstrakte Ziele dienen zur Ableitung konkreter Sicherheitsziele. Wir
-    definieren sie als Eigenschaften von gespeicherten oder übertragenen
-    Informationen ...
-
     \begin{itemize*}
-        \item
-        Vertraulichkeit: ... nur für einen autorisierten Nutzerkreis
-        zugänglich (i.S.v. interpretierbar) zu sein.
-        \item
-        Integrität: ... vor nicht autorisierter Veränderung geschützt zu sein.
-        \item
-        Verfügbarkeit: ... autorisierten Nutzern in angemessener Frist
-        zugänglich zu sein.
-        \item
-        Authentizität: ... ihren Urheber eindeutig erkennen zu können.
-        \item
-        Verbindlichkeit: ... sowohl integer als auch authentisch zu sein.
+        \item Rechnersystem sicher gegen Schäden durch zielgerichtete Angriffe, insbesondere bzgl Informationen, die im System gespeichert, verarbeitet und übertragen werden
+        \item für Sicherheitsziele gilt: Daten $\not=$ Informationen
+        \item sukzessive Konkretisierungen bzgl anwendungsspezifischer Anforderungen
     \end{itemize*}
 
+    abstrakte auf konkret definierte Sicherheitsziele
+    \begin{description*}
+        \item[Vertraulichkeit] nur für einen autorisierten Nutzerkreis zugänglich
+        \item[Integrität] vor nicht autorisierter Veränderung geschützt
+        \item[Verfügbarkeit] autorisierten Nutzern in angemessener Frist zugänglich
+        \item[Authentizität] Urheber eindeutig erkennen
+        \item[Verbindlichkeit] sowohl integer als auch authentisch
+    \end{description*}
 
-    \subparagraph{Schadenspotenzial}
-
+    \subsection{Schadenspotenzial}
     \begin{enumerate*}
-        \item
-        Vandalismus, Terrorismus
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        reine Zerstörungswut
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{1}
-        \item
-        Systemmissbrauch
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        illegitime Ressourcennutzung, Ziel i.d.R.: hocheffektive Folgeangriffe
-        \item
-        Manipulationvon Inhalten ( $\rightarrow$
-        Desinformation)
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{2}
-        \item
-              (Wirtschafts-) Spionage und Diebstahl
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        Verlust der Kontrolle über kritisches Wissen
-        ( $\rightarrow$ Risikotechnologien)
-        \item
-        immense wirtschaftliche Schäden ( $\rightarrow$
-        Technologieführer, Patentinhaber)
-        \item
-        z.B. Diebstahl von industriellem Know-How
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{3}
-        \item
-        Betrug, persönliche Bereicherung
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        wirtschaftliche Schäden
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{4}
-        \item
-        Sabotage, Erpressung
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        Außerkraftsetzen lebenswichtiger Infrastruktur (z.B. schon
-        Registrierkassen)
-        \item
-        Erpressung von ausgewählten (oder schlicht großen ) Zielgruppen durch
-        vollendete, reversible Sabotage ( $\rightarrow$
-        Verschlüsselung von Endanwenderinformationen)
-    \end{itemize*}
-
-
-    \subparagraph{Bedrohungen}
-
-    \begin{enumerate*}
-        \item
-        Eindringlinge (intruders)
+        \item Vandalismus, Terrorismus (reine Zerstörungswut)
+        \item Systemmissbrauch
         \begin{itemize*}
-            \item im engeren Sinne menschliche Angreifer ( ,,Hacker'' ), deren Angriff eine technische Schwachstelleausnutzt ( exploit )
+            \item illegitime Ressourcennutzung, hocheffektive Folgeangriffe
+            \item Manipulation von Inhalten ($\rightarrow$ Desinformation)
         \end{itemize*}
-        \item
-        Schadsoftware (malicious software, malware)
+        \item (Wirtschafts-) Spionage und Diebstahl
         \begin{itemize*}
-            \item durch Ausnutzung einer (auch menschlichen) Schwachstelle zur Ausführung gebrachte Programme, die (teil-) automatisierte Angriffe durchführen
-            \item Trojanische Pferde (trojan horses): scheinbar nützliche Software, die verborgene Angriffsfunktionalität enthält
-            \item Viren, Würmer (viruses, worms): Schadsoftware, die Funktionalität zur eigenen Vervielfältigung und/oder Modifikation beinhaltet
-            \item Logische Bomben (logicbombs): Code-Sequenz in trojanischen Pferden, deren Aktivierung an System-oder Datumsereignisse gebunden ist
+            \item Verlust der Kontrolle über kritisches Wissen ($\rightarrow$ Risikotechnologien)
+            \item immense wirtschaftliche Schäden, z.B. Diebstahl von industriellem Know-How
+        \end{itemize*}
+        \item Betrug, persönliche Bereicherung (wirtschaftliche Schäden)
+        \item Sabotage, Erpressung
+        \begin{itemize*}
+            \item Außerkraftsetzen lebenswichtiger Infrastruktur
+            \item Erpressung durch reversible Sabotage
+        \end{itemize*}
+    \end{enumerate*}
+
+    \subsection{Bedrohungen}
+    \begin{enumerate*}
+        \item Eindringlinge (intruders), Hacker
+        \begin{itemize*}
+            \item Angriff nutzt technische Schwachstelle aus ( exploit )
+        \end{itemize*}
+        \item Schadsoftware (malicious software, malware)
+        \begin{itemize*}
+            \item (teil-) automatisierte Angriffe
+            \item Trojanische Pferde: scheinbar nützliche Software
+            \item Viren, Würmer: Funktionalität zur eigenen Vervielfältigung und/oder Modifikation
+            \item Logische Bomben: trojanischen Pferde, deren Aktivierung an System- oder Datumsereignisse gebunden
             \item Root Kits
         \end{itemize*}
-        \item
-        Bots und Botnets
+        \item Bots und Botnets
         \begin{itemize*}
             \item (weit-) verteilt ausgeführte Schadsoftware
             \item eigentliches Ziel i.d.R. nicht das jeweils infizierte System
         \end{itemize*}
     \end{enumerate*}
 
-
-    \subparagraph{Professionelle Malware: Root
-        Kit}
-
+    \subsubsection{Professionelle Malware: Root  Kit}
     \begin{itemize*}
-        \item
-        Programm-Paket, das unbemerkt Betriebssystem (und ausgewählte
-        Anwendungen) modifiziert, um Administratorrechte zu erlangen
+        \item Programm-Paket, das unbemerkt Betriebssystem modifiziert, um Administratorrechte zu erlangen
+        \item Voraussetzung: eine einzige Schwachstelle...
+        \item ermöglichen Zugriff auf alle Funktionen und Dienste eines Betriebssystems
+        \item Angreifer erlangt vollständige Kontrolle des Systems und kann
         \begin{itemize*}
-            \item Administrator-bzw. Rootrechte: ermöglichen Zugriff auf alle Funktionen und Dienste eines Betriebssystems
-            \item Angreifer erlangt vollständige Kontrolle des Systems und kann \begin{itemize*} \item Dateien (Programme) hinzufügen bzw. ändern \item Prozesse überwachen \item über die Netzverbindungen senden und empfangen \item bei all dem Hintertüren für Durchführung und Verschleierung zukünftiger Angriffe platziere \end{itemize*}
-            \item Ziele eines Rootkits: \begin{itemize*} \item seine Existenz verbergen \item zu verbergen, welche Veränderungen vorgenommen wurden \item vollständige und irreversible Kontrolle über BS zu erlangen \end{itemize*}
+            \item Dateien (Programme) hinzufügen bzw. ändern
+            \item Prozesse überwachen
+            \item über die Netzverbindungen senden und empfangen
+            \item Hintertüren für zukünftiger Angriffe platzieren
         \end{itemize*}
-        \item
-        Ein erfolgreicher Root-Kit-Angriff ...
+        \item Ziele eines Rootkits
         \begin{itemize*}
-            \item ... kann jederzeit
-            \item ... mit hochaktuellem und systemspezifischem Wissen über Schwachstellen
-            \item ... vollautomatisiert, also reaktiv unverhinderbar
-            \item ... unentdeckbar
-            \item ... nicht reversibel
-            \item ... die uneingeschränkte Kontrolle über das Zielsystem erlangen.
+            \item seine Existenz verbergen
+            \item zu verbergen, welche Veränderungen vorgenommen wurden
+            \item vollständige und irreversible Kontrolle über BS zu erlangen
         \end{itemize*}
-        \item
-        Voraussetzung: eine einzige Schwachstelle...
-    \end{itemize*}
-
-
-    \subparagraph{Schwachstellen}
-
-    \begin{enumerate*}
-        \item
-        Passwort (begehrt: Administrator-Passwörter...)
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        ,,erraten''
-        \item
-        zu einfach, zu kurz, usw.
-        \item
-        Brute-Force-Angriffe mit Rechnerunterstützung
-        \item
-        Abfangen ( eavesdropping )
-        \item
-        unverschlüsselte Übertragung (verteilte Systeme) oder Speicherung
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{1}
-        \item
-        Programmierfehler (Speicherfehler...!)
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        im Anwenderprogrammen
-        \item
-        in Gerätemanagern
-        \item
-        im Betriebssystem
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{2}
-        \item
-        Mangelhafte Robustheit
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        keine Korrektur fehlerhafter Eingaben
-        \item
-        buffer overrun/underrun (,, Heartbleed'' )
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \setcounter{enumi}{3}
-        \item
-        Nichttechnische Schwachstellen
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item
-        physisch, organisatorisch, infrastrukturell
-        \item
-        menschlich ( $\rightarrow$ Erpressung,
-        socialengineering )
-    \end{itemize*}
-
-
-    \subparagraph{Zwischenfazit}
-
-    \begin{itemize*}
-        \item
-        Schwachstellen sind unvermeidbar
-        \item
-        Bedrohungen sind unkontrollierbar
+        \item erfolgreicher Root-Kit-Angriff ...
         \begin{itemize*}
-            \item ... und nehmen tendeziellzu!
+            \item jederzeit, unentdeckbar, nicht reversibel
+            \item systemspezifischem Wissen über Schwachstellen
+            \item vollautomatisiert, also reaktiv unverhinderbar
+            \item uneingeschränkte Kontrolle über Zielsystem erlangen
         \end{itemize*}
     \end{itemize*}
 
-    Beides führt zu operationellen Risiken beim Betrieb eines IT-Systems
+    \subsubsection{Schwachstellen}
+    \begin{enumerate*}
+        \item Passwort (erraten, zu einfach, Brute-Force, Abfangen)
+        \item Programmierfehler (Speicherfehler in Anwenderprogrammen/Gerätemanagern/Betriebssystem
+        \item Mangelhafte Robustheit
+        \begin{itemize*}
+            \item keine Korrektur fehlerhafter Eingaben
+            \item buffer overrun/underrun (,,Heartbleed'')
+        \end{itemize*}
+        \item Nichttechnische Schwachstellen
+        \begin{itemize*}
+            \item physisch, organisatorisch, infrastrukturell
+            \item menschlich ( $\rightarrow$ Erpressung, socialengineering )
+        \end{itemize*}
+    \end{enumerate*}
 
-    $\rightarrow$ Aufgabe der Betriebssystemsicherheit:
-    Auswirkungen operationeller Risiken reduzieren (wo diese nicht vermieden
-    werden können...)
-
-    Wie dies geht: Security Engineering
-
+    \subsubsection{Zwischenfazit}
+    \begin{itemize*}
+        \item Schwachstellen sind unvermeidbar
+        \item Bedrohungen sind unkontrollierbar
+        \item ... und nehmen tendeziell zu!
+        \item führt zu operationellen Risiken beim Betrieb eines IT-Systems
+        \item[$\rightarrow$] Aufgabe der BS-Sicherheit: Auswirkungen operationeller Risiken reduzieren
+    \end{itemize*}
 
     \subsection{Sicherheitspolitiken}
 
@@ -3325,7 +3139,7 @@
     \end{itemize*}
 
     \begin{enumerate*}
-        \setcounter{enumi}{1}
+
         \item
         Prozesse nebenläufiger Nicht-Multimedia-Anwendungen
         \begin{itemize*}
@@ -3876,7 +3690,7 @@
         \end{itemize*}
         \begin{enumerate*}
 
-            \setcounter{enumi}{1}
+
             \item Synchronisation
         \end{enumerate*}
         \begin{itemize*}

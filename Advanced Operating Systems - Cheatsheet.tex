@@ -1132,254 +1132,111 @@
 
     \subsection{Micro-Reboots}
     \begin{itemize*}
-        \item Beobachtungen am Ausfallverhalten von BS:
-        \item Kernelfehler sind (potenziell) fatal für gesamtes System
-        \item Anwendungsfehler sind es nicht
+        \item Kernelfehler potentiell fatal für gesamtes System
+        \item Anwendungsfehler nicht
         \item[$\rightarrow$] kleiner Kernel = geringeres Risiko von Systemausfällen
-        \item[$\rightarrow$] durch BS-Code in Serverprozessen: verbleibendes Risiko unabhängiger Teilausfälle von BS-Funktionalität (z.B. FS, Treiberprozesse, GUI, ...)
-        \item Ergänzung zu Isolationsmechanismen:
+        \item[$\rightarrow$] BS-Code in Serverprozessen: verbleibendes Risiko unabhängiger Teilausfälle von BS-Funktionalität
+        \item Ergänzung zu Isolationsmechanismen notwendig
         \item Mechanismen zur Behandlung von Subsystem-Ausfällen
-        \item = Mechanismen zur Behandlung Anwendungs-, Server- und Gerätetreiberfehlen
+        \item[=] Mechanismen zur Behandlung Anwendungs-, Server- und Gerätetreiberfehlen
         \item[$\rightarrow$] Micro-Reboots
     \end{itemize*}
 
     Ansatz
-
     \begin{itemize*}
-        \item
-        wir haben:
-        \item
-        kleinen, ergo vertrauenswürdigen (als fehlerfrei angenommenen)$\mu$Kernel
-        \item
-        BS-Funktionalität in bedingt vertrauenswürdigen Serverprozessen
-        (kontrollierbare, aber wesentlich größere Codebasis)
-        \item
-        Gerätetreiber und Anwendungen in nicht vertrauenswürdigen Prozessen
-        (nicht kontrollierbare Codebasis)
-        \item
-        wir wollen:
-        \item
-        Systemausfälle verhindern durch Vermeidung von errors im Kernel
-        $\rightarrow$ höchste Priorität
-        \item
-        Treiber-und Serverausfälle minimieren durch Verbergen ihrer
-        Auswirkungen $\rightarrow$ nachgeordnete Priorität
-        (Best-Effort-Prinzip)
-        \item
-        Idee:
-        \begin{itemize*}
-            \item Systemausfälle $\rightarrow$ $\mu$Kernel
-            \item Treiber-und Serverausfälle $\rightarrow$ Neustart durch spezialisierten Serverprozess
-        \end{itemize*}
+        \item kleinen (als fehlerfrei angenommenen) $\mu$Kernel
+        \item BS-Funktionalität in bedingt vertrauenswürdigen Serverprozessen %(kontrollierbare, aber wesentlich größere Codebasis)
+        \item Treiber/Anwendungen in nicht vertrauenswürdigen Prozessen %(nicht kontrollierbare Codebasis)
+        \item wollen Systemausfälle verhindern durch Vermeidung von errors im Kernel $\rightarrow$ höchste Priorität
+        \item Treiber-und Serverausfälle minimieren durch Verbergen ihrer Auswirkungen $\rightarrow$ nachgeordnete Priorität (Best-Effort-Prinzip)
+        \item Idee: Ausfälle $\rightarrow$ Neustart durch spezialisierten Serverprozess
     \end{itemize*}
 
-    Beispiel: Ethernet-Treiberausfall
+    %Beispiel: Ethernet-Treiberausfall
+    %\begin{itemize*}
+    %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
+    %    \item schwarz: ausfallfreie Kommunikation
+    %    \item rot: Ausfall und Behandlung
+    %    \item blau: Wiederherstellung nach Ausfall
+    %\end{itemize*}
 
+    %Beispiel: Dateisystem-Serverausfall
+    %\begin{itemize*}
+    %    %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
+    %    \item schwarz: ausfallfreie Kommunikation
+    %    \item rot: Ausfall und Behandlung
+    %    \item blau: Wiederherstellung nach Ausfall
+    %\end{itemize*}
+
+    \subsubsection{Beispiel-Betriebssystem: MINIX}
     \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-ethernet-treiberausfall.png}
-        \item
-        schwarz: ausfallfreie Kommunikation
-        \item
-        rot: Ausfall und Behandlung
-        \item
-        blau: Wiederherstellung nach Ausfall
-    \end{itemize*}
-
-    Beispiel: Dateisystem-Serverausfall
-
-    \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dateisystem-serverausfall.png}
-        \item
-        schwarz: ausfallfreie Kommunikation
-        \item
-        rot: Ausfall und Behandlung
-        \item
-        blau: Wiederherstellung nach Ausfall
-    \end{itemize*}
-
-
-    \subsection{Beispiel-Betriebssystem:
-        MINIX}
-
-    \begin{itemize*}
-        \item
-        Ziele:
-        \item
-        robustes Betriebssystems
-        \item
-        $\rightarrow$ Schutz gegen Sichtbarwerden von
-        Fehlern(= Ausfälle) für Nutzer
-        \item
-        Fokus auf Anwendungsdomänen: Endanwender-Einzelplatzrechner (Desktop,
-        Laptop, Smart*) und eingebettete Systeme
-        \item
-        Anliegen: Robustheit \textgreater{} Verständlichkeit \textgreater{}
-        geringer HW-Bedarf
-        \item
-        aktuelle Version: MINIX 3.3.0
+        \item Ziel: robustes Betriebssystems
+        \item[$\rightarrow$] Schutz gegen Sichtbarwerden von Fehlern(= Ausfälle) für Nutzer
+        \item Fokus auf Anwendungsdomänen: Einzelplatzrechner und eingebettete Systeme
+        \item Anliegen: Robustheit \textgreater{} Verständlichkeit \textgreater{} geringer HW-Bedarf
     \end{itemize*}
 
     Architektur
-
     \begin{itemize*}
-        \item
-        Kommunikationsschnittstellen ...
-        \begin{itemize*}
-            %\item
-            % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur.png}
-            \item ... für Anwendungen (weiß): Systemaufrufe im POSIX-Standard
-            \item ... für Serverprozesse (grau): \begin{itemize*} \item untereinander: IPC (botschaftenbasiert) \item mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt \end{itemize*}
-        \end{itemize*}
-        \item
-        Betriebssystem-Serverprozesse:
+        \item \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur.png}
+        \item Anwendungen (weiß): Systemaufrufe im POSIX-Standard
+        \item Serverprozesse (grau): IPC (botschaftenbasiert), mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
-        \item
-        Dateisystem (FS)
-        \item
-        Prozessmanagement (PM)
-        \item
-        Netzwerkmanagement (Net)
-        \item
-        Reincarnation Server (RS) $\rightarrow$ Micro-Reboots
-        jeglicher Serverprozesse
-        \item
-        (u. a.) ...
-        \item
-        Kernelprozesse:
-        \item
-        systemtask
-        \item
-        clocktask
+        \item Betriebssystem-Serverprozesse: Dateisystem (FS), Prozessmanagement (PM), Netzwerkmanagement (Net)
+        \item Reincarnation Server (RS) $\rightarrow$ Micro-Reboots jeglicher Serverprozesse
+        \item Kernelprozesse: systemtask, clocktask
     \end{itemize*}
 
     Reincarnation Server
-
     \begin{itemize*}
-        \item
-        Implementierungstechnik für Micro-Reboots:
-        \item
-        Prozesse zum Systemstart ( $\rightarrow$ Kernel
-        Image): system, clock, init, rs
-        \begin{itemize*}
-            \item system, clock: Kernelprogramm
-            \item init: Bootstrapping (Initialisierung von rs und anderer BS-Serverprozesse), Fork der Login-Shell (und damit sämtlicher Anwendungsprozesse)
-            \item rs: Fork sämtlicher BS-Serverprozesse, einschließlich Gerätetreiber
-        \end{itemize*}
+        \item Implementierungstechnik für Micro-Reboots
+        \item Prozesse zum Systemstart ($\rightarrow$ Kernel Image)
+        \begin{description*}
+            \item[system, clock] Kernelprogramm
+            \item[init] Bootstrapping (Initialisierung rs), Fork der Login-Shell
+            \item[rs] Fork aller BS-Serverprozesse inkl. Gerätetreiber
+        \end{description*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-reincarnation-server.png}
     \end{itemize*}
 
-    MINIX: Ausprobieren
-
-    \begin{itemize*}
-        \item
-        \href{https://wiki.minix3.org/doku.php?id=www:getting-started:start}{ausführliche
-            Dokumentation}
-        \item
-        \href{https://wiki.minix3.org/doku.php?id=www:download:start}{vorkompiliertes
-            Kernel-Image zum Installieren (VirtualBox, VMWare, ...)}
-    \end{itemize*}
-
-
     \subsection{Verfügbarkeit}
-
     \begin{itemize*}
-        \item
-        komplementäre NFE zu Robustheit: Verfügbarkeit ( availability )
-        \begin{itemize*}
-            \item Zur Erinnerung: Untereigenschaften von Verlässlichkeit
-        \end{itemize*}
-        \begin{enumerate*}
-
-            \item Verfügbarkeit (availability)
-            \item Robustheit (robustness, reliability)
-        \end{enumerate*}
-        \item
-        Beziehung:
-        \begin{itemize*}
-            \item Verbesserung von Robustheit $\rightarrow$ Verbesserung von Verfügbarkeit
-            \item Robustheitsmaßnahmen hinreichend , nicht notwendig (hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
-        \end{itemize*}
-        \item
-        eine weitere komplementäre NFE:
-        \begin{itemize*}
-            \item Robustheit $\rightarrow$ Sicherheit (security)
-        \end{itemize*}
-    \end{itemize*}
-
-    Allgemeine Definition: Der Grad, zu welchem ein System oder eine
-    Komponente funktionsfähig und zugänglich (erreichbar) ist,wann immer
-    seine Nutzung erforderlichist. (IEEE)
-
-    genauer quantifiziert:
-
-    \begin{itemize*}
-        \item
-        Der Anteil an Laufzeit eines Systems, in dem dieses seine
-        spezifizierte Leistung erbringt.
+        \item komplementäre NFE zu Robustheit: Verfügbarkeit ( availability )
+        \item Verbesserung von Robustheit $\rightarrow$ Verbesserung von Verfügbarkeit
+        \item Robustheitsmaßnahmen hinreichend , nicht notwendig %(hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
+        \item weitere komplementäre NFE: Robustheit $\rightarrow$ Sicherheit (security)
+        \item Definition: Grad, zu welchem ein System oder eine Komponente funktionsfähig und zugänglich (erreichbar) ist, wann immer seine Nutzung erforderlich ist (IEEE)
+        \item Anteil an Laufzeit eines Systems, in dem dieses seine spezifizierte Leistung erbringt
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-verfügbarkeit-laufzeit.png}
-        \item
-        Availability= Total Uptime/ Total Lifetime= MTTF / (MTTF + MTTR)
-        \begin{itemize*}
-            \item MTTR: Mean Time to Recovery ... Erwartungswert für TTR
-            \item MTTF: Mean Time to Failure ... Erwartungswert für TTF
-        \end{itemize*}
-        \item
-        einige Verfügbarkeitsklassen: | Verfügbarkeit |
-        Ausfallzeit pro Jahr | Ausfallzeit pro Woche |
-        | ------------- |
-        -------------------- |
-        ---------------------
-        | | 90\% | \textgreater{} 1 Monat
-        | ca. 17 Stunden | | 99\% | ca. 4
-        Tage | ca. 2 Stunden | | 99,9\% |
-        ca. 9 Stunden | ca. 10 Minuten | | 99,99\%
-        | ca. 1 Stunde | ca. 1 Minute | |
-        99,999\% | ca. 5 Minuten | ca. 6 Sekunden |
-        | 99,9999\% | ca. 2 Sekunden |
-        \textless\textless{} 1 Sekunde |
-        \item
-        Hochverfügbarkeitsbereich (gefeierte ,,five nines'' availability)
-        \item
-        Maßnahmen:
-        \item
-        Robustheitsmaßnahmen
-        \item
-        Redundanz
-        \item
-        Ausfallmanagement
+        \item $Availability= \frac{Total Uptime}{Total Lifetime}= \frac{MTTF}{MTTF + MTTR}$
+        \item MTTR: Mean Time to Recovery, MTTF: Mean Time to Failure
+        \item Hochverfügbarkeitsbereich (gefeierte ,,five nines'' availability)
+        \item Maßnahmen: Robustheit, Redundanz, Ausfallmanagement
     \end{itemize*}
 
+    einige Verfügbarkeitsklassen:
+    \begin{tabular}{l|l|l}
+        Verfügbarkeit & Ausfallzeit pro Jahr   & Ausfallzeit pro Woche          \\\hline
+        90\%          & \textgreater{} 1 Monat & ca. 17 Stunden                 \\
+        99\%          & ca. 4 Tage             & ca. 2 Stunden                  \\
+        99,9\%        & ca. 9 Stunden          & ca. 10 Minuten                 \\
+        99,99\%       & ca. 1 Stunde           & ca. 1 Minute                   \\
+        99,999\%      & ca. 5 Minuten          & ca. 6 Sekunden                 \\
+        99,9999\%     & ca. 2 Sekunden         & \textless\textless{} 1 Sekunde
+    \end{tabular}
 
-    \subsubsection{QNX Neutrino: Hochverfügbares
-        Echtzeit-BS}
-
-    Überblick QNX:
-
+    \subsubsection{QNX Neutrino: Hochverfügbares Echtzeit-BS}
     \begin{itemize*}
-        \item
-        Mikrokern-Betriebssystem
-        \item
-        primäres Einsatzfeld: eingebettete Systeme, z.B. Automobilbau
-        \item
-        Mikrokernarchitektur mit Adressraumisolation für Gerätetreiber
-        \item
-        (begrenzt) dynamische Micro-Rebootsmöglich
-        \item
-        $\rightarrow$ Maximierung der Uptime des Gesamtsystems
+        \item Mikrokern-Betriebssystem
+        \item primäres Einsatzfeld: eingebettete Systeme, z.B. Automobilbau
+        \item Mikrokernarchitektur mit Adressraumisolation für Gerätetreiber
+        \item (begrenzt) dynamische Micro-Rebootsmöglich
+        \item $\rightarrow$ Maximierung der Uptime des Gesamtsystems
     \end{itemize*}
-
-    Hochverfügbarkeitsmechanismen:
-
-    \begin{enumerate*}
-        \item
-        ,,High-Avalability-Manager'': Laufzeit-Monitor, der Systemdienste oder
-        Anwendungsprozesse überwacht und neustartet
-        $\rightarrow$ $\mu$Reboot-Server
-        \item
-        ,,High-Availability-Client-Libraries'': Funktionen zur transparenten
-        automatischen Reboot für ausgefallene Server-Verbindungen
-    \end{enumerate*}
-
+    \begin{description*}
+        \item[High-Avalability-Manager] Laufzeit-Monitor der Systemdienste/Anwendungsprozesse überwacht und neustartet $\rightarrow$ $\mu$Reboot-Server
+        \item[High-Availability-Client-Libraries] Funktionen zur transparenten automatischen Reboot für ausgefallene Server-Verbindungen
+    \end{description*}
 
     \section{Sicherheit}
 

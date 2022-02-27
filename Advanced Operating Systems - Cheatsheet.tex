@@ -1853,238 +1853,96 @@
     \end{itemize*}
 
     \section{Echtzeitfähigkeit}
+    Jedes System, bei dem der Zeitpunkt, zu dem der Output erzeugt wird, von Bedeutung ist. Dies liegt in der Regel daran, dass die Eingabe einer Bewegung in der physischen Welt entspricht und die Ausgabe sich auf dieselbe Bewegung beziehen muss. Die Verzögerung zwischen Eingabe- und Ausgabezeit muss für eine akzeptable Aktualität ausreichend klein sein.
 
-
-    \subsection{Motivation}
-
-    Echtzeitbegriff: Was ist ein Echtzeitsystem?
-
-    \begin{quote}
-        Any system in which the time at which output is produced is significant.
-        This is usually because the input corresponds to some movement in the
-        physical world, and the output has to relate to that same movement. The
-        lag from input time to output time must be sufficiently small for
-        acceptable timeliness. (The Oxford DictionaryofComputing)
-    \end{quote}
-
-    \begin{quote}
-        A real-time system is any information processing activity or system
-        which has to respond to externally generated input stimuli within a
-        finite and specified period. [Young 1982]
-    \end{quote}
-
-    \begin{quote}
-        A real-time system is a system that is required to react to stimuli from
-        the environment (including the passage of physical time) within time
-        intervals dictated by the environment. [Randall et.al. 1995]
-    \end{quote}
-
-    Spektrum von Echtzeitsystemen:
-
+    Spektrum von Echtzeitsystemen
     \begin{enumerate*}
-        \item Regelungssysteme: z.B. eingebettete Systeme (exakter: Steuerungs-,
-        Regelungs-u. Überwachungssysteme = ,,SRÜ''-Systeme)
+        \item Regelungssysteme: z.B. eingebettete Systeme, Flugsteuerung
         \item Endanwender-Rechnersysteme: z.B. Multimediasysteme
-        \item Lebewesen: Menschen, Tiere
+        \item Lebewesen: Menschen, Tiere, z.B. Gesundheitsüberwachung
     \end{enumerate*}
-
-    Beispiel Regelungssystem: ,,Fly-by-Wire''-Fluglage-Regelungssystem
-    (Schema)
-
-    \begin{enumerate*}
-        \item Flugzeugbewegung
-        \item Sensoren + Einstellmöglichkeiten des Piloten
-        \item Echtzeit-Datenverarbeitung (durch Echtzeit-Rechnersystem)
-        \item Aktoren setzen Berechnung um
-        \item Einstellung von Regelflächen
-        \item Aerodynamik und Flug Mechanik führt zu Flugzeugbewegung (1.)
-    \end{enumerate*}
-
-    Beispiel Überwachungssysteme
-
     \begin{itemize*}
-        \item Luftraumüberwachung:
+        \item Murphy`s Law: If something can go wrong, it will got wrong
+        \item Murphy`s Constant: Damage to an object is proportional to its value
+        \item Johnson`s Law: If a system stops working, it will do it at the worst possible time
+        \item Sodd`s Law: Sooner or later, the worst possible combination of circumstances will happen
+        \item Realisierung von Echtzeiteigenschaften: komplex und fragil
+    \end{itemize*}
+
+    \begin{description*}
+        \item[Antwortzeit] Zeitintervall, das ein System braucht, um (irgend)eine Ausgabe als Reaktion auf (irgend)eine Eingabe zu erzeugen
+        \item[Frist]
         \begin{itemize*}
-            \item Ortsfeste Radarstation
-            \item Mobile Radarstation
-            \item Tiefflieger-Erfassungsradar
-            \item Flugplatzradar Netzfunkstellen
-            \item Zentrale
+            \item bei EZS ist genau dieses $\Delta t$ kritisch, d.h. je nach Art des Systems darf dieses auf keinen Fall zu groß werden
+            \item Frist (deadline) $d$, die angibt bis zu welchem Zeitpunkt spätestmöglich die Reaktion erfolgt sein muss, bzw. wie groß das Intervall $\Delta t$ maximal sein darf
         \end{itemize*}
-        \item Umweltüberwachung: Stickstoffdioxidkonzentration über Europa
-        \item Vorgeburtliche Gesundheitsüberwachung: Herzschlagsüberwachungssystem
-        für Mutter und Kind
-    \end{itemize*}
-
-    Beispiel Multimediasystem
-
-    \begin{itemize*}
-        \item zeitabhängige Datenwiedergabe
-        \item Bildwiedergabe bei Mediendatenströmen
-        \item Durchführung der Schritte durch Multimedia-Task binnen $t_{i+1} -
-            t_i$
-        \item Frist für Rendering in Multimedia-Tasks: festgelegt durch periodische
-        Bildrate (24~48 fps $\rightarrow$ 1/24
-        ... 1/48 s)
-        \item $\rightarrow$ Berücksichtigung bei Scheduling,
-        Interruptbehandlung, Speicherverwaltung, ... erforderlich!
-    \end{itemize*}
-
-    Zwischenfazit [Buttazzo97]
-
-    \begin{itemize*}
-        \item Murphy`s General Law: If something can go wrong, it will got wrong.
-        \item Murphy`s Constant: Damage to an object is proportional to its value.
-        \item Johnson`s First Law: If a system stops working, it will do it at the
-        worst possible time.
-        \item Sodd`sSecond Law: Sooner or later, the worst possible combination of
-        circumstances will happen.
-    \end{itemize*}
-
-    Realisierung von Echtzeiteigenschaften: komplex und fragil!
-
-
-    \subsection{Terminologie}
-
-    bevor wir uns über Echtzeit-Betriebssystemen unterhalten:
-
-    \begin{enumerate*}
-        \item Wie ist die Eigenschaft Echtzeit definiert?
-        \item Was sind (rechnerbasierte) Echtzeitsysteme?
-        \item Wie können Echtzeitanwendungen beschrieben werden?
-        \item Welche grundsätzlichen Typen von Echtzeitprozessen gibt es/wodurch
-        werden diese charakterisiert?
-    \end{enumerate*}
-
-    Antwortzeit:
-
-    \begin{itemize*}
-        \item Alle Definitionen -die zitierten u. andere - betrachten eine
-        ,,responsetime'' (Antwortzeit, Reaktionszeit) als das Zeitintervall,
-        das ein System braucht, um (irgend)eine Ausgabe als Reaktion auf
-        (irgend)eine Eingabe zu erzeugen.
-    \end{itemize*}
-
-    Frist
-
-    \begin{itemize*}
-        \item Bei Echtzeitsystemen ist genau dieses $\Delta t$
-        kritisch, d.h. je nach Art des Systems darf dieses auf keinen Fall zu
-        groß werden.
-        \item Genauer spezifizierbar wird dies durch Einführung einer Frist
-        (deadline, due time) $d$, die angibt bis zu welchem Zeitpunkt
-        spätestmöglich die Reaktion erfolgt sein muss, bzw. wie groß das
-        Intervall $\Delta t$ maximal sein darf.
-    \end{itemize*}
-
-    Echtzeitfähigkeit und Korrektheit
-
-    \begin{itemize*}
-        \item Wird genau dieses maximale Zeitintervall in die Spezifikation eines
-        Systems einbezogen, bedeutet dies, dass ein Echtzeitsystem nur dann
-        korrekt arbeitet, wenn seine Reaktion bis zur spezifizierten Frist
-        erfolgt.
-        \item Die Frist trennt also korrektes von inkorrektem Verhalten des Systems.
-    \end{itemize*}
-
-    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeitfähigkeit.png}
-
-    Harte und weiche Echtzeitsysteme
-
-    \begin{itemize*}
-        \item Praktische Anwendungen erfordern oft Unterscheidung in harte und
-        weiche Echtzeitsysteme:
+        \item[Echtzeitfähigkeit und Korrektheit]
         \begin{itemize*}
-            \item hartes Echtzeitsystem: keine Frist darf jemals überschritten werden (sonst: katastrophale Konsequenzen)
-            \item weiches Echtzeitsystem: maßvolles (im spezifizierten Maß) Überschreiten von Fristen tolerierbar
+            \item Wird genau dieses maximale Zeitintervall in die Spezifikation eines Systems einbezogen, bedeutet dies, dass ein Echtzeitsystem nur dann korrekt arbeitet, wenn seine Reaktion bis zur spezifizierten Frist erfolgt
+            \item Frist trennt korrektes von inkorrektem Verhalten des Systems
         \end{itemize*}
-    \end{itemize*}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeitfähigkeit.png}
+        \item[Harte und weiche Echtzeitsysteme]
+        \begin{itemize*}
+            \item Praktische Anwendungen erfordern oft Unterscheidung
+            \item hartes EZS: keine Frist jemals überschreiten
+            \item weiches EZS: maßvolles Frist Überschreiten tolerierbar
+        \end{itemize*}
+    \end{description*}
 
-
-    \subsection{Charakteristika von
-        Echtzeit-Prozessen}
-
+    \subsection{Charakteristika von Echtzeit-Prozessen}
     \begin{itemize*}
-        \item reale Echtzeitanwendungen beinhalten periodische oder aperiodische
-        Prozesse (oder Mischung aus beiden)
-        \item typische Unterscheidung:
+        \item reale Echtzeitanwendungen beinhalten periodische oder aperiodische Prozesse (oder Mischung aus beiden)
+        \item Periodische Prozesse
         \begin{itemize*}
-            \item Periodische Prozesse \begin{itemize*} \item zeitgesteuert (typisch: periodische Sensorauswertung) \item oft: kritische Aktivitäten $\rightarrow$ harte Fristen \end{itemize*}
-            \item Aperiodische Prozesse \begin{itemize*} \item ereignisgesteuert \item Abhängig von Anwendung: harte oder weiche Fristen, ggf. sogar Nicht-Echtzeit \end{itemize*}
+            \item zeitgesteuert (typisch: periodische Sensorauswertung)
+            \item oft: kritische Aktivitäten $\rightarrow$ harte Fristen
         \end{itemize*}
-    \end{itemize*}
-
-
-    \subsubsection{Periodische Prozesse}
-
-    \begin{itemize*}
-        \item bei Echtzeit-Anwendungen: häufigster Fall
-        \item typisch für:
-        \begin{enumerate*}
-
-            \item periodische Analyse von Sensor-Daten (z.B. Umweltüberwachung)
-            \item Aktionsplanung (z.B. automatisierte Montage)
-            \item Erzeugung oder Verarbeitung einzelner Dateneinheiten eines multimedialen Datenstroms
-            \item ...
-        \end{enumerate*}
-        \item Prozessaktivierung
-        \begin{itemize*}
-            \item ereignisgesteuert oder zeitgesteuert
-            \item Prozesse, die Eingangsdaten verarbeiten: meist ereignisgesteuert, z.B. wenn neues Datenpaket eingetroffen
-            \item Prozesse, die Ausgangsdaten erzeugen: meist zeitgesteuert, z.B. Ansteuerung von Roboteraktoren
-        \end{itemize*}
-    \end{itemize*}
-
-    Periodische Prozesse
-
-    \begin{itemize*}
-        \item Fristen:
-        \begin{itemize*}
-            \item hart oder weich (anwendungsabhängig) \begin{itemize*} \item innerhalb einer Anwendung sind sowohl Prozesse mit harten oder weichen Fristen möglich \item Frist: spätestens am Ende der aktuellen Periode, möglich auch frühere Frist \end{itemize*}
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
-        \end{itemize*}
-        \item Modellierung:
-        \begin{itemize*}
-            \item unendliche Folge identischer Aktivierungen: Instanzen, aktiviert mit konstanter Rate (Periode)
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
-        \end{itemize*}
-        \item Aufgaben des Betriebssystems:
-        \begin{itemize*}
-            \item WennalleSpezifikationeneingehaltenwerden-muss Betriebssystem garantieren, dass \begin{enumerate*} \item zeitgesteuerte periodische Prozesse: mit ihrer spezifizierten Rate aktiviert werden und ihre Frist einhalten können \item ereignisgesteuerte periodische Prozesse: ihre Frist einhalten können \end{enumerate*}
-        \end{itemize*}
-    \end{itemize*}
-
-
-    \subsubsection{Aperiodische Prozesse}
-
-    \begin{itemize*}
-        \item typisch für
-        \begin{itemize*}
-            \item unregelmäßig auftretende Ereignisse, z.B.: \begin{itemize*} \item Überfahren der Spurgrenzen, Unterschreiten des Sicherheitsabstands $\rightarrow$ Reaktion des Fahrassistenzsystems \item Nutzereingaben in Multimediasystemen ( $\rightarrow$ Spielkonsole) \end{itemize*}
-        \end{itemize*}
-        \item Prozessaktivierung
+        \item Aperiodische Prozesse
         \begin{itemize*}
             \item ereignisgesteuert
-        \end{itemize*}
-        \item Fristen
-        \begin{itemize*}
-            \item oft weich(aber anwendungsabhängig)
-        \end{itemize*}
-        \item Aufgabendes Betriebssystems
-        \begin{itemize*}
-            \item bei Einhaltung der Prozessspezifikationen muss Betriebssystem auch hier für Einhaltung der Fristen sorgen
-        \end{itemize*}
-        \item Modellierung
-        \begin{itemize*}
-            \item bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
+            \item Abhängig von Anwendung: harte oder weiche Fristen
         \end{itemize*}
     \end{itemize*}
 
+    \subsubsection{Periodische Prozesse (pP)}
+    \begin{description*}
+        \item häufigster Fall bei Echtzeit-Anwendungen
+        \item[Prozessaktivierung] ereignisgesteuert oder zeitgesteuert
+        \item Prozesse, die Eingangsdaten verarbeiten: meist ereignisgesteuert
+        \item Prozesse, die Ausgangsdaten erzeugen: meist zeitgesteuert
+        \item[Fristen]
+        \begin{itemize*}
+            \item hart oder weich (anwendungsabhängig)
+            \item innerhalb einer Anwendung sind sowohl Prozesse mit harten oder weichen Fristen möglich
+            \item Frist: spätestens am Ende der aktuellen Periode, möglich auch frühere Frist
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-frist.png}
+        \end{itemize*}
+        \item[Modellierung] unendliche Folge identischer Aktivierungen: Instanzen, aktiviert mit konstanter Rate (Periode)
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-periodisch-modellierung.png}
+        \item[Aufgaben des Betriebssystems]
+        \begin{itemize*}
+            \item Wenn alle Spezifikationen eingehalten werden, muss Betriebssystem garantieren, dass
+            \item zeitgesteuerte pP: mit ihrer spezifizierten Rate aktiviert werden und ihre Frist einhalten können
+            \item ereignisgesteuerte pP: ihre Frist einhalten können
+        \end{itemize*}
+    \end{description*}
 
-    \subsubsection{Parameter von
-        Echtzeit-Prozessen}
+    \subsubsection{Aperiodische Prozesse (aP)}
+    \begin{description*}
+        \item typisch für unregelmäßig auftretende Ereignisse, z.B.:
+        \begin{itemize*}
+            \item Überfahren der Spurgrenzen, Unterschreiten des Sicherheitsabstands $\rightarrow$ Reaktion des Fahrassistenzsystems
+            \item Nutzereingaben in Multimediasystemen ( $\rightarrow$ Spielkonsole)
+        \end{itemize*}
+        \item[Prozessaktivierung] ereignisgesteuert
+        \item[Fristen] oft weich (aber anwendungsabhängig)
+        \item[Aufgaben des Betriebssystems] bei Einhaltung der Prozessspezifikationen muss Betriebssystem auch hier für Einhaltung der Fristen sorgen
+        \item[Modellierung] bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
+    \end{description*}
 
+    \subsubsection{Parameter von Echtzeit-Prozessen}
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
         \item $a_i$: Ankunftszeitpunkt (arrival time); auch r ... request

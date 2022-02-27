@@ -1683,7 +1683,6 @@
     \end{itemize*}
 
     \subsection{Isolationsmechanismen}
-
     \begin{itemize*}
         \item bekannt: Isolationsmechanismen für robuste Betriebssysteme
         \begin{itemize*}
@@ -1692,274 +1691,166 @@
         \end{itemize*}
         \item nun: Isolationsmechanismen für sichere Betriebssysteme
         \begin{itemize*}
-            \item all die obigen...
-            \item kryptografische Hardwareunterstützung: Intel SGX Enclaves
-            \item sprachbasiert: \begin{itemize*} \item streng typisierte Sprachen und \emph{managed code} : Microsoft Singularity [HLAA05] \item speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel): \href{https://www.redox-os.org/}{RedoxOS} \end{itemize*}
-            \item isolierte Laufzeitumgebungen: Virtualisierung (Kap. 6)
+            \item krypto. Hardwareunterstützung: Intel SGX Enclaves
+            \item sprachbasiert:
+            \begin{itemize*}
+                \item streng typisierte Sprachen und \emph{managed code}: Microsoft Singularity
+                \item speichersichere Sprachen (Rust) + Adressraumisolation ($\mu$Kernel): \href{https://www.redox-os.org/}{RedoxOS}
+            \end{itemize*}
+            \item isolierte Laufzeitumgebungen: Virtualisierung
         \end{itemize*}
     \end{itemize*}
 
-
-    \subparagraph{Intel SGX}
-
+    \subsubsection{Intel SGX}
     \begin{itemize*}
-        \item SGX: Software Guard Extensions [CoDe16]
-        \item Ziel: Schutz von sicherheitskritischen Anwendungen durch vollständige,
-        hardwarebasierte Isolation
-        \item $\rightarrow$ strenggenommen kein BS-Mechanismus:
-        Anwendungen müssen dem BS nicht mehr vertrauen! (AR-Schutz, Wechsel
-        von Privilegierungsebenen, ...)
-        \item Annahmen/Voraussetzungen:
-        \begin{enumerate*}
-
-            \item sämtliche Software nicht vertrauenswürdig (potenziell durch Angreifer kontrolliert)
-            \item Kommunikation mit dem angegriffenen System nicht vertrauenswürdig (weder vertraulich noch verbindlich)
-            \item kryptografische Algorithmen (Verschlüsselung und Signierung) sind vertrauenswürdig, also nicht für den Angreifer zu brechen
-            \item Ziel der Isolation: Vertraulichkeit, Integrität und Authentizität(nicht Verfügbarkeit) von Anwendungen (Code) und den durch sie verarbeiteten Informationen
-        \end{enumerate*}
+        \item SGX: Software Guard Extensions
+        \item Ziel: Schutz von sicherheitskritischen Anwendungen durch vollständige, hardwarebasierte Isolation
+        \item $\rightarrow$ strenggenommen kein BS-Mechanismus: Anwendungen müssen dem BS nicht mehr vertrauen
+        \item Annahmen/Voraussetzungen
     \end{itemize*}
-
+    \begin{enumerate*}
+        \item sämtliche Software nicht vertrauenswürdig (potenziell durch Angreifer kontrolliert)
+        \item Kommunikation mit dem angegriffenen System nicht vertrauenswürdig (weder vertraulich noch verbindlich)
+        \item kryptografische Algorithmen (Verschlüsselung und Signierung) sind vertrauenswürdig, also nicht für den Angreifer zu brechen
+        \item Ziel: Vertraulichkeit, Integrität und Authentizität von Anwendungen und durch sie verarbeiteten Informationen
+    \end{enumerate*}
 
     \subparagraph{Enclaves}
-
     \begin{itemize*}
-        \item Idee: geschützter Speicherbereich für Teilmenge der Seiten (Code und
-        Daten) einer Task: Enclave Page Cache (EPC)
-        \item Prozessor (und nur dieser) ver-und entschlüsselt EPC-Seiten
+        \item Idee: geschützter Speicherbereich für Teilmenge der Seiten (Code und Daten) einer Task: Enclave Page Cache (EPC)
+        \item Prozessor ver-und entschlüsselt EPC-Seiten
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves.png}
-        \item Enclaves: Erzeugung
+    \end{itemize*}
+    \begin{description*}
+        \item[ECREATE] App $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU
+        \item[EADD] App $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU
         \begin{itemize*}
-            \item Erzeugen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (ECREATE)
-            \item Seiten hinzufügen: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (EADD) \begin{itemize*} \item Metainformationen für jede hinzugefügte Seite als Teil der EPC-Datenstruktur (u.a.: Enklave - ID, Zugriffsrechte, vAR-Adresse) \end{itemize*}
-            \item Initialisieren: App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU (EINIT) \begin{itemize*} \item finalisiert gesamten Speicherinhalt für diese Enclave \item CPU erzeugt Hashwert = eindeutige Signatur des Enclave - Speicherinhalts \item falls BS bis zu diesem Punkt gegen Integrität der Anwendung verstoßen hat: durch Vergleich mit von dritter Seite generiertem Hashwert feststellbar! \end{itemize*}
+            \item Metainformationen für jede hinzugefügte Seite als Teil der EPC-Datenstruktur
         \end{itemize*}
-        \item Enclave - Zustandsmodell (vereinfacht) :
-        %\begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves-model.png}
-        %\end{itemize*}
-        \item Zugriff: App. $\rightarrow$ CPU-Instruktionen in User
-        Mode (EENTER, EEXIT)
+        \item[EINIT] App. $\rightarrow$ Syscall $\rightarrow$ BS-Instruktion an CPU
         \begin{itemize*}
-            \item CPU erfordert, dass EPC-Seiten in vARder zugreifenden Task
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
+            \item finalisiert gesamten Speicherinhalt für diese Enclave
+            \item CPU erzeugt Hashwert = eindeutige Signatur des Enclave - Speicherinhalts
+            %\item falls BS bis zu diesem Punkt gegen Integrität der Anwendung verstoßen hat: durch Vergleich mit von dritter Seite generiertem Hashwert feststellbar!
         \end{itemize*}
+    \end{description*}
+    \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-SGX-enclaves-model.png}
+    \end{center}
+    \begin{itemize*}
+        \item Zugriff: App $\rightarrow$ CPU-Instruk. in User Mode (EENTER, EEXIT)
+        \item CPU erfordert, dass EPC-Seiten in vAR der zugreifenden Task
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-SGX-enlaves-zugriff.png}
     \end{itemize*}
 
-
     \subparagraph{SGX: Licht und Schatten}
-
     \begin{itemize*}
         \item Einführung 2015 in Skylake - Mikroarchitektur
         \item seither in allen Modellen verbaut, jedoch nicht immer aktiviert
-        \item Nutzer bislang: Demos und Forschungsprojekte, Unterstützung durch
-        einige Cloud-Anbieter, (noch) keine größeren Märkte erschlossen
         \item Konzept hardwarebasierter Isolation ...
-        \begin{itemize*}
-            \item[\cmark] liefert erstmals die Möglichkeit zur Durchsetzung von Sicherheitspolitiken auf Anwendungsebene
-            \item[O]setzt Vertrauen in korrekte (und nicht böswillige) Hardwarevoraus
-            \item[O]Dokumentation und Entwicklerunterstützung (im Ausbau ...)
-            \item[\xmark] schützt mittels Enclaves einzelne Anwendungen, aber nicht das System
-            \item[\xmark] steckt hinsichtlich praktischer Eigenschaften noch in den Anfängen (vgl. $\mu$Kernel...): \begin{itemize*} \item Performanz [WeAK18] \item Speicherkapazität(max. Größe EPC: 128 MiB, davon nur 93 MiBnutzbar) \item[$\rightarrow$] komplementäre NFE: Speichereffizienz! \end{itemize*}
-        \end{itemize*}
+        \item[\cmark] liefert erstmals die Möglichkeit zur Durchsetzung von Sicherheitspolitiken auf Anwendungsebene
+        \item[O]setzt Vertrauen in korrekte (und nicht böswillige) Hardwarevoraus
+        \item[O]Dokumentation und Entwicklerunterstützung (im Ausbau ...)
+        \item[\xmark] schützt durch Enclaves einzelne Anwendungen aber nicht System
+        \item[\xmark] steckt in praktischer Eigenschaften (Performanz, Speicher) noch in den Anfängen
     \end{itemize*}
-
 
     \subsection{Sicherheitsarchitekturen}
-
-    Sicherheitsarchitektur... ist die Softwarearchitektur (Platzierung,
-    Struktur und Interaktion) der Sicherheitsmechanismen eines IT-Systems.
-
     \begin{itemize*}
-        \item Voraussetzung zum Verstehen jeder Sicherheitsarchitektur:
+        \item Voraussetzung zum Verstehen jeder Sicherheitsarchitektur
         \begin{itemize*}
             \item Verstehen des Referenzmonitorprinzips
-            \item frühe Forschungen zu Betriebssystemsicherheit in 1970er-1980er Jahren durch US-Verteidigungsministerium
-            \item Schlüsselveröffentlichung: Anderson-Report(1972)[Ande72]
+            \item frühe Forschungen durch US-Verteidigungsministerium
+            \item Schlüsselveröffentlichung: Anderson-Report (1972)
             \item[$\rightarrow$] fundamentalen Eigenschaften zur Charakterisierung von Sicherheitsarchitekturen
         \end{itemize*}
-        \item Begriffe des Referenzmonitorprinzips kennen wir schon:
+        \item Begriffe des Referenzmonitorprinzips kennen wir schon
         \begin{itemize*}
-            \item Abgrenzung passiver Ressourcen (in Form einzelner Objekte, z.B. Dateien)
-            \item von Subjekten (aktiven Elementen, z.B. laufenden Programmen, Prozessen) durch Betriebssystem
+            \item Abgrenzung passiver Ressourcen (Objekte, z.B. Dateien)
+            \item von Subjekten (aktiven Elementen, Prozess) durch BS
         \end{itemize*}
     \end{itemize*}
-
 
     \subsubsection{Referenzmonitorprinzip}
-
     \begin{itemize*}
-        \item Idee:
-        \begin{itemize*}
-            \item[$\rightarrow$] sämtliche Autorisierungsentscheidungen durch einen zentralen (abstrakten) Mechanismus = Referenzmonitor
-            \item Bewertet jeden Zugriffsversuch eines Subjekts auf Objekt durch Anwendung einer Sicherheitspolitik (security policy) \begin{itemize*} \item[$\rightarrow$] vgl. SELinux \end{itemize*}
-            \item somit: Architekturbeschreibung, wie Zugriffe auf Ressourcen (z.B. Dateien) auf solche Zugriffe, die Sicherheitspolitik erlaubt, eingeschränkt werden
-        \end{itemize*}
-        \item Autorisierungsentscheidungen
-        \begin{itemize*}
-            \item basieren auf sicherheitsrelevanten Eigenschaften jedes Subjekts und jedes Objekts
-            \item einige Beispiele kennen wir schon: \begin{itemize*} \item Nutzname, Unix-Gruppe \item Prozess-ID, INode-Nummer \item SELinux-Typ \end{itemize*}
-        \end{itemize*}
-        \item Architekturkomponenten in a nutshell:
-        %\begin{itemize*}
+        \item[$\rightarrow$] sämtliche Autorisierungsentscheidungen durch zentralen Mechanismus = Referenzmonitor
+        \item Bewertet jeden Zugriffsversuch eines Subjekts auf Objekt durch Anwendung einer Sicherheitspolitik (security policy)
+        \item Architekturbeschreibung, wie Zugriffe auf Ressourcen, die Sicherheitspolitik erlaubt, eingeschränkt werden
+        \item Autorisierungsentscheidungen: basieren auf sicherheitsrelevanten Eigenschaften jedes Subjekts und jedes Objekts
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Referenzmonitorprinzip.png}
-        %\end{itemize*}
     \end{itemize*}
 
-    Definierende Eigenschaften: Referenzmonitor ist eine
-    Architekturkomponenten, die
+    Referenzmonitor ist eine Architekturkomponenten, die
+    \begin{description*}
+        \item[RM 1] bei sämtlichen Subjekt/Objekt-Interaktionen involviert sind $\rightarrow$ Unumgehbarkeit (total mediation)
+        \item[RM 2] geschützt sind vor unautorisierter Manipulation $\rightarrow$ Manipulationssicherheit (tamperproofness)
+        \item[RM 3] hinreichend klein und wohlstrukturiert sind, für formale Analysemethoden $\rightarrow$ Verifizierbarkeit (verifyability)
+    \end{description*}
 
+    \subparagraph{Referenzmonitor in Betriebssystemen}
+    Nahezu alle Betriebssysteme implementieren irgendeine Form eines Referenzmonitors
     \begin{itemize*}
-        \item (RM 1) bei sämtlichen Subjekt/Objekt-Interaktionen involviert sind
-        \begin{itemize*}
-            \item[$\rightarrow$] Unumgehbarkeit ( total mediation )
-        \end{itemize*}
-        \item (RM 2) geschützt sind vor unautorisierter Manipulation
-        \begin{itemize*}
-            \item[$\rightarrow$] Manipulationssicherheit ( tamperproofness )
-        \end{itemize*}
-        \item (RM 3) hinreichend klein und wohlstrukturiert sind, um formalen
-        Analysemethoden zugänglich zu sein
-        \begin{itemize*}
-            \item[$\rightarrow$] Verifizierbarkeit ( verifyability )
-        \end{itemize*}
+        \item Subjekte, Objekte
+        \item Regeln einer Sicherheitspolitik charakterisiert
+        \item Unumgehbarkeit, Manipulationssicherheit
+        \item Verifizierbarkeit ihrer Sicherheitsarchitektur
     \end{itemize*}
 
-
-    \subparagraph{Referenzmonitor in
-        Betriebssystemen}
-
-    Nahezu alle Betriebssysteme implementieren irgendeine Form eines
-    Referenzmonitors [Jaeg11] und können über Begriffe, wie
-
+    Beispiel: Standard-Linux
     \begin{itemize*}
-        \item Subjekte
-        \item Objekte
-        \item Regeln einer Sicherheitspolitik charakterisiert sowie auf
-        \item Unumgehbarkeit
-        \item Manipulationssicherheit
-        \item Verifizierbarkeit ihrer Sicherheitsarchitektur hin untersucht werden
+        \item Subjekte (Prozesse) $\rightarrow$ haben reale Nutzer-Identifikatoren (UIDs)
+        \item Objekte (Dateien) $\rightarrow$ haben ACLs (,,rwxrw----'')
+        \item Regeln der Sicherheitspolitik $\rightarrow$ hart codiert, starr
+        \item Sicherheitsattribute, $\rightarrow$ Objekten zugeordnet, modifizierbar
     \end{itemize*}
+    Man beurteile die Politikimplementierung in dieser Architektur bzgl. Unumgehbarkeit, Manipulationssicherheit und Verifizierbarkeit
 
-    Beispiel: Standard- Linux
+    Referenzmonitorimplementierung: Flask
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-referenzmonitor-flask.png}
+    \end{center}
 
+    \subparagraph{SELinux-Architektur: Security Server}
     \begin{itemize*}
-        \item Subjekte (generell Prozesse)
-        \begin{itemize*}
-            \item haben reale (und effektive) Nutzer-Identifikatoren (UIDs)
-        \end{itemize*}
-        \item Objekte (verschiedene Systemressourcen, genutzt für Speicherung,
-        Kommunikation: Dateien, Directories, Sockets, SharedMemory usw.)
-        \begin{itemize*}
-            \item haben ACLs (,,rwxrw----'')
-        \end{itemize*}
-        \item Regeln der Sicherheitspolitik, die durch den Referenzmonitor (hier
-        Kernel) unterstützt werden
-        \begin{itemize*}
-            \item hart codiert, starr
-        \end{itemize*}
-        \item Sicherheitsattribute, die durch diese Regeln zur Prüfung genutzt
-        werden (z.B. Zugriffsmodi)
-        \begin{itemize*}
-            \item Objekten zugeordnet
-            \item modifizierbar
-        \end{itemize*}
-    \end{itemize*}
-
-    Man beurteile die Politikimplementierung in dieser Architektur bzgl.:
-
-    \begin{itemize*}
-        \item Unumgehbarkeit
-        \item Manipulationssicherheit
-        \item Verifizierbarkeit
-    \end{itemize*}
-
-
-    \subparagraph{Referenzmonitorimplementierung:
-        Flask}
-
-    ( Flask - Architekturmodell)
-
-    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-referenzmonitor-flask.png}
-
-
-    \subparagraph{SELinux-Architektur: Security
-        Server}
-
-    \begin{itemize*}
-        \item Security Server: Laufzeitumgebung für Politik in Schutzdomäne des
-        Kerns
-        \item Objektmanager: implementiert in allen BS-Dienstenmittels,, Linux
-        Security Module Framework ''
-        \begin{itemize*}
-            \item jedes Subsystemvon SELinux , das zuständig für \begin{enumerate*} \item Erzeugung neuer Objekte \item Zugriff auf existierende Objekte \end{enumerate*}
-            \item Beispiele: \begin{enumerate*} \item Prozess-Verwaltung (behandelte Objekte: hauptsächlich Prozesse) \item Dateisystem (behandelte Objekte: hauptsächlich Dateien) \item Networking/Socket-Subsystem (behandelte Objekte: [verschiedene Typen von] Sockets) \item u.a. \end{enumerate*}
-        \end{itemize*}
-    \end{itemize*}
-
-    SELinux-Architektur: Objektklassen
-
-    \begin{itemize*}
+        \item Security Server: Laufzeitumgebung für Politik in Schutzdomäne des Kerns
+        \item Objektmanager: implementiert in allen BS-Diensten mittels ,,Linux Security Module Framework ''
         \item Objektmanager zur Verwaltung verschiedener Objektklassen
-        \item spiegeln Diversität und Komplexität von Linux BS-Abtraktionen wider:
-        \begin{itemize*}
-            \item Dateisysteme: file, dir, fd, filesystem, ...
-            \item Netzwerk: netif, socket, tcp\_socket, udp\_socket, ...
-            \item IPC: msgq, sem, shm, ...
-            \item Sonstige: process, system, ...
-            \item ...
-        \end{itemize*}
+        \item spiegeln Diversität und Komplexität von Linux BS-Abtraktionen wider: Dateisysteme, Netzwerk, IPC, ...
+        \item jedes Subsystem von SELinux zuständig für
+        \begin{enumerate*}
+            \item Erzeugung neuer Objekte
+            \item Zugriff auf existierende Objekte
+        \end{enumerate*}
+        \item Beispiele: Prozess-Verwaltung, Dateisystem, Networking-System
     \end{itemize*}
 
     Dateisystem als Objektmanager
-
     \begin{itemize*}
-        \item Durch Analyse von Linux - Dateisystem und zugehöriger API wurden zu
-        überwachenden Objektklassen identifiziert:
-        \begin{itemize*}
-            \item ergibt sich unmittelbar aus Linux-API: \begin{itemize*} \item Dateien \item Verzeichnisse \item Pipes \end{itemize*}
-            \item feingranularere Objektklassen für durch Dateien repräsentierte Objekte (Unix-Prinzip: ,,everythingisa file''!): \begin{itemize*} \item reguläre Dateien \item symbolische Links \item zeichenorientierte Geräte \item blockorientierte Geräte \item FIFOs \item Unix-Domain Sockets (lokale Sockets) \end{itemize*}
-        \end{itemize*}
-        \item Permissions (Zugriffsrechte)
-        \item für jede Objektklasse: Menge an Permissions definiert, um Zugriffe auf
-        Objekte dieser Klasse zu kontrollieren
-        \item Permissions: abgeleitet aus Dienstleistungen, die Linux-Dateisystem
-        anbietet
-        \item $\rightarrow$ Objektklassen gruppieren verschiedene
-        Arten von Zugriffsoperationen auf verschiende Arten von Objekten
-        \item z.B. Permissions für alle ,,Datei''-Objektklassen (Auswahl ...): read,
-        write, append, create, execute, unlink
-        \item für ,,Verzeichnis''-Objektklasse: add\_name, remove\_name, reparant,
-        search, rmdir
+        \item Durch Analyse von Linux - Dateisystem und zugehöriger API wurden zu überwachenden Objektklassen identifiziert
+        \item ergibt sich unmittelbar aus Linux-API: Dateien, Verzeichnisse, Pipes
+        \item feingranularere Objektklassen für durch Dateien repräsentierte Objekte (Unix: ,,everything is a file'')
     \end{itemize*}
 
-
-    \subsubsection{Trusted Computing Base
-        (TCB)}
-
-    Begriff zur Bewertung von Referenzmonitorarchitekturen: TCB ( Trusted
-    Computing Base )
-
+    Permissions (Zugriffsrechte)
     \begin{itemize*}
-        \item = die Hard-und Softwarefunktionen eines IT-Systems, die notwendig und
-        hinreichend sind, um alle Sicherheitsregeln durchzusetzen.
+        \item für jede Objektklasse: Menge an Permissions definiert, um Zugriffe auf Objekte dieser Klasse zu kontrollieren
+        \item Permissions: abgeleitet aus Dienstleistungen, die Linux-Dateisystem anbietet
+        \item[$\rightarrow$] Objektklassen gruppieren verschiedene Arten von Zugriffsoperationen auf verschiende Arten von Objekten
+        \item z.B. Permissions für alle ,,Datei''-Objektklassen (Auswahl ...)
+    \end{itemize*}
+
+    \subsubsection{Trusted Computing Base (TCB)}
+    Begriff zur Bewertung von Referenzmonitorarchitekturen
+    \begin{itemize*}
+        \item[=] notwendige Hard-und Softwarefunktionen eines IT-Systems um alle Sicherheitsregeln durchzusetzen
         \item besteht üblicherweise aus
         \begin{enumerate*}
-
-            \item Laufzeitumgebung der Hardware(nicht E/A-Geräte)
+            \item Laufzeitumgebung der Hardware (nicht E/A-Geräte)
             \item verschiedenen Komponenten des Betriebssystem-Kernels
-            \item Benutzerprogrammen mit sicherheitsrelevanten Rechten (bei Standard-UNIX/Linux-Systemen: diejenigen mit root-Rechten)
+            \item Benutzerprogrammen mit sicherheitsrelevanten Rechten
         \end{enumerate*}
-        \item Betriebssystemfunktionen, die Teil der TCB sein müssen, beinhalten
-        Teile
-        \begin{itemize*}
-            \item des Prozessmanagements
-            \item des Speichermanagements
-            \item des Dateimanagements
-            \item des E/A-Managements
-            \item alle Referenzmonitorfunktionen
-        \end{itemize*}
+        \item Betriebssystemfunktionen, die Teil der TCB sein müssen, beinhalten Teile des Prozess-, Speicher-, Datei-, E/A-Managements
     \end{itemize*}
-
 
     \section{Echtzeitfähigkeit}
 

@@ -2256,127 +2256,70 @@
     \end{itemize*}
 
     \subsubsection{Überlast}
-
     \begin{itemize*}
-        \item Definition: kritische Situation - bei der die benötigte Menge an
-        Prozessorzeit die Kapazität des vorhandenen Prozessors übersteigt
-        $(U\textgreater1)$
-        \begin{itemize*}
-            \item[$\rightarrow$] nicht alle Prozesse können Fristen einhalten
-        \end{itemize*}
-        \item Hauptrisiko: kritische Prozesse können Fristen nicht einhalten
-        $\rightarrow$ Gefährdung funktionaler und anderer
-        nichtfkt. Eigenschaften ( $\rightarrow$ harte Fristen!)
-        \item Stichwort: ,,graceful degradation'' (,,würdevolle'' Verschlechterung)
-        statt unkontrollierbarer Situation $\rightarrow$
-        Wahrung von Determinismus
+        \item Definition: kritische Situation, bei der benötigte Menge an Prozessorzeit die Kapazität des vorhandenen Prozessors übersteigt %$(U< 1)$
+        \item[$\rightarrow$] nicht alle Prozesse können Fristen einhalten
+        \item Hauptrisiko: kritische Prozesse können Fristen nicht einhalten $\rightarrow$ Gefährdung funktionaler und anderer nichtfkt. Eigenschaften ( $\rightarrow$ harte Fristen!)
+        \item Stichwort: ,,graceful degradation'' statt unkontrollierbarer Situation $\rightarrow$ Wahrung von Determinismus
     \end{itemize*}
 
-
-    \paragraph{Wichtigkeit eines
-        Prozesses}
-
+    Wichtigkeit eines Prozesses
     \begin{itemize*}
-        \item Minimallösung: (lebenswichtig für Echtzeit-System)
-        \begin{itemize*}
-            \item Unterscheidung zwischen Zeitbeschränkungen (Fristen) und tatsächlicher Wichtigkeit eines Prozesses für System
-        \end{itemize*}
-        \item Allgemein gilt:
-        \begin{itemize*}
-            \item Wichtigkeit eines Prozesses ist unabhängig von seiner Periodendauer und irgendwelchen Fristen
-            \item z.B. kann ein Prozess trotz späterer Frist viel wichtiger als anderer mit früherer Frist sein.
-            \item Beispiel: Bei chemischem Prozess könnte Temperaturauswertung jede 10s wichtiger sein als Aktualisierung graphischer Darstellung an Nutzerkonsole jeweils nach 5s
-        \end{itemize*}
+        %\item Minimallösung (lebenswichtig für Echtzeit-System)
+        \item Unterscheidung zwischen Zeitbeschränkungen (Fristen) und tatsächlicher Wichtigkeit eines Prozesses für System
+        \item Wichtigkeit eines Prozesses ist unabhängig von seiner Periodendauer und irgendwelchen Fristen
+        \item z.B. kann Prozess trotz späterer Frist wichtiger als anderer mit früherer Frist sein
+        %\item Beispiel: Bei chemischem Prozess könnte Temperaturauswertung jede 10s wichtiger sein als Aktualisierung graphischer Darstellung an Nutzerkonsole jeweils nach 5s
     \end{itemize*}
 
-
-    \paragraph{Umgang mit Überlast: alltägliche
-        Analogien}
-
+    Umgang mit Überlast: alltägliche Analogien
     \begin{enumerate*}
-        \item Weglassen weniger wichtiger Aktionen
-        \begin{itemize*}
-            \item ohne Frühstück aus dem Haus...
-            \item kein Zähneputzen ...
-            \item Wichtung vom Problem bzw. Aktivitätsträgern (hier: Personen) abhängig!
-        \end{itemize*}
-        \item Verkürzen von Aktivitäten
-        \begin{itemize*}
-            \item Katzenwäsche...
-        \end{itemize*}
-        \item Kombinieren
-        \begin{itemize*}
-            \item kein Frühstück + Katzenwäsche + ungekämmt
-        \end{itemize*}
+        \item Weglassen weniger wichtiger Aktionen (kein Frühstück...)
+        \item Verkürzen von Aktivitäten (Katzenwäsche...)
+        \item Kombinieren (kein Frühstück + Katzenwäsche + ungekämmt)
     \end{enumerate*}
 
-
-    \paragraph{Wichtung von Prozessen}
-
-    Behandlung:
-
+    Wichtung von Prozessen
     \begin{itemize*}
-        \item zusätzlicher Parameter V (Wert) für jeden Prozess/Thread einer
-        Anwendung
-        \item spezifiziert relative Wichtigkeit eines Prozesses (od. Thread) im
-        Verhältnis zu anderen Prozessen (Threads) der gleichen Anwendung
-        \item bei Scheduling: V stellt zusätzliche Randbedingung (primär: Priorität
-        aufgrund von Frist, sekundär: Wichtigkeit)
+        \item Parameter V für jeden Prozess/Thread einer Anwendung
+        \item spezifiziert relative Wichtigkeit eines Prozesses/Thread im Verhältnis zu anderen der gleichen Anwendung
+        \item bei Scheduling: V stellt zusätzliche Randbedingung (primär: Priorität aufgrund von Frist, sekundär: Wichtigkeit)
     \end{itemize*}
 
-
-    \paragraph{Obligatorischer und optionaler
-        Prozessanteil}
-
+    Obligatorischer und optionaler Prozessanteil
     \begin{itemize*}
-        \item Aufteilung der Gesamtberechnung $(C_{ges})$ eines Prozesses in
-        zwei Phasen
-        \item einfache Möglichkeit der Nutzung des Konzepts des anpassbaren
-        Prozessorzeitbedarfs
-        \item Prinzip:
-        \begin{itemize*}
-            \item Bearbeitungszeitbedarf eines Prozesses zerlegt in \begin{enumerate*} \item obligatorischer Teil (Pflichtteil, $C_{ob}$): muss unbedingt u. immer ausgeführt werden $\rightarrow$ liefert bedingt akzeptables Ergebnis \item optionaler Teil $(C_{opt})$: nur bei ausreichender Prozessorkapazität ausgeführt $\rightarrow$ verbessert durch obligatorischen Teil erzieltes Ergebnis \end{enumerate*}
-            \item Prinzip in unterschiedlicher Weise verfeinerbar
-        \end{itemize*}
+        \item Aufteilung der Gesamtberechnung eines Prozesses in zwei Phasen
+        \item Möglichkeit der Nutzung des anpassbaren Prozessorzeitbedarfs
+        \item Bearbeitungszeitbedarf eines Prozesses zerlegt in
+        \begin{enumerate*}
+            \item obligatorischer Teil: unbedingt und immer ausführen $\rightarrow$ liefert bedingt akzeptables Ergebnis
+            \item optionaler Teil: nur bei ausreichender Lapazität ausführen $\rightarrow$ verbessert erzieltes Ergebnis
+        \end{enumerate*}
+        \item Prinzip in unterschiedlicher Weise verfeinerbar
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-obligatorisch-optionaler-prozessanteil.png}
     \end{itemize*}
 
-
     \subsubsection{Echtzeit-Interruptbehandlung}
-
-    \begin{enumerate*}
-        \item Fristüberschreitung durch ungeeignete Interruptbearbeitung
-        %\begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-fristüberschreitung.png}
-        %\end{itemize*}
-        \item Lösung für Echtzeitsysteme ohne Fristüberschreitung
-        \begin{itemize*}
-            \item Interrupt wird zunächst nur registriert (deterministischer Zeitaufwand)
-            \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$ Pop-up Thread
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
-        \end{itemize*}
-    \end{enumerate*}
-
-
-    \subsubsection{Echtzeit-Speicherverwaltung}
-
     \begin{itemize*}
-        \item Prinzip:
-        \begin{itemize*}
-            \item Hauptanliegen: auch hier Fristen einhalten
-            \item wie bei Interrupt-Bearbeitung und Prioritätsumkehr: unkontrollierbare Verzögerungen der Prozessbearbeitung (= zeitlicher Nichtdeterminismus) vermeiden!
-        \end{itemize*}
+        \item Fristüberschreitung durch ungeeignete Interruptbearbeitung
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-fristüberschreitung.png}
+        \item Interrupt wird nur registriert (deterministischer Zeitaufwand)
+        \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$ Pop-up Thread
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
+    \end{itemize*}
+
+    \subsection{Echtzeit-Speicherverwaltung}
+    \begin{itemize*}
+        \item Hauptanliegen: Fristen einhalten
+        \item unkontrollierbare Verzögerungen der Prozessbearbeitung vermeiden
         \item Ressourcenzuordnung, deswegen:
         \begin{enumerate*}
-
-            \item keine Ressourcen-Zuordnung ,,on-demand'' (d.h. in dem Moment, wo sie benötigt werden) sondern ,,Pre-Allokation'' (= Vorab-Zuordnung)
-            \item keine dynamische Ressourcenzuordnung (z.B. Hauptspeicher), sondern Zuordnung maximal benötigter Menge bei Pre-Allokation ( $\rightarrow$ BS mit ausschließlich statischer Hauptspeicherallokation: TinyOS)
+            \item keine Ressourcen-Zuordnung ,,on-demand'' sondern ,,Pre-Allokation'' (=Vorab)
+            \item keine dynamische Ressourcenzuordnung, sondern Zuordnung maximal benötigter Menge bei Pre-Allokation
         \end{enumerate*}
     \end{itemize*}
 
-
     \paragraph{Hauptspeicherverwaltung}
-
     \begin{itemize*}
         \item bei Anwendung existierender Paging-Systeme
         \begin{itemize*}

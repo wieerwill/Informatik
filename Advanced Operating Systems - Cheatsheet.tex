@@ -2374,7 +2374,6 @@
 
         Kommunikation zwischen 1 Sender und n Empfängern
     \end{center}
-
     \begin{itemize*}
         \item nach erstem Schreibzugriff: garantiert niemals undefinierte Wartezeiten durch Blockierung von Sender/Empfänger
         \item Lesen/Überschreiben in zyklischer Reihenfolge:
@@ -2473,128 +2472,93 @@
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
     \end{itemize*}
 
-    \section{Adaptivität}
-
-
-    \subsection{Motivation}
-
+    \section{Adaptivität (Flexibility)}
     \begin{itemize*}
-        \item als unmittelbar geforderte NFE:
-        \begin{itemize*}
-            \item eingebettete Systeme
-            \item Systeme in garstiger Umwelt (Meeresgrund, Arktis, Weltraum, ...)
-            \item Unterstützung von Cloud-Computing-Anwendungen
-            \item Unterstützung von Legacy-Anwendungen
-        \end{itemize*}
-        \item Beobachtung: genau diese Anwendungsdomänen fordern typischerweise auch
-        andere wesentliche NFE (s.bisherige Vorlesung ...)
-        \item $\rightarrow$ Adaptivität als komplementäre NFE zur
-        Förderung von
-        \begin{itemize*}
-            \item Robustheit: funktionale Adaptivitätdes BS reduziert Kernelkomplexität ( $\rightarrow$ kleiner, nicht adaptiver $\mu$Kernel)
-            \item Sicherheit: wie Robustheit:TCB-Größe $\rightarrow$ Verifizierbarkeit, außerdem: adaptive Reaktion auf Bedrohungen
-            \item Echtzeitfähigkeit: adaptive Scheduling-Strategie (vgl. RC), adapt. Überlastbehandlung, adapt. Interruptbehandlungs-und Pinning-Strategien
-            \item Performanz: Last-und Hardwareadaptivität
-            \item Erweiterbarkeit: adaptive BS liefern oft hinreichende Voraussetzungen der einfachen Erweiterbarkeit von Abstraktionen, Schnittstellen, Hardware-Multiplexing-und -Schutzmechanismen ( Flexibility )
-            \item Wartbarkeit: Anpassung des BS an Anwendungen, nicht umgekehrt
-            \item Sparsamkeit: Lastadaptivitätvon CPUs, adaptive Auswahl von Datenstrukturen und Kodierungsverfahren
-        \end{itemize*}
+        \item als unmittelbar geforderte NFE: eingebettete Systeme, Systeme in garstiger Umwelt
+        \item diese Anwendungsdomänen fordern typischerweise auch andere wesentliche NFE
+        \item[$\rightarrow$] Adaptivität als komplementäre NFE zur Förderung von
     \end{itemize*}
-
-
-    \subsection{Adaptivitätsbegriff}
-
+    \begin{description*}
+        \item[Robustheit] funktionale Adaptivitätdes BS reduziert Kernelkomplexität %($\rightarrow$ kleiner, nicht adaptiver $\mu$Kernel)
+        \item[Sicherheit] TCB-Größe $\rightarrow$ Verifizierbarkeit, adaptive Reaktion auf Bedrohungen
+        \item[Echtzeitfähigkeit] adaptives Scheduling/Überlast/Interruptbehandlung
+        \item[Performanz] Last-und Hardwareadaptivität
+        \item[Erweiterbarkeit] von Abstraktionen, Schnittstellen, Multiplexing
+        \item[Wartbarkeit] Anpassung des BS an Anwendungen, nicht umgekehrt
+        \item[Sparsamkeit] Lastadaptivität, adaptive Datenstrukturen
+    \end{description*}
     \begin{itemize*}
-        \item Adaptability: ,,see Flexibility. '' [Marciniak94]
-        \item Flexibility:
+        \item Begriff
         \begin{itemize*}
-            \item ,,The ease with which a system or a component can be modified for use in applications or environments other than those for which it was specifically designed.'' (IEEE)
-            \item für uns: entspricht Erweiterbarkeit
-        \end{itemize*}
-        \item Adaptivität: (unsere Arbeitsdefinition)
-        \begin{itemize*}
-            \item Die Fähigkeit eines Systems, sich an ein breites Spektrum verschiedener Anforderungen anpassen zu lassen.
-            \item = ... so gebaut zu sein, dass ein breites Spektrum verschiedener nicht funktionaler Eigenschaften unterstützt wird.
+            \item Fähigkeit eines Systems, sich an breites Spektrum verschiedener Anforderungen anzupassen
+            \item[=] so gebaut, dass breites Spektrum verschiedener nicht funktionaler Eigenschaften unterstützt
             \item letztere: komplementär zur allgemeinen NFE Adaptivität
         \end{itemize*}
-    \end{itemize*}
-
-
-    \subsection{Roadmap}
-
-    \begin{itemize*}
-        \item in diesem Kapitel: gleichzeitig Mechanismen und Architekturkonzepte
         \item Adaptivität jeweils anhand komplementärer Eigenschaften dargestellt:
         \begin{itemize*}
-            \item Exokernel: \{ Adaptivität \} $\cup$ \{ Performanz, Echtzeitfähigkeit,Wartbarkeit, Sparsamkeit \}
-            \item Virtualisierung: \{ Adaptivität \} $\cup$ \{ Wartbarkeit, Sicherheit, Robustheit \}
-            \item Container: \{ Adaptivität \} $\cup$ \{ Wartbarkeit, Portabilität, Sparsamkeit \}
+            \item Exokernel: \{Adaptivität\}$\cup$\{Performanz, Echtzeitfähigkeit,Wartbarkeit, Sparsamkeit\}
+            \item Virtualisierung: \{Adaptivität\}$\cup$\{Wartbarkeit, Sicherheit, Robustheit\}
+            \item Container: \{Adaptivität\}$\cup$\{Wartbarkeit, Portabilität, Sparsamkeit\}
         \end{itemize*}
-        \item Beispielsysteme:
+        \item Beispielsysteme
         \begin{itemize*}
-            \item Exokernel-Betriebssysteme: Aegis/ExOS, Nemesis, MirageOS
+            \item Exokernel OS: Aegis/ExOS, Nemesis, MirageOS
             \item Virtualisierung: Vmware, VirtualBox, Xen
             \item Containersoftware: Docker
         \end{itemize*}
     \end{itemize*}
 
-
     \subsection{Exokernelarchitektur}
-
     \begin{itemize*}
         \item Grundfunktion von Betriebssystemen
         \begin{itemize*}
             \item physische Hardware darstellen als abstrahierte Hardware mit komfortableren Schnittstellen
             %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
-            \item Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B. \begin{itemize*} \item \textbf{Prozesse:} gleiches Zustandsmodell, gleiches Threadmodell \item \textbf{Dateien:} gleiche Namensraumabstraktion \item \textbf{Adressräume:} gleiche Speicherverwaltung (VMM, Seitengröße, Paging) \item \textbf{Interprozesskommunikation:} gleiche Mechanismen für alle Anwendungsprozesse \end{itemize*}
+            \item Schnittstelle zu Anwendungen (API): Abstraktionen der Hardware
         \end{itemize*}
-        \item Problem:
-        \begin{itemize*}
-            \item Implementierungsspielraumfür Anwendungen wird begrenzt:
-        \end{itemize*}
+        \item Problem: Implementierungsspielraumfür Anwendungen wird begrenzt
         \begin{enumerate*}
-
             \item Vorteile domänenspezifischer Optimierungender Hardwarebenutzung können nicht ausgeschöpft werden $\rightarrow$ \textbf{Performanz, Sparsamkeit}
             \item die Implementierung existierender Abstraktionen kann bei veränderten Anforderungen nicht an Anwendungen angepasst werden $\rightarrow$ \textbf{Wartbarkeit}
             \item Hardwarespezifikationen, insbesondere des Zeitverhaltens (E/A, Netzwerk etc.), werden von Effekten des BS-Management überlagert $\rightarrow$ \textbf{Echtzeitfähigkeit}
         \end{enumerate*}
-        \item Idee von Exokernel-Architekturen:
-        %\begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernel-architektur.png}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernel-beispiel.png}
-        %\end{itemize*}
     \end{itemize*}
 
 
     \subsubsection{Exokernelmechanismen}
-
+    \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-exokernel-architektur.png}
+        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernel-beispiel.png}
+    \end{center}
     \begin{itemize*}
-        \item Designprinzip von Exokernelmechanismen:
+        \item Trennung von Schutz und Abstraktion der Ressourcen
+        \item Ressourcen-Schutz und -Multiplexing verbleibt beim Kernel
+        \item Ressourcen-Abstraktion Aufgabe der Library-Betriebssysteme
+        \item[$\rightarrow$] autonome Management-Strategien durch in Anwendungen importierte Funktionalität
+        \begin{enumerate*}
+            \item systemweit(durch jeweiliges BS vorgegebene) starre Hardware-Abstraktionen vermieden
+            \item anwendungsdomänenspezifische Abstraktionen sehr einfach
+            \item (Wieder-) Verwendung eigener/fremder Managementfunktionalität wesentlich erleichtert $\rightarrow$ komplementäre NFEn (Performanz, Sparsamkeit, ...)
+        \end{enumerate*}
+        \item Funktion des Exokernels
         \begin{itemize*}
-            \item Trennung von Schutz und Abstraktion der Ressourcen
-            \item Ressourcen-Schutz und -Multiplexing: verbleibt beim Betriebssystemkernel(dem Exokernel)
-            \item Ressourcen-Abstraktion (und deren Management): zentrale Aufgabe der Library-Betriebssysteme \begin{itemize*} \item[$\rightarrow$] autonome Management-Strategien durch in Anwendungen importierte Funktionalität \end{itemize*}
-            \item Resultat: \begin{enumerate*} \item systemweit(durch jeweiliges BS vorgegebene) starre Hardware-Abstraktionen vermieden \item anwendungsdomänenspezifische Abstraktionen sehr einfach realisierbar \item (Wieder-) Verwendung eigener und fremder Managementfunktionalität wesentlich erleichtert $\rightarrow$ komplementäre NFEn! (Performanz, EZ-Fähigkeit, Sparsamkeit, ...) \end{enumerate*}
-        \end{itemize*}
-        \item Funktion des Exokernels:
-        \begin{itemize*}
-            \item Prinzip: definiert Low-level-Schnittstelle \begin{itemize*} \item ,,low-level'' = so hardwarenah wie möglich, bspw. die logische Schnittstelle eines elektronischen Schaltkreises/ICs ( $\rightarrow$ Gerätetreiber $\subseteq$ Library-BS!) \item Bsp.: der Exokernelmuss den Hauptspeicher schützen, aber nicht verstehen, wie dieser verwaltet wird $\rightarrow$ Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ... \end{itemize*}
-            \item Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen \begin{itemize*} \item Bsp.: Adressraumsemantik, Seitentabellenlayout und -verwaltung, Paging-und Locking-Verfahren, ... \end{itemize*}
+            \item Prinzip: definiert Low-level-Schnittstelle (so hardwarenah wie möglich)
+            \item[$\rightarrow$] Adressierung ermöglichen ohne Informationen über Seiten, Segmente, Paging-Attribute, ...
+            \item Library-Betriebssysteme: implementieren darauf jeweils geeignete anwendungsnahe Abstraktionen
             \item Anwendungsprogrammierer: wählen geeignete Library-Betriebssysteme bzw. schreiben ihre eigenen Exokernelmechanismen
         \end{itemize*}
         \item prinzipielle Exokernelmechanismen am Beispiel Aegis/ExOS
-        [Engler+95]
-        \begin{itemize*}
-            \item Der Exokernel... \begin{itemize*} \item \emph{implementiert:} Multiplexing der Hardware-Ressourcen \item \emph{exportiert:} geschützte Hardware-Ressourcen \end{itemize*}
-        \end{itemize*}
+        \begin{description*}
+            \item[implementiert] Multiplexing der Hardware-Ressourcen
+            \item[exportiert] geschützte Hardware-Ressourcen
+        \end{description*}
         \item minimal: drei Arten von Mechanismen
-        \begin{enumerate*}
-
-            \item Secure Binding: erlaubt geschützte Verwendung von Hardware-Ressourcen durch Anwendungen, Behandlung von Ereignissen
-            \item Visible ResourceRevocation: beteiligt Anwendungen am Entzug von Ressourcen mittels (kooperativen) Ressourcen-Entzugsprotokolls
-            \item Abort-Protokoll: erlaubt ExokernelBeendigung von Ressourcenzuordnungen bei unkooperativen Applikationen
-        \end{enumerate*}
     \end{itemize*}
+    \begin{description*}
+        \item[Secure Binding] erlaubt geschützte Verwendung von Hardware- Ressourcen durch Anwendungen, Behandlung von Ereignissen
+        \item[Visible Resource Revocation] beteiligt Anwendungen am Entzug von Ressourcen mittels (kooperativen) Ressourcen-Entzugsprotokolls
+        \item[Abort-Protokoll] erlaubt ExokernelBeendigung von Ressourcenzuordnungen bei unkooperativen Applikationen
+    \end{description*}
 
 
     \subsubsection{Secure Binding}

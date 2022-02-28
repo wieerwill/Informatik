@@ -1937,103 +1937,39 @@
         \end{itemize*}
         \item[Prozessaktivierung] ereignisgesteuert
         \item[Fristen] oft weich (aber anwendungsabhängig)
-        \item[Aufgaben des Betriebssystems] bei Einhaltung der Prozessspezifikationen muss Betriebssystem auch hier für Einhaltung der Fristen sorgen
+        \item[Aufgaben des Betriebssystems] unter Einhaltung der Prozessspezifikationen muss BS für Einhaltung der Fristen sorgen
         \item[Modellierung] bestehen ebenfalls aus (maximal unendlicher) Folge identischer Aktivierungen (Instanzen); aber: Aktivierungszeitpunkte nicht regelmäßig (möglich: nur genau eine Aktivierung)
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-aperiodisch-modellierung.png}
     \end{description*}
 
     \subsubsection{Parameter von Echtzeit-Prozessen}
-    \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
-        \item $a_i$: Ankunftszeitpunkt (arrival time); auch r ... request
-        time/release time
-        \begin{itemize*}
-            \item Zeitpunkt, zu dem ein Prozess ablauffähig wird
-        \end{itemize*}
-        \item $s_i$: Startzeitpunkt (start time)
-        \begin{itemize*}
-            \item Zeitpunkt, zu dem ein Prozess mit der Ausführung beginnt
-        \end{itemize*}
-        \item $f_i$: Beendigungszeitpunkt (finishing time)
-        \begin{itemize*}
-            \item Zeitpunkt, an dem ein Prozess seine Ausführung beendet
-        \end{itemize*}
-        \item $d_i$: Frist (deadline, due time)
-        \begin{itemize*}
-            \item Zeitpunkt, zu dem ein Prozess seine Ausführung spätestens beenden sollte
-        \end{itemize*}
-        \item $C_i$: Bearbeitungszeit(bedarf) (computation time)
-        \begin{itemize*}
-            \item Zeitquantum, das Prozessor zur vollständigen Bearbeitung der aktuellen Instanz benötigt (Unterbrechungen nicht eingerechnet)
-        \end{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
-        \item $L_i$: Unpünktlichkeit (lateness): $L_i= f_i - d_i$
-        \begin{itemize*}
-            \item Zeitbetrag, um den ein Prozess früher oder später als seine Frist beendet wird (wenn Prozess vor seiner Frist beendet, hat $L_i$ negativen Wert)
-        \end{itemize*}
-        \item $E_i$: Verspätung (exceeding time, tardiness): $E_i= max(0,
-            L_i)$
-        \begin{itemize*}
-            \item Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
-        \end{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
-        \item $X_i$: Spielraum (Laxity, Slacktime): $X_i = d_i - a_i - C_i$
-        \begin{itemize*}
-            \item maximales Zeitquantum, um das Ausführung eines Prozesses verzögert werden kann, damit dieser noch bis zu seiner Frist beendet werden kann ($f_i=d_i$)
-        \end{itemize*}
-        \item außerdem:
-        \begin{itemize*}
-            \item criticality: Parameter zur Beschreibung der Konsequenzen einer Fristüberschreitung (typischerweise ,,hart'' oder ,,weich'')
-            \item $V_i$ ...Wert (value): Parameter zum Ausdruck der relativen Wichtigkeit eines Prozesses bezogen auf andere Prozesse der gleichen Anwendung
-        \end{itemize*}
-    \end{itemize*}
+    \begin{center}
+        %\includegraphics[width=.45\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz.png}
+        \includegraphics[width=.45\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz2.png}
+        \includegraphics[width=.45\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-parameter-instanz3.png}
+    \end{center}
+    \begin{description*}
+        \item[Ankunftszeitpunkt $a_i$] Prozess wird ablauffähig
+        \item[Startzeitpunkt $s_i$] Prozess beginnt mit Ausführung
+        \item[Beendigungszeitpunkt $f_i$] Prozess beendet Ausführung
+        \item[Frist (deadline) $d_i$] Prozess sollte Ausführung spätestens beenden
+        \item[Bearbeitungszeit (computation time) $C_i$] Zeit die Prozessor zur Bearbeitung der Instanz benötigt (ohne Unterbrechungen)
+        \item[Unpünktlichkeit (lateness)] $L_i= f_i - d_i$ Zeit um die Prozess früher/später als Frist beendet
+        \item[Verspätung (exceeding time)] $E_i= max(0, L_i)$ Zeitbetrag, den ein Prozess noch nach seiner Frist aktiv ist
+        \item[Spielraum (Laxity)] $X_i = d_i - a_i - C_i$ maximale Verzögerungszeit bis Frist beendet werden kann ($f_i=d_i$)
+        \item[criticality] Konsequenzen einer Fristüberschreitung (hart/weich)
+        \item[Wert $V_i$] Ausdruck relativer Wichtigkeit eines Prozesses
+    \end{description*}
 
-
-    \subsection{Echtzeitfähige
-        Betriebssysteme}
-
-    \begin{itemize*}
-        \item Hauptfragestellungen
-        \begin{enumerate*}
-
-            \item Was muss BS zu tun, um Echtzeitprozesse zu ermöglichen? Welche Teilprobleme müssen beachtet werden?
-            \item Welche Mechanismen müssen hierfür anders als bei nicht-echtzeitfähigen Betriebssystemen implementiert werden, und wie?
-        \end{enumerate*}
-        \item Grundlegender Gedanke
-        \begin{itemize*}
-            \item Abgeleitet aus den Aufgaben eines Betriebssystems sind folgende Fragestellungenvon Interesse:
-        \end{itemize*}
-        \begin{enumerate*}
-
-            \item Wie müssen die Ressourcen verwaltet werden? ( $\rightarrow$ CPU, Speicher, E/A, ...)
-            \item Sind neue Abstraktionen, Paradigmen (Herangehensweisen) und entsprechende Komponenten erforderlich (oder günstig)?
-        \end{enumerate*}
-        \item Prozess-Metainformationen
-        \begin{enumerate*}
-
-            \item Frist
-            \item Periodendauer
-            \item abgeleitet davon: Spielraum, Unpünktlichkeit, Verspätung, ...
-            \item im Zusammenhang damit: Prioritätsumkehr, Überlast
-        \end{enumerate*}
-        \item Ressourcen-Management
-        \begin{itemize*}
-            \item Wie müssen Ressourcen verwaltet werden, damit Fristen eingehalten werden können?
-        \end{itemize*}
-    \end{itemize*}
-
-    Wir betrachten i.F.
-
+    \subsection{Echtzeitfähige Betriebssysteme}
     \begin{enumerate*}
-        \item Algorithmen, die Rechnersysteme echtzeitfähig machen -einschließlich
-        des Betriebssystems:
+        \item Algorithmen, die Rechnersysteme echtzeitfähig machen
         \begin{itemize*}
             \item grundlegende Algorithmen zum Echtzeitscheduling
             \item Besonderheiten der Interruptbehandlung
             \item Besonderheiten der Speicherverwaltung
         \end{itemize*}
-        \item Probleme, die behandelt werden müssen, um Echtzeitfähigkeit nicht zu
-        be- oder verhindern:
+        \item Probleme, die behandelt werden müssen
         \begin{itemize*}
             \item Prioritätsumkehr
             \item Überlast
@@ -2041,266 +1977,120 @@
         \end{itemize*}
     \end{enumerate*}
 
-
     \subsubsection{Echtzeitscheduling}
-
-    \begin{itemize*}
-        \item Scheduling:
-        \begin{itemize*}
-            \item Schedulingvon Prozessen/Threads als wichtigster Einflussfaktor auf Zeitverhalten des Gesamtsystems
-        \end{itemize*}
-        \item Echtzeit-Scheduling:
-        \begin{itemize*}
-            \item benötigt: Scheduling-Algorithmen, die Scheduling unter Berücksichtigung der ( unterschiedlichen ) Fristen der Prozesse durchführen können
-        \end{itemize*}
-        \item Fundamentale Algorithmen:
-        \begin{itemize*}
-            \item wichtigste Strategien:
-        \end{itemize*}
-        \begin{enumerate*}
-
-            \item Ratenmonotones Scheduling (RM)
-            \item Earliest Deadline First (EDF)
-        \end{enumerate*}
-        \begin{itemize*}
-            \item beide schon 1973 von Liu \& Layland ausführlich diskutiert [Liu\&Layland73]
-        \end{itemize*}
-    \end{itemize*}
+    \begin{description*}
+        \item[Scheduling] wichtigster Einflussfaktor auf Zeitverhalten des Gesamtsystems
+        \item[Echtzeit-Scheduling] unter Berücksichtigung der Fristen
+    \end{description*}
+    Fundamentale/wichtigste Strategien
+    \begin{enumerate*}
+        \item Ratenmonotones Scheduling (RM)
+        \item Earliest Deadline First (EDF)
+    \end{enumerate*}
 
     Annahmen der Scheduling-Strategien
+    \begin{enumerate*}
+        \item Alle Instanzen eines periodischen Prozesses $t_i$ treten regelmäßig und mit konstanter Rate auf. Das Zeitintervall $T_i$ zwischen zwei aufeinanderfolgenden Aktivierungen heißt Periode des Prozesses
+        \item Alle Instanzen eines periodischen Prozesses $t_i$ haben den gleichen Worst-Case-Rechenzeitbedarf $C_i$
+        \item Alle Instanzen eines periodischen Prozesses $t_i$ haben die gleiche relative Frist $D_i$, welche gleich der Periodendauer $T_i$ ist
+        \item Alle Prozessesind kausal unabhängig voneinander (d.h. keine Vorrang- und Betriebsmittel-Restriktionen)
+        \item Kein Prozess kann sich selbst suspendieren, z.B. E/A-Op
+        \item Alle Prozesse werden mit ihrer Aktivierung sofort rechenbereit
+        \item Jeglicher Betriebssystem-Overhead wird vernachlässigt
+    \end{enumerate*}
+    5-7 sind weitere Annahmen des Scheduling Modells
 
+    \paragraph{Ratenmonotones Scheduling (RM)}
     \begin{itemize*}
-        \item A1: Alle Instanzen eines periodischen Prozesses $t_i$ treten
-        regelmäßig und mit konstanter Rate auf (= werden aktiviert ). Das
-        Zeitintervall $T_i$ zwischen zwei aufeinanderfolgenden
-        Aktivierungen heißt Periode des Prozesses.
-        \item A2: Alle Instanzen eines periodischen Prozesses $t_i$ haben den
-        gleichen Worst-Case-Rechenzeitbedarf $C_i$.
-        \item A3: Alle Instanzen eines periodischen Prozesses $t_i$ haben die
-        gleiche relative Frist $D_i$, welche gleich der Periodendauer
-        $T_i$ ist.
-        \item A4: Alle Prozessesind kausal unabhängig voneinander (d.h. keine
-        Vorrang- und Betriebsmittel-Restriktionen)
-        \item A5: Kein Prozess kann sich selbst suspendieren, z.B. bei
-        E/A-Operationen.
-        \item A6: Alle Prozesse werden mit ihrer Aktivierung sofort rechenbereit (
-        release time = arrival time ).
-        \item A7: Jeglicher Betriebssystem-Overhead (Kontextwechsel,
-        Scheduler-Rechenzeit) wird vernachlässigt.
-    \end{itemize*}
-
-    A5-7 sind weitere Annahmen des Scheduling Modells
-
-    Ratenmonotones Scheduling (RM)
-
-    \begin{itemize*}
-        \item Voraussetzung:
-        \begin{itemize*}
-            \item periodisches Bereitwerden der Prozesse/Threads, d.h. periodische Prozesse bzw. Threads
-        \end{itemize*}
-        \item Strategie RM:
-        \begin{itemize*}
-            \item Prozess (Thread) mit höchster Ankunftsrate bekommt höchste statische Priorität (Kriterium: Wie oft pro Zeiteinheit wird Prozess bereit?)
-            \item Scheduling-Zeitpunkt: nur einmal zu Beginn (bzw. wenn neuer periodischer Prozess auftritt)
-            \item präemptiver Algorithmus
-        \end{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm.png}
+        \item Voraussetzung: nur periodische Prozesse/Threads
+        \item Strategie RM
         \begin{itemize*}
-            \item Zuteilung eines Prozessors nach RM
-            \item $t_1, t_2$: Anforderungen von Prozessorzeit durch zwei periodische Prozesse
-            \item darunter: Prozessorzuteilung nach RM
+            \item Prozess/Thread mit höchster Ankunftsrate bekommt höchste statische Priorität
+            \item Kriterium: Wie oft pro Zeiteinheit wird Prozess bereit?
+            \item Scheduling-Zeitpunkt: nur einmal zu Beginn bzw. wenn neuer periodischer Prozess auftritt
+            \item präemptiv: keine Verdrängung gleicher Prioritäten
         \end{itemize*}
-        \item Optimalität von RM
-        \begin{itemize*}
-            \item Unter allen Verfahren mit festen (statischen)Prioritäten ist RM optimaler Algorithmus in dem Sinne, dass kein anderes Verfahren dieser Klasse eine Prozessmenge einplanen kann, die nicht auch von RM geplant werden kann. [Liu\&Layland73]
-        \end{itemize*}
+        \item Optimalität: Unter allen Verfahren mit festen Prioritäten optimaler Algorithmus%, so dass kein anderes Verfahren eine Prozessmenge einplanen kann, die nicht von RM geplant werden kann
         \item Prozessor-Auslastungsfaktor
         \begin{itemize*}
-            \item Bei gegebener Menge von n periodischen Prozessen gilt: $U=\sum_{i=1}^n  \frac{C_i}{T_i}$
-            \item mit $\frac{C_i}{T_i}$ Anteil an Prozessorzeit für jeden periodischen Prozess $t_i$
-            \item und $U$ Summe der Prozessorzeit zur Ausführung der gesamten Prozessmenge (,,utilization factor'')
+            \item Bei Menge von n Prozessen $U=\sum_{i=1}^n \frac{C_i}{T_i}$
+            \item mit $\frac{C_i}{T_i}$ Anteil an Prozessorzeit für jeden Prozess $t_i$
+            \item und Zeit $U$ zur Ausführung der gesamten Prozessmenge
         \end{itemize*}
-        \item Prozessorlast
-        \begin{itemize*}
-            \item $U$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$ Auslastungsfaktor
-        \end{itemize*}
+        \item Prozessorlast: $U$ ist folglich Maß für die durch Prozessmenge verursachte Last am Prozessor $\rightarrow$ Auslastungsfaktor
         \item Planbarkeitsanalyse einer Prozessmenge
         \begin{itemize*}
-            \item im allgemeinen Fall kann RM einen Prozessor nicht zu 100\% auslasten
-            \item von besonderem Interesse: kleinste obere Grenze des Auslastungsfaktors $U_{lub}$ (lub: ,,least upper bound'')
-        \end{itemize*}
-        \item Beispiel für $n=2$
-        \begin{itemize*}
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm2.png}
-            \item Obere Grenze des Prozessor-Auslastungsfaktors für zwei periodische Prozesse als Funktion des Verhältnisses ihrer Perioden.
-            \item (Abb. nach [Buttazzo97] Bild 4.7, S. 90)
+            \item allgemein kann RM Prozessor nicht 100\% auslasten
+            \item kleinste obere Grenze des Auslastungsfaktors $U_{lub}$
+            \item lub: ,,least upper bound''
         \end{itemize*}
         \item Obere Auslastungsgrenze bei RM
         \begin{itemize*}
-            \item nach [Buttazzo97] (S. 89-91) erhält man bei n Prozessen für RM: $U_{lub}=n(2^{\frac{1}{n}}-1)$
+            \item nach Buttazzo bei n Prozessen: $U_{lub}=n(2^{\frac{1}{n}}-1)$
             \item für $n\rightarrow\infty$ konvergiert $U_{lub}$ zu $ln\ 2 \approx 0,6931...$
-            \item Wird genannter Wert nicht überschritten, sind beliebige Prozessmengen planbar.
-            \item (Herleitung siehe [Buttazzo97] , Kap. 4.3.3)
+            \item Wert nicht überschritten $\rightarrow$ beliebige Prozessmengen
         \end{itemize*}
     \end{itemize*}
 
-
-    \subsubsection{Earliest Deadline First (EDF)}
+    \paragraph{Earliest Deadline First (EDF)}
     \begin{itemize*}
-        \item Voraussetzung:
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png}
+        \item Voraussetzung: kann periodische/aperiodische Prozesse planen
+        \item Optimalität: EDF in Klasse der Schedulingverfahren mit dynamischen Prioritäten: optimaler Algorithmus
+        \item Strategie EDF
         \begin{itemize*}
-            \item kann sowohl periodische als auch aperiodische Prozesse planen
+            \item Prozess mit frühester Frist höchste dynamische Priorität
+            \item Scheduling-Zeitpunkt: Bereitwerden eines Prozesses
+            \item präemptiv: keine Verdrängung gleicher Prioritäten
         \end{itemize*}
-        \item Optimalität:
+        \item Planbarkeitsanalyse
         \begin{itemize*}
-            \item EDF in Klasse der Schedulingverfahren mit dynamischen Prioritäten: optimaler Algorithmus [Liu\&Layland73]
-        \end{itemize*}
-        \item Strategie EDF:
-        \begin{itemize*}
-            \item Zu jedem Zeitpunkt erhält Prozess mit frühester Frist höchste dynamische Priorität
-            \item Scheduling-Zeitpunkt: Bereitwerden eines (beliebigen) Prozesses
-            \item präemptiver Algorithmus (keine Verdrängung bei gleichen Prioritäten)
-        \end{itemize*}
-        \item Beispiel
-        \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf.png}
-            \item Zuteilung eines Prozessors nach EDF
-            \item $t_1, t_2$: Anforderungen nach Prozessorzeit durch zwei periodische Prozesse
-            \item darunter: Prozessorzuteilung nach EDF
-        \end{itemize*}
-        \item Planbarkeitsanalyse:
-        \begin{itemize*}
-            \item Mit den Regeln $A1 ... A7$ ergibt sich für die obere Schranke des Prozessorauslastungsfaktors: $U_{lub}= 1\rightarrow$ Auslastung bis 100\% möglich!
-            \item Eine Menge periodischer Prozesse ist demnach mit EDF planbar genau dann wenn: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$ (Prozessor natürlich nicht mehr als 100\% auslastbar)
-        \end{itemize*}
-        \item Beweis: Obere Auslastungsgrenze bei EDF
-        \begin{itemize*}
-            \item Behauptung: Jede Menge von n periodischen Tasks ist mit EDF planbar $\leftrightarrow$: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$
-            \item $\leftarrow$: $U\textgreater1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser (oder höherer) Gesamtauslastung planbar sein.
-            \item $\rightarrow$: Beweis durch Widerspruch. Annahme: $U\leq 1$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt $t_2$, z.B.:
-            %\begin{itemize*} \item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf2.png} \end{itemize*}
-            \item Beobachtungen an diesem Schedule:
-            \begin{itemize*}
-                \item $exists$ ein längstes, kontinuierliches Rechenintervall $[t_1,t_2]$, in welchem nur Prozessinstanzen mit Fristen $\leq t_2$ rechnen
-                \item die Gesamtrechenzeit $C_{bad}$ aller Prozesse in $[t_1,t_2]$ muss die verfügbare Prozessorzeit übersteigen: $C_{bad} \textgreater{} t_2-t_1$ (sonst: keine Fristverletzung an $t_2$)
-                \item Anwesenheit in $[t_1,t_2]$ leitet sich davon ab, ob (genauer: wie oft) die Periode eines Prozesses in $t_2-t_1$ passt: $t_i$ in $[t_1,t_2]\Leftrightarrow\lfloor\frac{t_2-t_1}{T_i}\rfloor \textgreater0$
-                \item Damit ist $C_{bad}$ die Summe der Rechenzeiten aller Prozessinstanzen, die garantiert in $[t_1,t_2]$ sind, mithin: $C_{bad}=\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i$
-                \item Im Beispiel: $t_1... t_3$ in $[t_1,t_2]$, folglich: $C_{bad}= 2 C_1 + 1 C_2 + 1 C_3$
-                \item Zu zeigen: Beobachtung $C_{bad}\textgreater{} t_2-t_1$ widerspricht Annahme $U\leq 1$.
-                \item Es gilt $\sum_{i=1}^n \lfloor\frac{t_2-t_1}{T_i}\rfloor C_i\leq\sum_{i=1}^n\frac{t_2-t_1}{T_i}C_i$ wegen Abrundung.
-                \item Mit $U=\sum_{i=1}^n \frac{C_i}{T_i}$ folgt daraus $C_{bad}\leq(t_2-t_1)U$
-                \item $C_{bad}\textgreater t_2-t_1$ entspricht also $(t_2-t_1)U\textgreater t_2-t_1$ und somit $U\textgreater1$. Widerspruch zur Annahme!
-            \end{itemize*}
+            \item mit Regeln $1-7$ max. Prozessorauslastung: $U_{lub}= 1\rightarrow$ Auslastung bis 100\%
+            \item Menge von n Tasks planbar: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$
+            \item[$\leftarrow$] $U\textgreater1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser Gesamtauslastung planbar sein
+            \item[$\rightarrow$] Beweis durch Widerspruch. Annahme: $U\leq 1$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt $t_2$
         \end{itemize*}
     \end{itemize*}
 
-
-    \subsubsection{Vergleich: EDF vs. RM}
-    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
-
-    Zuteilung eines Prozessors nach EDF (dynamisch) bzw. RM (statisch)
-    $t_1,t_2$: Anforderungen nach Prozessorzeit durch zwei periodische
-    Prozesse darunter: Prozessorzuteilung nach EDF bzw. RM
-
-    \begin{itemize*}
-        \item gut erkennbar: deutliche Unterschiede bei Scheduling mit statischem
-        (RM) vs. dynamischem Algorithmus (EDF).
-    \end{itemize*}
-
-    Vergleich: Anzahl Prozesswechsel
-
-    \begin{itemize*}
-        \item Häufigkeit von Prozesswechseln im Beispiel:
-        \begin{itemize*}
-            \item RM: 16
-            \item EDF: 12
-        \end{itemize*}
-        \item Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von
-        $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat (usw.)
-        $\rightarrow$ keine unnötige Verdrängung
-    \end{itemize*}
-
-    Vergleich: 100\% Prozessorauslastung
-
-    \begin{itemize*}
-        \item EDF: erzeugt auch bei Prozessorauslastung bis 100\% (immer) korrekte
-        Schedules
-        \item RM: kann das im allgemeinen Fall nicht
-        \item Bedeutung von 100\% Prozessorauslastung in der Praxis: Überwiegend
-        müssen Systeme mit harten Echtzeitanforderungen auch weiche Echtzeit-
-        sowie Nicht-Echtzeit-Prozesse unterstützen. Daher: Belegungslücken am
-        Prozessor für die letzteren beiden nutzbar.
-    \end{itemize*}
-
-    Vergleich: Implementierung
-
+    \paragraph{Vergleich: EDF vs. RM}
+    \begin{center}
+    \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
+    \end{center}
     \begin{itemize*}
         \item RM
         \begin{itemize*}
-            \item statisch: jeweils eine Warteschlange pro Priorität:
+            \item Prozessorwechsel: 16
+            \item im allgemeinen Fall nicht immer korrekte Schedules bei 100\% Auslastung
+            \item statisch Implementiert: jeweils eine Warteschlange pro Priorität
             \item Einfügen und Entfernen von Tasks: $O(1)$
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-rm-statisch.png}
         \end{itemize*}
         \item EDF
         \begin{itemize*}
-            \item dynamisch: balancierter Binärbaum zur Sortierung nach Prioritäten:
+            \item Prozessorwechsel: 12
+        %\item Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat $\rightarrow$ keine unnötige Verdrängung
+            \item erzeugt auch bei Prozessorauslastung bis 100\% (immer) korrekte Schedules
+            \item dynamisch Implementiert: balancierter Binärbaum zur Sortierung nach Prioritäten
             \item Einfügen und Entfernen von Tasks: $O(log\ n)$
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
-        \end{itemize*}
-    \end{itemize*}
-
-    Scheduling in Multimedia-Anwendungen
-
-    \begin{itemize*}
-        \item Konkretisierung des Betrachtungswinkels
-        \begin{itemize*}
-            \item RM und EDF wurden entwickelt insbesondere für Echtzeit-Regelsysteme $\rightarrow$ ohne Berücksichtigung von Multimediasystemen
-            \item Multimediasysteme $\rightarrow$ andere Probleme, schwächere Annahmen: spezialisierte Scheduling-Algorithmen
-            \item gehen meist auch von EDF und/oder RM als Grundlage aus
-        \end{itemize*}
-        \item Betrachteter Algorithmus:
-        \begin{itemize*}
-            \item Beispielfür spezialisierten Scheduling-Algorithmus: \begin{itemize*} \item RC-Algorithmus - entwickelt an University of Texas \item Anpassung von EDF an Charakteristika von Multimedia-Anwendungen \end{itemize*}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-scheduling-edf-dynamisch.png}
         \end{itemize*}
     \end{itemize*}
 
     Prozesstypen in Multimedia-Anwendungen
-
     \begin{enumerate*}
-        \item Echte Multimedia-Prozesse
-    \end{enumerate*}
-
-    \begin{itemize*}
-        \item periodische Prozesse: weiche Fristen
+        \item Echte periodische Multimedia-Prozesse (weiche Fristen) 
         \begin{enumerate*}
-
             \item pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf $C$ für jede Instanz (unkomprimierte Audio- und Videodaten)
             \item pünktliche periodische Prozesse mit unterschiedlichem $C$ einzelner Instanzen (komprimierte Audio- und Videodaten)
-            \item unpünktliche periodische Prozesse: \begin{itemize*} \item verspätete Prozesse \item verfrühte Prozesse \end{itemize*}
+            \item unpünktliche periodische Prozesse: verspätet/verfrühte
         \end{enumerate*}
-        \item aperiodische-Prozesse aus Multimedia-Anwendungen: weiche Fristen
-    \end{itemize*}
-
-    \begin{enumerate*}
-
         \item Prozesse nebenläufiger Nicht-Multimedia-Anwendungen
         \begin{itemize*}
-            \item interaktive Prozesse : keine Fristen , aber: keine zu langen Antwortzeiten Ansatz (z.B.): maximal tolerierbare Verzögerung
-            \item Hintergrund-Prozesse : zeitunkritisch, keine Fristen, aber : dürfen nicht verhungern
+            \item interaktiv: keine Fristen , keine zu langen Antwortzeiten Ansatz, maximal tolerierbare Verzögerung
+            \item Hintergrund: zeitunkritisch, keine Fristen, dürfen nicht verhungern
         \end{itemize*}
     \end{enumerate*}
-
-    Multimediaanwendungen sind ein typisches Beispiel für mögliche
-    Abweichungen der Lastpezifikation $(T_i,C_i)$ eines
-    Echtzeitprozesses!
-
-    Problem: Abweichungen von Lastspezifikation
-
-    \begin{itemize*}
-        \item gibt Prozessor nicht frei
-        \item verspätete periodische Prozesse
-    \end{itemize*}
-
 
     \subsubsection{RC Algorithmus}
 
@@ -2658,7 +2448,7 @@
         \begin{itemize*}
             \item Interrupt wird zunächst nur registriert (deterministischer Zeitaufwand)
             \item tatsächliche Bearbeitung der Interruptroutine muss durch Scheduler eingeplant werden $\rightarrow$ Pop-up Thread
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interruptbehandlung-lösung.png}
         \end{itemize*}
     \end{enumerate*}
 
@@ -2698,14 +2488,14 @@
         \begin{itemize*}
             \item Anforderungsreihenfolge = 98, 183, 37, 122, 14, 124, 65, 67
             \item Zuletzt gelesener Block: 53
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
         \end{itemize*}
         \item Beispiel 2: EDF Festplattenscheduling
         \begin{itemize*}
             \item Anforderungsreihenfolge $t_1 = 98, 37, 124, 65$
             \item Anforderungsreihenfolge $t_2 = 183, 122, 14, 67$
             \item Zuletzt gelesener Block: 53 | | $a_i$ | $d_i$ | | ----- | ----- | ----- | | $t_1$ | 0 | 3 | | $t_2$ | 0 | 9 |
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
         \end{itemize*}
         \item Primärziel: Wahrung der Echtzeitgarantien
         \begin{itemize*}
@@ -2744,7 +2534,7 @@
         \item Vereinfachung:
         \begin{itemize*}
             \item o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$ berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist $>>$ Latenzzeit)
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -2798,12 +2588,12 @@
         \item Sender-Regeln:
         \begin{itemize*}
             \item anschaulich, ohne aktiven Empfänger
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
         \end{itemize*}
         \item Empfänger-Regel:
         \begin{itemize*}
             \item anschaulich, ohne aktiven Sender
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-empfänger.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-empfänger.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -3029,7 +2819,7 @@
         \item Grundfunktion von Betriebssystemen
         \begin{itemize*}
             \item physische Hardware darstellen als abstrahierte Hardware mit komfortableren Schnittstellen
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exokernelarchitekturen.png}
             \item Schnittstelle zu Anwendungen (API) : bietet dabei exakt die gleichen Abstraktionen der Hardware für alle Anwendungen an, z.B. \begin{itemize*} \item \textbf{Prozesse:} gleiches Zustandsmodell, gleiches Threadmodell \item \textbf{Dateien:} gleiche Namensraumabstraktion \item \textbf{Adressräume:} gleiche Speicherverwaltung (VMM, Seitengröße, Paging) \item \textbf{Interprozesskommunikation:} gleiche Mechanismen für alle Anwendungsprozesse \end{itemize*}
         \end{itemize*}
         \item Problem:
@@ -3845,7 +3635,7 @@
         Kernelmodulen) zur Verwaltung des gesamten virtualisierten Systems
         \begin{itemize*}
             \item es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-architektur.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-architektur.png}
         \end{itemize*}
     \end{itemize*}
 
@@ -3860,7 +3650,7 @@
         \item Beispiel: Zugriff auf Hardware
         \begin{itemize*}
             \item Sicherheitspolitik-Integration, Administration, Auswertung: $dom_0$
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
         \end{itemize*}
         \item Beispiel: Inter-Domänen-Kommunikation
         \begin{itemize*}
@@ -4087,7 +3877,7 @@
             \item damit: größte Ähnlichkeit zu traditionellen verteilten Systemen
             \item Verwendung: bei Vielzahl von Prozessorkernen (Skalierbarkeit!)
             \item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
         \end{itemize*}
         \item B. Hierarchisches Design
         \begin{itemize*}
@@ -4095,7 +3885,7 @@
             \item meistens: \begin{itemize*} \item jeder Prozessorkern hat eigenen L1-Cache \item L2-Cache, Zugriff auf (externen) Hauptspeicher u. Großteil der Busse aber geteilt \end{itemize*}
             \item Verwendung: typischerweise Serverkonfigurationen
             \item Beispiele: \begin{itemize*} \item IBM Power \item Intel Core 2, Core i \item Sun UltraSPARCT1 (Niagara) \end{itemize*}
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
         \end{itemize*}
         \item C. Pipeline-Design
         \begin{itemize*}
@@ -4103,7 +3893,7 @@
             \item durch letzten Prozessor: Ablage im Speichersystem
             \item Verwendung: \begin{itemize*} \item Graphikchips \item (hochspezialisierte) Netzwerkprozessoren \end{itemize*}
             \item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
-            %\item     % %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
         \end{itemize*}
     \end{itemize*}
 

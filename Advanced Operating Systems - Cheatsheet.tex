@@ -2055,7 +2055,7 @@
 
     \paragraph{Vergleich: EDF vs. RM}
     \begin{center}
-    \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
+        \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-echtzeit-edf-vs-rm.png}
     \end{center}
     \begin{itemize*}
         \item RM
@@ -2069,7 +2069,7 @@
         \item EDF
         \begin{itemize*}
             \item Prozessorwechsel: 12
-        %\item Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat $\rightarrow$ keine unnötige Verdrängung
+            %\item Ursache: dynamische Prioritätenvergabe führt dazu, dass Instanz II von $t_2$ die gleiche Priorität wie Instanz A von $t_1$ hat $\rightarrow$ keine unnötige Verdrängung
             \item erzeugt auch bei Prozessorauslastung bis 100\% (immer) korrekte Schedules
             \item dynamisch Implementiert: balancierter Binärbaum zur Sortierung nach Prioritäten
             \item Einfügen und Entfernen von Tasks: $O(log\ n)$
@@ -2079,7 +2079,7 @@
 
     Prozesstypen in Multimedia-Anwendungen
     \begin{enumerate*}
-        \item Echte periodische Multimedia-Prozesse (weiche Fristen) 
+        \item Echte periodische Multimedia-Prozesse (weiche Fristen)
         \begin{enumerate*}
             \item pünktliche periodische Prozesse mit konstantem Prozessorzeitbedarf $C$ für jede Instanz (unkomprimierte Audio- und Videodaten)
             \item pünktliche periodische Prozesse mit unterschiedlichem $C$ einzelner Instanzen (komprimierte Audio- und Videodaten)
@@ -2093,54 +2093,43 @@
     \end{enumerate*}
 
     \subsubsection{RC Algorithmus}
-
     \begin{itemize*}
-        \item Ziel
-        \begin{itemize*}
-            \item spezifikationstreue Prozesse nicht bestrafen durch Fristüberschreitung aufgrund abweichender Prozesse
-        \end{itemize*}
+        \item Ziel: spezifikationstreue Prozesse nicht bestrafen durch Fristüberschreitung aufgrund abweichender Prozesse
         \item Idee
         \begin{itemize*}
-            \item grundsätzlich: Schedulingnach frühester Fristaufsteigend (= EDF) $\rightarrow$ für eine vollständig spezifikationstreue Prozessmenge verhält sich RC wie reines EDF
-            \item Frist einer Instanz wird dynamisch angepasst:basierend auf derjenigen Periode, in der sie eigentlich sein sollte lt. Spezifikation der Prozessornutzung ($U_i$, hier: ,,Rate''): $U_i=\frac{C_i}{T_i}$
-            \item Bsp.: $U_i =\frac{20}{40}=\frac{1}{2}$ ($t_B$ hat spezifizierte Aktivitätsrate von $0,5$ pro Periode)
+            \item grundsätzlich: Scheduling nach frühester Frist aufsteigend
+            \item[$\rightarrow$] für vollständig spezifikationstreue Prozessmenge wie EDF
+            \item Frist einer Instanz wird dynamisch angepasst: basierend auf derjenigen Periode, in der sie eigentlich sein sollte% lt. Spezifikation der Prozessornutzung: $U_i=\frac{C_i}{T_i}$
+            \item Bsp.: $U_i =\frac{20}{40}=\frac{1}{2}$ (spez. Aktivitätsrate $0,5$/Periode)
         \end{itemize*}
-    \end{itemize*}
-
-
-    \paragraph{RC Algorithmus: Strategie}
-
-    \begin{itemize*}
         \item Variablen
         \begin{itemize*}
-            \item $a_i$: Ankunftszeit der zuletzt bereitgewordenen Instanz von $t_i$
-            \item $t_i^{virt}$: virtuelle Zeit in aktueller Periode, die $t_i$ bereits verbraucht hat
-            \item $c_i^{virt}$: Netto-Rechenzeit, die $t_i$ in aktueller Periode bereits verbraucht hat
-            \item $d_i$: dynamische Frist von $t_i$, nach der sich dessen Priorität berechnet (EDF)
+            \item $a_i$: Ankunftszeit der zuletzt bereitgewordenen Instanz
+            \item $t_i^{virt}$: virtuelle verbrauchte Zeit in aktueller Periode
+            \item $c_i^{virt}$: verbrauchte Netto-Rechenzeit
+            \item $d_i$: dynamische Frist von $t_i$ für Priorität (EDF)
         \end{itemize*}
         \item Strategie
         \begin{itemize*}
             \item für eine bereite (lauffähige) Instanz von $t_i$: adaptiere dynamisch $d_i$ basierend auf $t_i^{virt}$
-            \item für eine bereit gewordene (neu angekommene oder zuvor blockierte) Instanzvon $t_i$: aktualisiere $t_i^{virt}$ auf akt. Systemzeit $(t)\rightarrow$ etwaiger ''Zeitkredit'' verfällt
+            \item für eine bereit gewordene Instanz von $t_i$: aktualisiere $t_i^{virt}$ auf akt. Systemzeit $(t)\rightarrow$ etwaiger ,,Zeitkredit'' verfällt
+        \end{itemize*}
+        \item Zeitpunkte, zu denen der Scheduler aktiv wird
+        \begin{itemize*}
+            \item aktuell laufender Prozess $t_i$ blockiert:  $RC(t_i)$
+            \item Prozesse $t_i..._j$ werden bereit:  $for\ x\in[i,j]: RC(t_x)$
+            \item periodischer ,,clock tick'' (Scheduling Interrupt) $RC(t_i)$
         \end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{RC Algorithmus: Berechnung von $t_i^{virt}$}
-
-    Beispiel: Situation bei $t=20ms$
+    %\paragraph{RC Algorithmus: Berechnung von $t_i^{virt}$}
+    %Beispiel: Situation bei $t=20ms$
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-1.png}
-
-    Da $t_B$ aber noch weiteren Rechenbedarf hat: Situation bei $t=30
-        ms$
+    %Da $t_B$ aber noch weiteren Rechenbedarf hat: Situation bei $t=30ms$
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-ti-berechnen-2.png}
 
-
-    \paragraph{RC Algorithmus:
-        Adaptionsfunktion}
-
-    Für Prozess ti zu jedem Scheduling-Zeitpunkt:
-
+    %\paragraph{RC Algorithmus: Adaptionsfunktion}
+    %Für Prozess ti zu jedem Scheduling-Zeitpunkt:
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{RC (t_i) \{}
@@ -2160,28 +2149,7 @@
     %\end{Shaded}
 
 
-    \paragraph{RC Algorithmus: Scheduling}
-
-    Zeitpunkte, zu denen der Scheduler aktiv wird:
-
-    \begin{enumerate*}
-        \item aktuell laufender Prozess $t_i$ blockiert:
-        \begin{itemize*}
-            \item $RC(t_i)$
-        \end{itemize*}
-        \item Prozesse $t_i..._j$ werden bereit:
-        \begin{itemize*}
-            \item $for\ x\in[i,j]: RC(t_x)$
-        \end{itemize*}
-        \item periodischer ,,clock tick'' (SchedulingInterrupt):
-        \begin{itemize*}
-            \item $t_i$ := aktuell ausgeführter Prozess
-            \item $RC(t_i)$
-        \end{itemize*}
-    \end{enumerate*}
-
-    anschließendes Scheduling (präemptiv) = EDF:
-
+    %anschließendes Scheduling (präemptiv) = EDF
     %\begin{Shaded}
     %\begin{Highlighting}[]
     %\NormalTok{SCHED := \{t_i |t_i.status == BEREIT ⋀ d_i minimal \}; }\CommentTok{// bereite(r) Prozess(e) mit nächster Frist}
@@ -2193,107 +2161,74 @@
     %\end{Shaded}
 
 
-    \paragraph{Umgang mit abweichenden Prozessen unter
-        RC}
-
+    \paragraph{Umgang mit abweichenden Prozessen unter RC}
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rc-abweichende-prozesse.png}
+    %Prozesse, die sich entsprechend ihrer Spezifikation verhalten, erhalten bis zum Ende jeder spezifizierten Periode ihren spezifizierten Anteil an Prozessorzeit.
 
+    Auswirkung auf verschiedene Prozesstypen
+    \begin{description*}
+        \item[pünktlich] Einhaltung der Frist in jeder Periode garantiert
+        \item[verspätet] nur aktuelle Periode betrachtet, Nachholen ,,ausgelassener Perioden'' nicht möglich
+        \item[gierig] Prozessorentzug, sobald andere lauffähige Prozesse frühere Fristen aufweisen
+        \item[nicht-periodische Hintergrundprozesse] pro ,,Periode'' wird spezifizierte Prozessorrate garantiert
+    \end{description*}
 
-    \paragraph{Resultat}
-
-    \begin{quote}
-        Garantie: Prozesse, die sich entsprechend ihrer Spezifikation verhalten,
-        erhalten bis zum Ende jeder spezifizierten Periode ihren spezifizierten
-        Anteil an Prozessorzeit.
-    \end{quote}
-
-    Auswirkung auf verschiedene Prozesstypen:
-
+    \subsubsection{Umgang mit gemischten Prozessmengen}
+    %Hintergrund-Scheduling
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png}
+    \end{center}
     \begin{itemize*}
-        \item ,,pünktliche'' Prozesse: Einhaltung der Frist in jeder Periode
-        garantiert (unabhängig von Verhalten anderer Prozesse)
-        \item ,,verspätete'' Prozesse: nur aktuelle Periode betrachtet, Nachholen
-        ,,ausgelassener Perioden'' nicht möglich
-        \item ,,gierige'' Prozesse: Prozessorentzug, sobald andere lauffähige
-        Prozesse frühere Fristen aufweisen
-        \item nicht-periodische Hintergrundprozesse: pro ,,Periode'' wird
-        spezifizierte Prozessorrate garantiert (z.B. kleine Raten bei großen
-        ,,Periodendauern'' wählen.)
-    \end{itemize*}
-
-
-    \subsubsection{Umgang mit gemischten
-        Prozessmengen}
-
-    \begin{itemize*}
-        \item Hintergrund-Scheduling:
+        \item rechenbereite Prozesse auf 2 Warteschlangen aufgeteilt (einfache Variante eines Mehr-Ebenen-Scheduling )
+        \item Warteschlange 1
         \begin{itemize*}
-            \item Prinzip: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-gemischte-prozessmenge.png}
-            \item rechenbereite Prozesse auf 2 Warteschlangen aufgeteilt (einfache Variante eines Mehr-Ebenen-Scheduling )
-            \item Warteschlange 1: \begin{itemize*} \item alle periodischen Prozesse \item mit höchster Priorität mittels RM oder EDF bedient \end{itemize*}
-            \item Warteschlange 2: \begin{itemize*} \item alle aperiodischen Prozesse \item nur bedient, wenn keine wartenden Prozesse in Warteschlange 1 \end{itemize*}
+            \item alle periodischen Prozesse
+            \item mit höchster Priorität mittels RM oder EDF bedient
+        \end{itemize*}
+        \item Warteschlange 2
+        \begin{itemize*}
+            \item alle aperiodischen Prozesse
+            \item nur bedient, wenn keine wartenden Prozesse in W1
         \end{itemize*}
     \end{itemize*}
 
 
-    \paragraph{Hintergrund-Scheduling: Vor- und
-        Nachteile}
-
+    \paragraph{Hintergrund-Scheduling: Vor- und Nachteile}
     \begin{itemize*}
-        \item Hauptvorteil:
+        \item Hauptvorteil einfache Implementierung
+        \item Nachteile
         \begin{itemize*}
-            \item einfache Implementierung
+            \item Antwortzeit \textbf{aperiodischer Prozesse} kann zu lang werden
+            \item[$\rightarrow$] Verhungern möglich
+            \item nur für relativ zeitunkritische aperiodische Prozesse
         \end{itemize*}
-        \item Nachteile:
-        \begin{itemize*}
-            \item Antwortzeit \textbf{aperiodischer Prozesse} kann zu lang werden (insbesondere bei hoher aperiodischer Last) $\rightarrow$ Verhungern möglich!
-            \item geeignet nur für relativ zeitunkritische aperiodische Prozesse
-        \end{itemize*}
-        \item Beispiel: Hintergrund-Scheduling mit RM
-        %\begin{itemize*}
+        %\item Beispiel: Hintergrund-Scheduling mit RM
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-hintergrund-scheduling.png}
-        %\end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{Optimierung:
-        Server-Prozess}
-
+    \paragraph{Optimierung: Server-Prozess}
     \begin{itemize*}
-        \item Scheduling mit Server-Prozessen:
-        \begin{itemize*}
-            \item Prinzip: periodisch aktivierter Prozess benutzt zur Ausführung aperiodischer Prozessoranforderungen
-            \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess: \begin{itemize*} \item Periodendauer $T_S$ \item ,,Prozessorzeitbedarf'' $C_S$; jetzt Kapazitätdes Server-Prozesses \end{itemize*}
-            \item Arbeitsweise Server-Prozess: \begin{itemize*} \item geplant mit gleichem Scheduling-Algorithmus wie periodische Prozesse \item zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen bedient bis zur Kapazität des Servers \item keine aperiodischen Anforderungen: Server suspendiert sich bis Beginn der nächsten Periode (Schedule wird ohne ihn weitergeführt $\rightarrow$ Prozessorzeit für periodische Prozesse) \item Kapazitätin jeder Server-Periode neu ''aufgeladen'' \end{itemize*}
-        \end{itemize*}
+        \item Prinzip: periodisch aktivierter Prozess benutzt zur Ausführung aperiodischer Prozessoranforderungen
+        \item Beschreibung Server-Prozess: durch Parameter äquivalent zu wirklichem periodischen Prozess
+        \item Arbeitsweise Server-Prozess folgend
+        \item geplant mit gleichem S-Algorithmus wie periodische Prozesse
+        \item zum Aktivierungszeitpunkt vorliegende aperiodische Anforderungen bedient bis zur Kapazität des Servers
+        \item keine aperiodischen Anforderungen: Server suspendiert sich bis Beginn der nächsten Periode %(Schedule wird ohne ihn weitergeführt $\rightarrow$ Prozessorzeit für periodische Prozesse)
+        \item Kapazität in jeder Server-Periode neu ''aufgeladen''
     \end{itemize*}
-
-
-    \paragraph{Beispiel: Server-Prozess mit
-        RM}
-
+    %Beispiel: Server-Prozess mit RM
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-rm-server-prozess.png}
 
-
-    \paragraph{Optimierung:
-        Slack-Stealing}
-
+    \paragraph{Optimierung: Slack-Stealing}
     \begin{itemize*}
-        \item Prinzip: Es existiert passiver Prozess ,,slack stealer'' (kein
-        periodischer Server)
-        \item versucht so viel Zeit wie möglich für aperiodische Anforderungen zu
-        sammeln
-        \item realisiert durch ,,slackstealing''(= Spielraum-Stehlen) bei
-        periodischen Prozessen
-        \item letztere auf Zeit-Achse so weit nach hinten geschoben, dass Frist und
-        Beendigungszeitpunkt zusammenfallen
-        \item Sinnvoll, da normalerweise Beenden periodischer Prozesse vor ihrer
-        Frist keinerlei Vorteile bringt
-        \item Resultat: Verbesserung der Antwortzeiten für aperiodische
-        Anforderungen
+        \item Prinzip: passiver Prozess ,,slack stealer'' (kein periodischer Server)
+        \item so viel Zeit wie möglich für aperiodische Anforderungen sammeln
+        \item realisiert durch ,,slackstealing'' bei periodischen Prozessen
+        \item letztere auf Zeit-Achse so weit nach hinten geschoben, dass Frist und Beendigungszeitpunkt zusammenfallen
+        \item Sinnvoll, da Beenden vor Frist keine Vorteile bringt
+        \item[$\rightarrow$] Verbesserung der Antwortzeiten für aperiodische Anforderungen
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-slack-stealing.png}
     \end{itemize*}
-
 
     \subsubsection{Prioritätsumkehr}
 

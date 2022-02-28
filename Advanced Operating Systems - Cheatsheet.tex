@@ -2322,278 +2322,156 @@
     \paragraph{Hauptspeicherverwaltung}
     \begin{itemize*}
         \item bei Anwendung existierender Paging-Systeme
-        \begin{itemize*}
-            \item durch unkontrolliertes Ein-/Auslagern ,,zeitkritischer'' Seiten (-inhalte): unkontrollierbare Zeitverzögerungen möglich!
-            \item Technik hier: ,,Festnageln'' von Seiten im Speicher (Pinning, Memory Locking)
-        \end{itemize*}
+        \item durch unkontrolliertes Ein-/Auslagern ,,zeitkritischer'' Seiten (-inhalte): unkontrollierbare Zeitverzögerungen möglich
+        \item Technik: ,,Festnageln'' von Seiten im Speicher (Memory Locking)
     \end{itemize*}
 
-
     \paragraph{Sekundärspeicherverwaltung}
-
     \begin{itemize*}
-        \item Beispiel 1: FCFS Festplattenscheduling
-        \begin{itemize*}
-            \item Anforderungsreihenfolge = 98, 183, 37, 122, 14, 124, 65, 67
-            \item Zuletzt gelesener Block: 53
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-fcfs.png}
-        \end{itemize*}
-        \item Beispiel 2: EDF Festplattenscheduling
-        \begin{itemize*}
-            \item Anforderungsreihenfolge $t_1 = 98, 37, 124, 65$
-            \item Anforderungsreihenfolge $t_2 = 183, 122, 14, 67$
-            \item Zuletzt gelesener Block: 53 | | $a_i$ | $d_i$ | | ----- | ----- | ----- | | $t_1$ | 0 | 3 | | $t_2$ | 0 | 9 |
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-edf.png}
-        \end{itemize*}
         \item Primärziel: Wahrung der Echtzeitgarantien
         \begin{itemize*}
-            \item naheliegend: EA-Schedulingnach Fristen $\rightarrow$ EDF (wie Prozessor)
-            \item für Zugriffsreihenfolge auf Datenblöcke: lediglich deren Fristen maßgebend (weitere Regeln existieren nicht!)
+            \item naheliegend: EA-Scheduling nach Fristen $\rightarrow$ EDF
+            \item für Zugriffsreihenfolge auf Datenblöcke: lediglich deren Fristen maßgebend (weitere Regeln existieren nicht)
         \end{itemize*}
-        \item Resultat bei HDDs:
+        \item Resultat bei HDDs
         \begin{itemize*}
-            \item ineffiziente Bewegungen der Lese-/Schreibköpfe -ähnlich FCFS
+            \item ineffiziente Bewegungen der Lese-/Schreibköpfe
             \item nichtdeterministische Positionierzeiten
             \item geringer Durchsatz
         \end{itemize*}
-        \item Fazit:
-        \begin{itemize*}
-            \item Echtzeit-Festplattenscheduling $\rightarrow$ Kompromiss zwischen Zeitbeschränkungen und Effizienz
-        \end{itemize*}
-        \item bekannte Lösungen:
-        \begin{enumerate*}
-
-            \item Modifikation von EDF
-            \item Kombination von EDF mit anderen Zugriffsstrategien
-        \end{enumerate*}
+        \item Fazit: Echtzeit-Festplattenscheduling $\rightarrow$ Kompromiss zwischen Zeitbeschränkungen und Effizienz
+        \item bekannte Lösungen: Modifikation/Kombination von EDF
     \end{itemize*}
-
     $\rightarrow$ realisierte Strategien:
-
     \begin{enumerate*}
-        \item SCAN-EDF (SCAN: Kopfbewegung nur in eine Richtung bis
-        Mitte-/Randzylinder; EDF über alle angefragten Blöcke \emph{in dieser
-            Richtung} )
-        \item Group Sweeping (SCAN mit nach Fristen gruppenweiser Bedienung)
+        \item SCAN-EDF (Kopfbewegung in eine Richtung bis Mitte-/Randzylinder; EDF über alle angefragten Blöcke in dieser
+        Richtung)
+        \item Group Sweeping (SCAN nach Fristen gruppenweiser Bedienung)
         \item Mischstrategien
     \end{enumerate*}
-
     \begin{itemize*}
-        \item Vereinfachung:
-        \begin{itemize*}
-            \item o.g. Algorithmen i.d.R. zylinderorientiert $\rightarrow$ berücksichtigen bei Optimierung nur Positionierzeiten (Grund: Positionierzeit meist $>>$ Latenzzeit)
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
-        \end{itemize*}
+        \item Vereinfachung: o.g. Algorithmen i.d.R. zylinderorientiert
+        \item[$\rightarrow$] berücksichtigen bei Optimierung nur Positionierzeiten (Positionierzeit meist $>>$ Latenzzeit)
     \end{itemize*}
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-sekundärspeicherverwaltung-festplatte.png}
+    \end{center}
 
-
-    \subsubsection{Kommunikation und
-        Synchronisation}
-
+    \subsection{Kommunikation und Synchronisation}
     \begin{itemize*}
-        \item zeitlichen Nichtdeterminismus vermeiden:
-        \begin{enumerate*}
-
-            \item Interprozess-Kommunikation
-        \end{enumerate*}
+        \item zeitlichen Nichtdeterminismus vermeiden: Interprozess-Kommunikation
         \begin{itemize*}
             \item Minimierung blockierender Kommunikationsoperationen
-            \item indirekte Kommunikation $\rightarrow$ CAB zum Geschwindigkeitsausgleich
+            \item indirekte Kommunikation $\rightarrow$ Geschwindigkeitsausgleich
             \item keine FIFO-Ordnungen (nach Fristen priorisieren)
-            \item CAB ... Cyclic Asynchronous Buffer: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-kommunikation-cab.png}
         \end{itemize*}
-        \begin{enumerate*}
-
-
-            \item Synchronisation
-        \end{enumerate*}
-        \begin{itemize*}
-            \item keine FIFO-Ordnungen, z.B. bei Semaphor-Warteschlangen (vgl. o.)
-        \end{itemize*}
+        \item Synchronisation: keine FIFO-Ordnungen
     \end{itemize*}
 
+    \paragraph{Cyclic Asynchronous Buffer (CAB)}
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-kommunikation-cab.png}
 
-    \paragraph{Cyclic Asynchronous Buffer
-        (CAB)}
-
-    Kommunikation zwischen 1 Sender und n Empfängern:
+        Kommunikation zwischen 1 Sender und n Empfängern
+    \end{center}
 
     \begin{itemize*}
-        \item nach erstem Schreibzugriff: garantiert niemals undefinierte
-        Wartezeiten durch Blockierung von Sender/Empfänger
+        \item nach erstem Schreibzugriff: garantiert niemals undefinierte Wartezeiten durch Blockierung von Sender/Empfänger
         \item Lesen/Überschreiben in zyklischer Reihenfolge:
-        %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-kommunikation-zyklisch-cab.png}
-        %\end{itemize*}
-        \item Implementierung:
+        \item Most-Recently-Written (MRW) Zeiger auf jüngstes, durch Sender vollständig geschriebenes Element
+        \item Least-Recently-Written (LRW) Zeiger auf ältestes durch Sender geschriebenes Element
+        \item sowohl \emph{MRW} als auch \emph{LRW} können ausschließlich durch Sender manipuliert werden $\rightarrow$ keine inkonsistenten Zeiger durch konkurrierende Schreibzugriffe
+        \item sowohl \emph{MRW} als auch \emph{LRW} zeigen niemals auf ein Element, das gerade geschrieben wird $\rightarrow$ keine inkonsistenten Inhalte durch konkurrierende Schreib-/Lesezugriffe
+        \item Regeln für Sender
         \begin{itemize*}
-            \item MRW: Most-Recently-Written; Zeiger auf jüngstes, durch Sender vollständig geschriebenes Element
-            \item LRW: Least-Recently-Written; Zeiger auf ältestes durch Sender geschriebenes Element
-            \item Garantien: \begin{itemize*} \item sowohl \emph{MRW} als auch \emph{LRW} können ausschließlich durch Sender manipuliert werden $\rightarrow$ keine inkonsistenten Zeiger durch konkurrierende Schreibzugriffe! \item sowohl \emph{MRW} als auch \emph{LRW} zeigen niemals auf ein Element, das gerade geschrieben wird $\rightarrow$ keine inkonsistenten Inhalte durch konkurrierende Schreib-/Lesezugriffe! \end{itemize*}
-            \item Regeln für Sender: \begin{itemize*} \item muss \textbf{nach} jedem Schreiben \emph{MRW} auf geschriebenes Element setzen \item muss \textbf{bevor} \emph{LRW} geschrieben wird \emph{LRW} inkrementieren \end{itemize*}
-            \item Regel für Empfänger: muss immer nach Lesen von \emph{MRW} als nächstes \emph{LRW} anstelle des Listennachbarn lesen
+            \item muss \textbf{nach} jedem Schreiben \emph{MRW} auf geschriebenes Element setzen
+            \item muss \textbf{bevor} \emph{LRW} geschrieben wird \emph{LRW} inkrementieren
         \end{itemize*}
-        \item Sender-Regeln:
-        \begin{itemize*}
-            \item anschaulich, ohne aktiven Empfänger
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
-        \end{itemize*}
-        \item Empfänger-Regel:
-        \begin{itemize*}
-            \item anschaulich, ohne aktiven Sender
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-empfänger.png}
-        \end{itemize*}
+        \item Regel für Empfänger: muss immer nach Lesen von \emph{MRW} als nächstes \emph{LRW} anstelle des Listennachbarn lesen
+        %\item Sender-Regeln: \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sender-regel.png}
+        %\item Empfänger-Regel: \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-empfänger.png}
     \end{itemize*}
 
     Sonderfall 1: Empfänger schneller als Sender
-
     \begin{itemize*}
-        \item nach Zugriff auf MRW muss auf Lesesequenz bei LRW fortgesetzt werden
-        $\rightarrow$ transparenter Umgang mit nicht-vollem
-        Puffer
-        \item Abschwächung der Ordnungsgarantien:Empfänger weiß nur, dass Aktualität
-        der Daten zwischen LRW und MRW liegt
-        \item Empfänger (nach min. einem geschriebenen Element) niemals durch leeren
-        Puffer blockiert
+        \item nach Zugriff auf MRW muss auf Lesesequenz bei LRW fortgesetzt werden $\rightarrow$ transparenter Umgang mit nicht-vollem Puffer
+        \item Abschwächung der Ordnungsgarantien:Empfänger weiß nur, dass Aktualität der Daten zwischen LRW und MRW liegt
+        \item Empfänger niemals durch leeren Puffer blockiert
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-1.png}
     \end{itemize*}
 
     Sonderfall 2: Sender schneller als Empfänger
-
     \begin{itemize*}
-        \item Schreiben in Puffer grundsätzlich in Reihenfolge der Elemente
-        $\rightarrow$ keine blockierenden Puffergrenzen
-        $\rightarrow$ niemals Blockierung des Senders
-        \item keine Vollständigkeitsgarantien:Empfänger kann nicht sicher sein, eine
-        temporal stetige Sequenz zu lesen
-        \item $\rightarrow$ Szenarien, in denen Empfänger sowieso
-        nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
+        \item Schreiben in Puffer in Reihenfolge der Elemente $\rightarrow$ keine blockierenden Puffergrenzen $\rightarrow$ niemals Blockierung des Senders
+        \item keine Vollständigkeitsgarantien: Empfänger kann nicht sicher sein, eine temporal stetige Sequenz zu lesen
+        \item[$\rightarrow$] Szenarien, in denen Empfänger sowieso nur an aktuellsten Daten interessiert (z.B. Sensorwerte)
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-sonderfall-2.png}
     \end{itemize*}
 
-    Konkurrierende Zugriffe:
-
+    Konkurrierende Zugriffe
     \begin{itemize*}
         \item ... sind durch Empfänger immer unschädlich (da lesend)
-        \item ... müssen vom Sender nach Inkrementieren von LRW nicht-blockierend
-        erkannt werden (klassisches Semaphormodell ungeeignet)
-        \item schnellerer Sender überspringtein gesperrtes Element durch erneutes
-        Inkrementieren von LRW , muss MRW trotzdem nachziehen
+        \item ... müssen vom Sender nach Inkrementieren von LRW nicht-blockierend erkannt werden (Semaphormodell ungeeignet)
+        \item schnellerer Sender überspringtein gesperrtes Element durch erneutes Inkrementieren von LRW, MRW muss nachziehen
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-cab-konkurrierende-zugriffe.png}
     \end{itemize*}
 
-
-    \subsection{Architekturen und
-        Beispiel-Betriebssysteme}
-
+    \subsection{Architekturen}
     \begin{itemize*}
-        \item Architekturprinzipien:
+        \item müssen Echtzeitmechanismen unterstützen; ermöglicht entsprechende Strategien zur Entwicklungs-oder Laufzeit
+        \item müssen funktional geringe Komplexität aufweisen $\rightarrow$ theoretische und praktische Beherrschung von Nichtdeterminismus
+        \item Architekturen für komplementäre NFE
         \begin{itemize*}
-            \item müssen Echtzeitmechanismen unterstützen; ermöglicht entsprechende Strategien zur Entwicklungs-oder Laufzeit (CPU-Scheduler, EA-Scheduler, IPC ...)
-            \item müssen funktional geringe Komplexität aufweisen $\rightarrow$ theoretische und praktische Beherrschung von Nichtdeterminismus \begin{itemize*} \item Theoretisch: Modellierung und Analyse (vgl. Annahmen für Scheduling-Planbarkeitsanalyse) \item Praktisch: Implementierung (vgl. RC-Scheduler, Prioritätsvererbung) \end{itemize*}
+            \item Sparsamkeit $\rightarrow$ hardwarespezifische Kernelimplementierung
+            \item Adaptivität $\rightarrow$ $\mu$Kernel, Exokernel
         \end{itemize*}
-        \item Konsequenzen:
+        \item zu vermeiden
         \begin{itemize*}
-            \item Architekturen für komplementäre NFE: \begin{itemize*} \item Sparsamkeit $\rightarrow$ hardwarespezifische Kernelimplementierung \item Adaptivität $\rightarrow$ $\mu$Kernel, Exokernel \end{itemize*}
-            \item zu vermeiden: \begin{itemize*} \item starke Hardwareabstraktion $\rightarrow$ Virtualisierungsarchitekturen \item Kommunikation und Synchronisationskosten $\rightarrow$ verteilte BS \item Hardwareunabhängigkeit und Portabilität $\rightarrow$ vgl. Mach \end{itemize*}
+            \item starke HW-Abstraktion $\rightarrow$ Virtualisierungsarchitekturen
+            \item Kommunikation und Synchronisationskosten $\rightarrow$ verteilte BS
+            \item Hardwareunabhängigkeit und Portabilität $\rightarrow$ vgl. Mach
         \end{itemize*}
     \end{itemize*}
 
-    Auswahl: Beispiel-Betriebssysteme
-
-    \begin{itemize*}
-        \item wir kennen schon:
-        \begin{itemize*}
-            \item funktional kleine Kernelimplementierung: TinyOS
-            \item hardwarespezifischer $\mu$Kernel: L4-Abkömmlinge
-            \item Mischung aus beidem: RIOT
-            \item Kommerziell bedeutender $\mu$Kernel: QNX Neutrino
-        \end{itemize*}
-        \item weitere Vertreter:
-        \begin{itemize*}
-            \item hardwarespezifische Makrokernel: VRTX, VxWorks
-            \item $\mu$Kernel: DRYOS, DROPS
-            \item ,,Exokernel'' ...?
-        \end{itemize*}
-    \end{itemize*}
+    \subsection{Beispiel-Betriebssysteme}
 
     VRTX (Versatile Real-Time Executive)
-
     \begin{itemize*}
-        \item Entwickler:
-        \begin{itemize*}
-            \item Hunter \& Ready
-        \end{itemize*}
-        \item Eckdaten:
-        \begin{itemize*}
-            \item Makrokernel
-            \item war erstes kommerzielles Echtzeitbetriebssystem für eingebettete Systeme
-            \item heutige Bedeutung eher historisch
-            \item Nachfolger (1993 bis heute): Nucleus RTOS (Siemens)
-        \end{itemize*}
-        \item Anwendung:
-        \begin{itemize*}
-            \item Eingebettete Systeme in Automobilen(Brems-und ABS-Controller)
-            \item Mobiltelefone
-            \item Geldautomaten
-        \end{itemize*}
-        \item Einsatzgebiete
-        \begin{itemize*}
-            \item spektakulär: im Hubble-Weltraumteleskop
-        \end{itemize*}
+        \item Entwickler: Hunter \& Ready
+        \item Eckdaten: Makrokernel
+        \item war erstes kommerzielles Echtzeitbetriebssystem für eingebettete Systeme
+        \item Nachfolger (1993 bis heute): Nucleus RTOS (Siemens)
+        \item Anwendung: Eingebettete Systeme in Automobilen, Mobiltelefone
+        \item Einsatzgebiete im Hubble-Weltraumteleskop
     \end{itemize*}
 
     VxWorks
-
     \begin{itemize*}
-        \item Entwickler:
-        \begin{itemize*}
-            \item Wind River Systems (USA)
-        \end{itemize*}
-        \item Eckdaten:
-        \begin{itemize*}
-            \item modularer Makrokernel
-            \item Konkurrenzprodukt zu VRTX
-            \item Erfolgsfaktor: POSIX-konforme API
-            \item ähnlich QNX: ,,skalierbarer'' Kernel,zuschneidbarauf Anwendungsdomäne ( $\rightarrow$ Adaptivitätsansatz)
-        \end{itemize*}
-        \item Anwendung:
-        \begin{itemize*}
-            \item eingebettete Systeme:
-            \item industrielle Robotersteuerung
-            \item Luft-und Raumfahrt
-            \item Unterhaltungselektronik
-        \end{itemize*}
-        \item Einsatzgebiete
-        \begin{itemize*}
-            \item Deep-Impact-Mission zur Untersuchung des Kometen Temple 1
-            \item NASA Mars Rover
-            \item SpaceX Dragon
-        \end{itemize*}
+        \item Entwickler: Wind River Systems (USA)
+        \item Eckdaten: modularer Makrokernel
+        \item Erfolgsfaktor: POSIX-konforme API
+        \item ähnlich QNX: ,,skalierbarer'' Kernel, zuschneidbar auf Anwendungsdomäne ($\rightarrow$ Adaptivitätsansatz)
+        \item Anwendung: eingebettete Systeme, Luft-und Raumfahrt, Unterhaltungselektronik
+        \item Einsatzgebiete: NASA Mars Rover, SpaceX Dragon
     \end{itemize*}
 
-    DRYOS®
-
+    DRYOS
     \begin{itemize*}
         \item Entwickler: Canon Inc.
-        \item Eckdaten:
-        \begin{itemize*}
-            \item Mikrokernel(Größe: 16 kB)
-            \item Echtzeit-Middleware (Gerätetreiber $\rightarrow$ Objektive)
-            \item Anwendungen: AE-und AF-Steuerung/-Automatik, GUI, Bildbearbeitung, RAW-Konverter, ...
-            \item POSIX-kompatible Prozessverwaltung
-        \end{itemize*}
+        \item Eckdaten: Mikrokernel(Größe: 16 kB)
+        \item Echtzeit-Middleware (Gerätetreiber $\rightarrow$ Objektive)
+        \item Anwendungen: AE-und AF-Steuerung/-Automatik, GUI, Bildbearbeitung, RAW-Konverter, ...
+        \item POSIX-kompatible Prozessverwaltung
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-dryos.png}
     \end{itemize*}
 
     DROPS (Dresden Real-Time Operating System)
-
     \begin{itemize*}
         \item Entwickler: TU Dresden, Lehrstuhl Betriebssysteme
         \item Eckdaten: Multi-Server-Architektur auf Basis eines L4-Mikrokerns
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
     \end{itemize*}
-
 
     \section{Adaptivität}
 

@@ -2231,59 +2231,29 @@
     \end{itemize*}
 
     \subsubsection{Prioritätsumkehr}
-
-    \begin{quote}
-        Mechanismen zur Synchronisation und Koordination sind häufige Ursachen
-        für kausale Abhängigkeiten zwischen Prozessen!
-    \end{quote}
-
-
-    \paragraph{Problem}
-
+    Mechanismen zur Synchronisation und Koordination sind häufige Ursachen für kausale Abhängigkeiten zwischen Prozessen
     \begin{itemize*}
-        \item Prinzip \emph{kritischer Abschnitt} (Grundlagen BS):
-        \begin{itemize*}
-            \item Sperrmechanismen stellen wechselseitigen Ausschluss bei der Benutzung exklusiver Betriebsmittel durch nebenläufige Prozesse sicher
-            \item Benutzung von exklusiven sowie nichtentziehbaren Betriebsmitteln: kritischer Abschnitt
-            \item[$\rightarrow$] Wenn ein Prozess einen kritischen Abschnitt betreten hat, darf er aus diesem nicht verdrängt werden (durch anderen Prozess, der dasselbe Betriebsmittel nutzen will)
-        \end{itemize*}
+        \item \emph{kritischer Abschnitt}: Sperrmechanismen stellen wechselseitigen Ausschluss durch nebenläufige Prozesse sicher
+        \item Benutzung von exklusiven, nichtentziehbaren Betriebsmitteln
+        \item[$\rightarrow$] Wenn ein Prozess einen kritischen Abschnitt betreten hat, darf er aus diesem nicht verdrängt werden %(durch anderen Prozess, der dasselbe Betriebsmittel nutzen will)
         \item Konflikt: kritische Abschnitte vs. Echtzeit-Prioritäten
-        \begin{itemize*}
-            \item Falls ein weiterer Prozess mit höherer Priorität ablauffähig wird und im gleichen kritischen Abschnitt arbeiten will, muss er warten bis niederpriorisierter Prozess kritischen Abschnitt verlassen hat
-            \item (zeitweise) Prioritätsumkehr möglich! d.h. aus einer (Teil-) Menge von Prozessen muss derjenige mit höchster Priorität auf solche mit niedrigerer Priorität warten
-        \end{itemize*}
+        \item Prozess mit höherer Priorität ablauffähig $\rightarrow$ muss abwarten bis niederpriorisierter Prozess kritischen Abschnitt verlässt
+        \item (zeitweise) Prioritätsumkehr möglich% d.h. aus einer (Teil-) Menge von Prozessen muss derjenige mit höchster Priorität auf solche mit niedrigerer Priorität warten
     \end{itemize*}
 
-
-    \paragraph{Ursache der
-        Prioritätsumkehr}
-
+    Ursache der Prioritätsumkehr
     \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
-        \item Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem
-        Betriebsmittel
+        \item \includegraphics[width=.7\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-ursache.png}
+        \item Prioritätsumkehr bei Blockierung an nichtentziehbarem, exklusivem Betriebsmittel
         \item $\rightarrow$ unvermeidlich
     \end{itemize*}
 
-
-    \paragraph{Folgen der
-        Prioritätsumkehr}
-
+    Folgen der Prioritätsumkehr
     \begin{itemize*}
         \item Kritisch bei zusätzlichen Prozessen mittlerer Priorität
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
+        \item \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr-folgen.png}
         \item Lösung: Priority Inheritance Protocol (PIP)
     \end{itemize*}
-
-
-    \paragraph{Lösung:
-        Prioritätsvererbung}
-
-    \begin{itemize*}
-        \item ![Abb. nach [Buttazzo97] , Bild 7.6, S.188]
-        \item ePrio ... effektive Priorität
-    \end{itemize*}
-
 
     \subsubsection{Überlast}
 

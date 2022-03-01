@@ -2656,84 +2656,61 @@
         \item keine Isolation von Anwendungen $\rightarrow$ Parallelisierbarkeit: teuer und schwach$\rightarrow$ keine Robustheit und Sicherheit der Anwendungen
     \end{itemize*}
 
-
     \subsection{Virtualisierung}
+    \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-idee.png}
 
-    \begin{itemize*}
-        \item Ziele (zur Erinnerung):
-        \begin{itemize*}
-            \item Adaptivität
-            \item Wartbarkeit, Sicherheit, Robustheit
-            \item[$\rightarrow$] auf gleicher Hardware mehrere unterschiedliche Betriebssysteme ausführbar machen
-        \end{itemize*}
-        \item Idee:
-        %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-idee.png}
-    \end{itemize*}
-
+        $\rightarrow$ auf gleicher Hardware mehrere unterschiedliche Betriebssysteme ausführbar machen
+    \end{center}
     Ziele von Virtualisierung
-
     \begin{itemize*}
-        \item Adaptivität: ( ähnlich wie bei Exokernen)
+        \item Adaptivität (ähnlich wie Exokernen) % können viele unterschiedliche Betriebssysteme - mit jeweils unterschiedlichen Eigenschaften ausgeführt werden damit können Gruppen von Anwendungen auf ähnliche Weise jeweils unterschiedliche Abstraktionen etc. zur Verfügung gestellt werden
+        \item Wartbarkeit
+        \item Sicherheit
         \begin{itemize*}
-            \item können viele unterschiedliche Betriebssysteme - mit jeweils unterschiedlichen Eigenschaften ausgeführt werden damit können: Gruppen von Anwendungen auf ähnliche Weise jeweils unterschiedliche Abstraktionen etc. zur Verfügung gestellt werden
+            \item Isolation von Anwendungs-und Kernelcode durch getrennte Adressräume
+            \item Einschränkung der Fehlerausbreitung $\rightarrow$ angreifbare Schwachstellen
+            \item Überwachung der Kommunikation zwischen Teilsystemen
+            \item Sandboxing (vollständig von logischer Ablaufumgebung isolierte Software)
         \end{itemize*}
-        \item Wartbarkeit:
-        \begin{itemize*}
-            \item Anwendungen - die sonst nicht gemeinsam auf gleicher Maschine lauffähig - auf einer phyischenMaschine ausführbar
-            \item ökonomische Vorteile: Cloud-Computing, Wartbarkeit von Legacy-Anwendungen
-        \end{itemize*}
-        \item Sicherheit:
-        \begin{itemize*}
-            \item Isolation von Anwendungs-und Kernelcode durch getrennte Adressräume (wie z.B. bei Mikrokern-Architekturen)
-            \item somit möglich: \begin{enumerate*} \item Einschränkung der Fehlerausbreitung $\rightarrow$ angreifbare Schwachstellen \item Überwachung der Kommunikation zwischen Teilsystemen \end{enumerate*}
-            \item darüber hinaus: Sandboxing (vollständig von logischer Ablaufumgebung isolierte Software, typischerweise Anwendungen $\rightarrow$ siehe z.B. Cloud-Computing)
-        \end{itemize*}
-        \item Robustheit:
-        \begin{itemize*}
-            \item siehe Sicherheit!
-        \end{itemize*}
+        \item Robustheit: siehe Sicherheit
     \end{itemize*}
 
     Architekturvarianten - drei unterschiedliche Prinzipien:
-
     \begin{enumerate*}
-        \item Typ-1 - Hypervisor ( früher: VMM - ,,Virtual MachineMonitor'' )
-        \item Typ-2 - Hypervisor
+        \item Typ-1-Hypervisor (früher: VMM - ,,Virtual Machine Monitor'')
+        \item Typ-2-Hypervisor
         \item Paravirtualisierung
     \end{enumerate*}
 
-
-    \subsubsection{Typ-1 - Hypervisor}
-
+    \subsubsection{Typ-1-Hypervisor}
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-virtualisierung-hypervisor-1.png}
-        \item Idee des Typ- 1 - Hypervisors:
+        \item Idee des Typ-1-Hypervisors:
         \begin{itemize*}
-            \item Kategorien traditioneller funktionaler Eigenschaften von BS: \begin{enumerate*} \item Multiplexing \& Schutz der Hardware (ermöglicht Multiprozess-Betrieb) \item abstrahierte Maschine** mit ,,angenehmerer'' Schnittstelle als die reine Hardware (z.B. Dateien, Sockets, Prozesse, ...) \end{enumerate*}
+            \item Multiplexing \& Schutz der Hardware (ermöglicht Multiprozess-Betrieb)
+            \item abstrahierte Maschine mit ,,angenehmerer'' Schnittstelle als die reine Hardware (z.B. Dateien, Sockets, Prozesse, ...)
         \end{itemize*}
-        \item Typ- 1 - Hypervisor trennt beide Kategorien:
+        \item Typ-1-Hypervisor trennt beide Kategorien
         \begin{itemize*}
             \item läuft wie ein Betriebssystem unmittelbar über der Hardware
-            \item bewirkt Multiplexing der Hardware, liefert aber keine erweiterte Maschine** an Anwendungsschicht $\rightarrow$ ,,Multi-Betriebssystem-Betrieb''
+            \item bewirkt Multiplexing der Hardware, liefert aber keine erweiterte Maschine an Anwendungsschicht
+            \item[$\rightarrow$] ,,Multi-Betriebssystem-Betrieb''
         \end{itemize*}
-        \item Bietet mehrmals die unmittelbare Hardware-Schnittstelle an, wobei jede
-        Instanz eine virtuelle Maschine jeweils mit den unveränderten
-        Hardware-Eigenschaften darstellt (Kernel u. User Mode, Ein-/Ausgaben
-        usw.).
+        \item Bietet mehrmals die unmittelbare Hardware-Schnittstelle an, wobei jede Instanz eine virtuelle Maschine jeweils mit den unveränderten Hardware-Eigenschaften darstellt %(Kernel u. User Mode, Ein-/Ausgaben usw.)
         \item Ursprünge: Time-Sharing an Großrechnern
-        \begin{itemize*}
-            \item Standard-BS auf IBM-Großrechner System/360: OS/360
-            \item reines Stapelverarbeitungs-Betriebssystem (1960er Jahre)
-            \item Nutzer (insbes. Entwickler) strebten interaktive Arbeitsweise an eigenem Terminal an $\rightarrow$ timesharing (MIT, 1962: CTSS) \begin{itemize*} \item IBM zog nach: CP/CMS, später VM/370 $\rightarrow$ z/VM \item CP: Control Program $\rightarrow$ Typ- 1 - Hypervisor \item CMS: ConversationalMonitor System $\rightarrow$ Gast-BS \end{itemize*}
-            \item CP lief auf ,,blanker'' Hardware (Begriff geprägt: ,,bare metal hypervisor'' ) \begin{itemize*} \item lieferte Menge virtueller Kopiender System/360-Hardware an eigentliches Timesharing-System \item je eines solche Kopie pro Nutzer $\rightarrow$ unterschiedliche BS lauffähig (da jede virtuelle Maschine exakte Kopie der Hardware) \item in der Praxis: sehr leichtgewichtiges, schnelles Einzelnutzer-BS als Gast $\rightarrow$ CMS (heute wäre das wenig mehr als ein Terminal-Emulator...) \end{itemize*}
-        \end{itemize*}
         \item heute: Forderungen nach Virtualisierung von Betriebssystemen
         \begin{itemize*}
-            \item seit 1980er: universeller Einsatz des PC für Einzelplatz- und Serveranwendungen $\rightarrow$ veränderte Anforderungen an Virtualisierung
-            \item Wartbarkeit: vor allem ökonomische Gründe: \begin{enumerate*} \item Anwendungsentwicklung und -bereitstellung: verschiedene Anwendungen in Unternehmen, bisher auf verschiedenen Rechnern mit mehreren (oft verschiedenen) BS, auf einem Rechner entwickeln und betreiben (Lizenzkosten!) \item Administration: einfache Sicherung, Migration virtueller Maschinen \item Legacy-Software \end{enumerate*}
-            \item später: Sicherheit, Robustheit $\rightarrow$ Cloud-Computing-Anwendungen
+            \item universeller Einsatz des PC für Einzel- und Serveranwendungen $\rightarrow$ veränderte Anforderungen an Virtualisierung
+            \item Wartbarkeit: vor allem ökonomische Gründe
+            \begin{enumerate*}
+                \item Anwendungsentwicklung und -bereitstellung (Lizenzkosten)
+                \item Administration: einfache Sicherung, Migration virtueller Maschinen
+                \item Legacy-Software
+            \end{enumerate*}
+            \item später: Sicherheit, Robustheit $\rightarrow$ Cloud-Computing
         \end{itemize*}
-        \item ideal hierfür: Typ- 1 - Hypervisor
+        \item ideal hierfür: Typ-1-Hypervisor
         \begin{itemize*}
             \item[\cmark] Gast-BS angenehm wartbar
             \item[\cmark] Softwarekosten beherrschbar
@@ -2742,160 +2719,75 @@
     \end{itemize*}
 
     Hardware-Voraussetzungen
-
     \begin{itemize*}
-        \item Voraussetzungen zum Einsatz von Typ-1-HV
+        \item Ziel: Nutzung von Virtualisierung auf PC-Hardware
+        \item systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek \& Goldberg
         \begin{itemize*}
-            \item Ziel: Nutzung von Virtualisierung auf PC-Hardware
-            \item systematische Untersuchung der Virtualisierbarkeit von Prozessoren bereits 1974 durch Popek \& Goldberg [Popek\&Goldberg74]
-            \item Ergebnis: \begin{itemize*} \item Gast-BS (welches aus Sicht der CPU im User Mode - also unprivilegiert läuft) muss sicher sein können, dass privilegierte Instruktionen (Maschinencode im Kernel) ausgeführt werden \item dies geht nur, wenn tatsächlich der HV diese Instruktionen ausführt! \item dies geht nur, wenn CPU bei jeder solchen Instruktion im Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion emuliert! \end{itemize*}
+            \item Gast-BS (aus Sicht der CPU im User Mode) muss sicher sein können, dass privilegierte Instruktionen (Maschinencode im Kernel) ausgeführt werden
+            \item dies geht nur, wenn tatsächlich der HV diese Instruktionen ausführt
+            \item dies geht nur, wenn CPU bei jeder solchen Instruktion im Nutzermodus Kontextwechsel zum HV ausführen, welcher Instruktion emuliert
         \end{itemize*}
         \item virtualisierbare Prozessoren bis ca. 2006:
         \begin{itemize*}
-            \item[\cmark] IBM-Architekturen(bekannt: PowerPC, bis 2006 Apple-Standard)
+            \item[\cmark] IBM-Architekturen (PowerPC, bis 2006 Apple-Standard)
             \item[\xmark] Intel x86-Architekturen (386, Pentium, teilweise Core i)
         \end{itemize*}
     \end{itemize*}
 
     Privilegierte Instruktionen \textbf{ohne} Hypervisor
-
-    \begin{itemize*}
-        \item kennen wir schon: Instruktion für Systemaufrufe
-    \end{itemize*}
-
     \begin{enumerate*}
         \item User Mode: Anwendung bereitet Befehl und Parameter vor
-        \item User Mode: Privilegierte Instruktion (syscall/Trap - Interrupt)
-        $\rightarrow$ CPU veranlasst Kontext-und
-        Privilegierungswechsel, Ziel: BS-Kernel
-        \item Kernel Mode: BS-Dispatcher (Einsprungpunkt für Kernel-Kontrollfluss)
-        behandelt Befehl und Parameter, ruft weitere privilegierte
-        Instruktionen auf (z.B. EA-Code)
+        \item User Mode: Privilegierte Instruktion $\rightarrow$ CPU veranlasst Kontext-und Privilegierungswechsel, Ziel: BS-Kernel
+        \item Kernel Mode: BS-Dispatcher behandelt Befehl und Parameter, ruft weitere privilegierte Instruktionen auf
     \end{enumerate*}
-
     % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-ohne-hypervisor.png}
 
-    Privilegierte Instruktionen mit Typ- 1 - Hypervisor(1)
-
-    \begin{itemize*}
-        \item zum Vergleich: Instruktion für Systemaufrufe des Gast-BS
-    \end{itemize*}
-
+    Privilegierte Instruktionen mit Typ-1-Hypervisor
     \begin{enumerate*}
         \item User Mode: Anwendung bereitet Befehl und Parameter vor
-        \item User Mode: Trap $\rightarrow$ Kontext-und
-        Privilegierungswechsel, Ziel: Typ-1-HV
+        \item User Mode: Trap $\rightarrow$ Kontext-und Privilegierungswechsel, Ziel: Typ-1-HV
         \item Kernel Mode: HV-Dispatcher ruft Dispatcher im Gast-BS auf
-        \item User Mode: BS-Dispatcher behandelt Befehl und Parameter, ruft weitere
-        privilegierte Instruktionenauf (z.B. EA-Code)
-        $\rightarrow$ Kontext-und Privilegierungswechsel,
-        Ziel: Typ-1-HV
-        \item Kernel Mode: HV führt privilegierte Instruktionen anstelle des Gast-BS
-        aus
+        \item User Mode: BS-Dispatcher behandelt Befehl und Parameter, ruft weitere privilegierte Instruktionen auf $\rightarrow$ Kontext-und Privilegierungswechsel, Ziel: Typ-1-HV
+        \item Kernel Mode: HV führt privilegierte Instruktionen anstelle des Gast-BS aus
     \end{enumerate*}
-
     % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-mit-typ1-hv.png}
 
-
-    Sensible und privilegierte Instruktionen: Beobachtungen an verschiedenen
-    Maschinenbefehlssätzen: [Popek\&Goldberg74]
-
+    Sensible und privilegierte Instruktionen
     \begin{itemize*}
-        \item $\exists$ Menge an Maschinenbefehlen, die nur im
-        Kernel Mode ausgeführt werden dürfen (Befehle zur Realisierung von
-        E/A, Manipulation der MMU, ...)
-        \begin{itemize*}
-            \item[$\rightarrow$] sensible Instruktionen
-        \end{itemize*}
-        \item $\exists$ Menge an Maschinenbefehlen, die Wechsel des
-        Privilegierungsmodus auslösen (x86: Trap ), wenn sie im User Mode
-        ausgeführt werden
-        \begin{itemize*}
-            \item[$\rightarrow$] privilegierte Instruktionen
-        \end{itemize*}
-        \item Prozessor ist virtualisierbarfalls (notw. Bed.): sensible
-        Instruktionen $\subseteq$ privilegierte Instruktionen
-        \item Folge: jeder Maschinenbefehl, der im Nutzermodus nicht erlaubt ist,
-        muss einen Privilegierungswechsel auslösen (z.B. Trap generieren)
-        \item kritische Instruktionen = sensible Instruktionen \textbackslash{}
-        privilegierte Instruktionen
-        \begin{itemize*}
-            \item Befehle, welche diese Bedingung verletzen $\rightarrow$ Existenz im Befehlssatz führt zu nicht-virtualisierbarem Prozessor
-        \end{itemize*}
-        \item Beispiele für sensible Instruktionen bei Intel x86:
-        \begin{itemize*}
-            \item hlt: Befehlsabarbeitung bis zum nächsten Interrupt stoppen
-            \item invlpg: TLB-Eintrag für Seite invalidieren
-            \item lidt: IDT (interrupt descriptor table) neu laden
-            \item mov auf Steuerregistern
-            \item ...
-        \end{itemize*}
-        \item Beispiel: Privilegierte Prozessorinstruktionen
-        \begin{itemize*}
-            \item Bsp.: write - Systemaufruf
-            \item Anwendungsprogramm schreibt String in Puffer eines Ausgabegeräts ohne Nutzung der libc Standard-Bibliothek: \texttt{asm\ (\ "int\ \$0x80"\ );\ /*\ interrupt\ 80\ (trap)\ */}
-            \item Interrupt-Instruktion veranlasst Prozessor zum Kontextwechsel: Kernelcode im privilegierten Modus ausführen
-        \end{itemize*}
+        \item Maschinenbefehlen, die nur im Kernel Mode ausgeführt werden dürfen $\rightarrow$ sensible Instruktionen
+        \item Maschinenbefehlen im User Mode, die Wechsel des Privilegierungsmodus auslösen $\rightarrow$ privilegierte Instruktionen
+        \item Prozessor virtualisierbar falls sensible Instr. $\subseteq$ privilegierte Instr.
+        \item Befehl im UserM. nicht erlaubt $\rightarrow$ löst Privilegierungswechsel aus
+        \item kritische Instruktionen = sensible Instr. \textbackslash{} privilegierte Instr.
+        \item Beispiele für sensible Instruktionen bei Intel x86: mov auf Steuerregistern
     \end{itemize*}
 
-    Vergleich: Privilegierte vs. sensible Instruktionen
-
+    %Vergleich: Privilegierte vs. sensible Instruktionen
     % \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-instruction-priv-vs-sensible.png}
 
-
     Folgen für Virtualisierung
-
     \begin{itemize*}
         \item privilegierte Instruktionen bei virtualisierbaren Prozessoren
-        \item bei Ausführung einer privilegierten Instruktion in virtueller
-        Maschine: immer Kontrollflussübergabe an im Kernel-Modus laufende
-        Systemsoftware - hier Typ-1-HV
-        \item HV kann (anhand des virtuellen Privilegierungsmodus) feststellen:
+        \item bei Ausführung einer privilegierten Instruktion in virtueller Maschine: immer Kontrollflussübergabe an im Kernel-Modus laufende Systemsoftware - hier Typ-1-HV
+        \item HV kann (anhand des virtuellen Privilegierungsmodus) feststellen
         \begin{enumerate*}
-
             \item ob sensible Anweisung durch Gast-BS
             \item oder durch Nutzerprogramm (Systemaufruf!) ausgelöst
         \end{enumerate*}
-        \item Folgen:
+        \item Folgen
         \begin{enumerate*}
-
             \item privilegierte Instruktionen des Gast-Betriebssystems werden ausgeführt $\rightarrow$ ,,trap-and-emulate''
             \item Einsprung in Betriebssystem, hier also Einsprung in Gast-Betriebssystem $\rightarrow$ Upcall durch HV
         \end{enumerate*}
-        \item privilegierte Instruktionen bei nicht virtualisierbaren Prozessoren
-        \begin{itemize*}
-            \item solche Instruktionen typischerweise ignoriert!
-        \end{itemize*}
+        \item privilegierte Instruktionen bei nicht virtualisierbaren Prozessoren typischerweise ignoriert
     \end{itemize*}
 
     Intel-Architektur ab 386
-
     \begin{itemize*}
-        \item dominant im PC-und Universalrechnersegment ab 1980er
         \item keine Unterstützung für Virtualisierung ...
         \item kritische Instruktionen im User Mode werden von CPU ignoriert
-        \item außerdem: in Pentium-Familie konnte Kernel-Code explizit feststellen,
-        ob er im Kernel- oder Nutzermodus läuft $\rightarrow$
-        Gast-BS trifft (implementierungsabhängig) evtl. fatal fehlerhafte
-        Entscheidungen
-        \item Diese Architekturprobleme (bekannt seit 1974) wurden 20 Jahre lang im
-        Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen
-        ...
-        \begin{itemize*}
-            \item erste virtualisierungsfähige Intel-Prozessorenfamilie (s. [Adams2006] ): VT, VT-x® (2005)
-            \item dito für AMD: SVM, AMD-V® (auch 2005)
-        \end{itemize*}
-    \end{itemize*}
-
-    Forschungsarbeit 1990er Jahre
-
-    \begin{itemize*}
-        \item verschiedene akademische Projekte zur Virtualisierung bisher nicht
-        virtualisierbarer Prozessoren
-        \item erstes und vermutlich bekanntestes: DISCO- Projekt der University of
-        Stanford
-        \item Resultat: letztlich VMware (heute kommerziell) und
-        Typ-2-Hypervisors...
+        \item Pentium-Familie konnte Kernel-Code explizit feststellen, ob im Kernel- oder Nutzermodus $\rightarrow$ Gast-BS trifft evtl. fehlerhafte Entscheidungen
+        \item Diese Architekturprobleme (bekannt seit 1974) wurden 20 Jahre lang im Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen ...
     \end{itemize*}
 
 

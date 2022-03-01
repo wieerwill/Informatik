@@ -2790,81 +2790,52 @@
         \item Diese Architekturprobleme (bekannt seit 1974) wurden 20 Jahre lang im Sinne von Rückwärtskompatibilität auf Nachfolgeprozessoren übertragen ...
     \end{itemize*}
 
-
     \subsubsection{Typ-2-Hypervisor}
+    \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-typ-2-hypervisor.png}
+    \end{center}
 
-    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-typ-2-hypervisor.png}
-
-    Virtualisierung ohne Hardwareunterstützung:
-
+    Virtualisierung ohne Hardwareunterstützung, keine Möglichkeit...
     \begin{itemize*}
-        \item keine Möglichkeit, trap-and-emulate zu nutzen
-        \item keine Möglichkeit, um
-        \begin{enumerate*}
-
-            \item korrekt (bei sensiblen Instruktionen im Gast-Kernel) den Privilegierungsmodus zu wechseln
-            \item den korrekten Code im HV auszuführen
-        \end{enumerate*}
+        \item trap-and-emulate zu nutzen
+        \item um korrekt den Privilegierungsmodus zu wechseln
+        \item den korrekten Code im HV auszuführen
     \end{itemize*}
 
-    Übersetzungsstrategie in Software:
-
+    Übersetzungsstrategie in Software
     \begin{itemize*}
-        \item vollständige Übersetzung des Maschinencodes, der in VM ausgeführt
-        wird, in Maschinencode, der im HV ausgeführt wird
-        \item praktische Forderung: HV sollte selbst abstrahierte HW-Schnittstelle
-        zur Ausführung des (komplexen!) Übersetzungscodes zur Verfügung haben
-        (z.B. Nutzung von Gerätetreibern)
-        \item $\rightarrow$ Typ-2-HV als Kompromiss:
-        \begin{itemize*}
+        \item vollständige Übersetzung des Maschinencodes, der in VM ausgeführt wird, in Maschinencode, der im HV ausgeführt wird
+        \item praktische Forderung: HV sollte selbst abstrahierte HW-Schnittstelle zur Ausführung des (komplexen!) Übersetzungscodes zur Verfügung haben
+        \item[$\rightarrow$] Typ-2-HV als Kompromiss
             \item korrekte Ausführung von virtualisierter Software auf virtualisierter HW
             \item beherrschbare Komplexität der Implementierung
-        \end{itemize*}
     \end{itemize*}
 
     aus Nutzersicht
-
     \begin{itemize*}
-        \item läuft als gewöhnlicher Nutzer-Prozess auf Host-Betriebssystem (z.B.
-        Windows oder Linux)
-        \item VMware bedienbarwie physischer Rechner (bspw. erwartet Bootmedium in
-        virtueller Repräsentation eines physischen Laufwerks)
-        \item persistente Daten des Gast-BS auf virtuellem Speichermedium (
-        tatsächlich: Image-Datei aus Sicht des Host-Betriebssystems)
+        \item läuft als gewöhnlicher Nutzer-Prozess auf Host-Betriebssystem
+        \item VMware bedienbar wie physischer Rechner
+        \item persistente Daten des Gast-BS auf virtuellem Speichermedium
     \end{itemize*}
 
     Mechanismus: Code-Inspektion
-
     \begin{itemize*}
-        \item Bei Ausführung eines Binärprogramms in der virtuellen Maschine (egal
-        ob Bootloader, Gast-BS-Kernel, Anwendungsprogramm): zunächst
-        inspiziert Typ-2-HV den Code nach Basisblöcken
-        \begin{itemize*}
-            \item Basisblock: Befehlsfolge, die mit privilegierten Befehlen oder solchen Befehlen abgeschlossen ist, die den Kontrollfluss ändern (sichtbar an Manipulation des Programm-Zählers eip), z.B. jmp, call, ret.
-        \end{itemize*}
+        \item Bei Ausführung eines Binärprogramms in der virtuellen Maschine: zunächst inspiziert Typ-2-HV den Code nach Basisblöcken
+        \item Basisblock: Befehlsfolge, die mit privilegierten Befehlen oder solchen Befehlen abgeschlossen ist, die den Kontrollfluss ändern%, z.B. jmp, call, ret
         \item Basisblöcke werden nach sensiblen Instruktionen abgesucht
-        \item diese werden jeweils durchAufruf einer HV-Prozedur ersetzt, die
-        jeweilige Instruktion behandelt
-        \item gleiche Verfahrensweise mit letzter Instruktion eines Basis-Blocks
+        \item diese werden jeweils durch Aufruf einer HV-Prozedur ersetzt, die jeweilige Instruktion behandelt
     \end{itemize*}
 
     Mechanismus: Binary Translation (Binärcodeübersetzung)
-
     \begin{itemize*}
-        \item modifizierter Basisblock: wird innerhalbdes HVin Cachegespeichert und
-        ausgeführt
-        \item Basisblock ohne sensible Instruktionen: läuft unter Typ-2-HV exakt so
-        schnell wie unmittelbar auf Hardware (weil er auch tatsächlich
-        unmittelbar auf der Hardware läuft, nur eben im HV-Kontext)
-        \item sensible Instruktionen: nach dargestellter Methode abgefangen und
-        emuliert $\rightarrow$ dabei hilft jetzt das Host-BS
-        (z.B. durch eigene Systemaufrufe, Gerätetreiberschnittstellen)
+        \item modifizierter Basisblock: wird innerhalb des HV in Cache gespeichert und ausgeführt
+        \item Basisblock ohne sensible Instruktionen: läuft unter Typ-2-HV exakt so schnell wie unmittelbar auf Hardware %(weil er auch tatsächlich unmittelbar auf der Hardware läuft, nur eben im HV-Kontext)
+        \item sensible Instruktionen: nach dargestellter Methode abgefangen und emuliert $\rightarrow$ dabei hilft das Host-BS (z.B. durch eigene Systemaufrufe) % Gerätetreiberschnittstellen)
     \end{itemize*}
 
     Mechanismus: Caching von Basisblöcken
-
     \begin{itemize*}
-        \item HV nutzt zwei parallel arbeitende Module (Host-BS-Threads!):
+        \item HV nutzt zwei parallel arbeitende Module
         \begin{itemize*}
             \item Translator: Code-Inspektion, Binary Translation
             \item Dispatcher: Basisblock-Ausführung
@@ -2874,36 +2845,22 @@
         Befehlsadresse im Cache; falls miss $\rightarrow$
         suspendieren (zugunsten Translator)
         \item Translator: schreibt Basisblöcke in Basisblock-Cache
-        \item Annahme: irgendwann ist Großteil des Programms im Cache, dieses läuft
-        dann mit nahezu Original-Geschwindigkeit (theoretisch)
+        \item Annahme: irgendwann ist Großteil des Programms im Cache, dieses läuft dann mit nahezu Original-Geschwindigkeit (Theorie)
     \end{itemize*}
 
     Performanzmessungen
-
     \begin{itemize*}
-        \item zeigen gemischtes Bild: Typ2-HV keinesfalls so schlecht, wie einst
-        erwartet wurde
-        \item qualitativer Vergleich mit virtualisierbarer Hardware
-        (Typ1-Hypervisor):
-        \item ,,trap-and-emulate,,: erzeugt Vielzahl von Traps
-        $\rightarrow$ Kontextwechsel zwischen jeweiliger VM
-        und HV
-        \item insbesondere bei Vielzahl an VMs sehr teuer: CPU-Caches, TLBs,
-        Heuristiken zur spekulativen Ausführung werden verschmutzt
-        \item wenn andererseits sensible Instruktionen durch Aufruf von
-        VMware-Prozeduren innerhalb des ausführenden Programms ersetzt: keine
-        Kontextwechsel-Overheads
+        \item Typ2-HV keinesfalls so schlecht, wie einst erwartet wurde
+        \item ,,trap-and-emulate,, erzeugt Vielzahl von Traps $\rightarrow$ Kontextwechsel zwischen jeweiliger VM und HV
+        \item insbesondere bei Vielzahl an VMs sehr teuer: CPU-Caches, TLBs, Heuristiken zur spekulativen Ausführung werden verschmutzt
+        \item wenn sensible Instruktionen durch VMware-Prozeduren innerhalb des Programms ersetzt: keine Kontextwechsel-Overheads
     \end{itemize*}
 
-    Studie: (von Vmware) [Adams\&Agesen06]
-
+    Studie (von Vmware)
     \begin{itemize*}
-        \item last-und anwendungsabhängig kann Softwarelösung sogar Hardwarelösung
-        übertreffen
-        \item Folge: viele moderne Typ1-HV benutzen aus Performanzgründen ebenfalls
-        Binary Translation
+        \item last-und anwendungsabhängig kann Softwarelösung sogar Hardwarelösung übertreffen
+        \item viele moderne Typ1-HV benutzen aus Performanzgründen ebenfalls Binary Translation
     \end{itemize*}
-
 
     \subsubsection{Paravirtualisierung}
 

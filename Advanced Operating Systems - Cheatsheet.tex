@@ -2911,84 +2911,70 @@
     \end{itemize*}
 
     \subsection{Container}
-    Ziele:
+    \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-container.png}
+    \end{center}
     \begin{itemize*}
-        \item Adaptivität , im Dienste von ...
-        \item ... Wartbarkeit: einfachen Entwicklung, Installation, Rekonfiguration
+        \item Ziel Adaptivität , im Dienste von ...
+        \item ... Wartbarkeit %einfachen Entwicklung, Installation, Rekonfiguration 
         durch Kapselung von
         \begin{itemize*}
             \item Anwendungsprogrammen
-            \item \begin{itemize*} \item durch sie benutzte Bibliotheken \end{itemize*}
-            \item \begin{itemize*} \item Instanzen bestimmter BS-Ressourcen \end{itemize*}
+            \item durch sie benutzte Bibliotheken
+            \item Instanzen bestimmter BS-Ressourcen
         \end{itemize*}
-        \item ... Portabilität: Betrieb von Anwendungen, die lediglich von einem
-        bestimmten BS-Kernel abhängig sind (nämlich ein solcher, der Container
-        unterstützt); insbesondere hinsichtlich:
+        \item ... Portabilität: Betrieb von Anwendungen, die lediglich von einem bestimmten BS-Kernel abhängig sind %(nämlich ein solcher, der Container unterstützt); insbesondere hinsichtlich:
         \begin{itemize*}
             \item Abhängigkeitskonflikten (Anwendungen und Bibliotheken)
             \item fehlenden Abhängigkeiten (Anwendungen und Bibliotheken)
             \item Versions-und Namenskonflikten
         \end{itemize*}
-        \item ... Sparsamkeit: problemgerechtes ,,Packen,, von Anwendungen in
-        Container $\rightarrow$ Reduktion an Overhead: selten
-        (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
+        \item ... Sparsamkeit: problemgerechtes ,,Packen'' von Anwendungen in Container $\rightarrow$ Reduktion an Overhead: selten (oder gar nicht) genutzter Code, Speicherbedarf, Hardware, ...
     \end{itemize*}
 
-    Idee:
-
+    Idee
     \begin{itemize*}
-        \item private Sichten (Container) bilden = private User-Space-Instanzen für
-        verschiedene Anwendungsprogramme
-        \item Kontrolle dieser Container i.S.v. Multiplexing, Unabhängigkeit und
-        API: BS-Kernel
-        \item somit keine Form der BS-Virtualisierung, eher:
-        ,,User-Space-Virtualisierung,,
+        \item private Sichten bilden = private User-Space-Instanzen %für verschiedene Anwendungsprogramme
+        \item Kontrolle dieser Container i.S.v. Multiplexing, Unabhängigkeit und API: BS-Kernel
+        \item keine Form der BS-Virtualisierung, eher: ,,Userspace-Virtualisierung''
     \end{itemize*}
-
-    %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-container.png}
 
     Anwendungsfälle für Container
-
     \begin{itemize*}
-        \item Anwendungsentwicklung:
+        \item Anwendungsentwicklung:  konfliktfreies Entwickeln und Testen unterschiedlicher Software, für unterschiedliche Zielkonfigurationen BS-User-Space
+        \item Anwendungsbetrieb und -administration
         \begin{itemize*}
-            \item konfliktfreies Entwickeln und Testen unterschiedlicher Software, für unterschiedliche Zielkonfigurationen BS-User-Space
-        \end{itemize*}
-        \item Anwendungsbetrieb und -administration:
-        \begin{itemize*}
-            \item Entschärfung von ,,dependency hell,,
-            \item einfache Migration, einfaches Backup von Anwendungen ohne den (bei Virtualisierungsimages als Ballast auftretenden) BS-Kernel
+            \item Entschärfung von ,,dependency hell''
+            \item einfache Migration, einfaches Backup von Anwendungen ohne den BS-Kernel
             \item einfache Verteilung generischer Container für bestimmte Aufgaben
-            \item = Kombinationen von Anwendungen
+            \item[=] Kombinationen von Anwendungen
         \end{itemize*}
         \item Anwendungsisolation? $\rightarrow$ Docker
     \end{itemize*}
 
-    Zwischenfazit: Container
+    \subsubsection{Zwischenfazit: Container}
+    Ziele: Adaptivität komplementär zu...
+    \begin{description*}
+        \item[Wartbarkeit] Vermeidung von Administrationskosten% für Laufzeitumgebung von Anwendungen
+        \item[Portabilität] Vereinfachung von Abhängigkeitsverwaltung
+        \item[Sparsamkeit] Optimierung der Speicher-und Verwaltungskosten% für Laufzeitumgebung von Anwendungen
+    \end{description*}
 
+    Idee
     \begin{itemize*}
-        \item Ziele: Adaptivität komplementär zu...
-        \begin{itemize*}
-            \item Wartbarkeit : Vermeidung von Administrationskosten für Laufzeitumgebung von Anwendungen
-            \item Portabilität : Vereinfachung von Abhängigkeitsverwaltung
-            \item Sparsamkeit : Optimierung der Speicher-und Verwaltungskosten für Laufzeitumgebung von Anwendungen
-        \end{itemize*}
-        \item Idee:
-        \begin{itemize*}
-            \item unabhängige User-Space-Instanz für jeden einzelnen Container
-            \item Aufgaben des Kernels: Unterstützung der Containersoftware bei Multiplexing und Herstellung der Unabhängigkeitdieser Instanzen
-        \end{itemize*}
-        \item Ergebnisse:
-        \begin{itemize*}
-            \item[\cmark] vereinfachte Anwendungsentwicklung
-            \item[\cmark] vereinfachter Anwendungsbetrieb
-            \item[\xmark] Infrastruktur nötig über (lokale) Containersoftware hinaus, um Containern zweckgerecht bereitzustellen und zu warten
-            \item[\xmark] keine vollständige Isolationmöglich
-        \end{itemize*}
+        \item unabhängige User-Space-Instanz für jeden Container
+        \item Aufgaben Kernel: Unterstützung der Containersoftware bei Multiplexing und Herstellung der Unabhängigkeit dieser Instanzen
     \end{itemize*}
 
-    Beispielsysteme (Auswahl)
+    Ergebnisse
+    \begin{itemize*}
+        \item[\cmark] vereinfachte Anwendungsentwicklung
+        \item[\cmark] vereinfachter Anwendungsbetrieb
+        \item[\xmark] Infrastruktur nötig über (lokale) Containersoftware hinaus, um Containern zweckgerecht bereitzustellen und zu warten
+        \item[\xmark] keine vollständige Isolationmöglich
+    \end{itemize*}
 
+    \paragraph{Beispielsysteme}
     \begin{itemize*}
         \item Virtualisierung: VMware, VirtualBox
         \item Paravirtualisierung: Xen
@@ -2996,138 +2982,93 @@
         \item Container: Docker, LupineLinux
     \end{itemize*}
 
-
-    \subsubsection{Hypervisor}
-
-
-    \paragraph{VMware}
-
+    \paragraph{Hypervisor - VMware}
     \begin{itemize*}
-        \item " ... ist Unternehmenin PaloAlto, Kalifornien (USA)
-        \item gegründet 1998 von 5 Informatikern
         \item stellt verschiedene Virtualisierungs-Softwareprodukte her:
-        \begin{enumerate*}
-
-            \item VMware Workstation \begin{itemize*} \item war erstes Produkt von VMware (1999) \item mehrere unabhängige Instanzen von x86- bzw. x86-64-Betriebssystemen auf einer Hardware betreibbar \end{itemize*}
+        \begin{itemize*}
+            \item VMware Workstation:  mehrere unabhängige Instanzen von x86- bzw. x86-64-Betriebssystemen auf einer Hardware betreibbar
             \item VMware Fusion: ähnliches Produkt für Intel Mac-Plattformen
             \item VMware Player: (eingestellte) Freeware für nichtkommerziellen Gebrauch
             \item VMware Server (eingestellte Freeware, ehem. GSX Server)
-            \item VMware vSphere (ESXi) \begin{itemize*} \item Produkte 1 ... 3: für Desktop-Systeme \item Produkte 4 ... 5: für Server-Systeme \item Produkte 1 ... 4: Typ-2-Hypervisor \end{itemize*}
-        \end{enumerate*}
-        \item bei VMware-Installation: spezielle vm- Treiber in Host-Betriebssystem
-        eingefügt
+            \item VMware vSphere (ESXi): für Desktop/Server-Systeme, Typ-2-HV
+        \end{itemize*}
+        \item spezielle vm- Treiber in Host-Betriebssystem eingefügt
         \item diese ermöglichen: direkten Hardware-Zugriff
-        \item durch Laden der Treiber: entsteht ,,Virtualisierungsschicht''
-        (VMware-Sprechweise)
+        \item durch Laden der Treiber entsteht ,,Virtualisierungsschicht''
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-host-guest-architecture.png}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-bare-metal.png}
-        \begin{itemize*}
-            \item Typ1- Hypervisor- Architektur
-            \item Anwendung nur bei VMware ESXi
-        \end{itemize*}
+        %\begin{itemize*}
+        %\item Typ1- Hypervisor- Architektur
+        %\item Anwendung nur bei VMware ESXi
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-vmware-paravirtualisierung.png}
-        \begin{itemize*}
-            \item Entsprechende Produkte in Vorbereitung
-        \end{itemize*}
+        %\item Entsprechende Produkte in Vorbereitung
+        % \end{itemize*}
     \end{itemize*}
 
-
-    \paragraph{VirtualBox}
-
+    \paragraph{Hypervisor - VirtualBox}
     \begin{itemize*}
-        \item Virtualisierungs-Software für x86- bzw. x86-64-Betriebssysteme für
-        Industrie und ,,Hausgebrauch'' (ursprünglich: Innotek , dann Sun ,
-        jetzt Oracle )
-        \item frei verfügbare professionelle Lösung, als Open Source Software unter
-        GNU General Public License(GPL) version 2. ...
-        \item (gegenwärtig) lauffähig auf Windows, Linux, Macintosh und Solaris
-        Hosts
-        \item unterstützt große Anzahl von Gast-Betriebssystemen: Windows (NT 4.0,
-        2000, XP, Server 2003, Vista, Windows 7), DOS/Windows 3.x, Linux (2.4
-        and 2.6), Solaris and OpenSolaris , OS/2 , and OpenBSD u.a.
+        \item Virtualisierungs-Software für x86- bzw. x86-64-Betriebssysteme für Industrie und ,,Hausgebrauch'' (ursprünglich: Innotek , dann Sun, jetzt Oracle )
+        \item frei verfügbare professionelle Lösung, als Open Source Software unter GNU General Public License(GPL) version 2. ...
+        \item lauffähig auf Windows, Linux, Macintosh und Solaris Hosts
+        \item unterstützt große Anzahl von Gast-Betriebssystemen%: Windows (NT 4.0, 2000, XP, Server 2003, Vista, Windows 7), DOS/Windows 3.x, Linux (2.4 and 2.6), Solaris and OpenSolaris , OS/2 , and OpenBSD u.a.
         \item reiner Typ-2-Hypervisor
     \end{itemize*}
 
-
-    \subsubsection{Paravirutalisierung: Xen}
-
+    \paragraph{Paravirutalisierung: Xen}
     \begin{itemize*}
-        \item entstanden als Forschungsprojekt der University of Cambridge (UK),
-        dann XenSource Inc., danach Citrix, jetzt: Linux Foundation
-        (,,self-governing'')
-        \item frei verfügbar als Open Source Software unter GNU General Public
-        License (GPL)
-        \item lauffähig auf Prozessoren der Typen x86, x86-64, PowerPC, ARM, MIPS
-        \item unterstützt große Anzahl von Gast-Betriebssystemen: FreeBSD,
-        GNU/Hurd/Mach, Linux, MINIX, NetBSD, Netware, OpenSolaris, OZONE, Plan
-        9
-        \item ,,Built for the cloud before it was called cloud.'' (Russel Pavlicek,
-        Citrix)
+        \item entstanden als Forschungsprojekt der University of Cambridge
+        \item frei verfügbar als Open Source Software unter GNU (GPL)
+        \item lauffähig auf Prozessoren x86, x86-64, PowerPC, ARM, MIPS
+        \item unterstützt große Anzahl von Gast-Betriebssystemen %FreeBSD, GNU/Hurd/Mach, Linux, MINIX, NetBSD, Netware, OpenSolaris, OZONE, Plan 9
+        %\item ,,Built for the cloud before it was called cloud.'' (Russel Pavlicek, Citrix)
         \item bekannt für Paravirtualisierung
         \item unterstützt heute auch andere Virtualisierungs-Prinzipien
     \end{itemize*}
 
-    Xen : Architektur
-
+    Architektur
     \begin{itemize*}
         \item Gast-BSe laufen in Xen Domänen (,,$dom_i$'', analog $VM_i$)
-        \item es existiert genau eine, obligatorische, vertrauenswürdige Domäne:
-        $dom_0$
-        \item Aufgaben (Details umseitig):
+        \item genau eine, obligatorische, vertrauenswürdige Domäne: $dom_0$
         \begin{itemize*}
-            \item Bereitstellen und Verwalten der virtualisierten Hardware für andere Domänen (Hypervisor-API, Scheduling-Politiken für Hardware-Multiplexing)
+            \item Bereitstellen und Verwalten der virtualisierten Hardware für andere Domänen %(Hypervisor-API, Scheduling-Politiken für Hardware-Multiplexing)
             \item Hardwareverwaltung/-kommunikation für paravirtualisierte Gast-BSe (Gerätetreiber)
             \item Interaktionskontrolle (Sicherheitspolitiken)
         \end{itemize*}
-        \item $dom_0$ im Detail: ein separates, hochkritisch administriertes,
-        vertrauenswürdiges BS mit eben solchen Anwendungen (bzw.
-        Kernelmodulen) zur Verwaltung des gesamten virtualisierten Systems
-        \begin{itemize*}
-            \item es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-architektur.png}
-        \end{itemize*}
+        \item $dom_0$ im Detail: ein separates, hochkritisch administriertes, vertrauenswürdiges BS mit eben solchen Anwendungen zur Verwaltung des gesamten virtualisierten Systems
+        %\item es existieren hierfür spezialisierte Variantenvon Linux, BSD, GNU Hurd
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-architektur.png}
     \end{itemize*}
 
-    Xen : Sicherheit
-
+    Sicherheit
     \begin{itemize*}
         \item Sicherheitsmechanismusin Xen: Xen Security Modules (XSM)
-        \item illustriert, wie (Para-) Typ-1-Virtualisierung von BS die NFE
-        Sicherheit unterstützt
-        \item PDP: Teil des vertrauenswürdigen BS in $dom_0$, PEPs: XSMs im
-        Hypervisor
-        \item Beispiel: Zugriff auf Hardware
-        \begin{itemize*}
-            \item Sicherheitspolitik-Integration, Administration, Auswertung: $dom_0$
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
-        \end{itemize*}
-        \item Beispiel: Inter-Domänen-Kommunikation
-        \begin{itemize*}
-            \item Interaktionskontrolle (Aufgaben wie oben): $dom_0$
-            \item Beispiel: \href{https://www.flyn.org/projects/VisorFlow/}{VisorFlow}
-            \item selber XSM kontrolliert Kommunikation für zwei Domänen
-        \end{itemize*}
+        \item (Para-)Typ-1-Virtualisierung von BS unterstützt NFE Sicherheit
+        \item PDP: Teil des vertrauenswürdigen BS in $dom_0$, PEPs: XSMs im Hypervisor
+        %\item Beispiel: Zugriff auf Hardware
+        %\begin{itemize*}
+        %\item Sicherheitspolitik-Integration, Administration, Auswertung: $dom_0$
+        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Xen-sicherheit.png}
+        %\end{itemize*}
+        %\item Beispiel: Inter-Domänen-Kommunikation
+        %\begin{itemize*}
+        %\item Interaktionskontrolle (Aufgaben wie oben): $dom_0$
+        %\item Beispiel: \href{https://www.flyn.org/projects/VisorFlow/}{VisorFlow}
+        %\item selber XSM kontrolliert Kommunikation für zwei Domänen
+        %\end{itemize*}
     \end{itemize*}
 
-
     \subsubsection{Exokernel}
-
-    Nemesis
-
+    \paragraph{Nemesis}
     \begin{itemize*}
-        \item Betriebssystemaus EU-Verbundprojekt ,,Pegasus,, zur Realisierung eines
-        verteilten multimediafähigen Systems (1. Version: 1994/95)
-        \item Entwurfsprinzipien:
-        \begin{enumerate*}
-
-            \item Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
-            \item Realisierung als sog. vertikal strukturiertes Betriebssystem: \begin{itemize*} \item weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip) \item Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen (neu) \end{itemize*}
-        \end{enumerate*}
+        \item Betriebssystemaus EU-Verbundprojekt ,,Pegasus,, zur Realisierung eines verteilten multimediafähigen Systems %(1. Version: 1994/95)
+        \item Anwendungen: sollen Freiheit haben, Betriebsmittel in für sie geeignetster Weise zu nutzen (= Exokernel-Prinzip)
+        \item Realisierung als sog. vertikal strukturiertes Betriebssystem
+        \item weitaus meiste Betriebssystem-Funktionalität innerhalb der Anwendungen ausgeführt (= Exokernel-Prinzip)
+        \item Echtzeitanforderungen durch Multimedia $\rightarrow$ Vermeidung von Client-Server-Kommunikationsmodell wegen schlecht beherrschbarer zeitlicher Verzögerungen
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-Nemesis-struktur.png}
     \end{itemize*}
 
-    MirageOS + Xen
-
+    \paragraph{MirageOS + Xen}
     \begin{itemize*}
         \item Spezialfall: Exokernel als paravirtualisiertes BS auf Xen
         \item Ziele : Wartbarkeit (Herkunft: Virtualisierungsarchitekturen ...)
@@ -3138,54 +3079,29 @@
         \end{itemize*}
         \item Idee: ,,Unikernel'' $\rightarrow$ eine Anwendung, eine
         API, ein Kernel
-        \item umfangreiche Dokumentation, Tutorials, ...
-        $\rightarrow$
-        \href{https://mirage.io/wiki/learning}{ausprobieren}
-        \item Unikernel - Idee
-        \begin{itemize*}
-            \item Architekturprinzip: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-unikernel-architektur.png}
-            \item in MirageOS: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mirageOs-architektur.png}
-        \end{itemize*}
+        %\item Unikernel Architekturprinzip: %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-unikernel-architektur.png}
+        \item Unikernel in MirageOS
+        \item \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-mirageOs-architektur.png}
         \item Ergebnis: Kombination von Vorteilen zweier Welten
-        \begin{itemize*}
-            \item Virtualisierungs vorteile: Sicherheit, Robustheit ( $\rightarrow$ Xen - Prinzip genau einer vertrauenswürdigen, isolierten Domäne $dom_0$)
-            \item Exokernelvorteile: Wartbarkeit, Sparsamkeit
-            \item nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... ( $\rightarrow$ Performanz und Echzeitfähigkeit )
-        \end{itemize*}
+        \item Virtualisierungsvorteile: Sicherheit, Robustheit ($\rightarrow$ Xen-Prinzip genau einer vertrauenswürdigen, isolierten Domäne $dom_0$)
+        \item Exokernelvorteile: Wartbarkeit, Sparsamkeit
+        \item nicht: Exokernelvorteil der hardwarenahen Anwendungsentwicklung... ($\rightarrow$ Performanz und Echzeitfähigkeit)
     \end{itemize*}
 
-
     \subsubsection{Container: Docker}
-
     \begin{itemize*}
-        \item Idee: Container für einfache Wartbarkeit von
-        Linux-Anwendungsprogrammen ...
-        \begin{itemize*}
-            \item ... entwickeln
-            \item ... testen
-            \item ... konfigurieren
-            \item ... portieren $\rightarrow$ Portabilität
-        \end{itemize*}
-        \item Besonderheit: Container können - unabhängig von ihrem Einsatzzweck -
-        wie Software-Repositories benutzt, verwaltet, aktualisiert, verteilt
-        ... werden
-        \item Management von Containers: Docker Client $\rightarrow$
-        leichtgewichtiger Ansatz zur Nutzung der Wartbarkeitsvorteile von
-        Virtualisierung
-        \item Forsetzung unter der OCI (Open Container Initiative)
-        \begin{itemize*}
-            \item ,,Docker does a nice job [...] for a focused purpose, namely the lightweight packaging and deployment of applications.'' (Dirk Merkel, Linux Journal)
-        \end{itemize*}
-        \item Implementierung der Containertechnik basierend auf
-        Linux-Kernelfunktionen:
+        \item Idee: Container für einfache Wartbarkeit von Linux-Anwendungsprogrammen entwickeln, testen, portieren $\rightarrow$ Portabilität
+        \item Besonderheit: Container können wie Software-Repositories benutzt, verwaltet, aktualisiert, verteilt werden
+        \item Management von Containers: Docker Client $\rightarrow$ leichtgewichtiger Ansatz zur Nutzung der Wartbarkeitsvorteile von Virtualisierung
+        \item Fortsetzung unter der OCI (Open Container Initiative) % ,,Docker does a nice job [...] for a focused purpose, namely the lightweight packaging and deployment of applications.'' (Dirk Merkel, Linux Journal)
+        \item Implementierung der Containertechnik basierend auf Linux-Kernelfunktionen
         \begin{itemize*}
             \item Linux Containers (LXC): BS-Unterstützung für Containermanagement
             \item cgroups: Accounting/Beschränkung der Ressourcenzuordnung
             \item union mounting: Funktion zur logischen Reorganisation hierarchischer Dateisysteme
         \end{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
+        \item \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
     \end{itemize*}
-
 
     \section{Performanz und
       Parallelität}

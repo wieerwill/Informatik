@@ -2562,171 +2562,98 @@
 
 
     \subsubsection{Secure Binding}
-
     \begin{itemize*}
-        \item Schutzmechanismus, der Autorisierung ( $\rightarrow$
-        Library-BS)zur Benutzung einer Ressource von tatsächlicher Benutzung
-        ( $\rightarrow$ Exokernel) trennt
-        \item implementiert für den Exokernelerforderliches Zuordnungswissenvon
-        (HW-)Ressource zu Mangement-Code (der im Library-BS implementiert ist)
-        \item $\rightarrow$ ''Binding'' in Aegis implementiert als
-        Unix-Hardlinkauf Metadatenstruktur zu einem Gerät im Kernelspeicher (
-        ,,remember: everythingisa file...'' )
-        \item Zur Implementierung benötigt:
+        \item Schutzmechanismus, trennt Autorisierung zur Benutzung einer Ressource von tatsächlicher Benutzung
+        \item implementiert für Exokernel erforderliches Zuordnungswissen von (HW-)Ressource zu Mangement-Code
+        \item $\rightarrow$ ''Binding'' in Aegis implementiert als Unix-Hardlink auf Metadatenstruktur zu einem Gerät im Kernelspeicher
+        \item Zur Implementierung benötigt
         \begin{itemize*}
-            \item Hardware-Unterstützung zur effizienten Rechteprüfung (insbes. HW-Caching)
-            \item Software-Caching von Autorisierungsentscheidungen im Kernel (bei Nutzung durch verschiedene Library-BS)
-            \item Downloadingvon Applikationscode in Kernel zur effizienten Durchsetzung (quasi: User-Space-Implementierung von Systemaufrufcode)
+            \item Hardware-Unterstützung zur effizienten Rechteprüfung (HW-Caching)
+            \item Software-Caching von Autorisierungsentscheidungen im Kernel
+            \item Downloading von Applikationscode in Kernel zur effizienten Durchsetzung
         \end{itemize*}
-        \item einfach ausgedrückt: ,,Secure Binding'' erlaubt einem ExokernelSchutz
-        von Ressourcen, ohne deren Semantik verstehen zu müssen.
+        \item ,,Secure Binding'' erlaubt Exokernel Schutz von Ressourcen ohne deren Semantik verstehen zu müssen
     \end{itemize*}
 
-
-    \subsubsection{Visible Resource
-        Revocation}
-
+    \subsubsection{Visible Resource Revocation}
+    monolithische BS: entziehen Ressourcen ,,unsichtbar'', d.h. transparent für Anwendungen
     \begin{itemize*}
-        \item monolithische Betriebssysteme: entziehen Ressourcen ,,unsichtbar''
-        (invisible), d.h. transparent für Anwendungen
-        \begin{itemize*}
-            \item Vorteil: im allgemeinen geringere Latenzzeiten, einfacheres und komfortableres Programmiermodell
-            \item Nachteil: Anwendungen(hier: die eingebetteten Library-BS) erhalten keine Kenntnis über Entzug,bspw. aufgrund von Ressourcenknappheit etc.
-            \item[$\rightarrow$] erforderliches Wissen für Management-Strategien!
-        \end{itemize*}
-        \item Exokernel-Betriebssysteme: entziehen(überwiegend) Ressourcen
-        ,,sichtbar'' $\rightarrow$ Dialog zwischen Exokernel
-        und Library-BS
-        \begin{itemize*}
-            \item Vorteil: effizientes Management durch Library-BS möglich (z.B. Prozessor: nur tatsächlich benötigte Register werden bei Entzug gespeichert)
-            \item Nachteil : Performanz bei sehr häufigem Entzug, Verwaltungs-und Fehlerbehandlungsstrategien zwischen verschiedenen Library-BS müssen korrekt und untereinander kompatibelsein...
-            \item[$\rightarrow$] Abort - Protokoll notwendig, falls dies nicht gegeben ist
-        \end{itemize*}
+        \item Vorteil: im allgemeinen geringere Latenzzeiten, einfacheres und komfortableres Programmiermodell
+        \item Nachteil: Anwendungen erhalten keine Kenntnis über Entzug
+        \item[$\rightarrow$] erforderliches Wissen für Management-Strategien
+    \end{itemize*}
+    Exokernel-BS: entziehen Ressourcen ,,sichtbar'' $\rightarrow$ Dialog zwischen Exokernel und Library-BS
+    \begin{itemize*}
+        \item Vorteil: effizientes Management durch Library-BS möglich %(z.B. Prozessor: nur tatsächlich benötigte Register werden bei Entzug gespeichert)
+        \item Nachteil: Performanz bei sehr häufigem Entzug, Verwaltungs-und Fehlerbehandlungsstrategien zwischen verschiedenen Library-BS müssen korrekt und untereinander kompatibel sein...
+        \item[$\rightarrow$] Abort-Protokoll notwendig, falls dies nicht gegeben ist
     \end{itemize*}
 
-
-    \subsubsection{Abort - Protokoll}
-
+    \subsubsection{Abort-Protokoll}
     \begin{itemize*}
-        \item Ressourcenentzug bei unkooperativen Library-Betriebssystemen (
-        Konflikt mit Anforderung durch andere Anwendung/deren Library-BS:
-        Verweigerung der Rückgabe, zu späte Rückgabe, ...)
+        \item Ressourcenentzug bei unkooperativen Library-Betriebssystemen
         \item notwendig aufgrund von Visible Ressource Revocation
         \item Dialog:
         \begin{itemize*}
             \item Exokernel: ,,Bitte Seitenrahmen x freigeben.''
             \item Library-BS: ,,...''
-            \item Exokernel: ,,Seitenrahmen x innerhalb von 50 $\mu$s freigeben!''
+            \item Exokernel: ,,Seitenrahmen x innerhalb von 50 $\mu$s freigeben''
             \item Library-BS: ,,...''
             \item Exokernel: (führt Abort-Protokoll aus)
-            \item Library-BS: X (,,Abort'' in diesem Bsp. = Anwendungsprozess terminieren)
+            \item Library-BS: X (,,Abort'' hier Prozess terminieren)
         \end{itemize*}
-        \item In der Praxis:
-        \begin{itemize*}
-            \item harte Echtzeit-Fristen (,, innerhalb von 50 $\mu$s'' ) in den wenigsten Anwendungen berücksichtigt \begin{itemize*} \item[$\rightarrow$] Abort = lediglich Widerruf aller Secure Bindings der jeweiligen Ressource für die unkooperativeAnwendung, nicht deren Terminierung (= unsichtbarerRessourcenentzug) \item[$\rightarrow$] anschließend: Informieren des entsprechenden Library-BS \end{itemize*}
-            \item ermöglicht sinnvolle Reaktion des Library-BS (in Library-BS wird ,,Repossession''-Exceptionausgelöst, so dass auf Entzug geeignet reagiert werden kann)
-            \item bei zustandsbehafteten Ressourcen ( $\rightarrow$ CPU): Exokernelkann diesen Zustand auf Hintergrundspeicher sichern $\rightarrow$ Management-Informationen zum Aufräumen durch Library-BS
-        \end{itemize*}
+        \item harte Echtzeit-Fristen in wenigsten Anwendungen berücksichtigt
+        \item[$\rightarrow$] Abort = nur Widerruf der Secure Bindings, nicht Terminierung% der jeweiligen Ressource für die unkooperative Anwendung, nicht deren Terminierung (= unsichtbarer Ressourcenentzug) 
+        \item[$\rightarrow$] anschließend: Informieren des entsprechenden Library-BS
+        \item ermöglicht sinnvolle Reaktion des Library-BS %(in Library-BS wird ,,Repossession''-Exception ausgelöst, so dass auf Entzug geeignet reagiert werden kann)
+        \item bei zustandsbehafteten Ressourcen: Exokernel kann Zustand auf Hintergrundspeicher sichern $\rightarrow$ Management-Informationen zum Aufräumen durch Library-BS
     \end{itemize*}
 
-
-    \subsubsection{Exokernelperformanz}
-
+    \subsubsection{Aegis mit Library-OS ExOS}
     \begin{itemize*}
-        \item Was macht Exokern-Architekturen adaptiv(er)?
-        \begin{itemize*}
-            \item Abstraktionen und Mechanismen des Betriebssystems können den Erfordernissen der Anwendungen angepasst werden
-            \item (erwünschtes) Ergebnis: beträchtliche Performanzsteigerungen (vgl. komplementäre Ziel-NFE: Performanz, Echtzeitfähigkeit, Wartbarkeit, Sparsamkeit )
-        \end{itemize*}
+        \item sehr effiziente Exokerne, begrenzte Anzahl einfacher Systemaufrufe (~10) und Kernel-interne Primitiven
+        \item sicheres Hardware-Multiplexing auf niedriger Abstraktionsebene (,,low-level'') mit geringem Overhead
+        \item trad. Abstraktionen (VMM, IPC) auf Anwendungsebene effizient implementierbar $\rightarrow$ einfache Erweiter-/Spezialisierbarkeit %bzw. Ersetzbarkeit dieser Abstraktionen
+        \item hochspezialisierte Implementierungen von Abstraktionen generierbar%, die genau auf Funktionalität und Performanz-Anforderungen dieser Anwendung zugeschnitten
+        \item geschützte Kontrollflussübergabe: als IPC-Primitive im Aegis-Kernel, 7-mal schneller als zuvor %damals beste Implementierung
+        \item Ausnahmebehandlung bei Aegis: 5-mal schneller als bei damals bester Implementierung
+        \item durch Aegis: Flexibilität von ExOS, mit Mikrokernel nicht erreichbar
+        \item Aegis erlaubt Anwendungen Konstruktion effizienter IPC-Primitiven ($\Delta \mu$Kernel: nicht vertrauenswürdige Anwendungen können keinerlei spezialisierte IPC-Primitiven nutzen)
     \end{itemize*}
 
-    Performanzstudien
-
-    \begin{enumerate*}
-        \item Aegis mit Library-BS ExOS (MIT: Dawson Engler, Frans Kaashoek)
-        \item Xok mit Library-BS ExOS (MIT)
-        \item Nemesis (Pegasus-Projekt, EU)
-        \item XOmB (U Pittsburgh)
-        \item ...
-    \end{enumerate*}
-
-    Aegis/ExOSals erweiterte Machbarkeitsstudie [Engler+95]
-
-    \begin{enumerate*}
-        \item machbar: sehr effiziente Exokerne
-        \begin{itemize*}
-            \item Grundlage: begrenzte Anzahl einfacher Systemaufrufe (Größenordnung ~10) und Kernel-interne Primitiven (,,Pseudo-Maschinenanweisungen''), die enthalten sein müssen
-        \end{itemize*}
-        \item machbar: sicheres Hardware-Multiplexing auf niedriger
-        Abstraktionsebene (,,low-level'') mit geringem Overhead
-        \item traditionelle Abstraktionen (VMM, IPC) auf Anwendungsebene effizient
-        implementierbar $\rightarrow$ einfache
-        Erweiterbarkeit, Spezialisierbarkeitbzw. Ersetzbarkeit dieser
-        Abstraktionen
-        \item für Anwendungen: hochspezialisierte Implementierungen von
-        Abstraktionen generierbar, die genau auf Funktionalität und
-        Performanz-Anforderungen dieser Anwendung zugeschnitten
-        \item geschützte Kontrollflussübergabe: als IPC-Primitive im Aegis-Kernel,
-        7-mal schnellerals damals beste Implementierung (vgl. [Liedtke95],
-        Kap. 3)
-        \item Ausnahmebehandlung bei Aegis: 5-mal schneller als bei damals bester
-        Implementierung
-        \item durch Aegis möglich: Flexibilität von ExOS, die mit
-        Mikrokernel-Systemen nicht erreichbar ist:
-        \begin{itemize*}
-            \item Bsp. VMM: auf Anwendungsebene implementiert, wo diese sehr einfach mit DSM-Systemen u. Garbage-Kollektoren verknüpfbar
-        \end{itemize*}
-        \item Aegis erlaubt Anwendungen Konstruktion effizienter IPC-Primitiven ($\Delta \mu$Kernel: nicht vertrauenswürdige Anwendungen können keinerlei spezialisierte IPC-Primitiven nutzen, geschweige denn selbst implementieren)
-    \end{enumerate*}
-
-    Xok/ExOS
-
+    \subsubsection{Xok mit Library-OS ExOS}
     \begin{itemize*}
-        \item praktische Weiterentwicklung von Aegis: Xok
         \item für x86-Hardware implementiert
-        \item Kernel-Aufgaben (wie gehabt): Multiplexing von Festplatte, Speicher,
-        Netzwerkschnittstellen, ...
-        \item Standard Library-BS (wie bei Aegis): ExOS
-        \begin{itemize*}
-            \item ,,Unix as a Library''
-            \item Plattform für unmodifizierte Unix-Anwendungen (csh, perl, gcc, telnet, ftp, ...)
-        \end{itemize*}
-        \item z.B. Library-BS zum Dateisystem-Management: C-FFS
-        \begin{itemize*}
-            \item hochperformant (im Vergleich mit Makrokernel-Dateisystem-Management)
-            \item Abstraktionen und Operationen auf Exokernel-Basis (u.a.): Inodes, Verzeichnisse, physische Dateirelokation( $\rightarrow$ zusammenhängendes Lesen)
-            \item Secure Bindings für Metadaten-Modifikation
-        \end{itemize*}
-        \item Forschungsziele:
-        \begin{itemize*}
-            \item Aegis: Proof-of-Concept
-            \item XOK: Proof-of-Feasibility (Performanz)
-        \end{itemize*}
+        \item Kernel-Aufgaben: Multiplexing von Festplatte, Speicher, Netzwerk,...
+        \item Standard Lib-BS (wie Aegis): ExOS ,,Unix as a Library''
+        \item hochperformant
+        \item Abstraktionen und Operationen auf Exokernel-Basis %Inodes, Verzeichnisse, physische Dateirelokation ($\rightarrow$ zusammenhängendes Lesen)
+        \item Secure Bindings für Metadaten-Modifikation
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-exos.png}
     \end{itemize*}
 
-    Zwischenfazit: Exokernelarchitektur
-
+    \subsubsection{Fazit Exokernelarchitektur}
     \begin{itemize*}
-        \item Ziele:
-        \begin{itemize*}
-            \item Performanz, Sparsamkeit: bei genauer Kenntnis der Hardware ermöglicht deren direkte BenutzungAnwendungsentwicklern Effizienzoptimierung
-            \item Wartbarkeit: Hardwareabstraktionen sollen flexibel an Anwendungsdomänen anpassbar sein, ohne das BS modifizieren/wechseln zu müssen
-            \item Echtzeitfähigkeit: Zeitverhaltendes Gesamtsystems durch direkte Steuerung der Hardware weitestgehend durch (Echtzeit-) Anwendungen kontrollierbar
-        \end{itemize*}
-        \item Idee:
-        \begin{itemize*}
-            \item User-Space:anwendungsspezifische Hardwareabstraktionen im User-Space implementiert
-            \item Kernel-Space:nur Multiplexing und Schutz der HW-Schnittstellen
-            \item in der Praxis: kooperativer Ressourcenentzug zwischen Kernel, Lib. OS
-        \end{itemize*}
-        \item Ergebnisse:
-        \begin{itemize*}
-            \item hochperformanteHardwarebenutzung durch spezialisierte Anwendungen
-            \item funktional kleiner Exokernel( $\rightarrow$ Sparsamkeit, Korrektheit des Kernelcodes )
-            \item flexible Nutzung problemgerechterHW-Abstraktionen ( readymade Lib. OS)
-            \item keine Isolation von Anwendungen ( $\rightarrow$ Parallelisierbarkeit: teuer und mit schwachen Garantien; $\rightarrow$ Robustheit und Sicherheit der Anwendungen: nicht umsetzbar)
-        \end{itemize*}
+        \item Abstraktionen und Mechanismen des Betriebssystems können den Erfordernissen der Anwendungen angepasst werden
+        \item[$\rightarrow$] Ergebnis: beträchtliche Performanzsteigerungen
+    \end{itemize*}
+    \begin{description*}
+        \item[Performanz, Sparsamkeit] ermöglicht direkte HW-Benutzung und Effizienzoptimierung
+        \item[Wartbarkeit] Hardwareabstraktionen flexibel an Anwendungsdomänen anpassbar, ohne BS modifizieren/wechseln
+        \item[Echtzeitfähigkeit] Zeitverhalten des Gesamtsystems durch direkte Steuerung der Hardware weitestgehend kontrollierbar
+    \end{description*}
+    Idee
+    \begin{itemize*}
+        \item User-Space: anwendungsspezifische Hardwareabstraktionen
+        \item Kernel-Space: nur Multiplexing und Schutz der HW-Schnittstellen
+        \item Praxis: kooperativer Ressourcenentzug zwischen Kernel, Lib. OS
+    \end{itemize*}
+    Ergebnisse
+    \begin{itemize*}
+        \item hochperformante Hardwarebenutzung durch spez. Anwendungen
+        \item funktional kleiner Exokernel ($\rightarrow$ Sparsamkeit, Korrektheit)
+        \item flexible Nutzung problemgerechter HW-Abstraktionen
+        \item keine Isolation von Anwendungen $\rightarrow$ Parallelisierbarkeit: teuer und schwach$\rightarrow$ keine Robustheit und Sicherheit der Anwendungen
     \end{itemize*}
 
 

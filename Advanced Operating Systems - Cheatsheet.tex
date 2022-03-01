@@ -2807,8 +2807,8 @@
         \item vollständige Übersetzung des Maschinencodes, der in VM ausgeführt wird, in Maschinencode, der im HV ausgeführt wird
         \item praktische Forderung: HV sollte selbst abstrahierte HW-Schnittstelle zur Ausführung des (komplexen!) Übersetzungscodes zur Verfügung haben
         \item[$\rightarrow$] Typ-2-HV als Kompromiss
-            \item korrekte Ausführung von virtualisierter Software auf virtualisierter HW
-            \item beherrschbare Komplexität der Implementierung
+        \item korrekte Ausführung von virtualisierter Software auf virtualisierter HW
+        \item beherrschbare Komplexität der Implementierung
     \end{itemize*}
 
     aus Nutzersicht
@@ -2863,72 +2863,55 @@
     \end{itemize*}
 
     \subsubsection{Paravirtualisierung}
-
     Funktionsprinzip
-
     \begin{itemize*}
         \item ... unterscheidet sich prinzipiell von Typ-1/2-Hypervisor
         \item wesentlich: Quellcode des Gast-Betriebssystems modifiziert
         \item sensible Instruktionen: durch Hypervisor-Calls ersetzt
-        \item Folge: Gast-Betriebssystem arbeitet jetzt vollständig wie
-        Nutzerprogramm, welches Systemaufrufe zum Betriebssystem (hier dem
-        Hypervisor) ausführt
-        \item dazu:
-        \begin{itemize*}
-            \item Hypervisor: muss geeignetes Interface definieren (HV-Calls)
-            \item[$\rightarrow$] Menge von Prozedur-Aufrufen zur Benutzung durch Gast-Betriebssystem
-            \item bilden eine HV-API als Schnittstelle für Gast-Betriebssysteme (nicht für Nutzerprogramme!)
-        \end{itemize*}
-        \item mehr dazu: Xen
+        \item[$\rightarrow$] Gast-Betriebssystem arbeitet vollständig wie Nutzerprogramm, welches Systemaufrufe zum Betriebssystem (hier Hypervisor) ausführt
+        \item Hypervisor: muss geeignetes Interface definieren (HV-Calls)
+        \item[$\rightarrow$] Menge von Prozedur-Aufrufen zur Benutzung durch Gast-Betriebssystem
+        \item bilden eine HV-API als Schnittstelle für Gast-Betriebssysteme
     \end{itemize*}
 
     Verwandtschaft mit Mikrokernel-Architekturen
-
     \begin{itemize*}
-        \item Geht man vom Typ-1-HV noch einen Schritt weiter ...
+        \item entfernt alle sensiblen Instruktionen aus Gast-Betriebssystem...
+        \item ersetzt durch Hypervisor-Aufrufe, um Systemdienste zu nutzen...
+        \item hat man praktisch den Hypervisor in Mikrokernel transformiert
+        \item ... das wird schon gemacht: $L^4$Linux (TU Dresden)
         \begin{itemize*}
-            \item und entfernt alle sensiblen Instruktionen aus Gast-Betriebssystem ...
-            \item und ersetzt diese durch Hypervisor-Aufrufe, um Systemdienste wie E/A zu benutzen, ...
-            \item hat man praktisch den Hypervisor in Mikrokernel transformiert.
-        \end{itemize*}
-        \item ... und genau das wird auch schon gemacht: $L^4$Linux (TU
-        Dresden)
-        \begin{itemize*}
-            \item Basis: stringente $L^4\mu$ Kernel-Implementierung (Typ-1-HV-artiger Funktionsumfang)
+            \item Basis: stringente $L^4\mu$ Kernel-Implementierung %(Typ-1-HV-artiger Funktionsumfang)
             \item Anwendungslaufzeitumgebung: paravirtualisierter Linux-Kernel als Serverprozess
-            \item Ziele: Isolation (Sicherheit, Robustheit), Echtzeitfähigkeit durch direktere HW-Interaktion (vergleichbar Exokernel-Ziel)
+            \item Ziele: Isolation, Echtzeitfähigkeit durch direktere HW-Interaktion %(vergleichbar Exokernel-Ziel)
         \end{itemize*}
     \end{itemize*}
 
-    Zwischenfazit Virtualisierung
+    \subsubsection{Zwischenfazit Virtualisierung}
+    Ziele: Adaptivität komplementär zu
+    \begin{description*}
+        \item[Wartbarkeit] ökonomischer Betrieb ohne dedizierte Hardware
+        \item[Sicherheit] von nichtvertrauenswürdigen Anwendungen isoliert
+        \item[Robustheit] Fehler in VMs beeinträchtigen nicht andere VMs
+    \end{description*}
 
+    Idee: drei gängige Prinzipien
+    \begin{description*}
+        \item[Typ-1-HV] unmittelbares HW-Multiplexing, trap-and-emulate
+        \item[Typ-2-HV] HW-Multiplexing auf Basis eines Host-OS, binarytranslation
+        \item[Paravirtualisierung] Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt $\mu$Kern
+    \end{description*}
+
+    Ergebnisse
     \begin{itemize*}
-        \item Ziele: Adaptivität komplementär zu...
-        \begin{itemize*}
-            \item Wartbarkeit : ökonomischer Betrieb von Cloud-und Legacy-Anwendungen ohne dedizierte Hardware
-            \item Sicherheit : sicherheitskritische Anwendungen können vollständig von nichtvertrauenswürdigen Anwendungen (und untereinander) isoliert werden
-            \item Robustheit : Fehler in VMs (= Anwendungsdomänen) können nicht andere VMs beeinträchtigen
-        \end{itemize*}
-        \item Idee: drei gängige Prinzipien:
-        \begin{itemize*}
-            \item Typ-1-HV: unmittelbares HW-Multiplexing, trap-and-emulate
-            \item Typ-2-HV: HW-Multiplexing auf Basis eines Host-OS, binarytranslation
-            \item Paravirtualisierung: Typ-1-HV für angepasstes Gast-OS, kein trap-and-emulate nötig $\rightarrow$ HV ähnelt $\mu$Kern
-        \end{itemize*}
-        \item Ergebnisse:
-        \begin{itemize*}
-            \item[\cmark] VMs mit individuell anpassbarer Laufzeitumgebung
-            \item[\cmark] isolierteVMs
-            \item[\cmark] kontrollierbare VM-Interaktion (untereinander und mit HW)
-            \item[\xmark] keine hardwarespezifischen Optimierungen aus VM heraus möglich $\rightarrow$ Performanz, Echtzeitfähigkeit, Sparsamkeit!
-        \end{itemize*}
+        \item[\cmark] VMs mit individuell anpassbarer Laufzeitumgebung
+        \item[\cmark] isolierteVMs
+        \item[\cmark] kontrollierbare VM-Interaktion (untereinander und mit HW)
+        \item[\xmark] keine hardwarespezifischen Optimierungen aus VM heraus möglich $\rightarrow$ Performanz, Echtzeitfähigkeit, Sparsamkeit
     \end{itemize*}
-
 
     \subsection{Container}
-
     Ziele:
-
     \begin{itemize*}
         \item Adaptivität , im Dienste von ...
         \item ... Wartbarkeit: einfachen Entwicklung, Installation, Rekonfiguration

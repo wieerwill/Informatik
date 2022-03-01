@@ -3100,284 +3100,197 @@
             \item cgroups: Accounting/Beschränkung der Ressourcenzuordnung
             \item union mounting: Funktion zur logischen Reorganisation hierarchischer Dateisysteme
         \end{itemize*}
-        \item \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
+        \item \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
     \end{itemize*}
 
-    \section{Performanz und
-      Parallelität}
-
-
-    \subsection{Motivation}
-
+    \section{Performanz und Parallelität}
+    Motivation
     \begin{itemize*}
-        \item Performanz: Wer hätte gern einen schnell(er)en Rechner...?
-        \item Wer braucht schnelle Rechner:
-        \begin{itemize*}
-            \item Hochleistungsrechnen, HPC (,,high performancecomputing'') \begin{itemize*} \item wissenschaftliches Rechnen(z.B. Modellsimulation natürlicher Prozesse, Radioteleskop-Datenverarbeitung) \item Datenvisualisierung(z.B. Analysen großer Netzwerke) \item Datenorganisation-und speicherung(z.B. Kundendatenverarbeitung zur Personalisierung von Werbeaktivitäten, Bürgerdatenverarbeitung zur Personalisierung von Geheimdienstaktivitäten) \end{itemize*}
-            \item nicht disjunkt dazu: kommerzielle Anwendungen \begin{itemize*} \item ,,Big Data'': Dienstleistungen für Kunden, die o. g. Probleme auf gigantischen Eingabedatenmengen zu lösen haben (Software wie Apache Hadoop ) \item Wettervorhersage \end{itemize*}
-            \item anspruchsvolle Multimedia- Anwendungen \begin{itemize*} \item Animationsfilme \item VR-Rendering \end{itemize*}
-        \end{itemize*}
+        \item Hochleistungsrechnen, HPC (,,high performancecomputing''
+        \item ,,Big Data'': Dienstleistungen für Kunden
+        \item Wettervorhersage
+        \item anspruchsvolle Multimedia- Anwendungen (Animationen, VR-Rendering)
     \end{itemize*}
 
-
-    \subsection{Performanzbegriff}
-
+    Performanzbegriff
     \begin{itemize*}
-        \item Performance: The degree to which a system or component accomplishes
-        its designated functions within given constraints, such as speed,
-        accuracy, or memory usage. (IEEE)
-        \item Performanz im engeren Sinne dieses Kapitels: Minimierung der für
-        korrekte Funktion (= Lösung eines Berechnungsproblems) zur Verfügung
-        stehenden Zeit.
-        \item oder technischer: Maximierung der Anzahl pro Zeiteinheit
-        abgeschlossener Berechnungen.
+        \item Minimierung der für korrekte Funktion (= Lösung eines Berechnungsproblems) zur Verfügung stehenden Zeit.
+        \item technischer: Maximierung der Anzahl pro Zeiteinheit abgeschlossener Berechnungen
     \end{itemize*}
 
-
-    \subsection{Roadmap}
-
+    Anforderungen hochparallelen Rechnens an ...
     \begin{itemize*}
-        \item Grundlegende Erkenntnis: Performanz geht nicht (mehr) ohne
-        Parallelität $\rightarrow$ Hochleistungsrechnen =
-        hochparalleles Rechnen
-        \item daher in diesem Kapitel: Anforderungen hochparallelen Rechnens an ...
-        \begin{itemize*}
-            \item Hardware: Prozessorarchitekturen
-            \item Systemsoftware: Betriebssystemmechanismen
-            \item Anwendungssoftware: Parallelisierbarkeitvon Problemen
-        \end{itemize*}
-        \item BS-Architekturen anhand von Beispielsystemen:
-        \begin{itemize*}
-            \item Multikernel: Barrelfish
-            \item verteilte Betriebssysteme
-        \end{itemize*}
+        \item Hardware: Prozessorarchitekturen
+        \item Systemsoftware: Betriebssystemmechanismen
+        \item Anwendungssoftware: Parallelisierbarkeitvon Problemen
     \end{itemize*}
-
 
     \subsection{Hardware-Voraussetzungen}
-
     \begin{itemize*}
-        \item Entwicklungstendenzen der Rechnerhardware:
-        \begin{itemize*}
-            \item Multicore-Prozessoren: seit ca. 2006 (in größerem Umfang)
-            \item Warum neues Paradigma für Prozessoren? bei CPU-Taktfrequenz $>>$ 4 GHz: z.Zt. physikalische Grenze, u.a. nicht mehr sinnvoll handhabbare Abwärme
-            \item Damit weiterhin: \begin{enumerate*} \item Anzahl der Kerne wächst nicht linear \item Taktfrequenz wächst asymptotisch, nimmt nur noch marginal zu \end{enumerate*}
-        \end{itemize*}
+        \item Entwicklungstendenzen der Rechnerhardware
+        \item Multicore-Prozessoren: seit ca. 2006 (in größerem Umfang)
+        \item bei CPU-Taktfrequenz $>>$ 4GHz z.Zt. physikalische Grenze%, u.a. nicht mehr sinnvoll handhabbare Abwärme
+        \item Anzahl der Kerne wächst nicht linear
+        \item Taktfrequenz wächst asymptotisch, nimmt nur noch marginal zu
     \end{itemize*}
 
-
-    \subsection{Performanz durch Parallelisierung
-        ...}
-
-    Folgerungen
-
+    \subsection{Performanz durch Parallelisierung ...}
     \begin{enumerate*}
-        \item weitere Performanz-Steigerung von Anwendungen: primär durch
-        Parallelität (aggressiverer) Multi-Threaded-Anwendungen
-        \item erforderlich: Betriebssystem-Unterstützung
-        $\rightarrow$ Scheduling, Sychronisation
-        \item weiterhin erforderlich: Formulierungsmöglichkeiten (Sprachen),
-        Compiler, verteilte Algorithmen ... $\rightarrow$ hier
-        nicht im Fokus
+        \item Performanz-Steigerung von Anwendungen: primär durch Parallelität, Multi-Threaded-Anwendungen
+        \item erforderlich: Betriebssystem-Unterstützung $\rightarrow$ Scheduling, Sychronisation
+        \item weiterhin: Sprachen, Compiler, verteilte Algorithmen ...
     \end{enumerate*}
 
-
     \subsection{... auf Prozessorebene}
-
     Vorteile von Multicore-Prozessoren
-
     \begin{enumerate*}
-        \item möglich wird: \textbf{Parallelarbeit auf Chip-Ebene}
-        $\rightarrow$ Vermeidung der Plagen paralleler
-        verteilter Systeme
-        \item bei geeigneter Architektur: Erkenntnisse und Software aus Gebiet
-        verteilter Systeme als Grundlage verwendbar
-        \item durch gemeinsame Caches (architekturabhängig): schnellere
-        Kommunikation (speicherbasiert), billigere Migration von Aktivitäten
-        kann möglich sein
-        \item höhere Energieeffizienz: mehr Rechenleistung pro Chipfläche, geringere
-        elektrische Leistungsaufnahme $\rightarrow$ weniger
-        Gesamtabwärme, z.T. einzelne Kerne abschaltbar (vgl. Sparsamkeit ,
-        mobile Geräte)
+        \item möglich wird: \textbf{Parallelarbeit auf Chip-Ebene} $\rightarrow$ Vermeidung der Plagen paralleler verteilter Systeme
+        \item bei geeigneter Architektur: Erkenntnisse und Software aus Gebiet verteilter Systeme als Grundlage verwendbar
+        \item durch gemeinsame Caches (architekturabhängig): schnellere Kommunikation (speicherbasiert), billigere Migration von Aktivitäten kann möglich sein
+        \item höhere Energieeffizienz: mehr Rechenleistung pro Chipfläche, geringere elektrische Leistungsaufnahme $\rightarrow$ weniger Gesamtabwärme, z.T. einzelne Kerne abschaltbar
         \item Baugröße: geringeres physisches Volumen
     \end{enumerate*}
 
     Nachteile von Multicore-Prozessoren
-
     \begin{enumerate*}
-        \item durch gemeinsam genutzte Caches und Busstrukturen: Engpässe
-        (Bottlenecks) möglich
-        \item zur Vermeidung thermischer Zerstörungen: Lastausgleich zwingend
-        erforderlich! (Ziel: ausgeglichene Lastverteilung auf einzelnen
-        Kernen)
-        \item zum optimalen Einsatz zwingend erforderlich:
-        \begin{enumerate*}
-            \item Entwicklung Hardwarearchitektur
-            \item zusätzlich: Entwicklung geeigneter Systemsoftware
-            \item zusätzlich: Entwicklung geeigneter Anwendungssoftware
-        \end{enumerate*}
+        \item durch gemeinsam genutzte Caches und Busstrukturen: Engpässe (Bottlenecks) möglich
+        \item zur Vermeidung thermischer Zerstörungen: Lastausgleich zwingend erforderlich! (Ziel: ausgeglichene Lastverteilung auf einzelnen Kernen)
     \end{enumerate*}
 
+    zum optimalen Einsatz zwingend erforderlich
+    \begin{enumerate*}
+        \item Entwicklung Hardwarearchitektur
+        \item zusätzlich: Entwicklung geeigneter Systemsoftware
+        \item zusätzlich: Entwicklung geeigneter Anwendungssoftware
+    \end{enumerate*}
 
     \subsubsection{Multicore-Prozessoren}
-
-    \begin{itemize*}
-        \item Sprechweise in der Literatur gelegentlich unübersichtlich...
-        \item daher: Terminologie und Abkürzungen:
-        \begin{itemize*}
-            \item MC ...multicore(processor)
-            \item CMP ...chip-level multiprocessing, hochintegrierte Bauweise für ,,MC''
-            \item SMC ...symmetric multicore $\rightarrow$ SMP ... symmetric multi-processing
-            \item AMC ...asymmetric (auch: heterogeneous ) multicore $\rightarrow$ AMP ... asymmetric multi-processing
-            \item UP ...uni-processing , Synonym zu singlecore(SC) oder uniprocessor
-        \end{itemize*}
-    \end{itemize*}
+    Terminologie und Abkürzungen
+    \begin{description*}
+        \item[MC] multicore (processor)
+        \item[CMP] chip-level multiprocessing, hochintegrierte Bauweise für MC
+        \item[SMC] symmetric multicore $\rightarrow$ SMP ... symm. multi-processing
+        \item[AMC] asymmetric multicore $\rightarrow$ AMP ... asymmetric multi-processing
+        \item[UP] uni-processing, singlecore (SC) oder uniprocessor
+    \end{description*}
 
     Architekturen von Multicore-Prozessoren
-
     \begin{itemize*}
-        \item A. Netzwerkbasiertes Design
+        \item Netzwerkbasiertes Design
         \begin{itemize*}
-            \item Prozessorkerne des Chips u. ihre lokalen Speicher (oder Caches): durch Netzwerkstruktur verbunden
-            \item damit: größte Ähnlichkeit zu traditionellen verteilten Systemen
-            \item Verwendung: bei Vielzahl von Prozessorkernen (Skalierbarkeit!)
-            \item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
+            \item Prozessorkerne des Chips u. ihre lokalen Speicher (oder Caches) durch Netzwerkstruktur verbunden
+            \item größte Ähnlichkeit zu traditionellen verteilten Systemen
+            \item Verwendung bei Vielzahl von Prozessorkernen (Skalierbar)
+            %\item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
+            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
         \end{itemize*}
-        \item B. Hierarchisches Design
+        \item Hierarchisches Design
         \begin{itemize*}
-            \item mehrere Prozessor-Kerne teilen sich mehrere baumartig angeordnete Caches
-            \item meistens: \begin{itemize*} \item jeder Prozessorkern hat eigenen L1-Cache \item L2-Cache, Zugriff auf (externen) Hauptspeicher u. Großteil der Busse aber geteilt \end{itemize*}
+            \item mehrere Prozessor-Kerne teilen sich baumartige Caches
+            \item jeder Prozessorkern hat eigenen L1-Cache
+            \item L2-Cache, Zugriff auf Hauptspeicher u. Großteil der Busse %aber geteilt
             \item Verwendung: typischerweise Serverkonfigurationen
-            \item Beispiele: \begin{itemize*} \item IBM Power \item Intel Core 2, Core i \item Sun UltraSPARCT1 (Niagara) \end{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
+            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
         \end{itemize*}
-        \item C. Pipeline-Design
+        \item Pipeline-Design
         \begin{itemize*}
-            \item Daten durch mehrere Prozessor-Kerne schrittweise verarbeitet
+            \item Daten durch Prozessor-Kerne schrittweise verarbeitet
             \item durch letzten Prozessor: Ablage im Speichersystem
-            \item Verwendung: \begin{itemize*} \item Graphikchips \item (hochspezialisierte) Netzwerkprozessoren \end{itemize*}
-            \item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
+            \item Verwendung: Graphikchips, Netzwerkprozessoren
+            %\item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
+            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
         \end{itemize*}
     \end{itemize*}
 
     Symmetrische u. asymmetrische Multicore-Prozessoren
 
     \begin{itemize*}
-        \item symmetrische Multicore-Prozessoren (SMC)
-        \begin{itemize*}
-            \item alle Kerne identisch, d.h. gleiche Architektur und gleiche Fähigkeiten
-            \item Beispiele: \begin{itemize*} \item Intel Core 2 Duo \item Intel Core 2 Quad \item ParallaxPropeller \end{itemize*}
-        \end{itemize*}
-        \item asymmetrische MC-Prozessoren (AMC)
-        \item Multicore-Architektur, jedoch mit Kernen unterschiedlicher Architektur
+        \item symmetrische Multicore-Prozessoren (SMC): alle Kerne identisch, d.h. gleiche Architektur und gleiche Fähigkeiten
+        %\item Beispiele: \begin{itemize*} \item Intel Core 2 Duo \item Intel Core 2 Quad \item ParallaxPropeller \end{itemize*}
+        \item asymmetrische MC-Prozessoren (AMC): Multicore-Architektur, jedoch mit Kernen unterschiedlicher Architektur
         und/oder unterschiedlichen Fähigkeiten
-        \item Beispiel: Kilocore:
-        \begin{itemize*}
-            \item 1 Allzweck-Prozessor (PowerPC)
-            \item \begin{itemize*} \item 256 od. 1024 Datenverarbeitungsprozessoren \end{itemize*}
-        \end{itemize*}
     \end{itemize*}
 
-
-    \subsubsection{Superskalare
-        Prozessoren}
-
+    \subsubsection{Superskalare Prozessoren}
     \begin{itemize*}
         \item Bekannt aus Rechnerarchitektur: Pipelining
         \begin{itemize*}
             \item parallele Abarbeitung von Teilen eines Maschinenbefehls in Pipeline-Stufen
-            \item ermöglicht durch verschiedene Funktionseinheiten eines Prozessors für verschiedene Stufen: \begin{itemize*} \item Control Unit (CU) \item ArithmeticLogicUnit (ALU) \item Float Point Unit (FPU) \item Memory Management Unit (MMU) \item Cache \end{itemize*}
+            \item ermöglicht durch verschiedene Funktionseinheiten eines Prozessors für verschiedene Stufen
+            %\begin{itemize*} 
+            %    \item Control Unit (CU) 
+            %    \item Arithmetic Logic Unit (ALU) 
+            %    \item Float Point Unit (FPU) 
+            %    \item Memory Management Unit (MMU) 
+            %    \item Cache 
+            %\end{itemize*}
             \item sowie mehrere Pipeline-Register
         \end{itemize*}
-        \item superskalare Prozessoren: solche, bei denen zur Bearbeitung einer
-        Pipeling-Stufe erforderlichen Funktionseinheiten n-fach vorliegen
-        \item Ziel:
+        \item superskalare Prozessoren: solche, bei denen zur Bearbeitung einer Pipeling-Stufe erforderlichen Funktionseinheiten n-fach vorliegen
+        \item Ziel
         \begin{itemize*}
             \item Skalarprozessor (mit Pipelining): 1 Befehl pro Takt (vollständig) bearbeitet
             \item Superskalarprozessor: bis zu n Befehle pro Taktbearbeitet
         \end{itemize*}
-        \item Verbereitung heute: universell (bis hin zu allen
-        Desktop-Prozessorfamilien)
+        \item Verbereitung heute: universell %(bis hin zu allen Desktop-Prozessorfamilien)
     \end{itemize*}
 
-
-    \subsection{Parallelisierung in
-        Betriebssystemen}
-
+    \subsection{Parallelisierung in Betriebssystemen}
     \begin{itemize*}
         \item Basis für alle Parallelarbeit aus BS-Sicht: Multithreading
-        \item wir erinnern uns ...:
         \begin{itemize*}
             \item Kernel-Level-Threads (KLTs): BS implementiert Threads $\rightarrow$ Scheduler kann mehrere Threads nebenläufig planen $\rightarrow$ Parallelität möglich
-            \item User-Level-Threads (ULTs): Anwendung implementiert Threads $\rightarrow$ keine Parallelität möglich!
+            \item User-Level-Threads (ULTs): Anwendung implementiert Threads $\rightarrow$ keine Parallelität möglich
         \end{itemize*}
-        \item grundlegend für echt paralleles Multithreading:
+        \item grundlegend für echt paralleles Multithreading
         \begin{itemize*}
             \item parallelisierungsfähige Hardware
             \item kausal unabhängige Threads
-            \item passendes (und korrekt eingesetztes!) Programmiermodell, insbesondere Synchronisation!
+            \item passendes Programmiermodell, insbesondere Synchronisation!
             \item[$\rightarrow$] Programmierer + Compiler
         \end{itemize*}
-    \end{itemize*}
-
-    Vorläufiges Fazit:
-
-    \begin{itemize*}
-        \item BS-Abstraktionen müssen Parallelität unterstützen (Abstraktion
-        nebenläufiger Aktivitäten: KLTs)
+        \item BS-Abstraktionen müssen Parallelität unterstützen %(Abstraktion nebenläufiger Aktivitäten: KLTs)
         \item BS muss Synchronisationsmechanismen implementieren
     \end{itemize*}
 
-
-    \subsubsection{Synchronisations- und
-        Sperrmechanismen}
-
+    \subsubsection{Synchronisations- und  Sperrmechanismen}
     \begin{itemize*}
         \item Synchronisationsmechanismen zur Nutzung
         \begin{itemize*}
-            \item ... durch Anwendungen $\rightarrow$ Teil der API
-            \item ... durch den Kernel (z.B. Implementierung Prozessmanagement, E/A, ...)
+            \item durch Anwendungen $\rightarrow$ Teil der API
+            \item durch den Kernel
         \end{itemize*}
-        \item Aufgabe: Verhinderung konkurrierender Zugriffe auf logische oder
-        physische Ressourcen
+        \item  Verhinderung konkur. Zugriffe auf logische/physische Ressourcen
         \begin{itemize*}
-            \item Vermeidung von raceconditions
+            \item Vermeidung von race conditions
             \item Herstellung einer korrekten Ordnung entsprechend Kommunikationssemantik (z.B. ,,Schreiben vor Lesen'')
         \end{itemize*}
-        \item (alt-) bekanntes Bsp.: Reader-Writer-Problem
     \end{itemize*}
 
     Erinnerung: Reader-Writer-Problem
-
     \begin{itemize*}
-        \item Begriffe: (bekannt)
+        \item wechselseitiger Ausschluss ( mutual exclusion)
+        \item kritischer Abschnitt (critical section)
+        \item Synchronisationsprobleme
         \begin{itemize*}
-            \item wechselseitiger Ausschluss ( mutual exclusion)
-            \item kritischer Abschnitt (critical section)
-        \end{itemize*}
-        \item Synchronisationsprobleme:
-        \begin{itemize*}
-            \item Wie verhindern wir ein write in vollen Puffer?
-            \item Wie verhindern wir ein read aus leerem Puffer?
-            \item Wie verhindern wir, dass auf ein Element während des read durch ein gleichzeitiges write zugegriffen wird? (Oder umgekehrt?)
+            \item write in vollen Puffer
+            \item read aus leerem Puffer
+            \item während read durch gleichzeitiges write zugegriffen
         \end{itemize*}
     \end{itemize*}
 
-    Sperrmechanismen ( Locks )
-
+    Sperrmechanismen (Locks)
     \begin{itemize*}
         \item Wechselseitiger Ausschluss ...
         \begin{itemize*}
-            \item ... ist in nebenläufigen Systemen zwingend erforderlich
-            \item ... ist in echt parallelen Systemen allgegenwärtig
-            \item ... skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$ (monolithischer) Kernel-Code!
+            \item ist in nebenläufigen Systemen zwingend erforderlich
+            \item ist in echt parallelen Systemen allgegenwärtig
+            \item skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$ (monolithischer) Kernel-Code
         \end{itemize*}
         \item Mechanismen in Betriebssystemen: Locks
-        \item Arten von Locks am Beispiel Linux:
+        \item Arten von Locks am Beispiel Linux
         \begin{itemize*}
-            \item Big Kernel Lock (BKL) \begin{itemize*} \item historisch (1996-2011): lockkernel(); ... unlockkernel(); \item ineffizient durch massiv gestiegene Komplexität des Kernels \end{itemize*}
+            \item Big Kernel Lock (BKL)
             \item atomic-Operationen
             \item Spinlocks
             \item Semaphore (Spezialform: Reader/Writer Locks)
@@ -3385,44 +3298,23 @@
     \end{itemize*}
 
     atomic*
-
     \begin{itemize*}
-        \item Bausteine der komplexeren Sperrmechanismen:
-        \begin{itemize*}
-            \item Granularität: einzelne Integer- (oder sogar Bit-) Operation
-            \item Performanz: mittels Assembler implementiert, nutzt Atomaritäts garantiender CPU ( TSL - Anweisungen: ,,test-set-lock'' )
-        \end{itemize*}
-        \item Benutzung:
-
-        %\begin{Shaded}
-        %\begin{Highlighting}[]
-        %\DataTypeTok{atomic_t}\NormalTok{ x;}
-        %\NormalTok{atomic_set(\&x, }\DecValTok{42}\NormalTok{);}
-        %\DataTypeTok{int}\NormalTok{ y = atomic_read(\&x);}
-        %\end{Highlighting}
-        %\end{Shaded}
-        \begin{itemize*}
-            \item \texttt{atomic\_*} Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
-            \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
-            \item definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$ unnötiges Sperren sehr preiswert
-        \end{itemize*}
+        \item Bausteine der komplexeren Sperrmechanismen
+        \item Granularität: einzelne Integer- (oder sogar Bit-) Operation
+        \item Performanz: mittels Assembler implementiert %nutzt Atomaritäts garantiender CPU ( TSL - Anweisungen: ,,test-set-lock'' )
+        \item \texttt{atomic\_*} Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
+        \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
+        \item definierte Länge des kritischen Abschnitts $\rightarrow$ unnötiges Sperren sehr preiswert
     \end{itemize*}
 
+    \pagebreak
 
     \section{Zusammenfassung}
-
-
-    \subsection{Funktionale und nichtfunktionale
-        Eigenschaften}
-
+    \subsection{Funktionale und nichtfunktionale Eigenschaften}
     \begin{itemize*}
-        \item Funktionale Eigenschaften: beschreiben, was ein (Software)-Produkt tun
-        soll
-        \item Nichtfunktionale Eigenschaften: beschreiben, wie funktionale
-        Eigenschaften realisiert werden, also welche sonstigen
-        Eigenschaftendas Produkt haben soll ... unterteilbar in:
+        \item Funktionale Eigenschaften: beschreiben, was ein (Software)-Produkt tun soll
+        \item Nichtfunktionale Eigenschaften: beschreiben, wie funktionale Eigenschaften realisiert werden, also welche sonstigen Eigenschaftendas Produkt haben soll ... unterteilbar in
         \begin{enumerate*}
-
             \item Laufzeiteigenschaften (zur Laufzeit sichtbar)
             \item Evolutionseigenschaften (beim Betrieb sichtbar: Erweiterung, Wartung, Test usw.)
         \end{enumerate*}
@@ -3778,4 +3670,5 @@
     werden Sie aktiv!
 
 \end{multicols}
+
 \end{document}

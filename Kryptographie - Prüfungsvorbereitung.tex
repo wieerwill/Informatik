@@ -98,26 +98,51 @@
   \begin{parts}
     \part Ein Kryptosystem ist ein Tupel $S=(X,K,Y,e,d)$, wobei
     \begin{solution}
+      \begin{itemize}
+        \item X nicht leere endliche Menge als Klartext
+        \item K nicht leere endliche Menge als Schlüssel
+        \item Y eine Menge als Chiffretexte
+        \item $e:X\times K\rightarrow Y$ Verschlüsselungsfunktion
+        \item $d:Y\times K\rightarrow X$ Entschlüsselungsfunktion
+      \end{itemize}
     \end{solution}
 
     \part Dechiffrierbedingung
     \begin{solution}
+      $\forall x\in X\forall k\in K:d(e(x,k),k) =x$
     \end{solution}
 
     \part Surjektivität
     \begin{solution}
+      $\forall y\in Y\exists x\in X,k\in K:y=e(x,k)$
     \end{solution}
 
     \part Unter einer Chiffre von $S$ versteht man
     \begin{solution}
+      die Funktion $e(.,k):X\rightarrow Y$, $x\rightarrow e(x,k)$ für festes $k\in K$
     \end{solution}
 
     \part Ein Kryptosystem heißt possibilistisch sicher, wenn gilt
     \begin{solution}
+      \begin{itemize}
+        \item $\forall y\in Y\forall x\in X\exists k\in K:e(x,k)=y$
+        \item Bei possibilistischer Sicherheit und Klartexten und Schlüsseln, die Zeichenreihen über einem Alphabet sind, müssen Schlüssel mindestens so lang sein wieder zu übermittelnde Text
+        \item in der Verschlüsselungstabelle für $e$ kommen in jeder Spalte alle Chiffretexte vor
+        \item die Einträge in jeder Zeile der Tabelle für $e$ müssen verschieden sein
+      \end{itemize}
     \end{solution}
 
     \part Sei $(S,P_k)$ ein Kryptosystem mit Schlüsselverteilung. Es heißt informationstheoretisch sicher bezüglich $Pr_x$, wenn gilt
     \begin{solution}
+      \begin{itemize}
+        \item wenn für alle $x\in X,y\in Y$ mit $Pr(y)>0$ gilt: $Pr(x) = Pr(x|y)$.
+        \item wenn es bezüglich jeder beliebigen Klartextverteilung $Pr_X$ informationstheoretisch sicher ist
+        \item $(X,K,Y,e,d)$ ist possibilistisch sicher und $Pr_K(k)=\frac{1}{|K|}$ für alle $k\in K$
+        \item in der Verschlüsselungstabelle für e in jeder Spalte alle Chiffretexte vorkommen (possibilistische Sicherheit) und dass die Schlüsselverteilung $Pr_K$ uniform ist
+        \item $\forall x\in X \forall y\in Y: Pr(x,y)=Pr(x)Pr(y)$ (Eintreten von x und Eintreten von y sind unabhängig)
+        \item $\forall x\in X$ mit $Pr(x)>0$ und alle $y\in Y$ gilt $Pr(y)=Pr(y|x)$ (andere Formulierung der Unabhängigkeit)
+        \item Für alle $x,x'\in X$ mit $Pr(x),Pr(x')>0$ und alle $y\in Y$ gilt $P^x(y)=P^{x'}(y)$.
+      \end{itemize}
     \end{solution}
 
     \part Betrachte nun das konkrete Kryptosystem mit Schlüsselverteilung $S[Pr_K]=(X=\{a,b,c\}, K=\{k_1,k_2,k_3,k_4,k_5,k_6,k_7\}, Y=\{A,B,C,D,E\},e,d, Pr_K)$, wobei $e$ und $Pr_K$ folgender Tabelle zu entnehmen sind und $d$ die Dechiffrierbedingung erfüllt.
@@ -134,10 +159,15 @@
     \end{center}
     Ist $S$ possibilistisch sicher? Gebe an, wie sich dies anschaulich in der Tabelle ausdrückt oder demonstriere dies anhand eines Gegenbeispiels.
     \begin{solution}
+      Ja $S$ ist possibilistisch sicher. In jeder Spalte kommen alle Chiffretexte vor und in jeder Zeile sind die Einträge verschieden voneinander
     \end{solution}
 
     \part Ist $S[Pr_K]$ bezüglich der Gleichverteilung $Pr_K$ auf den Klartexten informationstheoretisch sicher? Gebe an, wie sich dies anschaulich in der Tabelle ausdrückt oder demonstriere dies anhand eines Gegenbeispiels.
     \begin{solution}
+      Ja das Kryptosystem ist informationstheoretisch sicher.
+
+      Die Schlüsselverteilung ist nicht uniform. Jeder Schlüssel $k$ hat eine andere Chiffre $x\rightarrow e(x,k)$. Die (absoluten) Wahrscheinlichkeiten für die Chiffretexte sind ebenfalls nicht uniform ($P(E)_a=\frac{1}{15}+\frac{1}{10}\approx\frac{1}{16}$, $P(B)_a=20\%$).
+      Die informationstechnische Sicherheit drückt sich dadurch aus, dass die Chiffretextwahrscheinlichkeiten auch für jeden Klartext (also jede Spalte) separat auftreten.
     \end{solution}
   \end{parts}
 

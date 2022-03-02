@@ -94,12 +94,351 @@
 
 %##########################################
 \begin{questions}
-  \question
+  \question Definitionen zu Kryptosystemen: Vervollständige die Definition eines Kryptosystems, sowie die Definition von possibilistischer und informationstheoretischer Sicherheit!
   \begin{parts}
-    \part
+    \part Ein Kryptosystem ist ein Tupel $S=(X,K,Y,e,d)$, wobei
     \begin{solution}
     \end{solution}
 
+    \part Dechiffrierbedingung
+    \begin{solution}
+    \end{solution}
+
+    \part Surjektivität
+    \begin{solution}
+    \end{solution}
+
+    \part Unter einer Chiffre von $S$ versteht man
+    \begin{solution}
+    \end{solution}
+
+    \part Ein Kryptosystem heißt possibilistisch sicher, wenn gilt
+    \begin{solution}
+    \end{solution}
+
+    \part Sei $(S,P_k)$ ein Kryptosystem mit Schlüsselverteilung. Es heißt informationstheoretisch sicher bezüglich $Pr_x$, wenn gilt
+    \begin{solution}
+    \end{solution}
+
+    \part Betrachte nun das konkrete Kryptosystem mit Schlüsselverteilung $S[Pr_K]=(X=\{a,b,c\}, K=\{k_1,k_2,k_3,k_4,k_5,k_6,k_7\}, Y=\{A,B,C,D,E\},e,d, Pr_K)$, wobei $e$ und $Pr_K$ folgender Tabelle zu entnehmen sind und $d$ die Dechiffrierbedingung erfüllt.
+    \begin{center}
+      \begin{tabular}{c|c|c|c|c}
+        k     & $Pr_K(k)$ & $e(a,k)$ & $e(b,k)$ & $e(c,k)$ \\\hline
+        $k_1$ & 10\%      & A        & E        & B        \\
+        $k_2$ & 15\%      & E        & D        & A        \\
+        $k_3$ & 15\%      & D        & A        & C        \\
+        $k_4$ & 5\%       & C        & B        & A        \\
+        $k_5$ & 20\%      & B        & C        & E        \\
+        $k_7$ & 10\%      & E        & C        & D
+      \end{tabular}
+    \end{center}
+    Ist $S$ possibilistisch sicher? Gebe an, wie sich dies anschaulich in der Tabelle ausdrückt oder demonstriere dies anhand eines Gegenbeispiels.
+    \begin{solution}
+    \end{solution}
+
+    \part Ist $S[Pr_K]$ bezüglich der Gleichverteilung $Pr_K$ auf den Klartexten informationstheoretisch sicher? Gebe an, wie sich dies anschaulich in der Tabelle ausdrückt oder demonstriere dies anhand eines Gegenbeispiels.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Sicherheit von Block Kryptosystemen
+
+  In der Vorlesung wurde folgende Situation alsSzenarium 2eingeführt:
+  ,,Alice möchte Bob mehrere verschiedene Klartexte vorher bekannter und begrenzter Länge übermitteln. Sie verwendet dafür immer denselben Schlüssel. Eva hört die Chiffretexte mit und kann sich sogar einige Klartexte mit dem verwendeten Schlüssel verschlüsseln lassen.''
+  \begin{parts}
+    \part Nenne ein informationstheoretisch sicheres Block-Kryptosystem, das von Eva in Szenarium 2 leicht gebrochen werden kann.
+    \begin{solution}
+    \end{solution}
+
+    \part In der Vorlesung wurde possibilistische Sicherheit für Szenarium 2 definiert. Nenne ein $l$-Block-Kryptosystem, das diese Definition erfüllt. Die nötige Schlüsselmenge $K$ hat Größe...
+    \begin{solution}
+    \end{solution}
+
+    \part Nenne ein Block-Kryptosystem aus der Vorlesung, das gegenwärtig für Szenarium 2 in der Praxis benutzt wird.
+    \begin{solution}
+    \end{solution}
+
+    \part Beschreibe das Konzept eines $l$-Unterscheiders und das zugehörige Sicherheitsspiel. Definiere den Vorteil eines Unterscheiders.
+    \begin{solution}
+
+      Unterscheider $U$:
+
+      Spiel $G_U^B$:
+
+      Vorteil:
+    \end{solution}
+
+  \end{parts}
+
+  Verschlüsselungsfunktion e
+
+  \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+    e    & 0000 & 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111 & 1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111 \\\hline
+    0000 & 1110 & 0100 & 0001 & 0101 & 0111 & 1001 & 0110 & 1000 & 0010 & 1111 & 1011 & 0000 & 1100 & 1010 & 0011 & 1101 \\
+    0001 & 0010 & 0110 & 1100 & 1101 & 0001 & 1011 & 1111 & 1000 & 0100 & 0000 & 0101 & 0111 & 1110 & 0011 & 1001 & 1010 \\
+    0010 & 1000 & 1001 & 0010 & 0111 & 0011 & 1101 & 0101 & 1111 & 1110 & 0001 & 1011 & 0100 & 1010 & 0000 & 1100 & 0110 \\
+    0011 & 0110 & 1010 & 0011 & 1101 & 0010 & 1000 & 0001 & 0101 & 1110 & 1100 & 1111 & 1001 & 0100 & 0000 & 1011 & 0111 \\
+    0100 & 0100 & 0010 & 1001 & 1000 & 0111 & 0011 & 1100 & 0110 & 1011 & 1110 & 1111 & 0101 & 1010 & 0001 & 0000 & 1101 \\
+    0101 & 1001 & 0101 & 1010 & 0100 & 0010 & 1011 & 1000 & 1100 & 0111 & 1110 & 0001 & 0000 & 1101 & 0011 & 1111 & 0110 \\
+    0110 & 1101 & 0001 & 1100 & 0010 & 0000 & 1000 & 0011 & 0111 & 0110 & 1111 & 1110 & 1001 & 1010 & 0101 & 0100 & 1011 \\
+    0111 & 1100 & 1101 & 0010 & 1111 & 0110 & 1001 & 0111 & 0001 & 1000 & 1110 & 0011 & 0000 & 0101 & 1011 & 1010 & 0100 \\
+    1000 & 1001 & 1011 & 1101 & 0000 & 0101 & 0111 & 1100 & 1111 & 0001 & 1110 & 0110 & 0011 & 1010 & 0010 & 0100 & 1000 \\
+    1001 & 1011 & 0001 & 0011 & 1000 & 1100 & 0010 & 1111 & 0000 & 0100 & 1010 & 0110 & 1110 & 0101 & 0111 & 1101 & 1001 \\
+    1010 & 1011 & 0010 & 0101 & 1000 & 1001 & 0011 & 0001 & 1110 & 0000 & 1100 & 1010 & 0111 & 1101 & 1111 & 0100 & 0110 \\
+    1011 & 1110 & 1100 & 0111 & 1101 & 1011 & 1111 & 0101 & 0110 & 1000 & 1010 & 1001 & 0011 & 0100 & 0010 & 0000 & 0001 \\
+    1100 & 1001 & 0000 & 0010 & 1101 & 0100 & 0001 & 1111 & 1000 & 1011 & 1100 & 1110 & 1010 & 0101 & 0011 & 0110 & 0111 \\
+    1101 & 1001 & 0100 & 1101 & 1010 & 0001 & 1000 & 0110 & 0010 & 1110 & 1111 & 1011 & 1100 & 0111 & 0011 & 0000 & 0101 \\
+    1110 & 1011 & 0111 & 0101 & 1101 & 1010 & 0001 & 0100 & 1000 & 1001 & 1110 & 1111 & 1100 & 0011 & 0010 & 0110 & 0000 \\
+    1111 & 1010 & 1101 & 1110 & 1001 & 0001 & 0100 & 0010 & 0110 & 1100 & 1000 & 0000 & 0101 & 1111 & 1011 & 0011 & 0111
+  \end{tabular}
+
+  \question Betriebsmodi von Blockchiffren. Gegeben ist das 4 -Block-Kryptosystem $B=(\{0,1\}^4,\{0,1\}^4,\{0,1\}^4,e,d)$, wobei $e$ der oben stehenden Tabelle ,,Verschlüsselungsfunktion e'' entnommen werden kann.
+  \begin{parts}
+    \part Zeichne die Schaltbilder, sodass Sie die Verschlüsselung des Klartextes $x=0101\ 0110\ 0101$ mit dem Schlüssel $k= 1101$ in dem Kryptoschema darstellen, das zu $B$ in der jeweiligen Betriebsart gehört.
+    \begin{subparts}
+      \subpart Benutze die ECB-Betriebsart (Electronic Code Book)!
+      \begin{solution}
+      \end{solution}
+
+      \subpart Benutze die CBC-Betriebsart (Cipher Block Chaining)! Gehe davon aus, dass $v=1010$ als Initialisierungsvektor Teil des Schlüssels ist.
+      \begin{solution}
+      \end{solution}
+
+      \subpart Benutze die R-CBC-Betriebsart (Randomized Cipher Block Chaining)! Gehe davon aus, dass $y_{-1}=0101$ als Initialisierungsvektor zufällig gewählt wurde.
+      \begin{solution}
+      \end{solution}
+
+      \subpart Benutze die OFB-Betriebsart (Output FeedBack)! Gehe davon aus, dass $y_{-1}=0101$ als Initialisierungsvektor zufällig gewählt wurde.
+      \begin{solution}
+      \end{solution}
+
+      \subpart Benutze die R-CTR-Betriebsart (Randomized CounTeR)! Gehe davon aus, dass der Zähler zufällig mit dem Wert $r=0101$ initialisiert wurde.
+      \begin{solution}
+      \end{solution}
+    \end{subparts}
+
+    \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{ECB-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
+    \begin{solution}
+    \end{solution}
+
+    \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{CBC-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
+    \begin{solution}
+    \end{solution}
+
+  \end{parts}
+
+  \question Zahlentheoretische Algorithmen
+  \begin{parts}
+    \part Auf Eingabe $x,y\in\mathbb{N}$ liefert der Euklidische Algorithmus eine ganze Zahlen $d$ mit ...
+    \begin{solution}
+    \end{solution}
+
+    \part Auf Eingabe $x,y\in\mathbb{N}$ liefert der erweiterte Euklidische Algorithmus (EEA) drei ganze Zahlen $d,s,t$. Welche Eigenschaften erfüllen diese?
+    \begin{solution}
+    \end{solution}
+
+    \part Für $x=15$ und $y=9$ liefert der EEA die Zahlen $d$=... ,$s$=... ,$t$=...
+    \begin{solution}
+    \end{solution}
+
+    \part Wenn er auf zwei Zahlen mit je $n$ Bits angewendet wird, führt der erweiterte Euklidische Algorithmus $O(...)$ Bitoperationen aus.
+    \begin{solution}
+    \end{solution}
+
+    \part Seien $a$ und $N$ teilerfremde natürliche Zahlen. Wie kann man eine ganze Zahl $b$ ermitteln, die die Gleichung $a*b\ mod\ N= 1$ erfüllt?
+    \begin{solution}
+    \end{solution}
+
+    \part Ergänze den Algorithmenrumpf der Funktion $modexp(x,y,N)$ zur rekursiven Berechnung von $x^y\ mod\ n$ mithilfe der schnellen modularen Exponentiation:
+    Funktion modexp(x,y,N)
+    if y=0 then ...
+    if y=1 then ...
+    z$\leftarrow$ ...   // rekursiver Aufruf
+    if ... then z$\leftarrow$ ...
+    return z
+
+    Dieser Algorithmus führt $O(...)$ modulare Multiplikationen aus.
+    \begin{solution}
+    \end{solution}
+
+    \part Für $m\geq 2$ ist die Menge $\mathbb{Z}^*_m$ definiert durch $\mathbb{Z}^*_m:=...$.
+    $\mathbb{Z}^*_m$ mit der ... als Operation ist eine ... Gruppe.
+    $\varphi(m):=...$. Drücke $\varphi(m)$ als Funktion von $m$ und seinen Primfaktoren aus:
+    $\varphi(m)=... *\prod_{...} ...$.
+
+    Gebe die folgenden Werte an:
+    $\varphi(2)=...$, $\varphi(3)=...$, $\varphi(4)=...$, $\varphi(5)=...$, $\varphi(8)=...$, $\varphi(10)=...$, $\varphi(12)=...$, $\varphi(55)=...$, $\varphi(64)=...$.
+    \begin{solution}
+    \end{solution}
+
+    \part Vervollständige den Chinesischen Restsatz:
+    Wenn $m$ und $n$ ... Zahlen sind, dann ist die Abbildung $\Phi:...\rightarrow..., x\rightarrow ...,...$.
+    \begin{solution}
+    \end{solution}
+
+    \part Vervollständige den kleinen Satz von Fermat:
+    Wenn $p$ ... ist und $a$ in ... liegt, dann gilt: ...
+    \begin{solution}
+    \end{solution}
+
+    \part  Vervollständige den Satz von Euler:
+    Für $m\geq 2$ und $x$ mit ... gilt ... .
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Primzahltests und Primzahlerzeugung
+  \begin{parts}
+    \part Definiere den Begriff ,,$a$ ist ein F-Lügner'' (für $N$): $N$ ist ... und es gilt ... .
+    \begin{solution}
+    \end{solution}
+
+    \part Definiere: $N$ heißt Carmichael-Zahl, wenn ...
+    \begin{solution}
+    \end{solution}
+
+    \part Formuliere den Fermat-Test für eine gegebene ungerade Zahl $N\geq 5$: Wähle... und berechne $c=...$. Wenn $c=...$ ist, ist die Ausgabe ...., sonst ist sie ... .
+    \begin{solution}
+    \end{solution}
+
+    \part Definiere: $b\in\{1,...,N-1\}$ heißt nichttriviale Quadratwurzel der 1 modulo $N$, wenn...
+    \begin{solution}
+    \end{solution}
+
+    \part Wenn man eine nichttriviale Quadratwurzel $b$ der 1 modulo $N$ gefunden hat, weiß man sicher, dass $N$.... ist.
+    \begin{solution}
+    \end{solution}
+
+    \part Definiere den Begriff $\{$ qqa ist ein MR-Lügner$\}$ (für $N$):
+    Suche ungerades $u$ und $k\geq 1$ mit...=... .
+    Bilde die Folge $b_0=...,b_1=...,...,b_k=...$.
+    $a$ heißt dann ein MR-Lügner (für $N$), falls ...
+    \begin{solution}
+    \end{solution}
+
+    \part Ergänze den Algorithmus von Miller/Rabin (Eingabe $N\geq 5$):
+    Funktion Miller-Rabin-Primzahltest(N)
+    Bestimme ... $u$ und $k\geq 1$ so, dass ...
+    Wähle ...
+    $b\leftarrow$...
+    if $b\in\{... \}$ then ...
+    for j from 1 to $k-1$ do
+    $b\leftarrow$ ...
+    if $b=... $ then ...
+    if $b=... $ then ...
+    return
+    \begin{solution}
+    \end{solution}
+
+    \part Was kann man über das Ein-/Ausgabeverhalten des Miller-Rabin-Algorithmus auf Eingabe $N\geq 5$ (ungerade) sagen?
+    $N$ zusammengesetzt $\Rightarrow$ ...,
+    $N$ Primzahl $\Rightarrow$...
+    \begin{solution}
+    \end{solution}
+
+    \part Wie kann man vorgehen, um aus dem Miller-Rabin-Test einen Primzahltest zu erhalten, dessen Fehlerwahrscheinlichkeit höchstens $1/4^l$ beträgt?
+    \begin{solution}
+    \end{solution}
+
+    \part Formuliere den Primzahlsatz:
+    \begin{solution}
+    \end{solution}
+
+    \part Nach der Ungleichung von Finsler gibt es $\Omega(...)$ Primzahlen im Intervall $[m, 2m)$. Entsprechend muss man für $\mu\in\mathbb{N}$ erwartet nur $O(...)$ Zahlen zufällig aus $[2^{\mu-1}, 2^{\mu})$ ziehen, um mindestens eine $\mu$-Bit Primzahl zu erhalten.
+    \begin{solution}
+    \end{solution}
+
+    \part Zu gegebenem $\mu$ soll eine (zufällige) Primzahl im Intervall $[2^{\mu-1}, 2^{\mu})$ gefunden werden. Wie geht man
+    vor?
+    wiederhole: ...
+    bis Ergebnis ... erscheint.
+    Wie lässt sich die erwartete Anzahl von Bitoperationen für das Finden einer solchen Primzahl abschätzen? $O(...)$.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Das RSA-System
+  \begin{parts}
+    \part Schlüsselerzeugung: Wähle .... und berechne $N=...$ sowie $\varphi(N)=...$. Der öffentliche Schlüssel von Bob ist $(N,e)$, wobei $e$ die Bedingung ... erfüllt. Der geheime Schlüssel von Bob ist $(N,d)$, mit ... . $d$ lässt sich mit folgendem Algorithmus berechnen: ...
+    \begin{solution}
+    \end{solution}
+
+    \part Verschlüsseln von $x\in ... :y=... $.
+    \begin{solution}
+    \end{solution}
+
+    \part Entschlüsseln von $y\in ... :z=... $.
+    \begin{solution}
+    \end{solution}
+
+    \part Formuliere die zentrale Korrektheitsaussage des RSA-Systems: ...=$x$, für alle zulässigen Klartextblöcke $x$.
+    \begin{solution}
+    \end{solution}
+
+    \part Beschreibe eine Strategie für RSA-basierte Systeme, mit der verhindert werden kann, dass zwei identische Klartextblöcke bei Verwendung desselben Schlüsselpaars gleich verschlüsselt werden.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Das Rabin-Kryptosystem
+  \begin{parts}
+    \part Komponenten des Rabin-Kryptosystems: Zwei große Primzahlen $p$ und $q$ mit ... . Der öffentliche Schlüssel ist $N=$\dots, der private Schlüssel von Bob ist ... .
+    \begin{solution}
+    \end{solution}
+
+    \part Verschlüsselung: Alice möchte einen Block $x\in$\dots an Bob schicken. Sie berechnet $y=$\dots und sendet $y$ an Bob.
+    \begin{solution}
+    \end{solution}
+
+    \part Entschlüsselung: Wenn Bob das Chiffrat $y$ erhält, berechnet er $z_1,...z_4$. Wie hängen diese Zahlen mit $y$ zusammen? ...
+    Mit welchen Formeln und welcher Methode berechnet Bob diese vier Zahlen?
+    modulo $p$:...
+    modulo $q$:\dots
+    Kombination der Teilergebnisse, um (zum Beispiel) $z_1$ zu erhalten: ...
+    Was ist der maximale Rechenaufwand? $O(...)$ Bitoperationen.
+    \begin{solution}
+    \end{solution}
+
+    \part Formuliere die zentrale Sicherheitsaussage des Rabin-Kryptosystems: ...
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Diskreter Logarithmus und das ElGamal-Kryptosystem
+
+  Gegeben sei eine zyklische Gruppe $(G,\circ,e)$ der Ordnung (Kardinalität) $N$ mit erzeugendem Element $g$.
+  \begin{parts}
+    \part Definiere die Exponentiation mit Basis $g$ und den Logarithmus zur Basis $g$ jeweils mit Definitions- und Wertebereich.
+    $exp_g$:... $\rightarrow$..., ...$\rightarrow$...
+    $log_g$:... $\rightarrow$..., ...$\rightarrow$...
+    Für die Berechnung der Exponentiation werden $O(...)$ Gruppenoperationen benötigt.
+    \begin{solution}
+    \end{solution}
+
+    \part Um die Schlüssel festzulegen, wählt Bob zufällig eine geheime Zahl $b\in...$. Der öffentliche Schlüssel ist ... mit $B=$...
+    \begin{solution}
+    \end{solution}
+
+    \part Verschlüsselung von Klartextblock $x\in$... mit öffentlichem Schlüssel: ...
+    \begin{solution}
+    \end{solution}
+
+    \part Entschlüsselung von Chiffretext $... \in ... $ mithilfe von $b$: ...
+    \begin{solution}
+    \end{solution}
+
+    \part Gebe das Diffie-Hellman-Problem (DH-Problem) an:
+    Zu Input, ..., ... finde ... .
+    \begin{solution}
+    \end{solution}
+
+    \part Zur Sicherheit des ElGamal-Kryptosystems lässt sich feststellen: Eve kann alle bzgl. $G$ und $g$ verschlüsselten Nachrichten effizient entschlüsseln genau dann wenn ...
+    \begin{solution}
+    \end{solution}
+
+    \part Wieso verwendet man in der Praxis lieber Systeme, die auf elliptischen Kurven basieren, als solche, die auf diskreten Logarithmen beruhen?
+    \begin{solution}
+    \end{solution}
   \end{parts}
 
 \end{questions}

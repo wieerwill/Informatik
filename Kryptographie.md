@@ -62,6 +62,8 @@
     - [Das ElGamal-Kryptosystem](#das-elgamal-kryptosystem)
     - [Berechnung diskreter Logarithmen](#berechnung-diskreter-logarithmen)
     - [Elliptische Kurvenuber endlichen Körpern](#elliptische-kurvenuber-endlichen-körpern)
+- [Anhang: Beweis von Satz 3.8](#anhang-beweis-von-satz-38)
+  - [Beweise und Bemerkungen zu Kapitel 4](#beweise-und-bemerkungen-zu-kapitel-4-1)
      
 Literaturempfehlung:
 - Ralf Küsters und Thomas Wilke: Moderne Kryptographie,Vieweg+ Teubner 2011
@@ -84,7 +86,7 @@ Simples Schema für dieses Problem (Aktion schreitet von links nach rechts fort,
 | Sender         | Verschlüsselung                           | Chiffretext y                                                         | Entschlüsselung                                                  | Empfänger                |
 | Alice          | (Chiffrierung, authentisieren, signieren) | über                                                                  | (Dechiffrierung, Absenderdentität prüfen, Unversehrtheit prüfen) | Bob                      |
 | hat Klartext x |                                           | unsicheren Kanal                                                      |                                                                  | rekonstruiert Klartext x |
-|                | Schlüssel k                               |                                                                       | Schlüssel k′                                                     |
+|                | Schlüssel k                               |                                                                       | Schlüssel k'                                                     |
 |                |                                           | Gegnerin Eva (enemy, eavesdropper, Kryptoanalytiker/in, Angreifer/in) |                                                                  |                          |
 
 ,,Alice''  ist dabei ein eingebürgerter Name für die sendende Instanz, ,,Bob'' der für die empfangende Instanz. Dabei kann es sich um Personen, Organisationen oder auch Computer(systeme) o. ä. handeln. Der Verschlüsselungsbereich von Alice (links von der zweiten senkrechten Linie) ist gegen Zugriffe von Eva geschützt, ebenso der Entschlüsselungsbereich von Bob(rechts von der dritten senkrechten Linie).
@@ -106,7 +108,7 @@ Im Kontext der modernen elektronischen Kommunikation ergeben sich neben der Konz
 - Nichtabstreitbarkeit (Bob kann gegenüber Dritten beweisen,dass die Nachricht in der empfangenen Form vom behaupteten Absender Alice kam)
 - ...
 
-Integrität bzw. Authentisierung: Hier ist die Aufgabenstellung verändert. Eva hat nicht nur die Fähigkeit, Nachrichten passiv mitzulesen, sondern sie kann in den Kommunikationskanal eingreifen. Sie kann Nachrichten abfangen(und sogar die Weiterleitungverhindern) und/oder eine neue bzw. veränderte Nachricht in den Kanal einspeisen. Ihre Absicht ist es,Bob dazu zu bringen, diese Nachricht für die echte von Alice abgeschickte Nachricht zu halten.Diese Art von Angriff soll verhindert werden. Hierfür verwendet man einen Mechanismus,der message authentication code (MAC) heißt. Darunter kann man sich eine Funktion vorstellen, die aus einer Nachricht x einen(nicht allzu langen) Code $mac=MAC(x)$ berechnet. Diese Funktion ist ein Geheimnis von legitimen Sendern von Nachrichten an Bob. Insbesondere kann Eva bei gegebener Nachricht x′ (verwandt zu x oder nicht) keinen korrekten MAC für x′ berechnen. Bob verfügt über ein Prüfverfahren, das es ihm erlaubt, ein empfangenes Paar $(x,mac)$ darauf zu testen, ob der zweite Teil der zu x gehörende MAC-Wert ist. Wenn Alice die einzige Instanz ist,die die geheime Funktion MAC kennt, dann kann Bob sogar überprüfen, ob Alice tatsächlich die Absenderin ist.
+Integrität bzw. Authentisierung: Hier ist die Aufgabenstellung verändert. Eva hat nicht nur die Fähigkeit, Nachrichten passiv mitzulesen, sondern sie kann in den Kommunikationskanal eingreifen. Sie kann Nachrichten abfangen(und sogar die Weiterleitungverhindern) und/oder eine neue bzw. veränderte Nachricht in den Kanal einspeisen. Ihre Absicht ist es,Bob dazu zu bringen, diese Nachricht für die echte von Alice abgeschickte Nachricht zu halten.Diese Art von Angriff soll verhindert werden. Hierfür verwendet man einen Mechanismus,der message authentication code (MAC) heißt. Darunter kann man sich eine Funktion vorstellen, die aus einer Nachricht x einen(nicht allzu langen) Code $mac=MAC(x)$ berechnet. Diese Funktion ist ein Geheimnis von legitimen Sendern von Nachrichten an Bob. Insbesondere kann Eva bei gegebener Nachricht x' (verwandt zu x oder nicht) keinen korrekten MAC für x' berechnen. Bob verfügt über ein Prüfverfahren, das es ihm erlaubt, ein empfangenes Paar $(x,mac)$ darauf zu testen, ob der zweite Teil der zu x gehörende MAC-Wert ist. Wenn Alice die einzige Instanz ist,die die geheime Funktion MAC kennt, dann kann Bob sogar überprüfen, ob Alice tatsächlich die Absenderin ist.
 
 Beispiel 3:
 - Alice = Bankkundin,
@@ -191,9 +193,9 @@ Beispiel: Schlüssel ist $k=ARCVS$ (für arcus, Bogen). Buchstaben an Positionen
 | Chiffretext:              | S X P V P V N T M H A G A Q |
 
 Ab hier betrachten wir meist nur Verfahren, die Schlüssel verwenden. Bei kryptographischen Verfahren mit Schlüsseln betrachten wir zwei grundsätzlich unterschiedliche Ansätze:
-- Symmetrische(Private-Key)-Kryptographie: Es gibt einen geheimen Schlüssel $k$, den beide der kommunizierenden Parteien kennen müssen. Bei Konzelationssystemen bedeutet dies etwa, dass das Verschlüsselungsverfahren und das Entschlüsselungsverfahren beide diesen Schlüssel $k=k′$ benutzen. Symmetrische Verfahren sind unser erstes Thema. Ein aktuelles standardisiertes symmetrisches Verfahren ist etwa AES
+- Symmetrische(Private-Key)-Kryptographie: Es gibt einen geheimen Schlüssel $k$, den beide der kommunizierenden Parteien kennen müssen. Bei Konzelationssystemen bedeutet dies etwa, dass das Verschlüsselungsverfahren und das Entschlüsselungsverfahren beide diesen Schlüssel $k=k'$ benutzen. Symmetrische Verfahren sind unser erstes Thema. Ein aktuelles standardisiertes symmetrisches Verfahren ist etwa AES
  (AdvancedEncryptionStandard).
-- Asymmetrische (Public-Key-) Kryptographie: Nur eine Seite hat einen geheimen Schlüssel $k′$, die andere Seite benutzt einen ,,öffentlichen'' Schlüssel $k\not =k′$. Beispiel: Bei  Konzelationssystemen hat der Empfänger (Bob) einen geheimen Schlüssel $k′$, der Sender (Alice) benutzt zur Verschlüsselung einen von Bob ausgegebenen öffentlichen Schlüssel $k\not =k′$. (Bei Authentisierung oder bei digitalen Signaturen ist es umgekehrt.) Asymmetrische Verfahren sind unser zweites Thema. Ein weit verbreitetes asymmetrisches Verfahren ist RSA (nach den Erfindern Rivest, Shamir und Adleman).
+- Asymmetrische (Public-Key-) Kryptographie: Nur eine Seite hat einen geheimen Schlüssel $k'$, die andere Seite benutzt einen ,,öffentlichen'' Schlüssel $k\not =k'$. Beispiel: Bei  Konzelationssystemen hat der Empfänger (Bob) einen geheimen Schlüssel $k'$, der Sender (Alice) benutzt zur Verschlüsselung einen von Bob ausgegebenen öffentlichen Schlüssel $k\not =k'$. (Bei Authentisierung oder bei digitalen Signaturen ist es umgekehrt.) Asymmetrische Verfahren sind unser zweites Thema. Ein weit verbreitetes asymmetrisches Verfahren ist RSA (nach den Erfindern Rivest, Shamir und Adleman).
 
 Das Kerckhoffs-Prinzip (1883, Auguste Kerckhoffs von Nieuwenhof(1835, 1903), niederländischer Linguist und Kryptologe) besagt,dass man davon ausgehen muss, dass Eva die Struktur des Verschlüsselungsverfahrens kennt und die Sicherheit nur von der Geheimhaltung des Schlüssels abhängen darf.
 
@@ -264,7 +266,7 @@ so dass Folgendes gilt:
 
 Bemerkung: Surjektivität kann immer hergestellt werden, indem man $Y$ auf das Bild $Bi(e) =e(X\times K)$ einschränkt. Die Forderung ist für unsere Analysen aber bequem.
 
-Für festes $k\in K$ wird die Funktione $(.,k):X\rightarrow Y,x \rightarrow e(x,k)$ als Chiffre bezeichnet.
+Für festes $k\in K$ wird die Funktion $e(.,k):X\rightarrow Y,x \rightarrow e(x,k)$ als Chiffre bezeichnet.
 
 **Beispiel 1.2** Sei $n>0, X=\{a_i,b_i| 1\leq i\leq n\},K=\{k_0,k_1\},Y=\{A_i,B_i| 1\leq i\leq n\}$. Die Funktionen $e$ und $d$ sind als Tabellen gegeben:
 
@@ -459,7 +461,7 @@ Sind $X_i:\Omega\rightarrow R_i$ Zufallsvariable und $S_i\subseteq R_i$, für $i
 
 
 ## Informationstheoretische Sicherheit
-Man erinnere sich an Beispiel 1.12. Eine naheliegende Annahme ist, dass jeder Klartextbuchstabe mit Wahrscheinlichkeit $\frac{1}{2}$ und jeder Schlüssel mit Wahrscheinlichkeit $\frac{1}{3}$ auftritt, und zwar unabhängig voneinander. Dann ist $Pr$(Klartext x ist a $\wedge$ Chiffretext y ist A)$=\frac{1}{3}$, Pr(Chiffretext y ist A)$=\frac{1}{2}$, also Pr(Klartext x ist a | Chiffretext y ist A)$=\frac{2}{3}\not=\frac{1}{2}=$Pr(Klartext x ist a). Wenn Eva also A beobachtet,ändert sich ihre Ansicht über die Verteilung auf den Klartextbuchstaben.
+Man erinnere sich an Beispiel 1.12. Eine naheliegende Annahme ist, dass jeder Klartextbuchstabe mit Wahrscheinlichkeit $\frac{1}{2}$ und jeder Schlüssel mit Wahrscheinlichkeit $\frac{1}{3}$ auftritt, und zwar unabhängig voneinander. Dann ist $Pr$(Klartext x ist a $\wedge$ Chiffretext y ist A)$=\frac{1}{3}$, Pr(Chiffretext y ist A)$=\frac{1}{2}$, also Pr(Klartext x ist a | Chiffretext y ist A)$=\frac{2}{3}\not=\frac{1}{2}=$Pr(Klartext x ist a). Wenn Eva also A beobachtet, ändert sich ihre Ansicht über die Verteilung auf den Klartextbuchstaben.
 
 Für das Konzept der informationstheoretischen Sicherheit nehmen wir an, dass Klartexte mit bestimmten Wahrscheinlichkeiten auftreten. Was diese Wahrscheinlichkeiten sind, kann der Anwender normalerweise nicht kontrollieren. Die konsequente Anwendung des Kerckhoffs-Prinzips besagt aber, dass man annehmen muss, dass Eva die relevante Wahrscheinlichkeitsverteilung auf X kennt. (Zum Beispiel würde sie wissen, dass $Pr^X(x_0)=\frac{1}{2}$ ist, für ein bestimmtes $x_0\in X$.) Nun betrachten wir ein Kryptosystem $S=(X,K,Y,e,d). Wir nehmen an, dass Alice und Bob ihren gemeinsamen Schlüssel k durch ein Zufallsexperiment wählen. Hierzu gehört ein zweiter Wahrscheinlichkeitsraum $(K,Pr_K)$. Es ist sinnvoll anzunehmen, dass $Pr_X$ und $Pr_K$ nichts miteinander zu tun haben. Es wird verschlüsselt und Chiffretext y wird gesendet. Dieser wird von Eva beobachtet. Wenn sich dadurch die Meinung von Eva über die Wahrscheinlichkeiten der verschiedenen Klartexte von der ursprünglichen Verteilung unterscheidet (etwa jetzt: ,,mit 90%iger Wahrscheinlichkeit ist es Klartext $x_0$''), hat Eva aus der Beobachtung von y eine gewisse Information erhalten.
 
@@ -474,7 +476,7 @@ Man beachte, dass die Verteilung $Pr_K$ ,,Teil des Kryptosystems'' ist, also der
 - Achtung: Die Definition verlangt $Pr_K(k)\in (0,1]$, also $Pr_K(k)> 0$ für alle $k\in K$. (Hat man Schlüssel mit Wahrscheinlichkeit 0, kann man sie aus K einfach weg lassen.)
 
 Sei weiter $Pr_X:X\rightarrow [0,1]$ eine Wahrscheinlichkeitsfunktion auf der Menge der Klartexte. Das heißt: $\sum_{x\in X}Pr_X(x)=1$. Diese Wahrscheinlichkeitsfunktion definiert natürlich eine W-Verteilung auf X, die wir wieder $Pr_X$ nennen. (Achtung: Es kann Klartextexte mit $Pr(x)=0$ geben. Solche Klartexte heißen passiv, die anderen, mit $Pr_X(x)>0$, aktiv.) Wir definieren die gemeinsame Wahrscheinlichkeitsfunktion $Pr:X\times K\rightarrow [0,1]$ durch $Pr((x,k)):=Pr_X(x)*Pr_K(k)$.
-Dies definiert einen Wahrscheinlichkeitsraum auf $X\times K$, für den $Pr(X′\times K′)=Pr_X(X′)*Pr_K(K′)$, für alle $X′\subseteq X,K′\subseteq K$ gilt. Durch diese Definition wird die Annahme modelliert, dass der Schlüssel k unabhängig vom Klartext durch ein von $Pr_K$ gesteuertes Zufallsexperiment gewählt wird.
+Dies definiert einen Wahrscheinlichkeitsraum auf $X\times K$, für den $Pr(X'\times K')=Pr_X(X')*Pr_K(K')$, für alle $X'\subseteq X,K'\subseteq K$ gilt. Durch diese Definition wird die Annahme modelliert, dass der Schlüssel k unabhängig vom Klartext durch ein von $Pr_K$ gesteuertes Zufallsexperiment gewählt wird.
 
 **Beispiel 1.20** Sei $X=\{a,b,c\},K=\{0,1,2,3\},Y=\{A,B,C\}$ und die Verschlüsselungsfunktion sei durch die folgende Tabelle gegeben:
 | e                 | a(0,4) | b(0) | c(0,6) |
@@ -518,7 +520,7 @@ Bemerkungen: Hinter Definition 1. steckt die folgende Vorstellung: Eva kennt (im
 Man beachte, dass in der Definition der informationstheoretischen Sicherheit die Fähigkeiten von Eva überhaupt nicht eingeschränkt werden. Auf welche Weise sie eventuell ermittelt, dass sich Wahrscheinlichkeiten geändert haben, wird gar nicht diskutiert. (Eva könnte zum Beispiel für jedes $y\in Y$ eine Tabelle haben, in der die Wahrscheinlichkeiten $Pr(x|y)$ für alle $x\in X$ aufgelistet sind. Oder sie fängt beim Vorliegen von $y$ an, eine solche Tabelle zu berechnen. Beides ist natürlich für nicht ganz kleine X und Y völlig unrealistisch.)
 
 **Beispiel 1.22**
-| e                  | a($\frac{1}{4}$) | b(\frac{3}{4}$ ) |
+| e                  | a($\frac{1}{4}$) | b($\frac{3}{4}$) |
 | ------------------ | ---------------- | ---------------- |
 | $k_0(\frac{1}{3})$ | A                | B                |
 | $k_1(\frac{2}{3})$ | B                | A                |
@@ -560,7 +562,7 @@ Beweis:
     1. Für jedes $x\in X$ ist die Abbildung $K\ni k \rightarrow e(x,k)\in Y$  bijektiv. (Dass diese Abbildung surjektiv ist, ist eine Umformulierung der possibilistischen Sicherheit, die nach 1. gegeben ist. Aus Surjektivität folgt Bijektivität, wegen $|K|=|Y|$.)
     2. Für jedes $k\in K$ ist die Abbildung $X\ni x \rightarrow e(x,k)\in Y$ bijektiv. (Dass die Abbildung injektiv ist, folgt aus der Dechiffrierbedingung. Aus Injektivität folgt Bijektivität, wegen $|X|=|Y|$.)
 
-Nun seien $k_1,k_2\in K$ beliebig. Unser Ziel ist zu zeigen, dass $Pr(k_1)=Pr(k_2)$ gilt. (Dann ist gezeigt,dass $Pr_K$ die uniforme Verteilung ist.) Wähle $x\in X$ beliebig und setze $y:=e(x,k_1)$. Beachte, dass es wegen 1. keinen Schlüssel $k\not=k_1$ mit $y=e(x,k)$ gibt. Wegen 2. gibt es ein $x′\in X$ mit $e(x′,k_2)=y$. Auch hier gibt es kein $k′\not=k_2$ mit $e(x′,k′)=y$. Es gilt also: $Pr(x)Pr(k_1)=\sum_{k\in K:e(x,k)=y} Pr(x)Pr(k) = Pr(x,y) = Pr(x|y)Pr(y) =^* Pr(x)Pr(y)$, und daher $Pr(k_1)=Pr(y)$, wegen $Pr(x)>0$. (* gilt, weil $V$ informationstheoretisch sicher ist.) Analog gilt $Pr(x′)Pr(k_2)=Pr(x′)Pr(y)$, und daher $Pr(k_2)=Pr(y)$. Es folgt $Pr(k_1)=Pr(k_2)$, wie gewünscht.
+Nun seien $k_1,k_2\in K$ beliebig. Unser Ziel ist zu zeigen, dass $Pr(k_1)=Pr(k_2)$ gilt. (Dann ist gezeigt,dass $Pr_K$ die uniforme Verteilung ist.) Wähle $x\in X$ beliebig und setze $y:=e(x,k_1)$. Beachte, dass es wegen 1. keinen Schlüssel $k\not=k_1$ mit $y=e(x,k)$ gibt. Wegen 2. gibt es ein $x'\in X$ mit $e(x',k_2)=y$. Auch hier gibt es kein $k'\not=k_2$ mit $e(x',k')=y$. Es gilt also: $Pr(x)Pr(k_1)=\sum_{k\in K:e(x,k)=y} Pr(x)Pr(k) = Pr(x,y) = Pr(x|y)Pr(y) =^* Pr(x)Pr(y)$, und daher $Pr(k_1)=Pr(y)$, wegen $Pr(x)>0$. (* gilt, weil $V$ informationstheoretisch sicher ist.) Analog gilt $Pr(x')Pr(k_2)=Pr(x')Pr(y)$, und daher $Pr(k_2)=Pr(y)$. Es folgt $Pr(k_1)=Pr(k_2)$, wie gewünscht.
 Teil 2. dieses Lemmas hat eine Umkehrung.
 
 Lemma 1.27 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV mit $|X|=|Y|=|K|$. Wenn $S=(X,K,Y,e,d)$ possibilistisch sicher ist und $Pr_K$ die Gleichverteilung ist, dann ist $V$ informationstheoretisch sicher.
@@ -596,30 +598,30 @@ Nun betrachten wir allgemeinere Situationen, und fragen auch nach informationsth
 Technisch hilfreich sind die folgenden Größen, die nur von der Verschlüsselungsfunktion und der Schlüsselverteilung abhängen (nicht von irgendeiner Klartextverteilung): $P^x(y):=\sum_{k\in K, e(x,k)=y} Pr(k)$, für $x\in X,y\in Y$ (1.1). 
 Man beobachtet sofort die folgenden Gleichungen, die aus der Unabhängigkeit der Verteilungen $Pr_X$ und $Pr_K$ folgen:
 - Für alle $x\in X:Pr(x,y) = Pr(x)*P^x(y)$. (1.2)
-- Wenn $Pr(x)> 0$:$Pr(y|x) = \frac{Pr(x,y)}{Pr(x)}=P^x(y)$. (1.3)ümgekehrt wie bei der Definition der informationstheoretischen Sicherheit stellt man sich hier vor, dass ein Klartext x gegeben ist und man fragt nach der resultierenden Verteilung auf den Chiffretexten.
+- Wenn $Pr(x)> 0$:$Pr(y|x) = \frac{Pr(x,y)}{Pr(x)}=P^x(y)$. (1.3) umgekehrt wie bei der Definition der informationstheoretischen Sicherheit stellt man sich hier vor, dass ein Klartext x gegeben ist und man fragt nach der resultierenden Verteilung auf den Chiffretexten.
 Das nächste Lemma besagt, dass man die Wahrscheinlichkeiten aktiver Klartexte beliebig ändern kann (auch auf 0, also sie weglassen), ohne dass eine bestehende informationstheoretische Sicherheit zerstört wird.
 
-Lemma 1.30 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und seien $Pr_X$ und $Pr′_X$ Klartextverteilungen mit $Pr′_X(x)>0\Rightarrow Pr_X(x)>0$. Dann gilt: Ist $V$ informationstheoretisch sicher bzgl. $Pr_X$, so ist V informationstheoretisch sicher bzgl. $Pr′_X$.
+Lemma 1.30 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und seien $Pr_X$ und $Pr'_X$ Klartextverteilungen mit $Pr'_X(x)>0\Rightarrow Pr_X(x)>0$. Dann gilt: Ist $V$ informationstheoretisch sicher bzgl. $Pr_X$, so ist V informationstheoretisch sicher bzgl. $Pr'_X$.
 
-Beweis: Sei $V$ informationstheoretisch sicher bzgl. $Pr_X$. Wir haben es jetzt mit zwei Wahrscheinlichkeitsräumen zu tun, einem zu $Pr_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr)$) und einem zu $Pr′_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr′)$).
+Beweis: Sei $V$ informationstheoretisch sicher bzgl. $Pr_X$. Wir haben es jetzt mit zwei Wahrscheinlichkeitsräumen zu tun, einem zu $Pr_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr)$) und einem zu $Pr'_X$ und $Pr_K$ (bezeichnet mit $(X\times K,Pr')$).
 Wir zeigen nacheinander vier Aussagen.
 1. $Pr_X(x)> 0 \Rightarrow P^x(y) = Pr(y|x) = Pr(y)$ für alle $y\in Y$. (Die Verteilungen $Pr^X(*)=Pr(*|x)$ auf den Chiffretexten sind für alle (Pr-)aktiven Klartexte x gleich und sind auch gleich der globalen Verteilung auf den Chiffretexten.) Beweis hierzu: Sei $Pr(x)>0$. Dann gilt $P^x(y)=Pr(y|x)$, siehe (1.3). Wenn $Pr(y)=0$ gilt, folgt auch $Pr(y|x)=0$. Sei also $Pr(y)>0$. Dann gilt: $Pr(y|x) =\frac{Pr(x,y)}{Pr(x)}=\frac{Pr(x|y)Pr(y)}{Pr(x)}=^* \frac{Pr(x)Pr(y)}{Pr(x)}= Pr(y)$. (* gilt, weil V informationstheoretisch sicher bzgl. $Pr_X$ ist.)
-2. $Pr′_X(x)> 0 \Rightarrow Pr′(y|x) = Pr(y)$ für alle $y\in Y$. Beweis hierzu: Aus $Pr′(x)>0$ folgt $Pr(x)>0$, nach Voraussetzung. Wir wenden (1.3) für $Pr′$ und für $Pr$ an und erhalten für alle $y\in Y$: $Pr′(y|x)=P^x(y)=Pr(y|x)=^a Pr(y)$.
-3. $Pr′(y)=Pr(y)$ für alle $y\in Y$. Beweis hierzu: Mit Lemma 1.15(a) (Formel von der totalen Wahrscheinlichkeit): $Pr′(y)=\sum_{x\in X: Pr′(x)> 0} Pr′(y|x)Pr′(x)=^b \sum_{x\in X: Pr′(x)> 0} Pr(y)Pr′(x) = Pr(y)$.
-4. $Pr′(x)=Pr′(x|y)$ für alle $x\in X,y\in Y$ mit $Pr′(y)>0$. (D.h.: V ist bzgl. $Pr′_X$ informationstheoretisch sicher.) Beweis hierzu: Wenn $Pr′(x)=0$ gilt, dann folgt $Pr′(x|y)=0=Pr′(x)$. Sei nun $Pr′(x)>0$. Dann: $Pr′(x|y)=\frac{Pr′(x,y)}{Pr′(y)}=\frac{Pr′(y|x)Pr′(x)}{Pr′(y)}=^{b,c} \frac{Pr(y)Pr′(x)}{Pr(y)} = Pr′(x)$.
+2. $Pr'_X(x)> 0 \Rightarrow Pr'(y|x) = Pr(y)$ für alle $y\in Y$. Beweis hierzu: Aus $Pr'(x)>0$ folgt $Pr(x)>0$, nach Voraussetzung. Wir wenden (1.3) für $Pr'$ und für $Pr$ an und erhalten für alle $y\in Y$: $Pr'(y|x)=P^x(y)=Pr(y|x)=^a Pr(y)$.
+3. $Pr'(y)=Pr(y)$ für alle $y\in Y$. Beweis hierzu: Mit Lemma 1.15(a) (Formel von der totalen Wahrscheinlichkeit): $Pr'(y)=\sum_{x\in X: Pr'(x)> 0} Pr'(y|x)Pr'(x)=^b \sum_{x\in X: Pr'(x)> 0} Pr(y)Pr'(x) = Pr(y)$.
+4. $Pr'(x)=Pr'(x|y)$ für alle $x\in X,y\in Y$ mit $Pr'(y)>0$. (D.h.: V ist bzgl. $Pr'_X$ informationstheoretisch sicher.) Beweis hierzu: Wenn $Pr'(x)=0$ gilt, dann folgt $Pr'(x|y)=0=Pr'(x)$. Sei nun $Pr'(x)>0$. Dann: $Pr'(x|y)=\frac{Pr'(x,y)}{Pr'(y)}=\frac{Pr'(y|x)Pr'(x)}{Pr'(y)}=^{b,c} \frac{Pr(y)Pr'(x)}{Pr(y)} = Pr'(x)$.
 
 Satz 1.31 Sei $V=(X,K,Y,e,d,Pr_K)$ KSV und sei $Pr_X$ eine Klartextverteilung. Dann sind äquivalent:
 1. V ist informationstheoretisch sicher für $Pr_X$.
 2. Für jedes $x\in X$ und jedes $y\in Y$ gilt: $Pr(x,y)=Pr(x)Pr(y)$ (das Eintreten von x und das Eintreten von y sind unabhängig).
 3. Für alle $x\in X$ mit $Pr(x)>0$ und alle $y\in Y$ gilt $Pr(y)=Pr(y|x)$ (andere Formulierung der Unabhängigkeit).
-4. Für alle $x,x′\in X$ mit $Pr(x),Pr(x′)>0$ und alle $y\in Y$ gilt $P^x(y)=P^{x′}(y)$.
+4. Für alle $x,x'\in X$ mit $Pr(x),Pr(x')>0$ und alle $y\in Y$ gilt $P^x(y)=P^{x'}(y)$.
 
 Bemerkung: Bedingung 1. fragt nach der Situation bei gegebenem Chiffretext y mit $Pr(y)>0$. Bedingung 2. ist die wahrscheinlichkeitstheoretisch klarste Charakterisierung von informationstheoretischer Sicherheit, ohne bedingte Wahrscheinlichkeiten zu verwenden. Bedingungen 3. und 4. machen deutlich, dass es nur auf das Verhalten des Kryptosystems (mit seiner Verteilung $Pr_K$) auf den aktiven Klartexten ankommt, nicht auf die Klartextverteilung. Sie sagen auch, worauf genau es ankommt: Für jeden beliebigen aktiven Buchstaben ist die von $e(x,*)$ und der Schlüsselverteilung erzeugte Verteilung auf den Chiffretexten gleich, und zwar gleich der absoluten Verteilung auf den Chiffretexten. Informationstheoretische Sicherheit von $V$ (also für alle Klartextverteilungen) heißt also, dass alle Funktionen $P^x:Y\rightarrow [0,1]$, für $x\in X$, gleich sind (weil man als $Pr_X$ eine Verteilung wählen kann, bei der alle Klartexte aktiv sind, zum Beispiel die Gleichverteilung).
 
 Beweis: 
 - ,,$1.\Rightarrow 2.$'': Wenn $Pr(y)=0$, gilt $Pr(x,y)=0=Pr(x)Pr(y)$. Sei jetzt $Pr(y)>0. Dann gilt $Pr(x,y)=Pr(y)Pr(x|y) = Pr(y)Pr(x)$, nach 1.
 - ,,2.\Rightarrow 3.'': Wegen 2. gilt $Pr(y)Pr(x)=Pr(x,y)$. Andererseits ist $Pr(y|x)Pr(x)=Pr(x,y)$, also folgt 3. durch Kürzen mit $Pr(x)>0$.
-- ,,3.\Rightarrow 4.'': Verwende (1.3) für $x$ und $x′$ und benutze 3.
+- ,,3.\Rightarrow 4.'': Verwende (1.3) für $x$ und $x'$ und benutze 3.
 - ,,4.\Rightarrow 1.'': (Dies ist natürlich der entscheidende und schwierigste Beweisschritt!) Nach Voraussetzung 4. gibt es für jedes $y\in Y$ ein $p_y$ mit $P^x(y)=p_y$ für alle aktiven $x\in X$. 
   - Nach Lemma 1.15.1 (Formel von der totalen Wahrscheinlichkeit) gilt dann für jedes y: $Pr(y)=\sum_{x\in X:Pr(x)>0} Pr(y|x)*Pr(x) = \sum_{x\in X: Pr(x)>0} P^x(y)*Pr(x) = \sum_{x\in X:Pr(x)>0} p_y*Pr(x) =p_y$.
   - Sei nun $y\in Y$ mit $Pr(y)>0$, und sei $x\in X$. Wenn $Pr(x)=0$ gilt, folgt auch $Pr(x|y)=0$. Wenn $x$ aktiv ist, dann gilt $Pr(x|y)=\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)Pr(x)}{p_y}=\frac{P^x(y)Pr(x)}{p_y}=Pr(x)$, wie gewünscht.
@@ -753,7 +755,7 @@ Den höchsten Organisationsstand erfuhr die Kryptologie in Venedig, wo sie in Fo
 ### Der Kasiski-Test
 Das bisher betrachtete Verfahren setzt voraus, dass die Schlüssellänge s bekannt ist. Ist die maximale Schlüssellänge S klein, dann kann man die Schlüssellängen 1 bis S einzeln durchprobieren. Ist S groß, möchte man die Suche nach der richtigen Schlüssellänge abkürzen. (Besonders vor dem Computerzeitalter, wo die Dechiffrierung per Hand durchgeführt werden musste, war eine solche Zeitersparnis wichtig.) Die Schlüssellänge kann oft durch den Kasiski-Test näherungsweise bestimmt werden. (Der Test ist benannt nach Friedrich Wilhelm Kasiski (1805, 1881), einem preußischen Infanteriemajor. Der Test wurde von ihm 1863 veröffentlicht. Er war aber bereits 1854 von Charles Babbage entwickelt, aber nicht veröffentlicht worden.)
 
-Die zentrale Idee des Tests ist die folgende einfache Beobachtung: Gleiche Klartextfragmente, die eventuell mehrfach vorkommen (z.B. das Wort ,,ein'') werden in gleiche Chiffretexte übersetzt, wenn sie unter dem gleichen Schlüsselfragment liegen. Genauer: Stimmt der Klartext im Abschnitt $i+s*l$ bis $j+s*(l+h)$ mit dem Klartext im Abschnitt von $i+s*l′$ bis $j+s*(l′+h)$ überein, so gilt dies auch für den Chiffretext $(1\geq i,j\geq s,l,l′,h\in\mathbb{N})$. 
+Die zentrale Idee des Tests ist die folgende einfache Beobachtung: Gleiche Klartextfragmente, die eventuell mehrfach vorkommen (z.B. das Wort ,,ein'') werden in gleiche Chiffretexte übersetzt, wenn sie unter dem gleichen Schlüsselfragment liegen. Genauer: Stimmt der Klartext im Abschnitt $i+s*l$ bis $j+s*(l+h)$ mit dem Klartext im Abschnitt von $i+s*l'$ bis $j+s*(l'+h)$ überein, so gilt dies auch für den Chiffretext $(1\geq i,j\geq s,l,l',h\in\mathbb{N})$. 
 Anders ausgedrückt: Kommt ein Teilwort im Klartext an zwei Positionen i und j und ist j-i ein Vielfaches von s, so werden die beiden Vorkommen des Wortes gleich verschlüsselt.
 
 Diese Beobachtung wird in die folgende Idee für einen Angriff umgemünzt: Für möglichst viele ,,lange'' Wörter, die im Chiffretext mehrfach auftreten, notiere die Abstände des Auftretens. (,,lang'' sollte wenigstens 3 sein.) Dann suche ein großes s, das viele dieser Abstände teilt (nicht unbedingt alle, denn einige Mehrfach vorkommen im Chiffretext könnten zufällig entstanden sein).
@@ -815,8 +817,8 @@ Effektive Verfahren der Schlüsselverlängerung (die aber keine informationstheo
 ### Koinzidenzindex und Friedman-Methode
 Wir betrachten noch eine andere interessante Methode zur Abschätzung der Schlüssellänge, die bei der Verwendung einer Vigenère-Chiffre oder anderen Substitutionschiffren mit fester Schlüssellänge s helfen können, diese zu ermitteln. Die Methode beruht darauf, dass die Buchstabenhäufigkeiten (zu einer gegebenen Sprache) fest stehen und sich bei der Verschlüsselung mit einer einfachen Substitutionschiffre nicht ändert. Ebenso ändert sich nicht die Wahrscheinlichkeit, bei der zufälligen Wahl eines Buchstabenpaars zwei identische Buchstaben zu erhalten. Die Methode stammt von William F. Friedman (1891, 1969), einem amerikanischen Kryptographen.
 
-Sei $x=x_0...x_{l-1}$ ein Klartext, sei $y=y_0...y_{l-1}$ der zugehörige Chiffretext, bei $s=1$ (an jeder Stelle derselbe Schlüssel). Seien $n_0,...,n_{25}$ die Anzahlen der Buchstaben $a,...,z$ in $x,n′_0,...,n′_25$ die in $y$. Wir wählen zufällig ein Paar von zwei Positionen in x (ohne ,,Zurücklegen''). Dafür gibt es $\binom{l}{2}$ Möglichkeiten. Genau $\binom{n_i}{2}$ viele davon führen dazu, dass man zweimal den Buchstaben Nummer i zieht, und $\sum_{0\geq i<26}\binom{n_i}{2}$ viele führen dazu, dass man an den beiden Positionen denselben Buchstaben sieht. Wir setzen $IC(x):=\frac{\sum_{0\geq i<26}\binom{n_i}{2}}{\binom{l}{2}}=\frac{\sum_{0\leq i<26}n_i(n_i-1)}{l(l-1)}$. 
-Diese Zahl nennt man den Koinzidenzindex von x. Sie ist die Wahrscheinlichkeit dafür, dass an den beiden zufällig gewählten Positionen der selbe Buchstabe steht. Weil die Verschlüsselung auf den Buchstaben eine Bijektion ist, also sich die vorkommenden Häufigkeiten durch die Verschlüsselung nicht ändern, gilt für $IC(y):=\frac{\sum_{0\geq i<26} n′_i(n′_i -1)}{l(l-1)}$ die Gleichung $IC(x)=IC(y)$.
+Sei $x=x_0...x_{l-1}$ ein Klartext, sei $y=y_0...y_{l-1}$ der zugehörige Chiffretext, bei $s=1$ (an jeder Stelle derselbe Schlüssel). Seien $n_0,...,n_{25}$ die Anzahlen der Buchstaben $a,...,z$ in $x,n'_0,...,n'_25$ die in $y$. Wir wählen zufällig ein Paar von zwei Positionen in x (ohne ,,Zurücklegen''). Dafür gibt es $\binom{l}{2}$ Möglichkeiten. Genau $\binom{n_i}{2}$ viele davon führen dazu, dass man zweimal den Buchstaben Nummer i zieht, und $\sum_{0\geq i<26}\binom{n_i}{2}$ viele führen dazu, dass man an den beiden Positionen denselben Buchstaben sieht. Wir setzen $IC(x):=\frac{\sum_{0\geq i<26}\binom{n_i}{2}}{\binom{l}{2}}=\frac{\sum_{0\leq i<26}n_i(n_i-1)}{l(l-1)}$. 
+Diese Zahl nennt man den Koinzidenzindex von x. Sie ist die Wahrscheinlichkeit dafür, dass an den beiden zufällig gewählten Positionen der selbe Buchstabe steht. Weil die Verschlüsselung auf den Buchstaben eine Bijektion ist, also sich die vorkommenden Häufigkeiten durch die Verschlüsselung nicht ändern, gilt für $IC(y):=\frac{\sum_{0\geq i<26} n'_i(n'_i -1)}{l(l-1)}$ die Gleichung $IC(x)=IC(y)$.
 Für lange Texte mit (sprachtypischer) Häufigkeitsverteilung der Buchstaben nähert sich $IC(x)$ einem bestimmten Wert an. Wenn $p_i$ die Häufigkeit von Buchstabe i in der verwendeten Sprache ist, wird für lange Texte x die Näherung $\frac{n_i}{l}\approx\frac{n_i-1}{l-1}\approx p_i$ gelten, also $IC(x)\approx \sum_{0\geq i<26} p^2_i$ sein. Die Summe $\sum_{0\geq i<26} p^2_i$ hat beispielsweise einen Wert von etwa $0,076$ für deutsche und $0,066$ für englische Texte. Wenn (in einer fiktiven Sprache) jeder Buchstabe dieselbe Wahrscheinlichkeit hat, ist $\sum_{0\geq i<26} p^2_i= 26*(\frac{1}{26})^2=\frac{1}{26}\approx 0,0385$; dies ist zugleich der minimal mögliche Wert.
 
 Für die Ermittlung eines Schätzwertes für die Schlüssellänge s gehen wir wie folgt vor. Wir nehmen an, die zugrunde liegende Sprache ist Deutsch. Wir berechnen zunächst $IC(y)$ für den Chiffretext y. Die unbekannte Schlüssellänge nennen wir s. Dann berechnen wir eine Näherung für $IC(y)$, auf eine zweite Weise. Dies wird uns eine (Näherungs-)Gleichung für s liefern.
@@ -829,7 +831,7 @@ Eine tatsächliche Durchführung des Verfahrens mit Chiffretexten wie im vorigen
 Beim ,,venezianischen'' Chiffretext EYRYC...UYR von oben ergibt sich:
 | $a_i$  | A   | B   | C   | D   | E   | F   | G   | H   | I   | J   | K   | L   | M   | N   | O   | P   | Q   | R   | S   | T   | U   | V   | W   | X   | Y   | Z   |
 | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| $n′_i$ | 8   | 12  | 13  | 2   | 18  | 25  | 7   | 19  | 20  | 14  | 8   | 15  | 16  | 7   | 12  | 8   | 3   | 15  | 25  | 10  | 19  | 41  | 13  | 11  | 19  | 8   |
+| $n'_i$ | 8   | 12  | 13  | 2   | 18  | 25  | 7   | 19  | 20  | 14  | 8   | 15  | 16  | 7   | 12  | 8   | 3   | 15  | 25  | 10  | 19  | 41  | 13  | 11  | 19  | 8   |
 
 Dies liefert $IC(y)\approx 0,048024$ und $l=368$. Damit erhalten wir $s\approx\frac{0,0375*368}{367 *0,048024-0,0385 *368+0,076}\approx 3,9$.
 Das ist nicht zu nahe am tatsächlichen Wert 5, aber auch nicht ungeheuer weit weg. (Die Formel reagiert sehr empfindlich auf kleine Änderungen in $IC(y)$. Mit $IC(y)=0,05$ ergibt sich $s\approx 3,24$, mit $IC(y)=0,046$ ergibt sich $s\approx 4,95$.)
@@ -842,7 +844,7 @@ Gleiches gilt für das Cäsar-System und das Vigenère-System.
 
 Mit dem nächsten Begriff erfassen wir folgende Situation: Eva kennt eine ganze Folge von Klartext-Chiffretext-Paaren bezüglich des (ihr unbekannten) Schlüssels k. Dabei kann sie sich die Klartexte sogar selbst herausgesucht haben. Wir wollen ,,possibilistische Sicherheit'' so definieren, dass sie trotzdem bei beliebigem gegebenem weiteren Chiffretext y keinen Klartext ausschließen kann.
 
-Definition 2.1 Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2 ,wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k′\in K$ existiert mit $e(x_i,k)=e(x_i,k′)$ für alle $1\leq i< r$ und $e(x_r,k′)=y$.
+Definition 2.1 Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2 ,wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k'\in K$ existiert mit $e(x_i,k)=e(x_i,k')$ für alle $1\leq i< r$ und $e(x_r,k')=y$.
 
 Wenn man die Definition auf $r=1$ anwendet, ergibt sich, dass S auch possibilistisch sicher im Sinn von Kapitel 1 ist.
 
@@ -896,7 +898,7 @@ Chiffrierung: $e(x,k)$ wird für $x\in\{0,1\}^{mn}$ und $k\in\{0,1\}^s$ wie folg
 
 Dechiffrierung: $d(y,k)$ wird aus y und k nach demselben Verfahren berechnet, wobei jedoch
 1. die S-Box (die eine Permutation ist) durch ihre Inverse $S^{-1}$ ersetzt wird und
-2. die Rundenschlüsselfunktion $\kappa$ ersetzt wird durch die Funktion $\kappa′:\{0,1\}^s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$, $(k,i)\rightarrow\begin{cases} \kappa (k,r-i)\quad\text{ für } i\in\{0,r\}\\ \kappa(k,r-i)^{\beta} \quad\text{ für } 0<i<r \end{cases}$
+2. die Rundenschlüsselfunktion $\kappa$ ersetzt wird durch die Funktion $\kappa':\{0,1\}^s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$, $(k,i)\rightarrow\begin{cases} \kappa (k,r-i)\quad\text{ für } i\in\{0,r\}\\ \kappa(k,r-i)^{\beta} \quad\text{ für } 0<i<r \end{cases}$
 
 Vorteil der Struktur: Man kann dieselbe Hardware für Verschlüsselung und Entschlüsselung benutzen. Bei der Entschlüsselung läuft der Vorgang rückwärts ab, wobei die Runden anders gruppiert sind. Anstelle von S verwendet man $S^{-1}$. Da $β$ selbst invers ist, kann man für die Permutation auch bei der Dekodierung β verwenden. Da Permutation und Schlüsselanwendung in den Runden vertauscht sind, muss man auf die Rundenschlüssel der ,,inneren'' Runden bei der Dekodierung auch noch β anwenden.
 
@@ -1238,8 +1240,8 @@ Wir betrachten hier l-Block-Kryptosysteme $B=(X,K,Y,e,d)$ mit $X=Y=\{0,1\}^l$ un
 1. Im Szenario 2 (chosen-plaintext attack,CPA) kann die Angreiferin Eva sich eine ,,geringe Zahl'' von Klartexten verschlüsseln lassen, also hat sie eine Liste von Klartext-Chiffretext-Paaren: $(x_1,y_1),...,(x_r,y_r)$. Nun kann jedenfalls nur ein ,,neuer'' Klartext $x$, also ein $x\in X\{x_1,...,x_r\}$, geheim übertragen werden. Die possibilistische Sicherheit verlangt genau, dass dies möglich ist: Wenn $y\in Y\{y_1,...,y_r\}$ ein neuer gegebener Chiffretext ist, dann gibt es für jeden Klartext $x\in X\{x_1,...,x_r\}$ einen Schlüssel $k$, der $x_i$ zu $y_i$ chiffriert, $1 \geq i\geq r$, und $x$ zu $y$ chiffriert.
 2. Wenn dabei $r$ beliebig groß sein darf, können nach Prop.2.3 nur Substitutionskryptosysteme in diesem Sinne sicher sein. Da sie $|X|!$ Schlüssel haben müssen und daher immense Schlüssellänge (mindestens $|X|log|X|-O(|X|)$ Bits) erfordern, kommen sie in der Praxis nicht in Frage.
 
-Idee eines neuen Sicherheitsbegriffs (für Block-Kryptosysteme): Gegeben sei eine Angreiferin Eva mit beschränkten Berechnungsressourcen. Wir fragen, wie sehr aus Evas Sicht das $l$-Block-Kryptosystem $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ dem Substitutionskryptosystem $S′=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e′,d′)$ (siehe Def.1.9) ähnelt. Ist es ihr mit ,,signifikanter Erfolgswahrscheinlichkeit'' möglich, aufgrund der ihr vorliegenden Information und im Rahmen ihrer Ressourcen, zu unterscheiden, welches der beiden Systeme verwendet wird? Wenn dies nicht der Fall ist, kann das Kryptosystem $B$ als sicher gelten, wie die folgende Überlegung zeigt.
-Wenn Eva aufgrund der ihr vorliegenden Information (2.4) nicht mit nennenswerter Erfolgswahrscheinlichkeit unterscheiden kann, ob sie es mit der Chiffre $e(.,k)$ (für ein zufälliges $k\in K$) oder mit $e′(.,\pi)$ (für ein zufälliges $\pi\in P_{\{0,1\}^l}$) zu tun hat, dann hat sie aus der ihr vorliegenden Information keine nennenswerte Information über die konkrete Chiffree $(.,k)$ gelernt. Insbesondere kann sich  ihre Information über die Klartextverteilung nicht (wesentlich) ändern, wenn ihr ein neuer Chiffretext $y$ vorgelegt wird, da bei $S′=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e′,d′)$ keine solche Änderung eintritt.
+Idee eines neuen Sicherheitsbegriffs (für Block-Kryptosysteme): Gegeben sei eine Angreiferin Eva mit beschränkten Berechnungsressourcen. Wir fragen, wie sehr aus Evas Sicht das $l$-Block-Kryptosystem $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ dem Substitutionskryptosystem $S'=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e',d')$ (siehe Def.1.9) ähnelt. Ist es ihr mit ,,signifikanter Erfolgswahrscheinlichkeit'' möglich, aufgrund der ihr vorliegenden Information und im Rahmen ihrer Ressourcen, zu unterscheiden, welches der beiden Systeme verwendet wird? Wenn dies nicht der Fall ist, kann das Kryptosystem $B$ als sicher gelten, wie die folgende Überlegung zeigt.
+Wenn Eva aufgrund der ihr vorliegenden Information (2.4) nicht mit nennenswerter Erfolgswahrscheinlichkeit unterscheiden kann, ob sie es mit der Chiffre $e(.,k)$ (für ein zufälliges $k\in K$) oder mit $e'(.,\pi)$ (für ein zufälliges $\pi\in P_{\{0,1\}^l}$) zu tun hat, dann hat sie aus der ihr vorliegenden Information keine nennenswerte Information über die konkrete Chiffree $(.,k)$ gelernt. Insbesondere kann sich  ihre Information über die Klartextverteilung nicht (wesentlich) ändern, wenn ihr ein neuer Chiffretext $y$ vorgelegt wird, da bei $S'=(\{0,1\}^l,P\{0,1\}^l,\{0,1\}^l,e',d')$ keine solche Änderung eintritt.
 
 Wir modellieren Verfahren, die eine Chiffre benutzen dürfen und dann ,,raten'' sollen, ob es eine Chiffre zu einem BKS $B$ oder eine Zufallspermutation ist, als randomisierte Algorithmen.
 
@@ -1263,10 +1265,10 @@ Definition 2.11 Sei $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ ein l-Block-Kryptosystem, un
 1. $b\leftarrow flip(\{0,1\})$
         - if $b=1$ (,,Realwelt'') then $k\leftarrow flip(K);F\leftarrow e(.,k)$ // Zufallschiffre von B
         - if $b=0$ (,,Idealwelt'') then $F\leftarrow flip(P\{0,1\}^l)$ // Zufallspermutation
-2. $b′\leftarrow U(F)$  // Der l-Unterscheider versucht herauszubekommen, ob $b=0$ oder $b=1$ gilt.
-3. if $b=b′$ then return 1 else return 0.     // 1 heißt, dass $U$ das richtige Ergebnis hat.
+2. $b'\leftarrow U(F)$  // Der l-Unterscheider versucht herauszubekommen, ob $b=0$ oder $b=1$ gilt.
+3. if $b=b'$ then return 1 else return 0.     // 1 heißt, dass $U$ das richtige Ergebnis hat.
 
-Das verkürzte Experiment/Spiel $S^B_U$ (,,short'') gibt im 3.Schritt einfach $b′$ aus.
+Das verkürzte Experiment/Spiel $S^B_U$ (,,short'') gibt im 3.Schritt einfach $b'$ aus.
 
 Der Wahrscheinlichkeitsraum für die Analyse des Spiels wird über die Zufallsexperimente zur Wahl von b, von k, der Zufallspermutation $\pi$ aus $P_{\{0,1\}^l}$ und die Zufallsexperimente in $U$ gebildet. Die Wahrscheinlichkeit dafür, dass der Unterscheider richtig liegt, ist $Pr(G^B_U=1)$, gemessen in diesem etwas verschachtelten Wahrscheinlichkeitsraum.
 
@@ -1412,7 +1414,7 @@ Definition: Das zu $B$ gehörende $l$-CBC-Kryptoschema $S=CBC(B)=(KB\times\{0,1\
 
 Der Vektor $v$ wird Initialisierungsvektor genannt. Man versteht recht gut, was beim Chiffrieren passiert, wenn man sich das Bild auf Seite 104 im Buch von Küsters/Wilke ansieht. Beim Dechiffrieren geht man den umgekehrten Weg: Entschlüssele einen Block $y_i$ mittels B, dann addiere $y_{i-1}$, um den Klartextblock $x_i$ zu erhalten. Es ist klar, dass die Dechiffrierbedingung erfüllt ist.
 
-Interessant ist die folgende Eigenschaft der Entschlüsselung im CBC-Modus: Wenn bei der Übertragung des Chiffretextes ein einzelner Block $y_i$ durch einen Fehler zu $y_i′$ verfälscht wird, dann ist die Entschlüsselung ab Block $y_{i+2}$ trotzdem wieder korrekt.
+Interessant ist die folgende Eigenschaft der Entschlüsselung im CBC-Modus: Wenn bei der Übertragung des Chiffretextes ein einzelner Block $y_i$ durch einen Fehler zu $y_i'$ verfälscht wird, dann ist die Entschlüsselung ab Block $y_{i+2}$ trotzdem wieder korrekt.
 
 In diesem Kryptoschema ist der zentrale Nachteil der ECB-Betriebsart verschwunden: Identische Klartextblöcke führen nun praktisch immer zu verschiedenen Chiffretextblöcken. Die Verschlüsselung von $x=x_1 x_1$ mit $x_1\in\{0,1\}^l$ liefert i.a. keinen Chiffretext der Form $y=y_1 y_1$. Die oben erwähnte Wikipedia-Seite zeigt auch, dass bei der Verschlüsselung des Bildes mit CBC keine offensichtlichen Probleme mehr auftauchen.
 
@@ -1484,7 +1486,7 @@ Es ist offensichtlich, dass die Dechiffrierbedingung erfüllt ist.
 Bemerkungen:
 - Wie bei R-CBC und OFB wird hier ein zufälliger Initialisierungswert $r$ verwendet, der als Teil des Chiffretextes dem Angreifer bekannt ist.
 - Wie bei OFB wird die Entschlüsselungsfunktion $d_B$ gar nicht verwendet, man kann also anstelle der Verschlüsselungsfunktion $e_B$ eine beliebige Funktion $e_B:\{0,1\}^l\times\{0,1\}^l\rightarrow\{0,1\}^l$ benutzen, bei der die ,,Chiffren'' $e_B(.,k)$ nicht einmal injektiv sein müssen.
-- Man kann dieses Kryptoschema auch wie folgt verstehen: Zu einem gegebenen Klartext $x\in\{0,1\}^{lm}$ wird aus einem zufälligen Initialwert $r$ ein langer Bitstring $k′=E_B(r,k) E_B((r+1) mod\ 2^l,k)... E_B((r+m-1) mod\ 2^l,k)$ berechnet und der Klartext $x$ dann mittels Vernamsystem und diesem Schlüssel verschlüsselt. Der Empfänger erhält $r$ und den Chiffretext, kann also ebenfalls $k′$ b erechnen und damit entschlüsseln. Ist $B$ ein sicheres Block-Kryptosystem, so kann ein Angreifer aus $r$ den Vernam-Schlüssel $k′$ nicht so einfach berechnen, da er $k$ nicht kennt. Die R-CTR-Betriebsart liefert also intuitiv einen hohen Grad an Sicherheit.
+- Man kann dieses Kryptoschema auch wie folgt verstehen: Zu einem gegebenen Klartext $x\in\{0,1\}^{lm}$ wird aus einem zufälligen Initialwert $r$ ein langer Bitstring $k'=E_B(r,k) E_B((r+1) mod\ 2^l,k)... E_B((r+m-1) mod\ 2^l,k)$ berechnet und der Klartext $x$ dann mittels Vernamsystem und diesem Schlüssel verschlüsselt. Der Empfänger erhält $r$ und den Chiffretext, kann also ebenfalls $k'$ b erechnen und damit entschlüsseln. Ist $B$ ein sicheres Block-Kryptosystem, so kann ein Angreifer aus $r$ den Vernam-Schlüssel $k'$ nicht so einfach berechnen, da er $k$ nicht kennt. Die R-CTR-Betriebsart liefert also intuitiv einen hohen Grad an Sicherheit.
 
 ## Sicherheit von symmetrischen Kryptoschemen
 Wir werden hier ein Sicherheitsmodell definieren, das es gestattet, Aussagen wie die folgende zu formulieren (und zu beweisen): Wenn B ein ,,sicheres'' l-Block-Kryptosystem ist (bzgl. einer Reihe von Parametern), und das Kryptoschema $S$ wird aus $B$ konstruiert, indem man einen geeigneten Betriebsmodus verwendet, dann ist $S$ ebenfalls ,,sicher'' (bzgl. einer variierten Reihe von Parametern). Ziel ist dabei, Betriebsmodi zu identifizieren, die keine unnötigen neuen Unsicherheitskomponenten ins Spiel bringen, die nicht im Block-KS
@@ -1520,10 +1522,10 @@ Definition 3.3 Sei $S=(K,E,D)$ ein symmetrisches Kryptoschema, und sei $A=(AF,AG
 1. $k\leftarrow flip(K)$, $H\leftarrow E(.,k)$ (In diesem Schritt wählt Charlie zufällig eine Chiffre des Kryptoschemas $S$.)
 2. $(z_0, z_1 ,v)\leftarrow AF(H)$ (In dieser Phase berechnet der Finder ein Paar von Klartexten gleicher Länge, von denen er annimmt,ihre Chiffretexte unterscheiden zu können.)
 3. $b\leftarrow flip(\{0,1\})$ und $y\leftarrow E(z_b,k)$ (In dieser Phase wählt Charlie zufällig einen der beiden Klartexte und verschlüsselt ihn zu $y$.)
-4. $b′\leftarrow AG(v,H,y)$ (In dieser Phase versucht der Rater herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde.)
-5. falls $b=b′$, so gib $1$ zurück, sonst $0$. (Charlies Auswertung: Hat $AG$ recht oder nicht?)
+4. $b'\leftarrow AG(v,H,y)$ (In dieser Phase versucht der Rater herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde.)
+5. falls $b=b'$, so gib $1$ zurück, sonst $0$. (Charlies Auswertung: Hat $AG$ recht oder nicht?)
 
-Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5.Schritt einfach $b′$ aus.
+Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5.Schritt einfach $b'$ aus.
 
 Dann ist  $Pr(G^S_A = 1)$ die Wahrscheinlichkeit dafür, dass der Angreifer $A$ sich für den korrekten Klartext entscheidet. Der Wahrscheinlichkeitsraum entsteht durch die expliziten Zufallsexperimente in Schritt 1. und 3. in Kombination mit den Zufallsexperimenten, die bei der Verwendung von $H$ ausgeführt werden. Man kann jetzt wie in Abschnitt 2.4 (Sicherheit von l-Block-Kryptosystemen) den Vorteil $adv(A,S) = 2(Pr(G^S_A= 1)-\frac{1}{2})$ und die Größen $suc(A,S) = Pr(S^S_A〈b= 1〉= 1)$ (,,Erfolg'') und $fail(A,S) = Pr(S_A^S〈b= 0〉= 1)$ ( ,,Misserfolg'' ) definieren. Allerdings haben die beiden letzten Werte eine etwas andere Semantik. Der Wert $suc(A,S)$ ist die bedingte Wahrscheinlichkeit, dass richtig erkannt wird, dass $z_1$ verschlüsselt wurde, $fail(A,S)$ ist die bedingte Wahrscheinlichkeit, dass nicht erkannt wird, dass $z_0$ verschlüsselt wurde. Lemma 2.14 gilt wörtlich. Das heißt: $$adv(A,S) = suc(A,S)-fail(A,S)$$.
 
@@ -1671,7 +1673,7 @@ Beispiel: Auf Eingabe $x=10534, y=12742$ ergibt sich der nachstehenden Tabelle a
 
 Fakt 4.4 Algorithmus 4.1 gibt $ggT(x,y)$ aus.
 
-Wenn $|x|<|y|$, hat der erste Schleifendurchlauf nur den Effekt, die beiden Zahlen zu vertauschen. Wir ignorieren diesen trivialen Schleifendurchlauf. Wir betrachten die Zahlen $a$ in $a$ und $b$ in $b$. Es gilt stets $a>b$, und $b$ nimmt in jeder Runde strikt ab, also terminiert der Algorithmus. Um einzusehen, dass er sogar sehr schnell terminiert, bemerken wir Folgendes. Betrachte den Beginn eines Schleifendurchlaufs. Der Inhalt von $a$ sei $a$, der Inhalt von $b$ sei $b$, mit $a\geq b >0$. Nach einem Schleifendurchlauf enthält $a$ den Wert $a′=b$ und $b$ den Wert $b′=a\ mod\ b$. Falls $b′=0$, endet der Algorithmus. Sonst wird noch ein Durchlauf ausgeführt, an dessen Ende $a$ den Wert $b′=a\ mod\ b$ enthält. Wir behaupten: $b′<\frac{1}{2} a$. Um dies zu beweisen, betrachten wir zwei Fälle: Wenn $b>\frac{1}{2} a$ ist, gilt $b′=a\ mod\ b=a-b<\frac{1}{2} a$. Wenn $b\leq\frac{1}{2} a$ ist, gilt $b′=a\ mod\ b < b\leq\frac{1}{2} a$. - Also wird der Wert in $a$ in jeweils zwei Durchläufen mindestens halbiert. Nach dem ersten Schleifendurchlauf enthält $a$ den Wert $min\{x,y\}$. Daraus ergibt sich Teil 1. der folgenden Aussage.
+Wenn $|x|<|y|$, hat der erste Schleifendurchlauf nur den Effekt, die beiden Zahlen zu vertauschen. Wir ignorieren diesen trivialen Schleifendurchlauf. Wir betrachten die Zahlen $a$ in $a$ und $b$ in $b$. Es gilt stets $a>b$, und $b$ nimmt in jeder Runde strikt ab, also terminiert der Algorithmus. Um einzusehen, dass er sogar sehr schnell terminiert, bemerken wir Folgendes. Betrachte den Beginn eines Schleifendurchlaufs. Der Inhalt von $a$ sei $a$, der Inhalt von $b$ sei $b$, mit $a\geq b >0$. Nach einem Schleifendurchlauf enthält $a$ den Wert $a'=b$ und $b$ den Wert $b'=a\ mod\ b$. Falls $b'=0$, endet der Algorithmus. Sonst wird noch ein Durchlauf ausgeführt, an dessen Ende $a$ den Wert $b'=a\ mod\ b$ enthält. Wir behaupten: $b'<\frac{1}{2} a$. Um dies zu beweisen, betrachten wir zwei Fälle: Wenn $b>\frac{1}{2} a$ ist, gilt $b'=a\ mod\ b=a-b<\frac{1}{2} a$. Wenn $b\leq\frac{1}{2} a$ ist, gilt $b'=a\ mod\ b < b\leq\frac{1}{2} a$. - Also wird der Wert in $a$ in jeweils zwei Durchläufen mindestens halbiert. Nach dem ersten Schleifendurchlauf enthält $a$ den Wert $min\{x,y\}$. Daraus ergibt sich Teil 1. der folgenden Aussage.
 
 Fakt 4.5
 1. Die Schleife in Zeilen $2-3$ wird höchstens $O(log(min\{x,y\}))$-mal ausgeführt.
@@ -1768,9 +1770,9 @@ Mit den Restklassen kann man dann wieder rechnen: Addition und Multiplikation la
 
 Beispielsweise gelten für $m=3$ die Gleichheiten $[4] + [5] = [9] = [0]$ und $[4]*[5] =[20] = [2]$.
 
-Fakt 4.11: Diese Operationen sind wohldefiniert, d.h., aus $x\equiv x′(mod\ m)$ und $y\equiv y′(mod\ m)$ folgt $[x+y]_m= [x′+y′]_m$ und $[x*y]_m= [x′*y′]_m$.
+Fakt 4.11: Diese Operationen sind wohldefiniert, d.h., aus $x\equiv x'(mod\ m)$ und $y\equiv y'(mod\ m)$ folgt $[x+y]_m= [x'+y']_m$ und $[x*y]_m= [x'*y']_m$.
 
-Der Beweis ist einfach. Weil $x\equiv x′ (mod\ m)$ und $y\equiv y′ (mod\ m)$ gilt, sind $x-x′$ und $y-y′$ durch $m$ teilbar. Also ist auch $xy-x′y′=x(y-y′) + (x-x′)y′$ durch $m$ teilbar, und es gilt $x*y\equiv x′*y′ (mod\ m)$. Der Fall der Addition ist noch einfacher.
+Der Beweis ist einfach. Weil $x\equiv x' (mod\ m)$ und $y\equiv y' (mod\ m)$ gilt, sind $x-x'$ und $y-y'$ durch $m$ teilbar. Also ist auch $xy-x'y'=x(y-y') + (x-x')y'$ durch $m$ teilbar, und es gilt $x*y\equiv x'*y' (mod\ m)$. Der Fall der Addition ist noch einfacher.
 
 Aus der Definition und der Wohldefiniertheit ergibt sich, dass man anstatt mit Restklassen auch mit Repräsentanten rechnen kann. Statt $([5]_3 *[5]_3)*[2]_3 = [25]_3 *[2]_3 = [1]_3 *[2]_3 = [2]_3$ schreibt man dann einfach $(5*5)* 2 \equiv  25 * 2 \equiv  1 * 2 \equiv 2 (mod\ 3)$.
 
@@ -2253,8 +2255,8 @@ Beweis: Teil 1. ist nur die Überprüfung, dass die Definition technisch sinnvol
 2. Dass $B_N\supseteq \mathbb{Z}^*_N$ gilt, folgt aus der Definition. Wir müssen also nur zeigen, dass $\mathbb{Z}^*_N - B_N\not=\varnothing$ gilt. Wir benutzen die in Lemma 4.38 beobachtete Eigenschaft von Carmichael-Zahlen, keine Primzahlpotenz zu sein. Nach diesem Lemma können wir $N=N_1 *N_2$ schreiben, für teilerfremde ungerade Zahlen $N_1,N_2\geq 3$. Im Folgenden werden die Eigenschaften aus dem Chinesischen Restsatz (Fakt 4.21) benutzen.
      - Die grobe Idee der Konstruktion ist folgende: Wir haben das Element $1$ mit $1^{u*2^{i_0}}$ mod\ N= 1$ und das Element $a_#$ mit $a^{u*2^{i_0}} \equiv -1 (mod\ N)$. Aus diesen beiden Elementen ,,basteln'' wir mit Hilfe des Chinesischen Restsatzes ein $b\in\mathbb{Z}^*_N$, das sich modulo $N_1$ wie $1$ und modulo $N_2$ wie $a_#$ verhält. Es wird sich zeigen, dass $b^{u*2^{i_0}} mod\ N \not\in\{1 ,N-1\}$ gilt, also $b\not\in B_N$ ist.
     - Wir führen diese Idee jetzt formal durch. Sei $x_2=a_#\ mod\ N_2$. Nach dem Chinesischen Restsatz (Fakt 4.21) gibt es eine eindeutig bestimmte Zahl $b\in\{0,1,...,N- 1\}$, die $b\equiv 1(mod\ N_1)$ und $b\equiv x_2(mod\ N_2)$ (4.6) erfüllt. (Es folgt $b\equiv a_#(mod\ N_2)$.) Wir zeigen, dass $b$ in $\mathbb{Z}^*_N-B_N$ liegt.
-    - Wir notieren, dass für beliebige $x,y\in\mathbb{Z}$ gilt: $x\equiv x′(mod\ N)\Rightarrow x\equiv x′(mod\ N_i)$, für $i=1,2$. (4.7)
-    - (Wenn $x-x′$ durch $N$ teilbar ist, dann auch durch $N_1$ und $N_2$.)
+    - Wir notieren, dass für beliebige $x,y\in\mathbb{Z}$ gilt: $x\equiv x'(mod\ N)\Rightarrow x\equiv x'(mod\ N_i)$, für $i=1,2$. (4.7)
+    - (Wenn $x-x'$ durch $N$ teilbar ist, dann auch durch $N_1$ und $N_2$.)
     - Beh. 1: $b\in\mathbb{Z}^*_N$.
       - Bew.: Offensichtlich gilt $b^{N-1} \equiv 1^{N-1} \equiv 1 (mod\ N_1)$. Weiter haben wir, modulo $N_2$ gerechnet: $b^{N-1} \equiv a^{N-1}_# \equiv ((a^{N-1}_#) mod\ N)\equiv 1 (mod\ N_2)$.
       - Wegen der Eindeutigkeitsaussage im Chinesischen Restsatz folgt daraus $b^{N-1} \equiv 1(mod\ N)$. Nach Lemma 4.35 folgt $b\in\mathbb{Z}^*_N$.
@@ -2315,12 +2317,12 @@ Bemerkung: Bei der Erzeugung zufälliger n-Bit-Primzahlen für kryptographische 
 
 ## Beweise und Bemerkungen zu Kapitel 4
 Beweis der Existenz und der Eindeutigkeit des größten gemeinsamen Teilers $ggT(x,y)$ zweier Zahlen (Definition 4.3.2):
-- *Eindeutigkeit*: Wenn in 2. $d$ und $d′$ beide (i) und (ii) erfüllen und nichtnegativ sind, dann folgt $d|d′$ und $d′|d$, also $d=d′$ nach Fakt 4.2.5.
+- *Eindeutigkeit*: Wenn in 2. $d$ und $d'$ beide (i) und (ii) erfüllen und nichtnegativ sind, dann folgt $d|d'$ und $d'|d$, also $d=d'$ nach Fakt 4.2.5.
 - *Existenz*: Weil $t$ gemeinsamer Teiler von $x$ und $y$ ist genau dann wenn $t$ gemeinsamer Teiler von $a=|x|$ und $b=|y|$ ist, und weil offenbar das Vertauschen von $x$ und $y$ nichts ändert, können wir uns auf den Fall $x=a\geq y=b\geq 0$ beschränken. Wir zeigen durch Induktion über $b=min\{a,b\}$, dass $ggT(a,b)$ existiert.
 - *Induktionsanfang*: $b=0$. 
   - 1. Fall: $a= 0$. Dann ist jede Zahl $t$ ein gemeinsamer Teiler von $a$ und $b$. Wir wählen $d=0$. Dann gilt (i), weil $0$ Teiler von $0$ ist, und (ii), weil jede Zahl $t$ die Zahl $0$ teilt. ($0$ ist ,,größter'' gemeinsamer Teiler von 0 und 0 im Sinn der Quasiordnung ,,Teilbarkeit''. Hier ist 0 das größte Element überhaupt.)
   - 2. Fall: $a >0$. Wir wählen $d=a$. Dann gilt (i), weil $a$ Teiler von $a$ und von 0 ist, und es gilt (ii), weil jeder gemeinsame Teiler von $a$ und 0 auf jeden Fall Teiler von $a$ ist.
-- *Induktionsschritt*: $b>0$. Setze $q:=a\ div\ b$ und $r:=a-qb=a\ mod\ b$ und $(a′,b′):=(b,r)$. Dann ist $b′=r < b=a′$. Nun haben $a$ und $b$ genau dieselben gemeinsamen Teiler wie $a′$ und $b′$. (Aus $t|a$ und $t|b$ folgt $t|(a-qb)$, also $t|a′$, und aus $t|a′$ und $t|b′$ folgt $t|r+qb$, also $t|a$.) Nach I.V. existiert $d= ggT(a′,b′)$, und dieses $d$ ist dann auch größter gemeinsamer Teiler von $a$ und $b$.
+- *Induktionsschritt*: $b>0$. Setze $q:=a\ div\ b$ und $r:=a-qb=a\ mod\ b$ und $(a',b'):=(b,r)$. Dann ist $b'=r < b=a'$. Nun haben $a$ und $b$ genau dieselben gemeinsamen Teiler wie $a'$ und $b'$. (Aus $t|a$ und $t|b$ folgt $t|(a-qb)$, also $t|a'$, und aus $t|a'$ und $t|b'$ folgt $t|r+qb$, also $t|a$.) Nach I.V. existiert $d= ggT(a',b')$, und dieses $d$ ist dann auch größter gemeinsamer Teiler von $a$ und $b$.
 
 
 # Asymmetrische Verschlüsselung: RSA & Co.
@@ -2435,9 +2437,9 @@ Definition 5.5: Sei $S=(X,K,G,E,D)$ ein asymmetrisches Kryptoschema und $A=(AF,A
 1. $(k,\hat{k})\leftarrow G()$ (ein Schlüsselpaar des Kryptoschemas $S$ wird gewählt)
 2. $(z_0,z_1,v)\leftarrow AF(k)$ (der Finder berechnet ein Paar von Klartexten gleicher Länge, von denen er annimmt, ihre Chiffretexte unterscheiden zu können)
 3. $b\leftarrow flip()$ und $y\leftarrow E(z_b,k)$ (einer der Klartexte wird zuyverschlüsselt)
-4. $b′\leftarrow AG(v,k,y)$ (der Rater versucht herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde)
-5. falls $b=b′$, so gib $1$ zurück, sonst $0$.
-- Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5. Schritt einfach $b′$ aus.
+4. $b'\leftarrow AG(v,k,y)$ (der Rater versucht herauszubekommen, ob $z_0$ oder $z_1$ verschlüsselt wurde)
+5. falls $b=b'$, so gib $1$ zurück, sonst $0$.
+- Das verkürzte Experiment oder Spiel $S^S_A$ gibt im 5. Schritt einfach $b'$ aus.
 
 Dann ist $Pr(G^S_A= 1)$ die Wahrscheinlichkeit dafür, dass der Angreifer $A$ den korrekten Klartext erkennt. Man kann jetzt wie in Abschnitt 2.4 (Sicherheit von $l$-Blockkryptosystemen) den Vorteil $adv(A,S) = 2 Pr(G^S_A = 1)- 1$, den ,,Erfolg'' $suc(A,S) = Pr(G^S_A〈b = 1〉 = 1)$ und den ,,Misserfolg'' $fail(A,S) =Pr(G^S_A〈b= 0〉= 1)$ definieren. Lemma 2.16 gilt dann wörtlich.
 
@@ -2533,7 +2535,7 @@ Wenn sich $p$ und $q$ nur geringfügig unterscheiden, lässt sich $N$ effizient 
 Es gibt ein RSA-spezifisches Angriffsverfahren (,,Iteration''), das effizient funktioniert, wenn $p-1$ und $q-1$ kleine Primfaktoren haben. Bei der Wahl von $p$ und $q$ ist also auch darauf zu achten, dass dies nicht der Fall ist (s. Buch von Buchmann).
 
 ### Zufallskomponente
-In der Praxis wird der Klartext $x\in\{0,1\}^w$ mit $w<\lfloor log\ N\rfloor$ durch Anhängen eines zufälligen Bitstrings $r$ auf Länge $\lfloor log\ N\rfloor$ gebracht und das Wort $x\circ r$ (Konkatenation von $x$ und $r$) wie beschrieben verschlüsselt. Die Zufallskomponentermacht den Verschlüsselungsalgorithmus $E$ zu einem randomisierten Verfahren. Der Empfänger muss natürlich ebenfalls die Länge $w$ kennen, um nach der Entschlüsselung aus $x\circ r$ die eigentliche Botschaft $x$ zu ermitteln. Dieses Vorgehen hat auch den Vorteil, dass selbst bei mehrmaligem Versenden derselben Botschaft (oder Wiederholung von Blöcken) unterschiedliche Chiffretexte entstehen und zum Beispiel die Parität der Anzahl der 1-Bits in $x\circ r$ sowie das letzte Bit von $x\circ r$ rein zufällig sind und keine Information über $x$ liefern. Auch das Problem mit dem Jacobisymbol wird damit entschärft, da $J_N(x\circ r)$ vermutlich einigermaßen zufällig sein wird. Zudem wird in realen Anwendungen noch eine ,,kryptographische Hashfunktion'' $h$ auf $x\circ r$ angewendet und der neue Klartext $x′=x\circ r\circ h(x\circ r)$ mit dem RSA-System verschlüsselt. Bob entschlüsselt zu $z\circ t\circ w$ und akzeptiert die Nachricht $z$ nur, wenn $h(z\circ t)=w$ ist. Vorteil hiervon: Manipulationen an der Nachricht werden erkannt, die Nachrichten-Integrität
+In der Praxis wird der Klartext $x\in\{0,1\}^w$ mit $w<\lfloor log\ N\rfloor$ durch Anhängen eines zufälligen Bitstrings $r$ auf Länge $\lfloor log\ N\rfloor$ gebracht und das Wort $x\circ r$ (Konkatenation von $x$ und $r$) wie beschrieben verschlüsselt. Die Zufallskomponentermacht den Verschlüsselungsalgorithmus $E$ zu einem randomisierten Verfahren. Der Empfänger muss natürlich ebenfalls die Länge $w$ kennen, um nach der Entschlüsselung aus $x\circ r$ die eigentliche Botschaft $x$ zu ermitteln. Dieses Vorgehen hat auch den Vorteil, dass selbst bei mehrmaligem Versenden derselben Botschaft (oder Wiederholung von Blöcken) unterschiedliche Chiffretexte entstehen und zum Beispiel die Parität der Anzahl der 1-Bits in $x\circ r$ sowie das letzte Bit von $x\circ r$ rein zufällig sind und keine Information über $x$ liefern. Auch das Problem mit dem Jacobisymbol wird damit entschärft, da $J_N(x\circ r)$ vermutlich einigermaßen zufällig sein wird. Zudem wird in realen Anwendungen noch eine ,,kryptographische Hashfunktion'' $h$ auf $x\circ r$ angewendet und der neue Klartext $x'=x\circ r\circ h(x\circ r)$ mit dem RSA-System verschlüsselt. Bob entschlüsselt zu $z\circ t\circ w$ und akzeptiert die Nachricht $z$ nur, wenn $h(z\circ t)=w$ ist. Vorteil hiervon: Manipulationen an der Nachricht werden erkannt, die Nachrichten-Integrität
 ist gesichert. (Es bleibt das Problem sicherzustellen, dass die Nachricht tatsächlich von Alice gesendet worden ist.)
 
 ### Effizienzverbesserungen
@@ -2633,9 +2635,9 @@ Achtung! Das DH-Protokoll in der hier vorgestellten Form wird völlig unsicher, 
 
 ,,Man-in-the-middle-attack'': Eva fängt alle Nachrichten von Alice an Bob und umgekehrt ab und modifiziert sie.
 
-Schlüsselvereinbarung: Alice sendet $A=g^a$. Eva fängt $A$ ab, wählt selbst eine Zufallszahl $a′$ und schickt $A′=g^{a′}$ an Bob. Dieser nimmt an, $A′$ käme von Alice. Sein $B=g^b$ wird ebenfalls von Eva abgefangen und durch $B′=g^{b′}$ ersetzt, für ein von Eva gewähltes $b′$. Alice nimmt an, $B′$ käme von Bob.
+Schlüsselvereinbarung: Alice sendet $A=g^a$. Eva fängt $A$ ab, wählt selbst eine Zufallszahl $a'$ und schickt $A'=g^{a'}$ an Bob. Dieser nimmt an, $A'$ käme von Alice. Sein $B=g^b$ wird ebenfalls von Eva abgefangen und durch $B'=g^{b'}$ ersetzt, für ein von Eva gewähltes $b'$. Alice nimmt an, $B'$ käme von Bob.
 
-Senden eines Chiffretextes: Wenn Alice Nachricht $x$ an Bob schicken möchte, verwendet sie Schlüssel $k′= (B′)^a=g^{ab'}$ und sendet $y′=E(x,k′)$. Eva fängt dies ab und entschlüsselt mittels $k′=A^{b′}$. Sie kennt nun $x$, berechnet $k′′=B^{a′}$ und schickt $E(x,k′′)$ an Bob. Dieser entschlüsselt mittels $k′′= (A′)^b$, und erhält wieder $x$.
+Senden eines Chiffretextes: Wenn Alice Nachricht $x$ an Bob schicken möchte, verwendet sie Schlüssel $k'= (B')^a=g^{ab'}$ und sendet $y'=E(x,k')$. Eva fängt dies ab und entschlüsselt mittels $k'=A^{b'}$. Sie kennt nun $x$, berechnet $k''=B^{a'}$ und schickt $E(x,k'')$ an Bob. Dieser entschlüsselt mittels $k''= (A')^b$, und erhält wieder $x$.
 
 Um das DH-Protokoll gegen solche Angriffe abzusichern, muss man andere Protokolle (sog. Authentifizierungsprotokolle) benutzen, die es ermöglichen herauszufinden, ob der Absender einer Nachricht tatsächlich der gewünschte Partner (Alice bzw. Bob) ist.
 
@@ -2789,15 +2791,695 @@ Gegeben (und allen Beteiligten bekannt): Elliptische Kurve $E=E_{A,B}$ über $\m
 - Gegeben: Klartext $x\in\mathbb{Z}^*_p$.
 - Öffentlicher Schlüssel $Q\in G$.
 - Wähle zufällig $a\in\mathbb{Z}_N$ und berechne $(k,y) =aQ$ mit $k\in\mathbb{Z}^*_p$. //(Falls $k=0$, wähle neues $a$.)
-- Berechne $E^a (x,Q)\leftarrow (Point-Compress(aP),x*k\ mod\ p) =: (y′,y′′);$ das Paar $(y′,y′′)\in(\mathbb{Z}_p\times\{0,1\})\times\mathbb{Z}^*_p$ ist der Chiffretext.
+- Berechne $E^a (x,Q)\leftarrow (Point-Compress(aP),x*k\ mod\ p) =: (y',y'');$ das Paar $(y',y'')\in(\mathbb{Z}_p\times\{0,1\})\times\mathbb{Z}^*_p$ ist der Chiffretext.
 
 Bemerkung: $k\in\mathbb{Z}^*_p$, die erste Komponente eines Punktes in $G$, wird durch eine Operation in $G$ erstellt, und dann wie beim One-Time-Pad (oder beim Vernam-System) benutzt, wobei diese Verschlüsselung durch Multiplikation in $\mathbb{Z}^*_p$ ausgeführt wird.
 
 *Entschlüsselungsfunktion* $D:Y\times\mathbb{Z}_N \rightarrow X$, als (deterministischer) Algorithmus.
-- Gegeben: Chiffretext $y=(y′,y′′)$ mit $y′\in\mathbb{Z}_p\times\{0,1\}$ und $y′′\in\mathbb{Z}^*_p$. Privater Schlüssel $b$.
-- Berechne $(x_1,y_1)\leftarrow Point-Decompress (y′)$ //nun gilt $(x_1,y_1) =aP$
+- Gegeben: Chiffretext $y=(y',y'')$ mit $y'\in\mathbb{Z}_p\times\{0,1\}$ und $y''\in\mathbb{Z}^*_p$. Privater Schlüssel $b$.
+- Berechne $(x_1,y_1)\leftarrow Point-Decompress (y')$ //nun gilt $(x_1,y_1) =aP$
 - $(x_0,y_0)\leftarrow b(x_1,y_1)$ (in $G$, nun gilt $(x_0,y_0) = (ba)P=a(bP) =aQ= (k,y))$, und schließlich in $\mathbb{Z}^*_p$
-- $D((y′,y′′),b)\leftarrow y′′*(x_0)^{-1}\ mod\ p$.
+- $D((y',y''),b)\leftarrow y''*(x_0)^{-1}\ mod\ p$.
 
 Behauptung: Wenn $Q=bP$, dann gilt $D(E^a (x,Q),b) =x$, für jedes $x\in X$ und jedes $a$, für das $(k,y) =aQ\in\mathbb{Z}^*_p \times\mathbb{Z}_N$. (Dies gilt nach den Anmerkungen in der Beschreibung von $E$ und $D$.)
 
+
+
+
+# Anhang: Beweis von Satz 3.8
+Wir b eweisen Satz 3.8. Gegeb enist alsoein l-Blo ck-KS B, aus dem wir mitdem R-
+CTR-Betriebsmo duseinKryptoschemaS=R-CTR(B)gewinnen.Gegeb enistweiterein
+(n,q,t)-b eschränkterl-AngreiferA= (AF,AG).Wirwollenzeigen,dassmanausAeinen
+UnterscheiderfürBgewinnen kann,derimWesentlichen dieHälftedes VorteilsvonA
+gegenS=R-CTR(B)hat.
+
+Manerinnere sichan Definition2.11. DasSpiel(Exp eriment) GBU wählt inFormeines
+Zufallsbitsbdie ,,Welt'' ,indergespieltwird,undstelltdemUnterscheiderUeineentspre-
+chendeBlo ckchiffreFzurVerfügung.
+
+- Wennb= 1,istF eineChiffree(.,k)zuB( ,,Realwelt'' ),mitzufälligemSchlüsselk.
+- Wennb= 0,istF einezufälligePermutationvon{ 0 , 1 }l( ,,Idealwelt'' ).üsolleineVermutungabgeb en,welcherderb eidenFällezutrifft.DieIdeedernunfolgenden
+Konstruktionist,dassU imWesentlichen das SpielGSA fürA ausführtunddab eiden
+VerschlüsselungsalgorithmusHF b enutzt,dersichausderChiffreF mitderBetriebsart
+R-CTR ergibt. Dazu startet U den Findungsteil AF von A, der ein Paar(z 0 ,z 1 ) von
+Klartextenerzeugt.DannwähltU zufällig(miteinemZufallsbitcaus{ 0 , 1 })einender
+b eidenaus:zc.DerChiffretexty=HF(zc)wirdAGvorgelegt,dereinAntwortbitc'liefert.
+(DiesesBitsollte,wennderAngreifergutistundF vonBherstammt,ehergleichc'als
+verschiedenvon c' sein.)Wenn c= c', vermutetU  ,,Realwelt'' ,gibt alsob' = 1 zurück,
+sonstvermutetU  ,,Idealwelt''  undantwortetmitb' = 0.U gewinntdasSpiel,wenndas
+Ausgab ebitb'mitbüb ereinstimmt.
+
+ImFall b = 0liegen dieErfolgschancen fürU sehrnahe an\frac{1}{2} , wiewir sehen werden,
+daHF sichselbstunterBerücksichtigungderInformationen,dieAF undAG sammeln,
+fastwieeineVernam-Chiffreverhält,unddaherderChiffretextzuz 0 eb ensowiederzu
+z 1 einfachwieeinZufallsstringaussieht,sodassU keineMöglichkeithat,dieb eidenzu
+unterscheiden.ImFallb = 1hingegenist derAblauf vonGBU genauderdesSpiels GSA
+vonAmitS=R-CTR(B),unddieErfolgswahrscheinlichkeitvonUentsprichtdemdieses
+Spiels.Kombinationderb eiden Fälleergibt,dassderVorteilvonU bisaufFehlerterme
+dieHälftedesVorteilsvonAist.Detailsfolgen.
+
+Wirb eschreib enzunächstdieArb eitsweisevonUimDetail.Ub ekommteineBlo ckchiffre
+F:{ 0 , 1 }l\rightarrow { 0 , 1 }lalsVerschlüsselungsorakelzurVerfügunggestellt.ü b enutztden AngreiferA = (AF,AG)als Unterprogramm.Von denProgrammteilen
+AF undAG vonAwerdenOrakelanfragengestellt,diefordern,dassTextex\in  { 0 , 1 }l**
+verschlüsseltwerden.DieseAnfragenb eantwortetU,indemesdieChiffreF inR-CTR-
+
+
+Betriebsart,alsodenVerschlüsselungsalgorithmusHF einsetzt.DasentsprechendeUnter-
+programmvonUheißtSim:
+
+Sim(x:{ 0 , 1 }l**,F:{ 0 , 1 }l\rightarrow { 0 , 1 }l) :{ 0 , 1 }l**
+
+//Inputx:Klartext,F:Blo ckchiffre(alsOrakel);Outputy:Chiffretext.
+
+1.r\leftarrow flip(l) //Zufallszahlin[2l] ={ 0 , 1 }l
+
+2.t\leftarrow |x|/l; //AnzahlderBlö ckeinx,alsox= (x_0 ,...,xt- 1 )
+
+3.y\leftarrow (r,F(r)\oplus_l x_0 ,F((r+ 1) mod 2l)\oplus_l x 1 ,...,F((r+t-1) mod 2l)\oplus_l xt- 1 )
+
+4.returny
+
+WennwirimFolgendenAF(Sim(.,F))schreib en,meinenwir,dassderFindungsteilvon
+Aaufgerufenwird,wob eiOrakelanfragenvonAFfürxmitSim(x,F)b eantwortetwerden.
+AnalogistAG(Sim(.,F))zuinterpretieren.üarb eitetmitgegeb enemVerschlüsselungsorakelF:{ 0 , 1 }l\rightarrow  { 0 , 1 }lwiefolgt.DieIdee
+ist,dassUdasSpielGA...durchführt,wob eialsVerschlüsselungsverfahrenfürdasKrypto-
+schemadieR-CTR-BetriebsartvonF b enutztwird.JenachdemobAdab eidasrichtige
+o derdasfalscheErgebniserhält,tipptUauf ,,Realwelt'' bzw. ,,Idealwelt'' .
+
+1. Findungsphase
+    (z 0 ,z 1 ,v)\leftarrow AF(Sim(.,F)).
+       //FindungsteilvonA;OrakelanfragenwerdenmitSim(.,F)b eantwortet.
+    //vsinddieNotizenvonA.
+2. Auswahl //Wählezufälligz 0 o derz 1 ,verschlüssle,Ergebnisisty
+    c\leftarrow flip(),y\leftarrow Sim(zc,F).
+3. Ratephase
+    c'\leftarrow AG(v,Sim(.,F),y).
+       //RateteilvonA;OrakelanfragenwerdenmitSim(.,F)b eantwortet.
+4. Auswertung
+    return[c=c']
+
+NachdenRegelnfürSzenario 2 darfdieBlo ckverschlüsselungF nichtmehrfachfürden-
+selb enBlo ckaufgerufenwerden.Beidemangegeb enenVerfahrenkanndiesab er(aufgrund
+
+
+der zufälligenWahldes Startwertsr b eiden Aufrufenvon Sim)durchaus vorkommen.
+WirzähleneinesolcheAbfragenichtalsneuenAufruf.OhnedassdiesimProgrammtext
+ausgeführtist,solltemansichvorstellen,dassUbzw.dasSpielGBUeineDatenstrukturfür
+allebisherb enanntenBlö ckesunddieschonabgefragtenWerteF(s)mitführtundb eider
+AusführungvonSimimmernachsieht,obF(s)füreinenBlo cksschonb ekanntist.Der
+AufwandhierfürwirdinderRechenzeitvonUb erücksichtigt.Wirdiskutierendiesganz
+amEndedesBeweises.
+
+WirerinnernunsandieDefinitionvonsuc(U,B)(WahrscheinlichkeitfürAntwort 1 inder
+Realwelt)undfail(U)(WahrscheinlichkeitfürAntwort 1 inderIdealwelt)undLemma2.14
+mitderFormel
+adv(U,B) = suc(U,B)-fail(U). (1.5)
+
+Zielist,eineuntereSchrankefüradv(U,B)zub eweisen.Wiranalysierendieb eidenTerme
+separat.Dazugeb enwirsuc(U,B)anundb eweisenundeineob ereSchrankefürfail(U).
+Dasersteisteinfach,daszweitetechnischetwasaufwendiger.
+
+ ,,Realwelt'' :Hieristb= 1undF:{ 0 , 1 }l \rightarrow  { 0 , 1 }l einedurchdenzufälliggewählten
+Schlüsselkb estimmteChiffree(.,k)vonB.Wiranalysierensuc(U,B) = Pr(SUB〈b= 1〉=
+1).Mansiehtsofort,dassU genaudasinDefinition3.3b eschrieb eneSpielfürAundS
+ausführt,unddassdaherdieWahrscheinlichkeitfürdasErgebnis ,,1'' genauPr(GSA= 1)
+ist.Wegenadv(A,S) = 2Pr(GSA= 1)- 1 gilt
+
+
+suc(U,B) = Pr(GSA= 1) =
+
+
+1 + adv(A,S)
+2
+
+. (1.6)
+
+ ,,Idealwelt'' :NunwendenwirunsderAnalysevonfail(U) = Pr(SUB〈b= 0〉= 1)zu.Diesist
+dieWahrscheinlichkeit,dassUinderSituation ,,Idealwelt'' ,inderFeineZufallsp ermutation
+ist,dasrichtigeBitc'=causgibt.Wirwerdensehen,dassdieseWahrscheinlichkeitnur
+unwesentlichvon\frac{1}{2} abweichenkann,wennlgenügendgroßist.(Dannergibtsichmit(1.6),
+dassadv(U,B)\approx \frac{1}{2} adv(A,S)gilt.)Wirmüsseneineob ereSchrankefürfail(U)angeb en.
+Wirb emerkenzunächst,dassdasSup erskriptBinSUB〈b= 0〉redundantist,dasichdieser
+AlgorithmusaufdieIdealweltb ezieht,inderBkeineRollespielt.Wirschreib endaherim
+FolgendendafürSU〈b= 0〉.
+
+Wirwissen,dassderAngreiferAinsgesamtnicht mehralsqOrakelanfragenstelltund
+dassdab eidieAnzahlderb etroffenenl-Bit-Blö ckenichtgrößeralsnist.Wirkönnensogar
+o. B. d. A. annehmen,dassdie Anzahlder verschiedenenb eim Ablauf vonU insgesamt
+verschlüsseltenBlö ckeexaktnist, fallsnicht,lassenwirUeinfach,außerhalbvonSim,
+dieVerschlüsselung derfehlenden Anzahl von neuenBlö cken anfordern,ohne dassdas
+ErgebniseineAuswirkungaufdieAusgab evonUhat.
+
+
+Ersetzung von Zufallsp ermutationen durch Zufallsfunktionen Umdie weitere
+Arb eitzuvereinfachen,b etrachtenwireinenleichtverändertenWahrscheinlichkeitsraum
+fürF.Wirnehmennämlichan,dassalsOrakelfürdieBlo ckchiffrenichteineZufallsp er-
+mutationF,sonderneinereinzufälligeFunktionF' von{ 0 , 1 }l nach{ 0 , 1 }l,verwendet
+wird.^33 Hierist esalsoerlaubt,dassF'(s 1 ) = F'(s 2 )fürBlö ckes 1\not= s 2 ist.Derneue
+Wahrscheinlichkeitsraumheißt$\Omega$',dieWahrscheinlichkeitsfunktiondarinPr'.Esstelltsich
+heraus,dasseskeinengroßenUnterschiedmacht,welchenderb eidenRäumemanb enutzt,
+solangennichtzugroßunddieBlo cklängelnichtzukleinist.
+
+Behauptung1: |Pr(SU〈b= 0〉= 1)-Pr'(SU〈b= 0〉= 1)|\geq 
+
+
+n^2
+2 l+1
+
+.
+
+Bemerkung:DieseBehauptungliefertoffenbareinenTeildesFehlertermsinSatz3.8.
+
+Beweis vonBehauptung 1:Definiere Ereignisse (fürb eide Wahrscheinlichkeitsräumein
+gleicherWeise),unterBezugnahmeaufdenAblaufdesSpielsfürUmitb= 0.Indiesem
+AblaufgibtesgenaunAnfragenzuverschiedenenBlö ckenandasOrakelF.(DerAblauf
+selb er,undumwelcheBlö ckeessichhandelt,hängtauchvomZufallab.)Betrachtedie
+folgendenEreignisse:
+
+
+Di:={diei-teAnfrageanFlieferteinResultatin{ 0 , 1 }l,dasvorherschonvorkam},
+
+füri= 1,...,n,undD:=
+
+⋃
+
+1 \geq i\geq nDi. Dann ist DdiedisjunkteVereinigungderEreignisse
+Di\cap  D 1 \cap  D 2 \cap  ***\cap  Di- 1 .Wirhab en
+
+
+Pr'(Di\cap  D 1 \cap  D 2 \cap  ***\cap  Di- 1 )\geq Pr'(Di|D 1 \cap  D 2 \cap  ***\cap  Di- 1 ) =
+
+
+i- 1
+2 l
+
+, (1.7)
+
+(diei-teAnfragelieferteinenderi- 1 vorherausgegeb enenWerte),also
+
+
+Pr'(D)\geq 
+
+\sum 
+
+
+1 \geq i\geq n
+
+
+i- 1
+2 l
+
+=
+
+
+n(n-1)
+2 * 2 l
+
+<
+
+
+n^2
+2 l+1
+
+. (1.8)
+
+BedingtaufdenTeilwahrscheinlichkeitsraumD= $\Omega$'-DistdieFolgedernverwendeten
+F'-WerteeinereinzufälligeFolgein{ 0 , 1 }lmitderZusatzeigenschaft,dassdieWertealle
+verschiedensind.Diesistab ergenaudieselb eSituation,diewirerhaltenwürden,wennwir
+imOriginalwahrscheinlichkeitsraummiteinerZufallsp ermutationFarb eitenwürden.Das
+heißt:
+Pr(SU〈b= 0〉= 1) = Pr'(SU〈b= 0〉= 1|D).
+
+Wegen(1.7) genügtes fürden BeweisderBehauptung,mitder AbkürzungC fürdas
+Ereignis{SU〈b= 0〉= 1}Folgendeszuzeigen:
+
+
+|Pr'(C|D)-Pr'(C)|\geq Pr'(D). (1.9)
+
+(^33) DiesistkeinewirklicheVerschlüsselungsfunktion,sondernnureinmathematischesKonstrukt.
+
+
+(Diesgiltimmer,völliggleichgültigwasCist.)Nunist
+
+Pr'(C)\geq Pr'(C\cap  D) = Pr'(C|D)Pr'(D) = Pr'(C|D)(1-Pr'(D))\geq Pr'(C|D)-Pr'(D).
+
+Andererseitsist
+
+
+Pr'(C) = Pr'(C|D)Pr'(D) + Pr'(C|D)Pr'(D)\geq Pr'(C|D) + Pr'(D).
+
+Damitist (1.9)unddamitdieBehauptunggezeigt.Ab hierarb eitenwiralsoin$\Omega$'mit
+einerZufallsfunktionF'.
+
+Wirüb erlegennun,wiedieArgumenteb estimmtwerden,fürdiedieZufallsfunktionF'
+aufgerufenwird.VonAF,b eiderVerschlüsselungvonzcundvonAG werdendemUnter-
+programmSim(.,F')(biszu)qKlartextex(1),...,x(q)mitt 1 ,...,tqBlö ckenzurVerschlüs-
+selungvorgelegt,indieserReihenfolge,mitt 1 +***+tq\geq n.Dab eiwerdeninSim(x(i),F')
+dietiArgumenter(i),...,(r(i)+ti-1) mod 2lfürF'b enutzt,füreinereinzufälligeZahl
+r(i)\in [2l].Wirb etrachtendasEreignis
+
+
+W:={unterdenalsArgumentfürF'b enutztenBlö ckengibtesWiederholungen},ündschätzenPr'(W)ab.DazudefinierenwirIntervalle
+
+
+Ii:={r(i),...,(r(i)+ti-1) mod 2l}
+
+(gegeb enenfallsmitWraparound,wennr(i)+ti> 2 l),für 1 \geq i\geq q.Für beliebig eWerte
+i < i'b etrachtenwirdasEreignis
+
+
+Wi,i':={Ii\cap  Ii'\not=\varnothing}.
+
+ Dann ist Pr'(Wi,i')\geq (ti+ti')/ 2 l.(Umdieszusehen,darfmansichIiundti' alsdurch
+denAblauf bisvorder Wahlvon r(i
+')
+schonfestgelegtvorstellen.Nurr(i
+')
+wirdzufällig
+gewählt.)Mit
+
+
+W\subseteq 
+
+⋃
+
+
+2 \geq i'\geq t
+
+⋃
+
+
+1 \geq i<i'
+
+
+Wi,i'ünd
+
+\sum 
+
+
+1 \geq i<i'ti\geq nerhaltenwir
+
+
+Pr'(W)\geq 
+
+\sum 
+
+
+1 \geq i<i'\geq q
+
+
+ti+ti'
+2 l
+
+\geq 
+
+1
+
+2 l+1
+
+\sum 
+
+
+1 \geq i,i'\geq q
+
+
+(ti+ti')
+
+=
+
+1
+
+2 l+1
+
+(
+
+\sum 
+
+
+1 \geq i'\geq q
+
+\sum 
+
+
+1 \geq i\geq q
+
+
+ti+
+
+\sum 
+
+
+1 \geq i\geq q
+
+\sum 
+
+
+1 \geq i'\geq q
+
+
+ti'
+
+)
+
+=
+
+
+2 qn
+2 l+1
+
+=
+
+
+qn
+2 l
+
+.
+
+MitC={SU〈b= 0〉= 1}wieob enkönnenwirkonstatieren:
+
+
+Pr'(C) = Pr'(C|W)Pr'(W) + Pr'(C|W)Pr'(W)\geq Pr'(C|W) +
+
+
+qn
+2 l
+
+. (1.10)
+
+
+Bemerkung: Hiersiehtman,wie derzweiteTeildes Fehlertermsdurch dieMöglichkeit
+einanderüb erschneidenderIntervalleIizustandekommt.WirsehenalsNächstes,dassdie
+FehlerwahrscheinlichkeitdesSpielsgenau\frac{1}{2} ist,wenndieseMöglichkeitausgeschlossenist.
+
+Wirzeigennun:Pr'(C |W) =\frac{1}{2} .DieIdeedab eiist,dassohneWiederholungenb eiden
+verschlüsseltenBlö ckenderAngreiferAkeinerleiMöglichkeithat,dieSituationenc= 0und
+c= 1zuunterscheiden.DieIdeeist,dassdieBlö cke,dieinSim(zc,F')aufgerufenwerden,
+inAFundAGsonstüb erhauptnichtvorkommen,alsoSim(zc,F')einreinzufälligerString
+derLänge|z 0 |=|z 1 |ist,selbstunterderBedingung,dassAdieVerschlüsselungderanderen
+inAFundAG vorkommendenKlartextblö ckekennt.FürdenBeweisgehenwirsorgfältig
+vor.
+
+Esgenügt,Folgendeszub eweisen:
+
+Behauptung2: Pr'({c=c'}\cap  W) = Pr'({c\not=c'}\cap  W).ümdieszub eweisen,zerlegenwirW indisjunkteTeile,dieAbläufenvonAF undAG
+(Schritte 1 und3)entsprechen,unddefiniereneinewahrscheinlichkeitserhaltendeBijektion
+zwischendiesenTeilen.Dab eiwirdeinAblaufmitc=c'aufeinenmitc\not=c'abgebildet
+undumgekehrt,so dassdie Wahrscheinlichkeitenjeweilsgleich sind.Darausfolgt dann
+Behauptung2.
+
+DieIdeeistrechteinfach:DurchdieBijektionwirdeinAblauf,indeminSchritt 2 Text
+z 0 verschlüsseltwird,aufeinenabgebildet,indemz 1 verschlüsseltwird,undumgekehrt,
+ohnedassderRateteilAG desAngreiferseinenUnterschiederkennenkann.Erwirdalso
+inb eidenFällendasselb eErgebnisbitc'zurückgeb en.DamitliegtAGmitseinemErgebnis
+c'genausooftrichtigwiefalsch.Detailsfolgen.
+
+BetrachteeineFestlegungderErgebnisseallerZufallsexp erimente(WahlvonF'undvon
+c,WahlderOffsetsr(i)b eidenAufrufenvonSim(.,F')),dieinW liegt,b eideralsokein
+Blo ckin{ 0 , 1 }l zweimalverschlüsseltwird.InSchritt 1 (Findungsphase)b erechnet AF
+
+zweiTextez 0 = (z 0 (0),...,zt(0)- 1 )undz 1 = (z 0 (1),...,zt(1)- 1 )undeinenDatensatzv.InSchritt
+2 (Auswahl)wirdderTextzcverschlüsselt;hierzuwirdr\in  2 lgewähltundeswird
+
+
+y'= (r,z 0 (c)\oplus_l F'(r),z( 1 c)\oplus_l (F'((r+ 1) mod 2l)),...,zt(-c) 1 \oplus_l (F'((r+t-1) mod 2l)))
+
+anAG üb ergeb en.DieBerechnungAG(v,Sim(.,F'),y')inSchritt 3 (Ratephase)liefert
+einBitc'.
+
+Wirändern die Zufallsergebnissegeschicktab. Unverändertbleib endie Ergebnisse der
+ZufallswahlvonOffsetsr(i)b eidenAufrufenvonSim(.,F').Zufallsbitcwirddurchsein
+Komplement 1 -cersetzt.F'wirddurcheineFunktionF''ersetzt,diewiefolgtdefiniert
+ist(mitbitweiser\oplus_l -Op erationaufBlö ckenderLängel):
+
+
+F''(r) :=z
+(0)
+0 \oplus_l z
+
+
+(1)
+0 \oplus_l F
+'(r),
+
+
+..
+
+.
+
+
+F''((r+t-1) mod 2l) :=z(0)t- 1 \oplus_l zt(1)- 1 \oplus_l F'((r+t-1) mod 2l);
+Außerhalbvon{r,(r+ 1) mod 2l,...,(r+t-1) mod 2l}sinddieWertewieb eiF'.
+
+Dassob eschrieb eneElementarereignis((r(i)) 1 \geq i\geq q, 1 -c,F'')hatdieselb eWahrscheinlich-
+keitwie((r(i)) 1 \geq i\geq q,c,F').Mansiehtauchsofort,dassdieselb eTransformation(1-c,F'')
+wiederin(c,F')zurückverwandelt.WieläuftUab,wennmandieverändertenErgebnis-
+seb enutzt?AblaufundErgebnis(z 0 ,z 1 ,v)vonAF (Schritt1)ändernsichnicht,dadie
+Blö cke,indenensichF'undF''unterscheiden,nichtabgefragtwerden.InSchritt 2 wird
+nunz 1 -cverschlüsselt,alsowirdy''=Sim(z 1 -c,F'')sowievanAG üb ergeb en.Ausder
+DefinitionvonF''folgt
+
+
+y''= (r,z(1 0 -c)\oplus_l F''(r),...,zt(1-- 1 c)\oplus_l F''((r+t-1) mod 2l))
+= (r,z( 0 c)\oplus_l F'(r),...,z(t-c) 1 \oplus_l F'((r+t-1) mod 2l))
+=y'.
+
+FürdendrittenTeilerhältAGalsodenInput(v,Sim(.,F''),y').Diedadurchausgelöste
+Berechnungläuftgenausoabwiedieb eimAufrufAG(v,Sim(.,F'),y'),daindenAnfragen
+anF''nurBlö ckevorkommen,aufdenensichF'undF''nichtunterscheiden.Alsokommt
+AGzudemselb enErgebnisc'.DahersinddieResultate[c=c']und[1-c=c']inSchritt
+4 unterschiedlich (einesist 0 und eines ist1),undb eide Berechnungen hab endieselb e
+Wahrscheinlichkeit.
+
+DurchSummationüb erallediesePaarevonEreignissenfolgtBehauptung2.Zusammen
+mitBehauptung 1 und(1.10)erhaltenwirdiegewünschteUngleichungfürfail(U):
+
+
+fail(U) = Pr(SU〈b= 0〉= 1)\geq Pr'(C) +
+
+
+n^2
+2 l+1
+\geq Pr'(C|W) +
+
+
+qn
+2 l
+
++
+
+
+n^2
+2 l+1
+
+=
+
+1
+
+2
+
++
+
+
+2 qn+n^2
+2 l+1
+
+.
+
+Mit(1.5)erhaltenwir:
+
+
+adv(U,B)\geq 
+
+
+1 + adv(A,S)
+2
+
+-
+
+(
+
+1
+
+2
+
++
+
+
+2 qn+n^2
+2 l+1
+
+)
+
+=
+
+
+adv(A,S)
+2
+
+-
+
+
+2 qn+n^2
+2 l+1
+
+,
+
+wiegewünscht.
+
+Schließlichmachenwirno chBemerkungenzurRechenzeitvonU.Esgehtdab eiumdiege-
+samteRechenzeitfürdasSpielGBU.Dab eimussUsämtlicheOrakelanfragenanFnotieren,
+alsoalleschonb enutztenArgumentesunddiezugehörigenWerteF(s), umb eierneu-
+temAuftauchendesArgumentssdenschoneinmalgewähltenWertausgeb enzukönnen
+
+
+(FunktionseigenschaftvonF).DieseArgumentesindalsqIntervalleIiangeordnet,diesich
+eventuellüb erschneiden.Umdiesezusp eichern,b enutztmanzumBeispieleinenbalancier-
+tenBinärbaum,indemAnfangs-undEndpunktederIntervalle[a,b]gesp eichertsind,für
+diedieWerteF(a),F(a+ 1),...,F(b)alleschongewähltwordensind.Zueinemsolchen
+Intervallsp eichertmandanndiezugehörigen F-WerteineinemArrayab.Damitlassen
+sichdieseOp erationenfürdieqOrakelanfragenderFormSim(x,F)inZeitO(q*log(q)*l)
+abarb eiten.(Derlog-FaktorrührtvondenSuchkostenimBaumher.)Insgesamtergibtsich
+fürGBUüb erdieRechenzeittvonAhinauseinZusatzaufwandvonO((n+q*log(q))l).
+
+
+
+## Beweise und Bemerkungen zu Kapitel 4
+Bemerkung A.1 zu Fakt 4.12
+Wenn man es genau nimmt, sind die Elemente von\mathbb{Z}_m  nicht Zahlen, sondern die
+Aquivalenzklassen (
+,,
+Restklassen'')
+
+[x] ={x+qm|q\in\mathbb{Z}}, für 0 \leq x < m,
+zurAquivalenzrelation x\equiv  y(modm). Die Operationen werden auf den Reprä-
+sentanten ausgefuhrt, zum Beispiel gilt in Z 11 , dass [4] + [7] = [11] = [0] ist, al-
+so sind [4] und [7] zueinander invers. Allgemeiner gilt in jedem\mathbb{Z}_m  die Gleichheit
+[a] + [m-a] = [m] = [0], d. h., [m-a] ist das additive Inverse-[a] zu [a]. Mul-
+tiplikativ gilt in\mathbb{Z}_m , dass [1] neutrales Element ist, und dass [1]*[1] = [1] und
+[m-1]*[m-1] = [m(m-2) + 1] = [1], also [1] und-[1] = [m-1] (triviale)
+Quadratwurzeln der 1 sind.
+Es ist bequem, die eckigen Klammern wegzulassen und für [ i] einfachizu schreiben.
+Man muss dann nur aufpassen, dass man Ausdrücke wie
+,,
+-1'' richtig interpretiert,
+nämlich als das additive Inverse von 1 in\mathbb{Z}_m , also [m-1].
+
+Beweisvon Satz 4.28:
+Die Existenz der Zerlegung in Primfaktoren beweist man durch Induktionüberx.
+Die Zahlx= 1 kann als leeres Produkt
+
+\prod 
+
+p\in \varnothing,pprimpgeschrieben werden. Eine andere
+Darstellung gibt es nicht. für x >1 sucht man einen echten Faktorx 1 vonx(d. h.
+1 < x 1 < xundx 1 y 1 =xfür einy 1 ), dann einen echten Faktorx 2 vonx 1 usw., bis
+man einen echten Faktorxkvonxerhält, der selber keinen echten Faktor hat. Dieses
+xkist ein Primfaktor vonx, man kann alsox=x'*xkschreiben. Aufx'wendet man
+die Induktionsvoraussetzung an.
+
+Die Eindeutigkeit sieht man wie folgt mit einem indirekten Beweis: Annahme: Es
+gibt einxmit unterschiedlichen Primfaktorzerlegungen. Wähle das kleinste solche
+xund unterschiedliche Primfaktorzerlegungenp 1 ***pk undq 1 ***ql vonx. Aus der
+Minimalität vonxfolgt, dass in der Listep 1 ,...,pk keine der Primzahlenq 1 ,...,ql
+vorkommt. Nun teiltq 1 die Zahlx=p 1 ***pk. Nach Fakt 4.27, wiederholt angewendet,
+teiltq 1 einen der Faktorenp 1 ,...,pk, etwapi. Weilq 1 undpiPrimzahlen sind, muss
+q 1 =pigelten, ein Widerspruch. 
+
+Beweisvon Fakt 4.16:
+
+,,
+\Rightarrow '': Es seiabmodm= 1. Das heißt: Es gibt einq\in\mathbb{Z}mitab-qm= 1. Wenn nun
+eine Zahld >0 sowohlaals auchmteilt, dann teiltdauchab-qm= 1, also ist
+d= 1. Also sindaundmteilerfremd.
+
+
+,,
+
+\Leftarrow '':aundmseien teilerfremd. Nach Lemma 4.6(a) gibt esx,y\in\mathbb{Z}mitxa+ym= 1.
+Setzeb:=xmodm. Dann gilt:
+
+(a*b) modm= (a*(xmodm)) modm=axmodm= 1,
+d. h.bist ein multiplikatives Inverses vona. 
+
+Beweis von Fakt 4.18: Natürlich ist die 1 das neutrale Element der Multiplikation
+in\mathbb{Z}_m  und in $\mathbb{Z}^*$ m. Wir bemerken zuerst, dass $\mathbb{Z}^*$ m unter Multiplikation modulo m
+abgeschlossen ist: Seienxund yzumteilerfremd. Nach Lemma 4.6(a) kann man
+1 =sx+tm=uy+vmschreiben, und erhält daraus
+
+1 = (sx+tm)(uy+vm) = (su)(xy) + (sxv+tuy+tvm)m.
+Daraus folgt, dass jeder gemeinsame Teiler vonxyundmauch 1 teilen muss, also ist
+ggT(xy,m) = 1.
+
+Nach Fakt 4.16 hat jedes Elementxvon $\mathbb{Z}^*$ mein multiplikatives Inversesy\in\mathbb{Z}m. Weil
+natürlichxauch das Inverse vonyist, folgt nach Fakt 4.16 auch, dassy\in\mathbb{Z}*mist.
+
+Kommutativität ist klar. 
+
+Beweisvon Fakt 4.19: Die zweiteAquivalenz ist klar: Der Ring \mathbb{Z}_m ist nach Definition
+ein Körper genau dann wenn jedes Element von\mathbb{Z}_m -{ 0 }ein multiplikatives Inverses
+besitzt.
+
+ErsteAquivalenz:
+
+,,
+
+\Rightarrow '': Sei meine Primzahl. Dann ist jedesa \in  { 1 ,...,m- 1 }= \mathbb{Z}_m -{ 0 } zum
+teilerfremd; nach der Definition folgt $\mathbb{Z}^*$ m=\mathbb{Z}_m -{ 0 }.
+
+,,
+\Leftarrow '': Seimeine zusammengesetzte Zahl, etwa durchkmit 2\leq k < mteilbar. Dann
+ist k = ggT(k,m) > 1, also kannk nach Fakt 4.16 kein multiplikatives Inverses
+modulomhaben. (Man sieht auch direkt, dasskbmodm=kb-qmdurchkteilbar
+ist, also für kein bgleich 1 sein kann.) 
+
+Beweisvon Fakt 4.21: Wir beschränken uns darauf, die Bijektivität zu beweisen. Als
+erstes bemerkt man, dass\mathbb{Z}_m nund\mathbb{Z}_m \timesZnbeide genaum*nElemente haben. Daher
+reicht es zu zeigen, dass die Abbildung \Phi  injektiv ist. Seien dazu 0\leq x\leq y < mn
+beliebig mit \Phi (x) = \Phi (y). Das heißt:xmodm=ymodmundxmodN=ymodN.
+Das wiederum heißt, dassm|(y-x) undn|(y-x) gilt. Nach Fakt 4.8 folgt, dass
+
+
+mnTeiler vony-xist. Nun ist 0\leq y-x < mn, worausy-x= 0, alsox=y, folgt.
+Damit ist die Injektivität von \Phi  bewiesen. 
+
+Beweisvon Prop. 4.22: Seix\in\mathbb{Z}*mn. Dann gibt es in $\mathbb{Z}^*$ mnein Inversesymitxymod
+mn= 1. Daraus folgtxymodm= 1, also istx modm\in\mathbb{Z}*m. Die entsprechende
+Aussage für nergibt sich analog. - Umgekehrt müssen wir zeigen, dass für u\in\mathbb{Z}*mund
+v\in\mathbb{Z}*ndie eindeutig bestimmte Zahlx\in\mathbb{Z}mmit \Phi (x) = (xmodm,xmodn) = (u,v)
+teilerfremd zumnist. Wähle Inversesvonuin $\mathbb{Z}^*$ mundtvonvin $\mathbb{Z}^*$ nund wähle nach
+dem Chinesischen Restsatzymit \Phi (y) = (s,t). Dann giltxymodm=usmodm= 1
+undxymodn=vtmodn= 1, also nach der Eindeutigkeitsaussage im Chinesischen
+Restsatzxymodmn= 1, alsox\in\mathbb{Z}*mn. 
+
+Beweisvon Satz 4.25:
+Man geht genauso vor wie im Beweis des kleinen Satzes von Fermat. Sei xmit
+ggT(m,x) = 1 gegeben. Da wir modulomrechnen, können wirxdurchxmodm
+ersetzen, d. h., wir können annehmen, dass 1\leq x < mgilt. Betrachte die Abbildung
+gx: $\mathbb{Z}^*$ m 3 s7\rightarrow xsmodm\in\mathbb{Z}*m. (Um zu sehen, dass diese Abbildung wohldefiniert
+ist, erinnere man sich, dass mitxund sauchxsteilerfremd zumist.) Diese Ab-
+bildung ist injektiv, weil für das multiplikative Inverse yvonxin $\mathbb{Z}^*$ mdie Gleichung
+y*gx(s) modm=yxsmodm=sgilt. Weil $\mathbb{Z}^*$ mendlich ist, muss die Abbildunggx
+sogar bijektiv sein. Das heißt:{gx(s)|s\in\mathbb{Z}*m}= $\mathbb{Z}^*$ m. Daher:
+
+\prod 
+s\in\mathbb{Z}*m
+s\equiv 
+\prod 
+
+s\in\mathbb{Z}*m
+gx(s)\equiv 
+\prod 
+
+s\in\mathbb{Z}*m
+xs\equiv x\varphi(m)*
+\prod 
+
+s\in\mathbb{Z}*m
+s (modm).
+Die Zahl (
+
+\prod 
+
+s\in\mathbb{Z}*ms) modmist teilerfremd zum, hat also ein multiplikatives Inverses
+z in $\mathbb{Z}^*$ m. Wenn wir beide Seiten der Gleichung mit z multiplizieren, erhalten wir
+1 \equiv x\varphi(m) (modm). 

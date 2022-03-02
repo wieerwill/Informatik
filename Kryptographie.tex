@@ -441,47 +441,28 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Bemerkung: Das informationstheoretisch sichere Vernam-Kryptosystem ist nutzlos: Aus Kenntnis von $x\in\{0,1\}^l$ und $y=e(x,k)$ für ein einziges Paar $(x,k)\in X\times K$ kann Eva den Schlüssel $k=x\oplus_l y$ berechnen. Gleiches gilt für das Cäsar-System und das Vigenère-System.
 
-    Mit dem nächsten Begriff erfassen wir folgende Situation: Eva kennt eine ganze Folge von Klartext-Chiffretext-Paaren bezüglich des (ihr unbekannten) Schlüssels k. Dabei kann sie sich die Klartexte sogar selbst herausgesucht haben. Wir wollen ,,possibilistische Sicherheit'' so definieren, dass sie trotzdem bei beliebigem gegebenem weiteren Chiffretext y keinen Klartext ausschließen kann.
+    \textbf{Definition} Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2, wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k'\in K$ existiert mit $e(x_i,k)=e(x_i,k')$ für alle $1\leq i< r$ und $e(x_r,k')=y$.
 
-    Definition 2.1 Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2 ,wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k'\in K$ existiert mit $e(x_i,k)=e(x_i,k')$ für alle $1\leq i< r$ und $e(x_r,k')=y$.
+    \textbf{Proposition} Für jede nichtleere Menge $X$ ist das Substitutionskryptosystem auf X possibilistisch sicher. 
+    
+    \textbf{Proposition} Sei $S=(X,K,Y,e,d)$ ein Kryptosystem, das possibilistisch sicher ist bzgl. Szenarium 2. Dann ist $\{e(.,k)|k\in K\}$ die Menge aller injektiven Abbildungen von X nach Y.
 
-    Proposition 2.2 Für jede nichtleere Menge $X$ ist das Substitutionskryptosystem (Def.1.9) auf X possibilistisch sicher. (Erinnerung: $K=P_X=\{\pi|\pi\text{ ist Permutation von }X\}$ und $e(\pi,x)=\pi(x)$.)
-    Beweis: Seien $x_1,x_2,...,x_r\in X$ paarweise verschieden, $k\in K=P_X$ und $y\in Y\{e(x_i,k)|1\leq i<r\}$. Aufgrund der Dechiffrierbedingung sind die Geheimtexte $e(x_i,k)$ für $1\leq i<r$ paarweise verschieden. Also gilt $|Y\backslash(\{y\}\cup\{e(x_i,k)| 1\leq i<r\})|=|Y|-r=|X|-r=|X\backslash\{x_1 ,...,x_r\}|$, und es existiert eine Bijektion $f:X\{x_1,...,x_r\}\rightarrow Y\backslash(\{y\}\cup\{e(x_i,k)| 1\leq i<r\})$.
-    Definiere nun $\pi:X\rightarrow Y$ durch $\pi(x) =\begin{cases} e(x_i,k)\quad\text{ falls }\exists i\in\{1,...,r-1\}:x=x_i \\ y\quad\text{ falls } x=x_r \\ f(x)\quad\text{ sonst}\end{cases}$.
-    Dann ist $\pi$ eine Bijektion und damit eine Permutation von X (da $X=Y$).
+    Ein Kryptosystem, das possibilistisch sicher bzgl. Szenarium 2 ist, hat mindestens $|\{\pi |\pi :X\rightarrow Y\text{ ist injektiv}\}|=\frac{|Y|!}{(|Y|-|X|)!} \geq |X|!$ Schlüssel. Mit $X=\{0,1\}^{128}$ gibt es $\geq 2^{128}!$ viele Schlüssel. Für die Speicherung eines Schlüssels braucht man durchschnittlich (Es gilt $log_2(N!)>N(log_2 N-log_2 e)> N(log_2 N- 1.45)$) $log(2^{128}!)> 2^{128}*(128- 1.45)> 2^{134}>(10^3 )^{13.4} > 10^{40}$ viele Bits, eine unpraktikable Zahl. Also können wir in realen Situationen im Szenarium 2 keine possibilistische Sicherheit, geschweige denn informationstheoretische Sicherheit erhalten.
 
-    Proposition 2.3 Sei $S=(X,K,Y,e,d)$ ein Kryptosystem, das possibilistisch sicher ist bzgl. Szenarium 2. Dann ist $\{e(.,k)|k\in K\}$ die Menge aller injektiven Abbildungen von X nach Y.
-    Beweis: Aus der Dechiffrierbedingung folgt sofort, dass alle Abbildungen $e(.,k)$ injektiv sind.
-    Sei nun $\pi:X\rightarrow Y$ eine beliebige injektive Abbildung. Weiter gelte $X=\{x_1,...,x_t\}$. Wir konstruieren induktiv Schlüssel $k_1,...,k_t$ mit $\forall i\in\{1,...,r\}:e(x_i,k_r)=\pi(x_i)$.
-    Das heißt: Schlüssel $k_r$ realisiert $\pi$ eingeschränkt auf $\{x_1,...,x_r\}$.
-
-    Da S auch possibilistisch sicher bzgl. Szenarium 1 ist, existiert der Schlüssel $k_1$ wie gewünscht. Die Schlüssel $k_r$ für $r=2,...,t$ ergeben sich nacheinander, indem man wiederholt Definition 2.1 auf $\{x_1,...,x_r\},k_{r-1}$ und $y=\pi(x_r)$ anwendet. Schließlich gilt $e(.,k_t)=\pi$.
-
-    Im Fall $X=Y$ folgt, dass nur das Substitutionskryptosystem possibilistisch sicher bzgl. Szenarium 2 ist.
-
-    Ein Kryptosystem, das possibilistisch sicher bzgl. Szenarium 2 ist, hat also mindestens $|\{\pi |\pi :X\rightarrow Y\text{ ist injektiv}\}|=\frac{|Y|!}{(|Y|-|X|)!} \geq |X|!$ Schlüssel. Mit $X=\{0,1\}^{128}$ (das ist durchaus realistisch!) gibt es also $\geq 2^{128}!$ viele Schlüssel. Für die Speicherung eines Schlüssels braucht man also durchschnittlich (Es gilt $log_2(N!)>N(log_2 N-log_2 e)> N(log_2 N- 1.45)$) $log(2^{128}!)> 2^{128}*(128- 1.45)> 2^{134}>(10^3 )^{13.4} > 10^{40}$ viele Bits, eine völlig unpraktikable Zahl.
-    Also können wir in realen Situationen im Szenarium 2 keine possibilistische Sicherheit, geschweige denn informationstheoretische Sicherheit erhalten.
-
-    Wir werden uns in diesem Kapitel also darauf verlassen müssen, dass Eva nur beschränkte Rechenressourcen hat, um einen praktikablen Angriff zu starten. Auf der anderen Seite wollen wir jetzt auch annehmen, dass Alice und Bob mit Computerhilfe verschlüsseln und entschlüsseln wollen, d.h. dass wir effiziente Algorithmen für die Ver- und Entschlüsselung benötigen. Damit wird es sinnvoll anzunehmen, dass Klar- und Geheimtexte und Schlüssel Bitvektoren sind.
-
-    Definition 2.4 Sei $l>0$. Ein l-Block-Kryptosystem ist ein Kryptosystem $S=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ mit $K\subseteq \{0,1\}^s$ für ein $s>0$.
-
-    Beispiele für l-Block-Kryptosysteme sind das Vernam-System der Länge l und Substitutionskryptosystem mit $X=\{0,1\}^l$, falls Permutationen als Bitvektoren kodiert sind. Wir sprechen dann vom Substitutionskryptosystem mit Parameter $l$.
-    Eine weitere Klasse von Verfahren wird im nächsten Abschnitt vorgestellt.
+    \textbf{Definition} Sei $l>0$. Ein l-Block-Kryptosystem ist ein Kryptosystem $S=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ mit $K\subseteq \{0,1\}^s$ für ein $s>0$.
 
     \subsection{Substitutions-Permutations-Kryptosysteme (SPKS)}
-    Substitutions-Permutations-Kryptosysteme bilden eine große Familie von praktisch relevanten Kryptosystemen, zu denen auch die Verfahren des Data Encryption Standard (DES) und des Advanced Encryption Standard (AES) gehören.
-
     Grundsätzlich handelt es sich um $mn$-Block-Kryptosysteme. Dabei werden die Klartexte $x=(x_0,...,x_{mn-1})\in\{ 0,1\}^{mn}$ als m-Tupel $(x^{(0)},x^{(1)},...,x^{(m-1)})$ von Bitvektoren der Länge n betrachtet. Dabei gilt $x(i)=(x_{in},x_{in+1},...,x_{(i+1)n-1})$, für $0\leq i<m$.
-    Ein Baustein der Verschlüsselungs- und Entschlüsselungsfunktion bei diesen Systemen sind Bitpermutationen auf Bitstrings der Länge l: Sei $\beta$ eine Permutation von $\{0,...,l-1\}$ und $x\in\{0,1\}^l$. Dann bezeichnet $x^{\beta}$ den Bitvektor $(x_{{\beta}(0)},x_{{\beta}(1)},...,x_{{\beta}(l-1)})$. Kurz: $x^{\beta}_{(i)}=x_{{\beta}(i)}$, für $0\leq i<l$.
-    Sehr oft werden wir annehmen, dass $\beta$ selbst invers ist, dass also ${\beta}^{-1}=\beta$ ist (oder ${\beta}({\beta}(i))=i$ für $0\leq i<l$). Dann erhält man $x^{\beta}$ aus x, indem man $x(i)$ an die Stelle ${\beta}(i)$ des neuen Vektors schreibt.
+    Ein Baustein der Verschlüsselungs- und Entschlüsselungsfunktion bei diesen Systemen sind Bitpermutationen auf Bitstrings der Länge l. Sei $\beta$ eine Permutation von $\{0,...,l-1\}$ und $x\in\{0,1\}^l$. Dann bezeichnet $x^{\beta}$ den Bitvektor $(x_{{\beta}(0)},x_{{\beta}(1)},...,x_{{\beta}(l-1)})$. 
+    Kurz: $x^{\beta}_{(i)}=x_{{\beta}(i)}$, für $0\leq i<l$.
+    Sehr oft werden wir annehmen, dass $\beta$ selbst invers ist, dass also ${\beta}^{-1}=\beta$ ist für $0\leq i<l$). Dann erhält man $x^{\beta}$ aus x, indem man $x(i)$ an die Stelle ${\beta}(i)$ des neuen Vektors schreibt.
 
-    Definition 2.5 Ein Substitutions-Permutations-Netzwerk (SPN) ist ein Tupel $N=(m,n,r,s,S,\beta,\kappa)$ wobei
+    \textbf{Definition} Ein Substitutions-Permutations-Netzwerk (SPN) ist ein Tupel $N=(m,n,r,s,S,\beta,\kappa)$ wobei
     \begin{itemize*}
-        \item die positiven ganzen Zahlen $m,n,r$ und $s$ die Wortanzahl $m$, die Wortlängen, die Rundenzahl r und die Schlüssellänge s angeben,
-        \item $S:\{0,1\}^n\rightarrow\{0,1\}^n$ eine bijektive Funktion ist (,,Substitution'',die S-Box),
-        \item ${\beta}:\{0,...,mn-1\}\rightarrow\{0,...,mn-1\}$ eine selbstinverse Permutation (die Bitpermutation) ist und
-        \item $\kappa :\{0,1\}s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$ die Rundenschlüsselfunktion ist.
+        \item positive ganzen Zahlen $m,n,r$ und $s$ die Wortanzahl, Wortlängen, Rundenzahl und Schlüssellänge
+        \item $S:\{0,1\}^n\rightarrow\{0,1\}^n$ eine bijektive Funktion (S-Box)
+        \item ${\beta}:\{0,...,mn-1\}\rightarrow\{0,...,mn-1\}$ selbstinverse Permutation (Bitpermutation)
+        \item $\kappa :\{0,1\}s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$ Rundenschlüsselfunktion
     \end{itemize*}
 
     Das zu N gehörende Substitutions-Permutations-Kryptosystem (SPKS) ist das mn-Block-Kryptosystem $B(N)=(\{0,1\}^{mn},\{0,1\}^s,\{0,1\}^{mn},e,d)$, das durch folgende Operationen beschrieben ist:
@@ -495,66 +476,49 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
             \item $w=v^{\beta}$ (Bitpermutation auf dem Gesamtwort der Länge mn)
             \item $u=w\oplus_{mn} \kappa (k,i)$ (XOR mit dem Rundenschlüssel)
             \item Schlussrunde: $v(j)=S(u(j))$ für $0\leq j<m$
-            \item Ausgabe: $y=v\oplus \kappa (k,r)$ (wie gewöhnliche Runde, ohne Bitpermutation)
+            \item Ausgabe: $y=v\oplus \kappa (k,r)$ (ohne Bitpermutation)
         \end{enumerate*}
     \end{enumerate*}
 
     Dechiffrierung: $d(y,k)$ wird aus y und k nach demselben Verfahren berechnet, wobei jedoch
     \begin{enumerate*}
-        \item die S-Box (die eine Permutation ist) durch ihre Inverse $S^{-1}$ ersetzt wird und
+        \item die S-Box durch ihre Inverse $S^{-1}$ ersetzt wird und
         \item die Rundenschlüsselfunktion $\kappa$ ersetzt wird durch die Funktion $\kappa':\{0,1\}^s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$, $(k,i)\rightarrow\begin{cases} \kappa (k,r-i)\quad\text{ für } i\in\{0,r\}\\ \kappa(k,r-i)^{\beta} \quad\text{ für } 0<i<r \end{cases}$
     \end{enumerate*}
 
     Vorteil der Struktur: Man kann dieselbe Hardware für Verschlüsselung und Entschlüsselung benutzen. Bei der Entschlüsselung läuft der Vorgang rückwärts ab, wobei die Runden anders gruppiert sind. Anstelle von S verwendet man $S^{-1}$. Da $\beta$ selbst invers ist, kann man für die Permutation auch bei der Dekodierung $\beta$ verwenden. Da Permutation und Schlüsselanwendung in den Runden vertauscht sind, muss man auf die Rundenschlüssel der ,,inneren'' Runden bei der Dekodierung auch noch $\beta$ anwenden.
 
-    Ein typischer Vertreter dieser Art Kryptosystem ist DES (bzw. sind die Chiffren der DES-Familie). Die DES-Version mit Blocklänge 64 und effektiver Schlüsselbreite 56 (das heißt, dass der Schlüsselraum Größe $2^{56}$ hat) wurde im Jahr 1977 als Standard für nicht geheime Dokumente in den USA publiziert. ,,Lineare Kryptanalyse'' ist eine Methode, solche Verfahren zu attackieren. Nach Weiterentwicklung der Methode gelang 1999 die Entschlüsselung einer DES-verschlüsselten Nachricht in weniger als einem Tag, mit einem Verbund von 100000 Arbeitsplatzrechnern, die im Wesentlichen alle Schlüssel durchprobierten. Dabei wurden über 240 Milliarden Schlüssel pro Sekunde getestet. Stärkere Varianten wie Triple-DES werden auch heute noch eingesetzt.
-
-    Beispiel 2.6 Die Wortanzahl ist $m=3$, die Wortlänge $n=4$, die Rundenzahl $r=3$, die Schlüssellänge $s=24=6*n$, und $\kappa (k,i)=k^{(i)}k^{(i+1)}k^{(i+2)}$. Die Bitpermutation $\beta$ vertauscht die Bits $(0,4),(1,5),(2,8),(3,9),(6,10)$ und $(7,11)$ und ist damit selbst invers. Die S-Box ist gegeben durch die folgende zweizeilige Tabelle:
-    \begin{tabular}{c|c|c}
-        | b  | 0000 | 0001 | 0010 | 0011 | 0100 | 0101 | 0110 | 0111 | 1000 | 1001 | 1010 | 1011 | 1100 | 1101 | 1110 | 1111 \\
-        | S(b) | 0101 | 0100 | 1101 | 0001 | 0011 | 1100 | 1011 | 1000 | 1010 | 0010 | 0110 | 1111 | 1001 | 1110 | 0000 | 0111
+    \textbf{Beispiel} Wortanzahl $m=3$, Wortlänge $n=4$, Rundenzahl $r=3$, Schlüssellänge $s=24=6*n$ und $\kappa (k,i)=k^{(i)}k^{(i+1)}k^{(i+2)}$. Die Bitpermutation $\beta$ vertauscht die Bits $(0,4),(1,5),(2,8),(3,9),(6,10)$ und $(7,11)$ und ist damit selbst invers. Die S-Box ist gegeben durch die folgende zweizeilige Tabelle
+    \begin{tabular}{c|c|c|c|c|c|c|c|c}
+        b& 0000& 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111 \\
+        S(b) & 0101 & 0100 & 1101 & 0001 & 0011 & 1100 & 1011 & 1000 \\\hline
+        b &  1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111 \\
+        S(b) & 1010 & 0010 & 0110 & 1111 & 1001 & 1110 & 0000 & 0111 
     \end{tabular}
-
-    Für $x= 0000 1111 0000$ und $k=0000 0001 0010 0011 0100 0101$ ergeben sich nacheinander
+    Für $x= 0000 1111 0000$ und $k=0000 0001 0010 0011 0100 0101$ ergeben sich
     \begin{enumerate*}
         \item $\kappa (k,0) = 0000 0001 0010$ und damit $u= 0000 1110 0010$
-        \item
-        \begin{itemize*}
             \item $i=1$ $v=0101 0000 1101$, $w=0011 0101 0100$, $\kappa (k,1) = 0001 0010 0011$ und $u=0010 0111 0111$
             \item $i=2$ $v=1101 1000 1000$, $w=1010 1100 0100$, $\kappa (k,2) = 0010 0011 0100$ und damit $u= 1000 1111 0000$
-        \end{itemize*}
         \item $v=1010 0111 0101$, $\kappa (k,3) = 0011 0100 0101$ und damit $y=1001 0011 0000$
     \end{enumerate*}
 
-
     \subsubsection{Einschub: Endliche Körper}
-    Zur Vorbereitung der Beschreibung von AES und für die spätere Verwendung in asymmetrischen Systemen diskutieren wir kurz die Konstruktion von endlichen Körpern mit $2^k$ Elementen. Dies ist eine Spezialisierung einer allgemeinen Konstruktion, die es erlaubt, aus einem Körper mit $q$ Elementen einen mit $q^k$ Elementen zu konstruieren.
-    Die Struktur $\mathbb{Z}_2=(\{0,1\},\oplus,\odot, 0 ,1)$ ist ein Körper, wobei $\oplus$ für die XOR-Operation und für $\wedge$ (AND) steht. (Körper: Addition, Multiplikation mit den üblichen Gesetzen, d.h. $(F,\oplus ,0)$ ist kommutative Gruppe, ist assoziativ und hat 1 als neutrales Element, die Distributivgesetze gelten, und Elemente $\not=0$ haben ein multiplikatives Inverses.) Man beachte, dass in $\mathbb{Z}_2$ die Subtraktion dasselbe ist wie die Addition: $a\oplus a= 0$ für $a=0,1$.
-
-    Zu einem endlichen Körper $F$ (zentrales Beispiel:$\mathbb{Z}_2$) bildet man den Polynomring $F[X]$. Vorstellen sollte man sich diesen als die Menge aller ,,formalen Ausdrücke'' $a_n* X^n+...+a_2 *X^2 +a_1 *X+a_0$, für $n\geq 0$ und $a_n,...,a_1,a_0\in F$. Ein solcher Ausdruck wird mit seiner Koeffizientenfolge $(...,0,0,a_n,...,a_1,a_0)$ (gegebenenfalls künstlich als unendliche Folge geschrieben) identifiziert. Normalerweise lässt man Terme mit Koeffizient 0 weg. Über $\mathbb{Z}_2$ schreibt man wie üblich oft nur den Bitstring $a_n...a_1a_0$ ohne Klammern und Kommas.
+    Die Struktur $\mathbb{Z}_2=(\{0,1\},\oplus,\odot, 0 ,1)$ ist ein Körper, wobei $\oplus$ für die XOR-Operation und für $\wedge$ (AND) steht. 
+    Zu einem endlichen Körper $F$ bildet man den Polynomring $F[X]$. Ein solcher Ausdruck wird mit seiner Koeffizientenfolge $(...,0,0,a_n,...,a_1,a_0)$ identifiziert. Normalerweise lässt man Terme mit Koeffizient 0 weg. Über $\mathbb{Z}_2$ schreibt man wie üblich oft nur den Bitstring $a_n...a_1a_0$ ohne Klammern und Kommas.
 
     Beispiel: In $\mathbb{Z}_2[X]$ liegen die Polynome $g=01011=(..., 0 , 1 , 0 , 1 ,1) =X^3 +X+1$ und $h=0110=(..., 0 , 1 , 1 ,0) =X^2 +X$.
 
-    Der Grad eines solchen Polynoms ist n, wenn n maximal mit $a_n\not = 0$ ist. Falls alle Koeffizienten gleich 0 sind (f ist das ,,Nullpolynom'', man schreibt 0), ist der Grad $-\infty$. Man addiert und subtrahiert solche Polynome wie üblich (d.h. komponentenweise) und multipliziert sie wie üblich (aus multiplizieren, Koeffizienten bei der selben X-Potenz aufsammeln). Als geschlossene Formel: Das Produkt von $(...,0,0,a_n,...,a_1,a_0)$ und $(...,0,0,b_m,...,b_1,b_0)$ ist $(...,0,0,c_{n+m},...,c_1,c_0)$ mit $c_k=\sum_{0\geq i\geq n; 0\geq j\geq m; i+j=k} a_i*b_j$.
+    Der Grad eines solchen Polynoms ist n, wenn n maximal mit $a_n\not = 0$ ist. Falls alle Koeffizienten gleich 0 sind  ist der Grad $-\infty$. Man addiert und subtrahiert solche Polynome wie üblich und multipliziert sie wie üblich.
 
     Beispiel: Die Summe von g und h ist $g+h=01101=(...,0,1,1,0,1)$, ihr Produkt ist $g*h=X^5+X^4+X^3+X=(...,0,0,1,1,1,0,1,0)=111010$.
 
-    Mit diesen Operationen erhält $F[X]$ die Struktur eines Rings: Die Addition ist Gruppe mit neutralem Element 0 (Nullpolynom), die Multiplikation ist assoziativ mit neutralem Element $1=(...,0,0,0,1)$, die Distributivgesetze gelten.
+    Mit diesen Operationen erhält $F[X]$ die Struktur eines Rings: Die Addition ist Gruppe mit neutralem Element 0, die Multiplikation ist assoziativ mit neutralem Element $1=(...,0,0,0,1)$, die Distributivgesetze gelten.
     Als Grundmenge des zu konstruierenden Körpers verwenden wir $F^k$, die Menge aller k-Tupel über F. Dies entspricht der Menge aller Polynome vom Grad bis zu $k-1$. Diese Menge hat genau $|F|^k$ Elemente. Im Fall $F=\mathbb{Z}_2$ erhalten wir $\{0,1\}^k$, die Menge aller Bitstrings der Länge k.
 
-    Als Addition $\oplus$ benutzen wir die gewöhnliche Addition von Polynomen, also die komponentenweise Addition der Tupel. Bei $F=\mathbb{Z}^k_2$ ist dies einfach das bitweise XOR. Wir geben die Additionstafel für $k=4$ an. Die Elemente des Körpers $GF(2^4)$ werden dabei wir üblich als Hexadezimalziffern geschrieben. Achtung: Man muss die Einträge richtig interpretieren, nämlich als Bitstrings, nicht als Zahlen: $5\oplus C=0101\oplus 1100=1001=9$.
+    Als Addition $\oplus$ benutzen wir die gewöhnliche Addition von Polynomen, also die komponentenweise Addition der Tupel. Bei $F=\mathbb{Z}^k_2$ ist dies einfach das bitweise XOR. Wir geben die Additionstafel für $k=4$ an. Die Elemente des Körpers $GF(2^4)$ werden dabei wir üblich als Hexadezimalziffern geschrieben: $5\oplus C=0101\oplus 1100=1001=9$.
 
-    \begin{tabular}{c|c|c}
-        | $\oplus$ | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F \\\hline
-        | 0    | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F     \\
-        | 1    | 1  | 0  | 3  | 2  | 5  | 4  | 7  | 6  | 9  | 8  | B  | A  | D  | C  | F  | E     \\
-        | 2    | 2  | 3  | 0  | 1  | 6  | 7  | 4  | 5  | A  | B  | 8  | 9  | E  | F  | C  | D     \\
-        | ...
-    \end{tabular}
-
-    Die Multiplikation $\odot$ ist etwas komplizierter.
-
-    Es wird ein irreduzibles Polynom $f=X^k+a_{k-1}* X^{k-1}+...+a_1*X+a_0$ vom Grad k (mit ,,Leitkoeffizient'' $a_k=1$) benötigt, also ein Koeffiziententupel $(1,a_{k-1},...,a_1,a_0)$ mit der Eigenschaft, dass man nicht $f=f_1*f_2$ schreiben kann, für Polynome $f_1$ und $f_2$, die Grad $\geq 1$ haben. Man kann zeigen, dass es für jedes $k\geq 2$ stets solche Polynome gibt. Sie können mit randomisierten Algorithmen effizient gefunden werden. Hier einige Beispiele für $F=\mathbb{Z}_2$. Wie üblich schreibt man die Koeffizientenfolge als Bitstring. Dieser Bitstring kann dann auch als natürliche Zahl (dezimal geschrieben) interpretiert werden.
+    Die Multiplikation $\odot$ ist etwas komplizierter. Es wird ein irreduzibles Polynom $f=X^k+a_{k-1}* X^{k-1}+...+a_1*X+a_0$ vom Grad k (mit ,,Leitkoeffizient'' $a_k=1$) benötigt, also ein Koeffiziententupel $(1,a_{k-1},...,a_1,a_0)$ mit der Eigenschaft, dass man nicht $f=f_1*f_2$ schreiben kann, für Polynome $f_1$ und $f_2$, die Grad $\geq 1$ haben. Man kann zeigen, dass es für jedes $k\geq 2$ stets solche Polynome gibt. Sie können mit randomisierten Algorithmen effizient gefunden werden. Hier einige Beispiele für $F=\mathbb{Z}_2$. Wie üblich schreibt man die Koeffizientenfolge als Bitstring. Dieser Bitstring kann dann auch als natürliche Zahl (dezimal geschrieben) interpretiert werden.
 
     \begin{tabular}{c|c|c}
         | k  | irreduzibles Polynom vom Grad k über $\mathbb{Z}_2$ | Kurzform | Zahl \\\hline
@@ -869,7 +833,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
         \item für jedes $x\in I$ eine Zufallsgröße $A(x):M\rightarrow Z,m\rightarrow A^m(x)$.
     \end{itemize*}
 
-    Beispiel 2.8 Betrachte den folgenden Algorithmus:
+    \textbf{Beispiel}2.8 Betrachte den folgenden Algorithmus:
     \begin{itemize*}
         \item $A(x:\{0,1\}^4):\{0,1\}$    // nach dem Doppelpunkt: Typ der Eingabe bzw. Ausgabe
         \item $b_0 \leftarrow flip()$
@@ -911,13 +875,13 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wir modellieren Verfahren, die eine Chiffre benutzen dürfen und dann ,,raten'' sollen, ob es eine Chiffre zu einem BKS $B$ oder eine Zufallspermutation ist, als randomisierte Algorithmen.
 
-    Definition 2.9 Ein l-Unterscheider ist ein randomisierter Algorithmus $U(F:\{0,1\}^l\rightarrow\{0,1\}^l):\{0,1\}$, dessen Laufzeit bzw. Ressourcenaufwand durch eine Konstante beschränkt ist.
+    \textbf{Definition} 2.9 Ein l-Unterscheider ist ein randomisierter Algorithmus $U(F:\{0,1\}^l\rightarrow\{0,1\}^l):\{0,1\}$, dessen Laufzeit bzw. Ressourcenaufwand durch eine Konstante beschränkt ist.
 
     Das Argument des l-Unterscheiders ist also eine Chiffre $F$. Diese ist als ,,Orakel'' gegeben, das heißt als Prozedur, die nur ausgewertet werden kann, deren Programmtext $U$ aber nicht kennt. Das Programm $U$ kann $F$ endlich oft aufrufen, um sich Paare wie in (2.4) zu besorgen. Danach kann $U$ noch weiter rechnen, um zu einer Entscheidung zu kommen. Das von $U$ gelieferte Ergebnis ist ein Bit.
 
     Am liebsten hätte man folgendes Verhalten, für ein gegebenes Block-Kryptosystem $B$: Programm $U$ sollte 1 liefern, wenn $F$ eine Chiffre $e(.,k)$ zu $B$ ist, und $0$, wenn $F=\pi$ für eine Permutation $\pi\in P\{0,1\}^l$ ist, die keine $B$-Chiffre ist. Das gewünschte Verhalten wird sich bei $U$ natürlich niemals mit absoluter Sicherheit, sondern nur mit mehr oder weniger großer Wahrscheinlichkeit einstellen, je nach Situation.
 
-    Beispiel 2.10 Als Beispiel betrachten wir das Vernam-Kryptosystem $B=B_{Vernam}$, siehe Beispiel 1.6. Wir definieren einen l-Unterscheider $U=U_{Vernam}$, der als Parameter eine Funktion $F:\{0,1\}^l\rightarrow\{0,1\}^l$ erhält und Folgendes tut:
+    \textbf{Beispiel}2.10 Als Beispiel betrachten wir das Vernam-Kryptosystem $B=B_{Vernam}$, siehe Beispiel 1.6. Wir definieren einen l-Unterscheider $U=U_{Vernam}$, der als Parameter eine Funktion $F:\{0,1\}^l\rightarrow\{0,1\}^l$ erhält und Folgendes tut:
     \begin{enumerate*}
         \item $k\leftarrow F(0^l)$
         \item $y\leftarrow F(1^l)$
@@ -928,7 +892,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wir definieren nun ein Spiel (,,game''), mit dem ein beliebiges Block-Kryptosystem $B$ und ein beliebiger Unterscheider $U$ darauf getestet werden, ob $B$ gegenüber $U$ ,,anfällig'' ist oder nicht. (Das Spiel ist ein Gedankenexperiment, es ist nicht algorithmisch.) Die Idee ist folgende: Man entscheidet mit einem Münzwurf (Zufallsbit b), ob $U$ für seine Untersuchungen als $F(.)$ eine zufällige Chiffre $e(.,k)$ von $B$ (,,Realwelt'') oder eine zufällige Permutation $\pi$ von $\{0,1\}^l$ (,,Idealwelt'') erhalten soll. Dann rechnet $U$ mit $F$ als Orakel und gibt dann seine Meinung ab, ob er sich in der Realwelt oder in der Idealwelt befindet. U ,,gewinnt'', wenn diese Meinung zutrifft.
 
-    Definition 2.11 Sei $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ ein l-Block-Kryptosystem, und sei $U$ ein Unterscheider. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus:
+    \textbf{Definition} 2.11 Sei $B=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ ein l-Block-Kryptosystem, und sei $U$ ein Unterscheider. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus:
     \begin{itemize*}
         \item $GBU():\{0,1\}$ // kein Argument, Ausgabe ist ein Bit
         \begin{enumerate*}
@@ -948,7 +912,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wir erläutern intuitiv, wieso diese Definition eine sehr allgemeine Situation erfasst. Angenommen, Angreiferin Eva kann auf irgendeine algorithmische Weise mit einer gewissen positiven Wahrscheinlichkeit eine ,,nicht triviale Information'' über die Klartexte gewinnen, wenn diese mittels einer zufälligen Chiffre des l-Block-Kryptosystems $B$ verschlüsselt worden sind. Damit kann sie einen Unterscheider mit nichttrivialer Erfolgswahrscheinlichkeit bauen! Sie ruft die Verschlüsselungsfunktion $F$ auf, um einige selbstgewählte Klartexte $x_1,...,x_q$ zu $F(x_1)=y_1,...,F(x_q)=y_q$ zu verschlüsseln. Dann berechnet sie aus $y_1,...,y_q$ ihre ,,nichttriviale Information'' $I_1,...,I_q$ zu den entsprechenden Klartexten und prüft, ob $I_r$ auf $x_r$ zutrifft, für $r=1,...,q$. Gibt es eine gute Übereinstimmung, so geht sie davon aus, dass $F$ aus der ,,Realwelt'' stammt, also eine Chiffre von $B$ ist. Ansonsten vermutet sie, dass $F$ aus der ,,Idealwelt'' stammt, also eine zufällige Permutation ist.
 
-    Beispiel 2.12 Für einen l-Bit-String $z$ sei $p(z)=\oplus_{1 \geq i\geq l} z_i$ seine Parität. Nehmen wir an, das Chiffrierverfahren von $N$ ist unvorsichtig geplant und zwar so, dass $p(e(x,k)) =p(x)$ ist für beliebige $x\in X$ und $k\in K$. Bei der Chiffrierung ändert sich also die Parität nicht. (Die Parität ist sicher ,,nichttriviale Information'', auch wenn sie vielleicht nicht unmittelbar nützlich ist.)
+    \textbf{Beispiel}2.12 Für einen l-Bit-String $z$ sei $p(z)=\oplus_{1 \geq i\geq l} z_i$ seine Parität. Nehmen wir an, das Chiffrierverfahren von $N$ ist unvorsichtig geplant und zwar so, dass $p(e(x,k)) =p(x)$ ist für beliebige $x\in X$ und $k\in K$. Bei der Chiffrierung ändert sich also die Parität nicht. (Die Parität ist sicher ,,nichttriviale Information'', auch wenn sie vielleicht nicht unmittelbar nützlich ist.)
 
     $U_{Paritaet}(F)$:
     \begin{enumerate*}
@@ -962,7 +926,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     Beispiel: Der folgende triviale l-Unterscheider $U_{trivial}$ erreicht $Pr(G^B_{U_{trivial}}= 1)=\frac{1}{2}$: $b\leftarrow flip(\{0,1\}); return\ b$.
     Daher interessieren wir uns nicht für die Wahrscheinlichkeit $Pr(G^B_U= 1)$ ansich, sondern für den Abstand von $Pr(G^B_U=1)$ zu $Pr(G^B_{U_{trivial}}= 1) =\frac{1}{2}$:
 
-    Definition 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$-
+    \textbf{Definition} 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$-
 
     Klar ist:
     \begin{itemize*}
@@ -971,7 +935,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
         \item Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$.üm den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S\langle b= 1\rangle = 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S\langle b= 0\rangle = 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
     \end{itemize*}
 
-    Lemma 2.14 $adv(U,B) = suc(U,B)-fail(U)$.
+    \textbf{Lemma} 2.14 $adv(U,B) = suc(U,B)-fail(U)$.
 
     Beweis: $Pr(G^B_U= 1) = Pr(S_U^B=b)$
     \begin{itemize*}
@@ -985,15 +949,15 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Durch Umstellen ergibt sich die Behauptung.ünterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
 
-    Definition 2.15 Sei $l\in\mathbb{N}$, U ein l-Unterscheider, B ein l-Block-KS. Für $q,t\in\mathbb{N}$ heißt U $(q,t)$-beschränkt, wenn die Laufzeit des Aufrufs von U innerhalb von $G^B_U$ durch t beschränkt ist und dieser Aufruf die Funktion F mit höchstens $q$ verschiedenen Argumenten ausführt.
+    \textbf{Definition} 2.15 Sei $l\in\mathbb{N}$, U ein l-Unterscheider, B ein l-Block-KS. Für $q,t\in\mathbb{N}$ heißt U $(q,t)$-beschränkt, wenn die Laufzeit des Aufrufs von U innerhalb von $G^B_U$ durch t beschränkt ist und dieser Aufruf die Funktion F mit höchstens $q$ verschiedenen Argumenten ausführt.
 
-    Beispiel 2.10 (Fortsetzung) Der l-Unterscheider $U_{Vernam}$ wertet die Funktion $F$ an zwei Stellen $0^l$ und $1^l$ aus. Die Laufzeit des Aufrufs von $U$ ist beschränkt durch $c*l$ für eine Konstante $c\geq 1$. Also ist $U_{Vernam}$ $(2,c*l)$-beschränkt.
+    \textbf{Beispiel}2.10 (Fortsetzung) Der l-Unterscheider $U_{Vernam}$ wertet die Funktion $F$ an zwei Stellen $0^l$ und $1^l$ aus. Die Laufzeit des Aufrufs von $U$ ist beschränkt durch $c*l$ für eine Konstante $c\geq 1$. Also ist $U_{Vernam}$ $(2,c*l)$-beschränkt.
 
-    Definition 2.16 Sei $\epsilon>0$. Dann heißt $B(q,t,\epsilon)$-sicher, wenn für jeden $(q,t)$-beschränkten l-Unterscheider $U$ gilt $adv(U,B)< \epsilon$.
+    \textbf{Definition} 2.16 Sei $\epsilon>0$. Dann heißt $B(q,t,\epsilon)$-sicher, wenn für jeden $(q,t)$-beschränkten l-Unterscheider $U$ gilt $adv(U,B)< \epsilon$.
 
     Man kann diese Bedingung auch umgedreht lesen, nämlich so: ,,Um mit Wahrscheinlichkeit größer als $\frac{1}{2}(1 +\epsilon)$ im Experiment $G^B_U$ die richtige Antwort 1 zu erzeugen, braucht ein l-Unterscheider mehr als q Auswertungen oder mehr Laufzeit/Platz als $t$.'' Mit beliebig hohen Rechenzeiten lassen sich praktisch alle Block-Kryptosysteme brechen, selbst mit sehr kleinem $q$.
 
-    Beispiel 2.10 (Fortsetzung) Sei $B$ das Vernam-System der Länge $l$. Um den Vorteil von $U_{Vernam}$ bzgl. $B$ zu bestimmen, berechnen wir Erfolg und Misserfolg von $U$: Es gilt offensichtlich $1=Pr(S^B_U\langle b= 1\rangle = 1) = suc(U,B)$.
+    \textbf{Beispiel}2.10 (Fortsetzung) Sei $B$ das Vernam-System der Länge $l$. Um den Vorteil von $U_{Vernam}$ bzgl. $B$ zu bestimmen, berechnen wir Erfolg und Misserfolg von $U$: Es gilt offensichtlich $1=Pr(S^B_U\langle b= 1\rangle = 1) = suc(U,B)$.
 
     Es gilt $fail(U) = Pr(S^B_U\langle b= 0\rangle = 1) = Pr(S_U^B= 1|b= 0)$. Das verkürzte Experiment $S_U^B$ gibt 1 aus, wenn der Unterscheider $U$ dies tut. Dieser tut es aber genau dann, wenn $1^l\oplus_l F(0^l) =F(1^l)$ gilt, d.h. $fail(U) = Pr(S_U^B\langle b= 0\rangle = 1) = Pr(1^l\oplus_l F(0^l) =F(1^l)) = \frac{1}{2^l- 1}$.
 
@@ -1005,7 +969,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Am obigen Beispiel eines Block-Kryptosystems, das die Parität von $x$ auf den Chiffretext $e(x,k)$ überträgt, sieht man aber auch, dass das Unterscheiderkonzept sehr empfindlich ist: Obwohl die Information über die Parity klein und harmlos scheint, erklärt es das System für nicht $(q,O(ql), 1-2^{-q})$-sicher, weil die Auswertung der Parität nur Zeit $O(l)$ kostet.
 
-    Beispiel 2.17 Es sei $B$ ein l-Block-Kryptosystem. (Man denke an AES.) Wir nehmen (realistisch) an, dass $t$ (etwa $t=6$) Klartext-Chiffretext-Paare $(x_1,y_1),...,(x_t,y_t)$ in $B$ den Schlüssel $k$ der Länge $s=l$ eindeutig bestimmen, für mindestens die Hälfte der Schlüssel (*).
+    \textbf{Beispiel}2.17 Es sei $B$ ein l-Block-Kryptosystem. (Man denke an AES.) Wir nehmen (realistisch) an, dass $t$ (etwa $t=6$) Klartext-Chiffretext-Paare $(x_1,y_1),...,(x_t,y_t)$ in $B$ den Schlüssel $k$ der Länge $s=l$ eindeutig bestimmen, für mindestens die Hälfte der Schlüssel (*).
 
     Der l-Unterscheider $U_{brute-force}$ wertet die Funktion F an $t+1$ Stellen $x_1,...,x_t,x$ aus, mit Ergebnissen $y_1,...,y_t,y$. Er probiert alle $2^l$ Schlüssel $k$, um einen zu finden, der $e(x_1,k)=y_1 ,...,e(x_t,k) =y_t$ erfüllt. Wenn kein solches $k$ gefunden wird, gibt $U$ den Wert $0$ aus.
     Sonst wird getestet, ob $e(x,k)=y$ ist. Falls ja, wird $1$ ausgegeben, sonst $0$.
@@ -1031,7 +995,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Klartexte und Chiffretexte sind nun endliche Folgen von Bitvektoren (,,Blöcken'') der festen Länge $l$. Die Menge aller dieser Folgen bezeichnen wir mit $(\{0,1\}^l)^*$ oder kürzer mit $\{0,1\}^{l*}$. Es gibt also unendlich viele Klartexte und Chiffretexte. Die Menge der Schlüssel heißt $K$. Der Verschlüsselungsalgorithmus $E$ ist randomisiert und transformiert einen Klartext $x$ und einen Schlüssel $k$ in einen Chiffretext. Der Entschlüsselungsalgorithmus $D$ ist deterministisch und transformiert einen Chiffretext $y$ und einen Schlüssel $k$ in einen Klartext. Sicher muss man den Algorithmen eine Rechenzeit zugestehen, die von der Länge der zu verarbeitenden Texte abhängt. Als effizient werden Algorithmen angesehen, die eine polynomielle Rechenzeit haben. Es muss eine verallgemeinerte Dechiffrierbedingung gelten, die die Randomisierung der Verschlüsselung berücksichtigt.
 
-    Definition 3.1 Ein symmetrisches $l$-Kryptoschema ist ein Tupel $S= (K,E,D)$, wobei
+    \textbf{Definition} 3.1 Ein symmetrisches $l$-Kryptoschema ist ein Tupel $S= (K,E,D)$, wobei
     \begin{itemize*}
         \item $K\subseteq\{0,1\}^s$ eine endliche Menge ist (für ein $s\in\mathbb{N}$),
         \item $E(x:\{0,1\}^{l*},k:K) :\{0,1\}^{l*}$ ein randomisierter Algorithmus und
@@ -1067,7 +1031,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     \subsubsection{ECB-Betriebsart ( ,,Electronic Code Book mode'' )}
     Dies ist die nächstliegende Methode. Ein Schlüssel ist ein Schlüssel $k$ von $B$. Man verschlüsselt einfach die einzelnen Blöcke von $x$ mit $B$, jedes mal mit demselben Schlüssel $k$.
 
-    Definition: Das zu $B$ gehörende $l$-ECB-Kryptoschema $S=ECB(B)=(KB,E,D)$ ist gegeben durch die folgenden Algorithmen:
+    \textbf{Definition}: Das zu $B$ gehörende $l$-ECB-Kryptoschema $S=ECB(B)=(KB,E,D)$ ist gegeben durch die folgenden Algorithmen:
     \begin{itemize*}
         \item $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$
         \item zerlege $x$ in Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
@@ -1089,7 +1053,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     \subsubsection{CBC-Betriebsart( ,,Cipher Block Chaining mode'' )}
     Diese Betriebsart weicht dem zentralen Problem von ECB aus, indem man die Blöcke in Runden $i=0, 1 ,...,m-1$ nacheinander verschlüsselt und das Ergebnis einer Runde zur Modifikation des Klartextblocks der nächsten Runde benutzt. Konkret: Es wird nicht $x_i$ mit $B$ verschlüsselt, sondern $x_i\oplus_l y_{i-1}$ (bitweises XOR). Man benötigt dann einen Anfangsvektor $y_{-1}$ für die erste Runde. Dieser ist Teil des Schlüssels des Kryptoschemas (nicht von B), ein Schlüssel des Schemas ist also ein Paar $(k,v)$ mit $k\in K_B$ und $v\in\{0,1\}^l$.
 
-    Definition: Das zu $B$ gehörende $l$-CBC-Kryptoschema $S=CBC(B)=(KB\times\{0,1\}^l,E,D)$ ist durch die folgenden Algorithmen gegeben:
+    \textbf{Definition}: Das zu $B$ gehörende $l$-CBC-Kryptoschema $S=CBC(B)=(KB\times\{0,1\}^l,E,D)$ ist durch die folgenden Algorithmen gegeben:
     \begin{itemize*}
         \item $E(x:\{0,1\}^{l*},(k,v) :KB\times\{0,1\}^l) :\{0,1\}^{l*}$
         \item zerlege $x$ in Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
@@ -1114,7 +1078,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     \subsubsection{R-CBC-Betriebsart( ,,Randomized CBC mode'' )}
     Um das Problem der identischen Verschlüsselung identischer Klartexte zu beseitigen, muss in die Verschlüsselung eine Zufalls komponente eingebaut werden. Beispielsweise kann man dazu CBC leicht modifizieren. Der Initialisierungsvektor $y_{-1}=v\in\{0,1\}^l$ ist nicht mehr Teil des Schlüssels, sondern wird vom Verschlüsselungsalgorithmus einfach zufällig gewählt, und zwar für jeden Klartext immer aufs Neue. Damit der Empfänger entschlüsseln kann, benötigt er $v$. Daher wird $y_{-1}$ als Zusatzkomponente dem Chiffretext vorangestellt. Damit ist der Chiffretext um einen Block länger als der Klartext, und Eva kennt auch $v=y_{-1}$.
 
-    Definition: Das zu $B$ gehörende l-R-CBC-Kryptoschema $S=R-CBC(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+    \textbf{Definition}: Das zu $B$ gehörende l-R-CBC-Kryptoschema $S=R-CBC(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
     \begin{itemize*}
         \item $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
         \item zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$
@@ -1147,7 +1111,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Zuerst betrachten wir die Betriebsart ,,Output Feedback''. Dabei wird ein zufälliger Startvektor $v$ aus $\{0,1\}^l$ gewählt. Man setzt $k_{-1}=v$, und konstruiert die Rundenschlüssel $k_0,...,k_{m-1}$ dadurch, dass man iteriert den letzten Rundenschlüssel durch die Verschlüsselungsfunktion von $B$ schickt: $k_i=e_B(k_{i-1}, k)$, für $i=0,1,...,m-1$. (Der Name ''Output Feedback''rührt daher, dass das Ergebnis einer Verschlüsselung durch $e_B$ wieder als Input des nächsten Aufrufs von $e_B$ benutzt wird.) Der Empfänger benötigt $v$, um seinerseits die Rundenschlüssel zu berechnen; daher wird $v$ als $y_{-1}$ dem Chiffretext vorangestellt, wie beim R-CBC-Modus.
 
-    Definition: Das zu $B$ gehörende l-OFB-Kryptoschema $S=(K_B,E,D) =OFB(B) =(K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+    \textbf{Definition}: Das zu $B$ gehörende l-OFB-Kryptoschema $S=(K_B,E,D) =OFB(B) =(K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
     \begin{itemize*}
         \item $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
         \item zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
@@ -1168,7 +1132,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     \subsubsection{R-CTR-Betriebsart (,,Randomized CounTeR mode'' )}
     Dies ist die zweite Betriebsart, bei der das Kryptosystem $B$ nur zur Herstellung von m ,,Rundenschlüsseln'' benutzt wird, mit denen dann die Blöcke per $\oplus_l$ verschlüsselt werden. Anstatt iteriert zu verschlüsseln, was bei OFB eine sequentielle Verarbeitung erzwingt, werden hier die mit $B$ zu verschlüsselnden Strings anders bestimmt. Man fasst $\{0,1\}^l$ als äquivalent zur Zahlenmenge $\{0,1,...,2^{l-1}\}$ auf, interpretiert einen $l$-Bit-String also als Block oder als Zahl, wie es passt. In dieser Menge wählt man eine Zufallszahl $r$. Man ,,zählt'' von $r$ ausgehend nach oben und berechnet die Rundenschlüssel $k_0,...,k_{m-1}$ durch Verschlüsseln von $r,r+1,...,r+m-1$ (modulo $2^l$ gerechnet) mittelse $B(.,k)$. Rundenschlüssel $k_i$ ist also $e_B((r+i) mod\ 2^l,k)$, und Chiffretextblock $y_i$ ist $k_i\oplus_l x_i$. Interessant ist, dass hier die Berechnung der Rundenschlüssel und die Ver- bzw. Entschlüsselung der Blöcke parallel erfolgen kann, also sehr schnell, falls mehrere Prozessoren zur Verfügung stehen.
 
-    Definition: Das zu $B$ gehörende l-R-CTR-Kryptoschema $S=R-CTR(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
+    \textbf{Definition}: Das zu $B$ gehörende l-R-CTR-Kryptoschema $S=R-CTR(B) = (K_B,E,D)$ ist gegeben durch die folgenden Algorithmen:
     \begin{itemize*}
         \item $E(x:\{0,1\}^{l*},k:K_B) :\{0,1\}^{l*}$;
         \item zerlege $x$ in $m$ Blöcke der Länge $l:x=x_0 x_1 ...x_{m-1}$;
@@ -1214,7 +1178,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wir beschreiben den Part von Eva in diesem Spiel als Algorithmenpaar. Der erste Algorithmus $AF$ (der ,,Finder'', ,,find'' ) ist für das Erzeugen von $z_0$ und $z_1$ zuständig. Als Argument erhält dieser Teil eine Chiffre $H$, die er im Sinne eines Orakels benutzen kann. Außerdem werden Aufzeichnungen über die angeforderten Verschlüsselungen und ihre Ergebnisse gemacht. Diese Aufzeichnungen sind als Element $v$ einer endlichen Menge $V$ kodiert. Der zweite Algorithmus $AG$ (der ,,Rater'' , ,,guess'' ) ist dafür zuständig, herauszufinden, ob $z_0$ oder $z_1$ verschlüsselt wurde. Dieser Algorithmus bekommt $H$ als Orakel, die Aufzeichnungen $v$ von $AF$ und den Chiffretext $y$ als Input.
 
-    Definition 3.2 Ein l-Angreifer $A$ ist ein Paar von randomisierten Algorithmen
+    \textbf{Definition} 3.2 Ein l-Angreifer $A$ ist ein Paar von randomisierten Algorithmen
     \begin{itemize*}
         \item $AF(H(\{0,1\}^{l*}) :\{0,1\}^{l*}) : (\{0,1\}^l\times\{0,1\}^l)^+\times V$
         \item $AG(v:V,H(\{0,1\}^{l*}) :\{0,1\}^{l*},y:\{0,1\}^{l*}) :\{0,1\}$
@@ -1225,7 +1189,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     Der ,,Finder'' AF bekommt also eine Chiffre $H=E(.,k)$ für einen zufälligen Schlüssel $k$ gegeben. (Er darf diese Chiffre nur zum Verschlüsseln benutzen; $k$ kennt er nicht.) Daraus berechnet er zwei verschiedene Klartexte $(z_0,z_1)$ gleicher Länge und ,,Notizen'' $v\in V$. Das Ausgabeformat $(\{0,1\}^l\times\{0,1\}^l)^+$ sagt, dass eine Folge $((z_0^{(0)},z^{(0)}_1),(z_0^{(1)},z_1^{(1)}),...,(z_0^{(m-1)},z_1^{(m-1)}))$ von Blockpaaren ausgegeben werden soll, die wir dann als Paar $(z_0 ,z_1) = ((z^{(0)}_0 ,z_0^{(1)},...,z_0^{(m-1)}),(z_1^{(0)},z^{(1)}_1 ,...,z_1^{(m-1)}))$ von zwei Folgen gleicher Länge lesen. Danach wird zufällig $z_0$ oder $z_1$ zu $y$ verschlüsselt.
     Im zweiten Schritt verwendet der ,,Rater'' $AG$ die Notizen $v$, die Chiffre $H=E(.,k)$ und die ,,Probe'' $y$, um zu bestimmen, ob $z_0$ oder $z_1$ verschlüsselt wurde.
 
-    Definition 3.3 Sei $S=(K,E,D)$ ein symmetrisches Kryptoschema, und sei $A=(AF,AG)$ ein l-Angreifer. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus $G^S_A:\{0,1\}:$
+    \textbf{Definition} 3.3 Sei $S=(K,E,D)$ ein symmetrisches Kryptoschema, und sei $A=(AF,AG)$ ein l-Angreifer. Das zugehörige Experiment (oder Spiel) ist der folgende Algorithmus $G^S_A:\{0,1\}:$
     \begin{enumerate*}
         \item $k\leftarrow flip(K)$, $H\leftarrow E(.,k)$ (In diesem Schritt wählt Charlie zufällig eine Chiffre des Kryptoschemas $S$.)
         \item $(z_0, z_1 ,v)\leftarrow AF(H)$ (In dieser Phase berechnet der Finder ein Paar von Klartexten gleicher Länge, von denen er annimmt,ihre Chiffretexte unterscheiden zu können.)
@@ -1240,7 +1204,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wenn ein Angreifer $A$ mit ,,nicht zu großem Rechenaufwand'' einen Vorteil erzielen kann, der deutlich über $0$ liegt, wird man das Kryptoschema als unsicher einstufen.
 
-    Beispiel 3.4 Ziel ist es, die ECB-Betriebsart anzugreifen, d.h. sei $S=ECB(B)$ für ein l-Block-Kryptosystem $B$. Wir wollen zeigen, dass es einen l-Angreifer $A$ mit $Pr(G^S_A= 1) = 1$, also $adv(A,S) = 1$, gibt. Dieser ist wie folgt aufgebaut.
+    \textbf{Beispiel}3.4 Ziel ist es, die ECB-Betriebsart anzugreifen, d.h. sei $S=ECB(B)$ für ein l-Block-Kryptosystem $B$. Wir wollen zeigen, dass es einen l-Angreifer $A$ mit $Pr(G^S_A= 1) = 1$, also $adv(A,S) = 1$, gibt. Dieser ist wie folgt aufgebaut.
     \begin{itemize*}
         \item l-Angreifer $A$ mit $V=\{1\}$ ($V=\{1\}$ bedeutet, dass stets $v=1$ gilt, dass die Aufzeichnung $v$ also keinerlei Information übermittelt.)
         \item $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^{2l}; z_1\leftarrow 0^l 1^l;$ Ausgabe: $(z_0,z_1 ,1)$
@@ -1251,7 +1215,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Die Ressourcen, die $A$ benötigt, sind sehr klein: Zwei Aufrufe des Verschlüsselungsverfahrens $e_B$ des Block-Kryptosystems. Wir können schließen, dass es einen effizienten Angreifer $A$ gibt, dem das Sicherheitsmodell Vorteil 1 gibt. Damit gilt das Kryptoschema $ECB(B)$ als komplett unsicher.
 
-    Beispiel 3.5 Ziel ist es, die CBC-Betriebsart anzugreifen, d.h. es sei $S=CBC(B)$ für ein Block-Kryptosystem $B$. Das Problem mit dieser Betriebsart ist, dass ein Klartext bei Wiederholung identisch verschlüsselt wird. Um dies auszunutzen, verwenden wir den folgenden l-Angreifer $A$ mit $V=\{0,1\}^l$, der zwei verschiedene Klartexte benutzt, die nur einen Block enthalten:
+    \textbf{Beispiel}3.5 Ziel ist es, die CBC-Betriebsart anzugreifen, d.h. es sei $S=CBC(B)$ für ein Block-Kryptosystem $B$. Das Problem mit dieser Betriebsart ist, dass ein Klartext bei Wiederholung identisch verschlüsselt wird. Um dies auszunutzen, verwenden wir den folgenden l-Angreifer $A$ mit $V=\{0,1\}^l$, der zwei verschiedene Klartexte benutzt, die nur einen Block enthalten:
     \begin{itemize*}
         \item $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^l;v\leftarrow H(z_0);z_1\leftarrow 1^l;$ Ausgabe: $(z_0,z_1,v)$
         \item ($A$ merkt sich den Chiffretext zu $x=0^l$.)
@@ -1262,13 +1226,13 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Dieses Beispiel lässt sich verallgemeinern:
 
-    Lemma 3.6 Es gibt einen l-Angreifer $A$, so dass für jedes l-Kryptoschema $S$ mit deterministischer Verschlüsselungsfunktion gilt: $adv(A,S) = 1$.
+    \textbf{Lemma} 3.6 Es gibt einen l-Angreifer $A$, so dass für jedes l-Kryptoschema $S$ mit deterministischer Verschlüsselungsfunktion gilt: $adv(A,S) = 1$.
 
     Wir benutzen einfach den in Beispiel 3.5 beschriebenen Angreifer. Damit zeigt sich, dass das beschriebene Spiel in der Lage ist, alle deterministischen Kryptoschemen als unsicher einzustufen (und damit die intuitive Einschätzung zu bestätigen).
 
     Nun bringen wir die Ressourcen ins Spiel, die der Angreifer benutzen darf. Komponenten dabei sind die Laufzeit des gesamten Experiments, die Anzahl der durchgeführten H-Verschlüsselungen von Chiffretexten und die Anzahl der dabei bearbeiteten Blöcke. ($S$ kann eine beliebige Struktur haben, muss also nicht notwendigerweise auf einem l-Block-Kryptosystem beruhen. Dennoch sind die Klartexte in Blöcke eingeteilt, und die Gesamtlänge aller betrachteten Blöcke ist eine sinnvolle Maßzahl.)
 
-    Definition 3.7 Sei $n,q,t,l\in\mathbb{N}$, $A$ ein l-Angreifer, $S$ ein symmetrisches l-Kryptoschema. Dann heißt $A(n,q,t)$-beschränkt, wenn die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist, der Algorithmus $H$ (als Orakel) höchstens $q$ mal aufgerufen wird und bei diesen Aufrufen höchstens $n$ Blöcke verwendet werden.
+    \textbf{Definition} 3.7 Sei $n,q,t,l\in\mathbb{N}$, $A$ ein l-Angreifer, $S$ ein symmetrisches l-Kryptoschema. Dann heißt $A(n,q,t)$-beschränkt, wenn die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist, der Algorithmus $H$ (als Orakel) höchstens $q$ mal aufgerufen wird und bei diesen Aufrufen höchstens $n$ Blöcke verwendet werden.
 
     Sei $\epsilon> 0$. Dann heißt $S(n,q,t,\epsilon)$-sicher, wenn für jeden $(n,q,t)$-beschränkten l-Angreifer $A$ gilt $adv(A,S)\geq\epsilon$.
 
@@ -1278,19 +1242,19 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Diese ,,relative Sicherheit'' kann man folgendermaßen ,,rückwärts'' ausdrücken: Wenn das Kryptoschema $S=R-CTR(B)$ unsicher ist, es also einen Angreifer mit großem Vorteil $adv(A,S)$ gibt, bei beschränkten Ressourcen, dann ist schon $B$ unsicher, das heißt, es gibt einen Unterscheider $U$ für $B$ mit großem Vorteil $adv(U,B)$, bei beschränkten Ressourcen. Technisch wird dies folgendermaßen formuliert, unter Einbeziehung gewisser Fehlerterme und genauer Benennung der Ressourcenschranken.
 
-    Satz 3.8 Es gibt eine kleine Konstante $c$, so dass für alle $t,n,q,l > 0$, alle l-Block-Kryptosysteme $B$ und alle $(n,q,t)$-beschränkten l-Angreifer $A$ ein $(n,t+c(q\ log(q) +n)*l)$-beschränkter l-Unterscheider $U$ existiert, so dass $adv(A,S)\geq 2 *adv(U,B) + \frac{2 qn+n^2}{2^l}$, wobei $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet.
+    \textbf{Satz} 3.8 Es gibt eine kleine Konstante $c$, so dass für alle $t,n,q,l > 0$, alle l-Block-Kryptosysteme $B$ und alle $(n,q,t)$-beschränkten l-Angreifer $A$ ein $(n,t+c(q\ log(q) +n)*l)$-beschränkter l-Unterscheider $U$ existiert, so dass $adv(A,S)\geq 2 *adv(U,B) + \frac{2 qn+n^2}{2^l}$, wobei $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet.
 
     Den Fehlerterm $(2qn+n^2)/2^l$ kann man vernachlässigen, wenn $l$ genügend groß gewählt wird. Die Zahlen $q$ und $n$ entsprechen der Verarbeitung von Blöcken, Werte für $q$ und $n$ von mehr als $1012$ sind also eher unrealistisch. Mit $l=128$ ist $2^l> 3 * 10^{38}$. Damit kann man ohne Weiteres $\frac{2qn+n^2}{2^l} <10^{-14}$ annehmen. Im Wesentlichen besagt der Satz also, dass aus der Existenz eines effizienten l-Angreifers mit einem gewissen Vorteil $a>0$ gegen R-CTR($B$) folgt, dass es einen effizienten l-Unterscheider $U$ mit Vorteil $a/2$ gegen $B$ gibt. Wenn also R-CTR($B$) unsicher ist (nicht $\epsilon$-sicher für relativ großes $\epsilon$), dann muss schon $B$ unsicher gewesen sein (nicht $\epsilon/2$-sicher). Oder noch kürzer: Wenn $B$ ,,sicher'' ist, dann auch R-CTR($B$). Durch die R-CTR-Betriebsart wird keine neue Unsicherheitskomponente ins Spiel gebracht.
     Mit den folgenden Definitionen lässt sich diese Aussage vielleicht noch griffiger formulieren.
 
-    Definition 3.9 Die Unsicherheit eines Block-Kryptosystems $B=(X,K,Y,e,d)$ zu Parametern $q,t$ ist $insec(q,t,B) := max\{adv(U,B)|\text{ U ist } (q,t) \text{-beschränkter Unterscheider}\}$.
+    \textbf{Definition} 3.9 Die Unsicherheit eines Block-Kryptosystems $B=(X,K,Y,e,d)$ zu Parametern $q,t$ ist $insec(q,t,B) := max\{adv(U,B)|\text{ U ist } (q,t) \text{-beschränkter Unterscheider}\}$.
     Man beachte: Weil mit $t$ auch die Programmtextlänge beschränkt ist, gibt es nur endlich viele solche Unterscheider. Damit ist das Maximum wohl definiert. Offensichtlich gilt, nach den Definitionen aus Abschnitt 2.4: $B$ ist $(q,t,\epsilon)$-sicher $\Leftrightarrow insec(q,t,B)\geq\epsilon$.
 
     Analog definiert man:
 
-    Definition 3.10 Die Unsicherheit eines Kryptoschemas $S=(K,E,D)$ zu Parametern $n,q,t$ ist $insec(n,q,t,S):=max\{adv(A,S)|A \text{ ist }(n,q,t)\text{-beschränkter Angreifer}\}$.
+    \textbf{Definition} 3.10 Die Unsicherheit eines Kryptoschemas $S=(K,E,D)$ zu Parametern $n,q,t$ ist $insec(n,q,t,S):=max\{adv(A,S)|A \text{ ist }(n,q,t)\text{-beschränkter Angreifer}\}$.
 
-    Satz 3.8 liest sich dann wie folgt: Wenn $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet, dann gilt für beliebige $n,t,q$: $insec(n,q,t,S)\geq 2 * insec(n,t+c(q\ log(q) +n)*l,B) +\frac{2qn+n^2}{2^l}$.
+    \textbf{Satz} 3.8 liest sich dann wie folgt: Wenn $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet, dann gilt für beliebige $n,t,q$: $insec(n,q,t,S)\geq 2 * insec(n,t+c(q\ log(q) +n)*l,B) +\frac{2qn+n^2}{2^l}$.
 
     $S$ ,,erbt'' also die obere Schranke für die Unsicherheit von $B$, bezüglich $n$ Orakelanfragen und einer vergrößerten Rechenzeit von $t+c(q\ log(q) +n)*l$, verschlechtert nur um einen Faktor $2$ und einen additiven Term $\frac{2qn+n^2}{2^l}$. Die Unsicherheit kommt also nicht durch die Verwendung der Betriebsart R-CTR ins Spiel, sondern steckt gegebenenfalls schon in $B$.
 
@@ -1343,7 +1307,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     Einige Zahlen und ihre Teilbarkeitsbeziehungen. Beziehungen, die aus der Transitivität folgen, sind nicht eingetragen. Man erkennt $1$ und $-1$ als kleinste Elemente und $0$ als größtes Element der Teilbarkeitsbeziehung als Präordnung. Die Elemente in der Ebene unmittelbar über $\{1,-1\}$ sind die Primzahlen, positiv und negativ, also Zahlen $x\not=\pm 1$, die durch keine Zahl außer $\pm x$ und $\pm 1$ teilbar sind.
     Der Beweis ist eine einfache Übung.
 
-    Definition 4.3 Größter gemeinsamer Teiler:
+    \textbf{Definition} 4.3 Größter gemeinsamer Teiler:
     \begin{enumerate*}
         \item Für $x,y\in\mathbb{Z}$ heißt $t\in\mathbb{Z}$ ein gemeinsamer Teiler von $x$ und $y$, wenn $t|x$ und $t|y$ gilt. (Bemerkung: 1 ist stets gemeinsamer Teiler von $x$ und $y$.)
         \item Für $x,y\in\mathbb{Z}$ sei $ggT(x, y)$, der größte gemeinsame Teiler von $x$ und $y$, die (eindeutig bestimmte) nichtnegative Zahl $d$ mit:
@@ -1420,7 +1384,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Die folgende sehr nützliche Aussage verallgemeinert diese Beobachtung:
 
-    Lemma 4.6... von Bezout
+    \textbf{Lemma} 4.6... von Bezout
     \begin{enumerate*}
         \item Wenn $x,y\in\mathbb{Z}$ teilerfremd sind, gibt es $s,t\in\mathbb{Z}$ mit $sx+ty= 1$.
         \item Für $x,y\in\mathbb{Z}$ gibt es $s,t\in\mathbb{Z}$ mit $sx+ty= ggT(x,y)$.
@@ -1488,7 +1452,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     Beweis: Weil $x$ und $y$ Teiler von $a$ sind, kann man $a=ux$ und $a=vy$ schreiben, für ganze Zahlen $u,v$. Weil $x$ und $y$ teilerfremd sind, liefert Lemma 4.6.1 zwei ganze Zahlen $s$ und $t$ mit $1=sx+ty$. Dann ist $a=asx+aty=vysx+uxty= (vs+ut)xy$, also ist $xy$ Teiler von $a$.
 
     \subsection{Modulare Arithmetik}
-    Definition 4.9: Für $m\geq 2$ definieren wir eine zweistellige Relation auf $\mathbb{Z}$: $x\equiv y (mod\ m)$ heißt $m|(x-y)$.
+    \textbf{Definition} 4.9: Für $m\geq 2$ definieren wir eine zweistellige Relation auf $\mathbb{Z}$: $x\equiv y (mod\ m)$ heißt $m|(x-y)$.
 
     Man sagt: ,,$x$ ist kongruent zu $y$ modulo $m$.'' In der Mathematik sieht man auch oft die kompaktere Notation $x\equiv y(m)$ oder $x\equiv_m y$. Es besteht eine enge Beziehung zwischen dieser Relation und der Division mit Rest.
 
@@ -1498,7 +1462,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
         \item Die zweistellige Relation $*\equiv *(mod\ m)$ ist eine Äquivalenzrelation, sie ist also reflexiv, transitiv und symmetrisch.
     \end{enumerate*}
 
-    Beispiel für 1.: $29\ mod\ 12 = 53\ mod\ 12 = 5$ und $53-29 = 24$ ist durch $12$ teilbar.
+    \textbf{Beispiel}für 1.: $29\ mod\ 12 = 53\ mod\ 12 = 5$ und $53-29 = 24$ ist durch $12$ teilbar.
 
     Der Beweis von 1. ist eine leichte Übung; 2. folgt sofort aus 1.
 
@@ -1535,7 +1499,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Das heißt im Detail: Die Operationen $+(mod\ m)$ und $*(mod\ m)$ führen nicht aus dem Bereich $\mathbb{Z}_m$ heraus. Die Addition erfüllt alle Rechenregeln für kommutative Gruppen, d.h. sie ist kommutativ und assoziativ, es gibt ein neutrales Element, nämlich $[0]$, und zu jedem $[x]$ gibt es ein Inverses $-[x]=[-x]$. (Es gilt ja $[x] + [-x] = [0]$. Beachte: Für $0 < x < m$ gilt $0< m-x < m$ und $[x]+[m-x]=[m]=[0]$, also $-[x]=[m-x]$. Insbesondere ist $-[1]=[-1]=[m-1]$ das additive Inverse zu $[1]$.) Die Multiplikation ist assoziativ und kommutativ, und sie hat $[1]$ als neutrales Element $([1]*[x] = [x]*[1] = [x])$; für Addition und Multiplikation gelten die Distributivgesetze. (Siehe auch Bemerkung A.1 im Anhang.)
 
-    Lemma 4.13: Für jedes $m\geq 2$ ist die Abbildung $\mathbb{Z}\rightarrow\mathbb{Z}_m ,x\rightarrow [x]$, ein Homomorphismus; d.h. für $x,y\in\mathbb{Z}$ gilt: $[x+y]=[x]+[y]$ und $[x*y] = [x]*[y]$.
+    \textbf{Lemma} 4.13: Für jedes $m\geq 2$ ist die Abbildung $\mathbb{Z}\rightarrow\mathbb{Z}_m ,x\rightarrow [x]$, ein Homomorphismus; d.h. für $x,y\in\mathbb{Z}$ gilt: $[x+y]=[x]+[y]$ und $[x*y] = [x]*[y]$.
 
     (Die folgt direkt aus Definition der Operationen.)
     In vielen Anwendungen der Zahlentheorie in kryptographischen Verfahren kommt es darauf an, Potenzen $x^y\ mod\ m$ zu berechnen. Dabei kann $y\geq 0$ eine sehr große Zahl sein. Beispiel: $3^{1384788374932954500363985493554603584759389}\ mod\ 28374618732464817362847326847331872341234$
@@ -1571,7 +1535,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Produkt: $x*x^2 *x^8 *x^{16} *x^{32} \equiv 13*17*16*5\equiv (-6)(-2)(-3)5 = -180\equiv -9\equiv 10$.
 
-    Lemma 4.14: Sei $x<m$. Die Berechnung von $x^y\ mod\ m$ benötigt $O(log\ y)$ Multiplikationen und Divisionen modulo m von Zahlen aus $\{0,...,m^2-1\}$, und damit $O((log\ y)(log\ m)^2)$ Ziffernoperationen.
+    \textbf{Lemma} 4.14: Sei $x<m$. Die Berechnung von $x^y\ mod\ m$ benötigt $O(log\ y)$ Multiplikationen und Divisionen modulo m von Zahlen aus $\{0,...,m^2-1\}$, und damit $O((log\ y)(log\ m)^2)$ Ziffernoperationen.
 
     Bemerkung: Man kann denselben Algorithmus in einem beliebigen Monoid $(M,\circ,e)$ ($M\not=\varnothing$ ist eine Menge,$\circ:M\times M \rightarrow M$ ist assoziative Operation mit neutralem Element $e\in M$) benutzen. Monoide bilden zum Beispiel:
     \begin{itemize*}
@@ -1589,7 +1553,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     Wir untersuchen nun, wie es mit multiplikativen Inversen im Ring $\mathbb{Z}_m =Z/m\mathbb{Z}$ steht. Das heißt: Gegeben $x\in\mathbb{Z}_m$, wann gibt es ein $y\in\mathbb{Z}_m$ mit $xy\ mod\ m= 1$? Wenn $x=0$, geht das natürlich nie. Für $1\leq x<m$ muss man genauer hinsehen.
     Zunächst eine einfache Beobachtung:
 
-    Lemma 4.15: Für jedes $m\geq 2$ und alle $x,y\in\mathbb{Z}$ gilt: Wenn $x\equiv y(mod\ m)$, dann gilt $ggT(x,m)=ggT(y,m)$. (In Worten: Der größte gemeinsame Teiler von $x$ und $m$ hängt nur von der Restklasse $[x] modulo\ m$ ab.) Insbesondere gilt $ggT(x,m) = ggT(x\ mod\ m,m)$.
+    \textbf{Lemma} 4.15: Für jedes $m\geq 2$ und alle $x,y\in\mathbb{Z}$ gilt: Wenn $x\equiv y(mod\ m)$, dann gilt $ggT(x,m)=ggT(y,m)$. (In Worten: Der größte gemeinsame Teiler von $x$ und $m$ hängt nur von der Restklasse $[x] modulo\ m$ ab.) Insbesondere gilt $ggT(x,m) = ggT(x\ mod\ m,m)$.
 
     Beweis: Sei $x=y+am$. Dann ist jeder gemeinsame Teiler von $x$ und $m$ auch gemeinsamer Teiler von $y$ und $m$ und umgekehrt.
 
@@ -1611,7 +1575,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Die Menge der invertierbaren Elemente von $\mathbb{Z}_m$ erhält eine eigene Bezeichnung.
 
-    Definition 4.17: Für $m\geq 2$ sei $\mathbb{Z}^*_m:=\{x\in\mathbb{Z}_m| ggT(x,m)=1\}$.
+    \textbf{Definition} 4.17: Für $m\geq 2$ sei $\mathbb{Z}^*_m:=\{x\in\mathbb{Z}_m| ggT(x,m)=1\}$.
 
     (Wieder sind eigentlich die Restklassen $[x]_m, 0\leq x < m, ggT(x,m) = 1$, gemeint.)
 
@@ -1691,12 +1655,12 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Wir wollen noch untersuchen, wie sich Zahlen, die zu $m$ und $n$ teilerfremd sind, in der Sichtweise des Chinesischen Restsatzes verhalten.
 
-    Proposition 4.22 (*): Wenn man die Abbildung $\Phi$ aus dem Chinesischen Restsatz auf $\mathbb{Z}^*_{mn}$ einschränkt, ergibt sich eine Bijektion zwischen $\mathbb{Z}^*_{mn}$ und $\mathbb{Z}^*_m\times\mathbb{Z}^*_n$.
+    \textbf{Proposition} 4.22 (*): Wenn man die Abbildung $\Phi$ aus dem Chinesischen Restsatz auf $\mathbb{Z}^*_{mn}$ einschränkt, ergibt sich eine Bijektion zwischen $\mathbb{Z}^*_{mn}$ und $\mathbb{Z}^*_m\times\mathbb{Z}^*_n$.
 
     Bemerkung: Der Chinesische Restsatz und die nachfolgenden Bemerkungen und Behauptungen lassen sich leicht auf $r>2$ paarweise teilerfremde Faktoren $n_1,...,n_r$
     verallgemeinern. Die Aussagen lassen sich durch vollständige Induktion über $r$ beweisen. Mit Prop. 4.22 können wir eine übersichtliche Formel für die Kardinalitäten der Mengen $\mathbb{Z}^*_m, m\geq 2$, entwickeln.
 
-    Definition 4.23 (Eulersche $\varphi$-Funktion): für $m\geq 2$ sei $\varphi(m):=|\mathbb{Z}^*_m| =|\{x| 0<x<m,ggT(x,m) = 1\}|$.
+    \textbf{Definition} 4.23 (Eulersche $\varphi$-Funktion): für $m\geq 2$ sei $\varphi(m):=|\mathbb{Z}^*_m| =|\{x| 0<x<m,ggT(x,m) = 1\}|$.
 
     Einige Beispielwerte, die man durch Aufzählen findet, sind in folgender Tabelle angegeben.
 
@@ -1708,7 +1672,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Folgendes ist eine unmittelbare Konsequenz aus Proposition 4.22:
 
-    Lemma 4.24: Für teilerfremde Zahlen $n$ und $m$ gilt $\varphi(mn)=\varphi(m)*\varphi(n)$.
+    \textbf{Lemma} 4.24: Für teilerfremde Zahlen $n$ und $m$ gilt $\varphi(mn)=\varphi(m)*\varphi(n)$.
 
     (Man teste $20=4*5$ und $12=3*4$.)
     Wir können den kleinen Satz von Fermat (Fakt 4.20) auf den Fall beliebiger $m$ verallgemeinern. Auch der Beweis ist sehr ähnlich.
@@ -1720,7 +1684,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     \subsection{Primzahlen}
     Jede positive ganze Zahl $x$ ist durch 1 und durch $x$ teilbar.
 
-    Definition 4.26:
+    \textbf{Definition} 4.26:
     \begin{enumerate*}
         \item Eine Zahl $p\geq 1$ heißt Primzahl, wenn $p$ genau zwei positive Teiler hat. Diese Teiler sind dann $1$ und $p$. (Die Zahl 1 hat nur einen positiven Teiler, nämlich 1. Also ist 1 keine Primzahl.)
         \item Eine Zahl $x\geq 1$ heißt zusammengesetzt, wenn sie einen Teiler $y$ mit $1<y < x$ besitzt. (Die Zahl 1 besitzt keinen Teiler $y$ mit $1<y<1$. Also ist 1 nicht zusammengesetzt.)
@@ -1732,11 +1696,11 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Beweis: Wenn $p|x$, sind wir fertig. Also können wir $p\not|x$ annehmen. Das heißt, dass $ggT(p,x) = 1$ ist. Nach dem Lemma von Bezout können wir $1 =sp+tx$ schreiben, für ganze Zahlen $s,t$. Daraus folgt: $y=spy+txy$. Nun ist $xy$ durch $p$ teilbar, also auch $y=spy+txy$.
 
-    Satz 4.28 (Fundamentalsatz der Arithmetik) (*): Jede ganze Zahl $x\geq 1$ kann als Produkt von Primzahlen geschrieben werden. Die Faktoren sind eindeutig bestimmt (bis auf die Reihenfolge).
+    \textbf{Satz} 4.28 (Fundamentalsatz der Arithmetik) (*): Jede ganze Zahl $x\geq 1$ kann als Produkt von Primzahlen geschrieben werden. Die Faktoren sind eindeutig bestimmt (bis auf die Reihenfolge).
 
     Mit Hilfe von Lemma 4.24 können wir nun eine Formel für $\varphi(m) =|\mathbb{Z}^*_m|$ angeben, die auf der Primzahlzerlegung beruht.
 
-    Lemma 4.29: für $m\geq 2$ gilt $\varphi(m)=m*\sum_{p\ prim, p|m} (1-\frac{1}{p}$)
+    \textbf{Lemma} 4.29: für $m\geq 2$ gilt $\varphi(m)=m*\sum_{p\ prim, p|m} (1-\frac{1}{p}$)
 
         Beweis: Wenn $m$ eine Primzahlpotenz $p^t$ ist, dann besteht $\mathbb{Z}^*_m$ aus den Zahlen in $\mathbb{Z}_m=\{0,1,...,p^t-1\}$, die nicht durch $p$ teilbar sind. Da es in $\mathbb{Z}_m$ insgesamt $p^t$ Zahlen gibt und $p^{t-1}$ Vielfache von $p$, gilt $\varphi(m)=p^t-p^{t-1} =m-m/p=m(1-1/p)$. Nun nehmen wir an, dass $m=p^{t_1}_1 ...p^{t_s}_s$ gilt, für verschiedene Primzahlen $p_1,...,p_s$ und $t_1,...,t_s\geq 1$. Die Faktoren $p^{t_1}_1,...,p^{t_s}_s$ sind teilerfremd. denn wenn etwa $p^{t_1}_1$ und $p^{t_2}_2...p^{t_s}_s$ einen gemeinsamen Teiler $>1$ hätten, dann wäre $p_1$ Teiler von $p^{t_2}_2...p^{t_s}_s$, was sofort einen Widerspruch zur Eindeutigkeit der Primfaktorzerlegung ergibt. Mit Lemma 4.24, $(s-1)$-mal angewendet, erhalten wir $\varphi(m) =\prod^s_{i=1} \varphi(p^{t_i}_i) = \prod^s_{i=1} (p^{t_i}_i (1-1/p_i)) =m* \prod^s_{i=1} (1-\frac{1}{p_i})$.
         Mit dieser Formel lassen sich die Werte in Tabelle 2 schnell verifizieren. (Beispiel: $\varphi(12) = 12(1-1/2)(1-1/3) = 12*(1/2)*(2/3) = 4$) Man beachte als Spezialfall: Wenn $m=pq$ für verschiedene Primzahlen $p$ und $q$, dann ist $\varphi(m)=pq(1-1/p)(1-1/q) =(p-1)(q-1)$. (Beispiel: $\varphi(15) =2*4=8$)
@@ -2590,7 +2554,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
 
     Unsere eigentliche Konstruktion benutzt nicht $\mathbb{R}$, sondern endliche Körper $\mathbb{Z}_p$ für eine Primzahl $p>3$. Wir rechnen ab hier in einem solchen Körper, für festes $p$; die Operationen $+$ und $*$ sind immer als Addition und Multiplikation modulo $p$ zu interpretieren.
 
-    Definition 5.13: Sei $p >3$ eine Primzahl, seien $A,B\in\mathbb{Z}_p$ mit $4A^3+ 27B^3 \not= 0$. Die elliptische Kurve $E_{A,B}$ besteht aus der Menge aller Lösungen $(x,y)\in\mathbb{Z}^2_p$ der Gleichung $y^2=x^3+Ax+B$ sowie einem zusätzlichen Punkt $O$ (genannt ,,der unendliche Punkt'').
+    \textbf{Definition} 5.13: Sei $p >3$ eine Primzahl, seien $A,B\in\mathbb{Z}_p$ mit $4A^3+ 27B^3 \not= 0$. Die elliptische Kurve $E_{A,B}$ besteht aus der Menge aller Lösungen $(x,y)\in\mathbb{Z}^2_p$ der Gleichung $y^2=x^3+Ax+B$ sowie einem zusätzlichen Punkt $O$ (genannt ,,der unendliche Punkt'').
     Wenn man für $\mathbb{Z}_p$ die Repräsentanten $-\frac{p-1}{2},..., 0 , ...,\frac{p-1}{2}$ benutzt, beobachtet man wiederum die Symmetrie entlang der x-Achse, sonst gibt es kein erkennbares Muster.
 
     Beispiel: $\mathbb{Z}_7$. Setze $f(x)=x^3+ 3x+ 3$ (in $\mathbb{Z}_7$) und betrachte $E_{3,3}=\{(x,y)\in\mathbb{Z}^2_7 | f(x)=y^2\}\cup \{O\}$. Damit $(x,y)$ zu $E_{3,3}$ gehört, muss $f(x)$ ein Quadrat sein. Allgemein weiß man, dass es in $\mathbb{Z}_p$ genau $\frac{p-1}{2}$ Quadrate gibt. Jedes $f(x)$, das von $0$ verschieden und ein Quadrat ist, führt zu zwei Punkten auf der elliptischen Kurve. Weiter gibt es für jedes $x$ mit $f(x) = 0$ einen Punkt auf der Kurve. Man rechnet aus:
@@ -2619,7 +2583,7 @@ $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*
     wobei $(x_3,y_3)$ folgendermaßen berechnet wird: $x_3=\lambda^2-x_1-x_2$, $y_3=\lambda(x_1-x_3)-y_1$ mit $\lambda=\begin{cases} (y_2-y_1)/(x_2-x_1),\quad\text{ falls } (x_1,y_1)\not= (x_2,y_2)\\ (3x^2_1+A)/(2y_1),\quad\text{ falls } (x_1,y_1) = (x_2,y_2)\end{cases}$.
     Der erste Fall bezieht sich auf den dritten Schnittpunkt einer Geraden durch zwei Punkte; der zweite auf den Tangentenfall.
 
-    Satz 5.14: Mit dieser Operation $\circ$ bildet $E_{A,B}$ eine kommutative Gruppe.
+    \textbf{Satz} 5.14: Mit dieser Operation $\circ$ bildet $E_{A,B}$ eine kommutative Gruppe.
 
     Man beweist dies durch Nachrechnen. Der Nachweis der Assoziativität ist etwas mühselig. Das zu $(x,y)$ inverse Element ist $(x,-y)$, das zu $O$ inverse Element ist $O$.
 

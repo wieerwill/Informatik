@@ -191,73 +191,290 @@
 
     \part Nenne ein Block-Kryptosystem aus der Vorlesung, das gegenwärtig für Szenarium 2 in der Praxis benutzt wird.
     \begin{solution}
+
+      Triple-DES, AES
     \end{solution}
 
     \part Beschreibe das Konzept eines $l$-Unterscheiders und das zugehörige Sicherheitsspiel. Definiere den Vorteil eines Unterscheiders.
     \begin{solution}
 
-      Unterscheider $U$:
+      \textbf{Unterscheider $U$:} Ein l-Unterscheider ist ein randomisierter Algorithmus $U(F:\{0,1\}^l\rightarrow\{0,1\}^l):\{0,1\}$, dessen Laufzeit bzw. Ressourcenaufwand durch eine Konstante beschränkt ist.
+      Das Argument des l-Unterscheiders ist eine Chiffre $F$. Diese ist als ,,Orakel'' gegeben, das heißt als Prozedur, die nur ausgewertet werden kann, deren Programmtext $U$ aber nicht kennt. Das Programm $U$ kann $F$ endlich oft aufrufen, um sich Paare zu besorgen. Danach kann $U$ noch weiter rechnen, um zu einer Entscheidung zu kommen. Das von $U$ gelieferte Ergebnis ist ein Bit.
+      Für ein gegebenes Block-Kryptosystem $B$ ist das gewünschte Verfahren: Programm $U$ sollte 1 liefern, wenn $F$ eine Chiffre $e(.,k)$ zu $B$ ist, und $0$, wenn $F=\pi$ für eine Permutation $\pi\in P\{0,1\}^l$ ist, die keine $B$-Chiffre ist.
 
-      Spiel $G_U^B$:
+      \textbf{Spiel $G_U^B$:} Wir definieren ein Spiel, mit dem ein beliebiges Block-Kryptosystem $B$ und ein beliebiger Unterscheider $U$ darauf getestet werden, ob $B$ gegenüber $U$ ,,anfällig'' ist oder nicht. Die Idee ist folgende:
+      Man entscheidet mit einem Münzwurf (Zufallsbit $b$), ob $U$ für seine Untersuchungen als $F(.)$ eine zufällige Chiffre $e(.,k)$ von $B$ (,,Realwelt'') oder eine zufällige Permutation $\pi$ von $\{0,1\}^l$ (,,Idealwelt'') erhalten soll. Dann rechnet $U$ mit $F$ als Orakel und gibt dann seine Meinung ab, ob er sich in der Realwelt oder in der Idealwelt befindet. U ,,gewinnt'', wenn diese Meinung zutrifft.
 
-      Vorteil:
+      \textbf{Vorteil:}
+      \begin{itemize}
+        \item der Vorteil von $U$ bzgl. $B$ ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$
+        \item Für jeden l-Unterscheider $U$ und jedes l-Block-KS $B$ gilt $-1\geq adv(U,B)\geq 1$
+        \item Werte $adv(U,B)<0$ sind uninteressant (Ausgaben können vertauscht werden um positiven Vorteil zu erhalten)
+      \end{itemize}
     \end{solution}
-
   \end{parts}
 
-  Verschlüsselungsfunktion e
+  \begin{table}
+    \caption{Verschlüsselungsfunktion e}
+    \label{Verschluesselungsfunktion}
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+      e    & 0000 & 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111 & 1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111 \\\hline
+      0000 & 1110 & 0100 & 0001 & 0101 & 0111 & 1001 & 0110 & 1000 & 0010 & 1111 & 1011 & 0000 & 1100 & 1010 & 0011 & 1101 \\
+      0001 & 0010 & 0110 & 1100 & 1101 & 0001 & 1011 & 1111 & 1000 & 0100 & 0000 & 0101 & 0111 & 1110 & 0011 & 1001 & 1010 \\
+      0010 & 1000 & 1001 & 0010 & 0111 & 0011 & 1101 & 0101 & 1111 & 1110 & 0001 & 1011 & 0100 & 1010 & 0000 & 1100 & 0110 \\
+      0011 & 0110 & 1010 & 0011 & 1101 & 0010 & 1000 & 0001 & 0101 & 1110 & 1100 & 1111 & 1001 & 0100 & 0000 & 1011 & 0111 \\
+      0100 & 0100 & 0010 & 1001 & 1000 & 0111 & 0011 & 1100 & 0110 & 1011 & 1110 & 1111 & 0101 & 1010 & 0001 & 0000 & 1101 \\
+      0101 & 1001 & 0101 & 1010 & 0100 & 0010 & 1011 & 1000 & 1100 & 0111 & 1110 & 0001 & 0000 & 1101 & 0011 & 1111 & 0110 \\
+      0110 & 1101 & 0001 & 1100 & 0010 & 0000 & 1000 & 0011 & 0111 & 0110 & 1111 & 1110 & 1001 & 1010 & 0101 & 0100 & 1011 \\
+      0111 & 1100 & 1101 & 0010 & 1111 & 0110 & 1001 & 0111 & 0001 & 1000 & 1110 & 0011 & 0000 & 0101 & 1011 & 1010 & 0100 \\
+      1000 & 1001 & 1011 & 1101 & 0000 & 0101 & 0111 & 1100 & 1111 & 0001 & 1110 & 0110 & 0011 & 1010 & 0010 & 0100 & 1000 \\
+      1001 & 1011 & 0001 & 0011 & 1000 & 1100 & 0010 & 1111 & 0000 & 0100 & 1010 & 0110 & 1110 & 0101 & 0111 & 1101 & 1001 \\
+      1010 & 1011 & 0010 & 0101 & 1000 & 1001 & 0011 & 0001 & 1110 & 0000 & 1100 & 1010 & 0111 & 1101 & 1111 & 0100 & 0110 \\
+      1011 & 1110 & 1100 & 0111 & 1101 & 1011 & 1111 & 0101 & 0110 & 1000 & 1010 & 1001 & 0011 & 0100 & 0010 & 0000 & 0001 \\
+      1100 & 1001 & 0000 & 0010 & 1101 & 0100 & 0001 & 1111 & 1000 & 1011 & 1100 & 1110 & 1010 & 0101 & 0011 & 0110 & 0111 \\
+      1101 & 1001 & 0100 & 1101 & 1010 & 0001 & 1000 & 0110 & 0010 & 1110 & 1111 & 1011 & 1100 & 0111 & 0011 & 0000 & 0101 \\
+      1110 & 1011 & 0111 & 0101 & 1101 & 1010 & 0001 & 0100 & 1000 & 1001 & 1110 & 1111 & 1100 & 0011 & 0010 & 0110 & 0000 \\
+      1111 & 1010 & 1101 & 1110 & 1001 & 0001 & 0100 & 0010 & 0110 & 1100 & 1000 & 0000 & 0101 & 1111 & 1011 & 0011 & 0111
+    \end{tabular}
+  \end{table}
 
-  \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
-    e    & 0000 & 0001 & 0010 & 0011 & 0100 & 0101 & 0110 & 0111 & 1000 & 1001 & 1010 & 1011 & 1100 & 1101 & 1110 & 1111 \\\hline
-    0000 & 1110 & 0100 & 0001 & 0101 & 0111 & 1001 & 0110 & 1000 & 0010 & 1111 & 1011 & 0000 & 1100 & 1010 & 0011 & 1101 \\
-    0001 & 0010 & 0110 & 1100 & 1101 & 0001 & 1011 & 1111 & 1000 & 0100 & 0000 & 0101 & 0111 & 1110 & 0011 & 1001 & 1010 \\
-    0010 & 1000 & 1001 & 0010 & 0111 & 0011 & 1101 & 0101 & 1111 & 1110 & 0001 & 1011 & 0100 & 1010 & 0000 & 1100 & 0110 \\
-    0011 & 0110 & 1010 & 0011 & 1101 & 0010 & 1000 & 0001 & 0101 & 1110 & 1100 & 1111 & 1001 & 0100 & 0000 & 1011 & 0111 \\
-    0100 & 0100 & 0010 & 1001 & 1000 & 0111 & 0011 & 1100 & 0110 & 1011 & 1110 & 1111 & 0101 & 1010 & 0001 & 0000 & 1101 \\
-    0101 & 1001 & 0101 & 1010 & 0100 & 0010 & 1011 & 1000 & 1100 & 0111 & 1110 & 0001 & 0000 & 1101 & 0011 & 1111 & 0110 \\
-    0110 & 1101 & 0001 & 1100 & 0010 & 0000 & 1000 & 0011 & 0111 & 0110 & 1111 & 1110 & 1001 & 1010 & 0101 & 0100 & 1011 \\
-    0111 & 1100 & 1101 & 0010 & 1111 & 0110 & 1001 & 0111 & 0001 & 1000 & 1110 & 0011 & 0000 & 0101 & 1011 & 1010 & 0100 \\
-    1000 & 1001 & 1011 & 1101 & 0000 & 0101 & 0111 & 1100 & 1111 & 0001 & 1110 & 0110 & 0011 & 1010 & 0010 & 0100 & 1000 \\
-    1001 & 1011 & 0001 & 0011 & 1000 & 1100 & 0010 & 1111 & 0000 & 0100 & 1010 & 0110 & 1110 & 0101 & 0111 & 1101 & 1001 \\
-    1010 & 1011 & 0010 & 0101 & 1000 & 1001 & 0011 & 0001 & 1110 & 0000 & 1100 & 1010 & 0111 & 1101 & 1111 & 0100 & 0110 \\
-    1011 & 1110 & 1100 & 0111 & 1101 & 1011 & 1111 & 0101 & 0110 & 1000 & 1010 & 1001 & 0011 & 0100 & 0010 & 0000 & 0001 \\
-    1100 & 1001 & 0000 & 0010 & 1101 & 0100 & 0001 & 1111 & 1000 & 1011 & 1100 & 1110 & 1010 & 0101 & 0011 & 0110 & 0111 \\
-    1101 & 1001 & 0100 & 1101 & 1010 & 0001 & 1000 & 0110 & 0010 & 1110 & 1111 & 1011 & 1100 & 0111 & 0011 & 0000 & 0101 \\
-    1110 & 1011 & 0111 & 0101 & 1101 & 1010 & 0001 & 0100 & 1000 & 1001 & 1110 & 1111 & 1100 & 0011 & 0010 & 0110 & 0000 \\
-    1111 & 1010 & 1101 & 1110 & 1001 & 0001 & 0100 & 0010 & 0110 & 1100 & 1000 & 0000 & 0101 & 1111 & 1011 & 0011 & 0111
-  \end{tabular}
-
-  \question Betriebsmodi von Blockchiffren. Gegeben ist das 4 -Block-Kryptosystem $B=(\{0,1\}^4,\{0,1\}^4,\{0,1\}^4,e,d)$, wobei $e$ der oben stehenden Tabelle ,,Verschlüsselungsfunktion e'' entnommen werden kann.
+  \question Betriebsmodi von Blockchiffren. Gegeben ist das 4 -Block-Kryptosystem $B=(\{0,1\}^4,\{0,1\}^4,\{0,1\}^4,e,d)$, wobei $e$ der Tabelle \ref{Verschluesselungsfunktion} entnommen werden kann.
   \begin{parts}
     \part Zeichne die Schaltbilder, sodass Sie die Verschlüsselung des Klartextes $x=0101\ 0110\ 0101$ mit dem Schlüssel $k= 1101$ in dem Kryptoschema darstellen, das zu $B$ in der jeweiligen Betriebsart gehört.
     \begin{subparts}
       \subpart Benutze die ECB-Betriebsart (Electronic Code Book)!
-      \begin{solution}
+      \begin{solution} Ein Schlüssel ist ein Schlüssel $k$ von $B$. Man verschlüsselt einfach die einzelnen Blöcke von $x$ mit $B$, jedes mal mit demselben Schlüssel $k$.
+
+        \begin{tikzpicture}[
+            every node/.style = {shape=rectangle, semithick, align=center}
+          ]
+          \node (x0) [draw] {$x_0$: 0101};
+          \node (x1) [draw, right=of x0] {$x_1$: 0110};
+          \node (x2) [draw, right=of x1] {$x_2$: 0101};
+          \node (k) [draw, left=of x0] {$k$: 1101};
+
+          \node (op0) [below=of x0] {$e$};
+          \node (op1) [below=of x1] {$e$};
+          \node (op2) [below=of x2] {$e$};
+
+          \node (out0) [draw, below=of op0] {?};
+          \node (out1) [draw, below=of op1] {?};
+          \node (out2) [draw, below=of op2] {?};
+
+          \path[->,thick]
+          (x0) edge (op0)
+          (x1) edge (op1)
+          (x2) edge (op2)
+          (op0) edge (out0)
+          (op1) edge (out1)
+          (op2) edge (out2)
+          (k) edge (op0)
+          (k) edge (op1)
+          (k) edge (op2)
+          ;
+        \end{tikzpicture}
       \end{solution}
 
       \subpart Benutze die CBC-Betriebsart (Cipher Block Chaining)! Gehe davon aus, dass $v=1010$ als Initialisierungsvektor Teil des Schlüssels ist.
       \begin{solution}
+        Blöcke in Runden $i=0, 1 ,...,m-1$ nacheinander verschlüsselt und das Ergebnis einer Runde wird zur Modifikation des Klartextblocks der nächsten Runde benutzt.
+
+        \begin{tikzpicture}[
+            every node/.style = {shape=rectangle, semithick, align=center}
+          ]
+          \node (x0) [draw] {$x_0$: 0101};
+          \node (x1) [draw, right=of x0] {$x_1$: 0110};
+          \node (x2) [draw, right=of x1] {$x_2$: 0101};
+          \node (v) [draw, below left=of x0] {$v$: 1010};
+          \node (k) [draw, below=of v] {$k$: 1101};
+
+          \node (op0) [below=of x0] {$\oplus$};
+          \node (op1) [below=of x1] {$\oplus$};
+          \node (op2) [below=of x2] {$\oplus$};
+
+          \node (op20) [below=of op0] {$e$};
+          \node (op21) [below=of op1] {$e$};
+          \node (op22) [below=of op2] {$e$};
+
+          \node (out0) [draw, below=of op20] {?};
+          \node (out1) [draw, below=of op21] {?};
+          \node (out2) [draw, below=of op22] {?};
+
+          \path[->,thick]
+          (x0) edge (op0)
+          (x1) edge (op1)
+          (x2) edge (op2)
+          (op0) edge (op20)
+          (op1) edge (op21)
+          (op2) edge (op22)
+          (op20) edge (out0)
+          (op21) edge (out1)
+          (op22) edge (out2)
+          (k) edge (op20)
+          (k) edge (op21)
+          (k) edge (op22)
+          (v) edge (op0)
+          (out0) edge (op1)
+          (out1) edge (op2)
+          ;
+        \end{tikzpicture}
       \end{solution}
 
       \subpart Benutze die R-CBC-Betriebsart (Randomized Cipher Block Chaining)! Gehe davon aus, dass $y_{-1}=0101$ als Initialisierungsvektor zufällig gewählt wurde.
       \begin{solution}
+
+        \begin{tikzpicture}[
+            every node/.style = {shape=rectangle, semithick, align=center}
+          ]
+          \node (x0) [draw] {$x_0$: 0101};
+          \node (x1) [draw, right=of x0] {$x_1$: 0110};
+          \node (x2) [draw, right=of x1] {$x_2$: 0101};
+          \node (k) [draw, below left=of x0] {$k$: 1101};
+
+          \node (op0) [below=of x0] {$\oplus$};
+          \node (op1) [below=of x1] {$\oplus$};
+          \node (op2) [below=of x2] {$\oplus$};
+
+          \node (op20) [below=of op0] {$e$};
+          \node (op21) [below=of op1] {$e$};
+          \node (op22) [below=of op2] {$e$};
+
+          \node (out0) [draw, below=of op20] {?};
+          \node (out1) [draw, below=of op21] {?};
+          \node (out2) [draw, below=of op22] {?};
+          \node (out00) [draw, left=of out0] {$y_{-1}$: 0101};
+
+          \path[->,thick]
+          (x0) edge (op0)
+          (x1) edge (op1)
+          (x2) edge (op2)
+          (op0) edge (op20)
+          (op1) edge (op21)
+          (op2) edge (op22)
+          (op20) edge (out0)
+          (op21) edge (out1)
+          (op22) edge (out2)
+          (k) edge (op20)
+          (k) edge (op21)
+          (k) edge (op22)
+          (out00) edge (op0)
+          (out0) edge (op1)
+          (out1) edge (op2)
+          ;
+        \end{tikzpicture}
       \end{solution}
 
       \subpart Benutze die OFB-Betriebsart (Output FeedBack)! Gehe davon aus, dass $y_{-1}=0101$ als Initialisierungsvektor zufällig gewählt wurde.
       \begin{solution}
+
+        \begin{tikzpicture}[
+            every node/.style = {shape=rectangle, semithick, align=center}
+          ]
+
+          \node (x0) [draw] {$x_0$: 0101};
+          \node (op20) [right =of x0] {$\oplus$};
+          \node (op10) [above=of op20] {$e$};
+          \node (x1) [draw, right=of op20] {$x_0$: 0101};
+          \node (op21) [right =of x1] {$\oplus$};
+          \node (op11) [above=of op21] {$e$};
+          \node (x2) [draw, right=of op21] {$x_0$: 0101};
+          \node (op22) [right=of x2] {$\oplus$};
+          \node (op12) [above=of op22] {$e$};
+
+          \node (y-1) [draw, above =of op10] {$y_{-1}$: 0101};
+          \node (k) [draw, right=of y-1] {$k$: 1101};
+
+          \node (out0) [draw, below=of op20] {?};
+          \node (out1) [draw, below=of op21] {?};
+          \node (out2) [draw, below=of op22] {?};
+
+          \path[->,thick]
+          (y-1) edge (op10)
+          (k) edge (op10)
+          (k) edge (op11)
+          (k) edge (op12)
+
+          (x0) edge (op20)
+          (x1) edge (op21)
+          (x2) edge (op22)
+
+          (op10) edge (op11)
+          (op11) edge (op12)
+
+          (op10) edge (op20)
+          (op11) edge (op21)
+          (op12) edge (op22)
+          (op20) edge (out0)
+          (op21) edge (out1)
+          (op22) edge (out2)
+          ;
+        \end{tikzpicture}
       \end{solution}
 
       \subpart Benutze die R-CTR-Betriebsart (Randomized CounTeR)! Gehe davon aus, dass der Zähler zufällig mit dem Wert $r=0101$ initialisiert wurde.
       \begin{solution}
+
+        \begin{tikzpicture}[
+            every node/.style = {shape=rectangle, semithick, align=center}
+          ]
+
+          \node (x0) [draw] {$x_0$: 0101};
+          \node (op20) [right =of x0] {$\oplus$};
+          \node (op10) [above=of op20] {$e$};
+          \node (r0) [draw, left=of op10] {$r$: 0101};
+
+          \node (x1) [draw, right=of op20] {$x_0$: 0101};
+          \node (op21) [right =of x1] {$\oplus$};
+          \node (op11) [above=of op21] {$e$};
+          \node (r1) [draw, left=of op11] {0110};
+
+          \node (x2) [draw, right=of op21] {$x_0$: 0101};
+          \node (op22) [right=of x2] {$\oplus$};
+          \node (op12) [above=of op22] {$e$};
+          \node (r2) [draw, left=of op12] {0111};
+
+          \node (k) [draw, above =of op10] {$k$: 1101};
+
+          \node (out0) [draw, below=of op20] {?};
+          \node (out1) [draw, below=of op21] {?};
+          \node (out2) [draw, below=of op22] {?};
+          \node (y-1) [draw, left =of out0] {$y_{-1} = r$: 0101};
+
+          \path[->,thick]
+          (k) edge (op10)
+          (k) edge (op11)
+          (k) edge (op12)
+
+          (r0) edge (op10)
+          (r1) edge (op11)
+          (r2) edge (op12)
+
+          (x0) edge (op20)
+          (x1) edge (op21)
+          (x2) edge (op22)
+
+          (op10) edge (op20)
+          (op11) edge (op21)
+          (op12) edge (op22)
+          (op20) edge (out0)
+          (op21) edge (out1)
+          (op22) edge (out2)
+          ;
+        \end{tikzpicture}
       \end{solution}
     \end{subparts}
 
     \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{ECB-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
     \begin{solution}
+
+      Ein Block $x\in\{0,1\}^l$ wird immer gleich verschlüsselt. Eva kann also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten. 
+      Zum Beispiel kann sie sofort sehen, ob der Klartext die Form $x=x_1 x_1$, mit $x_1\in\{0,1\}^l$, hat oder nicht.
     \end{solution}
 
     \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{CBC-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
     \begin{solution}
+
+      Wird zweimal der Klartext $x$ verschlüsselt, so geschieht dies immer durch denselben Chiffretext $y=E(x,(k,v))$. Dies ist eine Folge der Eigenschaft von CBC, deterministisch zu sein.
     \end{solution}
 
   \end{parts}

@@ -123,13 +123,26 @@
 \raggedright
 \begin{multicols}{3}\scriptsize % multicol parameters % These lengths are set only within the two main columns %\setlength{\columnseprule}{0.25pt} \setlength{\premulticols}{1pt} \setlength{\postmulticols}{1pt} \setlength{\multicolsep}{1pt} \setlength{\columnsep}{2pt} 
 
-    \subsection{Funktionale und nichtfunktionale Eigenschaften}
+    \section{Zusammenfassung}
     \begin{itemize*}
-        \item Requirements: (nicht-)Funktionale Eigenschaften entstehen durch Erfüllung von (nicht-)funktionalen Anforderungen
-        \item funktionale Eigenschaft: was ein Produkt tun soll
-        \item nichtfunktionale Eigenschaft (NFE): wie ein Produkt dies tun soll
+        \item Funktional: \textbf{was} ein (Software)-Produkt tun soll
+        \item Nichtfunktional: \textbf{wie} funktionale Eigenschaften realisiert werden
         \item andere Bezeichnungen NFE: Qualitäten, Quality of Service
     \end{itemize*}
+    \begin{description*}
+        \item[Laufzeiteigenschaften] zur Laufzeit eines Systems beobachtbar
+        \begin{itemize*}
+            \item Sparsamkeit und Effizienz
+            \item Robustheit, Verfügbarkeit
+            \item Sicherheit (Security)
+            \item Echtzeitfähigkeit, Adaptivität, Performanz
+        \end{itemize*}
+        \item[Evolutionseigenschaften] (Weiter-) Entwicklung und Betrieb
+        \begin{itemize*}
+            \item Wartbarkeit, Portierbarkeit
+            \item Offenheit, Erweiterbarkeit
+        \end{itemize*}
+    \end{description*}
 
     \subsubsection{Hardwarebasis}
     \begin{itemize*}
@@ -183,21 +196,179 @@
         \item[Schutz] gemeinsame Ablaufumgebung gegen Fehler und Manipulation
     \end{description*}
 
-    Nichtfunktionale Eigenschaften (Auswahl) von Betriebssystemen:
+    \subsection{Sparsamkeit und Effizienz}
     \begin{itemize*}
-        \item Laufzeiteigenschaften: zur Laufzeit eines Systems beobachtbar
-        \begin{itemize*}
-            \item Sparsamkeit und Effizienz
-            \item Robustheit, Verfügbarkeit
-            \item Sicherheit (Security)
-            \item Echtzeitfähigkeit, Adaptivität, Performanz
-        \end{itemize*}
-        \item Evolutionseigenschaften: charakterisieren (Weiter-) Entwicklung- und Betrieb eines Systems
-        \begin{itemize*}
-            \item Wartbarkeit, Portierbarkeit
-            \item Offenheit, Erweiterbarkeit
-        \end{itemize*}
+        \item Sparsamkeit: Funktion mit minimalem Ressourcenverbrauch %ausüben
+        \item Effizienz: Grad der Sparsamkeit %zu welchem ein System oder eine seiner Komponenten seine Funktion mit minimalem Ressourcenverbrauch ausübt
+        %\item $\rightarrow$ Ausnutzungsgrad begrenzter Ressourcen
+        \item Die jeweils betrachtete Ressource muss dabei spezifiziert sein
+        \item sinnvolle Möglichkeiten bei BS: Sparsamer Umgang mit Energie, Speicherplatz oder Prozessorzeit
     \end{itemize*}
+
+    \begin{enumerate*}
+        \item Hardware-Ebene: %momentan nicht oder nicht mit maximaler Leistung benötigte Ressourcen in energiesparenden Modus bringen: abschalten, Standby, 
+        Betriebe mit verringertem Energieverbrauch
+        \item Software-Ebene: neue Komponenten entwickeln, um
+        \begin{itemize*}
+            \item Bedingungen für energiesparen erkennen
+            \item Steuerungs-Algorithmen für Hardwarebetrieb% so zu gestalten, dass Hardware-Ressourcen möglichst lange in einem energiesparenden Modus betrieben werden
+            \item Energie-Verwaltungsstrategien%: energieeffizientes Scheduling zur Vermeidung von Unfairness und Prioritätsumkehr
+            \item Bsp: Festplatten-Prefetching, RR-Scheduling
+        \end{itemize*}
+    \end{enumerate*}
+
+    Sparsamkeit mit Speicherplatz
+    \begin{itemize*}
+        %\item Betrachtet: Sparsamkeit mit Speicherplatz mit besonderer Wichtigkeit für physisch beschränkte, eingebettete und autonome Geräte
+        \item Maßnahmen Hauptspeicherauslastung
+        \begin{enumerate*}
+            \item Speicherplatz sparende Algorithmen gleicher Strategien
+            \item Speicherverwaltung von Betriebssystemen
+            \begin{itemize*}
+                \item physische vs. virtuelle Speicherverwaltung
+                \item speichereffiziente Ressourcenverwaltung
+                \item Speicherbedarfdes Kernels
+                \item direkte Speicherverwaltungskosten
+            \end{itemize*}
+        \end{enumerate*}
+        \item Maßnahmen Hintergrundspeicherauslastung
+        \begin{enumerate*}
+            \item Speicherbedarf des Betriebssystem-Images
+            \item dynamische SharedLibraries
+            \item VMM-Auslagerungsbereich
+            \item Modularität und Adaptivität des Betriebssystem-Images
+        \end{enumerate*}
+        %\item Nicht betrachtet: Sparsamkeit mit Prozessorzeit
+        $\rightarrow$ 99\% Überschneidung mit NFE Performanz
+    \end{itemize*}
+
+    \subsection{Robustheit und Verfügbarkeit}
+    \begin{itemize*}
+        \item Robustheit: Zuverlässigkeit unter Anwesenheit externer Ausfälle
+        \item fault $\xrightarrow{aktiviert}$ error $\xrightarrow{breitet sich aus}$ failure
+        \item Korrektheit: Systemverhalten gemäß seiner Spezifikation
+        \item Verfügbarkeit: Anteil an Laufzeit, in dem Leistung erbracht
+    \end{itemize*}
+
+    Robustheit
+    \begin{itemize*}
+        \item Erhöhung durch Isolation: Verhinderung der Fehlerausbreitung
+        \begin{enumerate*}
+            \item Adressraumisolation: Mikrokernarchitekturen,
+            \item kryptografische HW-Unterstützung (Intel SGX)
+            \item Virtualisierungsarchitekturen
+        \end{enumerate*}
+        \item Behandlung von Ausfällen: Micro-Reboots
+    \end{itemize*}
+
+    Vorbedingung für Robustheit: Korrektheit
+    \begin{enumerate*}
+        \item Tests: nur Fehler aufspüren, keine Fehlerfreiheit garantiert
+        \item Verifizierung: komplex und umfangreich durch Modelle begrenzt
+    \end{enumerate*}
+
+    Verfügbarkeit
+    \begin{itemize*}
+        \item angesprochen: Hochverfügbare Systeme
+        \item Maßnahmen: Redundanz, Ausfallmanagement
+    \end{itemize*}
+
+    \subsection{Sicherheit}
+    \begin{itemize*}
+        \item Sicherheit: Schutz gegen Schäden durch zielgerichtete Angriffe, besonders Informationen (speichern, verarbeiten, kommunizieren)
+        \item Sicherheitsziele
+        \begin{enumerate*}
+            \item Vertraulichkeit (Confidentiality)
+            \item Integrität (Integrity)
+            \item Verfügbarkeit (Availability)
+            \item Authentizität (Authenticity)
+            \item Verbindlichkeit (Non-repudiability)
+        \end{enumerate*}
+        \item S.Ziele $\rightarrow$ Politik $\rightarrow$ Architektur $\rightarrow$ Mechanismen
+    \end{itemize*}
+
+    Security Engineering
+    \begin{description*}
+        \item[Politik] Regeln zum Erreichen eines Sicherheitsziels %\tiny{IBAC, TE, DAC, MAC}
+        \item[Mechanismen] Implementierung der Durchsetzung der Politik %\tiny{ACLs, SELinux}
+        \item[Architektur] Platzierung, Struktur und Interaktion von Mechanismen
+    \end{description*}
+    wesentlich: Referenzmonitorprinzipien
+    \begin{description*}
+        \item[RM1] Unumgehbarkeit $\rightarrow$ vollständiges Finden aller Schnittstellen
+        \item[RM2] Manipulationssicherheit $\rightarrow$ Sicherheit einer Sicherheitspolitik %selbst
+        \item[RM3] Verifizierbarkeit $\rightarrow$ wohlstrukturierte und per Design kleine TCBs
+    \end{description*}
+
+    \subsection{Echtzeitfähigkeit}
+    \begin{itemize*}
+        \item Echtzeitfähigkeit: auf eine Eingabe innerhalb spezifizierten Zeitintervalls korrekte Reaktion hervorbringen
+        %\item Maximum dieses relativen Zeitintervalls: Frist d
+    \end{itemize*}
+    \begin{enumerate*}
+        \item echtzeitfähige Scheduling-Algorithmen für Prozessoren
+        \item zentral: garantierte Einhaltung von Fristen
+        \item Probleme: Prioritätsumkehr, Überlast, kausale Abhängigkeit
+        \item echtzeitfähige Interrupt-Behandlung
+        \item zweiteilig: asynchron registrieren, geplant bearbeiten
+        \item echtzeitfähige Speicherverwaltung
+        \item Primärspeicherverwaltung, VMM (Pinning)
+        \item Sekundärspeicherverwaltung, Festplattenscheduling
+    \end{enumerate*}
+
+    \subsection{Adaptivität}
+    \begin{itemize*}
+        \item Adaptivität: gegebenes (breites) Spektrum NFEs zu unterstützen
+        \item Adaptivität komplementär und synergetisch zu anderen NFE
+    \end{itemize*}
+    \begin{description*}
+        \item[Exokernel] \{Adap.\}$\cup$\{Performanz, Echtzeit, Wartbar, Sparsam\}
+        \item[Virtualisierung] \{Adaptiv\}$\cup$\{Wartbar, Sicherheit, Robust\}
+        \item[Container] \{Adaptiv\}$\cup$\{Wartbark, Portabel, Sparsam\}
+    \end{description*}
+
+    \subsection{Performanz und Parallelität}
+    \begin{itemize*}
+        \item Performanz: für korrekte Funktion benötigte Zeit minimieren
+        \item hier betrachtet: Kurze Antwort-und Reaktionszeiten
+        \item Mechanismen, Architekturen, Grenzen der Parallelisierung
+    \end{itemize*}
+    \begin{description*}
+        \item[Hardware] Multicore-Prozessoren, Superskalarität
+        \item[Betriebssystem] Multithreading, Scheduling, Synchronisation und Kommunikation, Lastangleichung
+        \item[Anwendung] Parallelisierbarkeit, Effizienz, Prozessoreneinsatz
+    \end{description*}
+
+    \subsection{Synergetische und konträre Eigenschaften}
+    \begin{itemize*}
+        \item eine NFE bei IT-Systemen meist nicht ausreichend
+        %\item Welche nichtfunktionalen Eigenschaften mit Maßnahmen erreichbar, die in gleiche Richtung zielen, bei welchen wirken Maßnahmen eher gegenläufig?
+        %\item Erstere sollen synergetische, die zweiten konträre (also in Widerspruch zueinander stehende) nichtfunktionale Eigenschaften genannt werden.
+        \item Zusammenhang nicht immer eindeutig und offensichtlich %wie z.B. bei: ,,Sicherheit kostet Zeit.'' (d.h. Performanz und Sicherheit sind nichtsynergetische Eigenschaften)
+        \item bestimmte Einsatzgebiete brauchen oft mehrere NFE gleichzeitig %- unabhängig davon, ob sich diese synergetisch oder nichtsynergetisch zueinander verhalten
+        %\item Echtzeit und Verlässlichkeit: ,,SRÜ''-Systeme an potentiell gefährlichen Einsatzgebieten
+        %\item Echtzeit und Sparsamkeit: Teil der eingebetteten Systeme
+        %\item Robustheit und Sparsamkeit: unter entsprechenden Umweltbedingungen eingesetzte autonome Systeme, z.B. smart-dust-Systeme
+    \end{itemize*}
+
+    Überblick: NFE und Architekturkonzepte
+    \begin{tabular}{r|c|c|c|c|c}
+                      & Makrok.  & Mikro.   & Exok.    & Virt.    & Multik.  \\\hline
+        Energieeff.   &          &          & (\cmark) & \xmark   & \xmark   \\
+        Speichereff.  & \xmark   & (\cmark) & (\cmark) &          & \xmark   \\
+        Robustheit    & \xmark   & \cmark   & \xmark   & \cmark   &          \\
+        Verfügbarkeit & \xmark   & (\cmark) &          & (\cmark) & (\cmark) \\
+        Korrektheit   & \xmark   & \cmark   & \xmark   & \xmark   & (\cmark) \\
+        Sicherheit    & \xmark   & \cmark   & \xmark   & \cmark   &          \\
+        Echtzeitfähig & (\cmark) & (\cmark) & \cmark   & \xmark   & \xmark   \\
+        Adaptivität   & \xmark   & (\cmark) & \cmark   & \cmark   & (\cmark) \\
+        Wartbarkeit   & \cmark   &          & \cmark   & \cmark   &          \\
+        Performanz    & (\cmark) & \xmark   & \cmark   & \xmark   & \cmark
+    \end{tabular}
+
+    \cmark Ziel, (\cmark) synergetisch, \xmark Konträr
+
+    \pagebreak
 
     \section{Sparsamkeit und Effizienz}
     \subsection{Motivation}
@@ -3305,227 +3476,6 @@
         \item \texttt{atomic\_*} Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
         \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
         \item definierte Länge des kritischen Abschnitts $\rightarrow$ unnötiges Sperren sehr preiswert
-    \end{itemize*}
-
-    \pagebreak
-    \section{Zusammenfassung}
-    \begin{itemize*}
-        \item Funktionale Eigenschaften: beschreiben, was ein (Software)-Produkt tun soll
-        \item Nichtfunktionale Eigenschaften: beschreiben, wie funktionale Eigenschaften realisiert werden, unterteilbar in
-        \begin{enumerate*}
-            \item Laufzeiteigenschaften (zur Laufzeit sichtbar)
-            \item Evolutionseigenschaften (beim Betrieb sichtbar)
-        \end{enumerate*}
-    \end{itemize*}
-
-    \subsection{Sparsamkeit und Effizienz}
-    \begin{itemize*}
-        \item Sparsamkeit: Die Eigenschaft eines Systems, seine Funktion mit minimalem Ressourcenverbrauch auszuüben
-        \item Effizienz: Der Grad, zu welchem ein System oder eine seiner Komponenten seine Funktion mit minimalem Ressourcenverbrauch ausübt
-        \item $\rightarrow$ Ausnutzungsgrad begrenzter Ressourcen
-        \item Die jeweils betrachtete Ressource muss dabei spezifiziert sein
-        \item sinnvolle Möglichkeiten bei Betriebssystemen
-        \begin{enumerate*}
-            \item Sparsamer Umgang mit Energie
-            \item Sparsamer Umgang mit Speicherplatz
-            \item Sparsamer Umgang mit Prozessorzeit
-        \end{enumerate*}
-    \end{itemize*}
-
-    \begin{enumerate*}
-        \item Hardware-Ebene: momentan nicht oder nicht mit maximaler Leistung benötigte Ressourcen in energiesparenden Modus bringen: abschalten, Standby, Betrieb mit verringertem Energieverbrauch
-        \item Software-Ebene: neue Komponenten entwickeln, die in der Lage sein müssen
-        \begin{itemize*}
-            \item Bedingungenzu erkennen, unter denen ein energiesparender Modus möglich ist
-            \item Steuerungs-Algorithmen für Hardwarebetrieb so zu gestalten, dass Hardware-Ressourcen möglichst lange in einem energiesparenden Modus betrieben werden
-            \item Energie-Verwaltungsstrategien: energieeffizientes Scheduling zur Vermeidung von Unfairness und Prioritätsumkehr
-            \item Beispiele: energieeffizientes Magnetfestplatten-Prefetching, energiebewusstes RR-Scheduling
-        \end{itemize*}
-    \end{enumerate*}
-
-    Sparsamkeit mit Speicherplatz
-    \begin{itemize*}
-        \item Betrachtet: Sparsamkeit mit Speicherplatz mit besonderer Wichtigkeit für physisch beschränkte, eingebettete und autonome Geräte
-        \item Maßnahmen Hauptspeicherauslastung
-        \begin{enumerate*}
-            \item Speicherplatz sparende Algorithmen zur Realisierung gleicher Strategien
-            \item Speicherverwaltung von Betriebssystemen:
-            \begin{itemize*}
-                \item physische vs. virtuelle Speicherverwaltung
-                \item speichereffiziente Ressourcenverwaltung
-                \item Speicherbedarfdes Kernels
-                \item direkte Speicherverwaltungskosten
-            \end{itemize*}
-        \end{enumerate*}
-        \item Maßnahmen Hintergrundspeicherauslastung
-        \begin{enumerate*}
-            \item Speicherbedarf des Betriebssystem-Images
-            \item dynamische SharedLibraries
-            \item VMM-Auslagerungsbereich
-            \item Modularität und Adaptivität des Betriebssystem-Images
-        \end{enumerate*}
-        \item Nicht betrachtet: Sparsamkeit mit Prozessorzeit
-        $\rightarrow$ 99\% Überschneidung mit NFE Performanz
-    \end{itemize*}
-
-    \subsection{Robustheit und Verfügbarkeit}
-    \begin{itemize*}
-        \item Robustheit: Zuverlässigkeit unter Anwesenheit externer Ausfälle
-        \item fault, aktiviert $\rightarrow$ error, breitet sich aus $\rightarrow$ failure
-    \end{itemize*}
-
-    Robustheit
-    \begin{itemize*}
-        \item Erhöhung der Robustheit durch Isolation: Maßnahmen zur Verhinderung der Fehlerausbreitung
-        \begin{enumerate*}
-            \item Adressraumisolation: Mikrokernarchitekturen,
-            \item kryptografische HW-Unterstützung: Intel SGX und
-            \item Virtualisierungsarchitekturen
-        \end{enumerate*}
-        \item Erhöhung der Robustheit durch Behandlung von Ausfällen: Micro-Reboots
-    \end{itemize*}
-
-    Vorbedingung für Robustheit: Korrektheit
-    \begin{itemize*}
-        \item Korrektheit: Eigenschaft eines Systems sich gemäß seiner Spezifikation zu verhalten
-        \item Maßnahmen (nur angesprochen):
-    \end{itemize*}
-    \begin{enumerate*}
-        \item Software-Tests: können nur Fehler aufspüren, aber keine Fehlerfreiheit garantieren
-        \item Verifizierung:
-        \begin{itemize*}
-            \item Durch umfangreichen mathematischen Apparat wird Korrektheit der Software bewiesen
-            \item Aufgrund der Komplexität ist Größe verifizierbarer Systeme begrenzt
-        \end{itemize*}
-    \end{enumerate*}
-
-    Verfügbarkeit
-    \begin{itemize*}
-        \item Verfügbarkeit: Der Anteil an Laufzeit eines Systems, in dem dieses seine spezifizierte Leistung erbringt
-        \item angesprochen: Hochverfügbare Systeme
-        \item Maßnahmen zur Erhöhung der Verfügbarkeit
-        \begin{enumerate*}
-            \item Robustheitsmaßnahmen
-            \item Redundanz
-            \item Redundanz
-            \item Redundanz
-            \item Ausfallmanagement
-        \end{enumerate*}
-    \end{itemize*}
-
-    \subsection{Sicherheit}
-    \begin{itemize*}
-        \item Sicherheit (IT-Security): Schutz eines Systems gegen Schäden durch zielgerichtete Angriffe, insbesondere in Bezug auf die Informationen, die es speichert, verarbeitet und kommuniziert
-        \item Sicherheitsziele
-        \begin{enumerate*}
-            \item Vertraulichkeit (Confidentiality)
-            \item Integrität (Integrity)
-            \item Verfügbarkeit (Availability)
-            \item Authentizität (Authenticity)
-            \item Verbindlichkeit (Non-repudiability)
-        \end{enumerate*}
-    \end{itemize*}
-
-    Security Engineering
-    \begin{itemize*}
-        \item Sicherheitsziele $\rightarrow$ Sicherheitspolitik $\rightarrow$ Sicherheitsarchitektur $\rightarrow$ Sicherheitsmechanismen
-        \item Sicherheitspolitik: Regeln zum Erreichen eines Sicherheitsziels: IBAC, TE, MLS, DAC, MAC
-        \item Sicherheitsmechanismen: Implementierung der Durchsetzung einer Sicherheitspolitik: ACLs, SELinux
-        \item Sicherheitsarchitektur: Platzierung, Struktur und Interaktion von Sicherheitsmechanismen
-        \item wesentlich: Referenzmonitorprinzipien
-        \item RM1: Unumgehbarkeit $\rightarrow$ vollständiges Finden aller Schnittstellen
-        \item RM2: Manipulationssicherheit $\rightarrow$ Sicherheit einerSicherheitspolitik selbst
-        \item RM3: Verifizierbarkeit $\rightarrow$ wohlstrukturierte und per Designkleine TCBs
-    \end{itemize*}
-
-    \subsection{Echtzeitfähigkeit}
-    \begin{itemize*}
-        \item Echtzeitfähigkeit: Fähigkeit eines Systems auf eine Eingabe innerhalb eines spezifizierten Zeitintervalls eine korrekte Reaktion hervorzubringen.
-        \item Maximum dieses relativen Zeitintervalls: Frist d
-    \end{itemize*}
-    \begin{enumerate*}
-        \item echtzeitfähige Scheduling-Algorithmen für Prozessoren
-        \item zentral: garantierte Einhaltung von Fristen
-        \item wichtige Probleme: Prioritätsumkehr, Überlast, kausale Abhängigkeit
-        \item echtzeitfähige Interrupt-Behandlung
-        \item zweiteilig:asynchron registrieren, geplant bearbeiten
-        \item echtzeitfähige Speicherverwaltung
-        \item Primärspeicherverwaltung, VMM (Pinning)
-        \item Sekundärspeicherverwaltung, Festplattenscheduling
-    \end{enumerate*}
-
-    \subsection{Adaptivität}
-    \begin{itemize*}
-        \item Adaptivität: Eigenschaft eines Systems, so gebaut zu sein, dass es ein gegebenes (breites) Spektrum nichtfunktionaler Eigenschaften unterstützt
-        \item Beobachtung: Adaptivität i.d.R. als komplementär und synergetisch zu anderen NFE
-        \begin{itemize*}
-            \item Sparsamkeit
-            \item Robustheit
-            \item Sicherheit
-            \item Echzeitfähigkeit
-            \item Performanz
-            \item Wartbarkeit und Portierbarkeit
-        \end{itemize*}
-    \end{itemize*}
-
-    Adaptive Systemarchitekturen Zielstellungen
-    \begin{itemize*}
-        \item Exokernel: \{ Adaptivität \} $\cup$ \{ Performanz, Echtzeitfähigkeit, Wartbarkeit, Sparsamkeit \}
-        \item Virtualisierung: \{ Adaptivität \} $\cup$ \{ Wartbarkeit, Sicherheit, Robustheit \}
-        \item Container: \{ Adaptivität \} $\cup$ \{ Wartbarkeit, Portabilität, Sparsamkeit \}
-    \end{itemize*}
-
-    \subsection{Performanz und Parallelität}
-    \begin{itemize*}
-        \item Performanz (wie hier besprochen): Eigenschaft eines Systems, die für korrekte Funktion benötigte Zeit zu minimieren
-        \item hier betrachtet: Kurze Antwort-und Reaktionszeiten
-        \item Parallelisierung auf Betriebssystemebene zur weiteren Steigerung der Performanz/Ausnutzung von Multicore-Prozessoren
-        \item Parallelisierung auf Anwendungsebene zur Verringerung der Antwortzeiten von Anwendungen und Grenzen der Parallelisierbarkeit
-    \end{itemize*}
-
-    Mechanismen, Architekturen, Grenzen der Parallelisierung
-    \begin{itemize*}
-        \item Hardware: Multicore-Prozessoren, Superskalarität
-        \item Betriebssystem: Multithreading, Scheduling, Synchronisation und Kommunikation, Lastangleichung
-        \item Anwendung: Parallelisierbarkeit, optimaler Prozessoreneinsatz, Effizienz
-    \end{itemize*}
-
-    \subsection{Synergetische und konträre Eigenschaften}
-    \begin{itemize*}
-        \item Eine nichtfunktionale Eigenschaft bei IT-Systemen meist nicht ausreichend
-        \item Welche nichtfunktionalen Eigenschaften mit Maßnahmen erreichbar, die in gleiche Richtung zielen, bei welchen wirken Maßnahmen eher gegenläufig?
-        \item Erstere sollen synergetische, die zweiten konträre (also in Widerspruch zueinander stehende) nichtfunktionale Eigenschaften genannt werden.
-        \item Zusammenhang nicht immer eindeutig und offensichtlich, wie z.B. bei: ,,Sicherheit kostet Zeit.'' (d.h. Performanz und Sicherheit sind nichtsynergetische Eigenschaften)
-    \end{itemize*}
-
-    \subsection{Notwendige NFE-Paarungen}
-    \begin{itemize*}
-        \item Anwendungen für bestimmte Einsatzgebiete brauchen oft mehrere nichtfunktionale Eigenschaften gleichzeitig - unabhängig davon, ob sich diese synergetisch oder nichtsynergetisch zueinander verhalten
-        \item Echtzeit und Verlässlichkeit: ,,SRÜ''-Systeme an potentiell gefährlichen Einsatzgebieten
-        \item Echtzeit und Sparsamkeit: Teil der eingebetteten Systeme
-        \item Robustheit und Sparsamkeit: unter entsprechenden Umweltbedingungen eingesetzte autonome Systeme, z.B. smart-dust-Systeme
-    \end{itemize*}
-
-    Überblick: NFE und Architekturkonzepte
-    \begin{tabular}{r|c|c|c|c|c}
-                          & Makrok. & Mikro. & Exok. & Virt. & Multik. \\\hline
-        Energieeffizienz  &             &             & (\cmark)  & \xmark          & \xmark      \\
-        Speichereffizienz & \xmark      & (\cmark)    & (\cmark)  &                 & \xmark      \\
-        Robustheit        & \xmark      & \cmark      & \xmark    & \cmark          &             \\
-        Verfügbarkeit     & \xmark      & (\cmark)    &           & (\cmark)        & (\cmark)    \\
-        Korrektheit       & \xmark      & \cmark      & \xmark    & \xmark          & (\cmark)    \\
-        Sicherheit        & \xmark      & \cmark      & \xmark    & \cmark          &             \\
-        Echtzeitfähigkeit & (\cmark)    & (\cmark)    & \cmark    & \xmark          & \xmark      \\
-        Adaptivität       & \xmark      & (\cmark)    & \cmark    & \cmark          & (\cmark)    \\
-        Wartbarkeit       & \cmark      &             & \cmark    & \cmark          &             \\
-        Performanz        & (\cmark)    & \xmark      & \cmark    & \xmark          & \cmark
-    \end{tabular}
-
-    \begin{itemize*}
-        \item[\cmark] Zieleigenschaft
-        \item[(\cmark)] synergetische Eigenschaft
-        \item[\xmark] konträre Eigenschaft
-        \item[Leer] keine pauschale Aussage möglich
     \end{itemize*}
 
 \end{multicols}

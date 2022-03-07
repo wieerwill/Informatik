@@ -143,7 +143,17 @@
             \item Offenheit, Erweiterbarkeit
         \end{itemize*}
     \end{description*}
+    Mobile und eingebettete Systeme (kleine Auswahl)
+    \begin{itemize*}
+        \item mobile Rechner-Endgeräte
+        \item Weltraumfahrt und -erkundung
+        \item Automobile
+        \item verteilte Sensornetze (WSN)
+        \item Chipkarten
+        \item Multimedia-und Unterhaltungselektronik
+    \end{itemize*}
 
+    \subsection{Betriebssysteme}
     \subsubsection{Hardwarebasis}
     \begin{itemize*}
         \item Einst: Einprozessor-Systeme
@@ -372,11 +382,10 @@
 
     \section{Sparsamkeit und Effizienz}
     \subsection{Motivation}
-    Sparsamkeit (Arbeitsdefinition): Die Eigenschaft eines Systems, seine
-    Funktion mit minimalem Ressourcenverbrauch auszuüben $\rightarrow$ Effizienz bei Nutzung der Ressourcen
-
-    Effizienz: Der Grad, zu welchem ein System oder eine seiner Komponenten
-    seine Funktion mit minimalem Ressourcenverbrauch ausübt. (IEEE)
+    \begin{itemize*}
+        \item Sparsamkeit: Funktion mit minimalem Ressourcenverbrauch auszuüben $\rightarrow$ Effizienz bei Nutzung der Ressourcen
+        \item Effizienz: Grad mit welchem System Sparsam ist
+    \end{itemize*}
 
     Beispiele:
     \begin{itemize*}
@@ -389,42 +398,30 @@
         \item massiv reduzierte HW-Schnittstellen (E/A-Geräte, Peripherie)
     \end{itemize*}
 
-    Mobile und eingebettete Systeme (kleine Auswahl)
-    \begin{itemize*}
-        \item mobile Rechner-Endgeräte
-        \item Weltraumfahrt und -erkundung
-        \item Automobile
-        \item verteilte Sensornetze (WSN)
-        \item Chipkarten
-        \item Multimedia-und Unterhaltungselektronik
-    \end{itemize*}
-
     \subsection{Energieeffizienz}
     zeitweiliges Abschalten momentan nicht benötigter Ressourcen
-
-    Betriebssystemmechanismen
-    \begin{enumerate*}
+    \begin{itemize*}
         \item Dateisystem-E/A: energieeffizientes Festplatten-Prefetching
         \item CPU-Scheduling: energieeffizientes Scheduling
         \item Speicherverwaltung: Lokalitätsoptimierung
         \item Netzwerk: energiebewusstes Routing
         \item Verteiltes Rechnen: temperaturabhängige Lastverteilung
-    \end{enumerate*}
+    \end{itemize*}
 
     \subsubsection{Energieeffiziente Dateizugriffe}
-    HDD/Netzwerkgeräte/... sparen nur bei relativ langer Inaktivität Energie
     \begin{itemize*}
+        \item HDD etc. sparen nur bei relativ langer Inaktivität Energie
         \item Aufgabe: kurze, intensive Zugriffsmuster $\rightarrow$ lange Inaktivität
-        \item HDD-Geräten: Zustände mit absteigendem Energieverbrauch:
-        \begin{enumerate*}
-            \item Aktiv: einziger Arbeitszustand
-            \item Idle: Platte rotiert, Elektronik teilweise abgeschaltet
-            \item Standby: Rotation abgeschaltet
-            \item Sleep: gesamte restliche Elektronik abgeschaltet
-        \end{enumerate*}
+        \item HDD-Geräten: Zustände mit absteigendem Energieverbrauch
+        \begin{description*}
+            \item[Aktiv] einziger Arbeitszustand
+            \item[Idle] Platte rotiert, Elektronik teilweise abgeschaltet
+            \item[Standby] Rotation abgeschaltet
+            \item[Sleep] gesamte restliche Elektronik abgeschaltet
+        \end{description*}
         \item ähnliche, noch stärker differenzierte Zustände bei DRAM
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiezustände-festplatte.png}
-        \item durch geringe Verlängerungen des idle - Intervalls kann signifikant der Energieverbrauch reduziert werden
+        %\item durch geringe Verlängerungen des idle - Intervalls kann signifikant der Energieverbrauch reduziert werden
     \end{itemize*}
 
     \subsubsection{Prefetching-Mechanismus}
@@ -437,61 +434,47 @@
             \item Idee: Vorziehen möglichst vieler E/A-Anforderungen an Festplatte + zeitlich gleichmäßige Verteilung verbleibender
             \item Umsetzung: Caching dieser vorausschauend gelesenen Blöcke in ungenutzten PageCache
         \end{itemize*}
-        \item[$\rightarrow$] Inaktivität überwiegend sehr kurz $\rightarrow$ Energieeffizienz ...?
+        %\item[$\rightarrow$] Inaktivität überwiegend sehr kurz $\rightarrow$ Energieeffizienz ...?
         \item Zugriffs-/Festplattenoperationen
-        \begin{itemize*}
-            \item access(x) ... greife auf Inhalt von Festplattenblock x im PageCache zu
-            \item fetch(x) ... hole Block x nach einem access(x) von Festplatte
-            \item prefetch(x) ... hole Block x ohne access(x) von Festplatte
-        \end{itemize*}
-        \item Fetch-on-Demand-Strategie bisher (kein vorausschauendes Lesen)
+        \begin{description*}
+            \item[access(x)] zugriff auf Inhalt von Block x im PageCache
+            \item[fetch(x)] hole Block x nach einem access(x) von Festplatte
+            \item[prefetch(x)] hole Block x ohne access(x) von Festplatte
+        \end{description*}
+        \item bisher Fetch-on-Demand-Strategie (kein vorausschauendes Lesen)
         \item Traditionelles Prefetching
-        \begin{itemize*}
-            \item traditionelle Prefetching-Strategie: bestimmt
-            \begin{itemize*}
-                \item wann Block von der Platte holen (HW aktiv)
-                \item welcher Block zu holen ist
-                \item welcher Block zu ersetzen ist
-            \end{itemize*}
-        \end{itemize*}
         \begin{enumerate*}
             \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
-            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
+            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} soll Block überschrieben werden, der am spätesten in der Zukunft benötigt wird
             \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
             \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können
         \end{enumerate*}
-        \item Energieeffizientes Prefetching
-        \begin{itemize*}
-            \item versucht Länge der Disk-Idle-Intervalle zu maximieren
-        \end{itemize*}
+        \item Energieeffizientes Prefetching: Länge der Disk-Idle maximieren
         \begin{enumerate*}
-            \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
-            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} sollte der Block überschrieben werden, der am spätesten in der Zukunft wieder benötigt wird
-            \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
+            \item Optimales Prefetching
+            \item Optimales Ersetzen
+            \item ,,Richte keinen Schaden an''
             \item Maximiere Zugriffsfolgen: Führe immer dann nach einem \emph{fetch}/\emph{prefetch} ein weiteres \emph{prefetch} aus, wenn Blöcke für eine Ersetzung geeignet sind
             \item Beachte Idle-Zeiten: Unterbrich nur dann eine Inaktivitätsperiode durch ein \emph{prefetch}, falls dieses sofort ausgeführt werden muss, um Cache-Miss zu vermeiden
         \end{enumerate*}
     \end{itemize*}
+
     Allgemeine Schlussfolgerungen
     \begin{enumerate*}
-        \item Hardware-Spezifikation nutzen: Modi, in denen wenig Energie verbraucht wird
-        \item Entwicklung von Strategien, die langen Aufenthalt in energiesparenden Modi ermöglichen und dabei Leistungsparameter in vertretbarem Umfang reduzieren
-        \item Implementieren dieser Strategien in Betriebssystemmechanismen zur Ressourcenverwaltung
+        \item HW-Spez. nutzen: Modi, mit wenig Energieverbrauch
+        \item Entwicklung von Strategien, die langen Aufenthalt in energiesparenden Modi ermöglichen% und dabei Leistungsparameter in vertretbarem Umfang reduzieren
+        \item Implementieren dieser Strategien in BS zur Ressourcenverwaltung
     \end{enumerate*}
 
     \subsubsection{Energieeffizientes Prozessormanagement}
     \begin{itemize*}
         \item CMOS z.Zt. meistgenutzte Halbleitertechnologie für Prozessor
-        \item Komponenten für Energieverbrauch $P = P_{switch} + P_{leak} + ...$
-        \begin{itemize*}
-            \item $P_{switch}$: für Schaltvorgänge notwendige Leistung
-            \item $P_{leak}$: Verlustleistung durch verschiedene Leckströme
-            \item ...: weitere Einflussgrößen (technologiespezifisch)
-        \end{itemize*}
+        \item Energieverbrauch $P = P_{switching} + P_{leakage} + ...$
     \end{itemize*}
 
-    Schaltleistung: $P_{switching}$
+    Schaltleistung $P_{switching}$
     \begin{itemize*}
+        \item $P_{switch}$: für Schaltvorgänge notwendige Leistung
         \item Energiebedarf kapaz. Lade-/Entladevorgänge während Schaltens
         \item für momentane CMOS dominanter Anteil am Energieverbrauch
         \item Einsparpotenzial: Verringerung von Versorgungsspannung (quadratische Abhängigkeit!) und Taktfrequenz
@@ -503,40 +486,36 @@
         \end{itemize*}
     \end{itemize*}
 
-    Verlustleistung: $P_{leak}$
+    Verlustleistung $P_{leakage}$
     \begin{itemize*}
+        \item $P_{leak}$: Verlustleistung durch verschiedene Leckströme
         \item Energiebedarf baulich bedingter Leckströme
-        \item Hardware-Miniaturisierung $\rightarrow$ zunehmender Anteil $P_{leak}$ an P
+        \item Hardware-Miniaturisierung $\rightarrow$ zunehmender Anteil $P_{leakage}$ an P
         \item[$\Rightarrow$] Leckströme kritisch für energiesparenden Hardwareentwurf
     \end{itemize*}
 
     Regelspielraum: Nutzererfahrung
     \begin{itemize*}
-        \item Nutzererwartung: wichtigstes Kriterium zur Bewertung von auf einem Rechner aktiven Anwendungen durch Nutzer $\rightarrow$ Nutzererwartung bestimmt Nutzererfahrung
+        \item Nutzererwartung wichtigstes Kriterium durch Nutzer
+        \item[$\rightarrow$] Nutzererwartung bestimmt Nutzererfahrung
         \item Typ einer Anwendung entscheidet über jeweilige Nutzererwartung
         \begin{enumerate*}
-            \item Hintergrund (z.B. Compiler): Gesamt-Bearbeitungsdauer, Durchsatz
-            \item Echtzeit (z.B. Video-Player): ,,flüssiges'' Abspielen von Video oder Musik
-            \item Interaktiv (z.B. Webbrowser): Reaktivität, d.h. keine (wahrnehmbare) Verzögerung zwischen Nutzer-Aktion und Rechner-Reaktion
+            \item Hintergrund (Compiler): Bearbeitungsdauer, Durchsatz
+            \item Echtzeit (Video-Player): Abspielen von Video, Musik
+            \item Interaktiv (Webbrowser): Reaktivität, keine Verzögerung
         \end{enumerate*}
         \item Insbesondere kritisch: Echtzeit-/interaktive Anwendungen
         \item Reaktivität: Reaktion von Anwendungen; abhängig z.B. von
-        \begin{enumerate*}
-            \item \textbf{Hardware} an sich
-            \item \textbf{Energieversorgung} der Hardware (z.B. Spannungspegel)
-            \item \textbf{Software-Gegebenheiten} (z.B. Scheduling, Management)
-        \end{enumerate*}
-        \item Zwischenfazit: Nutzererfahrung
-        \begin{itemize*}
-            \item bietet Regelspielraum für Hardwareparameter
-            \item Betriebssystemmechanismen zum energieeffizienten Prozessormanagement  müssen mit Nutzererfahrung(jeweils erforderlicher Reaktivität)
-            ausbalanciert werden
-        \end{itemize*}
+        \begin{description*}
+            \item[Hardware] an sich
+            \item[Energieversorgung] der Hardware z.B. Spannungspegel
+            \item[Software-Gegebenheiten] z.B. Scheduling, Management
+        \end{description*}
     \end{itemize*}
 
     \subsubsection{Energieeffizientes Scheduling}
     \begin{itemize*}
-        \item Scheduling-Probleme beim Energiesparen: Fairness \& Prioritätsumkehr
+        \item Probleme mit Energiesparen: Fairness \& Prioritätsumkehr
         \item Beispiel: Round Robin (RR) mit Prioritäten
         \begin{itemize*}
             \item $E_i^{budget}$ ... Energiebudget von $t_i$
@@ -544,51 +523,47 @@
             \item $P_{limit}$ ... maximale Leistungsaufnahme [Energie/Zeit]
             \item $T$ ... resultierende Zeitscheibenlänge
         \end{itemize*}
-        \item Problem 1: Unfaire Energieverteilung
+    \end{itemize*}
+    \begin{description*}
+        \item[Problem 1] Unfaire Energieverteilung
         %\item Beschränkung des Energieverbrauchs (durch Qualitätseinbußen, schlimmstenfalls Ausfall) ab einem oberen Schwellwert $E_{max}$
-        \item Problem 2: energieintensive Threads behindern nachfolgende Threads gleicher Priorität
+        \item[Problem 2] energieintensive Threads behindern nachfolgende Threads gleicher Priorität
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-round-robin-unfair.png} \end{itemize*}
-        \item Problem 3: energieintensive Threads niedrigerer Priorität behindern spätere Threads höherer Priorität
+        \item[Problem 3] energieintensive Threads niedrigerer Priorität behindern spätere Threads höherer Priorität
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-prioritätsumkehr.png}
         %\end{itemize*}
-        \item RR Strategie 1: faire Energieverteilung (einheitliche Energielimits)
+    \end{description*}
+    \begin{itemize*}
+        \item RR Strategie 1: faire Energieverteilung (einheitliche E-Limits)
         \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr.png}
-            \item $1\leq i\leq 4: E_i^{limit} = P_{limit}* T$
-            %\item (Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
-        \end{itemize*}
-        \item faire bzw. gewichtete Aufteilung begrenzter Energie optimiert Energieeffizienz
-        \item Problem: lange, wenig energieintensive Threads verzögern Antwort-und Wartezeiten kurzer, energieintensiver Threads
-        \begin{itemize*}
+            \item $E_i^{limit} = P_{limit}* T$ %(Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
+            \item gewichtete Aufteilung begrenzter Energie optimiert Energieeffizienz
+            \item Problem: lange, wenig energieintensive Threads verzögern Antwort-und Wartezeiten kurzer, energieintensiver Threads
             \item Lösung im Einzelfall: Wichtung per $E_i^{limit}$
-            \item globale Reaktivität $\rightarrow$ Nutzererfahrung?
+            %\item globale Reaktivität $\rightarrow$ Nutzererfahrung?
         \end{itemize*}
         \item RR Strategie 2: maximale Reaktivität ( $\rightarrow$ klassisches RR)
-        %\begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
-        %\end{itemize*}
-        \item Problem: sparsame Threads werden bestraft durch Verfallen des ungenutzten Energiebudgets
-        \item Idee: Ansparen von Energiebudgets $\rightarrow$ mehrfache Ausführung eines Threads innerhalb einer Scheduling-Periode
+        \begin{itemize*}
+            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
+            \item Problem: sparsame Threads werden bestraft durch Verfallen des ungenutzten Energiebudgets
+            \item Idee: Ansparen von Energiebudgets $\rightarrow$ mehrfache Ausführung eines Threads innerhalb einer Scheduling-Periode
+        \end{itemize*}
         \item RR Strategie 3: Reaktivität, dann faire Energieverteilung
         %\begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewisstes-rr-2.png}
         %\end{itemize*}
     \end{itemize*}
+
     Implementierungsfragen
     \begin{itemize*}
         \item Kosten ggü. klassischem RR? (durch Prioritäten...?)
         \item Scheduling-Zeitpunkte?
-        \begin{itemize*}
-            \item welche Accounting-Operationen (Buchführung)?
-            \item wann Accounting-Operationen?
-            \item wann Verdrängung?
-        \end{itemize*}
-        \item Datenstrukturen?
-        \begin{itemize*}
-            \item ... im Scheduler $\rightarrow$ Warteschlange(n)?
-            \item ... im Prozessdeskriptor?
-        \end{itemize*}
+        \item Datenstrukturen? Wo gelagert?
+        %\begin{itemize*}
+        %    \item ... im Scheduler $\rightarrow$ Warteschlange(n)?
+        %    \item ... im Prozessdeskriptor?
+        %\end{itemize*}
         \item Pro
         \begin{itemize*}
             \item Optimierung der Energieverteilung nach Schedulingzielen
@@ -886,7 +861,7 @@
         \item[$\rightarrow$] nicht für alle Anwendungen sind alle Untereigenschaften erforderlich
     \end{itemize*}
 
-    \subsubsection{Robustheitsbegriff}
+    \subsection{Robustheitsbegriff}
     \begin{itemize*}
         \item Untereigenschaften von Verlässlichkeit: Robustheit (reliability)
         \item Ausfall: beobachtbare Verminderung der Leistung eines Systems, gegenüber seiner als korrekt spezifizierten Leistung
@@ -2219,7 +2194,7 @@
         \begin{itemize*}
             \item mit Regeln $1-7$ max. Prozessorauslastung: $U_{lub}= 1\rightarrow$ Auslastung bis 100\%
             \item Menge von n Tasks planbar: $U=\sum_{i=1}^n \frac{C_i}{T_i}\leq 1$
-            \item[$\leftarrow$] $U\textgreater1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser Gesamtauslastung planbar sein
+            \item[$\leftarrow$] $U>1$ übersteigt die verfügbare Prozessorzeit; folglich kann niemals eine Prozessmenge mit dieser Gesamtauslastung planbar sein
             \item[$\rightarrow$] Beweis durch Widerspruch. Annahme: $U\leq 1$ und die Prozessmenge ist nicht planbar. Dies führt zu einem Schedule mit Fristverletzung zu einem Zeitpunkt $t_2$
         \end{itemize*}
     \end{itemize*}

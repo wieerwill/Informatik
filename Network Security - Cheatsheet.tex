@@ -703,38 +703,31 @@
       \end{itemize*}
 
       \section{Asymmetrische Kryptographie}
-
       \begin{itemize*}
-            \item Allgemeine Idee:
-            \begin{itemize*}
-                  \item Verwenden Sie zwei verschiedene Schlüssel $-K$ und $+K$ für die Ver- und Entschlüsselung
-                  \item Bei einem zufälligen Chiffretext $c=E(+K, m)$ und $+K$ sollte es nicht möglich sein, $m = D(-K, c) = D(-K, E(+K, m))$ zu berechnen.
-                  \item Dies impliziert, dass die Berechnung von $-K$ bei $+K$ nicht möglich sein sollte.
-                  \item Der Schlüssel $-K$ ist nur einer Entität A bekannt und wird A's privater Schlüssel $-K_A$ genannt
-                  \item Der Schlüssel $+K$ kann öffentlich bekannt gegeben werden und wird A's öffentlicher Schlüssel $+K_A$ genannt
-            \end{itemize*}
-            \item Anwendungen:
-            \begin{itemize*}
-                  \item Verschlüsselung: Wenn B eine Nachricht mit dem öffentlichen Schlüssel $+K_A$ von A verschlüsselt, kann er sicher sein, dass nur A sie mit $-K_A$ entschlüsseln kann.
-                  \item Signieren: Wenn A eine Nachricht mit seinem eigenen privaten Schlüssel $-K_A$ verschlüsselt, kann jeder diese Signatur verifizieren, indem er sie mit A's öffentlichem Schlüssel $+K_A$ entschlüsselt
-                  \item Achtung! Entscheidend ist, dass jeder nachprüfen kann, dass er wirklich den öffentlichen Schlüssel von A kennt und nicht den Schlüssel eines Gegners!
-            \end{itemize*}
-            \item Entwurf von asymmetrischen Kryptosystemen:
+            \item zwei verschiedene Schlüssel $-K$ und $+K$
+            \item mit Chiffretext $c=E(+K, m)$ und $+K$ sollte es nicht möglich sein, $m=D(-K,c) =D(-K,E(+K,m))$ zu berechnen
+            \item Berechnung von $-K$ bei $+K$ nicht möglich sein sollte
+            \item $-K$ nur einer Entität A bekannt und wird privater Schlüssel $-K_A$ genannt
+            \item $+K$ öffentlich bekannt und wird öffentlicher Schlüssel $+K_A$ genannt
+            \item Anwendungen
+            \begin{description*}
+                  \item[Verschlüsselung] Nachricht mit $+K_A$ verschlüsselt, kann nur mit $-K_A$ entschlüsselT werden
+                  \item[Signieren] Nachricht mit $-K_A$ verschlüsselt, kann jeder Signatur mit $+K_A$ verifizieren
+                  \item[Achtung!] Entscheidend ist, dass jeder nachprüfen kann, dass er wirklich den öffentlichen Schlüssel von A kennt und nicht den Schlüssel eines Gegners
+            \end{description*}
+            \item Entwurf von asymmetrischen Kryptosystemen
             \begin{itemize*}
                   \item Schwierigkeit: Finde einen Algorithmus und eine Methode, zwei Schlüssel $-K$, $+K$ so zu konstruieren, dass es nicht möglich ist, $E(+K, m)$ mit der Kenntnis von $+K$ zu entschlüsseln
-                  \item Beschränkungen:
-                  \begin{itemize*}
-                        \item Die Schlüssellänge sollte ,,überschaubar'' sein
-                        \item Verschlüsselte Nachrichten sollten nicht beliebig länger sein als unverschlüsselte Nachrichten (wir würden einen kleinen konstanten Faktor tolerieren)
-                        \item Ver- und Entschlüsselung sollten nicht zu viele Ressourcen verbrauchen (Zeit, Speicher)
-                  \end{itemize*}
-                  \item Grundlegende Idee: Man nehme ein Problem aus dem Bereich der Mathematik/Informatik, das schwer zu lösen ist, wenn man nur $+K$ kennt, aber leicht zu lösen, wenn man $-K$ kennt
-                  \begin{itemize*}
-                        \item Knapsack-Probleme: Grundlage der ersten funktionierenden Algorithmen, die sich leider fast alle als unsicher erwiesen haben
-                        \item Faktorisierungsproblem: Grundlage des RSA-Algorithmus
-                        \item Diskreter-Logarithmus-Problem: Grundlage von Diffie-Hellman und ElGamal
-                  \end{itemize*}
+                  \item Schlüssellänge sollte ,,überschaubar'' sein
+                  \item Verschlüsselte Nachrichten sollten nicht beliebig länger sein als unverschlüsselte Nachrichten
+                  \item Ver- und Entschlüsselung sollten nicht zu viele Ressourcen verbrauchen (Zeit, Speicher)
+                  \item Idee: Man nehme ein Problem aus dem Bereich der Mathematik/Informatik, das schwer zu lösen ist, wenn man nur $+K$ kennt, aber leicht zu lösen, wenn man $-K$ kennt
             \end{itemize*}
+            \begin{description*}
+                  \item[Knapsack-Probleme] Grundlage der ersten funktionierenden Algorithmen, die sich leider fast alle als unsicher erwiesen haben
+                  \item[Faktorisierungsproblem] Grundlage des RSA-Algorithmus
+                  \item[Diskreter-Logarithmus-Problem] Grundlage von Diffie-Hellman und ElGamal
+            \end{description*}
       \end{itemize*}
 
       \subsection{Einige mathematische Hintergründe}
@@ -754,57 +747,29 @@
             \item Da der Rest r der Division durch n immer kleiner als n ist, stellt man manchmal die Menge ${x\ mod\ n | x\in\mathbb{Z}}$ durch Elemente der Menge $\mathbb{Z}_n={0, 1, ..., n-1}$ dar
       \end{itemize*}
 
-      %\begin{longtable}[]{@{}ll@{}}
-      % \toprule
-      % Eigenschaft & Ausdruck\tabularnewline
-      % \midrule
-      % \endhead
-      % Kommutativgesetze & $(a + b)\ mod\ n = (b
-      % + a)\ mod\ n$\tabularnewline
-      % & $(a \times b)\ mod\ n =
-      % (b \times a)\ mod\\
-      % n$\tabularnewline
-      % Assoziativgesetze & $,,(a + b) + c''\\
-      % mod\ n = ,,a + (b + c)''\\
-      % mod\ n$\tabularnewline
-      % & $,,(a \times b) \times
-      % c''\ mod\ n = ,,a \times
-      % (b \times c)''\ mod\\
-      % n$\tabularnewline
-      % Distributivgesetz & $,,a \times (b +
-      % c)''\ mod\ n = ,,(a \times
-      % b) + (a \times c)''\ mod\\
-      % n$\tabularnewline
-      % Identitäten & $(0 + a)\ mod\ n =
-      % a\ mod\ n$\tabularnewline
-      % & $(1 \times a)\ mod\ n =
-      % a\ mod\ n$\tabularnewline
-      % Inverse & $\forall a \in
-      % \mathbb{Z}n: \exists (-a)
-      % \in \mathbb{Z}n : a + (-a)
-      % \equiv 0\ mod\\
-      % n$\tabularnewline
-      % & p is prime $\Rightarrow \forall a
-      % \in \mathbb{Z}p: \exists
-      % (a-1) \in \mathbb{Z}p: a
-      % \times (a-1) \equiv 1\\
-      % mod\ p$\tabularnewline
-      % \bottomrule
-      %\end{longtable}
+      \begin{tabular}{l|l}
+            Eigenschaft & Ausdruck                                                                                                          \\\hline
+            Kommutativ  & $(a + b)\ mod\ n = (b+ a)\ mod\ n$                                                                                \\
+                        & $(a \times b)\ mod\ n = (b \times a)\ mod\ n$                                                                     \\
+            Assoziativ  & $,,(a + b) + c''\ mod\ n = ,,a + (b + c)''\ mod\ n$                                                               \\
+                        & $,,(a \times b) \times c''\ mod\ n = ,,a \times (b \times c)''\ mod\ n$                                           \\
+            Distributiv & $,,a \times (b + c)''\ mod\ n = ,,(a \times b) + (a \times c)''\ mod\ n$                                          \\
+            Identitäten & $(0 + a)\ mod\ n = a\ mod\ n$                                                                                     \\
+                        & $(1 \times a)\ mod\ n = a\ mod\ n$                                                                                \\
+            Inverse     & $\forall a \in \mathbb{Z}n: \exists (-a)\in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$                              \\
+                        & p is prime $\Rightarrow \forall a\in \mathbb{Z}p: \exists (a-1) \in \mathbb{Z}p: a \times (a-1) \equiv 1\ mod\ p$
+      \end{tabular}
 
       Größter gemeinsamer Teiler
       \begin{itemize*}
-            \item $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge ,,\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )''$ und $gcd(a, 0 ) : = | a |$
+            %\item $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge ,,\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )''$ und $gcd(a, 0 ) : = | a |$
             \item Der gcd-Rekursionssatz
             \begin{itemize*}
                   \item $\forall a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ mod\ b)$
-                  \item Beweis:
-                  \begin{itemize*}
-                        \item Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ mod\ b$, also $gcd(a, b) | gcd(b, a\ mod\ b)$
-                        \item Da $gcd(b, a\ mod\ b)$ sowohl b als auch $a\ mod\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ mod\ b) = a$, also $gcd(b, a\ mod\ b) | gcd(a, b)$
-                  \end{itemize*}
+                  \item Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen%, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ mod\ b$, also $gcd(a, b) | gcd(b, a\ mod\ b)$
+                  %\item Da $gcd(b, a\ mod\ b)$ sowohl b als auch $a\ mod\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ mod\ b) = a$, also $gcd(b, a\ mod\ b) | gcd(a, b)$
             \end{itemize*}
-            \item Euklidischer Algorithmus: Der euklidische Algorithmus berechnet aus a, b $gcd(a, b)$
+            \item Euklidischer Algorithmus: aus $a, b$ berechnet $gcd(a, b)$
             %\begin{Shaded}
             % \begin{Highlighting}[]
             % \DataTypeTok{int}\NormalTok{ Euclid(}\DataTypeTok{int}\NormalTok{ a, b){}
@@ -813,7 +778,7 @@
             % \NormalTok{}}
             % \end{Highlighting}
             %\end{Shaded}
-            \item Erweiterter euklidischer Algorithmus: Der Algorithmus ExtendedEuclid berechnet für a, b d, m, n so, dass: $d = gcd(a, b) = m \times a + n \times b$
+            \item Erweiterter euklidischer Algorithmus%: für $a, b$ berechnet  $d, m, n$ so, dass $d = gcd(a, b) = m \times a + n \times b$
             %\begin{Shaded}
             % \begin{Highlighting}[]
             % \KeywordTok{struct}\NormalTok{{}\DataTypeTok{int}\NormalTok{ d, m, n} ExtendedEuclid(}\DataTypeTok{int}\NormalTok{ a, b)}
@@ -825,72 +790,54 @@
             % \end{Highlighting}
             %\end{Shaded}
             \begin{itemize*}
-                  \item Beweis: (durch Induktion)
+                  \item Grundfall $(a,0): gcd(a, 0) = a = 1 \times a + 0 \times 0$
+                  \item Induktion von $(b, a\ mod\ b)$ auf $(a, b)$
                   \begin{itemize*}
-                        \item Grundfall $(a,0): gcd(a, 0) = a = 1 \times a + 0 \times 0$
-                        \item Induktion von $(b, a\ mod\ b)$ auf $(a, b)$:
-                        \begin{itemize*}
-                              \item ExtendedEuclid berechnet $d', m', n'$ korrekt (Induktionshypothese)
-                              \item $d=d'=m'\times b+n'\times (a\ mod\ b)=m'\times b+n'\times (a-\lfloor a/b\rfloor\times b)=n'\times a+(m'-\lfloor a/b\rfloor\times n')\times b$
-                        \end{itemize*}
+                        \item ExtendedEuclid berechnet $d', m', n'$ korrekt
+                        \item $d=d'=m'\times b+n'\times (a\ mod\ b)=m'\times b+n'\times (a-\lfloor a/b\rfloor\times b)=n'\times a+(m'-\lfloor a/b\rfloor\times n')\times b$
                   \end{itemize*}
-                  \item Die Laufzeit von $Euclid(a, b)$ und $ExtendedEuclid(a, b)$ ist von $O(log\ b)$
-                  \item Lemma 1: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\times a+n \times b$
+                  \item Laufzeit von $Euclid$ und $ExtendedEuclid$ ist $O(log\ b)$
             \end{itemize*}
-            \item Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer
-            Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen:
-            $p|(a\times b)\Rightarrow (p| a)\times(p| b)$
+            \item Lemma: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\times a+n \times b$
+            \item Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\times b)\Rightarrow (p| a)\times(p| b)$
             \begin{itemize*}
                   \item Der Beweis: Es sei $p|(a\times b)$
-                  \begin{itemize*}
-                        \item Wenn $p| a$ dann sind wir fertig.
-                        \item Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\exists m, n\in\mathbb{N}:1=m\times p+n\times a \Leftrightarrow b=m\times p \times b + n \times a \times b$
-                        \item Da $p|(a\times b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist
-                  \end{itemize*}
+                  \item Wenn $p| a$ dann sind wir fertig
+                  \item Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\exists m, n\in\mathbb{N}:1=m\times p+n\times a \Leftrightarrow b=m\times p \times b + n \times a \times b$
+                  \item Da $p|(a\times b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist
             \end{itemize*}
-            \item Theorem 2 (Fundamentalsatz der Arithmetik): Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig.
+            \item Theorem 2 (Fundamentalsatz der Arithmetik): Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig
+            %\item verwende Theorem 2, um folgende Korollarie zu beweisen
             \begin{itemize*}
-                  \item Der Beweis:
-                  \begin{itemize*}
-                        \item Wir werden zeigen, dass jede ganze Zahl mit einer nicht eindeutigen Faktorisierung einen eigenen Teiler mit einer nicht eindeutigen Faktorisierung hat, was zu einem klaren Widerspruch führt, wenn wir schließlich auf eine Primzahl reduziert haben.
-                        \item Nehmen wir an, dass n eine ganze Zahl mit einer nicht eindeutigen Faktorisierung ist: $n=p_1\times p_2\times ...\times p_r=q_1 \times q_2\times ... \times q_s$. Die Primzahlen sind nicht notwendigerweise verschieden, aber die zweite Faktorisierung ist nicht einfach eine Umordnung der ersten. Da $p_1$ n dividiert, dividiert es auch das Produkt $q_1\times q_2\times ... \times q_s$. Durch wiederholte Anwendung von Satz 1 zeigen wir, dass es mindestens ein $q_i$ gibt, das durch $p_1$ teilbar ist. Gegebenenfalls ordnen wir die $q_i$'s so, dass es $q_1$ ist. Da sowohl $p_1$ als auch $q_1$ Primzahlen sind, müssen sie gleich sein. Wir können also durch $p_1$ dividieren und haben, dass $n/p_1$ eine nicht-eindeutige Faktorisierung hat.
-                  \end{itemize*}
-                  \item Wir verwenden Theorem 2, um die folgende Korollarie 1 zu beweisen
-                  \begin{itemize*}
-                        \item Wenn $gcd(c,m)=1$ und $(a\times c)\equiv(b\times c)mod\ m$, dann $a\equiv b\ mod\ m$
-                        \item Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\exists n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
-                        \item $\Leftrightarrow ( a - b ) \times c = n \times m$
-                        \item $\Leftrightarrow p_1\times ...\times p_i\times q_1\times ...\times q_j=r_1\times ...\times r_k\times s_1\times ...\times s_l$
-                        \item Man beachte, dass die $p$'s, $q$'s, $r$'s und $s$'s Primzahlen sind und nicht verschieden sein müssen, aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$.
-                        \item Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\times ...\times p_i=r_1\times ...\times r_o\times s_1\times ...\times s_l$ (beachten Sie, dass es weniger r's geben wird)
-                        \item $\Leftrightarrow(a-b)=r_1\times ...\times r_o\times m\Rightarrow a \equiv b\ mod\ m$
-                  \end{itemize*}
-                  \item Bezeichne $\phi(n)$ die Anzahl der positiven ganzen Zahlen, die kleiner als n und relativ zu n prim sind
-                  \begin{itemize*}
-                        \item Beispiele: $\phi(4) = 2$, $\phi(6)=2$, $\phi(7)=6$, $\phi(15)=8$
-                        \item Wenn p eine Primzahl ist $\Rightarrow\phi(p)=p-1$
-                  \end{itemize*}
+                  \item Wenn $gcd(c,m)=1$ und $(a\times c)\equiv(b\times c)mod\ m$, dann $a\equiv b\ mod\ m$
+                  %\item Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\exists n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
+                  %\item $\Leftrightarrow ( a - b ) \times c = n \times m$
+                  %\item $\Leftrightarrow p_1\times ...\times p_i\times q_1\times ...\times q_j=r_1\times ...\times r_k\times s_1\times ...\times s_l$
+                  \item $p$, $q$, $r$ und $s$ sind Primzahlen und müssen nicht verschieden sein aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$
+                  %\item Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\times ...\times p_i=r_1\times ...\times r_o\times s_1\times ...\times s_l$ (beachten Sie, dass es weniger r's geben wird)
+                  \item[$\Leftrightarrow$] $(a-b)=r_1\times ...\times r_o\times m\Rightarrow a \equiv b\ mod\ m$
             \end{itemize*}
-            \item Theorem 3 (Euler): Seien n und b positive und relativ primäre ganze
-            Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
+            \item Bezeichne $\phi(n)$ die Anzahl der positiven ganzen Zahlen, die kleiner als n und relativ zu n prim sind
             \begin{itemize*}
-                  \item Beweis:
-                  \begin{itemize*}
-                        \item Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\times a_1\ mod\ n , ..., b\times a_t\ mod\ n$, d.h.: $b\times a_i \equiv r_i\ mod\ n$.
-                        \item Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$. Wäre dies nicht der Fall, hätten wir $b\times a_i\equiv b\times a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
-                        \item Wir wissen auch, dass jedes $r_i$ relativ prim zu n ist, denn jeder gemeinsame Teiler k von $r_i$ und $n$ , d.h. $n=k\times m$ und $r_i=p_i\times k$, müsste auch $a_i$ teilen,
-                        \item da $b\times a_i$gleich $(p_i\times k)\ mod\ (k\times m)\Rightarrow\exists s\in\mathbb{N}:(b\times a_i)-(p_i\times k)=s\times k\times m \Leftrightarrow (b\times a_i)=s\times k\times m+(p_i\times k)$
-                        \item Da k jeden der Summanden auf der rechten Seite dividiert und k nicht durch b dividiert (n und b sind relativ prim), müsste es auch $a_i$ dividieren, das relativ prim zu n sein soll
-                        \item Somit ist $r_1, ...,r_t$ eine Menge von $\phi(n)$ verschiedenen ganzen Zahlen, die relativ prim zu $n$ sind. Das bedeutet, dass sie genau dasselbe sind wie $a_1,...a_t$, nur dass sie in einer anderen Reihenfolge stehen. Insbesondere wissen wir, dass $r_1\times ...\times r_t=a_1\times ...\times a_t$
-                        \item Wir verwenden nun die Kongruenz $r_1\times ...\times r_t\equiv b\times a_1\times ...\times b\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_t\times a_1\times ...\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_\times r_1\times ...\times r_t\ mod\ n$
-                        \item Da alle $r_i$ relativ prim zu $n$ sind, können wir Korollar 1 anwenden und durch ihr Produkt dividieren: $1\equiv b_t\ mod\ n \Leftrightarrow 1\equiv b\phi(n)\ mod n$
-                  \end{itemize*}
+                  \item Beispiele: $\phi(4) = 2$, $\phi(6)=2$, $\phi(7)=6$, $\phi(15)=8$
+                  \item Wenn p eine Primzahl ist $\Rightarrow\phi(p)=p-1$
             \end{itemize*}
-            \item Satz 4 (Chinese Remainder Theorem):
+            \item Theorem 3 (Euler): Seien n und b positive und relativ primäre ganze Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
+            \begin{itemize*}
+                  %\item Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\times a_1\ mod\ n , ..., b\times a_t\ mod\ n$, d.h.: $b\times a_i \equiv r_i\ mod\ n$.
+                  \item Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$%. Wäre dies nicht der Fall, hätten wir $b\times a_i\equiv b\times a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
+                  %\item Wir wissen auch, dass jedes $r_i$ relativ prim zu n ist, denn jeder gemeinsame Teiler k von $r_i$ und $n$ , d.h. $n=k\times m$ und $r_i=p_i\times k$, müsste auch $a_i$ teilen,
+                  %\item da $b\times a_i$gleich $(p_i\times k)\ mod\ (k\times m)\Rightarrow\exists s\in\mathbb{N}:(b\times a_i)-(p_i\times k)=s\times k\times m \Leftrightarrow (b\times a_i)=s\times k\times m+(p_i\times k)$
+                  %\item Da k jeden der Summanden auf der rechten Seite dividiert und k nicht durch b dividiert (n und b sind relativ prim), müsste es auch $a_i$ dividieren, das relativ prim zu n sein soll
+                  %\item Somit ist $r_1, ...,r_t$ eine Menge von $\phi(n)$ verschiedenen ganzen Zahlen, die relativ prim zu $n$ sind. Das bedeutet, dass sie genau dasselbe sind wie $a_1,...a_t$, nur dass sie in einer anderen Reihenfolge stehen. Insbesondere wissen wir, dass $r_1\times ...\times r_t=a_1\times ...\times a_t$
+                  \item Wir verwenden nun die Kongruenz $r_1\times ...\times r_t\equiv b\times a_1\times ...\times b\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_t\times a_1\times ...\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_\times r_1\times ...\times r_t\ mod\ n$
+                  \item Da alle $r_i$ relativ prim zu $n$ sind, können wir Korollar 1 anwenden und durch ihr Produkt dividieren: $1\equiv b_t\ mod\ n \Leftrightarrow 1\equiv b\phi(n)\ mod n$
+            \end{itemize*}
+            \item Satz 4 (Chinese Remainder Theorem)
             \begin{itemize*}
                   \item Seien $m_1,...,m_r$ positive ganze Zahlen, die paarweise relativ prim sind,
-                  \item d.h. $ganz i\not= j:gcd(m_i, m_j) = 1$. Seien $a_1,...,a_r$ beliebige ganze Zahlen.
-                  \item Dann gibt es eine ganze Zahl a derart, dass:
+                  \item d.h. ganz $i\not= j:gcd(m_i, m_j) = 1$. Seien $a_1,...,a_r$ beliebige ganze Zahlen
+                  \item Dann gibt es eine ganze Zahl a derart, dass
                   \begin{itemize*}
                         \item $a\equiv a_1\ mod\ m_1$
                         \item $a\equiv a_2\ mod\ m_2$
@@ -898,29 +845,22 @@
                         \item $a\equiv a_r\ mod\ m_r$
                   \end{itemize*}
                   \item Außerdem ist a eindeutig modulo $M := m_1\times ...\times m_r$
-                  \item Beweis:
-                  \begin{itemize*}
-                        \item Für alle $i\in{1,...,r}$ definieren wir $M_i:=(M/m_i)\phi(m_i)$
-                        \item Da $M_i$ per Definition relativ prim zu $m_i$ ist, können wir Theorem 3 anwenden und wissen, dass $M_i\equiv 1\ mod\ m_i$
-                        \item Da $M_i$ durch $m_j$ für jedes $j\not= i$ teilbar ist, haben wir $\forall j\not= i:M_i\equiv 0\ mod\ m_j$ \item Wir können nun die Lösung konstruieren, indem wir definieren: $a:= a_1\times M_1+a_2\times M_2+...+a_r\times M_r$
-                        \item Die beiden oben angeführten Argumente bezüglich der Kongruenzen der $M_i$ implizieren, dass a tatsächlich alle Kongruenzen erfüllt.
-                        \item Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\forall i\in{1,...,r}:a\equiv b\ mod\ m_i\Rightarrow\forall i\in{1,. ...,r}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
-                  \end{itemize*}
+                  \item Für alle $i\in{1,...,r}$ definieren wir $M_i:=(M/m_i)\phi(m_i)$
+                  \item Da $M_i$ per Definition relativ prim zu $m_i$ ist, können wir Theorem 3 anwenden und wissen, dass $M_i\equiv 1\ mod\ m_i$
+                  \item Da $M_i$ durch $m_j$ für jedes $j\not= i$ teilbar ist, haben wir $\forall j\not= i:M_i\equiv 0\ mod\ m_j$ \item Wir können nun die Lösung konstruieren, indem wir definieren: $a:= a_1\times M_1+a_2\times M_2+...+a_r\times M_r$
+                  %\item Die beiden oben angeführten Argumente bezüglich der Kongruenzen der $M_i$ implizieren, dass a tatsächlich alle Kongruenzen erfüllt
+                  %\item Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\forall i\in{1,...,r}:a\equiv b\ mod\ m_i\Rightarrow\forall i\in{1,. ...,r}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
             \end{itemize*}
-            \item Lemma 2:
+            \item Lemma 2
             \begin{itemize*}
                   \item Wenn $gcd(m,n)=1$, dann ist $\phi(m\times n)=\phi(m)\times \phi(n)$
-                  \item Der Beweis:
-                  \begin{itemize*}
-                        \item Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\times n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\times n)$ gezählt werden.
-                        \item Betrachten Sie die Entsprechung $a\rightarrow(a\ mod\ m, a\ mod\ n)$. Die ganze Zahl a ist relativ prim zu m und relativ prim zu n (andernfalls würde sie $m \times n$ teilen). Also ist $(a\ mod\ m)$ relativ prim zu m und $(a\ mod\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ mod\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ mod\ m)$ gäbe, würde dieser Teiler auch a teilen. Somit entspricht jede Zahl a, die durch $\phi(m\times n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ mod\ m,a\ mod\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
-                        \item Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen: $a \equiv(a\ mod\ m)\ mod\ m$ $a \equiv(a\ mod\ n)\ mod\ n$ können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen:
-                        \begin{itemize*}
-                              \item Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ mod\ m, a\ mod\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde: $b\equiv (a\ mod\ m)\ mod\ m$ $b\equiv (a\ mod\ n)\ mod\ n$ aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$
-                              \item Daher ist $\phi(m \times n)$ höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
-                        \end{itemize*}
-                        \item Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
-                  \end{itemize*}
+                  %\item Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\times n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\times n)$ gezählt werden.
+                  \item Betracht $a\rightarrow(a\ mod\ m, a\ mod\ n)$. Die ganze Zahl $a$ ist relativ prim zu m und relativ prim zu n. Also ist $(a\ mod\ m)$ relativ prim zu m und $(a\ mod\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ mod\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ mod\ m)$ gäbe, würde dieser Teiler auch a teilen. %Somit entspricht jede Zahl a, die durch $\phi(m\times n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ mod\ m,a\ mod\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
+                  %\item Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen: $a \equiv(a\ mod\ m)\ mod\ m$, $a \equiv(a\ mod\ n)\ mod\ n$ können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen
+                  %\item Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ mod\ m, a\ mod\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde: $b\equiv (a\ mod\ m)\ mod\ m$ $b\equiv (a\ mod\ n)\ mod\ n$ aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$
+                  \item $\phi(m \times n)$ ist höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
+                  \item %Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: 
+                  Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
             \end{itemize*}
       \end{itemize*}
 

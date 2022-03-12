@@ -145,7 +145,7 @@
       \end{itemize}
     \end{solution}
 
-    \part Betrachte nun das konkrete Kryptosystem mit Schlüsselverteilung $S[Pr_K]=(X=\{a,b,c\}, K=\{k_1,k_2,k_3,k_4,k_5,k_6,k_7\}, Y=\{A,B,C,D,E\},e,d, Pr_K)$, wobei $e$ und $Pr_K$ folgender Tabelle zu entnehmen sind und $d$ die Dechiffrierbedingung erfüllt.
+    \part Betrachte nun das konkrete Kryptosystem mit Schlüsselverteilung $S[Pr_K]=(X=\{a,b,c\}$, $K=\{k_1,k_2,k_3,k_4,k_5,k_6,k_7\}$, $Y=\{A,B,C,D,E\},e,d, Pr_K)$, wobei $e$ und $Pr_K$ folgender Tabelle zu entnehmen sind und $d$ die Dechiffrierbedingung erfüllt.
     \begin{center}
       \begin{tabular}{c|c|c|c|c}
         k     & $Pr_K(k)$ & $e(a,k)$ & $e(b,k)$ & $e(c,k)$ \\\hline
@@ -173,12 +173,11 @@
 
   \question Sicherheit von Block Kryptosystemen
 
-  In der Vorlesung wurde folgende Situation alsSzenarium 2eingeführt:
-  ,,Alice möchte Bob mehrere verschiedene Klartexte vorher bekannter und begrenzter Länge übermitteln. Sie verwendet dafür immer denselben Schlüssel. Eva hört die Chiffretexte mit und kann sich sogar einige Klartexte mit dem verwendeten Schlüssel verschlüsseln lassen.''
+  In der Vorlesung wurde folgende Situation als Szenarium 2 eingeführt: ,,Alice möchte Bob mehrere verschiedene Klartexte vorher bekannter und begrenzter Länge übermitteln. Sie verwendet dafür immer denselben Schlüssel. Eva hört die Chiffretexte mit und kann sich sogar einige Klartexte mit dem verwendeten Schlüssel verschlüsseln lassen.''
   \begin{parts}
     \part Nenne ein informationstheoretisch sicheres Block-Kryptosystem, das von Eva in Szenarium 2 leicht gebrochen werden kann.
     \begin{solution}
-      Aus Kenntnis von $x\in\{0,1\}^l$ und $y=e(x,k)$ für ein einziges Paar $(x,k)\in X\times K$ kann Eva den Schlüssel $k=x\oplus_l y$ berechnen. Das gilt für das Cäsar-System, das Vigenère-System und das informationstheoretisch sichere Vernam-System.
+      Aus Kenntnis von $x\in\{0,1\}^l$ und $y=e(x,k)$ für ein einziges Paar $(x,k)\in X\times K$ kann Eva den Schlüssel $k=x\oplus_l y$ berechnen. Das gilt für das Cäsar-System, das Vigenère-System und das informationstheoretisch sichere \textbf{Vernam}-System.
     \end{solution}
 
     \part In der Vorlesung wurde possibilistische Sicherheit für Szenarium 2 definiert. Nenne ein $l$-Block-Kryptosystem, das diese Definition erfüllt. Die nötige Schlüsselmenge $K$ hat Größe...
@@ -191,7 +190,6 @@
 
     \part Nenne ein Block-Kryptosystem aus der Vorlesung, das gegenwärtig für Szenarium 2 in der Praxis benutzt wird.
     \begin{solution}
-
       Triple-DES, AES
     \end{solution}
 
@@ -257,9 +255,9 @@
           \node (op1) [below=of x1] {$e$};
           \node (op2) [below=of x2] {$e$};
 
-          \node (out0) [draw, below=of op0] {?};
-          \node (out1) [draw, below=of op1] {?};
-          \node (out2) [draw, below=of op2] {?};
+          \node (out0) [draw, below=of op0] {1000};
+          \node (out1) [draw, below=of op1] {0110};
+          \node (out2) [draw, below=of op2] {1000};
 
           \path[->,thick]
           (x0) edge (op0)
@@ -296,9 +294,13 @@
           \node (op21) [below=of op1] {$e$};
           \node (op22) [below=of op2] {$e$};
 
-          \node (out0) [draw, below=of op20] {?};
-          \node (out1) [draw, below=of op21] {?};
-          \node (out2) [draw, below=of op22] {?};
+          \node (out0) [draw, below=of op20] {0101};
+          \node (out1) [draw, below=of op21] {1010};
+          \node (out2) [draw, below=of op22] {0101};
+
+          \draw[->,thick] (op0) -- (op20) node [pos=0.5,right,font=\footnotesize] {1111};
+          \draw[->,thick] (op1) -- (op21) node [pos=0.5,right,font=\footnotesize] {0011};
+          \draw[->,thick] (op2) -- (op22) node [pos=0.5,right,font=\footnotesize] {1111};
 
           \path[->,thick]
           (x0) edge (op0)
@@ -329,7 +331,6 @@
           \node (x0) [draw] {$x_0$: 0101};
           \node (x1) [draw, right=of x0] {$x_1$: 0110};
           \node (x2) [draw, right=of x1] {$x_2$: 0101};
-          \node (k) [draw, below left=of x0] {$k$: 1101};
 
           \node (op0) [below=of x0] {$\oplus$};
           \node (op1) [below=of x1] {$\oplus$};
@@ -339,10 +340,15 @@
           \node (op21) [below=of op1] {$e$};
           \node (op22) [below=of op2] {$e$};
 
-          \node (out0) [draw, below=of op20] {?};
-          \node (out1) [draw, below=of op21] {?};
-          \node (out2) [draw, below=of op22] {?};
+          \node (out0) [draw, below=of op20] {1001};
+          \node (out1) [draw, below=of op21] {0101};
+          \node (out2) [draw, below=of op22] {1001};
           \node (out00) [draw, left=of out0] {$y_{-1}$: 0101};
+          \node (k) [draw, above =of out00] {$k$: 1101};
+
+          \draw[->,thick] (op0) -- (op20) node [pos=0.5,right,font=\footnotesize] {0000};
+          \draw[->,thick] (op1) -- (op21) node [pos=0.5,right,font=\footnotesize] {1111};
+          \draw[->,thick] (op2) -- (op22) node [pos=0.5,right,font=\footnotesize] {0000};
 
           \path[->,thick]
           (x0) edge (op0)
@@ -374,19 +380,23 @@
           \node (x0) [draw] {$x_0$: 0101};
           \node (op20) [right =of x0] {$\oplus$};
           \node (op10) [above=of op20] {$e$};
-          \node (x1) [draw, right=of op20] {$x_0$: 0101};
+          \node (x1) [draw, right=of op20] {$x_1$: 0110};
           \node (op21) [right =of x1] {$\oplus$};
           \node (op11) [above=of op21] {$e$};
-          \node (x2) [draw, right=of op21] {$x_0$: 0101};
+          \node (x2) [draw, right=of op21] {$x_2$: 0101};
           \node (op22) [right=of x2] {$\oplus$};
           \node (op12) [above=of op22] {$e$};
 
           \node (y-1) [draw, above =of op10] {$y_{-1}$: 0101};
           \node (k) [draw, right=of y-1] {$k$: 1101};
 
-          \node (out0) [draw, below=of op20] {?};
-          \node (out1) [draw, below=of op21] {?};
-          \node (out2) [draw, below=of op22] {?};
+          \node (out0) [draw, below=of op20] {1101};
+          \node (out1) [draw, below=of op21] {1000};
+          \node (out2) [draw, below=of op22] {0101};
+
+          \draw[->,thick] (op10) -- (op20) node [pos=0.5,right,font=\footnotesize] {1000};
+          \draw[->,thick] (op11) -- (op21) node [pos=0.5,right,font=\footnotesize] {1110};
+          \draw[->,thick] (op12) -- (op22) node [pos=0.5,right,font=\footnotesize] {0000};
 
           \path[->,thick]
           (y-1) edge (op10)
@@ -423,22 +433,26 @@
           \node (op10) [above=of op20] {$e$};
           \node (r0) [draw, left=of op10] {$r$: 0101};
 
-          \node (x1) [draw, right=of op20] {$x_0$: 0101};
+          \node (x1) [draw, right=of op20] {$x_1$: 0110};
           \node (op21) [right =of x1] {$\oplus$};
           \node (op11) [above=of op21] {$e$};
           \node (r1) [draw, left=of op11] {0110};
 
-          \node (x2) [draw, right=of op21] {$x_0$: 0101};
+          \node (x2) [draw, right=of op21] {$x_2$: 0101};
           \node (op22) [right=of x2] {$\oplus$};
           \node (op12) [above=of op22] {$e$};
           \node (r2) [draw, left=of op12] {0111};
 
           \node (k) [draw, above =of op10] {$k$: 1101};
 
-          \node (out0) [draw, below=of op20] {?};
-          \node (out1) [draw, below=of op21] {?};
-          \node (out2) [draw, below=of op22] {?};
+          \node (out0) [draw, below=of op20] {1101};
+          \node (out1) [draw, below=of op21] {0000};
+          \node (out2) [draw, below=of op22] {0111};
           \node (y-1) [draw, left =of out0] {$y_{-1} = r$: 0101};
+
+          \draw[->,thick] (op10) -- (op20) node [pos=0.5,right,font=\footnotesize] {1000};
+          \draw[->,thick] (op11) -- (op21) node [pos=0.5,right,font=\footnotesize] {0110};
+          \draw[->,thick] (op12) -- (op22) node [pos=0.5,right,font=\footnotesize] {0010};
 
           \path[->,thick]
           (k) edge (op10)
@@ -466,14 +480,12 @@
 
     \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{ECB-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
     \begin{solution}
-
-      Ein Block $x\in\{0,1\}^l$ wird immer gleich verschlüsselt. Eva kann also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten. 
+      Ein Block $x\in\{0,1\}^l$ wird immer gleich verschlüsselt. Eva kann also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten.
       Zum Beispiel kann sie sofort sehen, ob der Klartext die Form $x=x_1 x_1$, mit $x_1\in\{0,1\}^l$, hat oder nicht.
     \end{solution}
 
     \part Sei $S$ das Kryptoschema, das aus $B$ in der \textbf{CBC-Betriebsart} entsteht. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann. Eine informelle Beschreibung der Finder- und Raterkomponente des Angreifers ist ausreichend.
     \begin{solution}
-
       Wird zweimal der Klartext $x$ verschlüsselt, so geschieht dies immer durch denselben Chiffretext $y=E(x,(k,v))$. Dies ist eine Folge der Eigenschaft von CBC, deterministisch zu sein.
     \end{solution}
 
@@ -483,22 +495,71 @@
   \begin{parts}
     \part Auf Eingabe $x,y\in\mathbb{N}$ liefert der Euklidische Algorithmus eine ganze Zahlen $d$ mit ...
     \begin{solution}
+
+      \begin{enumerate}
+        \item $a,b:integer;a\leftarrow |x|;b\leftarrow |y|;$
+        \item $while\ b> 0\ repeat$
+              \begin{enumerate}
+                \item $(a,b)\leftarrow (b,a\ mod\ b);$ // simultane Zuweisung
+              \end{enumerate}
+        \item return $a$
+      \end{enumerate}
+
+      Der Euklidische Algorithmus liefert eine ganze Zahl $d$, die der größte gemeinsame Teiler von $x$ und $y$ ist.
     \end{solution}
 
     \part Auf Eingabe $x,y\in\mathbb{N}$ liefert der erweiterte Euklidische Algorithmus (EEA) drei ganze Zahlen $d,s,t$. Welche Eigenschaften erfüllen diese?
     \begin{solution}
+
+      \begin{enumerate}
+        \item Für die Ausgabe $(d,s,t)$ gilt $d= ggT(x,y) =s*x+t*y$.
+        \item Die Anzahl der Schleifendurchläufe ist dieselbe wie beim gewöhnlichen Euklidischen Algorithmus
+        \item Die Anzahl von Ziffernoperationen ist $O((log\ x)(log\ y))$
+      \end{enumerate}
+
+      Algorithmus:
+      \begin{enumerate}
+        \item $a,b,sa,ta,sb,tb,q:integer;$
+        \item $a\leftarrow x; b\leftarrow y;$
+        \item $sa\leftarrow 1; ta\leftarrow 0; sb\leftarrow 0; tb\leftarrow 1;$
+        \item while $b> 0$ repeat
+              \begin{enumerate}
+                \item $q\leftarrow a\ div\ b$;
+                \item $(a,b)\leftarrow (b,a-q*b)$;
+                \item $(sa,ta,sb,tb)\leftarrow (sb,tb,sa-q*sb,ta-q*tb)$;
+              \end{enumerate}
+        \item return$(a,sa,ta)$
+      \end{enumerate}
     \end{solution}
 
     \part Für $x=15$ und $y=9$ liefert der EEA die Zahlen $d$=... ,$s$=... ,$t$=...
     \begin{solution}
+
+      $ggT(x,y)= d = x*s+y*t$
+
+      $\downarrow$: $y_i\rightarrow x_{i+1}$, $r_i\rightarrow y_{i+1}$
+
+      $\uparrow$: $s_i=t_{i+1}$, $t_i=s_{i+1}-q_i*t_{i+1}$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c|c}
+        i & x  & y & q (Teiler) & r(est) & s  & t            & NR $\downarrow$ & NR $\uparrow$  \\\hline
+        1 & 15 & 9 & 1          & 6      & -1 & $1-1*(-1)=2$ & $15-9*1=6$      & $15*-1+9*2=3$  \\
+        2 & 9  & 6 & 1          & 3      & 1  & $0-1*1=-1$   & $9-6*1=3$       & $9*1+6*(-1)=3$ \\
+        3 & 6  & 3 & 2          & 0      & 0  & 1            & $6-3*2=0$       & $6*0+3*1=3$
+      \end{tabular}
+
+      $\Rightarrow d=3, s=-1, t=2$
     \end{solution}
 
     \part Wenn er auf zwei Zahlen mit je $n$ Bits angewendet wird, führt der erweiterte Euklidische Algorithmus $O(...)$ Bitoperationen aus.
     \begin{solution}
+      $O((log\ x)(log\ y))$
     \end{solution}
 
     \part Seien $a$ und $N$ teilerfremde natürliche Zahlen. Wie kann man eine ganze Zahl $b$ ermitteln, die die Gleichung $a*b\ mod\ N= 1$ erfüllt?
     \begin{solution}
+
+      $(a*b)\ mod\ N = (a\ mod\ N * b\ mod\ N)mod\ N = 1$
     \end{solution}
 
     \part Ergänze den Algorithmenrumpf der Funktion $modexp(x,y,N)$ zur rekursiven Berechnung von $x^y\ mod\ n$ mithilfe der schnellen modularen Exponentiation:
@@ -511,6 +572,17 @@
 
     Dieser Algorithmus führt $O(...)$ modulare Multiplikationen aus.
     \begin{solution}
+
+      function $modexp(x,y,m)$
+      \begin{itemize}
+        \item if $y= 0$ then return $1$
+        \item if $y= 1$ then return $x$
+        \item $z\leftarrow modexp((x*x) mod\ m,\lfloor y/2\rfloor,m);$ // rekursiver Aufruf
+        \item if $y$ ist ungerade then $z\leftarrow (z*x) mod\ m$
+        \item return $z$
+      \end{itemize}
+      In jeder Rekursionsstufe ist eine oder sind zwei Multiplikationen modulo m auszuführen, was $O((log\ m)^2)$ Ziffernoperationen erfordert.
+
     \end{solution}
 
     \part Für $m\geq 2$ ist die Menge $\mathbb{Z}^*_m$ definiert durch $\mathbb{Z}^*_m:=...$.
@@ -526,16 +598,28 @@
     \part Vervollständige den Chinesischen Restsatz:
     Wenn $m$ und $n$ ... Zahlen sind, dann ist die Abbildung $\Phi:...\rightarrow..., x\rightarrow ...,...$.
     \begin{solution}
+      Der ,,Chinesische Restsatz'' besagt im Wesentlichen, dass für teilerfremde Zahlen $m$ und $n$ die Strukturen $\mathbb{Z}_m \times\mathbb{Z}_n$ (mit komponentenweisen Operationen) und $\mathbb{Z}_{mn}$ isomorph sind.
+
+      $m$ und $n$ seien teilerfremd. Dann ist die Abbildung $\Phi:\mathbb{Z}_{mn} \owns x \rightarrow (x\ mod\ m, x\ mod\ n)\in\mathbb{Z}_m\times\mathbb{Z}_n$ bijektiv. Weiterhin: Wenn $\Phi(x)=(x_1,x_2)$ und $\Phi(y)=(y_1,y_2)$, dann gilt:
+    \begin{enumerate}
+        \item $\Phi(x+_{mn} y) = (x_1 +_m y_1 , x_2 +_n y_2)$
+        \item $\Phi(x*_{mn} y) = (x_1 *_m y_1 , x_2 *_n y_2)$
+        \item $\Phi(1) = (1,1)$
+    \end{enumerate}
+
+    (Dabei bezeichnen $+_j$ und $*_j$ die Addition und die Multiplikation modulo $j$.)
     \end{solution}
 
     \part Vervollständige den kleinen Satz von Fermat:
     Wenn $p$ ... ist und $a$ in ... liegt, dann gilt: ...
     \begin{solution}
+      Wenn $p$ eine Primzahl ist und $a\in\mathbb{Z}^*_p$ liegt, dann gilt $a^{p-1}\ mod\ p= 1$ 
     \end{solution}
 
     \part  Vervollständige den Satz von Euler:
     Für $m\geq 2$ und $x$ mit ... gilt ... .
     \begin{solution}
+      Für $m\geq 2$ und $x$ mit $ggT(m,x) = 1$ gilt $x\varphi(m)\ mod\ m=1$
     \end{solution}
   \end{parts}
 

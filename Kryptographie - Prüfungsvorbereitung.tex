@@ -627,22 +627,35 @@
   \begin{parts}
     \part Definiere den Begriff ,,$a$ ist ein F-Lügner'' (für $N$): $N$ ist ... und es gilt ... .
     \begin{solution}
+      Sei $N\geq 3$ ungerade und zusammengesetzt. 
+      
+      Eine Zahl $a\in\{1,...,N-1\}$ heißt \textbf{F-Zeuge} für $N$, wenn $a^{N-1} mod\ N\not= 1$ gilt. 
+      
+      Eine Zahl $a\in\{1,...,N-1\}$ heißt \textbf{F-Lügner} für $N$, wenn $a^{N-1} mod\ N=1$ gilt. 
+      
+      Die Menge der F-Lügner nennen wir $L^F_N$.
     \end{solution}
 
     \part Definiere: $N$ heißt Carmichael-Zahl, wenn ...
     \begin{solution}
+      Eine ungerade zusammengesetzte Zahl $N$ heißt eine Carmichael-Zahl, wenn für alle $a\in\mathbb{Z}^*_N$ die Gleichung $a^{N-1}\ mod\ N= 1$ gilt.
     \end{solution}
 
     \part Formuliere den Fermat-Test für eine gegebene ungerade Zahl $N\geq 5$: Wähle... und berechne $c=...$. Wenn $c=...$ ist, ist die Ausgabe ...., sonst ist sie ... .
     \begin{solution}
+      Nutze den Fermat-Test, um ,,Zeugen'' dafür anzugeben, dass eine Zahl $N$ zusammengesetzt ist: Wenn wir eine Zahl $a$ mit $1\leq a < N$ finden, für die $a^{N-1} mod\ N\not=1$ gilt, dann ist $N$ definitiv keine Primzahl.
+
+      Für eine gegebene ungerade Zahl $N\geq 5$: Wähle $a<5$ und berechne $c=a^{N-1}\ mod\ N$. Wenn $c\not=1$ ist, ist die Ausgabe N ist kine Primzahl, sonst ist sie eine Primzahl.
     \end{solution}
 
     \part Definiere: $b\in\{1,...,N-1\}$ heißt nichttriviale Quadratwurzel der 1 modulo $N$, wenn...
     \begin{solution}
+     Eine Zahl $b\in\{2,...,N-2\}$ mit $b^2\ mod\ N=1$ heißt eine nicht triviale Quadratwurzel der $1$ modulo $N$. Bei Primzahlen gibt es solche Zahlen nicht.
     \end{solution}
 
     \part Wenn man eine nichttriviale Quadratwurzel $b$ der 1 modulo $N$ gefunden hat, weiß man sicher, dass $N$.... ist.
     \begin{solution}
+      Wenn es eine nichttriviale Quadratwurzel der $1$ modulo $N$ gibt, dann ist $N$ zusammengesetzt.
     \end{solution}
 
     \part Definiere den Begriff $\{$ qqa ist ein MR-Lügner$\}$ (für $N$):
@@ -650,6 +663,11 @@
     Bilde die Folge $b_0=...,b_1=...,...,b_k=...$.
     $a$ heißt dann ein MR-Lügner (für $N$), falls ...
     \begin{solution}
+      Sei $N\geq 3$ ungerade und zusammengesetzt. 
+      Wir schreiben $N-1=u*2^k$, für $u$ ungerade, $k\geq 1$. 
+      Eine Zahl $a, 1\leq a < N$, heißt ein MR-Zeuge für $N$, wenn $b_0=1$ oder in der Folge $b_0,...,b_{k-1}$ zu $a$ kommt $N-1$ vor nicht gilt, d. h. $a^u\not\equiv 1$ und $a^{u*2^i}\not\equiv N-1 (mod\ N)$ für alle $i$ mit $0\leq i < k$ (Fälle 3 und 4). 
+      Eine Zahl $a, 1\leq a < N$, heißt ein MR-Lügner für N, wenn $b_0=1$ oder in der Folge $b_0,...,b_{k-1}$ zu $a$ kommt $N-1$ vor gilt, $a^u\equiv 1$ oder $a^{u*2^i}\equiv N-1 (mod\ N)$ für ein $i$ mit $0\leq i < k$ (Fälle 1 und 2). 
+      Die Menge der MR-Lügner nennen wir $L^{MR}_N$.
     \end{solution}
 
     \part Ergänze den Algorithmus von Miller/Rabin (Eingabe $N\geq 5$):
@@ -664,24 +682,46 @@
     if $b=... $ then ...
     return
     \begin{solution}
+      Der Miller-Rabin-Primzahltest
+            \begin{itemize}
+                \item Bestimme $u$ ungerade und $k\geq 1$ mit $N-1 =u*2^k$
+                \item wähle zufällig ein $a$ aus $\{1 ,...,N-1\}$
+                \item $b \leftarrow a^u\ mod\ N$ // mit schnellem Potenzieren
+                \item if $b\in\{1,N-1\}$ then return $0$
+                \item for $j$ from $1$ to $k-1$ do //,,wiederhole (k-1)-mal''
+                \item $b\leftarrow b^2\ mod\ N$
+                \item if $b=N-1$ then return $0$
+                \item if $b=1$ then return $1$
+                \item return $1$
+            \end{itemize}
     \end{solution}
 
     \part Was kann man über das Ein-/Ausgabeverhalten des Miller-Rabin-Algorithmus auf Eingabe $N\geq 5$ (ungerade) sagen?
     $N$ zusammengesetzt $\Rightarrow$ ...,
     $N$ Primzahl $\Rightarrow$...
     \begin{solution}
+      Wenn $N$ zusammengesetzt $\Rightarrow$ gibt es MR-Zeugen.
+
+      Wenn $N$ eine Primzahl ist, gibt der MR-Test $0$ aus.
     \end{solution}
 
     \part Wie kann man vorgehen, um aus dem Miller-Rabin-Test einen Primzahltest zu erhalten, dessen Fehlerwahrscheinlichkeit höchstens $1/4^l$ beträgt?
     \begin{solution}
+      Tatsächlich ist die Fehlerwahrscheinlichkeit durch $1/4^l$ beschränkt, für (von $l$ abhängig) genügend großen. Dies kann man aber nur durch fortgeschrittene zahlentheoretische Untersuchungen über die erwartete Wahrscheinlichkeit, dass eine zufällige ungerade zusammengesetzte Zahl den $l$-fach iterierten MiRa-Test übersteht, beweisen.
     \end{solution}
 
     \part Formuliere den Primzahlsatz:
     \begin{solution}
+        Primzahlsatz: $lim_{x\rightarrow \infty} \frac{\pi(x)}{x\backslash ln\ x}= 1$.
+
+      Mit $\pi(x)$ bezeichnen wir die Anzahl der Primzahlen, die nicht größer als $x$ sind.
     \end{solution}
 
     \part Nach der Ungleichung von Finsler gibt es $\Omega(...)$ Primzahlen im Intervall $[m, 2m)$. Entsprechend muss man für $\mu\in\mathbb{N}$ erwartet nur $O(...)$ Zahlen zufällig aus $[2^{\mu-1}, 2^{\mu})$ ziehen, um mindestens eine $\mu$-Bit Primzahl zu erhalten.
     \begin{solution}
+      Ungleichung von Finsler: Für jede ganze Zahl $m\geq 2$ liegen im Intervall $(m, 2m]$ mindestens $m/(3\ ln(2m))$ Primzahlen: $\pi (2m)-\pi(m)\geq \frac{m}{3\ ln(2m)}$.
+
+      $\Rightarrow \pi(2m)-\pi(m) = O(m/log\ m)$
     \end{solution}
 
     \part Zu gegebenem $\mu$ soll eine (zufällige) Primzahl im Intervall $[2^{\mu-1}, 2^{\mu})$ gefunden werden. Wie geht man

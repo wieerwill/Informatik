@@ -737,22 +737,45 @@
   \begin{parts}
     \part Schlüsselerzeugung: Wähle .... und berechne $N=...$ sowie $\varphi(N)=...$. Der öffentliche Schlüssel von Bob ist $(N,e)$, wobei $e$ die Bedingung ... erfüllt. Der geheime Schlüssel von Bob ist $(N,d)$, mit ... . $d$ lässt sich mit folgendem Algorithmus berechnen: ...
     \begin{solution}
+
+      Die Schlüssellänge ist festzulegen (etwa $l= 1024, 2048$ oder $4096$ Bits). 
+      Danach werden zwei (zufällige, verschiedene) Primzahlen $p$ und $q$ bestimmt, deren Bitlänge die Hälfte der Schlüssellänge ist.
+      Nun wird das Produkt $N=pq$ berechnet. Die Zahl $N$ hat $l$ oder $l-1$ Bits. Weiter wird $\varphi(N) = (p-1)(q-1)$ berechnet. 
+      Es wird eine Zahl $e\in\{3,...,\varphi(N)-1\}$ mit $ggT(e,\varphi(N)) = 1$ gewählt. 
+      Dann wird das multiplikative Inverse $d<\varphi(N) modulo\ \varphi(N)$ von $e$ bestimmt, so dass also $ed\ mod\ \varphi(N) = 1$ gilt. (Man beachte, dass nur ungerade $e$ in Frage kommen, weil $\varphi(N)$ gerade ist. 
+      Man weiß, dass die Anzahl der geeigneten Werte $e$ mindestens $\frac{\varphi(N)}{log(\varphi(N))}$ ist, so dass die erwartete Anzahl von Versuchen $O(log(\varphi(N)))=O(logN)$ ist.)
+
+      Der erwartete Berechnungsaufwand für die Schlüsselerzeugung ist $O((log\ N)^4) =O(l^4)$, weil dies die Kosten der Primzahlerzeugung sind.
+
+        Bob erhält aus seiner Rechnung $N$, $e$ und $d$. Aus diesen wird das Schlüsselpaar $(k,\hat{k})$ gebildet:
+        \begin{itemize}
+            \item Der öffentliche Schlüssel $k$ ist das Paar $(N,e)$. Dieser wird bekanntgegeben.
+            \item Der geheime Schlüssel $\hat{k}$ ist $(N,d)$. (Natürlich ist nur der Teil $d$ wirklich geheim.)
+        \end{itemize}
     \end{solution}
 
     \part Verschlüsseln von $x\in ... :y=... $.
     \begin{solution}
+      $x\in X= [N]: y=E(x,(N,e)) :=x^e\ mod\ N$
+      
+      (Zu berechnen mit schneller Exponentiation, Rechenzeit $O((log\ N)^3) =O(l^3)$)
     \end{solution}
 
     \part Entschlüsseln von $y\in ... :z=... $.
     \begin{solution}
+      $y\in Y: z=D(y,(N,d)) :=y^d\ mod\ N$
+      
+      (Zu berechnen mit schneller Exponentiation, Rechenzeit $O((log\ N)^3) =O(l^3)$)
     \end{solution}
 
     \part Formuliere die zentrale Korrektheitsaussage des RSA-Systems: ...=$x$, für alle zulässigen Klartextblöcke $x$.
     \begin{solution}
+      Korrektheit/Dechiffrierbedingung von RSA: Wenn $ed\ mod\ \varphi(N) = 1$ gilt, dann haben wir $x^{ed}\ mod\ N=x$, für alle $x\in [N]$.
     \end{solution}
 
     \part Beschreibe eine Strategie für RSA-basierte Systeme, mit der verhindert werden kann, dass zwei identische Klartextblöcke bei Verwendung desselben Schlüsselpaars gleich verschlüsselt werden.
     \begin{solution}
+      Verwendung von Prä- und Postblöcken, die vor und nach dem zu verschlüsselnden Textblock angehängt werden mit randomisiertem (Zufallsbits) oder zeitlich abhängigem (Zeitstempel) Inhalt.
     \end{solution}
   \end{parts}
 

@@ -783,10 +783,12 @@
   \begin{parts}
     \part Komponenten des Rabin-Kryptosystems: Zwei große Primzahlen $p$ und $q$ mit ... . Der öffentliche Schlüssel ist $N=$\dots, der private Schlüssel von Bob ist ... .
     \begin{solution}
+      Wähle zwei verschiedene zufällige große Primzahlen $p$ und $q$ mit $p\equiv q\equiv 3 (mod\ 4)$, also Primzahlen, die um 1 kleiner als ein Vielfaches von 4 sind. Berechne $N=pq$. Der öffentliche Schlüssel ist $k=N$; der geheime Schlüssel ist $\hat{k}= (p,q)$.
     \end{solution}
 
     \part Verschlüsselung: Alice möchte einen Block $x\in$\dots an Bob schicken. Sie berechnet $y=$\dots und sendet $y$ an Bob.
     \begin{solution}
+      Verschlüsselung eines Blocks, der eine Zahl $x<N$ ist: $y:=x^2\ mod\ N$.
     \end{solution}
 
     \part Entschlüsselung: Wenn Bob das Chiffrat $y$ erhält, berechnet er $z_1,...z_4$. Wie hängen diese Zahlen mit $y$ zusammen? ...
@@ -796,10 +798,34 @@
     Kombination der Teilergebnisse, um (zum Beispiel) $z_1$ zu erhalten: ...
     Was ist der maximale Rechenaufwand? $O(...)$ Bitoperationen.
     \begin{solution}
+      Entschlüsselung eines Chiffretextes $y<N$: Wir müssen Quadratwurzeln von y modulo N berechnen, das sind Zahlen b mit $b^2 mod\ N=y$. Wir kennen die Faktoren $p$ und $q$. Berechne Quadratwurzeln getrennt modulo $p$ und modulo $q: r:=y^{(p+1)/4} mod\ p$ und $s:=y^{(q+1)/4} mod\ q$.
+      Weil $r^2\ mod\ p =((x^2\ mod\ N)^{(p+1)/4})^2\ mod\ p=x^{p+1}\ mod\ p=(x^p *x) mod\ p = x^2\ mod\ p$, gilt $r^2-x^2\equiv (r-x)(r+x)\equiv 0 (mod\ p)$. Das heißt, dass entweder $r\equiv x(mod\ p)$ oder $p-r\equiv x(mod\ p)$ gilt.
+      Genauso sieht man, dass $s\equiv x(mod\ q)$ oder $q-s\equiv x(mod\ q)$ gilt.
+      Mit der konstruktiven Variante des chinesischen Restsatzes können wir nun vier Zahlen $z_1,...,z_4 \in [N]$ berechnen, die die folgenden Kongruenzen erfüllen
+      \begin{itemize}
+          \item $z_1 \equiv r (mod\ p)$ und $z_1 \equiv s (mod\ q)$
+          \item $z_2 \equiv r (mod\ p)$ und $z_2 \equiv q-s (mod\ q)$
+          \item $z_3 \equiv p-r (mod\ p)$ und $z_3 \equiv s (mod\ q)$
+          \item $z_4 \equiv p-r (mod\ p)$ und $z_4 \equiv q-s (mod\ q)$
+      \end{itemize}
+
+      Wegen der obigen Überlegung ist $x\in\{z_1,...,z_4\}$. Wir wählen eine dieser vier Möglichkeiten.
+
+      Für die Verschlüsselung muss nur eine Quadrierung modulo $N$ durchgeführt werden; sie kostet nur Zeit $O((log\ N)^2)$. Die Entschlüsselung erfordert eine Exponentiation modulo $p$ und eine modulo $q$ und mehrere Anwendungen des erweiterten Euklidischen Algorithmus - insgesamt Zeit $O((log\ N)^3)$.
     \end{solution}
 
     \part Formuliere die zentrale Sicherheitsaussage des Rabin-Kryptosystems: ...
     \begin{solution}
+      Welche der oberen Möglichkeiten die richtige (ausgewählte) ist, hängt vom Zufall ab, der die Auswahl von $x$ steuert. Jede der 4 Quadratwurzeln von $y$ hat dieselbe Wahrscheinlichkeit $1/4$, als $x$ gewählt worden zu sein.
+
+      \begin{enumerate}
+          \item Fall: $x=z$, Misserfolg.
+          \item Fall: $0<|x-z|< N$ und $x-z$ durch $p$ teilbar, woraus $ggT(x-z,N) =p$ folgt: Erfolg!
+          \item Fall: $0<|x-z|< N$ und durch $q$ teilbar, woraus $ggT(x-z,N) =q$ folgt: Erfolg!
+          \item Fall: $x+z=N$, also $x-z\equiv 2x(mod\ N)$. Weil $2x$ teilerfremd zu $N$ ist, ergibt sich $ggT(x-z,N)=1$, Misserfolg.
+      \end{enumerate}
+
+      Eva muss also nur $ggT(x-z,N)$ berechnen! Damit gelingt es ihr mit Wahrscheinlichkeit $1/2$, die Faktoren von $N$ zu ermitteln. Durch l-fache Wiederholung desselben Experiments lässt sich die Erfolgswahrscheinlichkeit auf $1-\frac{1}{2^l}$ erhöhen.
     \end{solution}
   \end{parts}
 

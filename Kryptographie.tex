@@ -335,7 +335,7 @@
 
     \textbf{Satz: Informationstheoretische Sicherheit des Vernam-Systems} Sei $l>0$ und $S=(X,K,Y,e,d)$ mit $X=K=Y=\{0,1\}^l$ und $e=d=\oplus_l$ das Vernam-System der Länge $l$. Sei weiter $Pr_K:K\rightarrow [0,1]$ die Gleichverteilung. Dann ist $V=S[Pr_K]$ informationstheoretisch sicher.
 
-    Es wird sich herausstellen, dass informationstheoretische Sicherheit inbestimmten Fällen Gleichverteilung auf den Schlüsseln erzwingt und dass die informationstheoretische Sicherheit eines KSV nichts mit den konkreten Wahrscheinlichkeiten der Klartextverteilung $Pr_X$ zu tun hat, sondern nur die Menge $\{x\in X|Pr_X(x)> 0\}$ der ''aktiven'' Klartexte relevant ist.
+    Es wird sich herausstellen, dass informationstheoretische Sicherheit in bestimmten Fällen Gleichverteilung auf den Schlüsseln erzwingt und dass die informationstheoretische Sicherheit eines KSV nichts mit den konkreten Wahrscheinlichkeiten der Klartextverteilung $Pr_X$ zu tun hat, sondern nur die Menge $\{x\in X|Pr_X(x)> 0\}$ der ''aktiven'' Klartexte relevant ist.
 
     $Pr(x|y) =\frac{Pr(x,y)}{Pr(y)}=\frac{Pr(y|x)*Pr(x)}{Pr(y)}=\frac{Pr_K(k_{x,y})*Pr(x)}{Pr(y)}=^* \frac{\frac{1}{|K|}*Pr(x)}{\frac{1}{|K|}}=Pr(x)$
 
@@ -520,16 +520,16 @@
 
     Die Multiplikation $\odot$ ist etwas komplizierter. Es wird ein irreduzibles Polynom $f=X^k+a_{k-1}* X^{k-1}+...+a_1*X+a_0$ vom Grad k (mit ,,Leitkoeffizient'' $a_k=1$) benötigt, also ein Koeffiziententupel $(1,a_{k-1},...,a_1,a_0)$ mit der Eigenschaft, dass man nicht $f=f_1*f_2$ schreiben kann, für Polynome $f_1$ und $f_2$, die Grad $\geq 1$ haben. Man kann zeigen, dass es für jedes $k\geq 2$ stets solche Polynome gibt. Sie können mit randomisierten Algorithmen effizient gefunden werden. Hier einige Beispiele für $F=\mathbb{Z}_2$. Wie üblich schreibt man die Koeffizientenfolge als Bitstring. Dieser Bitstring kann dann auch als natürliche Zahl (dezimal geschrieben) interpretiert werden.
 
-    \begin{tabular}{c|c|c}
-        | k  | irreduzibles Polynom vom Grad k über $\mathbb{Z}_2$ | Kurzform | Zahl \\\hline
-        | 1  | $X+ 1$                       | 11    | 3                              \\
-        | 2  | $X^2 +X+ 1$                     | 111    | 7                          \\
-        | 3  | $X^3 +X+ 1$                     | 1011   | 11                         \\
-        | 4  | $X^4 +X+ 1$                     | 10011   | 19                        \\
-        | 5  | $X^5 +X^2 + 1$                   | 100101  | 37                       \\
-        | 6  | $X^6 +X+ 1$                     | 1000011  | 67                       \\
-        | 7  | $X^7 +X^3 + 1$                   | 10001001 | 137                     \\
-        | 8  | $X^8 +X^4 +X^3 +X+ 1$                | 100011011 | 283
+    \begin{tabular}{c|c|c|c}
+        k  & irreduzibles Polynom vom Grad k über $\mathbb{Z}_2$ & Kurzform & Zahl \\\hline
+        1  & $X+ 1$                       & 11    & 3                              \\
+        2  & $X^2 +X+ 1$                     & 111    & 7                          \\
+        3  & $X^3 +X+ 1$                     & 1011   & 11                         \\
+        4  & $X^4 +X+ 1$                     & 10011   & 19                        \\
+        5  & $X^5 +X^2 + 1$                   & 100101  & 37                       \\
+        6  & $X^6 +X+ 1$                     & 1000011  & 67                       \\
+        7  & $X^7 +X^3 + 1$                   & 10001001 & 137                     \\
+        8  & $X^8 +X^4 +X^3 +X+ 1$                & 100011011 & 283
     \end{tabular}
 
     Das Polynom $X^2+1=(1,0,1)=101$ ist nicht irreduzibel, da über $\mathbb{Z}_2$ die Gleichung $(X+1)*(X+1)=X^2+1$ gilt.
@@ -540,52 +540,52 @@
 
     Man kann durch geduldiges Multiplizieren und Bilden von Resten (also Dividieren von Polynomen) in dieser Weise eine komplette Multiplikationstabelle aufstellen. Geschickter ist Folgendes: Man berechnet alle Produkte $g*h mod f$, für die in g und in h jeweils die ersten beiden Bits oder die letzten beiden Bits 0 sind. (Wenn man beobachtet, dass $(0,0,0,1)=0001$ das neutrale Element ist, und die Kommutativität berücksichtigt, muss man nur 15 Produkte berechnen.) Es ergibt sich die folgende Tabelle.
 
-    \begin{tabular}{c}
-        | $\odot$ | 0000 | 0001 | 0010 | 0011 | 0100 | 1000 | 1100 \\\hline
-        | 0000  | 0000 | 0000 | 0000 | 0000 | 0000 | 0000 | 0000   \\
-        | 0001  | 0000 | 0001 | 0010 | 0011 | 0100 | 1000 | 1100   \\
-        | 0010  | 0000 | 0010 | 0100 | 0110 | 1000 | 0011 | 1011   \\
-        | 0011  | 0000 | 0011 | 0110 | 0101 | 1100 | 1011 | 0111   \\
-        | 0100  | 0000 | 0100 | 1000 | 1100 | 0011 | 0110 | 0101   \\
-        | 1000  | 0000 | 1000 | 0011 | 1011 | 0110 | 1100 | 1010   \\
-        | 1100  | 0000 | 1100 | 1011 | 0111 | 0101 | 1010 | 1111
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+        $\odot$ & 0000 & 0001 & 0010 & 0011 & 0100 & 1000 & 1100 \\\hline
+         0000  & 0000 & 0000 & 0000 & 0000 & 0000 & 0000 & 0000   \\
+         0001  & 0000 & 0001 & 0010 & 0011 & 0100 & 1000 & 1100   \\
+         0010  & 0000 & 0010 & 0100 & 0110 & 1000 & 0011 & 1011   \\
+         0011  & 0000 & 0011 & 0110 & 0101 & 1100 & 1011 & 0111   \\
+         0100  & 0000 & 0100 & 1000 & 1100 & 0011 & 0110 & 0101   \\
+         1000  & 0000 & 1000 & 0011 & 1011 & 0110 & 1100 & 1010   \\
+         1100  & 0000 & 1100 & 1011 & 0111 & 0101 & 1010 & 1111
     \end{tabular}
 
     Wir notieren weiterhin Bitstrings $(a_3,a_2,a_1,a_0)=a_3a_2a_1a_0$ hexadezimal. Das Polynom $g=(1,0,1,1)=1011$ ist also $B=1000\oplus 0011=8\oplus 3$, das Polynom $h=(0,1,1,0)=0110$ ist $6=0100\oplus 0010=4\oplus 2$.
     Die Tabelle sieht dann so aus:
-    \begin{tabular}{c}
-        | $\odot$ | 0  | 1  | 2  | 3  | 4  | 8  | C \\\hline
-        | 0    | 0  | 0  | 0  | 0  | 0  | 0  | 0    \\
-        | 1    | 0  | 1  | 2  | 3  | 4  | 8  | C    \\
-        | 2    | 0  | 2  | 4  | 6  | 8  | 3  | B    \\
-        | 3    | 0  | 3  | 6  | 5  | C  | B  | 7    \\
-        | 4    | 0  | 4  | 8  | C  | 3  | 6  | 5    \\
-        | 8    | 0  | 8  | 3  | B  | 6  | C  | A    \\
-        | C    | 0  | C  | B  | 7  | 5  | A  | F
+    \begin{tabular}{c|c|c|c|c|c|c|c|c}
+        $\odot$ & 0  & 1  & 2  & 3  & 4  & 8  & C \\\hline
+         0    & 0  & 0  & 0  & 0  & 0  & 0  & 0    \\
+         1    & 0  & 1  & 2  & 3  & 4  & 8  & C    \\
+         2    & 0  & 2  & 4  & 6  & 8  & 3  & B    \\
+         3    & 0  & 3  & 6  & 5  & C  & B  & 7    \\
+         4    & 0  & 4  & 8  & C  & 3  & 6  & 5    \\
+         8    & 0  & 8  & 3  & B  & 6  & C  & A    \\
+         C    & 0  & C  & B  & 7  & 5  & A  & F
     \end{tabular}
 
     Nun wollen wir beliebige Polynome multiplizieren. Beispiel: Um $g=(1,0,1,1)=1011=B$ und $h=(0,1,1,0)=0110=6$ zu multiplizieren, rechnet man unter Benutzung der Tabelle und des Distributivgesetzes wie folgt (Multiplikation modulo f):
     $B\odot 6=(8\oplus 3)(4\oplus 2)=(8\odot 4)\oplus(8\odot 2)\oplus(3\odot 4)\oplus(3\odot 2)=6\oplus 3\oplus C\oplus 6= 0110\oplus 0011 \oplus 1100 \oplus 0110 = 1111 = F$.
 
     Mit etwas Geduld und unter Ausnutzung des Distributivgesetzes lässt sich auf diese Weise die folgende Multiplikationstabelle für die Elemente von $\mathbb{Z}^4_2$ finden.
-    \begin{tabular}{c}
-        |   | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F  \\\hline
-        | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0 \\
-        | 1  | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F \\
-        | 2  | 0  | 2  | 4  | 6  | 8  | A  | C  | E  | 3  | 1  | 7  | 5  | B  | 9  | F  | D \\
-        | 3  | 0  | 3  | 6  | 5  | C  | F  | A  | 9  | B  | 8  | D  | E  | 7  | 4  | 1  | 2 \\
-        | 4  | 0  | 4  | 8  | C  | 3  | 7  | B  | F  | 6  | 2  | E  | A  | 5  | 1  | D  | 9 \\
-        | 5  | 0  | 5  | A  | F  | 7  | 2  | D  | 8  | E  | B  | 4  | 1  | 9  | C  | 3  | 6 \\
-        | 6  | 0  | 6  | C  | A  | B  | D  | 7  | 1  | 5  | 3  | 9  | F  | E  | 8  | 2  | 4 \\
-        | 7  | 0  | 7  | E  | 9  | F  | 8  | 1  | 6  | D  | A  | 3  | 4  | 2  | 5  | C  | B \\
-        | 8  | 0  | 8  | 3  | B  | 6  | E  | 5  | D  | C  | 4  | F  | 7  | A  | 2  | 9  | 1 \\
-        | 9  | 0  | 9  | 1  | 8  | 2  | B  | 3  | A  | 4  | D  | 5  | C  | 6  | F  | 7  | E \\
-        | A  | 0  | A  | 7  | D  | E  | 4  | 9  | 3  | F  | 5  | 8  | 2  | 1  | B  | 6  | C \\
-        | B  | 0  | B  | 5  | E  | A  | 1  | F  | 4  | 7  | C  | 2  | 9  | D  | 6  | 8  | 3 \\
-        | C  | 0  | C  | B  | 7  | 5  | 9  | E  | 2  | A  | 6  | 1  | D  | F  | 3  | 4  | 8 \\
-        | D  | 0  | D  | 9  | 4  | 1  | C  | 8  | 5  | 2  | F  | B  | 6  | 3  | E  | A  | 7 \\
-        | E  | 0  | E  | F  | 1  | D  | 3  | 2  | C  | 9  | 7  | 6  | 8  | 4  | A  | B  | 5 \\
-        | F  | 0  | F  | D  | 2  | 9  | 6  | 4  | B  | 1  | E  | C  | 3  | 8  | 7  | 5  | A
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+           & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & A  & B  & C  & D  & E  & F  \\\hline
+         0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0 \\
+         1  & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & A  & B  & C  & D  & E  & F \\
+         2  & 0  & 2  & 4  & 6  & 8  & A  & C  & E  & 3  & 1  & 7  & 5  & B  & 9  & F  & D \\
+         3  & 0  & 3  & 6  & 5  & C  & F  & A  & 9  & B  & 8  & D  & E  & 7  & 4  & 1  & 2 \\
+         4  & 0  & 4  & 8  & C  & 3  & 7  & B  & F  & 6  & 2  & E  & A  & 5  & 1  & D  & 9 \\
+         5  & 0  & 5  & A  & F  & 7  & 2  & D  & 8  & E  & B  & 4  & 1  & 9  & C  & 3  & 6 \\
+        6  & 0  & 6  & C  & A  & B  & D  & 7  & 1  & 5  & 3  & 9  & F  & E  & 8  & 2  & 4 \\
+         7  & 0  & 7  & E  & 9  & F  & 8  & 1  & 6  & D  & A  & 3  & 4  & 2  & 5  & C  & B \\
+         8  & 0  & 8  & 3  & B  & 6  & E  & 5  & D  & C  & 4  & F  & 7  & A  & 2  & 9  & 1 \\
+         9  & 0  & 9  & 1  & 8  & 2  & B  & 3  & A  & 4  & D  & 5  & C  & 6  & F  & 7  & E \\
+         A  & 0  & A  & 7  & D  & E  & 4  & 9  & 3  & F  & 5  & 8  & 2  & 1  & B  & 6  & C \\
+         B  & 0  & B  & 5  & E  & A  & 1  & F  & 4  & 7  & C  & 2  & 9  & D  & 6  & 8  & 3 \\
+         C  & 0  & C  & B  & 7  & 5  & 9  & E  & 2  & A  & 6  & 1  & D  & F  & 3  & 4  & 8 \\
+         D  & 0  & D  & 9  & 4  & 1  & C  & 8  & 5  & 2  & F  & B  & 6  & 3  & E  & A  & 7 \\
+         E  & 0  & E  & F  & 1  & D  & 3  & 2  & C  & 9  & 7  & 6  & 8  & 4  & A  & B  & 5 \\
+         F  & 0  & F  & D  & 2  & 9  & 6  & 4  & B  & 1  & E  & C  & 3  & 8  & 7  & 5  & A
     \end{tabular}
 
     Das neutrale Element der Multiplikation ist das Polynom $1=(0,..., 0 ,1) = 0... 01$. Man beobachtet, dass in jeder Zeile (und ebenso in jeder Spalte) der Tabelle, außer der für das Nullpolynom, alle Elemente genau einmal vorkommen. Dies ist für jeden Körper F und jedes beliebige k so, und es folgt daraus, dass die Elemente der Menge $F^k-\{0\}$ ein Inverses haben.
@@ -610,19 +610,19 @@
 
     Wenn die Bitlänge $k$ kurz und bekannt ist, wird man Tabellen benutzen. (Zum Beispiel benutzt AES einen Körper der Größe 256.) Für die Multiplikation verwendet man auch gerne Potenz- und Logarithmentabellen.
 
-    Fakt 2.7 Sei F ein endlicher Körper mit $q$ Elementen. Dann gibt es in Fein ,,primitives Element'' g, d.h., g erfüllt $\{g^i| 0 \geq i < q-1\}=F-\{0\}$. (g ist erzeugendes Element der multiplikativen Gruppe von F.)
+    Fakt 2.7 Sei F ein endlicher Körper mit $q$ Elementen. Dann gibt es in F ein ,,primitives Element'' g, d.h., g erfüllt $\{g^i| 0 \geq i < q-1\}=F-\{0\}$. (g ist erzeugendes Element der multiplikativen Gruppe von F.)
 
     Beispiel: Wir hatten oben eine Multiplikationstabelle für $GF(2^4)$ aufgestellt. Mit ihrer Hilfe findet man leicht die ersten 15 Potenzenvon 2:
     Potenztabelle:
-    \begin{tabular}{c}
-        | i       | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 | 12 | 13 | 14 \\\hline
-        | $exp_2(i)=2^i$ | 1  | 2  | 4  | 8  | 3  | 6  | C  | B  | 5  | A  | 7  | E  | F  | D  | 9
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+        i       & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10 & 11 & 12 & 13 & 14 \\\hline
+         $exp_2(i)=2^i$ & 1  & 2  & 4  & 8  & 3  & 6  & C  & B  & 5  & A  & 7  & E  & F  & D  & 9
     \end{tabular}
 
     Diese Potenzen sind alle verschieden, also ist $g=2$ primitives Element. Die entsprechende Logarithmentab elle sieht so aus:
-    \begin{tabular}{c}
-        | x     | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F \\\hline
-        | $log_2(x)$ | 0  | 1  | 4  | 2  | 8  | 5  | 10 | 3  | 14 | 9  | 7  | 6  | 13 | 11 | 12
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+         x     & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & A  & B  & C  & D  & E  & F \\\hline
+        & $log_2(x)$ & 0  & 1  & 4  & 2  & 8  & 5  & 10 & 3  & 14 & 9  & 7  & 6  & 13 & 11  12
     \end{tabular}
 
     Achtung: Der Index der Exponential- und der Logarithmenfunktion ist nicht die natürliche Zahl 2, sondern 2, das ist das Element $X=0010$ von $GF(2^4)$.
@@ -736,24 +736,24 @@
     \end{itemize*}
 
     Abbildung 3: Die S-Box für AES. $S(z_1 z_0)$ für Hexziffern $z_1,z_0$ steht in Zeile $z_1$, Spalte $z_0$. Beispiel: $S(A4)=49$.
-    \begin{tabular}{c}
-        |   | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | A  | B  | C  | D  | E  | F   \\\hline
-        | 0  | 63 | 7C | 77 | 7B | F2 | 6B | 6F | C5 | 30 | 01 | 67 | 2B | FE | D7 | AB | 76 \\
-        | 1  | CA | 82 | C9 | 7D | FA | 59 | 47 | F0 | AD | D4 | A2 | AF | 9C | A4 | 72 | C0 \\
-        | 2  | B7 | FD | 93 | 26 | 36 | 3F | F7 | CC | 34 | A5 | E5 | F1 | 71 | D8 | 31 | 15 \\
-        | 3  | 04 | C7 | 23 | C3 | 18 | 96 | 05 | 9A | 07 | 12 | 80 | E2 | EB | 27 | B2 | 75 \\
-        | 4  | 09 | 83 | 2C | 1A | 1B | 6E | 5A | A0 | 52 | 3B | D6 | B3 | 29 | E3 | 2F | 84 \\
-        | 5  | 53 | D1 | 00 | ED | 20 | FC | B1 | 5B | 6A | CB | BE | 39 | 4A | 4C | 58 | CF \\
-        | 6  | D0 | EF | AA | FB | 43 | 4D | 33 | 85 | 45 | F9 | 02 | 7F | 50 | 3C | 9F | A8 \\
-        | 7  | 51 | A3 | 40 | 8F | 92 | 9D | 38 | F5 | BC | B6 | DA | 21 | 10 | FF | F3 | D2 \\
-        | 8  | CD | 0C | 13 | EC | 5F | 97 | 44 | 17 | C4 | A7 | 7E | 3D | 64 | 5D | 19 | 73 \\
-        | 9  | 60 | 81 | 4F | DC | 22 | 2A | 90 | 88 | 46 | EE | B8 | 14 | DE | 5E | 0B | DB \\
-        | A  | E0 | 32 | 3A | 0A | 49 | 06 | 24 | 5C | C2 | D3 | AC | 62 | 91 | 95 | E4 | 79 \\
-        | B  | E7 | C8 | 37 | 6D | 8D | D5 | 4E | A9 | 6C | 56 | F4 | EA | 65 | 7A | AE | 08 \\
-        | C  | BA | 78 | 25 | 2E | 1C | A6 | B4 | C6 | E8 | DD | 74 | 1F | 4B | BD | 8B | 8A \\
-        | D  | 70 | 3E | B5 | 66 | 48 | 03 | F6 | 0E | 61 | 35 | 57 | B9 | 86 | C1 | 1D | 9E \\
-        | E  | E1 | F8 | 98 | 11 | 69 | D9 | 8E | 94 | 9B | 1E | 87 | E9 | CE | 55 | 28 | DF \\
-        | F  | 8C | A1 | 89 | 0D | BF | E6 | 42 | 68 | 41 | 99 | 2D | 0F | B0 | 54 | BB | 16
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+        & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & A  & B  & C  & D  & E  & F   \\\hline
+        0  & 63 & 7C & 77 & 7B & F2 & 6B & 6F & C5 & 30 & 01 & 67 & 2B & FE & D7 & AB & 76 \\
+        1  & CA & 82 & C9 & 7D & FA & 59 & 47 & F0 & AD & D4 & A2 & AF & 9C & A4 & 72 & C0 \\
+        2  & B7 & FD & 93 & 26 & 36 & 3F & F7 & CC & 34 & A5 & E5 & F1 & 71 & D8 & 31 & 15 \\
+        3  & 04 & C7 & 23 & C3 & 18 & 96 & 05 & 9A & 07 & 12 & 80 & E2 & EB & 27 & B2 & 75 \\
+        4  & 09 & 83 & 2C & 1A & 1B & 6E & 5A & A0 & 52 & 3B & D6 & B3 & 29 & E3 & 2F & 84 \\
+        5  & 53 & D1 & 00 & ED & 20 & FC & B1 & 5B & 6A & CB & BE & 39 & 4A & 4C & 58 & CF \\
+        6  & D0 & EF & AA & FB & 43 & 4D & 33 & 85 & 45 & F9 & 02 & 7F & 50 & 3C & 9F & A8 \\
+        7  & 51 & A3 & 40 & 8F & 92 & 9D & 38 & F5 & BC & B6 & DA & 21 & 10 & FF & F3 & D2 \\
+        8  & CD & 0C & 13 & EC & 5F & 97 & 44 & 17 & C4 & A7 & 7E & 3D & 64 & 5D & 19 & 73 \\
+        9  & 60 & 81 & 4F & DC & 22 & 2A & 90 & 88 & 46 & EE & B8 & 14 & DE & 5E & 0B & DB \\
+        A  & E0 & 32 & 3A & 0A & 49 & 06 & 24 & 5C & C2 & D3 & AC & 62 & 91 & 95 & E4 & 79 \\
+        B  & E7 & C8 & 37 & 6D & 8D & D5 & 4E & A9 & 6C & 56 & F4 & EA & 65 & 7A & AE & 08 \\
+        C  & BA & 78 & 25 & 2E & 1C & A6 & B4 & C6 & E8 & DD & 74 & 1F & 4B & BD & 8B & 8A \\
+        D  & 70 & 3E & B5 & 66 & 48 & 03 & F6 & 0E & 61 & 35 & 57 & B9 & 86 & C1 & 1D & 9E \\
+        E  & E1 & F8 & 98 & 11 & 69 & D9 & 8E & 94 & 9B & 1E & 87 & E9 & CE & 55 & 28 & DF \\
+        F  & 8C & A1 & 89 & 0D & BF & E6 & 42 & 68 & 41 & 99 & 2D & 0F & B0 & 54 & BB & 16
     \end{tabular}
 
     \paragraph{Die S-Box von AES:}
@@ -926,7 +926,7 @@
     Beispiel: Der folgende triviale l-Unterscheider $U_{trivial}$ erreicht $Pr(G^B_{U_{trivial}}= 1)=\frac{1}{2}$: $b\leftarrow flip(\{0,1\}); return\ b$.
     Daher interessieren wir uns nicht für die Wahrscheinlichkeit $Pr(G^B_U= 1)$ ansich, sondern für den Abstand von $Pr(G^B_U=1)$ zu $Pr(G^B_{U_{trivial}}= 1) =\frac{1}{2}$:
 
-    \textbf{Definition} 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$-
+    \textbf{Definition} 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$
 
     Klar ist:
     \begin{itemize*}
@@ -947,7 +947,7 @@
         \item $=\frac{1}{2}(suc(U,B)-fail(U)) + \frac{1}{2}$
     \end{itemize*}
 
-    Durch Umstellen ergibt sich die Behauptung.ünterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
+    Durch Umstellen ergibt sich die Behauptung. Unterscheider mit Werten $adv(U,B)$ substanziell über 0 können als interessant (oder möglicherweise gefährlich) für B gelten. Wir müssen noch die beschränkten Ressourcen des Unterscheiders ins Spiel bringen.
 
     \textbf{Definition} 2.15 Sei $l\in\mathbb{N}$, U ein l-Unterscheider, B ein l-Block-KS. Für $q,t\in\mathbb{N}$ heißt U $(q,t)$-beschränkt, wenn die Laufzeit des Aufrufs von U innerhalb von $G^B_U$ durch t beschränkt ist und dieser Aufruf die Funktion F mit höchstens $q$ verschiedenen Argumenten ausführt.
 
@@ -1043,8 +1043,7 @@
         \item gib $x=x_0 ...x_{m-1}$ zurück.
     \end{itemize*}
 
-    Die Verschlüsselung verzichtet auf die Option, Randomisierung zu verwenden. (Sie hat den großen Vorteil, parallel ausführbar zu sein.) Es ist klar, dass die Dechiffrierbedingung erfüllt ist. Jedoch hat dieses Kryptoschema ein ziemlich offensichtliches Problem, nämlich,
-    dass ein Block $x\in\{0,1\}^l$ immer gleich verschlüsselt wird, Eva also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten kann. Zum Beispiel kann sie sofort sehen, ob der Klartext die Form $x=x_1 x_1$, mit $x_1\in\{0,1\}^l$, hat oder nicht.
+    Die Verschlüsselung verzichtet auf die Option, Randomisierung zu verwenden. (Sie hat den großen Vorteil, parallel ausführbar zu sein.) Es ist klar, dass die Dechiffrierbedingung erfüllt ist. Jedoch hat dieses Kryptoschema ein ziemlich offensichtliches Problem, nämlich, dass ein Block $x\in\{0,1\}^l$ immer gleich verschlüsselt wird, Eva also ganz leicht nicht-triviale Informationen aus dem Chiffretext erhalten kann. Zum Beispiel kann sie sofort sehen, ob der Klartext die Form $x=x_1 x_1$, mit $x_1\in\{0,1\}^l$, hat oder nicht.
 
     Das Problem wird augenfällig zum Beispiel bei der Verschlüsselung von Bildern. Ein Bild ist dabei einrechteckiges Schema (eine Matrix) von ,,Pixeln'', denen jeweils ein Farbcode (z.B. 1 Byte) zugeordnet ist. Man könnte dabei die Pixel in Gruppen (quadratische Blöcke oder Zeilensegmente) unterteilen. Das Farbmuster jeder solchen Gruppe liefert einen Klartextblock. Wenn viele Bildteile identisch aussehen, etwa gleich konstant gefärbt sind, ergibt sich jeweils derselbe Klartext für den entsprechenden Block, und damit auch derselbe Chiffretext. Wenn man den Chiffretext bildlich darstellt, ergibt sich leicht ein grober Eindruck des Originalbildes. Als Beispiel betrachte diese Bilder aus \href{https://de.wikipedia.org/wiki/Electronic_Code_Book_Mode}{Wikipedia}.
 
@@ -1094,11 +1093,10 @@
     Es gibt zwei Unterschiede zu CBC:
     \begin{enumerate*}
         \item Für jede Verschlüsselung eines Klartextes wird ein neuer zufälliger Initialisierungsvektor verwendet. Dadurch wird ein Klartext $x$ bei mehrfachem Auftreten mit hoher Wahrscheinlichkeit immer verschieden verschlüsselt.
-        \item Der Initialisierungsvektor ist nicht Teil des geheimen Schlüssels, sondern ist dem Angreifer bekannt, da er Teil des Chiffretextes ist. (Intuitiv würde man vielleicht sagen, dass dies ,,die Sicherheit verringert'' .)
+        \item Der Initialisierungsvektor ist nicht Teil des geheimen Schlüssels, sondern ist dem Angreifer bekannt, da er Teil des Chiffretextes ist. (Intuitiv würde man vielleicht sagen, dass dies ,,die Sicherheit verringert'')
     \end{enumerate*}
 
-    Tatsächlich und etwas unerwartet kann man nach einer sorgfältigen Formulierung eines Sicherheitsbegriffs für Kryptoschemen beweisen, dass die Betriebsart R-CBC zu ,,sicheren'' Verfahren führt, wenn die zugrundeliegende Blockchiffre ,,sicher'' ist. (Der Beweis ist
-    aufwendig.)
+    Tatsächlich und etwas unerwartet kann man nach einer sorgfältigen Formulierung eines Sicherheitsbegriffs für Kryptoschemen beweisen, dass die Betriebsart R-CBC zu ,,sicheren'' Verfahren führt, wenn die zugrundeliegende Blockchiffre ,,sicher'' ist. (Der Beweis ist aufwendig.)
 
     Warnung, als Beispiel für harmlos erscheinende Modifikationen, die Kryptoschemen unsicher machen:
     \begin{enumerate*}
@@ -1156,8 +1154,7 @@
     \end{itemize*}
 
     \subsection{Sicherheit von symmetrischen Kryptoschemen}
-    Wir werden hier ein Sicherheitsmodell definieren, das es gestattet, Aussagen wie die folgende zu formulieren (und zu beweisen): Wenn B ein ,,sicheres'' l-Block-Kryptosystem ist (bzgl. einer Reihe von Parametern), und das Kryptoschema $S$ wird aus $B$ konstruiert, indem man einen geeigneten Betriebsmodus verwendet, dann ist $S$ ebenfalls ,,sicher'' (bzgl. einer variierten Reihe von Parametern). Ziel ist dabei, Betriebsmodi zu identifizieren, die keine unnötigen neuen Unsicherheitskomponenten ins Spiel bringen, die nicht im Block-KS
-    $B$ schon vorhanden waren.
+    Wir werden hier ein Sicherheitsmodell definieren, das es gestattet, Aussagen wie die folgende zu formulieren (und zu beweisen): Wenn B ein ,,sicheres'' l-Block-Kryptosystem ist (bzgl. einer Reihe von Parametern), und das Kryptoschema $S$ wird aus $B$ konstruiert, indem man einen geeigneten Betriebsmodus verwendet, dann ist $S$ ebenfalls ,,sicher'' (bzgl. einer variierten Reihe von Parametern). Ziel ist dabei, Betriebsmodi zu identifizieren, die keine unnötigen neuen Unsicherheitskomponenten ins Spiel bringen, die nicht im Block-KS $B$ schon vorhanden waren.
 
     Wir beschränken uns hier auf den Fall, wo Eva begrenzte Ressourcen (Zeit, Orakelaufrufe) hat. Damit müssen wir uns bei Überlegungen zu Kryptoschemen auf das Verhalten auf Klartexten begrenzter Länge und auf feste Rechenzeiten beschränken. Nach dem Kerckhoffs-Prinzip nehmen wir an, dass Eva das Kryptoschema kennt, also zum Beispiel das verwendete Block-Kryptosystem und den Betriebsmodus. Sie kann sich einige Klartexte verschlüsseln lassen (,,known-plaintext attack'') und sieht einen Chiffretext $y$. Ihr Ziel ist, aus $y$ Information über den zugrundeliegenden Klartext $x$ zu gewinnen. Wir können nicht verhindern, dass Eva aus der Länge des Chiffretextes $y$ auf die Länge von $x$ schließt. (Bei allen Betriebsmodi, die wir gesehen haben, ergibt sich die Länge von $x$ direkt aus der Länge von $y$). Abgesehen hiervon soll sie mit hoher Wahrscheinlichkeit ,,keine signifikante Information'' über den Klartext erhalten können.
 
@@ -1204,7 +1201,7 @@
 
     Wenn ein Angreifer $A$ mit ,,nicht zu großem Rechenaufwand'' einen Vorteil erzielen kann, der deutlich über $0$ liegt, wird man das Kryptoschema als unsicher einstufen.
 
-    \textbf{Beispiel}3.4 Ziel ist es, die ECB-Betriebsart anzugreifen, d.h. sei $S=ECB(B)$ für ein l-Block-Kryptosystem $B$. Wir wollen zeigen, dass es einen l-Angreifer $A$ mit $Pr(G^S_A= 1) = 1$, also $adv(A,S) = 1$, gibt. Dieser ist wie folgt aufgebaut.
+    \textbf{Beispiel} 3.4 Ziel ist es, die ECB-Betriebsart anzugreifen, d.h. sei $S=ECB(B)$ für ein l-Block-Kryptosystem $B$. Wir wollen zeigen, dass es einen l-Angreifer $A$ mit $Pr(G^S_A= 1) = 1$, also $adv(A,S) = 1$, gibt. Dieser ist wie folgt aufgebaut.
     \begin{itemize*}
         \item l-Angreifer $A$ mit $V=\{1\}$ ($V=\{1\}$ bedeutet, dass stets $v=1$ gilt, dass die Aufzeichnung $v$ also keinerlei Information übermittelt.)
         \item $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^{2l}; z_1\leftarrow 0^l 1^l;$ Ausgabe: $(z_0,z_1 ,1)$
@@ -1215,7 +1212,7 @@
 
     Die Ressourcen, die $A$ benötigt, sind sehr klein: Zwei Aufrufe des Verschlüsselungsverfahrens $e_B$ des Block-Kryptosystems. Wir können schließen, dass es einen effizienten Angreifer $A$ gibt, dem das Sicherheitsmodell Vorteil 1 gibt. Damit gilt das Kryptoschema $ECB(B)$ als komplett unsicher.
 
-    \textbf{Beispiel}3.5 Ziel ist es, die CBC-Betriebsart anzugreifen, d.h. es sei $S=CBC(B)$ für ein Block-Kryptosystem $B$. Das Problem mit dieser Betriebsart ist, dass ein Klartext bei Wiederholung identisch verschlüsselt wird. Um dies auszunutzen, verwenden wir den folgenden l-Angreifer $A$ mit $V=\{0,1\}^l$, der zwei verschiedene Klartexte benutzt, die nur einen Block enthalten:
+    \textbf{Beispiel} 3.5 Ziel ist es, die CBC-Betriebsart anzugreifen, d.h. es sei $S=CBC(B)$ für ein Block-Kryptosystem $B$. Das Problem mit dieser Betriebsart ist, dass ein Klartext bei Wiederholung identisch verschlüsselt wird. Um dies auszunutzen, verwenden wir den folgenden l-Angreifer $A$ mit $V=\{0,1\}^l$, der zwei verschiedene Klartexte benutzt, die nur einen Block enthalten:
     \begin{itemize*}
         \item $AF(H)$ arbeitet wie folgt: $z_0\leftarrow 0^l;v\leftarrow H(z_0);z_1\leftarrow 1^l;$ Ausgabe: $(z_0,z_1,v)$
         \item ($A$ merkt sich den Chiffretext zu $x=0^l$.)
@@ -1254,7 +1251,7 @@
 
     \textbf{Definition} 3.10 Die Unsicherheit eines Kryptoschemas $S=(K,E,D)$ zu Parametern $n,q,t$ ist $insec(n,q,t,S):=max\{adv(A,S)|A \text{ ist }(n,q,t)\text{-beschränkter Angreifer}\}$.
 
-    \textbf{Satz} 3.8 liest sich dann wie folgt: Wenn $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet, dann gilt für beliebige $n,t,q$: $insec(n,q,t,S)\geq 2 * insec(n,t+c(q\ log(q) +n)*l,B) +\frac{2qn+n^2}{2^l}$.
+    \textbf{Satz} 3.8 liest sich dann wie folgt: Wenn $S$ das symmetrische l-Kryptoschema ist, das $B$ in der R-CTR-Betriebsart verwendet, dann gilt für beliebige $n,t,q: insec(n,q,t,S)\geq 2 * insec(n,t+c(q\ log(q) +n)*l,B) +\frac{2qn+n^2}{2^l}$.
 
     $S$ ,,erbt'' also die obere Schranke für die Unsicherheit von $B$, bezüglich $n$ Orakelanfragen und einer vergrößerten Rechenzeit von $t+c(q\ log(q) +n)*l$, verschlechtert nur um einen Faktor $2$ und einen additiven Term $\frac{2qn+n^2}{2^l}$. Die Unsicherheit kommt also nicht durch die Verwendung der Betriebsart R-CTR ins Spiel, sondern steckt gegebenenfalls schon in $B$.
 
@@ -1450,7 +1447,7 @@
     Beweis: Weil $x$ und $y$ Teiler von $a$ sind, kann man $a=ux$ und $a=vy$ schreiben, für ganze Zahlen $u,v$. Weil $x$ und $y$ teilerfremd sind, liefert Lemma 4.6.1 zwei ganze Zahlen $s$ und $t$ mit $1=sx+ty$. Dann ist $a=asx+aty=vysx+uxty= (vs+ut)xy$, also ist $xy$ Teiler von $a$.
 
     \subsection{Modulare Arithmetik}
-    \textbf{Definition} 4.9: Für $m\geq 2$ definieren wir eine zweistellige Relation auf $\mathbb{Z}$: $x\equiv y (mod\ m)$ heißt $m|(x-y)$.
+    \textbf{Definition} 4.9: Für $m\geq 2$ definieren wir eine zweistellige Relation auf $\mathbb{Z}: x\equiv y (mod\ m)$ heißt $m|(x-y)$.
 
     Man sagt: ,,$x$ ist kongruent zu $y$ modulo $m$.'' In der Mathematik sieht man auch oft die kompaktere Notation $x\equiv y(m)$ oder $x\equiv_m y$. Es besteht eine enge Beziehung zwischen dieser Relation und der Division mit Rest.
 

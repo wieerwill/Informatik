@@ -38,6 +38,7 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
   - [Übung](Kryptographie%20-%20Übung.pdf)
   - [Cheatsheet](Kryptographie.pdf)
   - [Prüfungsvorbereitung](Kryptographie%20-%20Prüfungsvorbereitung.pdf)
+  - [Karteikarten](Kryptographie%20-%20Flashcards.pdf)
 - [Logik und Logikprogrammierung](Logik%20und%20Logikprogrammierung.md) 
   - [Cheatsheet](Logik%20und%20Logikprogrammierung%20-%20Cheatsheet.pdf)
   - [Flashcards - Karteikarten für Definitionen](Logik%20und%20Logikprogrammierung%20-%20Flashcards.pdf)

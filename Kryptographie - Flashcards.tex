@@ -9,6 +9,7 @@
 \usepackage[]{amssymb}
 \usepackage{bussproofs} % prooftrees
 \usepackage{mdwlist} % less space for lists
+\usepackage{graphicx,overpic}
 \cardfrontstyle{headings}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -23,6 +24,17 @@
     \end{itemize*}
 \end{flashcard}
 
+\begin{flashcard}{Ein Kryptosystem mit Schlüsselverteilung (KSV) ist ein 6-Tupel $V=(X,K,Y,e,d,Pr_K)$, wobei}
+    \begin{itemize*}
+        \item $S=(X,K,Y,e,d)$ das zugrundeliegende Kryptosystem ist
+        \item $Pr_K:K\rightarrow (0,1]$ die Schlüsselverteilung
+        \item Für $V=(X,K,Y,e,d,Pr_K)$ schreiben wir auch $S[Pr_K]$
+        \item $Pr_K(k)\in (0,1]$ also $Pr_K(k)> 0$ für alle $k\in K$
+        \item weiter $Pr_X:X\rightarrow [0,1]$ Klartextverteilung
+        \item $Pr:X\times K\rightarrow [0,1]$ durch $Pr((x,k)):=Pr_X(x)*Pr_K(k)$
+        %\item Annahme modelliert, dass der Schlüssel k unabhängig vom Klartext durch ein von $Pr_K$ gesteuertes Zufallsexperiment gewählt
+    \end{itemize*}
+\end{flashcard}
 
 \begin{flashcard}[Kryptosysteme]{Dechiffrierbedingung}
     $\forall x\in X\forall k\in K:d(e(x,k),k) =x$
@@ -48,12 +60,21 @@
 \begin{flashcard}[Kryptosysteme]{Sei $(S,P_k)$ ein Kryptosystem mit Schlüsselverteilung. Es heißt informationstheoretisch sicher bezüglich $Pr_x$, wenn gilt}
     \begin{itemize*}
         \item Eintreten von x und y sind unabhängig
-        \item $\forall x\in X \forall y\in Y: Pr(x,y)=Pr(x)Pr(y)$
+        \item wenn für alle $x\in X,y\in Y$ mit $Pr(y)>0$ gilt: $Pr(x) = Pr(x|y)$.
+        %\item $\forall x\in X \forall y\in Y: Pr(x,y)=Pr(x)Pr(y)$
         \item bezüglich jeder beliebigen Klartextverteilung $Pr_X$ informationstheoretisch sicher
         \item $(X,K,Y,e,d)$ ist possibilistisch sicher und $Pr_K(k)=\frac{1}{|K|}$ für alle $k\in K$
         \item in jeder Spalte für $e$ alle Chiffretexte vorkommen und die Schlüsselverteilung $Pr_K$ uniform
         \item für jede Spalte Chiffretextwahrs. separat
     \end{itemize*}
+\end{flashcard}
+
+\begin{flashcard}{Definition Verschiebechiffre}
+    Eine Verschiebechiffre ist ein Kryptosystem $S=(Z_n,Z_n,Z_n,e,d)$ mit $e(x,k)=(x+k) mod\ n$
+\end{flashcard}
+
+\begin{flashcard}{Definition Vigenère-Kryptosystem}
+    Das Vigenère-Kryptosystem (mit Parametern $(n,S,L)\in\mathbb{N}^3$) ist das Kryptosystem ($(\mathbb{Z}_n)\geq L,(\mathbb{Z}_n)\geq S,(\mathbb{Z}_n)\geq L,e,d$), so dass für alle $s\geq S,l\geq L,x_i,k_j\in\mathbb{Z}_n$ gilt: $e(x_0...x_{l-1},k_0 ...k_{s-1})=y_0 ...y_{l-1}$ mit $y_i=(x_i+k_{i\ mod\ s}) mod\ n$, für alle $0\geq i < l$.
 \end{flashcard}
 
 \begin{flashcard}[Block Kryptosystemen]{Beschreibe Szenario 2}
@@ -66,6 +87,23 @@
 
 \begin{flashcard}[Block Kryptosysteme]{Nenne ein informationstheoretisch sicheres Block-Kryptosystem, das von Eva in Szenarium 2 leicht gebrochen werden kann.}
     Aus Kenntnis von $x\in\{0,1\}^l$ und $y=e(x,k)$ für ein einziges Paar $(x,k)\in X\times K$ kann Eva den Schlüssel $k=x\oplus_l y$ berechnen. Das gilt für das Cäsar-System, das Vigenère-System und das informationstheoretisch sichere \textbf{Vernam}-System.
+\end{flashcard}
+
+\begin{flashcard}{Wann ist ein Kryptosystem possibilistisch sicher bzgl. Szenarium 2}
+    Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2, wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,...,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k'\in K$ existiert mit $e(x_i,k)=e(x_i,k')$ für alle $1\leq i< r$ und $e(x_r,k')=y$.
+\end{flashcard}
+
+\begin{flashcard}{Definition l-Block-Kryptosystem}
+    Sei $l>0$. Ein l-Block-Kryptosystem ist ein Kryptosystem $S=(\{0,1\}^l,K,\{0,1\}^l,e,d)$ mit $K\subseteq \{0,1\}^s$ für ein $s>0$.
+\end{flashcard}
+
+\begin{flashcard}{Ein Substitutions-Permutations-Netzwerk (SPN) ist ein Tupel $N=(m,n,r,s,S,\beta,\kappa)$ wobei}
+    \begin{itemize*}
+        \item positive ganzen Zahlen $m,n,r$ und $s$ die Wortanzahl, Wortlängen, Rundenzahl und Schlüssellänge
+        \item $S:\{0,1\}^n\rightarrow\{0,1\}^n$ eine bijektive Funktion (S-Box)
+        \item ${\beta}:\{0,...,mn-1\}\rightarrow\{0,...,mn-1\}$ selbstinverse Permutation (Bitpermutation)
+        \item $\kappa :\{0,1\}s\times\{0,...,r\}\rightarrow\{0,1\}^{mn}$ Rundenschlüsselfunktion
+    \end{itemize*}
 \end{flashcard}
 
 \begin{flashcard}[Block Kryptosysteme]{In der Vorlesung wurde possibilistische Sicherheit für Szenarium 2 definiert. Nenne ein $l$-Block-Kryptosystem, das diese Definition erfüllt. Die nötige Schlüsselmenge $K$ hat Größe\dots}
@@ -97,25 +135,42 @@
     \end{itemize*}
 \end{flashcard}
 
+\begin{flashcard}{Ein symmetrisches $l$-Kryptoschema ist ein Tupel $S= (K,E,D)$, wobei}
+    \begin{itemize*}
+        \item $K\subseteq\{0,1\}^s$ endliche Menge (für ein $s\in\mathbb{N}$)
+        \item $E(x:\{0,1\}^{l*},k:K) :\{0,1\}^{l*}$ randomisierter Algorithmus
+        \item $D(y:\{0,1\}^{l*},k:K) :\{0,1\}^{l*}$ deterministischer Algorithmus
+        \item Laufzeiten von $E$ und $D$ sind polynomiell beschränkt in der Länge von $x$ bzw. $y$
+        \item Dechiffrierbedingung: $\forall x\in\{0,1\}^{l*},k\in K,m\in M_1\times...\times M_r$ gilt: $D(E^m(x,k),k)=x$
+    \end{itemize*}
+\end{flashcard}
+
 \begin{flashcard}[Betriebsarten]{Beschreibe die ECB-Betriebsart (Electronic Code Book)}
     Ein Schlüssel ist ein Schlüssel $k$ von $B$. Man verschlüsselt einfach die einzelnen Blöcke von $x$ mit $B$, jedes mal mit demselben Schlüssel $k$.
+    %Es wird nicht $x_i$ mit $B$ verschlüsselt, sondern $x_i\oplus_l y_{i-1}$ (bitweises XOR). Man benötigt dann einen Anfangsvektor $y_{-1}$ für die erste Runde. Dieser ist Teil des Schlüssels des Kryptoschemas (nicht von B), ein Schlüssel des Schemas ist also ein Paar $(k,v)$ mit $k\in K_B$ und $v\in\{0,1\}^l$.
 
+    \includegraphics[width=.9\linewidth]{Assets/NetworkSecurity-electronic-code-book-mode.png}
 \end{flashcard}
 
 \begin{flashcard}[Betriebsarten]{Beschreibe die CBC-Betriebsart (Cipher Block Chaining)}
     Blöcke in Runden $i=0, 1 ,\dots,m-1$ nacheinander verschlüsselt und das Ergebnis einer Runde wird zur Modifikation des Klartextblocks der nächsten Runde benutzt.
+
+    \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-cipher-block-chaining-mode.png}
 \end{flashcard}
 
 \begin{flashcard}[Betriebsarten]{Beschreibe die R-CBC-Betriebsart (Randomized Cipher Block Chaining)}
-    ?
+    Der Initialisierungsvektor $y_{-1}=v\in\{0,1\}^l$ ist nicht mehr Teil des Schlüssels, sondern wird vom Verschlüsselungsalgorithmus einfach zufällig gewählt, und zwar für jeden Klartext immer aufs Neue. Damit der Empfänger entschlüsseln kann, benötigt er $v$. Daher wird $y_{-1}$ als Zusatzkomponente dem Chiffretext vorangestellt. Damit ist der Chiffretext um einen Block länger als der Klartext, und Eva kennt auch $v=y_{-1}$.
 \end{flashcard}
 
 \begin{flashcard}[Betriebsarten]{Beschreibe die OFB-Betriebsart (Output FeedBack)}
-    ?
+    Man setzt $k_{-1}=v$, und konstruiert die Rundenschlüssel $k_0,...,k_{m-1}$ durch iterieren des letzten Rundenschlüssel durch die Verschlüsselungsfunktion von $B$: $k_i=e_B(k_{i-1}, k)$%, für $i=0,1,...,m-1$. 
+    %Der Empfänger benötigt $v$, um seinerseits die Rundenschlüssel zu berechnen, daher wird $v$ als $y_{-1}$ dem Chiffretext vorangestellt.
+
+    \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-output-feedback-mode.png}
 \end{flashcard}
 
 \begin{flashcard}[Betriebsarten]{Beschreibe die R-CTR-Betriebsart (Randomized CounTeR)}
-    ?
+    Man fasst $\{0,1\}^l$ als äquivalent zur Zahlenmenge $\{0,1,...,2^{l-1}\}$ auf, interpretiert einen $l$-Bit-String also als Block oder als Zahl, wie es passt. In dieser Menge wählt man eine Zufallszahl $r$. Man ,,zählt'' von $r$ ausgehend nach oben und berechnet die Rundenschlüssel $k_0,...,k_{m-1}$ durch Verschlüsseln von $r,r+1,...,r+m-1$ (modulo $2^l$ gerechnet) mittelse $B(.,k)$. Rundenschlüssel $k_i$ ist also $e_B((r+i) mod\ 2^l,k)$, und Chiffretextblock $y_i$ ist $k_i\oplus_l x_i$.
 \end{flashcard}
 
 \begin{flashcard}[Betriebsarten]{Nutze die ECB-Betriebsart. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann.}
@@ -125,6 +180,10 @@
 
 \begin{flashcard}[Betriebsarten]{Nutze die CBC-Betriebsart. Gebe einen Angreifer an, der die Chiffretexte zweier selbstgewählter Klartexte ohne Kenntnis des Schlüssels unterscheiden kann.}
     Wird zweimal der Klartext $x$ verschlüsselt, so geschieht dies immer durch denselben Chiffretext $y=E(x,(k,v))$. Dies ist eine Folge der Eigenschaft von CBC, deterministisch zu sein.
+\end{flashcard}
+
+\begin{flashcard}{Sei $n,q,t,l\in\mathbb{N}$, $A$ ein l-Angreifer, $S$ ein symmetrisches l-Kryptoschema. Dann heißt $A(n,q,t)$-beschränkt, wenn\dots }
+    ...die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist, der Algorithmus $H$ (als Orakel) höchstens $q$ mal aufgerufen wird und bei diesen Aufrufen höchstens $n$ Blöcke verwendet werden.
 \end{flashcard}
 
 \begin{flashcard}[Zahlentheorie]{Auf Eingabe $x,y\in\mathbb{N}$ liefert der Euklidische Algorithmus eine ganze Zahlen $d$ mit \dots}
@@ -297,6 +356,37 @@
     Wie lässt sich die erwartete Anzahl von Bitoperationen für das Finden einer solchen Primzahl abschätzen? $O(\dots)$.
 \end{flashcard}
 
+\begin{flashcard}{Ein Public-Key-Kryptosystem $(X,Y,K,E,D)$ hat 5 Komponenten}
+    \begin{itemize*}
+        \item Klartextmenge $X$ (endlich),
+        \item Chiffretextmenge $Y$ (endlich),
+        \item Schlüsselmenge $K$, wobei $K\supseteq K_{pub} \times K_{priv}$ für Mengen $K_{pub}$ und $K_{priv}$,
+        \item Verschlüsselungsfunktion $E:X\times K_{pub} \rightarrow Y$,
+        \item Entschlüsselungsfunktion $D:Y\times K_{priv} \rightarrow X$,
+        \item mit Dechiffrierbedingung: $D(E(x,k), \hat{k}) =x$, für alle $x\in X,(k,\hat{k})\in K$.
+    \end{itemize*}
+\end{flashcard}
+
+\begin{flashcard}{Ein asymmetrisches Kryptoschema ist ein Tupel $S= (X,K,G,E,D)$, wobei}
+    \begin{itemize*}
+        \item $X,K\supseteq K_{pub} \times K_{priv}$ Mengen,
+        \item $G():K_{pub} \times K_{priv}$ randomisierter Algorithmus
+        \item $E(x:X,k:K_{pub}):\{0,1\}^*$ randomisierter Algo.
+        \item $D(y:\{0,1\}^*,k:K_{priv}):\{0,1\}^*$ determ. Algo.
+        \item Laufzeit ist beschränkt durch eine Konstante,
+        \item die Laufzeiten von $E$ und $D$ sind polynomiell beschränkt
+        \item $\forall x\in X,k\in K_{pub}$ gilt: $D(E^m (x,k),\hat{k}) =x$.
+    \end{itemize*}
+\end{flashcard}
+
+\begin{flashcard}{ Sei $t\in\mathbb{N}$, $A$ ein Angreifer auf ein asymmetrisches Kryptoschema $S$. Dann heißt $A$ $t$-beschränkt, wenn }
+    die Laufzeit des Experiments $G^S_A$ durch $t$ beschränkt ist.
+\end{flashcard}
+
+\begin{flashcard}{Sei $\epsilon >0$. Dann heißt $S(t,\epsilon)$-sicher, wenn }
+    für jeden $t$-beschränkten Angreifer $A$ gilt $adv(A,S)\leq \epsilon$.
+\end{flashcard}
+
 \begin{flashcard}[RSA-System]{Schlüsselerzeugung: Wähle \dots und berechne $N=\dots$ sowie $\varphi(N)=\dots$. Der öffentliche Schlüssel von Bob ist $(N,e)$, wobei $e$ die Bedingung \dots erfüllt. Der geheime Schlüssel von Bob ist $(N,d)$, mit \dots. $d$ lässt sich mit folgendem Algorithmus berechnen: \dots}
 
     Wähe zwei Primzahlen $p$ und $q$, deren Bitlänge 1/2 der Schlüssellänge ist und das Produkt $N=pq$ sowie $\varphi(N)=(p-1)(q-1)$ berechnet.
@@ -421,5 +511,12 @@
     \end{itemize*}
 \end{flashcard}
 
+\begin{flashcard}{Sei $p >3$ eine Primzahl, seien $A,B\in\mathbb{Z}_p$ mit \dots. Die elliptische Kurve $E_{A,B}$ besteht aus der Menge aller Lösungen \dots der Gleichung \dots sowie einem zusätzlichen Punkt \dots (genannt ,,der unendliche Punkt'').}
+    Sei $p >3$ eine Primzahl, seien $A,B\in\mathbb{Z}_p$ mit $4A^3+ 27B^3 \not= 0$. Die elliptische Kurve $E_{A,B}$ besteht aus der Menge aller Lösungen $(x,y)\in\mathbb{Z}^2_p$ der Gleichung $y^2=x^3+Ax+B$ sowie einem zusätzlichen Punkt $O$ (genannt ,,der unendliche Punkt'').
+\end{flashcard}
+
+\begin{flashcard}{Definition Hasse-Schranke}
+    Sei $E$ elliptische Kurve über $\mathbb{Z}_p$. Dann gilt $p+ 1- 2\sqrt{p}\leq |E|\leq p+1 + 2\sqrt{p}$.
+\end{flashcard}
 
 \end{document}

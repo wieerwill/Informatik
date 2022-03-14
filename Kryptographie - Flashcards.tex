@@ -14,6 +14,9 @@
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{flashcard}{Informationstheoretische Sicherheit des Vernam-Systems} Sei $l>0$ und $S=(X,K,Y,e,d)$ mit $X=K=Y=\{0,1\}^l$ und $e=d=\oplus_l$ das Vernam-System der Länge $l$. Sei weiter $Pr_K:K\rightarrow [0,1]$ die Gleichverteilung. Dann ist $V=S[Pr_K]$ informationstheoretisch sicher.
+\end{flashcard}
+
 \begin{flashcard}[Kryptosysteme]{Ein Kryptosystem ist ein Tupel $S=(X,K,Y,e,d)$, wobei}
     \begin{itemize*}
         \item X nicht leere endliche Menge als Klartext
@@ -69,12 +72,52 @@
     \end{itemize*}
 \end{flashcard}
 
-\begin{flashcard}{Definition Verschiebechiffre}
-    Eine Verschiebechiffre ist ein Kryptosystem $S=(Z_n,Z_n,Z_n,e,d)$ mit $e(x,k)=(x+k) mod\ n$
+\begin{flashcard}[Definition]{Cäsarchiffe}
+    Cäsar ließ Texte verschlüsseln, indem man nimmt immer den Buchstaben, der im Alphabet drei Positionen ,,weiter rechts'' steht, mit ,,wrap around'' am Ende.
 \end{flashcard}
 
-\begin{flashcard}{Definition Vigenère-Kryptosystem}
+\begin{flashcard}[Definition]{Verschiebechiffre}
+    Eine Verschiebechiffre ist ein Kryptosystem $S=(Z_n,Z_n,Z_n,e,d)$ mit $e(x,k)=(x+k) mod\ n$
+
+    Verschiebe zyklisch um eine Anzahl k von Buchstaben
+\end{flashcard}
+
+\begin{flashcard}[Definition]{Substitutionschiffre}
+    Das Bild eines Buchstabens soll ein ganz beliebiger anderer Buchstabe sein. Dabei müssen natürlich verschiedene Buchstaben auf verschiedene Buchstaben abgebildet werden. Es ergibt sich eine Chiffre, die durch eine Tabelle mit ganz beliebiger Buchstabenanordnung gegeben ist.
+    Wenn man hier ver- und entschlüsseln möchte, muss man die gesamte zweite Tabellenzeile kennen. Diese kann hier also als ,,Schlüssel'' dienen. Es gibt $21!\approx 5,11* 10^{19}$ viele verschiedene Schlüssel.
+\end{flashcard}
+
+\begin{flashcard}[Definition]{Vigenère-Kryptosystem}
     Das Vigenère-Kryptosystem (mit Parametern $(n,S,L)\in\mathbb{N}^3$) ist das Kryptosystem ($(\mathbb{Z}_n)\geq L,(\mathbb{Z}_n)\geq S,(\mathbb{Z}_n)\geq L,e,d$), so dass für alle $s\geq S,l\geq L,x_i,k_j\in\mathbb{Z}_n$ gilt: $e(x_0...x_{l-1},k_0 ...k_{s-1})=y_0 ...y_{l-1}$ mit $y_i=(x_i+k_{i\ mod\ s}) mod\ n$, für alle $0\geq i < l$.
+\end{flashcard}
+
+\begin{flashcard}[Definition]{Kasiki Test}
+    Die Schlüssellänge kann oft durch den Kasiski-Test näherungsweise bestimmt werden. Stimmt der Klartext im Abschnitt $i+s*l$ bis $j+s*(l+h)$ mit dem Klartext im Abschnitt von $i+s*l'$ bis $j+s*(l'+h)$ überein, so gilt dies auch für den Chiffretext $(1\geq i,j\geq s,l,l',h\in\mathbb{N})$. Kommt ein Teilwort im Klartext an zwei Positionen i und j und ist j-i ein Vielfaches von s, so werden die beiden Vorkommen des Wortes gleich verschlüsselt.
+\end{flashcard}
+
+\begin{flashcard}[Definition]{Koinzidenzindex und Friedman-Methode}
+    Die Methode beruht darauf, dass die Buchstabenhäufigkeiten fest stehen und sich bei der Verschlüsselung mit einer einfachen Substitutionschiffre nicht ändert. Ebenso ändert sich nicht die Wahrscheinlichkeit, bei der zufälligen Wahl eines Buchstabenpaars zwei identische Buchstaben zu erhalten.
+\end{flashcard}
+
+\begin{flashcard}[Definition]{Vernam Kryptosystem}
+    Das Vernam-Kryptosystem oder one-time pad der Länge $l$ ist das Kryptosystem $(\{0,1\}^l,\{0,1\}^l,\{0,1\}^l,\oplus_l,\oplus_l)$.
+    \begin{enumerate*}
+        \item Für $x\in X$ und $k\in K$ gelten $d(e(x,k),k)=(x\oplus_l k)\oplus_l k=x\oplus_l(k\oplus_l k) =x\oplus_l 0^l=x$, d.h. die Dechiffrierbedingung ist erfüllt.
+        \item Für $y\in Y$ gilt $e(y,0^l) =y$ und $y\in X,0^l\in K$. Also gilt Surjektivität.
+    \end{enumerate*}
+\end{flashcard}
+
+\begin{flashcard}[Kryptosysteme]{Kerkoff-Prinzip}
+    besagt,dass man davon ausgehen muss, dass Eva die Struktur des Verschlüsselungsverfahrens kennt und die Sicherheit nur von der Geheimhaltung des Schlüssels abhängen darf
+\end{flashcard}
+
+\begin{flashcard}[Angriffe]{4 Arten von Angriffsszenarien}
+    \begin{description*}
+        \item[ciphertext-only attack] (COA) nur mithören
+        \item[known-plaintext attack] (KPA) Paare von Klartext und Chiffretext bekannt
+        \item[chosen-plaintext attack] (CPA) einige von Eva gewählte Klartexte verschlüsseln
+        \item[chosen-cyphertext attack] (CCA) einige von Eva gewählte Chiffretexte entschlüsseln
+    \end{description*}
 \end{flashcard}
 
 \begin{flashcard}[Block Kryptosystemen]{Beschreibe Szenario 2}
@@ -106,6 +149,30 @@
     \end{itemize*}
 \end{flashcard}
 
+\begin{flashcard}[Ablauf]{Chiffrierung eines Substitutions-Permutations-Kryptosystem}
+    für $x\in\{0,1\}^{mn}$ und $k\in\{0,1\}^s$
+    \begin{enumerate*}
+        \item Initialisierung: $u=x\oplus_{mn} \kappa (k,0)$.
+        \item Verschlüsselung in Runden für $i=1,...,r-1$
+        \begin{enumerate*}
+            \item $v(j)=S(u(j))$ für $0\leq j<m$ (jedes Wort einzeln durch die S-Box)
+            \item $w=v^{\beta}$ (Bitpermutation auf Gesamtwort)
+            \item $u=w\oplus_{mn} \kappa (k,i)$ (XOR mit Schlüssel)
+            \item Schlussrunde $v(j)=S(u(j))$ für $0\leq j<m$
+            \item Ausgabe: $y=v\oplus \kappa (k,r)$
+        \end{enumerate*}
+    \end{enumerate*}
+\end{flashcard}
+
+\begin{flashcard}[Definition]{AES - Advanced Encryption Standard}
+    \begin{itemize*}
+        \item ist ein symmetrisches Verschlüsselungsverfahren
+        \item die Klartextlänge und Chiffretextlänge stets $l= 128$
+        \item die Schlüssellänge $128,192$ oder $256$ Bits
+        \item Arithmetik im Körper $GF(2^8)$ benutzt, dessen Elemente $8$-Bit-Vektoren, also Bytes, entsprechen
+    \end{itemize*}
+\end{flashcard}
+
 \begin{flashcard}[Block Kryptosysteme]{In der Vorlesung wurde possibilistische Sicherheit für Szenarium 2 definiert. Nenne ein $l$-Block-Kryptosystem, das diese Definition erfüllt. Die nötige Schlüsselmenge $K$ hat Größe\dots}
     Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher bzgl. Szenarium 2, wenn für jedes $1 \leq r\leq |X|$, jede Folge von paarweise verschiedenen Klartexten $x_1,x_2,\dots,x_r\in X$, jeden Schlüssel $k\in K$ und jedes $y\in Y\backslash\{e(x_i,k)| 1 \leq i < r\}$ ein Schlüssel $k'\in K$ existiert mit $e(x_i,k)=e(x_i,k')$ für alle $1\leq i< r$ und $e(x_r,k')=y$.
 
@@ -114,7 +181,7 @@
 \end{flashcard}
 
 \begin{flashcard}[Block Kryptosysteme]{Nenne ein Block-Kryptosystem aus der Vorlesung, das gegenwärtig für Szenarium 2 in der Praxis benutzt wird.}
-    Triple-DES, AES
+    AES
 \end{flashcard}
 
 \begin{flashcard}[Block Kryptosysteme]{Beschreibe das Konzept eines $l$-Unterscheiders}

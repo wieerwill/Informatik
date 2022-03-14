@@ -1286,12 +1286,12 @@ Wenn wir in der  ,,Realwelt''  sind $(b=1)$, also $F$ eine Chiffre $e(.,k)$ ist,
 Beispiel: Der folgende triviale l-Unterscheider $U_{trivial}$ erreicht $Pr(G^B_{U_{trivial}}= 1)=\frac{1}{2}$: $b\leftarrow flip(\{0,1\}); return\ b$.
 Daher interessieren wir uns nicht für die Wahrscheinlichkeit $Pr(G^B_U= 1)$ ansich, sondern für den Abstand von $Pr(G^B_U=1)$ zu $Pr(G^B_{U_{trivial}}= 1) =\frac{1}{2}$:
 
-Definition 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$-
+Definition 2.13 Sei $U$ ein l-Unterscheider und $B$ ein l-Block-KS. Der Vorteil von $U$ bzgl. B ist $adv(U,B):= 2(Pr(G^B_U=1)-\frac{1}{2})$
 
 Klar ist:
 - Für jeden l-Unterscheider $U$ und jedes l-Block-KS $B$ gilt $-1\geq adv(U,B)\geq 1$.
 - Werte $adv(U,B)<0$ sind uninteressant. (Wenn man einen Unterscheider $U$ mit $adv(U,B)<0$ hat, sollte man in $U$ die Ausgaben $0$ und $1$ vertauschen und erhält einen Unterscheider mit positivem Vorteil.)
-- Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$.üm den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S〈b= 1〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S〈b= 0〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
+- Für den trivialen l-Unterscheider $U_{trivial}$ gilt $adv(U,B) = 0$ um den Vorteil eines Unterscheiders auszurechnen, sind seine ,,Erfolgswahrscheinlichkeit'' und seine ,,Misserfolgswahrscheinlichkeit'' hilfreiche Werte: Der Erfolg von U bzgl. B ist (für das verkürzte Spiel $S=S_U^B$) $suc(U,B) := Pr(S〈b= 1〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des l-Block-KS B richtig erkennt. Der Misserfolg ist $fail(U,B) := fail(U) := Pr(S〈b= 0〉= 1)$, d.h. die Wahrscheinlichkeit, dass U die Verwendung des idealen Substitutionskryptosystems nicht erkennt. Man kann in der Notation für ,,fail'' das ,,B'' auch weglassen, da im Fall $b=0$ das Kryptosystem B überhaupt keine Rolle spielt.
 
 Lemma 2.14 $adv(U,B) = suc(U,B)-fail(U)$.
 
@@ -1652,7 +1652,7 @@ Algorithmus 4.1 Euklidischer Algorithmus:
 - Methode:
   1. $a,b:integer;a\leftarrow |x|;b\leftarrow |y|;$
   2. $while\ b> 0\ repeat$
-  3. $(a,b)\leftarrow (b,amodb);$ // simultane Zuweisung
+  3. $(a,b)\leftarrow (b,a\ mod\ b);$ // simultane Zuweisung
   4. return $a$.
 
 Die eigentliche Rechnung findet in der while-Schleife statt. In dieser Schleife wird immer ein Zahlenpaar durch ein anderes ersetzt, das dieselben gemeinsamen Teiler hat wie $x$ und $y$. Wenn der Algorithmus terminiert, weil der Inhalt $b$ von $b$ Null geworden ist, kann man den Inhalt von $a$ ausgeben.
@@ -1736,7 +1736,7 @@ gilt. - Allgemein gilt:
 Fakt 4.7: Wenn Algorithmus 4.2 auf Eingabe $(x,y)$ mit $x,y\geq 0$ gestartet wird, dann gilt:
 1. Für die Ausgabe $(d,s,t)$ gilt $d= ggT(x,y) =sx+ty$.
 2. Die Anzahl der Schleifendurchläufe ist dieselbe wie beim gewöhnlichen Euklidischen Algorithmus.
-3. Die Anzahl von Ziffernoperationen für Algorithmus 4.2 ist $O((log\ x)(log\ y)).
+3. Die Anzahl von Ziffernoperationen für Algorithmus 4.2 ist $O((log\ x)(log\ y))$.
 
 Wir notieren noch eine wichtige Folgerung aus dem Lemma von Bezout. Die Aussage ist aus der Schule bekannt: Wenn eine Zahl z.B. durch $3$ und durch $5$ teilbar ist, dann ist sie auch durch 15 teilbar. Dort benutzt man die Primzahlzerlegung zur Begründung. Diese ist aber gar nicht nötig.
 

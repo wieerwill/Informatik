@@ -30,6 +30,7 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
   - [Cheatsheet](Einführung%20in%20die%20Neurowissenschaften%20-%20Cheatsheet.pdf)
 - [Grundlagen der Biosignalverarbeitung](Grundlagen%20der%20Biosignalverarbeitung.md)
   - [Cheatsheet](Grundlagen%20der%20Biosignalverarbeitung.pdf)
+  - [Prüfungsvorbereitung](Grundlagen%20der%20Biosignalverarbeitung%20-%20Prüfungsvorbereitung.pdf)
 - [Grundlagen und diskrete Strukturen](Grundlagen%20und%20Diskrete%20Strukturen.md)
   - [Cheatsheet](Grundlagen%20und%20Diskrete%20Strukturen%20-%20Cheatsheet.pdf)
   - [Short Paper](Grundlagen%20und%20Diskrete%20Strukturen%20-%20short.pdf)

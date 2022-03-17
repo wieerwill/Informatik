@@ -415,26 +415,10 @@
     \begin{solution}
 
       \begin{itemize}
-        \item Leckeffekt = Auslaufen der Spektralanteile auf benachbarte Frequenzen $\Rightarrow$ führt zu Verzerrungen und falsch detektierte Spektraleanteilen durch Überlagerung unterschiedlicher Perioden      
-\item Zeitbereich: Periodifizierung der Abtastwerte ergibt kein cos-Signal sondern erzeugt Sprungstellen an Rändern
-\item Frequenzbereich: ausschneiden des Signals entspricht im Spektralbereich einer Faltung mit Fourtiertransformierten dieses Rechteckfensters. Signal wird in Blöcken verarbeitet, diese Blöcke sind endlich $\rightarrow$ Leckeffekt entsteht, wenn Blocklänge nicht natürlichzahliges Vielfaches der Periode des Signals ist.
+        \item Leckeffekt = Auslaufen der Spektralanteile auf benachbarte Frequenzen $\Rightarrow$ führt zu Verzerrungen und falsch detektierte Spektraleanteilen durch Überlagerung unterschiedlicher Perioden
+        \item Zeitbereich: Periodifizierung der Abtastwerte ergibt kein cos-Signal sondern erzeugt Sprungstellen an Rändern
+        \item Frequenzbereich: ausschneiden des Signals entspricht im Spektralbereich einer Faltung mit Fourtiertransformierten dieses Rechteckfensters. Signal wird in Blöcken verarbeitet, diese Blöcke sind endlich $\rightarrow$ Leckeffekt entsteht, wenn Blocklänge nicht natürlichzahliges Vielfaches der Periode des Signals ist.
       \end{itemize}
-    \end{solution}
-
-    \part Welche Eigenschaft muss eine Fensterfunktion haben damit dieser Effekt verringert wird?
-    \begin{solution}
-      Fenster verhindern Leckeffekt: Signal an Fenster Anfang/Ende ein/ausblenden $\rightarrow$ künstliche Periodisierung
-
-
-      Varianten: Rechteck-, Dreieck-, Gauß-Fenster
-    \end{solution}
-
-    \part Wie muss man die Eigenschaft der Fensterfunktion wählen, damit 1. Dynamischer Amplitudengang und 2. Gute Auflösung im Spektralbereich entsteht?
-    \begin{solution}
-      \begin{description}
-        \item[schmale Fensterung] flache Übergänge, große Sperrdämpfung
-        \item[breite Fensterung] steile Übergänge, geringe Sperrdämpfung
-      \end{description}
     \end{solution}
 
     \part Gebe Abtastfrequenz $f_A$ und Messdauer $T_M$ an, so dass das resultierende DFT-Spektrum exakt wird
@@ -443,10 +427,10 @@
 
       $$T_M=M*T_C=M*\frac{1}{f_C}=N*T_A=N*\frac{1}{f_A}$$
 
-      Bsp: 
-   
+      Bsp:
+
       $T_M=\frac{1}{7} s$, $f_A=21Hz$, $N=3\ Samples$, $M=1$
-   
+
       $T_M=\frac{7}{7} s$, $f_A=21Hz$, $N=21\ Samples$, $M=7$
 
 
@@ -480,6 +464,42 @@
     \part Wie kann man schnell die Koeffizienten eines FIR Filters ausrechnen?
     \begin{solution}
 
+    \end{solution}
+  \end{parts}
+
+  \question Für Signale mit festgelegtem Abtastparamter können die Eigenschaften des DFT-Spektrums durch den Einsatz von Fensterfunktionen gezielt beeinflusst werden
+  \begin{parts}
+    \part Wie sind Fensterfunktionen $h(n)$ auf diskretes Zeitsignal $y(n)$ anzuwenden?
+    \begin{solution}
+      Multiplikation des Fensters mit ,,darunter liegendem'' Signal, enspricht im Spektralbereich einer Faltung des Fenster-Spektrums mit Spektrum des Signals
+    \end{solution}
+
+    \part Nenne mögliche Fensterfunktionen für DFT Spektralanalyse
+    \begin{solution}
+      Hamming, Blackman, Tschebyscheff, Hann, Rechteck
+    \end{solution}
+
+    \part Welche Eigenschaft muss eine Fensterfunktion haben damit Leckeffekt verringert wird?
+    \begin{solution}
+      Fenster verhindern Leckeffekt: Signal an Fenster Anfang/Ende ein/ausblenden $\rightarrow$ künstliche Periodisierung
+    \end{solution}
+
+    \part Wie muss man die Eigenschaft der Fensterfunktion wählen, damit 1. Dynamischer Amplitudengang und 2. Gute Auflösung im Spektralbereich entsteht?
+    \begin{solution}
+      \begin{description}
+        \item[hohe Auflösung] schmale Hauptkeule
+        \item[dynamischer Amplitudengang] geringe Nebenkeulen, große Sperrdämpfung
+      \end{description}
+
+
+      schmale Fensterung $\rightarrow$ flache Übergänge, große Sperrdämpfung
+
+      breite Fensterung $\rightarrow$ steile Übergänge, geringe Sperrdämpfung
+    \end{solution}
+
+    \part Mit welcher Fensterfunktion wird die höchste spektrale Auflösung erreicht?
+    \begin{solution}
+      Rechteck
     \end{solution}
   \end{parts}
 

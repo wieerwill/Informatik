@@ -388,13 +388,37 @@
     \begin{solution}
       Um Signalfrequenz $f_c$ mit einer der diskreten Frequenzen im DFT-Spektrum zu treffen, muss die Signalfrequenz $f_c$ ein ganzzahliges Vielfaches der spektralen Auflösung $\delta f$ sein: $f_c=\frac{1}{T_c=k*\Delta f=\frac{k}{T_{DFT}}}$. Die Analysezeit $T_{DFT}$ sollte ebenso ganzes vielfaches der Periodendauer $T_C$ sein: $T_{DFT}=k*T_C=N*T_A$
 
+      $T_M = \frac{1}{T_{DFT}}=1/4,5s = ...$
+
+      $fa= N\ Samples * T_M = ...$
+
+      $fc = N\ Perioden * T_M =...$
+
+      $fs=0$
+
+      $df=1/T_M$
+
+      $fe=fa-df=...$
+
+    \end{solution}
+
+    \part Wodurch wird hoher Spektralteil links im DFT Betragsspektrum verursacht?
+    \begin{solution}
+      Spektralwert bei $f_s$ entspricht dem Gleichanteil des Signals. Dieser ist im angegebenen Signal nicht Null sondern 0,5.
+
+      $y(t)=cos(2\pi f_c t)+ 0,5$
+
+      Dass dieses Spektrum nicht exakt 0,5 ist, liegt am Leckeffekt
     \end{solution}
 
     \part Welcher Effekt verursacht viele Spektralteile?
     \begin{solution}
-      Leckeffekt: Signal wird in Blöcken verarbeitet, diese Blöcke sind endlich $\rightarrow$ Leckeffekt entsteht, wenn Blocklänge nicht natürlichzahliges Vielfaches der Periode des Signals ist.
-      Leckeffekt führt zu Verzerrungen und falsch detektierte Spektraleanteilen durch Überlagerung unterschiedlicher Perioden
 
+      \begin{itemize}
+        \item Leckeffekt = Auslaufen der Spektralanteile auf benachbarte Frequenzen $\Rightarrow$ führt zu Verzerrungen und falsch detektierte Spektraleanteilen durch Überlagerung unterschiedlicher Perioden      
+\item Zeitbereich: Periodifizierung der Abtastwerte ergibt kein cos-Signal sondern erzeugt Sprungstellen an Rändern
+\item Frequenzbereich: ausschneiden des Signals entspricht im Spektralbereich einer Faltung mit Fourtiertransformierten dieses Rechteckfensters. Signal wird in Blöcken verarbeitet, diese Blöcke sind endlich $\rightarrow$ Leckeffekt entsteht, wenn Blocklänge nicht natürlichzahliges Vielfaches der Periode des Signals ist.
+      \end{itemize}
     \end{solution}
 
     \part Welche Eigenschaft muss eine Fensterfunktion haben damit dieser Effekt verringert wird?
@@ -411,6 +435,22 @@
         \item[schmale Fensterung] flache Übergänge, große Sperrdämpfung
         \item[breite Fensterung] steile Übergänge, geringe Sperrdämpfung
       \end{description}
+    \end{solution}
+
+    \part Gebe Abtastfrequenz $f_A$ und Messdauer $T_M$ an, so dass das resultierende DFT-Spektrum exakt wird
+    \begin{solution}
+      $T_M$ muss natürliches vielfaches von $T_C=1/f_C$ sein und zugleich vielfaches von $T_A=1/f_A$ sein, wobei $f_A$ das Abtasttheorem einhalten muss.
+
+      $$T_M=M*T_C=M*\frac{1}{f_C}=N*T_A=N*\frac{1}{f_A}$$
+
+      Bsp: 
+   
+      $T_M=\frac{1}{7} s$, $f_A=21Hz$, $N=3\ Samples$, $M=1$
+   
+      $T_M=\frac{7}{7} s$, $f_A=21Hz$, $N=21\ Samples$, $M=7$
+
+
+      $T_M=2 s$, $f_A=21Hz$, $N=42\ Samples$, $M=14$
     \end{solution}
   \end{parts}
 
@@ -535,13 +575,8 @@
     \end{solution}
   \end{parts}
 
-  \question Berechne mit $t_{ab}=10s$, $f_{s1}=9kHz$ und $f_{s2}=10kHz$, peaks gegeben
+  \question Berechne mit $t_{ab}=10s$, $f_{s1}=9kHz$ und $f_{s2}=10kHz$, Peaks gegeben
   \begin{parts}
-    \part Abtasttheorem
-    \begin{solution}
-
-    \end{solution}
-
     \part Welche Frequenzbereiche der Signale
     \begin{solution}
 

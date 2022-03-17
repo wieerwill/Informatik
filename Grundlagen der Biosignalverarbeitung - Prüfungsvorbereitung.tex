@@ -142,12 +142,14 @@
   \begin{parts}
     \part Warum muss man bei der Übertragung von Biosignale über größere Distanz das Signal modulieren?
     \begin{solution}
+      Theoretisch können Signale direkt übertragen werden. Dabei können jedoch Störsignale auf das abgenommene Signal einwirken und dieses verfälschen oder das Signal ist zu schwach und geht bei der Übertragung verloren bzw kommt nicht am Empfänger an.
 
+      Deshalb ist es Empfohlen, das abgenommene Biosignal 1. zu verstärken und 2. gegeüber Störungen resistent zu modulieren.
     \end{solution}
 
     \part Welche Form der analogen Modulation ist besonders Störungsresistent und warum?
     \begin{solution}
-
+      Eine besonders Störresistente Form der Modulation ist die Analog-Digital-Wandlung des Analogen Signals in sein digitales Äquivalent. Auch mit größeren äußeren Störungen, die auf das digitale Signal einwirken, kann der Empfänger durch die große Differenz zwischen 0- und 1- Signalen klar unterscheiden und das Originalsignal (falls notwendig/gewünscht) rücktransformieren in sein Original.
     \end{solution}
   \end{parts}
 
@@ -156,7 +158,7 @@
     \part Welche chemischen/elektrische Vorgänge an Elektroden
     \begin{solution}
       \begin{itemize}
-        \item Metallelektrode umgeben von selektiv durchlässiger Membran eingetaucht in die zu untersuchende Elektrolytkösung
+        \item Metallelektrode umgeben von selektiv durchlässiger Membran eingetaucht in die zu untersuchende Elektrolytlösung
         \item die zur Elektrode gelangenden Ionen (Moleküle) verändern die Potentialdifferenz zwischen Mess- und Bezugselektrode
         \item Spannung proportional log. Ionenkonzentration (pH)
         \item Bsp $pCO_2$-Elektrode: $CO_2+H_2O \Leftrightarrow H_2CO_3 \Leftrightarrow H^+ HCO_3^-$
@@ -165,17 +167,17 @@
 
     \part Probleme bei Signalauswertung
     \begin{solution}
+      Metallelektroden selbst können polarisierbar sein und positiv geladene Metallionen in der Elektrolytlösung das Signal verfälschen.
     \end{solution}
 
     \part Elektroden auf Haut erzeugen Gleichspannung. Wie entsteht diese Gleichspannung?
     \begin{solution}
-      polarisierbare Metallelektroden $\rightarrow$ positiv geladene Metallionen gelangen in umgebende
-      Elektrolytlösung $\rightarrow$ molekulare Doppelschicht mit hoher Impedanz für Niederfrequenzbereich (Hochpassfilter bei Ableitung evozierter Potentiale)
+      polarisierbare Metallelektroden $\rightarrow$ positiv geladene Metallionen gelangen in umgebende Elektrolytlösung $\rightarrow$ molekulare Doppelschicht mit hoher Impedanz für Niederfrequenzbereich (Hochpassfilter bei Ableitung evozierter Potentiale)
     \end{solution}
 
     \part Wie kann man diese Gleichspannung reduzieren?
     \begin{solution}
-      unpolarisierbare Metallelektroden
+      unpolarisierbare Metallelektroden nutzen
 
       Ag/AgCl: Verminderung und Stabilisierung der galvanischen Spannung $\rightarrow$ geringe Übergangsimpedanzen im gesamten Frequenzbereich
 
@@ -212,7 +214,15 @@
 
     \part Entstehung von biologischen Störungen
     \begin{solution}
-
+      Körperfunktionen lassen sich (ohne Beschädigung) nicht abschalten wie z.B. Rechner. Deshalb wirken unterschiedliche Funktionen des Körpers, wie z.B. Atmung oder Herzschlag auf die Messung ein. Diese Störungen können nicht entfernt werden aber möglichst unterdrücken, indem bestimmte Abnahmepfade (z.B. EKG mit Goldberg) genutzt werden. Die Aktivität des Patienten spielt hierbei eine wichtige Rolle.
+      \begin{itemize}
+        \item Spektral alle Biosignale im selben Band (0-100Hz)
+        \item Nichtlineare Verkopplung der Biosignale verhindern Trennung mit herkömmlichen Methoden
+        \item Kein Biosignal deterministisch und reproduzierbar
+        \item Transiente/aperiodische, instationäre Biosignale nicht qualifizierbar
+        \item Trennung kaum möglich, bestenfalls Reduktion/Abschwächung
+        \item Problem: funktionelle Verkopplung/Überlagerung im Mensch
+      \end{itemize}
     \end{solution}
 
     \part Methoden zur Eindämmung von Störungen
@@ -221,16 +231,7 @@
       \begin{itemize}
         \item Basislinienschwankung: Gute mechanische Elektrodenfixierung verwenden und prüfen, Kontaktcreme zufügen, eventuell Verwendung anderer Elektroden. Ruhigstellung, Entspannung der Muskeln, Anhalten oder Reduzierung der Atmung.
         \item Netzbrummen: Gerät oder Netzkabel aus Patientennähe entfernen, Kontrolle Elektrodenkontakt! Zur Unterdrückung der 50-Hz-Störungen, die in dem Nutzspektrum des QRS-Komplexes liegt, können nur phasenlineare Filter angewendet werden. Dies ist z.B. mit digitalen Notch-Filtern oder mit Kompensationsfiltern zu erzielen.
-        \item Biologische Störungen: Ruhigstellung, Entspannung der Muskeln, Anhalten oder Reduzierung der Atmung 
-              \begin{itemize}
-                \item Spektral alle Biosignale im selben Band (0-100Hz)
-                \item Nichtlineare Verkopplung der Biosignale verhindern Trennung mit herkömmlichen Methoden
-                \item Kein Biosignal deterministisch und reproduzierbar
-                \item Transiente/aperiodische, instationäre Biosignale nicht qualifizierbar
-                \item Trennung kaum möglich, bestenfalls Reduktion/Abschwächung
-                \item Problem: funktionelle Verkopplung/Überlagerung im Mensch
-                \item Idee: Einschränkung der Frequenzfenster
-              \end{itemize}
+        \item Biologische Störungen: Ruhigstellung, Entspannung der Muskeln, Anhalten oder Reduzierung der Atmung
       \end{itemize}
     \end{solution}
   \end{parts}
@@ -249,7 +250,7 @@
 
     \part Warum stört Erdmagnetfeld nicht? Gradiometerprinzip reicht nicht aus für Erklärung
     \begin{solution}
-
+      Das Erdmagnetfeld wirkt in beiden Messsensoren ungefähr gleich (verschwinded geringer Unterschied je nach Entfernung der Sensoren voneinander). Durch die Differenzbildung wird diese Störung in beiden Sensoren mit entfernt.
     \end{solution}
   \end{parts}
 
@@ -273,6 +274,7 @@
         \item[T-Welle] Erregungsrückgang (umgekehrt registriert)
       \end{description}
 
+      Ablauf
       \begin{enumerate}
         \item Die erschlafften Vorhöfe füllen sich mit Blut.
         \item Beim Zusammenziehen der Vorhöfe strömt das Blut durch die Segelklappen in die Herzkammern.
@@ -315,22 +317,52 @@
       Die Elektroden für das EEG sind jeweils in einem bestimmten System angebracht, wonach verschiedene Arten von Ableitungen unterschieden werden. Üblich ist das 10-20-System; es werden aber auch alternative Montagen wie das 10-10-System angewendet sowie invasive Ableitungen.
     \end{solution}
 
-    \part Spektralanalyse EEG (Leitungsspektrum, Auflösung berechnen)
-    \begin{solution}
-
-    \end{solution}
-
     \part Fenster festlegen, wenn Arzt 0,4Hz Auflösung will
     \begin{solution}
 
+      Abtastintervall $T_A$: Zeit zwischen zwei Messpunkten $T_A=\frac{1}{Abtastfrequenz}$
+
+      Zeitfenster: Messzeit $T=N*T_A$ für $N$ Abtast-Punkte
+
+      Niedrigste Frequenz $\Delta f=\frac{1}{N_A * T_A}$
+
+      Höchste Frequenz $f_{max}=\frac{N_A/2}{N_A * T_A}=\frac{1}{2} f_A$
     \end{solution}
   \end{parts}
 
   \question Guarding-Technik beschreiben
   \begin{solution}
+    Schirm am Ausgang eines OV und über Ausgangswiderstand des OV mit der Masse niederohmig verbunden.
+    Gleichtaktwiderstand bleibt erhalten, Schutz gegen Störungseinkopplung
 
+    Für Mess-Sicherheit: um Kabel und Guarding-Schirm zweiter Schirm mit Masse verbunden
+
+    $\Rightarrow$ Abschirmung der Signalleitungen vor Störungen aus dem Messkreis
   \end{solution}
 
+  \question Abtasttheorem
+  \begin{parts}
+    \part Beschreibe
+    \begin{solution}
+      ein bandbreitenbegrenztes Signal der Grenzfrequenz $f_g$ ist durch seinen periodischen Abtastwert $s(nT)$ vollständig bestimmt, wenn die Abtastrate größer als die Nyquistrate ist: $F_T=\frac{1}{T} > 2*f_G$
+    \end{solution}
+    \part Abtasttheorem: Welche notwendige und hinreichende Bedingung benötigt man für die Abtastung bei fc=100Hz und USB 0,1...1kHz
+    \begin{solution}
+
+    \end{solution}
+  \end{parts}
+
+  \question Aliasing erklären
+  \begin{solution}
+    Frequenzsignale innerhalb der Signalverarbeitung überschritten oder in unzureichender Abtastrate gemessen $\rightarrow$ Verzerrung
+
+    Anti-Aliasing-Filter: wandeln Frequenzen oberhalb der Nyquistfrequenz um und verhindern bei Abtastfrequenz, dass Signale in Frequenz nicht verändert werden
+  \end{solution}
+
+  \question Gibbsche Phänomen erklären
+  \begin{solution}
+    das typische Verhalten von Fourierreihen in der Umgebung von Sprungsstellen. Wird eine Fourierreihe aus einer Funktion mit Unstetigkeiten entwickelt, ergeben sich an den Unstetigkeitsstellen typische Über- und Unterschwinger, die sich aber mit steigendem Anteil hochfrequenter Schwingungen verringern. Erst bei einer unendlichen Reihe verschwinden die Überschwinger.
+  \end{solution}
 
   \question Messverstärker
   \begin{parts}
@@ -350,32 +382,35 @@
     \end{solution}
   \end{parts}
 
-  \question AKF periodisch $\leftrightarrow$ aperiodisch (FFT-Shift)
-  \begin{solution}
-
-  \end{solution}
-
-
   \question Signal mit $f(t)=2*cos(t*2*\pi *f)$, die Frequenz war 9Hz, das Signal war im Bereich von 0 bis 4,5s gegeben. Gegeben TM,...?
   \begin{parts}
-    \part $f=fs:df:fe\rightarrow fs,df,fe$ berechnen
+    \part Eine Matlab funktion nutzt $f=fs:df:fe$ um das Fenster zu berechnen. Berechne $fs,df$ und $fe$
     \begin{solution}
+      Um Signalfrequenz $f_c$ mit einer der diskreten Frequenzen im DFT-Spektrum zu treffen, muss die Signalfrequenz $f_c$ ein ganzzahliges Vielfaches der spektralen Auflösung $\delta f$ sein: $f_c=\frac{1}{T_c=k*\Delta f=\frac{k}{T_{DFT}}}$. Die Analysezeit $T_{DFT}$ sollte ebenso ganzes vielfaches der Periodendauer $T_C$ sein: $T_{DFT}=k*T_C=N*T_A$
 
     \end{solution}
 
-    \part Welcher Effekt verursacht viele Spektralteile? Leckeffekt erklären
+    \part Welcher Effekt verursacht viele Spektralteile?
     \begin{solution}
+      Leckeffekt: Signal wird in Blöcken verarbeitet, diese Blöcke sind endlich $\rightarrow$ Leckeffekt entsteht, wenn Blocklänge nicht natürlichzahliges Vielfaches der Periode des Signals ist.
+      Leckeffekt führt zu Verzerrungen und falsch detektierte Spektraleanteilen durch Überlagerung unterschiedlicher Perioden
 
     \end{solution}
 
     \part Welche Eigenschaft muss eine Fensterfunktion haben damit dieser Effekt verringert wird?
     \begin{solution}
+      Fenster verhindern Leckeffekt: Signal an Fenster Anfang/Ende ein/ausblenden $\rightarrow$ künstliche Periodisierung
 
+
+      Varianten: Rechteck-, Dreieck-, Gauß-Fenster
     \end{solution}
 
     \part Wie muss man die Eigenschaft der Fensterfunktion wählen, damit 1. Dynamischer Amplitudengang und 2. Gute Auflösung im Spektralbereich entsteht?
     \begin{solution}
-
+      \begin{description}
+        \item[schmale Fensterung] flache Übergänge, große Sperrdämpfung
+        \item[breite Fensterung] steile Übergänge, geringe Sperrdämpfung
+      \end{description}
     \end{solution}
   \end{parts}
 
@@ -384,11 +419,22 @@
     \part Anhand welcher Merkmale kann man einen Filter klassifizieren, ob er FIR oder IIR ist?
     \begin{solution}
 
+      \begin{tabular}{p{7cm}|p{7cm}}
+        FIR = Finite Impulse Response                                                          & IIR = Infinite Impulse Response                                             \\\hline
+        + Lineare Phase, keine Phasenverzerrung, alle Frequenzen um gleichen Betrag verschoben & + Niedrige Kosten, weniger Koeffizienten + Speicher                         \\
+        + Stabil, keine Rückkopplung, niemals instabil                                         & Niedrige Latenzzeit für Echtzeitsteuerung und schnelle HF Anwendung         \\
+        + arbiträrer Frequenzgang $\rightarrow$ beliebiger Betragsverlauf                      & + Analoges Äquivalent zur Nachahmung der Eigenschaften von analogen Filtern \\
+                                                                                               & + hohe Flankensteilheit                                                     \\
+        - hoher Rechen+Speicherbedarf, viel mehr Koeffizienten als IIR                         & - nicht linearer Phaseneigenschaft, besonders an Grenzfrequenzen            \\
+        - höhere Latenz: möglicherweise große Gruppenverzögerung                               & - aufgrund Rückkopplung numerisch weniger stabil als FIR                    \\
+        - kein analoges Äquivalent                                                             &                                                                             \\
+        $y(n)=\sum^{N-1}_{k=0} h(k)x(n-k)$                                                     & $y(n)=\sum^{\infty}_{k=0} h(k) x(n-k)$
+      \end{tabular}
     \end{solution}
 
     \part Können FIR instabil werden? Begründen Sie Ihre Vermutung.
     \begin{solution}
-
+      Nein, keine Rückkopplungen im Filter
     \end{solution}
 
     \part Wie kann man schnell die Koeffizienten eines FIR Filters ausrechnen?
@@ -419,6 +465,9 @@
     \part Erläutern Sie anhand eines Blockschaltbilds die Funktionsweise eines adaptiven noise Cancellers
     \begin{solution}
 
+      \begin{center}
+        \includegraphics[width=.6\linewidth]{Assets/biosignalverarbeitung-adaptive-noise-cancellation-system.png}
+      \end{center}
     \end{solution}
 
     \part Was muss für das Rauschen gelten, damit das LMS Prinzip angewendet werden kann? Welche Signale müssen korellieren und welche dürfen nicht in Korrelationsbeziehung stehen?
@@ -428,10 +477,6 @@
 
   \end{parts}
 
-  \question Abtasttheorem: Welche notwendige und hinreichende Bedingung benötigt man für die Abtastung bei fc=100Hz und USB 0,1...1kHz
-  \begin{solution}
-
-  \end{solution}
 
   \question LTI System
   \begin{parts}

@@ -817,18 +817,17 @@
     \pagebreak
     \pagebreak
     \section{Robustheit und Verfügbarkeit}
-    Motivation
     \begin{itemize*}
         \item allgemein: verlässlichkeitskritische Anwendungsszenarien
-        \item Forschung in garstiger Umwelt (Weltraum)
+        \item z.B. Forschung in garstiger Umwelt (Weltraum)
         \item hochsicherheitskritische Systeme (Finanz, Cloud Dienste)
         \item hochverfügbare System (öffentliche Infrastruktur, Strom)
-        \item HPC (high performance computing)
+        %\item HPC (high performance computing)
     \end{itemize*}
 
     Allgemeine Begriffe
     \begin{itemize*}
-        \item Verlässlichkeit: Fähigkeit, eine Leistung zu erbringen, der man berechtigterweise vertrauen kann
+        \item \textbf{Verlässlichkeit} Fähigkeit, eine Leistung zu erbringen, der man berechtigterweise vertrauen kann
         \item Untereigenschaften
         \begin{enumerate*}
             \item Verfügbarkeit (availability)
@@ -836,19 +835,16 @@
             \item (Funktions-) Sicherheit (safety)
             \item Vertraulichkeit (confidentiality)
             \item Integrität (integrity)
-            \item Wartbarkeit (maintainability) (vgl.: evolutionäre Eigenschaften)
+            \item Wartbarkeit (maintainability)
         \end{enumerate*}
-        \item[$\rightarrow$] nicht für alle Anwendungen sind alle Untereigenschaften erforderlich
+        \item[$\rightarrow$] nicht immer sind alle Untereigenschaften erforderlich
     \end{itemize*}
 
     \subsection{Robustheitsbegriff}
-    \begin{itemize*}
-        \item Untereigenschaften von Verlässlichkeit: Robustheit (reliability)
-        \item Ausfall: beobachtbare Verminderung der Leistung eines Systems, gegenüber seiner als korrekt spezifizierten Leistung
-        \item Robustheit: Verlässlichkeit unter Anwesenheit externer Ausfälle (= Ursache außerhalb des betrachteten Systems)
-    \end{itemize*}
-
-    \subsubsection{Fehler, Ausfälle und ihre Vermeidung}
+    \begin{description*}
+        \item[Ausfall] beobachtbare Verminderung der Leistung eines Systems, gegenüber seiner als korrekt spezifizierten Leistung
+        \item[Robustheit] Verlässlichkeit unter Anwesenheit externer Ausfälle (= Ursache außerhalb des betrachteten Systems)
+    \end{description*}
     \begin{itemize*}
         \item Fehler $\rightarrow$ fehlerhafter Zustand $\rightarrow$ Ausfall
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-fehler.png}
@@ -864,22 +860,22 @@
             \item Isolation von Subsystemen
             \item[$\rightarrow$] Isolationsmechanismen
         \end{itemize*}
-        \item[Fehler] (fault) Ursache für fehlerhaften Systemzustand ( error ), z.B. Programmierfehler
+        \item[Fehler] (fault) Ursache für fehlerhaften Systemzustand (error)%, z.B. Programmierfehler
         \begin{itemize*}
             \item Ausfallverhalten spezifizieren
-            \item Ausfälle zur Laufzeit erkennen und Folgen beheben, abschwächen...
+            \item Ausfälle zur Laufzeit erkennen und Folgen beheben%, abschwächen...
             \item[$\rightarrow$] Micro-Reboots
         \end{itemize*}
     \end{description*}
 
     \subsection{Fehlerhafter Zustand}
-    interner und externer Zustand (internal \& external state)
-    \begin{itemize*}
-        \item externer Zustand: der Teil des Gesamtzustands, der an externer Schnittstelle sichtbar wird
-        \item interner Zustand: restlicher Teilzustand
-        \item erbrachte Leistung: zeitliche Folge externer Zustände
-    \end{itemize*}
-    Fehlerausbreitung und (externer) Ausfall
+    %interner und externer Zustand (internal \& external state)
+    \begin{description*}
+        \item[externer Zustand] der Teil des Gesamtzustands, der an externer Schnittstelle sichtbar wird
+        \item[interner Zustand] restlicher Teilzustand
+        \item[erbrachte Leistung] zeitliche Folge externer Zustände
+    \end{description*}
+    %Fehlerausbreitung und (externer) Ausfall
     \begin{itemize*}
         \item Wirkungskette: Treiber-Programmierfehler (fault) $\rightarrow$ fehlerhafter interner Zustand des Treibers (error)
         \begin{itemize*}
@@ -909,7 +905,7 @@
     \end{itemize*}
 
     \subsubsection{Strukturierte Programmierung}
-    Monolithisches BS... in historischer Reinform:
+    Monolithisches BS... in historischer Reinform
     \begin{itemize*}
         \item Anwendungen, Kernel, gesamte BS-Funktionalität
         \item programmiert als Sammlung von Prozeduren
@@ -932,6 +928,7 @@
         \item[$\Rightarrow$] Schichtendifferenzierung ( layered operating system )
         \item Modularisierung
     \end{itemize*}
+    
     Modularer Makrokernel
     \begin{itemize*}
         \item Kernelfunktionen in Module unterteilt $\rightarrow$ Erweiter-/Portierbarkeit

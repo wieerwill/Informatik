@@ -379,23 +379,19 @@
     \cmark Ziel, (\cmark) synergetisch, \xmark Konträr
 
     \pagebreak
-
     \section{Sparsamkeit und Effizienz}
-    \subsection{Motivation}
+    \begin{description*}
+        \item[Sparsamkeit] Funktion mit minimalem Ressourcenverbrauch ausüben $\rightarrow$ Effizienz bei Nutzung der Ressourcen
+        \item[Effizienz] Grad mit welchem System Sparsam ist
+    \end{description*}
     \begin{itemize*}
-        \item Sparsamkeit: Funktion mit minimalem Ressourcenverbrauch auszuüben $\rightarrow$ Effizienz bei Nutzung der Ressourcen
-        \item Effizienz: Grad mit welchem System Sparsam ist
-    \end{itemize*}
-
-    Beispiele:
-    \begin{itemize*}
-        \item mobile Geräte: Sparsamkeit mit Energie
+        %\item mobile Geräte: Sparsamkeit mit Energie
         \item Sparsamkeit mit weiteren Ressourcen, z.B. Speicherplatz
         \item Betriebssystem (Kernel + User Space): geringer Speicherbedarf
         \item optimale Speicherverwaltung durch Betriebssystem zur Laufzeit
-        \item Baugrößenoptimierung(Platinen-und Peripheriegerätegröße)
-        \item Kostenoptimierung(kleine Caches, keine MMU, ...)
-        \item massiv reduzierte HW-Schnittstellen (E/A-Geräte, Peripherie)
+        \item Baugrößenoptimierung (Platinen-und Peripheriegerätegröße)
+        %\item Kostenoptimierung (kleine Caches, keine MMU, ...)
+        %\item massiv reduzierte HW-Schnittstellen (E/A-Geräte, Peripherie)
     \end{itemize*}
 
     \subsection{Energieeffizienz}
@@ -444,8 +440,8 @@
         \item bisher Fetch-on-Demand-Strategie (kein vorausschauendes Lesen)
         \item Traditionelles Prefetching
         \begin{enumerate*}
-            \item Optimales Prefetching: Jedes \emph{prefetch} sollte den nächsten Block im Referenzstrom in den Cache bringen, der noch nicht dort ist
-            \item Optimales Ersetzen: Bei jedem ersetzenden \emph{prefetch} soll Block überschrieben werden, der am spätesten in der Zukunft benötigt wird
+            \item Optimales Prefetching: Jedes \emph{prefetch} soll nächsten Block im Referenzstrom in Cache bringen, der noch nicht dort ist
+            \item Optimales Ersetzen: ersetzender \emph{prefetch} soll Block überschreiben, der weitesten in der Zukunft benötigt wird
             \item ,,Richte keinen Schaden an'': Überschreibe niemals Block A um Block B zu holen, wenn A vor B benötigt wird
             \item Erste Möglichkeit: Führe nie ein ersetzendes \emph{prefetch} aus, wenn dieses schon vorher hätte ausgeführt werden können
         \end{enumerate*}
@@ -474,21 +470,18 @@
 
     Schaltleistung $P_{switching}$
     \begin{itemize*}
-        \item $P_{switch}$: für Schaltvorgänge notwendige Leistung
+        \item $P_{switching}$: für Schaltvorgänge notwendige Leistung
         \item Energiebedarf kapaz. Lade-/Entladevorgänge während Schaltens
-        \item für momentane CMOS dominanter Anteil am Energieverbrauch
-        \item Einsparpotenzial: Verringerung von Versorgungsspannung (quadratische Abhängigkeit!) und Taktfrequenz
+        \item Einsparpotenzial: Verringerung von Versorgungsspannung (quadratische Abhängigkeit) und Taktfrequenz
         \item[$\rightarrow$] längere Schaltvorgänge, größere Latenz zwischen Schaltvorgängen
         \item[$\Rightarrow$] Energieeinsparung nur mit Qualitätseinbußen
-        \begin{itemize*}
-            \item Anpassung des Lastprofils (Zeit-Last? Fristen kritisch?)
-            \item Beeinträchtigung der Nutzererfahrung (Reaktivität?)
-        \end{itemize*}
+        %\item Anpassung des Lastprofils (Zeit-Last? Fristen kritisch?)
+        %\item Beeinträchtigung der Nutzererfahrung (Reaktivität?)
     \end{itemize*}
 
     Verlustleistung $P_{leakage}$
     \begin{itemize*}
-        \item $P_{leak}$: Verlustleistung durch verschiedene Leckströme
+        \item $P_{leakage}$: Verlustleistung durch verschiedene Leckströme
         \item Energiebedarf baulich bedingter Leckströme
         \item Hardware-Miniaturisierung $\rightarrow$ zunehmender Anteil $P_{leakage}$ an P
         \item[$\Rightarrow$] Leckströme kritisch für energiesparenden Hardwareentwurf
@@ -496,8 +489,8 @@
 
     Regelspielraum: Nutzererfahrung
     \begin{itemize*}
-        \item Nutzererwartung wichtigstes Kriterium durch Nutzer
-        \item[$\rightarrow$] Nutzererwartung bestimmt Nutzererfahrung
+        %\item Nutzererwartung wichtigstes Kriterium durch Nutzer
+        \item Nutzererwartung bestimmt Nutzererfahrung
         \item Typ einer Anwendung entscheidet über jeweilige Nutzererwartung
         \begin{enumerate*}
             \item Hintergrund (Compiler): Bearbeitungsdauer, Durchsatz
@@ -516,13 +509,13 @@
     \subsubsection{Energieeffizientes Scheduling}
     \begin{itemize*}
         \item Probleme mit Energiesparen: Fairness \& Prioritätsumkehr
-        \item Beispiel: Round Robin (RR) mit Prioritäten
-        \begin{itemize*}
-            \item $E_i^{budget}$ ... Energiebudget von $t_i$
-            \item $E_i^{limit}$ ... Energielimit von $t_i$
-            \item $P_{limit}$ ... maximale Leistungsaufnahme [Energie/Zeit]
-            \item $T$ ... resultierende Zeitscheibenlänge
-        \end{itemize*}
+        %\item Beispiel: Round Robin (RR) mit Prioritäten
+        %\begin{itemize*}
+        %    \item $E_i^{budget}$ ... Energiebudget von $t_i$
+        %    \item $E_i^{limit}$ ... Energielimit von $t_i$
+        %    \item $P_{limit}$ ... maximale Leistungsaufnahme [Energie/Zeit]
+        %    \item $T$ ... resultierende Zeitscheibenlänge
+        %\end{itemize*}
     \end{itemize*}
     \begin{description*}
         \item[Problem 1] Unfaire Energieverteilung
@@ -538,16 +531,16 @@
         \item RR Strategie 1: faire Energieverteilung (einheitliche E-Limits)
         \begin{itemize*}
             \item $E_i^{limit} = P_{limit}* T$ %(Abweichungen = Wichtung der Prozesse $\rightarrow$ bedingte Fairness)
-            \item gewichtete Aufteilung begrenzter Energie optimiert Energieeffizienz
+            \item gewichtete Aufteilung begrenzter Energie %optimiert Energieeffizienz
             \item Problem: lange, wenig energieintensive Threads verzögern Antwort-und Wartezeiten kurzer, energieintensiver Threads
-            \item Lösung im Einzelfall: Wichtung per $E_i^{limit}$
+            %\item Lösung im Einzelfall: Wichtung per $E_i^{limit}$
             %\item globale Reaktivität $\rightarrow$ Nutzererfahrung?
         \end{itemize*}
         \item RR Strategie 2: maximale Reaktivität ( $\rightarrow$ klassisches RR)
         \begin{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-energiebewusstes-rr-reaktivität.png}
             \item Problem: sparsame Threads werden bestraft durch Verfallen des ungenutzten Energiebudgets
-            \item Idee: Ansparen von Energiebudgets $\rightarrow$ mehrfache Ausführung eines Threads innerhalb einer Scheduling-Periode
+            \item Idee: Ansparen von Energiebudgets $\rightarrow$ mehrfache Ausführung eines Threads innerhalb einer Periode
         \end{itemize*}
         \item RR Strategie 3: Reaktivität, dann faire Energieverteilung
         %\begin{itemize*}
@@ -557,9 +550,9 @@
 
     Implementierungsfragen
     \begin{itemize*}
-        \item Kosten ggü. klassischem RR? (durch Prioritäten...?)
-        \item Scheduling-Zeitpunkte?
-        \item Datenstrukturen? Wo gelagert?
+        %\item Kosten ggü. klassischem RR? (durch Prioritäten...?)
+        %\item Scheduling-Zeitpunkte?
+        %\item Datenstrukturen? Wo gelagert?
         %\begin{itemize*}
         %    \item ... im Scheduler $\rightarrow$ Warteschlange(n)?
         %    \item ... im Prozessdeskriptor?
@@ -595,13 +588,13 @@
     DPM: Dynamic Power Management
     \begin{itemize*}
         \item versetzt leerlaufende Hardware selektiv in Zustände mit niedrigem Energieverbrauch
-        \item Zustandsübergänge durch Power-Manager gesteuert, bestimmte \emph{DPM-}Strategie (Firmware) zugrunde, um gutes Verhältnis zwischen Performanz/Reaktivität und Energieeinsparung zu erzielen
-        \item bestimmt, wann und wie lange eine Hardware in Energiesparmodus
+        \item Zustandsübergänge durch Power-Manager gesteuert, bestimmte \emph{DPM-}Strategie (Firmware) zugrunde, um gutes Verhältnis zwischen Performanz und Energieeinsparung zu erzielen
+        \item bestimmt, wann \& wie lange eine Hardware in Energiesparmodus
     \end{itemize*}
     \begin{description*}
         \item[Greedy] Hardware-Komponente sofort nach Erreichen des Leerlaufs in Energiesparmodus, ,,Aufwecken'' durch neue Anforderung
         \item[Time-out] Energiesparmodus erst nachdem ein definiertes Intervall im Leerlauf, ,,Aufwecken'' wie bei Greedy-Strategien
-        \item[Vorhersage] Energiesparmodus sofort nach Erreichen des Leerlaufs, wenn Heuristik vorhersagt,dass Kosten gerechtfertigt
+        \item[Vorhersage] Energiesparmodus sofort nach Erreichen des Leerlaufs, wenn Heuristik vorhersagt, dass Kosten gerechtfertigt
         \item[Stochastisch] Energiesparmodus auf Grundlage stochastischen Modells
     \end{description*}
 
@@ -624,7 +617,7 @@
     \subsection{Speichereffizienz}
     \begin{itemize*}
         \item  ... heißt: Auslastung des verfügbaren Speichers
-        \item oft implizit: Hauptspeicherauslastung (memoryfootprint)
+        \item oft implizit: Hauptspeicherauslastung (memory footprint)
         \item für kleine/mobile Systeme: Hintergrundspeicherauslastung
         \item Maße zur Konkretisierung:
         \begin{itemize*}
@@ -635,8 +628,8 @@
         \item Konsequenzen für Ressourcenverwaltung durch BS
         \begin{itemize*}
             \item Taskverwaltung (Accounting, Multiplexing, Fairness, ...)
-            \item Programmiermodell, API (dynamische Speicherreservierung)
-            \item Sinnfrage und Strategien virtueller Speicherverwaltung (VMM)
+            \item Programmiermodell, API (dyna. Speicherreservierung)
+            \item Strategien virtueller Speicherverwaltung (VMM)
         \end{itemize*}
         \item Konsequenzen für Betriebssystem selbst
         \begin{itemize*}
@@ -651,22 +644,14 @@
     Problem: externe Fragmentierung
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-externe-fragmentierung.png}
-        \item Lösungen
-        \begin{itemize*}
-            \item First Fit, Best Fit, WorstFit, Buddy
-            \item Relokation
-        \end{itemize*}
+        \item Lösungen: First Fit, Best Fit, WorstFit, Buddy, Relokation
         \item Kompromissloser Weg: kein Multitasking
     \end{itemize*}
 
     Problem: interne Fragmentierung
     \begin{itemize*}
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-interne-fragmentierung.png}
-        \item Lösung
-        \begin{itemize*}
-            \item Seitenrahmengröße verringern
-            \item Tradeoff: dichter belegte vAR $\rightarrow$ größere Datenstrukturen für Seitentabellen
-        \end{itemize*}
+        \item Lösung: Seitenrahmengröße verringern ABER dichter belegte vAR $\rightarrow$ größere Datenstrukturen für Seitentabellen
         \item direkter Einfluss des Betriebssystems auf Hauptspeicherbelegung
         \begin{itemize*}
             \item[$\rightarrow$] Speicherbedarf des Kernels
@@ -699,35 +684,34 @@
         \item typische Einsatzgebiete sparsamer BS: eingebettete Systeme
         \item eingebettetes System
         \begin{itemize*}
-            \item Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient, physisch eingebunden ist
-            \item Wesentlicher Bestandteil dieses größeren Systems
+            %\item Computersystem, das in ein größeres technisches System, welches nicht zur Datenverarbeitung dient, physisch eingebunden ist
+            \item Wesentlicher Bestandteil größerer Systems
             \item Liefert Ausgaben in Form von Informationen/Daten
         \end{itemize*}
         \item spezielle, anwendungsspezifische Ausprägung der Aufgaben
         \begin{itemize*}
-            \item reduzierter Umfang von HW-Abstraktion, hardwarenähere Ablaufumgebung
+            \item reduzierter Umfang von HW-Abstraktion, hardwarenah %-nähere Ablaufumgebung
             \item begrenzte Notwendigkeit von HW-Multiplexing \& Schutz
         \end{itemize*}
-        \item eng verwandte NFE: Adaptivität von sparsamen BS
-        \item sparsame Betriebssysteme:
-        \begin{itemize*}
-            \item energieeffizient: geringe Architekturanforderungen an energieintensive Hardware
-            \item speichereffizient: Auskommen mit kleinen Datenstrukturen
-        \end{itemize*}
-        \item Konsequenz: geringe logische Komplexität des Betriebssystemkerns
+        \item sparsame Betriebssysteme
+        \begin{description*}
+            \item[energieeffizient] geringe Architekturanforderungen an energieintensive Hardware
+            \item[speichereffizient] Auskommen mit kleinen Datenstrukturen
+        \end{description*}
+        \item[$\Rightarrow$] geringe logische Komplexität des Betriebssystemkerns
         \item sekundär: Adaptivität des Betriebssystemkerns
     \end{itemize*}
 
     \subsubsection{Makrokernel (monolithischer Kernel)}
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-makrokernel.png}
     \begin{itemize*}
-        \item User Space:
+        \item User Space
         \begin{itemize*}
             \item Anwendungstasks
             \item CPU im unprivilegierten Modus (Unix ,,Ringe'' 1...3)
             \item Isolation von Tasks durch Programmiermodell/VMM
         \end{itemize*}
-        \item Kernel Space:
+        \item Kernel Space
         \begin{itemize*}
             \item Kernel und Gerätecontroller (Treiber)
             \item CPU im privilegierten Modus (Unix ,,Ring'' 0)
@@ -746,13 +730,13 @@
     \subsubsection{Mikrokernel}
     %\includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mikrokernel.png}
     \begin{itemize*}
-        \item User Space:
+        \item User Space
         \begin{itemize*}
             \item Anwendungstasks, Kernel- und Treibertasks
             \item CPU im unprivilegierten Modus
             \item Isolation von Tasks durch VMM
         \end{itemize*}
-        \item Kernel Space:
+        \item Kernel Space
         \begin{itemize*}
             \item funktional minimaler Kernel ($\mu$Kernel)
             \item CPU im privilegierten Modus
@@ -772,15 +756,13 @@
     \begin{itemize*}
         \item Beispiel für sparsame BS im Bereich eingebetteter Systeme
         \item verbreitete Anwendung: verteilte Sensornetze (WSN)
-        \item ,,TinyOS'' ist ein quelloffenes, BSD-lizenziertes Betriebssystem
         \item für drahtlose Geräte mit geringem Stromverbrauch
-        \item Architektur
+        \item Architektur: monolithisch (Makrokernel) mit Besonderheiten
         \begin{itemize*}
-            \item monolithisch (Makrokernel) mit Besonderheiten:
             \item keine klare Trennung zwischen der Implementierung von Anwendungen und BS (aber von funktionalen Aufgaben)
             \item[$\rightarrow$] zur Laufzeit: 1 Anwendung + Kernel
         \end{itemize*}
-        \item Mechanismen:
+        \item Mechanismen
         \begin{itemize*}
             \item kein Multithreading, keine echte Parallelität
             \item[$\rightarrow$] keine Synchronisation zwischen Tasks
@@ -789,53 +771,51 @@
             \item nicht-präemptives FIFO-Scheduling
             \item kein Paging $\rightarrow$ keine Seitentabellen, keine MMU
         \end{itemize*}
-        \item in Zahlen:
+        \item in Zahlen
         \begin{itemize*}
             \item Kernelgröße: 400 Byte
             \item Kernelimagegröße: 1-4 kByte
             \item Anwendungsgröße: typisch ca. 15 kB, DB: 64 kB
         \end{itemize*}
-        \item Programmiermodell:
+        \item Programmiermodell
         \begin{itemize*}
             \item BS+Anwendung als Ganzes übersetzt: statische Optimierungen durch Compiler (Laufzeit, Speicherbedarf)
-            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel
-            \begin{itemize*}
-                \item command: API-Aufruf, z.B. EA-Operation
-                \item event: Reaktion auf diesen durch Anwendung
-            \end{itemize*}
-            \item sowohl commands als auch events : asynchron
+            \item Nebenläufigkeit durch ereignisbasierte Kommunikation zw. Anwendung und Kernel (command \& event)
+            %\begin{itemize*}
+            %    \item command: API-Aufruf, z.B. EA-Operation
+            %    \item event: Reaktion auf diesen durch Anwendung
+            %\end{itemize*}
+            %\item sowohl commands als auch events : asynchron
         \end{itemize*}
     \end{itemize*}
 
     \subsubsection{BS: RIOT}
     \begin{itemize*}
-        \item sparsames BS,optimiert für anspruchsvollere Anwendungen
+        \item sparsames BS, optimiert für anspruchsvollere Anwendungen
         \item Open-Source-Mikrokernel-basiertes Betriebssystem für IoT
-        \item Architektur
+        \item Architektur: Mikrokernel
         \begin{itemize*}
-            \item halbwegs: Mikrokernel
-            \item energiesparende Kernelfunktionalität
-            \begin{itemize*}
                 \item minimale Algorithmenkomplexität
                 \item vereinfachtes Threadkonzept $\rightarrow$ keine Kontextsicherung erforderlich
                 \item keine dynamische Speicherallokation
                 \item energiesparende Hardwarezustände vom Scheduler ausgelöst (inaktive CPU)
-            \end{itemize*}
             \item Mikrokerneldesign unterstützt komplementäre NFE: Adaptivität, Erweiterbarkeit
             \item Kosten: IPC (hier gering)
         \end{itemize*}
-        \item Mechanismen:
+        \item Mechanismen
         \begin{itemize*}
             \item Multithreading-Programmiermodell
             \item modulare Implementierung von Dateisystemen, Scheduler, Netzwerkstack
         \end{itemize*}
-        \item in Zahlen:
+        \item in Zahlen
         \begin{itemize*}
             \item Kernelgröße: 1,5 kByte
             \item Kernelimagegröße: 5 kByte
         \end{itemize*}
     \end{itemize*}
 
+    \pagebreak
+    \pagebreak
     \section{Robustheit und Verfügbarkeit}
     Motivation
     \begin{itemize*}
@@ -1384,6 +1364,7 @@
         \item[High-Availability-Client-Libraries] Funktionen zur transparenten automatischen Reboot für ausgefallene Server-Verbindungen
     \end{description*}
 
+    \pagebreak
     \section{Sicherheit}
     Terminologie
     \begin{description*}
@@ -1998,6 +1979,7 @@
         \item Betriebssystemfunktionen, die Teil der TCB sein müssen, beinhalten Teile des Prozess-, Speicher-, Datei-, E/A-Managements
     \end{itemize*}
 
+    \pagebreak
     \section{Echtzeitfähigkeit}
     Jedes System, bei dem der Zeitpunkt, zu dem der Output erzeugt wird, von Bedeutung ist. Dies liegt in der Regel daran, dass die Eingabe einer Bewegung in der physischen Welt entspricht und die Ausgabe sich auf dieselbe Bewegung beziehen muss. Die Verzögerung zwischen Eingabe- und Ausgabezeit muss für eine akzeptable Aktualität ausreichend klein sein.
 
@@ -2618,6 +2600,7 @@
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-drops.png}
     \end{itemize*}
 
+    \pagebreak
     \section{Adaptivität (Flexibility)}
     \begin{itemize*}
         \item als unmittelbar geforderte NFE: eingebettete Systeme, Systeme in garstiger Umwelt
@@ -3249,6 +3232,7 @@
         \item \includegraphics[width=.6\linewidth]{Assets/AdvancedOperatingSystems-docker.png}
     \end{itemize*}
 
+    \pagebreak
     \section{Performanz und Parallelität}
     Motivation
     \begin{itemize*}

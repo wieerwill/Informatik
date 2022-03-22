@@ -3231,25 +3231,23 @@
 
     \pagebreak
     \section{Performanz und Parallelität}
-    Motivation
     \begin{itemize*}
-        \item Hochleistungsrechnen, HPC (,,high performancecomputing''
+        \item Hochleistungsrechnen (,,high performance computing''
         \item ,,Big Data'': Dienstleistungen für Kunden
-        \item Wettervorhersage
-        \item anspruchsvolle Multimedia- Anwendungen (Animationen, VR-Rendering)
+        \item anspruchsvolle Multimedia- Anwendungen (Animationen)
     \end{itemize*}
 
     Performanzbegriff
     \begin{itemize*}
-        \item Minimierung der für korrekte Funktion (= Lösung eines Berechnungsproblems) zur Verfügung stehenden Zeit.
-        \item technischer: Maximierung der Anzahl pro Zeiteinheit abgeschlossener Berechnungen
+        \item Minimierung der für korrekte Funktion (= Lösung eines Berechnungsproblems) zur Verfügung stehenden Zeit
+        \item Maximierung der Anzahl pro Zeiteinheit abgeschlossener Berechnungen
     \end{itemize*}
 
     Anforderungen hochparallelen Rechnens an ...
     \begin{itemize*}
         \item Hardware: Prozessorarchitekturen
         \item Systemsoftware: Betriebssystemmechanismen
-        \item Anwendungssoftware: Parallelisierbarkeitvon Problemen
+        \item Anwendungssoftware: Parallelisierbarkeit von Problemen
     \end{itemize*}
 
     \subsection{Hardware-Voraussetzungen}
@@ -3292,7 +3290,6 @@
     \end{enumerate*}
 
     \subsubsection{Multicore-Prozessoren}
-    Terminologie und Abkürzungen
     \begin{description*}
         \item[MC] multicore (processor)
         \item[CMP] chip-level multiprocessing, hochintegrierte Bauweise für MC
@@ -3309,7 +3306,6 @@
             \item größte Ähnlichkeit zu traditionellen verteilten Systemen
             \item Verwendung bei Vielzahl von Prozessorkernen (Skalierbar)
             %\item Beispiel: Intel Teraflop-Forschungsprozessor Polaris (80 Kerne als 8x10-Gitter)
-            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
         \end{itemize*}
         \item Hierarchisches Design
         \begin{itemize*}
@@ -3317,7 +3313,6 @@
             \item jeder Prozessorkern hat eigenen L1-Cache
             \item L2-Cache, Zugriff auf Hauptspeicher u. Großteil der Busse %aber geteilt
             \item Verwendung: typischerweise Serverkonfigurationen
-            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
         \end{itemize*}
         \item Pipeline-Design
         \begin{itemize*}
@@ -3325,9 +3320,16 @@
             \item durch letzten Prozessor: Ablage im Speichersystem
             \item Verwendung: Graphikchips, Netzwerkprozessoren
             %\item Beispiele: Prozessoren X10 u. X11 von Xelerator zur Verarbeitung von Netzwerkpaketen in Hochleistungsroutern (X11: bis zu 800 Pipeline-Prozessorkerne)
-            \item \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
         \end{itemize*}
     \end{itemize*}
+
+    \begin{center}
+    Netzwerk, Hierarchisch, Pipeline
+
+    \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren.png}
+    \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-2.png}
+    \includegraphics[width=.3\linewidth]{Assets/AdvancedOperatingSystems-multicore-prozessoren-3.png}
+    \end{center}
 
     Symmetrische u. asymmetrische Multicore-Prozessoren
 
@@ -3415,70 +3417,45 @@
             \item skaliert äußerst unfreundlich mit Code-Komplexität $\rightarrow$ (monolithischer) Kernel-Code
         \end{itemize*}
         \item Mechanismen in Betriebssystemen: Locks
-        \item Arten von Locks am Beispiel Linux
-        \begin{itemize*}
-            \item Big Kernel Lock (BKL)
-            \item atomic-Operationen
-            \item Spinlocks
-            \item Semaphore (Spezialform: Reader/Writer Locks)
-        \end{itemize*}
     \end{itemize*}
 
-    atomic*
+    atomic* Lock Operation
     \begin{itemize*}
         \item Bausteine der komplexeren Sperrmechanismen
         \item Granularität: einzelne Integer- (oder sogar Bit-) Operation
         \item Performanz: mittels Assembler implementiert %nutzt Atomaritäts garantiender CPU ( TSL - Anweisungen: ,,test-set-lock'' )
         \item \texttt{atomic\_*} Geschmacksrichtungen: read, set, add, sub, inc, dec u. a.
-        \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
-        \item definierte Länge des kritischen Abschnitts $\rightarrow$ unnötiges Sperren sehr preiswert
+        \item keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks syntaktisch unmöglich %durch Mehrfachsperrung  
+        \item definierte Länge des kritischen Abschnitts $\rightarrow$ sehr preiswert
     \end{itemize*}
 
     Spinlock
     \begin{itemize*}
         \item Locking für längere kritische Abschnitte
-        \begin{itemize*}
-            \item wechselseitiger Ausschluss durch aktives Warten
-            \item Granularität: einfach-exklusive Ausführung von Code, der ...
-            \item ... nicht blockiert
-            \item ... (vorhersehbar) kurze Zeit den kritischen Abschnitt nutzt
-            \item Performanz: keine Scheduler-Aktivierung, keine sperrbedingten Kontextwechsel (alle wartenden Threads bleiben ablaufbereit!)
-        \end{itemize*}
-        \item Benutzung:
-        \begin{itemize*}
-            \item explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung oder multiple Locks möglich
-            \item variable Länge des kritischen Abschnitts $\rightarrow$ unnötiges Sperren sehr teuer! (aktives Warten verschwendet Prozessorzeit)
-        \end{itemize*}
+        \item wechselseitiger Ausschluss durch aktives Warten
+        \item Granularität: einfach-exklusive Ausführung von Code, der ...
+        \item ... nicht blockiert
+        \item ... (vorhersehbar) kurze Zeit den kritischen Abschnitt nutzt
+        \item Performanz: keine Scheduler-Aktivierung, keine sperrbedingten Kontextwechsel (alle wartenden Threads bleiben ablaufbereit!)
     \end{itemize*}
 
     Semaphor
     \begin{itemize*}
-        \item Locking für komplexere kritische Abschnitte:
-        \begin{itemize*}
-            \item wechselseitiger Ausschluss durch suspendieren von Threads
-            \item Granularität: n - exklusive Ausführung von (nahezu) beliebigem Code, über längere oder unbekannt lange (aber endliche) kritische Abschnitte
-            \item Performanz: nutzt Scheduler(Suspendierung und Reaktivierung wartender Threads), verursacht potenziell Kontextwechsel, implementiert Warteschlange
-        \end{itemize*}
-        \item Benutzung
-        \begin{itemize*}
-            \item mehrfach nutzbare krit. Abschnitte möglich ($\rightarrow$ begrenzt teilbare Ressourcen)
-            \item explizite Reaktion auf Signale während des Wartens möglich
-            \item Deadlocks möglich, unnötiges Sperren teuer
-        \end{itemize*}
+        \item Locking für komplexere kritische Abschnitte
+        \item wechselseitiger Ausschluss durch suspendieren von Threads
+        \item Granularität: exklusive Ausführung über längere oder unbekannt lange kritische Abschnitte
+        \item Performanz: nutzt Scheduler, verursacht potenziell Kontextwechsel, implementiert Warteschlange
     \end{itemize*}
 
     R/W-Lock
     \begin{itemize*}
-        \item Reader/Writer Locks: Spezialformen von Spinlocksund binären Semaphoren ( n = 1)
-        \begin{itemize*}
-            \item Steigerung der Locking-Granularität $\rightarrow$ Optimierung des Parallelitätsgrades
-            \item Idee: sperrende Threads nach Zugriffssemantik auf kritischen Abschnitt in zwei Gruppen unterteilt:
-            \item Reader: nur lesende Zugriffe auf Variablen
-            \item Writer: mindestens ein schreibender Zugriff auf Variablen
-            \item R/W-Spinlock/Semaphor muss explizit als Reader oder Writer gesperrt werden
-            \item Performanz: analog Spinlock/Semaphor
-        \end{itemize*}
-        \item Benutzung analog Spinlock/Semaphor
+        \item Reader/Writer Locks: Spezialformen von Spinlocks/Semaphoren
+        \item Steigerung der Granularität $\rightarrow$ Optimierung des Parallelitätsgrades
+        \item Idee: sperrende Threads nach Zugriffssemantik auf kritischen Abschnitt in zwei Gruppen unterteilt:
+        \item Reader: nur lesende Zugriffe auf Variablen
+        \item Writer: mindestens ein schreibender Zugriff auf Variablen
+        \item R/W-Lock muss explizit als Reader/Writer gesperrt werden
+        \item Performanz: analog Spinlock/Semaphor
     \end{itemize*}
 
     Fazit: Locks im Linux-Kernel
@@ -3488,7 +3465,7 @@
         \begin{itemize*}
             \item mögliche Länge des kritischen Abschnitts
             \item Granularität der selektiven Blockierung (z.B. nur Leser , nur Schreiber )
-            \item ![](Assets/AdvancedOperatingSystems-locks-in-linux.png)
+            %\item ![](Assets/AdvancedOperatingSystems-locks-in-linux.png)
         \end{itemize*}
         \item Locking-Sicherheit: Risiken und Nebenwirkungen hinsichtlich ...
         \begin{itemize*}
@@ -3504,248 +3481,130 @@
         \item Performanzeinbußen
         \begin{itemize*}
             \item stark belastete Prozessorkerne müssen Multiplexing zwischen mehr Threadsausführen als schwach belastete
-            \item dadurch: Verlängerungder Gesamtbearbeitungsdauer
+            \item dadurch: Verlängerung der Gesamtbearbeitungsdauer
         \end{itemize*}
         \item Akkumulation der Wärmeabgabe
         \begin{itemize*}
-            \item bedingt durch bauliche Gegebenheiten (Miniaturisierung, CMP)
-            \item Kontrolle erforderlich zur Vermeidung thermischer Probleme (bis zu Zerstörung der Hardware)
+            \item bedingt durch bauliche Gegebenheiten (Miniaturisierung)
+            \item Kontrolle zur Vermeidung thermischer Probleme
         \end{itemize*}
     \end{enumerate*}
-    \begin{itemize*}
-        \item Lösung: Angleichung der Last auf einzelnen Prozessorkernen
-    \end{itemize*}
 
     Lastangleichung
     \begin{itemize*}
-        \item Verfahren zur Lastangleichung
+        \item statische Verfahren: einmalige Zuordnung von Threads
         \begin{itemize*}
-            \item statische Verfahren: einmalige Zuordnung von Threads
-            \begin{itemize*}
-                \item Korrekturen möglich nur durch geeignete Verteilung neuer Threads
-                \item Wirksamkeit der Korrekturen: relativ gering
-            \end{itemize*}
-            \item dynamische Verfahren: Optimierung der Zielfunktion zur Laufzeit
-            \begin{itemize*}
-                \item Zuordnungsentscheidungen dynamisch anpassbar
-                \item Korrekturpotentialzur Laufzeitdurch Zuweisung eines anderen Prozessorkerns an einen Thread ( Migration )
-                \item aber: algorithmisch komplexer, höhere Laufzeitkosten
-            \end{itemize*}
+            \item Korrekturen durch geeignete Verteilung neuer Threads
+            \item Wirksamkeit der Korrekturen: relativ gering
         \end{itemize*}
-        \item verbreitete Praxis in Universalbetriebssystemen: dynamische
-    \end{itemize*}
-
-    Dynamische Lastangleichung
-    \begin{itemize*}
-        \item Anpassungsgründe zur Laufzeit
+        \item dynamische Verfahren: Optimierung der Zielfunktion zur Laufzeit
         \begin{itemize*}
-            \item Veränderte Lastsituation: Beenden von Threads
-            \item Verändertes Verhaltens einzelner Threads: z.B. Änderung des Parallelitätsgrads, vormals E/A-Thread wird prozessorintensiv, etc.
-            \item Zuordnungsentscheidungen
-            \begin{itemize*}
-                \item auf Grundlage von a-priori - Informationen über Prozessverhalten
-                \item durch Messungen tatsächlichen Verhaltens $\rightarrow$ Übergang von Steuerung zu Regelung
-            \end{itemize*}
-            \item Kosten von Thread-Migration
-            \begin{itemize*}
-                \item zusätzliche Thread-bzw. Kontextwechsel
-                \item kalte Caches
-                \item $\rightarrow$ Migrationskosten gegen Nutzen aufwiegen
-            \end{itemize*}
+            \item Zuordnungsentscheidungen dynamisch anpassbar
+            \item Korrekturpotentialzur Laufzeitdurch Zuweisung eines anderen Prozessorkerns an einen Thread ( Migration )
+            \item aber: algorithmisch komplexer, höhere Laufzeitkosten
+            \item auf Grundlage von a-priori - Informationen über Prozessverhalten
+            \item durch Messungen tatsächlichen Verhaltens $\rightarrow$ Übergang von Steuerung zu Regelung
+        \end{itemize*}
+        \item Kosten von Thread-Migration
+        \begin{itemize*}
+            \item zusätzliche Thread-bzw. Kontextwechsel
+            \item kalte Caches
+            \item[$\rightarrow$] Migrationskosten gegen Nutzen aufwiegen
         \end{itemize*}
     \end{itemize*}
 
-    grundlegende Strategien:
-    \begin{enumerate*}
-        \item Lastausgleich (loadbalancing oder loadleveling)
+    grundlegende Strategien
+    \begin{description*}
+        \item[Lastausgleich] loadbalancing oder loadleveling
         \begin{itemize*}
-            \item Ziel: gleichmäßige Verteilung der Last auf alle Prozessorkerne
+            \item Ziel: gleichmäßige Verteilung der Last auf alle Kerne
+            \item verwendet strengere Kriterien, die auch bei nicht leerlaufenden und überlasteten Kernen greifen
+            \item 100\%tiger Lastausgleich nicht möglich %(2 Threads auf 3 CPUs etc.)
         \end{itemize*}
-        \item Lastverteilung (loadsharing)
+        \item[Lastverteilung] loadsharing
         \begin{itemize*}
             \item verwendet schwächere Kriterien
-            \item nur extreme Lastunterschiede zwischen einzelnen Prozessorkernen ausgeglichen(typisch: Ausgleich zwischen leerlaufenden bzw. überlasteten Kernen)
+            \item nur extreme Lastunterschiede zwischen einzelnen Prozessorkernen ausgeglichen %(typisch: Ausgleich zwischen leerlaufenden bzw. überlasteten Kernen)
         \end{itemize*}
-    \end{enumerate*}
-
-    Anmerkungen
-    \begin{enumerate*}
-        \item Lastausgleich: verwendet strengere Kriterien, die auch bei nicht leerlaufenden und überlasteten Kernen greifen
-        \item 100\%tiger Lastausgleich nicht möglich (2 Threads auf 3 CPUs etc.)
-    \end{enumerate*}
-
-    Lastverteilung beim Linux-Scheduler: globale Entscheidungen
-    \begin{enumerate*}
-        \item anfängliche Lastverteilung auf Prozessorkerne, grob bzgl. Ausgewogenheit
-        \item dynamische Lastverteilung auf Prozessorkerne durch
-        \begin{enumerate*}
-            \item loadbalancing-Strategie
-            \item idlebalancing-Strategie
-        \end{enumerate*}
-    \end{enumerate*}
+    \end{description*}
 
     Verteilungsstrategien
-    \begin{itemize*}
-        \item ,,load balancing'' - Strategie
+    \begin{description*}
+        \item[load balancing] - Strategie
         \begin{itemize*}
             \item für jeden Kern nach Zeitscheibenprinzip (z.B. 200 ms) aktiviert
             \item ,,Thread-Stehlen'' vom am meisten ausgelasteten Kern
             \item aber: bestimmte Threads werden (vorerst) nicht migriert
-            \begin{enumerate*}
-                \item solche, die nicht auf allen Kernen lauffähig
-                \item die mit noch ,,heißem Cache''
-            \end{enumerate*}
-            \item erzwungene Thread-Migration (unabhängig von heißen Caches), wenn ,,loadbalancing'' mehrmals fehlgeschlagen
+            \item erzwungene Thread-Migration wenn ,,loadbalancing'' mehrmals fehlgeschlagen
         \end{itemize*}
-        \item ,,idle balancing'' - Strategie
+        \item[idle balancing] - Strategie
         \begin{itemize*}
-            \item von jedem Kern aktiviert, bevor er in Leerlauf geht:
+            \item von jedem Kern aktiviert, bevor er in Leerlauf geht
             \item Versuch einer ,,Arbeitsbeschaffung''
             \item mögliche Realisierung: gleichfalls als ,,Thread-Stehlen'' vom am meisten ausgelasteten Kern
         \end{itemize*}
-    \end{itemize*}
+    \end{description*}
 
     Heuristische Lastverteilung
     \begin{itemize*}
-        \item in der Praxis: Heuristiken werden genutzt ...
+        \item ... für alle Entscheidungen bzgl.
         \begin{itemize*}
-            \item ... für alle Entscheidungen bzgl.
-            \begin{itemize*}
-                \item loadbalancing (,,Migrieren oder nicht?'')
-                \item threadselection (,,Welchen Threads von anderem Prozessor migrieren?'')
-                \item time-slicing (,,Zeitscheibenlänge für loadbalancing?'')
-            \end{itemize*}
-            \item ... unter Berücksichtigung von
-            \begin{itemize*}
-                \item Systemlast
-                \item erwarteter Systemperformanz
-                \item bisherigem Thread-Verhalten
-            \end{itemize*}
+            \item loadbalancing (,,Migrieren oder nicht?'')
+            \item threadselection (,,Welchen Threads migrieren?'')
+            \item time-slicing (,,Zeitscheibenlänge für loadbalancing?'')
         \end{itemize*}
-        \item Bewertung
+        \item ... unter Berücksichtigung von
         \begin{itemize*}
-            \item Heuristiken verwenden Minimum an Informationen zur Realisierung schneller Entscheidungen $\rightarrow$ Performanz der Lastverteilung
-            \item Tradeoff: höhere Performanz für aktuelle Last durch teurere Heuristiken (Berücksichtigung von mehr Informationen)?
+            \item Systemlast
+            \item erwarteter Systemperformanz
+            \item bisherigem Thread-Verhalten
         \end{itemize*}
+        \item Minimum an Informationen zur Realisierung schneller Entscheidungen $\rightarrow$ Performanz der Lastverteilung
+        \item Tradeoff: höhere Performanz durch teurere Heuristiken %(Berücksichtigung von mehr Informationen)?
     \end{itemize*}
 
     \subsection{Grenzen der Parallelisierbarkeit}
-    (oder: warum nicht jedes Performanzproblemdurch zusätzliche Hardware gelöst wird)
+    %(oder: warum nicht jedes Performanzproblemdurch zusätzliche Hardware gelöst wird)
     \begin{itemize*}
-        \item Parallelarbeit aus Anwendungssicht: Welchen Performanzgewinn bringt die Parallelisierung?
-        \item naiv:
-        \begin{itemize*}
-            \item 1 Prozessor $\rightarrow$ Bearbeitungszeit t
-            \item n Prozessoren $\rightarrow$ Bearbeitungszeit t/n
-        \end{itemize*}
-        \item Leistungsmaß für den Performanzgewinn: Speedup $S(n)=\frac{T(1)}{T(n)}$, $T(n)$ bearbeitungszeit bei n Prozessoren
-        \item Amdahls Gesetz: ,,Auch hochgradig parallele Programme weisen gewisse Teile strenger Datenabhängigkeit auf - die nur sequenziell ausgeführt werden können -und daher den erzielbaren Speed-up grundsätzlich limitieren.''
-        \item Jedes Programm besteht aus einem nur sequenziell ausführbaren und einem parallelisierbaren Anteil: $T(1)=T_s + T_p$
-        \item mit als sequenziellem Anteil (z.B. $\rightarrow$ 10% sequenzieller Anteil): Effizienz $f=\frac{T_s}{T_s+T_p}$ wobei $0\leq f \leq 1$
-        \item Damit ergibt sich im günstigsten Fall für Bearbeitungszeit bei Prozessoren: $T(n)=f*T(1)+ (1-f)\frac{T(1)}{n}$
+        %\item Leistungsmaß für den Performanzgewinn: Speedup $S(n)=\frac{T(1)}{T(n)}$
+        \item Jedes Programm aus sequenziellem und parallelisierbaren Anteil
+        \item mit als sequenziellem Anteil $f=\frac{T_s}{T_s+T_p}$ wobei $0\leq f \leq 1$
+        \item im günstigsten Fall: $T(n)=f*T(1)+ (1-f)\frac{T(1)}{n}$
         \item Speedup nach Amdahl: $S(n)=\frac{T(1)}{T(n)}=\frac{1}{f+\frac{1-f}{n}}$
-    \end{itemize*}
-
-    Praktische Konsequenz aus Amdahls Gesetz:
-    \begin{itemize*}
-        \item mögliche Beschleunigung bei Parallelisierung einer Anwendung i.A. durch die Eigenschaften der Anwendungselbst begrenzt (sequenzieller Anteil)
-        \item Erhöhung der Prozessorenanzahlüber bestimmtes Maß hinaus bringt nur noch minimalen Performanzgewinn
-    \end{itemize*}
-
-    Annahme bisher
-    \begin{itemize*}
-        \item parallelisierbarer Anteil auf beliebige Anzahl Prozessoren parallelisierbar
-        \item genauere Problembeschreibung möglich durch Parallelitätsprofil: maximaler Parallelitätsgrad einer Anwendung in Abhängigkeit von der Zeit
-        \item Für ein bestimmtes Problem bringt ab einer Maximalzahl ($p_{max}$) jede weitere Erhöhung der Prozessoren-Anzahl keinen weiteren Gewinn, da die Parallelisierbarkeitdes Problems begrenzt ist.
+        \item mögliche Beschleunigung bei Parallelisierung einer Anwendung i.A. durch die Eigenschaften der Anwendung selbst begrenzt
+        \item Erhöhung der Prozessorenanzahl über bestimmtes Maß hinaus bringt nur noch minimalen Performanzgewinn
+        \item Für bestimmtes Problem bringt ab einer Maximalzahl jede weitere Erhöhung der Prozessoren-Anzahl keinen weiteren Gewinn, da die Parallelisierbarkeit des Problems begrenzt ist
+        \item Effizienz des Speedups $E(n)=\frac{S(n)}{n}$
+        \item Nutzen($E(n)$)-Kosten($T(n)$)-Quotienten maximieren: $\mu(n)=\frac{E(n)}{T(n)} T(1)=S(n)*E(n)=\frac{S(n)^2}{n}$
     \end{itemize*}
 
     Einfluss von Kommunikation und Synchronisation
     \begin{itemize*}
         \item Threads eines Prozesses müssen kommunizieren (Daten austauschen), spätestens nach ihrer Beendigung
         \item hierzu i.A. auch Synchronisation (Koordination) erforderlich
-        \item Resultat: Prozessoren nicht gesamte Zeit für Berechnungen nutzbar
+        \item Prozessoren nicht gesamte Zeit für Berechnungen nutzbar
     \end{itemize*}
 
-    \subsubsection{Overhead durch Kommunikation und Synchronisation}
-    aus Erfahrungen und theoretischen Überlegungen: Zeitaufwand für Kommunikation und Synchronisation zwischen Prozessen (bzw. Threads) einer Anwendung auf verschiedenen Prozessoren:
-    \begin{itemize*}
-        \item streng monoton wachsende Funktion der Prozessoren-Anzahl n (d.h. Funktion nicht nach oben beschränkt)
-        \item praktische Konsequenz von Kommunikation und Synchronisation:
-        \begin{itemize*}
-            \item zu viele Prozessoren für eine Anwendung bedeutet
-            \item keine Geschwindigkeitssteigerung
-            \item sogar Erhöhung der Gesamtbearbeitungszeit $T_{\sum}$
-            \item $\rightarrow$ fallender Speedup
-        \end{itemize*}
-        \item Für minimale Bearbeitungsdauer gibt es eine optimale Anzahl Prozessoren
-    \end{itemize*}
-
-    Leistungsmaß Effizienz: Effizienz des Speedups $E(n)=\frac{S(n)}{n}$
-    \begin{itemize*}
-        \item Normierung des Speedupauf CPU-Anzahl entspricht Wirkungsgrad der eingesetzten Prozessoren
-        \item Idealfall: $S(n)=n\Rightarrow E(n)=\frac{S(n)}{n}=1$
-    \end{itemize*}
-
-    \paragraph{Optimale Prozessorenanzahl}
-    $T(n)$ Gesamtbearbeitungszeit
-    \begin{itemize*}
-        \item Im Bereich des Minimums: sehr flacher Verlauf
-        \item (geringe) Änderung der Prozessoren-Anzahl in diesem Bereich: kaum Auswirkungen auf Rechenzeit (im steilen, fallenden Bereich hat Prozessorenanzahl jedoch gewaltige Auswirkungen auf Rechenzeit)
-    \end{itemize*}
-
-    $E(n)$ Effizienz (Auslastung der Prozessoren)
-    \begin{itemize*}
-        \item verringert sich stetig mit zunehmender Prozessoren-Anzahl
-        \item Konflikt zwischen Kostenminimierung (= Minimierung der Ausführungszeit bzw. Maximierung des Speed-up) und Nutzenmaximierung (= Maximierung der Effizienz)
-        \item $\rightarrow$  Kompromissbereich
-    \end{itemize*}
-
-
-    Nutzen($E(n)$)-Kosten($T(n)$)-Quotienten maximieren: $\mu(n)=\frac{E(n)}{T(n)} T(1)=S(n)*E(n)=\frac{S(n)^2}{n}$
+    \begin{center}
+        \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-optimale-prozessoranzahl.png}
+    \end{center}
 
     \begin{enumerate*}
         \item Effizienz maximieren: $n_{opt}=n^*_E = 1$ unsinnig
-        \item Speedup maximieren = Ausführungszeit minimieren: $n_{opt}=n^*_S$ Individuell für jedes Programm
-        \item Nutzen-Kosten-Funktion maximieren: $n_{opt}=n^*_{\mu}$ individuell für jedes Programm
+        \item Speedup maximieren = Ausführungszeit minimieren: $n_{opt}=n^*_S$ %Individuell für jedes Programm
+        \item Nutzen-Kosten-Funktion maximieren: $n_{opt}=n^*_{\mu}$ %individuell für jedes Programm
     \end{enumerate*}
 
     \subsection{Beispiel-Betriebssysteme}
     \begin{itemize*}
-        \item Auswahl: Betriebssysteme, die mit Fokus auf Hochparallelität entworfen wurden
-        \item Konsequenzen für BS-Architekturen:
-        \begin{itemize*}
-            \item Parallelität durch Abstraktion von Multicore-Architekturen: Multikernel
-            \item Parallelität durch netzwerkbasierteMulticore-Architekturen: Verteilte Betriebssysteme
-        \end{itemize*}
+        \item durch Abstraktion von Multicore-Architekturen: Multikernel
+        \item durch netzwerkbasierte Multicore-Architekturen: Verteilte BS
     \end{itemize*}
 
     \subsubsection{Multikernel: Barrelfish}
-    In a nutshell:
     \begin{itemize*}
-        \item seit ca. 2009 entwickeltes, experimentelles Forschungs-Betriebssystem (open source)
+        \item seit ca. 2009 entwickeltes, experimentelles Betriebssystem
         \item Untersuchungen zur Struktur künftiger heterogener Multicore-Systeme
-        \item gegenwärtig in Entwicklung an ETH Zürich in Zusammenarbeit mit Microsoft
-        \item Forschungsfragen
-        \begin{enumerate*}
-            \item Betriebssystemarchitektur
-            \begin{itemize*}
-                \item Trend stetig wachsender Anzahl Prozessorkerne $\rightarrow$ Skalierbarkeit des Betriebssystems zur Maximierung von
-                Parallelität?
-                \item zunehmende Menge an Varianten der Hardware-Architektur, betreffend z.B.
-                \begin{itemize*}
-                    \item Speicherhierarchien
-                    \item Verbindungsstrukturen
-                    \item Befehlssatz
-                    \item E/A-Konfiguration
-                    \item $\rightarrow$ Unterstützung zunehmend heterogener Hardware-Vielfalt (insbesondere noch zu erwartender Multicore-Prozessoren)?
-                \end{itemize*}
-            \end{itemize*}
-            \item Wissensdarstellung
-            \begin{itemize*}
-                \item Betriebssystem und Anwendungen Informationen über aktuelle Architektur zur Laufzeit liefern
-                \item $\rightarrow$ Informationen zur Adaptivitätdes BS an Last und Hardware zur Maximierung von Parallelität?
-            \end{itemize*}
-        \end{enumerate*}
         \item Betriebssystem-Architektur für heterogene Multicore-Rechner
         \begin{itemize*}
             \item Idee: Betriebssystem wird strukturiert ...
@@ -3756,113 +3615,84 @@
             \end{itemize*}
             \item Entwurfsprinzipien:
             \begin{enumerate*}
-                \item alle Inter-Core-Kommunikation explizit realisiert d.h. keine implizite Kommunikation z.B. über verteilte Speichermodelle wie DSM (Distributed SharedMemory), Botschaften zum Cache-Abgleich etc.
+                \item alle Inter-Core-Kommunikation explizit realisiert %d.h. keine implizite Kommunikation z.B. über verteilte Speichermodelle wie DSM (Distributed SharedMemory), Botschaften zum Cache-Abgleich etc.
                 \item Betriebssystem-Struktur ist Hardware-neutral
-                \item Zustandsinformationen als repliziert (nicht als verteilt)betrachtet $\rightarrow$ schwächere Synchronisationsanforderungen!
+                \item Zustandsinformationen als repliziert (nicht verteilt) betrachtet $\rightarrow$ schwächere Synchronisationsanforderungen
             \end{enumerate*}
             \item Ziele dieser Entwurfsprinzipien
             \begin{enumerate*}
-                \item Verbesserte Performanz auf Grundlage des Entwurfs als verteiltes System
+                \item Verbesserte Performanz auf Grundlage des Entwurfs %als verteiltes System
                 \item Natürliche Unterstützung für Hardware-Inhomogenitäten
                 \item Größere Modularität
                 \item Wiederverwendbarkeit von Algorithmen, die für verteilte Systeme entwickelt wurden
             \end{enumerate*}
-            \item Implementierung: auf jedem Prozessorkern Betriebssystem-Instanz aus CPU-''Treiber'' und Monitor-Prozess
+            \item Implementierung: auf jedem Prozessorkern BS-Instanz aus CPU-Treiber und Monitor-Prozess
         \end{itemize*}
     \end{itemize*}
 
     CPU Driver
     \begin{itemize*}
-        \item Aufgabe: Umsetzung von Strategien zur Ressourcenverwaltung, z.B.
+        \item Aufgabe: Umsetzung von Strategien zur Ressourcenverwaltung
         \begin{itemize*}
             \item Durchsetzung von Zugriffssteuerungsentscheidungen
             \item Zeitscheiben-Multiplexing von Threads
-            \item Vermittlung von Hardware-Zugriffendes Kernels (MMU, Clockusw.)
+            \item Vermittlung von Hardware-Zugriffendes Kernels
             \item Ereignisbehandlung
         \end{itemize*}
         \item Implementierung:
         \begin{itemize*}
-            \item hardwarespezifisch
-            \item vollständig ereignisgesteuert, single-threaded, nicht-präemptiv
+            \item hardwarespezifisch, ist vergleichsweise klein %, so dass er im Lokalspeicher des Prozessorkerns untergebracht werden kann 
+            \item voll ereignisgesteuert, single-threaded, nicht-präemptiv
             \item läuft im privilegierten Modus (Kernel-Modus)
-            \item ist absolut lokal auf jedem Prozessor-Kern (gesamte Inter-Core-Kommunikation durch die Monitore realisiert)
-            \item ist vergleichsweise klein, so dass er im Lokalspeicher des Prozessorkerns untergebracht werden kann $\rightarrow$  Wartbarkeit, Robustheit, Korrektheit
+            \item ist absolut lokal auf jedem Prozessor-Kern %(gesamte Inter-Core-Kommunikation durch die Monitore realisiert)
+            \item[$\rightarrow$] Wartbarkeit, Robustheit, Korrektheit
         \end{itemize*}
     \end{itemize*}
 
     Monitor
     \begin{itemize*}
-        \item Wichtige Angaben
-        \begin{itemize*}
             \item läuft im Nutzer-Modus
             \item Quellcode fast vollständig prozessorunabhängig
-        \end{itemize*}
-        \item Monitore auf allen Prozessorkernen: koordinieren gemeinsam systemweite Zustandsinformationen
+        \item auf allen Prozessorkernen: koordinieren gemeinsam systemweite Zustandsinformationen
         \begin{itemize*}
-            \item auf allen Prozessor-Kernen replizierte Datenstrukturen: mittels Abstimmungsprotokollkonsistent gehalten (z.B. Speicherzuweisungstabellen u. Adressraum-Abbildungen)
-            \item $\rightarrow$ implementiert Konsensalgorithmenfür verteilte Systeme
+            \item auf allen Prozessor-Kernen replizierte Datenstrukturen%: mittels Abstimmungsprotokollkonsistent gehalten (z.B. Speicherzuweisungstabellen u. Adressraum-Abbildungen)
+            \item[$\rightarrow$] implementiert Konsensalgorithmen für verteilte Systeme
         \end{itemize*}
         \item Monitore: enthalten die meisten wesentlichen Mechanismen und Strategien, die in monolithischem Betriebssystem-Kernel (bzw. $\mu$Kernel-Serverprozessen) zu finden sind
     \end{itemize*}
 
     \subsubsection{Verteilte Betriebssysteme}
     \begin{itemize*}
-        \item hier nur Einblick in ein breites Themenfeld
         \item Grundidee: Ortstransparenz
-        \begin{itemize*}
-            \item FE des Betriebssystems:
-            \begin{itemize*}
-                \item abstrahieren ...
-                \item multiplexen ...
-                \item schützen ...
-            \end{itemize*}
-            \item hierzu: lokaler BS-Kernel kommuniziert mit über Netzwerk verbundenen, physisch verteilten anderen Kernels (desselben BS)
-            \item Anwendungssicht auf (nun verteilte) Hardware-Ressourcen identisch zu Sicht auf lokale Hardware $\rightarrow$ Ortstransparenz
-        \end{itemize*}
-        \item Zwei Beispiele:
-        \begin{itemize*}
-            \item Amoeba: Forschungsbetriebssystem, Python-Urplattform
-            \item Plan 9 fom Bell Labs: everything is a file
-        \end{itemize*}
+        \item lokaler BS-Kernel kommuniziert mit über Netzwerk verbundenen, physisch verteilten anderen Kernels
+        \item Anwendungssicht auf (verteilte) Hardware-Ressourcen identisch zu Sicht auf lokale Hardware $\rightarrow$ Ortstransparenz
     \end{itemize*}
 
     \paragraph{Amoeba}
-    Architektur
     \begin{itemize*}
-        \item verteiltes System aus drei (nicht zwingend disjunkten)Arten von Knoten:
+        \item verteiltes System aus drei Arten von Knoten
         \begin{itemize*}
             \item Workstation (GUI/Terminalprozess, Benutzerinteraktion)
             \item Pool Processor (nicht-interaktive Berechnungen)
-            \item Servers(File ~, Directory ~, Networking ~, ...)
+            \item Servers (File, Directory, Networking, ...)
         \end{itemize*}
-        \item Betriebssystem: $\mu$Kernel (identisch auf allen Knoten) + Serverprozesse (dedizierte Knoten, s.o.: Servers )
-        \item $\rightarrow$ Vertreter einer verteilten $\mu$Kernel-Implementierung
-        \item Kommunikation:
-        \begin{itemize*}
-            \item LAN (Ethernet)
-            \item RPCs (Remote ProcedureCalls)
-            \item $\rightarrow$ realisieren ortstransparenten Zugriff auf sämtliche BS-Abstraktionen (Amoeba: objects )
-        \end{itemize*}
+        \item BS: $\mu$Kernel (identisch auf allen Knoten) + Serverprozesse (dedizierte Knote)
+        \item[$\rightarrow$] Vertreter einer verteilten $\mu$Kernel-Implementierung
+        \item Kommunikation: LAN,  RPCs (Remote Procedure Calls)
+        \item[$\rightarrow$] realisieren ortstransparenten Zugriff auf BS-Abstraktionen
     \end{itemize*}
 
     \paragraph{Plan 9}
     \begin{itemize*}
-        \item verteiltes BS der Bell Labs (heute: Open Source Projekt)
-        \item Besonderheit: Semantik der Zugriffe auf verteilte BS-Abstraktionen
+        \item verteiltes BS der Bell Labs (heute Open Source)
+        \item Semantik der Zugriffe auf verteilte BS-Abstraktionen
         \begin{itemize*}
-            \item ortstransparent (s. Amoeba)
-            \item mit ressourcenunabhängig identischen Operationen - deren spezifische Funktionalität wird für die Anwendung transparent implementiert $\rightarrow$ Konzept ,,everything is a file''... bis heute in unixoiden BS und Linux!
+            \item ortstransparent
+            \item mit ressourcenunabhängig identischen Operationen %- deren spezifische Funktionalität wird für die Anwendung transparent implementiert $\rightarrow$ Konzept ,,everything is a file''... bis heute in unixoiden BS und Linux!
         \end{itemize*}
-        \item Beispiele:
-        \begin{itemize*}
-            \item Tastatureingabenwerden aus (Pseudo-) ,,Datei'' gelesen
-            \item Textausgabenwerden in ,,Datei'' geschrieben -aus dieser wiederum lesen Terminalanwendungen
-            \item all dies wird logisch organisiert durch private Namensräume
-            \item $\rightarrow$ Konzept hierarchischer Dateisysteme
-        \end{itemize*}
+        \item all dies wird logisch organisiert durch private Namensräume
+        \item[$\rightarrow$] Konzept hierarchischer Dateisysteme
     \end{itemize*}
 
-
 \end{multicols}
-
 \end{document}

@@ -3383,6 +3383,314 @@ atomic*
   - keine explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung syntaktisch unmöglich
   - definierte Länge des kritischen Abschnitts (genau diese eine Operation) $\rightarrow$ unnötiges Sperren sehr preiswert
 
+Spinlock
+- Lockingfür längere kritische Abschnitte:
+  - wechselseitiger Ausschluss durch aktives Warten
+  - Granularität: einfach-exklusive Ausführung von Code, der ...
+    - ... nicht blockiert
+    - ... (vorhersehbar) kurze Zeit den kritischen Abschnitt nutzt
+  - Performanz: keine Scheduler-Aktivierung, keine sperrbedingten Kontextwechsel (alle wartenden Threads bleiben ablaufbereit!)
+- Benutzung:
+```
+DEFINE_SPINLOCK(the_lock);
+spin_lock(&the_lock);
+... // critical section
+spin_unlock(&the_lock);
+```
+  - explizite Lock-Datenstruktur $\rightarrow$ Deadlocks durch Mehrfachsperrung oder multiple Locks möglich
+  - variable Länge des kritischen Abschnitts $\rightarrow$ unnötiges Sperren sehr teuer! (aktives Warten verschwendet Prozessorzeit)
+
+Semaphor
+- Lockingfür komplexere kritische Abschnitte:
+  - wechselseitiger Ausschluss durch suspendieren von Threads
+  - Granularität: n - exklusive Ausführung von (nahezu) beliebigem Code, über längere oder unbekannt lange (aber endliche) kritische Abschnitte
+  - Performanz: nutzt Scheduler(Suspendierung und Reaktivierung wartender Threads), verursacht potenziell Kontextwechsel, implementiert Warteschlange
+- Benutzung:
+```
+struct semaphore the_semaphor;
+sema_init(&the_semaphor, n); // Zählsemaphor mit n Plätzen
+if (down_interruptible(&the_semaphor))
+{ // unterbrechbares Warten... }
+... // critical section
+up(&the_semaphor);
+```
+  - mehrfach nutzbare krit. Abschnitte möglich ($\rightarrow$ begrenzt teilbare Ressourcen)
+  - explizite Reaktion auf Signale während des Wartens möglich
+  - Deadlocks möglich, unnötiges Sperren teuer
+
+R/W-Lock
+- Reader/Writer Locks: Spezialformen von Spinlocksund binären Semaphoren ( n = 1)
+  - Steigerung der Locking-Granularität $\rightarrow$ Optimierung des Parallelitätsgrades
+  - Idee: sperrende Threads nach Zugriffssemantik auf kritischen Abschnitt in zwei Gruppen unterteilt:
+    - _Reader:_ nur lesende Zugriffe auf Variablen
+    - _Writer:_ mindestens ein schreibender Zugriff auf Variablen
+  - R/W-Spinlock/Semaphor muss explizit als _Reader_ oder _Writer_ gesperrt werden
+  - Performanz: analog Spinlock/Semaphor
+- Benutzung analog Spinlock/Semaphor, z.B.:
+  ```
+  DEFINE_RWLOCK(the_lock);
+  read_lock(&the_lock);
+  ... // read-only critical section
+  read_unlock(&the_lock);
+  ```
+
+Fazit: Locks im Linux-Kernel
+- Locking-Overhead: Sperrkosten bei korrekter Benutzung
+- Lock-Granularität (ebenfalls bei korrekter Benutzung):
+  - mögliche Länge des kritischen Abschnitts
+  - Granularität der selektiven Blockierung (z.B. nur Leser , nur Schreiber )
+  - ![](Assets/AdvancedOperatingSystems-locks-in-linux.png)
+- Locking-Sicherheit: Risiken und Nebenwirkungen hinsichtlich ...
+  - fehlerhaften Sperrens (Auftreten von Synchronisationsfehlern)
+  - Deadlocks
+  - unnötigen Sperrens (Parallelität ad absurdum ...)
+
+### Lastangleichung und Lastausgleich
+- Probleme bei ungleicher Auslastung von Multicore-Prozessoren:
+1. Performanzeinbußen
+    - stark belastete Prozessorkerne müssen Multiplexing zwischen mehr Threadsausführen als schwach belastete
+    - dadurch: Verlängerungder Gesamtbearbeitungsdauer
+2. Akkumulation der Wärmeabgabe
+    - bedingt durch bauliche Gegebenheiten (Miniaturisierung, CMP)
+    - Kontrolle erforderlich zur Vermeidung thermischer Probleme (bis zu Zerstörung der Hardware)
+- Lösung: Angleichung der Last auf einzelnen Prozessorkernen
+
+#### Lastangleichung
+- Verfahren zur Lastangleichung
+  - statische Verfahren: einmalige Zuordnung von Threads
+    - Korrekturen möglich nur durch geeignete Verteilung neuer Threads
+    - Wirksamkeit der Korrekturen: relativ gering
+  - dynamische Verfahren: Optimierung der Zielfunktion zur Laufzeit
+    - Zuordnungsentscheidungen dynamisch anpassbar
+    - Korrekturpotentialzur Laufzeitdurch Zuweisung eines anderen Prozessorkerns an einen Thread ( Migration )
+    - aber: algorithmisch komplexer, höhere Laufzeitkosten
+- verbreitete Praxis in Universalbetriebssystemen: dynamische
+
+#### Dynamische Lastangleichung
+- Anpassungsgründe zur Laufzeit
+  - Veränderte Lastsituation: Beenden von Threads
+  - Verändertes Verhaltens einzelner Threads: z.B. Änderung des Parallelitätsgrads, vormals E/A-Thread wird prozessorintensiv, etc.
+- Zuordnungsentscheidungen
+  - auf Grundlage von a-priori - Informationen über Prozessverhalten
+  - durch Messungen tatsächlichen Verhaltens $\rightarrow$ Übergang von Steuerung zu Regelung
+- Kosten von Thread-Migration
+  - zusätzliche Thread-bzw. Kontextwechsel
+  - kalte Caches
+  - $\rightarrow$ Migrationskosten gegen Nutzen aufwiegen
+
+grundlegende Strategien:
+1. Lastausgleich (loadbalancing oder loadleveling)
+    - Ziel: gleichmäßige Verteilung der Last auf alle Prozessorkerne
+2. Lastverteilung (loadsharing)
+    - verwendet schwächere Kriterien
+    - nur extreme Lastunterschiede zwischen einzelnen Prozessorkernen ausgeglichen(typisch: Ausgleich zwischen leerlaufenden bzw. überlasteten Kernen)
+
+- Anmerkungen
+1. Lastausgleich: verwendet strengere Kriterien, die auch bei nicht leerlaufenden und überlasteten Kernen greifen
+2. 100%tiger Lastausgleich nicht möglich (2 Threads auf 3 CPUs etc.)
+
+
+#### Lastverteilung beim Linux-Scheduler
+globale Entscheidungen
+1. anfängliche Lastverteilung auf Prozessorkerne
+    grobbzgl. Ausgewogenheit
+2. dynamische Lastverteilung auf Prozessorkerne durch
+    1. loadbalancing-Strategie
+    2. idlebalancing-Strategie
+
+#### Verteilungsstrategien
+- ,,load balancing'' - Strategie
+  - für jeden Kern nach Zeitscheibenprinzip (z.B. 200 ms) aktiviert:
+    - ,,Thread-Stehlen'' vom am meisten ausgelasteten Kern
+    - aber: bestimmte Threads werden (vorerst) nicht migriert
+    1. solche, die nicht auf allen Kernen lauffähig
+    2. die mit noch ,,heißem Cache''
+    - erzwungene Thread-Migration (unabhängig von heißen Caches), wenn ,,loadbalancing'' mehrmals fehlgeschlagen
+- ,,idle balancing'' - Strategie
+  - von jedem Kern aktiviert, bevor er in Leerlauf geht:
+  - Versuch einer ,,Arbeitsbeschaffung''
+  - mögliche Realisierung: gleichfalls als ,,Thread-Stehlen'' vom am meisten ausgelasteten Kern
+
+#### Heuristische Lastverteilung
+- in der Praxis: Heuristiken werden genutzt ...
+  - ... für alle Entscheidungen bzgl.
+    - loadbalancing (,,Migrieren oder nicht?'')
+    - threadselection (,,Welchen Threads von anderem Prozessor migrieren?'')
+    - time-slicing (,,Zeitscheibenlänge für loadbalancing?'')
+  - ... unter Berücksichtigung von
+    - Systemlast
+    - erwarteter Systemperformanz
+    - bisherigem Thread-Verhalten
+- Bewertung
+  - Heuristiken verwenden Minimum an Informationen zur Realisierung schneller Entscheidungen $\rightarrow$ Performanz der Lastverteilung
+  - Tradeoff: höhere Performanz für aktuelle Last durch teurere Heuristiken (Berücksichtigung von mehr Informationen)?
+
+## Grenzen der Parallelisierbarkeit
+(oder: warum nicht jedes Performanzproblemdurch zusätzliche Hardware gelöst wird)
+
+- Parallelarbeit aus Anwendungssicht: Welchen Performanzgewinn bringt die Parallelisierung?
+- naiv:
+  - 1 Prozessor $\rightarrow$ Bearbeitungszeit t
+  - n Prozessoren $\rightarrow$ Bearbeitungszeit t/n
+- Leistungsmaß für den Performanzgewinn: Speedup $S(n)=\frac{T(1)}{T(n)}$, $T(n)$ bearbeitungszeit bei n Prozessoren
+
+Amdahls Gesetz: ,,Auch hochgradig parallele Programme weisen gewisse Teile strenger Datenabhängigkeit auf - die nur sequenziell ausgeführt werden können -und daher den erzielbaren Speed-up grundsätzlich limitieren.''
+
+Jedes Programm besteht aus einem nur sequenziell ausführbaren und einem parallelisierbaren Anteil: $T(1)=T_s + T_p$
+
+mit als sequenziellem Anteil (z.B. $\rightarrow$ 10% sequenzieller Anteil): Effizienz $f=\frac{T_s}{T_s+T_p}$ wobei $0\leq f \leq 1$
+
+Damit ergibt sich im günstigsten Fall für Bearbeitungszeit bei Prozessoren: $T(n)=f*T(1)+ (1-f)\frac{T(1)}{n}$
+
+Speedup nach Amdahl: $S(n)=\frac{T(1)}{T(n)}=\frac{1}{f+\frac{1-f}{n}}$
+
+Praktische Konsequenz aus Amdahls Gesetz:
+- mögliche Beschleunigung bei Parallelisierung einer Anwendung i.A. durch die Eigenschaften der Anwendungselbst begrenzt (sequenzieller Anteil)
+- Erhöhung der Prozessorenanzahlüber bestimmtes Maß hinaus bringt nur noch minimalen Performanzgewinn
+
+Annahme bisher:
+- parallelisierbarer Anteil auf beliebige Anzahl Prozessoren parallelisierbar
+- genauere Problembeschreibung möglich durch Parallelitätsprofil: maximaler Parallelitätsgrad einer Anwendung in Abhängigkeit von der Zeit
+- Für ein bestimmtes Problem bringt ab einer Maximalzahl ($p_{max}$) jede weitere Erhöhung der Prozessoren-Anzahl keinen weiteren Gewinn, da die Parallelisierbarkeitdes Problems begrenzt ist.
+
+#### Einfluss von Kommunikation und Synchronisation
+- Threads eines Prozesses müssen kommunizieren (Daten austauschen), spätestens nach ihrer Beendigung
+- hierzu i.A. auch Synchronisation (Koordination) erforderlich 
+- Resultat: Prozessoren nicht gesamte Zeit für Berechnungen nutzbar
+
+### Overhead durch Kommunikation und Synchronisation
+aus Erfahrungen und theoretischen Überlegungen: 
+Zeitaufwand für Kommunikation und Synchronisation zwischen Prozessen (bzw. Threads) einer Anwendung auf verschiedenen Prozessoren:
+- streng monoton wachsende Funktion der Prozessoren-Anzahl n (d.h. Funktion nicht nach oben beschränkt)
+- praktische Konsequenz von Kommunikation und Synchronisation:
+    - zu viele Prozessoren für eine Anwendung bedeutet
+      - keine Geschwindigkeitssteigerung
+      - sogar Erhöhung der Gesamtbearbeitungszeit $T_{\sum}$
+      - $\rightarrow$ fallender Speedup
+- Für minimale Bearbeitungsdauer gibt es eine optimale Anzahl Prozessoren
+
+#### Leistungsmaß Effizienz
+Effizienz des Speedups $E(n)=\frac{S(n)}{n}$
+- Normierung des Speedupauf CPU-Anzahl entspricht Wirkungsgrad der eingesetzten Prozessoren
+- Idealfall: $S(n)=n\Rightarrow E(n)=\frac{S(n)}{n}=1$
+
+#### Optimale Prozessorenanzahl
+$T(n)$ Gesamtbearbeitungszeit
+- Im Bereich des Minimums: sehr flacher Verlauf
+- (geringe) Änderung der Prozessoren-Anzahl in diesem Bereich: kaum Auswirkungen auf Rechenzeit (im steilen, fallenden Bereich hat Prozessorenanzahl jedoch gewaltige Auswirkungen auf Rechenzeit)
+
+$E(n)$ Effizienz (Auslastung der Prozessoren)
+- verringert sich stetig mit zunehmender Prozessoren-Anzahl
+- Konflikt zwischen Kostenminimierung (= Minimierung der Ausführungszeit bzw. Maximierung des Speed-up) und Nutzenmaximierung (= Maximierung der Effizienz)
+- $\rightarrow$  Kompromissbereich
+
+
+Nutzen($E(n)$)-Kosten($T(n)$)-Quotienten maximieren: $\mu(n)=\frac{E(n)}{T(n)} T(1)=S(n)*E(n)=\frac{S(n)^2}{n}$
+
+1. Effizienz maximieren: $n_{opt}=n^*_E = 1$ unsinnig
+2. Speedup maximieren = Ausführungszeit minimieren: $n_{opt}=n^*_S$ Individuell für jedes Programm
+3. Nutzen-Kosten-Funktion maximieren: $n_{opt}=n^*_{\mu}$ individuell für jedes Programm
+
+## Beispiel-Betriebssysteme
+- Auswahl: Betriebssysteme, die mit Fokus auf Hochparallelität entworfen wurden
+- Konsequenzen für BS-Architekturen:
+  - Parallelität durch Abstraktion von Multicore-Architekturen: Multikernel
+  - Parallelität durch netzwerkbasierteMulticore-Architekturen: Verteilte Betriebssysteme
+
+### Multikernel: Barrelfish
+In a nutshell:
+- seit ca. 2009 entwickeltes, experimentelles Forschungs-Betriebssystem (open source)
+- Untersuchungen zur Struktur künftiger heterogener Multicore-Systeme
+- gegenwärtig in Entwicklung an ETH Zürich
+  - in Zusammenarbeit mit Microsoft
+- Forschungsfragen
+  1. Betriebssystemarchitektur
+    - Trend stetig wachsender Anzahl Prozessorkerne $\rightarrow$ Skalierbarkeit des Betriebssystems zur Maximierung von
+       Parallelität?
+    - zunehmende Menge an Varianten der Hardware-Architektur, betreffend z.B.
+          - Speicherhierarchien
+          - Verbindungsstrukturen
+          - Befehlssatz
+          - E/A-Konfiguration
+          - $\rightarrow$ Unterstützung zunehmend heterogener Hardware-Vielfalt (insbesondere noch zu erwartender Multicore-Prozessoren)?
+  2. Wissensdarstellung
+       - Betriebssystem und Anwendungen Informationen über aktuelle Architektur zur Laufzeit liefern
+       - $\rightarrow$ Informationen zur Adaptivitätdes BS an Last und Hardware zur Maximierung von Parallelität?
+- Betriebssystem-Architektur für heterogene Multicore-Rechner
+  - Idee: Betriebssystem wird strukturiert ...
+     - als verteiltes System von Kernen,
+     - die über Botschaften kommunizieren (Inter-Core-Kommunikation) und
+     - keinen gemeinsamen Speicher besitzen.
+  - Entwurfsprinzipien:
+    1. alle Inter-Core-Kommunikation explizit realisiert d.h. keine implizite Kommunikation z.B. über verteilte Speichermodelle wie DSM (Distributed SharedMemory), Botschaften zum Cache-Abgleich etc.
+    2. Betriebssystem-Struktur ist Hardware-neutral
+    3. Zustandsinformationen als repliziert (nicht als verteilt)betrachtet $\rightarrow$ schwächere Synchronisationsanforderungen!
+- Ziele dieser Entwurfsprinzipien
+  1. Verbesserte Performanz auf Grundlage des Entwurfs als verteiltes System
+  2. Natürliche Unterstützung für Hardware-Inhomogenitäten
+  3. Größere Modularität
+  4. Wiederverwendbarkeit von Algorithmen, die für verteilte Systeme entwickelt wurden
+- Implementierung: auf jedem Prozessorkern Betriebssystem-Instanz aus CPU-''Treiber'' und Monitor-Prozess
+
+CPU Driver
+- Aufgabe: Umsetzung von Strategien zur Ressourcenverwaltung, z.B.
+  - Durchsetzung von Zugriffssteuerungsentscheidungen
+  - Zeitscheiben-Multiplexing von Threads
+  - Vermittlung von Hardware-Zugriffendes Kernels (MMU, Clockusw.)
+  - Ereignisbehandlung
+- Implementierung:
+  - hardwarespezifisch
+  - vollständig ereignisgesteuert, single-threaded, nicht-präemptiv
+  - läuft im privilegierten Modus (Kernel-Modus)
+  - ist absolut lokal auf jedem Prozessor-Kern (gesamte Inter-Core-Kommunikation durch die Monitore realisiert)
+  - ist vergleichsweise klein, so dass er im Lokalspeicher des Prozessorkerns untergebracht werden kann $\rightarrow$  Wartbarkeit, Robustheit, Korrektheit
+
+Monitor
+- Wichtige Angaben
+  - läuft im Nutzer-Modus
+  - Quellcode fast vollständig prozessorunabhängig
+- Monitore auf allen Prozessorkernen: koordinieren gemeinsam systemweite Zustandsinformationen
+  - auf allen Prozessor-Kernen replizierte Datenstrukturen: mittels Abstimmungsprotokollkonsistent gehalten (z.B. Speicherzuweisungstabellen u. Adressraum-Abbildungen)
+  - $\rightarrow$ implementiert Konsensalgorithmenfür verteilte Systeme
+- Monitore: enthalten die meisten wesentlichen Mechanismen und Strategien, die in monolithischem Betriebssystem-Kernel (bzw. $\mu$Kernel-Serverprozessen) zu finden sind
+
+### Verteilte Betriebssysteme
+- hier nur Einblick in ein breites Themenfeld
+- Grundidee: Ortstransparenz
+  - FE des Betriebssystems:
+    - abstrahieren ...
+    - multiplexen ...
+    - schützen ...
+  - hierzu: lokaler BS-Kernel kommuniziert mit über Netzwerk verbundenen, physisch verteilten anderen Kernels (desselben BS)
+  - Anwendungssicht auf (nun verteilte) Hardware-Ressourcen identisch zu Sicht auf lokale Hardware $\rightarrow$ Ortstransparenz
+- Zwei Beispiele:
+  - Amoeba: Forschungsbetriebssystem, Python-Urplattform
+  - Plan 9 fom Bell Labs: everything is a file
+
+#### Amoeba
+Architektur:
+- verteiltes System aus drei (nicht zwingend disjunkten)Arten von Knoten:
+  - Workstation (GUI/Terminalprozess, Benutzerinteraktion)
+  - Pool Processor (nicht-interaktive Berechnungen)
+  - Servers(File ~, Directory ~, Networking ~, ...)
+- Betriebssystem: $\mu$Kernel (identisch auf allen Knoten) + Serverprozesse (dedizierte Knoten, s.o.: Servers )
+- $\rightarrow$ Vertreter einer verteilten μKernel-Implementierung
+- Kommunikation:
+  - LAN (Ethernet)
+  - RPCs (Remote ProcedureCalls)
+  - $\rightarrow$ realisieren ortstransparenten Zugriff auf sämtliche BS-Abstraktionen (Amoeba: objects )
+
+#### Plan 9
+- verteiltes BS der Bell Labs (heute: Open Source Projekt)
+- Besonderheit: Semantik der Zugriffe auf verteilte BS-Abstraktionen
+  - ortstransparent (s. Amoeba)
+  - mit ressourcenunabhängig identischen Operationen - deren spezifische Funktionalität wird für die Anwendung transparent implementiert $\rightarrow$ Konzept ,,everything is a file''... bis heute in unixoiden BS und Linux!
+- Beispiele:
+  - Tastatureingabenwerden aus (Pseudo-) ,,Datei'' gelesen
+  - Textausgabenwerden in ,,Datei'' geschrieben -aus dieser wiederum lesen Terminalanwendungen
+  - all dies wird logisch organisiert durch private Namensräume
+  - $\rightarrow$ Konzept hierarchischer Dateisysteme
+
 # Zusammenfassung
 ## Funktionale und nichtfunktionale Eigenschaften
 - Funktionale Eigenschaften: beschreiben, was ein (Software)-Produkt tun soll
@@ -3700,4 +4008,4 @@ Referenzmonitor:
 - Barrelfish:
   - [Baumann+2009b] Andrew Baumann et al.: The Multikernel: A newOS architecture for scalable multicoresystems, Proceedings ACM SOSP (Symposium on Operating System Principles) 2009
 - Amoeba:
-  - [Tanenbaum+91] AndrewS. Tanenbaum, M. Frans Kaashoek, Robbertvan Renesse, Henri E. Bal: The Amoeba Distributed Operating System - A Status Report Elsevier Computer Communications, Vol. 14, No.6, 1991, S. 324 – 335
+  - [Tanenbaum+91] AndrewS. Tanenbaum, M. Frans Kaashoek, Robbertvan Renesse, Henri E. Bal: The Amoeba Distributed Operating System - A Status Report Elsevier Computer Communications, Vol. 14, No.6, 1991, S. 324 - 335

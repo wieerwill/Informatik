@@ -823,10 +823,6 @@
         \item hochsicherheitskritische Systeme (Finanz, Cloud Dienste)
         \item hochverfügbare System (öffentliche Infrastruktur, Strom)
         %\item HPC (high performance computing)
-    \end{itemize*}
-
-    Allgemeine Begriffe
-    \begin{itemize*}
         \item \textbf{Verlässlichkeit} Fähigkeit, eine Leistung zu erbringen, der man berechtigterweise vertrauen kann
         \item Untereigenschaften
         \begin{enumerate*}
@@ -856,14 +852,12 @@
         \end{itemize*}
         \item[fehlerhafter Zustand] (error) notwendige Ursache eines Ausfalls (nicht jeder error muss zu failure führen)
         \begin{itemize*}
-            \item Maskierung, Redundanz
-            \item Isolation von Subsystemen
+            \item Maskierung, Redundanz, Isolation von Subsystemen
             \item[$\rightarrow$] Isolationsmechanismen
         \end{itemize*}
         \item[Fehler] (fault) Ursache für fehlerhaften Systemzustand (error)%, z.B. Programmierfehler
         \begin{itemize*}
-            \item Ausfallverhalten spezifizieren
-            \item Ausfälle zur Laufzeit erkennen und Folgen beheben%, abschwächen...
+            \item Ausfallverhalten spezifizieren, zur Laufzeit erkennen und Folgen beheben%, abschwächen...
             \item[$\rightarrow$] Micro-Reboots
         \end{itemize*}
     \end{description*}
@@ -871,7 +865,7 @@
     \subsection{Fehlerhafter Zustand}
     %interner und externer Zustand (internal \& external state)
     \begin{description*}
-        \item[externer Zustand] der Teil des Gesamtzustands, der an externer Schnittstelle sichtbar wird
+        \item[externer Zustand] Teil des Gesamtzustands, an externer Schnittstelle sichtbar
         \item[interner Zustand] restlicher Teilzustand
         \item[erbrachte Leistung] zeitliche Folge externer Zustände
     \end{description*}
@@ -962,22 +956,18 @@
         \item[\cmark] nichtvertrauenswürdiger Code kann keine beliebigen physischen Adressen schreiben
         \item[\cmark] Kommunikation zwischen nvw. Code muss durch IPC-Mechanismen explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit möglich
         \item[\cmark] Kontrollfluss begrenzen: Funktionsaufrufe können i.A. keine AR-Grenzen überschreiten
-        \begin{itemize*}
-            \item[$\rightarrow$] BS-Zugriffssteuerung kann nicht durch Taskfehler ausgehebelt werden
-            \item[$\rightarrow$] unabsichtliche Terminierungsfehler(unendliche Rekursion) erschwert ...
-        \end{itemize*}
+        %\begin{itemize*}
+            %\item[$\rightarrow$] BS-Zugriffssteuerung kann nicht durch Taskfehler ausgehebelt werden
+            %\item[$\rightarrow$] unabsichtliche Terminierungsfehlererschwert ...%(unendliche Rekursion) 
+        %\end{itemize*}
         \item keine Isolation zwischen Fehlern innerhalb des Kernels
     \end{itemize*}
 
     \subsection{Mikrokernelarchitektur}
-    Fortschritt ggü. Makrokernel
     \begin{itemize*}
-        \item Strukturierungskonzept
-        \begin{itemize*}
             \item strenger durchgesetzt durch konsequente Isolation voneinander unabhängiger Kernel-Subsysteme
-            \item zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich!
-        \end{itemize*}
-        \item zusätzlich zu vertikaler Strukturierung des Kernels: horizontale Strukturierung eingeführt
+            \item zur Laufzeit durchgesetzt $\rightarrow$ Reaktion auf fehlerhafte Zustände möglich
+        \item zusätzlich zu vertikaler Strukturierung: horizontal
         \begin{itemize*}
             \item[$\rightarrow$] funktionale Einheiten: vertikal (Schichten)
             \item[$\rightarrow$] isolierte Einheiten: horizontal (private vAR)
@@ -990,9 +980,8 @@
 
     \subsubsection{Modularer Makrokernel vs. Mikrokernel}
     \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel.png}
         \item minimale Kernelfunktionalität
-        \item keine Dienste, nur allgemeine Schnittstellenfür diese
+        \item keine Dienste, nur allgemeine Schnittstellen für diese
         \item keine Strategien, nur grundlegende Mechanismen zur Ressourcenverwaltung
         \item neues Problem: minimales Mikrokerneldesign
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-modularer-makrokernel-2.png}
@@ -1000,20 +989,18 @@
 
     \paragraph{Robustheit von Mikrokernen}
     \begin{itemize*}
-        \item = Gewinn durch Adressraumisolation innerhalb des Kernels
+        \item[=] Gewinn durch Adressraumisolation innerhalb des Kernels
         \item[\cmark] kein nichtvertrauenswürdiger Code im Kernelspace, der dort beliebige physische Adressen manipulieren kann
-        \item[\cmark] Kommunikation zwischen nvw. Code (nicht zur zwischen Anwendungstasks)muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
-        \item[\cmark] Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code (Kernelcode) möglich (z.B.: Nichtterminierung erkennen)
+        \item[\cmark] Kommunikation zwischen nvw. Code muss durch IPC explizit hergestellt werden $\rightarrow$ Überwachung und Validierung zur Laufzeit
+        \item[\cmark] Kontrollfluss begrenzen: Zugriffssteuerung auch zwischen Serverprozessen, zur Laufzeit unabhängiges Teilmanagement von Code möglich %(z.B.: Nichtterminierung erkennen)
         \item Neu:
         \item[\cmark] nvw. BS-Code muss nicht mehr im Kernelspace laufen
-        \item[\cmark] verbleibender Kernel: klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
-        \item[\cmark] daneben: Adaptivität durch konsequentere Modularisierung des Kernels gesteigert
+        \item[\cmark] Kernel: klein, funktional weniger komplex, leichter zu entwickeln, zu testen, evtl. formal zu verifizieren
+        \item[\cmark] Adaptivität durch konsequentere Modularisierung des Kernels
     \end{itemize*}
 
     \subsubsection{Mikrokernel: Mach}
     \begin{itemize*}
-        \item 1975: Aleph (BS des ,,Rochester Intelligent Gateway'')
-        \item 1979/81: Accent (verteiltes BS), CMU
         \item Mach 3.0 (1989): einer der ersten praktisch nutzbaren $\mu$Kerne
         \item Ziel: API-Emulation ($\not=$ Virtualisierung) von UNIX und -Derivaten auf unterschiedlichen Prozessorarchitekturen
         \item mehrere unterschiedliche Emulatoren gleichzeitig lauffähig
@@ -1035,40 +1022,24 @@
     \begin{enumerate*}
         \item Prozesse, Threads, Speicherobjekte
         \item Ports (generisches, ortstransparentes Adressierungskonzept)
-        \item Botschaften, ... (sekundäre, von den obigen genutzte Abstraktionen)
+        \item Botschaften, ... (sekundäre, von obigen genutzte Abstraktionen)
     \end{enumerate*}
 
-    Architektur
-    \begin{itemize*}
-        %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-architektur.png}
-        \item Systemaufrufkosten:
-        \begin{itemize*}
-            \item IPC-Benchmark (1995): i486 Prozessor, 50 MHz
-            \item Messung mit verschiedenen Botschaftenlängen( x - Werte)
-            \item ohne Nutzdaten (0 Byte Botschaftenlänge): 115 $\mu$s (Tendenz unfreundlich ...)
-            %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-mach-systemaufruf.png}
-        \end{itemize*}
-        \item Bewertung aus heutiger Sicht:
+    Architektur: Bewertung aus heutiger Sicht
         \begin{itemize*}
             \item funktional komplex
             \item 153 Systemaufrufe
             \item mehrere Schnittstellen, parallele Implementierungen für eine Funktion
             \item[$\rightarrow$] Adaptivität (Auswahl durch Programmierer)
         \end{itemize*}
-        \item Fazit:
-        \begin{itemize*}
-            \item zukunftsweisender Ansatz
-            \item langsame und ineffiziente Implementierung
-        \end{itemize*}
-    \end{itemize*}
 
     Lessons Learned
     \begin{itemize*}
         \item Umsetzung: Designkriterien weitgehend unbekannt
-        \item Folgen für Performanz und Programmierkomfort: [Heis19]
+        \item Folgen für Performanz und Programmierkomfort
         \item[\xmark] ,,complex'', ,,inflexible'', ,,slow''
         \item wissen etwas über Kosten: IPC-Performanz, Kernelabstraktionen
-        \item wissen nichts über guten $\mu$Kern-Funktionsumfang und gute Schnittstellen
+        \item wissen nichts über guten $\mu$Kern-Funktionsumfang und Schnittstellen
     \end{itemize*}
 
     \subsubsection{L4}
@@ -1097,7 +1068,6 @@
 
     \subsubsection{Mikrokernel - Designprinzipien}
     \begin{itemize*}
-        \item Was gehört in einen Mikrokern?
         \item Konzeptsicht $\rightarrow$ Funktionalität
         \item Implementierungssicht $\rightarrow$ Performanz
         \item[$\rightarrow$] 1. Generation: durch Performanzentscheidungen aufgeweicht
@@ -1106,11 +1076,10 @@
 
     Designprinzipien für Mikrokernel-Konzept
     \begin{enumerate*}
-        \item System interaktive und nicht vollständig vertrauenswürdige Applikationen unterstützen ( $\rightarrow$ HW-Schutz,-Multiplexing),
+        \item System interaktive und nicht vollständig vertrauenswürdige Applikationen unterstützen ($\rightarrow$ HW-Schutz,-Multiplexing)
         \item Hardware mit virtueller Speicherverwaltung und Paging
     \end{enumerate*}
 
-    Designprinzipien
     \begin{description*}
         \item[Autonomie] Subsystem muss so implementiert werden, dass es von keinem anderen Subsystem gestört oder korrumpiert werden kann
         \item[Integrität] Subsystem $S_1$ muss sich auf Garantien von $S_2$ verlassen können. D.h. beide Subsysteme müssen miteinander kommunizieren können, ohne dass ein drittes Subsystem diese Kommunikation stören, fälschen oder abhören kann.
@@ -1118,9 +1087,9 @@
 
     L4: Speicherabstraktion
     \begin{itemize*}
-        \item Adressraum: Abbildung, die jede virtuelle Seite auf einen physischen Seitenrahmen abbildet oder als ,,nicht zugreifbar'' markiert
-        \item Implementierung über Seitentabellen, unterstützt durch MMU-Hardware
-        \item Aufgabe des Mikrokernels (Schicht aller Subsysteme): muss Hardware-Konzept des Adressraums verbergen und durch eigenes Adressraum-Konzept überlagern
+        \item Adressraum: Abbildung, die jede virtuelle Seite auf einen physischen Seitenrahmen abbildet oder ,,nicht zugreifbar'' markiert
+        \item Implementierung über Seitentabellen, unterstützt durch MMU
+        \item Aufgabe des Mikrokernels: muss Hardware-Konzept des Adressraums verbergen und durch eigenes Adressraum-Konzept überlagern
         \item Mikrokernel-Konzept des Adressraums:
         \begin{itemize*}
             \item muss Implementierung von beliebigen virtuellen Speicherverwaltungs-und -schutzkonzepten oberhalb des Mikrokernels (d.h. in den Subsystemen) erlauben
@@ -1186,7 +1155,7 @@
         \begin{itemize*}
             \item müssen vertrauenswürdig vergeben und verwaltet werden
             \item[$\rightarrow$] essenziell für (sinnvolles) Multitasking und -threading
-            \item[$\rightarrow$] essenziell für vertrauenswürdige Kernel-/Server-Schnittstellen
+            \item[$\rightarrow$] essenziell für vertrauensw. Kernel-/Server-Schnittstellen
         \end{itemize*}
         \item Designentscheidung
         \begin{itemize*}
@@ -1214,16 +1183,16 @@
         \item Konsequenzen für Mikrokernel-Implementierung
         \begin{itemize*}
             \item müssen für jeden Prozessortyp neu implementiert werden
-            \item deshalb prinzipiell nicht portierbar $\rightarrow$ L3-/L4-Prototypen: 99\% Assemblercode
+            \item deshalb prinzipiell nicht portierbar %$\rightarrow$ L3-/L4-Prototypen: 99\% Assemblercode
         \end{itemize*}
-        \item innerhalb eines Mikrokernels sind von Prozessorhardware abhängig
+        \item innerhalb eines Mikrokernels von Prozessorhardware abhängig
         \begin{enumerate*}
             \item grundlegende Implementierungsentscheidungen
             \item meiste Algorithmen u. Datenstrukturen
         \end{enumerate*}
-        \item Fazit: Mikrokernel mit akzeptabler Performanz hardwarespezifische Implementierung minimal erforderlicher vom Prozessortyp unabhängiger Abstraktionen
+        %\item Mikrokernel mit akzeptabler Performanz hardwarespezifische Implementierung minimal erforderlicher vom Prozessortyp unabhängiger Abstraktionen
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-l4-ipc-performance.png}
-        \item L4 heute: Spezifikation Mikrokernels (nicht Implementierung)
+        %\item L4 heute: Spezifikation Mikrokernels (nicht Implementierung)
     \end{enumerate*}
 
     %Einige Weiterentwicklungen:
@@ -1261,12 +1230,8 @@
         \item[$\rightarrow$] BS-Code in Serverprozessen: verbleibendes Risiko unabhängiger Teilausfälle von BS-Funktionalität
         \item Ergänzung zu Isolationsmechanismen notwendig
         \item Mechanismen zur Behandlung von Subsystem-Ausfällen
-        \item[=] Mechanismen zur Behandlung Anwendungs-, Server- und Gerätetreiberfehlen
+        %\item[=] Mechanismen zur Behandlung Anwendungs-, Server- und Gerätetreiberfehlen
         \item[$\rightarrow$] Micro-Reboots
-    \end{itemize*}
-
-    Ansatz
-    \begin{itemize*}
         \item kleinen (als fehlerfrei angenommenen) $\mu$Kernel
         \item BS-Funktionalität in bedingt vertrauenswürdigen Serverprozessen %(kontrollierbare, aber wesentlich größere Codebasis)
         \item Treiber/Anwendungen in nicht vertrauenswürdigen Prozessen %(nicht kontrollierbare Codebasis)
@@ -1295,18 +1260,18 @@
     \begin{itemize*}
         \item Ziel: robustes Betriebssystems
         \item[$\rightarrow$] Schutz gegen Sichtbarwerden von Fehlern(= Ausfälle) für Nutzer
-        \item Fokus auf Anwendungsdomänen: Einzelplatzrechner und eingebettete Systeme
+        \item Fokus auf Anwendungsdomänen: Einzelplatzrechner, Embedded
         \item Anliegen: Robustheit \textgreater{} Verständlichkeit \textgreater{} geringer HW-Bedarf
     \end{itemize*}
 
     Architektur
     \begin{itemize*}
-        \item \includegraphics[width=.8\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur.png}
+        \item \includegraphics[width=.7\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur.png}
         \item Anwendungen (weiß): Systemaufrufe im POSIX-Standard
         \item Serverprozesse (grau): IPC (botschaftenbasiert), mit Kernel: spezielle MINIX-API (kernel calls), für Anwendungsprozesse gesperrt
         %\item \includegraphics[width=\linewidth]{Assets/AdvancedOperatingSystems-minix-architektur-bs.png}
         \item Betriebssystem-Serverprozesse: Dateisystem (FS), Prozessmanagement (PM), Netzwerkmanagement (Net)
-        \item Reincarnation Server (RS) $\rightarrow$ Micro-Reboots jeglicher Serverprozesse
+        \item Reincarnation Server (RS) $\rightarrow$ Micro-Reboots der Serverprozesse
         \item Kernelprozesse: systemtask, clocktask
     \end{itemize*}
 
@@ -1326,7 +1291,7 @@
     \begin{itemize*}
         \item komplementäre NFE zu Robustheit: Verfügbarkeit ( availability )
         \item Verbesserung von Robustheit $\rightarrow$ Verbesserung von Verfügbarkeit
-        \item Robustheitsmaßnahmen hinreichend , nicht notwendig %(hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
+        \item Robustheitsmaßnahmen hinreichend, nicht notwendig %(hochverfügbare Systeme können sehr wohl von Ausfällen betroffen sein...)
         \item weitere komplementäre NFE: Robustheit $\rightarrow$ Sicherheit (security)
         \item Definition: Grad, zu welchem ein System oder eine Komponente funktionsfähig und zugänglich (erreichbar) ist, wann immer seine Nutzung erforderlich ist (IEEE)
         \item Anteil an Laufzeit eines Systems, in dem dieses seine spezifizierte Leistung erbringt
@@ -1354,10 +1319,10 @@
         \item primäres Einsatzfeld: eingebettete Systeme, z.B. Automobilbau
         \item Mikrokernarchitektur mit Adressraumisolation für Gerätetreiber
         \item (begrenzt) dynamische Micro-Rebootsmöglich
-        \item $\rightarrow$ Maximierung der Uptime des Gesamtsystems
+        \item[$\rightarrow$] Maximierung der Uptime des Gesamtsystems
     \end{itemize*}
     \begin{description*}
-        \item[High-Avalability-Manager] Laufzeit-Monitor der Systemdienste/Anwendungsprozesse überwacht und neustartet $\rightarrow$ $\mu$Reboot-Server
+        \item[High-Avalability-Manager] Laufzeit-Monitor der Systemdienste/ Anwendungsprozesse überwacht und neustartet $\rightarrow$ $\mu$Reboot-Server
         \item[High-Availability-Client-Libraries] Funktionen zur transparenten automatischen Reboot für ausgefallene Server-Verbindungen
     \end{description*}
 

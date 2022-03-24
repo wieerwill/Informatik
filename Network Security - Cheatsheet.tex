@@ -859,14 +859,14 @@
                   %\item Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen: $a \equiv(a\ mod\ m)\ mod\ m$, $a \equiv(a\ mod\ n)\ mod\ n$ können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen
                   %\item Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ mod\ m, a\ mod\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde: $b\equiv (a\ mod\ m)\ mod\ m$ $b\equiv (a\ mod\ n)\ mod\ n$ aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$
                   \item $\phi(m \times n)$ ist höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
-                  \item %Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: 
+                  %\item Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: 
                   Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Der RSA Public Key Algorithmus}
       \begin{itemize*}
-            \item Der RSA-Algorithmus wurde 1977 von R. Rivest, A. Shamir und L. Adleman ,,RSA78'' erfunden und basiert auf Theorem 3.
+            \item Der RSA-Algorithmus wurde 1977 von R. Rivest, A. Shamir und L. Adleman erfunden und basiert auf Theorem 3.
             \item Seien $p, q$ verschiedene große Primzahlen und $n=p\times q$. Nehmen wir an, wir haben auch zwei ganze Zahlen e und d, so dass: $d\times e \equiv 1\ mod\ \phi(n)$
             \item M sei eine ganze Zahl, die die zu verschlüsselnde Nachricht darstellt, wobei M positiv, kleiner als und relativ prim zu n ist.
             \item Beispiel: Verschlüsseln mit = 99, A = 10, B = 11, ..., Z = 35. Somit würde ,,HELLO'' als 1714212124 kodiert werden. Falls erforderlich, ist M in Blöcke kleinerer Nachrichten aufzuteilen: 17142 12124
@@ -896,12 +896,10 @@
             \item In diesem Kurs wird nicht gelehrt, warum es schwierig ist, große n zu faktorisieren, da dies einen tiefen Einblick in die Mathematik erfordern würde.
             \begin{itemize*}
                   \item Wenn p und q bestimmte Eigenschaften erfüllen, sind die besten bekannten Algorithmen exponentiell zur Anzahl der Ziffern von n
-                  \item Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist:
-                  \begin{itemize*}
-                        \item Daher sollten p und q ungefähr die gleiche Bitlänge haben und ausreichend groß sein
-                        \item $(p-q)$ sollte nicht zu klein sein
-                        \item Wenn man einen kleinen Verschlüsselungsexponenten, z.B. 3, wählen will, kann es zusätzliche Einschränkungen geben, z.B. $gcd(p-1, 3) = 1$ und $gcd(q-1,3)=1$
-                  \end{itemize*}
+                  \item Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist
+                  \item Daher sollten p und q ungefähr die gleiche Bitlänge haben und ausreichend groß sein
+                  \item $(p-q)$ sollte nicht zu klein sein
+                  \item Wenn man einen kleinen Verschlüsselungsexponenten, z.B. 3, wählen will, kann es zusätzliche Einschränkungen geben, z.B. $gcd(p-1, 3) = 1$ und $gcd(q-1,3)=1$
                   \item Die Sicherheit von RSA hängt auch davon ab, dass die erzeugten Primzahlen wirklich zufällig sind (wie jede Methode zur Schlüsselerzeugung bei jedem Algorithmus).
                   \item Moral: Wenn Sie RSA selbst implementieren wollen, bitten Sie einen Mathematiker oder besser einen Kryptographen, Ihren Entwurf zu überprüfen.
             \end{itemize*}
@@ -942,10 +940,8 @@
                   \item Definition: endliche Felder
                   \begin{itemize*}
                         \item Ein Feld $(S,\oplus, \otimes)$ ist eine Menge S zusammen mit zwei Operationen $\oplus$, $\otimes$, so dass
-                        \begin{itemize*}
-                              \item $(S,\oplus)$ und $(S\backslash{e_{\oplus}},\otimes)$ sind kommutative Gruppen, d.h. nur das Identitätselement bezüglich der Operation $\oplus$ muss kein Inverses bezüglich der Operation $\otimes$ haben
-                              \item Für alle $a,b,c\in S$ haben wir ein $\otimes(b\oplus c)=(a\otimes b)\oplus(a\otimes c)$
-                        \end{itemize*}
+                        \item $(S,\oplus)$ und $(S\backslash{e_{\oplus}},\otimes)$ sind kommutative Gruppen, d.h. nur das Identitätselement bezüglich der Operation $\oplus$ muss kein Inverses bezüglich der Operation $\otimes$ haben
+                        \item Für alle $a,b,c\in S$ haben wir ein $\otimes(b\oplus c)=(a\otimes b)\oplus(a\otimes c)$
                   \end{itemize*}
                   \item Wenn $| S|<\infty$ dann heißt $(S,\oplus,\otimes)$ ein endliches Feld
             \end{itemize*}
@@ -973,13 +969,11 @@
             \end{itemize*}
             \item Definition: Ordnung einer Gruppe und eines Elements
             \begin{itemize*}
-                  \item Sei $(S,\circ)$ eine Gruppe, $e\in S$ ihr Identitätselement und $b\in S$ irgendein Element von $S$:
-                  \begin{itemize*}
-                        \item Dann heiße $| S|$ die Ordnung von $(S,\circ)$
-                        \item Sei $c\in\mathbb{Z}^+$ das kleinste Element, so dass $b^c=e$ ist (falls ein solches c existiert, falls nicht, setze $c=\infty$). Dann wird c die Ordnung von b genannt.
-                  \end{itemize*}
+                  \item Sei $(S,\circ)$ eine Gruppe, $e\in S$ ihr Identitätselement und $b\in S$ irgendein Element von $S$
+                  \item Dann heiße $| S|$ die Ordnung von $(S,\circ)$
+                  \item Sei $c\in\mathbb{Z}^+$ das kleinste Element, so dass $b^c=e$ ist (falls ein solches c existiert, falls nicht, setze $c=\infty$). Dann wird c die Ordnung von b genannt
             \end{itemize*}
-            \item Theorem 7 (Lagrange):
+            \item Theorem 7 (Lagrange)
             \begin{itemize*}
                   \item Ist G eine endliche Gruppe und H eine Untergruppe von G , so ist $| H|$ Teiler von $| G|$.
                   \item Wenn also $b in G$ ist, dann ist die Ordnung von b Teiler von $| G|$.
@@ -991,12 +985,10 @@
             \item Die Theoreme 5, 7 und 8 sind die Grundlage des folgenden Algorithmus, der eine zyklische Gruppe $\mathbb{Z}^*_p$ und eine Urwurzel g davon findet:
             \begin{itemize*}
                   \item Man wählt eine große Primzahl q, so dass $p=2q+1$ eine Primzahl ist.
-                  \begin{itemize*}
-                        \item Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist.
-                        \item Die Ordnung von $\mathbb{Z}^*_p$ ist $2\times q$ und $\phi(2\times q)=\phi(2)\times \phi(q)=q-1$, da $q$ prim ist.
-                        \item Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \approx 1/2$.
-                        \item Um effizient zu prüfen, ob ein zufällig gewähltes g eine Urwurzel ist, müssen wir nur prüfen, ob $g^2\equiv 1 mod p$ oder $g^q\equiv 1 mod p$ ist. Wenn nicht, dann muss seine Ordnung $|\mathbb{Z}^*_p|$ sein, da Satz 7 besagt, dass die Ordnung von g $|\mathbb{Z}^*_p|$ teilen muss
-                  \end{itemize*}
+                  \item Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist.
+                  \item Die Ordnung von $\mathbb{Z}^*_p$ ist $2\times q$ und $\phi(2\times q)=\phi(2)\times \phi(q)=q-1$, da $q$ prim ist.
+                  \item Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \approx 1/2$.
+                  \item Um effizient zu prüfen, ob ein zufällig gewähltes g eine Urwurzel ist, müssen wir nur prüfen, ob $g^2\equiv 1 mod p$ oder $g^q\equiv 1 mod p$ ist. Wenn nicht, dann muss seine Ordnung $|\mathbb{Z}^*_p|$ sein, da Satz 7 besagt, dass die Ordnung von g $|\mathbb{Z}^*_p|$ teilen muss
             \end{itemize*}
             \item Definition: diskreter Logarithmus
             \begin{itemize*}
@@ -1009,14 +1001,12 @@
 
       \subsection{Diffie-Hellman-Schlüsselaustausch}
       \begin{itemize*}
-            \item Der Diffie-Hellman-Schlüsselaustausch wurde erstmals in der bahnbrechenden Arbeit ,,DH76'' veröffentlicht, in der auch die Grundidee der asymmetrischen Kryptographie vorgestellt wurde
-            \item Der DH-Austausch in seiner Grundform ermöglicht es zwei Parteien A und B, sich über einen öffentlichen Kanal auf ein gemeinsames Geheimnis zu einigen:
-            \begin{itemize*}
-                  \item Öffentlicher Kanal bedeutet, dass ein potentieller Angreifer E (E steht für Eavesdropper) alle zwischen A und B ausgetauschten Nachrichten lesen kann
-                  \item Es ist wichtig, dass A und B sicher sein können, dass der Angreifer nicht in der Lage ist, Nachrichten zu verändern, da er in diesem Fall einen Man-in-the-Middle-Angriff starten könnte
-                  \item Die mathematische Grundlage für den DH-Austausch ist das Problem, diskrete Logarithmen in endlichen Feldern zu finden.
-                  \item Der DH-Austausch ist kein asymmetrischer Verschlüsselungsalgorithmus, wird aber dennoch hier vorgestellt, da er gut zum mathematischen Charakter dieser Vorlesung passt...
-            \end{itemize*}
+            \item Der Diffie-Hellman-Schlüsselaustausch wurde erstmals 1976 veröffentlicht, in der auch die Grundidee der asymmetrischen Kryptographie vorgestellt wurde
+            \item Der DH-Austausch in seiner Grundform ermöglicht es zwei Parteien A und B, sich über einen öffentlichen Kanal auf ein gemeinsames Geheimnis zu einigen
+            \item Öffentlicher Kanal bedeutet, dass ein potentieller Angreifer E (E steht für Eavesdropper) alle zwischen A und B ausgetauschten Nachrichten lesen kann
+            \item Es ist wichtig, dass A und B sicher sein können, dass der Angreifer nicht in der Lage ist, Nachrichten zu verändern, da er in diesem Fall einen Man-in-the-Middle-Angriff starten könnte
+            \item Die mathematische Grundlage für den DH-Austausch ist das Problem, diskrete Logarithmen in endlichen Feldern zu finden.
+            \item Der DH-Austausch ist kein asymmetrischer Verschlüsselungsalgorithmus
             \item Wenn Alice (A) und Bob (B) sich auf ein gemeinsames Geheimnis s einigen wollen und ihr einziges Kommunikationsmittel ein öffentlicher Kanal ist, können sie wie folgt vorgehen:
             \begin{itemize*}
                   \item A wählt eine Primzahl p, eine primitive Wurzel g von $\mathbb{Z}^*_p$ und eine Zufallszahl q:
@@ -1053,20 +1043,15 @@
             \end{itemize*}
             \item Zwei Gegenmaßnahmen gegen den Man-in-the-Middle-Angriff:
             \begin{itemize*}
-                  \item Das gemeinsame Geheimnis wird ,,authentifiziert'', nachdem es vereinbart worden ist.
-                  \begin{itemize*}
-                        \item Wir werden dies im Abschnitt über die Schlüsselverwaltung behandeln
-                  \end{itemize*}
+                  \item Das gemeinsame Geheimnis wird ,,authentifiziert'', nachdem es vereinbart worden ist
                   \item A und B verwenden ein sogenanntes Interlock-Protokoll, nachdem sie sich auf ein gemeinsames Geheimnis geeinigt haben:
                   \begin{itemize*}
                         \item Dazu müssen sie Nachrichten austauschen, die E weiterleiten muss, bevor sie sie entschlüsseln bzw. wieder verschlüsseln kann.
                         \item Der Inhalt dieser Nachrichten muss von A und B überprüfbar sein.
                         \item Dies zwingt E dazu, Nachrichten zu erfinden, und sie kann entdeckt werden.
                         \item Eine Technik, um zu verhindern, dass E die Nachrichten entschlüsselt, besteht darin, sie in zwei Teile aufzuteilen und den zweiten Teil vor dem ersten zu senden.
-                        \begin{itemize*}
-                              \item Wenn der verwendete Verschlüsselungsalgorithmus bestimmte Eigenschaften verhindert, kann E den zweiten Teil nicht verschlüsseln, bevor sie den ersten erhält.
-                              \item Da A den ersten Teil erst senden wird, nachdem er eine Antwort (den zweiten Teil) von B erhalten hat, ist E gezwungen, zwei Nachrichten zu erfinden, bevor sie die ersten Teile erhalten kann.
-                        \end{itemize*}
+                        \item Wenn der verwendete Verschlüsselungsalgorithmus bestimmte Eigenschaften verhindert, kann E den zweiten Teil nicht verschlüsseln, bevor sie den ersten erhält.
+                        \item Da A den ersten Teil erst senden wird, nachdem er eine Antwort (den zweiten Teil) von B erhalten hat, ist E gezwungen, zwei Nachrichten zu erfinden, bevor sie die ersten Teile erhalten kann.
                   \end{itemize*}
             \end{itemize*}
             \item Bemerkung: In der Praxis muss die Zahl g nicht unbedingt eine Urwurzel von p sein, es genügt, wenn sie eine große Untergruppe von $\mathbb{Z}^*_p$ erzeugt
@@ -1074,7 +1059,7 @@
 
       \subsection{ElGamal Algorithmus}
       \begin{itemize*}
-            \item Der ElGamal-Algorithmus kann sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden (siehe auch ,,ElG85a'').
+            \item Der ElGamal-Algorithmus kann sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden
             \item Wie der DH-Austausch basiert er auf der Schwierigkeit, diskrete Logarithmen in endlichen Feldern zu berechnen
             \item Um ein Schlüsselpaar zu erstellen:
             \begin{itemize*}
@@ -1111,8 +1096,8 @@
             \item Sicherheit von ElGamal-Signaturen:
             \begin{itemize*}
                   \item Da der private Schlüssel v benötigt wird, um s berechnen zu können, müsste ein Angreifer den diskreten Logarithmus von y modulo p zur Basis g berechnen, um Signaturen zu fälschen
-                  \item Entscheidend für die Sicherheit ist, dass für jede Nachricht eine neue Zufallszahl k gewählt wird, denn ein Angreifer kann das Geheimnis v berechnen, wenn er zwei Nachrichten zusammen mit ihren Signaturen auf der Basis des gleichen k erhält (siehe ,,Men97a'', Anmerkung 11.66.ii)
-                  \item Um zu verhindern, dass ein Angreifer eine Nachricht M mit einer passenden Signatur erstellen kann, ist es notwendig, die Nachricht M nicht direkt zu signieren, sondern einen kryptographischen Hashwert $m=h(M)$ davon zu signieren (diese werden bald behandelt, siehe auch ,,Men97a'', Anmerkung 11.66.iii)
+                  \item Entscheidend für die Sicherheit ist, dass für jede Nachricht eine neue Zufallszahl k gewählt wird, denn ein Angreifer kann das Geheimnis v berechnen, wenn er zwei Nachrichten zusammen mit ihren Signaturen auf der Basis des gleichen k erhält
+                  \item Um zu verhindern, dass ein Angreifer eine Nachricht M mit einer passenden Signatur erstellen kann, ist es notwendig, die Nachricht M nicht direkt zu signieren, sondern einen kryptographischen Hashwert $m=h(M)$ davon zu signieren
             \end{itemize*}
             \item Um eine Nachricht m mit dem öffentlichen Schlüssel $(y,g,p)$ zu
             verschlüsseln:
@@ -1143,12 +1128,10 @@
             \item Die Hauptmotivation für diese Verallgemeinerung ist
             \begin{itemize*}
                   \item Zahlreiche mathematische Forschungen auf dem Gebiet der Primzahlprüfung, der Faktorisierung und der Berechnung diskreter Logarithmen haben zu Techniken geführt, mit denen diese Probleme effizienter gelöst werden können, wenn bestimmte Eigenschaften erfüllt sind:
-                  \begin{itemize*}
-                        \item Als 1977 die RSA-129-Aufgabe gestellt wurde, ging man davon aus, dass es etwa 40 Billiarden Jahre dauern würde, die 129-stellige Zahl ($\approx 428$ Bit) zu faktorisieren.
-                        \item Im Jahr 1994 benötigte eine Gruppe von Computern, die über das Internet vernetzt waren, 8 Monate, um die Zahl zu faktorisieren, was etwa 5000 MIPS-Jahre entsprach.
-                        \item Fortschritte bei den Faktorisierungsalgorithmen ermöglichten 2009 die Faktorisierung einer 232-stelligen Zahl (768 Bit) in etwa 1500 AMD64-Jahren ,,KAFL10''.
-                        \item $\Rightarrow$ die Schlüssellänge muss erhöht werden (derzeit etwa 2048 Bit)
-                  \end{itemize*}
+                  \item Als 1977 die RSA-129-Aufgabe gestellt wurde, ging man davon aus, dass es etwa 40 Billiarden Jahre dauern würde, die 129-stellige Zahl ($\approx 428$ Bit) zu faktorisieren.
+                  \item Im Jahr 1994 benötigte eine Gruppe von Computern, die über das Internet vernetzt waren, 8 Monate, um die Zahl zu faktorisieren, was etwa 5000 MIPS-Jahre entsprach.
+                  \item Fortschritte bei den Faktorisierungsalgorithmen ermöglichten 2009 die Faktorisierung einer 232-stelligen Zahl (768 Bit) in etwa 1500 AMD64-Jahren
+                  \item[$\rightarrow$] die Schlüssellänge muss erhöht werden (derzeit etwa 2048 Bit)
                   \item Einige der effizienteren Verfahren beruhen auf bestimmten Eigenschaften der algebraischen Strukturen $(\mathbb{Z}^*_p,\times p)$ und $(\mathbb{Z}_p, +_p, \times_p)$
                   \item Verschiedene algebraische Strukturen können daher die gleiche Sicherheit mit kürzeren Schlüssellängen bieten
             \end{itemize*}
@@ -1256,8 +1239,9 @@
       \subsubsection{Foundations of ECC - Größe der erzeugten Gruppen}
       \begin{itemize*}
             \item Bitte beachten Sie, dass die Ordnung einer durch einen Punkt auf einer Kurve über $\mathbb{Z}_p$ erzeugten Gruppe nicht $p-1$ ist!
-            \item Die Bestimmung der exakten Ordnung ist nicht einfach, kann aber mit Schoofs Algorithmus ,,Sch85'' in logarithmischer Zeit durchgeführt werden (erfordert viel mehr mathematischen Hintergrund als hier gewünscht)
-            \item Der Satz von Hasse über elliptische Kurven besagt jedoch, dass die Gruppengröße n zwischen: $p+1 - 2\sqrt{p}\leq n\leq p+1+2\sqrt{p}$ liegen muss \item Wie bereits erwähnt: Es genügt, relativ große Gruppen zu erzeugen
+            \item Die Bestimmung der exakten Ordnung ist nicht einfach, kann aber mit Schoofs Algorithmus in logarithmischer Zeit durchgeführt werden (erfordert viel mehr mathematischen Hintergrund als hier gewünscht)
+            \item Der Satz von Hasse über elliptische Kurven besagt jedoch, dass die Gruppengröße n zwischen: $p+1 - 2\sqrt{p}\leq n\leq p+1+2\sqrt{p}$ liegen muss
+            \item Wie bereits erwähnt: Es genügt, relativ große Gruppen zu erzeugen
       \end{itemize*}
 
       \subsubsection{ECDH}
@@ -1291,11 +1275,9 @@
             \begin{itemize*}
                   \item Wähle eine zufällige $k\in\mathbb{Z}^+$ mit $k< n-1$, berechne $R=kG$
                   \item Berechne $S=M+kY$, wobei M ein von der Nachricht abgeleiteter Punkt ist
-                  \begin{itemize*}
-                        \item Problem: Die Interpretation der Nachricht m als x-Koordinate von M ist nicht ausreichend, da der y-Wert nicht existieren muss
-                        \item Lösung aus ,,Ko87'': Wähle eine Konstante c (z.B. 100) und prüfe, ob $cm$ die x-Koordinate eines gültigen Punktes ist, wenn nicht, versuche $cm+1$, dann $cm+2$ usw.
-                        \item Um m zu entschlüsseln: nimm den x-Wert von M und führe eine ganzzahlige Division durch c durch (der Empfänger muss c ebenfalls kennen)
-                  \end{itemize*}
+                  \item Problem: Die Interpretation der Nachricht m als x-Koordinate von M ist nicht ausreichend, da der y-Wert nicht existieren muss
+                  \item Lösung: Wähle eine Konstante c (z.B. 100) und prüfe, ob $cm$ die x-Koordinate eines gültigen Punktes ist, wenn nicht, versuche $cm+1$, dann $cm+2$ usw.
+                  \item Um m zu entschlüsseln: nimm den x-Wert von M und führe eine ganzzahlige Division durch c durch (der Empfänger muss c ebenfalls kennen)
                   \item Der Chiffretext sind die Punkte $(R,S)$
                   \item Doppelt so lang wie m, wenn sie in so genannter komprimierter Form gespeichert werden, d.h. nur die x-Koordinaten werden gespeichert und ein einziges Bit, das angibt, ob die größere oder kleinere entsprechende y-Koordinate verwendet werden soll
             \end{itemize*}
@@ -1320,7 +1302,7 @@
             \begin{itemize*}
                   \item Wie in der ursprünglichen Version von ElGamal ist es entscheidend, k nicht zweimal zu verwenden
                   \item Nachrichten sollten nicht direkt signiert werden
-                  \item Weitere Prüfungen können erforderlich sein, d.h. G darf nicht O sein, ein gültiger Punkt auf der Kurve usw. (siehe ,,NIST09'' für weitere Details)
+                  \item Weitere Prüfungen können erforderlich sein, d.h. G darf nicht O sein, ein gültiger Punkt auf der Kurve usw.
             \end{itemize*}
       \end{itemize*}
 
@@ -1328,22 +1310,20 @@
       \begin{itemize*}
             \item Die Sicherheit hängt stark von der gewählten Kurve und dem Punkt ab:
             \item Die Diskriminante der Kurve darf nicht Null sein, d.h. $4a^3+27b^2\not\equiv 0\ mod\ p$ sonst ist die Kurve degradiert (eine sogenannte ,,singuläre Kurve'' )
-            \item Menezes et. al. haben einen subexponentiellen Algorithmus für sogenannte ,,supersinguläre elliptische Kurven'' gefunden, der aber im allgemeinen Fall nicht funktioniert ,,Men93a''
+            \item Menezes et. al. haben einen subexponentiellen Algorithmus für sogenannte ,,supersinguläre elliptische Kurven'' gefunden, der aber im allgemeinen Fall nicht funktioniert
             \item Die konstruierten algebraischen Gruppen sollten so viele Elemente wie möglich haben.
             \item In diesem Kurs wird nicht näher auf die Kryptographie elliptischer Kurven eingegangen, da dies viel mehr Mathematik erfordert, als für diesen Kurs erwünscht ist...
-            \item Für Nicht-Kryptographen ist es am besten, sich auf vordefinierte Kurven zu verlassen, z.B. ,,LM10'' oder ,,NIST99'' und Standards wie ECDSA
+            \item Für Nicht-Kryptographen ist es am besten, sich auf vordefinierte Kurven zu verlassen
             \item Viele Veröffentlichungen wählen die Parameter a und b so, dass sie nachweislich durch einen Zufallsprozess gewählt werden (z.B. veröffentlichen Sie x für $h(x)=a$ und $y$ für $h(y) = b$); so soll sichergestellt werden, dass die Kurven keine kryptographische Schwäche enthalten, die nur den Autoren bekannt ist
             \item Die Sicherheit ist abhängig von der Länge von p
-            % Schlüssellängen mit vergleichbaren Stärken nach ,,NIST12'': | Symmetrische Algorithmen | RSA | ECC | | ------------------------ | ----- | ------- | | 112 | 2048 | 224-255 | | 128 | 3072 | 256-383 | | 192 | 7680 | 384-511 | | 256 | 15360 | >{} 512 |
+            % Schlüssellängen mit vergleichbaren Stärken | Symmetrische Algorithmen | RSA | ECC | | ------------------------ | ----- | ------- | | 112 | 2048 | 224-255 | | 128 | 3072 | 256-383 | | 192 | 7680 | 384-511 | | 256 | 15360 | >{} 512 |
             \item Die Sicherheit hängt auch stark von der Implementierung ab
             \begin{itemize*}
                   \item Die verschiedenen Fälle (z.B. mit O) in der ECC-Berechnung können beobachtbar sein, d.h. Stromverbrauch und Zeitunterschiede
-                  \item Angreifer können Seitenkanalangriffe ableiten, wie in OpenSSL 0.9.8o ,,BT11''
-                  \begin{itemize*}
-                        \item Ein Angreifer kann die Bitlänge eines Wertes k in $kP$ ableiten, indem er die für den Quadrat- und Multiplikationsalgorithmus benötigte Zeit misst
-                        \item Der Algorithmus wurde in OpenSSL frühzeitig abgebrochen, wenn keine weiteren Bits auf ,,1'' gesetzt wurden
-                  \end{itemize*}
-                  \item Angreifer könnten versuchen, ungültige Punkte zu generieren, um Fakten über den verwendeten Schlüssel abzuleiten, wie in OpenSSL 0.9.8g, was zu einer Wiederherstellung eines vollen 256-Bit ECC-Schlüssels nach nur 633 Abfragen führte ,,BBP12''
+                  \item Angreifer können Seitenkanalangriffe ableiten, wie in OpenSSL 0.9.8
+                  \item Ein Angreifer kann die Bitlänge eines Wertes k in $kP$ ableiten, indem er die für den Quadrat- und Multiplikationsalgorithmus benötigte Zeit misst
+                  \item Der Algorithmus wurde in OpenSSL frühzeitig abgebrochen, wenn keine weiteren Bits auf ,,1'' gesetzt wurden
+                  \item Angreifer könnten versuchen, ungültige Punkte zu generieren, um Fakten über den verwendeten Schlüssel abzuleiten, wie in OpenSSL 0.9.8g, was zu einer Wiederherstellung eines vollen 256-Bit ECC-Schlüssels nach nur 633 Abfragen führte
             \end{itemize*}
             \item Lektion gelernt: Machen Sie es nicht selbst, es sei denn, Sie müssen es tun und wissen, was Sie tun!
       \end{itemize*}
@@ -1354,12 +1334,10 @@
             \item Wir haben auf Details verzichtet, da dies nicht viele neue Erkenntnisse gebracht hätte!
             \item Elliptische Kurven und ähnliche algebraische Gruppen sind ein aktives Forschungsgebiet und ermöglichen weitere fortgeschrittene Anwendungen, z.B:
             \begin{itemize*}
-                  \item Sogenannte Edwards-Kurven werden derzeit diskutiert, da sie robuster gegen Seitenkanalangriffe zu sein scheinen (z.B. ,,BLR08'')
+                  \item Sogenannte Edwards-Kurven werden derzeit diskutiert, da sie robuster gegen Seitenkanalangriffe zu sein scheinen
                   \item Bilineare Paarungen ermöglichen
-                  \begin{itemize*}
-                        \item Programme zu verifizieren, dass sie zur selben Gruppe gehören, ohne ihre Identität preiszugeben (Secret Handshakes, z.B. ,,SM09'')
-                        \item Öffentliche Schlüssel können strukturiert werden, z.B. ,,Alice'' als öffentlicher Schlüssel für Alice verwenden (Identitätsbasierte Verschlüsselung, Grundlagen in ,,BF03'')
-                  \end{itemize*}
+                  \item Programme zu verifizieren, dass sie zur selben Gruppe gehören, ohne ihre Identität preiszugeben
+                  \item Öffentliche Schlüssel können strukturiert werden, z.B. ,,Alice'' als öffentlicher Schlüssel für Alice verwenden
             \end{itemize*}
             \item Bevor Sie elliptische Kurvenkryptographie in einem Produkt einsetzen, stellen Sie sicher, dass Sie keine Patente verletzen, da es noch viele gültige Patente in diesem Bereich gibt!
       \end{itemize*}
@@ -1414,12 +1392,10 @@
             \end{itemize*}
             \item Definition: kryptografische Hash-Funktion
             \begin{itemize*}
-                  \item Eine kryptografische Hash-Funktion h ist eine Hash-Funktion, die zusätzlich unter anderem die folgenden Eigenschaften erfüllt:
-                  \begin{itemize*}
-                        \item Pre-Image-Resistenz: für im Wesentlichen alle vorgegebenen Ausgaben y ist es rechnerisch nicht möglich, ein x zu finden, so dass $h(x)=y$
-                        \item Vorabbild-Resistenz: Bei x ist es rechnerisch nicht möglich, eine zweite Eingabe $x'$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
-                        \item Kollisionssicherheit: Es ist rechnerisch nicht möglich, ein beliebiges Paar $(x,x')$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
-                  \end{itemize*}
+                  \item Eine kryptografische Hash-Funktion h ist eine Hash-Funktion, die zusätzlich unter anderem die folgenden Eigenschaften erfüllt
+                  \item Pre-Image-Resistenz: für im Wesentlichen alle vorgegebenen Ausgaben y ist es rechnerisch nicht möglich, ein x zu finden, so dass $h(x)=y$
+                  \item Vorabbild-Resistenz: Bei x ist es rechnerisch nicht möglich, eine zweite Eingabe $x'$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
+                  \item Kollisionssicherheit: Es ist rechnerisch nicht möglich, ein beliebiges Paar $(x,x')$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
                   \item Kryptographische Hash-Funktionen werden zur Berechnung von Modification Detection Codes (MDC) verwendet
             \end{itemize*}
       \end{itemize*}
@@ -1505,7 +1481,7 @@
             \end{itemize*}
             \item Was hat das mit MDCs zu tun?
             \item Wir haben gezeigt, dass bei n möglichen unterschiedlichen Werten die Anzahl k der Werte, die man zufällig wählen muss, um mindestens ein Paar identischer Werte zu erhalten, in der Größenordnung von $\sqrt{n}$ liegt.
-            \item Betrachten wir nun den folgenden Angriff ,,Yuv79a'':
+            \item Betrachten wir nun den folgenden Angriff
             \begin{itemize*}
                   \item Eve möchte, dass Alice eine Nachricht m1 signiert, die Alice normalerweise nie signieren würde. Eve weiß, dass Alice die Funktion MDC1(m) verwendet, um eine MDC von m zu berechnen, die eine Länge von r Bit hat, bevor sie diese MDC mit ihrem privaten Schlüssel signiert, was ihre digitale Signatur ergibt.
                   \item Zunächst erzeugt Eve ihre Nachricht m1. Würde sie nun MDC1(m1) berechnen und dann versuchen, eine zweite harmlose Nachricht m2 zu finden, die zu demselben MDC führt, wäre ihr Suchaufwand im durchschnittlichen Fall in der Größenordnung von $2^{(r-1)}$.
@@ -1588,14 +1564,14 @@
                   \item $CV_i = f(CV_{i -1}, y_{i-1}) \quad\quad 1\leq i \leq L$
                   \item $H(y) = CV_L$
             \end{itemize*}
-            \item Es wurde gezeigt ,,Mer89a'', dass, wenn die Kompressionsfunktion f kollisionssicher ist, die resultierende iterierte Hash-Funktion H ebenfalls kollisionssicher ist.
+            \item Es wurde gezeigt, dass, wenn die Kompressionsfunktion f kollisionssicher ist, die resultierende iterierte Hash-Funktion H ebenfalls kollisionssicher ist.
             \item Die Kryptoanalyse kryptographischer Hash-Funktionen konzentriert sich daher auf die interne Struktur der Funktion f und die Suche nach effizienten Techniken zur Erzeugung von Kollisionen bei einer einzigen Ausführung von f
             \item In erster Linie durch Geburtstagsangriffe motiviert, ist ein gängiger Mindestvorschlag für n , die Bitlänge des Hashwerts, 160 Bit, da dies einen Aufwand der Größenordnung $2^{80}$ für einen Angriff impliziert, der heute als undurchführbar gilt
       \end{itemize*}
 
       \subsection{Der Message Digest 5}
       \begin{itemize*}
-            \item MD5 folgt der zuvor skizzierten allgemeinen Struktur (z. B. ,,Riv92a''):
+            \item MD5 folgt der zuvor skizzierten allgemeinen Struktur
             \begin{itemize*}
                   \item Die Nachricht y wird mit einer ,,1'' aufgefüllt, gefolgt von 0 bis 511 ,,0'' Bits, so dass die Länge der resultierenden Nachricht kongruent 448 modulo 512 ist
                   \item Die Länge der ursprünglichen Nachricht wird als 64-Bit-Wert hinzugefügt, so dass eine Nachricht entsteht, deren Länge ein ganzzahliges Vielfaches von 512 Bit ist.
@@ -1629,14 +1605,14 @@
             \begin{itemize*}
                   \item Jedes Bit des 128-Bit-Hash-Codes ist eine Funktion eines jeden Eingabebits
                   \item 1996 veröffentlichte H. Dobbertin einen Angriff, der es erlaubt, eine Kollision für die Funktion f zu erzeugen (realisiert durch die oben beschriebenen 64 Schritte).
-                  \item Es dauerte bis 2004, bis eine erste Kollision gefunden wurde ,,WLYF04''.
-                  \item Inzwischen ist es möglich, Kollisionen innerhalb von Sekunden auf allgemeiner Hardware zu erzeugen ,,Kl06''.
+                  \item Es dauerte bis 2004, bis eine erste Kollision gefunden wurde
+                  \item Inzwischen ist es möglich, Kollisionen innerhalb von Sekunden auf allgemeiner Hardware zu erzeugen
                   \item MD5 darf nicht in Betracht gezogen werden, wenn Kollisionssicherheit erforderlich ist!
                   \begin{itemize*}
                         \item Dies ist oft der Fall!
-                        \item Beispiele: Zwei Postskripte mit unterschiedlichen Texten, aber gleichen Hashes ,,LD05'', Zertifikate, eines für eine gesicherte Domain und eines für eine eigene Zertifizierungsstelle ,,LWW05'', Jede Nachricht, die erweiterbar ist ,,KK06''
+                        \item Beispiele: Zwei Postskripte mit unterschiedlichen Texten, aber gleichen Hashes, Zertifikate, eines für eine gesicherte Domain und eines für eine eigene Zertifizierungsstelle, Jede Nachricht, die erweiterbar ist
                   \end{itemize*}
-                  \item Die Resistenz gegen Preimage-Angriffe ist mit 2123.4 Berechnungen noch o.k,,SA09''
+                  \item Die Resistenz gegen Preimage-Angriffe ist mit 2123.4 Berechnungen noch ok
             \end{itemize*}
       \end{itemize*}
 
@@ -1680,13 +1656,13 @@
             \item Sicherheit von SHA-1:
             \begin{itemize*}
                   \item Da SHA-1 MDCs der Länge 160 Bit erzeugt, wird erwartet, dass es eine bessere Sicherheit gegen Brute-Force- und Geburtstagsangriffe bietet als MD5.
-                  \item Einige inhärente Schwächen von Merkle-Dåmgard-Konstruktionen, z. B. ,,KK06'', sind vorhanden
-                  \item Im Februar 2005 veröffentlichten X. Wang et. al. einen Angriff, der es erlaubt, eine Kollision mit einem Aufwand von $2^{69}$ zu finden, der in den folgenden Monaten auf $2^{63}$ verbessert und in ,,WYY05a'' veröffentlicht wurde
-                  \item Die Forschung ging weiter (z.B. ,,Man11''), und im Februar 2017 wurde die erste tatsächliche Kollision gefunden (demonstriert mit einem veränderten PDF-Dokument)
+                  \item Einige inhärente Schwächen von Merkle-Dåmgard-Konstruktionen sind vorhanden
+                  \item Im Februar 2005 veröffentlichten X. Wang et. al. einen Angriff, der es erlaubt, eine Kollision mit einem Aufwand von $2^{69}$ zu finden, der in den folgenden Monaten auf $2^{63}$ verbessert wurde
+                  \item Die Forschung ging weiter und im Februar 2017 wurde die erste tatsächliche Kollision gefunden (demonstriert mit einem veränderten PDF-Dokument)
             \end{itemize*}
             \item SHA-2-Familie
             \begin{itemize*}
-                  \item Im Jahr 2001 veröffentlichte das NIST einen neuen Standard FIPS PUB 180-2, der neue Varianten mit den Bezeichnungen SHA-256, SHA-384 und SHA-512 ,,NIST02'' mit 256, 384 und 512 Bits enthält.
+                  \item Im Jahr 2001 veröffentlichte das NIST einen neuen Standard FIPS PUB 180-2, der neue Varianten mit den Bezeichnungen SHA-256, SHA-384 und SHA-512 mit 256, 384 und 512 Bits enthält.
                   \item SHA-224 wurde im Jahr 2004 hinzugefügt
                   \item SHA-224 und SHA-384 sind verkürzte Versionen von SHA-256 und SHA-512 mit unterschiedlichen Initialisierungswerten
                   \item SHA-2 verwendet ebenfalls die Merkle-Dåmgard-Konstruktion mit einer Blockgröße von 512 Bit (SHA-256) und 1024 Bit (SHA-512)
@@ -1708,8 +1684,8 @@
                   \item Aufgrund der Größe und der komplizierteren Rundungsfunktionen etwa 30-50 Prozent langsamer als SHA-1 (variiert für 64-Bit- und 32-Bit-Systeme!)
                   \item Sicherheitsdiskussion:
                   \begin{itemize*}
-                        \item Bereits 2004 wurde entdeckt, dass eine vereinfachte Version des Algorithmus (mit XOR statt Addition und symmetrischen Konstanten) hochkorrelierte Ausgaben erzeugt ,,GH04''
-                        \item Für rundenreduzierte Versionen von SHA-2 gibt es Pre-Image-Angriffe, die schneller sind als Brute-Force, aber sehr unpraktisch (z.B. ,,AGM09'')
+                        \item Bereits 2004 wurde entdeckt, dass eine vereinfachte Version des Algorithmus (mit XOR statt Addition und symmetrischen Konstanten) hochkorrelierte Ausgaben erzeugt
+                        \item Für rundenreduzierte Versionen von SHA-2 gibt es Pre-Image-Angriffe, die schneller sind als Brute-Force, aber sehr unpraktisch
                         \item Auch wenn Größe und Komplexität derzeit keine Angriffe zulassen, ist die Situation unangenehm
                         \item Dies führte zur Notwendigkeit eines neuen SHA-3-Standards
                   \end{itemize*}
@@ -1777,13 +1753,12 @@
                   \item Im Vergleich zu SHA-1 und SHA-2 werden zusätzliche Sicherheitseigenschaften garantiert, da der interne Zustand nie öffentlich gemacht wird
                   \begin{itemize*}
                         \item Verhindert Angriffe, bei denen beliebige Informationen zu einer gültigen geheimen Nachricht hinzugefügt werden
-                        \item Bietet Chosen Target Forced Prefix (CTFP) Preimage-Resistenz ,,KK06'', d.h. es ist nicht möglich, eine Nachricht $m=P|| S$ zu konstruieren, wobei P fest und S beliebig gewählt ist, s.t., $H(m)=y$
+                        \item Bietet Chosen Target Forced Prefix (CTFP) Preimage-Resistenz, d.h. es ist nicht möglich, eine Nachricht $m=P|| S$ zu konstruieren, wobei P fest und S beliebig gewählt ist, s.t., $H(m)=y$
                         \item Für Merkle-Dåmgard-Konstruktionen ist dies nur so schwer wie die Kollisionssicherheit
-                        \item Keine schnelle Möglichkeit, Multikollisionen schnell zu erzeugen ,,Jou04''
+                        \item Keine schnelle Möglichkeit, Multikollisionen schnell zu erzeugen
                   \end{itemize*}
             \end{itemize*}
       \end{itemize*}
-
 
       \subsection{Cipher Block Chaining Message Authentication Codes}
       \begin{itemize*}
@@ -1816,16 +1791,16 @@
             \item Grundidee: ,,mix'' einen geheimen Schlüssel K mit der Eingabe und berechne einen MDC
             \item Die Annahme, dass ein Angreifer K kennen muss, um einen gültigen MAC zu erzeugen, wirft dennoch einige kryptografische Probleme auf (zumindest für Merkle-Dåmgard-Hash-Funktionen):
             \begin{itemize*}
-                  \item Die Konstruktion $H(K|| m)$ ist nicht sicher (siehe Anmerkung 9.64 in ,,Men97a'')
-                  \item Die Konstruktion $H(m|| K)$ ist nicht sicher (siehe Bemerkung 9.65 in ,,Men97a'')
+                  \item Die Konstruktion $H(K|| m)$ ist nicht sicher
+                  \item Die Konstruktion $H(m|| K)$ ist nicht sicher
                   \item Die Konstruktion $H(K|| p|| m|| K)$, bei der p ein zusätzliches Auffüllfeld bezeichnet, bietet keine ausreichende Sicherheit
             \end{itemize*}
             \item Die am häufigsten verwendete Konstruktion ist: $H(K\oplus p_1|| H(K\oplus p_2|| m))$
             \begin{itemize*}
                   \item Der Schlüssel wird mit 0's aufgefüllt, um den Schlüssel zu einem Eingabeblock der kryptographischen Hashfunktion aufzufüllen
                   \item Zwei verschiedene konstante Muster $p_1$ und $p_2$ werden mit dem aufgefüllten Schlüssel XOR-verknüpft
-                  \item Dieses Schema scheint sicher zu sein (siehe Anmerkung 9.67 in ,,Men97a'')
-                  \item Es wurde in RFC 2104 ,,Kra97a'' standardisiert und wird HMAC genannt.
+                  \item Dieses Schema scheint sicher zu sein
+                  \item Es wurde in RFC 2104 standardisiert und wird HMAC genannt.
             \end{itemize*}
       \end{itemize*}
 
@@ -1843,7 +1818,7 @@
             \end{itemize*}
       \end{itemize*}
 
-      \subsubsection{Galois/Zähler-Modus (GCM) ,,MV04''}
+      \subsubsection{Galois/Zähler-Modus (GCM)}
       \begin{itemize*}
             \item Beliebter AEAD-Modus
             \item NIST-Standard, Teil von IEEE 802.1AE, IPsec, TLS, SSH usw.
@@ -1872,9 +1847,9 @@
                   \item Erwiesenermaßen sicher (unter bestimmten Voraussetzungen, z. B. wenn die verwendete Blockchiffre nicht von Zufallszahlen unterscheidbar ist), aber die Konstruktion ist anfällig:
                   \item IVs MÜSSEN NICHT wiederverwendet werden, da sonst Datenströme XOR-verknüpft werden können und das XOR der Datenströme wiederhergestellt werden kann, was zu einer sofortigen Wiederherstellung des geheimen Werts ,,H'' führen kann
                   \item H hat einen möglichen schwachen Wert $0^{128}$, in diesem Fall wird die Authentifizierung nicht funktionieren, und wenn IVs mit einer anderen Länge als 96 Bits verwendet werden, wird $C_0$ immer gleich sein!
-                  \item Einige andere Schlüssel erzeugen Hash-Schlüssel mit einer niedrigen Ordnung, was vermieden werden muss... ,,Saa11''
-                  \item Erfolgreiche Fälschungsversuche können Informationen über H durchsickern lassen, daher MÜSSEN kurze MAC-Längen vermieden oder risikominimiert werden ,,Dwo07''
-                  \item Die erreichte Sicherheit ist nur $2^{t-k}$ und nicht $2^t$ (für MAC-Länge t und Anzahl der Blöcke $2^k$), da Blöcke modifiziert werden können, um nur Teile des MAC zu ändern ,,Fer05''
+                  \item Einige andere Schlüssel erzeugen Hash-Schlüssel mit einer niedrigen Ordnung, was vermieden werden muss...
+                  \item Erfolgreiche Fälschungsversuche können Informationen über H durchsickern lassen, daher MÜSSEN kurze MAC-Längen vermieden oder risikominimiert werden
+                  \item Die erreichte Sicherheit ist nur $2^{t-k}$ und nicht $2^t$ (für MAC-Länge t und Anzahl der Blöcke $2^k$), da Blöcke modifiziert werden können, um nur Teile des MAC zu ändern
             \end{itemize*}
       \end{itemize*}
 
@@ -1907,7 +1882,7 @@
 
       \subsection{SpongeWrap}
       \begin{itemize*}
-            \item Durch Verwendung von SHA-3 ist es auch möglich, ein AEAD-Konstrukt zu implementieren ,,BDP11a''
+            \item Durch Verwendung von SHA-3 ist es auch möglich, ein AEAD-Konstrukt zu implementieren
             \item Die Konstruktion ist sehr einfach und vergleichsweise leicht zu verstehen
             \item Verwendet den sogenannten Duplex-Modus für Sponge-Funktionen, bei dem Schreib- und Leseoperationen verschachtelt werden
             \item Erfordert kein Auffüllen der Daten auf eine bestimmte Blockgröße
@@ -2007,13 +1982,8 @@
                   \item Werte des Betriebssystems wie Systemauslastung und Netzwerkstatistiken
             \end{itemize*}
             \item Idealerweise sollten mehrere Zufallsquellen ,,gemischt'' werden, z. B. durch Verkettung ihrer Werte und Berechnung eines kryptografischen Hashwerts für den kombinierten Wert, um zu verhindern, dass ein Angreifer den Zufallswert erraten kann
-            \begin{itemize*}
-                  \item Wird z. B. nur die Systemuhr als Zufallsquelle verwendet, könnte ein Angreifer die aus dieser Zufallsquelle gewonnenen Zufallszahlen erraten, wenn er weiß, wann sie erzeugt wurden.
-            \end{itemize*}
-            \item Verzerrung
-            \begin{itemize*}
-                  \item Betrachten wir einen Zufallsgenerator, der verzerrte, aber unkorrelierte Bits erzeugt, z. B. 1en mit der Wahrscheinlichkeit $p\not= 0,5$ und 0en mit der Wahrscheinlichkeit $1-p$, wobei p unbekannt, aber fest ist
-            \end{itemize*}
+            \item Wird z. B. nur die Systemuhr als Zufallsquelle verwendet, könnte ein Angreifer die aus dieser Zufallsquelle gewonnenen Zufallszahlen erraten, wenn er weiß, wann sie erzeugt wurden.
+            \item Verzerrung:  Betrachten wir einen Zufallsgenerator, der verzerrte, aber unkorrelierte Bits erzeugt, z. B. 1en mit der Wahrscheinlichkeit $p\not= 0,5$ und 0en mit der Wahrscheinlichkeit $1-p$, wobei p unbekannt, aber fest ist
             \item Die folgende Technik kann verwendet werden, um eine Zufallsfolge zu erhalten, die unkorreliert und unverzerrt ist:
             \begin{itemize*}
                   \item Die Ausgangssequenz des Generators wird in Bitpaare gruppiert
@@ -2026,15 +1996,13 @@
       \subsection{Statistische Tests für Zufallszahlen}
       \begin{itemize*}
             \item Mit den folgenden Tests lässt sich überprüfen, ob eine generierte Zufalls- oder Pseudozufallsfolge bestimmte statistische Eigenschaften nicht erfüllt
-            \begin{itemize*}
-                  \item Monobit-Test: Gibt es gleich viele 1en wie 0en?
-                  \item Serieller Test (Zwei-Bit-Test): Gibt es gleich viele 00-, 01-, 10-, 11-Paare?
-                  \item Poker-Test: Gibt es gleich viele Sequenzen ni der Länge q, die mit $q$ den gleichen Wert haben, so dass $\lfloor m/q\rfloor\geq 5\times (2^q)$
-                  \item Test auf Durchläufe: Entspricht die Anzahl der Läufe (Sequenzen, die nur entweder 0 oder 1 enthalten) unterschiedlicher Länge den Erwartungen für Zufallszahlen?
-                  \item Autokorrelationstest: Gibt es Korrelationen zwischen der Sequenz und (nicht-zyklischen) verschobenen Versionen davon?
-                  \item Maurer's Universal Test: Kann die Sequenz komprimiert werden?
-                  \item NIST SP 800-22: Standardisierte Testsuite, umfasst die oben genannten und weitere fortgeschrittene Tests
-            \end{itemize*}
+            \item Monobit-Test: Gibt es gleich viele 1en wie 0en?
+            \item Serieller Test (Zwei-Bit-Test): Gibt es gleich viele 00-, 01-, 10-, 11-Paare?
+            \item Poker-Test: Gibt es gleich viele Sequenzen ni der Länge q, die mit $q$ den gleichen Wert haben, so dass $\lfloor m/q\rfloor\geq 5\times (2^q)$
+            \item Test auf Durchläufe: Entspricht die Anzahl der Läufe (Sequenzen, die nur entweder 0 oder 1 enthalten) unterschiedlicher Länge den Erwartungen für Zufallszahlen?
+            \item Autokorrelationstest: Gibt es Korrelationen zwischen der Sequenz und (nicht-zyklischen) verschobenen Versionen davon?
+            \item Maurer's Universal Test: Kann die Sequenz komprimiert werden?
+            \item NIST SP 800-22: Standardisierte Testsuite, umfasst die oben genannten und weitere fortgeschrittene Tests
       \end{itemize*}
 
       \subsection{Sichere Pseudo-Zufallszahlengenerierung}
@@ -2146,11 +2114,7 @@
       \subsection{Anwendungen von kryptographischen Protokollen}
       \begin{itemize*}
             \item Schlüsselaustausch
-            \item Authentifizierung
-            \begin{itemize*}
-                  \item Authentifizierung der Datenherkunft
-                  \item Authentifizierung von Entitäten
-            \end{itemize*}
+            \item Authentifizierung der Datenherkunft/Entitäten
             \item Kombinierte Authentifizierung und Schlüsselaustausch
             \item Aufteilung des Geheimnisses (alle Teile werden für die Rekonstruktion benötigt)
             \item Gemeinsame Nutzung des Geheimnisses (m von n Teilen werden für die Rekonstruktion benötigt)
@@ -2163,7 +2127,6 @@
       \end{itemize*}
 
       \subsection{Schlüsselaustausch}
-
       \begin{itemize*}
             \item Das vorgestellte Diffie-Hellman-Protokoll ist unser erstes Beispiel für ein kryptographisches Protokoll zum Schlüsselaustausch
             \item Bitte beachten Sie, dass es keine Authentifizierung realisiert
@@ -2183,14 +2146,10 @@
 
       \begin{itemize*}
             \item Die Beziehung zwischen Datenintegrität und kryptografischen Protokollen ist zweifach
-            \begin{itemize*}
-                  \item Es gibt kryptografische Protokolle zur Sicherstellung der Datenintegrität. Sie umfassen in der Regel nur einen Protokollschritt und sind daher nicht sehr ,,spannend'':
-                  \begin{itemize*}
-                        \item Beispiel 1: Angenommen, jeder kennt den öffentlichen RSA-Schlüssel von Alice und kann sicher sein, dass er den Schlüssel von Alice wirklich kennt, dann kann Alice die Datenintegrität ihrer Nachrichten sicherstellen, indem sie sie mit ihrem privaten Schlüssel verschlüsselt.
-                        \item Beispiel 2: Alice kann auch einen MDC über ihre Nachricht berechnen und den mit ihrem privaten Schlüssel verschlüsselten MDC an die Nachricht anhängen
-                  \end{itemize*}
-                  \item Die Datenintegrität der ausgetauschten Nachrichten ist oft eine wichtige Eigenschaft in kryptografischen Protokollen, daher ist die Datenintegrität ein Baustein für kryptografische Protokolle
-            \end{itemize*}
+            \item Es gibt kryptografische Protokolle zur Sicherstellung der Datenintegrität. Sie umfassen in der Regel nur einen Protokollschritt und sind daher nicht sehr ,,spannend''
+            \item Beispiel 1: Angenommen, jeder kennt den öffentlichen RSA-Schlüssel von Alice und kann sicher sein, dass er den Schlüssel von Alice wirklich kennt, dann kann Alice die Datenintegrität ihrer Nachrichten sicherstellen, indem sie sie mit ihrem privaten Schlüssel verschlüsselt.
+            \item Beispiel 2: Alice kann auch einen MDC über ihre Nachricht berechnen und den mit ihrem privaten Schlüssel verschlüsselten MDC an die Nachricht anhängen
+            \item Die Datenintegrität der ausgetauschten Nachrichten ist oft eine wichtige Eigenschaft in kryptografischen Protokollen, daher ist die Datenintegrität ein Baustein für kryptografische Protokolle
       \end{itemize*}
 
       \subsection{Authentifizierung von Entitäten}
@@ -2248,8 +2207,7 @@
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Notation kryptographischer Protokolle}
-
+      %\subsection{Notation kryptographischer Protokolle}
       %\begin{longtable}[]{@{}ll@{}}
       % \toprule
       % Notation & Bedeutung\tabularnewline
@@ -2281,7 +2239,7 @@
 
       \subsection{Das Needham-Schroeder-Protokoll}
       \begin{itemize*}
-            \item Erfunden im Jahr 1978 von Roger Needham und Michael Schroeder ,,Nee78a''
+            \item Erfunden im Jahr 1978 von Roger Needham und Michael Schroeder
             \item Das Protokoll basiert auf symmetrischer Verschlüsselung und nutzt eine vertrauenswürdige dritte Partei (TTP)
             \item Angenommen, TTP teilt die geheimen Schlüssel KA,TTP und KB,TTP mit Alice bzw. Bob:
             \begin{itemize*}
@@ -2312,10 +2270,7 @@
 
       \subsection{Das Otway-Rees-Protokoll}
       \begin{itemize*}
-            \item Das oben beschriebene Sicherheitsproblem sowie einige andere wurden
-            von Needham und Schroeder behandelt. Ihre Lösung ,,Nee87a'' ist im
-            Wesentlichen die gleiche wie die von Otway und Rees in der gleichen
-            Zeitschrift ,,Otw87a'' vorgeschlagene:
+            \item Das oben beschriebene Sicherheitsproblem sowie einige andere wurden von Needham und Schroeder behandelt. Ihre Lösung ist im Wesentlichen die gleiche wie die von Otway und Rees in der gleichen Zeitschrift vorgeschlagene:
             \begin{itemize*}
                   \item Alice generiert eine Nachricht, die eine Indexzahl $i_A$, ihren Namen A, Bobs Namen B und die gleichen Informationen plus eine zusätzliche Zufallszahl $r_A$ enthält, die mit dem Schlüssel $K_{A,TTP}$ verschlüsselt ist, den sie mit TTP teilt, und sendet diese Nachricht an Bob:
                   \begin{enumerate*}
@@ -2344,7 +2299,6 @@
                   \item Skalierbarkeit: Das System sollte in der Lage sein, eine große Anzahl von Clients und Servern zu unterstützen.
             \end{itemize*}
             \item Das Kerberos zugrunde liegende kryptografische Verfahren ist die symmetrische Verschlüsselung (Kerberos V. 4 verwendet DES, V. 5 erlaubt andere Algorithmen)
-            \item Eine gute Anleitung zu den Überlegungen hinter dem Kerberos-Design findet sich in ,,Bry88a'', wo das Protokoll in einer Reihe von fiktiven Dialogen entwickelt wird
             \item Das grundlegende Anwendungsszenario von Kerberos ist ein Benutzer, Alice, der auf einen oder mehrere verschiedene Dienste zugreifen möchte, die von verschiedenen Servern $S_1, S_2, ...$ bereitgestellt werden, die über ein unsicheres Netzwerk verbunden sind
             \item Kerberos befasst sich mit den folgenden Sicherheitsaspekten in diesem Szenario
             \begin{itemize*}
@@ -2357,13 +2311,7 @@
       Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
       \begin{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Kerberos.png}
-            \item Der Benutzer meldet sich an seiner Arbeitsstation an und fordert den Zugriff auf einen Dienst an:
-            \begin{itemize*}
-                  \item Die Workstation repräsentiert ihn im Kerberos-Protokoll und sendet die erste Nachricht an den Authentifizierungsserver AS, die seinen Namen, den Namen eines geeigneten Ticket-Granting-Servers TGS und einen Zeitstempel $t_A$ enthält:
-            \end{itemize*}
-            \begin{enumerate*}
-                  \item $A\rightarrow AS:(A, TGS, t_A)$
-            \end{enumerate*}
+            \item Der Benutzer meldet sich an seiner Arbeitsstation an und fordert den Zugriff auf einen Dienst an: Die Workstation repräsentiert ihn im Kerberos-Protokoll und sendet die erste Nachricht an den Authentifizierungsserver AS, die seinen Namen, den Namen eines geeigneten Ticket-Granting-Servers TGS und einen Zeitstempel $t_A$ enthält:  $A\rightarrow AS:(A, TGS, t_A)$
             \item Der AS prüft, ob A sich für den Zugang zu den Diensten authentifizieren darf, generiert aus A's Passwort (das ihm bekannt ist) den Schlüssel KA, extrahiert die Arbeitsplatzadresse $Addr_A$ der Anfrage, erstellt ein Ticket $Ticket_{TGS}$ und einen Sitzungsschlüssel $K_{A,TGS}$ und sendet die folgende Nachricht an A: 2. $AS\rightarrow A:{ K_{A,TGS}, TGS, t_{AS}, LifetimeTicket_{TGS}, Ticket_{TGS}}_{K_A}$ mit $Ticket_{TGS}={K_{A,TGS},A, Addr_A, TGS, t_{AS}, LifetimeTicket_{TGS}}_{{K}{AS,TGS}}$
             \item Nach Erhalt dieser Nachricht fordert die Workstation Alice auf, ihr Passwort einzugeben, berechnet daraus den Schlüssel $K_A$ und entschlüsselt die Nachricht mit diesem Schlüssel. Wenn Alice nicht ihr ,,authentisches'' Passwort angibt, sind die extrahierten Werte ,,Müll'' und der Rest des Protokolls schlägt fehl.
             \item Alice erstellt einen sogenannten Authenticator und sendet ihn zusammen mit dem Ticket und dem Namen des Servers $S1$ an TGS: 3. $A\rightarrow TGS:(S1, Ticket_{TGS}, Authenticator_{A,TGS})$ mit Authenticator $A,TGS={A,Addr_A,t'_{A}}{K_{A,TGS}}$
@@ -2374,7 +2322,6 @@
             \item Das oben beschriebene Protokoll ist der Kerberos-Dialog der Version 4.
             \begin{itemize*}
                   \item In diesem Protokoll wurden eine Reihe von Mängeln festgestellt, so dass eine neue Version 5 des Protokolls definiert wurde, auf die wir später eingehen werden...
-                  \item Wo liegt eigentlich das Problem?
             \end{itemize*}
       \end{itemize*}
 
@@ -2482,7 +2429,7 @@
 
       \subsection{PAKE-Schemata: EKE}
       \begin{itemize*}
-            \item Ein einfaches erstes Protokoll ist Encrypted Key Exchange (EKE) ,,BM92''
+            \item Ein einfaches erstes Protokoll ist Encrypted Key Exchange (EKE)
             \item Der Dialog beginnt damit, dass A ein privates/öffentliches Schlüsselpaar zur einmaligen Verwendung erzeugt und den öffentlichen Schlüssel $+K_{ar}$ verschlüsselt mit dem Passwort $K_{A,B}$ an B sendet
             \begin{enumerate*}
                   \item $A\rightarrow B:A,{+K_{ar}}_{{K}{A,B}}$
@@ -2506,12 +2453,9 @@
             \begin{itemize*}
                   \item Was bedeutet das für ECC?
                   \item Für RSA schlagen die Autoren vor, e zu verschlüsseln und n im Klartext zu senden
-                  \begin{itemize*}
-                        \item n hat keine kleinen Primfaktoren und ist daher von Zufallszahlen unterscheidbar
-                        \item Immer noch unsicher gegen Man-in-the-Middle-Angriffe, da Angreifer n mit besonderen Eigenschaften wählen können (z.B. $p-1$ und $q-1$ teilbar durch 3)
-                        \item Antwort von B ist von Zufallszahlen unterscheidbar
-                        \item Details sind in ,,Par97'' oder ,,SR14'' zu finden.
-                  \end{itemize*}
+                  \item n hat keine kleinen Primfaktoren und ist daher von Zufallszahlen unterscheidbar
+                  \item Immer noch unsicher gegen Man-in-the-Middle-Angriffe, da Angreifer n mit besonderen Eigenschaften wählen können (z.B. $p-1$ und $q-1$ teilbar durch 3)
+                  \item Antwort von B ist von Zufallszahlen unterscheidbar
             \end{itemize*}
             \item Bietet keine perfekte Vorwärtsverschwiegenheit...
             \item Aber es gibt ein anderes Protokoll von den Autoren namens DH-EKE
@@ -2547,7 +2491,7 @@
       \subsubsection{SRP}
       \begin{itemize*}
             \item Das heute am weitesten verbreitete Protokoll: Sicheres Fernkennwort (SRP)
-            \item Mehrere Versionen: Hier SRP-6a ,,Wu02''
+            \item Mehrere Versionen: Hier SRP-6a
             \item Initialisierung:
             \begin{itemize*}
                   \item Server B wählt eine Zufallszahl $s_{A,B}$
@@ -2618,7 +2562,7 @@
             \item Die Sicherheit des privaten Schlüssels der CA ist entscheidend für die Sicherheit aller Nutzer!
             \item Notation eines Zertifikats, das einen öffentlichen Schlüssel $+K_A$ an Benutzer A bindet, ausgestellt von der Zertifizierungsstelle CA unter Verwendung ihres privaten Schlüssels $-CK_{CA}$:
             \begin{itemize*}
-                  \item $Cert_{-CK_{CA}}(+K_A) = CA,,V, SN, AI, CA, T_{CA}, A, +K_A''$ mit:
+                  \item $Cert_{-CK_{CA}}(+K_A) = CA_{V, SN, AI, CA, T_{CA}, A, +K_A}$ mit:
                   \begin{itemize*}
                         \item V = Versionsnummer
                         \item SN = Seriennummer
@@ -2628,7 +2572,7 @@
                         \item A = Name, an den der öffentliche Schlüssel in diesem Zertifikat gebunden ist
                         \item $+K_A$ = öffentlicher Schlüssel, der an einen Namen gebunden wird
                   \end{itemize*}
-                  \item Die Kurzschreibweise $CA,,m''$ steht für $(m,{H(m)}_{{-CK}{CA}})$
+                  \item Die Kurzschreibweise $CA_m$ steht für $(m,{H(m)}_{{-CK}{CA}})$
                   \item Eine andere Kurzschreibweise für $Cert_{-CK_{CA}}(+K_A)$ ist $CA<>$
             \end{itemize*}
       \end{itemize*}
@@ -2779,15 +2723,13 @@
                   \item Spezifische logikbasierte Ansätze:
                   \begin{itemize*}
                         \item Ansätze dieser Klasse definieren einen Satz von Prädikaten und eine Abbildung der während eines Protokolllaufs ausgetauschten Nachrichten auf einen Satz von Formeln
-                        \item Ein generischer Satz von Regeln erlaubt es dann, das Wissen und den Glauben zu analysieren, der von den Peer-Entitäten eines kryptographischen Protokolls während eines Protokolllaufs erlangt wird (recht erfolgreicher Ansatz: GNY-Logik ,,GNY90a'')
+                        \item Ein generischer Satz von Regeln erlaubt es dann, das Wissen und den Glauben zu analysieren, der von den Peer-Entitäten eines kryptographischen Protokolls während eines Protokolllaufs erlangt wird (recht erfolgreicher Ansatz: GNY-Logik)
                   \end{itemize*}
             \end{itemize*}
       \end{itemize*}
 
       \section{Sichere Gruppenkommunikation}
-
       \section{Zugriffskontrolle}
-
       \subsection{Was ist Zugangskontrolle?}
       \begin{itemize*}
             \item Definition: Die Zugriffskontrolle umfasst die Mechanismen, die die Vermittlung von Subjektanfragen für den Zugriff auf Objekte, wie sie in einer bestimmten Sicherheitspolitik definiert sind, erzwingen.
@@ -2887,25 +2829,18 @@
             \item Es gibt zwei Haupttypen von Zugriffskontrollmechanismen:
             \begin{itemize*}
                   \item Diskretionäre Zugriffskontrolle umfasst diejenigen Verfahren und Mechanismen, die die spezifizierte Vermittlung nach dem Ermessen der einzelnen Benutzer durchsetzen
-                  \begin{itemize*}
-                        \item Beispiel: Das Unix-Betriebssystem ermöglicht es den Benutzern, die Zugriffsrechte für Dateien, die ihnen gehören, zu erteilen oder zu entziehen (Lesen, Schreiben, Ausführen).
-                  \end{itemize*}
+                  \item Beispiel: Das Unix-Betriebssystem ermöglicht es den Benutzern, die Zugriffsrechte für Dateien, die ihnen gehören, zu erteilen oder zu entziehen (Lesen, Schreiben, Ausführen).
                   \item Die obligatorische Zugriffskontrolle umfasst die Verfahren und Mechanismen, die die angegebene Vermittlung nach dem Ermessen einer zentralen Systemverwaltung durchsetzen.
             \end{itemize*}
             \item Beide Arten können kombiniert werden, wobei die obligatorischen Zugriffskontrollentscheidungen in den meisten Fällen Vorrang vor den diskretionären Entscheidungen haben
-            \begin{itemize*}
-                  \item Beispiel:
-                  \item Verwendung einer diskretionären Zugangskontrolle auf Personalcomputern kombiniert mit einer obligatorischen Zugangskontrolle für die Kommunikation ($\rightarrow$ Firewalls)
-            \end{itemize*}
+            \item Beispiel: Verwendung einer diskretionären Zugangskontrolle auf Personalcomputern kombiniert mit einer obligatorischen Zugangskontrolle für die Kommunikation ($\rightarrow$ Firewalls)
       \end{itemize*}
 
       \subsection{Zugriffsmatrizen}
       \begin{itemize*}
-            \item Ein nützliches Konzept für die Beschreibung von Zugangskontrollmechanismen ist die Zugangsmatrix:
-            \begin{itemize*}
-                  \item In einer Zugriffsmatrix für zwei Mengen von Subjekten und Objekten entspricht jede Zeile einem Subjekt und jede Spalte einem Objekt
-                  \item Jede Zelle der Matrix definiert die Zugriffsrechte des entsprechenden Subjekts auf das entsprechende Objekt
-            \end{itemize*}
+            \item Ein nützliches Konzept für die Beschreibung von Zugangskontrollmechanismen ist die Zugangsmatrix
+            \item In einer Zugriffsmatrix für zwei Mengen von Subjekten und Objekten entspricht jede Zeile einem Subjekt und jede Spalte einem Objekt
+            \item Jede Zelle der Matrix definiert die Zugriffsrechte des entsprechenden Subjekts auf das entsprechende Objekt
       \end{itemize*}
 
       %\begin{longtable}[]{@{}lllll@{}}
@@ -2937,7 +2872,7 @@
                   \item Wenn Sicherheitslabels mit den Entitäten eines Systems gespeichert und verarbeitet werden, können sie zur Durchführung einer label-basierten Zugriffskontrolle verwendet werden
                   \item Dieses Verfahren wird in der Regel als obligatorischer Zugriffskontrollmechanismus verwendet.
             \end{itemize*}
-            \item $\rightarrow$ Die Datenintegrität von Zugriffskontrolldatenstrukturen ist entscheidend!
+            \item[$\rightarrow$] Die Datenintegrität von Zugriffskontrolldatenstrukturen ist entscheidend!
       \end{itemize*}
 
       \section{Integration von Sicherheitsdiensten in Kommunikationsarchitekturen}
@@ -2981,11 +2916,9 @@
       \subsection{Beziehungen zwischen Schichten und Anforderungsniveaus}
       \begin{itemize*}
             \item Die Beziehungen zwischen den Protokollschichten und den Stufen der Sicherheitsanforderungen für die Protokollelemente sind nicht eins-zu-eins
-            \begin{itemize*}
-                  \item Sicherheitsmechanismen, die sowohl die Anforderungen der Endsystem- als auch der Teilnetzebene erfüllen, können entweder in der Transport- und/oder in der Netzwerkschicht realisiert werden.
-                  \item Die Anforderungen der Verbindungsebene können durch die Integration von Sicherheitsmechanismen oder durch die Verwendung von ,,speziellen Funktionen'' der Verbindungsschicht und/oder der physikalischen Schicht erfüllt werden.
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Layer-relationship.png}
-            \end{itemize*}
+            \item Sicherheitsmechanismen, die sowohl die Anforderungen der Endsystem- als auch der Teilnetzebene erfüllen, können entweder in der Transport- und/oder in der Netzwerkschicht realisiert werden.
+            \item Die Anforderungen der Verbindungsebene können durch die Integration von Sicherheitsmechanismen oder durch die Verwendung von ,,speziellen Funktionen'' der Verbindungsschicht und/oder der physikalischen Schicht erfüllt werden.
+            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Layer-relationship.png}
       \end{itemize*}
 
       \subsection{Allgemeine Überlegungen zur architektonischen Platzierung}
@@ -3073,40 +3006,34 @@
                   \begin{itemize*}
                         \item Der Benutzer gibt einige Authentifizierungsinformationen an das lokale System weiter, die sicher an das entfernte System weitergeleitet werden
                   \end{itemize*}
-                  \item Kombination der oben genannten Mittel:
-                  \begin{itemize*}
-                        \item Beispiel: Kerberos
-                  \end{itemize*}
+                  \item Kombination der oben genannten Mittel. Beispiel: Kerberos
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Integration in untere Protokollschichten vs. Anwendungen}
       \begin{itemize*}
-            \item Vorteile der Integration von Sicherheitsdiensten in niedrigere Netzwerkschichten:
+            \item Vorteile der Integration von Sicherheitsdiensten in niedrigere Netzwerkschichten
+            \item Sicherheit:
             \begin{itemize*}
-                  \item Sicherheit:
-                  \begin{itemize*}
-                        \item Auch das Netz selbst muss geschützt werden
-                        \item Sicherheitsmechanismen, die in den Netzelementen (insbesondere in der Hardware) realisiert sind, sind für die Netznutzer oft schwerer angreifbar
-                  \end{itemize*}
-                  \item Anwendungsunabhängigkeit:
-                  \begin{itemize*}
-                        \item Grundlegende Netzsicherheitsdienste müssen nicht in jede einzelne Anwendung integriert werden
-                  \end{itemize*}
-                  \item Dienstgüte (QoS):
-                  \begin{itemize*}
-                        \item Die QoS-erhaltende Planung des Kommunikationssubsystems kann auch die Verschlüsselung nebeneinander bestehender Datenströme planen.
-                        \item Beispiel: gleichzeitiger Sprachanruf und FTP-Übertragung
-                  \end{itemize*}
-                  \item Effizienz:
-                  \begin{itemize*}
-                        \item Hardware-Unterstützung für rechenintensive Ver-/Entschlüsselung kann leichter in die Protokollverarbeitung integriert werden
-                  \end{itemize*}
+                  \item Auch das Netz selbst muss geschützt werden
+                  \item Sicherheitsmechanismen, die in den Netzelementen (insbesondere in der Hardware) realisiert sind, sind für die Netznutzer oft schwerer angreifbar
+            \end{itemize*}
+            \item Anwendungsunabhängigkeit:
+            \begin{itemize*}
+                  \item Grundlegende Netzsicherheitsdienste müssen nicht in jede einzelne Anwendung integriert werden
+            \end{itemize*}
+            \item Dienstgüte (QoS):
+            \begin{itemize*}
+                  \item Die QoS-erhaltende Planung des Kommunikationssubsystems kann auch die Verschlüsselung nebeneinander bestehender Datenströme planen.
+                  \item Beispiel: gleichzeitiger Sprachanruf und FTP-Übertragung
+            \end{itemize*}
+            \item Effizienz:
+            \begin{itemize*}
+                  \item Hardware-Unterstützung für rechenintensive Ver-/Entschlüsselung kann leichter in die Protokollverarbeitung integriert werden
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Integration in Endsysteme vs. Zwischensysteme}
-
       \begin{itemize*}
             \item Integration in Endsysteme:
             \begin{itemize*}
@@ -3124,8 +3051,7 @@
             \item Je nach den Sicherheitszielen kann eine Integration sowohl in Endsystemen als auch in Zwischensystemen sinnvoll sein
       \end{itemize*}
 
-      \subsection{Beispiel: Authentifizierungsbeziehungen in Inter-Netzwerken}
-
+      %\subsection{Beispiel: Authentifizierungsbeziehungen in Inter-Netzwerken}
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Authentication-relation-in-inter-networks.png}
 
       %\begin{longtable}[]{@{}ll@{}}
@@ -3203,14 +3129,11 @@
       \end{itemize*}
 
       \subsubsection{IEEE 802.1Q}
-      Ziele und Dienste
+      Ziele und Dienste. Der Standard IEEE 802.1Q
       \begin{itemize*}
-            \item Der Standard IEEE 802.1Q:
-            \begin{itemize*}
-                  \item Ermöglicht die Schaffung von ,,miteinander verbundenen IEEE-802-Standard-LANs mit unterschiedlichen oder identischen Methoden der Medienzugriffskontrolle'', d. h. die Schaffung separater virtueller lokaler Netzwerke (VLANs) über eine physische Infrastruktur
-                  \item Obwohl es sich nicht um einen echten Sicherheitsstandard handelt, wird er häufig verwendet, um verschiedene Benutzer und Dienste voneinander zu trennen, z. B. nicht vertrauenswürdige Gastcomputer von Unternehmensservern, ohne eine neue Infrastruktur einzurichten
-                  \item Wird verwendet, um Zugangskontrolle auf Verbindungsebene zu realisieren
-            \end{itemize*}
+            \item Ermöglicht die Schaffung von ,,miteinander verbundenen IEEE-802-Standard-LANs mit unterschiedlichen oder identischen Methoden der Medienzugriffskontrolle'', d. h. die Schaffung separater virtueller lokaler Netzwerke (VLANs) über eine physische Infrastruktur
+            \item Obwohl es sich nicht um einen echten Sicherheitsstandard handelt, wird er häufig verwendet, um verschiedene Benutzer und Dienste voneinander zu trennen, z. B. nicht vertrauenswürdige Gastcomputer von Unternehmensservern, ohne eine neue Infrastruktur einzurichten
+            \item Wird verwendet, um Zugangskontrolle auf Verbindungsebene zu realisieren
       \end{itemize*}
 
       Grundlegende Funktionsweise
@@ -3232,7 +3155,7 @@
             \item VLANs werden normalerweise gekoppelt durch
             \begin{itemize*}
                   \item Router, die mehrere Schnittstellen in den verschiedenen VLANs haben
-                  \item Router, die selbst zum vertrauenswürdigen Netzwerk gehören und selbst getaggte Frames empfangen und senden können (kann gefährlich sein, Wechselwirkung zwischen Routing und VLANs, siehe unten)
+                  \item Router, die selbst zum vertrauenswürdigen Netzwerk gehören und selbst getaggte Frames empfangen und senden können (kann gefährlich sein, Wechselwirkung zwischen Routing und VLANs)
             \end{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ieee802.1q-scenario.png}
       \end{itemize*}
@@ -3256,25 +3179,16 @@
       \end{itemize*}
 
       \subsubsection{IEEE 802.1X}
-      Ziele
       \begin{itemize*}
-            \item Der Standard IEEE 802.1X:
-            \begin{itemize*}
-                  \item Ziel ist es, ,,den Zugang zu den von einem LAN angebotenen Diensten auf diejenigen Benutzer und Geräte zu beschränken, die diese Dienste nutzen dürfen''
-            \end{itemize*}
-            \item Definiert eine portbasierte Netzwerkzugriffskontrolle, um ein Mittel
-            zur ,,Authentifizierung und Autorisierung von Geräten bereitzustellen,
-            die an einen LAN-Port mit Punkt-zu-Punkt-Verbindungseigenschaften
-            angeschlossen sind''.
+            \item Ziel ist es, ,,den Zugang zu den von einem LAN angebotenen Diensten auf diejenigen Benutzer und Geräte zu beschränken, die diese Dienste nutzen dürfen''
+            \item Definiert eine portbasierte Netzwerkzugriffskontrolle, um ein Mittel zur ,,Authentifizierung und Autorisierung von Geräten bereitzustellen, die an einen LAN-Port mit Punkt-zu-Punkt-Verbindungseigenschaften angeschlossen sind''.
       \end{itemize*}
 
       Kontrollierte und unkontrollierte Ports
       \begin{itemize*}
             \item IEEE 802.1X führt den Begriff der zwei logischen Ports ein:
-            \begin{itemize*}
-                  \item Der unkontrollierte Port ermöglicht die Authentifizierung eines Geräts
-                  \item Der kontrollierte Port ermöglicht es einem authentifizierten Gerät, auf LAN-Dienste zuzugreifen
-            \end{itemize*}
+            \item Der unkontrollierte Port ermöglicht die Authentifizierung eines Geräts
+            \item Der kontrollierte Port ermöglicht es einem authentifizierten Gerät, auf LAN-Dienste zuzugreifen
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ieee802.1X-ports.png}
       \end{itemize*}
 
@@ -3289,10 +3203,8 @@
             \item Zugriff auf ein LAN mit IEEE 802.1X Sicherheitsmaßnahmen:
             \begin{itemize*}
                   \item Vor einer erfolgreichen Authentifizierung kann der Antragsteller auf den unkontrollierten Port zugreifen:
-                  \begin{itemize*}
-                        \item Der Port ist unkontrolliert in dem Sinne, dass er den Zugriff vor der Authentifizierung erlaubt.
-                        \item Dieser Port erlaubt jedoch nur einen eingeschränkten Zugriff
-                  \end{itemize*}
+                  \item Der Port ist unkontrolliert in dem Sinne, dass er den Zugriff vor der Authentifizierung erlaubt.
+                  \item Dieser Port erlaubt jedoch nur einen eingeschränkten Zugriff
                   \item Die Authentifizierung kann durch den Supplicant oder den Authenticator initiiert werden.
                   \item Nach erfolgreicher Authentifizierung wird der kontrollierte Port geöffnet.
             \end{itemize*}
@@ -3302,9 +3214,9 @@
       \begin{itemize*}
             \item IEEE 802.1X definiert keine eigenen Sicherheitsprotokolle, sondern befürwortet die Verwendung bestehender Protokolle:
             \begin{itemize*}
-                  \item Das Extensible Authentication Protocol (EAP) kann eine grundlegende Geräteauthentifizierung realisieren ,,RFC 3748''.
-                  \item Wenn die Aushandlung eines Sitzungsschlüssels während der Authentifizierung erforderlich ist, wird die Verwendung des EAP TLS Authentication Protocol empfohlen ,,RFC 5216''.
-                  \item Außerdem wird empfohlen, den Authentifizierungsserver mit dem Remote Authentication Dial In User Service (RADIUS) ,,RFC 2865'' zu realisieren.
+                  \item Das Extensible Authentication Protocol (EAP) kann eine grundlegende Geräteauthentifizierung realisieren
+                  \item Wenn die Aushandlung eines Sitzungsschlüssels während der Authentifizierung erforderlich ist, wird die Verwendung des EAP TLS Authentication Protocol empfohlen
+                  \item Außerdem wird empfohlen, den Authentifizierungsserver mit dem Remote Authentication Dial In User Service (RADIUS) zu realisieren.
             \end{itemize*}
             \item Der Austausch von EAP Nachrichten zwischen Supplicant und Authenticator wird mit dem EAP over LANs (EAPOL) Protokoll realisiert:
             \begin{itemize*}
@@ -3318,15 +3230,13 @@
       \subsubsection{IEEE 802.1AE}
       Ziele
       \begin{itemize*}
-            \item Der Standard IEEE 802.1AE wird auch als MAC-Sicherheit (MACsec) bezeichnet:
-            \begin{itemize*}
-                  \item Ermöglicht autorisierten Systemen, die sich an LANs in einem Netzwerk anschließen und diese miteinander verbinden, die Vertraulichkeit der übertragenen Daten zu wahren und Maßnahmen gegen Frames zu ergreifen, die von nicht autorisierten Geräten übertragen oder verändert werden. ''
-                  \item Schützt Pakete durch kryptografische Mittel zwischen Geräten, z. B. zwischen Switches oder einem Computer und einem Switch
-                  \item Setzt eine gültige Authentifizierung voraus und ist somit eine Erweiterung von 802.1X
-                  \item Kryptografische Schlüssel werden auch während der 802.1X-Authentifizierungsphase abgeleitet
-                  \item Kann Datenursprungsauthentifizierung und optional Vertraulichkeit durchführen
-                  \item Unterstützt AES-128 und AES-256 in GCM, wobei die Unterstützung von AES-128-GCM obligatorisch ist!
-            \end{itemize*}
+            \item Der Standard IEEE 802.1AE wird auch als MAC-Sicherheit (MACsec) bezeichnet
+            \item Ermöglicht autorisierten Systemen, die sich an LANs in einem Netzwerk anschließen und diese miteinander verbinden, die Vertraulichkeit der übertragenen Daten zu wahren und Maßnahmen gegen Frames zu ergreifen, die von nicht autorisierten Geräten übertragen oder verändert werden. ''
+            \item Schützt Pakete durch kryptografische Mittel zwischen Geräten, z. B. zwischen Switches oder einem Computer und einem Switch
+            \item Setzt eine gültige Authentifizierung voraus und ist somit eine Erweiterung von 802.1X
+            \item Kryptografische Schlüssel werden auch während der 802.1X-Authentifizierungsphase abgeleitet
+            \item Kann Datenursprungsauthentifizierung und optional Vertraulichkeit durchführen
+            \item Unterstützt AES-128 und AES-256 in GCM, wobei die Unterstützung von AES-128-GCM obligatorisch ist!
       \end{itemize*}
 
       Frame-Format
@@ -3346,11 +3256,9 @@
       \begin{itemize*}
             \item MACsec erlaubt es, Verbindungen zu sichern, z.B. zwischen Gebäuden auf einem Campus
             \item Es bietet keinen Schutz gegen kompromittierte Geräte!
-            \begin{itemize*}
-                  \item Wenn es in Kombination mit 802.1Q verwendet wird, kann die vertrauenswürdige Computerbasis immer noch ziemlich groß sein...
-                  \item Die Verwendung des GCM unterliegt den in Kapitel 5 beschriebenen potenziellen Problemen
-                  \item Derzeit unterstützen nur hochwertige Switches MACsec!
-            \end{itemize*}
+            \item Wenn es in Kombination mit 802.1Q verwendet wird, kann die vertrauenswürdige Computerbasis immer noch ziemlich groß sein...
+            \item Die Verwendung des GCM unterliegt den in Kapitel 5 beschriebenen potenziellen Problemen
+            \item Derzeit unterstützen nur hochwertige Switches MACsec
       \end{itemize*}
 
       \subsection{Punkt-zu-Punkt-Protokoll}
@@ -3363,7 +3271,7 @@
             \end{itemize*}
             \item Protokolle für diesen Zweck:
             \begin{itemize*}
-                  \item Serial Line IP (SLIP): keine Fehlererkennung, unterstützt nur IP, keine dynamische Adressvergabe, keine Authentifizierung ,,RFC 1055''
+                  \item Serial Line IP (SLIP): keine Fehlererkennung, unterstützt nur IP, keine dynamische Adressvergabe, keine Authentifizierung
                   \item Point-to-Point Protocol (PPP): Nachfolger von SLIP, unterstützt IP, IPX, ...
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point.png}
             \end{itemize*}
@@ -3388,15 +3296,12 @@
 
       Eine typische PPP-Verbindung
       \begin{itemize*}
-            \item Nutzungsszenario ,,Internetzugang eines PCs über Modem'':
+            \item Nutzungsszenario ,,Internetzugang eines PCs über Modem''
             \begin{itemize*}
                   \item Der Benutzer ruft den Internet Service Provider (ISP) über ein Modem an und stellt eine ,,physikalische'' Verbindung über den ,,Plain Old Telephone Service'' (POTS) her.
                   \item Anrufer sendet mehrere LCP-Pakete in PPP-Frames, um die gewünschten PPP-Parameter auszuwählen
                   \item Sicherheitsspezifische Aushandlung (siehe unten)
-                  \item Austausch von NCP-Paketen zur Konfiguration der Netzwerkschicht:
-                  \begin{itemize*}
-                        \item z.B. Konfiguration von IP einschließlich dynamischer Zuweisung einer IP-Adresse über Dynamic Host Configuration Protocol (DHCP)
-                  \end{itemize*}
+                  \item Austausch von NCP-Paketen zur Konfiguration der Netzwerkschicht: z.B. Konfiguration von IP einschließlich dynamischer Zuweisung einer IP-Adresse über Dynamic Host Configuration Protocol (DHCP)
                   \item Der Anrufer kann wie jeder andere Host mit einer festen Verbindung zum Internet beliebige Internetdienste nutzen
                   \item Beim Verbindungsabbau werden die zugewiesene IP-Adresse und die Netzschichtverbindung freigegeben
                   \item Die Schicht-2-Verbindung wird über LCP freigegeben und das Modem baut die ,,physikalische'' Verbindung ab
@@ -3421,9 +3326,7 @@
 
       Sicherheitsdienste
       \begin{itemize*}
-            \item Die ursprüngliche Version von PPP ,,RFC 1661'' schlägt die optionale
-            Ausführung eines Authentifizierungsprotokolls nach der
-            Verbindungsaufbauphase vor:
+            \item Die ursprüngliche Version von PPP ,,RFC 1661'' schlägt die optionale Ausführung eines Authentifizierungsprotokolls nach der Verbindungsaufbauphase vor:
             \begin{itemize*}
                   \item Falls erforderlich, wird die Authentifizierung von einer Peer-Entität über einen LCP Configuration-Request am Ende der Verbindungsaufbauphase gefordert
                   \item Ursprünglich sind zwei Authentifizierungsprotokolle definiert worden:
@@ -3437,8 +3340,7 @@
                         \item PPP EAP Transport Level Security Protocol (PPP-EAP-TLS)
                   \end{itemize*}
             \end{itemize*}
-            \item Außerdem kann nach der Authentifizierung eine Verschlüsselung
-            ausgehandelt werden:
+            \item Außerdem kann nach der Authentifizierung eine Verschlüsselung ausgehandelt werden:
             \begin{itemize*}
                   \item Protokolle:
                   \begin{itemize*}
@@ -3451,10 +3353,10 @@
 
       Authentifizierungsprotokolle
       \begin{itemize*}
-            \item Passwort-Authentifizierungs-Protokoll (PAP):
+            \item Passwort-Authentifizierungs-Protokoll (PAP)
             \begin{itemize*}
                   \item PAP wurde 1992 in RFC 1334 definiert.
-                  \item Das Protokoll ist sehr einfach:
+                  \item Das Protokoll ist sehr einfach
                   \begin{itemize*}
                         \item Voraussetzung: der Authentifikator kennt das Passwort der Peer-Entität
                         \item Am Ende der Verbindungsaufbauphase fordert eine Entität, Authenticator genannt, die Peer-Entität auf, sich mit PAP zu authentifizieren
@@ -3462,12 +3364,12 @@
                         \item Der Authentifikator prüft, ob die bereitgestellten Informationen korrekt sind und antwortet entweder mit einem Authenticate-ack oder einem Authenticate-nack
                   \end{itemize*}
                   \item Da das Protokoll keinen kryptographischen Schutz bietet, ist es unsicher
-                  \item PAP wird in den aktualisierten RFCs für die PPP-Authentifizierung nicht erwähnt ,,RFC1994''
+                  \item PAP wird in den aktualisierten RFCs für die PPP-Authentifizierung nicht erwähnt
             \end{itemize*}
-            \item Challenge Handshake Authentication Protocol (CHAP):
+            \item Challenge Handshake Authentication Protocol (CHAP)
             \begin{itemize*}
                   \item CHAP ist ebenfalls in RFC 1334 und RFC 1994 definiert.
-                  \item Es verwirklicht ein einfaches Challenge-Response-Protokoll:
+                  \item Es verwirklicht ein einfaches Challenge-Response-Protokoll
                   \begin{itemize*}
                         \item Voraussetzung: Authentifikator und Peer-Entität teilen ein Geheimnis
                         \item Nach der Verbindungsaufbauphase sendet der Authentifikator (A) eine Challenge-Nachricht, die einen Identifikator für diese Challenge, eine Zufallszahl $r_A$ und seinen Namen enthält, an die Peer-Entität (B): $A \rightarrow B: (1, Identifikator, r_A, A)$
@@ -3492,27 +3394,27 @@
                   \end{itemize*}
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-CHAP2.png}
             \end{itemize*}
-            \item Erweiterbares Authentifizierungsprotokoll (EAP):
+            \item Erweiterbares Authentifizierungsprotokoll (EAP)
             \begin{itemize*}
-                  \item EAP ist ein allgemeines Protokoll für die PPP-Authentifizierung, das mehrere Authentifizierungsmethoden unterstützt ,,RFC2284''.
+                  \item EAP ist ein allgemeines Protokoll für die PPP-Authentifizierung, das mehrere Authentifizierungsmethoden unterstützt
                   \item Die Hauptidee hinter EAP ist es, ein gemeinsames Protokoll bereitzustellen, um komplexere Authentifizierungsmethoden als ,,1 Frage + 1 Antwort'' durchzuführen.
                   \item Das Protokoll bietet grundlegende Primitive:
                   \begin{itemize*}
                         \item Anfrage, Antwort: weiter verfeinert durch Typfeld + typspezifische Daten
                         \item Success, Failure: zur Angabe des Ergebnisses eines Authentifizierungsaustauschs
                   \end{itemize*}
-                  \item Typ-Felder:
+                  \item Typ-Felder
                   \begin{itemize*}
                         \item Identität
                         \item Benachrichtigung
                         \item Nak (nur Antwort, zur Beantwortung inakzeptabler Anfragetypen)
                         \item MD5 Challenge (dies entspricht CHAP)
-                        \item One-Time Password (OTP): definiert in ,,RFC2289''
+                        \item One-Time Password (OTP)
                         \item Generische Token-Karte
                         \item EAP-TLS
                   \end{itemize*}
             \end{itemize*}
-            \item Einmaliges Kennwort (One-Time Password, OTP):
+            \item Einmaliges Kennwort (One-Time Password, OTP)
             \begin{itemize*}
                   \item Die Grundidee von OTP besteht darin, ein ,,Passwort'' zu übermitteln, das nur für einen Durchlauf eines Authentifizierungsdialogs verwendet werden kann
                   \item Erstmalige Einrichtung:
@@ -3540,7 +3442,7 @@
             \end{itemize*}
             \item PPP-EAP-TLS:
             \begin{itemize*}
-                  \item TLS steht für Transport Layer Security ,,RFC 2246''.
+                  \item TLS steht für Transport Layer Security
                   \item Es wird also der Authentifizierungsdialog von TLS ausgeführt
                   \item Dieser Dialog wird in Kapitel 12 über die Sicherheit der Transportschicht im Detail erläutert.
             \end{itemize*}
@@ -3548,24 +3450,24 @@
 
       Verschlüsselungsprotokolle
       \begin{itemize*}
-            \item Nach dem Verbindungsaufbau und der Authentifizierungsphase kann die Verschlüsselung für eine PPP-Verbindung ausgehandelt werden:
+            \item Nach dem Verbindungsaufbau und der Authentifizierungsphase kann die Verschlüsselung für eine PPP-Verbindung ausgehandelt werden
             \begin{itemize*}
-                  \item Das Encryption Control Protocol (ECP) ,,RFC1968'' ist für die Konfiguration und Aktivierung von Datenverschlüsselungsalgorithmen an beiden Enden der PPP-Verbindung zuständig:
+                  \item Das Encryption Control Protocol (ECP) ist für die Konfiguration und Aktivierung von Datenverschlüsselungsalgorithmen an beiden Enden der PPP-Verbindung zuständig:
                   \begin{itemize*}
                         \item ECP verwendet das gleiche Rahmenformat wie LCP und führt zwei neue Primitive ein: Reset-Request und Reset-Ack zur Anzeige von Entschlüsselungsfehlern unabhängig für jede Richtung (nützlich für die kryptographische Resynchronisation)
                         \item Eine bestimmte Verschlüsselungsmethode wird mit dem configure-Primitiv ausgehandelt, das eine Option zur Angabe von DESE, 3DESE, Proprietär usw. enthält.
                         \item Proprietäre Verschlüsselungsprotokolle werden durch einen registrierten OUI (Organizational Unit Identifier) + einen herstellerspezifischen Wert identifiziert.
                         \item Genau ein ECP-Paket wird im PPP-Informationsfeld eines Link-Layer-Pakets transportiert
-                        \item ECP-Pakete werden durch das PPP-Protokollfeld identifiziert:
+                        \item ECP-Pakete werden durch das PPP-Protokollfeld identifiziert
                         \begin{itemize*}
                               \item 0x8053 für ,,Standard'' Betrieb
                               \item 0x8055 für die Verschlüsselung einzelner Verbindungsdaten auf mehreren Verbindungen zum selben Ziel
                         \end{itemize*}
                   \end{itemize*}
             \end{itemize*}
-            \item Das PPP DES Encryption Protocol (DESE):
+            \item Das PPP DES Encryption Protocol (DESE)
             \begin{itemize*}
-                  \item In diesem Kurs wird nur die aktualisierte Version DESEv2 ,,RFC2419'' behandelt
+                  \item In diesem Kurs wird nur die aktualisierte Version DESEv2 behandelt
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-DESE.png}
                   \item DESEv2 wird mit einer ECP-Konfigurationsanforderungsnachricht ausgehandelt:
                   \begin{itemize*}
@@ -3577,7 +3479,7 @@
                         \item Initial Nonce: ein Initialisierungsvektor für DES im CBC-Modus (8 Oktette)
                   \end{itemize*}
             \end{itemize*}
-            \item PPP DESE v2 Nachrichtenformat:
+            \item PPP DESE v2 Nachrichtenformat
             \begin{itemize*}
                   \item Adresse: 0x11111111 (bei HDLC-ähnlichem Framing)
                   \item Steuerung: 0x00000011 (bei HDLC-ähnlicher Rahmung)
@@ -3590,7 +3492,7 @@
                   \end{itemize*}
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-DESE2.png}
             \end{itemize*}
-            \item PPP 3DES Encryption Protocol (3DESE):
+            \item PPP 3DES Encryption Protocol (3DESE)
             \begin{itemize*}
                   \item PPP 3DESE ,,RFC2420'' ist dem PPP DESE sehr ähnlich
                   \item PPP 3DESE wird mit einer Configure-Request-Nachricht ausgehandelt, wobei das Type-Feld der Option auf 2 gesetzt ist (\textasciitilde{} 3DESE)
@@ -3598,7 +3500,7 @@
             \end{itemize*}
             \item Alle PPP-Verschlüsselungsprotokolle gehen davon aus, dass vor der
             Verschlüsselungsphase ein Sitzungsschlüssel für die
-            Verschlüsselung/Entschlüsselung von PPP-Paketen vereinbart wurde:
+            Verschlüsselung/Entschlüsselung von PPP-Paketen vereinbart wurde
             \begin{itemize*}
                   \item Diese Annahme ist sinnvoll, da die Festlegung des Sitzungsschlüssels eine Aufgabe ist, die während der Authentifizierungsphase erfüllt werden sollte.
                   \item Allerdings unterstützt nur das PPP-EAP-TLS-Authentifizierungsprotokoll den Aufbau von Sitzungsschlüsseln.
@@ -3630,43 +3532,41 @@
 
       \subsubsection{PPTP: Freiwilliges vs. obligatorisches Tunneling}
       \begin{itemize*}
-            \item PPTP realisiert einen ,,Tunnel'' über das Internet, der PPP-Pakete überträgt.
-            \item Ein solcher Tunnel kann zwischen verschiedenen Einheiten realisiert werden:
+            \item PPTP realisiert einen ,,Tunnel'' über das Internet, der PPP-Pakete überträgt
+            \item Ein solcher Tunnel kann zwischen verschiedenen Einheiten realisiert werden
+            \item Einem Client-PC und einem PPTP Remote Access Server (RAS)
             \begin{itemize*}
-                  \item Einem Client-PC und einem PPTP Remote Access Server (RAS):
-                  \begin{itemize*}
-                        \item Dies wird auch als freiwilliges Tunneling bezeichnet, da der Client-PC aktiv an der PPTP-Verarbeitung beteiligt ist.
-                        \item Diese Variante ermöglicht die sichere Kommunikation zwischen einem Client-PC und einem bestimmten Subnetz unter Verwendung beliebiger Zugangs- und Zwischennetze
-                  \end{itemize*}
-                  \item Ein Point of Presence (POP) eines ISP und ein PPTP-Fernzugangsserver:
-                  \begin{itemize*}
-                        \item Dies wird auch als obligatorisches Tunneling bezeichnet, da der Client-PC nicht an der Entscheidung beteiligt ist, ob PPTP verwendet wird oder nicht.
-                        \item Auf diese Weise lässt sich Sicherheit auf Subnetzebene realisieren, aber keine echte End-to-End-Sicherheit zwischen dem Client-PC und dem RAS
-                        \item Beim obligatorischen Tunneling fungiert der ISP POP als Proxy-Client für den RAS
-                  \end{itemize*}
+                  \item Dies wird auch als freiwilliges Tunneling bezeichnet, da der Client-PC aktiv an der PPTP-Verarbeitung beteiligt ist.
+                  \item Diese Variante ermöglicht die sichere Kommunikation zwischen einem Client-PC und einem bestimmten Subnetz unter Verwendung beliebiger Zugangs- und Zwischennetze
+            \end{itemize*}
+            \item Ein Point of Presence (POP) eines ISP und ein PPTP-Fernzugangsserver
+            \begin{itemize*}
+                  \item Dies wird auch als obligatorisches Tunneling bezeichnet, da der Client-PC nicht an der Entscheidung beteiligt ist, ob PPTP verwendet wird oder nicht.
+                  \item Auf diese Weise lässt sich Sicherheit auf Subnetzebene realisieren, aber keine echte End-to-End-Sicherheit zwischen dem Client-PC und dem RAS
+                  \item Beim obligatorischen Tunneling fungiert der ISP POP als Proxy-Client für den RAS
             \end{itemize*}
       \end{itemize*}
 
-      Obligatorische Tunneling-Protokollschichten
+      %Obligatorische Tunneling-Protokollschichten
       %\begin{itemize*}
       %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-PPTP-Tunneling-Protocol.png}
       %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-PPTP-Tunneling-Protocol2.png}
       %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-PPTP-Packet-Construction-at-Client.png}
       %\end{itemize*}
 
-      \subsubsection{PPTP / PPP Proprietäre Erweiterungen und einige ,,Geschichte''}
+      \subsubsection{PPTP / PPP Proprietäre Erweiterungen}
       \begin{itemize*}
-            \item PPTP hat sich vor allem aufgrund der Unterstützung durch Microsoft durchgesetzt:
+            \item PPTP hat sich vor allem aufgrund der Unterstützung durch Microsoft durchgesetzt
             \begin{itemize*}
-                  \item Es wurde unter aktiver Beteiligung von Microsoft entwickelt und ist in ,,RFC2637'' dokumentiert.
+                  \item Es wurde unter aktiver Beteiligung von Microsoft entwickelt
                   \item Microsoft implementierte es als Teil seines Remote Access Service (RAS)
             \end{itemize*}
-            \item Microsoft hat weitere ,,proprietäre'' Erweiterungen für PPP spezifiziert:
+            \item Microsoft hat weitere ,,proprietäre'' Erweiterungen für PPP spezifiziert
             \begin{itemize*}
-                  \item Microsoft PPP CHAP-Erweiterungen ,,RFC2433''
-                  \item Microsoft Point to Point Encryption Protocol ,,RFC3078''
+                  \item Microsoft PPP CHAP-Erweiterungen
+                  \item Microsoft Point to Point Encryption Protocol
             \end{itemize*}
-            \item Allerdings wurde eine Reihe von Schwachstellen in PPTP Version 1 und auch in einer verbesserten Version 2 entdeckt ,,SM98a, SMW99a'':
+            \item Allerdings wurde eine Reihe von Schwachstellen in PPTP Version 1 und auch in einer verbesserten Version 2 entdeckt
             \begin{itemize*}
                   \item Ein allgemeiner Konsens, PPTP als Standardprotokoll zu übernehmen, konnte in den in den IETF-Arbeitsgruppen nicht erreicht werden.
                   \item Außerdem wurde ein ähnliches Protokoll (Layer 2 Forwarding, L2F) von Cisco als konkurrierender Ansatz vorgeschlagen
@@ -3676,13 +3576,13 @@
 
       \subsubsection{Vergleich von PPTP und L2TP}
       \begin{itemize*}
-            \item Beide Protokolle:
+            \item Beide Protokolle
             \begin{itemize*}
                   \item verwenden PPP, um eine anfängliche Umhüllung für Benutzerpakete bereitzustellen
                   \item erweitern das PPP-Modell, indem sie erlauben, dass die Layer-2- und PPP-Endpunkte sich auf verschiedenen Geräten befinden
                   \item unterstützen freiwilliges und obligatorisches Tunneling
             \end{itemize*}
-            \item Zugrundeliegendes Netzwerk:
+            \item Zugrundeliegendes Netzwerk
             \begin{itemize*}
                   \item PPTP benötigt ein IP-Netzwerk für den Transport seiner PDUs
                   \item L2TP unterstützt verschiedene Technologien: IP (unter Verwendung von UDP), permanente virtuelle Schaltungen (PVCs) von Frame Relay, virtuelle Schaltungen (VCs) von X.25 oder ATM VCs
@@ -3691,10 +3591,7 @@
             \begin{itemize*}
                   \item L2TP ermöglicht z. B. die Erstellung verschiedener Tunnel für unterschiedliche Dienstqualitäten
             \end{itemize*}
-            \item Beide Protokolle bieten eine Header-Kompression:
-            \begin{itemize*}
-                  \item Mit Header-Kompression kommt L2TP mit 4 Byte Overhead aus, im Vergleich zu 6 Byte bei PPTP.
-            \end{itemize*}
+            \item Beide Protokolle bieten eine Header-Kompression:  Mit Header-Kompression kommt L2TP mit 4 Byte Overhead aus, im Vergleich zu 6 Byte bei PPTP.
             \item L2TP ermöglicht eine Tunnelauthentifizierung, während PPTP dies nicht tut.
       \end{itemize*}
 
@@ -3704,33 +3601,30 @@
             \begin{itemize*}
                   \item Ein privates Netz, das innerhalb einer öffentlichen Netzinfrastruktur, wie dem globalen Internet, aufgebaut ist.
                   \item Eine Kommunikationsumgebung, in der der Zugang kontrolliert wird, um Peer-Verbindungen nur innerhalb einer definierten Interessengemeinschaft zuzulassen, und die durch eine Form der Partitionierung eines gemeinsamen zugrundeliegenden Kommunikationsmediums aufgebaut ist, wobei dieses zugrundeliegende Kommunikationsmedium dem Netz Dienste auf nicht-exklusiver Basis bereitstellt
-                  \item Ein logisches Computernetzwerk mit eingeschränkter Nutzung, das aus den Systemressourcen eines relativ öffentlichen, physischen Netzwerks (z. B. dem Internet) aufgebaut ist, oft unter Verwendung von Verschlüsselung und oft durch Tunneln von Verbindungen des virtuellen Netzwerks über das reale Netzwerk ,,RFC2828''.
+                  \item Ein logisches Computernetzwerk mit eingeschränkter Nutzung, das aus den Systemressourcen eines relativ öffentlichen, physischen Netzwerks (z. B. dem Internet) aufgebaut ist, oft unter Verwendung von Verschlüsselung und oft durch Tunneln von Verbindungen des virtuellen Netzwerks über das reale Netzwerk
                   \item Anmerkung: Die beiden letzteren Definitionen beinhalten explizit Sicherheitseigenschaften (kontrollierter Zugriff, Verschlüsselung), die erste hingegen nicht.
             \end{itemize*}
       \end{itemize*}
 
       \begin{quote}
-            ,,Sicher, es ist viel billiger als eigene Frame-Relay-Verbindungen, aber
-            es funktioniert ungefähr so gut, wie wenn man sich auf dem Times Square
-            Watte in die Ohren steckt und so tut, als wäre sonst niemand da.''
-            (Wired Magazine Feb. 1998)
+            ,,Sicher, es ist viel billiger als eigene Frame-Relay-Verbindungen, aber es funktioniert ungefähr so gut, wie wenn man sich auf dem Times Square Watte in die Ohren steckt und so tut, als wäre sonst niemand da.'' (Wired Magazine Feb. 1998)
       \end{quote}
 
       Techniken zum Aufbau virtueller privater Netze
       \begin{itemize*}
-            \item Nutzung dedizierter Verbindungen (Cut-Through-Mechanismen):
+            \item Nutzung dedizierter Verbindungen (Cut-Through-Mechanismen)
             \begin{itemize*}
                   \item Virtuelle Verbindungen über ATM oder Frame Relay
                   \item Multi-Protokoll über ATM (MPOA)
                   \item Multiprotokoll-Etiketten-Vermittlung (MPLS)
-                  \item Sicherheitsdienste für Link Layer VPNs können effizient im Link Layer Protokoll realisiert werden; ein Beispiel ist die ATM Security Specification ,,ATM99a''
+                  \item Sicherheitsdienste für Link Layer VPNs können effizient im Link Layer Protokoll realisiert werden; ein Beispiel ist die ATM Security Specification
             \end{itemize*}
-            \item Kontrolliertes Routenleck / Routenfilterung:
+            \item Kontrolliertes Routenleck / Routenfilterung
             \begin{itemize*}
                   \item Grundidee: Kontrolle der Routenausbreitung dahingehend, dass nur bestimmte Netze Routen für andere Netze erhalten
                   \item Damit soll ,,security by obscurity'' realisiert werden (also kein wirklicher Schutz!)
             \end{itemize*}
-            \item Tunneln:
+            \item Tunneln
             \begin{itemize*}
                   \item Generische Routing-Kapselung (GRE)
                   \item PPP / PPTP / L2TP
@@ -3743,18 +3637,14 @@
       \begin{itemize*}
             \item Kurze Einführung in das Internet-Protokoll (IP)
             \item Sicherheitsprobleme von IP und Ziele von IPsec
-            \item Die IPsec-Architektur:
+            \item Die IPsec-Architektur
             \begin{itemize*}
-                  \item Modi des IPsec-Sicherheitsprotokolls:
-                  \begin{itemize*}
-                        \item Transportmodus
-                        \item Tunnel-Modus
-                  \end{itemize*}
+                  \item Modi des IPsec-Sicherheitsprotokolls Transport/Tunnel-Modus
                   \item Alternativen zur Implementierung
                   \item IP-Sicherheitsrichtlinien-Datenbank (SPD)
                   \item Sicherheitsvereinigungen (SA) und die SA-Datenbank (SADB)
             \end{itemize*}
-            \item IPsec Sicherheitsprotokolle:
+            \item IPsec Sicherheitsprotokolle
             \begin{itemize*}
                   \item Authentifizierungs-Header (AH)
                   \item Encapsulating Security Payload (ESP)
@@ -3767,7 +3657,7 @@
             \item IP (Internet Protocol): unzuverlässiges, verbindungsloses Netzwerkprotokoll
             \item TCP (Transmission Control Protocol): zuverlässiges, verbindungsorientiertes Transportprotokoll, realisiert über IP
             \item UDP (User Datagram Protocol): unzuverlässiges, verbindungsloses Transportprotokoll, bietet eine Anwendungsschnittstelle zu IP
-            \item Beispiele für Anwendungsprotokolle :
+            \item Beispiele für Anwendungsprotokolle
             \begin{itemize*}
                   \item HTTP: Hypertext-Übertragungsprotokoll
                   \item SMTP: Einfaches Mail-Übertragungsprotokoll
@@ -3844,18 +3734,16 @@
 
       \subsection{Sicherheitsprobleme des Internet-Protokolls}
       \begin{itemize*}
-            \item Wenn eine Einheit ein IP-Paket empfängt, hat sie keine Garantie für:
+            \item Wenn eine Einheit ein IP-Paket empfängt, hat sie keine Garantie für
+            \item Authentifizierung der Datenherkunft / Datenintegrität
             \begin{itemize*}
-                  \item Authentifizierung der Datenherkunft / Datenintegrität:
-                  \begin{itemize*}
-                        \item Das Paket wurde tatsächlich von der Einrichtung gesendet, auf die die Quelladresse des Pakets verweist.
-                        \item Das Paket enthält den ursprünglichen Inhalt des Absenders, so dass es während des Transports nicht verändert worden ist.
-                        \item Die empfangende Einrichtung ist tatsächlich die Einrichtung, an die der Absender das Paket senden wollte.
-                  \end{itemize*}
-                  \item Vertraulichkeit:
-                  \begin{itemize*}
-                        \item Die ursprünglichen Daten wurden auf dem Weg vom Absender zum Empfänger nicht von Dritten eingesehen.
-                  \end{itemize*}
+                  \item Das Paket wurde tatsächlich von der Einrichtung gesendet, auf die die Quelladresse des Pakets verweist.
+                  \item Das Paket enthält den ursprünglichen Inhalt des Absenders, so dass es während des Transports nicht verändert worden ist.
+                  \item Die empfangende Einrichtung ist tatsächlich die Einrichtung, an die der Absender das Paket senden wollte.
+            \end{itemize*}
+            \item Vertraulichkeit:
+            \begin{itemize*}
+                  \item Die ursprünglichen Daten wurden auf dem Weg vom Absender zum Empfänger nicht von Dritten eingesehen.
             \end{itemize*}
       \end{itemize*}
 
@@ -3883,7 +3771,7 @@
       \end{itemize*}
 
       \subsection{Überblick über die IPsec-Standardisierung}
-      % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IPsec-standardization.png}
+      \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IPsec-standardization.png}
 
       \subsection{Überblick über die IPsec-Architektur}
       \begin{itemize*}
@@ -3948,7 +3836,7 @@
 
       Der Unterschied zwischen den beiden Modi ist, dass:
 
-      Im Transportmodus wird lediglich ein sicherheitsspezifischer Header (+ eventueller Trailer) hinzugefügt:
+      Im Transportmodus wird lediglich ein sicherheitsspezifischer Header (+ eventueller Trailer) hinzugefügt
       \begin{itemize*} % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-transport-mode.png} \end{itemize*}
             \item Der Tunnelmodus kapselt IP-Pakete ein: Die Verkapselung von IP-Paketen ermöglicht es einem Gateway, den Verkehr im Namen anderer Entitäten zu schützen (z. B. Hosts eines Subnetzes usw.)
             % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-tunnel-mode.png} \end{itemize*}
@@ -3968,13 +3856,12 @@
             \begin{itemize*}
                   \item Internet Security Association Key Management Protocol (ISAKMP):
                   \begin{itemize*}
-                        \item Definiert einen generischen Rahmen für die Schlüsselauthentifizierung, den Schlüsselaustausch und die Aushandlung von Sicherheitsassoziationsparametern ,,RFC2408''.
+                        \item Definiert einen generischen Rahmen für die Schlüsselauthentifizierung, den Schlüsselaustausch und die Aushandlung von Sicherheitsassoziationsparametern
                         \item Definiert kein spezifisches Authentifizierungsprotokoll, aber spezifiziert: Paketformate, Zeitgeber für die Weiterleitung, Anforderungen an den Nachrichtenaufbau
-                        \item Die Verwendung von ISAKMP für IPsec wird in ,,RFC2407'' näher beschrieben.
                   \end{itemize*}
                   \item Internet-Schlüsselaustausch (IKE):
                   \begin{itemize*}
-                        \item Definiert ein Authentifizierungs- und Schlüsselaustauschprotokoll ,,RFC2409''.
+                        \item Definiert ein Authentifizierungs- und Schlüsselaustauschprotokoll
                         \item Ist konform zu ISAKMP und kann für verschiedene Anwendungen verwendet werden
                         \item Der Aufbau von IPsec SAs zwischen zwei Entitäten wird in zwei Phasen realisiert:
                         \item Einrichtung einer IKE SA (definiert, wie man IPsec SAs einrichtet)
@@ -3992,12 +3879,9 @@
                   \item Die Sequenznummer wird mit jedem gesendeten IP-Paket erhöht
                   \item Die Sequenznummer ist 32 Bit lang, es wird ein neuer Sitzungsschlüssel benötigt, bevor ein Wrap-around erfolgt
                   \item Der Empfänger eines IP-Pakets prüft, ob die Sequenznummer in einem Fenster zulässiger Nummern enthalten ist
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-replay-protection.png}
-                  \begin{itemize*}
-                        \item (Paket mit Sequenznummer N kann noch akzeptiert werden)
-                  \end{itemize*}
+                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-replay-protection.png} (Paket mit Sequenznummer N kann noch akzeptiert werden)
             \end{itemize*}
-            \item Wenn ein empfangenes Paket eine Sequenznummer hat, die:
+            \item Wenn ein empfangenes Paket eine Sequenznummer hat, die
             \begin{itemize*}
                   \item links vom aktuellen Fenster $\Rightarrow$ liegt, lehnt der Empfänger das Paket ab
                   \item innerhalb des aktuellen Fensters $\Rightarrow$ liegt, nimmt der Empfänger das Paket an
@@ -4005,10 +3889,10 @@
                   \item Natürlich werden IP-Pakete nur akzeptiert, wenn sie die Authentifizierungsprüfung bestehen und das Fenster wird niemals vor dieser Prüfung weitergeschaltet
             \end{itemize*}
             \item Die minimale Fenstergröße beträgt 32 Pakete (64 Pakete werden empfohlen)
-            \begin{itemize*}
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-replay-protection2.png}
-                  \item Paket mit Sequenznummer N kann nicht mehr akzeptiert werden
-            \end{itemize*}
+            %\begin{itemize*}
+            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ipsec-replay-protection2.png}
+            %\item Paket mit Sequenznummer N kann nicht mehr akzeptiert werden
+            %\end{itemize*}
       \end{itemize*}
 
       \subsection{IPsec-Implementierungsalternativen: Host-Implementierung}
@@ -4021,7 +3905,7 @@
             \end{itemize*}
             \item Zwei Hauptalternativen zur Integration:
       \end{itemize*}
-      \begin{tabular}{c|c}
+      \begin{tabular}{p{4cm}|p{4cm}}
             Integriertes Betriebssystem & ,,Bump'' im Stack                                                                                         \\\hline
             Anwendung                   & Anwendung                                                                                                 \\
             Transport                   & Transport                                                                                                 \\
@@ -4092,54 +3976,47 @@
       \begin{itemize*}
             \item Nehmen wir an, die IP-Schicht eines Knotens (Host/Gateway) wird angewiesen, ein IP-Paket an einen anderen Knoten (Host/Gateway) zu senden
             \item Um IPsec zu unterstützen, muss sie die folgenden Schritte durchführen
+            \item Feststellen, ob und wie das ausgehende Paket gesichert werden muss
             \begin{itemize*}
-                  \item Feststellen, ob und wie das ausgehende Paket gesichert werden muss
-                  \begin{itemize*}
-                        \item Dies wird durch einen Lookup im SPD realisiert
-                        \item Wenn die Richtlinie ,,verwerfen'' vorschreibt, wird das Paket verworfen $\Rightarrow$ done
-                        \item Wenn das Paket nicht gesichert werden muss, dann sende es $\Rightarrow$ done
-                  \end{itemize*}
-                  \item Ermitteln, welche SA auf das Paket angewendet werden soll
-                  \begin{itemize*}
-                        \item Wenn es noch keine passende SA mit dem entsprechenden Knoten gibt, dann fordere den Key Management Demon auf, einen IKE durchzuführen
-                  \end{itemize*}
-                  \item Die ermittelte (und eventuell neu erstellte) SA in der SADB nachschlagen
-                  \item Führen Sie die von der SA festgelegte Sicherheitstransformation durch, indem Sie den Algorithmus, seine Parameter und den Schlüssel, wie in der SA angegeben, verwenden.
-                  \begin{itemize*}
-                        \item Dies resultiert in der Konstruktion eines AH- oder ESP-Headers
-                        \item Eventuell wird auch ein neuer (äußerer) IP-Header erstellt (Tunnelmodus)
-                  \end{itemize*}
-                  \item Senden Sie das resultierende IP-Paket $\Rightarrow$ done
+                  \item Dies wird durch einen Lookup im SPD realisiert
+                  \item Wenn die Richtlinie ,,verwerfen'' vorschreibt, wird das Paket verworfen $\Rightarrow$ done
+                  \item Wenn das Paket nicht gesichert werden muss, dann sende es $\Rightarrow$ done
             \end{itemize*}
+            \item Ermitteln, welche SA auf das Paket angewendet werden soll
+            \begin{itemize*}
+                  \item Wenn es noch keine passende SA mit dem entsprechenden Knoten gibt, dann fordere den Key Management Demon auf, einen IKE durchzuführen
+            \end{itemize*}
+            \item Die ermittelte (und eventuell neu erstellte) SA in der SADB nachschlagen
+            \item Führen Sie die von der SA festgelegte Sicherheitstransformation durch, indem Sie den Algorithmus, seine Parameter und den Schlüssel, wie in der SA angegeben, verwenden.
+            \begin{itemize*}
+                  \item Dies resultiert in der Konstruktion eines AH- oder ESP-Headers
+                  \item Eventuell wird auch ein neuer (äußerer) IP-Header erstellt (Tunnelmodus)
+            \end{itemize*}
+            \item Senden Sie das resultierende IP-Paket $\Rightarrow$ done
       \end{itemize*}
 
       \subsection{Grundschema der IPsec-Verarbeitung: Eingehende Pakete}
       \begin{itemize*}
             \item Nehmen wir an, die IP-Schicht eines Knotens (Host/Gateway) empfängt ein IP-Paket von einem anderen Knoten (Host/Gateway)
-            \item Um IPsec zu unterstützen, muss sie die folgenden Schritte durchführen:
+            \item Um IPsec zu unterstützen, muss sie die folgenden Schritte durchführen
+            \item Feststellen, ob das Paket einen IPsec-Header enthält, den diese Einheit verarbeiten soll:
             \begin{itemize*}
-                  \item Feststellen, ob das Paket einen IPsec-Header enthält, den diese Einheit verarbeiten soll:
-                  \begin{itemize*}
-                        \item Wenn es einen solchen IPsec-Header gibt, dann suchen Sie die SA in der SADB, die durch den SPI des IPsec-Headers spezifiziert ist, und führen Sie die entsprechende IPsec-Verarbeitung durch
-                        \item Wenn die SA, auf die der SPI verweist, (noch) nicht existiert, verwerfen Sie das Paket
-                  \end{itemize*}
-                  \item Ermitteln, ob und wie das Paket hätte geschützt werden sollen:
-                  \begin{itemize*}
-                        \item Dies wird wiederum durch einen Lookup im SPD realisiert, wobei der Lookup im Falle von getunnelten Paketen durch Auswertung des inneren IP-Headers durchgeführt wird
-                        \item Wenn die Richtlinie ,,Verwerfen'' vorschreibt, wird das Paket verworfen.
-                        \item Wenn der Schutz des Pakets nicht mit der Richtlinie übereinstimmt, wird das Paket verworfen.
-                        \item Wenn das Paket ordnungsgemäß gesichert wurde, dann übergebe es an die entsprechende Protokollinstanz (Netzwerk-/Transportschicht)
-                  \end{itemize*}
+                  \item Wenn es einen solchen IPsec-Header gibt, dann suchen Sie die SA in der SADB, die durch den SPI des IPsec-Headers spezifiziert ist, und führen Sie die entsprechende IPsec-Verarbeitung durch
+                  \item Wenn die SA, auf die der SPI verweist, (noch) nicht existiert, verwerfen Sie das Paket
+            \end{itemize*}
+            \item Ermitteln, ob und wie das Paket hätte geschützt werden sollen:
+            \begin{itemize*}
+                  \item Dies wird wiederum durch einen Lookup im SPD realisiert, wobei der Lookup im Falle von getunnelten Paketen durch Auswertung des inneren IP-Headers durchgeführt wird
+                  \item Wenn die Richtlinie ,,Verwerfen'' vorschreibt, wird das Paket verworfen.
+                  \item Wenn der Schutz des Pakets nicht mit der Richtlinie übereinstimmt, wird das Paket verworfen.
+                  \item Wenn das Paket ordnungsgemäß gesichert wurde, dann übergebe es an die entsprechende Protokollinstanz (Netzwerk-/Transportschicht)
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Auswahl der IPsec-Sicherheitspolitik}
       Die folgenden Selektoren, die aus den Headern der Netzwerk- und Transportschicht extrahiert werden, ermöglichen die Auswahl einer bestimmten Richtlinie im SPD:
       \begin{itemize*}
-            \item IP-Quelladresse:
-            \begin{itemize*}
-                  \item Bestimmter Host, Netzwerkpräfix, Adressbereich oder Platzhalter
-            \end{itemize*}
+            \item IP-Quelladresse: Bestimmter Host, Netzwerkpräfix, Adressbereich oder Platzhalter
             \item IP-Zieladresse:
             \begin{itemize*}
                   \item Bestimmter Host, Netzwerk-Präfix, Adressbereich oder Platzhalter
@@ -4150,32 +4027,27 @@
                   \item Der Protokoll-Identifikator des Transportprotokolls für dieses Paket
                   \item Dies ist möglicherweise nicht zugänglich, wenn ein Paket mit ESP gesichert ist.
             \end{itemize*}
-            \item Ports der oberen Schicht:
-            \begin{itemize*}
-                  \item Falls zugänglich, die Ports der oberen Schicht für die sitzungsorientierte Policy-Auswahl
-            \end{itemize*}
+            \item Ports der oberen Schicht: Falls zugänglich, die Ports der oberen Schicht für die sitzungsorientierte Policy-Auswahl
       \end{itemize*}
 
       \subsection{IPsec Security Policy Definition}
       \begin{itemize*}
-            \item Policy Selectors werden verwendet, um spezifische Policy-Definitionen auszuwählen, spezifiziert:
+            \item Policy Selectors werden verwendet, um spezifische Policy-Definitionen auszuwählen, spezifiziert
+            \item Wie die Einrichtung einer IKE SA zwischen zwei Knoten durchgeführt werden soll
             \begin{itemize*}
-                  \item Wie die Einrichtung einer IKE SA zwischen zwei Knoten durchgeführt werden soll:
-                  \begin{itemize*}
-                        \item Identifizierung: DNS-Name oder andere Namenstypen, wie in der IPsec-Domäne der Interpretation eines Protokolls zur Einrichtung von SAs definiert
-                        \item Phase I-Modus: Hauptmodus oder aggressiver Modus (siehe unten)
-                        \item Schutzsuite(n): Angabe, wie die IKE-Authentifizierung durchgeführt wird
-                  \end{itemize*}
-                  \item Welche und wie Sicherheitsdienste für IP-Pakete bereitgestellt werden sollen:
-                  \begin{itemize*}
-                        \item Selektoren, die bestimmte Flüsse identifizieren
-                        \item Sicherheitsattribute für jeden Fluss:
-                        \item Sicherheitsprotokoll: AH oder ESP
-                        \item Protokollmodus: Transport- oder Tunnelmodus
-                        \item Sicherheitstransformationen: kryptografische Algorithmen und Parameter
-                        \item Andere Parameter: SA-Lebensdauer, Replay-Fenster
-                        \item Aktion: Verwerfen, Sichern, Umgehen
-                  \end{itemize*}
+                  \item Identifizierung: DNS-Name oder andere Namenstypen, wie in der IPsec-Domäne der Interpretation eines Protokolls zur Einrichtung von SAs definiert
+                  \item Phase I-Modus: Hauptmodus oder aggressiver Modus (siehe unten)
+                  \item Schutzsuite(n): Angabe, wie die IKE-Authentifizierung durchgeführt wird
+            \end{itemize*}
+            \item Welche und wie Sicherheitsdienste für IP-Pakete bereitgestellt werden sollen:
+            \begin{itemize*}
+                  \item Selektoren, die bestimmte Flüsse identifizieren
+                  \item Sicherheitsattribute für jeden Fluss:
+                  \item Sicherheitsprotokoll: AH oder ESP
+                  \item Protokollmodus: Transport- oder Tunnelmodus
+                  \item Sicherheitstransformationen: kryptografische Algorithmen und Parameter
+                  \item Andere Parameter: SA-Lebensdauer, Replay-Fenster
+                  \item Aktion: Verwerfen, Sichern, Umgehen
             \end{itemize*}
             \item Wenn bereits eine SA mit einem entsprechenden Sicherheitsendpunkt eingerichtet ist, wird im SPD auf diese verwiesen.
       \end{itemize*}
@@ -4189,7 +4061,7 @@
             \end{itemize*}
             \item Die ESP-Definition gliedert sich in zwei Teile:
             \begin{itemize*}
-                  \item Die Definition des Basisprotokolls ,,RFC4303'':
+                  \item Die Definition des Basisprotokolls
                   \begin{itemize*}
                         \item Definition des Header- und Trailer-Formats
                         \item Verarbeitung des Basisprotokolls
@@ -4233,9 +4105,7 @@
                   \item Dies kann vorkommen, wenn ESP von einem Router im Tunnelmodus angewendet wurde.
                   \item Um die Konformität mit der SA-Policy korrekt zu prüfen, müssen alle zu diesem Paket gehörenden Fragmente vom Router empfangen werden, bevor die Prüfung durchgeführt werden kann
                   \item Beispiel: In einer SA sind nur Pakete an einen bestimmten Port erlaubt
-                  \begin{itemize*}
-                        \item Die erforderliche Port-Information ist nur im ersten Fragment des IP-Pakets vorhanden
-                  \end{itemize*}
+                  \item Die erforderliche Port-Information ist nur im ersten Fragment des IP-Pakets vorhanden
             \end{itemize*}
             \item Paketzustellung bedeutet Zustellung an die entsprechende Verarbeitungseinheit:
             \begin{itemize*}
@@ -4268,7 +4138,7 @@
             \end{itemize*}
             \item Wie bei ESP ist die AH-Definition in zwei Teile aufgeteilt:
             \begin{itemize*}
-                  \item Die Definition des Basisprotokolls ,,RFC4302'':
+                  \item Die Definition des Basisprotokolls
                   \begin{itemize*}
                         \item Definition des Header-Formats
                         \item Verarbeitung des Basisprotokolls
@@ -4302,8 +4172,8 @@
       \begin{itemize*}
             \item Vertraulichkeit (nur ESP):
             \begin{itemize*}
-                  \item Die Verwendung von DES mit ESP ,,RFC4303'' wird nicht mehr empfohlen
-                  \item AES-CBC, definiert in RFC 3602, ist vielleicht ,,der,, Standardalgorithmus
+                  \item Die Verwendung von DES mit ESP wird nicht mehr empfohlen
+                  \item AES-CBC ist vielleicht der Standardalgorithmus
                   \item Der Initialisierungsvektor (IV) ist immer im Klartext enthalten, um Synchronisationsprobleme zu vermeiden.
                   \item Der gesamte IV soll zufällig sein
                   \item Nehmen Sie KEINE weiteren IVs aus früheren Chiffretexten!
@@ -4322,7 +4192,7 @@
                         \item HMAC-RIPEMD160-96 mit einer Schlüssellänge von 160 Bit
                         \item HMAC-SHA2 mit Schlüssellängen von 256, 384 und 512 Bit
                   \end{itemize*}
-                  \item Alle diese Algorithmen verwenden die in ,,RFC2104'' definierte HMAC-Konstruktion:
+                  \item Alle diese Algorithmen verwenden definierte HMAC-Konstruktion:
                   \begin{itemize*}
                         \item ipad = 0x36 wiederholt B mal (B = 64 für die oben genannten Algorithmen)
                         \item opad = 0x5C, B-mal wiederholt
@@ -4368,7 +4238,7 @@
                   \item Die für eine Anwendung von ISAKMP spezifischen Verfahren werden in einem DOI-Dokument detailliert beschrieben.
                   \item Es wurden weitere DOI-Dokumente erstellt:
                   \begin{itemize*}
-                        \item Group DOI für sichere Gruppenkommunikation ,,RFC6407''
+                        \item Group DOI für sichere Gruppenkommunikation
                         \item MAP DOI für die Verwendung von ISAKMP zum Aufbau von SAs zur Sicherung des Mobile Application Protocol (MAP) von GSM (Internet Draft, Nov. 2000)
                   \end{itemize*}
             \end{itemize*}
@@ -4381,7 +4251,7 @@
 
       \subsubsection{ISAKMP - Grundlegendes Nachrichtenformat}
       \begin{itemize*}
-            \item % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ISAKMP-format.png}
+            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ISAKMP-format.png}
             \item Initiator \& Responder Cookie:
             \begin{itemize*}
                   \item Identifizieren einen ISAKMP-Austausch bzw. eine Sicherheitsassoziation
@@ -4417,37 +4287,33 @@
 
       \subsubsection{ISAKMP - Begrenzter Schutz vor Denial of Service}
       \begin{itemize*}
-            \item Die Initiator- und Responder-Cookies dienen auch als Schutz gegen einfache Denial-of-Service-Angriffe:
+            \item Die Initiator- und Responder-Cookies dienen auch als Schutz gegen einfache Denial-of-Service-Angriffe
+            \item Authentifizierung und Schlüsselaustausch erfordern oft ,,teure'' Berechnungen, z.B. Potenzierung (für Diffie-Hellman Schlüsselaustausch)
+            \item Um zu verhindern, dass ein Angreifer eine ISAKMP-Einheit mit gefälschten Nachrichten von gefälschten Quelladressen überschwemmen und diese teuren Operationen verursachen kann, wird das folgende Schema verwendet:
             \begin{itemize*}
-                  \item Authentifizierung und Schlüsselaustausch erfordern oft ,,teure'' Berechnungen, z.B. Potenzierung (für Diffie-Hellman Schlüsselaustausch)
-                  \item Um zu verhindern, dass ein Angreifer eine ISAKMP-Einheit mit gefälschten Nachrichten von gefälschten Quelladressen überschwemmen und diese teuren Operationen verursachen kann, wird das folgende Schema verwendet:
-                  \begin{itemize*}
-                        \item Die initiierende ISAKMP-Entität erzeugt einen Initiator-Cookie: $CKY-I = H(Secret_{Initiator}, Address_{Responder}, t_{Initiator})$
-                        \item Der Responder generiert sein eigenes Cookie: $CKY-R = H(Secret_{Responder}, Address_{Initiator}, t_{Responder})$
-                        \item Beide Entitäten schließen immer beide Cookies ein und überprüfen immer ihr eigenes Cookie, bevor sie eine teure Operation durchführen
-                        \item Der oben erwähnte Angriff wird daher nicht erfolgreich sein, da der Angreifer eine Antwort von dem angegriffenen System erhalten muss, um ein Cookie von ihm zu erhalten
-                  \end{itemize*}
-                  \item ISAKMP spezifiziert die genaue Cookie-Erzeugungsmethode nicht
+                  \item Die initiierende ISAKMP-Entität erzeugt einen Initiator-Cookie: $CKY-I = H(Secret_{Initiator}, Address_{Responder}, t_{Initiator})$
+                  \item Der Responder generiert sein eigenes Cookie: $CKY-R = H(Secret_{Responder}, Address_{Initiator}, t_{Responder})$
+                  \item Beide Entitäten schließen immer beide Cookies ein und überprüfen immer ihr eigenes Cookie, bevor sie eine teure Operation durchführen
+                  \item Der oben erwähnte Angriff wird daher nicht erfolgreich sein, da der Angreifer eine Antwort von dem angegriffenen System erhalten muss, um ein Cookie von ihm zu erhalten
             \end{itemize*}
+            \item ISAKMP spezifiziert die genaue Cookie-Erzeugungsmethode nicht
       \end{itemize*}
 
       \subsubsection{ISAKMP - Nutzdatenarten}
       \begin{itemize*}
-            \item RFC 2408 definiert verschiedene Nutzdaten von ISAKMP (Liste ist nicht vollständig):
+            \item RFC 2408 definiert verschiedene Nutzdaten von ISAKMP (Liste ist nicht vollständig)
+            \item Generische Payloads: Hash, Signatur, Nonce, Vendor ID, Schlüsselaustausch
+            \item Spezifische Payloads: SA, Zertifikat, Zertifikatsanforderung, Identifikation
+            \item Abhängige und gekapselte Nutzdaten:
             \begin{itemize*}
-                  \item Generische Payloads: Hash, Signatur, Nonce, Vendor ID, Schlüsselaustausch
-                  \item Spezifische Payloads: SA, Zertifikat, Zertifikatsanforderung, Identifikation
-                  \item Abhängige und gekapselte Nutzdaten:
-                  \begin{itemize*}
-                        \item Proposal-Payload: beschreibt einen Vorschlag für die SA-Verhandlung
-                        \item Transform-Payload: beschreibt eine Transformation eines Proposals
-                  \end{itemize*}
-                  \item Außerdem gibt es eine generische Attribut-Nutzlast:
-                  \begin{itemize*}
-                        \item Dies ist eigentlich kein ISAKMP-Payload, sondern ein Payload, der innerhalb der ISAKMP-Payloads erscheint.
-                        \item Alle Attribut-Payloads haben eine gemeinsame Struktur
-                        % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ISAKMP-payload-types.png} 
-                  \end{itemize*}
+                  \item Proposal-Payload: beschreibt einen Vorschlag für die SA-Verhandlung
+                  \item Transform-Payload: beschreibt eine Transformation eines Proposals
+            \end{itemize*}
+            \item Außerdem gibt es eine generische Attribut-Nutzlast:
+            \begin{itemize*}
+                  \item Dies ist eigentlich kein ISAKMP-Payload, sondern ein Payload, der innerhalb der ISAKMP-Payloads erscheint.
+                  \item Alle Attribut-Payloads haben eine gemeinsame Struktur
+                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ISAKMP-payload-types.png} 
             \end{itemize*}
       \end{itemize*}
 
@@ -4523,11 +4389,7 @@
                         \item einer Transformation (MD5) für das erste Protokoll (AH), und
                         \item eine Umwandlung (3DES) für das zweite Protokoll (ESP)
                   \end{itemize*}
-                  \item Die zweite Schutzsuite wird mit zwei Transformationen für ein einziges Protokoll (ESP) vorgestellt:
-                  \begin{itemize*}
-                        \item 3DES, oder
-                        \item AES
-                  \end{itemize*}
+                  \item Die zweite Schutzsuite wird mit zwei Transformationen für ein einziges Protokoll (ESP) vorgestellt: 3DES, oder AES
                   \item Bitte beachten Sie, dass es nicht möglich ist, festzulegen, dass Transformation 1 und Transformation 2 für eine Instanz einer Protokollspezifikation verwendet werden müssen.
                   \item In diesem Fall folgen auf den SA-Payload die folgenden Payloads:
                   \begin{itemize*}
@@ -4612,7 +4474,8 @@
             \item Phase 1 IKE-Austausche werden mit Hilfe von zwei Hash-Werten Hash-I und Hash-R authentifiziert, die vom Initiator und vom Responder erstellt werden:
             \begin{itemize*}
                   \item Hash-I = HMAC(SKEYID, gx | gy | CKY-I | CKY-R | SA-Angebot | ID-I)
-                  \item Hash-R = HMAC(SKEYID, gy | gx | CKY-R | CKY-I | SA-offer | ID-R) wobei gx, gy die ausgetauschten öffentlichen Diffie-Hellman-Werte bezeichnen ID-I, ID-R bezeichnen die Identität des Initiators und des Responders SA-offer bezeichnet die Nutzdaten bezüglich der SA-Verhandlung
+                  \item Hash-R = HMAC(SKEYID, gy | gx | CKY-R | CKY-I | SA-offer | ID-R)
+                  \item wobei gx, gy die ausgetauschten öffentlichen Diffie-Hellman-Werte bezeichnen ID-I, ID-R bezeichnen die Identität des Initiators und des Responders SA-offer bezeichnet die Nutzdaten bezüglich der SA-Verhandlung
             \end{itemize*}
             \item IKE unterstützt vier verschiedene Methoden der Authentifizierung:
             \begin{itemize*}
@@ -4649,7 +4512,7 @@
             \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-exchange-payload-signature.png}
             \begin{itemize*}
                   \item $(m)$ gibt an, dass m optional ist
-                  \item $I,,m''$ bedeutet, dass I m signiert
+                  \item $I[m]$ bedeutet, dass I m signiert
             \end{itemize*}
             \item Bitte beachten Sie, dass Hash-I und Hash-R signiert werden müssen, da sie nichts enthalten, von dem bekannt ist, dass es authentisch ist
       \end{itemize*}
@@ -4763,7 +4626,7 @@
             \item Konfiguration von großen IPsec-Infrastrukturen
       \end{itemize*}
 
-      \subsection{Internet Key Exchange Protocol Version 2 ,,RFC5996''}
+      \subsection{Internet Key Exchange Protocol Version 2}
       Zusätzliche Designziele zu IKEv1
       \begin{itemize*}
             \item Konsolidierung von mehreren IKEv1-RFCs (und mehreren Erweiterungen)
@@ -4893,7 +4756,7 @@
             \item Wann ist NAT-T zu verwenden?
             \begin{itemize*}
                   \item NAT-Situation muss von IKE erkannt werden
-                  \item Erfolgt durch IKEv1-Erweiterung ,,RFC3947'' und IKEv2
+                  \item Erfolgt durch IKEv1-Erweiterung
                   \item IKE verwendet NAT-T, wenn der IKE-Quellport nicht 500 ist
                   \item Funktioniert nicht immer, dann ist eine manuelle Konfiguration erforderlich
             \end{itemize*}
@@ -4936,7 +4799,7 @@
             \item Aber eigentlich sind nur Adressfelder im inneren IP-Header erforderlich (alle anderen Felder können vom externen Header abgeleitet werden)
             \item Beide virtuellen Adressfelder verwenden immer dieselben Adressen (kein Multiplexing wie in üblichen Tunnelmodusszenarien)
             \item Die Beschränkung auf zwei Adressen im Tunnel ermöglicht eine statische Bindung während der IKE-Aushandlung
-            \item Der Bound-End-to-End-Tunnel (BEET)-Modus ,,NiMe08'' verhält sich semantisch wie eine Tunnelmodus-Assoziation mit einem Verkehrsselektor für einen einzelnen Host (/32)
+            \item Der Bound-End-to-End-Tunnel (BEET)-Modus verhält sich semantisch wie eine Tunnelmodus-Assoziation mit einem Verkehrsselektor für einen einzelnen Host (/32)
             \item Die übertragenen ESP-Pakete sind äquivalent zu Transport (!)-Modus-Paketen (virtuelle Adressen werden nie in Paketen übertragen)
             \item Der innere Header wird durch den ESP-Entkapselungsprozess wiederhergestellt.
             \item Unterscheidet zwischen der Erreichbarkeit eines Hosts (externe IP-Adresse) und seiner Identität (virtuelle IP-Adresse)
@@ -5032,7 +4895,7 @@
 
       \subsubsection{Tunnel Endpoint Discovery (TED)}
       \begin{itemize*}
-            \item Proprietärer Ansatz von Cisco ,,Fluh01''
+            \item Proprietärer Ansatz von Cisco
             \item Sicherheitsassoziationen werden reaktiv erstellt
             \begin{itemize*}
                   \item Alice sendet Paket an Bob
@@ -5053,7 +4916,7 @@
 
       \subsubsection{Gruppenverschlüsseltes Transport-VPN (GET)}
       \begin{itemize*}
-            \item Cisco Produktbranding mehrerer IPsec-Komponenten ,,Bhai08''
+            \item Cisco Produktbranding mehrerer IPsec-Komponenten
             \item Sicherheits-Gateways kontaktieren zentralen IKE-Server
             \item IKE-Server verteilt symmetrische Schlüssel (bevorzugt über Multicast)
             \item Alle Sicherheitsgateways einer Gruppe verwenden dieselbe SA (einschließlich SPI, Schlüssel)
@@ -5074,7 +4937,7 @@
 
       \subsubsection{Proaktives Multicast-basiertes IPsec-Erkennungsprotokoll}
       \begin{itemize*}
-            \item Ansatz wurde für militärische Anwendungen entwickelt ,,Tran06''
+            \item Ansatz wurde für militärische Anwendungen entwickelt
             \item Sicherheits-Gateways kündigen periodisch private Netzwerke an
             \item Erfolgt durch Transportnetzwerk-Multicast
             \item Nachrichten werden durch einen vorab geteilten symmetrischen Schlüssel geschützt
@@ -5092,7 +4955,7 @@
 
       \subsubsection{Soziales VPN}
       \begin{itemize*}
-            \item Akademischer Ansatz ,,FBJW08''
+            \item Akademischer Ansatz
             \item Verwendet Facebook als ,,policy'' Server zum Austausch von IKE Zertifikaten
             \begin{itemize*}
                   \item Man kann mit Freunden kommunizieren
@@ -5118,7 +4981,7 @@
 
       \subsubsection{Dynamisches Mehrpunkt-VPN (DMVPN)}
       \begin{itemize*}
-            \item Ein weiterer Ansatz von Cisco ,,Bhai08''
+            \item Ein weiterer Ansatz von Cisco
             \item VPN ist aufgeteilt in
             \begin{itemize*}
                   \item Statische Kern-Gateways (,,Hubs'')
@@ -5156,7 +5019,7 @@
 
       \subsubsection{Sicheres OverLay für IPsec-Erkennung (SOLID)}
       \begin{itemize*}
-            \item Komplexer Ansatz, verspricht einfache Implementierung ,,RSS10''
+            \item Komplexer Ansatz, verspricht einfache Implementierung
             \item Sicherheitsgateways bilden ein strukturiertes Overlay-Netzwerk
             \begin{itemize*}
                   \item Verbindet Sicherheitsgateways so, dass das VPN effizient nach einer Zieladresse durchsucht werden kann
@@ -5205,7 +5068,7 @@
                   \item Die Pakete werden entlang der Ringstruktur gesendet
                   \item Benötigt $O(n)$ Overlay Hops, um das Ziel zu erreichen (wobei n die Anzahl der Netzwerke in der VPN-Topologie ist)
             \end{itemize*}
-            \item $\Rightarrow$ Kürzere ,,Suchpfade'' erforderlich
+            \item[$\rightarrow$] Kürzere ,,Suchpfade'' erforderlich
       \end{itemize*}
 
       \paragraph{SOLID - Mehr Topologiekontrolle}
@@ -5281,7 +5144,6 @@
       \end{itemize*}
 
       \section{Sicherheitsprotokolle der Transportschicht}
-
       \subsection{Anwendungsbereich von Sicherheitsprotokollen der Transportschicht}
       \begin{itemize*}
             \item Die Transportschicht sorgt für die Kommunikation zwischen Anwendungsprozessen (anstelle der Kommunikation zwischen Endsystemen) und ihre Hauptaufgaben sind:
@@ -5302,15 +5164,13 @@
 
       \subsection{Das Secure Socket Layer (SSL) Protokoll}
       \begin{itemize*}
-            \item SSL wurde ursprünglich in erster Linie zum Schutz von HTTP-Sitzungen entwickelt:
-            \begin{itemize*}
-                  \item In den frühen 1990er Jahren gab es ein ähnliches Protokoll namens S-HTTP
-                  \item Da jedoch S-HTTP-fähige Browser nicht kostenlos waren und SSL Version 2.0 in den Browsern von Netscape Communications enthalten war, setzte es sich schnell durch.
-                  \item SSL v.2 enthielt einige Schwachstellen, weshalb die Microsoft Corporation ein konkurrierendes Protokoll namens Private Communication Technology (PCT) entwickelte.
-                  \item Netscape verbesserte das Protokoll und SSL v.3 wurde zum De-facto-Standardprotokoll für die Sicherung des HTTP-Verkehrs.
-                  \item Dennoch kann SSL eingesetzt werden, um beliebige Anwendungen zu sichern, die über TCP laufen.
-                  \item 1996 beschloss die IETF, ein allgemeines Transport Layer Security (TLS) Protokoll zu spezifizieren, das auf SSL basiert
-            \end{itemize*}
+            \item SSL wurde ursprünglich in erster Linie zum Schutz von HTTP-Sitzungen entwickelt
+            \item In den frühen 1990er Jahren gab es ein ähnliches Protokoll namens S-HTTP
+            \item Da jedoch S-HTTP-fähige Browser nicht kostenlos waren und SSL Version 2.0 in den Browsern von Netscape Communications enthalten war, setzte es sich schnell durch.
+            \item SSL v.2 enthielt einige Schwachstellen, weshalb die Microsoft Corporation ein konkurrierendes Protokoll namens Private Communication Technology (PCT) entwickelte.
+            \item Netscape verbesserte das Protokoll und SSL v.3 wurde zum De-facto-Standardprotokoll für die Sicherung des HTTP-Verkehrs.
+            \item Dennoch kann SSL eingesetzt werden, um beliebige Anwendungen zu sichern, die über TCP laufen.
+            \item 1996 beschloss die IETF, ein allgemeines Transport Layer Security (TLS) Protokoll zu spezifizieren, das auf SSL basiert
       \end{itemize*}
 
       \subsection{SSL-Sicherheitsdienste}
@@ -5422,7 +5282,7 @@
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{SSL Handshake Protokoll: Vollständiger Handshake}
+      %\subsection{SSL Handshake Protokoll: Vollständiger Handshake}
       %\begin{longtable}[]{@{}lll@{}}
       % \toprule
       % Client & & Server\tabularnewline
@@ -5525,7 +5385,7 @@
                   \item Nachdem der Server C entschlüsselt hat, prüft er, ob das erste Oktett gleich 0x ist und ob es ein 0x00-Oktett gibt; wenn diese Prüfung fehlschlägt, antwortet er mit einer Fehlermeldung
                   \item Diese Fehlermeldung kann von einem Angreifer genutzt werden, um einen ,,Orakel-Angriff'' zu starten.
             \end{itemize*}
-            \item Ein Orakel-Angriff gegen das SSL-Handshake-Protokoll ,,BKS98a'':
+            \item Ein Orakel-Angriff gegen das SSL-Handshake-Protokoll
             \begin{itemize*}
                   \item Betrachten wir einen Angreifer (Eve), der einen SSL-Handshake-Dialog belauscht hat und das Pre-Master-Secret (und damit alle anderen abgeleiteten Geheimnisse), das zwischen Alice (Client) und Bob (Server) ausgetauscht wurde, wiederherstellen möchte
                   \item Eve hat die verschlüsselte Nachricht C, die das Pre-Master-Secret enthält, erfolgreich abgehört und möchte nun den Klartext wiederherstellen
@@ -5547,10 +5407,8 @@
                   \item Regelmäßiger Wechsel der öffentlichen Schlüsselpaare ($\Rightarrow$-Overhead)
                   \item Verringerung der Wahrscheinlichkeit, ,,gute'' Chiffriertexte zu erhalten, indem das Format der entschlüsselten Chiffriertexte gründlich überprüft und dem Client ein identisches Verhalten (Fehlermeldung, Zeitverhalten usw.) gezeigt wird
                   \item Der Kunde muss den Klartext kennen, bevor er antwortet, ob die Nachricht erfolgreich entschlüsselt werden konnte.
-                  \item Hinzufügen einer Struktur zum Klartext, z. B. durch Hinzufügen eines Hashwerts zum Klartext:
-                  \begin{itemize*}
-                        \item Achtung: Es ist eine gewisse Vorsicht geboten, um Anfälligkeiten für eine andere Klasse von Angriffen zu vermeiden ,,Cop96a''.
-                  \end{itemize*}
+                  \item Hinzufügen einer Struktur zum Klartext, z. B. durch Hinzufügen eines Hashwerts zum Klartext
+                  \item Achtung: Es ist eine gewisse Vorsicht geboten, um Anfälligkeiten für eine andere Klasse von Angriffen zu vermeiden
                   \item Änderung des Verschlüsselungsprotokolls für öffentliche Schlüssel, d.h. Überarbeitung von PKCS \#1:
                   \begin{itemize*}
                         \item PKCS \#1 Version 2.1 bereitet den Klartext vor der Verschlüsselung mit einer Methode vor, die als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bezeichnet wird, um die PKCS \#1 Entschlüsselungsprozedur ,,plaintext aware'' zu machen, was bedeutet, dass es nicht möglich ist, einen gültigen Chiffretext zu konstruieren, ohne den entsprechenden Klartext zu kennen
@@ -5647,12 +5505,12 @@
             \begin{itemize*}
                   \item In SSL 3.0 und TLS 1.0 ist der Initialisierungsvektor eines im CBC-Modus verschlüsselten Datensatzes der letzte Block des vorherigen Datensatzes
                   \item Wenn ein Angreifer den Inhalt des vorherigen Datensatzes kontrolliert, kann er einen adaptiven Klartextangriff durchführen, um den Inhalt des nächsten Datensatzes herauszufinden.
-                  \item Durchführbar für Webverkehr, d. h. Erzeugen von Verkehr mit JavaScript und Beobachten von außen, führt zum sogenannten BEAST-Angriff (Browser Exploit Against SSL/TLS) ,,RD10''.
+                  \item Durchführbar für Webverkehr, d. h. Erzeugen von Verkehr mit JavaScript und Beobachten von außen, führt zum sogenannten BEAST-Angriff (Browser Exploit Against SSL/TLS)
                   \item Auch für VPN-Verkehr machbar
                   \item Abgeschwächt durch TLS 1.1, wo explizite IVs verwendet werden
                   \item 2009 wurde eine sogenannte TLS-Neuverhandlungsschwachstelle identifiziert
                   \begin{itemize*}
-                        \item Angreifer können sie nutzen, um einer legitimen Sitzung durch einen Man-in-the-Middle-Angriff Daten voranzustellen (Details in ,,Zo11'')
+                        \item Angreifer können sie nutzen, um einer legitimen Sitzung durch einen Man-in-the-Middle-Angriff Daten voranzustellen
                         \item Die Auswirkungen hängen stark von dem verwendeten Anwendungsprotokoll ab
                   \end{itemize*}
                   \item Bei HTTPS führt dies zu mehreren Ausnutzungsmöglichkeiten, z. B,
@@ -5661,7 +5519,7 @@
                         \item Alice sendet: \texttt{GET\ /ebanking/start.html\ HTTP/1.1}
                         \item Die Anfrage wird in eine valide HTTP Anfrage umgewandelt: \texttt{GET\ /ebanking/transfer?what=LotsOfMoney\&to=eve\ HTTP/1.1\ <crlf>{}\ X-Ignore:\ GET\ /ebanking/start.html\ HTTP/1.1}
                   \end{itemize*}
-                  \item Abgeschwächt durch Identifizierung neu ausgehandelter Sitzungen mit einer anderen ID ,,RRDO10''
+                  \item Abgeschwächt durch Identifizierung neu ausgehandelter Sitzungen mit einer anderen ID
             \end{itemize*}
       \end{itemize*}
 
@@ -5703,11 +5561,11 @@
       \begin{itemize*}
             \item SSH Version 2 ist in mehreren separaten Dokumenten spezifiziert, z.B.:
             \begin{itemize*}
-                  \item SSH Protocol Assigned Numbers ,,LL06''
-                  \item SSH-Protokollarchitektur ,,YL06a''
-                  \item SSH-Authentifizierungsprotokoll ,,YL06b''
-                  \item SSH-Transportschichtprotokoll ,,YL06c''
-                  \item SSH-Verbindungsprotokoll ,,YL06d''
+                  \item SSH Protocol Assigned Numbers
+                  \item SSH-Protokollarchitektur
+                  \item SSH-Authentifizierungsprotokoll
+                  \item SSH-Transportschichtprotokoll
+                  \item SSH-Verbindungsprotokoll
             \end{itemize*}
             \item SSH-Architektur:
             \begin{itemize*}
@@ -5737,7 +5595,7 @@
                   \item Verschlüsselung:
                   \begin{itemize*}
                         \item AES, 3DES, Blowfish, Twofish, Serpent, IDEA und CAST in CBC
-                        \item AES in GCM ,,IS09''
+                        \item AES in GCM
                         \item Arcfour (,,vermutlich'' kompatibel mit dem ,,unveröffentlichten'' RC4)
                         \item keine (nicht empfohlen) \end{itemize*}
                   \item Integrität:
@@ -5748,8 +5606,8 @@
                   \item Schlüsselaustausch:
                   \begin{itemize*}
                         \item Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen
-                        \item ECDH mit mehreren vordefinierten NIST-Gruppen ,,SG09'' (obligatorisch drei Kurven über $\mathbb{Z}_p$)
-                        \item Öffentlicher Schlüssel: RSA, DSS, ECC (in mehreren Varianten ,,SG09'')
+                        \item ECDH mit mehreren vordefinierten NIST-Gruppen (obligatorisch drei Kurven über $\mathbb{Z}_p$)
+                        \item Öffentlicher Schlüssel: RSA, DSS, ECC (in mehreren Varianten)
                   \end{itemize*}
                   \item Komprimierung: keine, zlib (siehe RFCs 1950, 1951)
             \end{itemize*}
@@ -5785,7 +5643,7 @@
                   \item Ist eine Vermutung richtig, wird das entsprechende Schlüsselaustauschpaket als erstes Schlüsselaustauschpaket der anderen Entität akzeptiert
                   \item Falsche Vermutungen werden ignoriert und neue Schlüsselaustauschpakete werden nach Aushandlung des Algorithmus gesendet
             \end{itemize*}
-            \item Für den Schlüsselaustausch definiert ,,YL06c'' nur eine Methode:
+            \item Für den Schlüsselaustausch nur eine Methode definiert
             \begin{itemize*}
                   \item Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen (1024 und 2048 Bit)
                   \item Z.B. $p = 2^{1024} -2^{960} - 1 + (2^{64}\times \lfloor 2894 \times \pi + 129093\rfloor); g = 2$
@@ -5912,8 +5770,8 @@
                   \item Dann wird der Start eines Shell-Prozesses über eine ssh\_msg\_channel\_request-Nachricht mit dem Request-Typ ,,shell'' gefordert (dies führt normalerweise zum Start der Standard-Shell für den Benutzer, wie sie in /etc/passwd definiert ist)
                   \item Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
 
-                  | SSH Client | | SSH Server | | -------------------------------------------------------------------------- | ---- | ---------------------------------------------------- | | ssh\_msg\_channel\_open (,,session'', 20, 2048, 512) | --->{} | | | <--- | ssh\_msg\_channel\_open\_confirmation(20, 31, 1024, 256) | | ssh\_msg\_channel\_request (31, ,,pty-req'', false, ...) | --->{} | | ssh\_msg\_channel\_request (31, ,,env'', false, ,,home'', ,,/home/username'') | --->{} | | ssh\_msg\_channel\_request (31, ,,shell'', true, ...) | --->{} | | | <--- | ssh\_msg\_channel\_success(20) |
-                  ,,Nutzdatenaustausch findet ab jetzt statt...''
+                  %| SSH Client | | SSH Server | | -------------------------------------------------------------------------- | ---- | ---------------------------------------------------- | | ssh\_msg\_channel\_open (,,session'', 20, 2048, 512) | --->{} | | | <--- | ssh\_msg\_channel\_open\_confirmation(20, 31, 1024, 256) | | ssh\_msg\_channel\_request (31, ,,pty-req'', false, ...) | --->{} | | ssh\_msg\_channel\_request (31, ,,env'', false, ,,home'', ,,/home/username'') | --->{} | | ssh\_msg\_channel\_request (31, ,,shell'', true, ...) | --->{} | | | <--- | ssh\_msg\_channel\_success(20) |
+                  %,,Nutzdatenaustausch findet ab jetzt statt...''
             \end{itemize*}
       \end{itemize*}
 
@@ -5998,20 +5856,19 @@
                   \item Keine (einzelne) Entität im Netz sollte in der Lage sein, den Standort eines mobilen Geräts zu verfolgen
             \end{itemize*}
             \item Einige grundlegende Ansätze zur Lösung dieses Problems
-            ,,Müller99a'':
             \begin{itemize*}
-                  \item Broadcast von Nachrichten:
+                  \item Broadcast von Nachrichten
                   \begin{itemize*}
                         \item Jede Nachricht wird an jeden möglichen Empfänger gesendet
                         \item Wenn Vertraulichkeit erforderlich ist, wird die Nachricht asymmetrisch verschlüsselt
                         \item Dieser Ansatz ist nicht gut skalierbar für große Netzwerke / hohe Last
                   \end{itemize*}
-                  \item Temporäre Pseudonyme:
+                  \item Temporäre Pseudonyme
                   \begin{itemize*}
                         \item Mobile Geräte verwenden Pseudonyme, die regelmäßig gewechselt werden
                         \item Um das mobile Gerät zu erreichen, ist jedoch eine Abbildungsinstanz erforderlich, die die Geschichte der Pseudonyme des Mobiltelefons verfolgen kann.
                   \end{itemize*}
-                  \item Gemischte Netzwerke:
+                  \item Gemischte Netzwerke
                   \begin{itemize*}
                         \item Nachrichten werden über verschiedene Entitäten (Mixes) geleitet und jede Entität kann nur einen Teil der Nachrichtenroute erfahren (siehe unten)
                   \end{itemize*}
@@ -6068,7 +5925,7 @@
                         \item $M2\rightarrow B: {r_3 , m}_{+K_B}$
                         \item Es ist wichtig, dass die Mischungen ,,genug,, Nachrichten verarbeiten
                   \end{itemize*}
-                  \item Dieses Konzept lässt sich auf die mobile Kommunikation übertragen ,,Müller99a''
+                  \item Dieses Konzept lässt sich auf die mobile Kommunikation übertragen
             \end{itemize*}
       \end{itemize*}
 
@@ -6149,7 +6006,7 @@
             \item Betrachten wir nun zwei Nachrichten $M_1$ und $M_2$ mit CRCs $R_1$ und $R_2$:
             \begin{itemize*}
                   \item Da $\frac{M_1(x)\times 2^n+R_1(x)}{G(x)}$ und $\frac{M_2(x)\times 2^n+R_2(x)}{G(x)}$ mit dem Rest $0$ teilen, teilt sich auch $\frac{M_1(x)\times 2^n +R_1(x)+M_2(x)\times 2^n +R_2(x)}{G(x)} =\frac{(M_1(x)+M_2(x))\times 2^n +(R_1(x)+R_2(x))}{G(x)}$ teilt mit Rest $0$
-                  \item $\Rightarrow$ CRC ist linear, d.h. $CRC(M_1 + M_2) = CRC(M_1) + CRC(M_2)$
+                  \item[$\rightarrow$] CRC ist linear, d.h. $CRC(M_1 + M_2) = CRC(M_1) + CRC(M_2)$
             \end{itemize*}
             \item Diese Eigenschaft macht CRC schwach für kryptographische Zwecke!
       \end{itemize*}
@@ -6167,7 +6024,7 @@
             \end{itemize*}
       \end{itemize*}
 
-      IEEE 802.11's Shared Key Authentication Dialog:
+      IEEE 802.11's Shared Key Authentication Dialog
       \begin{itemize*}
             \item Die Authentifizierung sollte zwischen Stationen und Zugangspunkten erfolgen und könnte auch zwischen beliebigen Stationen durchgeführt werden.
             \item Bei der Authentifizierung fungiert eine Station als Requestor (A) und die andere als Responder (B)
@@ -6203,14 +6060,8 @@
       \begin{itemize*}
             \item WEP wurde entwickelt, um die folgenden Sicherheitseigenschaften zu gewährleisten:
             \begin{itemize*}
-                  \item Vertraulichkeit:
-                  \begin{itemize*}
-                        \item Nur Stationen, die über $K_{BSS}$ verfügen, können mit WEP geschützte Nachrichten lesen
-                  \end{itemize*}
-                  \item Authentifizierung der Datenherkunft / Datenintegrität:
-                  \begin{itemize*}
-                        \item Böswillige Veränderungen von WEP-geschützten Nachrichten können erkannt werden
-                  \end{itemize*}
+                  \item Vertraulichkeit: Nur Stationen, die über $K_{BSS}$ verfügen, können mit WEP geschützte Nachrichten lesen
+                  \item Authentifizierung der Datenherkunft / Datenintegrität: Böswillige Veränderungen von WEP-geschützten Nachrichten können erkannt werden
                   \item Zugriffskontrolle in Verbindung mit Schichtenmanagement:
                   \begin{itemize*}
                         \item Wenn in der Schichtenverwaltung so eingestellt, werden nur WEP-geschützte Nachrichten von Empfängern akzeptiert
@@ -6277,7 +6128,7 @@
                   \item $= RC4(IV, K_{BSS}) \oplus (M', CRC(M'))$
                   \item Man beachte, dass $E$ $M'$ nicht kennt, da es $M$ nicht kennt.
                   \item Dennoch führt ein ,,1'' an Position $n$ in $\delta$ zu einem umgedrehten Bit an Position n in $M'$, so dass E kontrollierte Änderungen an $M$ vornehmen kann
-                  \item $\Rightarrow$ Datenherkunftsauthentifizierung / Datenintegrität von WEP ist unsicher!
+                  \item[$\rightarrow$] Datenherkunftsauthentifizierung / Datenintegrität von WEP ist unsicher!
             \end{itemize*}
       \end{itemize*}
 
@@ -6294,7 +6145,7 @@
                         \item Der Angreifer sendet IP-Pakete, die für das Internet bestimmt sind, an den Zugangspunkt, der sie entsprechend weiterleitet und dem Angreifer freien Zugang zum Internet gewährt
                   \end{itemize*}
             \end{itemize*}
-            \item $\Rightarrow$ WEP Access Control kann mit bekanntem Klartext umgangen werden
+            \item[$\rightarrow$] WEP Access Control kann mit bekanntem Klartext umgangen werden
       \end{itemize*}
 
       \subsubsection{Schwachstelle Nr. 5: Schwachstelle in der RC4-Schlüsselberechnung}
@@ -6312,8 +6163,7 @@
                         \item Die IV für den Schlüsselstrom wird mit jedem Paket im Klartext übertragen.
                         \item Die ersten beiden Oktette eines verschlüsselten Datenpakets können erraten werden
                   \end{itemize*}
-                  \item Der Angriff ist in ,,SMF01a'' und ,,SIR01a'' beschrieben und wurde später so verfeinert, dass er noch schneller funktioniert ,,TWP07''.
-                  \item R. Rivest kommentiert dies ,,Riv01a'': ,,Diejenigen, die die RC4-basierten WEP- oder WEP2-Protokolle verwenden, um die Vertraulichkeit ihrer 802.11-Kommunikation zu gewährleisten, sollten diese Protokolle als gebrochen betrachten ,,...''''
+                  \item R. Rivest kommentiert dies: ,,Diejenigen, die die RC4-basierten WEP- oder WEP2-Protokolle verwenden, um die Vertraulichkeit ihrer 802.11-Kommunikation zu gewährleisten, sollten diese Protokolle als gebrochen betrachten ,,...''''
             \end{itemize*}
       \end{itemize*}
 
@@ -6379,7 +6229,6 @@
                   \item Persönlicher Modus - basierend auf Pre-Shared Keys
             \end{itemize*}
       \end{itemize*}
-      (das meiste Material über 802.11i ist aus ,,WM02a'' entnommen)
 
       \subsection{WPA-Schlüsselverwaltung}
       \begin{itemize*}
@@ -6391,7 +6240,7 @@
                   \begin{itemize*}
                         \item Explizit durch 64 zufällige Hex-Zeichen oder implizit durch ein Passwort gegeben
                         \item Wenn Passwort: PMK = PBKDF2(Passwort, SSID, 4096, 256)
-                        \item Wobei PBKDF2 die passwortbasierte Schlüsselableitungsfunktion 2 aus ,,RFC2898'' mit einer Salz-SSID und einer Ausgangslänge von 256 Bit ist
+                        \item Wobei PBKDF2 die passwortbasierte Schlüsselableitungsfunktion 2 mit einer Salz-SSID und einer Ausgangslänge von 256 Bit ist
                         \item impliziert 2 * 4096 Berechnungen von HMAC-SHA1, um Brute-Force zu verlangsamen
                   \end{itemize*}
             \end{itemize*}
@@ -6411,7 +6260,7 @@
                   \item EAPOL Key Encryption Key (KEK, zweite 128 Bits),
                   \begin{itemize*}
                         \item Wird zur Verschlüsselung neuer Schlüssel in EAPOL-Nachrichten verwendet
-                        \item Mit RC4 (veraltet), AES im Key Wrap Mode ,,RFC3394''
+                        \item Mit RC4 (veraltet), AES im Key Wrap Mode
                   \end{itemize*}
                   \item Ein Temporal Key (TK) zum Schutz des Datenverkehrs (ab Bit 256)!
             \end{itemize*}
@@ -6516,7 +6365,7 @@
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-aes-ccmp-frame-format.png}
       \end{itemize*}
 
-      \subsection{Vergleich WEP, TKIP und CCMP}
+      %\subsection{Vergleich WEP, TKIP und CCMP}
       %\begin{longtable}[]{@{}llll@{}}
       % \toprule
       % & WEP & TKIP & CCMP\tabularnewline
@@ -6535,7 +6384,7 @@
       % \bottomrule
       %\end{longtable}
 
-      TKIP ist derzeit veraltet, AES wird empfohlen.
+      %TKIP ist derzeit veraltet, AES wird empfohlen.
 
       \section{Sicherheit von GSM- und UMTS-Netzen}
       \subsection{GSM-Übersicht}
@@ -6561,7 +6410,7 @@
                         \item Zugangskontrolle und Benutzerauthentifizierung
                   \end{itemize*}
             \end{itemize*}
-            \item GSM bietet die folgenden Sicherheitsfunktionen ,,ETSI93a, ETSI94a'':
+            \item GSM bietet die folgenden Sicherheitsfunktionen
             \begin{itemize*}
                   \item Vertraulichkeit der Identität des Teilnehmers:
                   \begin{itemize*}
@@ -6576,29 +6425,27 @@
             \end{itemize*}
       \end{itemize*}
 
-      Einige GSM-Abkürzungen | | | |
-      ------ |
-      -------------------------------------------
-      | | AuC | Authentication center |
-      | BSC | Basisstations-Controller | |
-      BTS | Basis-Transceiver-Station | | IMSI
-      | Internationale mobile Teilnehmerkennung | |
-      HLR | Heimatstandortregister | | LAI
-      | Standortbereichskennung | | MS |
-      Mobile Station (z. B. ein Mobiltelefon) | | MSC
-      | Mobile Vermittlungsstelle | | MSISDN
-      | Mobile subscriber international ISDN number |
-      | TMSI | Temporäre mobile Teilnehmerkennung |
-      | VLR | Register für Besucherstandorte |
+      %Einige GSM-Abkürzungen | | | |
+      %| | AuC | Authentication center |
+      %| BSC | Basisstations-Controller | |
+      %BTS | Basis-Transceiver-Station | | IMSI
+      %| Internationale mobile Teilnehmerkennung | |
+      %HLR | Heimatstandortregister | | LAI
+      %| Standortbereichskennung | | MS |
+      %Mobile Station (z. B. ein Mobiltelefon) | | MSC
+      %| Mobile Vermittlungsstelle | | MSISDN
+      %| Mobile subscriber international ISDN number |
+      %| TMSI | Temporäre mobile Teilnehmerkennung |
+      %| VLR | Register für Besucherstandorte |
 
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-gsm-authentication.png}
 
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-gsm-authentication-2.png}
 
-      \begin{itemize*}
-            \item $K_i$: Authentifizierungsschlüssel des einzelnen Teilnehmers
-            \item $SRES$: Signierte Antwort
-      \end{itemize*}
+      %\begin{itemize*}
+      %      \item $K_i$: Authentifizierungsschlüssel des einzelnen Teilnehmers
+      %      \item $SRES$: Signierte Antwort
+      %\end{itemize*}
 
       Der grundlegende (anfängliche) Authentifizierungsdialog:
       \begin{enumerate*}
@@ -6679,8 +6526,6 @@
                   \item GR (GPRS Register): Verwaltet Benutzeradressen (entspricht HLR)
             \end{itemize*}
       \end{itemize*}
-
-      (allgemeine GPRS-Beschreibung entnommen aus ,,Sch03a'')
 
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-gprs-logical-architecture.png}
 
@@ -6781,7 +6626,7 @@
             \end{itemize*}
       \end{itemize*}
 
-      Einige UMTS-Authentifizierungsabkürzungen
+      %Einige UMTS-Authentifizierungsabkürzungen
 
       %\begin{longtable}[]{@{}ll@{}}
       % \toprule
@@ -6803,8 +6648,8 @@
 
       \subsubsection{Überblick über den UMTS-Authentifizierungsmechanismus}
       \begin{itemize*}
-            \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-umts-authentication-mechanism.png}
-            \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-umts-authentication-vectors.png}
+            \item \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-umts-authentication-mechanism.png}
+            \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-umts-authentication-vectors.png}
             \begin{itemize*}
                   \item Der HE/AuC beginnt mit der Erzeugung einer neuen Sequenznummer SQN und einer unvorhersehbaren Herausforderung RAND
                   \begin{itemize*}
@@ -6833,7 +6678,7 @@
                   \begin{itemize*}
                         \item Liegt die Sequenznummer nicht im korrekten Bereich, sendet das USIM einen Synchronisationsfehler an den VLR/SGSN zurück, einschließlich eines entsprechenden Parameters, und bricht das Verfahren ab.
                   \end{itemize*}
-                  \item Wenn die Sequenznummer im korrekten Bereich liegt, berechnet das USIM:
+                  \item Wenn die Sequenznummer im korrekten Bereich liegt, berechnet das USIM
                   \begin{itemize*}
                         \item die Authentifizierungsantwort $RES = f2_K(RAND)$
                         \item den Chiffrierschlüssel $CK = f3_K(RAND)$ und den Integritätsschlüssel $IK = f4_K(RAND)$

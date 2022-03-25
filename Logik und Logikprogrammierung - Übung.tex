@@ -1,5 +1,5 @@
 \documentclass[10pt, a4paper]{exam}
-%\printanswers			    % Comment this line to hide the answers 
+\printanswers			    % Comment this line to hide the answers 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
@@ -9,6 +9,10 @@
 \usepackage{pgfplots}
 \usepackage{bussproofs}
 \usepackage[many]{tcolorbox}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 
 % Don't print section numbers
 \setcounter{secnumdepth}{0}
@@ -351,12 +355,20 @@
 
             \begin{solution}
 
-                \begin{tabular}{c|c|c}
-                    $p_1$ & $p_1\rightarrow p_1$ & $p_1\rightarrow p_1 \Vdash p_1$ \\\hline
-                    w     & w                    & w                               \\
-                    $0.5$ & w                    & w                               \\
-                    f     & w                    & w                               \\
+                \begin{tabular}{c|c|c|c|c|c}
+                    $p_1$         & $p_2$         & $p_1\rightarrow p_2$ & $\Gamma= inf\{p_1\rightarrow p_2, \varphi\}$ & $\Gamma\vdash p_2$ \\\hline
+                    0             & 0             & 1                    & 0                                            & \cmark             \\
+                    0             & $\frac{1}{2}$ & 1                    & 0                                            & \xmark             \\
+                    0             & 1             & 1                    & 0                                            & \cmark             \\
+                    $\frac{1}{2}$ & 0             & 0                    & $\frac{1}{2}$                                & \xmark             \\
+                    $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$        & $\frac{1}{2}$                                & \cmark             \\
+                    $\frac{1}{2}$ & 1             & $\frac{1}{2}$        & 0                                            & \cmark             \\
+                    1             & 0             & 0                    & 0                                            & \cmark             \\
+                    1             & $\frac{1}{2}$ & $\frac{1}{2}$        & $\frac{1}{2}$                                & \cmark             \\
+                    1             & 1             & 1                    & 1                                            & \cmark
                 \end{tabular}
+
+                B Tautologie, keine $K_3$ Tautologie
             \end{solution}
 
             \subpart $\Gamma=\{p_1\rightarrow p_2, p_1\}, \varphi=p_2, W\in\{B,K_3\}$
@@ -398,11 +410,12 @@
             \subpart $\lnot(p_1\wedge \lnot p_1)$
             \begin{solution}
 
-                \begin{tabular}{c | c | c | c}
-                    $p_1$ & $\lnot p_1$ & $p_1\wedge \lnot p_1$ & $\lnot(p_1\wedge \lnot p_1)$ \\\hline
-                    w     & f           & f                     & w                            \\
-                    f     & w           & f                     & w
-                \end{tabular}
+                $B[\lnot(p_1\wedge \lnot p_2)]=1_b -inf\{B(p_1), -B(p_1)\}=1_B-0_B=1_B \Rightarrow$ B Tautologie
+
+                für $K_3$ betrachte Belegung $B=\frac{1}{2}$
+
+                $K[\lnot(p_1\wedge\lnot p_1)]= 1_b -inf\{B(p_1), -B(p_1)\} = 1-\frac{1}{2} \Rightarrow$ keine $K_3$ Tautologie
+                %$B((p_1\vee p_2)\rightarrow(p_2\wedge p_3) = max(B(p_2\wedge p_3), 1-B(p_1\vee p_2)) = max(min(B(p_2),B(p_3)), 1-max(B(p_1),B(p_2))) = max(min(0.7,1),1-max(0.5,0.7)) = 0.7$
 
                 $\Rightarrow Tautologie$
             \end{solution}
@@ -533,21 +546,28 @@
     \begin{parts}
         \part Die Formelmenge $\{\varphi\}$ ist erfüllbar genau dann, wenn $\lnot\varphi$ kein Theorem ist.
         \begin{solution}
-            $\varnothing\not\vdash\lnot\varphi \Vdash \{\varphi\}$
+            %$\varnothing\not\vdash\lnot\varphi \Vdash \{\varphi\}$
+            $\lnot\varphi$ Theorem $\leftrightarrow$ $\lnot\varphi$ B Tautologie
+
+            $\leftrightarrow B(\lnot \varphi)=1-B(\varphi)=1 \quad\forall$ B Bedingung
+
+            $\leftrightarrow \{\varphi\}$ erfüllbar
         \end{solution}
 
         \part Wenn $\varphi$ eine F-Tautologie ist, dann ist $\bot$ eine Teilformel von $\varphi$.
         \begin{solution}
-            $\Gamma\Vdash_F \rightarrow \varphi\rightarrow\bot$
+            %$\Gamma\Vdash_F \rightarrow \varphi\rightarrow\bot$
+            zeige $\bot$ keine Teilformel von $\varphi\rightarrow\varphi$ keine $K_3$ Tautologie. Idee: betrachte $K_3$ Belegung $B=\frac{1}{2}$, zeige $B(\varphi)=\frac{1}{2}$ induktiv
         \end{solution}
 
         \part Das natürliche Schließen ist auch ohne die Regel $(\bot)$ vollständig.
         \begin{solution}
-
+            ersetzte Deduktion durch Falsum
         \end{solution}
 
         \part Für jede aussagenlogische Formel $\varphi$ gibt es unendlich viele, paarweise verschiedene, äquivalente Formeln.
         \begin{solution}
+            definiere Folge $(\varphi)_{i=N}$ mit $\varphi_1=\varphi$ und $\varphi_{i+1}=\varphi_i +\varphi$
 
             Idee: Kombination der Menge mit beliebige u.u. unendlich vielen Formeln $\lnot\bot$
 
@@ -579,25 +599,31 @@
         \part Überprüfen Sie mittels Makierungsalgorithmus, ob die unten angegebene Folgerung gilt.
         $$p_1\wedge (p_2\vee \lnot p_3\vee \lnot p_5)\wedge (\lnot p_1\vee p_3)\wedge (\lnot p_3\vee p_4)\wedge (\lnot p_1\vee p_2)\Vdash p_5$$
         \begin{solution}
+            Markierungsalgorithmus M:
+            \begin{itemize}
+                \item Eingabe: Menge von Hornklauseln (Negationen auf linke Seite, Positive auf Rechte)
+                \item Ausgabe: $M(\Gamma)=$ erfüllbar $\leftrightarrow \Gamma$ erfüllbar
+                \item Grundlage: $\Gamma\Vdash\varphi \leftrightarrow \Gamma\cup\{\lnot\varphi\}$ unerfüllbar
+            \end{itemize}
             \begin{itemize}
                 \item $\{ (p_1), (p_2\vee \lnot p_3\vee \lnot p_5), (\lnot p_1\vee p_3), (\lnot p_3\vee p_4), (\lnot p_1\vee p_2), \lnot p_5\}$
-                \item Umformen
+                \item Hornklauseln
+                      \begin{enumerate}
+                          \item $\lnot\bot\rightarrow p_1$
+                          \item $p_3\wedge p_5\rightarrow p_2$
+                          \item $p_1\rightarrow p_3$
+                          \item $p_3\rightarrow p_4$
+                          \item $p_1\rightarrow p_2$
+                          \item $p_5\rightarrow \bot$
+                      \end{enumerate}
+                \item Markier-Algorithmus
                       \begin{itemize}
-                          \item $p_1\equiv \varnothing\rightarrow p_1$
-                          \item $\lnot p_5\equiv p_5\rightarrow \bot$
-                          \item $\lnot p_1\vee p_3 \equiv p_1\rightarrow p_3 = \{p_1\}\rightarrow p_3$
-                          \item $\lnot p_3\vee p_4 \equiv p_3\rightarrow p_4 = \{p_3\}\rightarrow p_4$
-                          \item $\lnot p_1\vee p_2 \equiv p_1\rightarrow p_2 = \{p_1\}\rightarrow p_2$
-                          \item $p_2\vee\lnot p_3\vee\lnot p_5 \equiv p_3\wedge p_5\rightarrow p_2 = \{p_3,p_5\}\rightarrow p_2$
+                          \item $p_1$ für 1.
+                          \item $p_3,p_4$ für 3.,5.
+                          \item $p_4$ für 4.
+                          \item keine Terme übrig, allg. Terminiert mit ,,erfüllbar''
                       \end{itemize}
-                \item $\{\varnothing\rightarrow p_1, \{p_5\}\rightarrow\bot, \{p_1\}\rightarrow p_3, \{p_3\}\rightarrow p_4, \{p_1\}\rightarrow p_2, \{p_3,p_5\}\rightarrow p_2$
-                \item Algorithmus
-                      \begin{itemize}
-                          \item Markiere $p_1$ da $\varnothing\rightarrow p_1$
-                          \item Markiere $p_3,p_2$ da $\{p_1\}\rightarrow p_3, \{p_1\}\rightarrow p_2$
-                          \item Markiere $p_4$ da $\{p_3\}\rightarrow p_4$
-                      \end{itemize}
-                \item Algorithmus bricht ab, Formel ist erfüllbar
+                \item erfüllbar $\rightarrow$ Folgerung falsch $\rightarrow \Gamma\not\Vdash\varphi$
             \end{itemize}
         \end{solution}
 
@@ -605,25 +631,24 @@
         $$(p_1\wedge\lnot p_2\wedge p_3)\vee(p_4\wedge\lnot p_1)\vee(p_2\wedge\lnot p_4)\vee\lnot p_2\vee p_4$$
         \begin{solution}
             \begin{itemize}
-                \item $\lnot\phi = \lnot((p_1\wedge\lnot p_2\wedge p_3)\vee(p_4\wedge\lnot p_1)\vee(p_2\wedge\lnot p_4)\vee\lnot p_2\vee p_4)$
-                \item $= (\lnot p_1\vee p_2\lnot p_3)\wedge(\lnot p_4\vee p_1)\wedge(\lnot p_2\vee p_4)\wedge p_2 \wedge \lnot p_4$
-                \item $\{(\lnot p_1\vee p_2\lnot p_3),(\lnot p_4\vee p_1),(\lnot p_2\vee p_4),p_2,\lnot p_4)\}$ keine Menge von Hornklauseln
-                \item Umformen
+                \item $\varphi$ Tautologie $\leftrightarrow \{\lnot\varphi\}$ unerfüllbar
+                \item $\phi = (p_1\wedge\lnot p_2\wedge p_3)\vee(p_4\wedge\lnot p_1)\vee(p_2\wedge\lnot p_4)\vee\lnot p_2\vee p_4$
+                \item $\lnot\phi=(\lnot p_1\vee p_2\vee\lnot p_3)\wedge(\lnot p_4\vee p_1)\wedge(\lnot p_2\vee p_4)\wedge p_2\wedge\lnot p_4$
+                \item Hornklauseln
+                      \begin{enumerate}
+                          \item $p_1 \wedge p_3 \rightarrow p_2$
+                          \item $p_4 \rightarrow p_1$
+                          \item $p_2 \rightarrow p_4$
+                          \item $\lnot\varnothing\rightarrow p_2$
+                          \item $p_4\rightarrow\bot$
+                      \end{enumerate}
+                \item Markier-Algorithmus
                       \begin{itemize}
-                          \item $(\lnot p_1\vee p_2\lnot p_3) \equiv p_1\wedge p_3\rightarrow p_2 = \{p_1,p_3\}\rightarrow p_2$
-                          \item $(\lnot p_4\vee p_1)\equiv p_4\rightarrow p_1 = \{p_4\}\rightarrow p_1$
-                          \item $(\lnot p_2\vee p_4)\equiv p_2\rightarrow p_4 = \{p_2\}\rightarrow p_4$
-                          \item $p_2 \equiv \varnothing\rightarrow p_2$
-                          \item $\lnot p_4 \equiv p_4\rightarrow\bot = \{p_4\}\rightarrow\bot$
+                          \item $p_2$ für 4.
+                          \item $p_4$ für 3.
+                          \item wegen 5. bricht Algorithmus ab mit unerfüllbar
                       \end{itemize}
-                \item $\{\{p_1,p_3\}\rightarrow p_2, \{p_4\}\rightarrow p_1, \{p_2\}\rightarrow p_4, \varnothing\rightarrow p_2, \{p_4\}\rightarrow\bot\}$
-                \item Algorithmus
-                      \begin{itemize}
-                          \item Markiere $p_2$ wegen $\varnothing\rightarrow p_2$
-                          \item Markiere $p_4$ wegen $p_2\rightarrow p_4$
-                          \item Markiere $p_1$, wegen $p_4\rightarrow p_1$
-                      \end{itemize}
-                \item Ausgabe unerfüllbar da $p_4\rightarrow\bot$, also ist es Tautologie
+                \item Ausgabe unerfüllbar da $p_4\rightarrow\bot$, also ist $\phi$ Tautologie
             \end{itemize}
         \end{solution}
     \end{parts}
@@ -633,31 +658,29 @@
         \part Überprüfen Sie mittels SLD-Resolution, ob die unten angegebene Folgerung gilt.
         $$p_1\wedge(\lnot p_1\vee\lnot p_2\vee p_4)\wedge(\lnot p_1\vee p_3\vee\lnot p_4)\wedge(p_6\vee\lnot p_3)\wedge(\lnot p_2\vee p_5\vee\lnot p_6)\Vdash\lnot p_2\vee(p_4\wedge p_5)$$
         \begin{solution}
+            SLD Resolution für $B(M_1\rightarrow\bot, M_2\rightarrow\bot,...,M_n\rightarrow\bot)$ mit $M_n\rightarrow\bot\in\Gamma$ und $M_{ind}=M_n\wedge\{\varphi\}\wedge N$ für $N\rightarrow\varphi\in\Gamma$. $M_n=\varnothing\Leftrightarrow\Gamma$ unerfüllbar
 
             \begin{itemize}
-                \item $\{(p_1),(\lnot p_1\vee\lnot p_2\vee p_4),(\lnot p_1\vee p_3\vee\lnot p_4),(p_6\vee\lnot p_3),(\lnot p_2\vee p_5\vee\lnot p_6),(\lnot p_2\vee (p_4\wedge p_5)\}$
-                \item Umformen
+                \item Horn-Klauseln
+                      \begin{enumerate}
+                          \item $\varnothing \rightarrow p_1$
+                          \item $p_1 \wedge p_2\rightarrow p_4$
+                          \item $p_1 \wedge p_4\rightarrow p_3$
+                          \item $p_3 \rightarrow p_6$
+                          \item $p_6 \wedge p_2 \rightarrow p_5$
+                          \item $\lnot\bot\rightarrow p_2$
+                          \item $p_4\wedge p_5\rightarrow \bot$
+                      \end{enumerate}
+                \item SLD Mengen
                       \begin{itemize}
-                          \item $p_1 \equiv \varnothing \rightarrow p_1$
-                          \item $(\lnot p_1\vee \lnot p_2 \vee p_4) \equiv p_1\wedge p_2\rightarrow p_4 = \{p_1,p_2\}\rightarrow p_4$
-                          \item $(\lnot p_1\vee p_3\vee\lnot p_4)\equiv p_1\wedge p_4\rightarrow p_3 = \{p_1,p_4\}\rightarrow p_3$
-                          \item $(p_6\vee\lnot p_3)\equiv p_3\rightarrow p_6 = \{p_3\}\rightarrow p_6$
-                          \item $(\lnot p_2\vee p_5\vee\lnot p_6) \equiv p_6\wedge p_2\rightarrow p_5 = \{p_6,p_2\}\rightarrow p_5$
-                          \item $p_4\wedge p_5 \rightarrow \bot = \{p_4,p_5\}\rightarrow \bot$
-                          \item $\lnot(\lnot p_2\vee(p_4\wedge p_5))=p_2\wedge \lnot(p_4 \wedge p_5) \equiv \varnothing\rightarrow p_2$
+                          \item aus 7.: $M_1=\{p_4,p_5\}$
+                          \item aus 5.: $M_2=\{p_2,p_4,p_6\}$
+                          \item aus 4.: $M_3=\{p_2,p_3,p_4\}$
+                          \item aus 3.: $M_4=\{p_1,p_2,p_4\}$
+                          \item aus 2.: $M_5=\{p_1,p_2\}$
+                          \item aus 1.+6.: $M_6=\varnothing$
                       \end{itemize}
-                \item SLD
-                      \begin{itemize}
-                          \item $M_0=\{p_5,p_4\}$
-                          \item $M_1=M_0\backslash p_5\cup \{p_6,p_2\}=\{p_2,p_4,p_6\}$
-                          \item $M_2=M_1\backslash p_4\cup \{p_1,p_2\} = \{p_1,p_2,p_6\}$
-                          \item $M_3=M_2\backslash p_6\cup \{p_3\} = \{p_1,p_2,p_3\}$
-                          \item $M_4=M_3\backslash p_3\cup \{p_1,p_4\} = \{p_1,p_2,p_4\}$
-                          \item $M_5=M_4\backslash p_4\cup \{p_1,p_2\} = \{p_1, p_2\}$
-                          \item $M_6=M_5\backslash p_1\cup \{\varnothing\} = \{p_2\}$
-                          \item $M_7=M_6\backslash p_2\cup \{\varnothing\} = \varnothing$
-                      \end{itemize}
-                \item = nicht erfüllbar
+                \item $M=\varnothing\rightarrow \Gamma$ unerfüllbar $\rightarrow \varphi_{links}\Vdash\varphi_{rechts}$
             \end{itemize}
         \end{solution}
 
@@ -665,25 +688,24 @@
         $$(p_2\wedge\lnot p_1\wedge p_3)\vee(p_4\wedge p_1\wedge p_3)\vee(\lnot p_4\wedge p_1\wedge p_2)\vee\lnot p_3\vee\lnot p_2$$
         \begin{solution}
             \begin{itemize}
-                \item $\lnot((p_2\wedge\lnot p_1\wedge p_3)\vee(p_4\wedge p_1\wedge p_3)\vee(\lnot p_4\wedge p_1\wedge p_2)\vee\lnot p_3\vee\lnot p_2)$
-                \item $(\lnot p_2\vee p_1 \vee \lnot p_3)\wedge(\lnot p_4\vee\lnot p_1 \vee\lnot p_3)\wedge(p_4\vee\lnot p_1\vee\lnot p_2)\wedge p_3 \wedge p_2$
-                \item Umformen
+                \item Invertiere Formel für SLD
+                \item Horn-Klauseln
+                      \begin{enumerate}
+                          \item $p_2 \wedge p_3 \rightarrow p_1$
+                          \item $p_1 \wedge p_3 \wedge p_4 \rightarrow\bot$
+                          \item $p_1 \wedge p_2 \rightarrow p_4$
+                          \item $\lnot\bot\rightarrow p_3$
+                          \item $\lnot\bot\rightarrow p_2$
+                      \end{enumerate}
+                \item SLD Mengen
                       \begin{itemize}
-                          \item $(\lnot p_2\vee p_1 \vee \lnot p_3)\equiv p_2\wedge p_3 \rightarrow p_1 =\{p_2,p_3\}\rightarrow p_1$
-                          \item $(\lnot p_4\vee\lnot p_1 \vee\lnot p_3)\equiv p_4\wedge p_1\wedge p_3\rightarrow\bot = \{p_1,p_3,p_4\}\rightarrow\bot$
-                          \item $(p_4\vee\lnot p_1\vee\lnot p_2)\equiv p_1\wedge p_2\rightarrow p_4 = \{p_1,p_2\}\rightarrow p_4$
-                          \item $p_3\equiv \varnothing \rightarrow p_3$
-                          \item $p_2\equiv \varnothing \rightarrow p_2$
+                          \item aus 2.: $M_1=\{p_1,p_3,p_4\}$
+                          \item aus 1.: $M_2=\{p_2,p_3,P_4\}$
+                          \item aus 3.: $M_3=\{p_1,p_2,p_3\}$
+                          \item aus 1.: $M_4=\{p_2,p_3\}$
+                          \item aus 4.+5.: $M_5=\varnothing$
                       \end{itemize}
-                \item SLD
-                      \begin{itemize}
-                          \item $M_0 = \{p_1,p_3,p_4\}$
-                          \item $M_1 = M_0\backslash p_4\cup\{p_1,p_2\} = \{p_1,p_2,p_3\}$
-                          \item $M_2 = M_1\backslash p_1\cup\{p_2,p_3\} = \{p_2,p_3\}$
-                          \item $M_3 = M_2\backslash p_2\cup\{\varnothing\} = \{p_3\}$
-                          \item $M_4 = M_3\backslash p_3\cup\{\varnothing\} = \varnothing$
-                      \end{itemize}
-                \item = nicht erfüllbar; ist Tautologie
+                \item $M=\varnothing\rightarrow \{\lnot\varphi\}$ unerfüllbar $\rightarrow \varphi$ Tautologie
             \end{itemize}
         \end{solution}
     \end{parts}
@@ -691,17 +713,17 @@
     \begin{parts}
         \part $a\rightarrow b \equiv \lnot b\rightarrow \lnot a$
         \begin{solution}
-
+            $a\rightarrow b \equiv \lnot a\vee b\equiv b\vee\lnot a\equiv \lnot\lnot b\vee\lnot a\equiv \lnot b\rightarrow \lnot a$
         \end{solution}
 
         \part $a\vee (a\wedge b)\equiv a$
         \begin{solution}
-
+            nutze $\alpha=\beta$ gdw $\alpha\leftrightarrow\beta$ ist Theorem, gdw $\alpha\rightarrow\beta, \beta\rightarrow\alpha$ Theoreme
         \end{solution}
 
         \part $\lnot a \rightarrow \bot \equiv a$
         \begin{solution}
-
+            $\lnot a\rightarrow \bot \equiv \lnot\lnot a\vee \bot\equiv a\vee \bot\equiv a\vee(a\wedge\lnot a)\equiv a$
         \end{solution}
     \end{parts}
 
@@ -715,17 +737,19 @@
     \begin{parts}
         \part Aus $\Gamma\not\Vdash_W \phi$ folgt $\Gamma\Vdash_w\lnot\phi$ für jeden Wahrheitswertebereich $W$.
         \begin{solution}
+            $\Gamma=\{\lnot\bot\}$, $\varphi=p$, $W=K_3$, $K_3$ Belegung $B=\frac{1}{2}$
 
+            $\rightarrow inf\ B[\Gamma]=1$ und $B(\varphi)=B(p)=\frac{1}{2}\rightarrow f\not\Vdash_{k_3} \varphi, \lnot\varphi$
         \end{solution}
 
         \part Es gibt eine Menge aussagenlogischer Formeln $\Gamma$ und eine Formel $\phi$ mit $\Gamma\vdash\phi$ und $\Gamma\vdash\lnot\phi$.
         \begin{solution}
-
+            $\Gamma=\{\bot\}, \varphi$ beliebig, z.b. $\varphi=\bot$
         \end{solution}
 
         \part Angenommen, es gäbe eine aussagenlogische Formel $\phi$ mit $\varnothing\vdash\phi$ und $\varnothing\vdash\lnot\phi$. Dann ist jede aussagenlogische Formel ein Theorem.
         \begin{solution}
-
+            betrachte $\psi$, ist Deduktion für $\varnothing\rightarrow\psi\rightarrow\psi$ Theorem
         \end{solution}
     \end{parts}
 
@@ -746,22 +770,22 @@
     \begin{parts}
         \part $\forall x:Q(x,x)\rightarrow\exists x:Q(x,y)$
         \begin{solution}
-            kein Satz, y ist nicht gebunden
+            y frei $\rightarrow$ kein Satz
         \end{solution}
 
         \part $P(f(x))\rightarrow\exists x:P(x)$
         \begin{solution}
-            kein Satz, denn das erste x ist nicht gebunden
+            x vorn frei $\rightarrow$ kein Satz
         \end{solution}
 
         \part $P(a)\vee P(f(a))$
         \begin{solution}
-            Satz, da es keine (freien) Variablen in der Formel gibt
+            keine freien Variablen $\rightarrow$ ist Satz
         \end{solution}
 
         \part $\exists z:(Q(z,x)\vee Q(y,z))\rightarrow\exists y:(Q(x,y)\wedge Q(x,z))$
         \begin{solution}
-            kein Satz, da z.B. x nicht gebunden ist
+            y vorn frei, z hinten frei $\rightarrow$ kein Satz
         \end{solution}
     \end{parts}
 
@@ -784,13 +808,13 @@
     \end{center}
     \begin{solution}
 
-        a) $E_a=\exists x\exists y(\lnot x=y\wedge \lnot E(x,y))$ also $G_1\Vdash E_a$ und $G_2\not\Vdash E_a$
+        a) $\exists u,u': (v\not=v' \wedge \lnot E(v,v'))$
 
-        b) $E_b=\exists x\exists y\exists z(x\not= y\wedge x\not= z \wedge y\not= z)$
+        b) $\exists v,w,w': (E(v,w) \wedge E(v,w') \wedge E(w,w') \wedge v\not=w\not=w')$
 
-        c) $E_c=\forall x(\lnot E(x,x))$
+        c) $\lnot\exists v: E(v,v))$
 
-        d) $E_d=$
+        d) $\exists v: \forall v': \lnot E(v,v')$
     \end{solution}
 
     \question Sei $\Gamma$ die Signatur bestehend aus einem zwei-stelligen Relationssymbol $\in$. Für eine Menge von Mengen $M$ definieren wir die Struktur $S$ mit $U_S=M$ und $\in^S=\in$. Geben Sie für jede der folgenden Aussagen eine Formel an, die diese beschreibt.

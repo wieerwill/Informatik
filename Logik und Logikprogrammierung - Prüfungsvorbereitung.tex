@@ -26,6 +26,10 @@
 \SolutionEmphasis{\small}
 \geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
 
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
 \pdfinfo{
     /Title (Logik und Logikprogrammierung - Prüfungsvorbereitung)
     /Creator (TeX)
@@ -98,22 +102,33 @@
   \begin{parts}
     \part Der Korrektheitssatz der Aussagenlogik für den Wahrheitswertebereich $B$ lautet...
     \begin{solution}
+      Für jede Menge von Formeln $\Gamma$ und jede Formel $\varphi$ gilt $\Gamma\vdash\varphi\Rightarrow\Gamma\vdash_B\varphi$.
     \end{solution}
 
     \part Eine Menge von Formeln $\Gamma$ heißt erfüllbar, wenn...
     \begin{solution}
+      Sei $\Gamma$ eine Menge von Formeln. $\Gamma$ heißt erfüllbar, wenn es eine passende B-Belegung $B$ gibt mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$.
+    \end{solution}
+
+    \part Der Satz von Cook lautet...
+    \begin{solution}
+      Die Erfüllbarkeit einer endlichen Menge $\Gamma$ ist NP-vollständig.
     \end{solution}
 
     \part Zwei Formeln $\alpha$ und $\beta$ heißen äquivalent, wenn...
     \begin{solution}
+      Zwei Formeln $\alpha$ und $\beta$ heißen äquivalent $(\alpha\equiv\beta)$, wenn für alle passenden B-Belegungen $B$ gilt: $B(\alpha) =B(\beta)$.
     \end{solution}
 
     \part Der Kompaktheitssatz der Aussagenlogik lautet...
     \begin{solution}
+      Sei $\Gamma$ eine u.U. unendliche Menge von Formeln. Dann gilt $\Gamma$ unerfüllbar $\Leftarrow\Rightarrow\exists\Gamma'\subseteq\Gamma$ endlich: $\Gamma'$ unerfüllbar
     \end{solution}
 
     \part Eine Horn Klausel ist eine Formel der Form
     \begin{solution}
+      Eine Hornklausel hat die Form $(\lnot\bot\wedge p_1\wedge p_2\wedge ... \wedge p_n)\rightarrow q$ für $n\geq 0$, atomare Formeln $p_1 ,p_2 ,... ,p_n$ und $q$ atomare Formel oder $q=\bot$.
+      Eine Hornformel ist eine Konjunktion von Hornklauseln.
     \end{solution}
   \end{parts}
 
@@ -121,14 +136,36 @@
   \begin{parts}
     \part Werte die Formel $\varpi_a=\lnot p \wedge \lnot\lnot p$ im Heytingschen Wahrheitswertebereich $H_{\mathbb{R}}$ aus für die $H_{\mathbb{R}}$-Belegung $B$ mit $B(p)=\mathbb{R}\backslash \{0\}$
     \begin{solution}
+      $B_{H_{mathbb{R}}}(\lnot p \wedge \lnot\lnot p)= Inneres(\mathbb{R}/ p)\cap p= 1$
     \end{solution}
 
     \part Überprüfe ob die Formel $\varphi_B=(\lnot p\rightarrow \lnot p)\rightarrow p$ eine $K_3$-Tautologie ist. Ist $\varphi_b$ eine $B_{\mathbb{R}}$ Tautologie?
     \begin{solution}
+
+      \begin{tabular}{c|c|c|c}
+        $p$           & $\lnot p$     & $\phi=(\lnot p\rightarrow \lnot p)$ & $\phi\rightarrow p$ \\\hline
+        0             & 1             & 1                                   & 0                   \\
+        $\frac{1}{2}$ & $\frac{1}{2}$ & 1                                   & $\frac{1}{2}$       \\
+        1             & 0             & 1                                   & 1                   \\
+      \end{tabular}
     \end{solution}
 
     \part Überprüfe ob die semantische Folgeung $\{p\rightarrow q, q\rightarrow r\}\Vdash_B r\rightarrow\lnot p$ gilt.
     \begin{solution}
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        $p$ & $q$ & $r$ & $\lnot p$ & $\Gamma_1=p\rightarrow q$ & $\Gamma_2=q\rightarrow r$ & $\Phi=r\rightarrow\lnot p$ & $\Gamma\Vdash\Phi$ \\\hline
+        0   & 0   & 0   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        0   & 0   & 1   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        0   & 1   & 0   & 1         & 1                         & 0                         & 1                          &                    \\
+        0   & 1   & 1   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        1   & 0   & 0   & 0         & 0                         & 1                         & 1                          &                    \\
+        1   & 0   & 1   & 0         & 0                         & 1                         & 0                          &                    \\
+        1   & 1   & 0   & 0         & 1                         & 0                         & 1                          &                    \\
+        1   & 1   & 1   & 0         & 1                         & 1                         & 0                          & \xmark
+      \end{tabular}
+
+      Folgerung gilt nicht
     \end{solution}
   \end{parts}
 

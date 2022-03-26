@@ -858,7 +858,7 @@
         \end{solution}
     \end{parts}
 
-    \question Vervollständigen Sie die unten aufgeführte Deduktion, indem Sie die verwendeten Regeln angeben und gege-benenfalls temporäre Hypothesen kenntlich machen. Welche syntaktische Folgerung wird durch die Deduktiongezeigt?
+    \question Vervollständigen Sie die unten aufgeführte Deduktion, indem Sie die verwendeten Regeln angeben und gegebenenfalls temporäre Hypothesen kenntlich machen. Welche syntaktische Folgerung wird durch die Deduktiongezeigt?
     \begin{solution}
         \begin{prooftree}
             \AxiomC{$\exists x\forall y: E(x,y)$}
@@ -930,7 +930,7 @@
             \UnaryInfC{$\exists x(P(x)) \rightarrow \forall x(P(x))$}
         \end{prooftree}
         \begin{solution}
-            $\exists$-E fehlerhaft, da x frei in $P(x)$
+            $\forall$-I fehlerhaft, aus $\exists$-E tritt x frei in Folgerung auf $\rightarrow$ x freie Variable
         \end{solution}
     \end{parts}
 
@@ -985,12 +985,22 @@
 
     \question Geben Sie zum Beweis des Korrektheitslemmas für das natürliche Schließen in der Prädikatenlogik den Induktionsschritt für den Fall $(\exists-I)$ an.
     \begin{solution}
+        %I.V.: es gelte $\Gamma\vdash\varphi$, zu zeigen ist $\Gamma\Vdash\varphi$
+        % I.A.: mit $\varphi[x:=t]$ wird über keine Variable aus t in $\varphi$ quantifiziert.
 
-        I.V.: es gelte $\Gamma\vdash\varphi$, zu zeigen ist $\Gamma\Vdash\varphi$
+        Deduktion \begin{prooftree}
+            \AxiomC{$\varphi[x:=t]$}
+            \RightLabel{\scriptsize ($\exists$-I)}
+            \UnaryInfC{$\exists x:\varphi$}
+        \end{prooftree} und $[x:=t]$ passt zu $\varphi$.
 
-        I.A.: mit $\varphi[x:=t]$ wird über keine Variable aus t in $\varphi$ quantifiziert.
+        Nach IV gilt für alle Strukturen A; VI $\varrho: A\Vdash_{\varrho} T\rightarrow A\Vdash \varphi[x:=t]$.
 
-        I.S.:
+        Angenommen $A\Vdash_{\varrho} T$, nach Lemma 8.10 $A\Vdash_{\varrho} \varphi[x:=\varrho[t]] \leftrightarrow A\Vdash_{\varrho[x:=\varrho[t]]}\varphi$
+
+        $\rightarrow$ es existiert $a\in U^A(a:=\varrho[t]): A\Vdash_{varroh[x:=a]} \varphi$
+
+        $\rightarrow A\Vdash_{varrho} \exists x:\varphi$
     \end{solution}
 
     \question In dieser Aufgabe betrachten wir Mengen von Schließregeln. Wir sagen, dass eine Menge von $R$ von Schließregeln verifizierbar ist, wenn es entscheidbar ist, ob in einer Deduktion ausschließlich Regeln aus R verwendet wurden. Beispielsweise sei $R_{nat}$ die Menge der Regeln des natürlichen Schließens. In der Vorlesung haben wir bereits gesehen, dass $R_{nat}$ verifizierbar ist.\\
@@ -1004,6 +1014,9 @@
                 \item Nicht vollständig, da z.B. $\forall x(x=x)$ nicht ableitbar mit Regeln aus $R_a$
                 \item Korrekt und verifizierbar, da $R_a\in R_{nat}$
             \end{itemize}
+            \vspace{1cm}
+
+            Alternativ: für Formel $\varphi$ sei $(\varphi)$ die Ableitungsregel $\frac{}{\varphi} \rightarrow\{(\lnot\bot)\}$, $\lnot\bot\wedge\lnot\bot$ lässt sich nicht ableiten
         \end{solution}
 
         \part vollständig, nicht korrekt, aber verifizierbar ist.
@@ -1015,6 +1028,9 @@
                 \item nicht Korrekt, da für jede Formel gilt $\varnothing\vdash\epsilon$ und $\varnothing\vdash\lnot\epsilon$
                 \item Verifizierbar, da jede Deduktio die Form $\frac{I}{\epsilon}$ hat
             \end{itemize}
+            \vspace{1cm}
+
+            Alternativ: $\{(\varphi): \varphi\text{ ist Formel}\}$ offensichtlich vollständig und nicht korrekt
         \end{solution}
 
         \part vollständig und korrekt, aber nicht verifizierbar ist.
@@ -1026,6 +1042,9 @@
                 \item nicht verifizierbar, da die Menge der allgmeingültigen Formeln ist nicht entscheidbar.
                 \item $\epsilon$ allgemeingültig $\Leftrightarrow \varnothing\Vdash\epsilon\Leftrightarrow \frac{0}{\epsilon}(I)$ ist eine Deduktion
             \end{itemize}
+            \vspace{1cm}
+
+            Alternativ: $\{(\varphi): \varphi\text{ eine Tautologie}\}$ offensichtlich vollständig und korrekt aber nicht verifizierbar. Betrachte Menge von Deduktionen $\{\frac{}{\varphi}: \varphi\text{ Formel}\}$ wäre R verifizierbar, so wäre entscheidbar ob $\frac{}{\varphi}\in R$, also ob $\varphi$ Tautologie ist
         \end{solution}
     \end{parts}
 
@@ -1042,12 +1061,14 @@
         \part Formalisieren Sie die angegebenen Sachverhalte in der Prädikatenlogik. Verwenden Sie dazu einstellige Relationssymbole $P$(rofessor), $S$(tudierender), $V$(orlesung) und zweistellige Relationssymbole $H$(ält die Vorlesung), $M$(ag den Vortragsstil), $B$(esucht die Vorlesung). Formalisieren Sie insbesondere auch zwischen welchen Objekten die Beziehungen $H$,$M$ und $B$ bestehen können.
         \begin{solution}
             \begin{itemize}
-                \item $\forall x \exists y (H(x,y) \wedge \forall z(H(z,y)\rightarrow x=z))$
-                \item $\forall x \forall y (H(x,y)\rightarrow P(x) \wedge V(x))$
-                \item $\forall x \forall y (M(x,y)\rightarrow S(X) \wedge P(y))$
-                \item $\forall x \forall y (B(x,y)\rightarrow S(x) \wedge V(y))$
-                \item $\forall x \forall y (B(x,y)\leftrightarrow \exists z(M(x,z)\wedge H(z,y)))$
-                \item $\forall x((S(x)\vee P(x) \vee V(x))\wedge \lnot(S(x)\wedge P(x))\wedge \lnot(S(x)\wedge V(x))\wedge \lnot(P(x)\wedge V(x)))$
+                \item $\forall v,p,p':(V(v)\wedge P(p)\wedge P(p') \wedge H(p,v) \wedge H(p,v') \rightarrow p=p'))$
+                \item $\forall v,x:(V(v)\wedge B(x,v) \rightarrow S(x))$
+                \item $\forall p,x:(P(p)\wedge M(x,p)\rightarrow S(X))$
+                \item $\forall s,v,p:(S(s)\wedge V(v)\wedge P(p)\wedge H(p,v)\rightarrow (B(s,v)\leftrightarrow M(s,p))$
+                \item $\forall x:(S(x)\vee V(x)\vee P(x))\wedge\lnot((S(x)\wedge V(x))\vee(S(x)\wedge P(x))\vee(V(x)\wedge P(x)))$
+                \item $\forall s,p: H(p,v)\rightarrow P(p)\wedge V(v)$
+                \item $\forall s,v: B(s,v)\rightarrow S(s)\wedge V(v)$
+                \item $\forall s,p: M(s,p)\rightarrow S(s)\wedge P(p)$
             \end{itemize}
         \end{solution}
 
@@ -1102,11 +1123,49 @@
         \end{solution}
     \end{parts}
 
+    \question Zeigen Sie für jede der folgenden Klassen von Strukturen, dass sie durch einen Satz, nur durch eine unendliche Formelmenge und nicht durch einen Satz oder auch nicht durch unendliche eine Formelmenge axiomatisiert werden kann. Wir betrachten wieder die Signatur $\sum$ für Graphen.
+    \begin{parts}
+        \part Die Klasse der Graphen, die keinen Kreis der Länge 3 enthalten.
+        \begin{solution}
+            trivial
+        \end{solution}
+
+        \part Die Klasse der endlichen Graphen.
+        \begin{solution}
+            lässt sich nicht durch ein $\phi$ axiomatisieren. Angenommen es gibt ein solches $\phi\rightarrow\phi$ hat Modell jeder endl. Größe $\rightarrow\phi$ hat unendliches Modell $\rightarrow$ Konflikt
+        \end{solution}
+
+        \part Die Klasse der Graphen, die keinen Kreis, aber eine 5-Clique enthalten. Eine k-Clique ist eine Menge von k vielen Knoten in der zwischen jedem Knotenpaar eine Kante existiert.
+        \begin{solution}
+            $\varphi=\bot$
+        \end{solution}
+
+        \part Die Klasse der kreisfreien Graphen.
+        \begin{solution}
+            $\phi=\{\lnot\varphi_m, n\geq 1\} | G\Vdash\varphi_n \leftrightarrow$ G hat Kreise der Länge n $\rightarrow \phi$ axiomatisiert die Klasse der kreisfreien Graphen
+        \end{solution}
+
+        \part Die Klasse der Graphen, die einen Kreis enthalten.
+        \begin{solution}
+            angenommen existiert $\varphi$ mit Eigenschaften des kreisfreien Graphen $\rightarrow\lnot\varphi$ axiomatisiert Klasse der Graphen mit Kreis
+        \end{solution}
+
+        \part Die Klasse der Graphen, die zu $(2^{\mathbb{N}},\varnothing)$ isomorph sind.
+        \begin{solution}
+            $2^{mathbb{N}}$ ist überabzählbar. Angenommen es existiert $\phi$ mit $m\rightarrow\phi$ erfüllbar $\rightarrow\phi$ besitzt algb. Modell
+        \end{solution}
+
+    \end{parts}
+
     \question Sei $f$ ein einstelliges Funktionssymbol und $R$ ein zweistelliges Relationssymbol. Weiterhin sei $$\varphi=\lnot\exists x(R(x,f(x))\wedge\forall y\exists x(R(y,x)))$$
     \begin{parts}
         \part Berechnen Sie eine Formel $\psi_1$ in Pränexform, die äquivalent ist zu $\varphi$.
         \begin{solution}
-            $\psi_1 = \forall y\exists x\lnot\exists z ( R(z,f(z))\wedge R(y,x))$
+            %$\psi_1 = \forall y\exists x\lnot\exists z ( R(z,f(z))\wedge R(y,x))$
+            $\lnot\exists x((\forall y\exists x: R(y,x))\wedge R(x,f(x)))$
+            $=\lnot\exists(\forall y' \exists x': (R(y',x')\wedge R(x,f(x))))$
+            $=\forall x\exists y' \forall x': \lnot (R(y',x')\wedge R(x,f(x)))$
+            $=\forall x \forall x':\lnot(R(g(x), x')\wedge R(x,f(x)))$ mit neuem 1-stelligem Funktionssymbol $g$
         \end{solution}
 
         \part Berechnen Sie eine Formel $\psi_2$ in Skolemform, die erfüllbarkeitsäquivalent ist zu $\varphi$.
@@ -1137,7 +1196,6 @@
     \begin{parts}
         \part Berechnen Sie die Herbrand-Expansion $E(\varphi)$.
         \begin{solution}
-
             $H_{\varphi} = \{a,b, R(a,b) ,...\}$
 
             $E(\varphi) = \{R(a,b)\wedge(R(x,x)\rightarrow R(a,y))\wedge\lnot R(y,a) | x,y\in H_{\varphi}\}$
@@ -1145,14 +1203,15 @@
 
         \part Überprüfen Sie, ob $E(\varphi)$ aussagenlogisch erfüllbar ist.
         \begin{solution}
+            $D(\sum)\ni a,b$
 
-            mit $x=a,y=a: R(a,b)\wedge(R(a,a)\rightarrow R(a,a))\wedge\lnot R(a,a)$ Nicht erfüllbar $R\wedge\lnot R$
+            $E(\varphi):$\\
+            $R(a,b)\wedge (R(a,a)\rightarrow R(a,a)) \wedge \lnot R(a,a)$\\
+            $R(a,b)\wedge (R(a,a)\rightarrow R(a,b)) \wedge \lnot R(b,a)$\\
+            $R(a,b)\wedge (R(b,b)\rightarrow R(a,a)) \wedge \lnot R(a,a)$\\
+            $R(a,b)\wedge (R(b,b)\rightarrow R(a,b)) \wedge \lnot R(b,a)$
 
-            mit $x=a,y=b: R(a,b)\wedge(R(a,a)\rightarrow R(a,b))\wedge\lnot R(b,a)$ erfüllbar
-
-            mit $x=b,y=a: R(a,b)\wedge(R(b,b)\rightarrow R(a,a))\wedge\lnot R(a,a)$ Nicht erfüllbar $R\wedge\lnot R$
-
-            mit $x=b,y=b: R(a,b)\wedge(R(b,b)\rightarrow R(a,b))\wedge\lnot R(b,a)$ erfullbar
+            B Belegung B mit $B(R(\begin{pmatrix}a\\a\\b\\b\end{pmatrix}, \begin{pmatrix}a\\b\\b\\a\end{pmatrix}))=\begin{pmatrix}0\\1\\0\\0\end{pmatrix}$
 
             $\rightarrow$ aussagenlogisch nicht erfüllbar
         \end{solution}
@@ -1172,6 +1231,44 @@
         $H_{\varphi} = \{a, f(a), g(a), ... \}$
 
     \end{solution}
+
+    \question Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $P$, dem einstelligen Funktionssymbol $g$, dem zweistelligen Funktionssymbol $f$ und den Konstanten $a$ und $b$. Welche der folgenden Mengen von atomaren Formeln sind unifizierbar? Ermitteln Sie dazu mittels des Unifikationsalgorithmus einen Unifikator oder aber zeigen Sie, an welcher Stelle der Algorithmus mit der Ausgabe ,,nicht unifizierbar'' abbricht. Geben Sie im positiven Fall einen zweiten Unifikator an.
+    \begin{parts}
+        \part $\{P(y, f(a,z)), P(b, f(a,b))\}$
+        \begin{solution}
+            \begin{tabular}{l|l|l}
+                $\varphi_1 \sigma$ & $\varphi_2 \sigma$ & $\sigma$         \\\hline
+                $P(y,f(a,z))$      & $P(b,f(a,b))$      & $id$             \\
+                $P(b,f(a,z))$      & $P(b,f(a,b))$      & $id[y:=b]$       \\
+                $P(b,f(a,b))$      & $P(b,f(a,b))$      & $id[y:=b][z:=b]$
+            \end{tabular}
+
+            Terminiert unifiziert
+        \end{solution}
+
+        \part $\{P(y, f(x,x)), P(b, f(a,y))\}$
+        \begin{solution}
+            \begin{tabular}{l|l|l}
+                $\varphi_1 \sigma$ & $\varphi_2 \sigma$ & $\sigma$         \\\hline
+                $P(y,f(x,x))$      & $P(b,f(a,b))$      & $id$             \\
+                $P(b,f(a,a))$      & $P(b,f(a,b))$      & $id[y:=b][z:=b]$
+            \end{tabular}
+
+            Terminiert nicht unifiziert
+        \end{solution}
+
+        \part $\{P(y, f(x,y)), P(g(z),f(a,z))\}$
+        \begin{solution}
+            \begin{tabular}{l|l|l}
+                $\varphi_1 \sigma$  & $\varphi_2 \sigma$ & $\sigma$            \\\hline
+                $P(y,f(x,y))$       & $P(g(z),f(a,z))$   & $id$                \\
+                $P(g(z),f(a,g(z)))$ & $P(g(z),f(a,z))$   & $id[y:=g(z)][x:=a]$
+            \end{tabular}
+
+            Terminiert nicht unifiziert
+        \end{solution}
+
+    \end{parts}
 
 \end{questions}
 \end{document}

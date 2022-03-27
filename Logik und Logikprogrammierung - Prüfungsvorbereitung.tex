@@ -418,18 +418,70 @@
       \item $Gr=[4,5,6]$
     \end{itemize}
     \begin{solution}
+      \begin{lstlisting}
+      % delete Funktion
+      delete(_, [ ], [ ]).
+      delete(X, [X|Xs], Xs).
+      delete(X, [Y|Ys], [Y|Zs]) :-
+        delete(X, Ys, Zs).
+
+      % append Funktion 
+      append([ ], Xs, Xs).
+      append([X|Xs], Ys, [X|Zs]) :-
+        append(Xs, Ys, Zs).
+
+      % partition Funktion
+      partition([ ], E, Kl, Gr).
+      partition([K|R], E, Kl, Gr):-
+        K<E, 
+        append(K, Kl, Kl), 
+        partition(R, E, Kl, Gr).
+      partition([K|R], E, Kl, Gr):-
+        K>E, 
+        append(K, Gr, Gr), 
+        partition(R, E, Kl, Gr). 
+
+      \end{lstlisting}
     \end{solution}
 
     \part Das Prädikat $merge(L1,L2,L)$ soll zwei sortierte Listen mit ganzen Zahlen $L1$ und $L2$ zu einer sortierten Liste $L$ verschmelzen.
     \begin{solution}
+      \begin{lstlisting}
+        merge([ ], L2, L2).
+        merge(L1, [ ], L1).
+        merge([K1|R2], [K2|R2], L):-
+          K1>K2,
+          append(K2, L, L),
+          merge([K1|R1], R2, L).
+        merge([K1|R2], [K2|R2], L):-
+          K2=<K1,
+          append(K1, L, L),
+          merge(R1, [K2|R2], L).      
+      \end{lstlisting}
     \end{solution}
 
     \part Das Prädikat $listmerge(ListenListe, L)$ bekommt eine Liste sortierter Listen $ListenListe$ und soll sie zu einer sortierten Liste L verschmelzen. Das in Aufgabe b) definierte Prädikat $merge$ kann dabei verwendet werden.
     \begin{solution}
+      \begin{lstlisting}
+        listmerge([ ], L).
+        listmerge([K|R], L):-
+          merge(K, L, L2),
+          listmerge(R, L2).
+      \end{lstlisting}
     \end{solution}
 
     \part Das Prädikat $am\_groesten(L, Max)$ soll das größte Element $Max$ einer Zahlenliste $L$ ermitteln. Falls $L$ leer ist, soll ,,nein'' geantwortet werden.
     \begin{solution}
+      \begin{lstlisting}
+        am_groesten([], Max):-
+          fail.
+        am_groesten([K|R], Max):-
+          K>Max,
+          am_groesten(R, K).
+        am_groesten([K|R], Max):-
+          K=<Max,
+          am_groesten(R, Max).
+      \end{lstlisting}
     \end{solution}
 
     \part Das Prädikat $am\_kuerzesten(ListenListe, L)$ soll aus einer Liste von $ListenListe$ die kürzeste Liste $L$ ermitteln. Dies soll möglichst effizient geschehen: \begin{itemize}
@@ -439,6 +491,15 @@
     \end{itemize}
     Falls $ListenListe$ leer ist, soll ,,nein'' geantwortet werden.
     \begin{solution}
+      \begin{lstlisting}
+        am_kuerzesten([], L).
+        am_kuerzesten([K,R], L):-
+          kuerzer_als(K,L),
+          am_kuerzesten(R, K).
+        am_kuerzesten([K,R], L):-
+          !kuerzer_als(K,L),
+          am_kuerzesten(R, L).
+      \end{lstlisting}
     \end{solution}
   \end{parts}
 
@@ -451,10 +512,50 @@
   \begin{parts}
     \part Das Prädikat $enthalten(Baum, Zahl)$ bekommt einen binären Suchbaum $Baum$ sowie eine Zahl $Zahl$ und soll entscheiden, ob diese Zahl in Baum enthalten ist und die Antwort ,,ja'' oder ,,nein'' liefern.
     \begin{solution}
+      \begin{lstlisting}
+        baum(nil).
+        baum(Wurzel, Links, Rechts):-
+          baum(Links),
+          baum(Rechts).
+        
+        ist_knoten(X, baum(X, Links, Rechts)).
+        ist_knoten(X, baum(Y, Links, Rechts)) :-
+          ist_knoten(X, Links).
+        ist_knoten(X, baum(Y, Links, Rechts)) :-
+          ist_knoten(X, Rechts).
+
+        enhalten(baum(X, Links, Rechts), X).
+        enhalten(baum(Y, Links, Rechts), X):-
+          enthalten(Links, X).
+        enthalten(baum(Y, Links, Rechts), X):-
+          enthalten(Rechts, X).
+      \end{lstlisting}
     \end{solution}
 
-    \part Das Prädikat $flattern(Baum,Liste)$ soll aus einem gegebenen Suchbaum $Baum$ die Liste $Liste$ aller der im Baum enthaltenen Zahlen in aufsteigender sortierter Reihenfolge liefern.
+    \part Das Prädikat $flatten(Baum,Liste)$ soll aus einem gegebenen Suchbaum $Baum$ die Liste $Liste$ aller der im Baum enthaltenen Zahlen in aufsteigender sortierter Reihenfolge liefern.
     \begin{solution}
+      \begin{lstlisting}
+        flatten([], []).          
+        flatten(baum(X, Links, Rechts), L):-
+          insert(X, L, L2),
+          flatten(Links, L2),
+          flatten(Rechts, L2).
+        flatten([], L):-
+          insertionSort(L, []).
+        
+        insert(X, [], [X]).
+        insert(X, [X1|L1], [X, X1|L1]):- 
+          X=<X1, 
+          !.
+        insert(X, [X1|L1], [X1|L]):- 
+          insert(X, L1, L).
+
+        insertionSort([], []):- 
+          !.
+        insertionSort([X|L], S):- 
+          insertionSort(L, S1), 
+          insert(X, S1, S).
+      \end{lstlisting}
     \end{solution}
   \end{parts}
 

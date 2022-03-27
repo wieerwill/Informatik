@@ -173,10 +173,51 @@
   \begin{parts}
     \part Überprüfe mittels Markierungsalgorithmus, ob die Formel $\varphi_a=(\lnot p\vee q)\wedge(t\vee \lnot s)\wedge(\lnot r\vee s\vee \lnot q)\wedge r\wedge (\lnot p\vee t)\wedge \lnot s \wedge (\lnot r\vee p)$ erfüllbar ist.
     \begin{solution}
+      \begin{itemize}
+        \item $\lnot\varphi_a=(p\wedge \lnot q)\vee(\lnot t\wedge s)\vee(r\wedge\lnot s\wedge q)\vee\lnot r\vee (p\wedge\lnot t)\vee s \vee(r\wedge\lnot p)$
+        \item Horn Klauseln
+              \begin{enumerate}
+                \item $q\rightarrow p$
+                \item $t\rightarrow s$
+                \item $s\rightarrow r\wedge q$
+                \item $r\rightarrow\bot$
+                \item $t\rightarrow p$
+                \item $\lnot\bot\rightarrow s$
+                \item $p\rightarrow r$
+              \end{enumerate}
+        \item Markieren
+              \begin{enumerate}
+                \item für 6.: $s$
+                \item für 3.: $r,q$
+                \item für 4.+1.: $\bot, p$
+                \item für 7.: $r$
+                \item Terme 2 und 5 bleiben übrig $\rightarrow$ terminiert mit ,,unerfüllbar''
+              \end{enumerate}
+        \item $\lnot\varphi_a$ unerfüllbar $\Rightarrow \varphi_a$ erfüllbar
+      \end{itemize}
     \end{solution}
 
     \part Überprüfe mittels SLD Resolution, ob die Formel $\varphi_b=(r\wedge p)\vee\lnot t\vee (p\wedge \lnot q)\vee \lnot p\vee (\lnot r\wedge q \wedge t)$ eine Tautologie ist
     \begin{solution}
+      \begin{itemize}
+        \item Horn Klauseln
+              \begin{enumerate}
+                \item $\lnot\bot\rightarrow r\wedge p$
+                \item $t\rightarrow\bot$
+                \item $q\rightarrow p$
+                \item $p\rightarrow\bot$
+                \item $r\rightarrow q\wedge t$
+              \end{enumerate}
+        \item Markieren
+              \begin{enumerate}
+                \item für 2.+3.: $M_0=\{p,t\}$
+                \item für 3.: $M_1=\{q,t\}$
+                \item für 5.: $M_2=\{r\}$
+                \item für 4.: $M_3=\{r,p\}$
+                \item für 1.: $M_4=\varnothing$
+              \end{enumerate}
+        \item $M_4=\varnothing \Rightarrow \varphi_b$ unerfüllbar
+      \end{itemize}
     \end{solution}
   \end{parts}
 
@@ -184,6 +225,29 @@
   \begin{parts}
     \part Entscheide, welche der Formeln $\varphi=p_1\wedge(p_2\rightarrow p_3)$, $\psi=\lnot p_1\rightarrow p_2$ monoton sind.
     \begin{solution}
+      Teste für B-Belegung mit Boolschem Wahrheitswertebereich
+
+      \begin{tabular}{c|c|c|c|c}
+        $p_1$ & $p_2$ & $p_3$ & $p_2\rightarrow p_3$ & $\varphi=p_1\wedge(p_2\rightarrow p_3)$ \\\hline
+        0     & 0     & 0     & 1                    & 0                                       \\
+        0     & 0     & 1     & 1                    & 0                                       \\
+        0     & 1     & 0     & 0                    & 1                                       \\
+        0     & 1     & 1     & 1                    & 0                                       \\
+        1     & 0     & 0     & 1                    & 1                                       \\
+        1     & 0     & 1     & 1                    & 1                                       \\
+        1     & 1     & 0     & 0                    & 0                                       \\
+        1     & 1     & 1     & 1                    & 1
+      \end{tabular}
+      $\Rightarrow$ nicht monoton
+
+      \begin{tabular}{c|c|c|c}
+        $p_1$ & $p_2$ & $\lnot p_1$ & $\psi=\lnot p_1\rightarrow p_2$ \\\hline
+        0     & 0     & 1           & 0                               \\
+        0     & 1     & 1           & 1                               \\
+        1     & 0     & 0           & 1                               \\
+        1     & 1     & 0           & 1
+      \end{tabular}
+      $\Rightarrow$ monoton
     \end{solution}
 
     \part Zeige per vollständiger Induktion über den Formelaufbau, dass aussagenlogische Formeln in denen weder $\lnot$ noch $\rightarrow$ vorkommen, monoton sind.
@@ -195,18 +259,29 @@
   \begin{parts}
     \part Es gilt $\Delta\vdash \varphi$ für eine $\sum$-Formel $\varphi$ und eine Menge $\Delta$ von $\sum$-Formeln, falls
     \begin{solution}
+      Seien $\Delta$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Delta\vdash\varphi\Leftrightarrow\Delta\Vdash_B \varphi$
+      Insbesondere ist eine Formel genau dann eine B-Tautologie, wenn sie ein Theorem ist.
     \end{solution}
 
     \part Der Vollständigkeitssatz der Prädikatenlogik lautet...
     \begin{solution}
+      Sei $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\Vdash\varphi \Rightarrow \Gamma\vdash\varphi$.
+      Insbesondere ist jede allgemeingültige Formel ein Theorem.
     \end{solution}
 
     \part Der Satz von Löwenheim-Skolem lautet...
     \begin{solution}
+      Sei $\Gamma$ erfüllbare und höchstens abzählbar unendliche Menge von $\sum$-Formeln. Dann existiert ein höchstens abzählbar unendliches Modell von $\Gamma$.
     \end{solution}
 
     \part Die (elementare) Theorie einer $\sum$-Struktur $A$ ist
     \begin{solution}
+      Eine $\sum$-Struktur ist ein Tupel $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$, wobei
+      \begin{itemize}
+        \item $U_A$ eine nichtleere Menge, das Universum,
+        \item $R^A\supseteq U_A^{ar(R)}$ eine Relation der Stelligkeit $ar(R)$ für $R\in Rel$ und
+        \item $f^A:U_A^{ar(f)}\rightarrow U_A$ eine Funktion der Stelligkeit $ar(f)$ für $f\in\Omega$ ist.
+      \end{itemize}
     \end{solution}
   \end{parts}
 
@@ -214,6 +289,12 @@
   \begin{parts}
     \part Gebe die Regeln $(\forall-I)$, $(\exists-E)$ und $(GfG)$ inklusive Bedingung an
     \begin{solution}
+
+      $\varphi[x:=t]:\frac{\forall x\varphi}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $t$ wird in $\varphi$ quantifiziert
+
+      $\exists x\varphi:\frac{\varphi[x:=t]}{\exists x\varphi}$ Bedingung: über keine Variable in $t$ wird in $\varphi$ quantifiziert
+
+      $(GfG): \frac{\varphi[x:=s]\quad s=t}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert
     \end{solution}
 
     \part Zeige, dass $\forall x\exists y(f(x)=y)$ ein Theorem ist, indem du eine entsprechende Deduktion angibst
@@ -248,12 +329,39 @@
   \begin{parts}
     \part Betrachte die Formel $\varphi=\forall x(\exists y(R(x,y)\wedge \lnot \exists x(R(y,x))))$. Gebe eine Formel $\psi_1$ in Pränexform an, die äquivalent zu $\varphi$ ist und eine Formel $\psi_2$ in Skolemform, die erfüllbarkeitsäquivalent zu $\varphi$ ist.
     \begin{solution}
+      \begin{itemize}
+        \item $\forall x(\exists y (R(x,y) \wedge \lnot \exists x(R(y,x))))$
+        \item $\forall x( \exists x_2 \exists y( R(x,y)\wedge\lnot R(y,x_2)))$
+        \item $\forall x( \exists x_2 \exists y( R(x,y)\wedge\lnot R(y,x_2)))$
+        \item $\forall x \exists x_2 \exists y( R(x,y\wedge\lnot R(y,x_2)))$ (Pränexform)
+        \item $\forall x (R(x,y)\wedge\lnot R(g(x),h(x)))[x_2:=h(x)][y:=g(x)]$
+        \item $\forall x (R(x,y)\wedge\lnot R(g(x),h(x)))$ (Skolemform)
+      \end{itemize}
     \end{solution}
 
-    \part Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $R$, zweistelligem Funktionssymbol $f$, einstelligem Funktionssymbol $g$ und Konstanten $a,b$. Ermittle mit dem Unifikationsalgorithmus, welche der folgenden Paare atomarer Formeln unifizierbar sind und gebe einen allgemeinsten Unifikator an, falls dieser existiert.\\
-    i) $(R(x, f(y,g(a))), R(a,f(g(x),y)))$\\
-    ii) $(R(f(g,x),y),g(y), R(f(y,z),z))$
+    \part Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $R$, zweistelligem Funktionssymbol $f$, einstelligem Funktionssymbol $g$ und Konstanten $a,b$. Ermittle mit dem Unifikationsalgorithmus, ob die atomare Formel unifizierbar ist und gebe einen allgemeinsten Unifikator an, falls dieser existiert. $$(R(x, f(y,g(a))), R(a,f(g(x),y)))$$
     \begin{solution}
+
+      \begin{tabular}{c|c|c}
+        $\varphi_1\sigma$    & $\varphi_2\sigma$   & $\sigma$            \\\hline
+        $R(x, f(y,g(a)))$    & $R(a,f(g(x),y))$    & $id$                \\
+        $R(a, f(y,g(a)))$    & $R(a,f(g(x),y))$    & $id[x:=a]$          \\
+        $R(a, f(g(x),g(a)))$ & $R(a,f(g(x),g(x)))$ & $id[x:=a][y:=g(x)]$ \\
+      \end{tabular}
+
+      Terminiert nicht unifizierbar
+    \end{solution}
+
+    \part Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $R$, zweistelligem Funktionssymbol $f$, einstelligem Funktionssymbol $g$ und Konstanten $a,b$. Ermittle mit dem Unifikationsalgorithmus, ob die atomare Formel unifizierbar ist und gebe einen allgemeinsten Unifikator an, falls dieser existiert. $$(R(f(g,x),y), R(f(y,z),z))$$
+    \begin{solution}
+
+      \begin{tabular}{c|c|c}
+        $\varphi_1\sigma$ & $\varphi_2\sigma$ & $\sigma$   \\\hline
+        $R(f(g,x),y)$     & $R(f(y,z),z))$    & $id$       \\
+        $R(f(y,x),y)$     & $R(f(y,z),z))$    & $id[y:=y]$
+      \end{tabular}
+
+      Terminiert nicht unifizierbar
     \end{solution}
   \end{parts}
 
@@ -270,26 +378,32 @@
   \begin{parts}
     \part ?-top(grün).
     \begin{solution}
+      \{gelb\}, true
     \end{solution}
 
     \part ?-top(X).
     \begin{solution}
+      \{rot, orange, gelb, grün, blau \}, false
     \end{solution}
 
     \part ?-top(rot).
     \begin{solution}
+      \{\}, false
     \end{solution}
 
     \part ?-oben(grün).
     \begin{solution}
+      false
     \end{solution}
 
     \part ?-oben(X).
     \begin{solution}
+      \{rot\}, true
     \end{solution}
 
     \part ?-oben(rot).
     \begin{solution}
+      true
     \end{solution}
   \end{parts}
 

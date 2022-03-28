@@ -126,8 +126,6 @@
       \setlength{\multicolsep}{1pt}
       \setlength{\columnsep}{2pt}
 
-      \section{Einleitung}
-
       \subsection{Sicherheitsziele}
       \begin{description*}
             \item[Vertraulichkeit] Confidentiality, Anonymität
@@ -189,9 +187,9 @@
       \subsection{Analyse der Netzwerksicherheit}
       \begin{itemize*}
             \item Risikopotenzial der allgemeinen Bedrohungen für nutzenden Einheiten
-            \item Aufwand (Ressourcen, Zeit...) zur Durchführung bekannter Angriffe
-            \item Es ist im Allgemeinen unmöglich, unbekannte Angriffe zu bewerten
-            \item kann besser nach den feinkörnigeren Angriffen auf der Nachrichtenebene strukturiert werden
+            \item Aufwand (Zeit...) zur Durchführung bekannter Angriffe
+            \item im Allgemeinen unmöglich, unbekannte Angriffe zu bewerten
+            %\item kann besser nach den feinkörnigeren Angriffen auf der Nachrichtenebene strukturiert werden
       \end{itemize*}
 
       \subsection{Angriffe auf Nachrichtenebene}
@@ -205,6 +203,8 @@
             \end{itemize*}
             %\item Eine Sicherheitsanalyse einer Protokollarchitektur muss diese Angriffe entsprechend den Schichten der Architektur analysieren
       \end{itemize*}
+
+      \columnbreak
 
       \subsection{Schutzmaßnahmen der Informationssicherheit}
       \begin{itemize*}
@@ -257,17 +257,15 @@
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Kommunikationssicherheit}
+      \subsection{Sicherheitsdienste}
       \begin{itemize*}
-            \item Sicherheitsdienst: abstrakter Dienst, der bestimmte Sicherheitseigenschaft gewährleisten soll
-            \item Sicherheitsdienst kann sowohl mit Hilfe von kryptografischen Algorithmen und Protokollen als auch mit herkömmlichen Mitteln realisiert werden
+            \item abstrakter Dienst, der bestimmte Sicherheitseigenschaft gewährleisten soll
+            \item realisiert mit Hilfe von kryptografischen Algorithmen und Protokollen oder herkömmlichen Mitteln
             \item Dokument auf USB-Stick vertraulich, indem es verschlüsselt gespeichert und Datenträger in Tresor verschlossen
-            \item i.d.R. ist Kombination aus kryptografischen und anderen Mitteln am effektivsten
+            \item Kombination aus kryptografischen und anderen Mitteln am effektivsten
             \item Kryptographischer Algorithmus: mathematische Umwandlung von Eingabedaten in Ausgabedaten
             \item Kryptografisches Protokoll: Reihe von Schritten und Austausch von Nachrichten %zwischen mehreren Einheiten, um ein bestimmtes Sicherheitsziel zu erreichen
       \end{itemize*}
-
-      \subsection{Sicherheitsdienste - Überblick}
       \begin{description*}
             \item[Authentifizierung] Authentication
             \begin{itemize*}
@@ -321,13 +319,13 @@
                   \item Bekannte Chiffretext-Klartext-Paare
                   \item Gewählter Klartext oder gewählter Chiffretext
                   \item Differentielle Kryptoanalyse und lineare Kryptoanalyse
-                  \item Neuere Entwicklung: verwandte Schlüsselanalyse
+                  \item Neuer: verwandte Schlüsselanalyse
             \end{itemize*}
             \item Kryptoanalyse der Public-Key-Kryptographie
             \begin{itemize*}
                   \item Schlüssel öffentlich zugänglich, kann ausgenutzt werden
                   \item zielt eher darauf ab, das Kryptosystem selbst zu knacken
-                  \item näher an reinen mathematischen Forschung als klassische Kryptoanalyse
+                  \item näher an reinen mathematischen Forschung %als klassische Kryptoanalyse
                   \item Berechnung von diskreten Logarithmen
                   \item Faktorisierung von großen ganzen Zahlen
             \end{itemize*}
@@ -351,13 +349,13 @@
             Elektronen im Universum               & $8,37 * 10^{77}$
       \end{tabular}
 
-      \subsubsection{Wichtige Eigenschaften von Verschlüsselungsalgorithmen}
+      \subsubsection{Eigenschaften von Verschlüsselungsalgorithmen}
       \begin{itemize*}
             \item \textbf{Fehlerfortpflanzung} charakterisiert Auswirkungen von Bit-Fehlern bei Übertragung von Chiffretext zu rekonstruiertem Klartext
             \item Je nach Verschlüsselungsalgorithmus können pro fehlerhaftem Chiffretext-Bit ein oder mehrere fehlerhafte Bits im rekonstruierten Klartext vorhanden sein
             \item \textbf{Synchronisierung} charakterisiert die Auswirkungen verlorener Chiffretext-Dateneinheiten auf den rekonstruierten Klartext
             \item Einige Verschlüsselungsalgorithmen können sich nicht von verlorenem Chiffretext erholen und benötigen daher eine explizite Neusynchronisierung im Falle verlorener Nachrichten
-            \item Andere Algorithmen führen eine automatische Neusynchronisierung nach 0 bis n (n je nach Algorithmus) Chiffretextbits durch.
+            \item Andere Algorithmen führen eine automatische Neusynchronisierung nach 0 bis n (je nach Algorithmus) Chiffretextbits durch
       \end{itemize*}
 
       \subsection{Klassifizierung von Verschlüsselungsalgorithmen}
@@ -387,13 +385,13 @@
       \section{Symmetrische Kryptographie}
       \subsection{Symmetrische Verschlüsselung}
       \begin{itemize*}
-            \item Derselbe Schlüssel KA,B wird für die Verschlüsselung und Entschlüsselung von Nachrichten verwendet
+            \item Derselbe Schlüssel $K_{A,B}$ wird für die Verschlüsselung und Entschlüsselung von Nachrichten verwendet
             \item Wenn P die Klartextnachricht bezeichnet, bezeichnet $E(K_{A,B}, P)$ den Chiffretext und es gilt $D(K_{A,B}, E(K_{A,B}, P)) = P$
             \item Alternativ schreibt man manchmal $P_{K_{A,B}}$ oder $E_{K_{A,B}}(P)$
       \end{itemize*}
 
       \subsection{Symmetrische Block-Verschlüsselungsarten}
-      \subsubsection{Electronic Code Book Mode: ECB}
+      \subsubsection{Electronic Code Book Mode (ECB)}
       \begin{itemize*}
             \item Jeder Block $P_i$ der Länge $b$ wird unabhängig verschlüsselt: $C_i = E(K, p_i)$
             \item Bitfehler in Chiffretextblock $C_i$ führt zu völlig falsch wiederhergestellten Klartextblock $P_i'$
@@ -404,7 +402,7 @@
             \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-electronic-code-book-mode.png}
       \end{center}
 
-      \subsubsection{Cipher Block Chaining Mode: CBC}
+      \subsubsection{Cipher Block Chaining Mode (CBC)}
       \begin{itemize*}
             \item Vor Verschlüsselung eines Klartextblocks $P_i$ wird dieser mit dem vorangegangenen Chiffretextblock $C_{i-1}$ XOR-verknüpft
             \begin{itemize*}
@@ -412,7 +410,7 @@
                   \item $P_{i'} = C_{i-1} \oplus D(K, C_i)$
                   \item Um $C_1$ zu berechnen, einigen sich beide Parteien auf einen Anfangswert (IV) für $C_0$
             \end{itemize*}
-            \item Fehlerfortpflanzung: Ein verfälschter Chiffretextblock führt zu zwei verfälschten Klartextblöcken, da $P_i'$ mit $C_{i-1}$ und $C_i$ berechnet wird
+            \item Fehlerfortpflanzung: Ein verfälschter Chiffretextblock führt zu zwei verfälschten Klartextblöcken, da $P_i'$ aus $C_{i-1}$ und $C_i$
             \item Synchronisation: Wenn die Anzahl der verlorenen Bits ein ganzzahliges Vielfaches von b ist, wird ein zusätzlicher Block $P_{i+1}$ verzerrt, bevor die Synchronisation wiederhergestellt wird %Wenn eine andere Anzahl von Bits verloren geht, ist eine explizite Neusynchronisation erforderlich
             \item Vorteil: identische Klartextblöcke werden zu nicht-identischem Chiffretext verschlüsselt
       \end{itemize*}
@@ -420,13 +418,13 @@
             \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-cipher-block-chaining-mode.png}
       \end{center}
 
-      \subsubsection{Ciphertext Feedback Mode: CFB}
+      \subsubsection{Ciphertext Feedback Mode (CFB)}
       \begin{itemize*}
             \item Ein Blockverschlüsselungsalgorithmus, der mit Blöcken der Größe b arbeitet, kann in einen Algorithmus umgewandelt werden, der mit Blöcken der Größe $j (j<b)$ arbeitet
             \begin{itemize*}
                   \item $S(j, x)$ bezeichnen die $j$ höherwertigen Bits von $x$
                   \item $P_i$, $C_i$ den $i$-ten Block von Klartext und Geheimtext der Länge $j$ bezeichnen
-                  \item IV ist ein Anfangswert, auf den sich beide Parteien geeinigt haben
+                  \item IV ist ein Anfangswert beider Parteien
                   \item $R_1 = IV$
                   \item $R_n = (R_{n-1}*2^j\ mod\ 2^b)\oplus C_{n-1}$
                   \item $C_n = S(j,E_K(R_n))\oplus P_n$
@@ -436,18 +434,19 @@
             \item Ein gängiger Wert für j ist 8 für die Verschlüsselung von einem Zeichen pro Schritt
             \item Fehlerfortpflanzung: Da die Chiffretextblöcke schrittweise durch das Register geschoben werden, verfälscht ein fehlerhafter Block $C_i$ den wiederhergestellten Klartextblock $P_i'$ sowie die folgenden $\lceil b / j\rceil$-Blöcke
             \item Synchronisation: Wenn die Anzahl der verlorenen Bits ein ganzzahliges Vielfaches von j ist, werden $\lceil b / j\rceil$ zusätzliche Blöcke verfälscht, bevor die Synchronisation wiederhergestellt ist% Wenn eine beliebige andere Anzahl von Bits verloren geht, ist eine explizite Neusynchronisierung erforderlich
-            \item Nachteil: Die Verschlüsselungsfunktion E muss häufiger berechnet werden, da eine Verschlüsselung von $b$ Bit durchgeführt werden muss, um $j$ Bit des Klartextes zu verbergen. Beispiel: Bei Verwendung von DES mit Verschlüsselung von jeweils einem Zeichen $\Rightarrow$ muss die Verschlüsselung 8-mal häufiger durchgeführt werden
+            \item Nachteil: Die Verschlüsselungsfunktion E muss häufiger berechnet werden, da eine Verschlüsselung von $b$ Bit durchgeführt werden muss, um $j$ Bit des Klartextes zu verbergen
+            %\item Beispiel: Bei Verwendung von DES mit Verschlüsselung von jeweils einem Zeichen $\Rightarrow$ muss die Verschlüsselung 8-mal häufiger durchgeführt werden
       \end{itemize*}
 
-      \subsubsection{Output-Feedback-Modus: OFB}
+      \subsubsection{Output-Feedback-Modus (OFB)}
       \begin{itemize*}
-            \item Der Blockverschlüsselungsalgorithmus wird zur Erzeugung einer Pseudozufallsfolge $R_i$ verwendet, die nur von $K$ und $IV$ abhängt
+            \item Pseudozufallsfolge $R_i$ verwendet, die nur von $K$ und $IV$ abhängt
             \begin{itemize*}
                   \item $S(j, x)$ bezeichnen die $j$ höherwertigen Bits von $x$
                   \item $P_i$, $C_i$ bezeichnen den $i$-ten Block von Klartext und Chiffretext der Länge $j$
-                  \item $IV$ sei ein Anfangswert, auf den sich beide Parteien geeinigt haben
+                  \item $IV$ sei ein Anfangswert beider Parteien
                   \item $R_1 = IV$
-                  \item $R_n = (R_{n-1}* 2^j\ mod\ 2^b )\oplus S(j,E_K(R_{n-1}))$ // j-bit Linksverschiebung + verschlüsselter alter Wert
+                  \item $R_n = (R_{n-1}* 2^j\ mod\ 2^b )\oplus S(j,E_K(R_{n-1}))$ %// j-bit Linksverschiebung + verschlüsselter alter Wert
                   \item $C_n = S(j,E_K(R_n))\oplus P_n$
                   \item $S(j,E_K(R_n))\oplus C_n = S(j,E_K(R_n))\oplus S(j,E_K(R_n))\oplus P_n$
                   \item $S(j,E_K(R_n))\oplus C_n = P_n$
@@ -456,7 +455,7 @@
             \item Fehlerfortpflanzung: Einzelbitfehler führen nur zu Einzelbitfehlern $\rightarrow$ keine Fehlermultiplikation
             \item Synchronisierung: Wenn einige Bits verloren gehen, ist eine explizite Re-Synchronisation erforderlich
             \item Vorteil: Die Pseudo-Zufallsfolge kann vorberechnet werden, um die Auswirkungen der Verschlüsselung auf die Ende-zu-Ende-Verzögerung gering zu halten
-            \item Wie bei CFB muss die Verschlüsselungsfunktion E häufiger berechnet werden, da eine Verschlüsselung von b Bit durchgeführt werden muss, um j Bit des Klartextes zu verbergen
+            \item Verschlüsselungsfunktion muss häufiger berechnet werden, da eine Verschlüsselung von $b$ Bit durchgeführt werden muss, um $j$ Bit des Klartextes zu verbergen
             \item Es ist für einen Angreifer möglich, bestimmte Bits des Klartextes zu manipulieren
       \end{itemize*}
       \begin{center}
@@ -467,7 +466,7 @@
       \begin{itemize*}
             \item symmetrische Blockchiffre mit Blöcken der Länge 128 Bit
             \item unter Verwendung von Schlüsseln der Länge 128 Bit
-            \item NSA reduzierte Blockgröße auf 64 Bit, die Größe des Schlüssels auf 56 Bit und änderte Details in den Substitutionsfeldern des Algorithmus
+            \item NSA reduzierte Blockgröße auf 64 Bit, die Größe des Schlüssels auf 56 Bit und änderte Details in den Substitutionsfeldern
       \end{itemize*}
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-des-algorithm.png}
       \begin{center}
@@ -491,14 +490,14 @@
                   \item $L_i = R_{i-1}$
                   \item $R_i = L_{i-1}\oplus f(R_{i-1}, K_i)$
                   \item Aufteilung der Daten in zwei Hälften und Organisation der Verschlüsselung gemäß den obigen Gleichungen
-                  \item Dieses Konzept wird in vielen Blockchiffren verwendet und wird als Feistel-Netzwerk bezeichnet
+                  \item wird als Feistel-Netzwerk bezeichnet
             \end{itemize*}
             \item Der DES-Entschlüsselungsprozess ist im Wesentlichen derselbe wie die Verschlüsselung. Er verwendet den Chiffretext als Eingabe für den Verschlüsselungsalgorithmus, wendet aber die Unterschlüssel in umgekehrter Reihenfolge an
             \item Die Ausgangswerte sind also
             \begin{itemize*}
                   \item $L_0' || R_0' =$ InitialPermutation (Chiffretext)
-                  \item chiffretext = InverseInitialPermutation ($R_{16} || L_{16}$)
-                  \item $L_0' || R_0' =$ InitialPermutation (InverseInitialPermutation ($R_{16}|| L_{16}))=R_{16}|| L_{16}$
+                  \item Chiffretext = InverseInitialPermutation ($R_{16} || L_{16}$)
+                  %\item $L_0' || R_0' =$ InitialPermutation (InverseInitialPermutation ($R_{16}|| L_{16}))=R_{16}|| L_{16}$
             \end{itemize*}
             \item Nach einem Schritt der Entschlüsselung
             \begin{itemize*}
@@ -528,7 +527,7 @@
                   \item Schwache Schlüssel: Vier Schlüssel sind schwach, da sie Unterschlüssel erzeugen, die entweder alle 0 oder alle 1 enthalten.
                   \item Halbschwache Schlüssel: Es gibt sechs Schlüsselpaare, die Klartext zu identischem Chiffriertext verschlüsseln, da sie nur zwei verschiedene Unterschlüssel erzeugen
                   \item Möglicherweise schwache Schlüssel: Es gibt 48 Schlüssel, die nur vier verschiedene Unterschlüssel erzeugen
-                  \item Insgesamt werden 64 Schlüssel von $72057594037927936$ als schwach angesehen
+                  \item Insgesamt werden $64$ von $72057594037927936$ als schwach angesehen
             \end{itemize*}
             \item Algebraische Struktur
             \begin{itemize*}
@@ -544,18 +543,15 @@
                   \item DES mit 16 Runden ist gegen diesen Angriff immun, da der Angriff $2^{47}$ gewählte Klartexte oder $2^{55}$ bekannte Klartexte benötigt
                   \item Die Entwickler von DES erklärten in den 1990er Jahren, dass sie in den 1970er Jahren über diese Art von Angriffen Bescheid wussten und dass die s-Boxen entsprechend entworfen wurden
             \end{itemize*}
-            \item Schlüssellänge
-            \begin{itemize*}
-                  \item Da 56-Bit-Schlüssel in $10,01$ Stunden durchsucht werden kann, wenn man $10^6$ Verschlüsselungen/$\mu s$ durchführen kann, kann DES nicht mehr als ausreichend sicher angesehen werden.
-            \end{itemize*}
+            \item Schlüssellänge:  Da 56-Bit-Schlüssel in $10,01$ Stunden durchsucht werden kann, wenn man $10^6$ Verschlüsselungen/$\mu s$ durchführen kann, kann DES nicht mehr als ausreichend sicher angesehen werden
       \end{itemize*}
 
       \subsubsection{Erweiterung der Schlüssellänge von DES}
       \begin{itemize*}
             \item Doppelter DES: Da DES nicht geschlossen ist, führt die doppelte Verschlüsselung zu einer Chiffre, die 112-Bit-Schlüssel verwendet
             \begin{itemize*}
-                  \item Leider kann sie mit einem Aufwand von $2^{56}$ angegriffen werden.
-                  \item Da $C=E(K_2,E(K_1,P))$ haben wir $X:=E(K_1,P)=D(K_2,C)$
+                  \item kann mit Aufwand von $2^{56}$ angegriffen werden.
+                  \item Da $C=E(K_2,E(K_1,P)) \Rightarrow X:=E(K_1,P)=D(K_2,C)$
                   \item Wenn ein Angreifer ein bekanntes Klartext/Chiffretext-Paar erhalten kann, kann er zwei Tabellen erstellen (meet-in-the-middle-attack)
                   \begin{itemize*}
                         \item Tabelle 1 enthält die Werte von $X$, wenn $P$ mit allen möglichen Werten von $K$ verschlüsselt ist
@@ -563,62 +559,62 @@
                         \item Sortiere die beiden Tabellen und konstruiere Schlüssel $K_{T1}|| K_{T2}$ für alle Kombinationen von Einträgen, die den gleichen Wert ergeben.
                   \end{itemize*}
             \end{itemize*}
-            \item Da es für jeden beliebigen Klartext $2^{64}$ mögliche Chiffretext-Werte gibt, die mit Double-DES erzeugt werden könnten, gibt es beim ersten bekannten Klartext/Chiffretext-Paar durchschnittlich $2^{112}/2^{64}=2^{48}$ Fehlalarme.
-            \item Jedes weitere Klartext/Chiffretext-Paar verringert die Chance, einen falschen Schlüssel zu erhalten, um den Faktor $1/2^{64}$, so dass bei zwei bekannten Blöcken die Chance $2^{-16}$ beträgt.
+            \item Da es für jeden beliebigen Klartext $2^{64}$ mögliche Chiffretext-Werte gibt, die mit Double-DES erzeugt werden könnten, gibt es beim ersten bekannten Klartext/Chiffretext-Paar durchschnittlich $2^{112}/2^{64}=2^{48}$ Fehlalarme
+            \item Jedes weitere Klartext/Chiffretext-Paar verringert die Chance, einen falschen Schlüssel zu erhalten, um den Faktor $1/2^{64}$, so dass bei zwei bekannten Blöcken die Chance $2^{-16}$ beträgt
             \item Der Aufwand, der erforderlich ist, um Double DES zu knacken, liegt also in der Größenordnung von $2^{56}$, was nur geringfügig besser ist als der Aufwand von $2^{55}$, der erforderlich ist, um Single DES mit einem Angriff mit bekanntem Klartext zu knacken, und weit entfernt von den $2^{111}$, die wir von einer Chiffre mit einer Schlüssellänge von 112 Bit erwarten würden
             \item Diese Art von Angriff kann durch die Verwendung eines dreifachen Verschlüsselungsschemas umgangen werden, wie es 1979 von W. Tuchman vorgeschlagen wurde
             \item $C=E(K_3,D(K_2,E(K_1,P)))$
-            \item Die Verwendung der Entschlüsselungsfunktion D in der Mitte ermöglicht die Verwendung von Dreifachverschlüsselungsgeräten mit Gegenstellen, die nur Einfachverschlüsselungsgeräte besitzen, indem $K_1=K_2=K_3$ gesetzt wird.
+            \item Die Verwendung der Entschlüsselungsfunktion D in der Mitte ermöglicht die Verwendung von Dreifachverschlüsselungsgeräten mit Gegenstellen, die nur Einfachverschlüsselungsgeräte besitzen, indem $K_1=K_2=K_3$ gesetzt wird
             \item Dreifachverschlüsselung kann mit zwei (Einstellung $K_1=K_3$) oder drei verschiedenen Schlüsseln verwendet werden
-            \item Bislang sind keine praktischen Angriffe gegen dieses Verfahren bekannt
+            \item Bislang keine praktischen Angriffe gegen dieses Verfahren bekannt
             \item Nachteil: die Leistung beträgt nur $1/3$ der einfachen Verschlüsselung, so dass es besser sein könnte, gleich eine andere Chiffre zu verwenden, die eine größere Schlüssellänge bietet
       \end{itemize*}
 
-      \subsection{fortgeschrittener Verschlüsselungsstandard AES}
+      \subsection{Fortgeschrittener Verschlüsselungsstandard AES}
       \begin{itemize*}
-            \item Oktober 2000: Rijndael wird als Vorschlag des NIST für AES bekannt gegeben
+            \item Oktober 2000: Rijndael als Vorschlag des NIST für AES
             \item Rundenbasierte symmetrische Chiffre
-            \item Keine Feistel-Struktur (unterschiedliche Verschlüsselungs- und Entschlüsselungsfunktionen)
+            \item Keine Feistel-Struktur (versch. Ver- und Entschlüsselung)
             \item Schlüssellänge: 128, 192, oder 256 Bit
             \item Blocklänge: 128, 192 oder 256 Bit (nur 128 standardisiert)
             \item Anzahl der Runden: 10, 12, 14
             \item Der Algorithmus arbeitet mit
             \begin{itemize*}
-                  \item $state[4, 4]$: ein Byte-Array mit 4 Zeilen und 4 Spalten (für 128-Bit-Blockgröße)
-                  \item $key[4, 4]$: ein Array mit 4 Zeilen und 4 Spalten (für 128-Bit-Schlüsselgröße)
+                  \item $state[4, 4]$: ein Byte-Array mit 4 Zeilen und 4 Spalten %(für 128-Bit-Blockgröße)
+                  \item $key[4, 4]$: ein Array mit 4 Zeilen und 4 Spalten %(für 128-Bit-Schlüsselgröße)
             \end{itemize*}
             \item Verschlüsselung: (für eine Block- und Schlüsselgröße von 128 Bit) in Runden $1-9$ werden vier Operationen verwendet
             \begin{description*}
-                  \item[ByteSub] eine nicht-lineare Byte-Substitution durch eine feste Tabelle (s-Box)
-                  \item[ShiftRow] die Zeilen des Zustands werden zyklisch um verschiedene Offsets verschoben
+                  \item[ByteSub] nicht-lineare Byte-Substitution durch feste Tabelle (s-Box)
+                  \item[ShiftRow] Zeilen des Zustands zyklisch um verschiedene Offsets verschoben
                   \item[MixColumn] die Spalten von $state[]$ werden als Polynome über $GF(2^8)$ betrachtet und modulo $x^4+1$ mit einer festen Matrix multipliziert: $\begin{pmatrix} 02&03&01&01\\ 01&02&03&01 \\ 01&01&02&03\\ 03&01&01&02 \end{pmatrix}$
                   \item[RoundKey] ein Round-Key wird mit dem Status XORiert
-                  \item[-] Runde 10 macht keinen Gebrauch von der Operation MixColumn
+                  \item[Runde 10] nutzt Operation MixColumn NICHT
             \end{description*}
             % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-rijndael-one-round.png}
             \item Entschlüsselung
             \begin{itemize*}
-                  \item Rundenschlüssel und Operationen werden in umgekehrter Reihenfolge angewendet
-                  \item Der MixColumn-Schritt kann nur durch Multiplikation mit der inversen Matrix (auch über $GF(2^8)$) invertiert werden
+                  \item Rundenschlüssel und Operationen in umgekehrter Reihenfolge
+                  \item MixColumn-Schritt kann nur durch Multiplikation mit der inversen Matrix (auch über $GF(2^8)$) invertiert werden
                   \item $\begin{pmatrix} 0e&0b&0d&09\\ 09&0e&0b&0d\\ 0d&09&0e&0b\\ 0b&0d&09&0e \end{pmatrix}$
                   \item Oft werden tabellarische vorberechnete Lösungen verwendet, die mehr Platz benötigen
             \end{itemize*}
       \end{itemize*}
 
-      \subsubsection{AES - Sicherheit}
+      Sicherheit
       \begin{itemize*}
-            \item Die einfache mathematische Struktur von AES ist der Hauptgrund für seine Geschwindigkeit, führte aber auch zu Kritik
-            \item Nur die ByteSub-Funktion ist wirklich nichtlinear und verhindert eine effektive Analyse
-            \item AES kann als eine große Matrix-Operation beschrieben werden
+            %\item Die einfache mathematische Struktur von AES ist der Hauptgrund für seine Geschwindigkeit, führte aber auch zu Kritik
+            \item Nur die ByteSub-Funktion ist wirklich nichtlinear und verhindert effektive Analyse
+            \item AES kann als große Matrix-Operation beschrieben werden
             \item Bereits während der Standardisierung wurden Angriffe für reduzierte Versionen entwickelt
             \begin{itemize*}
                   \item Ein Angriff mit $2^{32}$ gewähltem Klartext gegen eine 7-Runden-Version von AES
                   \item Signifikante Reduktion der Komplexität auch für eine 9-Runden-Version von AES mit 256-Schlüsselgröße mit einem zugehörigen Schlüsselangriff
             \end{itemize*}
-            \item 2011 wurde der erste Angriff gegen vollständigen AES bekannt
+            \item 2011 erster Angriff gegen vollständigen AES bekannt
             \begin{itemize*}
                   \item Schlüsselwiederherstellung in $2^{126.1}$ für AES mit 128 Bit, $2^{189.7}$ für AES mit 192 Bit, $2^{254.4}$ für AES mit 256 Bit
-                  \item ,,Praktischer,, Angriff (geht nicht von verwandten Schlüsseln aus)
+                  \item Praktischer Angriff (geht nicht von verwandten Schlüsseln aus)
                   \item nur ein kleiner Kratzer in Anbetracht von 10 Jahren kryptographischer Forschung
             \end{itemize*}
       \end{itemize*}
@@ -629,38 +625,38 @@
             \item RC4 wird im Output-Feedback-Modus (OFB) betrieben
             \begin{itemize*}
                   \item Der Verschlüsselungsalgorithmus erzeugt eine Pseudozufallsfolge $RC4(IV,K)$, die nur vom Schlüssel K und einem Initialisierungsvektor IV abhängt
-                  \item Der Klartext $P_i$ wird dann mit der Pseudozufallssequenz XOR-verknüpft, um den Chiffretext zu erhalten und umgekehrt
+                  \item Der Klartext $P_i$ wird dann mit der Pseudozufallssequenz XOR-verknüpft, um den Chiffretext zu erhalten %und umgekehrt
                   \item $C_1 = P_1\oplus RC4 (IV_1,K)$
                   \item $P_1 = C_1\oplus RC4 (IV_1,K)$
             \end{itemize*}
             \item Pseudo-Zufallsfolge wird oft als Keystream bezeichnet
-            \item Entscheidend für Sicherheit, dass Keystream niemals wiederverwendet wird
-            \item Wenn der Keystream wiederverwendet wird (d.h. $IV_1=IV_2$ mit demselben $K$), dann kann das XOR zweier Klartexte erhalten werden %$C_1\oplus C_2= P_1\oplus RC4(IV, K)\oplus P_2\oplus RC4(IV,K) = P_1\oplus P_2$
+            \item Keystream niemals wiederverwenden, entscheidend für Sicherheit (XOR zweier Klartexte erhalten)
+            %\item Wenn der Keystream wiederverwendet wird (d.h. $IV_1=IV_2$ mit demselben $K$), dann kann das XOR zweier Klartexte erhalten werden %$C_1\oplus C_2= P_1\oplus RC4(IV, K)\oplus P_2\oplus RC4(IV,K) = P_1\oplus P_2$
             \item RC4 verwendet einen Schlüssel variabler Länge bis zu 2048 Bit
             \item Eig. dient Schlüssel als Seed für Pseudo-Zufallsgenerator
-            \item RC4 arbeitet mit zwei 256-Byte-Arrays: $S,,0,255'', K,,0,255''$
+            \item RC4 arbeitet mit zwei 256-Byte-Arrays: $S[0,255], K[0,255]$
             \begin{enumerate*}
                   \item Initialisierung der Arrays
                   %\begin{Shaded} % \begin{Highlighting}[] % \ControlFlowTok{for}\NormalTok{ (i = }\DecValTok{0}\NormalTok{; i < }\DecValTok{256}\NormalTok{; i++){} % \NormalTok{ S[i] = i; }\CommentTok{// Array S[] mit 0 bis 255 füllen} % \NormalTok{}} % \CommentTok{// Füllen des Arrays K[] mit dem Schlüssel und IV durch Wiederholung, bis K[] gefüllt ist} % \NormalTok{n = }\DecValTok{0}\NormalTok{;} % \ControlFlowTok{for}\NormalTok{ (i =}\DecValTok{0}\NormalTok{; i < }\DecValTok{256}\NormalTok{; i++) {} % \NormalTok{ n = (n + S[i] + K[i]) MOD }\DecValTok{256}\NormalTok{; swap(S[i], S[n]); } % \NormalTok{}} % \end{Highlighting} %\end{Shaded}
                   \item Erzeugen des Schlüsselstroms (nach Init $i=0;n=0;$)
                   %\begin{Shaded} % \begin{Highlighting}[] % \NormalTok{i = (i + }\DecValTok{1}\NormalTok{) MOD }\DecValTok{256}\NormalTok{; n = (n + S[i]) MOD }\DecValTok{256}\NormalTok{;} % \NormalTok{swap(S[i], S[n]);} % \NormalTok{t = (S[i] + S[n]) MOD }\DecValTok{256}\NormalTok{;} % \NormalTok{Z = S[t]; }\CommentTok{// Z enthält 8 Bit des durch eine Iteration erzeugten Schlüsselstroms} % \end{Highlighting} %\end{Shaded}
-                  \item XOR-Verknüpfung des Schlüsselstroms mit dem Klartext oder Chiffretext
+                  \item XOR-Verknüpfung des Schlüsselstroms mit dem Klartext% oder Chiffretext
             \end{enumerate*}
             \item Sicherheit von RC4
             \begin{itemize*}
                   \item Sicherheit gegen Brute-Force-Angriffe
                   \item variable Schlüssellänge bis 2048 Bit
-                  \item durch Verringerung der Schlüssellänge auch beliebig unsicher werden
+                  \item durch Verringerung der Schlüssellänge beliebig unsicher
                   \item RSA Data Security Inc. behauptet, RC4 sei immun gegen differentielle und lineare Kryptoanalyse und es seien keine kleinen Zyklen bekannt
             \end{itemize*}
             \item RC4 mit 40-Bit-Schlüsseln hatte einen besonderen Exportstatus%, selbst als andere Chiffren nicht aus den USA exportiert werden durften
             \begin{itemize*}
-                  \item Secure Socket Layer (SSL) verwendet RC4 mit 40-Bit-Schlüsseln als Standardalgorithmus
-                  \item Schlüssellänge von 40 Bit ist nicht immun gegen Brute-Force
+                  \item SSL verwendet RC4 mit 40-Bit-Schlüsseln %als Standardalgorithmus
+                  \item Schlüssellänge von 40 Bit nicht immun gegen Brute-Force
             \end{itemize*}
-            \item Je nach Schlüsselplanungsmethode kann RC4 stark verwundbar sein
+            \item Je nach Schlüsselplanung kann RC4 stark verwundbar sein
             \item empfohlen min. erste 3072 Bytes des Schlüsselstroms zu verwerfen
-            \item sollte nicht mehr verwendet werden, auch nicht bei längeren Schlüsseln
+            \item sollte nicht mehr verwendet werden%, auch nicht bei längeren Schlüsseln
       \end{itemize*}
 
       \subsection{KASUMI}
@@ -668,26 +664,28 @@
             \item Verwendet zur Verschlüsselung von Anrufen in GSM und UMTS
             \item Entwickelt für Hardware-Implementierung ($<10k$ Gatter)
             \item Schnelle Implementierung möglich
-            \item 64-Bit-Blockgröße
-            \item 128-Bit-Schlüssellänge
+            \item 64-Bit-Blockgröße, 128-Bit-Schlüssellänge
             \item 8 Runden Feistel-Netzwerk
             \item Sicherheitsspanne nicht sehr groß
-            \item \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-kasumi-singe-iteration.png}
+      \end{itemize*}
+      \begin{center}
+            \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-kasumi-singe-iteration.png}
+      \end{center}
+      \begin{itemize*}
             \item linke 32 Bit der zu verschlüsselnden Daten werden durch zwei nichtlineare Funktionen FO und FL verändert, die beide Schlüsselmaterial verwenden
             \item Reihenfolge, in der FO und FL angewendet werden, hängt von Rundenzahl ab
             \item FL teilt die Daten in 16-Bit-Wörter auf, die mit Schlüsselmaterial kombiniert, permutiert und mit den Originalwerten XOR-verknüpft werden
             \item FO ist ein 3-Runden-Feistel-Netzwerk mit einer Modifizierungsfunktion FI, die selbst ein Feistel-ähnliches Netzwerk ist, das zwei s-Boxen verwendet
             \item Der Ausgang des obigen Schritts wird mit den rechten 32 Bit der Daten XOR-verknüpft, was zu den neuen rechten 32 Bit der Daten führt
-            \item Das neue linke 32-Bit der Daten ist der rechte Wert der vorherigen Iteration
+            \item neue linke 32-Bit der Daten ist rechte Wert der vorherigen Iteration
       \end{itemize*}
 
-      \subsubsection{KASUMI - Sicherheit}
+      Sicherheit
       \begin{itemize*}
-            \item reduzierte Version (6 Runden) kann durch unmögliche differentielle Kryptoanalyse angegriffen werden, bei der unmögliche Zustände der Chiffre aus Chiffretext/Klartext-Paaren abgeleitet werden
-            \begin{itemize*}
-                  \item Erste Veröffentlichung bereits ein Jahr nach der Standardisierung
-                  \item Zeitkomplexität von $2^{100}$
-            \end{itemize*}
+            \item reduzierte Version (6 Runden) kann durch unmögliche differentielle Kryptoanalyse angegriffen werden, bei der unmögliche Zustände der Chiffre aus Chiffretext/Klartext-Paaren abgeleitet werden (Zeitkomplexität von $2^{100}$)
+            %\begin{itemize*}
+            %\item Erste Veröffentlichung bereits ein Jahr nach der Standardisierung
+            %\end{itemize*}
             \item Für Vollversion von KASUMI verwandte Schlüsselangriffe möglich
             \begin{itemize*}
                   \item Ausgewählter Klartextangriff, bei dem der Angreifer dieselben Daten mit mehreren ,,verwandten'' Schlüsseln verschlüsseln kann
@@ -697,7 +695,7 @@
             \end{itemize*}
             \item ETSI hat jedoch SNOW 3G eingeführt, um auf eine vollständige Verletzung von KASUMI vorbereitet zu sein
             \begin{itemize*}
-                  \item Stromchiffre basierend auf LFSR, in 7.500 ASIC-Gattern implementiert
+                  \item Stromchiffre basierend auf LFSR, in 7.500 ASIC-Gattern %implementiert
                   \item anfällig für verwandte Schlüsselangriffe
             \end{itemize*}
       \end{itemize*}
@@ -707,43 +705,41 @@
             \item zwei verschiedene Schlüssel $-K$ und $+K$
             \item mit Chiffretext $c=E(+K, m)$ und $+K$ sollte es nicht möglich sein, $m=D(-K,c) =D(-K,E(+K,m))$ zu berechnen
             \item Berechnung von $-K$ bei $+K$ nicht möglich sein sollte
-            \item $-K$ nur einer Entität A bekannt und wird privater Schlüssel $-K_A$ genannt
-            \item $+K$ öffentlich bekannt und wird öffentlicher Schlüssel $+K_A$ genannt
-            \item Anwendungen
+            \item $-K_A$ nur einer Entität A bekannt, privater Schlüssel
+            \item $+K_A$ öffentlich bekannt, öffentlicher Schlüssel
             \begin{description*}
                   \item[Verschlüsselung] Nachricht mit $+K_A$ verschlüsselt, kann nur mit $-K_A$ entschlüsselT werden
                   \item[Signieren] Nachricht mit $-K_A$ verschlüsselt, kann jeder Signatur mit $+K_A$ verifizieren
-                  \item[Achtung!] Entscheidend ist, dass jeder nachprüfen kann, dass er wirklich den öffentlichen Schlüssel von A kennt und nicht den Schlüssel eines Gegners
+                  \item[Achtung] Entscheidend ist, dass jeder nachprüfen kann, dass er wirklich den öffentlichen Schlüssel von A kennt und nicht den Schlüssel eines Gegners
             \end{description*}
             \item Entwurf von asymmetrischen Kryptosystemen
             \begin{itemize*}
-                  \item Schwierigkeit: Finde einen Algorithmus und eine Methode, zwei Schlüssel $-K$, $+K$ so zu konstruieren, dass es nicht möglich ist, $E(+K, m)$ mit der Kenntnis von $+K$ zu entschlüsseln
+                  \item Finde einen Algorithmus und eine Methode, zwei Schlüssel $-K$, $+K$ so zu konstruieren, dass es nicht möglich ist, $E(+K, m)$ mit der Kenntnis von $+K$ zu entschlüsseln
                   \item Schlüssellänge sollte ,,überschaubar'' sein
                   \item Verschlüsselte Nachrichten sollten nicht beliebig länger sein als unverschlüsselte Nachrichten
                   \item Ver- und Entschlüsselung sollten nicht zu viele Ressourcen verbrauchen (Zeit, Speicher)
                   \item Idee: Man nehme ein Problem aus dem Bereich der Mathematik/Informatik, das schwer zu lösen ist, wenn man nur $+K$ kennt, aber leicht zu lösen, wenn man $-K$ kennt
             \end{itemize*}
-            \begin{description*}
-                  \item[Knapsack-Probleme] Grundlage der ersten funktionierenden Algorithmen, die sich leider fast alle als unsicher erwiesen haben
-                  \item[Faktorisierungsproblem] Grundlage des RSA-Algorithmus
-                  \item[Diskreter-Logarithmus-Problem] Grundlage von Diffie-Hellman und ElGamal
-            \end{description*}
       \end{itemize*}
+      \begin{description*}
+            \item[Knapsack-Probleme] Grundlage der ersten funktionierenden Algorithmen, leider fast alle als unsicher erwiesen
+            \item[Faktorisierungsproblem] Grundlage des RSA-Algorithmus
+            \item[Diskreter-Logarithmus-Problem] Grundlage von Diffie-Hellman und ElGamal
+      \end{description*}
 
       \subsection{Einige mathematische Hintergründe}
       \begin{itemize*}
             \item Sei $\mathbb{Z}$ die Menge der ganzen Zahlen, und $a,b,n\in\mathbb{Z}$
-            \item Wir sagen, $a$ teilt $b(a| b)$, wenn es eine ganze Zahl $k\in\mathbb{Z}$ gibt, so dass $a\times k=b$
-            \item $a$ ist prim, wenn es positiv ist und die einzigen Teiler von a $1$ und $a$ sind.
-            \item $r$ ist der Rest von a geteilt durch $n$, wenn $r=a-\lfloor a / n \rfloor\times n$, wobei
-            $\lfloor x\rfloor$ die größte ganze Zahl kleiner oder gleich $x$ ist.
-            \begin{itemize*}
-                  \item Beispiel: 4 ist der Rest von 11 geteilt durch 7 als $4=11-\lfloor 11/7\rfloor\times 7$
-                  \item Wir können dies auch anders schreiben: $a=q\times n + r$ mit $q=\lfloor a/n\rfloor$
-            \end{itemize*}
-            \item Für den Rest $r$ der Division von a durch n schreiben wir $a\ MOD\ n$
-            \item Wir sagen, b ist kongruent $a\ mod\ n$, wenn es bei der Division durch n den gleichen Rest wie a hat. Also teilt n $(a-b)$, und wir schreiben $b\equiv a\ mod\ n$
-            \item Beispiele: $4\equiv 11\ mod\ 7$, $25\equiv 11\ mod\ 7$, $11\equiv 25\ mod\ 7$, $11\equiv 4\ mod\ 7$, $-10\equiv 4\ mod\ 7$
+            \item $a$ teilt $b(a| b)$ wenn es eine ganze Zahl $k\in\mathbb{Z}$ gibt, so dass $a\times k=b$
+            \item $a$ ist prim, wenn a positiv und einzige Teiler von a $1$ und $a$
+            \item $r$ ist der Rest von a geteilt durch $n$, wenn $r=a-\lfloor a / n \rfloor\times n$, wobei $\lfloor x\rfloor$ die größte ganze Zahl kleiner oder gleich $x$ ist
+            %\begin{itemize*}
+            %      \item Beispiel: 4 ist der Rest von 11 geteilt durch 7 als $4=11-\lfloor 11/7\rfloor\times 7$
+            %      \item Wir können dies auch anders schreiben: $a=q\times n + r$ mit $q=\lfloor a/n\rfloor$
+            %\end{itemize*}
+            \item Für Rest $r$ von a durch n schreiben wir $a\ MOD\ n$
+            \item b ist kongruent $a\ mod\ n$, wenn es bei der Division durch n den gleichen Rest wie a hat. Also teilt n $(a-b)$, und wir schreiben $b\equiv a\ mod\ n$
+            %\item Beispiele: $4\equiv 11\ mod\ 7$, $25\equiv 11\ mod\ 7$, $11\equiv 25\ mod\ 7$, $11\equiv 4\ mod\ 7$, $-10\equiv 4\ mod\ 7$
             \item Da der Rest r der Division durch n immer kleiner als n ist, stellt man manchmal die Menge ${x\ mod\ n | x\in\mathbb{Z}}$ durch Elemente der Menge $\mathbb{Z}_n={0, 1, ..., n-1}$ dar
       \end{itemize*}
 
@@ -751,9 +747,9 @@
             Eigenschaft & Ausdruck                                                                                                          \\\hline
             Kommutativ  & $(a + b)\ mod\ n = (b+ a)\ mod\ n$                                                                                \\
                         & $(a \times b)\ mod\ n = (b \times a)\ mod\ n$                                                                     \\
-            Assoziativ  & $,,(a + b) + c''\ mod\ n = ,,a + (b + c)''\ mod\ n$                                                               \\
-                        & $,,(a \times b) \times c''\ mod\ n = ,,a \times (b \times c)''\ mod\ n$                                           \\
-            Distributiv & $,,a \times (b + c)''\ mod\ n = ,,(a \times b) + (a \times c)''\ mod\ n$                                          \\
+            Assoziativ  & $[(a + b) + c]\ mod\ n =[a + (b + c)]\ mod\ n$                                                                    \\
+                        & $[(a \times b) \times c]\ mod\ n =[a \times (b \times c)]\ mod\ n$                                                \\
+            Distributiv & $[a \times (b + c)]\ mod\ n =[(a \times b) + (a \times c)]\ mod\ n$                                               \\
             Identitäten & $(0 + a)\ mod\ n = a\ mod\ n$                                                                                     \\
                         & $(1 \times a)\ mod\ n = a\ mod\ n$                                                                                \\
             Inverse     & $\forall a \in \mathbb{Z}n: \exists (-a)\in \mathbb{Z}n : a + (-a) \equiv 0\ mod\ n$                              \\
@@ -763,13 +759,10 @@
       Größter gemeinsamer Teiler
       \begin{itemize*}
             %\item $c = gcd(a, b) :\Leftrightarrow ( c | a) \wedge ( c | b) \wedge ,,\forall d: ( d | a ) \wedge ( d | b) \Rightarrow ( d | c )''$ und $gcd(a, 0 ) : = | a |$
-            \item Der gcd-Rekursionssatz
-            \begin{itemize*}
-                  \item $\forall a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ mod\ b)$
-                  \item Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen%, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ mod\ b$, also $gcd(a, b) | gcd(b, a\ mod\ b)$
-                  %\item Da $gcd(b, a\ mod\ b)$ sowohl b als auch $a\ mod\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ mod\ b) = a$, also $gcd(b, a\ mod\ b) | gcd(a, b)$
-            \end{itemize*}
-            \item Euklidischer Algorithmus: aus $a, b$ berechnet $gcd(a, b)$
+            \item Der gcd-Rekursionssatz $\forall a, b \in \mathbb{Z}^+: gcd(a, b) = gcd(b, a\ mod\ b)$
+            %\item Da $gcd(a, b)$ sowohl a als auch b teilt, teilt es auch jede Linearkombination von ihnen%, insbesondere $(a- \lfloor a / b \rfloor \times b) = a\ mod\ b$, also $gcd(a, b) | gcd(b, a\ mod\ b)$
+            %\item Da $gcd(b, a\ mod\ b)$ sowohl b als auch $a\ mod\ b$ teilt, teilt es auch jede Linearkombination von beiden, insbesondere $\lfloor a / b \rfloor \times b + (a\ mod\ b) = a$, also $gcd(b, a\ mod\ b) | gcd(a, b)$
+            %\item Euklidischer Algorithmus: aus $a, b$ berechnet $gcd(a, b)$
             %\begin{Shaded}
             % \begin{Highlighting}[]
             % \DataTypeTok{int}\NormalTok{ Euclid(}\DataTypeTok{int}\NormalTok{ a, b){}
@@ -799,30 +792,30 @@
                   \item Laufzeit von $Euclid$ und $ExtendedEuclid$ ist $O(log\ b)$
             \end{itemize*}
             \item Lemma: Sei $a,b\in\mathbb{N}$ und $d=gcd(a,b)$. Dann gibt es $m,n\in\mathbb{N}$ so, dass: $d=m\times a+n \times b$
-            \item Theorem 1 (Euklid): Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\times b)\Rightarrow (p| a)\times(p| b)$
-            \begin{itemize*}
-                  \item Der Beweis: Es sei $p|(a\times b)$
-                  \item Wenn $p| a$ dann sind wir fertig
-                  \item Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\exists m, n\in\mathbb{N}:1=m\times p+n\times a \Leftrightarrow b=m\times p \times b + n \times a \times b$
-                  \item Da $p|(a\times b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist
-            \end{itemize*}
-            \item Theorem 2 (Fundamentalsatz der Arithmetik): Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig
+            \item Euklid: Wenn eine Primzahl das Produkt zweier ganzer Zahlen teilt, dann teilt sie mindestens eine der ganzen Zahlen: $p|(a\times b)\Rightarrow (p| a)\times(p| b)$
+            %\begin{itemize*}
+            %      \item Der Beweis: Es sei $p|(a\times b)$
+            %      \item Wenn $p| a$ dann sind wir fertig
+            %      \item Wenn nicht, dann $gcd(p,a) = 1 \Rightarrow\exists m, n\in\mathbb{N}:1=m\times p+n\times a \Leftrightarrow b=m\times p \times b + n \times a \times b$
+            %      \item Da $p|(a\times b)$, teilt p beide Summanden der Gleichung und somit auch die Summe, die b ist
+            %\end{itemize*}
+            \item Fundamentalsatz der Arithmetik: Die Faktorisierung in Primzahlen ist bis zur Ordnung eindeutig
             %\item verwende Theorem 2, um folgende Korollarie zu beweisen
-            \begin{itemize*}
-                  \item Wenn $gcd(c,m)=1$ und $(a\times c)\equiv(b\times c)mod\ m$, dann $a\equiv b\ mod\ m$
-                  %\item Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\exists n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
-                  %\item $\Leftrightarrow ( a - b ) \times c = n \times m$
-                  %\item $\Leftrightarrow p_1\times ...\times p_i\times q_1\times ...\times q_j=r_1\times ...\times r_k\times s_1\times ...\times s_l$
-                  \item $p$, $q$, $r$ und $s$ sind Primzahlen und müssen nicht verschieden sein aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$
-                  %\item Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\times ...\times p_i=r_1\times ...\times r_o\times s_1\times ...\times s_l$ (beachten Sie, dass es weniger r's geben wird)
-                  \item[$\Leftrightarrow$] $(a-b)=r_1\times ...\times r_o\times m\Rightarrow a \equiv b\ mod\ m$
-            \end{itemize*}
+            %\begin{itemize*}
+            %      \item Wenn $gcd(c,m)=1$ und $(a\times c)\equiv(b\times c)mod\ m$, dann $a\equiv b\ mod\ m$
+            %\item Der Beweis: Da $(a\times c)\equiv(b\times c)mod\ m\Rightarrow\exists n\in\mathbb{N}:(a\times c)-(b\times c)=n\times m$
+            %\item $\Leftrightarrow ( a - b ) \times c = n \times m$
+            %\item $\Leftrightarrow p_1\times ...\times p_i\times q_1\times ...\times q_j=r_1\times ...\times r_k\times s_1\times ...\times s_l$
+            %      \item $p$, $q$, $r$ und $s$ sind Primzahlen und müssen nicht verschieden sein aber da $gcd(c,m)=1$, gibt es keine Indizes g, h, so dass $q_g = s_h$
+            %\item Wir können also die Gleichung fortlaufend durch alle q's teilen, ohne jemals ein $s$ zu ,,eliminieren'' und erhalten schließlich etwas wie $\Leftrightarrow p_1\times ...\times p_i=r_1\times ...\times r_o\times s_1\times ...\times s_l$ (beachten Sie, dass es weniger r's geben wird)
+            %      \item[$\Leftrightarrow$] $(a-b)=r_1\times ...\times r_o\times m\Rightarrow a \equiv b\ mod\ m$
+            %\end{itemize*}
             \item Bezeichne $\phi(n)$ die Anzahl der positiven ganzen Zahlen, die kleiner als n und relativ zu n prim sind
             \begin{itemize*}
                   \item Beispiele: $\phi(4) = 2$, $\phi(6)=2$, $\phi(7)=6$, $\phi(15)=8$
                   \item Wenn p eine Primzahl ist $\Rightarrow\phi(p)=p-1$
             \end{itemize*}
-            \item Theorem 3 (Euler): Seien n und b positive und relativ primäre ganze Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
+            \item Euler: Seien n und b positive und relativ primäre ganze Zahlen, d.h. $gcd(n, b) = 1 \Rightarrow b \phi(n) \equiv 1\ mod\ n$
             \begin{itemize*}
                   %\item Sei $t=\phi(n)$ und $a_1,...a_t$ seien die positiven ganzen Zahlen kleiner als $n$, die relativ zu $n$ prim sind. Definieren Sie $r_1,...,r_t$ als die Residuen von $b\times a_1\ mod\ n , ..., b\times a_t\ mod\ n$, d.h.: $b\times a_i \equiv r_i\ mod\ n$.
                   \item Beachten Sie, dass $i\not= j \Rightarrow r_i\not= r_j$%. Wäre dies nicht der Fall, hätten wir $b\times a_i\equiv b\times a_j\ mod\ n$ und da $gcd(b,n)=1$, würde Korollar 1 $a_i\equiv a_j\ mod\ n$ implizieren, was nicht sein kann, da $a_i$ und $a_j$ per Definition verschiedene ganze Zahlen zwischen 0 und n sind
@@ -833,7 +826,7 @@
                   \item Wir verwenden nun die Kongruenz $r_1\times ...\times r_t\equiv b\times a_1\times ...\times b\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_t\times a_1\times ...\times a_t\ mod\ n$ $\Leftrightarrow r_1\times ...\times r_t\equiv b_\times r_1\times ...\times r_t\ mod\ n$
                   \item Da alle $r_i$ relativ prim zu $n$ sind, können wir Korollar 1 anwenden und durch ihr Produkt dividieren: $1\equiv b_t\ mod\ n \Leftrightarrow 1\equiv b\phi(n)\ mod n$
             \end{itemize*}
-            \item Satz 4 (Chinese Remainder Theorem)
+            \item Chinesischer Restssatz Theorem
             \begin{itemize*}
                   \item Seien $m_1,...,m_r$ positive ganze Zahlen, die paarweise relativ prim sind,
                   \item d.h. ganz $i\not= j:gcd(m_i, m_j) = 1$. Seien $a_1,...,a_r$ beliebige ganze Zahlen
@@ -851,119 +844,65 @@
                   %\item Die beiden oben angeführten Argumente bezüglich der Kongruenzen der $M_i$ implizieren, dass a tatsächlich alle Kongruenzen erfüllt
                   %\item Um zu sehen, dass a eindeutig modulo $M$ ist, sei b eine beliebige andere ganze Zahl, die die r Kongruenzen erfüllt. Da $a\equiv c\ mod\ n$ und $b\equiv c\ mod\ n \Rightarrow a \equiv b\ mod\ n$ haben wir $\forall i\in{1,...,r}:a\equiv b\ mod\ m_i\Rightarrow\forall i\in{1,. ...,r}:m_i|(a-b) \Rightarrow M|(a-b)$, da die $m_i$ paarweise relativ prim sind $\Leftrightarrow a\equiv b\ mod\ M$
             \end{itemize*}
-            \item Lemma 2
-            \begin{itemize*}
-                  \item Wenn $gcd(m,n)=1$, dann ist $\phi(m\times n)=\phi(m)\times \phi(n)$
-                  %\item Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\times n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\times n)$ gezählt werden.
-                  \item Betracht $a\rightarrow(a\ mod\ m, a\ mod\ n)$. Die ganze Zahl $a$ ist relativ prim zu m und relativ prim zu n. Also ist $(a\ mod\ m)$ relativ prim zu m und $(a\ mod\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ mod\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ mod\ m)$ gäbe, würde dieser Teiler auch a teilen. %Somit entspricht jede Zahl a, die durch $\phi(m\times n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ mod\ m,a\ mod\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
-                  %\item Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen: $a \equiv(a\ mod\ m)\ mod\ m$, $a \equiv(a\ mod\ n)\ mod\ n$ können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen
-                  %\item Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ mod\ m, a\ mod\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde: $b\equiv (a\ mod\ m)\ mod\ m$ $b\equiv (a\ mod\ n)\ mod\ n$ aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$
-                  \item $\phi(m \times n)$ ist höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
-                  %\item Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: 
-                  Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
-            \end{itemize*}
-      \end{itemize*}
-
-      \subsection{Der RSA Public Key Algorithmus}
-      \begin{itemize*}
-            \item Der RSA-Algorithmus wurde 1977 von R. Rivest, A. Shamir und L. Adleman erfunden und basiert auf Theorem 3.
-            \item Seien $p, q$ verschiedene große Primzahlen und $n=p\times q$. Nehmen wir an, wir haben auch zwei ganze Zahlen e und d, so dass: $d\times e \equiv 1\ mod\ \phi(n)$
-            \item M sei eine ganze Zahl, die die zu verschlüsselnde Nachricht darstellt, wobei M positiv, kleiner als und relativ prim zu n ist.
-            \item Beispiel: Verschlüsseln mit = 99, A = 10, B = 11, ..., Z = 35. Somit würde ,,HELLO'' als 1714212124 kodiert werden. Falls erforderlich, ist M in Blöcke kleinerer Nachrichten aufzuteilen: 17142 12124
-            \item Zum Verschlüsseln berechnen Sie: $E = M^e\ mod\ n$
-            \item Dies kann mit dem Quadrat- und Multiplikationsalgorithmus effizient durchgeführt werden
-            \item Zum Entschlüsseln berechnet man: $M'=E^d\ mod\ n$
-            \begin{itemize*}
-                  \item Da $d\times e\equiv 1\ mod\ \phi(n)\Rightarrow\exists k\in\mathbb{Z}:(d\times e)-1=k\times\phi(n)\Leftrightarrow(d\times e)=k\times\phi(n)+1$
-                  \item haben wir: $M'\equiv E^d\equiv M^{e\times d}\equiv M^{k\times\phi(n)+1}\equiv 1^k\times M\equiv M\ mod\ n$
-            \end{itemize*}
-            \item Da $(d\times e)=(e\times d)$ funktioniert die Operation auch in umgekehrter Richtung, d.h. man kann mit d verschlüsseln und mit e entschlüsseln
-            \begin{itemize*}
-                  \item Diese Eigenschaft erlaubt es, die gleichen Schlüssel d und e zu verwenden:
-                  \item den Empfang von Nachrichten, die mit dem eigenen öffentlichen Schlüssel verschlüsselt wurden
-                  \item Senden von Nachrichten, die mit dem eigenen privaten Schlüssel signiert wurden
-            \end{itemize*}
-            \item So richten Sie ein Schlüsselpaar für RSA ein:
-            \begin{itemize*}
-                  \item Wählen Sie zufällig zwei Primzahlen $p$ und $q$ (mit jeweils 100 bis 200 Ziffern)
-                  \item Berechne $n=p\times q,\phi(n)=(p-1)\times (q-1)$ (Lemma 2)
-                  \item Wähle zufällig $e$, so dass $gcd(e,\phi(n))=1$
-                  \item Berechne mit dem erweiterten euklidischen Algorithmus d und c, so dass: $e\times d+\phi(n)\times c = 1$, wobei zu beachten ist, dass dies impliziert, dass $e\times d\equiv 1\ mod\ \phi(n)$
-                  \item Der öffentliche Schlüssel ist das Paar $(e, n)$
-                  \item Der private Schlüssel ist das Paar $(d, n)$
-            \end{itemize*}
-            \item Die Sicherheit des Verfahrens liegt in der Schwierigkeit der Faktorisierung von $n=p\times q$, da es einfach ist, $\phi(n)$ und dann $d$ zu berechnen, wenn $p$ und $q$ bekannt sind.
-            \item In diesem Kurs wird nicht gelehrt, warum es schwierig ist, große n zu faktorisieren, da dies einen tiefen Einblick in die Mathematik erfordern würde.
-            \begin{itemize*}
-                  \item Wenn p und q bestimmte Eigenschaften erfüllen, sind die besten bekannten Algorithmen exponentiell zur Anzahl der Ziffern von n
-                  \item Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist
-                  \item Daher sollten p und q ungefähr die gleiche Bitlänge haben und ausreichend groß sein
-                  \item $(p-q)$ sollte nicht zu klein sein
-                  \item Wenn man einen kleinen Verschlüsselungsexponenten, z.B. 3, wählen will, kann es zusätzliche Einschränkungen geben, z.B. $gcd(p-1, 3) = 1$ und $gcd(q-1,3)=1$
-                  \item Die Sicherheit von RSA hängt auch davon ab, dass die erzeugten Primzahlen wirklich zufällig sind (wie jede Methode zur Schlüsselerzeugung bei jedem Algorithmus).
-                  \item Moral: Wenn Sie RSA selbst implementieren wollen, bitten Sie einen Mathematiker oder besser einen Kryptographen, Ihren Entwurf zu überprüfen.
-            \end{itemize*}
-      \end{itemize*}
-
-      \subsection{Einige weitere mathematische Hintergründe}
-      \begin{itemize*}
+            \item Lemma: Wenn $gcd(m,n)=1$, dann ist $\phi(m\times n)=\phi(m)\times \phi(n)$
+            %\begin{itemize*}
+            %\item Sei a eine positive ganze Zahl, die kleiner als und relativ prim zu $m\times n$ ist. Mit anderen Worten: a ist eine der ganzen Zahlen, die von $\phi(m\times n)$ gezählt werden.
+            %\item Betracht $a\rightarrow(a\ mod\ m, a\ mod\ n)$. Die ganze Zahl $a$ ist relativ prim zu m und relativ prim zu n. Also ist $(a\ mod\ m)$ relativ prim zu m und $(a\ mod\ n)$ ist relativ prim zu n, da: $a=\lfloor a/m\rfloor\times m + (a\ mod\ m)$, wenn es also einen gemeinsamen Teiler von $m$ und $(a\ mod\ m)$ gäbe, würde dieser Teiler auch a teilen. %Somit entspricht jede Zahl a, die durch $\phi(m\times n )$ gezählt wird, einem Paar von zwei ganzen Zahlen $(a\ mod\ m,a\ mod\ n)$, wobei die erste durch $\phi(m)$ und die zweite durch $\phi(n)$ gezählt wird.
+            %\item Aufgrund des zweiten Teils von Satz 4 ist die Einzigartigkeit der Lösung $a\ mod\ (m\times n)$ der simultanen Kongruenzen: $a \equiv(a\ mod\ m)\ mod\ m$, $a \equiv(a\ mod\ n)\ mod\ n$ können wir ableiten, dass verschiedene ganze Zahlen, die durch $\phi(m\times n)$ gezählt werden, verschiedenen Paaren entsprechen
+            %\item Um dies zu sehen, nehmen wir an, dass $a\not=b$, gezählt durch $\phi(m\times n)$, demselben Paar $(a\ mod\ m, a\ mod\ n)$ entspricht. Dies führt zu einem Widerspruch, da b auch die Kongruenzen erfüllen würde: $b\equiv (a\ mod\ m)\ mod\ m$ $b\equiv (a\ mod\ n)\ mod\ n$ aber die Lösung dieser Kongruenzen ist eindeutig modulo $(m \times n)$
+            %\item $\phi(m \times n)$ ist höchstens die Anzahl solcher Paare: $\phi(m \times n)\leq \phi(m)\times \phi(n)$
+            %\item Betrachten wir nun ein Paar von ganzen Zahlen $(b,c)$, von denen eine mit $\phi(m)$ und die andere mit $\phi(n)$ gezählt wird: 
+            %Mit Hilfe des ersten Teils von Satz 4 können wir eine einzige positive ganze Zahl a konstruieren, die kleiner als und relativ prim zu $m\times n$ ist: $a\equiv b\ mod\ m$ und $a\equiv c\ mod\ n$. Die Anzahl solcher Paare ist also höchstens $\phi(m \times n):\phi(m \times n)\leq\phi(m)\times\phi(n)$
+            %\end{itemize*}
             \item Definition: endliche Gruppen
             \begin{itemize*}
-                  \item Eine Gruppe $( S , \oplus)$ ist eine Menge S zusammen mit einer binären Operation $\oplus$, für die die folgende Eigenschaften gelten:
-                  \begin{itemize*}
-                        \item Geschlossenheit: Für alle $a, b \in S$ , haben wir $a \oplus b \in S$
-                        \item Identität: Es gibt ein Element $e \in S$ , so dass $e \oplus a = a \oplus e = a$ für alle $a \in S$
-                        \item Assoziativität: Für alle $a, b, c \in S$ , gilt $( a \oplus b ) \oplus c = a \oplus ( b \oplus c )$
-                        \item Inversen: Für jedes $a \in S$ , gibt es ein einziges Element $b \in S$ , so dass dass $a \oplus b = b \oplus a = e$
-                  \end{itemize*}
+                  \item Eine Gruppe $(S, \oplus)$ ist eine Menge S zusammen mit einer binären Operation $\oplus$, für die die folgende Eigenschaften gelten
+                  \item Geschlossenheit: Für alle $a, b \in S$ , haben wir $a \oplus b \in S$
+                  \item Identität: Es gibt ein Element $e \in S$ , so dass $e \oplus a = a \oplus e = a$ für alle $a \in S$
+                  \item Assoziativität: Für alle $a, b, c \in S$ , gilt $( a \oplus b ) \oplus c = a \oplus ( b \oplus c )$
+                  \item Inversen: Für jedes $a \in S$ , gibt es ein einziges Element $b \in S$ , so dass dass $a \oplus b = b \oplus a = e$
                   \item Erfüllt eine Gruppe $( S , \oplus)$ das Kommutativgesetz $\forall a, b \in S : a \oplus b = b \oplus a$ dann nennt man sie eine abelsche Gruppe
                   \item Wenn eine Gruppe $( S , \oplus)$ nur eine endliche Menge von Elementen hat, d.h. $|S| < \infty$, dann wird sie eine endliche Gruppe genannt
             \end{itemize*}
-            \item Beispiele:
+            %\item Beispiele:
+            %\begin{itemize*}
+            %      \item $(\mathbb{Z}_n , +_n)$
+            %      \begin{itemize*}
+            %            \item mit $\mathbb{Z}_n:={,,0''_n,,,1''_n,...,,,n-1''_n}$
+            %            \item wobei $,,a''_n:={b \in \mathbb{Z} | b \equiv a mod n}$ und
+            %            \item $+_n$ ist so definiert, dass $,,a''_n+_n,,b''_n=,,a+b''_n$
+            %            \item eine endliche abelsche Gruppe ist. Für den Beweis siehe die Tabelle mit den Eigenschaften der modularen Arithmetik
+            %      \end{itemize*}
+            %      \item $(\mathbb{Z}^*_n , \times_n)$
+            %      \begin{itemize*}
+            %            \item mit $\mathbb{Z}^*_n :={,,a''_n\in \mathbb{Z}_n | gcd(a,n)=1}$, und
+            %            \item $\times_n$ ist so definiert, dass $,,a''_n\times_n ,,b''_n=,,a\times b''_n$
+            %            \item eine endliche abelsche Gruppe ist. Man beachte, dass $\mathbb{Z}^*_n$ nur die Elemente von $\mathbb{Z}_n$ enthält, die eine multiplikative Inverse modulo n haben. Zum Beweis siehe Eigenschaften der modularen Arithmetik
+            %            \item Beispiel: $\mathbb{Z}^*_{{15}={,,1''}{15},,,2''_{{15},,,4''}{15},,,7''_{{15},,,8''}{15},,,11''_{{15},,,13''}{15},,,14''_{15}}$, als $1\times 1\equiv 1 mod 15$, $2 \times 8 \equiv 1 mod 15$, $4 \times 4 \equiv 1 mod 15$, $7 \times 13 \equiv 1 mod 15$, $11 \times 11 \equiv 1 mod 15$, $14 \times 14 \equiv 1 mod 15$ \end{itemize*}
+            %\end{itemize*}
+            \item Wenn klar ist, dass es sich um $(\mathbb{Z}_n, +_n)$ oder $(\mathbb{Z}^*_n,\times_n)$ handelt, werden Äquivalenzklassen $,,a''_n$ oft durch ihre repräsentativen Elemente a dargestellt und $+_n$ und $\times_n$ durch $+$ bzw. $\times$ bezeichnet
+            \item Definition: endliche Felder
             \begin{itemize*}
-                  \item $(\mathbb{Z}_n , +_n)$
-                  \begin{itemize*}
-                        \item mit $\mathbb{Z}_n:={,,0''_n,,,1''_n,...,,,n-1''_n}$
-                        \item wobei $,,a''_n:={b \in \mathbb{Z} | b \equiv a mod n}$ und
-                        \item $+_n$ ist so definiert, dass $,,a''_n+_n,,b''_n=,,a+b''_n$
-                        \item eine endliche abelsche Gruppe ist. Für den Beweis siehe die Tabelle mit den Eigenschaften der modularen Arithmetik
-                  \end{itemize*}
-                  \item $(\mathbb{Z}^*_n , \times_n)$
-                  \begin{itemize*}
-                        \item mit $\mathbb{Z}^*_n :={,,a''_n\in \mathbb{Z}_n | gcd(a,n)=1}$, und
-                        \item $\times_n$ ist so definiert, dass $,,a''_n\times_n ,,b''_n=,,a\times b''_n$
-                        \item eine endliche abelsche Gruppe ist. Man beachte, dass $\mathbb{Z}^*_n$ nur die Elemente von $\mathbb{Z}_n$ enthält, die eine multiplikative Inverse modulo n haben. Zum Beweis siehe Eigenschaften der modularen Arithmetik
-                        \item Beispiel: $\mathbb{Z}^*_{{15}={,,1''}{15},,,2''_{{15},,,4''}{15},,,7''_{{15},,,8''}{15},,,11''_{{15},,,13''}{15},,,14''_{15}}$, als $1\times 1\equiv 1 mod 15$, $2 \times 8 \equiv 1 mod 15$, $4 \times 4 \equiv 1 mod 15$, $7 \times 13 \equiv 1 mod 15$, $11 \times 11 \equiv 1 mod 15$, $14 \times 14 \equiv 1 mod 15$ \end{itemize*}
+                  \item Ein Feld $(S,\oplus, \otimes)$ ist eine Menge S zusammen mit zwei Operationen $\oplus$, $\otimes$, so dass
+                  \item $(S,\oplus)$ und $(S\backslash{e_{\oplus}},\otimes)$ sind kommutative Gruppen, d.h. nur das Identitätselement bezüglich der Operation $\oplus$ muss kein Inverses bezüglich der Operation $\otimes$ haben
+                  \item Für alle $a,b,c\in S$ haben wir ein $\otimes(b\oplus c)=(a\otimes b)\oplus(a\otimes c)$
             \end{itemize*}
-            \item Wenn klar ist, dass es sich um $(\mathbb{Z}_n, +_n)$ oder $(\mathbb{Z}^*_n,\times_n)$ handelt, werden Äquivalenzklassen $,,a''_n$ oft durch ihre repräsentativen Elemente a dargestellt und $+_n$ und $\times_n$ durch $+$ bzw. $\times$ bezeichnet.
-            \begin{itemize*}
-                  \item Definition: endliche Felder
-                  \begin{itemize*}
-                        \item Ein Feld $(S,\oplus, \otimes)$ ist eine Menge S zusammen mit zwei Operationen $\oplus$, $\otimes$, so dass
-                        \item $(S,\oplus)$ und $(S\backslash{e_{\oplus}},\otimes)$ sind kommutative Gruppen, d.h. nur das Identitätselement bezüglich der Operation $\oplus$ muss kein Inverses bezüglich der Operation $\otimes$ haben
-                        \item Für alle $a,b,c\in S$ haben wir ein $\otimes(b\oplus c)=(a\otimes b)\oplus(a\otimes c)$
-                  \end{itemize*}
-                  \item Wenn $| S|<\infty$ dann heißt $(S,\oplus,\otimes)$ ein endliches Feld
-            \end{itemize*}
-            \item Beispiel: $(\mathbb{Z}_p, +_p, \times_p)$ ist ein endliches Feld für jede Primzahl p
+            \item Wenn $| S|<\infty$ dann heißt $(S,\oplus,\otimes)$ ein endliches Feld
+            %\item Beispiel: $(\mathbb{Z}_p, +_p, \times_p)$ ist ein endliches Feld für jede Primzahl p
             \item Definition: Primitive Wurzel, Generator
             \begin{itemize*}
                   \item Sei $(S,\circ)$ eine Gruppe, $g\in S$ und $g^a:=g\circ g\circ...\circ g$ (a mal mit $a\in\mathbb{Z}^+$)
                   \item Dann heißt g eine primitive Wurzel oder ein Generator von $(S,\circ):\Leftrightarrow{g^a|1\leq a\leq | S|}=S$
-                  \item Beispiele:
-                  \begin{itemize*}
-                        \item 1 ist eine primitive Wurzel von $(\mathbb{Z}_n, +_n)$
-                        \item 3 ist eine Primitivwurzel von $(\mathbb{Z}^*_7, \times_7)$
-                  \end{itemize*}
+                  %\item Beispiele:
+                  %\begin{itemize*}
+                  %      \item 1 ist eine primitive Wurzel von $(\mathbb{Z}_n, +_n)$
+                  %      \item 3 ist eine Primitivwurzel von $(\mathbb{Z}^*_7, \times_7)$
+                  %\end{itemize*}
                   \item Nicht alle Gruppen haben Primitivwurzeln, und diejenigen, die sie haben, nennt man zyklische Gruppen
             \end{itemize*}
-            \item Theorem 5:
+            \item Theorem: $(\mathbb{Z}^*_n, \times_n)$ hat eine primitive Wurzel $\Leftrightarrow n\in{2,4,p,2\times p^e}$, wobei p eine ungerade Primzahl ist und $e\in\mathbb{Z}^+$
+            \item Theorem: Wenn $(S,\circ)$ eine Gruppe ist und $b\in S$, dann ist $(S',\circ)$ mit $S'={b^a| a\in\mathbb{Z}^+}$ ebenfalls eine Gruppe
             \begin{itemize*}
-                  \item $(\mathbb{Z}^*_n, \times_n)$ hat eine primitive Wurzel $\Leftrightarrow n\in{2,4,p,2\times p^e}$, wobei p eine ungerade Primzahl ist und $e\in\mathbb{Z}^+$
-            \end{itemize*}
-            \item Theorem 6:
-            \begin{itemize*}
-                  \item Wenn $(S,\circ)$ eine Gruppe ist und $b\in S$, dann ist $(S',\circ)$ mit $S'={b^a| a\in\mathbb{Z}^+}$ ebenfalls eine Gruppe.
                   \item Da $S'\subseteq S, heißt (S',\circ)$ eine Untergruppe von $(S,\circ)$
                   \item Wenn b eine Urwurzel von $(S,\circ)$ ist, dann ist $S'=S$
             \end{itemize*}
@@ -973,171 +912,197 @@
                   \item Dann heiße $| S|$ die Ordnung von $(S,\circ)$
                   \item Sei $c\in\mathbb{Z}^+$ das kleinste Element, so dass $b^c=e$ ist (falls ein solches c existiert, falls nicht, setze $c=\infty$). Dann wird c die Ordnung von b genannt
             \end{itemize*}
-            \item Theorem 7 (Lagrange)
+            \item Lagrange) Ist G eine endliche Gruppe und H eine Untergruppe von G , so ist $| H|$ Teiler von $|G|$
+            %\item Wenn also $b in G$ ist, dann ist die Ordnung von b Teiler von $|G|$.
+            \item Theorem: Ist G eine zyklische endliche Gruppe der Ordnung n und d ist Teiler von n, dann hat G genau $\phi(d)$ Elemente der Ordnung $d$. Insbesondere hat G $\phi(n)$-Elemente der Ordnung $n$
+            \item Grundlage des Algorithmus, der zyklische Gruppe $\mathbb{Z}^*_p$ und Urwurzel g davon findet
             \begin{itemize*}
-                  \item Ist G eine endliche Gruppe und H eine Untergruppe von G , so ist $| H|$ Teiler von $| G|$.
-                  \item Wenn also $b in G$ ist, dann ist die Ordnung von b Teiler von $| G|$.
-            \end{itemize*}
-            \item Theorem 8:
-            \begin{itemize*}
-                  \item Ist G eine zyklische endliche Gruppe der Ordnung n und d ist Teiler von n, dann hat G genau $\phi(d)$ Elemente der Ordnung $d$. Insbesondere hat G $\phi(n)$-Elemente der Ordnung n.
-            \end{itemize*}
-            \item Die Theoreme 5, 7 und 8 sind die Grundlage des folgenden Algorithmus, der eine zyklische Gruppe $\mathbb{Z}^*_p$ und eine Urwurzel g davon findet:
-            \begin{itemize*}
-                  \item Man wählt eine große Primzahl q, so dass $p=2q+1$ eine Primzahl ist.
-                  \item Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist.
-                  \item Die Ordnung von $\mathbb{Z}^*_p$ ist $2\times q$ und $\phi(2\times q)=\phi(2)\times \phi(q)=q-1$, da $q$ prim ist.
-                  \item Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \approx 1/2$.
+                  \item Man wählt eine große Primzahl q, so dass $p=2q+1$ eine Primzahl ist
+                  \item Da $p$ prim ist, besagt Satz 5, dass $\mathbb{Z}^*_p$ zyklisch ist
+                  \item Die Ordnung von $\mathbb{Z}^*_p$ ist $2\times q$ und $\phi(2\times q)=\phi(2)\times \phi(q)=q-1$, da $q$ prim ist
+                  \item Die Wahrscheinlichkeit, dass eine Primitivwurzel zufällig ausgewählt wird, beträgt also $(q-1)/2q \approx 1/2$
                   \item Um effizient zu prüfen, ob ein zufällig gewähltes g eine Urwurzel ist, müssen wir nur prüfen, ob $g^2\equiv 1 mod p$ oder $g^q\equiv 1 mod p$ ist. Wenn nicht, dann muss seine Ordnung $|\mathbb{Z}^*_p|$ sein, da Satz 7 besagt, dass die Ordnung von g $|\mathbb{Z}^*_p|$ teilen muss
             \end{itemize*}
             \item Definition: diskreter Logarithmus
             \begin{itemize*}
                   \item Sei p eine Primzahl, g eine Urwurzel von $(\mathbb{Z}^*_p,\times_p)$ und c ein beliebiges Element von $\mathbb{Z}^*_p$. Dann gibt es z so, dass: $g^z\equiv c mod p$
                   \item z wird der diskrete Logarithmus von c modulo p zur Basis g genannt
-                  \item Beispiel 6 ist der diskrete Logarithmus von 1 modulo 7 zur Basis 3 als $3^6\equiv 1 mod 7$
+                  %\item Beispiel 6 ist der diskrete Logarithmus von 1 modulo 7 zur Basis 3 als $3^6\equiv 1 mod 7$
                   \item Die Berechnung des diskreten Logarithmus z bei gegebenem g, c und p ist ein rechnerisch schwieriges Problem, und die asymptotische Laufzeit der besten bekannten Algorithmen für dieses Problem ist exponentiell zur Bitlänge von p
             \end{itemize*}
       \end{itemize*}
 
+      \subsection{Der RSA Public Key Algorithmus}
+      \begin{itemize*}
+            \item 1977 von R. Rivest, A. Shamir und L. Adleman erfunden %und basiert auf Theorem 3
+            \item Seien $p, q$ verschiedene große Primzahlen und $n=p\times q$. Nehmen wir an, wir haben auch zwei ganze Zahlen e und d, so dass: $d\times e \equiv 1\ mod\ \phi(n)$
+            \item M sei eine ganze Zahl, die die zu verschlüsselnde Nachricht darstellt, wobei M positiv, kleiner als und relativ prim zu n ist
+            %\item Beispiel: Verschlüsseln mit = 99, A = 10, B = 11, ..., Z = 35. Somit würde ,,HELLO'' als 1714212124 kodiert werden. Falls erforderlich, ist M in Blöcke kleinerer Nachrichten aufzuteilen: 17142 12124
+            \item Zum Verschlüsseln berechne: $E = M^e\ mod\ n$ (mit dem Quadrat- und Multiplikationsalgorithmus effizient)
+            \item Zum Entschlüsseln berechne: $M'=E^d\ mod\ n$
+            \begin{itemize*}
+                  \item Da $d\times e\equiv 1\ mod\ \phi(n)\Rightarrow\exists k\in\mathbb{Z}:(d\times e)-1=k\times\phi(n)\Leftrightarrow(d\times e)=k\times\phi(n)+1$
+                  \item $M'\equiv E^d\equiv M^{e\times d}\equiv M^{k\times\phi(n)+1}\equiv 1^k\times M\equiv M\ mod\ n$
+            \end{itemize*}
+            \item Da $(d\times e)=(e\times d)$ funktioniert die Operation auch in umgekehrter Richtung, d.h. man kann mit d verschlüsseln und mit e entschlüsseln
+            \begin{itemize*}
+                  \item erlaubt es, die gleichen Schlüssel d und e zu verwenden
+                  \item Empfang von Nachrichten, die mit eigenen öffentlichen Schlüssel verschlüsselt
+                  \item Senden von Nachrichten, die mit eigenen privaten Schlüssel signiert
+            \end{itemize*}
+            \item Schlüsselpaar für RSA einrichten
+            \begin{itemize*}
+                  \item Wählen zufällig zwei Primzahlen $p$ und $q$ (jeweils 100-200 Ziffern)
+                  \item Berechne $n=p\times q,\phi(n)=(p-1)\times (q-1)$
+                  \item Wähle zufällig $e$, so dass $gcd(e,\phi(n))=1$
+                  \item Berechne mit dem erweiterten euklidischen Algorithmus d und c, so dass $e\times d+\phi(n)\times c=1$, wobei zu beachten ist, dass dies impliziert, dass $e\times d\equiv 1\ mod\ \phi(n)$
+                  \item der öffentliche Schlüssel ist das Paar $(e,n)$
+                  \item der private Schlüssel ist das Paar $(d,n)$
+            \end{itemize*}
+            \item Sicherheit des Verfahrens liegt in Schwierigkeit der Faktorisierung von $n=p\times q$, da es einfach ist, $\phi(n)$ und dann $d$ zu berechnen, wenn $p$ und $q$ bekannt sind
+            %\begin{itemize*}
+            %      \item Wenn p und q bestimmte Eigenschaften erfüllen, sind die besten bekannten Algorithmen exponentiell zur Anzahl der Ziffern von n
+            %      \item Bitte beachten Sie, dass es bei einer unglücklichen Wahl von p und q Algorithmen geben könnte, die effizienter faktorisieren können, und dass Ihre RSA-Verschlüsselung dann nicht mehr sicher ist
+            %      \item Daher sollten p und q ungefähr die gleiche Bitlänge haben und ausreichend groß sein
+            %      \item $(p-q)$ sollte nicht zu klein sein
+            %      \item Wenn man einen kleinen Verschlüsselungsexponenten, z.B. 3, wählen will, kann es zusätzliche Einschränkungen geben, z.B. $gcd(p-1, 3) = 1$ und $gcd(q-1,3)=1$
+            %      \item Die Sicherheit von RSA hängt auch davon ab, dass die erzeugten Primzahlen wirklich zufällig sind
+            %\end{itemize*}
+      \end{itemize*}
+
       \subsection{Diffie-Hellman-Schlüsselaustausch}
       \begin{itemize*}
-            \item Der Diffie-Hellman-Schlüsselaustausch wurde erstmals 1976 veröffentlicht, in der auch die Grundidee der asymmetrischen Kryptographie vorgestellt wurde
-            \item Der DH-Austausch in seiner Grundform ermöglicht es zwei Parteien A und B, sich über einen öffentlichen Kanal auf ein gemeinsames Geheimnis zu einigen
-            \item Öffentlicher Kanal bedeutet, dass ein potentieller Angreifer E (E steht für Eavesdropper) alle zwischen A und B ausgetauschten Nachrichten lesen kann
+            \item erstmals 1976 veröffentlicht%, in der auch die Grundidee der asymmetrischen Kryptographie vorgestellt wurde
+            \item ermöglicht es zwei Parteien A und B, sich über einen öffentlichen Kanal auf ein gemeinsames Geheimnis zu einigen
+            \item Öffentlicher Kanal bedeutet, dass ein potentieller Angreifer E alle zwischen A und B ausgetauschten Nachrichten lesen kann
             \item Es ist wichtig, dass A und B sicher sein können, dass der Angreifer nicht in der Lage ist, Nachrichten zu verändern, da er in diesem Fall einen Man-in-the-Middle-Angriff starten könnte
-            \item Die mathematische Grundlage für den DH-Austausch ist das Problem, diskrete Logarithmen in endlichen Feldern zu finden.
-            \item Der DH-Austausch ist kein asymmetrischer Verschlüsselungsalgorithmus
-            \item Wenn Alice (A) und Bob (B) sich auf ein gemeinsames Geheimnis s einigen wollen und ihr einziges Kommunikationsmittel ein öffentlicher Kanal ist, können sie wie folgt vorgehen:
+            \item Die mathematische Grundlage ist das Problem, diskrete Logarithmen in endlichen Feldern zu finden
+            \item DH-Austausch ist kein asymmetrischer Verschlüsselungsalgorithmus
+            \item Wenn $A$ und $B$ sich auf ein gemeinsames Geheimnis $s$ einigen wollen und ihr einziges Kommunikationsmittel ein öffentlicher Kanal ist, können sie wie folgt vorgehen
             \begin{itemize*}
-                  \item A wählt eine Primzahl p, eine primitive Wurzel g von $\mathbb{Z}^*_p$ und eine Zufallszahl q:
+                  \item $A$ wählt eine Primzahl $p$, eine primitive Wurzel $g$ von $\mathbb{Z}^*_p$ und eine Zufallszahl $q$
                   \begin{itemize*}
-                        \item A und B können sich vor der Kommunikation auf die Werte p und g einigen, oder A wählt p und g und sendet sie mit seiner ersten Nachricht
-                        \item A berechnet $v=g^q\ mod\ p$ und sendet an $B:{p,g,v}$
+                        \item $A$ und $B$ können sich vor der Kommunikation auf die Werte $p$ und $g$ einigen oder $A$ wählt $p$ und $g$ und sendet sie mit seiner ersten Nachricht
+                        \item $A$ berechnet $v=g^q\ mod\ p$ und sendet an $B:\{p,g,v\}$
                   \end{itemize*}
-                  \item B wählt eine Zufallszahl r:
+                  \item $B$ wählt eine Zufallszahl $r$
                   \begin{itemize*}
-                        \item B berechnet $w=g^r\ mod\ p$ und sendet an $A:{p,g,w}$ (oder einfach ${w}$)
+                        \item $B$ berechnet $w=g^r\ mod\ p$ und sendet an $A:\{p,g,w\}$ (oder $\{w\}$)
                   \end{itemize*}
-                  \item Beide Seiten errechnen das gemeinsame Geheimnis:
+                  \item Beide Seiten errechnen das gemeinsame Geheimnis
                   \begin{itemize*}
-                        \item A errechnet $s=w^q\ mod\ p$
-                        \item B errechnet $s'=v^r\ mod\ p$
+                        \item $A$ errechnet $s=w^q\ mod\ p$
+                        \item $B$ errechnet $s'=v^r\ mod\ p$
                         \item Da $g^{q\times r}\ mod\ p = g^{r \times q}\ mod\ p$ ist, gilt: $s=s'$
                   \end{itemize*}
-                  \item Ein Angreifer Eve, der den öffentlichen Kanal abhört, kann das Geheimnis s nur berechnen, wenn er entweder q oder r berechnen kann, die die diskreten Logarithmen von v, w modulo p zur Basis g sind.
+                  \item Ein Angreifer E, der den öffentlichen Kanal abhört, kann das Geheimnis $s$ nur berechnen, wenn er entweder $q$ oder $r$ berechnen kann, die die diskreten Logarithmen von $v$, $w$ modulo $p$ zur Basis $g$ sind
             \end{itemize*}
-            \item Wenn der Angreifer Eve in der Lage ist, Nachrichten auf dem
-            öffentlichen Kanal zu verändern, kann er einen
-            Man-in-the-Middle-Angriff starten:
+            \item Wenn der Angreifer E in der Lage ist, Nachrichten auf dem öffentlichen Kanal zu verändern, kann er eine Man-in-the-Middle-Angriff starten
             \begin{itemize*}
-                  \item Eve generiert zwei Zufallszahlen $q'$ und $r'$: Eve berechnet $v'=g^{q'}\ mod\ p$ und $w'=g^{r'}\ mod\ p$
+                  \item E generiert zwei Zufallszahlen $q'$ und $r'$ und berechnet $v'=g^{q'}\ mod\ p$ und $w'=g^{r'}\ mod\ p$
                   \item Wenn A ${p,g,v}$ sendet, fängt sie die Nachricht ab und sendet an $B:{p,g,v'}$
                   \item Wenn B ${p,g,w}$ sendet, fängt sie die Nachricht ab und sendet an $A:{p,g,w'}$
-                  \item Wenn das angebliche ,,gemeinsame Geheimnis'' berechnet wird, erhalten wir:
+                  \item Wenn das angebliche ,,gemeinsame Geheimnis'' berechnet wird, erhalten wir
                   \begin{itemize*}
                         \item A berechnet $s_1=w'^q\ mod\ p = v^{r'}\ mod\ p$, letzteres berechnet von E
                         \item B berechnet $s_2=v'^r\ mod\ p = w^{q'}\ mod\ p$, letzteres berechnet von E
                         \item A und E haben sich also auf ein gemeinsames Geheimnis $s_1$ geeinigt, und E und B haben sich auf ein gemeinsames Geheimnis $s_2$ geeinigt.
                   \end{itemize*}
-                  \item Wenn das ,,gemeinsame Geheimnis'' nun von A und B verwendet wird, um Nachrichten zu verschlüsseln, die über den öffentlichen Kanal ausgetauscht werden sollen, kann E alle Nachrichten abfangen und ent- bzw. wiederverschlüsseln, bevor er sie zwischen A und B weiterleitet.
+                  \item Wenn das ,,gemeinsame Geheimnis'' nun von A und B verwendet wird, um Nachrichten zu verschlüsseln, die über den öffentlichen Kanal ausgetauscht werden sollen, kann E alle Nachrichten abfangen und ent- bzw. wiederverschlüsseln, bevor er sie zwischen A und B weiterleitet
             \end{itemize*}
-            \item Zwei Gegenmaßnahmen gegen den Man-in-the-Middle-Angriff:
+            \item Zwei Gegenmaßnahmen gegen den Man-in-the-Middle-Angriff
             \begin{itemize*}
-                  \item Das gemeinsame Geheimnis wird ,,authentifiziert'', nachdem es vereinbart worden ist
-                  \item A und B verwenden ein sogenanntes Interlock-Protokoll, nachdem sie sich auf ein gemeinsames Geheimnis geeinigt haben:
-                  \begin{itemize*}
-                        \item Dazu müssen sie Nachrichten austauschen, die E weiterleiten muss, bevor sie sie entschlüsseln bzw. wieder verschlüsseln kann.
-                        \item Der Inhalt dieser Nachrichten muss von A und B überprüfbar sein.
-                        \item Dies zwingt E dazu, Nachrichten zu erfinden, und sie kann entdeckt werden.
-                        \item Eine Technik, um zu verhindern, dass E die Nachrichten entschlüsselt, besteht darin, sie in zwei Teile aufzuteilen und den zweiten Teil vor dem ersten zu senden.
-                        \item Wenn der verwendete Verschlüsselungsalgorithmus bestimmte Eigenschaften verhindert, kann E den zweiten Teil nicht verschlüsseln, bevor sie den ersten erhält.
-                        \item Da A den ersten Teil erst senden wird, nachdem er eine Antwort (den zweiten Teil) von B erhalten hat, ist E gezwungen, zwei Nachrichten zu erfinden, bevor sie die ersten Teile erhalten kann.
-                  \end{itemize*}
+                  \item Das gemeinsame Geheimnis wird ,,authentifiziert'' nachdem es vereinbart worden ist
+                  \item A und B verwenden ein sogenanntes Interlock-Protokoll, nachdem sie sich auf ein gemeinsames Geheimnis geeinigt haben
+                  \item Dazu müssen sie Nachrichten austauschen, die E weiterleiten muss, bevor sie sie entschlüsseln bzw. wieder verschlüsseln kann
+                  \item Der Inhalt dieser Nachrichten muss von A und B überprüfbar sein
+                  \item Dies zwingt E dazu, Nachrichten zu erfinden und sie kann entdeckt werden
+                  \item Eine Technik, um zu verhindern, dass E die Nachrichten entschlüsselt, besteht darin, sie in zwei Teile aufzuteilen und den zweiten Teil vor dem ersten zu senden
+                  \item Wenn der verwendete Verschlüsselungsalgorithmus bestimmte Eigenschaften verhindert, kann E den zweiten Teil nicht verschlüsseln, bevor sie den ersten erhält
+                  \item Da A den ersten Teil erst senden wird, nachdem er eine Antwort (den zweiten Teil) von B erhalten hat, ist E gezwungen, zwei Nachrichten zu erfinden, bevor sie die ersten Teile erhalten kann
             \end{itemize*}
-            \item Bemerkung: In der Praxis muss die Zahl g nicht unbedingt eine Urwurzel von p sein, es genügt, wenn sie eine große Untergruppe von $\mathbb{Z}^*_p$ erzeugt
+            \item Bemerkung: In der Praxis muss die Zahl $g$ nicht unbedingt eine Urwurzel von $p$ sein, es genügt, wenn sie eine große Untergruppe von $\mathbb{Z}^*_p$ erzeugt
       \end{itemize*}
 
       \subsection{ElGamal Algorithmus}
       \begin{itemize*}
-            \item Der ElGamal-Algorithmus kann sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden
-            \item Wie der DH-Austausch basiert er auf der Schwierigkeit, diskrete Logarithmen in endlichen Feldern zu berechnen
-            \item Um ein Schlüsselpaar zu erstellen:
+            \item für Verschlüsselung und digitale Signaturen
+            \item basiert auf Schwierigkeit, diskrete Logarithmen in endlichen Feldern zu berechnen
+            \item Um ein Schlüsselpaar zu erstellen
             \begin{itemize*}
-                  \item Wähle eine große Primzahl p, einen Generator g der multiplikativen Gruppe $\mathbb{Z}^*_p$ und eine Zufallszahl v, so dass $1\leq v\leq p - 2$. Berechnen Sie: $y=g^v mod p$
+                  \item Wähle eine große Primzahl p, einen Generator g der multiplikativen Gruppe $\mathbb{Z}^*_p$ und eine Zufallszahl v, so dass $1\leq v\leq p - 2$. Berechnen Sie: $y=g^v\ mod\ p$
                   \item Der öffentliche Schlüssel ist $( y, g, p )$
                   \item Der private Schlüssel ist v
             \end{itemize*}
-            \item So signieren Sie eine Nachricht m :
+            \item So signieren Sie eine Nachricht $m$
             \begin{itemize*}
-                  \item Wähle eine Zufallszahl k so, dass k relativ prim zu $p-1$ ist.
+                  \item Wähle eine Zufallszahl k so, dass k relativ prim zu $p-1$ ist
                   \item Berechne $r=g^k mod p$
-                  \item Berechne mit dem erweiterten euklidischen Algorithmus $k^{-1}$, den Kehrwert von $k mod (p - 1)$
-                  \item Berechne $s=k^{-1} \times ( m - v \times r) mod ( p - 1)$
-                  \item Die Signatur über die Nachricht ist $( r, s )$
+                  \item Berechne mit dem erweiterten euklidischen Algorithmus $k^{-1}$, den Kehrwert von $k\ mod\ (p-1)$
+                  \item Berechne $s=k^{-1} \times(m-v \times r)mod(p-1)$
+                  \item Die Signatur über die Nachricht ist $(r,s)$
             \end{itemize*}
-            \item Überprüfen einer Signatur $( r , s )$ über eine Nachricht m:
+            \item Überprüfen einer Signatur $(r,s)$ über eine Nachricht $m$
             \begin{itemize*}
-                  \item Bestätige, dass $y^r \times r^s\ mod\ p = g^m\ mod\ p$
-                  \item Der Beweis: Wir benötigen Folgendes
+                  \item Bestätige, dass $y^r\times r^s\ mod\ p = g^m\ mod\ p$
+                  \item Beweis: Wir benötigen Folgendes
                   \begin{itemize*}
                         \item Lemma 3: Sei p eine Primzahl und g ein Generator von $\mathbb{Z}^*_p$. Dann sei $i \equiv j mod ( p -1) \Rightarrow g i \equiv g j mod p$
                         \item Beweis: $i \equiv j mod (p-1) \Rightarrow$ es gibt $k\in \mathbb{Z}^+$ so, dass $(i-j)=(p-1)\times k$
                         \item Also $g^{(i-j)}=g^{(p-1)\times k} \equiv 1^k\equiv 1 mod p$, wegen Theorem 3 (Euler) $\Rightarrow g^i \equiv g^j mod p$
                   \end{itemize*}
                   \item Als $s\equiv k^{-1}\times(m-v\times r) mod (p-1)$
-                  \begin{itemize*}
-                        \item $\Leftrightarrow k \times s\equiv m-v\times r mod (p-1)$
-                        \item $\Leftrightarrow m \equiv v\times r+k\times s mod (p-1)$
-                        \item $\Rightarrow g^m \equiv g^{(v\times r+ k\times s)} mod p$ mit Lemma 3
-                        \item $\Leftrightarrow g^m \equiv g^{(v\times r)}\times g^{(k\times s)} mod p$
-                        \item $\Leftrightarrow g^m \equiv y^r\times r^s mod p$
-                  \end{itemize*}
+                  %\begin{itemize*}
+                  %      \item $\Leftrightarrow k \times s\equiv m-v\times r mod (p-1)$
+                  %      \item $\Leftrightarrow m \equiv v\times r+k\times s mod (p-1)$
+                  %      \item $\Rightarrow g^m \equiv g^{(v\times r+ k\times s)} mod p$ mit Lemma 3
+                  %      \item $\Leftrightarrow g^m \equiv g^{(v\times r)}\times g^{(k\times s)} mod p$
+                  %      \item $\Leftrightarrow g^m \equiv y^r\times r^s mod p$
+                  %\end{itemize*}
             \end{itemize*}
-            \item Sicherheit von ElGamal-Signaturen:
+            \item Sicherheit von ElGamal-Signaturen
             \begin{itemize*}
                   \item Da der private Schlüssel v benötigt wird, um s berechnen zu können, müsste ein Angreifer den diskreten Logarithmus von y modulo p zur Basis g berechnen, um Signaturen zu fälschen
                   \item Entscheidend für die Sicherheit ist, dass für jede Nachricht eine neue Zufallszahl k gewählt wird, denn ein Angreifer kann das Geheimnis v berechnen, wenn er zwei Nachrichten zusammen mit ihren Signaturen auf der Basis des gleichen k erhält
                   \item Um zu verhindern, dass ein Angreifer eine Nachricht M mit einer passenden Signatur erstellen kann, ist es notwendig, die Nachricht M nicht direkt zu signieren, sondern einen kryptographischen Hashwert $m=h(M)$ davon zu signieren
             \end{itemize*}
-            \item Um eine Nachricht m mit dem öffentlichen Schlüssel $(y,g,p)$ zu
-            verschlüsseln:
+            \item Um eine Nachricht $m$ mit dem öffentlichen Schlüssel $(y,g,p)$ zu verschlüsseln
             \begin{itemize*}
                   \item Wähle einen zufälligen $k\in\mathbb{Z}^+$ mit $k< p-1$
                   \item Berechne $r=g^k\ mod\ p$
                   \item Berechne $s=m\times y^k\ mod\ p$
                   \item Der verschlüsselte Text ist $(r,s)$, der doppelt so lang ist wie m
             \end{itemize*}
-            \item Entschlüsseln der Nachricht $(r,s)$ mit v:
+            \item Entschlüsseln der Nachricht $(r,s)$ mit $v$
             \begin{itemize*}
                   \item Verwenden Sie den privaten Schlüssel v zur Berechnung von $r^{(p-1-v)}\ mod\ p=r^{(-v)}\ mod\ p$
                   \item Wiederherstellung von m durch Berechnung von $m=r^{(-v)}\times s\ mod\ p$
                   \item Beweis: $r^{(-v)}\times s\equiv r^{(-v)} \times m \times y^k\equiv g^{(-vk)}\times m \times y^k\equiv g^{(-v \times k)} \times m\times g^{(v \times k)} \equiv m mod p$
             \end{itemize*}
-            \item Sicherheit:
+            \item Sicherheit
             \begin{itemize*}
-                  \item Die einzige bekannte Möglichkeit für einen Angreifer, m wiederherzustellen, ist die Berechnung des diskreten Logarithmus v von y modulo p zur Basis g
-                  \item Für jede Nachricht wird ein neues zufälliges k benötigt
+                  \item einzige bekannte Möglichkeit für einen Angreifer, $m$ wiederherzustellen, ist die Berechnung des diskreten Logarithmus $v$ von $y\ mod\ p$ zur Basis $g$
+                  \item für jede Nachricht wird ein neues zufälliges $k$ benötigt
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Elliptische Kurven Kryptographie}
       \begin{itemize*}
-            \item Die bisher vorgestellten Algorithmen wurden für die multiplikative Gruppe $(\mathbb{Z}^*_p,\times p)$
-            bzw. das Feld $(\mathbb{Z}_p, +_p, \times_p)$ entwickelt.
-            \item In den 1980er Jahren wurde festgestellt, dass sie verallgemeinert und auch für andere Gruppen und Felder verwendet werden können
+            %\item Die bisher vorgestellten Algorithmen wurden für die multiplikative Gruppe $(\mathbb{Z}^*_p,\times p)$ bzw. das Feld $(\mathbb{Z}_p, +_p, \times_p)$ entwickelt.
+            \item In den 1980er Jahren wurde festgestellt, dass multiplikative Gruppen verallgemeinert und auch für andere Gruppen und Felder verwendet werden können
             \item Die Hauptmotivation für diese Verallgemeinerung ist
             \begin{itemize*}
-                  \item Zahlreiche mathematische Forschungen auf dem Gebiet der Primzahlprüfung, der Faktorisierung und der Berechnung diskreter Logarithmen haben zu Techniken geführt, mit denen diese Probleme effizienter gelöst werden können, wenn bestimmte Eigenschaften erfüllt sind:
-                  \item Als 1977 die RSA-129-Aufgabe gestellt wurde, ging man davon aus, dass es etwa 40 Billiarden Jahre dauern würde, die 129-stellige Zahl ($\approx 428$ Bit) zu faktorisieren.
-                  \item Im Jahr 1994 benötigte eine Gruppe von Computern, die über das Internet vernetzt waren, 8 Monate, um die Zahl zu faktorisieren, was etwa 5000 MIPS-Jahre entsprach.
-                  \item Fortschritte bei den Faktorisierungsalgorithmen ermöglichten 2009 die Faktorisierung einer 232-stelligen Zahl (768 Bit) in etwa 1500 AMD64-Jahren
-                  \item[$\rightarrow$] die Schlüssellänge muss erhöht werden (derzeit etwa 2048 Bit)
+                  \item Zahlreiche mathematische Forschungen auf dem Gebiet der Primzahlprüfung, der Faktorisierung und der Berechnung diskreter Logarithmen haben zu Techniken geführt, mit denen diese Probleme effizienter gelöst werden können, wenn bestimmte Eigenschaften erfüllt sind
+                  \item Als 1977 die RSA-129-Aufgabe gestellt wurde, ging man davon aus, dass es etwa 40 Billiarden Jahre dauern würde, die 129-stellige Zahl ($\approx 428$ Bit) zu faktorisieren
+                  \item Im Jahr 1994 benötigte eine Gruppe von Computern, die über das Internet vernetzt waren, 8 Monate, um die Zahl zu faktorisieren, was etwa 5000 MIPS-Jahre entsprach
+                  \item Fortschritte bei den Faktorisierungsalgorithmen ermöglichten 2009 die Faktorisierung einer 232-stelligen Zahl ($768$ Bit) in etwa 1500 AMD64-Jahren
+                  \item[$\rightarrow$] die Schlüssellänge muss erhöht werden (etwa 2048 Bit)
                   \item Einige der effizienteren Verfahren beruhen auf bestimmten Eigenschaften der algebraischen Strukturen $(\mathbb{Z}^*_p,\times p)$ und $(\mathbb{Z}_p, +_p, \times_p)$
                   \item Verschiedene algebraische Strukturen können daher die gleiche Sicherheit mit kürzeren Schlüssellängen bieten
             \end{itemize*}
             \item Eine sehr vielversprechende Struktur für die Kryptographie lässt sich aus der Gruppe der Punkte auf einer elliptischen Kurve über einem endlichen Feld gewinnen
             \begin{itemize*}
-                  \item Die mathematischen Operationen in diesen Gruppen können sowohl in Hardware als auch in Software effizient implementiert werden.
+                  \item Die mathematischen Operationen in diesen Gruppen können sowohl in Hardware als auch in Software effizient implementiert werden
                   \item Das Problem des diskreten Logarithmus gilt in der allgemeinen Klasse, die sich aus der Gruppe der Punkte auf einer elliptischen Kurve über einem endlichen Feld ergibt, als schwierig
             \end{itemize*}
       \end{itemize*}
@@ -1145,16 +1110,14 @@
       \subsubsection{Gruppenelemente}
       \begin{itemize*}
             \item Algebraische Gruppe bestehend aus
-            \begin{itemize*}
-                  \item Punkte auf der Weierstraß'schen Gleichung: $y^2 = x^3 + ax + b$
-                  \item Zusätzlicher Punkt O im ,,Unendlichen''
-            \end{itemize*}
+            \item Punkte auf der Weierstraß'schen Gleichung $y^2 = x^3 + ax + b$
+            \item und zusätzlicher Punkt $0$ im ,,Unendlichen''
             \item Kann über $\mathbb{R}$ berechnet werden, aber in der Kryptographie werden $\mathbb{Z}_p$ und $GF(2^n)$ verwendet
-            \begin{itemize*}
-                  \item Schon in $\mathbb{R}$ beeinflussen Argumente die Form erheblich
-                  \item $y^2 = x^3-3x+5$ % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-1.png} 
-                  \item $y^2 = x^3-40x+5$ % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-2.png} 
-            \end{itemize*}
+            %\begin{itemize*}
+            %      \item Schon in $\mathbb{R}$ beeinflussen Argumente die Form erheblich
+            %      \item $y^2 = x^3-3x+5$ % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-1.png} 
+            %      \item $y^2 = x^3-40x+5$ % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-2.png} 
+            %\end{itemize*}
       \end{itemize*}
 
       \subsubsection{Punktaddition}
@@ -1162,207 +1125,205 @@
             \item Addition von Elementen = Addition von Punkten auf der Kurve
             \item Geometrische Interpretation
             \begin{itemize*}
-                  \item Jeder Punkt $P:(x,y)$ hat einen Kehrwert $-P:(x,-y)$
-                  \item Eine Linie durch zwei Punkte P und Q schneidet sich normalerweise mit einem dritten Punkt R
-                  \item Im Allgemeinen ist die Summe von zwei Punkten P und Q gleich $-R$
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-3.png}
+                  \item jeder Punkt $P:(x,y)$ hat einen Kehrwert $-P:(x,-y)$
+                  \item eine Linie durch zwei Punkte $P$ und $Q$ schneidet sich normalerweise mit einem dritten Punkt $R$
+                  \item die Summe von zwei Punkten $P$ und $Q$ ist $-R$
             \end{itemize*}
             \item Addition (Sonderfälle)
             \begin{itemize*}
-                  \item Der zusätzliche Punkt O ist das neutrale Element, d.h. $P+O=P$
-                  \item $P + (-P)$:
-                  \begin{itemize*}
-                        \item Wird der inverse Punkt zu P addiert, schneiden sich Linie und Kurve im ,,Unendlichen''
-                        \item Per Definition: $P+(-P) = O$
-                  \end{itemize*}
-                  \item $P+P$: Die Summe zweier identischer Punkte P ist der Kehrwert des Schnittpunkts mit der Tangente durch P:
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-4.png} 
+                  \item Punkt $0$ ist das neutrale Element d.h. $P+O=P$
+                  \item $P + (-P)=0$: wird der inverse Punkt zu P addiert, schneiden sich Linie und Kurve im ,,Unendlichen''
+                  \item $P+P$: Die Summe zweier identischer Punkte $P$ ist der Kehrwert des Schnittpunkts mit der Tangente durch $P$
             \end{itemize*}
       \end{itemize*}
+      \begin{center}
+            \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-ecc-3.png}
+            \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-ecc-4.png}
+      \end{center}
 
       \subsubsection{Grundlagen des ECC - Algebraische Addition}
       \begin{itemize*}
-            \item Wenn einer der Summanden O ist, ist die Summe der andere Summand
-            \item Wenn die Summanden zueinander invers sind, ist die Summe O
+            \item Wenn einer der Summanden $0$, ist die Summe der andere Summand
+            \item Wenn die Summanden zueinander invers sind, ist die Summe $0$
             \item Für die allgemeineren Fälle ist die Steigung der Geraden: $\alpha=\begin{cases} \frac{y_Q-y_P}{x_Q-x_P} \quad\text{ for } P\not=-Q \vee P\not=Q \\ \frac{3x^2_P +a}{2y_P} \quad\text{ for } P=Q \end{cases}$
             \item Ergebnis der Punktaddition, wobei $(x_r,y_r)$ bereits der Spiegelpunkt $(-R)$ ist
       \end{itemize*}
 
       \subsubsection{Multiplikation}
       \begin{itemize*}
-            \item Multiplikation von natürlicher Zahl n und Punkt P durch mehrfache wiederholte Additionen
+            \item Multiplikation von natürlicher Zahl $n$ und Punkt $P$ durch mehrfache wiederholte Additionen
             \item Zahlen werden in 2er-Potenzen gruppiert, um eine logarithmische Laufzeit zu erreichen, z.B. $25P = P + 8P + 16P$
-            \item Dies ist nur möglich, wenn das n bekannt ist!
-            \item Wenn n für $nP = Q$ unbekannt ist, muss ein Logarithmus gelöst werden, was möglich ist, wenn die Koordinatenwerte aus $\mathbb{R}$ gewählt werden
+            \item Dies ist nur möglich, wenn das $n$ bekannt ist
+            \item Wenn $n$ für $nP=Q$ unbekannt ist, muss ein Logarithmus gelöst werden, wenn die Koordinatenwerte aus $\mathbb{R}$ gewählt werden
             \item Für $\mathbb{Z}_p$ und $GF(2^n)$ muss das diskrete Logarithmusproblem für elliptische Kurven gelöst werden, was nicht effizient durchgeführt werden kann!
-            \item Hinweis: Es ist nicht definiert, wie zwei Punkte multipliziert werden, sondern nur eine natürliche Zahl n und der Punkt P
+            \item Hinweis: Es ist nicht definiert, wie zwei Punkte multipliziert werden, sondern nur eine natürliche Zahl $n$ und der Punkt $P$
       \end{itemize*}
 
       \subsubsection{Kurven über $\mathbb{Z}_p$}
       \begin{itemize*}
             \item Über $\mathbb{Z}_p$ zerfällt die Kurve in eine Menge von Punkten
             \item Für: $y^2=x^3-3x+5\ mod\ 19$
-            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ecc-5.png}
+            \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-ecc-5.png}
             \item Hinweis: Für einige x-Werte gibt es keinen y-Wert!
       \end{itemize*}
 
       \subsubsection{Berechnen Sie die y-Werte in $\mathbb{Z}_p$}
       \begin{itemize*}
-            \item Im Allgemeinen etwas problematischer: Bestimmen Sie die y-Werte für ein gegebenes x (da sein quadratischer Wert berechnet wird) durch $y^2\equiv f(x)\ mod\ p$
-            \item Daher wird p oft s.t. gewählt $p\equiv 3\ mod\ 4$
+            \item Im Allgemeinen etwas problematischer: Bestimmen Sie die y-Werte für ein gegebenes $x$ durch $y^2\equiv f(x)\ mod\ p$
+            \item Daher wird $p$ oft s.t. gewählt $p\equiv 3\ mod\ 4$
             \item Dann wird y durch $y_1\equiv f(x)^{\frac{p+1}{4}}$ und $y_2\equiv -f(x)^{\frac{p+1}{4}}$ berechnet, wenn und nur wenn überhaupt eine Lösung existiert
-            \item Kurzer Beweis
-            \begin{itemize*}
-                  \item Aus dem Euler-Theorem 3 wissen wir, dass $f(x)^{p-1}\equiv 1\ mod\ p$
-                  \item Die Quadratwurzel muss also 1 oder -1 sein $f(x)^{\frac{p-1}{2}}\equiv\pm 1\ mod\ p$
-            \end{itemize*}
-            \item Fall 1: $f(x)^{\frac{p-1}{2}}\equiv1\ mod\ p$
-            \begin{itemize*}
-                  \item Multiplizieren Sie beide Seiten mit f(x): $f(x)^{\frac{p-1}{2}}\equiv f(x)\equiv y^2\ mod\ p$
-                  \item Da $p + 1$ durch 4 teilbar ist, können wir die Quadratwurzel ziehen, so dass $f(x)^{\frac{p-1}{2}}\equiv y\ mod\ p$
-            \end{itemize*}
-            \item Fall 2: In diesem Fall existiert keine Lösung für den gegebenen x-Wert (wie von Euler gezeigt)
+            %\item Kurzer Beweis
+            %\begin{itemize*}
+            %      \item Aus dem Euler-Theorem 3 wissen wir, dass $f(x)^{p-1}\equiv 1\ mod\ p$
+            %      \item Die Quadratwurzel muss also 1 oder -1 sein $f(x)^{\frac{p-1}{2}}\equiv\pm 1\ mod\ p$
+            %\end{itemize*}
+            %\item Fall 1: $f(x)^{\frac{p-1}{2}}\equiv1\ mod\ p$
+            %\begin{itemize*}
+            %      \item Multiplizieren Sie beide Seiten mit f(x): $f(x)^{\frac{p-1}{2}}\equiv f(x)\equiv y^2\ mod\ p$
+            %      \item Da $p + 1$ durch 4 teilbar ist, können wir die Quadratwurzel ziehen, so dass $f(x)^{\frac{p-1}{2}}\equiv y\ mod\ p$
+            %\end{itemize*}
+            %\item Fall 2: In diesem Fall existiert keine Lösung für den gegebenen x-Wert (wie von Euler gezeigt)
       \end{itemize*}
 
       \subsubsection{Addition und Multiplikation in $\mathbb{Z}_p$}
       \begin{itemize*}
-            \item Aufgrund des diskreten Strukturpunktes haben mathematische Operationen keine geometrische Interpretation mehr, sondern
+            \item Aufgrund des diskreten Strukturpunktes haben mathematische Operationen keine geometrische Interpretation mehr
             \item Algebraische Addition ähnlich der Addition über $\mathbb{R}$
-            \item Wird der inverse Punkt zu P addiert, schneiden sich Linie und ,,Kurve'' immer noch im ,,Unendlichen''
-            \item Alle x- und y-Werte werden mod p berechnet
+            \item Wird der inverse Punkt zu $P$ addiert, schneiden sich Linie und ,,Kurve'' immer noch im ,,Unendlichen''
+            \item Alle x- und y-Werte werden $mod\ p$ berechnet
             \item Division wird durch Multiplikation mit dem inversen Element des Nenners ersetzt
-            \item Verwendung des erweiterten euklidischen Algorithmus mit w und p zur Ableitung der Inversen $-w$
-            \item Die algebraische Multiplikation einer natürlichen Zahl n und eines Punktes P erfolgt ebenfalls durch wiederholte Addition von Summanden der Potenz von 2
-            \item Das Problem des diskreten Logarithmus ist die Bestimmung einer natürlichen Zahl n in $nP=Q$ für zwei bekannte Punkte P und Q
+            \item Verwendung des erweiterten euklidischen Algorithmus mit $w$ und $p$ zur Ableitung der Inversen $-w$
+            \item Die algebraische Multiplikation einer natürlichen Zahl $n$ und eines Punktes $P$ erfolgt ebenfalls durch wiederholte Addition von Summanden der Potenz von 2
+            \item Das Problem des diskreten Logarithmus ist die Bestimmung einer natürlichen Zahl $n$ in $nP=Q$ für zwei bekannte Punkte $P$ und $Q$
       \end{itemize*}
 
-      \subsubsection{Foundations of ECC - Größe der erzeugten Gruppen}
+      \subsubsection{ECC - Größe der erzeugten Gruppen}
       \begin{itemize*}
-            \item Bitte beachten Sie, dass die Ordnung einer durch einen Punkt auf einer Kurve über $\mathbb{Z}_p$ erzeugten Gruppe nicht $p-1$ ist!
-            \item Die Bestimmung der exakten Ordnung ist nicht einfach, kann aber mit Schoofs Algorithmus in logarithmischer Zeit durchgeführt werden (erfordert viel mehr mathematischen Hintergrund als hier gewünscht)
-            \item Der Satz von Hasse über elliptische Kurven besagt jedoch, dass die Gruppengröße n zwischen: $p+1 - 2\sqrt{p}\leq n\leq p+1+2\sqrt{p}$ liegen muss
-            \item Wie bereits erwähnt: Es genügt, relativ große Gruppen zu erzeugen
+            \item beachte, dass die Ordnung einer durch einen Punkt auf einer Kurve über $\mathbb{Z}_p$ erzeugten Gruppe nicht $p-1$ ist
+            \item Die Bestimmung der exakten Ordnung ist nicht einfach, kann aber mit Schoofs Algorithmus in logarithmischer Zeit durchgeführt werden %(erfordert viel mehr mathematischen Hintergrund als hier gewünscht)
+            \item Satz von Hasse über elliptische Kurven besagt, dass die Gruppengröße $n$ zwischen: $p+1 - 2\sqrt{p}\leq n\leq p+1+2\sqrt{p}$ liegen muss
+            \item Es genügt, relativ große Gruppen zu erzeugen
       \end{itemize*}
 
-      \subsubsection{ECDH}
+      \subsubsection{ECDH - ECC Diffie Hellmann}
       \begin{itemize*}
-            \item Der Diffie-Hellman-Algorithmus kann leicht an elliptische Kurven angepasst werden
-            \item Wenn Alice (A) und Bob (B) sich auf ein gemeinsames Geheimnis s einigen wollen:
+            \item Diffie-Hellman kann leicht an elliptische Kurven angepasst werden
+            \item Wenn A und B sich auf ein gemeinsames Geheimnis $s$ einigen wollen
             \begin{itemize*}
-                  \item A und B einigen sich auf eine kryptographisch sichere elliptische Kurve und einen Punkt P auf dieser Kurve
-                  \item A wählt eine Zufallszahl q: A berechnet $Q=qP$ und überträgt Q an Bob
-                  \item B wählt eine Zufallszahl r: B berechnet $R=rP$ und überträgt P an Alice
-                  \item Beide Seiten errechnen das gemeinsame Geheimnis:
-                  \begin{itemize*}
-                        \item A errechnet $S=qR$
-                        \item B errechnet $S'=rQ$
-                        \item Da $qrP=rqP$ der geheime Punkt $S=S'$
-                  \end{itemize*}
+                  \item A und B einigen sich auf eine kryptographisch sichere elliptische Kurve und einen Punkt $P$ auf dieser Kurve
+                  \item A wählt eine Zufallszahl $q$: A berechnet $Q=qP$ und überträgt $Q$ an B
+                  \item B wählt eine Zufallszahl $r$: B berechnet $R=rP$ und überträgt $P$ an A
+                  \item Beide Seiten errechnen das gemeinsame Geheimnis: A errechnet $S=qR$, B errechnet $S'=rQ$
+                  \item da $qrP=rqP \rightarrow$ der geheime Punkt $S=S'$
             \end{itemize*}
-            \item Angreifer, die den öffentlichen Kanal abhören, können S nur berechnen, wenn sie entweder q oder r berechnen können, die die diskreten Logarithmen von Q und R für den Punkt P sind
+            \item Angreifer, die den öffentlichen Kanal abhören, können $S$ nur berechnen, wenn sie entweder $q$ oder $r$ berechnen können, die die diskreten Logarithmen von $Q$ und $R$ für den Punkt $P$ sind
       \end{itemize*}
 
       \subsubsection{EC-Version des ElGamal-Algorithmus}
       \begin{itemize*}
-            \item Die Anpassung von ElGamal für elliptische Kurven ist für die Verschlüsselungsroutine recht einfach
-            \item Ein Schlüsselpaar einrichten:
+            \item Anpassung von ElGamal für elliptische Kurven% ist für die Verschlüsselungsroutine recht einfach
+            \item Schlüsselpaar einrichten
             \begin{itemize*}
-                  \item Wählen Sie eine elliptische Kurve über einem endlichen Feld, einen Punkt G, der eine große Gruppe erzeugt, und eine Zufallszahl v, so dass $1 < v < n$, wobei n die Größe der induzierten Gruppe bezeichnet, Berechnen Sie: $Y = vG$
+                  \item Wählen eine elliptische Kurve über einem endlichen Feld, einen Punkt $G$, der eine große Gruppe erzeugt, und eine Zufallszahl $v$, so dass $1 < v < n$, wobei $n$ die Größe der induzierten Gruppe bezeichnet. Berechne: $Y = vG$
                   \item Der öffentliche Schlüssel ist $(Y,G,Kurve)$
-                  \item Der private Schlüssel ist v
+                  \item Der private Schlüssel ist $v$
             \end{itemize*}
-            \item Um eine Nachricht zu verschlüsseln:
+            \item Nachricht verschlüsseln
             \begin{itemize*}
-                  \item Wähle eine zufällige $k\in\mathbb{Z}^+$ mit $k< n-1$, berechne $R=kG$
-                  \item Berechne $S=M+kY$, wobei M ein von der Nachricht abgeleiteter Punkt ist
-                  \item Problem: Die Interpretation der Nachricht m als x-Koordinate von M ist nicht ausreichend, da der y-Wert nicht existieren muss
-                  \item Lösung: Wähle eine Konstante c (z.B. 100) und prüfe, ob $cm$ die x-Koordinate eines gültigen Punktes ist, wenn nicht, versuche $cm+1$, dann $cm+2$ usw.
-                  \item Um m zu entschlüsseln: nimm den x-Wert von M und führe eine ganzzahlige Division durch c durch (der Empfänger muss c ebenfalls kennen)
+                  \item Wähle zufälliges $k\in\mathbb{Z}^+$ mit $k<n-1$, berechne $R=kG$
+                  \item Berechne $S=M+kY$, wobei $M$ ein von der Nachricht abgeleiteter Punkt ist
+                  \item Problem: Die Interpretation der Nachricht $m$ als x-Koordinate von $M$ ist nicht ausreichend, da der y-Wert nicht existieren muss
+                  \item Lösung: Wähle eine Konstante $c$ und prüfe, ob $cm$ die x-Koordinate eines gültigen Punktes ist, wenn nicht, versuche $cm+1$, dann $cm+2$ usw.
+                  \item Um m zu entschlüsseln: nimm den x-Wert von M und führe eine ganzzahlige Division durch $c$ durch (der Empfänger muss c ebenfalls kennen)
                   \item Der Chiffretext sind die Punkte $(R,S)$
-                  \item Doppelt so lang wie m, wenn sie in so genannter komprimierter Form gespeichert werden, d.h. nur die x-Koordinaten werden gespeichert und ein einziges Bit, das angibt, ob die größere oder kleinere entsprechende y-Koordinate verwendet werden soll
+                  \item Doppelt so lang wie $m$, wenn sie in so genannter komprimierter Form gespeichert werden, d.h. nur die x-Koordinaten werden gespeichert und ein einziges Bit, das angibt, ob die größere oder kleinere entsprechende y-Koordinate verwendet werden soll
             \end{itemize*}
-            \item Um eine Nachricht zu entschlüsseln:
+            \item Nachricht entschlüsseln
             \begin{itemize*}
                   \item Ableitung von M durch Berechnung von $S-vR$
                   \item Beweis: $S-vR=M+kY-vR =M+kvG-vkG= M+O= M$
             \end{itemize*}
-            \item Eine Nachricht signieren:
+            \item Nachricht signieren
             \begin{itemize*}
-                  \item Wähle ein zufälliges $k\in\mathbb{Z}^+$ mit $k< n-1$, berechne $R = kG$
-                  \item Berechne $s=k^{-1}(m+rv) mod\ n$, wobei $r$ der x-Wert von R ist
-                  \item Die Signatur ist $(r,s)$, wiederum etwa doppelt so lang wie n
+                  \item Wähle zufälliges $k\in\mathbb{Z}^+$ mit $k<n-1$, berechne $R=kG$
+                  \item Berechne $s=k^{-1}(m+rv) mod\ n$, wobei $r$ der x-Wert von R
+                  \item Die Signatur ist $(r,s)$, wiederum etwa doppelt so lang wie $n$
             \end{itemize*}
-            \item Überprüfen einer signierten Nachricht:
+            \item Überprüfen einer signierten Nachricht
             \begin{itemize*}
-                  \item Prüfen, ob der Punkt $P=ms^{-1}G+rs^{-1}Y$ die x-Koordinate r hat
-                  \item Anmerkung: $s^{-1}$ wird durch den Erweiterten Euklidischen Algorithmus mit den Eingaben s und n (der Ordnung der Gruppe) berechnet.
+                  \item Prüfen, ob der Punkt $P=ms^{-1}G+rs^{-1}Y$ die x-Koordinate $r$ hat
+                  \item Anmerkung: $s^{-1}$ wird durch den Erweiterten Euklidischen Algorithmus mit den Eingaben $s$ und $n$ berechnet
                   \item Beweis: $ms^{-1}G+rs^{-1}Y = ms^{-1}G+rs^{-1}vG = (m+rv)(s^{-1})G = (ks)(s^{-1})G = kG = R$
             \end{itemize*}
-            \item Diskussion zur Sicherheit:
+            \item Diskussion zur Sicherheit
             \begin{itemize*}
-                  \item Wie in der ursprünglichen Version von ElGamal ist es entscheidend, k nicht zweimal zu verwenden
+                  \item Wie in der ursprünglichen Version von ElGamal ist es entscheidend, $k$ nicht zweimal zu verwenden
                   \item Nachrichten sollten nicht direkt signiert werden
-                  \item Weitere Prüfungen können erforderlich sein, d.h. G darf nicht O sein, ein gültiger Punkt auf der Kurve usw.
+                  \item Weitere Prüfungen können erforderlich sein, d.h. $G$ darf nicht $0$ sein, ein gültiger Punkt auf der Kurve usw.
             \end{itemize*}
       \end{itemize*}
 
       \subsubsection{Sicherheit}
       \begin{itemize*}
             \item Die Sicherheit hängt stark von der gewählten Kurve und dem Punkt ab:
-            \item Die Diskriminante der Kurve darf nicht Null sein, d.h. $4a^3+27b^2\not\equiv 0\ mod\ p$ sonst ist die Kurve degradiert (eine sogenannte ,,singuläre Kurve'' )
-            \item Menezes et. al. haben einen subexponentiellen Algorithmus für sogenannte ,,supersinguläre elliptische Kurven'' gefunden, der aber im allgemeinen Fall nicht funktioniert
-            \item Die konstruierten algebraischen Gruppen sollten so viele Elemente wie möglich haben.
-            \item In diesem Kurs wird nicht näher auf die Kryptographie elliptischer Kurven eingegangen, da dies viel mehr Mathematik erfordert, als für diesen Kurs erwünscht ist...
-            \item Für Nicht-Kryptographen ist es am besten, sich auf vordefinierte Kurven zu verlassen
-            \item Viele Veröffentlichungen wählen die Parameter a und b so, dass sie nachweislich durch einen Zufallsprozess gewählt werden (z.B. veröffentlichen Sie x für $h(x)=a$ und $y$ für $h(y) = b$); so soll sichergestellt werden, dass die Kurven keine kryptographische Schwäche enthalten, die nur den Autoren bekannt ist
-            \item Die Sicherheit ist abhängig von der Länge von p
-            % Schlüssellängen mit vergleichbaren Stärken | Symmetrische Algorithmen | RSA | ECC | | ------------------------ | ----- | ------- | | 112 | 2048 | 224-255 | | 128 | 3072 | 256-383 | | 192 | 7680 | 384-511 | | 256 | 15360 | >{} 512 |
+            \item Die Diskriminante der Kurve darf nicht Null sein, d.h. $4a^3+27b^2\not\equiv 0\ mod\ p$ sonst ist die Kurve degradiert %(eine sogenannte ,,singuläre Kurve'' )
+            \item Menezes haben einen subexponentiellen Algorithmus für sogenannte ,,supersinguläre elliptische Kurven'' gefunden, der aber im allgemeinen Fall nicht funktioniert
+            \item Die konstruierten algebraischen Gruppen sollten so viele Elemente wie möglich haben
+            \item Viele Veröffentlichungen wählen die Parameter a und b so, dass sie nachweislich durch einen Zufallsprozess gewählt werden; so soll sichergestellt werden, dass die Kurven keine kryptographische Schwäche enthalten, die nur den Autoren bekannt ist
+            \item Die Sicherheit ist abhängig von der Länge von $p$
+            \begin{tabular}{c|c|c}
+                  Symmetrische A. & RSA   & ECC     \\\hline
+                  112             & 2048  & 224-255 \\
+                  128             & 3072  & 256-383 \\
+                  192             & 7680  & 384-511 \\
+                  256             & 15360 & $>$512
+            \end{tabular}
             \item Die Sicherheit hängt auch stark von der Implementierung ab
             \begin{itemize*}
-                  \item Die verschiedenen Fälle (z.B. mit O) in der ECC-Berechnung können beobachtbar sein, d.h. Stromverbrauch und Zeitunterschiede
-                  \item Angreifer können Seitenkanalangriffe ableiten, wie in OpenSSL 0.9.8
-                  \item Ein Angreifer kann die Bitlänge eines Wertes k in $kP$ ableiten, indem er die für den Quadrat- und Multiplikationsalgorithmus benötigte Zeit misst
+                  \item Die verschiedenen Fälle in der ECC-Berechnung können beobachtbar sein, d.h. Stromverbrauch und Zeitunterschiede
+                  \item Angreifer können Seitenkanalangriffe ableiten%, wie in OpenSSL 0.9.8
+                  \item Ein Angreifer kann die Bitlänge eines Wertes $k$ in $kP$ ableiten, indem er die für den Quadrat- und Multiplikationsalgorithmus benötigte Zeit misst
                   \item Der Algorithmus wurde in OpenSSL frühzeitig abgebrochen, wenn keine weiteren Bits auf ,,1'' gesetzt wurden
-                  \item Angreifer könnten versuchen, ungültige Punkte zu generieren, um Fakten über den verwendeten Schlüssel abzuleiten, wie in OpenSSL 0.9.8g, was zu einer Wiederherstellung eines vollen 256-Bit ECC-Schlüssels nach nur 633 Abfragen führte
+                  \item Angreifer könnten versuchen, ungültige Punkte zu generieren, um Fakten über den verwendeten Schlüssel abzuleiten was zu einer Wiederherstellung eines vollen 256-Bit ECC-Schlüssels nach nur 633 Abfragen führte
             \end{itemize*}
-            \item Lektion gelernt: Machen Sie es nicht selbst, es sei denn, Sie müssen es tun und wissen, was Sie tun!
+            \item Lektion gelernt: Machen Sie es nicht selbst, es sei denn, Sie müssen es tun und wissen, was Sie tun
       \end{itemize*}
 
       \subsubsection{Weitere Anmerkungen}
       \begin{itemize*}
-            \item Wie bereits erwähnt, ist es möglich, kryptographische elliptische Kurven über $G(2^n)$ zu konstruieren, was in Hardware-Implementierungen schneller sein kann.
-            \item Wir haben auf Details verzichtet, da dies nicht viele neue Erkenntnisse gebracht hätte!
-            \item Elliptische Kurven und ähnliche algebraische Gruppen sind ein aktives Forschungsgebiet und ermöglichen weitere fortgeschrittene Anwendungen, z.B:
+            \item es ist möglich, kryptographische elliptische Kurven über $G(2^n)$ zu konstruieren, was in Hardware-Implementierungen schneller sein kann
+            \item Elliptische Kurven und ähnliche algebraische Gruppen sind ein aktives Forschungsgebiet und ermöglichen weitere fortgeschrittene Anwendungen
             \begin{itemize*}
-                  \item Sogenannte Edwards-Kurven werden derzeit diskutiert, da sie robuster gegen Seitenkanalangriffe zu sein scheinen
+                  \item Edwards-Kurven scheinen robuster gegen Seitenkanalangriffe
                   \item Bilineare Paarungen ermöglichen
                   \item Programme zu verifizieren, dass sie zur selben Gruppe gehören, ohne ihre Identität preiszugeben
-                  \item Öffentliche Schlüssel können strukturiert werden, z.B. ,,Alice'' als öffentlicher Schlüssel für Alice verwenden
+                  \item Öffentliche Schlüssel können strukturiert werden%, z.B. ,,Alice'' als öffentlicher Schlüssel für Alice verwenden
             \end{itemize*}
-            \item Bevor Sie elliptische Kurvenkryptographie in einem Produkt einsetzen, stellen Sie sicher, dass Sie keine Patente verletzen, da es noch viele gültige Patente in diesem Bereich gibt!
       \end{itemize*}
 
       \subsection{Schlussfolgerung}
       \begin{itemize*}
-            \item Asymmetrische Kryptographie erlaubt es, zwei verschiedene Schlüssel zu verwenden:
+            \item Asymmetrische Kryptographie erlaubt es, zwei verschiedene Schlüssel zu verwenden
             \begin{itemize*}
                   \item Verschlüsselung / Entschlüsselung
                   \item Signieren / Überprüfen
             \end{itemize*}
-            \item Die praktischsten Algorithmen, die immer noch als sicher gelten, sind:
-            \begin{itemize*}
-                  \item RSA, basierend auf der Schwierigkeit, diskrete Logarithmen zu faktorisieren und zu lösen
-                  \item Diffie-Hellman (kein asymmetrischer Algorithmus, sondern ein Schlüsselvereinbarungsprotokoll)
-                  \item ElGamal, wie DH basierend auf der Schwierigkeit, diskrete Logarithmen zu berechnen
-            \end{itemize*}
-            \item Da ihre Sicherheit vollständig auf der Schwierigkeit bestimmter mathematischer Probleme beruht, stellt der algorithmische Fortschritt ihre größte Bedrohung dar.
+            \item die praktischsten Algorithmen, die immer noch als sicher gelten
+            \begin{description*}
+                  \item[RSA] diskrete Logarithmen faktorisieren und lösen
+                  \item[Diffie-Hellman] Schlüsselvereinbarungsprotokoll
+                  \item[ElGamal] wie DH basierend auf diskreten Logarithmen
+            \end{description*}
+            \item Da ihre Sicherheit vollständig auf der Schwierigkeit bestimmter mathematischer Probleme beruht, stellt der algorithmische Fortschritt ihre größte Bedrohung dar
             \item Praktische Überlegungen:
             \begin{itemize*}
-                  \item Asymmetrische kryptografische Operationen sind um Größenordnungen langsamer als symmetrische Operationen.
-                  \item Daher werden sie oft nicht für die Verschlüsselung/Signierung von Massendaten verwendet.
-                  \item Symmetrische Verfahren werden zur Verschlüsselung / Berechnung eines kryptografischen Hashwerts verwendet, während die asymmetrische Kryptografie nur zur Verschlüsselung eines Schlüssels / Hashwerts eingesetzt wird.
+                  \item Asymmetrische kryptografische Operationen sind um Größenordnungen langsamer als symmetrische Operationen
+                  \item Daher werden sie oft nicht für die Verschlüsselung/Signierung von Massendaten verwendet
+                  \item Symmetrische Verfahren werden zur Verschlüsselung / Berechnung eines kryptografischen Hashwerts verwendet, während die asymmetrische Kryptografie nur zur Verschlüsselung eines Schlüssels / Hashwerts eingesetzt wird
             \end{itemize*}
       \end{itemize*}
+
+      \columnbreak
 
       \section{Modifikationsprüfwerte}
       \subsection{Motivation}

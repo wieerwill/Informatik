@@ -136,7 +136,7 @@
   \begin{parts}
     \part Werte die Formel $\varpi_a=\lnot p \wedge \lnot\lnot p$ im Heytingschen Wahrheitswertebereich $H_{\mathbb{R}}$ aus für die $H_{\mathbb{R}}$-Belegung $B$ mit $B(p)=\mathbb{R}\backslash \{0\}$
     \begin{solution}
-      $B_{H_{mathbb{R}}}(\lnot p \wedge \lnot\lnot p)= Inneres(\mathbb{R}/ p)\cap p= 1$
+      $B_{H_{mathbb{R}}}(\lnot p \wedge \lnot\lnot p)= Inneres(\mathbb{R}/ p)\cap p= Inneres(\mathbb{R}\backslash\{\mathbb{R}\backslash\{0\}\})\cap \mathbb{R}\backslash\{0\}=\{0\}\cap \mathbb{R}\backslash\{0\} = \varnothing$
     \end{solution}
 
     \part Überprüfe ob die Formel $\varphi_B=(\lnot p\rightarrow \lnot p)\rightarrow p$ eine $K_3$-Tautologie ist. Ist $\varphi_b$ eine $B_{\mathbb{R}}$ Tautologie?
@@ -148,6 +148,10 @@
         $\frac{1}{2}$ & $\frac{1}{2}$ & 1                                   & $\frac{1}{2}$       \\
         1             & 0             & 1                                   & 1                   \\
       \end{tabular}
+
+      Keine $K_3$ Tautologie.
+
+      Da keine $B$ Tautologie $\rightarrow$ keine $B_R$ Tautologie
     \end{solution}
 
     \part Überprüfe ob die semantische Folgeung $\{p\rightarrow q, q\rightarrow r\}\Vdash_B r\rightarrow\lnot p$ gilt.
@@ -216,7 +220,7 @@
                 \item für 4.: $M_3=\{r,p\}$
                 \item für 1.: $M_4=\varnothing$
               \end{enumerate}
-        \item $M_4=\varnothing \Rightarrow \varphi_b$ unerfüllbar
+        \item $M_4=\varnothing \Rightarrow \{\lnot\varphi_b\}$ unerfüllbar $\rightarrow \varphi$ Tautologie
       \end{itemize}
     \end{solution}
   \end{parts}
@@ -290,9 +294,13 @@
     \part Gebe die Regeln $(\forall-I)$, $(\exists-E)$ und $(GfG)$ inklusive Bedingung an
     \begin{solution}
 
-      $\varphi[x:=t]:\frac{\forall x\varphi}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $t$ wird in $\varphi$ quantifiziert
+      $\forall-I:\frac{\varphi}{\forall x\varphi}$ Bedingung: x nicht frei in Hypothesen
 
-      $\exists x\varphi:\frac{\varphi[x:=t]}{\exists x\varphi}$ Bedingung: über keine Variable in $t$ wird in $\varphi$ quantifiziert
+      $\forall-E:\frac{\forall x\varphi}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $t$ wird in $\varphi$ quantifiziert
+
+      $\exists-I:\frac{\varphi[x:=t]}{\exists x\varphi}$ Bedingung: über keine Variable in $t$ wird in $\varphi$ quantifiziert
+
+      $\exists-E:\frac{\exists x\varphi\quad \sigma}{\sigma}$ Bedingung: x weder frei in Hypothesen noch in $\sigma$
 
       $(GfG): \frac{\varphi[x:=s]\quad s=t}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert
     \end{solution}

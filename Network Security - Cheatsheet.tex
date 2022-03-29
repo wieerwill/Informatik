@@ -1820,77 +1820,74 @@
 
       \subsection{Zufalls- und Pseudo-Zufallszahlengenerierung}
       \begin{itemize*}
-            \item Definition: ,,Ein Zufallsbitgenerator ist ein Gerät oder ein Algorithmus, der eine Folge statistisch unabhängiger und unverfälschter Binärziffern ausgibt.''
-            \item Bemerkung: Ein Zufallsbitgenerator kann zur Erzeugung gleichmäßig verteilter Zufallszahlen verwendet werden, z. B. kann eine zufällige ganze Zahl im Intervall $,,0,n''$ erhalten werden, indem eine zufällige Bitfolge der Länge $\lfloor lg n\rfloor+1$ erzeugt und in eine Zahl umgewandelt wird. Ist die resultierende ganze Zahl größer als n, so kann sie verworfen werden, und der Vorgang wird so lange wiederholt, bis eine ganze Zahl im gewünschten Bereich erzeugt worden ist
-            \item Definition: Ein Pseudo-Zufallsbitgenerator (PRBG) ist ein deterministischer Algorithmus, der bei einer wirklich zufälligen Binärfolge der Länge k eine Binärfolge der Länge $m>> k$ ausgibt, die ,,zufällig'' erscheint. Die Eingabe in den PRBG wird als Seed bezeichnet, die Ausgabe als pseudozufällige Bitfolge.
-            \item Bemerkungen
+            \item Ein \textbf{Zufallsbitgenerator} ist ein Gerät oder ein Algorithmus, der eine Folge statistisch unabhängiger und unverfälschter Binärziffern ausgibt
+            \item Ein Zufallsbitgenerator kann zur Erzeugung gleichmäßig verteilter Zufallszahlen verwendet werden, z. B. kann eine zufällige ganze Zahl im Intervall $[0,n]$ erhalten werden, indem eine zufällige Bitfolge der Länge $\lfloor lg\ n\rfloor+1$ erzeugt und in eine Zahl umgewandelt wird %Ist die resultierende ganze Zahl größer als n, so kann sie verworfen werden, und der Vorgang wird so lange wiederholt, bis eine ganze Zahl im gewünschten Bereich erzeugt worden ist
+            \item Ein \textbf{Pseudo-Zufallsbitgenerator} (PRBG) ist ein deterministischer Algorithmus, der bei einer wirklich zufälligen Binärfolge der Länge $k$ eine Binärfolge der Länge $m>>k$ ausgibt, die zufällig erscheint. Die Eingabe in den PRBG wird als Seed bezeichnet, die Ausgabe als pseudozufällige Bitfolge
+            \item Die Ausgabe eines PRBG ist nicht zufällig, tatsächlich ist die Anzahl der möglichen Ausgabesequenzen der Länge $m$ höchstens ein kleiner Bruchteil $2^k/2^m$, da der PRBG immer dieselbe Ausgabesequenz für einen (festen) Seed erzeugt
+            \item Die Motivation für die Verwendung einer PRBG ist, dass es zu teuer sein könnte, echte Zufallszahlen der Länge $m$ zu erzeugen, so dass nur eine kleinere Menge von Zufallsbits erzeugt wird und dann aus den $k$ echten Zufallsbits eine pseudozufällige Bitfolge erzeugt wird
+            \item Um Vertrauen in die Zufälligkeit einer Pseudo-Zufallsfolge zu gewinnen, werden statistische Tests mit den erzeugten Folgen durchgeführt
+            %\item Beispiel
+            %\begin{itemize*}
+            %      \item Ein linearer Kongruenzgenerator erzeugt eine Pseudo-Zufallsfolge von Zahlen $y_1,y_2, ...$ gemäß der linearen Rekursion $y_i= a\times y_{i-1} + b\ mod\ q$, wobei $a, b, q$ Parameter sind, die den PRBG charakterisieren
+            %      \item Leider ist dieser Generator auch dann vorhersehbar, wenn $a, b$ und $q$ unbekannt sind, und sollte daher nicht für kryptographische Zwecke verwendet werden
+            %\end{itemize*}
+            \item Sicherheitsanforderungen an PRBGs
             \begin{itemize*}
-                  \item Die Ausgabe eines PRBG ist nicht zufällig, tatsächlich ist die Anzahl der möglichen Ausgabesequenzen der Länge m höchstens ein kleiner Bruchteil $2^k/2^m$, da der PRBG immer dieselbe Ausgabesequenz für einen (festen) Seed erzeugt
-                  \item Die Motivation für die Verwendung einer PRBG ist, dass es zu teuer sein könnte, echte Zufallszahlen der Länge m zu erzeugen, z. B. durch Münzwurf, so dass nur eine kleinere Menge von Zufallsbits erzeugt wird und dann aus den k echten Zufallsbits eine pseudozufällige Bitfolge erzeugt wird
-                  \item Um Vertrauen in die ,,Zufälligkeit'' einer Pseudo-Zufallsfolge zu gewinnen, werden statistische Tests mit den erzeugten Folgen durchgeführt
+                  \item Als Mindestsicherheitsanforderung sollte die Länge $k$ des Seeds einer PRBG so groß sein, dass eine Brute-Force-Suche über alle Seeds für einen Angreifer nicht durchführbar ist
+                  \item Die Ausgabe einer PRBG sollte statistisch nicht von echten Zufallssequenzen unterscheidbar sein
+                  \item Die Ausgabebits sollten für einen Angreifer mit begrenzten Ressourcen unvorhersehbar sein, wenn er den Seed nicht kennt
             \end{itemize*}
-            \item Beispiel
-            \begin{itemize*}
-                  \item Ein linearer Kongruenzgenerator erzeugt eine Pseudo-Zufallsfolge von Zahlen $y_1,y_2, ...$ gemäß der linearen Rekursion $y_i= a\times y_{i-1} + b\ mod\ q$, wobei $a, b, q$ Parameter sind, die den PRBG charakterisieren
-                  \item Leider ist dieser Generator auch dann vorhersehbar, wenn $a, b$ und $q$ unbekannt sind, und sollte daher nicht für kryptographische Zwecke verwendet werden
-            \end{itemize*}
-            \item Sicherheitsanforderungen an PRBGs für die Verwendung in der Kryptographie:
-            \begin{itemize*}
-                  \item Als Mindestsicherheitsanforderung sollte die Länge k des Seeds einer PRBG so groß sein, dass eine Brute-Force-Suche über alle Seeds für einen Angreifer nicht durchführbar ist
-                  \item Die Ausgabe einer PRBG sollte statistisch nicht von echten Zufallssequenzen unterscheidbar sein.
-                  \item Die Ausgabebits sollten für einen Angreifer mit begrenzten Ressourcen unvorhersehbar sein, wenn er den Seed nicht kennt.
-            \end{itemize*}
-            \item Definition: Ein PRBG besteht alle statistischen Polynomialzeit-Tests, wenn kein deterministischer olynomialzeit-Algorithmus zwischen einer Ausgangssequenz des Generators und einer echten Zufallssequenz derselben Länge mit einer Wahrscheinlichkeit deutlich größer als 0 unterscheiden kann
-            \item Polynomialzeit-Algorithmus bedeutet, dass die Laufzeit des Algorithmus durch ein Polynom in der Länge m der Sequenz begrenzt ist
-            \item Definition: Ein PRBG besteht den Next-Bit-Test, wenn es keinen deterministischen Polynomialzeit-Algorithmus gibt, der bei Eingabe der ersten m Bits einer Ausgangssequenz $s$ das $(m+1)$-te Bit $s_{m+1}$ der Ausgangssequenz mit einer Wahrscheinlichkeit deutlich größer als 0 vorhersagen kann
-            \item Theorem (Universalität des Next-Bit-Tests): Wenn eine PRBG den Next-Bit-Test $\Leftrightarrow$ besteht, dann besteht sie alle statistischen Polynomialzeittests
-            \item Definition: Ein PRBG, der den Next-Bit-Test besteht - möglicherweise unter einer plausiblen, aber unbewiesenen mathematischen Annahme wie der Unlösbarkeit des Faktorisierungsproblems für große ganze Zahlen - wird als kryptographisch sicherer Pseudo-Zufallsgenerator (CSPRBG) bezeichnet
+            \item Ein PRBG besteht alle statistischen Polynomialzeit-Tests, wenn kein deterministischer polynomialzeit-Algorithmus zwischen einer Ausgangssequenz des Generators und einer echten Zufallssequenz derselben Länge mit einer Wahrscheinlichkeit deutlich größer als $0$ unterscheiden kann
+            \item Polynomialzeit-Algorithmus bedeutet, dass die Laufzeit des Algorithmus durch ein Polynom in der Länge $m$ der Sequenz begrenzt ist
+            \item Ein PRBG besteht den Next-Bit-Test, wenn es keinen deterministischen Polynomialzeit-Algorithmus gibt, der bei Eingabe der ersten $m$ Bits einer Ausgangssequenz $s$ das $(m+1)$-te Bit $s_{m+1}$ der Ausgangssequenz mit einer Wahrscheinlichkeit deutlich größer als $0$ vorhersagen kann
+            \item Theorem: Wenn eine PRBG den Next-Bit-Test $\Leftrightarrow$ besteht, dann besteht sie alle statistischen Polynomialzeittests
+            \item Ein PRBG, der den Next-Bit-Test besteht wird als kryptographisch sicherer Pseudo-Zufallsgenerator (CSPRBG) bezeichnet
       \end{itemize*}
 
       \subsection{Zufallszahlengenerierung}
       \begin{itemize*}
             \item Hardware-basierte Zufallsbit-Generatoren basieren auf physikalischen Phänomenen, wie
             \begin{itemize*}
-                  \item die verstrichene Zeit zwischen der Emission von Teilchen beim radioaktiven Zerfall,
-                  \item thermisches Rauschen einer Halbleiterdiode oder eines Widerstandes,
-                  \item Frequenzinstabilität eines frei laufenden Oszillators,
-                  \item der Betrag, um den ein Metall-Isolator-Halbleiter-Kondensator während eines bestimmten Zeitraums aufgeladen wird,
-                  \item Luftturbulenzen in einem versiegelten Festplattenlaufwerk, die zufällige Schwankungen in den Sektor-Lese-Latenzen des Festplattenlaufwerks verursachen, und
-                  \item Ton von einem Mikrofon oder Videoeingang von einer Kamera
-                  \item der Zustand einer ungeraden Anzahl von kreisförmig verbundenen NOT-Gattern
+                  \item Zeit zwischen Emission von Teilchen bei radioaktiven Zerfall
+                  \item thermisches Rauschen einer Halbleiterdiode,
+                  \item Frequenzinstabilität eines Oszillators,
+                  %\item der Betrag, um den ein Metall-Isolator-Halbleiter-Kondensator während eines bestimmten Zeitraums aufgeladen wird,
+                  %\item Luftturbulenzen in einem versiegelten Festplattenlaufwerk, die zufällige Schwankungen in den Sektor-Lese-Latenzen des Festplattenlaufwerks verursachen, und
+                  \item Ton von Mikrofon oder Video einer Kamera
+                  %\item der Zustand einer ungeraden Anzahl von kreisförmig verbundenen NOT-Gattern
             \end{itemize*}
-            \item Ein hardwarebasierter Zufallsbitgenerator sollte idealerweise in einer manipulationssicheren Vorrichtung untergebracht und so vor möglichen Angreifern geschützt sein
+            \item hardwarebasierte Zufallsbitgenerator sollte idealerweise in einer manipulationssicheren Vorrichtung untergebracht und so vor möglichen Angreifern geschützt sein
             \item Softwarebasierte Zufallsbit-Generatoren können auf Prozessen basieren wie
             \begin{itemize*}
                   \item der Systemuhr,
-                  \item der verstrichenen Zeit zwischen Tastenanschlägen oder Mausbewegungen,
+                  \item der verstrichenen Zeit zwischen Mausbewegungen,
                   \item Inhalt von Eingabe-/Ausgabepuffern
-                  \item Benutzereingaben und
-                  \item Werte des Betriebssystems wie Systemauslastung und Netzwerkstatistiken
+                  %\item Benutzereingaben und
+                  \item Werte des Betriebssystems wie Systemauslastung %und Netzwerkstatistiken
             \end{itemize*}
-            \item Idealerweise sollten mehrere Zufallsquellen ,,gemischt'' werden, z. B. durch Verkettung ihrer Werte und Berechnung eines kryptografischen Hashwerts für den kombinierten Wert, um zu verhindern, dass ein Angreifer den Zufallswert erraten kann
-            \item Wird z. B. nur die Systemuhr als Zufallsquelle verwendet, könnte ein Angreifer die aus dieser Zufallsquelle gewonnenen Zufallszahlen erraten, wenn er weiß, wann sie erzeugt wurden.
-            \item Verzerrung:  Betrachten wir einen Zufallsgenerator, der verzerrte, aber unkorrelierte Bits erzeugt, z. B. 1en mit der Wahrscheinlichkeit $p\not= 0,5$ und 0en mit der Wahrscheinlichkeit $1-p$, wobei p unbekannt, aber fest ist
-            \item Die folgende Technik kann verwendet werden, um eine Zufallsfolge zu erhalten, die unkorreliert und unverzerrt ist:
+            \item Idealerweise sollten mehrere Zufallsquellen ,,gemischt'' werden um zu verhindern, dass ein Angreifer den Zufallswert erraten kann
+            %\item Wird z. B. nur die Systemuhr als Zufallsquelle verwendet, könnte ein Angreifer die aus dieser Zufallsquelle gewonnenen Zufallszahlen erraten, wenn er weiß, wann sie erzeugt wurden.
+            \item Verzerrung: Betrachte einen Zufallsgenerator, der verzerrte, aber unkorrelierte Bits erzeugt, z.B. $1$en mit $p\not= 0,5$ und $0$en mit $1-p$, wobei $p$ unbekannt aber fest ist
+            \item folgende Technik kann verwendet werden, um eine Zufallsfolge zu erhalten, die unkorreliert und unverzerrt ist
             \begin{itemize*}
-                  \item Die Ausgangssequenz des Generators wird in Bitpaare gruppiert
-                  \item Alle Paare 00 und 11 werden verworfen.
-                  \item Für jedes Paar 10 erzeugt der unvoreingenommene Generator eine 1 und für jedes Paar 01 eine 0.
+                  \item Ausgangssequenz des Generators in Bitpaare gruppiert
+                  \item Alle Paare $00$ und $11$ werden verworfen
+                  \item Für jedes Paar $10$ erzeugt der unvoreingenommene Generator eine $1$ und für jedes Paar $01$ eine $0$
             \end{itemize*}
-            \item Ein weiteres praktisches (wenn auch nicht beweisbares) Verfahren zur Entzerrung ist die Weiterleitung von Sequenzen, deren Bits korreliert oder verzerrt sind, durch eine kryptografische Hash-Funktion wie MD5 oder SHA-1
+            \item Ein weiteres praktisches Verfahren zur Entzerrung ist Weiterleitung von Sequenzen, deren Bits korreliert oder verzerrt sind, durch eine kryptografische Hash-Funktion wie MD5 oder SHA-1
       \end{itemize*}
 
       \subsection{Statistische Tests für Zufallszahlen}
-      \begin{itemize*}
-            \item Mit den folgenden Tests lässt sich überprüfen, ob eine generierte Zufalls- oder Pseudozufallsfolge bestimmte statistische Eigenschaften nicht erfüllt
-            \item Monobit-Test: Gibt es gleich viele 1en wie 0en?
-            \item Serieller Test (Zwei-Bit-Test): Gibt es gleich viele 00-, 01-, 10-, 11-Paare?
-            \item Poker-Test: Gibt es gleich viele Sequenzen ni der Länge q, die mit $q$ den gleichen Wert haben, so dass $\lfloor m/q\rfloor\geq 5\times (2^q)$
-            \item Test auf Durchläufe: Entspricht die Anzahl der Läufe (Sequenzen, die nur entweder 0 oder 1 enthalten) unterschiedlicher Länge den Erwartungen für Zufallszahlen?
-            \item Autokorrelationstest: Gibt es Korrelationen zwischen der Sequenz und (nicht-zyklischen) verschobenen Versionen davon?
-            \item Maurer's Universal Test: Kann die Sequenz komprimiert werden?
-            \item NIST SP 800-22: Standardisierte Testsuite, umfasst die oben genannten und weitere fortgeschrittene Tests
-      \end{itemize*}
+      Mit den folgenden Tests lässt sich überprüfen, ob eine generierte Zufalls- oder Pseudozufallsfolge bestimmte statistische Eigenschaften nicht erfüllt
+      \begin{description*}
+            \item[Monobit-Test] Gibt es gleich viele 1en wie 0en?
+            \item[Serieller Test] Gibt es gleich viele 00-, 01-, 10-, 11-Paare?
+            \item[Poker-Test] Gibt es gleich viele Sequenzen $ni$ der Länge $q$, die mit $q$ den gleichen Wert haben, so dass $\lfloor m/q\rfloor\geq 5\times (2^q)$
+            \item[Test auf Durchläufe] Entspricht die Anzahl der Läufe unterschiedlicher Länge den Erwartungen für Zufallszahlen?
+            \item[Autokorrelationstest] Gibt es Korrelationen zwischen der Sequenz und verschobenen Versionen davon?
+            \item[Maurer's Universal Test] Kann die Sequenz komprimiert werden?
+            \item[NIST SP 800-22] Standardisierte Testsuite, umfasst die oben genannten und weitere fortgeschrittene Tests
+      \end{description*}
 
       \subsection{Sichere Pseudo-Zufallszahlengenerierung}
       \begin{itemize*}
@@ -1902,40 +1899,40 @@
                   \item Ausgabe: m pseudo-zufällige 64-Bit-Strings $y_1,y_2,...Y_m$
                   \begin{enumerate*}
                         \item $q = E(K, Date_Time)$
-                        \item For i von 1 bis m do
+                        \item for $i$ von $1$ bis $m$ do
                         \begin{enumerate*}
                               \item $x_i = E(K, (q\oplus s)$
                               \item $s = E(K, (x_i\oplus q)$
                         \end{enumerate*}
                         \item $Return(x_1,x_2,...x_m)$
                   \end{enumerate*}
-                  \item Diese Methode ist eine vom U.S. Federal Information Processing Standard (FIPS) zugelassene Methode zur pseudozufälligen Erzeugung von Schlüsseln und Initialisierungsvektoren zur Verwendung mit DES
+                  %\item Diese Methode ist eine vom U.S. Federal Information Processing Standard (FIPS) zugelassene Methode zur pseudozufälligen Erzeugung von Schlüsseln und Initialisierungsvektoren zur Verwendung mit DES
             \end{itemize*}
             \item Das RSA-PRBG ist ein CSPRBG unter der Annahme, dass das RSA-Problem unlösbar ist
             \begin{itemize*}
-                  \item Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge k
+                  \item Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge $k$
             \end{itemize*}
             \begin{enumerate*}
-                  \item Setup-Prozedur: Erzeuge zwei geheime Primzahlen $p, q$, die für die Verwendung mit RSA geeignet sind. Berechne $n=p\times q$ und $\phi=(p-1)\times(q-1)$. Wähle eine zufällige ganze Zahl e so, dass $1< e<\phi$ und $gcd(e,\phi)=1$
-                  \item Wähle eine zufällige ganze Zahl $y_0$ (den Keim) so, dass $y_0\in ,,1,n''$
-                  \item Für i von 1 bis k tun
+                  \item Setup-Prozedur: Erzeuge zwei geheime Primzahlen $p, q$, die für die Verwendung mit RSA geeignet sind. Berechne $n=p\times q$ und $\phi=(p-1)\times(q-1)$. Wähle eine zufällige ganze Zahl $e$ so, dass $1< e<\phi$ und $gcd(e,\phi)=1$
+                  \item Wähle eine zufällige ganze Zahl $y_0$ (Seed) so, dass $y_0\in ,,1,n''$
+                  \item Für $i$ von $1$ bis $k$ tun
                   \begin{enumerate*}
                         \item $y_i=(y_{i-1})^e\ mod\ n$
                         \item $z_i =$ das niedrigstwertige Bit von $y_i$
                   \end{enumerate*}
             \end{enumerate*}
             \begin{itemize*}
-                  \item Die Effizienz des Generators kann leicht verbessert werden, indem man die letzten j Bits von jedem $y_i$ nimmt, wobei $j=c\times lg(lg(n))$ und c eine Konstante ist
-                  \item Für eine gegebene Bitlänge m von n wurde jedoch noch kein Wertebereich für die Konstante c ermittelt, in dem der Algorithmus noch einen CSPRBG ergibt
+                  \item Die Effizienz des Generators kann leicht verbessert werden, indem man die letzten $j$ Bits von jedem $y_i$ nimmt, wobei $j=c\times lg(lg(n))$ und $c$ eine Konstante ist
+                  \item Für eine gegebene Bitlänge $m$ von $n$ wurde jedoch noch kein Wertebereich für die Konstante $c$ ermittelt, in dem der Algorithmus noch einen CSPRBG ergibt
             \end{itemize*}
-            \item Der Blum-Blum-Shub-PRBG ist ein CSPRBG unter der Annahme, dass das Problem der ganzzahligen Faktorisierung unlösbar ist:
+            \item Der Blum-Blum-Shub-PRBG ist ein CSPRBG unter der Annahme, dass das Problem der ganzzahligen Faktorisierung unlösbar ist
             \begin{itemize*}
-                  \item Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge k
+                  \item Ausgabe: eine pseudo-zufällige Bitfolge $z_1,z_2,...,z_k$ der Länge $k$
             \end{itemize*}
             \begin{enumerate*}
                   \item Setup-Prozedur: Erzeuge zwei große geheime und unterschiedliche Primzahlen $p,q$, so dass $p,q$ jeweils kongruent 3 modulo 4 sind, und lass $n=p\times q$
-                  \item Wähle eine zufällige ganze Zahl s (den Keim) so, dass $s\in ,,1, n-1''$ liegt, so dass $gcd(s,n)=1$ und $y_0=s^2\ mod\ n$
-                  \item Für i von 1 bis k tun
+                  \item Wähle eine zufällige ganze Zahl $s$ (Seed) so, dass $s\in ,,1, n-1''$ liegt, so dass $gcd(s,n)=1$ und $y_0=s^2\ mod\ n$
+                  \item Für $i$ von $1$ bis $k$ tun
                   \begin{enumerate*}
                         \item $y_i = (y_{i-1})^2\ mod\ n$
                         \item $z_i =$ das niedrigstwertige Bit von $y_i$
@@ -1944,42 +1941,33 @@
             \begin{itemize*}
                   \item Die Effizienz des Generators kann mit der gleichen Methode wie beim RSA-Generator verbessert werden, wobei ähnliche Einschränkungen für die Konstante c gelten
             \end{itemize*}
-            \item Dualer deterministischer Zufallsbitgenerator mit elliptischer Kurve:
+            \item Dualer deterministischer Zufallsbitgenerator mit elliptischer Kurve
             \begin{itemize*}
                   \item Basierend auf der Unlösbarkeit des Problems des diskreten Logarithmus elliptischer Kurven
-                  \item Vereinfachte Version: % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-dual-elliptic-curve-deterministic-random-bit-generator.png}
-                  \item Der Zustand t wird mit einem Generator P multipliziert, der x-Wert des neuen Punktes wird zu t'
-                  \item Multiplikation mit einem anderen Punkt Q r Bits der Ausgabe können erzeugt werden, die Anzahl der Bits hängt von der Kurve ab (zwischen 240 und 504 Bits)
+                  \item Vereinfachte Version: \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-dual-elliptic-curve-deterministic-random-bit-generator.png}
+                  \item Der Zustand $t$ wird mit einem Generator $P$ multipliziert, der x-Wert des neuen Punktes wird zu $t'$
+                  \item Multiplikation mit einem anderen Punkt $Qr$ Bits der Ausgabe können erzeugt werden, die Anzahl der Bits hängt von der Kurve ab %(zwischen 240 und 504 Bits)
                   \item Teil der Norm NIST 800-90A
-                  \item Sicherheit:
-                  \begin{itemize*}
-                        \item Es wurde gezeigt, dass Angreifer den Zustand t ableiten können, wenn P für eine Konstante e gleich eQ gewählt wird.
-                        \item Wir wissen nicht, wie die vordefinierten Punkte P und Q in NIST 800-90A abgeleitet werden, also Vorsicht
-                  \end{itemize*}
+                  \item Sicherheit:  Es wurde gezeigt, dass Angreifer den Zustand $t$ ableiten können, wenn $P$ für eine Konstante $e$ gleich $eQ$ gewählt wird.
+                  \item Wir wissen nicht, wie die vordefinierten Punkte $P$ und $Q$ in NIST 800-90A abgeleitet werden, also Vorsicht
             \end{itemize*}
       \end{itemize*}
 
       \subsection{CSPRNG-Sicherheit ist eine große Sache!}
       \begin{itemize*}
-            \item Im September 2006 wurde Debian versehentlich so verändert, dass nur
-            die Prozess-ID verwendet wurde, um den OpenSSL CSPRNG zu füttern
-            \begin{itemize*}
-                  \item Nur 32.768 mögliche Werte!
-                  \item Wurde bis Mai 2008 nicht entdeckt
-            \end{itemize*}
+            \item Im September 2006 wurde Debian versehentlich so verändert, dass nur die Prozess-ID verwendet wurde, um den OpenSSL CSPRNG zu füttern. Nur 32.768 mögliche Werte
             \item Ein Scan von etwa 23 Millionen TLS- und SSH-Hosts zeigte, dass
             \begin{itemize*}
-                  \item Mindestens 0,34\% der Hosts teilten Schlüssel aufgrund fehlerhafter RNGs
+                  \item Mindestens 0,34\% der Hosts teilten Schlüssel% aufgrund fehlerhafter RNGs
                   \item 0,50\% der gescannten TLS-Schlüssel aufgrund einer geringen Zufälligkeit kompromittiert werden konnten
-                  \item und 1,06\% der SSH-Hosts...
+                  \item und 1,06\% der SSH-Hosts
             \end{itemize*}
-            \item Überwachen Sie Ihren CSPRNG!
-            \begin{itemize*}
-                  \item Generieren Sie keine Zufallszahlen direkt nach dem Booten Ihres Systems
-                  \item Verwenden Sie blockierende RNGs, d.h. solche, die nicht fortfahren, bis sie genügend Entropie haben
-            \end{itemize*}
+            \item Überwache den verwendeten CSPRNG
+            \item Generiere keine Zufallszahlen direkt nach dem Booten% des Systems
+            \item Verwende blockierende RNGs, d.h. solche, die nicht fortfahren, bis sie genügend Entropie haben
       \end{itemize*}
 
+      \pagebreak
       \section{Kryptographische Protokolle}
       \begin{itemize*}
             \item Definition: Ein kryptographisches Protokoll ist definiert als eine

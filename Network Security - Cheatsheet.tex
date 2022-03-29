@@ -1326,15 +1326,14 @@
       \columnbreak
 
       \section{Modifikationsprüfwerte}
-      \subsection{Motivation}
       \begin{itemize*}
-            \item In der Datenkommunikation ist es üblich, eine Art Fehlererkennungscode für Nachrichten zu berechnen, mit dem der Empfänger überprüfen kann, ob eine Nachricht während der Übertragung verändert wurde.
-            \item Beispiele: Parität, Bit-Interleaved Parity, Cyclic Redundancy Check (CRC)
+            \item In Kommunikation üblich, eine Art Fehlererkennungscode für Nachrichten zu berechnen, mit dem Empfänger überprüfen können, ob eine Nachricht während der Übertragung verändert wurde.
+            \item Bsp: Parität, Bit-Interleaved Parity, Cyclic Redundancy Check
             \item Dies führt zu dem Wunsch, einen ähnlichen Wert zu haben, der es ermöglicht zu überprüfen, ob eine Nachricht während der Übertragung verändert wurde.
-            \item Es ist jedoch ein großer Unterschied, ob man davon ausgeht, dass die Nachricht durch mehr oder weniger zufällige Fehler oder absichtlich verändert wird:
-            \item Wenn jemand eine Nachricht, die mit einem CRC-Wert geschützt ist, absichtlich verändern will, kann er den CRC-Wert nach der Veränderung neu berechnen oder die Nachricht so verändern, dass sie den gleichen CRC-Wert ergibt.
+            \item großer Unterschied, ob man davon ausgeht, dass die Nachricht durch zufällige Fehler oder absichtlich verändert wird
+            \item Wenn jemand eine Nachricht, die mit einem CRC-Wert geschützt ist, absichtlich verändern will, kann er den CRC-Wert nach der Veränderung neu berechnen oder die Nachricht so verändern, dass sie den gleichen CRC-Wert ergibt
             \item Ein Änderungsprüfwert muss also einige zusätzliche Eigenschaften erfüllen, die es Angreifern unmöglich machen, ihn zu fälschen
-            \item Zwei Hauptkategorien von Modifikationsprüfwerten:
+            \item Zwei Hauptkategorien von Modifikationsprüfwerten
             \begin{itemize*}
                   \item Modifikationserkennungscode (MDC)
                   \item Nachrichten-Authentifizierungs-Code (MAC)
@@ -1343,73 +1342,61 @@
 
       \subsection{Kryptographische Hash-Funktionen}
       \begin{itemize*}
-            \item Definition: Hash-Funktion
-            \begin{itemize*}
-                  \item Eine Hash-Funktion ist eine Funktion h, die die folgenden zwei Eigenschaften hat:
-                  \begin{itemize*}
-                        \item Komprimierung: h bildet eine Eingabe x mit beliebiger endlicher Bitlänge auf eine Ausgabe $h(x)$ mit fester Bitlänge n ab.
-                        \item Einfachheit der Berechnung: Bei h und x ist es einfach, $h(x)$ zu berechnen.
-                  \end{itemize*}
-            \end{itemize*}
-            \item Definition: kryptografische Hash-Funktion
-            \begin{itemize*}
-                  \item Eine kryptografische Hash-Funktion h ist eine Hash-Funktion, die zusätzlich unter anderem die folgenden Eigenschaften erfüllt
-                  \item Pre-Image-Resistenz: für im Wesentlichen alle vorgegebenen Ausgaben y ist es rechnerisch nicht möglich, ein x zu finden, so dass $h(x)=y$
-                  \item Vorabbild-Resistenz: Bei x ist es rechnerisch nicht möglich, eine zweite Eingabe $x'$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
-                  \item Kollisionssicherheit: Es ist rechnerisch nicht möglich, ein beliebiges Paar $(x,x')$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
-                  \item Kryptographische Hash-Funktionen werden zur Berechnung von Modification Detection Codes (MDC) verwendet
-            \end{itemize*}
+            \item Definition: Hash-Funktion ist eine Funktion $h$ mit folgenden zwei Eigenschaften
+            \begin{description*}
+                  \item[Komprimierung] $h$ bildet eine Eingabe $x$ mit beliebiger endlicher Bitlänge auf eine Ausgabe $h(x)$ mit fester Bitlänge $n$ ab
+                  \item[Einfachheit] der Berechnung: Bei $h$ und $x$ ist es einfach, $h(x)$ zu berechnen
+            \end{description*}
+            \item Definition: kryptografische Hash-Funktion, ist eine Hash-Funktion, die zusätzlich folgende Eigenschaften erfüllt
+            \begin{description*}
+                  \item[Pre-Image-Resistenz] für im Wesentlichen alle vorgegebenen Ausgaben $y$ ist es rechnerisch nicht möglich, ein $x$ zu finden, so dass $h(x)=y$
+                  \item[Vorabbild-Resistenz] Bei $x$ ist es rechnerisch nicht möglich, eine zweite Eingabe $x'$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
+                  \item[Kollisionssicherheit] Es ist rechnerisch nicht möglich, ein beliebiges Paar $(x,x')$ mit $x\not= x'$ zu finden, so dass $h(x)=h(x')$
+            \end{description*}
+            \item Kryptographische Hash-Funktionen werden zur Berechnung von Modification Detection Codes (MDC) verwendet
       \end{itemize*}
 
       \subsection{Nachrichten-Authentifizierungs-Codes (MAC)}
       \begin{itemize*}
-            \item Definition: Nachrichten-Authentifizierungs-Code
-            \begin{itemize*}
-                  \item Ein Message-Authentication-Code-Algorithmus ist eine Familie von Funktionen $h_k$, die durch einen geheimen Schlüssel k parametrisiert sind und die folgenden Eigenschaften aufweisen:
-                  \begin{itemize*}
-                        \item Komprimierung: hk bildet eine Eingabe x beliebiger endlicher Bitlänge auf eine Ausgabe $h_k(x)$ fester Bitlänge ab, genannt MAC
-                        \item Einfache Berechnung: Bei k, x und einer bekannten Funktionsfamilie $h_k$ ist der Wert $h_k(x)$ einfach zu berechnen
-                        \item Berechnungsresistenz: für jeden festen, erlaubten, aber unbekannten Wert von k ist es bei null oder mehr Text-MAC-Paaren $(x_i, h_k(x_i))$ rechnerisch nicht möglich, ein Text-MAC-Paar $(x, h_k(x))$ für jede neue Eingabe $x\not= x_i$ zu berechnen
-                  \end{itemize*}
-                  \item Bitte beachten Sie, dass Rechenresistenz die Eigenschaft der Nicht-Wiederherstellung des Schlüssels impliziert, d.h. k kann nicht aus Paaren $(x_i,h_k(x_i))$ wiederhergestellt werden, aber Rechenresistenz kann nicht aus der Nicht-Wiederherstellung des Schlüssels abgeleitet werden, da der Schlüssel k nicht immer wiederhergestellt werden muss, um neue MACs zu fälschen
-            \end{itemize*}
+            \item ist eine Familie von Funktionen $h_k$, die durch einen geheimen Schlüssel $k$ parametrisiert sind und die folgenden Eigenschaften aufweisen
+            \begin{description*}
+                  \item[Komprimierung] $hk$ bildet eine Eingabe $x$ beliebiger endlicher Bitlänge auf eine Ausgabe $h_k(x)$ fester Bitlänge ab, genannt MAC
+                  \item[Einfache Berechnung] Bei $k$, $x$ und einer bekannten Funktionsfamilie $h_k$ ist der Wert $h_k(x)$ einfach zu berechnen
+                  \item[Berechnungsresistenz] für jeden festen, erlaubten, aber unbekannten Wert von $k$ ist es bei null oder mehr Text-MAC-Paaren $(x_i, h_k(x_i))$ rechnerisch nicht möglich, ein Text-MAC-Paar $(x, h_k(x))$ für jede neue Eingabe $x\not= x_i$ zu berechnen
+            \end{description*}
+            \item Bitte beachten Sie, dass Rechenresistenz die Eigenschaft der Nicht-Wiederherstellung des Schlüssels impliziert, d.h. k kann nicht aus Paaren $(x_i,h_k(x_i))$ wiederhergestellt werden, aber Rechenresistenz kann nicht aus der Nicht-Wiederherstellung des Schlüssels abgeleitet werden, da der Schlüssel $k$ nicht immer wiederhergestellt werden muss, um neue MACs zu fälschen
       \end{itemize*}
 
-      \subsection{Ein einfacher Angriff gegen einen unsicheren MAC}
+      \subsection{einfacher Angriff gegen unsicheren MAC}
       \begin{itemize*}
-            \item Betrachten wir zur Veranschaulichung die folgende MAC-Definition:
+            \item zur Veranschaulichung folgende MAC-Definition
             \begin{itemize*}
-                  \item Eingabe: Nachricht $m=(x_1,x_2,...,x_n)$, wobei $x_i$ 64-Bit-Werte sind, und Schlüssel k
+                  \item Eingabe: Nachricht $m=(x_1,x_2,...,x_n)$, wobei $x_i$ 64-Bit-Werte sind, und Schlüssel $k$
                   \item Berechne $\delta(m):= x_1\oplus x_2\oplus...\oplus x_n$, wobei $\oplus$ die bitweise Exklusiv-Oder-Verknüpfung bezeichnet
                   \item Ausgabe: MAC $C_k(m):= E_k(\delta(m))$ mit $E_k(x)$ für die DES-Verschlüsselung
             \end{itemize*}
-            \item Die Schlüssellänge beträgt 56 Bit und die MAC-Länge 64 Bit, so dass wir einen Aufwand von etwa $2^{55}$ Operationen erwarten würden, um den Schlüssel k zu erhalten und den MAC zu knacken (= Nachrichten fälschen zu können).
-            \item Leider ist die MAC-Definition unsicher:
+            \item Die Schlüssellänge beträgt 56 Bit und die MAC-Länge 64 Bit, so dass wir einen Aufwand von etwa $2^{55}$ Operationen erwarten würden, um den Schlüssel $k$ zu erhalten und den MAC zu knacken %(= Nachrichten fälschen zu können).
+            \item Leider ist die MAC-Definition unsicher
             \begin{itemize*}
-                  \item Angenommen, ein Angreifer Eve, der die zwischen Alice und Bob ausgetauschten Nachrichten fälschen will, erhält eine Nachricht $(m,C_k(m))$, die von Alice mit dem mit Bob geteilten geheimen Schlüssel k ,,geschützt'' wurde
-                  \item Eve kann eine Nachricht $m'$ konstruieren, die denselben MAC ergibt:
-                  \begin{itemize*}
-                        \item Sei $y_1,y_2,...,y_{n-1}$ ein beliebiger 64-Bit-Wert
-                        \item Definiere $y_n:= y_1\oplus y_2\oplus...\oplus y_{n-1}\oplus \delta(m)$, und $m':=(y_1,y_2,...,y_n)$
-                        \item Wenn Bob $(m',C_k(m))$ von Eve erhält, die vorgibt, Alice zu sein, wird er es als von Alice stammend akzeptieren, da $C_k(m)$ ein gültiger MAC für $m'$ ist
-                  \end{itemize*}
+                  \item Angenommen, ein Angreifer E, der die zwischen A und B ausgetauschten Nachrichten fälschen will, erhält eine Nachricht $(m,C_k(m))$, die von Alice mit dem mit Bob geteilten geheimen Schlüssel $k$ ,,geschützt'' wurde
+                  \item Eve kann eine Nachricht $m'$ konstruieren, die denselben MAC ergibt
+                  \item Sei $y_1,y_2,...,y_{n-1}$ ein beliebiger 64-Bit-Wert
+                  \item Definiere $y_n:= y_1\oplus y_2\oplus...\oplus y_{n-1}\oplus \delta(m)$ und $m':=(y_1,y_2,...,y_n)$
+                  \item Wenn B $(m',C_k(m))$ von E erhält, die vorgibt, A zu sein, wird er es als von A stammend akzeptieren, da $C_k(m)$ ein gültiger MAC für $m'$ ist
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Anwendungen für kryptographische Hash-Funktionen und MACs}
+      \subsection{Anwendungen für Hash-Funktionen und MACs}
       \begin{itemize*}
-            \item Wichtigste Anwendung, die zum ursprünglichen Entwurf führte: Integrität von Nachrichten
+            \item Integrität von Nachrichten
             \begin{itemize*}
-                  \item Ein MDC stellt einen digitalen Fingerabdruck dar, der mit einem privaten Schlüssel signiert werden kann, z. B. mit dem RSA- oder ElGamal-Algorithmus, und es ist nicht möglich, zwei Nachrichten mit demselben Fingerabdruck zu erstellen, so dass ein bestimmter signierter Fingerabdruck von einem Angreifer nicht wiederverwendet werden kann
-                  \item Ein MAC über eine Nachricht m bescheinigt direkt, dass der Absender der Nachricht im Besitz des geheimen Schlüssels k ist und die Nachricht ohne Kenntnis dieses Schlüssels nicht verändert worden sein kann.
+                  \item MDC stellt digitalen Fingerabdruck dar, der mit einem privaten Schlüssel signiert werden kann und es ist nicht möglich, zwei Nachrichten mit demselben Fingerabdruck zu erstellen%, so dass ein bestimmter signierter Fingerabdruck von einem Angreifer nicht wiederverwendet werden kann
+                  \item MAC über Nachricht $m$ bescheinigt direkt, dass der Absender der Nachricht im Besitz des geheimen Schlüssels $k$ ist und die Nachricht ohne Kenntnis dieses Schlüssels nicht verändert worden sein kann
             \end{itemize*}
-            \item Andere Anwendungen, die eine gewisse Vorsicht erfordern:
-            \begin{itemize*}
-                  \item Bestätigung von Wissen
-                  \item Schlüsselableitung
-                  \item Pseudo-Zufallszahlengenerierung
-            \end{itemize*}
-            \item Je nach Anwendung müssen weitere Anforderungen erfüllt werden:
+            \item Bestätigung von Wissen
+            \item Schlüsselableitung
+            \item Pseudo-Zufallszahlengenerierung
+            \item Je nach Anwendung weitere Anforderungen
             \begin{itemize*}
                   \item Partielle Vorabbild-Resistenz: auch wenn nur ein Teil der Eingabe, z.B. t Bit, unbekannt ist, sollte es im Durchschnitt $2^{t-1}$ Operationen benötigen, um diese Bits zu finden
             \end{itemize*}
@@ -1417,107 +1404,83 @@
 
       \subsection{Angriffe basierend auf dem Geburtstagsphänomen}
       \begin{itemize*}
-            \item Das Geburtstagsphänomen:
+            \item Geburtstagsphänomen: Wie viele Personen müssen sich in einem Raum befinden, damit die Wahrscheinlichkeit, dass es mindestens zwei Personen mit demselben Geburtstag gibt, größer als $0,5$ ist?
+            \item Definiere $P(n,k):= Pr$,,mindestens ein Duplikat in $k$ Elementen, wobei jedes Element einen von $n$ gleich wahrscheinlichen Werten zwischen 1 und $n$ annehmen kann ''
+            \item Definiere $Q(n,k):= Pr$,,kein Duplikat in $k$ Artikeln, jeder Artikel zwischen 1 und $n$''
             \begin{itemize*}
-                  \item Wie viele Personen müssen sich in einem Raum befinden, damit die Wahrscheinlichkeit, dass es mindestens zwei Personen mit demselben Geburtstag gibt, größer als 0,5 ist?
-                  \item Der Einfachheit halber lassen wir den 29. Februar beiseite und nehmen an, dass jeder Geburtstag gleich wahrscheinlich ist
-            \end{itemize*}
-            \item Definieren Sie $P(n,k):= Pr$,,mindestens ein Duplikat in k Elementen, wobei jedes Element einen von n gleich wahrscheinlichen Werten zwischen 1 und n annehmen kann ''
-            \item Definieren Sie $Q(n,k):= Pr$,,kein Duplikat in k Artikeln, jeder Artikel zwischen 1 und n ''
-            \begin{itemize*}
-                  \item Wir können das erste Element aus n möglichen Werten wählen, das zweite Element aus $n-1$ möglichen Werten, usw.
-                  \item Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten ohne Duplikate auszuwählen, ist also: $N=n \times (n-1)\times ...\times (n-k+1)= n!\backslash(n-k)!$
-                  \item Die Anzahl der verschiedenen Möglichkeiten, k Elemente aus n Werten auszuwählen, mit oder ohne Duplikate, ist: $n^k$
+                  \item das erste Element aus $n$ möglichen Werten wählen, das zweite Element aus $n-1$ möglichen Werten, usw.
+                  \item Die Anzahl der verschiedenen Möglichkeiten, $k$ Elemente aus $n$ Werten ohne Duplikate auszuwählen, ist also: $N=n \times (n-1)\times ...\times (n-k+1)= n!\backslash(n-k)!$
+                  \item Die Anzahl der verschiedenen Möglichkeiten, $k$ Elemente aus $n$ Werten auszuwählen, mit oder ohne Duplikate, ist $n^k$
                   \item Also, $Q(n,k)=N\backslash n^k=n!\backslash((n-k)! \times n^k)$
             \end{itemize*}
-            \item Wir haben: $P(n,k)=1-Q(n,k)=1-\frac{n!}{(n-k)!\times n^k}=1-\frac{n\times(n-1)\times...\times(n-k+1)}{n^k}=1-,,(1-\frac{1}{n})\times(1-\frac{2}{n})\times...\times(1-\frac{k-1}{n})''$
-            \item Wir werden die folgende Ungleichung verwenden: $(1-x) \leq e^{-x}$ für alle $x \geq 0$
-            \item So: $P(n,k)>1-,,(e^{-1/n})\times(e^{-2/n})\times...\times(e^{-(k-1)/n})''=1-e^{\frac{-k\times(k-1)}{2n}}$
-            \item Im letzten Schritt haben wir die Gleichheit: $1+2+...+(k-1)=(k^2 - k)\backslash 2$
-            \item Kehren wir zu unserer ursprünglichen Frage zurück: Wie viele Personen k müssen sich in einem Raum befinden, damit mindestens zwei Personen mit demselben Geburtstag (von $n=365$ möglichen) mit der Wahrscheinlichkeit $\geq 0,5$ vorhanden sind?
+            \item Wir haben: $P(n,k)=1-Q(n,k)=1-\frac{n!}{(n-k)!\times n^k}$ %$=1-\frac{n\times(n-1)\times...\times(n-k+1)}{n^k}=1-,,(1-\frac{1}{n})\times(1-\frac{2}{n})\times...\times(1-\frac{k-1}{n})''$
+            \item folgende Ungleichung $(1-x) \leq e^{-x}$ für alle $x \geq 0$
+            \item So: $P(n,k)>1-e^{\frac{-k\times(k-1)}{2n}}$ %$=1-[(e^{-1/n})\times(e^{-2/n})\times...\times(e^{-(k-1)/n})]$
+            \item Im letzten Schritt: $1+2+...+(k-1)=(k^2 - k)\backslash 2$
+            \item Geburtstagsphänomen: $n=365$ mit Wahrscheinlichkeit $\geq 0,5$?
             \begin{itemize*}
-                  \item Wir wollen also lösen: $\frac{1}{2}=1-e^{\frac{-k\times(k-1)}{2n}}\Leftrightarrow 2=e^{\frac{k\times(k-1)}{2n}}\Leftrightarrow ln(2)=\frac{k\times(k-1)}{2n}$
-                  \item Für große k können wir $k\times(k-1)$ durch $k^2$ approximieren, und wir erhalten: $k=\sqrt{2 ln(2)n}\approx 1,18\sqrt{n}$
-                  \item Für $n=365$ erhalten wir $k=22,54$, was der richtigen Antwort recht nahe kommt 23
+                  \item $\frac{1}{2}=1-e^{\frac{-k\times(k-1)}{2n}}\Leftrightarrow 2=e^{\frac{k\times(k-1)}{2n}}\Leftrightarrow ln(2)=\frac{k\times(k-1)}{2n}$
+                  \item für große $k$ kann $k\times(k-1)$ durch $k^2$ approximiert werden und erhalten: $k=\sqrt{2 ln(2)n}\approx 1,18\sqrt{n}$
+                  \item für $n=365$ wird $k=22,54$%, was der richtigen Antwort recht nahe kommt 23
             \end{itemize*}
-            \item Was hat das mit MDCs zu tun?
-            \item Wir haben gezeigt, dass bei n möglichen unterschiedlichen Werten die Anzahl k der Werte, die man zufällig wählen muss, um mindestens ein Paar identischer Werte zu erhalten, in der Größenordnung von $\sqrt{n}$ liegt.
-            \item Betrachten wir nun den folgenden Angriff
+            \item bei $n$ möglichen unterschiedlichen Werten liegt die Anzahl $k$ der Werte, die man zufällig wählen muss, um mindestens ein Paar identischer Werte zu erhalten, in der Größenordnung von $\sqrt{n}$
+            \item Betrachten folgenden Angriff
             \begin{itemize*}
-                  \item Eve möchte, dass Alice eine Nachricht m1 signiert, die Alice normalerweise nie signieren würde. Eve weiß, dass Alice die Funktion MDC1(m) verwendet, um eine MDC von m zu berechnen, die eine Länge von r Bit hat, bevor sie diese MDC mit ihrem privaten Schlüssel signiert, was ihre digitale Signatur ergibt.
-                  \item Zunächst erzeugt Eve ihre Nachricht m1. Würde sie nun MDC1(m1) berechnen und dann versuchen, eine zweite harmlose Nachricht m2 zu finden, die zu demselben MDC führt, wäre ihr Suchaufwand im durchschnittlichen Fall in der Größenordnung von $2^{(r-1)}$.
-                  \item Stattdessen nimmt sie eine beliebige harmlose Nachricht m2 und beginnt, Variationen m1' und m2' der beiden Nachrichten zu produzieren, z.B. durch Hinzufügen von -Kombinationen oder Variationen mit semantisch identischen Wörtern.
+                  \item E möchte, dass A eine Nachricht $m1$ signiert, die A normalerweise nie signieren würde. E weiß, dass A die Funktion $MDC1(m)$ verwendet, um eine MDC von $m$ zu berechnen, die eine Länge von $r$ Bit hat, bevor sie diese MDC mit ihrem privaten Schlüssel signiert, was ihre digitale Signatur ergibt
+                  \item Zunächst erzeugt E ihre Nachricht $m1$. Würde sie nun $MDC1(m1)$ berechnen und dann versuchen, eine zweite harmlose Nachricht $m2$ zu finden, die zu demselben MDC führt, wäre ihr Suchaufwand im durchschnittlichen Fall in der Größenordnung von $2^{(r-1)}$
+                  \item Stattdessen nimmt sie eine beliebige harmlose Nachricht $m2$ und beginnt, Variationen $m1'$ und $m2'$ der beiden Nachrichten zu produzieren%, z.B. durch Hinzufügen von -Kombinationen oder Variationen mit semantisch identischen Wörtern.
             \end{itemize*}
-            \item Wie wir aus dem Geburtstagsphänomen gelernt haben, muss sie nur etwa $\sqrt{2^r}=2^{r/2}$ Variationen von jeder der beiden Nachrichten produzieren, so dass die Wahrscheinlichkeit, dass sie zwei Nachrichten m1' und m2' mit demselben MDC erhält, mindestens 0,5 beträgt
+            \item E muss nur etwa $\sqrt{2^r}=2^{r/2}$ Variationen von jeder der beiden Nachrichten produzieren, so dass die Wahrscheinlichkeit, dass sie zwei Nachrichten $m1'$ und $m2'$ mit demselben MDC erhält, mindestens $0,5$ beträgt
             \item Da sie die Nachrichten zusammen mit ihren MDCs speichern muss, um eine Übereinstimmung zu finden, liegt der Speicherbedarf ihres Angriffs in der Größenordnung von $2^{\frac{r}{2}}$ und der Rechenzeitbedarf in der gleichen Größenordnung
-            \item Nachdem sie m1' und m2' mit $MDC1(m1')=MDC1(m2')$ gefunden hat, fordert sie Alice auf, $m2'$ zu signieren. Eve kann dann diese Unterschrift nehmen und behaupten, dass Alice $m1'$ unterschrieben hat.
-            \item Angriffe nach dieser Methode werden Geburtstagsangriffe genannt.
-            \item Nehmen wir nun an, dass Alice RSA mit Schlüsseln der Länge 2048 Bit und eine kryptographische Hashfunktion verwendet, die MDCs der Länge 96 Bit erzeugt.
-            \item Eves durchschnittlicher Aufwand, zwei Nachrichten m1' und m2' wie oben beschrieben zu erzeugen, liegt in der Größenordnung von $2^{48}$, was heute machbar ist. Das Knacken von RSA-Schlüsseln der Länge 2048 Bit ist mit den heutigen Algorithmen und Technologien bei weitem nicht möglich.
+            \item Nachdem sie $m1'$ und $m2'$ mit $MDC1(m1')=MDC1(m2')$ gefunden hat, fordert sie A auf, $m2'$ zu signieren. E kann dann diese Unterschrift nehmen und behaupten, dass A $m1'$ unterschrieben hat
+            \item diese Methode wird Geburtstagsangriff genannt
+            \item Bsp: A nutzt RSA mit $2048$Bit Schlüsseln und kryptographische Hashfunktion mit $96$Bit Länge. E durchschnittlicher Aufwand, zwei Nachrichten $m1'$ und $m2'$ zu erzeugen, liegt in Größenordnung $2^{48}$ (heute machbar) %Das Knacken von RSA-Schlüsseln der Länge 2048 Bit ist mit den heutigen Algorithmen und Technologien bei weitem nicht möglich.
       \end{itemize*}
 
       \subsection{Übersicht über die gebräuchlichen MDCs}
       \begin{itemize*}
-            \item Kryptografische Hash-Funktionen zur Erstellung von MDCs:
-            \begin{itemize*}
-                  \item Message Digest 5 (MD5):
+            \item Kryptografische Hash-Funktionen zur Erstellung von MDCs
+            \begin{description*}
+                  \item[Message Digest 5] (MD5)  Erfunden von R. Rivest
+                  \item[Sicherer Hash-Algorithmus 1] (SHA-1) von NSA
+                  \item[Sicherer Hash-Algorithmus 2] (SHA-2, SHA-256, SHA-512)
                   \begin{itemize*}
-                        \item Erfunden von R. Rivest
-                        \item Nachfolger von MD
-                  \end{itemize*}
-                  \item Sicherer Hash-Algorithmus 1 (SHA-1):
-                  \begin{itemize*}
-                        \item Erfunden von der National Security Agency (NSA)
-                        \item Der Entwurf wurde von MD inspiriert.
-                  \end{itemize*}
-                  \item Sicherer Hash-Algorithmus 2 (SHA-2, auch SHA-256 und SHA-512)
-                  \begin{itemize*}
-                        \item Ebenfalls von der National Security Agency (NSA) entwickelt
-                        \item Auch Merkle-Dåmgard-Verfahren
                         \item Größere Blockgröße \& komplexere Rundenfunktion
                   \end{itemize*}
-                  \item Sicherer Hash-Algorithmus 3 (SHA-3, Keccak)
+                  \item[Sicherer Hash-Algorithmus 3] (SHA-3, Keccak)
                   \begin{itemize*}
                         \item Gewinner eines offenen Wettbewerbs
                         \item Sogenannte Sponge-Konstruktion
                         \item Vielseitiger als frühere Hash-Funktionen
                   \end{itemize*}
-            \end{itemize*}
-            \item Nachrichten-Authentifizierungs-Codes (MACs):
+            \end{description*}
+            \item Nachrichten-Authentifizierungs-Codes (MACs)
             \begin{itemize*}
-                  \item DES-CBC-MAC:
+                  \item DES-CBC-MAC
                   \begin{itemize*}
                         \item Verwendet den Data Encryption Standard im Cipher Block Chaining Modus
-                        \item Im Allgemeinen kann die CBC-MAC-Konstruktion mit jeder Blockchiffre verwendet werden.
+                        \item allgemein kann CBC-MAC-Konstruktion mit jeder Blockchiffre verwendet werden
                   \end{itemize*}
-                  \item MACs, die aus MDCs aufgebaut sind:
-                  \begin{itemize*}
-                        \item Dieser sehr verbreitete Ansatz wirft einige kryptografische Bedenken auf, da er einige implizite, aber nicht verifizierte Annahmen über die Eigenschaften der MDCs trifft.
-                  \end{itemize*}
+                  \item MACs, die aus MDCs aufgebaut sind (sehr verbreitet)
+                  %\begin{itemize*}
+                  %      \item Dieser sehr verbreitete Ansatz wirft einige kryptografische Bedenken auf, da er einige implizite, aber nicht verifizierte Annahmen über die Eigenschaften der MDCs trifft.
+                  %\end{itemize*}
             \end{itemize*}
             \item Authentifizierte Verschlüsselung mit zugehörigen Daten (AEAD)
-            \begin{itemize*}
-                  \item Galois-Counter-Verfahren (GCM)
-                  \begin{itemize*}
-                        \item Verwendet eine Blockchiffre zur Verschlüsselung und Authentifizierung von Daten
-                        \item Schnell in Netzwerkanwendungen
-                  \end{itemize*}
-                  \item Sponge Wrap
-                  \begin{itemize*}
-                        \item Verwendet eine SHA-3 ähnliche Hash-Funktion zur Verschlüsselung und Authentifizierung von Daten
-                  \end{itemize*}
-            \end{itemize*}
+            \begin{description*}
+                  \item[Galois-Counter-Verfahren] (GCM) Verwendet eine Blockchiffre zur Verschlüsselung und Authentifizierung von Daten
+                  \item[Sponge Wrap] Verwendet eine SHA-3 ähnliche Hash-Funktion zur Verschlüsselung und Authentifizierung von Daten
+            \end{description*}
       \end{itemize*}
 
-
-      \subsection{Gemeinsame Struktur von kryptografischen Hash-Funktionen}
+      \subsection{Struktur von kryp. Hash-Funktionen}
       \begin{itemize*}
-            \item So wie viele der heutigen Blockchiffren der allgemeinen Struktur eines Feistel-Netzwerks folgen, folgen auch viele der heute verwendeten kryptografischen Hash-Funktionen einer gemeinsamen Struktur, der sogenannten Merkle-Dåmgard-Struktur:
+            \item viele der heute verwendeten kryptografischen Hash-Funktionen folgen einer gemeinsamen Struktur, der sogenannten Merkle-Dåmgard-Struktur
             \begin{itemize*}
-                  \item Sei y eine beliebige Nachricht. Normalerweise wird die Länge der Nachricht an die Nachricht angehängt und auf ein Vielfaches einer Blockgröße b aufgefüllt. Bezeichnen wir $(y_0,y_1,...,y_{L-1})$ die resultierende Nachricht, die aus L Blöcken der Größe b
-                  \item Die allgemeine Struktur ist wie folgt abgebildet: % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-feistel.png}
-                  \item CV ist ein Verkettungswert, mit $CV_0:= IV$ und $MDC(y) := CV_L$
-                  \item f ist eine spezifische Kompressionsfunktion, die $(n+b)$ Bit auf n Bit komprimiert
+                  \item Sei $y$ eine beliebige Nachricht. Normalerweise wird die Länge der Nachricht an die Nachricht angehängt und auf ein Vielfaches einer Blockgröße $b$ aufgefüllt. Bezeichnen wir $(y_0,y_1,...,y_{L-1})$ die resultierende Nachricht, die aus $L$ Blöcken der Größe $b$
+                  \item Die allgemeine Struktur ist wie folgt abgebildet: \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-feistel.png}
+                  \item $CV$ ist Verkettungswert mit $CV_0:=IV$ und $MDC(y):=CV_L$
+                  \item $f$ ist spezifische Kompressionsfunktion, die $(n+b)$ Bit auf $n$ Bit komprimiert
             \end{itemize*}
             \item Die Hash-Funktion H lässt sich wie folgt zusammenfassen:
             \begin{itemize*}
@@ -1525,125 +1488,106 @@
                   \item $CV_i = f(CV_{i -1}, y_{i-1}) \quad\quad 1\leq i \leq L$
                   \item $H(y) = CV_L$
             \end{itemize*}
-            \item Es wurde gezeigt, dass, wenn die Kompressionsfunktion f kollisionssicher ist, die resultierende iterierte Hash-Funktion H ebenfalls kollisionssicher ist.
-            \item Die Kryptoanalyse kryptographischer Hash-Funktionen konzentriert sich daher auf die interne Struktur der Funktion f und die Suche nach effizienten Techniken zur Erzeugung von Kollisionen bei einer einzigen Ausführung von f
-            \item In erster Linie durch Geburtstagsangriffe motiviert, ist ein gängiger Mindestvorschlag für n , die Bitlänge des Hashwerts, 160 Bit, da dies einen Aufwand der Größenordnung $2^{80}$ für einen Angriff impliziert, der heute als undurchführbar gilt
+            \item Es wurde gezeigt, dass, wenn die Kompressionsfunktion $f$ kollisionssicher ist, die resultierende iterierte Hash-Funktion $H$ ebenfalls kollisionssicher ist
+            \item Kryptoanalyse krypt. Hash-Funktionen konzentriert sich auf interne Struktur der Funktion $f$ und Suche nach effizienten Techniken zur Erzeugung von Kollisionen bei einer einzigen Ausführung von $f$
+            \item gängiger Mindestvorschlag für $n$, die Bitlänge des Hashwerts, $160$Bit, da dies einen Aufwand der Größenordnung $2^{80}$ für einen Angriff impliziert, der heute als undurchführbar gilt
       \end{itemize*}
 
       \subsection{Der Message Digest 5}
       \begin{itemize*}
             \item MD5 folgt der zuvor skizzierten allgemeinen Struktur
+            \item Nachricht $y$ wird mit einer ,,1'' aufgefüllt, gefolgt von 0 bis 511 ,,0'' Bits, so dass die Länge der resultierenden Nachricht kongruent $448\ mod\ 512$ ist
+            \item Länge der ursprünglichen Nachricht wird als $64$Bit-Wert hinzugefügt, so dass eine Nachricht entsteht, deren Länge ein ganzzahliges Vielfaches von $512$Bit ist
+            \item diese neue Nachricht wird in Blöcke der Länge $b=512$Bit unterteilt.
+            \item die Länge des Verkettungswertes ist $n=128$Bit
+            \item Verkettungswert ist strukturiert als vier 32-Bit-Register A,B,C,D
+            \item Initialisierung
             \begin{itemize*}
-                  \item Die Nachricht y wird mit einer ,,1'' aufgefüllt, gefolgt von 0 bis 511 ,,0'' Bits, so dass die Länge der resultierenden Nachricht kongruent 448 modulo 512 ist
-                  \item Die Länge der ursprünglichen Nachricht wird als 64-Bit-Wert hinzugefügt, so dass eine Nachricht entsteht, deren Länge ein ganzzahliges Vielfaches von 512 Bit ist.
-                  \item Diese neue Nachricht wird in Blöcke der Länge $b=512$ Bit unterteilt.
-                  \item Die Länge des Verkettungswertes ist $n=128$ Bit
-                  \begin{itemize*}
-                        \item Der Verkettungswert ist ,,strukturiert'' als vier 32-Bit-Register A, B, C, D
-                        \item Initialisierung:
-                        \begin{itemize*}
-                              \item A := 0x 01 23 45 67
-                              \item B := 0x 89 AB CD EF
-                              \item C := 0x FE DC BA 98
-                              \item D := 0x 76 54 32 10
-                        \end{itemize*}
-                  \end{itemize*}
-                  \item Jeder Block der Nachricht $y_i$ wird mit dem Verkettungswert $CV_i$ mit der Funktion f verarbeitet, die intern durch 4 Runden zu je 16 Schritten realisiert ist
-                  \begin{itemize*}
-                        \item Jede Runde ist ähnlich aufgebaut und verwendet eine Tabelle T, die 64 konstante Werte von je 32 Bit enthält,
-                        \item Jede der vier Runden verwendet eine bestimmte logische Funktion g
-                  \end{itemize*}
+                  \item A := 0x 01 23 45 67,$\quad$ B := 0x 89 AB CD EF
+                  \item C := 0x FE DC BA 98,$\quad$ D := 0x 76 54 32 10
             \end{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-md5.png}
+            \item Jeder Block der Nachricht $y_i$ wird mit dem Verkettungswert $CV_i$ mit der Funktion f verarbeitet, die intern durch 4 Runden zu je 16 Schritten realisiert ist
             \begin{itemize*}
-                  \item Die Funktion g ist eine von vier verschiedenen logischen Funktionen
-                  \item $y_i,,k''$ bezeichnet das k-te 32-Bit-Wort des Nachrichtenblocks i
-                  \item $T[j]$ ist der j-te Eintrag der Tabelle t, wobei j bei jedem Schritt modulo 64 inkrementiert wird
-                  \item CLS s bezeichnet die zyklische Linksverschiebung um s Bits, wobei s einem bestimmten Schema folgt.
+                  \item Jede Runde ist ähnlich aufgebaut und verwendet eine Tabelle $T$, die 64 konstante Werte von je 32 Bit enthält,
+                  \item Jede der vier Runden verwendet eine bestimmte logische Funktion g
             \end{itemize*}
-            \item Der MD5-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks.
-            \item Sicherheit von MD5:
+            \item \includegraphics[width=.4\linewidth]{Assets/NetworkSecurity-md5.png}
+            \item Die Funktion g ist eine von vier verschiedenen logischen Funktionen
+            \item $y_i,,k''$ bezeichnet das k-te $32$Bit-Wort des Nachrichtenblocks $i$
+            \item $T[j]$ ist der j-te Eintrag der Tabelle $t$, wobei $j$ bei jedem Schritt $mod\ 64$ inkrementiert wird
+            \item CLS s bezeichnet die zyklische Linksverschiebung um $s$ Bits, wobei $s$ einem bestimmten Schema folgt
+            \item Der MD5-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks
+            \item Sicherheit von MD5
             \begin{itemize*}
-                  \item Jedes Bit des 128-Bit-Hash-Codes ist eine Funktion eines jeden Eingabebits
-                  \item 1996 veröffentlichte H. Dobbertin einen Angriff, der es erlaubt, eine Kollision für die Funktion f zu erzeugen (realisiert durch die oben beschriebenen 64 Schritte).
-                  \item Es dauerte bis 2004, bis eine erste Kollision gefunden wurde
-                  \item Inzwischen ist es möglich, Kollisionen innerhalb von Sekunden auf allgemeiner Hardware zu erzeugen
-                  \item MD5 darf nicht in Betracht gezogen werden, wenn Kollisionssicherheit erforderlich ist!
-                  \begin{itemize*}
-                        \item Dies ist oft der Fall!
-                        \item Beispiele: Zwei Postskripte mit unterschiedlichen Texten, aber gleichen Hashes, Zertifikate, eines für eine gesicherte Domain und eines für eine eigene Zertifizierungsstelle, Jede Nachricht, die erweiterbar ist
-                  \end{itemize*}
-                  \item Die Resistenz gegen Preimage-Angriffe ist mit 2123.4 Berechnungen noch ok
+                  \item Jedes Bit des $128$Bit-Hash-Codes ist eine Funktion eines jeden Eingabebits
+                  \item 1996 veröffentlichte H. Dobbertin einen Angriff, der es erlaubt, eine Kollision für die Funktion f zu erzeugen %(realisiert durch die oben beschriebenen 64 Schritte).
+                  \item dauerte bis 2004 bis eine erste Kollision gefunden wurde
+                  \item Inzwischen möglich Kollisionen innerhalb von Sekunden auf allgemeiner Hardware zu erzeugen
+                  \item MD5 darf nicht in Betracht gezogen werden, wenn Kollisionssicherheit erforderlich ist
+                  \item Die Resistenz gegen Preimage-Angriffe ist mit $2123.4$ Berechnungen noch ok
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Der sichere Hash-Algorithmus SHA-1}
       \begin{itemize*}
-            \item Auch SHA-1 folgt der gleichen Struktur wie oben beschrieben:
+            \item Auch SHA-1 folgt der gleichen Struktur wie oben
+            \item SHA-1 arbeitet mit $512$Bit-Blöcken und erzeugt einen $160$Bit-Hash-Wert
+            \item Design vom MD4-Algorithmus inspiriert, Initialisierung im Grunde dieselbe wie MD5
             \begin{itemize*}
-                  \item SHA-1 arbeitet mit 512-Bit-Blöcken und erzeugt einen 160-Bit-Hash-Wert.
-                  \item Da sein Design auch vom MD4-Algorithmus inspiriert wurde, ist seine Initialisierung im Grunde dieselbe wie die von MD5:
+                  \item Die Daten werden aufgefüllt, ein Längenfeld wird hinzugefügt und die resultierende Nachricht wird als Blöcke der Länge $512$Bit verarbeitet
+                  \item Verkettungswert als fünf $32$Bit-Register A,B,C,D,E
+                  \item Initialisierung
                   \begin{itemize*}
-                        \item Die Daten werden aufgefüllt, ein Längenfeld wird hinzugefügt und die resultierende Nachricht wird als Blöcke der Länge 512 Bit verarbeitet.
-                        \item Der Verkettungswert ist als fünf 32-Bit-Register A, B, C, D, E strukturiert
-                        \item Initialisierung:
-                        \begin{itemize*}
-                              \item A = 0x 67 45 23 01
-                              \item B = 0x EF CD AB 89
-                              \item C = 0x 98 BA DC FE
-                              \item D = 0x 10 32 54 76
-                              \item E = 0x C3 D2 E1 F
-                        \end{itemize*}
-                        \item Die Werte werden im Big-Endian-Format gespeichert.
+                        \item A = 0x 67 45 23 01, $\quad$ B = 0x EF CD AB 89
+                        \item C = 0x 98 BA DC FE, $\quad$ D = 0x 10 32 54 76
+                        \item E = 0x C3 D2 E1 F0
                   \end{itemize*}
-                  \item Jeder Block yi der Nachricht wird zusammen mit CVi in einem Modul verarbeitet, das die Kompressionsfunktion f in vier Runden zu je 20 Schritten realisiert.
-                  \begin{itemize*}
-                        \item Die Runden haben eine ähnliche Struktur, aber jede Runde verwendet eine andere primitive logische Funktion $f_1, f_2, f_3, f_4$.
-                        \item Bei jedem Schritt wird eine feste additive Konstante $K_t$ verwendet, die während einer Runde unverändert bleibt
-                  \end{itemize*}
+                  \item Die Werte werden im Big-Endian-Format gespeichert
             \end{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-sha1.png}
+            \item Jeder Block $y_i$ der Nachricht wird zusammen mit $CV_i$ in einem Modul verarbeitet, das die Kompressionsfunktion $f$ in vier Runden zu je 20 Schritten realisiert
+            \begin{itemize*}
+                  \item Runden haben ähnliche Struktur, aber jede Runde verwendet eine andere primitive logische Funktion $f_1, f_2, f_3, f_4$
+                  \item Bei jedem Schritt wird eine feste additive Konstante $K_t$ verwendet, die während einer Runde unverändert bleibt
+            \end{itemize*}
+            \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-sha1.png}
             \begin{itemize*}
                   \item $t\in{0,...,15}\Rightarrow W_t:= y_i,,t''$
                   \item $t\in{16,...,79}\Rightarrow W_t:=CLS_1(W_{t-16}\oplus W_{t-14}\oplus W_{t-8} \oplus W_{t-3})$
-                  \item Nach Schritt 79 wird jedes Register A, B, C, D, E modulo $2^{32}$ mit dem Wert des entsprechenden Registers vor Schritt 0 addiert, um $CV_{i+1}$ zu berechnen
+                  \item Nach Schritt 79 wird jedes Register A,B,C,D,E modulo $2^{32}$ mit dem Wert des entsprechenden Registers vor Schritt 0 addiert, um $CV_{i+1}$ zu berechnen
             \end{itemize*}
-            \item Der SHA-1-MDC über eine Nachricht ist der Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks.
-            \item Vergleich zwischen SHA-1 und MD5:
+            \item SHA-1-MDC über Nachricht ist Inhalt des Verkettungswertes CV nach Verarbeitung des letzten Nachrichtenblocks
+            \item Vergleich zwischen SHA-1 und MD5
             \begin{itemize*}
-                  \item Geschwindigkeit: SHA-1 ist etwa 25\% langsamer als MD5 (CV ist etwa 25\% größer)
-                  \item Einfachheit und Kompaktheit: beide Algorithmen sind einfach zu beschreiben und zu implementieren und erfordern keine großen Programme oder Ersetzungstabellen
+                  \item Geschwindigkeit: SHA-1 ist etwa 25\% langsamer als MD5 %(CV ist etwa 25\% größer)
+                  \item Einfachheit und Kompaktheit: beide Algorithmen einfach zu beschreiben und zu implementieren und erfordern keine großen Programme oder Ersetzungstabellen
             \end{itemize*}
-            \item Sicherheit von SHA-1:
+            \item Sicherheit von SHA-1
             \begin{itemize*}
-                  \item Da SHA-1 MDCs der Länge 160 Bit erzeugt, wird erwartet, dass es eine bessere Sicherheit gegen Brute-Force- und Geburtstagsangriffe bietet als MD5.
+                  \item SHA-1 MDCs der Länge 160 Bit, bessere Sicherheit gegen Brute-Force- und Geburtstagsangriffe erwartet als MD5
                   \item Einige inhärente Schwächen von Merkle-Dåmgard-Konstruktionen sind vorhanden
                   \item Im Februar 2005 veröffentlichten X. Wang et. al. einen Angriff, der es erlaubt, eine Kollision mit einem Aufwand von $2^{69}$ zu finden, der in den folgenden Monaten auf $2^{63}$ verbessert wurde
-                  \item Die Forschung ging weiter und im Februar 2017 wurde die erste tatsächliche Kollision gefunden (demonstriert mit einem veränderten PDF-Dokument)
+                  \item Die Forschung ging weiter und im Februar 2017 wurde die erste tatsächliche Kollision gefunden %(demonstriert mit einem veränderten PDF-Dokument)
             \end{itemize*}
             \item SHA-2-Familie
             \begin{itemize*}
-                  \item Im Jahr 2001 veröffentlichte das NIST einen neuen Standard FIPS PUB 180-2, der neue Varianten mit den Bezeichnungen SHA-256, SHA-384 und SHA-512 mit 256, 384 und 512 Bits enthält.
-                  \item SHA-224 wurde im Jahr 2004 hinzugefügt
+                  \item 2001 veröffentlichte das NIST neuen Standard FIPS PUB 180-2 mit Bezeichnungen SHA-256, SHA-384 und SHA-512 mit 256, 384 und 512 Bits
+                  \item SHA-224 wurde 2004 hinzugefügt
                   \item SHA-224 und SHA-384 sind verkürzte Versionen von SHA-256 und SHA-512 mit unterschiedlichen Initialisierungswerten
                   \item SHA-2 verwendet ebenfalls die Merkle-Dåmgard-Konstruktion mit einer Blockgröße von 512 Bit (SHA-256) und 1024 Bit (SHA-512)
                   \item Der interne Zustand ist in 8 Registern von 32 Bit (SHA-256) und 64 Bit (SHA-512) organisiert
                   \item 64 Runden (SHA-256) oder 80 Runden (SHA-512)
-            \end{itemize*}
-            \item Ein Schritt
-            \begin{itemize*}
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-sha-2.png}
-                  \item $t\in{0, ..., 15}\Rightarrow W_t:=y_i,,t''$
-                  \item $t\in{16, ..., r}\Rightarrow W_t:=W_{t-16}\oplus \delta_0(W_{t-15})\oplus W_{t-7}\oplus\delta_1(W_{t-2})$
-                  \item $K_t$ ist der gebrochene Teil der Kubikwurzel aus der t-ten Primzahl
-                  \item Die ROTR- und Funktionen XOR-verknüpfen verschiedene Verschiebungen des Eingangswertes
-                  \item Ch und Maj sind logische Kombinationen der Eingabewerte
-            \end{itemize*}
-            \item SHA-2-Familie
-            \begin{itemize*}
+                  \item Ein Schritt
+                  \begin{itemize*}
+                        \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-sha-2.png}
+                        \item $t\in{0, ..., 15}\Rightarrow W_t:=y_i,,t''$
+                        \item $t\in{16, ..., r}\Rightarrow W_t:=W_{t-16}\oplus \delta_0(W_{t-15})\oplus W_{t-7}\oplus\delta_1(W_{t-2})$
+                        \item $K_t$ ist der gebrochene Teil der Kubikwurzel aus der t-ten Primzahl
+                        \item Die ROTR- und Funktionen XOR-verknüpfen verschiedene Verschiebungen des Eingangswertes
+                        \item $Ch$ und $Maj$ sind logische Kombinationen der Eingabewerte
+                  \end{itemize*}
                   \item Alles in allem sehr ähnlich zu SHA-1
-                  \item Aufgrund der Größe und der komplizierteren Rundungsfunktionen etwa 30-50 Prozent langsamer als SHA-1 (variiert für 64-Bit- und 32-Bit-Systeme!)
-                  \item Sicherheitsdiskussion:
+                  \item Aufgrund der Größe und komplizierteren Rundungsfunktionen etwa 30-50\% langsamer als SHA-1
+                  \item Sicherheitsdiskussion
                   \begin{itemize*}
                         \item Bereits 2004 wurde entdeckt, dass eine vereinfachte Version des Algorithmus (mit XOR statt Addition und symmetrischen Konstanten) hochkorrelierte Ausgaben erzeugt
                         \item Für rundenreduzierte Versionen von SHA-2 gibt es Pre-Image-Angriffe, die schneller sind als Brute-Force, aber sehr unpraktisch
@@ -1655,47 +1599,42 @@
 
       \subsection{Der sichere Hash-Algorithmus SHA-3}
       \begin{itemize*}
-            \item Sicherheitsbedenken bezüglich SHA-1 und SHA-2 führten zu einem offenen Wettbewerb des NIST, der 2007 begann
+            \item Sicherheitsbedenken bezüglich SHA-1 und SHA-2
             \begin{itemize*}
-                  \item 5 Finalisten ohne nennenswerte Schwächen
-                  \item Oktober 2012: NIST gibt bekannt, dass Keccak zu SHA-3 wird
-                  \item 4 europäische Erfinder
-                  \item Einer davon ist Joan Daemen, der AES mitentwickelt hat
+                  \item Oktober 2012: Keccak wird zu SHA-3
                   \item SHA-3 ist sehr schnell, besonders in der Hardware
                   \item Sehr gut dokumentiert und analysierbar
             \end{itemize*}
             \item Keccak basiert auf einer so genannten Schwammkonstruktion anstelle der früheren Merkle-Dåmgard-Konstruktionen
-            \begin{itemize*}
-                  \item Vielseitiges Design, um fast alle symmetrischen kryptographischen Funktionen zu implementieren (allerdings ist nur das Hashing standardisiert)
-            \end{itemize*}
+            \item Vielseitiges Design, um fast alle symmetrischen kryptographischen Funktionen zu implementieren
             \item Arbeitet normalerweise in 2 Phasen
-            \begin{itemize*}
-                  \item ,,Absorbieren'' von Informationen beliebiger Länge in 1600 Bit des internen Zustands
-                  \item ,,Auspressen'' (d.h. Ausgeben) von Hash-Daten beliebiger Länge (nur 224, 256, 384 und 512 Bit standardisiert)
-            \end{itemize*}
+            \begin{description*}
+                  \item[Absorbieren] von Informationen beliebiger Länge in $1600$Bit des internen Zustands
+                  \item[Auspressen] (d.h. Ausgeben) von Hash-Daten beliebiger Länge (nur 224, 256, 384 und 512 Bit standardisiert)
+            \end{description*}
             \item Der interne Zustand ist in 2 Registern organisiert
             \begin{itemize*}
-                  \item Ein Register der Größe r ist ,,public'': Eingabedaten werden in der Absorptionsphase mit XOR verknüpft, Ausgabedaten werden in der Quetschungsphase daraus abgeleitet
-                  \item Das Register der Größe c ist ,,privat''; Ein- und Ausgabe wirken sich nicht direkt auf es aus.
-                  \item In Keccak ist die Größe der Register 1600 Bits (d.h. $c+r=1600$ Bits)
-                  \item Die Größe von c ist doppelt so groß wie die Länge des Ausgangsblocks
-                  \item Beide Register werden mit ,,0'' initialisiert
+                  \item Ein Register der Größe $r$ ist ,,public'': Eingabedaten werden in der Absorptionsphase mit XOR verknüpft, Ausgabedaten werden in der Quetschungsphase daraus abgeleitet
+                  \item Das Register der Größe $c$ ist ,,privat'': Ein- und Ausgabe wirken sich nicht direkt auf es aus
+                  \item In Keccak ist die Größe der Register ($c+r=$)$1600$Bits
+                  \item Die Größe von $c$ ist doppelt so groß wie die Länge des Ausgangsblocks
+                  \item Beide Register werden mit $0$ initialisiert
             \end{itemize*}
-            \item Das Hashing erfolgt durch eine Funktion f, die die Register liest und einen neuen Zustand ausgibt
+            \item Das Hashing erfolgt durch eine Funktion $f$, die die Register liest und einen neuen Zustand ausgibt
             \item Sponge-Konstruktion
             \begin{itemize*}
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-sha-3.png}
-                  \item Absorptionsphase: $k + 1$ Eingabeblöcke der Größe r werden in den Zustand gemischt
-                  \item Quetschphase: $l + 1$ Ausgangsblöcke der Größe r werden erzeugt (oft nur einer)
-                  \item Der letzte Eingabe- und Ausgabeblock kann aufgefüllt oder abgeschnitten werden.
+                  \item \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-sha-3.png}
+                  \item Absorption: $k+1$ Eingabeblöcke der Größe $r$ werden in den Zustand gemischt
+                  \item Quetsch: $l+1$ Ausgangsblöcke der Größe $r$ werden erzeugt (oft nur einer)
+                  \item letzter Eingabe- und Ausgabeblock auffüllen oder abschneiden
             \end{itemize*}
             \item Die Funktion f
             \begin{itemize*}
                   \item Offensichtlich hängt die Sicherheit einer Sponge-Konstruktion von der Sicherheit von f
-                  \item Keccak verwendet 24 Runden von 5 verschiedenen Unterfunktionen $(\Sigma, \rho, \pi,\chi,\iota)$, um f zu implementieren.
-                  \item Die Unterfunktionen operieren auf einem ,,dreidimensionalen'' Bit-Array a $[5][5][w]$, wobei w entsprechend der Größe r und c gewählt wird
-                  \item Alle Operationen werden über $GF(2^n)$ durchgeführt.
-                  \item Jede der Unterfunktionen gewährleistet bestimmte Eigenschaften, z.B,
+                  \item Keccak verwendet 24 Runden von 5 verschiedenen Unterfunktionen $(\Sigma,\rho,\pi,\chi,\iota)$, um f zu implementieren
+                  \item Die Unterfunktionen operieren auf einem ,,dreidimensionalen'' Bit-Array a $[5][5][w]$, wobei $w$ entsprechend der Größe $r$ und $c$ gewählt wird
+                  \item Alle Operationen werden über $GF(2^n)$ durchgeführt
+                  \item Jede der Unterfunktionen gewährleistet bestimmte Eigenschaften
                   \begin{itemize*}
                         \item Schnelle Diffusion der geänderten Bits im gesamten Zustand ($\Sigma$)
                         \item Langfristige Diffusion ($\pi$)
@@ -1703,46 +1642,40 @@
                         \item Rundenspezifische Substitution ($\iota$)
                   \end{itemize*}
             \end{itemize*}
-            \item $\Sigma$ wird zuerst ausgeführt, um sicherzustellen, dass sich der geheime und der öffentliche Zustand schnell vermischen, bevor andere Unterfunktionen angewendet werden.
+            \item $\Sigma$ wird zuerst ausgeführt, um sicherzustellen, dass sich der geheime und der öffentliche Zustand schnell vermischen, bevor andere Unterfunktionen angewendet werden
             \item Sicherheit
             \begin{itemize*}
                   \item Derzeit gibt es keine nennenswerten Schwachstellen in SHA-3
-                  \begin{itemize*}
-                        \item Die bekanntesten Pre-Image-Angriffe funktionieren nur mit einer Funktion f mit bis zu 8 Runden
-                        \item Zum Schutz vor internen Kollisionen sollten 11 Runden ausreichen.
-                  \end{itemize*}
+                  \item Die bekanntesten Pre-Image-Angriffe funktionieren nur mit einer Funktion f mit bis zu 8 Runden
+                  \item Zum Schutz vor internen Kollisionen sollten 11 Runden ausreichen
                   \item Im Vergleich zu SHA-1 und SHA-2 werden zusätzliche Sicherheitseigenschaften garantiert, da der interne Zustand nie öffentlich gemacht wird
-                  \begin{itemize*}
-                        \item Verhindert Angriffe, bei denen beliebige Informationen zu einer gültigen geheimen Nachricht hinzugefügt werden
-                        \item Bietet Chosen Target Forced Prefix (CTFP) Preimage-Resistenz, d.h. es ist nicht möglich, eine Nachricht $m=P|| S$ zu konstruieren, wobei P fest und S beliebig gewählt ist, s.t., $H(m)=y$
-                        \item Für Merkle-Dåmgard-Konstruktionen ist dies nur so schwer wie die Kollisionssicherheit
-                        \item Keine schnelle Möglichkeit, Multikollisionen schnell zu erzeugen
-                  \end{itemize*}
+                  \item Verhindert Angriffe, bei denen beliebige Informationen zu einer gültigen geheimen Nachricht hinzugefügt werden
+                  \item Bietet Chosen Target Forced Prefix (CTFP) Preimage-Resistenz, d.h. es ist nicht möglich, eine Nachricht $m=P||S$ zu konstruieren, wobei $P$ fest und $S$ beliebig gewählt ist, s.t. $H(m)=y$
+                  \item Für Merkle-Dåmgard-Konstruktionen ist dies nur so schwer wie die Kollisionssicherheit
+                  \item Keine schnelle Möglichkeit, Multikollisionen schnell zu erzeugen
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Cipher Block Chaining Message Authentication Codes}
+      \subsection{Cipher Block Chaining MAC}
       \begin{itemize*}
-            \item Ein CBC-MAC wird berechnet, indem eine Nachricht im CBC-Modus verschlüsselt wird und der letzte Chiffretextblock oder ein Teil davon als MAC verwendet wird:
-            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-CBC-mac.png}
-            \item Dieser MAC muss nicht mehr signiert werden, da er bereits mit einem gemeinsamen Geheimnis K erzeugt wurde.
+            \item CBC-MAC wird berechnet, indem Nachricht im CBC-Modus verschlüsselt und letzte Chiffretextblock oder Teil davon als MAC verwendet wird
+            \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-CBC-mac.png}
+            \item MAC muss nicht mehr signiert werden, da bereits mit gemeinsamen Geheimnis K erzeugt
+            \item Es ist jedoch nicht möglich zu sagen, wer genau einen MAC erstellt hat, da jeder (Sender, Empfänger), der den geheimen Schlüssel K kennt, dies tun kann
+            \item Verfahren funktioniert mit jeder Blockchiffre (DES, IDEA, ...)
+            \item Sicherheit von CBC-MAC
             \begin{itemize*}
-                  \item Es ist jedoch nicht möglich zu sagen, wer genau einen MAC erstellt hat, da jeder (Sender, Empfänger), der den geheimen Schlüssel K kennt, dies tun kann
-            \end{itemize*}
-            \item Dieses Verfahren funktioniert mit jeder Blockchiffre (DES, IDEA, ...)
-            \item Sicherheit von CBC-MAC:
-            \begin{itemize*}
-                  \item Da ein Angreifer K nicht kennt, ist ein Geburtstagsangriff sehr viel schwieriger (wenn nicht gar unmöglich) zu starten
+                  \item Da Angreifer K nicht kennt, ist Geburtstagsangriff sehr viel schwieriger
                   \item Ein Angriff auf einen CBC-MAC erfordert bekannte Paare (Nachricht, MAC)
-                  \item Dies ermöglicht kürzere MACs
+                  \item ermöglicht kürzere MACs
                   \item Ein CBC-MAC kann optional verstärkt werden, indem man sich auf einen zweiten Schlüssel $K'\not= K$ einigt und eine dreifache Verschlüsselung des letzten Blocks durchführt: $MAC:=E(K,D(K',E(K,C_{n-1})))$
                   \item Dadurch verdoppelt sich der Schlüsselraum bei nur geringem Rechenaufwand
-                  \item Die Konstruktion ist nicht sicher, wenn die Nachrichtenlängen variieren!
+                  \item Die Konstruktion ist nicht sicher, wenn die Nachrichtenlängen variieren
             \end{itemize*}
-            \item Es gibt auch einige Vorschläge, MDCs aus symmetrischen Blockchiffren zu erzeugen, indem der Schlüssel auf einen festen (bekannten) Wert gesetzt wird:
+            \item Es gibt auch einige Vorschläge, MDCs aus symmetrischen Blockchiffren zu erzeugen, indem der Schlüssel auf einen festen (bekannten) Wert gesetzt wird
             \begin{itemize*}
-                  \item Wegen der relativ kleinen Blockgröße von 64 Bit der meisten gängigen Blockchiffren bieten diese Verfahren keine ausreichende Sicherheit gegen Geburtstagsangriffe.
-                  \item Da symmetrische Blockchiffren mehr Rechenaufwand erfordern als spezielle kryptografische Hash-Funktionen, sind diese Verfahren relativ langsam.
+                  \item Wegen der relativ kleinen Blockgröße von 64 Bit der meisten gängigen Blockchiffren bieten diese Verfahren keine ausreichende Sicherheit gegen Geburtstagsangriffe
+                  \item Da symmetrische Blockchiffren mehr Rechenaufwand erfordern als spezielle kryptografische Hash-Funktionen, sind diese Verfahren relativ langsam
             \end{itemize*}
       \end{itemize*}
 
@@ -1750,24 +1683,24 @@
       \begin{itemize*}
             \item Grund für die Konstruktion von MACs aus MDCs Kryptografische Hash-Funktionen laufen im Allgemeinen schneller ab als symmetrische Blockchiffren
             \item Grundidee: ,,mix'' einen geheimen Schlüssel K mit der Eingabe und berechne einen MDC
-            \item Die Annahme, dass ein Angreifer K kennen muss, um einen gültigen MAC zu erzeugen, wirft dennoch einige kryptografische Probleme auf (zumindest für Merkle-Dåmgard-Hash-Funktionen):
+            \item Die Annahme, dass ein Angreifer K kennen muss, um einen gültigen MAC zu erzeugen, wirft dennoch einige kryptografische Probleme auf (zumindest für Merkle-Dåmgard-Hash-Funktionen)
             \begin{itemize*}
-                  \item Die Konstruktion $H(K|| m)$ ist nicht sicher
-                  \item Die Konstruktion $H(m|| K)$ ist nicht sicher
-                  \item Die Konstruktion $H(K|| p|| m|| K)$, bei der p ein zusätzliches Auffüllfeld bezeichnet, bietet keine ausreichende Sicherheit
+                  \item Die Konstruktion $H(K||m)$ ist nicht sicher
+                  \item Die Konstruktion $H(m||K)$ ist nicht sicher
+                  \item Die Konstruktion $H(K||p||m||K)$, bei der p ein zusätzliches Auffüllfeld bezeichnet, bietet keine ausreichende Sicherheit
             \end{itemize*}
-            \item Die am häufigsten verwendete Konstruktion ist: $H(K\oplus p_1|| H(K\oplus p_2|| m))$
+            \item häufigste verwendete Konstruktion ist $H(K\oplus p_1||H(K\oplus p_2||m))$
             \begin{itemize*}
-                  \item Der Schlüssel wird mit 0's aufgefüllt, um den Schlüssel zu einem Eingabeblock der kryptographischen Hashfunktion aufzufüllen
+                  \item Schlüssel wird mit $0$ aufgefüllt, um den Schlüssel zu einem Eingabeblock der kryptographischen Hashfunktion aufzufüllen
                   \item Zwei verschiedene konstante Muster $p_1$ und $p_2$ werden mit dem aufgefüllten Schlüssel XOR-verknüpft
                   \item Dieses Schema scheint sicher zu sein
-                  \item Es wurde in RFC 2104 standardisiert und wird HMAC genannt.
+                  \item Es wurde in RFC 2104 standardisiert und wird HMAC genannt
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Authentifizierte Verschlüsselung mit zugehörigen Daten (AEAD) Modi}
       \begin{itemize*}
-            \item Normalerweise sind die Daten nicht authentifiziert oder verschlüsselt, sondern verschlüsselt UND authentifiziert (Blöcke $P_0...P_n$)
+            \item Normalerweise sind die Daten nicht authentifiziert oder verschlüsselt, sondern verschlüsselt UND authentifiziert %(Blöcke $P_0...P_n$)
             \item Manchmal müssen zusätzliche Daten authentifiziert werden (z.B. Paketköpfe), im Folgenden mit $A_0...A_m$ bezeichnet
             \item führte zur Entwicklung von AEAD-Betriebsarten
             \item Beispiele hierfür sind
@@ -1775,7 +1708,7 @@
                   \item Galois/Zähler-Modus (GCM)
                   \item Zähler mit CBC-MAC (CCM)
                   \item Offset-Codebuch-Modus (OCM)
-                  \item SpongeWrap - eine Methode zur Verwendung von Keccak für den AEAD-Betrieb
+                  \item SpongeWrap
             \end{itemize*}
       \end{itemize*}
 
@@ -1784,113 +1717,106 @@
             \item Beliebter AEAD-Modus
             \item NIST-Standard, Teil von IEEE 802.1AE, IPsec, TLS, SSH usw.
             \item Frei von Patenten
-            \item Wird wegen seiner hohen Geschwindigkeit hauptsächlich in Netzwerkanwendungen eingesetzt
+            \item wegen seiner hohen Geschwindigkeit hauptsächlich in Netzwerkanwendungen eingesetzt
             \begin{itemize*}
                   \item Äußerst effizient in der Hardware
                   \item Prozessorunterstützung auf neueren x86-CPUs
                   \item Zeitintensive Aufgaben können vorberechnet und parallelisiert werden
                   \item Keine Notwendigkeit für Auffüllungen
             \end{itemize*}
-            \item Verwendet konventionelle Blockchiffre mit 128-Bit-Blockgröße (z. B. AES)
+            \item Verwendet konventionelle Blockchiffre mit 128-Bit-Blockgröße (z.B. AES)
             \item Berechnet MAC durch Multiplikationen und Additionen in $GF(2^{128})$ über das irreduzible Polynom $x^{128}+x^{7}+x^{2}+x+1$
             \item Erfordert nur $n+1$ Blockchiffre-Aufrufe pro Paket (n = Länge der verschlüsselten und authentifizierten Daten)
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-gcm.png}
             \begin{itemize*}
                   \item $I_0$ wird mit dem IV und einem Padding oder einem Hash des IV initialisiert (wenn er nicht 96 Bit beträgt)
                   \item $\circ H$ ist $GF(2^{128})$ Multiplikation mit $H=E(K,0^{128})$
-                  \item Die Eingabeblöcke $A_m$ und $P_n$ werden auf 128 Bit aufgefüllt
-                  \item $A_m$ und $C_n$ werden vor der Ausgabe auf die Originalgröße gekürzt
-                  \item Die letzte Authentifizierung verwendet 64 Bit kodierte Bitlängen von A und C
+                  \item Eingabeblöcke $A_m$ und $P_n$ auf 128 Bit aufgefüllt
+                  \item $A_m$ und $C_n$ vor Ausgabe auf die Originalgröße gekürzt
+                  \item letzte Authentifizierung verwendet 64 Bit kodierte Bitlängen von $A$ und $C$
             \end{itemize*}
             \item Sicherheit
             \begin{itemize*}
-                  \item Schneller Modus, erfordert aber einige Sorgfalt:
-                  \item Erwiesenermaßen sicher (unter bestimmten Voraussetzungen, z. B. wenn die verwendete Blockchiffre nicht von Zufallszahlen unterscheidbar ist), aber die Konstruktion ist anfällig:
-                  \item IVs MÜSSEN NICHT wiederverwendet werden, da sonst Datenströme XOR-verknüpft werden können und das XOR der Datenströme wiederhergestellt werden kann, was zu einer sofortigen Wiederherstellung des geheimen Werts ,,H'' führen kann
-                  \item H hat einen möglichen schwachen Wert $0^{128}$, in diesem Fall wird die Authentifizierung nicht funktionieren, und wenn IVs mit einer anderen Länge als 96 Bits verwendet werden, wird $C_0$ immer gleich sein!
+                  \item Schneller Modus, erfordert aber einige Sorgfalt
+                  \item Erwiesenermaßen sicher %(unter bestimmten Voraussetzungen, z.B. wenn die verwendete Blockchiffre nicht von Zufallszahlen unterscheidbar ist)
+                  aber die Konstruktion ist anfällig
+                  \item IVs dürfen NICHT wiederverwendet werden, da sonst Datenströme XOR-verknüpft werden können und das XOR der Datenströme wiederhergestellt werden kann, was zu einer sofortigen Wiederherstellung des geheimen Werts $H$ führen kann
+                  \item H hat einen möglichen schwachen Wert $0^{128}$, in diesem Fall wird die Authentifizierung nicht funktionieren, und wenn IVs mit einer anderen Länge als 96 Bits verwendet werden, wird $C_0$ immer gleich sein
                   \item Einige andere Schlüssel erzeugen Hash-Schlüssel mit einer niedrigen Ordnung, was vermieden werden muss...
                   \item Erfolgreiche Fälschungsversuche können Informationen über H durchsickern lassen, daher MÜSSEN kurze MAC-Längen vermieden oder risikominimiert werden
                   \item Die erreichte Sicherheit ist nur $2^{t-k}$ und nicht $2^t$ (für MAC-Länge t und Anzahl der Blöcke $2^k$), da Blöcke modifiziert werden können, um nur Teile des MAC zu ändern
             \end{itemize*}
       \end{itemize*}
 
-      \subsubsection{Kleiner Exkurs: Rechenoperationen in $GF(2^n)$}
+      \subsubsection{Exkurs: Rechenoperationen in $GF(2^n)$}
       \begin{itemize*}
             \item Galoisfeld-Arithmetik definiert über Termen (z.B. $a_3x^3+a_2x^2+a_1x+a_0$)
             \item Koeffizienten sind Elemente des Feldes $\mathbb{Z}_2$, d.h. entweder 0 oder 1
-            \item Oft werden nur die Koeffizienten gespeichert, so wird aus $x^4+x^2 +x^1$ 0x16
+            \item Oft werden nur die Koeffizienten gespeichert, so wird aus $x^4+x^2 +x^1=$ 0x16
             \item Die Addition in $GF(2^n)$ ist einfach die Addition von Termen
             \begin{itemize*}
-                  \item Da gleiche Koeffizienten auf 0 abbilden, einfach XOR der Werte!
-                  \item Extrem schnell in Hard- und Software!
+                  \item Da gleiche Koeffizienten auf 0 abbilden, XOR der Werte
+                  \item Extrem schnell in Hard- und Software
             \end{itemize*}
-            \item Multiplikation in $GF(2^n)$ ist Polynommultiplikation und
-            anschließende Modulodivision durch ein irreduzibles Polynom vom Grad n
+            \item Multiplikation in $GF(2^n)$ ist Polynommultiplikation und Modulodivision durch irreduzibles Polynom vom Grad $n$
             \begin{itemize*}
-                  \item Irreduzible Polynome sind nicht ohne Rest durch irgendein anderes Polynom teilbar, außer durch ,,1'', ähnlich wie Primzahlen in GF
+                  \item Irreduzible Polynome sind nicht ohne Rest durch irgendein anderes Polynom teilbar, außer durch $1$, ähnlich wie Primzahlen in GF
                   \item Kann durch eine Reihe von Verschiebe- und XOR-Operationen implementiert werden
-                  \item Sehr schnell in Hardware oder auf neueren Intel-CPUs (mit CLMUL-Operationen)
+                  \item Sehr schnell in Hardware oder auf neueren Intel-CPUs
                   \item Modulo-Operation kann wie bei einer regulären CRC-Berechnung durchgeführt werden
             \end{itemize*}
-            \item Addition Beispiel: $x^3 +x+1 x\oplus x^2+x = x^3 +x^2 +1 \leftrightarrow$ 0x0B XOR 0x06 = 0x0D
-            \item Multiplikationsbeispiel (über $x^4 +x+1$): $x^3 +x+1\circ x^2+x = x^5+x^3+x^2\oplus x^4+x^2+x\ mod\ x^4+x+1=x^5+x^4+x^3+x\ mod\ x^4+x+1 = x^3 +x^2 +x+1$
-            \item Elemente von $GF(2^n)$ (mit Ausnahme von 1 und dem irreduziblen
-            Polynom) können ein Generator für die Gruppe sein
-            \item Beispiel für x und das Polynom $x^4+x+1:x,x^2,x^3,x+1,x^2+x,x^3+x^2,x^3+x+1,x^2 +1,x^3+x,x^2+x+1,x^3+x^2+x,x^3+x^2+x+1,x^3+x^2+1,x^3+1,1,x,...$
-            \item Andere Konzepte endlicher Gruppen gelten ebenfalls, z. B. hat jedes Element ein multiplikatives inverses Element
+            %\item Addition Beispiel: $x^3 +x+1 x\oplus x^2+x = x^3 +x^2 +1 \leftrightarrow$ 0x0B XOR 0x06 = 0x0D
+            %\item Multiplikationsbeispiel (über $x^4 +x+1$): $x^3 +x+1\circ x^2+x = x^5+x^3+x^2\oplus x^4+x^2+x\ mod\ x^4+x+1=x^5+x^4+x^3+x\ mod\ x^4+x+1 = x^3 +x^2 +x+1$
+            \item Elemente von $GF(2^n)$ (mit Ausnahme von 1 und dem irreduziblen Polynom) können ein Generator für die Gruppe sein
+            %\item Beispiel für x und das Polynom $x^4+x+1:x,x^2,x^3,x+1,x^2+x,x^3+x^2,x^3+x+1,x^2 +1,x^3+x,x^2+x+1,x^3+x^2+x,x^3+x^2+x+1,x^3+x^2+1,x^3+1,1,x,...$
+            \item Andere Konzepte endlicher Gruppen gelten ebenfalls, z.B. hat jedes Element ein multiplikatives inverses Element
             \item Kann durch eine angepasste Version des Erweiterten Euklidischen Algorithmus gefunden werden
       \end{itemize*}
 
       \subsection{SpongeWrap}
       \begin{itemize*}
-            \item Durch Verwendung von SHA-3 ist es auch möglich, ein AEAD-Konstrukt zu implementieren
-            \item Die Konstruktion ist sehr einfach und vergleichsweise leicht zu verstehen
-            \item Verwendet den sogenannten Duplex-Modus für Sponge-Funktionen, bei dem Schreib- und Leseoperationen verschachtelt werden
+            \item mit SHA-3 möglich, ein AEAD-Konstrukt zu implementieren
+            \item Konstruktion sehr einfach und leicht zu verstehen
+            \item Verwendet Duplex-Modus für Sponge-Funktionen, bei dem Schreib- und Leseoperationen verschachtelt werden
             \item Erfordert kein Auffüllen der Daten auf eine bestimmte Blockgröße
             \item Kann nicht parallelisiert werden
             \item Sicherheit
             \begin{itemize*}
-                  \item Noch nicht weit verbreitet, aber mehrere Aspekte haben sich als genauso sicher wie SHA-3 im standardisierten Modus erwiesen
-                  \item Wenn die authentifizierten Daten A keine eindeutige IV enthalten, wird derselbe Schlüsselstrom erzeugt (ermöglicht die Wiederherstellung eines Blocks XOR-verschlüsselter Daten)
+                  \item nicht weit verbreitet, Aspekte genauso sicher wie SHA-3 im standardisierten Modus
+                  \item Wenn die authentifizierten Daten A keine eindeutige IV enthalten, wird derselbe Schlüsselstrom erzeugt %(ermöglicht die Wiederherstellung eines Blocks XOR-verschlüsselter Daten)
                   %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-sponge-wrap.png}
                   \item Vereinfachte Version, bei der die Länge von Schlüssel und MAC kleiner sein muss als die Blockgröße
-                  \item Auffüllungen mit einem einzelnen ,,0''- oder ,,1''-Bit stellen sicher, dass verschiedene Datenblocktypen gut voneinander getrennt sind
+                  \item Auffüllungen mit einem einzelnen $0$- oder $1$-Bit stellen sicher, dass verschiedene Datenblocktypen gut voneinander getrennt sind
             \end{itemize*}
       \end{itemize*}
 
       \section{Zufallszahlengenerierung}
       \subsection{Aufgaben der Schlüsselverwaltung}
-      \begin{itemize*}
-            \item Erzeugung
+      \begin{description*}
+            \item[Erzeugung] Für die Sicherheit ist es von entscheidender Bedeutung, dass die Schlüssel mit einem wirklich zufälligen oder zumindest pseudozufälligen Generierungsverfahren erzeugt werden
+            %\item Andernfalls könnte ein Angreifer den Schlüsselgenerierungsprozess reproduzieren und den zur Sicherung einer bestimmten Kommunikation verwendeten Schlüssel leicht finden
+            \item[Verteilung]
             \begin{itemize*}
-                  \item Für die Sicherheit ist es von entscheidender Bedeutung, dass die Schlüssel mit einem wirklich zufälligen oder zumindest pseudozufälligen Generierungsverfahren erzeugt werden
-                  \item Andernfalls könnte ein Angreifer den Schlüsselgenerierungsprozess reproduzieren und den zur Sicherung einer bestimmten Kommunikation verwendeten Schlüssel leicht finden
+                  \item einiger anfänglicher Schlüssel in der Regel manuell / ,,out of band,, erfolgen
+                  \item Sitzungsschlüssel verteilung in der Regel während eines Authentifizierungsaustauschs durchgeführt
+                  %\item Beispiele: Diffie-Hellman, Otway-Rees, Kerberos, X
             \end{itemize*}
-            \item Verteilung
+            \item[Speicherung]
             \begin{itemize*}
-                  \item Die Verteilung einiger anfänglicher Schlüssel muss in der Regel manuell / ,,out of band,, erfolgen
-                  \item Die Verteilung von Sitzungsschlüsseln wird in der Regel während eines Authentifizierungsaustauschs durchgeführt
-                  \item Beispiele: Diffie-Hellman, Otway-Rees, Kerberos, X
-            \end{itemize*}
-            \item Speicherung
-            \begin{itemize*}
-                  \item Schlüssel, insbesondere Authentifizierungsschlüssel, sollten sicher gespeichert werden
-                  \item entweder verschlüsselt mit einer schwer zu erratenden Passphrase, oder besser
+                  \item Schlüssel sollten sicher gespeichert werden
+                  \item verschlüsselt mit einer schwer zu erratenden Passphrase oder
                   \item in einem sicheren Gerät wie einer Smart-Card
             \end{itemize*}
-            \item Entzug: Wenn ein Schlüssel kompromittiert wurde, sollte es möglich sein, diesen Schlüssel zu widerrufen, damit er nicht mehr missbraucht werden kann (vgl. X.509)
-            \item Vernichtung: Schlüssel, die nicht mehr verwendet werden (z. B. alte Sitzungsschlüssel), sollten sicher vernichtet werden
-            \item Wiederherstellung:
+            \item[Entzug] Wenn ein Schlüssel kompromittiert wurde, sollte es möglich sein, diesen Schlüssel zu widerrufen, damit er nicht mehr missbraucht werden kann (vgl. X.509)
+            \item[Vernichtung] Schlüssel, die nicht mehr verwendet werden, sollten sicher vernichtet werden
+            \item[Wiederherstellung]
             \begin{itemize*}
-                  \item Wenn ein Schlüssel verloren gegangen ist (z. B. defekte Chipkarte, Diskette, versehentliches Löschen), sollte er wiederhergestellt werden können, um Datenverluste zu vermeiden
+                  \item Wenn ein Schlüssel verloren gegangen ist, sollte er wiederhergestellt werden können, um Datenverluste zu vermeiden
                   \item Die Wiederherstellung von Schlüsseln ist nicht zu verwechseln mit der Schlüsselhinterlegung
             \end{itemize*}
-            \item Hinterlegung
-            \begin{itemize*}
-                  \item Mechanismen und Architekturen, die es staatlichen Stellen (und nur diesen) ermöglichen sollen, Sitzungsschlüssel zu erhalten, um zu Strafverfolgungszwecken die Kommunikation abzuhören / gespeicherte Daten zu lesen
-                  \item Wenn ich meinen Schlüssel zurückbekomme, ist es Schlüsselwiederherstellung, wenn du meinen Schlüssel zurückbekommst, ist es Schlüsselhinterlegung...'')
-            \end{itemize*}
-      \end{itemize*}
+            \item[Hinterlegung] Mechanismen und Architekturen, die es staatlichen Stellen ermöglichen sollen, Sitzungsschlüssel zu erhalten, um zu Strafverfolgungszwecken die Kommunikation abzuhören/gespeicherte Daten zu lesen
+            %\item Wenn ich meinen Schlüssel zurückbekomme, ist es Schlüsselwiederherstellung, wenn du meinen Schlüssel zurückbekommst, ist es Schlüsselhinterlegung...
+      \end{description*}
 
       \subsection{Zufalls- und Pseudo-Zufallszahlengenerierung}
       \begin{itemize*}

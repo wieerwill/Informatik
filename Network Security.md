@@ -1587,7 +1587,7 @@ Größter gemeinsamer Teiler
         - B = 0x EF CD AB 89
         - C = 0x 98 BA DC FE 
         - D = 0x 10 32 54 76
-        - E = 0x C3 D2 E1 F
+        - E = 0x C3 D2 E1 F0
     - Die Werte werden im Big-Endian-Format gespeichert.
   - Jeder Block yi der Nachricht wird zusammen mit CVi in einem Modul verarbeitet, das die Kompressionsfunktion f in vier Runden zu je 20 Schritten realisiert.
     - Die Runden haben eine ähnliche Struktur, aber jede Runde verwendet eine andere primitive logische Funktion $f_1, f_2, f_3, f_4$.

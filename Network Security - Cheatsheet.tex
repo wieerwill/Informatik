@@ -2835,34 +2835,31 @@
 
       \subsection{Anwendungsbereich von Sicherheitsprotokollen der Verbindungsschicht}
       \begin{itemize*}
-            \item Nach dem klassischen Verständnis des OSI-Modells stellt die Verbindungsschicht einen gesicherten Datenübertragungsdienst zwischen zwei gleichrangigen Einheiten bereit, die direkt über ein Kommunikationsmedium miteinander verbunden sind.
-            \item Ihre Hauptaufgaben sind:
+            \item Nach dem klassischen Verständnis des OSI-Modells stellt die Verbindungsschicht einen gesicherten Datenübertragungsdienst zwischen zwei gleichrangigen Einheiten bereit, die direkt über ein Kommunikationsmedium miteinander verbunden sind
+            \item Ihre Hauptaufgaben sind
             \begin{itemize*}
                   \item Fehlererkennung und -korrektur
-                  \item Medium Access Control (MAC, nicht zu verwechseln mit Message Authentication Code) für gemeinsam genutzte Medien, z.B. Ethernet usw.
+                  \item Medium Access Control für gemeinsam genutzte Medien
             \end{itemize*}
-            \item Nicht alle heutigen Netzwerktechnologien passen in dieses Modell:
+            \item Nicht alle heutigen Netzwerktechnologien passen in dieses Modell
             \begin{itemize*}
                   \item Einwahlverbindungen zu einem Internetdienstanbieter
                   \item Lösungen für virtuelle private Netzwerke (VPN)
             \end{itemize*}
-            \item In diesem Kurs geben wir uns mit der folgenden Definition zufrieden:
-            \begin{itemize*}
-                  \item Der Zweck eines Link-Layer-Sicherheitsprotokolls besteht darin, bestimmte Sicherheitseigenschaften der Link-Layer-PDUs zu gewährleisten, d. h. der PDUs der Protokollschicht, die die PDUs der Netzwerkschicht (z.B. IP) tragen.
-            \end{itemize*}
+            \item Der Zweck eines Link-Layer-Sicherheitsprotokolls besteht darin, bestimmte Sicherheitseigenschaften der Link-Layer-PDUs zu gewährleisten, d.h. der PDUs der Protokollschicht, die die PDUs der Netzwerkschicht tragen
       \end{itemize*}
 
       \subsection{IEEE 802.1}
-      \subsubsection{Die IEEE 802.1 Standardfamilie: Hintergrund und Ziele}
+      \subsubsection{Die IEEE 802.1 Standardfamilie}
       \begin{itemize*}
-            \item Das Institute of Electrical and Electronics Engineers (IEEE) 802 LAN/MAN Standards Committee entwickelt Standards für lokale Netzwerke und Metropolitan Area Networks.
-            \item Die am weitesten verbreiteten Standards sind:
+            \item Das Institute of Electrical and Electronics Engineers (IEEE) 802 LAN/MAN Standards Committee entwickelt Standards für lokale Netzwerke und Metropolitan Area Networks
+            \item die am weitesten verbreiteten Standards sind
             \begin{itemize*}
-                  \item Ethernet-Familie (802.3, allgemein als CSMA/CD bezeichnet),
+                  \item Ethernet-Familie (802.3, allg. CSMA/CD bezeichnet)
                   \item Drahtloses LAN (802.11)
                   \item WIMAX (802.16)
             \end{itemize*}
-            \item Die IEEE 802.1-Standards:
+            \item die IEEE 802.1-Standards
             \begin{itemize*}
                   \item Können mit verschiedenen IEEE 802.x Technologien verwendet werden
                   \item Definieren unter anderem verschiedene explizite Sicherheitsdienste oder Dienste, die zur Erreichung von Sicherheitszielen verwendet werden können
@@ -2870,22 +2867,20 @@
       \end{itemize*}
 
       \subsubsection{IEEE 802.1Q}
-      Ziele und Dienste. Der Standard IEEE 802.1Q
+      Ziele und Dienste
       \begin{itemize*}
-            \item Ermöglicht die Schaffung von ,,miteinander verbundenen IEEE-802-Standard-LANs mit unterschiedlichen oder identischen Methoden der Medienzugriffskontrolle'', d. h. die Schaffung separater virtueller lokaler Netzwerke (VLANs) über eine physische Infrastruktur
-            \item Obwohl es sich nicht um einen echten Sicherheitsstandard handelt, wird er häufig verwendet, um verschiedene Benutzer und Dienste voneinander zu trennen, z.B. nicht vertrauenswürdige Gastcomputer von Unternehmensservern, ohne eine neue Infrastruktur einzurichten
+            \item Ermöglicht die Schaffung von miteinander verbundenen IEEE-802-Standard-LANs mit unterschiedlichen oder identischen Methoden der Medienzugriffskontrolle, d.h. die Schaffung separater virtueller lokaler Netzwerke (VLANs) über eine physische Infrastruktur
+            \item Obwohl es sich nicht um einen echten Sicherheitsstandard handelt, wird er häufig verwendet, um verschiedene Benutzer und Dienste voneinander zu trennen %z.B. nicht vertrauenswürdige Gastcomputer von Unternehmensservern, ohne eine neue Infrastruktur einzurichten
             \item Wird verwendet, um Zugangskontrolle auf Verbindungsebene zu realisieren
       \end{itemize*}
 
       Grundlegende Funktionsweise
       \begin{itemize*}
             \item Jedes Netzwerkpaket wird mit einem VLAN-Tag versehen, der eine 12-Bit-VLAN-ID enthält, die ein virtuelles Netzwerk identifiziert
-            \item Switches stellen sicher, dass Pakete mit bestimmten VLAN-IDs nur an bestimmte Netzwerk-Ports zugestellt werden, z.B. wird ein VLAN mit internen Firmeninformationen nicht an einen öffentlich zugänglichen Port zugestellt
-            \item Die VLAN-ID ist nicht kryptografisch geschützt!
-            \begin{itemize*}
-                  \item VLAN IDs müssen auf andere Weise, d.h. physikalisch, gesichert werden!
-                  \item Normalerweise werden VLAN-IDs am ersten vertrauenswürdigen Switch eingefügt und am letzten vertrauenswürdigen Switch auf dem Weg durch das Netzwerk entfernt
-            \end{itemize*}
+            \item Switches stellen sicher, dass Pakete mit bestimmten VLAN-IDs nur an bestimmte Netzwerk-Ports zugestellt werden %z.B. wird ein VLAN mit internen Firmeninformationen nicht an einen öffentlich zugänglichen Port zugestellt
+            \item Die VLAN-ID ist nicht kryptografisch geschützt
+            \item VLAN IDs müssen auf andere Weise (physikalisch) gesichert werden
+            \item Normalerweise werden VLAN-IDs am ersten vertrauenswürdigen Switch eingefügt und am letzten vertrauenswürdigen Switch auf dem Weg durch das Netzwerk entfernt
       \end{itemize*}
 
       Typisches Einführungsszenario
@@ -2898,36 +2893,35 @@
                   \item Router, die mehrere Schnittstellen in den verschiedenen VLANs haben
                   \item Router, die selbst zum vertrauenswürdigen Netzwerk gehören und selbst getaggte Frames empfangen und senden können (kann gefährlich sein, Wechselwirkung zwischen Routing und VLANs)
             \end{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ieee802.1q-scenario.png}
+            \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-ieee802.1q-scenario.png}
       \end{itemize*}
 
       Weitere Diskussion
       \begin{itemize*}
             \item 802.1Q ermöglicht eine einfache Trennung verschiedener Sicherheitsdomänen innerhalb eines vertrauenswürdigen Netzwerks
-            \begin{itemize*}
-                  \item Ermöglicht auch die Priorisierung bestimmter VLANs (z.B. um die Verwaltung von Geräten zu ermöglichen, wenn der Rest des Netzes von einem Angreifer überflutet wird)
-                  \item VLAN-Tags können gestapelt werden, z.B. um verschiedene Kunden zu trennen, die eigene VLANs einrichten
-            \end{itemize*}
-            \item Diskussion über die Sicherheit:
-            \begin{itemize*}
-                  \item Die Sicherheit hängt davon ab, dass kein einziges Gerät in der vertrauenswürdigen Domäne kompromittiert wird!
-                  \item Alle Switches müssen korrekt konfiguriert sein, d.h. kein einziger Switch darf eingehenden Verkehr aus einem nicht vertrauenswürdigen Netz zulassen, der bereits getaggt ist
-                  \item Paketfluten in einem VLAN können sich auch auf andere VLANs auswirken
-                  \item Router, die an mehreren VLANs teilnehmen, können auf einer Schnittstelle Pakete aus verschiedenen VLANs empfangen, aber
-                  \item Anstatt ein striktes Routing zu einer anderen Schnittstelle (z.B. dem Internet) durchzuführen, könnte ein Angreifer diesen Router nutzen, um über dieselbe Schnittstelle zurück in ein anderes VLAN zu routen (sogenannter Layer-2-Proxy-Angriff)
-                  \item Kann sogar funktionieren, wenn VLAN 1 und VLAN 2 das gleiche IP-Subnetz nutzen!
-            \end{itemize*}
+            \item Ermöglicht auch die Priorisierung bestimmter VLANs %(z.B. um die Verwaltung von Geräten zu ermöglichen, wenn der Rest des Netzes von einem Angreifer überflutet wird)
+            \item VLAN-Tags können gestapelt werden z.B. um verschiedene Kunden zu trennen%, die eigene VLANs einrichten
+      \end{itemize*}
+
+      Diskussion über die Sicherheit
+      \begin{itemize*}
+            \item Die Sicherheit hängt davon ab, dass kein einziges Gerät in der vertrauenswürdigen Domäne kompromittiert wird
+            \item Alle Switches müssen korrekt konfiguriert sein, d.h. kein einziger Switch darf eingehenden Verkehr aus einem nicht vertrauenswürdigen Netz zulassen, der bereits getaggt ist
+            \item Paketfluten in einem VLAN können sich auch auf andere VLANs auswirken
+            \item Router, die an mehreren VLANs teilnehmen, können auf einer Schnittstelle Pakete aus verschiedenen VLANs empfangen, aber
+            \item Anstatt ein striktes Routing zu einer anderen Schnittstelle (z.B. dem Internet) durchzuführen, könnte ein Angreifer diesen Router nutzen, um über dieselbe Schnittstelle zurück in ein anderes VLAN zu routen (sogenannter Layer-2-Proxy-Angriff)
+            \item Kann sogar funktionieren, wenn VLAN 1 und VLAN 2 das gleiche IP-Subnetz nutzen
       \end{itemize*}
 
       \subsubsection{IEEE 802.1X}
       \begin{itemize*}
-            \item Ziel ist es, ,,den Zugang zu den von einem LAN angebotenen Diensten auf diejenigen Benutzer und Geräte zu beschränken, die diese Dienste nutzen dürfen''
-            \item Definiert eine portbasierte Netzwerkzugriffskontrolle, um ein Mittel zur ,,Authentifizierung und Autorisierung von Geräten bereitzustellen, die an einen LAN-Port mit Punkt-zu-Punkt-Verbindungseigenschaften angeschlossen sind''.
+            \item Ziel ist es, den Zugang zu den von einem LAN angebotenen Diensten auf diejenigen Benutzer und Geräte zu beschränken, die diese Dienste nutzen dürfen
+            \item Definiert eine portbasierte Netzwerkzugriffskontrolle, um ein Mittel zur Authentifizierung und Autorisierung von Geräten bereitzustellen, die an einen LAN-Port mit Punkt-zu-Punkt-Verbindungseigenschaften angeschlossen sind
       \end{itemize*}
 
       Kontrollierte und unkontrollierte Ports
       \begin{itemize*}
-            \item IEEE 802.1X führt den Begriff der zwei logischen Ports ein:
+            \item IEEE 802.1X führt den Begriff der zwei logischen Ports ein
             \item Der unkontrollierte Port ermöglicht die Authentifizierung eines Geräts
             \item Der kontrollierte Port ermöglicht es einem authentifizierten Gerät, auf LAN-Dienste zuzugreifen
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ieee802.1X-ports.png}
@@ -2938,57 +2932,58 @@
             \item Es werden drei Hauptrollen unterschieden:
             \begin{itemize*}
                   \item Ein Gerät, das den von einem IEEE 802.1X LAN angebotenen Dienst nutzen möchte, agiert als Supplicant, der den Zugriff auf den kontrollierten Port anfordert
-                  \item Der Anschlusspunkt an die LAN-Infrastruktur (z.B. eine MAC-Brücke) fungiert als Authentifikator, der den Supplicant auffordert, sich zu authentifizieren.
-                  \item Der Authentifikator prüft die vom Antragsteller vorgelegten Anmeldeinformationen nicht selbst, sondern leitet sie zur Überprüfung an seinen Authentifizierungsserver weiter.
+                  \item Der Anschlusspunkt an die LAN-Infrastruktur fungiert als Authentifikator, der den Supplicant auffordert, sich zu authentifizieren
+                  \item Der Authentifikator prüft die vom Antragsteller vorgelegten Anmeldeinformationen nicht selbst, sondern leitet sie zur Überprüfung an seinen Authentifizierungsserver weiter
             \end{itemize*}
-            \item Zugriff auf ein LAN mit IEEE 802.1X Sicherheitsmaßnahmen:
+            \item Zugriff auf ein LAN mit IEEE 802.1X Sicherheitsmaßnahmen
             \begin{itemize*}
-                  \item Vor einer erfolgreichen Authentifizierung kann der Antragsteller auf den unkontrollierten Port zugreifen:
-                  \item Der Port ist unkontrolliert in dem Sinne, dass er den Zugriff vor der Authentifizierung erlaubt.
+                  \item Vor einer erfolgreichen Authentifizierung kann der Antragsteller auf den unkontrollierten Port zugreifen
+                  \item Der Port ist unkontrolliert in dem Sinne, dass er den Zugriff vor der Authentifizierung erlaubt
                   \item Dieser Port erlaubt jedoch nur einen eingeschränkten Zugriff
-                  \item Die Authentifizierung kann durch den Supplicant oder den Authenticator initiiert werden.
-                  \item Nach erfolgreicher Authentifizierung wird der kontrollierte Port geöffnet.
+                  \item Die Authentifizierung kann durch den Supplicant oder den Authenticator initiiert werden
+                  \item Nach erfolgreicher Authentifizierung wird der kontrollierte Port geöffnet
             \end{itemize*}
       \end{itemize*}
 
       Sicherheitsprotokolle und Nachrichtenaustausch
       \begin{itemize*}
-            \item IEEE 802.1X definiert keine eigenen Sicherheitsprotokolle, sondern befürwortet die Verwendung bestehender Protokolle:
+            \item IEEE 802.1X definiert keine eigenen Sicherheitsprotokolle, sondern befürwortet die Verwendung bestehender Protokolle
             \begin{itemize*}
                   \item Das Extensible Authentication Protocol (EAP) kann eine grundlegende Geräteauthentifizierung realisieren
                   \item Wenn die Aushandlung eines Sitzungsschlüssels während der Authentifizierung erforderlich ist, wird die Verwendung des EAP TLS Authentication Protocol empfohlen
-                  \item Außerdem wird empfohlen, den Authentifizierungsserver mit dem Remote Authentication Dial In User Service (RADIUS) zu realisieren.
+                  \item Außerdem wird empfohlen, den Authentifizierungsserver mit dem Remote Authentication Dial In User Service (RADIUS) zu realisieren
             \end{itemize*}
-            \item Der Austausch von EAP Nachrichten zwischen Supplicant und Authenticator wird mit dem EAP over LANs (EAPOL) Protokoll realisiert:
+            \item Der Austausch von EAP Nachrichten zwischen Supplicant und Authenticator wird mit dem EAP over LANs (EAPOL) Protokoll realisiert
             \begin{itemize*}
-                  \item EAPOL definiert die Verkapselungstechniken, die verwendet werden sollen, um EAP-Pakete zwischen Supplicant Port Access Entities (PAE) und Authenticator PAEs in einer LAN-Umgebung zu übertragen.
-                  \item EAPOL-Rahmenformate wurden für verschiedene Mitglieder der 802.x-Protokollfamilie definiert, z.B. EAPOL für Ethernet, ...
+                  \item EAPOL definiert die Verkapselungstechniken, die verwendet werden sollen, um EAP-Pakete zwischen Supplicant Port Access Entities (PAE) und Authenticator PAEs in einer LAN-Umgebung zu übertragen
+                  \item EAPOL-Rahmenformate wurden für verschiedene Mitglieder der 802.x-Protokollfamilie definiert%, z.B. EAPOL für Ethernet, ...
                   \item Zwischen Supplicant und Authenticator können RADIUS-Nachrichten verwendet werden
             \end{itemize*}
       \end{itemize*}
 
-      Beispiel für eine 802.1X-Authentifizierung''(Assets/NetworkSecurity-ieee802.1X-example.png)
+      % Beispiel für eine 802.1X-Authentifizierung \includegraphics{Assets/NetworkSecurity-ieee802.1X-example.png}
+
       \subsubsection{IEEE 802.1AE}
       Ziele
       \begin{itemize*}
-            \item Der Standard IEEE 802.1AE wird auch als MAC-Sicherheit (MACsec) bezeichnet
-            \item Ermöglicht autorisierten Systemen, die sich an LANs in einem Netzwerk anschließen und diese miteinander verbinden, die Vertraulichkeit der übertragenen Daten zu wahren und Maßnahmen gegen Frames zu ergreifen, die von nicht autorisierten Geräten übertragen oder verändert werden. ''
-            \item Schützt Pakete durch kryptografische Mittel zwischen Geräten, z.B. zwischen Switches oder einem Computer und einem Switch
-            \item Setzt eine gültige Authentifizierung voraus und ist somit eine Erweiterung von 802.1X
+            \item wird auch als MAC-Sicherheit (MACsec) bezeichnet
+            \item Ermöglicht autorisierten Systemen, die sich an LANs in einem Netzwerk anschließen und diese miteinander verbinden, die Vertraulichkeit der übertragenen Daten zu wahren und Maßnahmen gegen Frames zu ergreifen, die von nicht autorisierten Geräten übertragen oder verändert werden
+            \item Schützt Pakete durch kryptografische Mittel zwischen Geräten%, z.B. zwischen Switches
+            \item Setzt eine gültige Authentifizierung voraus und ist Erweiterung von 802.1X
             \item Kryptografische Schlüssel werden auch während der 802.1X-Authentifizierungsphase abgeleitet
             \item Kann Datenursprungsauthentifizierung und optional Vertraulichkeit durchführen
-            \item Unterstützt AES-128 und AES-256 in GCM, wobei die Unterstützung von AES-128-GCM obligatorisch ist!
+            \item Unterstützt AES-128 und AES-256 in GCM, wobei die Unterstützung von AES-128-GCM obligatorisch ist
       \end{itemize*}
 
       Frame-Format
       \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ieee802.1AE-frame.png}
+            \item \includegraphics[width=.8\linewidth]{Assets/NetworkSecurity-ieee802.1AE-frame.png}
             \item Quell- und Zieladressen werden im Klartext gesendet
-            \item VLAN-Tag, Typfeld und Nutzdaten werden ebenfalls verschlüsselt
+            \item VLAN-Tag, Typfeld und Nutzdaten werden verschlüsselt
             \item Ein neuer 8-16 Byte langer SecTAG wird eingefügt
             \begin{itemize*}
-                  \item Beginnt mit 0x88e5, um ein Protokoll für ältere Geräte zu emulieren
-                  \item Enthält einen 4-Byte-Paketzähler (wird als IV verwendet, auch um Replay-Angriffe abzuwehren)
+                  \item Startet mit 0x88e5, um Protokoll für ältere Geräte zu emulieren
+                  \item Enthält einen 4-Byte-Paketzähler (wird als IV verwendet)%, auch um Replay-Angriffe abzuwehren)
             \end{itemize*}
             \item FCS wird durch einen kryptografischen MAC von 8-16 Byte ersetzt und von MACsec berechnet, optional kann ein zusätzlicher CRC-FCS für ältere Geräte hinzugefügt werden
       \end{itemize*}
@@ -2996,27 +2991,27 @@
       Diskussion über Sicherheit
       \begin{itemize*}
             \item MACsec erlaubt es, Verbindungen zu sichern, z.B. zwischen Gebäuden auf einem Campus
-            \item Es bietet keinen Schutz gegen kompromittierte Geräte!
-            \item Wenn es in Kombination mit 802.1Q verwendet wird, kann die vertrauenswürdige Computerbasis immer noch ziemlich groß sein...
-            \item Die Verwendung des GCM unterliegt den in Kapitel 5 beschriebenen potenziellen Problemen
+            \item Es bietet \textbf{keinen} Schutz gegen kompromittierte Geräte
+            \item In Kombination mit 802.1Q kann vertrauenswürdige Computerbasis immer noch ziemlich groß sein
+            \item Die Verwendung des GCM unterliegt beschriebenen potenziellen Problemen
             \item Derzeit unterstützen nur hochwertige Switches MACsec
       \end{itemize*}
 
       \subsection{Punkt-zu-Punkt-Protokoll}
       Zweck und Aufgaben
       \begin{itemize*}
-            \item Große Teile des Internets beruhen auf Punkt-zu-Punkt-Verbindungen:
+            \item Große Teile des Internets beruhen auf Punkt-zu-Punkt-Verbindungen
             \begin{itemize*}
-                  \item Wide Area Network (WAN)-Verbindungen zwischen Routern
-                  \item Einwahlverbindungen von Hosts über Modems und Telefonleitungen
+                  \item Wide Area Network-Verbindungen zwischen Routern
+                  \item Einwahlverbindungen von Hosts über Modems
             \end{itemize*}
             \item Protokolle für diesen Zweck:
-            \begin{itemize*}
-                  \item Serial Line IP (SLIP): keine Fehlererkennung, unterstützt nur IP, keine dynamische Adressvergabe, keine Authentifizierung
-                  \item Point-to-Point Protocol (PPP): Nachfolger von SLIP, unterstützt IP, IPX, ...
+            \begin{description*}
+                  \item[Serial Line IP] (SLIP) keine Fehlererkennung, unterstützt nur IP, keine dynamische Adressvergabe, keine Authentifizierung
+                  \item[Point-to-Point Protocol (PPP)] Nachfolger von SLIP, unterstützt IP, IPX
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point.png}
-            \end{itemize*}
-            \item PPP ,,RFC 1661/1662''
+            \end{description*}
+            \item PPP [RFC 1661/1662]
             \begin{itemize*}
                   \item Schicht-2-Rahmenformat mit Rahmenbegrenzung und Fehlererkennung
                   \item Kontrollprotokoll (Link Control Protocol, LCP) für Verbindungsaufbau, -test, -aushandlung und -abbau
@@ -3028,46 +3023,40 @@
       \begin{itemize*}
             \item Zeichenorientierte (statt bitorientierte) $\Rightarrow$ byteausgerichtete Rahmen
             \item Code-Transparenz wird durch Zeichenstuffing erreicht
-            \item Normalerweise werden nur unnummerierte Frames übertragen, in Szenarien mit hoher Fehlerwahrscheinlichkeit (drahtlose Kommunikation) kann jedoch ein zuverlässigerer Modus mit Sequenznummern und erneuten Übertragungen ausgehandelt werden
+            \item Normalerweise werden nur unnummerierte Frames übertragen, in Szenarien mit hoher Fehlerwahrscheinlichkeit kann jedoch ein zuverlässigerer Modus mit Sequenznummern und erneuten Übertragungen ausgehandelt werden
             \item Unterstützte Protokolle für das Nutzdatenfeld sind u.a.: IP, IPX, Appletalk
-            \item Wenn nicht anders ausgehandelt, beträgt die maximale Nutzdatengröße 1500 Byte.
+            \item Wenn nicht anders ausgehandelt, beträgt die maximale Nutzdatengröße 1500 Byte
             \item Zusätzliche Aushandlung unterstützt kleinere Paketköpfe
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Punkt-zu-Punkt-Format.png}
+            \item \includegraphics[width=.8\linewidth]{Assets/NetworkSecurity-Point-to-Point-format.png}
       \end{itemize*}
 
-      Eine typische PPP-Verbindung
+      Eine typische PPP-Verbindung ,,Internetzugang eines PCs über Modem''
       \begin{itemize*}
-            \item Nutzungsszenario ,,Internetzugang eines PCs über Modem''
-            \begin{itemize*}
-                  \item Der Benutzer ruft den Internet Service Provider (ISP) über ein Modem an und stellt eine ,,physikalische'' Verbindung über den ,,Plain Old Telephone Service'' (POTS) her.
-                  \item Anrufer sendet mehrere LCP-Pakete in PPP-Frames, um die gewünschten PPP-Parameter auszuwählen
-                  \item Sicherheitsspezifische Aushandlung (siehe unten)
-                  \item Austausch von NCP-Paketen zur Konfiguration der Netzwerkschicht: z.B. Konfiguration von IP einschließlich dynamischer Zuweisung einer IP-Adresse über Dynamic Host Configuration Protocol (DHCP)
-                  \item Der Anrufer kann wie jeder andere Host mit einer festen Verbindung zum Internet beliebige Internetdienste nutzen
-                  \item Beim Verbindungsabbau werden die zugewiesene IP-Adresse und die Netzschichtverbindung freigegeben
-                  \item Die Schicht-2-Verbindung wird über LCP freigegeben und das Modem baut die ,,physikalische'' Verbindung ab
-            \end{itemize*}
+            \item Der Benutzer ruft den Internet Service Provider (ISP) über ein Modem an und stellt eine ,,physikalische'' Verbindung über den ,,Plain Old Telephone Service'' (POTS) her
+            \item Anrufer sendet mehrere LCP-Pakete in PPP-Frames, um die gewünschten PPP-Parameter auszuwählen
+            \item Sicherheitsspezifische Aushandlung
+            \item Austausch von NCP-Paketen zur Konfiguration der Netzwerkschicht%: z.B. Konfiguration von IP einschließlich dynamischer Zuweisung einer IP-Adresse über Dynamic Host Configuration Protocol (DHCP)
+            \item Der Anrufer kann wie jeder andere Host mit einer festen Verbindung zum Internet beliebige Internetdienste nutzen
+            \item Beim Verbindungsabbau werden die zugewiesene IP-Adresse und die Netzschichtverbindung freigegeben
+            \item Die Schicht-2-Verbindung wird über LCP freigegeben und das Modem baut die ,,physikalische'' Verbindung ab
       \end{itemize*}
 
       Link Control Protocol
       \begin{itemize*}
-            \item Rahmenformat des Link Control Protocol (LCP):
+            \item Rahmenformat des Link Control Protocol (LCP)
             \begin{itemize*}
                   \item Code: configure-request, configure-ack, configure-nack, configure-reject, terminate-request, terminate-ack, code-reject, protocol-reject, echo-request, echo-reply, discard-request
                   \item Länge: gibt die Länge des LCP-Pakets einschließlich des Codefelds usw. an
                   \item Daten: null oder mehr Oktette befehlsspezifischer Daten
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-LCP.png}
+                  \item \includegraphics[width=.8\linewidth]{Assets/NetworkSecurity-Point-to-Point-LCP.png}
             \end{itemize*}
-            \item Die Konfigurationsprimitive von LCP ermöglichen die Konfiguration der
-            Verbindungsschicht:
-            \begin{itemize*}
-                  \item Es gibt verschiedene Optionen für dieses Primitiv zur Konfiguration verschiedener Aspekte (max. Empfangseinheit, Protokollkompression, Authentifizierung, ...)
-            \end{itemize*}
+            \item Die Konfigurationsprimitive von LCP ermöglichen die Konfiguration der Verbindungsschicht
+            \item Es gibt verschiedene Optionen für dieses Primitiv zur Konfiguration verschiedener Aspekte %(max. Empfangseinheit, Protokollkompression, Authentifizierung, ...)
       \end{itemize*}
 
       Sicherheitsdienste
       \begin{itemize*}
-            \item Die ursprüngliche Version von PPP ,,RFC 1661'' schlägt die optionale Ausführung eines Authentifizierungsprotokolls nach der Verbindungsaufbauphase vor:
+            \item Die ursprüngliche Version von PPP schlägt die optionale Ausführung eines Authentifizierungsprotokolls nach der Verbindungsaufbauphase vor
             \begin{itemize*}
                   \item Falls erforderlich, wird die Authentifizierung von einer Peer-Entität über einen LCP Configuration-Request am Ende der Verbindungsaufbauphase gefordert
                   \item Ursprünglich sind zwei Authentifizierungsprotokolle definiert worden:
@@ -3081,14 +3070,11 @@
                         \item PPP EAP Transport Level Security Protocol (PPP-EAP-TLS)
                   \end{itemize*}
             \end{itemize*}
-            \item Außerdem kann nach der Authentifizierung eine Verschlüsselung ausgehandelt werden:
+            \item Außerdem kann nach der Authentifizierung eine Verschlüsselung ausgehandelt werden, mögliche Protokolle
             \begin{itemize*}
-                  \item Protokolle:
-                  \begin{itemize*}
-                        \item Encryption Control Protocol (ECP) zur Aushandlung
-                        \item PPP DES-Verschlüsselungsprotokoll (DESE)
-                        \item PPP-Dreifach-DES-Verschlüsselungsprotokoll (3DESE)
-                  \end{itemize*}
+                  \item Encryption Control Protocol (ECP) zur Aushandlung
+                  \item PPP DES-Verschlüsselungsprotokoll (DESE)
+                  \item PPP-Dreifach-DES-Verschlüsselungsprotokoll (3DESE)
             \end{itemize*}
       \end{itemize*}
 
@@ -3098,41 +3084,34 @@
             \begin{itemize*}
                   \item PAP wurde 1992 in RFC 1334 definiert.
                   \item Das Protokoll ist sehr einfach
-                  \begin{itemize*}
-                        \item Voraussetzung: der Authentifikator kennt das Passwort der Peer-Entität
-                        \item Am Ende der Verbindungsaufbauphase fordert eine Entität, Authenticator genannt, die Peer-Entität auf, sich mit PAP zu authentifizieren
-                        \item Die Peer-Entität sendet eine Authenticate-Request-Nachricht mit ihrer Peer-ID und ihrem Passwort
-                        \item Der Authentifikator prüft, ob die bereitgestellten Informationen korrekt sind und antwortet entweder mit einem Authenticate-ack oder einem Authenticate-nack
-                  \end{itemize*}
+                  \item Voraussetzung: der Authentifikator kennt das Passwort der Peer-Entität
+                  \item Am Ende der Verbindungsaufbauphase fordert eine Entität, Authenticator genannt, die Peer-Entität auf, sich mit PAP zu authentifizieren
+                  \item Die Peer-Entität sendet eine Authenticate-Request-Nachricht mit ihrer Peer-ID und ihrem Passwort
+                  \item Der Authentifikator prüft, ob die bereitgestellten Informationen korrekt sind und antwortet entweder mit einem Authenticate-ack oder einem Authenticate-nack
                   \item Da das Protokoll keinen kryptographischen Schutz bietet, ist es unsicher
-                  \item PAP wird in den aktualisierten RFCs für die PPP-Authentifizierung nicht erwähnt
+                  %\item PAP wird in den aktualisierten RFCs für die PPP-Authentifizierung nicht erwähnt
             \end{itemize*}
             \item Challenge Handshake Authentication Protocol (CHAP)
             \begin{itemize*}
                   \item CHAP ist ebenfalls in RFC 1334 und RFC 1994 definiert.
-                  \item Es verwirklicht ein einfaches Challenge-Response-Protokoll
-                  \begin{itemize*}
-                        \item Voraussetzung: Authentifikator und Peer-Entität teilen ein Geheimnis
-                        \item Nach der Verbindungsaufbauphase sendet der Authentifikator (A) eine Challenge-Nachricht, die einen Identifikator für diese Challenge, eine Zufallszahl $r_A$ und seinen Namen enthält, an die Peer-Entität (B): $A \rightarrow B: (1, Identifikator, r_A, A)$
-                        \item Die Peer-Entität berechnet eine kryptografische Hash-Funktion über ihren Namen, das gemeinsame Geheimnis $K_{A,B}$ und die Zufallszahl $r_A$ und sendet die folgende Nachricht: $B \rightarrow A: (2, Kennung, H(B, K_{A,B}, r_A), B)$
-                        \item Beim Empfang dieser Nachricht berechnet der Authentifikator den Hashwert neu und vergleicht ihn mit dem empfangenen Wert; wenn beide Werte übereinstimmen, antwortet er mit einer Erfolgsmeldung
-                        \item RFC 1994 legt fest, dass MD5 als Hash-Funktion unterstützt werden muss, aber die Verwendung anderer Hash-Funktionen kann ausgehandelt werden
-                  \end{itemize*}
+                  \item verwirklicht einfaches Challenge-Response-Protokoll
+                  \item Voraussetzung: Authentifikator und Peer-Entität teilen ein Geheimnis
+                  \item Nach der Verbindungsaufbauphase sendet der Authentifikator (A) eine Challenge-Nachricht, die einen Identifikator für diese Challenge, eine Zufallszahl $r_A$ und seinen Namen enthält, an die Peer-Entität (B): $A \rightarrow B: (1, Identifikator, r_A, A)$
+                  \item Die Peer-Entität berechnet eine kryptografische Hash-Funktion über ihren Namen, das gemeinsame Geheimnis $K_{A,B}$ und die Zufallszahl $r_A$ und sendet die folgende Nachricht: $B \rightarrow A: (2, Kennung, H(B, K_{A,B}, r_A), B)$
+                  \item Beim Empfang dieser Nachricht berechnet der Authentifikator den Hashwert neu und vergleicht ihn mit dem empfangenen Wert; wenn beide Werte übereinstimmen, antwortet er mit einer Erfolgsmeldung
+                  \item RFC 1994 legt fest, dass MD5 als Hash-Funktion unterstützt werden muss aber die Verwendung anderer Hash-Funktionen kann ausgehandelt werden
             \end{itemize*}
-            \item CHAP-Nachrichtenformat:
+            \item CHAP-Nachrichtenformat
             \begin{itemize*}
-                  \item Code: 1 \textasciitilde{} Herausforderung / 2 \textasciitilde{} Antwort / 3 \textasciitilde{} Erfolg / 4 \textasciitilde{} Fehler
+                  %\item Code: 1 \textasciitilde{} Herausforderung / 2 \textasciitilde{} Antwort / 3 \textasciitilde{} Erfolg / 4 \textasciitilde{} Fehler
                   \item Identifier: ein Oktett, das bei jeder gesendeten Challenge geändert werden muss
                   \item Länge: die Gesamtlänge der CHAP-Nachricht in Oktetten
                   \item Value Size: ein Oktett, das die Länge des Wertes angibt
                   \item Wert: enthält die zufällige Herausforderung / die Antwort auf die Herausforderung
                   \item Name: ein oder mehrere Oktette, die das System identifizieren, das das Paket erstellt hat; die Größe des Namens wird anhand des Längenfeldes berechnet
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-CHAP1.png}
-                  \item Nachricht:
-                  \begin{itemize*}
-                        \item Null oder mehr Oktette mit implementierungsabhängigem Inhalt
-                        \item Der Inhalt soll für den Menschen lesbar sein und hat keinen Einfluss auf die Funktionsweise des Protokolls
-                  \end{itemize*}
+                  \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-Point-to-Point-CHAP1.png}
+                  \item Nachricht: Null oder mehr Oktette mit implementierungsabhängigem Inhalt
+                  %\item Der Inhalt der Nachricht soll für den Menschen lesbar sein und hat keinen Einfluss auf die Funktionsweise des Protokolls
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-CHAP2.png}
             \end{itemize*}
             \item Erweiterbares Authentifizierungsprotokoll (EAP)
@@ -3144,87 +3123,71 @@
                         \item Anfrage, Antwort: weiter verfeinert durch Typfeld + typspezifische Daten
                         \item Success, Failure: zur Angabe des Ergebnisses eines Authentifizierungsaustauschs
                   \end{itemize*}
-                  \item Typ-Felder
-                  \begin{itemize*}
-                        \item Identität
-                        \item Benachrichtigung
-                        \item Nak (nur Antwort, zur Beantwortung inakzeptabler Anfragetypen)
-                        \item MD5 Challenge (dies entspricht CHAP)
-                        \item One-Time Password (OTP)
-                        \item Generische Token-Karte
-                        \item EAP-TLS
-                  \end{itemize*}
+                  \item Typ-Felder: Identität, Benachrichtigung, Nak, MD5 Challenge, One-Time Password (OTP), Generische Token-Karte, EAP-TLS
             \end{itemize*}
             \item Einmaliges Kennwort (One-Time Password, OTP)
             \begin{itemize*}
-                  \item Die Grundidee von OTP besteht darin, ein ,,Passwort'' zu übermitteln, das nur für einen Durchlauf eines Authentifizierungsdialogs verwendet werden kann
-                  \item Erstmalige Einrichtung:
+                  \item Die Grundidee von OTP besteht darin, ein Passwort zu übermitteln, das nur für einen Durchlauf eines Authentifizierungsdialogs verwendet werden kann
+                  \item Erstmalige Einrichtung
                   \begin{itemize*}
-                        \item Der Authentifikator A sendet einen Seed-Wert rA und die Peer-Entität B verkettet diesen mit seinem Passwort und berechnet einen Hash-Wert: $PW_N = H^N(r_A, password_B)$
-                        \item Das Paar $(N, PW_N)$ wird ,,sicher'' an den Authentifikator übertragen und beim Authentifikator gespeichert.
+                        \item Der Authentifikator A sendet einen Seed-Wert $r_A$ und die Peer-Entität B verkettet diesen mit seinem Passwort und berechnet einen Hash-Wert: $PW_N = H^N(r_A, password_B)$
+                        \item Das Paar $(N, PW_N)$ wird sicher an den Authentifikator übertragen und beim Authentifikator gespeichert
                   \end{itemize*}
-                  \item Dialog zur Authentifizierung:
+                  \item Dialog zur Authentifizierung
                   \begin{itemize*}
                         \item $A\rightarrow B: N - 1$
                         \item $B\rightarrow A: PW_{N-1} := H^{N-1}(r_A, Passwort_B)$
                         \item A prüft, ob $H(PW_{N-1}) = PW_N$, und speichert $(N-1, PW_{N-1})$ als neue Authentifizierungsinformation für B
                   \end{itemize*}
-                  \item Sicherheit: Um dieses Verfahren zu brechen, müsste ein Angreifer ein PWN abhören und $H^{-1}(PW_N)$ berechnen, was unpraktisch ist.
+                  \item Sicherheit: Um dieses Verfahren zu brechen, müsste ein Angreifer ein PWN abhören und $H^{-1}(PW_N)$ berechnen, was unpraktisch ist
             \end{itemize*}
-            \item Generische Token-Karte:
+            \item Generische Token-Karte
             \begin{itemize*}
                   \item Im Grunde ein Challenge-Response-Dialog
-                  \item Eine Token-Karte wird verwendet, um eine Antwort auf eine Herausforderung zu berechnen:
-                  \begin{itemize*}
-                        \item Die Herausforderung wird dem Benutzer präsentiert, der sie in sein Token-Card-Gerät eintippen muss.
-                        \item Die Token-Karte berechnet die Antwort und zeigt sie an.
-                        \item Der Benutzer gibt die Antwort in das System ein, das sie als Antwort auf die Aufforderungsnachricht sendet.
-                  \end{itemize*}
+                  \item Eine Token-Karte wird verwendet, um eine Antwort auf eine Herausforderung zu berechnen
+                  \item Die Herausforderung wird dem Benutzer präsentiert, der sie in sein Token-Card-Gerät eintippen muss
+                  \item Die Token-Karte berechnet die Antwort und zeigt sie an
+                  \item Der Benutzer gibt die Antwort in das System ein, das sie als Antwort auf die Aufforderungsnachricht sendet
             \end{itemize*}
-            \item PPP-EAP-TLS:
+            \item PPP-EAP-TLS
             \begin{itemize*}
                   \item TLS steht für Transport Layer Security
-                  \item Es wird also der Authentifizierungsdialog von TLS ausgeführt
-                  \item Dieser Dialog wird in Kapitel 12 über die Sicherheit der Transportschicht im Detail erläutert.
+                  \item Authentifizierungsdialog von TLS ausgeführt
+                  %\item Dieser Dialog wird in Kapitel 12 über die Sicherheit der Transportschicht im Detail erläutert
             \end{itemize*}
       \end{itemize*}
 
       Verschlüsselungsprotokolle
       \begin{itemize*}
             \item Nach dem Verbindungsaufbau und der Authentifizierungsphase kann die Verschlüsselung für eine PPP-Verbindung ausgehandelt werden
+            \item Das Encryption Control Protocol (ECP) ist für die Konfiguration und Aktivierung von Datenverschlüsselungsalgorithmen an beiden Enden der PPP-Verbindung zuständig:
             \begin{itemize*}
-                  \item Das Encryption Control Protocol (ECP) ist für die Konfiguration und Aktivierung von Datenverschlüsselungsalgorithmen an beiden Enden der PPP-Verbindung zuständig:
+                  \item ECP verwendet das gleiche Rahmenformat wie LCP und führt zwei neue Primitive ein: Reset-Request und Reset-Ack zur Anzeige von Entschlüsselungsfehlern unabhängig für jede Richtung %(nützlich für die kryptographische Resynchronisation)
+                  \item Eine bestimmte Verschlüsselungsmethode wird mit dem configure-Primitiv ausgehandelt, das eine Option zur Angabe von DESE, 3DESE, Proprietär usw. enthält.
+                  \item Proprietäre Verschlüsselungsprotokolle werden durch einen registrierten OUI (Organizational Unit Identifier) + einen herstellerspezifischen Wert identifiziert.
+                  \item Genau ein ECP-Paket wird im PPP-Informationsfeld eines Link-Layer-Pakets transportiert
+                  \item ECP-Pakete werden durch das PPP-Protokollfeld identifiziert
                   \begin{itemize*}
-                        \item ECP verwendet das gleiche Rahmenformat wie LCP und führt zwei neue Primitive ein: Reset-Request und Reset-Ack zur Anzeige von Entschlüsselungsfehlern unabhängig für jede Richtung (nützlich für die kryptographische Resynchronisation)
-                        \item Eine bestimmte Verschlüsselungsmethode wird mit dem configure-Primitiv ausgehandelt, das eine Option zur Angabe von DESE, 3DESE, Proprietär usw. enthält.
-                        \item Proprietäre Verschlüsselungsprotokolle werden durch einen registrierten OUI (Organizational Unit Identifier) + einen herstellerspezifischen Wert identifiziert.
-                        \item Genau ein ECP-Paket wird im PPP-Informationsfeld eines Link-Layer-Pakets transportiert
-                        \item ECP-Pakete werden durch das PPP-Protokollfeld identifiziert
-                        \begin{itemize*}
-                              \item 0x8053 für ,,Standard'' Betrieb
-                              \item 0x8055 für die Verschlüsselung einzelner Verbindungsdaten auf mehreren Verbindungen zum selben Ziel
-                        \end{itemize*}
+                        \item 0x8053 für ,,Standard'' Betrieb
+                        \item 0x8055 für die Verschlüsselung einzelner Verbindungsdaten auf mehreren Verbindungen zum selben Ziel
                   \end{itemize*}
             \end{itemize*}
-            \item Das PPP DES Encryption Protocol (DESE)
+            \item PPP DES Encryption Protocol (DESEv2)
             \begin{itemize*}
-                  \item In diesem Kurs wird nur die aktualisierte Version DESEv2 behandelt
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-Point-to-Point-DESE.png}
-                  \item DESEv2 wird mit einer ECP-Konfigurationsanforderungsnachricht ausgehandelt:
-                  \begin{itemize*}
-                        \item Code: 1 \textasciitilde{} configure request
-                        \item Identifier: ändert sich mit jeder neuen Anfrage
-                        \item Länge: Gesamtlänge der Configure-Request-Nachricht
-                        \item Type: 3 \textasciitilde{} DESEv2
-                        \item Länge': 10 (die Länge dieser Konfigurationsoption)
-                        \item Initial Nonce: ein Initialisierungsvektor für DES im CBC-Modus (8 Oktette)
-                  \end{itemize*}
+                  \item \includegraphics[width=.5\linewidth]{Assets/NetworkSecurity-Point-to-Point-DESE.png}
+                  \item DESEv2 wird mit einer ECP-Konfigurationsanforderungsnachricht ausgehandelt
+                  \item Code: 1 - configure request
+                  \item Identifier: ändert sich mit jeder neuen Anfrage
+                  \item Länge: Gesamtlänge der Configure-Request-Nachricht
+                  \item Type: 3 - DESEv2
+                  \item Länge': 10 (die Länge dieser Konfigurationsoption)
+                  \item Initial Nonce: ein Initialisierungsvektor für DES im CBC-Modus (8 Oktette)
             \end{itemize*}
-            \item PPP DESE v2 Nachrichtenformat
+            \item PPP DESEv2 Nachrichtenformat
             \begin{itemize*}
                   \item Adresse: 0x11111111 (bei HDLC-ähnlichem Framing)
                   \item Steuerung: 0x00000011 (bei HDLC-ähnlicher Rahmung)
-                  \item Protokoll-ID: 0x0053 \textasciitilde{} DESE (Standard) / 0x0055 \textasciitilde{} DESE (individuelle Verbindung)
+                  \item Protokoll-ID: 0x0053 - DESE (Standard) / 0x0055 - DESE (individuelle Verbindung)
                   \item Sequenznummer: anfänglich 0, diese Nummer wird von der verschlüsselnden Stelle bei jedem gesendeten Paket erhöht
                   \item Chiffriertext: die verschlüsselten Protokoll- und Informationsfelder eines PPP-Pakets
                   \begin{itemize*}
@@ -3236,29 +3199,21 @@
             \item PPP 3DES Encryption Protocol (3DESE)
             \begin{itemize*}
                   \item PPP 3DESE ,,RFC2420'' ist dem PPP DESE sehr ähnlich
-                  \item PPP 3DESE wird mit einer Configure-Request-Nachricht ausgehandelt, wobei das Type-Feld der Option auf 2 gesetzt ist (\textasciitilde{} 3DESE)
+                  \item PPP 3DESE wird mit einer Configure-Request-Nachricht ausgehandelt, wobei das Type-Feld der Option auf 2 gesetzt ist
                   \item Die Verschlüsselung der PPP-Nutzdaten erfolgt wie bei DESE, mit dem Unterschied, dass 3DES mit 3 verschiedenen Schlüsseln verwendet wird
             \end{itemize*}
-            \item Alle PPP-Verschlüsselungsprotokolle gehen davon aus, dass vor der
-            Verschlüsselungsphase ein Sitzungsschlüssel für die
-            Verschlüsselung/Entschlüsselung von PPP-Paketen vereinbart wurde
-            \begin{itemize*}
-                  \item Diese Annahme ist sinnvoll, da die Festlegung des Sitzungsschlüssels eine Aufgabe ist, die während der Authentifizierungsphase erfüllt werden sollte.
-                  \item Allerdings unterstützt nur das PPP-EAP-TLS-Authentifizierungsprotokoll den Aufbau von Sitzungsschlüsseln.
-            \end{itemize*}
+            \item Alle PPP-Verschlüsselungsprotokolle gehen davon aus, dass vor der Verschlüsselungsphase ein Sitzungsschlüssel für die Verschlüsselung/Entschlüsselung von PPP-Paketen vereinbart wurde
+            \item Diese Annahme ist sinnvoll, da die Festlegung des Sitzungsschlüssels eine Aufgabe ist, die während der Authentifizierungsphase erfüllt werden sollte.
+            \item Allerdings unterstützt nur das PPP-EAP-TLS- Authentifizierungsprotokoll den Aufbau von Sitzungsschlüsseln
       \end{itemize*}
 
       \subsubsection{Punkt-zu-Punkt-Tunneling-Protokoll (PPTP)}
       \begin{itemize*}
             \item PPP wurde ursprünglich für den Betrieb zwischen ,,direkt'' verbundenen Einheiten entwickelt, d.h. Einheiten, die eine gemeinsame Schicht-2-Verbindung haben
-            \begin{itemize*}
-                  \item Beispiel: ein PC und ein Einwahlrouter eines Internetanbieters, die über das Telefonnetz mittels Modem verbunden sind
-            \end{itemize*}
+            %\item Beispiel: ein PC und ein Einwahlrouter eines Internetanbieters, die über das Telefonnetz mittels Modem verbunden sind
             \item Die Grundidee von PPTP besteht darin, die Reichweite des Protokolls auf das gesamte Internet auszudehnen, indem der Transport von PPP-PDUs in IP-Paketen definiert wird
-            \begin{itemize*}
-                  \item Die Nutzlast von PPTP-PDUs sind also PPP-Pakete (ohne schicht-2-spezifische Felder wie HDLC-Flags, Bit-Einfügungen, Steuerzeichen, CRC-Fehlerprüfwerte usw.)
-                  \item PPP-Pakete werden in GRE-Pakete (generische Routing-Kapselung) eingekapselt, die wiederum in IP-Pakete eingekapselt werden:
-            \end{itemize*}
+                  \item Die Nutzlast von PPTP-PDUs sind PPP-Pakete %(ohne schicht-2-spezifische Felder wie HDLC-Flags, Bit-Einfügungen, Steuerzeichen, CRC-Fehlerprüfwerte usw.)
+                  \item PPP-Pakete werden in GRE-Pakete eingekapselt, die wiederum in IP-Pakete eingekapselt werden
       \end{itemize*}
 
       %\begin{longtable}[]{@{}l@{}}
@@ -3274,15 +3229,15 @@
       \subsubsection{PPTP: Freiwilliges vs. obligatorisches Tunneling}
       \begin{itemize*}
             \item PPTP realisiert einen ,,Tunnel'' über das Internet, der PPP-Pakete überträgt
-            \item Ein solcher Tunnel kann zwischen verschiedenen Einheiten realisiert werden
-            \item Einem Client-PC und einem PPTP Remote Access Server (RAS)
+            \item dieser Tunnel zwischen verschiedenen Einheiten realisiert
+            \item zw. Client-PC und einem PPTP Remote Access Server (RAS)
             \begin{itemize*}
-                  \item Dies wird auch als freiwilliges Tunneling bezeichnet, da der Client-PC aktiv an der PPTP-Verarbeitung beteiligt ist.
+                  \item Dies wird auch als freiwilliges Tunneling bezeichnet, da der Client-PC aktiv an der PPTP-Verarbeitung beteiligt ist
                   \item Diese Variante ermöglicht die sichere Kommunikation zwischen einem Client-PC und einem bestimmten Subnetz unter Verwendung beliebiger Zugangs- und Zwischennetze
             \end{itemize*}
-            \item Ein Point of Presence (POP) eines ISP und ein PPTP-Fernzugangsserver
+            \item zw. Point of Presence (POP) eines ISP und ein PPTP-Fernzugangsserver
             \begin{itemize*}
-                  \item Dies wird auch als obligatorisches Tunneling bezeichnet, da der Client-PC nicht an der Entscheidung beteiligt ist, ob PPTP verwendet wird oder nicht.
+                  \item Dies wird auch als obligatorisches Tunneling bezeichnet, da der Client-PC nicht an der Entscheidung beteiligt ist, ob PPTP verwendet wird oder nicht
                   \item Auf diese Weise lässt sich Sicherheit auf Subnetzebene realisieren, aber keine echte End-to-End-Sicherheit zwischen dem Client-PC und dem RAS
                   \item Beim obligatorischen Tunneling fungiert der ISP POP als Proxy-Client für den RAS
             \end{itemize*}
@@ -3302,54 +3257,41 @@
                   \item Es wurde unter aktiver Beteiligung von Microsoft entwickelt
                   \item Microsoft implementierte es als Teil seines Remote Access Service (RAS)
             \end{itemize*}
-            \item Microsoft hat weitere ,,proprietäre'' Erweiterungen für PPP spezifiziert
+            \item Microsoft hat weitere proprietäre Erweiterungen für PPP spezifiziert
             \begin{itemize*}
                   \item Microsoft PPP CHAP-Erweiterungen
                   \item Microsoft Point to Point Encryption Protocol
             \end{itemize*}
             \item Allerdings wurde eine Reihe von Schwachstellen in PPTP Version 1 und auch in einer verbesserten Version 2 entdeckt
-            \begin{itemize*}
-                  \item Ein allgemeiner Konsens, PPTP als Standardprotokoll zu übernehmen, konnte in den in den IETF-Arbeitsgruppen nicht erreicht werden.
-                  \item Außerdem wurde ein ähnliches Protokoll (Layer 2 Forwarding, L2F) von Cisco als konkurrierender Ansatz vorgeschlagen
+                  \item Ein allgemeiner Konsens, PPTP als Standardprotokoll zu übernehmen, konnte in den in den IETF-Arbeitsgruppen nicht erreicht werden
+                  \itemähnliches Protokoll (Layer 2 Forwarding, L2F) von Cisco als konkurrierender Ansatz vorgeschlagen
                   \item Infolgedessen wurde ein Kompromiss gefunden, der die Vorteile beider Vorschläge in einem einzigen Protokoll zusammenfasst: Layer 2 Tunneling Protocol (L2TP)
             \end{itemize*}
-      \end{itemize*}
 
       \subsubsection{Vergleich von PPTP und L2TP}
       \begin{itemize*}
-            \item Beide Protokolle
-            \begin{itemize*}
                   \item verwenden PPP, um eine anfängliche Umhüllung für Benutzerpakete bereitzustellen
                   \item erweitern das PPP-Modell, indem sie erlauben, dass die Layer-2- und PPP-Endpunkte sich auf verschiedenen Geräten befinden
                   \item unterstützen freiwilliges und obligatorisches Tunneling
-            \end{itemize*}
             \item Zugrundeliegendes Netzwerk
             \begin{itemize*}
-                  \item PPTP benötigt ein IP-Netzwerk für den Transport seiner PDUs
-                  \item L2TP unterstützt verschiedene Technologien: IP (unter Verwendung von UDP), permanente virtuelle Schaltungen (PVCs) von Frame Relay, virtuelle Schaltungen (VCs) von X.25 oder ATM VCs
+                  \item PPTP benötigt IP-Netzwerk für Transport seiner PDUs
+                  \item L2TP unterstützt verschiedene Technologien: IP, permanente virtuelle Schaltungen von Frame Relay, virtuelle Schaltungen
             \end{itemize*}
             \item PPTP kann nur einen einzigen Tunnel zwischen Endpunkten unterstützen, L2TP ermöglicht die Verwendung mehrerer Tunnel zwischen Endpunkten
-            \begin{itemize*}
+            \item Beide Protokolle bieten eine Header-Kompression:  Mit Header-Kompression kommt L2TP mit 4 Byte Overhead aus, im Vergleich zu 6 Byte bei PPTP
                   \item L2TP ermöglicht z.B. die Erstellung verschiedener Tunnel für unterschiedliche Dienstqualitäten
-            \end{itemize*}
-            \item Beide Protokolle bieten eine Header-Kompression:  Mit Header-Kompression kommt L2TP mit 4 Byte Overhead aus, im Vergleich zu 6 Byte bei PPTP.
-            \item L2TP ermöglicht eine Tunnelauthentifizierung, während PPTP dies nicht tut.
+            \item L2TP ermöglicht eine Tunnelauthentifizierung, während PPTP dies nicht tut
       \end{itemize*}
 
       \subsection{Virtuelle private Netzwerke}
       \begin{itemize*}
-            \item Verschiedene Definitionen des Begriffs virtuelles privates Netzwerk (VPN):
-            \begin{itemize*}
-                  \item Ein privates Netz, das innerhalb einer öffentlichen Netzinfrastruktur, wie dem globalen Internet, aufgebaut ist.
-                  \item Eine Kommunikationsumgebung, in der der Zugang kontrolliert wird, um Peer-Verbindungen nur innerhalb einer definierten Interessengemeinschaft zuzulassen, und die durch eine Form der Partitionierung eines gemeinsamen zugrundeliegenden Kommunikationsmediums aufgebaut ist, wobei dieses zugrundeliegende Kommunikationsmedium dem Netz Dienste auf nicht-exklusiver Basis bereitstellt
-                  \item Ein logisches Computernetzwerk mit eingeschränkter Nutzung, das aus den Systemressourcen eines relativ öffentlichen, physischen Netzwerks (z.B. dem Internet) aufgebaut ist, oft unter Verwendung von Verschlüsselung und oft durch Tunneln von Verbindungen des virtuellen Netzwerks über das reale Netzwerk
-                  \item Anmerkung: Die beiden letzteren Definitionen beinhalten explizit Sicherheitseigenschaften (kontrollierter Zugriff, Verschlüsselung), die erste hingegen nicht.
+            \item Verschiedene Definitionen 
+                  \item privates Netz, das innerhalb einer öffentlichen Netzinfrastruktur, wie dem globalen Internet, aufgebaut ist
+                  \item Kommunikationsumgebung, in der der Zugang kontrolliert wird, um Peer-Verbindungen nur innerhalb einer definierten Interessengemeinschaft zuzulassen%, und die durch eine Form der Partitionierung eines gemeinsamen zugrundeliegenden Kommunikationsmediums aufgebaut ist, wobei dieses zugrundeliegende Kommunikationsmedium dem Netz Dienste auf nicht-exklusiver Basis bereitstellt
+                  \item logisches Computernetzwerk mit eingeschränkter Nutzung, das aus den Systemressourcen eines relativ öffentlichen, physischen Netzwerks aufgebaut ist%, oft unter Verwendung von Verschlüsselung und oft durch Tunneln von Verbindungen des virtuellen Netzwerks über das reale Netzwerk
+                  %\item Anmerkung: Die beiden letzteren Definitionen beinhalten explizit Sicherheitseigenschaften (kontrollierter Zugriff, Verschlüsselung), die erste hingegen nicht
             \end{itemize*}
-      \end{itemize*}
-
-      \begin{quote}
-            ,,Sicher, es ist viel billiger als eigene Frame-Relay-Verbindungen, aber es funktioniert ungefähr so gut, wie wenn man sich auf dem Times Square Watte in die Ohren steckt und so tut, als wäre sonst niemand da.'' (Wired Magazine Feb. 1998)
-      \end{quote}
 
       Techniken zum Aufbau virtueller privater Netze
       \begin{itemize*}
@@ -3358,12 +3300,12 @@
                   \item Virtuelle Verbindungen über ATM oder Frame Relay
                   \item Multi-Protokoll über ATM (MPOA)
                   \item Multiprotokoll-Etiketten-Vermittlung (MPLS)
-                  \item Sicherheitsdienste für Link Layer VPNs können effizient im Link Layer Protokoll realisiert werden; ein Beispiel ist die ATM Security Specification
+                  \item Sicherheitsdienste für Link Layer VPNs können effizient im Link Layer Protokoll realisiert werden
             \end{itemize*}
             \item Kontrolliertes Routenleck / Routenfilterung
             \begin{itemize*}
-                  \item Grundidee: Kontrolle der Routenausbreitung dahingehend, dass nur bestimmte Netze Routen für andere Netze erhalten
-                  \item Damit soll ,,security by obscurity'' realisiert werden (also kein wirklicher Schutz!)
+                  \item Kontrolle der Routenausbreitung, dass nur bestimmte Netze Routen für andere Netze erhalten
+                  \item ,,security by obscurity'' %(also kein wirklicher Schutz!)
             \end{itemize*}
             \item Tunneln
             \begin{itemize*}
@@ -3372,6 +3314,7 @@
                   \item IPSec-Sicherheitsarchitektur für das Internet-Protokoll
             \end{itemize*}
       \end{itemize*}
+      \columnbreak
 
       \section{Die IPsec-Architektur für das Internet-Protokoll}
       \subsection{Überblick}

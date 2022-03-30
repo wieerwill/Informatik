@@ -4009,173 +4009,131 @@
       \subsubsection{ISAKMP - Session Key Establishment}
       \begin{itemize*}
             \item ISAKMP baut 4 verschiedene Schlüssel mit einem Authentifizierungsaustausch auf
-            \item SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist und als ,,Hauptschlüssel'' dient
-            \item Die Berechnung von SKEYID ist abhängig von der Authentifizierungsmethode
+            \item SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist und als Hauptschlüssel dient
+            \item Berechnung von SKEYID ist abhängig von der Authentifizierungsmethode
             \item SKEYID\_e ist das Schlüsselmaterial, das von der ISAKMP SA zum Schutz der Vertraulichkeit ihrer Nachrichten verwendet wird
             \item SKEYID\_a ist das Schlüsselmaterial, das von der ISAKMP SA zur Authentifizierung ihrer Nachrichten verwendet wird
             \item SKEYID\_d ist das Verschlüsselungsmaterial, das zur Ableitung von Schlüsseln für Nicht-ISAKMP-Sicherheitsassoziationen verwendet wird
       \end{itemize*}
 
-      \subsection{IKE - Einführung}
+      \subsection{IKE -Internet Key Exchange}
       \begin{itemize*}
             \item Während ISAKMP die grundlegenden Datenformate und Verfahren zur Aushandlung beliebiger SAs definiert, spezifiziert der Internet Key Exchange das standardisierte Protokoll zur Aushandlung von IPsec SAs
-            \item IKE definiert fünf Austauschvorgänge:
-            \begin{itemize*}
-                  \item Phase-1-Austausch für die Einrichtung einer IKE SA :
+            \item IKE definiert fünf Austauschvorgänge
+            \begin{enumerate*}
+                  \item Phase-1-Austausch für die Einrichtung einer IKE SA
                   \begin{itemize*}
-                        \item Main-Mode-Austausch, der durch 6 ausgetauschte Nachrichten realisiert wird
-                        \item Aggressive mode exchange, der nur 3 Nachrichten benötigt
+                        \item Main-Mode-Austausch durch 6 ausgetauschte Nachrichten
+                        \item Aggressive mode exchange mit nur 3 Nachrichten
                   \end{itemize*}
-                  \item Phase 2 Austausch für die Einrichtung von IPsec SAs:
+                  \item Phase 2 Austausch für die Einrichtung von IPsec SAs
                   \begin{itemize*}
-                        \item Quick-Mode-Austausch, der mit 3 Nachrichten realisiert wird
+                        \item Quick-Mode-Austausch mit 3 Nachrichten
                   \end{itemize*}
-                  \item Andere Austausche:
-                  \begin{itemize*}
-                        \item Informationsaustausch zur Übermittlung von Status- und Fehlermeldungen
-                        \item Neuer Gruppenaustausch zur Vereinbarung von privaten Diffie-Hellman-Gruppen
-                  \end{itemize*}
-            \end{itemize*}
-            \item Hinweis: Auf den folgenden Folien steht HMAC(K, x | y | ...) für H(K, p 1 , H(K, p 2 , x, y, ...)), wobei p 1 und p 2 Auffüllmuster bezeichnen
+                  \item Informationsaustausch zur Übermittlung von Status- und Fehlermeldungen
+                  \item Neuer Gruppenaustausch zur Vereinbarung von privaten Diffie-Hellman-Gruppen
+            \end{enumerate*}
+            %\item Hinweis: Auf den folgenden Folien steht HMAC(K, x | y | ...) für H(K, p 1 , H(K, p 2 , x, y, ...)), wobei p 1 und p 2 Auffüllmuster bezeichnen
       \end{itemize*}
 
       \subsubsection{IKE - Berechnung von IKE-Sitzungsschlüsseln}
       \begin{itemize*}
-            \item IKE baut vier verschiedene Schlüssel mit einem Authentifizierungsaustausch auf:
-            \begin{itemize*}
-                  \item SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist, und die als ,,Hauptschlüssel'' dient.
-                  \begin{itemize*}
-                        \item Die Berechnung von SKEYID ist abhängig von der Authentifizierungsmethode
-                  \end{itemize*}
-                  \item SKEYID\_d ist das Keying-Material, das zur Ableitung von Schlüsseln für Nicht-IKE-SAs verwendet wird
-                  \begin{itemize*}
-                        \item $SKEYID_d = HMAC(SKEYID, g^{xy} | CKY-I | CKY-R | 0)$, wobei $g^{xy}$ das gemeinsame Diffie-Hellman-Geheimnis bezeichnet
-                  \end{itemize*}
-                  \item SKEYID\_a ist das Schlüsselmaterial, das von der IKE SA zur Authentifizierung ihrer Nachrichten verwendet wird
-                  \begin{itemize*}
-                        \item SKEYID\_a = $HMAC(SKEYID, SKEYID_d | g^{xy} | CKY-I | CKY-R | 1)$
-                  \end{itemize*}
-                  \item SKEYID\_e ist das Schlüsselmaterial, das von der IKE SA zum Schutz der Vertraulichkeit ihrer Nachrichten verwendet wird
-                  \begin{itemize*}
-                        \item SKEYID\_e = $HMAC(SKEYID, SKEYID_a | g^{xy} | CKY-I | CKY-R | 2)$
-                  \end{itemize*}
-            \end{itemize*}
-            \item Falls erforderlich, werden die Schlüssel nach der folgenden Methode erweitert:
-            \begin{itemize*}
-                  \item $K=(K_1 | K_2 | ...)$ mit $K_i = HMAC(SKEYID, K_{i-1})$ und $K_0 = 0$
-            \end{itemize*}
+            \item IKE baut vier verschiedene Schlüssel mit einem Authentifizierungsaustausch auf
+            \item SKEYID ist eine Zeichenkette, die aus geheimem Material abgeleitet wird, das nur den aktiven Teilnehmern des Austauschs bekannt ist und die als Hauptschlüssel dient
+            \item Berechnung von SKEYID abhängig von Authentifizierungsmethode
+            \item SKEYID\_d ist das Keying-Material, das zur Ableitung von Schlüsseln für Nicht-IKE-SAs verwendet wird $SKEYID_d = HMAC(SKEYID, g^{xy} | CKY-I | CKY-R | 0)$, wobei $g^{xy}$ das gemeinsame DH-Geheimnis
+            \item SKEYID\_a ist das Schlüsselmaterial, das von der IKE SA zur Authentifizierung ihrer Nachrichten verwendet wird $SKEYID_a = HMAC(SKEYID, SKEYID_d | g^{xy} | CKY-I | CKY-R | 1)$
+            \item SKEYID\_e ist das Schlüsselmaterial, das von der IKE SA zum Schutz der Vertraulichkeit ihrer Nachrichten verwendet wird $SKEYID_e = HMAC(SKEYID, SKEYID_a | g^{xy} | CKY-I | CKY-R | 2)$
+            \item Falls erforderlich, werden die Schlüssel nach der folgenden Methode erweitert: $K=(K_1 | K_2 | ...)$ mit $K_i = HMAC(SKEYID, K_{i-1})$ und $K_0 = 0$
       \end{itemize*}
 
       \subsubsection{IKE - Authentifizierungsmethoden}
       \begin{itemize*}
-            \item Phase 1 IKE-Austausche werden mit Hilfe von zwei Hash-Werten Hash-I und Hash-R authentifiziert, die vom Initiator und vom Responder erstellt werden:
+            \item Phase 1 IKE-Austausche werden mit Hilfe von zwei Hash-Werten Hash-I und Hash-R authentifiziert, die vom Initiator und vom Responder erstellt werden
             \begin{itemize*}
-                  \item Hash-I = HMAC(SKEYID, gx | gy | CKY-I | CKY-R | SA-Angebot | ID-I)
-                  \item Hash-R = HMAC(SKEYID, gy | gx | CKY-R | CKY-I | SA-offer | ID-R)
-                  \item wobei gx, gy die ausgetauschten öffentlichen Diffie-Hellman-Werte bezeichnen ID-I, ID-R bezeichnen die Identität des Initiators und des Responders SA-offer bezeichnet die Nutzdaten bezüglich der SA-Verhandlung
+                  \item $Hash-I = HMAC(SKEYID, g^x | g^y | CKY-I | CKY-R | SA-Angebot | ID-I)$
+                  \item $Hash-R = HMAC(SKEYID, g^y | g^x | CKY-R | CKY-I | SA-offer | ID-R)$
+                  \item wobei $g^x, g^y$ die öffentliche DH-Werte
+                  \item $ID-I, ID-R$: Identität des Initiators/Responders
+                  \item SA-offer: Nutzdaten bezüglich der SA-Verhandlung
             \end{itemize*}
-            \item IKE unterstützt vier verschiedene Methoden der Authentifizierung:
+            \item IKE unterstützt vier verschiedene Methoden der Authentifizierung
+      \end{itemize*}
+      \begin{enumerate*}
+            \item Pre-shared Key: $SKYEID = HMAC(K_{Initiator}, Responder , r_{Initiator} | r_{Responder})$
+            \item Zwei verschiedene Formen der Authentifizierung mit Public-Key-Verschlüsselung:  $SKEYID = HMAC(H(r_{Initiator}, r_{Responder}), CKY-I | CKY-R)$
+            \item Digitale Unterschrift:
             \begin{itemize*}
-                  \item Pre-shared Key:
-                  \begin{itemize*}
-                        \item SKYEID = $HMAC(K_{Initiator}, Responder , r_{Initiator} | r_{Responder})$
-                  \end{itemize*}
-                  \item Zwei verschiedene Formen der Authentifizierung mit Public-Key-Verschlüsselung:
-                  \begin{itemize*}
-                        \item $SKEYID = HMAC(H(r_{Initiator}, r_{Responder}), CKY-I | CKY-R)$
-                  \end{itemize*}
-                  \item Digitale Unterschrift:
-                  \begin{itemize*}
-                        \item $SKEYID = HMAC((r_{Initiator} | r_{Responder}), g^{xy})$
-                        \item Da in diesem Fall SKEYID selbst keine Authentifizierung bietet, werden die Werte Hash-I und Hash-R vom Initiator/Responder signiert
-                  \end{itemize*}
+                  \item $SKEYID = HMAC((r_{Initiator} | r_{Responder}), g^{xy})$
+                  \item Da in diesem Fall SKEYID selbst keine Authentifizierung bietet, werden die Werte Hash-I und Hash-R vom Initiator/Responder signiert
             \end{itemize*}
+      \end{enumerate*}
+
+      \subsubsection{IKE - Hauptmodus: Austausch mit Pre-Shared Key}
+      \begin{itemize*}
+            %\item Die folgenden Beschreibungen listen die ausgetauschten ISAKMP- und IKE-Payloads auf, wenn verschiedene ,,Flavors'' der IKE-Authentifizierung durchgeführt werden
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-exchange-payloads.png}
+            \item $N_i, N_r$ bezeichnen $r_{Initiiator}, r_{Responder}$
+            \item $ID_i, ID_r$ die Identität des Initiators/Responders
+            \item $KE$ die öffentlichen Werte eines DH-Austausches
+            \item Hash-I und Hash-R müssen nicht signiert werden, da sie bereits authentisches Geheimnis (Pre-Shared Key) enthalten
       \end{itemize*}
 
-      \subsubsection{IKE - Main Mode Austausch mit Pre-Shared Key}
+      \subsubsection{IKE - Hauptmodus: Austausch mit Signaturen}
       \begin{itemize*}
-            \item Die folgenden Beschreibungen listen die ausgetauschten ISAKMP- und IKE-Payloads auf, wenn verschiedene ,,Flavors'' der IKE-Authentifizierung durchgeführt werden:
-            \begin{itemize*}
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-exchange-payloads.png}
-                  \item $N_i, N_r$ bezeichnen $r_{Initiiator}, r_{Responder}$ (IKE-Notation)
-                  \item $ID_i, ID_r$ bezeichnen die Identität des Initiators und des Responders
-                  \item $KE$ bezeichnet die öffentlichen Werte eines DH-Austausches
-            \end{itemize*}
-            \item Bitte beachten Sie, dass Hash-I und Hash-R nicht signiert werden müssen, da sie bereits ,,ein authentisches Geheimnis'' (Pre-Shared Key) enthalten
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-exchange-payload-signature.png}
+            \item $(m)$ gibt an, dass $m$ optional ist
+            \item $I[m]$ bedeutet, dass $I$ $m$ signiert
+            \item Hash-I und Hash-R müssen signiert werden, da sie nichts enthalten, von dem bekannt ist, dass es authentisch ist
       \end{itemize*}
 
-      \subsubsection{IKE - Hauptmodus Austausch mit Signaturen}
+      \subsubsection{IKE - Hauptmodus: Austausch mit Public Key}
       \begin{itemize*}
-            \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-exchange-payload-signature.png}
-            \begin{itemize*}
-                  \item $(m)$ gibt an, dass m optional ist
-                  \item $I[m]$ bedeutet, dass I m signiert
-            \end{itemize*}
-            \item Bitte beachten Sie, dass Hash-I und Hash-R signiert werden müssen, da sie nichts enthalten, von dem bekannt ist, dass es authentisch ist
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-exchange-public-key.png}
+            \item $m$ mit dem öffentlichen Schlüssel $+K_I$ verschlüsselt
+            \item Hash-I und Hash-R müssen nicht signiert werden, da sie ausgetauschte Zufallszahlen $N_i$/$N_r$ enthalten
+            \item Jede Entität beweist ihre Authentizität, indem sie die empfangene Zufallszahl $N_i$/$N_r$ mit ihrem privaten Schlüssel entschlüsselt
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-exchange-public-key-2.png}
+            \item ${m}_{K_i}$ bedeutet, dass $m$ mit dem symmetrischen Schlüssel $K_i$ mit $K_i=H(N_i, CKY-I)$ und $K_r=H(N_r,CKY-R)$ verschlüsselt ist
+            \item alle bisher beschriebenen Schemata bieten Schutz der Identität vor Abhörern im Internet, da die IDs und Zertifikate nicht im Klartext gesendet werden
+            \item IP-Adressen der ausgetauschten Pakete sind immer lesbar
       \end{itemize*}
 
-      \subsubsection{IKE - Main Mode Exchange mit Public Key Encryption}
+      \subsubsection{IKE - Aggressiv: Austausch mit Pre-Shared Key}
       \begin{itemize*}
-            \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-exchange-public-key.png}
-            \begin{itemize*}
-                  \item wobei: ${m}_{+KI}$ bedeutet, dass m mit dem öffentlichen Schlüssel $+K_I$ verschlüsselt ist
-                  \item Bitte beachten Sie, dass Hash-I und Hash-R nicht signiert werden müssen, da sie die ausgetauschten Zufallszahlen Ni bzw. Nr ,,enthalten''.
-                  \begin{itemize*} \item Jede Entität beweist also ihre Authentizität, indem sie die empfangene Zufallszahl ( Ni oder Nr ) mit ihrem privaten Schlüssel entschlüsselt \end{itemize*}
-            \end{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-exchange-public-key-2.png}
-            \begin{itemize*}
-                  \item wobei: ${m}_{+KI}$ bedeutet, dass m mit dem öffentlichen Schlüssel $+K_I$ verschlüsselt ist
-                  \item ${m}_{K_i}$ bedeutet, dass m mit dem symmetrischen Schlüssel $K_i$ mit $K_i=H(N_i, CKY-I)$ und $K_r=H(N_r,CKY-R)$ verschlüsselt ist
-                  \item Bitte beachten Sie, dass alle bisher beschriebenen Schemata einen Schutz der Identität vor Abhörern im Internet bieten, da die IDs und Zertifikate nicht im Klartext gesendet werden:
-                  \item Die IP-Adressen der ausgetauschten Pakete sind jedoch immer lesbar...
-            \end{itemize*}
-      \end{itemize*}
-
-      \subsubsection{IKE - Aggressiver Modus Austausch mit Pre-Shared Key}
-      \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-aggressive-mode.png}
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-aggressive-mode.png}
             \item Da die Identität des Initiators und des Responders gesendet werden muss, bevor ein Sitzungsschlüssel erstellt werden kann, kann der Austausch im aggressiven Modus keinen Identitätsschutz vor Abhörern bieten
-            \item Ähnliche Varianten des aggressiven Modus gibt es auch für die Authentifizierung mit:
-            \begin{itemize*}
-                  \item Digitale Signatur
-                  \item Verschlüsselung mit öffentlichem Schlüssel
-            \end{itemize*}
+            \item Ähnliche Varianten auch für Digitale Signatur und mit öffentlichem Schlüssel
       \end{itemize*}
 
       \subsubsection{IKE - Quick Mode Exchange}
       \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKE-quick-mode.png}
-            \item $Hash1 = HMAC(SKEYID_a, M-ID | SA | Ni | ,, | KE '' ,, | ID_{ci} | ID_{cr}'' )$
-            \item $Hash2 = HMAC(SKEYID_a, M-ID | N_i | SA | N_r | ,, | KE '' ,, | ID_{ci} | ID_{cr}'' )$
+            \item \includegraphics[width=.7\linewidth]{Assets/NetworkSecurity-IKE-quick-mode.png}
+            \item $Hash1 = HMAC(SKEYID_a, M-ID | SA | Ni | KE[] | ID_{ci} | ID_{cr})$
+            \item $Hash2 = HMAC(SKEYID_a, M-ID | N_i | SA | N_r | KE[] | ID_{ci} | ID_{cr})$
             \item $Hash3 = HMAC(SKEYID_a, 0 | M-ID | N_i | N_r)$
             \item Die optionale Einbeziehung der Identitäten $ID_{ci}$ und $ID_{cr}$ ermöglicht es ISAKMP-Entitäten, eine SA im Namen anderer Clients einzurichten (Gateway-Szenario)
             \item Die optionalen Schlüsselaustausch-Payloads KE ermöglichen die Durchführung eines neuen DH-Austauschs, wenn perfekte Forward Secrecy gewünscht ist
-            \item Sitzungsschlüsselmaterial $= HMAC(SKEYID_d, ,, g^{xy} | '' protocol | SPI | N_i |
-                  N_r)$
+            \item Sitzungsschlüsselmaterial $= HMAC(SKEYID_d, g^{xy} | protocol | SPI | N_i | N_r)$
       \end{itemize*}
 
       \subsection{Weitere Probleme mit IPsec}
       \begin{itemize*}
-            \item Komprimierung:
+            \item Komprimierung
             \begin{itemize*}
-                  \item Wenn Verschlüsselung verwendet wird, dann können die resultierenden IP-Pakete nicht in der Verbindungsschicht komprimiert werden, z.B. bei einer Verbindung zu einem ISP über Modem
-                  \item Daher wurde das IP Payload Compression Protocol (PCP) definiert
-                  \item PCP kann mit IPsec verwendet werden:
-                  \begin{itemize*}
-                        \item In der IPsec-Policy-Definition kann PCP festgelegt werden.
-                        \item Die IKE SA-Verhandlung ermöglicht die Aufnahme von PCP in die Vorschläge
-                  \end{itemize*}
+                  \item Wenn Verschlüsselung verwendet wird, dann können die resultierenden IP-Pakete nicht in der Verbindungsschicht komprimiert werden%, z.B. bei einer Verbindung zu einem ISP über Modem
+                  \item[$\rightarrow$] IP Payload Compression Protocol (PCP) definiert
+                  \item PCP kann mit IPsec verwendet werden
+                  \item In IPsec-Policy-Definition kann PCP festgelegt werden
+                  \item IKE SA-Verhandlung ermöglicht die Aufnahme von PCP in die Vorschläge
             \end{itemize*}
-            \item Interoperabilitätsprobleme bei End-to-End-Sicherheit mit Header-Verarbeitung in Zwischenknoten:
+            \item Interoperabilitätsprobleme bei End-to-End-Sicherheit mit Header-Verarbeitung in Zwischenknoten
             \begin{itemize*}
-                  \item Interoperabilität mit Firewalls:
+                  \item Interoperabilität mit Firewalls: Die Ende-zu-Ende-Verschlüsselung kollidiert mit der Notwendigkeit von Firewalls, die Protokoll-Header der oberen Schichten in IP-Paketen zu prüfen
+                  \item Interoperabilität mit Network Address Translation (NAT)
                   \begin{itemize*}
-                        \item Die Ende-zu-Ende-Verschlüsselung kollidiert mit der Notwendigkeit von Firewalls, die Protokoll-Header der oberen Schichten in IP-Paketen zu prüfen.
-                  \end{itemize*}
-                  \item Interoperabilität mit Network Address Translation (NAT):
-                  \begin{itemize*}
-                        \item Verschlüsselte Pakete lassen weder eine Analyse noch eine Änderung der Adressen zu.
-                        \item Authentifizierte Pakete werden verworfen, wenn die Quell- oder Zieladresse geändert wird.
+                        \item Verschlüsselte Pakete lassen weder eine Analyse noch eine Änderung der Adressen zu
+                        \item Authentifizierte Pakete werden verworfen, wenn die Quell- oder Zieladresse geändert wird
                   \end{itemize*}
             \end{itemize*}
       \end{itemize*}
@@ -4183,24 +4141,23 @@
       \subsection{Schlussfolgerung}
       \begin{itemize*}
             \item IPsec ist die Sicherheitsarchitektur der IETF für das Internet-Protokoll
-            \item Sie bietet die folgenden Sicherheitsdienste für IP-Pakete:
+            \item Sie bietet die folgenden Sicherheitsdienste für IP-Pakete
             \begin{itemize*}
                   \item Authentifizierung der Datenherkunft
                   \item Schutz vor Wiederholung
                   \item Vertraulichkeit
             \end{itemize*}
-            \item Es kann in Endsystemen oder Zwischensystemen realisiert werden:
+            \item Es kann in Endsystemen oder Zwischensystemen realisiert werden
             \begin{itemize*}
                   \item Implementierung im Endsystem: Integriertes Betriebssystem oder ,,bump in the stack''
                   \item Gateway-Implementierung: Integrierter Router oder ,,bump in the wire''
             \end{itemize*}
-            \item Es wurden zwei grundlegende Sicherheitsprotokolle definiert:
+            \item zwei grundlegende Sicherheitsprotokolle definiert
             \begin{itemize*}
                   \item Authentifizierungs-Header (AH)
                   \item Encapsulating security payload (ESP)
             \end{itemize*}
-            \item SA-Verhandlung und Schlüsselverwaltung werden mit folgenden
-            Protokollen realisiert:
+            \item SA-Verhandlung und Schlüsselverwaltung mit folgenden Protokollen
             \begin{itemize*}
                   \item Internet security association key management protocol (ISAKMP)
                   \item Internet-Schlüsselaustausch (IKE)
@@ -4216,7 +4173,7 @@
             \end{itemize*}
             \item Netzwerkadressübersetzung (NAT)
             \begin{itemize*}
-                  \item Beispiel für Probleme mit NAT und IPsec
+                  %\item Beispiel für Probleme mit NAT und IPsec
                   \item NAT-Überwindung
                   \item Bound-End-to-End Tunnel Mode (BEET)
             \end{itemize*}
@@ -4226,14 +4183,14 @@
       \subsection{Internet Key Exchange Protocol Version 2}
       Zusätzliche Designziele zu IKEv1
       \begin{itemize*}
-            \item Konsolidierung von mehreren IKEv1-RFCs (und mehreren Erweiterungen)
-            \begin{itemize*}
-                  \item Erleichterung für Entwickler und Prüfer
-                  \item Klärung mehrerer unspezifischer Punkte
-            \end{itemize*}
+            \item Konsolidierung von mehreren IKEv1-RFCs (und Erweiterungen)
+            %\begin{itemize*}
+            %      \item Erleichterung für Entwickler und Prüfer
+            %      \item Klärung mehrerer unspezifischer Punkte
+            %\end{itemize*}
             \item Vereinfachungen
             \begin{itemize*}
-                  \item Anzahl der verschiedenen Schlüsselaustauschverfahren auf eines reduziert
+                  \item nur ein Schlüsselaustauschverfahren
                   \item Verschlüsselung wie in ESP
                   \item Einfacher Anfrage/Antwort-Mechanismus
             \end{itemize*}
@@ -4246,108 +4203,98 @@
       \subsubsection{IKEv2 - Schlüsselaustauschverfahren}
       \begin{itemize*}
             \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-IKEv2-exchange-procedure.png}
-            \begin{itemize*}
-                  \item $K$ Schlüssel abgeleitet durch $PRF(PRF(N_i || N_r, g^{ir}), N_i || N_r || SPI_i || SPI_r)$
-                  \item $PRF$ ,,irgendeine'' Pseudozufallsfunktion - in der Regel eine asymmetrische HMAC SIG-Signatur oder MAC über die ersten beiden Nachrichten
-                  \item $SAEx$ ein Huckepack- ,,Quick-Mode-Austausch''
-            \end{itemize*}
+            \item $K$ Schlüssel abgeleitet durch $PRF(PRF(N_i || N_r, g^{ir}), N_i || N_r || SPI_i || SPI_r)$
+            \item $PRF$ irgendeine Pseudozufallsfunktion %- in der Regel eine asymmetrische HMAC SIG-Signatur oder MAC über die ersten beiden Nachrichten
+            \item $SAEx$ ein ,,Quick-Mode-Austausch''
             \item Nur ein einziger Austauschtyp
             \item Vier Nachrichten werden ausgetauscht $(= 2 * RTT)$
             \item Initiator löst alle erneuten Übertragungen aus
       \end{itemize*}
-      \subsubsection{IKEv2 - Eigenschaften des Schlüsselaustauschverfahrens}
+      \subsubsection{IKEv2 - Eigenschaften des Austauschverfahrens}
       \begin{itemize*}
             \item Der erste SA-Austausch erfolgt huckepack
-            \begin{itemize*}
-                  \item Geringere Latenz, da eine RTT eingespart wird
-            \end{itemize*}
+            \item Geringere Latenz, da eine RTT eingespart wird
             \item Nachricht 4 sollte huckepack mit Nachricht 2 ausgetauscht werden, aber
+            \item Nachricht 3 verifiziert, dass Initiator Nachricht 2 erhalten hat (SPI-Cookie)
             \begin{itemize*}
-                  \item Nachricht 3 verifiziert, dass Initiator Nachricht 2 erhalten hat (SPI \textasciitilde{} Cookie)
-                  \begin{itemize*}
-                        \item Dient als DoS-Schutz, wenn anschließend rechenintensive Aufgaben durchgeführt werden
-                  \end{itemize*}
-                  \item Identität des Responders wird erst nach Verifizierung des Initiators offengelegt
-                  \begin{itemize*}
-                        \item Schützt vor dem Scannen nach einer Partei mit einer bestimmten ID
-                  \end{itemize*}
-                  \item Initiator weiß nicht, wann es sicher ist, Daten zu senden
-                  \begin{itemize*}
-                        \item (Pakete können in falscher Reihenfolge empfangen werden)
-                  \end{itemize*}
-                  \item Würde eine kompliziertere Strategie zur erneuten Übertragung erfordern
-                  \item Responder kann nicht über eine Policy für die Child SA entscheiden
+                  \item Dient als DoS-Schutz%, wenn anschließend rechenintensive Aufgaben durchgeführt werden
             \end{itemize*}
+            \item Identität des Responders wird erst nach Verifizierung des Initiators offengelegt
+            \begin{itemize*}
+                  \item Schützt vor dem Scannen nach Partei mit bestimmter ID
+            \end{itemize*}
+            \item Initiator weiß nicht, wann es sicher ist, Daten zu senden
+            \begin{itemize*}
+                  \item Pakete können in falscher Reihenfolge empfangen werden
+            \end{itemize*}
+            \item Würde eine kompliziertere Strategie zur erneuten Übertragung erfordern
+            \item Responder kann nicht über eine Policy für die Child SA entscheiden
       \end{itemize*}
 
       \subsubsection{IKEv2 - Zusätzliche Funktionen}
       \begin{itemize*}
             \item Zusätzlicher DoS-Schutz
             \begin{itemize*}
-                  \item Im Falle eines DoS-Angriffs kann der Responder den Initiator auffordern, ein zustandsloses Cookie zu senden
-                  \item Fügt dem Austausch 2 zusätzliche Nachrichten hinzu
+                  \item Responder kann Initiator auffordern, ein zustandsloses Cookie zu senden
+                  %      \item Fügt dem Austausch 2 zusätzliche Nachrichten hinzu
             \end{itemize*}
             \item Dead Peer Detection
             \begin{itemize*}
-                  \item Regelmäßige IKE-Anfragen, um festzustellen, ob die SA gelöscht werden kann
+                  \item Regelmäßige IKE-Anfragen, um festzustellen, ob SA gelöscht werden kann
             \end{itemize*}
             \item Flexiblere Verhandlungstechniken
             \begin{itemize*}
-                  \item Möglichkeit der Angabe: ,,Verwenden Sie eine dieser Chiffren mit einem dieser Authentifizierungsalgorithmen'' (es müssen nicht mehr alle Kombinationen aufgezählt werden)
+                  \item es müssen nicht mehr alle Kombinationen aufgezählt werden
                   \item Verkehrsselektoren können eingegrenzt werden
-                  \begin{itemize*}
-                        \item Initiator: ,,Ich möchte 192.168.0.0/16 für meinen Tunnelmodus verwenden''
-                        \item Antwortgeber: ,,OK, aber Sie dürfen nur 192.168.78.0/24 verwenden''
-                        \item Kann verwendet werden, um den Responder dem Initiator einen Adressbereich zuweisen zu lassen (in einfachen Situationen ohne / mit Hilfe von DHCP; siehe auch unten)
-                  \end{itemize*}
+                  %\item Initiator: ,,Ich möchte 192.168.0.0/16 für meinen Tunnelmodus verwenden''
+                  %\item Antwortgeber: ,,OK, aber Sie dürfen nur 192.168.78.0/24 verwenden''
+                  \item Responder kann dem Initiator einen Adressbereich zuweisen lassen %(in einfachen Situationen ohne / mit Hilfe von DHCP)
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Netzwerk-Adressübersetzung (NAT)}
       \begin{itemize*}
-            \item Heutzutage ein häufiges Problem: ISP stellt nur eine einzige IP-Adresse zur Verfügung, es sollen aber mehrere Geräte angeschlossen werden
-            \item Lösung: Ein Router wird verwendet, um mehrere interne (private) Adressen auf eine einzige externe (öffentliche) Adresse abzubilden
-            \item Häufigster Ansatz (vereinfacht):
+            \item Problem: ISP stellt nur eine IP-Adresse zur Verfügung aber mehrere Geräte sollen angeschlossen werden
+            \item Lösung: Router wird verwendet, um mehrere interne Adressen auf eine externe Adresse abzubilden
+            \item Häufigster Ansatz (vereinfacht)
+            \item Für Pakete, die von der privaten Seite kommen
             \begin{itemize*}
-                  \item Für Pakete, die von der privaten Seite kommen:
-                  \begin{itemize*}
-                        \item Der Router schreibt die TCP/UDP-Quellports auf einen eindeutigen Wert pro IP-Flow um
-                        \item Speichert den neuen Quellport in einer Tabelle mit der Quelladresse und dem alten Quellport
-                        \item Ersetzt die Quell-IP-Adresse durch die externe Adresse
-                  \end{itemize*}
-                  \item Für Pakete, die von der öffentlichen Seite kommen:
-                  \begin{itemize*}
-                        \item Der Router sucht den IP-Fluss nach dem TCP/UDP-Zielport ab
-                        \item Ersetzt die Zieladresse und den Port durch die alten Werte
-                  \end{itemize*}
+                  \item Router schreibt die TCP/UDP-Quellports auf einen eindeutigen Wert pro IP-Flow um
+                  \item Speichert den neuen Quellport in einer Tabelle mit der Quelladresse und dem alten Quellport
+                  \item Ersetzt die Quell-IP-Adresse durch die externe Adresse
+            \end{itemize*}
+            \item Für Pakete, die von der öffentlichen Seite kommen
+            \begin{itemize*}
+                  \item Der Router sucht den IP-Fluss nach dem TCP/UDP-Zielport ab
+                  \item Ersetzt die Zieladresse und den Port durch die alten Werte
             \end{itemize*}
       \end{itemize*}
 
-      \subsubsection{NAT - Ein Beispiel}
-      \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-NAT-example.png}
-            \item NAT ändert die Quelladresse eines jeden Pakets in eine öffentliche IP-Adresse mit anderen (,,umgeschriebenen,,) Quellports
-      \end{itemize*}
+      %\subsubsection{NAT - Ein Beispiel}
+      %\begin{itemize*}
+      %      \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-NAT-example.png}
+      %      \item NAT ändert die Quelladresse eines jeden Pakets in eine öffentliche IP-Adresse mit anderen (,,umgeschriebenen,,) Quellports
+      %\end{itemize*}
 
       \subsubsection{Probleme mit NAT und IPsec - NAT-Traversal}
       \begin{itemize*}
-            \item Probleme:
+            \item Probleme
             \begin{itemize*}
                   \item AH kann per Definition nicht mit NAT verwendet werden
-                  \item ESP bietet kein ,,wiederbeschreibbares Feld'' (wie Portnummer)
-                  \item TCP/UDP-Portnummern werden verschlüsselt oder authentifiziert (oder beides)
+                  \item ESP bietet kein ,,wiederbeschreibbares Feld'' %(wie Portnummer)
+                  \item TCP/UDP-Portnummern werden verschlüsselt und/oder authentifiziert
             \end{itemize*}
-            \item Lösung für ESP: ESP-Pakete in normale UDP-Pakete einkapseln
-            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-NAT-encap-ESP.png}
+            \item Lösung: ESP-Pakete in normale UDP-Pakete einkapseln
+            \item \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-NAT-encap-ESP.png}
             \item UDP-Header enthält nur Portnummern und leere Prüfsumme
             \begin{itemize*}
                   \item Fügt 8 Byte Overhead hinzu
-                  \item Einziger Zweck: dem NAT-Gerät etwas zum ,,Umschreiben'' geben (um die Empfänger der Pakete in der Antwort unterscheiden zu können)
+                  \item Einziger Zweck: dem NAT-Gerät etwas zum Umschreiben geben %(um die Empfänger der Pakete in der Antwort unterscheiden zu können)
                   \item Port 4500 reserviert für NAT-T (NAT-Traversal)
             \end{itemize*}
-            \item Im Transport-Modus:
+            \item im Transport-Modus
             \begin{itemize*}
-                  \item Innere UDP/TCP-Prüfsumme hängt von der ursprünglichen Quelladresse ab (Layering-Verletzung in der ursprünglichen TCP/IP-Suite)
+                  \item Innere UDP/TCP-Prüfsumme hängt von ursprünglicher Quelladresse ab %(Layering-Verletzung in der ursprünglichen TCP/IP-Suite)
                   \item Muss wiederhergestellt werden
             \end{itemize*}
             \item Wann ist NAT-T zu verwenden?
@@ -4355,7 +4302,7 @@
                   \item NAT-Situation muss von IKE erkannt werden
                   \item Erfolgt durch IKEv1-Erweiterung
                   \item IKE verwendet NAT-T, wenn der IKE-Quellport nicht 500 ist
-                  \item Funktioniert nicht immer, dann ist eine manuelle Konfiguration erforderlich
+                  \item Funktioniert nicht immer, manuelle Konfiguration erforderlich
             \end{itemize*}
             \item Timeout-Probleme und Keep-Alives
             \begin{itemize*}
@@ -4363,57 +4310,55 @@
                   \item NAT-T-Ströme können im Router eine Zeitüberschreitung verursachen
                   \item Eingehende Pakete können dann nicht zugestellt werden
                   \item Regelmäßige Keep-Alive-Pakete stellen sicher, dass der Router seinen Status beibehält
-                  \item Einfaches UDP-Paket an Port 4500 mit einem einzigen 0xFF-Oktett
+                  \item simples UDP-Paket an Port 4500 mit einem 0xFF-Oktett
             \end{itemize*}
       \end{itemize*}
 
       \subsubsection{Probleme mit NAT und IPsec - BEET-Modus}
       \begin{itemize*}
-            \item Welche Adressen soll Alice verwenden, um Pakete an Bob, Charlie und Dave zu senden?
-            \item Weder die externen noch die internen Adressen dürfen eindeutig sein!
+            %\item Welche Adressen soll A verwenden, um Pakete an B, C und D zu senden?
+            \item Weder externe noch interne Adressen dürfen eindeutig sein
             \begin{itemize*}
-                  \item Bobs und Charlies Pakete haben beide die gleiche externe Adresse
-                  \item Bobs und Daves Pakete haben beide dieselbe interne Adresse
+                  %\item B und C Pakete haben gleiche externe Adresse
+                  %\item B und D Pakete haben dieselbe interne Adresse
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-NAT-BEET-mode.png}
-                  \item Die Verwendung interner oder externer Adressen ist unsicher (Warum?)
-                  \item Die Unterscheidung erfordert virtuelle Adressen...
+                  \item Verwendung interner oder externer Adressen ist unsicher
+                  \item Unterscheidung erfordert virtuelle Adressen
             \end{itemize*}
             \item Virtuelle IP-Adressen zuweisen oder aushandeln
             \begin{itemize*}
-                  \item Alice muss jedem ihrer Peers eindeutige virtuelle Adressen zuweisen
-                  \item Dies kann manuell geschehen, oder
-                  \item durch DHCP über IKE, oder
+                  \item jedem Peer eindeutige virtuelle Adressen zuweisen
+                  \item manuell, durch DHCP über IKE oder
                   \item durch Aushandlung von Verkehrsselektoren (IKEv2)
                   \item L2TP über IPsec ausführen
             \end{itemize*}
             \item IPsec-Tunnelmodus ist erforderlich
             \begin{itemize*}
-                  \item Externer IP-Header trägt entweder eine öffentliche IP-Adresse oder eine private NAT-Adresse
+                  \item Externer IP-Header trägt entweder öffentliche IP-Adresse oder private NAT-Adresse
                   \item Interner IP Header trägt virtuelle IP-Adresse
-                  \item Führt zu (mindestens!) 28 Bytes Overhead pro Paket in NAT-Situationen
-                  \item | IP Header | UDP Header | ESP Header | IP Header | geschützte Daten |
+                  \item Führt zu (mindestens) 28 Bytes Overhead pro Paket in NAT-Situationen
+                  %\item | IP Header | UDP Header | ESP Header | IP Header | geschützte Daten |
             \end{itemize*}
-            \item Aber eigentlich sind nur Adressfelder im inneren IP-Header erforderlich (alle anderen Felder können vom externen Header abgeleitet werden)
-            \item Beide virtuellen Adressfelder verwenden immer dieselben Adressen (kein Multiplexing wie in üblichen Tunnelmodusszenarien)
+            \item eigentlich nur Adressfelder im inneren IP-Header erforderlich %(alle anderen Felder können vom externen Header abgeleitet werden)
+            \item Beide virtuellen Adressfelder verwenden immer dieselben Adressen %(kein Multiplexing wie in üblichen Tunnelmodusszenarien)
             \item Die Beschränkung auf zwei Adressen im Tunnel ermöglicht eine statische Bindung während der IKE-Aushandlung
-            \item Der Bound-End-to-End-Tunnel (BEET)-Modus verhält sich semantisch wie eine Tunnelmodus-Assoziation mit einem Verkehrsselektor für einen einzelnen Host (/32)
-            \item Die übertragenen ESP-Pakete sind äquivalent zu Transport (!)-Modus-Paketen (virtuelle Adressen werden nie in Paketen übertragen)
-            \item Der innere Header wird durch den ESP-Entkapselungsprozess wiederhergestellt.
-            \item Unterscheidet zwischen der Erreichbarkeit eines Hosts (externe IP-Adresse) und seiner Identität (virtuelle IP-Adresse)
-            \item Hosts können nun zwischen verschiedenen Standorten hin- und herwandern und ihre virtuelle IP-Adresse beibehalten (dies ermöglicht zusätzlich eine bessere Unterstützung der Mobilität)
+            \item Bound-End-to-End-Tunnel (BEET)-Modus verhält sich semantisch wie eine Tunnelmodus-Assoziation mit einem Verkehrsselektor für einen einzelnen Host (/32)
+            \item übertragene ESP-Pakete sind äquivalent zu Transport-Modus-Paketen %(virtuelle Adressen werden nie in Paketen übertragen)
+            \item innerer Header wird durch ESP-Entkapselungsprozess wiederhergestellt
+            \item Unterscheidet zwischen Erreichbarkeit eines Hosts (externe IP-Adresse) und seiner Identität (virtuelle IP-Adresse)
+            \item Hosts können zwischen verschiedenen Standorten wandern und ihre virtuelle IP-Adresse beibehalten %(dies ermöglicht zusätzlich eine bessere Unterstützung der Mobilität)
       \end{itemize*}
 
       \subsection{Konfiguration großer IPsec-Infrastrukturen}
       \begin{itemize*}
-            \item Kommunikationsinfrastrukturen von Unternehmen und Behörden:
+            %\item Kommunikationsinfrastrukturen von Unternehmen und Behörden
             \item Kann komplexe Overlay-Topologien bilden
             \begin{itemize*}
-                  \item Verschachtelt
-                  \item Kreisläufe
+                  \item Verschachtelt, Kreisläufe
                   \item Mehrere Sicherheitsgateways pro privatem Netzwerk
                   \item Mehrere private Netze pro Gateway
                   \item Private Adressbereiche in privaten Netzen
-                  \item QoS und sicheres IP-Multicast können erforderlich sein
+                  %\item QoS und sicheres IP-Multicast können erforderlich sein
             \end{itemize*}
             \item Kann bis zu Tausende von Sicherheits-Gateways haben
             \item Kann sich dynamisch ändern
@@ -4421,22 +4366,21 @@
                   \item Hinzufügen und Entfernen von Sicherheitsgateways
                   \item Ausfälle von Verbindungen und Knoten
                   \item Denial-of-Service-Angriffe
-                  \item Mobile Sicherheitsgateways (z.B. für die Kommunikation im Katastrophenfall)
+                  \item Mobile Sicherheitsgateways %(z.B. für die Kommunikation im Katastrophenfall)
             \end{itemize*}
-            \item Muss natürlich sicher sein ...
+            %\item Muss natürlich sicher sein ...
       \end{itemize*}
 
       \subsection{Probleme bei der manuellen Konfiguration der IPsec-Infrastruktur}
       \begin{itemize*}
             \item Die IETF hat keine Methode zur automatischen Konfiguration und zum Einsatz von IPsec in großen Szenarien definiert
             \item Daher werden Sicherheits-Gateways in der Regel manuell konfiguriert
+            \item Anzahl der Sicherheitsrichtlinieneinträge wächst quadratisch mit Anzahl der Sicherheitsgateways
+            \item Problem der Skalierbarkeit
             \begin{itemize*}
-                  \item Die Anzahl der Sicherheitsrichtlinieneinträge wächst quadratisch mit der Anzahl der Sicherheitsgateways
-                  \item Problem der Skalierbarkeit
-                  \begin{itemize*}
-                        \item Der Administrationsaufwand wächst $\Rightarrow$ Die Kosten steigen
-                        \item Administratoren machen potenziell mehr Konfigurationsfehler, z.B. vergessen, einen Eintrag aus einem SPD zu löschen oder einen zu großen IP-Bereich zuzulassen, usw. $\Rightarrow$ Mögliche Sicherheitsprobleme
-                  \end{itemize*}
+                  \item Administrationsaufwand wächst $\Rightarrow$ Kosten steigen
+                  \item Administratoren machen potenziell mehr Konfigurationsfehler %, z.B. vergessen, einen Eintrag aus einem SPD zu löschen oder einen zu großen IP-Bereich zuzulassen, usw. 
+                  $\Rightarrow$ mögliche Sicherheitsprobleme
             \end{itemize*}
             \item Problem der Agilität
             \begin{itemize*}
@@ -4445,24 +4389,22 @@
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Automatische IPsec-Konfiguration - einige Anforderungen}
+      \subsection{Automatische IPsec-Konfiguration}
+      Funktionelle Anforderungen
       \begin{itemize*}
-            \item Funktionelle Anforderungen
-            \begin{itemize*}
-                  \item Muss manuelle Eingriffe minimieren
-                  \item Muss auch komplexe Infrastrukturen unterstützen (verschachtelte Topologien mit privaten Adressbereichen usw.)
-                  \item Muss nur Unicast verwenden (da Multicast usw. nicht weit verbreitet ist)
-            \end{itemize*}
-            \item Nicht-funktionale Anforderungen
-            \begin{itemize*}
-                  \item Muss robust sein, d. h. stabil auf schwierige Netzbedingungen reagieren
-                  \item Sie muss sicher sein, insbesondere darf sie nicht schwächer sein als eine manuell konfigurierte IPsec-Infrastruktur
-                  \item Sie muss in Bezug auf die Anzahl der Sicherheits-Gateways skalierbar sein
-                  \item Es muss sich schnell an neue Topologien anpassen können.
-            \end{itemize*}
+            \item muss manuelle Eingriffe minimieren
+            \item muss auch komplexe Infrastrukturen unterstützen %(verschachtelte Topologien mit privaten Adressbereichen usw.)
+            \item muss nur Unicast verwenden %(da Multicast usw. nicht weit verbreitet ist)
+      \end{itemize*}
+      Nicht-funktionale Anforderungen
+      \begin{itemize*}
+            \item muss robust sein, d.h. stabil auf schwierige Netzbedingungen reagieren
+            \item muss sicher sein, insbesondere darf sie nicht schwächer sein als eine manuell konfigurierte IPsec-Infrastruktur
+            \item muss in Bezug auf die Anzahl der Sicherheits-Gateways skalierbar sein
+            \item muss sich schnell an neue Topologien anpassen können
       \end{itemize*}
 
-      \subsection{Verschiedene Ansätze für die automatische IPsec-Konfiguration}
+      \subsection{Ansätze für automatische IPsec-Konfiguration}
       \begin{itemize*}
             \item IPsec-Richtlinienverteilung über zentrale Server
             \item Gruppenverschlüsseltes Transport-VPN (GET)
@@ -4478,21 +4420,21 @@
             \item Einfacher, gemeinsamer Ansatz zur Konfiguration einer großen Anzahl von Sicherheits-Gateways
             \item Zentraler Policy Server statisch in jedem Gateway konfiguriert
             \item Jedes Gateway kontaktiert den Policy Server, um SPD zu aktualisieren
-            \item Beispiel: Microsoft Active Directory, verschiedene Militärprodukte
-            \item Einige offensichtliche Probleme:
+            %\item Beispiel: Microsoft Active Directory, verschiedene Militärprodukte
+            \item Einige offensichtliche Probleme
             \begin{itemize*}
-                  \item Administratoren müssen die zentrale Datenbank manuell bearbeiten
+                  \item Admins müssen zentrale Datenbank manuell bearbeiten
                   \item Verschachtelte Topologien sind schwer zu realisieren
                   \item Skalierbarkeitsprobleme aufgrund von Engpässen
-                  \item Verfügbarkeit ist schwer zu garantieren (Single Point of Failure)
-                  \item Dynamische Topologien erfordern, dass neue Richtlinien proaktiv an die Sicherheitsgateways übermittelt werden (auch wenn sie derzeit vielleicht nicht verwendet werden)
+                  \item Verfügbarkeit schwer zu garantieren (Single Point of Failure)
+                  \item Dynamische Topologien erfordern, dass neue Richtlinien proaktiv an die Sicherheitsgateways übermittelt werden %(auch wenn sie derzeit vielleicht nicht verwendet werden)
                   \item Viele Richtlinieneinträge werden höchstwahrscheinlich nie verwendet (kein Verkehr)
             \end{itemize*}
       \end{itemize*}
 
       \subsubsection{Tunnel Endpoint Discovery (TED)}
       \begin{itemize*}
-            \item Proprietärer Ansatz von Cisco
+            %\item Proprietärer Ansatz von Cisco
             \item Sicherheitsassoziationen werden reaktiv erstellt
             \begin{itemize*}
                   \item Alice sendet Paket an Bob
@@ -4513,18 +4455,18 @@
 
       \subsubsection{Gruppenverschlüsseltes Transport-VPN (GET)}
       \begin{itemize*}
-            \item Cisco Produktbranding mehrerer IPsec-Komponenten
+            %\item Cisco Produkt mehrerer IPsec-Komponenten
             \item Sicherheits-Gateways kontaktieren zentralen IKE-Server
-            \item IKE-Server verteilt symmetrische Schlüssel (bevorzugt über Multicast)
-            \item Alle Sicherheitsgateways einer Gruppe verwenden dieselbe SA (einschließlich SPI, Schlüssel)
+            \item IKE-Server verteilt symmetrische Schlüssel %(bevorzugt über Multicast)
+            \item alle Sicherheitsgateways einer Gruppe verwenden dieselbe SA %(einschließlich SPI, Schlüssel)
             \item Wiederholungsschutz durch Zeitfenster (1-100 Sekunden)
             \begin{itemize*}
                   \item Sliding-Window-Mechanismus funktioniert nicht, da mehrere Absender denselben SPI verwenden
             \end{itemize*}
-            \item Zusätzliche Probleme mit zentralen Policy-Servern:
+            \item Zusätzliche Probleme mit zentralen Policy-Servern
             \begin{itemize*}
                   \item schwacher Wiedergabeschutz
-                  \item Die Kompromittierung eines einzelnen Gateways beeinträchtigt das gesamte VPN
+                  \item Kompromittierung eines Gateways beeinträchtigt gesamte VPN
                   \item Rekeying durch symmetrischen Austausch $\Rightarrow$ kann nicht von kompromittierten Schlüsseln wiederhergestellt werden
                   \item Perfektes Vorwärtsgeheimnis nicht verfügbar
             \end{itemize*}
@@ -4532,9 +4474,9 @@
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-GET.png}
       \end{itemize*}
 
-      \subsubsection{Proaktives Multicast-basiertes IPsec-Erkennungsprotokoll}
+      \subsubsection{Proaktives Multicast IPsec-Erkennungsprotokoll}
       \begin{itemize*}
-            \item Ansatz wurde für militärische Anwendungen entwickelt
+            \item Ansatz für militärische Anwendungen entwickelt
             \item Sicherheits-Gateways kündigen periodisch private Netzwerke an
             \item Erfolgt durch Transportnetzwerk-Multicast
             \item Nachrichten werden durch einen vorab geteilten symmetrischen Schlüssel geschützt
@@ -4543,8 +4485,8 @@
             \begin{itemize*}
                   \item Erfordert Transportnetz-Multicast
                   \item Verschachtelte Topologien funktionieren nicht
-                  \item Anzahl der empfangenen Nachrichten kann ziemlich groß sein
-                  \item Ein kompromittiertes Gateway führt zu einer nicht wiederherstellbaren Kompromittierung des VPN
+                  \item Anzahl empfangener Nachrichten kann sehr groß sein
+                  \item kompromittiertes Gateway führt zu nicht wiederherstellbaren Kompromittierung des VPN
                   \item Replay-Schutz nicht berücksichtigt
             \end{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-proactive-multicast-discovery.png}
@@ -4552,46 +4494,37 @@
 
       \subsubsection{Soziales VPN}
       \begin{itemize*}
-            \item Akademischer Ansatz
+            %\item Akademischer Ansatz
             \item Verwendet Facebook als ,,policy'' Server zum Austausch von IKE Zertifikaten
-            \begin{itemize*}
-                  \item Man kann mit Freunden kommunizieren
-            \end{itemize*}
             \item Agilität durch Peer-to-Peer-Netzwerk
-            \begin{itemize*}
-                  \item Schaut in einer verteilten Hash-Tabelle nach der externen IP-Adresse des Ziels
-            \end{itemize*}
+            \item Schaut in einer verteilten Hash-Tabelle nach der externen IP-Adresse des Ziels
             \item Probleme
             \begin{itemize*}
                   \item Keine Gateway-Funktionalität (nur Ende-zu-Ende)
                   \item Keine verschachtelten Topologien
                   \item Ziemlich großer Paket-Overhead
                   \item Schlechte Skalierbarkeit im Falle vieler potentieller Kommunikationspartner
-                  \item Sicherheit
-                  \begin{itemize*}
-                        \item Vertrauen Sie Facebook?
-                        \item Wissen Sie, ob die Person in Facebook wirklich die ist, die sie behauptet?
-                        \item Überhaupt keine Verifizierung möglich
-                  \end{itemize*}
+            \end{itemize*}
+            \item Sicherheit
+            \begin{itemize*}
+                  \item Vertraust du Facebook?
+                  \item ist die Person in Facebook wirklich die, die sie behauptet?
+                  \item keine Verifizierung möglich
             \end{itemize*}
       \end{itemize*}
 
       \subsubsection{Dynamisches Mehrpunkt-VPN (DMVPN)}
       \begin{itemize*}
-            \item Ein weiterer Ansatz von Cisco
+            %\item Ein weiterer Ansatz von Cisco
             \item VPN ist aufgeteilt in
             \begin{itemize*}
-                  \item Statische Kern-Gateways (,,Hubs'')
-                  \item Dynamische periphere Gateways (,,Spokes'')
+                  \item Statische Kern-Gateways (Hubs)
+                  \item Dynamische periphere Gateways (Spokes)
             \end{itemize*}
             \item Hubs können OSPF-Routing zwischen den anderen nutzen
             \item Spokes kontaktieren vorkonfigurierte Hubs für den Zugang zum VPN
             \item Dynamische ,,Spoke-to-Spoke''-Verbindungen optimieren den Datenfluss
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-DMVPN.png}
-      \end{itemize*}
-
-      \paragraph{Dynamisches Mehrpunkt-VPN (DMVPN) - Diskussion}
-      \begin{itemize*}
             \item Vorteile
             \begin{itemize*}
                   \item Ansatz ermöglicht dynamischere Topologien
@@ -4599,18 +4532,16 @@
             \end{itemize*}
             \item Nachteilig
             \begin{itemize*}
-                  \item Erfordert immer noch erheblichen Konfigurationsaufwand
+                  \item Erfordert erheblichen Konfigurationsaufwand
                   \begin{itemize*}
                         \item Kernnetz muss manuell konfiguriert werden
                         \item Spokes müssen mit den Adressen der Hubs konfiguriert werden
-                        \item Macht z.B. einen einfachen Wechsel zu einem neuen ISP unmöglich
+                        \item einfacher Wechsel zu neuem ISP unmöglich
                   \end{itemize*}
                   \item Spokes können nicht verschachtelt werden
-                  \item Spokes können sich nicht zwischen ,,Hubs'' bewegen
-                  \begin{itemize*}
-                        \item Hub verhält sich wie MobileIP Home Agent für Spoke
-                  \end{itemize*}
-                  \item Ausfall von ,,Hubs'' kritisch für deren ,,Spokes''
+                  \item Spokes können sich nicht zwischen Hubs bewegen
+                  \item Hub verhält sich wie MobileIP Home Agent für Spoke
+                  \item Ausfall von Hubs kritisch für deren Spokes
             \end{itemize*}
       \end{itemize*}
 
@@ -4618,87 +4549,70 @@
       \begin{itemize*}
             \item Komplexer Ansatz, verspricht einfache Implementierung
             \item Sicherheitsgateways bilden ein strukturiertes Overlay-Netzwerk
-            \begin{itemize*}
-                  \item Verbindet Sicherheitsgateways so, dass das VPN effizient nach einer Zieladresse durchsucht werden kann
-            \end{itemize*}
+            \item Verbindet Sicherheitsgateways so, dass das VPN effizient nach einer Zieladresse durchsucht werden kann
             \item Erfordert nur sehr wenige proaktiv erstellte IPsec-Verbindungen
             \begin{itemize*}
                   \item Minimale Konnektivität ermöglicht eine reaktive Erkennung von Sicherheitsgateways
                   \item Sich bewegende Sicherheitsgateways müssen nicht alle anderen über die aktuelle externe IP-Adresse informieren
             \end{itemize*}
             \item Drei Aufgaben zu erfüllen
-            \begin{itemize*}
-                  \item Topologie-Kontrolle
-                  \begin{itemize*}
-                        \item Proaktiver Aufbau einer VPN-Struktur zur schnellen Erkennung
-                  \end{itemize*}
-                  \item Erkennung von Sicherheitsgateways
-                  \begin{itemize*}
-                        \item Jedes Mal, wenn ein Client-Computer ein Paket sendet und keine gültige SA gefunden wird
-                        \item Muss das entsprechende Sicherheits-Gateway finden, um reaktiv eine SA zu erstellen
-                  \end{itemize*}
-                  \item Weiterleitung von Datenpaketen
-                  \begin{itemize*}
-                        \item Suche nach einem effizienten Weg zur Weiterleitung von Paketen durch das Overlay
-                  \end{itemize*}
-            \end{itemize*}
       \end{itemize*}
-
-      \paragraph{SOLID - Topologie-Kontrolle}
-      \begin{itemize*}
-            \item Mechanismen zur Topologiekontrolle
+      \begin{description*}
+            \item[Topologie-Kontrolle] Proaktiver Aufbau einer VPN-Struktur zur schnellen Erkennung
+            \item[Erkennung von Sicherheitsgateways]
             \begin{itemize*}
-                  \item Kontinuierliche Aktualisierung der VPN-Struktur zur Anpassung an Veränderungen
+                  \item Jedes Mal, wenn ein Client-Computer ein Paket sendet und keine gültige SA gefunden wird
+                  \item Muss das entsprechende Sicherheits-Gateway finden, um reaktiv eine SA zu erstellen
             \end{itemize*}
+            \item[Weiterleitung von Datenpaketen] Suche nach einem effizienten Weg zur Weiterleitung von Paketen durch das Overlay
+      \end{description*}
+
+      Topologie-Kontrolle
+      \begin{itemize*}
+            \item Kontinuierliche Aktualisierung der VPN-Struktur zur Anpassung an Veränderungen
             \item In SOLID werden proaktiv SAs erstellt, um eine künstliche Ringstruktur zu bilden
             \item Sicherheitsgateways sind nach inneren Adressen geordnet
-            \item Gateways, die nicht direkt im Transportnetz kommunizieren können, werden durch virtuelle Pfade verbunden $\Rightarrow$ Verschachtelte Strukturen werden abgeflacht, um eine einfache Erkennung zu ermöglichen
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-SOLID-topology.png}
+            \item Gateways, die nicht direkt im Transportnetz kommunizieren können, werden durch virtuelle Pfade verbunden $\Rightarrow$ Verschachtelte Strukturen werden abgeflacht%, um eine einfache Erkennung zu ermöglichen
       \end{itemize*}
 
-      \paragraph{SOLID - Erkennung}
+      Erkennung
       \begin{itemize*}
             \item Reaktive Erkennung, um ein Sicherheits-Gateway für eine bestimmte Client-IP-Adresse zu finden
-            \item Suchanfragen werden an das (bereits zugeordnete) Gateway weitergeleitet, dessen innere IP-Adresse der gesuchten IP-Adresse ,,am ähnlichsten'' ist
-            \begin{itemize*}
-                  \item Ein einfacher Mechanismus stellt sicher, dass das korrekte entsprechende Sicherheits-Gateway gefunden wird
-                  \item Die Pakete werden entlang der Ringstruktur gesendet
-                  \item Benötigt $O(n)$ Overlay Hops, um das Ziel zu erreichen (wobei n die Anzahl der Netzwerke in der VPN-Topologie ist)
-            \end{itemize*}
+            \item Suchanfragen werden an das Gateway weitergeleitet, dessen innere IP-Adresse der gesuchten IP-Adresse ,,am ähnlichsten'' ist
+            \item Ein einfacher Mechanismus stellt sicher, dass das korrekte entsprechende Sicherheits-Gateway gefunden wird
+            \item Die Pakete werden entlang der Ringstruktur gesendet
+            \item Benötigt $O(n)$ Overlay Hops, um das Ziel zu erreichen (n = Anzahl der Netzwerke in VPN-Topologie)
             \item[$\rightarrow$] Kürzere ,,Suchpfade'' erforderlich
       \end{itemize*}
+      \begin{center}
+            \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-SOLID-topology.png}
+            \includegraphics[width=.45\linewidth]{Assets/NetworkSecurity-SOLID-topology-control.png}
+      \end{center}
 
-      \paragraph{SOLID - Mehr Topologiekontrolle}
+      Mehr Topologiekontrolle
       \begin{itemize*}
             \item Erweiterte Topologiekontrolle schafft zusätzliche SAs
             \item IP-Adressraum des VPN wird in Bereiche unterteilt
-            \begin{itemize*}
-                  \item Exponentiell wachsende Größe der Bereiche
-            \end{itemize*}
+            \item Exponentiell wachsende Größe der Bereiche
             \item Zu jedem Bereich wird mindestens eine SA proaktiv von jedem Gateway gehalten
             \item Anzahl der zusätzlichen SAs wächst in $O(log\ n)$
             \item Aufgrund der Konstruktionstechnik Entdeckung in $O(log\ n)$ Overlay Hops $\Rightarrow$ Ansatz skaliert gut mit Anzahl der Netzwerke
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-SOLID-topology-control.png}
       \end{itemize*}
 
-      \paragraph{SOLID - Weiterleitung von Datenpaketen}
+      Weiterleitung von Datenpaketen
       \begin{itemize*}
             \item Nach der anfänglichen Erkennung müssen die Datenpakete weitergeleitet werden
             \item Senden von Daten entlang des Entdeckungspfades möglich
-            \begin{itemize*}
-                  \item Länge wieder $O(log\ n)$ Overlay-Hops
-                  \item Zu ineffizient, wenn viele Pakete geroutet werden müssen
-                  \item Wird nur anfangs verwendet
-            \end{itemize*}
+            \item Länge wieder $O(log\ n)$ Overlay-Hops
+            \item Zu ineffizient, wenn viele Pakete geroutet werden müssen
+            \item Wird nur anfangs verwendet
             \item Nachfolgend wird der Pfad optimiert
-            \begin{itemize*}
-                  \item Optimierung erfolgt, wenn Gateway feststellt, dass es Pakete für zwei Gateways weiterleitet, die sich im gleichen Netz befinden
-                  \item Führt in zyklusfreien VPNs zu optimalen Routen in Bezug auf die Anzahl der Overlay-Sprünge
-                  \item Kleine Zyklen können lokal umgangen werden
-            \end{itemize*}
+            \item Optimierung erfolgt, wenn Gateway feststellt, dass es Pakete für zwei Gateways weiterleitet, die sich im gleichen Netz befinden
+            \item Führt in zyklusfreien VPNs zu optimalen Routen in Bezug auf die Anzahl der Overlay-Sprünge
+            \item Kleine Zyklen können lokal umgangen werden
       \end{itemize*}
 
-      \paragraph{SOLID - Eigenschaften und Ergebnisse}
+      Eigenschaften und Ergebnisse
       \begin{itemize*}
             \item Kann komplexe Infrastrukturen innerhalb von Sekunden oder Minuten konfigurieren
             \item Erfordert keine manuelle Interaktion
@@ -4706,39 +4620,19 @@
             \item Robustheit
             \begin{itemize*}
                   \item Kein einzelner Ausfallpunkt
-                  \item Wenn das Netzwerk aufgeteilt wird, können die Teile unabhängig voneinander arbeiten
+                  \item Bereiche können unabhängig voneinander arbeiten
             \end{itemize*}
             \item Keine Schwächung der von Standard-IPsec gebotenen Sicherheit
             \item Gute Skalierbarkeit mit der Anzahl der privaten Netze, keine Engpässe
-            \item Wenn Sicherheitsgateways umziehen, müssen nur zwei SAs
-            wiederhergestellt werden, um die Erreichbarkeit zu gewährleisten
+            \item Wenn Sicherheitsgateways umziehen, müssen nur zwei SAs wiederhergestellt werden, um die Erreichbarkeit zu gewährleisten
       \end{itemize*}
 
-      \paragraph{SOLID - Simulative Bewertung}
+      Simulative Bewertung
       \begin{itemize*}
             \item SOLID kann in OMNeT++ evaluiert werden
             \item Ermöglicht Tests von komplexen Szenarien
       \end{itemize*}
-
-      \paragraph{SOLID - Sonstige Forschung}
-      \begin{itemize*}
-            \item SOLID wird in der Gruppe Telematik/Computernetzwerke erforscht
-            \item Entwicklung von Prototypen
-            \item Verfügbarkeit
-            \begin{itemize*}
-                  \item Schutz des wichtigeren Kernnetzes vor DoS-Angriffen
-                  \item Schaffung eines mehrschichtigen VPN, das bestimmte Verkehrsflüsse zwischen Sicherheits-Gateways verhindert
-            \end{itemize*}
-            \item Zugriffskontrolle
-            \item Robustheit
-            \begin{itemize*}
-                  \item Proaktive Wiederherstellung bei Netzwerkausfällen
-            \end{itemize*}
-            \item Anwendungsschicht-Multicast
-            \begin{itemize*}
-                  \item Ermöglicht sicheres Multicast über reine Unicast-Netze
-            \end{itemize*}
-      \end{itemize*}
+      \columnbreak
 
       \section{Sicherheitsprotokolle der Transportschicht}
       \subsection{Anwendungsbereich von Sicherheitsprotokollen der Transportschicht}

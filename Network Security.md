@@ -104,7 +104,6 @@
     - [X.509 - Zertifikatssperrung](#x509---zertifikatssperrung)
     - [X.509 - Authentifizierungsprotokolle](#x509---authentifizierungsprotokolle)
   - [Formale Validierung von kryptographischen Protokollen](#formale-validierung-von-kryptographischen-protokollen)
-- [Sichere Gruppenkommunikation](#sichere-gruppenkommunikation)
 - [Zugriffskontrolle](#zugriffskontrolle)
   - [Was ist Zugangskontrolle?](#was-ist-zugangskontrolle)
   - [Sicherheitspolitik](#sicherheitspolitik)
@@ -2331,9 +2330,6 @@ Zugriff auf einen Dienst mit Kerberos - Protokollübersicht
   - Spezifische logikbasierte Ansätze:
     - Ansätze dieser Klasse definieren einen Satz von Prädikaten und eine Abbildung der während eines Protokolllaufs ausgetauschten Nachrichten auf einen Satz von Formeln
     - Ein generischer Satz von Regeln erlaubt es dann, das Wissen und den Glauben zu analysieren, der von den Peer-Entitäten eines kryptographischen Protokolls während eines Protokolllaufs erlangt wird (recht erfolgreicher Ansatz: GNY-Logik [GNY90a])
-
-
-# Sichere Gruppenkommunikation
 
 # Zugriffskontrolle
 ## Was ist Zugangskontrolle?

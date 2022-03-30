@@ -5259,124 +5259,97 @@
       \end{itemize*}
       \columnbreak
 
-      \section{Sicherheitsaspekte der mobilen Kommunikation}
+      \section{Sicherheit mobiler Kommunikation}
       \begin{itemize*}
-            \item Die mobile Kommunikation ist mit den gleichen Bedrohungen konfrontiert wie ihr stationäres Pendant:
+            \item mobile Kommunikation mit gleichen Bedrohungen konfrontiert wie stationäres Pendant
+            %\begin{itemize*}
+            %\item Maskerade, Abhören, Verletzung von Berechtigungen, Verlust oder Veränderung von übertragenen Informationen, Ablehnung von Kommunikationsakten, Fälschung von Informationen, Sabotage
+            %\item Es müssen also ähnliche Maßnahmen wie in Festnetzen ergriffen werden.
+            %\end{itemize*}
+            \item spezifische Probleme, aus Mobilität von Benutzern und/oder Geräten ergeben
+            \item bestehende Bedrohungen werden gefährlicher
             \begin{itemize*}
-                  \item Maskerade, Abhören, Verletzung von Berechtigungen, Verlust oder Veränderung von übertragenen Informationen, Ablehnung von Kommunikationsakten, Fälschung von Informationen, Sabotage
-                  \item Es müssen also ähnliche Maßnahmen wie in Festnetzen ergriffen werden.
+                  \item drahtlose Kommunikation für Abhörmaßnahmen leichter zugänglich
+                  \item Fehlen physischer Verbindung macht Zugang zu Diensten einfacher
             \end{itemize*}
-            \item Es gibt jedoch einige spezifische Probleme, die sich aus der Mobilität von Benutzern und/oder Geräten ergeben:
+            \item neue Schwierigkeiten bei Realisierung von Sicherheitsdiensten
             \begin{itemize*}
-                  \item Einige bereits bestehende Bedrohungen werden noch gefährlicher:
-                  \begin{itemize*}
-                        \item Die drahtlose Kommunikation ist für Abhörmaßnahmen leichter zugänglich.
-                        \item Das Fehlen einer physischen Verbindung macht den Zugang zu Diensten einfacher
-                  \end{itemize*}
-                  \item Einige neue Schwierigkeiten bei der Realisierung von Sicherheitsdiensten:
-                  \begin{itemize*}
-                        \item Die Authentifizierung muss neu eingerichtet werden, wenn das mobile Gerät umzieht.
-                        \item Die Schlüsselverwaltung wird schwieriger, da die Identitäten der Peers nicht im Voraus festgelegt werden können.
-                  \end{itemize*}
-                  \item Eine völlig neue Bedrohung:
-                  \begin{itemize*}
-                        \item Der Standort eines Geräts/Nutzers wird zu einer wichtigeren Information, die abzuhören und damit zu schützen sich lohnt
-                  \end{itemize*}
+                  \item Authentifizierung muss neu eingerichtet werden, wenn das mobile Gerät umzieht
+                  \item Schlüsselverwaltung wird schwieriger, da die Identitäten der Peers nicht im Voraus festgelegt werden können
             \end{itemize*}
+            \item völlig neue Bedrohung: Standort eines Geräts/Nutzers wird wichtigere Information, die abzuhören und damit zu schützen sich lohnt
       \end{itemize*}
 
       \subsection{Standortdatenschutz in Mobilfunknetzen}
       \begin{itemize*}
-            \item In den heutigen Mobilfunknetzen gibt es keinen angemessenen Schutz des Standortes:
+            \item In heutigen Mobilfunknetzen kein angemessener Schutz des Standortes
             \begin{itemize*}
-                  \item GSM / UMTS / LTE:
-                  \begin{itemize*}
-                        \item Aktive Angreifer können IMSIs auf der Luftschnittstelle sammeln
-                        \item Die Betreiber des besuchten Netzes können den Standort der Nutzer teilweise verfolgen.
-                        \item Die Betreiber des Heimatnetzes können den Standort des Nutzers vollständig verfolgen.
-                        \item Zumindest kommunizierende Endsysteme können den Standort eines mobilen Geräts jedoch nicht in Erfahrung bringen
-                  \end{itemize*}
+                  \item GSM / UMTS / LTE
+                  \item Aktive Angreifer können IMSIs auf der Luftschnittstelle sammeln
+                  \item Betreiber besuchter Netzes können Standort der Nutzer teilweise verfolgen
+                  \item Betreiber des Heimatnetzes können Standort des Nutzers vollständig verfolgen
+                  \item kommunizierende Endsysteme können den Standort nicht in Erfahrung bringen
             \end{itemize*}
-            \item Drahtloses LAN:
+            \item Drahtloses LAN: Kein Datenschutz für Standort, da MAC-Adresse in jedem MAC-Frame immer im Klartext enthalten
+            \item Das grundlegende Problem des Datenschutzes
             \begin{itemize*}
-                  \item Kein Datenschutz für den Standort, da die (weltweit eindeutige) MAC-Adresse in jedem MAC-Frame immer im Klartext enthalten ist
-            \end{itemize*}
-            \item Das grundlegende Problem des Datenschutzes:
-            \begin{itemize*}
-                  \item Ein mobiles Gerät sollte erreichbar sein
-                  \item Keine (einzelne) Entität im Netz sollte in der Lage sein, den Standort eines mobilen Geräts zu verfolgen
+                  \item mobiles Gerät sollte erreichbar sein
+                  \item Keine Entität im Netz sollte in der Lage sein, den Standort eines mobilen Geräts zu verfolgen
             \end{itemize*}
             \item Einige grundlegende Ansätze zur Lösung dieses Problems
-            \begin{itemize*}
-                  \item Broadcast von Nachrichten
+            \begin{description*}
+                  \item[Broadcast von Nachrichten]
                   \begin{itemize*}
-                        \item Jede Nachricht wird an jeden möglichen Empfänger gesendet
-                        \item Wenn Vertraulichkeit erforderlich ist, wird die Nachricht asymmetrisch verschlüsselt
-                        \item Dieser Ansatz ist nicht gut skalierbar für große Netzwerke / hohe Last
+                        \item Jede Nachricht an jeden möglichen Empfänger senden
+                        \item bei Vertraulichkeit, asymmetrische Verschlüsselung
+                        \item nicht gut skalierbar für große Netzwerke / hohe Last
                   \end{itemize*}
-                  \item Temporäre Pseudonyme
+                  \item[Temporäre Pseudonyme]
                   \begin{itemize*}
                         \item Mobile Geräte verwenden Pseudonyme, die regelmäßig gewechselt werden
-                        \item Um das mobile Gerät zu erreichen, ist jedoch eine Abbildungsinstanz erforderlich, die die Geschichte der Pseudonyme des Mobiltelefons verfolgen kann.
+                        \item Um Gerät zu erreichen, ist Abbildungsinstanz erforderlich, die Geschichte der Pseudonyme des Mobiltelefons verfolgen kann
                   \end{itemize*}
-                  \item Gemischte Netzwerke
-                  \begin{itemize*}
-                        \item Nachrichten werden über verschiedene Entitäten (Mixes) geleitet und jede Entität kann nur einen Teil der Nachrichtenroute erfahren (siehe unten)
-                  \end{itemize*}
-            \end{itemize*}
-            \item Adressierungsschemata für standortbezogenen Datenschutz mit Broadcast:
+                  \item[Gemischte Netzwerke] Nachrichten werden über verschiedene Entitäten (Mixes) geleitet und jede Entität kann nur einen Teil der Nachrichtenroute erfahren
+            \end{description*}
+            \item Adressierungsschemata für standortbezogenen Datenschutz mit Broadcast
+            \begin{description*}
+                  \item[Explizite Adressen] Jede Entität, die explizite Adresse sieht, kann die adressierte Entität bestimmen
+                  \item[Implizite Adressen] identifiziert kein bestimmtes Gerät oder einen bestimmten Ort, sondern benennt lediglich eine Einheit, ohne dass dem Namen eine weitere Bedeutung beigemessen wird
+                  %\item Sichtbare implizite Adressen: Entitäten, die mehrere Vorkommen einer Adresse sehen, können auf Gleichheit prüfen
+                  \item{Unsichtbare implizite Adressen} Nur die adressierte Einheit kann die Gleichheit der Adresse überprüfen.
+                  %\item Dies erfordert Operationen mit öffentlichen Schlüsseln: $ImplAddr_A ={r_B, r_A}_{+K_A}$ wobei $r_A$ von der adressierten Entität gewählt wird und $r_B$ ein Zufallswert ist, der von einer Entität $B$ erzeugt wird, die unsichtbar auf die Entität $A$ verweisen will
+            \end{description*}
+            \item Temporäre Pseudonyme
             \begin{itemize*}
-                  \item Explizite Adressen: Jede Entität, die eine explizite Adresse ,,sieht,,, kann die adressierte Entität bestimmen
-            \end{itemize*}
-            \item Implizite Adressen:
-            \begin{itemize*}
-                  \item Eine implizite Adresse identifiziert kein bestimmtes Gerät oder einen bestimmten Ort, sondern benennt lediglich eine Einheit, ohne dass dem Namen eine weitere Bedeutung beigemessen wird.
-                  \item Sichtbare implizite Adressen: Entitäten, die mehrere Vorkommen einer Adresse sehen, können auf Gleichheit prüfen
-            \end{itemize*}
-            \item Unsichtbare implizite Adressen:
-            \begin{itemize*}
-                  \item Nur die adressierte Einheit kann die Gleichheit der Adresse überprüfen.
-                  \item Dies erfordert Operationen mit öffentlichen Schlüsseln: $ImplAddr_A ={r_B, r_A}_{+K_A}$ wobei $r_A$ von der adressierten Entität gewählt wird und $r_B$ ein Zufallswert ist, der von einer Entität $B$ erzeugt wird, die unsichtbar auf die Entität $A$ verweisen will
-            \end{itemize*}
-      \end{itemize*}
-      \begin{itemize*}
-            \item Vorübergehende Pseudonyme:
-            \begin{itemize*}
-                  \item Der Standort eines Gerätes A wird nicht mehr mit seiner Kennung $ID_A$, sondern mit einem wechselnden Pseudonym $P_A(t)$ gespeichert.
+                  \item Der Standort eines Gerätes A wird nicht mehr mit seiner Kennung $ID_A$, sondern mit einem wechselnden Pseudonym $P_A(t)$ gespeichert
+                  %\item Beispiel: VLRs in GSM kennen und speichern möglicherweise nur die TMSI (die eine Art temporäres Pseudonym ist)
+                  \item Zuordnung einer IDA zum aktuellen Pseudonym $P_A(t)$ wird in vertrauenswürdigen Gerät gespeichert
+                  %\item Beispiel: GSM HLRs könnten als vertrauenswürdige Geräte realisiert werden
+                  \item Wenn ein eingehender Anruf an den aktuellen Standort von Gerät A weitergeleitet werden muss
                   \begin{itemize*}
-                        \item Beispiel: VLRs in GSM kennen und speichern möglicherweise nur die TMSI (die eine Art temporäres Pseudonym ist)
+                        \item Netzbetreiber von A fragt vertrauenswürdiges Gerät nach aktuellen Pseudonym $P_A(t)$
+                        \item Netz leitet Anruf an aktuellen Standort von A weiter, indem es temporäres Pseudonym in Standortdatenbank nachschlägt
                   \end{itemize*}
-                  \item Die Zuordnung einer IDA zum aktuellen Pseudonym $P_A(t)$ wird in einem vertrauenswürdigen Gerät gespeichert
-                  \begin{itemize*}
-                        \item Beispiel: GSM HLRs könnten als vertrauenswürdige Geräte realisiert werden
-                  \end{itemize*}
-                  \item Wenn ein eingehender Anruf an den aktuellen Standort von Gerät A weitergeleitet werden muss:
-                  \begin{itemize*}
-                        \item Der Netzbetreiber von Gerät A fragt das vertrauenswürdige Gerät nach dem aktuellen Pseudonym $P_A(t)$
-                        \item Das Netz leitet den Anruf dann an den aktuellen Standort von A weiter, indem es das temporäre Pseudonym in einer Standortdatenbank nachschlägt.
-                        \item Es ist wichtig, dass die Einrichtungen, die einen Anruf weiterleiten, nichts über die ursprüngliche Adresse der Rufaufbau-Nachricht erfahren können ($\rightarrow$ implizite Adressen)
-                        \item Die Verwendung von Mischungen (siehe unten) kann einen zusätzlichen Schutz gegen Angriffe von kolludierenden Netzeinheiten bieten
-                  \end{itemize*}
+                  \item Einrichtungen, die Anruf weiterleiten, erfahren nichts über ursprüngliche Adresse der Rufaufbau-Nachricht %($\rightarrow$ implizite Adressen)
+                  \item Verwendung von Mischungen kann zusätzlichen Schutz gegen Angriffe von kolludierenden Netzeinheiten bieten
             \end{itemize*}
-            \item Kommunikations-Mixe:
+            \item Kommunikations-Mixe
             \begin{itemize*}
-                  \item Das Konzept wurde 1981 von D. Chaum für nicht zurückverfolgbare E-Mail-Kommunikation erfunden
-                  \item Ein Mix verbirgt die Kommunikationsbeziehungen zwischen Absendern und Empfängern:
-                  \begin{itemize*}
-                        \item Er puffert eingehende Nachrichten, die asymmetrisch verschlüsselt sind, so dass nur der Mix sie entschlüsseln kann.
-                        \item Er verändert das ,,Aussehen,, von Nachrichten, indem er sie entschlüsselt
-                        \item Er ändert die Reihenfolge der Nachrichten und leitet sie in Stapeln weiter.
-                        \item Wenn jedoch der Mix kompromittiert wird, kann ein Angreifer ,,alles,, erfahren.
-                  \end{itemize*}
-                  \item Die Sicherheit kann durch kaskadierende Mixe erhöht werden.
+                  \item Konzept 1981 für nicht zurückverfolgbare E-Mail-Kommunikation
+                  \item Mix verbirgt Kommunikationsbeziehungen zwischen Absendern und Empfängern
+                  \item puffert eingehende Nachrichten, die asymmetrisch verschlüsselt sind, so dass nur der Mix sie entschlüsseln kann
+                  \item verändert das ,,Aussehen,, von Nachrichten, indem er sie entschlüsselt
+                  \item ändert Reihenfolge der Nachrichten und leitet sie in Stapeln weiter
+                  \item wenn Mix kompromittiert, kann Angreifer alles erfahren
+                  \item Sicherheit kann durch kaskadierende Mixe erhöht werden
                   \item Beispiel: A sendet eine Nachricht m an B über zwei Mixe M1 und M2
                   \begin{itemize*}
-                        \item $A\rightarrow M1: {r_1 ,{r_2 ,{r_3 , m}_{{+K_B}}}{+K_{M2}}}_{{+K}{M1}}$
-                        \item $M1\rightarrow M2:{r_2 ,{r_3 , m}_{{+K_B}}}{+K{M2}}$
-                        \item $M2\rightarrow B: {r_3 , m}_{+K_B}$
-                        \item Es ist wichtig, dass die Mischungen ,,genug,, Nachrichten verarbeiten
+                        \item $A\rightarrow M1: \{r_1 ,{r_2 ,{r_3 , m}_{+K_B}}\}_{+K_{M2} +K\{M1\}}$
+                        \item $M1\rightarrow M2:\{r_2 ,{r_3 , m}_{+K_B}\}_{+K{M2}}$
+                        \item $M2\rightarrow B: \{r_3 , m\}_{+K_B}$
                   \end{itemize*}
-                  \item Dieses Konzept lässt sich auf die mobile Kommunikation übertragen
+                  \item Es ist wichtig, dass die Mischungen ,,genug,, Nachrichten verarbeiten
+                  \item Konzept lässt sich auf mobile Kommunikation übertragen
             \end{itemize*}
       \end{itemize*}
 

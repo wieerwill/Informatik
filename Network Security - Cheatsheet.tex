@@ -4635,275 +4635,251 @@
       \columnbreak
 
       \section{Sicherheitsprotokolle der Transportschicht}
-      \subsection{Anwendungsbereich von Sicherheitsprotokollen der Transportschicht}
+      \subsection{Anwendungsbereich von Sicherheitsprotokollen}
       \begin{itemize*}
-            \item Die Transportschicht sorgt für die Kommunikation zwischen Anwendungsprozessen (anstelle der Kommunikation zwischen Endsystemen) und ihre Hauptaufgaben sind:
+            \item Transportschicht sorgt für die Kommunikation zwischen Anwendungsprozessen mit Hauptaufgaben
             \begin{itemize*}
                   \item Isolierung höherer Protokollschichten von der Technologie, der Struktur und den Unzulänglichkeiten der eingesetzten Kommunikationstechnik
                   \item Transparente Übertragung von Nutzdaten
-                  \item Globale Adressierung von Anwendungsprozessen, unabhängig von Adressen der unteren Schichten (Ethernet-Adressen, Telefonnummern usw.)
-                  \item Gesamtziel: Bereitstellung eines effizienten und zuverlässigen Dienstes
+                  \item Globale Adressierung von Anwendungsprozessen, unabhängig von Adressen der unteren Schichten %(Ethernet-Adressen, Telefonnummern usw.)
+                  \item Bereitstellung eines effizienten und zuverlässigen Dienstes
             \end{itemize*}
-            \item Sicherheitsprotokolle der Transportschicht zielen darauf ab, den
-            Dienst der Transportschicht zu verbessern, indem sie zusätzliche
-            Sicherheitseigenschaften gewährleisten
-            \begin{itemize*}
-                  \item Da sie in der Regel einen zuverlässigen Transportdienst voraussetzen und darauf aufbauen, stellen sie nach der Terminologie des OSI-Referenzmodells (Open Systems Interconnection) eigentlich Sitzungsschichtprotokolle dar.
-                  \item Da OSI jedoch nicht mehr ,,en vogue'' ist, werden sie als Sicherheitsprotokolle der Transportschicht bezeichnet
-            \end{itemize*}
+            \item Sicherheitsprotokolle der Transportschicht zielen darauf ab, den Dienst der Transportschicht zu verbessern, indem sie zusätzliche Sicherheitseigenschaften gewährleisten
+            \item Da sie in der Regel einen zuverlässigen Transportdienst voraussetzen und darauf aufbauen, stellen sie nach der Terminologie des OSI-Referenzmodells eigentlich Sitzungsschichtprotokolle dar
+            %\item Da OSI jedoch nicht mehr ,,en vogue'' ist, werden sie als Sicherheitsprotokolle der Transportschicht bezeichnet
       \end{itemize*}
 
-      \subsection{Das Secure Socket Layer (SSL) Protokoll}
+      \subsection{Secure Socket Layer (SSL) Protokoll}
       \begin{itemize*}
-            \item SSL wurde ursprünglich in erster Linie zum Schutz von HTTP-Sitzungen entwickelt
-            \item In den frühen 1990er Jahren gab es ein ähnliches Protokoll namens S-HTTP
-            \item Da jedoch S-HTTP-fähige Browser nicht kostenlos waren und SSL Version 2.0 in den Browsern von Netscape Communications enthalten war, setzte es sich schnell durch.
-            \item SSL v.2 enthielt einige Schwachstellen, weshalb die Microsoft Corporation ein konkurrierendes Protokoll namens Private Communication Technology (PCT) entwickelte.
-            \item Netscape verbesserte das Protokoll und SSL v.3 wurde zum De-facto-Standardprotokoll für die Sicherung des HTTP-Verkehrs.
-            \item Dennoch kann SSL eingesetzt werden, um beliebige Anwendungen zu sichern, die über TCP laufen.
+            \item ursprünglich zum Schutz von HTTP-Sitzungen entwickelt
+            \item 1990 ähnliches Protokoll namens S-HTTP
+            \item S-HTTP-fähige Browser nicht kostenlos und SSL Version 2.0 in den Browsern von Netscape Communications enthalten war, setzte es sich schnell durch
+            \item SSL v.2 enthielt einige Schwachstellen, weshalb die Microsoft Corporation ein konkurrierendes Protokoll namens Private Communication Technology (PCT) entwickelte
+            \item Netscape verbesserte das Protokoll und SSL v.3 wurde zum De-facto-Standardprotokoll für die Sicherung des HTTP-Verkehrs
+            \item Dennoch kann SSL eingesetzt werden, um beliebige Anwendungen zu sichern, die über TCP laufen
             \item 1996 beschloss die IETF, ein allgemeines Transport Layer Security (TLS) Protokoll zu spezifizieren, das auf SSL basiert
       \end{itemize*}
 
-      \subsection{SSL-Sicherheitsdienste}
+      \subsubsection{SSL-Sicherheitsdienste}
       \begin{itemize*}
-            \item Peer-Entity-Authentifizierung:
+            \item Peer-Entity-Authentifizierung
             \begin{itemize*}
-                  \item Vor jeder Kommunikation zwischen einem Client und einem Server wird ein Authentifizierungsprotokoll ausgeführt, um die Peer-Entitäten zu authentifizieren.
-                  \item Nach erfolgreichem Abschluss des Authentifizierungsdialogs wird eine SSL-Sitzung zwischen den Peer-Entities aufgebaut.
+                  \item Vor jeder Kommunikation zwischen einem Client und einem Server wird ein Authentifizierungsprotokoll ausgeführt, um die Peer-Entitäten zu authentifizieren
+                  \item Nach erfolgreichem Abschluss des Authentifizierungsdialogs wird eine SSL-Sitzung zwischen den Peer-Entities aufgebaut
             \end{itemize*}
-            \item Vertraulichkeit der Benutzerdaten:
+            \item Vertraulichkeit der Benutzerdaten
             \begin{itemize*}
-                  \item Falls beim Aufbau der Sitzung vereinbart, werden die Benutzerdaten verschlüsselt.
+                  \item Falls beim Aufbau der Sitzung vereinbart, werden die Benutzerdaten verschlüsselt
                   \item Es können verschiedene Verschlüsselungsalgorithmen ausgehandelt werden: RC4, DES, 3DES, IDEA
             \end{itemize*}
-            \item Integrität der Benutzerdaten:
+            \item Integrität der Benutzerdaten
             \begin{itemize*}
-                  \item Ein MAC, der auf einer kryptografischen Hash-Funktion basiert, wird an die Benutzerdaten angehängt.
-                  \item Der MAC wird mit einem ausgehandelten Geheimnis im Präfix-Suffix-Modus errechnet.
-                  \item Für die MAC-Berechnung kann entweder MD5 oder SHA ausgehandelt werden.
+                  \item Ein MAC, der auf einer kryptografischen Hash-Funktion basiert, wird an die Benutzerdaten angehängt
+                  \item Der MAC wird mit einem ausgehandelten Geheimnis im Präfix-Suffix-Modus errechnet
+                  \item Für die MAC-Berechnung kann entweder MD5 oder SHA ausgehandelt werden
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{SSL-Sitzungs- und Verbindungsstatus}
+      \subsubsection{SSL-Sitzungs- und Verbindungsstatus}
       \begin{itemize*}
-            \item Sitzungsstatus:
+            \item Sitzungsstatus
             \begin{itemize*}
                   \item Sitzungskennzeichen: eine vom Server gewählte Bytefolge
                   \item Peer-Zertifikat: X.509 v.3 Zertifikat der Gegenstelle (optional)
                   \item Komprimierungsmethode: Algorithmus zur Komprimierung der Daten vor der Verschlüsselung
-                  \item Cipher spec: spezifiziert kryptographische Algorithmen und Parameter
+                  \item Cipher: spezifiziert kryptographische Algorithmen und Parameter
                   \item Hauptgeheimnis: ein ausgehandeltes gemeinsames Geheimnis mit einer Länge von 48 Byte
-                  \item Ist wiederaufnehmbar: ein Kennzeichen, das angibt, ob die Sitzung neue Verbindungen unterstützt
+                  \item wiederaufnehmbar: ein Kennzeichen, das angibt, ob die Sitzung neue Verbindungen unterstützt
             \end{itemize*}
-            \item Verbindungsstatus:
+            \item Verbindungsstatus
             \begin{itemize*}
                   \item Server und Client random: von Server und Client gewählte Bytefolgen
                   \item Server write MAC secret: wird in MAC-Berechnungen des Servers verwendet
                   \item Client write MAC secret: wird bei MAC-Berechnungen durch den Client verwendet
-                  \item Server-Schreibschlüssel: wird für die Verschlüsselung durch den Server und die Entschlüsselung durch den Client verwendet
-                  \item Client write key: wird für die Verschlüsselung durch den Client und die Entschlüsselung durch den Server verwendet
+                  \item Server write key: wird für Verschlüsselung durch Server und Entschlüsselung durch Client verwendet
+                  \item Client write key: wird für Verschlüsselung durch Client und Entschlüsselung durch Server verwendet
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Architektur des SSL-Protokolls}
-      % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ssl-protocol-architecture.png}
-      \begin{itemize*}
-            \item SSL ist als eine mehrschichtige und modulare Protokollarchitektur
-            aufgebaut:
+      \begin{center}
+            \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-ssl-protocol-architecture.png}
+      \end{center}
+      SSL ist als eine mehrschichtige und modulare Protokollarchitektur aufgebaut
+      \begin{description*}
+            \item[Handshake] Authentifizierung und Aushandlung von Parametern
+            \item[Change Cipher] Signalisierung von Übergängen in der Verschlüsselungsstrategie
+            \item[Alert] Signalisierung von Fehlerzuständen
+            \item[Application Data] Schnittstelle für den transparenten Zugriff auf das Record-Protokoll
+            \item[Aufzeichnung]
             \begin{itemize*}
-                  \item Handshake: Authentifizierung und Aushandlung von Parametern
-                  \item Change Cipherspec: Signalisierung von Übergängen in der Verschlüsselungsstrategie
-                  \item Alert: Signalisierung von Fehlerzuständen
-                  \item Application Data: Schnittstelle für den transparenten Zugriff auf das Record-Protokoll
-                  \item Aufzeichnung:
-                  \begin{itemize*}
-                        \item Fragmentierung der Nutzdaten in Klartextsätze der Länge $< 2^{14}$
-                        \item Komprimierung (optional) von Klartextsätzen
-                        \item Verschlüsselung und Integritätsschutz (beides optional)
-                  \end{itemize*}
+                  \item Fragmentierung der Nutzdaten in Klartextsätze der Länge $< 2^{14}$
+                  \item Komprimierung (optional) von Klartextsätzen
+                  \item Verschlüsselung und Integritätsschutz (beides optional)
             \end{itemize*}
-      \end{itemize*}
+      \end{description*}
 
       \subsection{SSL-Record-Protokoll}
       % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-SSL-record-protocol.png}
-      \begin{itemize*}
-            \item Inhaltstyp:
+      \begin{description*}
+            \item[Inhaltstyp]
             \begin{itemize*}
                   \item Ändern Cipherspec. (20)
                   \item Warnung (21)
                   \item Handshake (22)
                   \item Anwendungsdaten (23)
             \end{itemize*}
-            \item Version: die Protokollversion von SSL (major = 3, minor = 0)
-            \item Länge: die Länge der Daten in Bytes, darf nicht größer sein als
-            $2^{14} + 2^{10}$
+            \item[Version] die Protokollversion von SSL %(major = 3, minor = 0)
+            \item[Länge] die Länge der Daten in Bytes, darf nicht größer sein als $2^{14} + 2^{10}$
+      \end{description*}
+
+      \subsubsection{Verarbeitung des SSL-Datensatzprotokolls}
+      Absendende Seite
+      \begin{enumerate*}
+            \item Datensatzschicht fragmentiert die Nutzdaten in Datensätze mit maximaler Länge von $2^{14}$ Oktetten, wobei mehrere Nachrichten desselben Inhaltstyps zu einem Datensatz zusammengefasst werden können
+            \item Daten des Datensatzes komprimiert, der Standardalgorithmus ist ,,null'' und er darf die Länge des Datensatzes nicht um mehr als $2^{10}$ Oktette erhöhen
+            \item MAC wird an die Datensatzdaten angehängt $MAC = H(MAC_{write\_secret} + pad_2 + H(MAC_{write\_secret} + pad_1 + seqnum + length + data))$
+            %\item Man beachte, dass seqnum nicht übertragen wird, da es implizit bekannt ist und das zugrundeliegende TCP einen gesicherten Dienst bietet
+            \item Die Daten des Datensatzes und der MAC werden mit dem in der aktuellen Chiffriervorschrift definierten Verschlüsselungsalgorithmus verschlüsselt (kann ein vorheriges Auffüllen erfordern)
+      \end{enumerate*}
+
+      Empfängerseite
+      \begin{itemize*}
+            \item Der Datensatz wird entschlüsselt, auf Integrität geprüft, dekomprimiert, de-fragmentiert und an die Anwendung oder das SSL-Protokoll der höheren Schicht übergeben
       \end{itemize*}
 
-      \subsection{Verarbeitung des SSL-Datensatzprotokolls}
+      \subsection{SSL Handshake Protokoll}
       \begin{itemize*}
-            \item Absendende Seite:
-            \begin{itemize*}
-                  \item Die Datensatzschicht fragmentiert zunächst die Nutzdaten in Datensätze mit einer maximalen Länge von $2^{14}$ Oktetten, wobei mehrere Nachrichten desselben Inhaltstyps zu einem Datensatz zusammengefasst werden können
-                  \item Nach der Fragmentierung werden die Daten des Datensatzes komprimiert, der Standardalgorithmus hierfür ist null (\textasciitilde{} keine Komprimierung), und er darf die Länge des Datensatzes nicht um mehr als $2^{10}$ Oktette erhöhen
-                  \item Ein Nachrichtenauthentifizierungscode wird an die Datensatzdaten angehängt:
-                  \begin{itemize*}
-                        \item $MAC = H(MAC_write_secret + pad_2 + H(MAC_write_secret + pad_1 + seqnum + length + data))$
-                        \item Man beachte, dass seqnum nicht übertragen wird, da es implizit bekannt ist und das zugrundeliegende TCP einen gesicherten Dienst bietet
-                  \end{itemize*}
-                  \item Die Daten des Datensatzes und der MAC werden mit dem in der aktuellen Chiffriervorschrift definierten Verschlüsselungsalgorithmus verschlüsselt (dies kann ein vorheriges Auffüllen erfordern)
-            \end{itemize*}
-            \item Empfängerseite:
-            \begin{itemize*}
-                  \item Der Datensatz wird entschlüsselt, auf Integrität geprüft, dekomprimiert, de-fragmentiert und an die Anwendung oder das SSL-Protokoll der höheren Schicht übergeben
-            \end{itemize*}
+            \item Das SSL-Handshake-Protokoll wird verwendet, um die Peer-Authentifizierung und die kryptographischen Parameter für eine SSL-Sitzung festzulegen
+            \item Eine SSL-Sitzung kann so ausgehandelt werden, dass sie wieder aufgenommen werden kann
+            \item Die Wiederaufnahme und Duplizierung von SSL-Sitzungen ermöglicht die Wiederverwendung des etablierten Sicherheitskontextes
+            \item Dies ist für die Absicherung des HTTP-Verkehrs sehr wichtig, da in der Regel für jedes Element einer Webseite eine eigene TCP-Verbindung aufgebaut wird
+            \item Seit HTTP 1.1 werden persistente TCP-Verbindungen verwendet
+            \item Dennoch ist die Wiederaufnahme von SSL-Sitzungen sehr sinnvoll, da persistente TCP-Verbindungen nach dem Herunterladen aller Elemente, die zu einer Seite gehören, und einer gewissen Zeit der Inaktivität des Benutzers geschlossen werden können
+            \item Bei Wiederaufnahme/Duplizierung einer bestehenden Sitzung wird abgekürzter Handshake durchgeführt
       \end{itemize*}
 
-      \subsection{SSL Handshake Protokoll: Einführung}
+      Vollständiger Handshake
+      \begin{tabular}{c|c|c}
+            Client              &               & Server               \\\hline
+            ClientHello         & $\rightarrow$ &                      \\
+                                &               & ServerHello          \\
+                                &               & (ServerCertificate)  \\
+                                &               & (CertificateRequest) \\
+                                &               & (ServerKeyExchange)  \\
+                                & $\leftarrow$  & ServerHelloDone      \\
+            (ClientCertificate) &               &                      \\
+            ClientKeyExchange   &               &                      \\
+            (CertificateVerify) &               &                      \\
+            ChangeCipherSpec    &               &                      \\
+            Finished            & $\rightarrow$ &                      \\
+                                &               & ChangeCipherSpec     \\
+                                & $\leftarrow$  & Finished
+      \end{tabular}
+
+      Abgekürzter Handshake
+      \begin{tabular}{c|c|c}
+            Client                 &               & Server                 \\\hline
+            ClientHello(SessionID) & $\rightarrow$ &                        \\
+                                   &               & ServerHello(SessionID) \\
+                                   &               & ChangeCipherSpec       \\
+                                   & $\leftarrow$  & Finished               \\
+            ChangeCipherSpec       &               &                        \\
+            Finished               & $\rightarrow$ &
+      \end{tabular}
       \begin{itemize*}
-            \item Das SSL-Handshake-Protokoll wird verwendet, um die Peer-Authentifizierung und die kryptographischen Parameter für eine SSL-Sitzung festzulegen.
-            \item Eine SSL-Sitzung kann so ausgehandelt werden, dass sie wieder aufgenommen werden kann:
-            \begin{itemize*}
-                  \item Die Wiederaufnahme und Duplizierung von SSL-Sitzungen ermöglicht die Wiederverwendung des etablierten Sicherheitskontextes.
-                  \item Dies ist für die Absicherung des HTTP-Verkehrs sehr wichtig, da in der Regel für jedes Element einer Webseite eine eigene TCP-Verbindung aufgebaut wird.
-                  \begin{itemize*}
-                        \item Seit HTTP 1.1 werden persistente TCP-Verbindungen verwendet.
-                        \item Dennoch ist die Wiederaufnahme von SSL-Sitzungen sehr sinnvoll, da persistente TCP-Verbindungen nach dem Herunterladen aller Elemente, die zu einer Seite gehören, und einer gewissen Zeit der Inaktivität des Benutzers geschlossen werden können.
-                  \end{itemize*}
-                  \item Bei der Wiederaufnahme / Duplizierung einer bestehenden Sitzung wird ein abgekürzter Handshake durchgeführt
-            \end{itemize*}
+            \item Die Nachricht ,,Finished,, enthält eine MAC, die entweder auf MD5 oder SHA basiert und das Master-Secret enthält, das zuvor zwischen Client und Server festgelegt wurde
+            \item Wenn der Server die Sitzung nicht fortsetzen kann/beschließt, sie nicht fortzusetzen, antwortet er mit den Nachrichten des vollständigen Handshake
       \end{itemize*}
 
-      %\subsection{SSL Handshake Protokoll: Vollständiger Handshake}
-      %\begin{longtable}[]{@{}lll@{}}
-      % \toprule
-      % Client & & Server\tabularnewline
-      % \midrule
-      % \endhead
-      % ClientHello & --->{} & \tabularnewline
-      % & & ServerHello\tabularnewline
-      % & & ,,ServerCertificate''\tabularnewline
-      % & & ,,CertificateRequest''\tabularnewline
-      % & & ,,ServerKeyExchange''\tabularnewline
-      % & <--- & ServerHelloDone\tabularnewline
-      % ,,ClientCertificate'' & & \tabularnewline
-      % ClientKeyExchange & & \tabularnewline
-      % ,,CertificateVerify'' & & \tabularnewline
-      % ChangeCipherSpec & & \tabularnewline
-      % Finished & --->{} & \tabularnewline
-      % & & ChangeCipherSpec\tabularnewline
-      % & <--- & Finished\tabularnewline
-      % \bottomrule
-      %\end{longtable}
-      ,,...'' kennzeichnet optionale Nachrichten
-
-      \subsection{SSL Handshake Protokoll: Abgekürzter Handshake}
-      %\begin{longtable}[]{@{}lll@{}}
-      % \toprule
-      % Client & & Server\tabularnewline
-      % \midrule
-      % \endhead
-      % ClientHello(SessionID) & --->{} & \tabularnewline
-      % & & ServerHello(SessionID)\tabularnewline
-      % & & ChangeCipherSpec\tabularnewline
-      % & <--- & Finished\tabularnewline
-      % ChangeCipherSpec & & \tabularnewline
-      % Finished & --->{} & \tabularnewline
-      % \bottomrule
-      %\end{longtable}
+      \subsubsection{SSL-Handshake-Protokoll: Kryptografische Aspekte}
       \begin{itemize*}
-            \item Die Nachricht ,,Finished,, enthält eine MAC, die entweder auf MD5 oder SHA basiert und das Master-Secret enthält, das zuvor zwischen Client und Server festgelegt wurde.
-            \item Wenn der Server die Sitzung nicht fortsetzen kann / beschließt, sie nicht fortzusetzen, antwortet er mit den Nachrichten des vollständigen Handshake
-      \end{itemize*}
-
-      \subsection{SSL-Handshake-Protokoll: Kryptografische Aspekte}
-      \begin{itemize*}
-            \item SSL unterstützt drei Methoden zur Erstellung von Sitzungsschlüsseln:
+            \item SSL unterstützt drei Methoden zur Erstellung von Sitzungsschlüsseln
+            \begin{description*}
+                  \item[RSA] ein Pre-Master-Geheimnis wird vom Client zufällig generiert und mit dem öffentlichen Schlüssel des Servers verschlüsselt an den Server gesendet
+                  \item[Diffie-Hellman] Standard-Diffie-Hellman-Austausch und das ermittelte gemeinsame Geheimnis als Pre-Master-Secret verwendet
+                  \item[Fortezza] unveröffentlichte, von der NSA entwickelte Sicherheitstechnologie, die Schlüsselhinterlegung unterstützt %und in diesem Kurs nicht behandelt wird
+            \end{description*}
+            \item Da SSL in erster Linie für die Sicherung des HTTP-Verkehrs entwickelt wurde, ist das ,,Standardanwendungsszenario'' ein Client, der auf einen authentischen Webserver zugreifen möchte
             \begin{itemize*}
-                  \item RSA: ein Pre-Master-Geheimnis wird vom Client zufällig generiert und mit dem öffentlichen Schlüssel des Servers verschlüsselt an den Server gesendet
-                  \item Diffie-Hellman: Es wird ein Standard-Diffie-Hellman-Austausch durchgeführt, und das ermittelte gemeinsame Geheimnis wird als Pre-Master-Secret verwendet.
-                  \item Fortezza: eine unveröffentlichte, von der NSA entwickelte Sicherheitstechnologie, die eine Schlüsselhinterlegung unterstützt und in diesem Kurs nicht behandelt wird
+                  \item Webserver sendet sein Zertifikat mit öffentlichen Schlüssel nach der ServerHello-Nachricht
+                  \item Server-Zertifikat kann öffentlichen DH-Werte des Servers enthalten oder Server kann sie in optionalen ServerKeyExchange-Nachricht senden
+                  \item Client verwendet Zertifikat des Servers/empfangenen DH-Werte/Fortezza-Karte, um einen RSA-/DH-/Fortezza-basierten Schlüsselaustausch durchzuführen
             \end{itemize*}
-            \item Da SSL in erster Linie für die Sicherung des HTTP-Verkehrs entwickelt wurde, ist das ,,Standardanwendungsszenario'' ein Client, der auf einen authentischen Webserver zugreifen möchte:
-            \begin{itemize*}
-                  \item In diesem Fall sendet der Webserver sein Zertifikat mit dem öffentlichen Schlüssel nach der ServerHello-Nachricht
-                  \item Das Server-Zertifikat kann die öffentlichen DH-Werte des Servers enthalten oder der Server kann sie in der optionalen ServerKeyExchange-Nachricht senden
-                  \item Der Client verwendet das Zertifikat des Servers / die empfangenen DH-Werte / seine Fortezza-Karte, um einen RSA- / DH- / Fortezza-basierten Schlüsselaustausch durchzuführen.
-            \end{itemize*}
-            \item Das Pre-Master-Secret und die Zufallszahlen, die der Client und der Server in ihren Hallo-Nachrichten angeben, werden verwendet, um das Master-Secret der Länge 48 Byte zu generieren.
-            \item Berechnung des Master-Geheimnisses:
+            \item Pre-Master-Secret und Zufallszahlen, die der Client und der Server in ihren Hallo-Nachrichten angeben, werden verwendet, um das Master-Secret der Länge 48 Byte zu generieren
+            \item Berechnung des Master-Geheimnisses
             \begin{itemize*}
                   \item Master-Geheimnis = MD5(vor-Master-Geheimnis + SHA('A' + vor-Master-Geheimnis + ClientHello.random + ServerHello.random)) + MD5(Vor-Hauptgeheimnis + SHA('BB' + Vor-Hauptgeheimnis + ClientHello.random + ServerHello.random)) + MD5(pre-master-secret + SHA('CCC' + pre-master-secret + ClientHello.random + ServerHello.random))
             \end{itemize*}
-            \item Die Verwendung von MD5 und SHA zur Generierung des Master-Geheimnisses wird als sicher angesehen, selbst wenn eine der kryptografischen Hash-Funktionen ,,defekt'' ist.
-            \item Um die Sitzungsschlüssel aus dem Master-Secret zu berechnen, wird in einem ersten Schritt eine ausreichende Menge an Schlüsselmaterial aus dem Master-Secret und den Zufallszahlen von Client und Server erzeugt:
+            \item Die Verwendung von MD5 und SHA zur Generierung des Master-Geheimnisses wird als sicher angesehen, selbst wenn eine der kryptografischen Hash-Funktionen ,,defekt'' ist
+            \item Um die Sitzungsschlüssel aus dem Master-Secret zu berechnen, wird in einem ersten Schritt eine ausreichende Menge an Schlüsselmaterial aus dem Master-Secret und den Zufallszahlen von Client und Server erzeugt
             \begin{itemize*}
-                  \item key\_block = MD5(master-secret + SHA('A' + master-secret + ClientHello.random + ServerHello.random)) + MD5(master-secret + SHA('BB' + master-secret + ClientHello.random + ServerHello.random)) + ,,...''
+                  \item key\_block = MD5(master-secret + SHA('A' + master-secret + ClientHello.random + ServerHello.random)) + MD5(master-secret + SHA('BB' + master-secret + ClientHello.random + ServerHello.random)) + [...]
             \end{itemize*}
             \item Anschließend wird das Material des Sitzungsschlüssels fortlaufend aus dem key\_block entnommen:
             \begin{itemize*}
-                  \item client\_write\_MAC\_secret = key\_block,,1, CipherSpec.hash\_size''
-                  \item server\_write\_MAC\_secret = key\_block,,i 1 , i 1 + CipherSpec.hash\_size - 1''
-                  \item client\_write\_key = key\_block,,i 2 , i 2 + CipherSpec.key\_material - 1''
-                  \item server\_write\_key = key\_block,,i 3 , i 3 + CipherSpec.key\_material - 1''
-                  \item client\_write\_IV = key\_block,,i 4 , i 4 + CipherSpec.IV\_size - 1''
-                  \item server\_write\_IV = key\_block,,i 5 , i 5 + CipherSpec.IV\_size - 1''
+                  \item $client\_write\_MAC\_secret = key\_block[1, CipherSpec.hash\_size]$
+                  \item $server\_write\_MAC\_secret = key\_block[i_1 , i_1 + CipherSpec.hash\_size - 1]$
+                  \item $client\_write\_key = key\_block[i_2 , i_2 + CipherSpec.key\_material - 1]$
+                  \item $server\_write\_key = key\_block[i_3 , i_3 + CipherSpec.key\_material - 1]$
+                  \item $client\_write\_IV = key\_block[i_4 , i_4 + CipherSpec.IV\_size - 1]$
+                  \item $server\_write\_IV = key\_block[i_5 , i_5 + CipherSpec.IV\_size - 1]$
             \end{itemize*}
-            \item Authentifizierung von und mit dem Pre-Master-Secret:
+            \item Authentifizierung von und mit dem Pre-Master-Secret
             \begin{itemize*}
-                  \item SSL unterstützt Schlüsselerstellung ohne Authentifizierung (anonym), in diesem Fall können Man-in-the-Middle-Angriffe nicht abgewehrt werden
-                  \item Bei Verwendung des RSA-basierten Schlüsselaustauschs:
+                  \item SSL unterstützt Schlüsselerstellung ohne Authentifizierung (anonym), Man-in-the-Middle-Angriffe können nicht abgewehrt werden
+                  \item Bei Verwendung des RSA Schlüsselaustauschs
                   \begin{itemize*}
-                        \item Der Client verschlüsselt das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers, der durch eine Zertifikatskette überprüft werden kann.
-                        \item Der Client weiß, dass nur der Server das Pre-Master-Secret entschlüsseln kann. Wenn der Server also die fertige Nachricht mit dem Master-Secret sendet, kann der Client die Server-Authentizität ableiten.
-                        \item Der Server kann aus dem empfangenen Pre-Master-Secret keine Client-Authentizität ableiten.
+                        \item Der Client verschlüsselt das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers, der durch eine Zertifikatskette überprüft werden kann
+                        \item Der Client weiß, dass nur der Server das Pre-Master-Secret entschlüsseln kann. Wenn der Server also die fertige Nachricht mit dem Master-Secret sendet, kann der Client die Server-Authentizität ableiten
+                        \item Der Server kann aus dem empfangenen Pre-Master-Secret keine Client-Authentizität ableiten
                         \item Wenn Client-Authentizität erforderlich ist, sendet der Client zusätzlich sein Zertifikat und eine CertificateVerify-Nachricht, die eine Signatur über einen Hash (MD5 oder SHA) des Master-Geheimnisses und aller vor der CertificateVerify-Nachricht ausgetauschten Handshake-Nachrichten enthält
                   \end{itemize*}
                   \item Beim DH-Key-Austausch wird die Authentizität aus den DH-Werten abgeleitet, die im Zertifikat des Servers (und des Clients) enthalten und signiert sind
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{SSL Handshake Protokoll: Eine Sicherheitslücke}
+      \subsubsection{SSL Handshake Protokoll: Eine Sicherheitslücke}
       \begin{itemize*}
             \item 1998 entdeckte D. Bleichenbacher eine Schwachstelle im Verschlüsselungsstandard PKCS \#1 (v.1.5), der im SSL-Handshake-Verfahren verwendet wird
-            \item Wenn der Client das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers verschlüsselt, verwendet er PKCS \#1, um es vor der Verschlüsselung zu formatieren:
+            \item Wenn der Client das Pre-Master-Secret mit dem öffentlichen Schlüssel des Servers verschlüsselt, verwendet er PKCS \#1, um es vor der Verschlüsselung zu formatieren
             \begin{itemize*}
                   \item EM = 0x02 | PS | 0x00 | M
-                  \begin{itemize*}
-                        \item wobei PS eine Auffüllzeichenfolge von mindestens 8 pseudozufällig erzeugten Nicht-Null-Oktetts und M die zu verschlüsselnde Nachricht (= Pre-Master-Secret) bezeichnet
-                        \item (PS wird verwendet, um eine Zufallskomponente hinzuzufügen und M auf die Modulusgröße des verwendeten Schlüssels aufzufüllen)
-                  \end{itemize*}
+                  %\begin{itemize*}
+                  %      \item wobei PS eine Auffüllzeichenfolge von mindestens 8 pseudozufällig erzeugten Nicht-Null-Oktetts und M die zu verschlüsselnde Nachricht (= Pre-Master-Secret) bezeichnet
+                  %      \item (PS wird verwendet, um eine Zufallskomponente hinzuzufügen und M auf die Modulusgröße des verwendeten Schlüssels aufzufüllen)
+                  %\end{itemize*}
                   \item Dann wird EM verschlüsselt: $C = E(+K_{Server}, EM)$
                   \item Nachdem der Server C entschlüsselt hat, prüft er, ob das erste Oktett gleich 0x ist und ob es ein 0x00-Oktett gibt; wenn diese Prüfung fehlschlägt, antwortet er mit einer Fehlermeldung
-                  \item Diese Fehlermeldung kann von einem Angreifer genutzt werden, um einen ,,Orakel-Angriff'' zu starten.
+                  \item Diese Fehlermeldung kann von einem Angreifer genutzt werden, um einen ,,Orakel-Angriff'' zu starten
             \end{itemize*}
             \item Ein Orakel-Angriff gegen das SSL-Handshake-Protokoll
             \begin{itemize*}
-                  \item Betrachten wir einen Angreifer (Eve), der einen SSL-Handshake-Dialog belauscht hat und das Pre-Master-Secret (und damit alle anderen abgeleiteten Geheimnisse), das zwischen Alice (Client) und Bob (Server) ausgetauscht wurde, wiederherstellen möchte
-                  \item Eve hat die verschlüsselte Nachricht C, die das Pre-Master-Secret enthält, erfolgreich abgehört und möchte nun den Klartext wiederherstellen
-                  \item Eve generiert eine Reihe zusammenhängender Chiffretexte $C_1 , C_2 , ...$:
+                  \item Betrachten wir einen Angreifer E, der einen SSL-Handshake-Dialog belauscht hat und das Pre-Master-Secret, das zwischen Alice (Client) und Bob (Server) ausgetauscht wurde, wiederherstellen möchte
+                  \item E hat die verschlüsselte Nachricht C, die das Pre-Master-Secret enthält, erfolgreich abgehört und möchte nun den Klartext wiederherstellen
+                  \item E generiert eine Reihe zusammenhängender Chiffretexte $C_1 , C_2 , ...$
                   \begin{itemize*}
                         \item $C_i = C\times R_i^e\ mod\ n$, wobei $(e, n)$ der öffentliche Schlüssel von Bob ist
-                        \item Die $R_i$ werden adaptiv ausgewählt, abhängig von älteren ,,guten'' $R_i$, die von Bob verarbeitet wurden, ohne Fehlermeldungen zu erzeugen (was anzeigt, dass sie zu einer gültigen PKCS-1-Nachricht entschlüsselt wurden)
+                        \item Die $R_i$ werden adaptiv ausgewählt, abhängig von älteren ,,guten'' $R_i$, die von Bob verarbeitet wurden, ohne Fehlermeldungen zu erzeugen %(was anzeigt, dass sie zu einer gültigen PKCS-1-Nachricht entschlüsselt wurden)
                         \item Die $C_i$ werden an Bob übermittelt, und es werden entsprechend neue $C_i$ erzeugt
-                        \item Aus dem ,,guten'' $R_i$ leitet Eve bestimmte Bits der entsprechenden Nachricht $M_i= C_i^d = M\times R_i\ mod\ n$ ab, basierend auf der PKCS \#1 Verschlüsselungsmethode
+                        \item Aus dem ,,guten'' $R_i$ leitet E bestimmte Bits der entsprechenden Nachricht $M_i= C_i^d = M\times R_i\ mod\ n$ ab, basierend auf der PKCS \#1 Verschlüsselungsmethode
                   \end{itemize*}
                   \item Aus den abgeleiteten Bits von $M\times R_i\ mod\ n$ für hinreichend viele $R_i$ kann Eve die Größe des Intervalls reduzieren, das die unbekannte Nachricht M enthalten muss
-                  \item Im Wesentlichen halbiert jeder ,,gute'' Chiffretext das betreffende Intervall, so dass Eve mit genügend ,,guten'' Chiffretexten in der Lage ist, M
-                  \item Mit PKCS \#1 Version 1.5 (wie ursprünglich in SSL V.3.0 verwendet) wird ungefähr einer von $2^{16}$ bis $2^{18}$ zufällig ausgewählten Chiffretexten ,,gut'' sein.
+                  \item Im Wesentlichen halbiert jeder ,,gute'' Chiffretext das betreffende Intervall, so dass Eve mit genügend ,,guten'' Chiffretexten in der Lage ist, M wiederherzustellen
+                  \item Mit PKCS \#1 Version 1.5 wird ungefähr einer von $2^{16}$ bis $2^{18}$ zufällig ausgewählten Chiffretexten ,,gut'' sein
                   \item Typischerweise beträgt die Gesamtzahl der erforderlichen Chiffretexte bei einem $1024$-Bit-Modul etwa $2^{20}$, und dies ist auch die Anzahl der Abfragen an Bob
-                  \item Nach der Durchführung von etwa 1 Million gefälschter SSL-Handshake-Dialoge (die alle entweder von Bob oder Eve unterbrochen werden) ist Eve also in der Lage, das Pre-Master-Secret und alle abgeleiteten Schlüssel einer zuvor eingerichteten SSL-Sitzung zwischen Alice und Bob wiederherzustellen. Subtile Protokollinteraktionen (hier: SSL und PKCS \#1) können zum Versagen eines Sicherheitsprotokolls führen, selbst wenn der grundlegende kryptographische Algorithmus (hier: RSA) selbst nicht gebrochen ist!
+                  \item Nach der Durchführung von etwa 1 Million gefälschter SSL-Handshake-Dialoge ist Eve also in der Lage, das Pre-Master-Secret und alle abgeleiteten Schlüssel einer zuvor eingerichteten SSL-Sitzung zwischen Alice und Bob wiederherzustellen
+                  \item Subtile Protokollinteraktionen können zum Versagen eines Sicherheitsprotokolls führen, selbst wenn der grundlegende kryptographische Algorithmus selbst nicht gebrochen ist
             \end{itemize*}
-            \item Gegenmassnahmen:
+            \item Gegenmassnahmen
             \begin{itemize*}
-                  \item Regelmäßiger Wechsel der öffentlichen Schlüsselpaare ($\Rightarrow$-Overhead)
-                  \item Verringerung der Wahrscheinlichkeit, ,,gute'' Chiffriertexte zu erhalten, indem das Format der entschlüsselten Chiffriertexte gründlich überprüft und dem Client ein identisches Verhalten (Fehlermeldung, Zeitverhalten usw.) gezeigt wird
-                  \item Der Kunde muss den Klartext kennen, bevor er antwortet, ob die Nachricht erfolgreich entschlüsselt werden konnte.
-                  \item Hinzufügen einer Struktur zum Klartext, z.B. durch Hinzufügen eines Hashwerts zum Klartext
-                  \item Achtung: Es ist eine gewisse Vorsicht geboten, um Anfälligkeiten für eine andere Klasse von Angriffen zu vermeiden
-                  \item Änderung des Verschlüsselungsprotokolls für öffentliche Schlüssel, d.h. Überarbeitung von PKCS \#1:
-                  \begin{itemize*}
-                        \item PKCS \#1 Version 2.1 bereitet den Klartext vor der Verschlüsselung mit einer Methode vor, die als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bezeichnet wird, um die PKCS \#1 Entschlüsselungsprozedur ,,plaintext aware'' zu machen, was bedeutet, dass es nicht möglich ist, einen gültigen Chiffretext zu konstruieren, ohne den entsprechenden Klartext zu kennen
-                  \end{itemize*}
+                  \item Regelmäßiger Wechsel der öffentlichen Schlüsselpaare
+                  \item Verringerung der Wahrscheinlichkeit, ,,gute'' Chiffriertexte zu erhalten, indem das Format der entschlüsselten Chiffriertexte gründlich überprüft und dem Client ein identisches Verhalten gezeigt wird
+                  \item Der Kunde muss den Klartext kennen, bevor er antwortet, ob die Nachricht erfolgreich entschlüsselt werden konnte
+                  \item Hinzufügen einer Struktur zum Klartext, z.B. Hashwerts zum Klartext
+                  \item Vorsicht geboten, um Anfälligkeiten für eine andere Klasse von Angriffen zu vermeiden
+                  \item Änderung des Verschlüsselungsprotokolls für öffentliche Schlüssel, d.h. Überarbeitung von PKCS \#1
+                  \item PKCS \#1 Version 2.1 bereitet den Klartext vor der Verschlüsselung mit einer Methode vor, die als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bezeichnet wird, um die PKCS \#1 Entschlüsselungsprozedur ,,plaintext aware'' zu machen, was bedeutet, dass es nicht möglich ist, einen gültigen Chiffretext zu konstruieren, ohne den entsprechenden Klartext zu kennen
             \end{itemize*}
       \end{itemize*}
 
@@ -4911,92 +4887,87 @@
       \begin{itemize*}
             \item Kein Schutz (Standard-Suite):
             \begin{itemize*}
-                  \item CipherSuite SSL\_NULL\_WITH\_NULL\_NULL = { 0x00,0x00 }
+                  \item CipherSuite SSL\_NULL\_WITH\_NULL\_NULL=\{0x00,0x00\}
             \end{itemize*}
-            \item Der Server stellt einen für die Verschlüsselung geeigneten RSA-Schlüssel bereit:
+            \item Der Server stellt einen für die Verschlüsselung geeigneten RSA-Schlüssel bereit
             \begin{itemize*}
-                  \item SSL\_RSA\_WITH\_NULL\_MD5 = { 0x00,0x01 }
-                  \item SSL\_RSA\_WITH\_NULL\_SHA = { 0x00,0x02 }
-                  \item SSL\_RSA\_EXPORT\_WITH\_RC4\_40\_MD5 = { 0x00,0x03 }
-                  \item SSL\_RSA\_WITH\_RC4\_128\_MD5 = { 0x00,0x04 }
-                  \item SSL\_RSA\_WITH\_RC4\_128\_SHA = { 0x00,0x05 }
-                  \item SSL\_RSA\_EXPORT\_WITH\_RC2\_CBC\_40\_MD5 = { 0x00,0x06 }
-                  \item SSL\_RSA\_WITH\_IDEA\_CBC\_SHA = { 0x00,0x07 }
-                  \item SSL\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x08 }
-                  \item SSL\_RSA\_WITH\_DES\_CBC\_SHA = { 0x00,0x09 }
-                  \item SSL\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x0A }
+                  \item SSL\_RSA\_WITH\_NULL\_MD5 = \{0x00,0x01\}
+                  \item SSL\_RSA\_WITH\_NULL\_SHA = \{0x00,0x02\}...
+                  %\item $SSL\_RSA\_EXPORT\_WITH\_RC4\_40\_MD5 = \{ 0x00,0x03 \}
+                  %\item $SSL\_RSA\_WITH\_RC4\_128\_MD5 = \{ 0x00,0x04 \}
+                  %\item $SSL\_RSA\_WITH\_RC4\_128\_SHA = \{ 0x00,0x05 \}
+                  %\item $SSL\_RSA\_EXPORT\_WITH\_RC2\_CBC\_40\_MD5 = \{0x00,0x06\}
+                  %\item $SSL\_RSA\_WITH\_IDEA\_CBC\_SHA = \{ 0x00,0x07 \}
+                  %\item $SSL\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = \{ 0x00,0x08 \}
+                  %\item $SSL\_RSA\_WITH\_DES\_CBC\_SHA = \{ 0x00,0x09 \}
+                  %\item $SSL\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = \{ 0x00,0x0A \}
             \end{itemize*}
             \item Cipher-Suites mit authentifiziertem DH-Schlüssel-Austausch
             \begin{itemize*}
-                  \item SSL\_DH\_DSS\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x0B }
-                  \item SSL\_DH\_DSS\_WITH\_DES\_CBC\_SHA = { 0x00,0x0C }
-                  \item SSL\_DH\_DSS\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x0D }
-                  \item SSL\_DH\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x0E }
-                  \item SSL\_DH\_RSA\_WITH\_DES\_CBC\_SHA = { 0x00,0x0F }
-                  \item SSL\_DH\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x10 }
-                  \item SSL\_DHE\_DSS\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x11 }
-                  \item SSL\_DHE\_DSS\_WITH\_DES\_CBC\_SHA = { 0x00,0x12 }
-                  \item SSL\_DHE\_DSS\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x13 }
-                  \item SSL\_DHE\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x14 }
-                  \item SSL\_DHE\_RSA\_WITH\_DES\_CBC\_SHA = { 0x00,0x15 }
-                  \item SSL\_DHE\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x16 }
+                  \item SSL\_DH\_DSS\_EXPORT\_WITH\_DES40\_CBC\_SHA = \{0x00,0x0B\}
+                  \item SSL\_DH\_DSS\_WITH\_DES\_CBC\_SHA = \{0x00,0x0C\}
+                  %\item SSL\_DH\_DSS\_WITH\_3DES\_EDE\_CBC\_SHA = \{ 0x00,0x0D \}
+                  %\item SSL\_DH\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = \{ 0x00,0x0E \}
+                  %\item SSL\_DH\_RSA\_WITH\_DES\_CBC\_SHA = \{ 0x00,0x0F \}
+                  %\item SSL\_DH\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = \{ 0x00,0x10 \}
+                  \item SSL\_DHE\_DSS\_EXPORT\_WITH\_DES40\_CBC\_SHA=\{0x00,0x11\}...
+                  %\item SSL\_DHE\_DSS\_WITH\_DES\_CBC\_SHA = \{ 0x00,0x12 \}
+                  %\item SSL\_DHE\_DSS\_WITH\_3DES\_EDE\_CBC\_SHA = \{ 0x00,0x13 \}
+                  %\item SSL\_DHE\_RSA\_EXPORT\_WITH\_DES40\_CBC\_SHA = \{ 0x00,0x14 \}
+                  %\item SSL\_DHE\_RSA\_WITH\_DES\_CBC\_SHA = \{ 0x00,0x15 \}
+                  %\item SSL\_DHE\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA = \{ 0x00,0x16 \}
+                  \item DH für Suites, bei denen die öffentlichen DH-Werte in einem von einer CA signierten Zertifikat enthalten sind
+                  \item DHE für Suites, bei denen sie mit einem öffentlichen Schlüssel signiert sind, der von einer CA zertifiziert ist
             \end{itemize*}
       \end{itemize*}
-      (DH steht für Suites, bei denen die öffentlichen DH-Werte in einem von einer CA signierten Zertifikat enthalten sind, DHE für Suites, bei denen sie mit einem öffentlichen Schlüssel signiert sind, der von einer CA zertifiziert ist)
       \begin{itemize*}
             \item Von der Verwendung der folgenden Chiffriersuiten ohne jegliche Authentifizierung der Entität wird dringend abgeraten, da sie anfällig für Man-in-the-Middle-Angriffe sind:
             \begin{itemize*}
-                  \item SSL\_DH\_anon\_EXPORT\_WITH\_RC4\_40\_MD5 = { 0x00,0x17 }
-                  \item SSL\_DH\_anon\_WITH\_RC4\_128\_MD5 = { 0x00,0x18 }
-                  \item SSL\_DH\_anon\_EXPORT\_WITH\_DES40\_CBC\_SHA = { 0x00,0x19 }
-                  \item SSL\_DH\_anon\_WITH\_DES\_CBC\_SHA = { 0x00,0x1A }
-                  \item SSL\_DH\_anon\_WITH\_3DES\_EDE\_CBC\_SHA = { 0x00,0x1B }
+                  \item SSL\_DH\_anon\_EXPORT\_WITH\_RC4\_40\_MD5=\{0x00,0x17\}
+                  \item SSL\_DH\_anon\_WITH\_RC4\_128\_MD5 =\{0x00,0x18\}
+                  \item SSL\_DH\_anon\_EXPORT\_WITH\_DES40\_CBC\_SHA =\{0x00,0x19\}
+                  \item SSL\_DH\_anon\_WITH\_DES\_CBC\_SHA=\{0x00,0x1A\}
+                  \item SSL\_DH\_anon\_WITH\_3DES\_EDE\_CBC\_SHA=\{0x00,0x1B\}
             \end{itemize*}
-            \item Die letzte Cipher Suite ist für den Fortezza-Token:
+            \item Die letzte Cipher Suite ist für den Fortezza-Token
             \begin{itemize*}
-                  \item SSL\_FORTEZZA\_DMS\_WITH\_NULL\_SHA = { 0x00,0x1C }
-                  \item SSL\_FORTEZZA\_DMS\_WITH\_FORTEZZA\_CBC\_SHA = { 0x00,0x1D }
+                  \item SSL\_FORTEZZA\_DMS\_WITH\_NULL\_SHA =\{0x00,0x1C\}...
+                  %\item SSL\_FORTEZZA\_DMS\_WITH\_FORTEZZA\_CBC\_SHA=\{0x00,0x1D\}
             \end{itemize*}
       \end{itemize*}
-      (Diese Cipher-Suites müssen natürlich nicht auswendig gelernt werden und werden hier nur aufgeführt, um die Flexibilität des SSL-Protokolls zu verdeutlichen)
+      %(Diese Cipher-Suites müssen natürlich nicht auswendig gelernt werden und werden hier nur aufgeführt, um die Flexibilität des SSL-Protokolls zu verdeutlichen)
 
       \subsection{Das Transport Layer Security-Protokoll}
       \begin{itemize*}
-            \item 1996 gründete die IETF eine Arbeitsgruppe zur Definition eines Transport Layer Security (TLS) Protokolls:
+            \item 1996 gründete die IETF eine Arbeitsgruppe zur Definition eines Transport Layer Security (TLS) Protokolls
+            \item 1996 veröffentlichte Entwurf der TLS V.1.0-Spezifikation im Wesentlichen identisch mit SSL V.3.0-Spezifikation
+            \item Absicht TLS auf SSL V.3.0 mit Änderungen aufzubauen
             \begin{itemize*}
-                  \item Offiziell wurde angekündigt, die Protokolle SSL, SSH und PCT als Input zu nehmen.
-                  \item Der im Dezember 1996 veröffentlichte Entwurf der TLS V.1.0-Spezifikation war jedoch im Wesentlichen identisch mit der SSL V.3.0-Spezifikation
-            \end{itemize*}
-            \item Eigentlich war es von Anfang an die Absicht der Arbeitsgruppe, TLS auf SSL V.3.0 mit den folgenden Änderungen aufzubauen:
-            \begin{itemize*}
-                  \item Die HMAC-Konstruktion zur Berechnung kryptographischer Hash-Werte sollte anstelle von Hashing im Präfix- und Suffix-Modus übernommen werden.
+                  \item Die HMAC-Konstruktion zur Berechnung kryptographischer Hash-Werte sollte anstelle von Hashing im Präfix- und Suffix-Modus übernommen werden
                   \item Die auf Fortezza basierenden Chiffrier-Suiten von SSL sollten entfernt werden, da sie eine unveröffentlichte Technologie enthalten
-                  \item Ein auf dem DSS (Digital Signature Standard) basierender Dialog zur Authentifizierung und zum Schlüsselaustausch sollte aufgenommen werden.
-                  \item Das TLS-Record-Protokoll und das Handshake-Protokoll sollten getrennt und in separaten Dokumenten klarer spezifiziert werden, was bisher nicht geschehen ist.
+                  \item Ein auf dem DSS (Digital Signature Standard) basierender Dialog zur Authentifizierung und zum Schlüsselaustausch sollte aufgenommen werden
+                  \item Das TLS-Record-Protokoll und das Handshake-Protokoll sollten getrennt und in separaten Dokumenten klarer spezifiziert werden
             \end{itemize*}
-            \item Um die Exportfähigkeit von TLS-konformen Produkten zu erreichen, wurde in einigen Chiffriersuiten die Verwendung von Schlüsseln mit einer auf 40 Bit reduzierten Entropie vorgeschrieben.
+            \item Um die Exportfähigkeit von TLS-konformen Produkten zu erreichen, wurde in einigen Chiffriersuiten die Verwendung von Schlüsseln mit einer auf 40 Bit reduzierten Entropie vorgeschrieben
+            \item Von der Verwendung dieser Cipher-Suites wird dringend abgeraten, da sie praktisch keinen Schutz der Vertraulichkeit von Daten bieten
+            \item Ab TLS 1.2 (RFC 5246)
             \begin{itemize*}
-                  \item Von der Verwendung dieser Cipher-Suites wird dringend abgeraten, da sie praktisch keinen Schutz der Vertraulichkeit von Daten bieten.
-            \end{itemize*}
-            \item Ab TLS 1.2 (RFC 5246):
-            \begin{itemize*}
-                  \item Schlüsselaustausch-Algorithmen:
+                  \item Schlüsselaustausch-Algorithmen
                   \begin{itemize*}
-                        \item DH oder ECDH Austausch ohne oder mit DSS / RSA / ECDSA Signaturen
+                        \item DH/ECDH Austausch ohne/mit DSS/RSA/ECDSA Signaturen
                         \item DH-Austausch mit zertifizierten öffentlichen DH-Parametern
                         \item RSA-basierter Schlüsselaustausch
-                        \item keine
                   \end{itemize*}
-                  \item Verschlüsselungsalgorithmen: AES / 3DES in CBC / CCM /GCM, RC4, null
-                  \item Hash-Algorithmen: MD5, SHA-1, SHA-256, SHA-384, SHA-512, null
-                  \item Premaster Secret: Keine MD5/SHA-1 Kombination, sondern nur SHA-256!
+                  \item Verschlüsselungsalgorithmen: AES/3DES in CBC/CCM/GCM, RC4, null
+                  \item Hash-Algorithmen: MD5,SHA-1,SHA-256,SHA-384,SHA-512,null
+                  \item Premaster Secret: Keine MD5/SHA-1 Kombination, sondern nur SHA-256
             \end{itemize*}
-            \item Was die Protokollfunktionen betrifft, ist TLS im Wesentlichen dasselbe wie SSL
-            \item Sicherheit:
+            \item Protokollfunktionen im Wesentlichen wie SSL
+            \item Sicherheit
             \begin{itemize*}
                   \item In SSL 3.0 und TLS 1.0 ist der Initialisierungsvektor eines im CBC-Modus verschlüsselten Datensatzes der letzte Block des vorherigen Datensatzes
-                  \item Wenn ein Angreifer den Inhalt des vorherigen Datensatzes kontrolliert, kann er einen adaptiven Klartextangriff durchführen, um den Inhalt des nächsten Datensatzes herauszufinden.
-                  \item Durchführbar für Webverkehr, d. h. Erzeugen von Verkehr mit JavaScript und Beobachten von außen, führt zum sogenannten BEAST-Angriff (Browser Exploit Against SSL/TLS)
+                  \item Wenn ein Angreifer den Inhalt des vorherigen Datensatzes kontrolliert, kann er einen adaptiven Klartextangriff durchführen, um den Inhalt des nächsten Datensatzes herauszufinden
+                  \item Durchführbar für Webverkehr d.h. Erzeugen von Verkehr mit JavaScript und Beobachten von außen führt zum sogenannten BEAST-Angriff (Browser Exploit Against SSL/TLS)
                   \item Auch für VPN-Verkehr machbar
                   \item Abgeschwächt durch TLS 1.1, wo explizite IVs verwendet werden
                   \item 2009 wurde eine sogenannte TLS-Neuverhandlungsschwachstelle identifiziert
@@ -5004,300 +4975,289 @@
                         \item Angreifer können sie nutzen, um einer legitimen Sitzung durch einen Man-in-the-Middle-Angriff Daten voranzustellen
                         \item Die Auswirkungen hängen stark von dem verwendeten Anwendungsprotokoll ab
                   \end{itemize*}
-                  \item Bei HTTPS führt dies zu mehreren Ausnutzungsmöglichkeiten, z. B,
-                  \begin{itemize*}
-                        \item Angreifer injeziert: \texttt{GET\ /ebanking/transfer?what=LotsOfMoney\&to=eve\ HTTP/1.1\ <crlf>{}\ X-Ignore:\ <no\ crlf>{}}
-                        \item Alice sendet: \texttt{GET\ /ebanking/start.html\ HTTP/1.1}
-                        \item Die Anfrage wird in eine valide HTTP Anfrage umgewandelt: \texttt{GET\ /ebanking/transfer?what=LotsOfMoney\&to=eve\ HTTP/1.1\ <crlf>{}\ X-Ignore:\ GET\ /ebanking/start.html\ HTTP/1.1}
-                  \end{itemize*}
+                  \item Bei HTTPS führt dies zu mehreren Ausnutzungsmöglichkeiten
+                  %\begin{itemize*}
+                  %      \item Angreifer injeziert: \texttt{GET\ /ebanking/transfer?what=LotsOfMoney\&to=eve\ HTTP/1.1\ <crlf>{}\ X-Ignore:\ <no\ crlf>{}}
+                  %      \item Alice sendet: \texttt{GET\ /ebanking/start.html\ HTTP/1.1}
+                  %      \item Die Anfrage wird in eine valide HTTP Anfrage umgewandelt: \texttt{GET\ /ebanking/transfer?what=LotsOfMoney\&to=eve\ HTTP/1.1\ <crlf>{}\ X-Ignore:\ GET\ /ebanking/start.html\ HTTP/1.1}
+                  %\end{itemize*}
                   \item Abgeschwächt durch Identifizierung neu ausgehandelter Sitzungen mit einer anderen ID
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Das Datagram Transport Layer Security Protokoll}
+      \subsection{Datagram Transport Layer Security Protokoll}
       \begin{itemize*}
             \item TLS bietet sichere Kommunikation über ein zuverlässiges Transportprotokoll
-            \item DTLS ist so angepasst, dass es über unzuverlässige Transportprotokolle wie z.B. UDP funktioniert
-            \item Wird zum Schutz verwendet:
+            \item DTLS ist so angepasst, dass es über unzuverlässige Transportprotokolle funktioniert
+            \item Wird zum Schutz verwendet
             \begin{itemize*}
-                  \item Sprach- und Videodaten in Echtzeit, insbesondere Voice-over-IP
-                  \item Getunnelte TCP-Daten (da TCP über TCP eine schlechte Idee für die Leistung ist)
+                  \item Sprach- und Videodaten in Echtzeit%, insbesondere Voice-over-IP
+                  \item Getunnelte TCP-Daten
             \end{itemize*}
-            \item DTLS basiert derzeit auf TLS 1.2, enthält jedoch einige Änderungen:
+            \item DTLS basiert derzeit auf TLS 1.2, enthält jedoch einige Änderungen
             \begin{itemize*}
-                  \item Bietet
-                  \begin{itemize*}
-                        \item Nachrichtenwiederholungen, um verlorenen Handshake-Paketen entgegenzuwirken
-                        \item Eigener Fragmentierungsmechanismus, um große Handshake-Pakete zu ermöglichen
-                  \end{itemize*}
-                  \item Hinzufügen von Sequenznummern, um neu geordnete Datenpakete zu ermöglichen (und Verbot von Stromchiffren, z.B. RC4)
-                  \item Fügt einen Mechanismus hinzu, um zu erkennen, dass ein Client die ,,Verbindung'' mit denselben Ports neu gestartet hat (z.B. nach einem Anwendungsabsturz)
-                  \item Fügt einen Wiedergabeschutz durch ein gleitendes Fenster hinzu (wie bei IPsec)
-                  \item Fügt eine Cookie-basierte DoS-Abwehr hinzu (wie bei IKEv2)
+                  \item Nachrichtenwiederholungen, um verlorenen Handshake-Paketen entgegenzuwirken
+                  \item Eigener Fragmentierungsmechanismus, um große Handshake-Pakete zu ermöglichen
+                  \item Hinzufügen von Sequenznummern, um neu geordnete Datenpakete zu ermöglichen %(und Verbot von Stromchiffren, z.B. RC4)
+                  \item Fügt einen Mechanismus hinzu, um zu erkennen, dass ein Client die ,,Verbindung'' mit denselben Ports neu gestartet hat %(z.B. nach einem Anwendungsabsturz)
+                  \item Fügt einen Wiedergabeschutz durch ein gleitendes Fenster hinzu %(wie bei IPsec)
+                  \item Fügt eine Cookie-basierte DoS-Abwehr hinzu %(wie bei IKEv2)
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Das Secure Shell-Protokoll}
       \begin{itemize*}
-            \item Secure Shell (SSH) Version 1 wurde ursprünglich von Tatu Ylönen an der Universität Helsinki in Finnland entwickelt.
-            \item Da der Autor auch eine kostenlose Implementierung mit Quellcode zur Verfügung stellte, fand das Protokoll weite Verbreitung im Internet
-            \item Später wurde die Entwicklung von SSH durch den Autor kommerzialisiert.
-            \item Nichtsdestotrotz sind immer noch kostenlose Versionen verfügbar, wobei die am weitesten verbreitete Version OpenSSH ist
-            \item 1997 wurde eine Spezifikation der Version 2.0 von SSH bei der IETF eingereicht und seitdem in einer Reihe von Internet-Entwürfen verfeinert
-            \item SSH wurde ursprünglich entwickelt, um einen sicheren Ersatz für die Unix r-Tools (rlogin, rsh, rcp und rdist) zu bieten, und stellt somit ein Protokoll der Anwendungs- oder Sitzungsschicht dar.
-            \item Da SSH jedoch auch ein allgemeines Sicherheitsprotokoll der Transportschicht enthält und Tunneling-Fähigkeiten bietet, wird es in diesem Kapitel als Sicherheitsprotokoll der Transportschicht behandelt
+            \item SSH 1 an Universität Helsinki in Finnland entwickelt
+            \item kostenlose Implementierung mit Quellcode, weite Verbreitung
+            \item Später Entwicklung durch Autor kommerzialisiert
+            \item am weitesten verbreitete kostenfreue Version OpenSSH
+            \item 1997 Spezifikation Version 2.0 und seitdem verfeinert
+            \item ursprünglich entwickelt, um sicheren Ersatz für Unix r-Tools (%rlogin, rsh, rcp und rdist) 
+            zu bieten
+            \item stellt Protokoll der Anwendungs- oder Sitzungsschicht dar
+            \item auch allgemeines Sicherheitsprotokoll der Transportschicht und Tunneling-Fähigkeiten
       \end{itemize*}
 
       \subsection{SSH Version 2}
       \begin{itemize*}
-            \item SSH Version 2 ist in mehreren separaten Dokumenten spezifiziert, z.B.:
+            \item SSH Version 2 ist in mehreren separaten Dokumenten spezifiziert
+            %\begin{itemize*}
+            %      \item SSH Protocol Assigned Numbers
+            %      \item SSH-Protokollarchitektur
+            %      \item SSH-Authentifizierungsprotokoll
+            %      \item SSH-Transportschichtprotokoll
+            %      \item SSH-Verbindungsprotokoll
+            %\end{itemize*}
+            \item SSH-Architektur
             \begin{itemize*}
-                  \item SSH Protocol Assigned Numbers
-                  \item SSH-Protokollarchitektur
-                  \item SSH-Authentifizierungsprotokoll
-                  \item SSH-Transportschichtprotokoll
-                  \item SSH-Verbindungsprotokoll
+                  \item verfolgt Client-Server-Ansatz
+                  \item Jeder SSH-Server hat mind. einen Host-Schlüssel
+                  \item bietet zwei verschiedene Vertrauensmodelle
             \end{itemize*}
-            \item SSH-Architektur:
-            \begin{itemize*}
-                  \item SSH verfolgt einen Client-Server-Ansatz
-                  \item Jeder SSH-Server hat mindestens einen Host-Schlüssel
-                  \item SSH Version 2 bietet zwei verschiedene Vertrauensmodelle:
-                  \begin{itemize*}
-                        \item Jeder Client hat eine lokale Datenbank, die jeden Hostnamen mit dem entsprechenden öffentlichen Hostschlüssel verknüpft
-                        \item Die Zuordnung von Hostname zu öffentlichem Schlüssel wird von einer Zertifizierungsstelle zertifiziert, und jeder Client kennt den öffentlichen Schlüssel der Zertifizierungsstelle
-                  \end{itemize*}
-                  \item Das Protokoll ermöglicht die vollständige Aushandlung von Algorithmen und Formaten für Verschlüsselung, Integrität, Schlüsselaustausch, Komprimierung und öffentliche Schlüssel
-            \end{itemize*}
+            \begin{enumerate*}
+                  \item Jeder Client hat eine lokale Datenbank, die jeden Hostnamen mit dem entsprechenden öffentlichen Hostschlüssel verknüpft
+                  \item Die Zuordnung von Hostname zu öffentlichem Schlüssel wird von einer Zertifizierungsstelle zertifiziert, und jeder Client kennt den öffentlichen Schlüssel der Zertifizierungsstelle
+            \end{enumerate*}
+            \item ermöglicht die vollständige Aushandlung von Algorithmen und Formaten für Verschlüsselung, Integrität, Schlüsselaustausch, Komprimierung und öffentliche Schlüssel
       \end{itemize*}
 
       \subsection{SSH-Transportprotokoll}
       \begin{itemize*}
-            \item SSH verwendet ein zuverlässiges Transportprotokoll (normalerweise TCP).
-            \item Es bietet die folgenden Dienste:
+            \item SSH verwendet ein zuverlässiges Transportprotokoll
+            \item Es bietet die folgenden Dienste
             \begin{itemize*}
                   \item Verschlüsselung von Benutzerdaten
                   \item Authentifizierung der Datenherkunft (Integrität)
                   \item Server-Authentifizierung (nur Host-Authentifizierung)
                   \item Komprimierung der Benutzerdaten vor der Verschlüsselung
             \end{itemize*}
-            \item Unterstützte Algorithmen:
+            \item Unterstützte Algorithmen
             \begin{itemize*}
-                  \item Verschlüsselung:
+                  \item Verschlüsselung
                   \begin{itemize*}
                         \item AES, 3DES, Blowfish, Twofish, Serpent, IDEA und CAST in CBC
                         \item AES in GCM
-                        \item Arcfour (,,vermutlich'' kompatibel mit dem ,,unveröffentlichten'' RC4)
-                        \item keine (nicht empfohlen) \end{itemize*}
-                  \item Integrität:
+                        \item Arcfour %(,,vermutlich'' kompatibel mit dem ,,unveröffentlichten'' RC4)
+                        \item keine (nicht empfohlen)
+                  \end{itemize*}
+                  \item Integrität
                   \begin{itemize*}
                         \item HMAC mit MD5, SHA-1, SHA-256 oder SHA-512
                         \item keine (nicht empfohlen)
                   \end{itemize*}
-                  \item Schlüsselaustausch:
+                  \item Schlüsselaustausch
                   \begin{itemize*}
-                        \item Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen
-                        \item ECDH mit mehreren vordefinierten NIST-Gruppen (obligatorisch drei Kurven über $\mathbb{Z}_p$)
-                        \item Öffentlicher Schlüssel: RSA, DSS, ECC (in mehreren Varianten)
+                        \item DH mit SHA-1 und zwei vordefinierten Gruppen
+                        \item ECDH mit mehreren vordefinierten NIST-Gruppen %(obligatorisch drei Kurven über $\mathbb{Z}_p$)
+                        \item Öffentlicher Schlüssel: RSA, DSS, ECC %(in mehreren Varianten)
                   \end{itemize*}
-                  \item Komprimierung: keine, zlib (siehe RFCs 1950, 1951)
+                  \item Komprimierung: keine, zlib %(siehe RFCs 1950, 1951)
             \end{itemize*}
       \end{itemize*}
 
       \subsection{SSH-Transportprotokoll Paketformat}
-      % \includegraphics[width=\linewidth]{Assets/NetworkSecurity-ssh-transport-protocol-packet.png}
-      \begin{itemize*}
-            \item Das Paketformat ist nicht 32-Bit-wortorientiert
-            \item Felder des Pakets:
-            \begin{itemize*}
-                  \item Paketlänge: die Länge des Pakets selbst, ohne dieses Längenfeld und den MAC
-                  \item Padding length: Länge des Padding-Feldes, muss zwischen vier und 255 liegen
-                  \item Payload: die eigentliche Nutzlast des Pakets, wenn Komprimierung ausgehandelt wurde, wird dieses Feld komprimiert
-                  \item Padding: dieses Feld besteht aus zufällig ausgewählten Oktetten, um die Nutzlast auf ein ganzzahliges Vielfaches von 8 oder der Blockgröße des Verschlüsselungsalgorithmus aufzufüllen, je nachdem, welcher Wert größer ist
-                  \item MAC: Wurde die Nachrichtenauthentifizierung ausgehandelt, enthält dieses Feld den MAC des gesamten Pakets ohne das MAC-Feld selbst; soll das Paket verschlüsselt werden, wird der MAC vor der Verschlüsselung wie folgt berechnet
-                  \begin{itemize*}
-                        \item MAC = HMAC(shared\_secret, seq\_number || unencrypted\_packet), wobei seq\_number eine 32-Bit-Sequenznummer für jedes Paket bezeichnet
-                  \end{itemize*}
-            \end{itemize*}
-            \item Verschlüsselung: wenn Verschlüsselung ausgehandelt wird, wird das
-            gesamte Paket ohne MAC nach der MAC-Berechnung verschlüsselt
-      \end{itemize*}
+      \begin{multicols}{2}
+            \includegraphics[width=.6\linewidth]{Assets/NetworkSecurity-ssh-transport-protocol-packet.png}
 
-      \subsection{SSH-Aushandlung, Schlüsselaustausch und Server-Authentifizierung}
+            \begin{itemize*}
+                  \item Paketformat nicht 32-Bit-wortorientiert
+                  \item Verschlüsselung: wenn Verschlüsselung ausgehandelt wird, wird das gesamte Paket ohne MAC nach der MAC-Berechnung verschlüsselt
+            \end{itemize*}
+      \end{multicols}
+      \begin{description*}
+            \item[Paketlänge] Länge des Pakets ohne Längenfeld undMAC
+            \item[Padding length] Länge des Padding-Feldes [4-255]
+            \item[Payload] Nutzlast des Pakets, wenn Komprimierung ausgehandelt wurde, wird dieses Feld komprimiert
+            \item[Padding] zufällige Oktette, um Nutzlast auf ganzzahliges Vielfaches von 8 oder der Blockgröße des Verschlüsselungsalgorithmus aufzufüllen
+            \item[MAC] bei Nachrichtenauthentifizierung MAC des gesamten Pakets ohne MAC-Feld
+            \item bei verschlüsselung: MAC = HMAC(shared\_secret, seq\_number || unencrypted\_packet) %wobei seq\_number eine 32-Bit-Sequenznummer für jedes Paket bezeichnet
+      \end{description*}
+
+      \subsection{SSH-Aushandlung und Schlüsselaustausch}
+      Algorithmus-Aushandlung
       \begin{itemize*}
-            \item Algorithmus-Aushandlung:
-            \begin{itemize*}
-                  \item Jede Entität sendet ein Paket (bezeichnet als kexinit ) mit einer Spezifikation der von ihr unterstützten Methoden in der Reihenfolge ihrer Präferenz
-                  \item Beide Entitäten iterieren über die Liste des Clients und wählen den ersten Algorithmus, der auch vom Server unterstützt wird
-                  \item Diese Methode wird verwendet, um Folgendes auszuhandeln: Server-Host-Schlüssel-Algorithmus (\textasciitilde{} Server-Authentifizierung) sowie Verschlüsselungs-, MAC- und Kompressionsalgorithmus
-                  \item Zusätzlich kann jede Entität ein Schlüsselaustauschpaket entsprechend einer Vermutung über den bevorzugten Schlüsselaustauschalgorithmus der anderen Entität anhängen
-                  \item Ist eine Vermutung richtig, wird das entsprechende Schlüsselaustauschpaket als erstes Schlüsselaustauschpaket der anderen Entität akzeptiert
-                  \item Falsche Vermutungen werden ignoriert und neue Schlüsselaustauschpakete werden nach Aushandlung des Algorithmus gesendet
-            \end{itemize*}
-            \item Für den Schlüsselaustausch nur eine Methode definiert
-            \begin{itemize*}
-                  \item Diffie-Hellman mit SHA-1 und zwei vordefinierten Gruppen (1024 und 2048 Bit)
-                  \item Z.B. $p = 2^{1024} -2^{960} - 1 + (2^{64}\times \lfloor 2894 \times \pi + 129093\rfloor); g = 2$
-            \end{itemize*}
-            \item Wenn der Schlüsselaustausch mit der vordefinierten DH-Gruppe durchgeführt wird:
-            \begin{itemize*}
-                  \item Der Client wählt eine Zufallszahl $x$, berechnet $e=g^x\ mod\ p$ und sendet $e$ an den Server
-                  \item Der Server wählt eine Zufallszahl $y$, errechnet $f=g^y\ mod\ p$
-                  \item Nach dem Empfang von $e$ berechnet der Server ferner $K=e^y\ mod\ p$ und einen Hash-Wert $h = Hash(version_C, version_S, kexinit_C, kexinit_S, +K_S, e, f, K)$, wobei version und kexinit die Versionsinformationen des Clients und des Servers sowie die anfänglichen Algorithmus-Aushandlungsmeldungen bezeichnen
-                  \item Der Server signiert h mit seinem privaten Host-Schlüssel - KS und sendet dem Client eine Nachricht mit $(+K_S, f, s)$.
-                  \item Beim Empfang prüft der Client den Host-Schlüssel $+K_S$, berechnet $K=f^x\ mod\ p$ sowie den Hash-Wert $h$ und prüft dann die Signatur $s$ über $h$
-            \end{itemize*}
-            \item Nach diesen Prüfungen kann der Client sicher sein, dass er tatsächlich ein geheimes K mit dem Host ausgehandelt hat, der $-K_S$ kennt.
-            \item Der Server-Host kann jedoch keine Rückschlüsse auf die Authentizität des Clients ziehen; zu diesem Zweck wird das SSH-Authentifizierungsprotokoll verwendet
+            \item Jede Entität sendet Paket mit Spezifikation der unterstützten Methoden in Reihenfolge der Präferenz
+            \item Beide Entitäten iterieren über Liste des Clients und wählen ersten Algorithmus, den Server unterstützt
+            \item verwendet für: Server-Host-Schlüssel-Algorithmus, Verschlüsselungs-, MAC- und Kompressionsalgorithmus
+            \item Zusätzlich kann jede Entität Schlüsselaustauschpaket anhängen
+            \item Passt Schlüsselaustauschpaket wird es akzeptiert
+            \item Falsche Austauschpakete werden ignoriert% und neue Schlüsselaustauschpakete werden nach Aushandlung des Algorithmus gesendet
+      \end{itemize*}
+      Für den Schlüsselaustausch nur eine Methode definiert
+      \begin{itemize*}
+            \item DH mit SHA-1 und zwei vordefinierten Gruppen (1024 und 2048 Bit)
+            \item Z.B. $p = 2^{1024} -2^{960} - 1 + (2^{64}\times \lfloor 2894 \times \pi + 129093\rfloor); g = 2$
+      \end{itemize*}
+      Wenn der Schlüsselaustausch mit der vordefinierten DH-Gruppe durchgeführt wird
+      \begin{itemize*}
+            \item Client wählt Zufallszahl $x$, berechnet $e=g^x\ mod\ p$ und sendet $e$ an Server
+            \item Server wählt Zufallszahl $y$, berechnet $f=g^y\ mod\ p$
+            \item Nach Empfang von $e$ berechnet Server $K=e^y\ mod\ p$ und Hash-Wert $h = Hash(version_C, version_S, kexinit_C, kexinit_S, +K_S, e, f, K)$, wobei version und kexinit die Versionsinformationen des Clients und Servers sowie anfänglichen Algorithmus-Aushandlungsmeldungen bezeichnen
+            \item Server signiert $h$ mit privaten Host-Schlüssel $-K_S$ und sendet Client Nachricht mit $(+K_S, f, s)$
+            \item beim Empfang prüft Client den Host-Schlüssel $+K_S$, berechnet $K=f^x\ mod\ p$ sowie Hash-Wert $h$ und prüft dann die Signatur $s$ über $h$
+            \item Nach Prüfung kann Client sicher sein, dass geheimes $K$ mit Host ausgehandelt, der $-K_S$ kennt
+            \item Server-Host kann keine Rückschlüsse auf Authentizität des Clients ziehen; dafür wird SSH-Authentifizierungsprotokoll verwendet
       \end{itemize*}
 
       \subsection{SSH-Sitzungsschlüssel-Ableitung}
       \begin{itemize*}
-            \item Die Methode des Schlüsselaustauschs ermöglicht es, ein gemeinsames Geheimnis K und den Hash-Wert h zu ermitteln, die zur Ableitung der SSH-Sitzungsschlüssel verwendet werden:
-            \begin{itemize*}
-                  \item Der Hashwert h des anfänglichen Schlüsselaustauschs wird auch als session\_id verwendet
-                  \item $IV_{Client2Server}$ = Hash(K, h, ,,A'', session\_id) // Initialisierungsvektor
-                  \item $IV_{Server2Client}$ = Hash(K, h, ,,B'', session\_id) // Initialisierungsvektor
-                  \item $EK_{Client2Server}$ = Hash(K, h, ,,C'', session\_id) // Verschlüsselungsschlüssel
-                  \item $EK_{Server2Client}$ = Hash(K, h, ,,D'', session\_id) // Chiffrierschlüssel
-                  \item $IK_{Client2Server}$ = Hash(K, h, ,,E'', session\_id) // Integritätsschlüssel
-                  \item $IK_{Server2Client}$ = Hash(K, h, ,,F'', session\_id) // Integritätsschlüssel
-            \end{itemize*}
+            \item Methode des Schlüsselaustauschs ermöglicht, ein gemeinsames Geheimnis $K$ und den Hash-Wert $h$ zu ermitteln, die zur Ableitung der SSH-Sitzungsschlüssel verwendet werden
+            \item Der Hashwert $h$ des anfänglichen Schlüsselaustauschs wird auch als session\_id verwendet
+            \item $IV_{Client2Server}$ = Hash(K, h, [A], session\_id) %// Initialisierungsvektor
+            \item $IV_{Server2Client}$ = Hash(K, h, [B], session\_id) %// Initialisierungsvektor
+            \item $EK_{Client2Server}$ = Hash(K, h, [C], session\_id) %// Verschlüsselungsschlüssel
+            \item $EK_{Server2Client}$ = Hash(K, h, [D], session\_id) %// Chiffrierschlüssel
+            \item $IK_{Client2Server}$ = Hash(K, h, [E], session\_id) %// Integritätsschlüssel
+            \item $IK_{Server2Client}$ = Hash(K, h, [F], session\_id) %// Integritätsschlüssel
             \item Die Schlüsseldaten werden am Anfang der Hash-Ausgabe entnommen
-            \item Wenn mehr Schlüsselbits benötigt werden als von der Hash-Funktion erzeugt werden:
+            \item Wenn mehr Schlüsselbits benötigt werden als von der Hash-Funktion erzeugt werden
             \begin{itemize*}
                   \item K1 = Hash(K, h, x, session\_id) // x = ,,A'', ,,B'', usw.
                   \item K2 = Hash(K, h, K1)
                   \item K2 = Hash(K, h, K1, K2)
-                  \item XK = K1 || K2 || ...
+                  \item $XK = K1 || K2 || ...$
             \end{itemize*}
       \end{itemize*}
 
       \subsection{SSH-Authentifizierungsprotokoll}
       \begin{itemize*}
-            \item Das SSH-Authentifizierungsprotokoll dient zur Überprüfung der Identität des Clients und ist für die Ausführung über das SSH-Transportprotokoll vorgesehen
-            \item Das Protokoll unterstützt standardmäßig die folgenden Authentifizierungsmethoden:
-            \begin{itemize*}
-                  \item Öffentlicher Schlüssel: Der Benutzer erzeugt und sendet eine Signatur mit einem öffentlichen Schlüssel pro Benutzer an den Server
-                  \item $Client\rightarrow Server: E(-K_{Benutzer}, (session_id, 50, Name_{Benutzer}, Service, ,,publickey'', True, PublicKeyAlgorithmName, +K_{Benutzer}))$
-                  \item Kennwort: Übertragung eines Kennworts pro Benutzer in der verschlüsselten SSH-Sitzung (das Kennwort wird dem Server im Klartext präsentiert, aber mit Verschlüsselung des SSH-Transportprotokolls übertragen)
-                  \item Host-basiert: analog zum öffentlichen Schlüssel, aber mit einem öffentlichen Schlüssel pro Host
-                  \item Keine: wird verwendet, um den Server nach unterstützten Methoden zu fragen und wenn keine Authentifizierung erforderlich ist (der Server antwortet direkt mit einer Erfolgsmeldung)
-            \end{itemize*}
+            \item dient zur Überprüfung der Identität des Clients und für Ausführung über SSH-Transportprotokoll vorgesehen
+            \item unterstützt folgende Authentifizierungsmethoden
+            \begin{description*}
+                  \item[Öffentlicher Schlüssel] Der Benutzer erzeugt und sendet eine Signatur mit einem öffentlichen Schlüssel pro Benutzer an den Server %$Client\rightarrow Server: E(-K_{Benutzer}, (session_id, 50, Name_{Benutzer}, Service, ,,publickey'', True, PublicKeyAlgorithmName, +K_{Benutzer}))$
+                  \item[Kennwort] Übertragung eines Kennworts pro Benutzer in der verschlüsselten SSH-Sitzung %(das Kennwort wird dem Server im Klartext präsentiert, aber mit Verschlüsselung des SSH-Transportprotokolls übertragen)
+                  \item[Host-basiert] analog zum öffentlichen Schlüssel aber mit einem öffentlichen Schlüssel pro Host
+                  \item[Keine] wird verwendet, um den Server nach unterstützten Methoden zu fragen und wenn keine Authentifizierung erforderlich ist %(der Server antwortet direkt mit einer Erfolgsmeldung)
+            \end{description*}
             \item Wenn die Authentifizierungsnachricht des Clients erfolgreich geprüft wurde, antwortet der Server mit einer ssh\_msg\_userauth\_success-Nachricht
       \end{itemize*}
 
       \subsection{SSH-Verbindungsprotokoll}
       \begin{itemize*}
-            \item Das SSH-Verbindungsprotokoll läuft auf dem SSH-Transportprotokoll und bietet folgende Dienste:
+            \item läuft auf SSH-Transportprotokoll und bietet folgende Dienste
             \begin{itemize*}
                   \item Interaktive Anmeldesitzungen
                   \item Fernausführung von Befehlen
                   \item Weitergeleitete TCP/IP-Verbindungen
                   \item Weitergeleitete X11-Verbindungen
             \end{itemize*}
-            \item Für jeden der oben genannten Dienste werden ein oder mehrere ,,Kanäle'' eingerichtet, und alle Kanäle werden in eine einzige verschlüsselte und integritätsgeschützte SSH-Transportprotokollverbindung gemultiplext:
+            \item Für jeden der oben genannten Dienste werden ein oder mehrere ,,Kanäle'' eingerichtet und alle Kanäle werden in eine einzige verschlüsselte und integritätsgeschützte SSH-Transportprotokollverbindung gemultiplext
             \begin{itemize*}
-                  \item Beide Seiten können die Eröffnung eines Kanals beantragen, und die Kanäle werden durch Nummern beim Sender und beim Empfänger gekennzeichnet.
-                  \item Kanäle sind typisiert, z.B. ,,session'', ,,x11'', ,,forwarded-tcpip'', ,,direct-tcpip'' ...
-                  \item Kanäle werden durch einen Fenstermechanismus kontrolliert, und es dürfen keine Daten über einen Kanal gesendet werden, bevor ,,window space'' verfügbar ist
+                  \item Beide Seiten können Eröffnung eines Kanals beantragen und Kanäle werden durch Nummern beim Sender und beim Empfänger gekennzeichnet
+                  \item Kanäle sind typisiert%, z.B. ,,session'', ,,x11'', ,,forwarded-tcpip'', ,,direct-tcpip'' ...
+                  \item Kanäle werden durch einen Fenstermechanismus kontrolliert
+                  \item es dürfen keine Daten über Kanal gesendet werden, bevor ,,window space'' verfügbar ist
             \end{itemize*}
-            \item Öffnen eines Kanals:
+            \item Öffnen eines Kanals
             \begin{itemize*}
-                  \item Beide Seiten können die Nachricht ssh\_msg\_channel\_open senden, die mit dem Nachrichtencode 90 und den folgenden Parametern signalisiert wird:
-                  \begin{itemize*}
-                        \item Kanaltyp: ist vom Datentyp String, z.B. ,,session'', ,,x11'', etc.
-                        \item Absenderkanal: ist ein lokaler Bezeichner vom Typ uint32 und wird vom Anforderer dieses Kanals gewählt
-                        \item initial window size: ist vom Typ uint32 und gibt an, wie viele Bytes an den Initiator gesendet werden dürfen, bevor das Fenster vergrößert werden muss
-                        \item maximale Paketgröße: ist vom Typ uint32 und legt die maximale Paketgröße fest, die der Initiator für diesen Kanal zu akzeptieren bereit ist
-                        \item weitere Parameter, die vom Typ des Kanals abhängen, können folgen
-                  \end{itemize*}
-                  \item Wenn der Empfänger dieser Nachricht die Kanalanfrage nicht annehmen will, antwortet er mit der Nachricht ssh\_msg\_channel\_open\_failure (Code 92):
-                  \begin{itemize*}
-                        \item Empfängerkanal: die vom Absender in der Öffnungsanfrage angegebene ID
-                        \item reason code: ist vom Typ uint32 und gibt den Grund für die Ablehnung an
-                        \item additional textual information: ist vom Typ string
-                        \item language tag: ist vom Typ string und entspricht dem RFC 1766
-                  \end{itemize*}
-                  \item Wenn der Empfänger dieser Nachricht die Kanalanfrage annehmen will, antwortet er mit der Nachricht ssh\_msg\_channel\_open\_confirmation (Code 91) und den folgenden Parametern
-                  \begin{itemize*}
-                        \item Empfänger-Kanal: die vom Absender in der Öffnungsanforderung angegebene ID
-                        \item Absenderkanal: die dem Kanal vom Antwortenden gegebene Kennung
-                        \item initial window size: ist vom Typ uint32 und gibt an, wie viele Bytes an den Responder gesendet werden können, bevor das Fenster vergrößert werden muss
-                        \item maximum packet size: ist vom Typ uint32 und legt die maximale Paketgröße fest, die der Responder für diesen Kanal zu akzeptieren bereit ist
-                        \item weitere Parameter, die vom Kanaltyp abhängen, können folgen
-                  \end{itemize*}
+                  \item Beide Seiten können Nachricht ssh\_msg\_channel\_open senden, die mit dem Nachrichtencode 90 und den folgenden Parametern signalisiert wird
+                  \begin{description*}
+                        \item[Kanaltyp] String, z.B. ,,session''% ,,x11'', etc.
+                        \item[Absenderkanal] lokaler Bezeichner vom Typ uint32% und wird vom Anforderer dieses Kanals gewählt
+                        \item[initial window size] uint32, wie viele Bytes an den Initiator gesendet werden dürfen%, bevor das Fenster vergrößert werden muss
+                        \item[maximale Paketgröße] uint32,legt die maximale Paketgröße fest%, die der Initiator für diesen Kanal zu akzeptieren bereit ist
+                        \item[weitere Parameter] können folgen %die vom Typ des Kanals abhängen
+                  \end{description*}
+                  \item Wenn Empfänger dieser Nachricht Kanalanfrage nicht annehmen will, antwortet er mit ssh\_msg\_channel\_open\_failure (Code 92)
+                  \begin{description*}
+                        \item[Empfängerkanal] vom Absender angegebene ID
+                        \item[reason code] uint32, Grund für Ablehnung
+                        \item[additional textual information] string
+                        \item[language tag] string, entspricht RFC 1766
+                  \end{description*}
+                  \item Wenn Empfänger dieser Nachricht Kanalanfrage annehmen will, antwortet er mit ssh\_msg\_channel\_open\_confirmation (Code 91) und Parametern
+                  \begin{description*}
+                        \item[Empfänger-Kanal] vom Absender angegebene ID
+                        \item[Absenderkanal] Kanal vom Antwortenden gegebene Kennung
+                        \item[initial window size] uint32, wie viele Bytes an den Responder gesendet werden können%, bevor das Fenster vergrößert werden muss
+                        \item[maximum packet size] uint32, legt die maximale Paketgröße fest%, die der Responder für diesen Kanal zu akzeptieren bereit ist
+                        \item[weitere Parameter] vom Kanaltyp abhängen, können folgen
+                  \end{description*}
             \end{itemize*}
-            \item Sobald ein Kanal geöffnet ist, sind die folgenden Aktionen möglich:
+            \item Sobald ein Kanal geöffnet ist, sind die folgenden Aktionen möglich
             \begin{itemize*}
-                  \item Datenübertragung (allerdings sollte die empfangende Seite wissen, ,,was mit den Daten zu tun ist'', was eine weitere vorherige Aushandlung erfordern kann)
+                  \item Datenübertragung %(allerdings sollte die empfangende Seite wissen, ,,was mit den Daten zu tun ist'', was eine weitere vorherige Aushandlung erfordern kann)
                   \item Kanaltypspezifische Anfragen
                   \item Schließung des Kanals
             \end{itemize*}
-            \item Für die Datenübertragung sind die folgenden Nachrichten definiert:
+            \item Für die Datenübertragung sind die folgenden Nachrichten definiert
             \begin{itemize*}
                   \item ssh\_msg\_channel\_data: mit den beiden Parametern Empfängerkanal, Daten
-                  \item ssh\_msg\_channel\_extended\_data: erlaubt die zusätzliche Angabe eines Datentypcodes und ist nützlich, um Fehler zu signalisieren, z.B. bei interaktiven Shells
+                  \item ssh\_msg\_channel\_extended\_data: erlaubt die zusätzliche Angabe eines Datentypcodes und ist nützlich, um Fehler zu signalisieren%, z.B. bei interaktiven Shells
                   \item ssh\_msg\_channel\_window\_adjust: erlaubt es, das Flusskontrollfenster des Empfängerkanals um die angegebene Anzahl von Bytes zu erweitern
             \end{itemize*}
-            \item Schließen von Kanälen:
+            \item Schließen von Kanälen
             \begin{itemize*}
-                  \item Wenn eine Peer-Entität keine Daten mehr an einen Kanal senden will, sollte sie dies der anderen Seite mit der Nachricht ssh\_msg\_channel\_eof signalisieren
-                  \item Wenn eine der beiden Seiten einen Kanal beenden möchte, sendet sie die Nachricht ssh\_msg\_channel\_close mit dem Parameter recipient channel
-                  \item Beim Empfang der Nachricht ssh\_msg\_channel\_close muss eine Peer-Entität mit einer ähnlichen Nachricht antworten, es sei denn, sie hat bereits die Schließung dieses Kanals beantragt.
-                  \item Sowohl nach dem Empfang als auch nach dem Senden der Nachricht ssh\_msg\_channel\_close für einen bestimmten Kanal kann die ID dieses Kanals wiederverwendet werden.
+                  \item Wenn Peer-Entität keine Daten mehr an Kanal senden will, mit Nachricht ssh\_msg\_channel\_eof signalisieren
+                  \item Wenn eine Seite Kanal beenden möchte, sendet Nachricht ssh\_msg\_channel\_close mit Parameter recipient\_channel
+                  \item Beim Empfang der Nachricht ssh\_msg\_channel\_close muss Peer-Entität mit ähnlicher Nachricht antworten%, es sei denn, sie hat bereits die Schließung dieses Kanals beantragt.
+                  \item nach Empfang oder Senden der Nachricht ssh\_msg\_channel\_close für Kanal kann Kanal ID wiederverwendet werden
             \end{itemize*}
-            \item Kanaltypspezifische Anfragen erlauben es, bestimmte Eigenschaften eines Kanals anzufordern, z.B. dass die empfangende Seite weiß, wie sie die über diesen Kanal gesendeten Daten verarbeiten soll, und werden mit signalisiert:
-            \begin{itemize*}
-                  \item ssh\_msg\_channel\_request: mit den Parametern recipient channel, request type (string), want reply (bool) und weiteren anfragespezifischen Parametern
-                  \item ssh\_msg\_channel\_success: mit dem Parameter recipient channel
-                  \item ssh\_msg\_channel\_failure: mit dem Parameter recipient channel
-            \end{itemize*}
-            \item Beispiel 1 - Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
-            \begin{itemize*}
-                  \item Zunächst wird ein Kanal vom Typ ,,session'' geöffnet
-                  \item Ein Pseudo-Terminal wird angefordert, indem eine ssh\_msg\_channel\_request-Nachricht gesendet wird, wobei der Anforderungstyp auf ,,pty-req'' gesetzt wird
-                  \item Falls erforderlich, können Umgebungsvariablen gesetzt werden, indem ssh\_msg\_channel\_request-Nachrichten mit dem Anforderungstyp ,,env'' gesendet werden.
-                  \item Dann wird der Start eines Shell-Prozesses über eine ssh\_msg\_channel\_request-Nachricht mit dem Request-Typ ,,shell'' gefordert (dies führt normalerweise zum Start der Standard-Shell für den Benutzer, wie sie in /etc/passwd definiert ist)
-                  \item Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
-
-                  %| SSH Client | | SSH Server | | -------------------------------------------------------------------------- | ---- | ---------------------------------------------------- | | ssh\_msg\_channel\_open (,,session'', 20, 2048, 512) | --->{} | | | <--- | ssh\_msg\_channel\_open\_confirmation(20, 31, 1024, 256) | | ssh\_msg\_channel\_request (31, ,,pty-req'', false, ...) | --->{} | | ssh\_msg\_channel\_request (31, ,,env'', false, ,,home'', ,,/home/username'') | --->{} | | ssh\_msg\_channel\_request (31, ,,shell'', true, ...) | --->{} | | | <--- | ssh\_msg\_channel\_success(20) |
-                  %,,Nutzdatenaustausch findet ab jetzt statt...''
-            \end{itemize*}
+            \item Kanaltypspezifische Anfragen erlauben, bestimmte Eigenschaften eines Kanals anzufordern%, z.B. dass die empfangende Seite weiß, wie sie die über diesen Kanal gesendeten Daten verarbeiten soll, und werden mit signalisiert:
+            \begin{description*}
+                  \item[ssh\_msg\_channel\_request] mit den Parametern recipient channel, request type (string), want reply (bool) und weiteren anfragespezifischen Parametern
+                  \item[ssh\_msg\_channel\_success] mit dem Parameter recipient channel
+                  \item[ssh\_msg\_channel\_failure] mit dem Parameter recipient channel
+            \end{description*}
+            %\item Beispiel 1 - Anfordern einer interaktiven Sitzung und Starten einer Shell darin:
+            %\begin{itemize*}
+            %      \item Zunächst wird ein Kanal vom Typ ,,session'' geöffnet
+            %      \item Ein Pseudo-Terminal wird angefordert, indem eine ssh\_msg\_channel\_request-Nachricht gesendet wird, wobei der Anforderungstyp auf ,,pty-req'' gesetzt wird
+            %      \item Falls erforderlich, können Umgebungsvariablen gesetzt werden, indem ssh\_msg\_channel\_request-Nachrichten mit dem Anforderungstyp ,,env'' gesendet werden.
+            %      \item Dann wird der Start eines Shell-Prozesses über eine ssh\_msg\_channel\_request-Nachricht mit dem Request-Typ ,,shell'' gefordert (dies führt normalerweise zum Start der Standard-Shell für den Benutzer, wie sie in /etc/passwd definiert ist)
+            %     \item Anfordern einer interaktiven Sitzung und Starten einer Shell darin
+            %| SSH Client | | SSH Server | | -------------------------------------------------------------------------- | ---- | ---------------------------------------------------- | | ssh\_msg\_channel\_open (,,session'', 20, 2048, 512) | --->{} | | | <--- | ssh\_msg\_channel\_open\_confirmation(20, 31, 1024, 256) | | ssh\_msg\_channel\_request (31, ,,pty-req'', false, ...) | --->{} | | ssh\_msg\_channel\_request (31, ,,env'', false, ,,home'', ,,/home/username'') | --->{} | | ssh\_msg\_channel\_request (31, ,,shell'', true, ...) | --->{} | | | <--- | ssh\_msg\_channel\_success(20) |
+            %,,Nutzdatenaustausch findet ab jetzt statt...''
+            %\end{itemize*}
+            %\item Beispiel 2 - Anforderung der X11-Weiterleitung:
+            %\begin{itemize*}
+            %      \item Zuerst wird ein Kanal des Typs ,,session'' geöffnet
+            %      \item Die X11-Weiterleitung wird durch Senden einer ssh\_msg\_channel\_request-Nachricht mit dem Anforderungstyp ,,x11-req'' angefordert
+            %      \item Wenn später eine Anwendung auf dem Server gestartet wird, die auf das Terminal des Client-Rechners zugreifen muss (der X11-Server, der auf dem Client-Rechner läuft), wird ein neuer Kanal über ssh\_msg\_channel\_open geöffnet, wobei der Kanaltyp auf ,,x11'' und die IP-Adresse und Portnummer des Absenders als zusätzliche Parameter gesetzt werden
+            %\end{itemize*}
+            %\item Beispiel 3 - Einrichtung einer TCP/IP-Portweiterleitung:
+            %\begin{itemize*}
+            %      \item Eine Partei muss die Portweiterleitung von ihrem eigenen Ende in die andere Richtung nicht explizit anfordern. Wenn sie jedoch Verbindungen zu einem Port auf der anderen Seite an ihre eigene Seite weiterleiten lassen möchte, muss sie dies explizit über eine ssh\_msg\_global\_request-Nachricht mit den Parametern ,,tcpip-forward'', want-reply, zu bindende Adresse (,,0.0.0.0'' für jede Quelladresse) und zu bindende Portnummer anfordern (diese Anforderung wird normalerweise vom Client gesendet)
+            %      \item Wenn eine Verbindung zu einem Port kommt, für den eine Weiterleitung angefordert wurde, wird ein neuer Kanal über ssh\_msg\_channel\_open mit dem Typ ,,forwarded-tcpip'' und den Adressen des Ports, der verbunden wurde, sowie des ursprünglichen Quellports als Parameter geöffnet (diese Nachricht wird normalerweise vom Server gesendet)
+            %      \item Wenn eine Verbindung zu einem (Client-)Port kommt, der lokal als weitergeleitet eingestellt ist, wird ein neuer Kanal angefordert, wobei der Typ auf ,,direct-tcpip'' gesetzt wird und die folgenden Adressinformationen in zusätzlichen Parametern angegeben werden:
+            %      \begin{itemize*}
+            %            \item host to connect, port to connect: Adresse, mit der der Empfänger diesen Kanal verbinden soll
+            %            \item Absender-IP-Adresse, Absender-Port: Quelladresse der Verbindung
+            %      \end{itemize*}
+            %\end{itemize*}
       \end{itemize*}
 
-      \subsection{SSH-Verbindungsprotokoll II}
+      Schlussfolgerung
       \begin{itemize*}
-            \item Beispiel 2 - Anforderung der X11-Weiterleitung:
-            \begin{itemize*}
-                  \item Zuerst wird ein Kanal des Typs ,,session'' geöffnet
-                  \item Die X11-Weiterleitung wird durch Senden einer ssh\_msg\_channel\_request-Nachricht mit dem Anforderungstyp ,,x11-req'' angefordert
-                  \item Wenn später eine Anwendung auf dem Server gestartet wird, die auf das Terminal des Client-Rechners zugreifen muss (der X11-Server, der auf dem Client-Rechner läuft), wird ein neuer Kanal über ssh\_msg\_channel\_open geöffnet, wobei der Kanaltyp auf ,,x11'' und die IP-Adresse und Portnummer des Absenders als zusätzliche Parameter gesetzt werden
-            \end{itemize*}
-            \item Beispiel 3 - Einrichtung einer TCP/IP-Portweiterleitung:
-            \begin{itemize*}
-                  \item Eine Partei muss die Portweiterleitung von ihrem eigenen Ende in die andere Richtung nicht explizit anfordern. Wenn sie jedoch Verbindungen zu einem Port auf der anderen Seite an ihre eigene Seite weiterleiten lassen möchte, muss sie dies explizit über eine ssh\_msg\_global\_request-Nachricht mit den Parametern ,,tcpip-forward'', want-reply, zu bindende Adresse (,,0.0.0.0'' für jede Quelladresse) und zu bindende Portnummer anfordern (diese Anforderung wird normalerweise vom Client gesendet)
-                  \item Wenn eine Verbindung zu einem Port kommt, für den eine Weiterleitung angefordert wurde, wird ein neuer Kanal über ssh\_msg\_channel\_open mit dem Typ ,,forwarded-tcpip'' und den Adressen des Ports, der verbunden wurde, sowie des ursprünglichen Quellports als Parameter geöffnet (diese Nachricht wird normalerweise vom Server gesendet)
-                  \item Wenn eine Verbindung zu einem (Client-)Port kommt, der lokal als weitergeleitet eingestellt ist, wird ein neuer Kanal angefordert, wobei der Typ auf ,,direct-tcpip'' gesetzt wird und die folgenden Adressinformationen in zusätzlichen Parametern angegeben werden:
-                  \begin{itemize*}
-                        \item host to connect, port to connect: Adresse, mit der der Empfänger diesen Kanal verbinden soll
-                        \item Absender-IP-Adresse, Absender-Port: Quelladresse der Verbindung
-                  \end{itemize*}
-            \end{itemize*}
+            \item Sowohl SSL, TLS als auch SSH eignen sich für die Sicherung der Internet-Kommunikation in der (oberen) Transportschicht
+            \item Alle drei Sicherheitsprotokolle arbeiten mit einem zuverlässigen Transportdienst und benötigen diesen
+            \item Es gibt eine datagrammorientierte Variante von TLS, genannt DTLS
+            \item Obwohl SSH in/oberhalb der Transportschicht arbeitet, ist die Server-Authentifizierung hostbasiert und nicht anwendungsbasiert
+            \item Sicherheitsprotokolle der Transportschicht bieten echten End-to-End-Schutz für Benutzerdaten, die zwischen Anwendungsprozessen ausgetauscht werden
+            \item Außerdem können sie mit der Paketfilterung der heutigen Firewalls zusammenarbeiten
+            \item Die Protokoll-Header-Felder von Protokollen der unteren Schicht können jedoch nicht auf diese Weise geschützt werden, so dass sie keine Gegenmaßnahmen für Bedrohungen der Netzinfrastruktur selbst bieten
       \end{itemize*}
-
-      \subsection{Schlussfolgerung}
-      \begin{itemize*}
-            \item Sowohl SSL, TLS als auch SSH eignen sich für die Sicherung der Internet-Kommunikation in der (oberen) Transportschicht:
-            \begin{itemize*}
-                  \item Alle drei Sicherheitsprotokolle arbeiten mit einem zuverlässigen Transportdienst, z.B. TCP, und benötigen diesen.
-                  \item Es gibt eine datagrammorientierte Variante von TLS, genannt DTLS
-                  \item Obwohl SSH in / oberhalb der Transportschicht arbeitet, ist die Server-Authentifizierung hostbasiert und nicht anwendungsbasiert.
-                  \item Sicherheitsprotokolle der Transportschicht bieten echten End-to-End-Schutz für Benutzerdaten, die zwischen Anwendungsprozessen ausgetauscht werden.
-                  \item Außerdem können sie mit der Paketfilterung der heutigen Firewalls zusammenarbeiten.
-                  \item Die Protokoll-Header-Felder von Protokollen der unteren Schicht können jedoch nicht auf diese Weise geschützt werden, so dass sie keine Gegenmaßnahmen für Bedrohungen der Netzinfrastruktur selbst bieten.
-            \end{itemize*}
-      \end{itemize*}
+      \columnbreak
 
       \section{Sicherheitsaspekte der mobilen Kommunikation}
       \begin{itemize*}

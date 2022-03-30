@@ -5356,45 +5356,50 @@
       \section{Sicherheit von drahtlosen lokalen Netzen}
       \subsection{IEEE 802.11}
       \begin{itemize*}
-            \item IEEE 802.11 ,,IEEE12'' standardisiert die Medienzugriffskontrolle (MAC) und die physikalischen Eigenschaften eines drahtlosen lokalen Netzwerks (LAN).
-            \item Der Standard umfasst mehrere physikalische Schichteinheiten:
+            \item IEEE 802.11 standardisiert die Medienzugriffskontrolle (MAC) und die physikalischen Eigenschaften eines drahtlosen lokalen Netzwerks (LAN)
+            \item Der Standard umfasst mehrere physikalische Schichteinheiten
             \begin{itemize*}
                   \item Derzeit zwischen 1-300 Mbit/s
                   \item 2,4-GHz-Band und 5-GHz-Band
                   \item Viele verschiedene Modulationsverfahren
             \end{itemize*}
-            \item Die Übertragung im lizenzfreien 2,4-GHz-Band impliziert:
+            \item Die Übertragung im lizenzfreien 2,4-GHz-Band impliziert
             \begin{itemize*}
                   \item Medium-Sharing mit unfreiwilligen 802.11-Geräten
                   \item Überlappung von logisch getrennten Wireless LANs
                   \item Überlappung mit Nicht-802.11-Geräten
             \end{itemize*}
-            \item Die Medienzugriffskontrolle (MAC) unterstützt sowohl den Betrieb unter Kontrolle eines Access Points als auch zwischen unabhängigen Stationen.
-            \item In diesem Kurs werden wir uns hauptsächlich auf die (Un-)Sicherheitsaspekte des Standards konzentrieren!
+            \item Medienzugriffskontrolle (MAC) unterstützt Betrieb unter Kontrolle eines Access Points und zwischen unabhängigen Stationen
       \end{itemize*}
 
-      802.11 - Architektur eines Infrastrukturnetzes
-      \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-802.11-network-architecture.png}
-            \item Station (STA): Endgerät mit Zugriffsmechanismen auf das drahtlose Medium und Funkkontakt zum Access Point
-            \item Basic Service Set (BSS): Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
-            \item Zugangspunkt: Station, die in das drahtlose LAN und das Verteilungssystem integriert ist
-            \item Portal: Brücke zu anderen (kabelgebundenen) Netzwerken
-            \item Verteilungssystem: Verbindungsnetz zur Bildung eines logischen Netzes (Extended Service Set, ESS), das auf mehreren BSS basiert
-      \end{itemize*}
+      Architektur eines Infrastrukturnetzes
+      \begin{multicols}{2}
+            \includegraphics[width=.8\linewidth]{Assets/NetworkSecurity-802.11-network-architecture.png}
 
-      802.11 - Architektur eines Ad-Hoc-Netzes
-      \begin{itemize*}
-            %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-802.11-ad-hoc-architecture.png}
-            \item Station (STA): Endgerät mit Zugriffsmechanismen auf das drahtlose Medium
-            \item Basic Service Set (BSS): Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
-            \item Ad-Hoc-Netze ermöglichen die direkte Kommunikation zwischen Endsystemen innerhalb einer begrenzten Reichweite
-            \item Da es keine Infrastruktur gibt, ist keine Kommunikation zwischen verschiedenen BSSs möglich
-      \end{itemize*}
+            \begin{description*}
+                  \item[Station (STA)] Endgerät mit Zugriffsmechanismen auf drahtloses Medium und Funkkontakt zum Access Point
+                  \item[Basic Service Set (BSS)] Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
+                  \item[Zugangspunkt] Station, in drahtlose LAN und Verteilungssystem integriert
+                  \item[Portal] Brücke zu anderen (kabel-) Netzwerken
+                  \item[Verteilungssystem] Verbindungsnetz zur Bildung eines logischen Netzes das auf mehreren BSS basiert
+            \end{description*}
+      \end{multicols}
+
+      Architektur eines Ad-Hoc-Netzes
+      \begin{multicols}{2}
+            \includegraphics[width=.8\linewidth]{Assets/NetworkSecurity-802.11-ad-hoc-architecture.png}
+
+            \begin{description*}
+                  \item[Station (STA)] Endgerät mit Zugriffsmechanismen auf das drahtlose Medium
+                  \item[Basic Service Set (BSS)] Gruppe von Stationen, die dieselbe Funkfrequenz verwenden
+                  \item[Ad-Hoc-Netze] ermöglichen die direkte Kommunikation zwischen Endsystemen innerhalb einer begrenzten Reichweite
+                  \item Da es keine Infrastruktur gibt, ist keine Kommunikation zwischen verschiedenen BSSs möglich
+            \end{description*}
+      \end{multicols}
 
       Sicherheitsdienste von IEEE 802.11
       \begin{itemize*}
-            \item Die Sicherheitsdienste von IEEE 802.11 wurden ursprünglich wie folgt realisiert:
+            \item Die Sicherheitsdienste von IEEE 802.11 wurden ursprünglich wie folgt realisiert
             \begin{itemize*}
                   \item Authentifizierungsdienst für Entitäten
                   \item Wired Equivalent Privacy (WEP) Mechanismus
@@ -5405,321 +5410,280 @@
                   \item Authentifizierung der Datenherkunft / Datenintegrität
                   \item Zugangskontrolle in Verbindung mit Schichtenmanagement
             \end{itemize*}
-            \item WEP verwendet die folgenden Algorithmen:
+            \item WEP verwendet die folgenden Algorithmen
             \begin{itemize*}
-                  \item Die RC4-Stromchiffre (siehe Kapitel 3)
-                  \item Die CRC-Prüfsumme (Cyclic Redundancy Code) zur Fehlererkennung
+                  \item Die RC4-Stromchiffre
+                  \item Die CRC-Prüfsumme zur Fehlererkennung
             \end{itemize*}
       \end{itemize*}
 
       \subsection{Der zyklische Redundanzcode}
       \begin{itemize*}
-            \item Der zyklische Redundanzcode (CRC) ist ein Fehlererkennungscode
-            \item Mathematische Grundlage:
+            \item zyklischer Redundanzcode (CRC) ist ein Fehlererkennungscode
+            \item Bitstrings als Darstellungen von Polynomen mit Koeffizienten 0 und 1 behandelt $\Rightarrow$ Bitstring, der Nachricht $M$ wird $M(x)$
+            \item Polynomarithmetik wird modulo 2 durchgeführt $\Rightarrow$ Addition und Subtraktion identisch mit XOR
+            \item CRC-Berechnung für eine Nachricht $M(x)$
             \begin{itemize*}
-                  \item Bitstrings werden als Darstellungen von Polynomen mit den Koeffizienten 0 und 1 behandelt $\Rightarrow$ Ein Bitstring, der eine Nachricht M darstellt, wird als M(x) interpretiert
-                  \item Polynomarithmetik wird modulo 2 durchgeführt $\Rightarrow$ Addition und Subtraktion sind identisch mit XOR
-            \end{itemize*}
-            \item CRC-Berechnung für eine Nachricht $M(x)$:
-            \begin{itemize*}
-                  \item A und B einigen sich auf ein Polynom $G(x)$; üblicherweise ist $G(x)$ standardisiert
-                  \item Sei $n$ der Grad von $G(x)$, d.h. die Länge von $G(x)$ sei $n+1$
+                  \item A und B einigen sich auf Polynom $G(x)$%; üblicherweise ist $G(x)$ standardisiert
+                  \item Sei $n$ der Grad von $G(x)$%, d.h. die Länge von $G(x)$ sei $n+1$
                   \item Wenn dann $\frac{M(x)\times 2^n}{G(x)}=Q(x)+\frac{R(x)}{G(x)}$ gilt $\frac{M(x)\times 2^n +R(x)}{G(x)}$ wobei $R(x)$ der Rest von $M(x)$ geteilt durch $G(x)$ ist
                   \item Normalerweise wird $R(x)$ vor der Übertragung an $M(x)$ angehängt, und $Q(x)$ ist nicht von Interesse, da es nur geprüft wird, wenn $\frac{M(x)\times 2^n+R(x)}{G(x)}$ mit Rest $0$ dividiert
             \end{itemize*}
-            \item Betrachten wir nun zwei Nachrichten $M_1$ und $M_2$ mit CRCs $R_1$ und $R_2$:
-            \begin{itemize*}
-                  \item Da $\frac{M_1(x)\times 2^n+R_1(x)}{G(x)}$ und $\frac{M_2(x)\times 2^n+R_2(x)}{G(x)}$ mit dem Rest $0$ teilen, teilt sich auch $\frac{M_1(x)\times 2^n +R_1(x)+M_2(x)\times 2^n +R_2(x)}{G(x)} =\frac{(M_1(x)+M_2(x))\times 2^n +(R_1(x)+R_2(x))}{G(x)}$ teilt mit Rest $0$
-                  \item[$\rightarrow$] CRC ist linear, d.h. $CRC(M_1 + M_2) = CRC(M_1) + CRC(M_2)$
-            \end{itemize*}
-            \item Diese Eigenschaft macht CRC schwach für kryptographische Zwecke!
+            %\item Betrachten wir nun zwei Nachrichten $M_1$ und $M_2$ mit CRCs $R_1$ und $R_2$:
+            %\begin{itemize*}
+            %      \item Da $\frac{M_1(x)\times 2^n+R_1(x)}{G(x)}$ und $\frac{M_2(x)\times 2^n+R_2(x)}{G(x)}$ mit dem Rest $0$ teilen, teilt sich auch $\frac{M_1(x)\times 2^n +R_1(x)+M_2(x)\times 2^n +R_2(x)}{G(x)} =\frac{(M_1(x)+M_2(x))\times 2^n +(R_1(x)+R_2(x))}{G(x)}$ teilt mit Rest $0$
+            %\end{itemize*}
+            \item CRC ist linear, d.h. $CRC(M_1 + M_2) = CRC(M_1) + CRC(M_2)$
+            \item Diese Eigenschaft macht CRC schwach für kryptographische Zwecke
       \end{itemize*}
 
       \subsection{IEEE 802.11 Entity-Authentifizierung}
-      \begin{itemize*}
-            \item Ursprünglich gibt es die IEEE 802.11-Authentifizierung in zwei ,,Geschmacksrichtungen'':
+      Ursprünglich 802.11-Authentifizierung in zwei Richtungen
+      \begin{description*}
+            \item[Offene System-Authentifizierung] Im Wesentlichen handelt es sich um einen Null-Authentifizierungsalgorithmus
+            \item[Shared-Key-Authentifizierung]
             \begin{itemize*}
-                  \item Offene System-Authentifizierung: ,,Im Wesentlichen handelt es sich um einen Null-Authentifizierungsalgorithmus.'' (IEEE 802.11)
-                  \item Shared-Key-Authentifizierung:
-                  \begin{itemize*}
-                        \item Die ,,Shared-Key-Authentifizierung unterstützt die Authentifizierung von STAs entweder als Mitglied derer, die einen gemeinsamen geheimen Schlüssel kennen, oder als Mitglied derer, die ihn nicht kennen.'' (IEEE 802.11, Abschnitt 8.1.2)
-                        \item Es wird davon ausgegangen, dass der erforderliche geheime, gemeinsam genutzte Schlüssel den teilnehmenden STAs über einen sicheren, von IEEE 802.11 unabhängigen Kanal übermittelt wurde.
-                  \end{itemize*}
+                  \item unterstützt Authentifizierung von STAs entweder als Mitglied derer, die einen gemeinsamen geheimen Schlüssel kennen, oder als Mitglied derer, die ihn nicht kennen %(IEEE 802.11, Abschnitt 8.1.2)
+                  \item Es wird davon ausgegangen, dass der erforderliche geheime, gemeinsam genutzte Schlüssel den teilnehmenden STAs über einen sicheren, von IEEE 802.11 unabhängigen Kanal übermittelt wurde
             \end{itemize*}
-      \end{itemize*}
+      \end{description*}
 
       IEEE 802.11's Shared Key Authentication Dialog
       \begin{itemize*}
-            \item Die Authentifizierung sollte zwischen Stationen und Zugangspunkten erfolgen und könnte auch zwischen beliebigen Stationen durchgeführt werden.
-            \item Bei der Authentifizierung fungiert eine Station als Requestor (A) und die andere als Responder (B)
-            \item Der Authentifizierungsdialog:
+            \item Authentifizierung zwischen Stationen und Zugangspunkten %erfolgen und könnte auch zwischen beliebigen Stationen durchgeführt werden
+            \item Bei Authentifizierung eine Station als Requestor (A) und andere als Responder (B)
+            \item Authentifizierungsdialog
             \begin{enumerate*}
                   \item $A \rightarrow B: (Authentifizierung, 1, ID_A)$
                   \item $B \rightarrow A: (Authentifizierung, 2, r_B)$
-                  \item $A \rightarrow B: {Authentifizierung, 3, r_B}_{{K}{A,B}}$
+                  \item $A \rightarrow B: \{Authentifizierung, 3, r_B\}_{K\{A,B\}}$
                   \item $B \rightarrow A: (Authentifizierung, 4, erfolgreich)$
             \end{enumerate*}
-            \item Die gegenseitige Authentifizierung erfordert zwei unabhängige Protokolldurchläufe, einen in jeder Richtung
-            \item Aber: ein Angreifer kann sich nach dem Abhören eines Protokolldurchlaufs ausgeben, da er einen gültigen Schlüsselstrom aus den Nachrichten 2 und 3 erhalten kann!
+            \item gegenseitige Authentifizierung erfordert zwei unabhängige Protokolldurchläufe, einen in jeder Richtung
+            \item Angreifer kann sich nach dem Abhören eines Protokolldurchlaufs ausgeben, da er einen gültigen Schlüsselstrom aus den Nachrichten 2 und 3 erhalten kann
       \end{itemize*}
 
       \subsection{IEEE 802.11's Wired Equivalence Privacy}
       \begin{itemize*}
-            \item IEEE 802.11's WEP verwendet RC4 als Pseudo-Zufallsbit-Generator (PRNG):
+            \item WEP verwendet RC4 als Pseudo-Zufallsbit-Generator (PRNG)
             \begin{itemize*}
-                  \item Für jede zu schützende Nachricht M wird ein 24-Bit-Initialisierungsvektor (IV) mit dem gemeinsamen Schlüssel $K_{BSS}$ verkettet, um den Seed des PRNG zu bilden.
-                  \item Der Integritätsprüfwert (ICV) von M wird mit CRC berechnet und an die Nachricht angehängt (,,||'')
-                  \item Die resultierende Nachricht $(M || ICV)$ wird mit dem von $RC4(IV || K_{BSS})$ erzeugten Schlüsselstrom XOR-verknüpft (,,$\oplus$'')
+                  \item Für jede zu schützende Nachricht $M$ wird ein 24-Bit-Initialisierungsvektor (IV) mit dem gemeinsamen Schlüssel $K_{BSS}$ verkettet, um den Seed des PRNG zu bilden
+                  \item Integritätsprüfwert (ICV) von $M$ wird mit CRC berechnet und an die Nachricht angehängt ($[||]$)
+                  \item Die resultierende Nachricht $(M || ICV)$ wird mit dem von $RC4(IV || K_{BSS})$ erzeugten Schlüsselstrom XOR-verknüpft ($\oplus$)
                   % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-802.11-wep-encryption.png}
             \end{itemize*}
-            \item Da die IV mit jeder Nachricht im Klartext gesendet wird, kann jeder Empfänger, der $K_{BSS}$ kennt, den entsprechenden Schlüsselstrom zur Entschlüsselung einer Nachricht erzeugen.
-            \begin{itemize*}
-                  \item Dadurch wird die wichtige Eigenschaft der Selbstsynchronisation von WEP gewährleistet
-                  \item Der Entschlüsselungsprozess ist im Grunde die Umkehrung der Verschlüsselung:
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-802.11-wep-decryption.png}
-            \end{itemize*}
+            \item Da die IV mit jeder Nachricht im Klartext gesendet wird, kann jeder Empfänger, der $K_{BSS}$ kennt, den entsprechenden Schlüsselstrom zur Entschlüsselung einer Nachricht erzeugen
+            \item Dadurch wird die wichtige Eigenschaft der Selbstsynchronisation von WEP gewährleistet
+            \item Der Entschlüsselungsprozess ist im Grunde die Umkehrung der Verschlüsselung
+            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-802.11-wep-decryption.png}
       \end{itemize*}
 
-      \subsection{Die Sicherheitsansprüche von IEEE 802.11}
-      \begin{itemize*}
-            \item WEP wurde entwickelt, um die folgenden Sicherheitseigenschaften zu gewährleisten:
+      \subsubsection{Die Sicherheitsansprüche von IEEE 802.11}
+      WEP wurde entwickelt, um die folgenden Sicherheitseigenschaften zu gewährleisten
+      \begin{description*}
+            \item[Vertraulichkeit] Nur Stationen, die über $K_{BSS}$ verfügen, können mit WEP geschützte Nachrichten lesen
+            \item[Authentifizierung der Datenherkunft/Datenintegrität] Böswillige Veränderungen von WEP-geschützten Nachrichten können erkannt werden
+            \item[Zugriffskontrolle in Verbindung mit Schichtenmanagement]
             \begin{itemize*}
-                  \item Vertraulichkeit: Nur Stationen, die über $K_{BSS}$ verfügen, können mit WEP geschützte Nachrichten lesen
-                  \item Authentifizierung der Datenherkunft / Datenintegrität: Böswillige Veränderungen von WEP-geschützten Nachrichten können erkannt werden
-                  \item Zugriffskontrolle in Verbindung mit Schichtenmanagement:
-                  \begin{itemize*}
-                        \item Wenn in der Schichtenverwaltung so eingestellt, werden nur WEP-geschützte Nachrichten von Empfängern akzeptiert
-                        \item Somit können Stationen, die $K_{BSS}$ nicht kennen, nicht an solche Empfänger senden
-                  \end{itemize*}
+                  \item Wenn in der Schichtenverwaltung so eingestellt, werden nur WEP-geschützte Nachrichten von Empfängern akzeptiert
+                  \item Somit können Stationen, die $K_{BSS}$ nicht kennen, nicht an solche Empfänger senden
             \end{itemize*}
-            \item Leider trifft keine der obigen Behauptungen zu...
-      \end{itemize*}
+      \end{description*}
+      Leider trifft keine der obigen Behauptungen zu...
 
       \subsubsection{Schwachstelle \#1: Die Schlüssel}
       \begin{itemize*}
-            \item IEEE 802.11 sieht keine Schlüsselverwaltung vor:
-            \begin{itemize*}
-                  \item Manuelle Verwaltung ist fehleranfällig und unsicher
-                  \item Die gemeinsame Verwendung eines Schlüssels für alle Stationen eines BSS führt zu zusätzlichen Sicherheitsproblemen
-                  \item Als Folge der manuellen Schlüsselverwaltung werden die Schlüssel selten geändert.
-                  \item Eine weitere Folge ist, dass die ,,Sicherheit'' oft sogar ausgeschaltet ist!
-            \end{itemize*}
-            \item Schlüssellänge:
-            \begin{itemize*}
-                  \item Die im ursprünglichen Standard festgelegte Schlüssellänge von 40 Bit bietet nur geringe Sicherheit
-                  \item Der Grund dafür war die Exportierbarkeit
-                  \item Wireless LAN-Karten erlauben oft auch Schlüssel der Länge 104 Bit, aber das macht die Situation nicht besser, wie wir später sehen werden
-            \end{itemize*}
+            \item IEEE 802.11 sieht \textbf{keine Schlüsselverwaltung} vor
+            \item Manuelle Verwaltung ist fehleranfällig und unsicher
+            \item gemeinsame Verwendung eines Schlüssels für alle Stationen eines BSS führt zu zusätzlichen Sicherheitsproblemen
+            \item Als Folge der manuellen Schlüsselverwaltung werden die Schlüssel selten geändert
+            %\item Eine weitere Folge ist, dass die ,,Sicherheit'' oft sogar ausgeschaltet ist!
+            \item Schlüssellänge: Schlüssellänge von 40 Bit bietet nur geringe Sicherheit
+            %\item Der Grund dafür war die Exportierbarkeit
+            %\item Wireless LAN-Karten erlauben oft auch Schlüssel der Länge 104 Bit, aber das macht die Situation nicht besser, wie wir später sehen werden
       \end{itemize*}
 
       \subsubsection{Schwachstelle \#2: WEP-Vertraulichkeit ist unsicher}
       \begin{itemize*}
             \item Selbst mit gut verteilten und langen Schlüsseln ist WEP unsicher
-            \item Der Grund dafür ist die Wiederverwendung des Schlüsselstroms:
+            \item Grund ist die Wiederverwendung des Schlüsselstroms
             \begin{itemize*}
-                  \item Erinnern Sie sich, dass die Verschlüsselung mit jeder Nachricht neu synchronisiert wird, indem eine IV der Länge 24 Bit an $K_{BSS}$ angehängt und der PRNG neu initialisiert wird
-                  \item Betrachten wir zwei Klartexte M 1 und M 2, die mit demselben IV 1 verschlüsselt wurden:
-                  \begin{itemize*}
-                        \item $C_1 = P_1 \oplus RC4 (IV_1 , K_{BSS})$
-                        \item $C_2 = P_2 \oplus RC4 (IV_1 , K_{BSS})$ dann:
-                        \item $C_1 \oplus C_2 = (P_1 \oplus RC4 (IV_1, K_{BSS})) \oplus (P_2\oplus RC4 (IV_1 , K_{BSS})) = P_1 \oplus P_2$
-                  \end{itemize*}
-                  \item Wenn also ein Angreifer z.B. $P_1$ und $C_1$ kennt, kann er $P_2$ aus $C_2$ wiederherstellen, ohne den Schlüssel $K_{BSS}$ zu kennen.
-                  \begin{itemize*}
-                        \item Kryptographen nennen dies einen Angriff mit bekanntem Klartext
-                  \end{itemize*}
+                  \item Verschlüsselung wird mit jeder Nachricht neu synchronisiert, indem IV an $K_{BSS}$ angehängt und PRNG neu initialisiert
+                  \item zwei Klartexte $M_1$ und $M_2$ mit demselben $IV_1$ verschlüsselt
+                  \item $C_1 = P_1 \oplus RC4 (IV_1 , K_{BSS})$
+                  \item $C_2 = P_2 \oplus RC4 (IV_1 , K_{BSS})$
+                  \item $C_1 \oplus C_2 = (P_1 \oplus RC4 (IV_1, K_{BSS})) \oplus (P_2\oplus RC4 (IV_1 , K_{BSS})) = P_1 \oplus P_2$
+                  \item Wenn Angreifer z.B. $P_1$ und $C_1$ kennt, kann er $P_2$ aus $C_2$ wiederherstellen, ohne Schlüssel $K_{BSS}$ zu kennen
+                  %\item Kryptographen nennen dies einen Angriff mit bekanntem Klartext
             \end{itemize*}
-            \item Wie oft kommt die Wiederverwendung des Schlüsselstroms vor?
-            \begin{itemize*}
-                  \item In der Praxis recht häufig, da viele Implementierungen die IV schlecht wählen
-                  \item Selbst bei optimaler Wahl, da die IV-Länge 24 Bit beträgt, wird eine stark ausgelastete Basisstation eines 11-Mbit/s-WLAN den verfügbaren Speicherplatz in einem halben Tag erschöpfen
-            \end{itemize*}
+            \item In Praxis häufige Wiederverwendung des Schlüsselstroms, da viele Implementierungen die IV schlecht wählen
+            \item Selbst bei optimaler Wahl, da die IV-Länge 24 Bit beträgt, wird eine stark ausgelastete Basisstation eines 11-Mbit/s-WLAN den verfügbaren Speicherplatz in einem halben Tag erschöpfen
       \end{itemize*}
 
       \subsubsection{Schwachstelle \#3: WEP-Datenintegrität ist unsicher}
       \begin{itemize*}
-            \item Erinnern Sie sich, dass CRC eine lineare Funktion ist und RC4 ebenfalls linear ist
-            \item Nehmen wir an, A sendet eine verschlüsselte Nachricht an B, die von einem Angreifer E abgefangen wird:
-            \begin{itemize*}
-                  \item $A \rightarrow B: (IV, C) mit C = RC4(IV, K_{BSS}) \oplus (M, CRC(M))$
-            \end{itemize*}
-            \item Der Angreifer E kann einen neuen Chiffretext $C'$ konstruieren, der zu einer Nachricht $M'$ mit einer gültigen Prüfsumme $CRC(M')$ entschlüsselt wird:
-            \begin{itemize*}
-                  \item E wählt eine beliebige Nachricht $\delta$ mit der gleichen Länge
-                  \item $C' = C \oplus (\delta, CRC(\delta)) = RC4(IV, K_{BSS}) \oplus (M, CRC(M)) \oplus (\delta, CRC(\delta))$
-                  \item $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M) \oplus CRC(\delta))$
-                  \item $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M \oplus \delta))$
-                  \item $= RC4(IV, K_{BSS}) \oplus (M', CRC(M'))$
-                  \item Man beachte, dass $E$ $M'$ nicht kennt, da es $M$ nicht kennt.
-                  \item Dennoch führt ein ,,1'' an Position $n$ in $\delta$ zu einem umgedrehten Bit an Position n in $M'$, so dass E kontrollierte Änderungen an $M$ vornehmen kann
-                  \item[$\rightarrow$] Datenherkunftsauthentifizierung / Datenintegrität von WEP ist unsicher!
-            \end{itemize*}
+            \item CRC lineare Funktion und RC4 ebenfalls linear
+            \item Nehme an, A sendet verschlüsselte Nachricht an B, die von Angreifer E abgefangen wird
+            %\item $A \rightarrow B: (IV, C) mit C = RC4(IV, K_{BSS}) \oplus (M, CRC(M))$
+            \item Angreifer E kann neuen Chiffretext $C'$ konstruieren, der zu Nachricht $M'$ mit gültige Prüfsumme $CRC(M')$ entschlüsselt wird
+            \item E wählt eine beliebige Nachricht $\delta$ mit der gleichen Länge
+            \item $C' = C \oplus (\delta, CRC(\delta))$% = RC4(IV, K_{BSS}) \oplus (M, CRC(M)) \oplus (\delta, CRC(\delta))$
+            %\item $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M) \oplus CRC(\delta))$
+            %\item $= RC4(IV, K_{BSS}) \oplus (M \oplus \delta, CRC(M \oplus \delta))$
+            \item $= RC4(IV, K_{BSS}) \oplus (M', CRC(M'))$
+            \item Man beachte, dass $E$ $M'$ nicht kennt, da es $M$ nicht kennt
+            \item Dennoch führt ein ,,1'' an Position $n$ in $\delta$ zu einem umgedrehten Bit an Position n in $M'$, so dass E kontrollierte Änderungen an $M$ vornehmen kann
+            \item[$\rightarrow$] Datenherkunftsauthentifizierung / Datenintegrität von WEP ist unsicher
       \end{itemize*}
 
       \subsubsection{Schwachstelle \#4: WEP-Zugangskontrolle ist unsicher}
       \begin{itemize*}
-            \item Erinnern Sie sich, dass die Integritätsfunktion ohne einen Schlüssel berechnet wird
-            \item Betrachten wir einen Angreifer, der ein Klartext-Chiffretext-Paar in Erfahrung bringt:
-            \begin{itemize*}
-                  \item Da der Angreifer $M$ und $C=RC4(IV, K_{BSS})\oplus (M, CRC(M))$ kennt, kann er den zur Erzeugung von $C$ verwendeten Schlüsselstrom berechnen
-                  \item Wenn $E$ später eine Nachricht $M'$ senden will, kann er $C' = RC4(IV, K_{BSS})\oplus (M', CRC(M'))$ berechnen und die Nachricht $(IV, C')$ senden.
-                  \item Da die Wiederverwendung alter IV-Werte möglich ist, ohne beim Empfänger einen Alarm auszulösen, handelt es sich um eine gültige Nachricht
-                  \item Eine ,,Anwendung'' für diesen Angriff ist die unbefugte Nutzung von Netzwerkressourcen:
-                  \begin{itemize*}
-                        \item Der Angreifer sendet IP-Pakete, die für das Internet bestimmt sind, an den Zugangspunkt, der sie entsprechend weiterleitet und dem Angreifer freien Zugang zum Internet gewährt
-                  \end{itemize*}
-            \end{itemize*}
+            \item Integritätsfunktion wird ohne Schlüssel berechnet
+            \item Angreifer, der Klartext-Chiffretext-Paar in Erfahrung bringt
+            \item Da Angreifer $M$ und $C=RC4(IV, K_{BSS})\oplus (M, CRC(M))$ kennt, kann er zur Erzeugung von $C$ verwendeten Schlüsselstrom berechnen
+            \item Wenn $E$ später Nachricht $M'$ senden will, kann er $C' = RC4(IV, K_{BSS})\oplus (M', CRC(M'))$ berechnen und Nachricht $(IV, C')$ senden
+            \item Da Wiederverwendung alter IV-Werte möglich ist, ohne beim Empfänger einen Alarm auszulösen, handelt es sich um eine gültige Nachricht
+            \item Eine Anwendung für diesen Angriff ist unbefugte Nutzung von Netzwerkressourcen
+            %\item Der Angreifer sendet IP-Pakete, die für das Internet bestimmt sind, an den Zugangspunkt, der sie entsprechend weiterleitet und dem Angreifer freien Zugang zum Internet gewährt
             \item[$\rightarrow$] WEP Access Control kann mit bekanntem Klartext umgangen werden
       \end{itemize*}
 
-      \subsubsection{Schwachstelle Nr. 5: Schwachstelle in der RC4-Schlüsselberechnung}
+      \subsubsection{Schwachstelle \#5: RC4-Schlüsselberechnung}
       \begin{itemize*}
-            \item Anfang August 2001 wurde ein weiterer Angriff auf WEP entdeckt:
+            \item Anfang August 2001 wurde ein weiterer Angriff auf WEP entdeckt
+            \item gemeinsamer Schlüssel kann in weniger als 15 Minuten wiederhergestellt werden, wenn $\sim 4-6$ Millionen Pakete wiederhergestellt wurden
+            \item Angriff mit verwandten Schlüsseln, der Verwendung von RC4 durch WEP ausnutzt
             \begin{itemize*}
-                  \item Der gemeinsame Schlüssel kann in weniger als 15 Minuten wiederhergestellt werden, vorausgesetzt, dass etwa 4 bis 6 Millionen Pakete wiederhergestellt wurden.
-                  \item Bei dem Angriff handelt es sich um einen Angriff mit verwandten Schlüsseln, bei dem die Verwendung von RC4 durch WEP ausgenutzt wird:
+                  \item RC4 ist anfällig für die Ableitung von Bits eines Schlüssels, wenn
                   \begin{itemize*}
-                        \item RC4 ist anfällig für die Ableitung von Bits eines Schlüssels, wenn:
-                        \begin{itemize*}
-                              \item viele Nachrichten mit einem Schlüsselstrom verschlüsselt werden, der aus einem variablen Initialisierungsvektor und einem festen Schlüssel erzeugt wird, und
-                              \item die Initialisierungsvektoren und der Klartext der ersten beiden Oktette für die verschlüsselten Nachrichten bekannt sind
-                        \end{itemize*}
-                        \item Die IV für den Schlüsselstrom wird mit jedem Paket im Klartext übertragen.
-                        \item Die ersten beiden Oktette eines verschlüsselten Datenpakets können erraten werden
+                        \item viele Nachrichten mit einem Schlüsselstrom verschlüsselt werden, der aus einem variablen Initialisierungsvektor und einem festen Schlüssel erzeugt wird, und
+                        \item die Initialisierungsvektoren und der Klartext der ersten beiden Oktette für die verschlüsselten Nachrichten bekannt sind
                   \end{itemize*}
-                  \item R. Rivest kommentiert dies: ,,Diejenigen, die die RC4-basierten WEP- oder WEP2-Protokolle verwenden, um die Vertraulichkeit ihrer 802.11-Kommunikation zu gewährleisten, sollten diese Protokolle als gebrochen betrachten ,,...''''
+                  \item Die IV für den Schlüsselstrom wird mit jedem Paket im Klartext übertragen
+                  \item Die ersten beiden Oktette eines verschlüsselten Datenpakets können erraten werden
             \end{itemize*}
+            \item R. Rivest: RC4-basierten WEP- oder WEP2-Protokolle [...] als gebrochen betrachten
       \end{itemize*}
 
-      \subsection{Schlussfolgerungen zu den Unzulänglichkeiten von IEEE 802.11}
+      \subsubsection{Folgerungen zu IEEE 802.11 Unzulänglichkeiten}
       \begin{itemize*}
-            \item Das ursprüngliche IEEE 802.11 bietet keine ausreichende Sicherheit:
-            \begin{itemize*}
-                  \item Fehlende Schlüsselverwaltung macht die Nutzung der Sicherheitsmechanismen mühsam und führt dazu, dass die Schlüssel selten gewechselt werden oder sogar die Sicherheit ausgeschaltet ist
-                  \item Sowohl die Entity-Authentifizierung als auch die Verschlüsselung beruhen auf einem Schlüssel, der von allen Stationen eines Basisdienstes gemeinsam genutzt wird
-                  \item Unsicheres Protokoll zur Entitätsauthentifizierung
-                  \item Wiederverwendung des Schlüsselstroms ermöglicht Angriffe mit bekanntem Klartext
-                  \item Lineare Integritätsfunktion ermöglicht die Fälschung von ICVs
-                  \item Unverschlüsselte Integritätsfunktion ermöglicht die Umgehung der Zugangskontrolle durch Erstellung gültiger Nachrichten aus einem bekannten Klartext-Chiffretext-Paar
-                  \item Schwachstelle in der RC4-Schlüsselplanung ermöglicht die Kryptoanalyse von Schlüsseln
-            \end{itemize*}
+            \item Das ursprüngliche IEEE 802.11 bietet keine ausreichende Sicherheit
+            \item Fehlende Schlüsselverwaltung macht die Nutzung der Sicherheitsmechanismen mühsam und führt dazu, dass die Schlüssel selten gewechselt werden oder sogar die Sicherheit ausgeschaltet ist
+            \item Sowohl die Entity-Authentifizierung als auch die Verschlüsselung beruhen auf einem Schlüssel, der von allen Stationen eines Basisdienstes gemeinsam genutzt wird
+            \item Unsicheres Protokoll zur Entitätsauthentifizierung
+            \item Wiederverwendung des Schlüsselstroms ermöglicht Angriffe mit bekanntem Klartext
+            \item Lineare Integritätsfunktion ermöglicht die Fälschung von ICVs
+            \item Unverschlüsselte Integritätsfunktion ermöglicht die Umgehung der Zugangskontrolle durch Erstellung gültiger Nachrichten aus einem bekannten Klartext-Chiffretext-Paar
+            \item Schwachstelle in der RC4-Schlüsselplanung ermöglicht die Kryptoanalyse von Schlüsseln
             \item Selbst mit IEEE 802.1X und individuellen Schlüsseln bleibt das Protokoll schwach
-            \item Einige vorgeschlagene Gegenmaßnahmen:
+            \item Einige vorgeschlagene Gegenmaßnahmen
             \begin{itemize*}
-                  \item Platzieren Sie Ihr IEEE 802.11 Netzwerk außerhalb Ihrer Internet Firewall
-                  \item Vertrauen Sie keinem Host, der über IEEE 802.11 verbunden ist.
-                  \item Verwenden Sie zusätzlich andere Sicherheitsprotokolle, z.B. PPTP, L2TP, IPSec, SSH, ...
+                  \item Platziere das IEEE 802.11 Netzwerk außerhalb der Internet Firewall
+                  \item Vertraue keinem Host, der über IEEE 802.11 verbunden ist
+                  \item Verwende zusätzlich andere Sicherheitsprotokolle, z.B. PPTP, L2TP, IPSec, SSH, ...
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Interlude: Sicherheit in öffentlichen WLAN-Hotspots}
-      Welche Sicherheit können Sie in einem öffentlichen WLAN-Hotspot erwarten?
+      \subsection{ Sicherheit in öffentlichen WLAN-Hotspots}
+      Welche Sicherheit in öffentlichem WLAN-Hotspot zu erwarten?
       \begin{itemize*}
-            \item Bei den meisten Hotspots: Leider fast keine!
-            \item Wenn Sie außer der Eingabe eines Benutzernamens und eines Passworts auf einer Webseite keine weiteren Sicherheitsparameter konfigurieren müssen, können Sie Folgendes erwarten:
+            \item bei den meisten Hotspots: Leider fast keine
+            %\item außer Eingabe des Benutzernamens und Passworts auf Webseite keine weiteren Sicherheitsparameter konfigurieren müssen, können Sie Folgendes erwarten
+            \item Der Hotspot-Betreiber prüft Ihre Authentizität bei der Anmeldung %(oft mit SSL geschützt, um das Abhören Ihres Passworts zu verhindern)
+            \item Nur authentifizierte Clients erhalten den Dienst, da die Paketfilterung den Zugriff auf die Anmeldeseite nur bei erfolgreicher Authentifizierung zulässt
+            \item Nach Überprüfung der Anmeldeauthentifizierung: keine weiteren Sicherheitsmaßnahmen
+            \item Kein Schutz für Ihre Benutzerdaten
             \begin{itemize*}
-                  \item Der Hotspot-Betreiber prüft Ihre Authentizität bei der Anmeldung (oft mit SSL geschützt, um das Abhören Ihres Passworts zu verhindern)
-                  \item Nur authentifizierte Clients erhalten den Dienst, da die Paketfilterung den Zugriff auf die Anmeldeseite nur bei erfolgreicher Authentifizierung zulässt.
-                  \item Nach Überprüfung der Anmeldeauthentifizierung: keine weiteren Sicherheitsmaßnahmen
-                  \item Kein Schutz für Ihre Benutzerdaten:
-                  \begin{itemize*}
-                        \item Alles kann abgefangen und manipuliert werden
-                        \item Sie können zwar eigene Maßnahmen ergreifen, z.B. VPN oder SSL, aber die Konfiguration ist oft mühsam oder wird vom Kommunikationspartner gar nicht unterstützt und die Leistung wird durch zusätzlichen (pro-Paket-) Overhead beeinträchtigt
-                  \end{itemize*}
-                  \item Plus: Ihre Sitzung kann durch die Verwendung Ihrer MAC- und IP-Adressen gestohlen werden!
+                  \item Alles kann abgefangen und manipuliert werden
+                  \item können eigene Maßnahmen ergreifen aber Konfiguration ist oft mühsam oder wird nicht unterstützt %und die Leistung wird durch zusätzlichen (pro-Paket-) Overhead beeinträchtigt
             \end{itemize*}
-            \item Konsequenz: bessere WLAN-Sicherheit ist dringend erforderlich
+            \item Sitzung kann durch Verwendung der MAC- und IP-Adressen gestohlen werden
+            \item[$\rightarrow$] bessere WLAN-Sicherheit dringend erforderlich
       \end{itemize*}
 
-      \subsection{Fixing WLAN Security: IEEE 802.11i, WPA und WPA}
+      \subsection{WLAN Security: IEEE 802.11i und WPA}
       \begin{itemize*}
-            \item Umfang: Definition der Interaktion zwischen 802.1X und 802.11 Standards
-            \item TGi definiert zwei Klassen von Sicherheitsalgorithmen für 802.11:
+            \item TGi definiert zwei Klassen von Sicherheitsalgorithmen für 802.11
             \begin{itemize*}
                   \item Pre-RSN Sicherheitsnetzwerk ($\rightarrow$ WEP)
                   \item Robustes Sicherheitsnetzwerk (RSN)
             \end{itemize*}
-            \item Die RSN-Sicherheit besteht aus zwei grundlegenden Teilsystemen:
+            \item RSN-Sicherheit besteht aus zwei grundlegenden Teilsystemen
             \begin{itemize*}
-                  \item Mechanismen zum Schutz der Daten:
-                  \begin{itemize*}
-                        \item TKIP - schnelles Re-Keying, um WEP für ein Minimum an Datenschutz zu verbessern (Marketingname WPA)
-                        \item AES-Verschlüsselung - robuster Datenschutz für lange Zeit (Marketingname WPA2)
-                  \end{itemize*}
-            \end{itemize*}
-            \item Verwaltung von Sicherheitsvereinbarungen:
-            \begin{itemize*}
-                  \item Unternehmensmodus - basierend auf 802.1X
-                  \item Persönlicher Modus - basierend auf Pre-Shared Keys
+                  \item Mechanismen zum Schutz der Daten
+                  \begin{description*}
+                        \item[TKIP] schnelles Re-Keying, um WEP für ein Minimum an Datenschutz zu verbessern (WPA)
+                        \item[AES-Verschlüsselung] robuster Datenschutz für lange Zeit (WPA2)
+                  \end{description*}
+                  \item Verwaltung von Sicherheitsvereinbarungen
+                  \begin{description*}
+                        \item[Unternehmensmodus] basierend auf 802.1X
+                        \item[Persönlicher Modus] basierend auf Pre-Shared Keys
+                  \end{description*}
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{WPA-Schlüsselverwaltung}
+      \subsubsection{WPA-Schlüsselverwaltung}
       \begin{itemize*}
-            \item Im Gegensatz zum ursprünglichen 802.11: paarweise Schlüssel zwischen STA und BS, zusätzliche Gruppenschlüssel für Multi- und Broadcast-Pakete sowie Station-to-Station-Link (STSL)-Schlüssel
+            \item paarweise Schlüssel zwischen STA und BS, zusätzliche Gruppenschlüssel für Multi- und Broadcast-Pakete sowie Station-to-Station-Link (STSL)-Schlüssel
             \item Das erste Geheimnis: der 256 Bit Pairwise Master Key (PMK)
-            \begin{itemize*}
-                  \item Unternehmensmodus: Verwendet 802.1X-Authentifizierung und installiert einen neuen Schlüssel, der BS und Client bekannt ist, z.B. durch EAP-TTLS
-                  \item Persönlicher Modus: Verwendet einen Pre-Shared Key (PSK), der dem BS und vielen STAs bekannt ist.
+            \begin{description*}
+                  \item[Unternehmensmodus] Verwendet 802.1X-Authentifizierung und installiert einen neuen Schlüssel, der BS und Client bekannt ist%, z.B. durch EAP-TTLS
+                  \item[Persönlicher Modus] Verwendet einen Pre-Shared Key (PSK), der BS und vielen STAs bekannt ist
                   \begin{itemize*}
                         \item Explizit durch 64 zufällige Hex-Zeichen oder implizit durch ein Passwort gegeben
                         \item Wenn Passwort: PMK = PBKDF2(Passwort, SSID, 4096, 256)
                         \item Wobei PBKDF2 die passwortbasierte Schlüsselableitungsfunktion 2 mit einer Salz-SSID und einer Ausgangslänge von 256 Bit ist
-                        \item impliziert 2 * 4096 Berechnungen von HMAC-SHA1, um Brute-Force zu verlangsamen
+                        \item impliziert $2*4096$ Berechnungen von HMAC-SHA1, um Brute-Force zu verlangsamen
                   \end{itemize*}
-            \end{itemize*}
-            \item PMK ist ein Vertrauensanker für die Authentifizierung per EAPOL (EAP over LAN) Handshake, wird aber nie direkt verwendet...
-            \item Für aktuelle kryptographische Protokolle wird ein kurzzeitiger 512 Bit Pairwise Transient Key (PTK) wie folgt generiert
+            \end{description*}
+            \item PMK ist ein Vertrauensanker für die Authentifizierung per EAPOL (EAP over LAN) Handshake, wird aber nie direkt verwendet
+            \item Für aktuelle kryptographische Protokolle wird kurzzeitiger 512 Bit Pairwise Transient Key (PTK) generiert
             \begin{itemize*}
-                  \item $PTK = PRF(PMK, \text{,,Paarweise Schlüsselerweiterung''}, min(Addr_{BS}, Addr_{STA}) || max(Addr_{BS}, Addr_{STA}) || min(r_{BS}, r_{STA}) || max(r_{BS}, r_{STA}))$
-                  \item Dabei ist $PRF(K, A, B)$ die verkettete Ausgabe von $HMAC-SHA1(K, A || '0' || B || i)$ über einen laufenden Index i
+                  \item $PTK = PRF(PMK, \text{,,Paarweise Schlüsselerweiterung''},$ $min(Addr_{BS}, Addr_{STA}) || max(Addr_{BS}, Addr_{STA}) ||$ $min(r_{BS}, r_{STA}) || max(r_{BS}, r_{STA}))$
+                  \item Dabei ist $PRF(K,A,B)$ die verkettete Ausgabe von $HMAC-SHA1(K, A || '0' || B || i)$ über laufenden Index i
             \end{itemize*}
-            \item Der PTK wird aufgeteilt in:
-            \begin{itemize*}
-                  \item EAPOL-Schlüssel-Bestätigungsschlüssel (KCK, erste 128 Bits),
+            \item Der PTK wird aufgeteilt in
+            \begin{description*}
+                  \item[EAPOL-Schlüssel-Bestätigungsschlüssel] KCK, erste 128 Bits
                   \begin{itemize*}
-                        \item Wird zum Schutz der Integrität von EAPOL-Nachrichten verwendet
-                        \item Durch HMAC-MD5 (veraltet), HMAC-SHA1-128, AES-128-CMAC
+                        \item zum Schutz der Integrität von EAPOL-Nachrichten
+                        \item Durch HMAC-MD5, HMAC-SHA1-128, AES-128-CMAC
                   \end{itemize*}
-                  \item EAPOL Key Encryption Key (KEK, zweite 128 Bits),
+                  \item[EAPOL Key Encryption Key] KEK, zweite 128 Bits
                   \begin{itemize*}
-                        \item Wird zur Verschlüsselung neuer Schlüssel in EAPOL-Nachrichten verwendet
-                        \item Mit RC4 (veraltet), AES im Key Wrap Mode
+                        \item zur Verschlüsselung neuer Schlüssel in EAPOL-Nachrichten
+                        \item Mit RC4, AES im Key Wrap Mode
                   \end{itemize*}
-                  \item Ein Temporal Key (TK) zum Schutz des Datenverkehrs (ab Bit 256)!
-            \end{itemize*}
+                  \item[Temporal Key] (TK) zum Schutz des Datenverkehrs ab Bit 256
+            \end{description*}
             \item Initialer Dialog mit BS:
             \begin{itemize*}
                   \item EAPOL (EAP over LAN) 4-Wege-Handshake wird verwendet, um
-                  \begin{itemize*}
-                        \item Überprüfung der gegenseitigen Kenntnis des PMK
-                        \item Initiiert durch BS, um Schlüssel zu installieren (gruppenweise und paarweise)
-                  \end{itemize*}
-                  \item Vereinfachter Handshake funktioniert wie folgt:
+                  \item Überprüfung der gegenseitigen Kenntnis des PMK
+                  \item Initiiert durch BS, um Schlüssel zu installieren (gruppenweise und paarweise)
+                  \item Vereinfachter Handshake funktioniert wie folgt
                   \begin{enumerate*}
                         \item $BS\rightarrow STA: (1, r_{BS} , PMKID, install\ new\ PTK)$
                         \item $STA BS: (2, r_{STA}, MAC_{KCK})$
                         \item $BS STA: (3, r_{BS}, MAC_{KCK}, {TK}_{KEK})$
                         \item $STA BS: (4, r_{STA}, MAC_{KCK})$
                   \end{enumerate*}
-                  \item Wobei PMKID den PMK identifiziert: obere 128 Bit von $HMAC-SHA-256(PMK, ,,PMK Name,, || Addr_{BS} || Addr_{STA} )$
+                  \item Wobei PMKID den PMK identifiziert: obere 128 Bit von $HMAC-SHA-256(PMK,[PMK Name]||Addr_{BS}||Addr_{STA})$
             \end{itemize*}
       \end{itemize*}
 
-      \subsection{Eine Zwischenlösung: Temporal Key Integrity Protokoll}
+      \subsection{Zwischenlösung: Temporal Key Integrity Protokoll}
       \begin{itemize*}
-            \item Ziele des Entwurfs:
+            \item Schnelle Lösung für das bestehende WEP-Problem, betreibt WEP als Unterkomponente
+            \item Kann in Software implementiert werden, nutzt vorhandene WEP-Hardware wieder
+            \item Anforderungen an vorhandene AP-Hardware
             \begin{itemize*}
-                  \item Schnelle Lösung für das bestehende WEP-Problem, betreibt WEP als Unterkomponente
-                  \item Kann in Software implementiert werden, nutzt vorhandene WEP-Hardware wieder
-                  \item Anforderungen an vorhandene AP-Hardware:
-                  \begin{itemize*}
-                        \item 33 oder 25 MHz ARM7 oder i486, die bereits vor TKIP mit 90\% CPU-Auslastung laufen
-                        \item Nur als Software/Firmware-Upgrade gedacht
-                        \item Keine unangemessene Beeinträchtigung der Leistung
-                  \end{itemize*}
+                  \item 33 oder 25 MHz ARM7 oder i486, die bereits vor TKIP mit 90\% CPU-Auslastung laufen
+                  \item Nur als Software/Firmware-Upgrade gedacht
+                  \item Keine unangemessene Beeinträchtigung der Leistung
             \end{itemize*}
-            \item Wichtigste Konzepte:
+            \item Wichtigste Konzepte
             \begin{itemize*}
                   \item Nachrichtenintegritätscode (MIC)
                   \item Gegenmaßnahmen im Falle von MIC-Fehlern
@@ -5727,88 +5691,76 @@
                   \item Dynamische Schlüsselverwaltung (Re-Keying)
                   \item Schlüsselmischung
             \end{itemize*}
-            \item TKIP erfüllt die Kriterien für einen guten Standard: alle sind damit unzufrieden...
+            \item TKIP erfüllt Kriterien für guten Standard
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-mpdu-data-format.png}
       \end{itemize*}
 
-      Message Integrity Code Funktion Michael
+      Message Integrity Code Funktion (Michael)
       \begin{itemize*}
             \item Schützt vor Fälschungen:
+            \item Muss billig sein: CPU-Budget 5 Anweisungen/Byte
+            \item Leider schwach: ein $2^{29}$ Nachrichtenangriff existiert
+            \item über MSDUs berechnet, während WEP über MPDUs läuft
+            \item Verwendet zwei 64-Bit-Schlüssel, einen in jeder Verbindungsrichtung
+            \item Erfordert Gegenmaßnahmen
             \begin{itemize*}
-                  \item Muss billig sein: CPU-Budget 5 Anweisungen / Byte
-                  \item Leider schwach: ein $2^{29}$ Nachrichtenangriff existiert
-                  \item Wird über MSDUs berechnet, während WEP über MPDUs läuft
-                  \item Verwendet zwei 64-Bit-Schlüssel, einen in jeder Verbindungsrichtung
-                  \item Erfordert Gegenmaßnahmen:
-                  \begin{itemize*}
-                        \item Rekey on active attack (nur wenige Fehlalarme, da CRC zuerst geprüft wird)
-                        \item Ratenbegrenzung auf eine Neuverschlüsselung pro Minute
-                  \end{itemize*}
-                  % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-rekey.png}
+                  \item ReKey on active attack (nur wenige Fehlalarme, da CRC zuerst geprüft wird)
+                  \item Ratenbegrenzung auf eine Neuverschlüsselung pro Minute
             \end{itemize*}
+            % \item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-rekey.png}
       \end{itemize*}
 
       Wiederholungsschutz und RC4-Schlüsselplanung
       \begin{itemize*}
-            \item Replay-Schutz:
+            \item Replay-Schutz
             \begin{itemize*}
                   \item Zurücksetzen der Paket-Sequenz \# auf 0 bei Wiederholung
                   \item Erhöhen der Sequenz \# um 1 bei jedem Paket
                   \item Verwerfen aller Pakete, die außerhalb der Sequenz empfangen werden
             \end{itemize*}
-            \item Umgehen Sie die Schwächen der WEP-Verschlüsselung:
+            \item Umgehe Schwächen der WEP-Verschlüsselung
             \begin{itemize*}
-                  \item Erstellen Sie einen besseren paketweisen Verschlüsselungsschlüssel, indem Sie Angriffe mit schwachen Schlüsseln verhindern und WEP IV und paketweisen Schlüssel dekorrelieren
+                  \item Erstelle besseren paketweisen Verschlüsselungsschlüssel, indem Angriffe mit schwachen Schlüsseln verhindert und WEP IV und paketweisen Schlüssel dekorreliert
                   \item muss auf vorhandener Hardware effizient sein
             \end{itemize*}
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-replay-protection.png}
       \end{itemize*}
 
-      TKIP-Verarbeitung beim Sender
+      %TKIP-Verarbeitung beim Sender
       %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-processing.png}
 
-      TKIP-Verarbeitung auf der Empfängerseite
+      %TKIP-Verarbeitung auf der Empfängerseite
       %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-tkip-receiver.png}
 
-      \subsection{Die langfristige Lösung: AES-basierter WLAN-Schutz}
+      \subsection{Lösung: AES-basierter WLAN-Schutz}
       \begin{itemize*}
-            \item Zählermodus mit CBC-MAC (CCMP):
+            \item Zählermodus mit CBC-MAC (CCMP)
+            \item Obligatorisch zu implementieren: langfristige Lösung
+            \item völlig neues Protokoll mit wenigen Zugeständnissen an WEP
+            \item Bietet: Datenvertraulichkeit, Authentifizierung der Datenherkunft, Schutz vor Wiederholungen
+            \item Basiert auf AES in Counter Mode Encryption mit CBC-MAC (CCM)
             \begin{itemize*}
-                  \item Obligatorisch zu implementieren: die langfristige Lösung
-                  \item Ein völlig neues Protokoll mit wenigen Zugeständnissen an WEP
-                  \item Bietet: Datenvertraulichkeit, Authentifizierung der Datenherkunft, Schutz vor Wiederholungen
-                  \item Basiert auf AES in Counter Mode Encryption mit CBC-MAC (CCM)
-                  \begin{itemize*}
-                        \item Verwendung von CBC-MAC zur Berechnung einer MIC für den Klartext-Header, die Länge des Klartext-Headers und die Nutzdaten
-                        \item Verwenden Sie den CTR-Modus, um die Payload mit den Zählerwerten 1, 2, 3, ... zu verschlüsseln.
-                        \item Verwenden Sie den CTR-Modus, um die MIC mit dem Zählerwert 0 zu verschlüsseln.
-                  \end{itemize*}
-                  \item AES-Overhead erfordert neue AP-Hardware
-                  \item Der AES-Overhead erfordert möglicherweise neue STA-Hardware für Handheld-Geräte, aber theoretisch nicht für PCs (dies erhöht jedoch die CPU-Last und den Energieverbrauch), praktisch aufgrund fehlender Treiber für beide
+                  \item Verwendung von CBC-MAC zur Berechnung einer MIC für den Klartext-Header, die Länge des Klartext-Headers und die Nutzdaten
+                  \item Verwende den CTR-Modus, um die Payload mit den Zählerwerten 1, 2, 3, ... zu verschlüsseln
+                  \item Verwende den CTR-Modus, um die MIC mit dem Zählerwert 0 zu verschlüsseln
             \end{itemize*}
+            \item AES-Overhead erfordert neue AP-Hardware
+            \item AES-Overhead erfordert möglicherweise neue STA-Hardware für Handheld-Geräte, aber theoretisch nicht für PCs %(dies erhöht jedoch die CPU-Last und den Energieverbrauch), praktisch aufgrund fehlender Treiber für beide
             %\item \includegraphics[width=\linewidth]{Assets/NetworkSecurity-aes-ccmp-frame-format.png}
       \end{itemize*}
-
-      %\subsection{Vergleich WEP, TKIP und CCMP}
-      %\begin{longtable}[]{@{}llll@{}}
-      % \toprule
-      % & WEP & TKIP & CCMP\tabularnewline
-      % \midrule
-      % \endhead
-      % Cipher & RC4 & RC4 & AES\tabularnewline
-      % Key Size & 40 or 104 bits & 104 bits & 128 bits encrypt, 64 bit
-      % auth.\tabularnewline
-      % Key Life & 24-bit IV, wrap & 48-bit IV & 48-bit IV\tabularnewline
-      % Packet Key & Concat. & Mixing Fnc. & Not Needed\tabularnewline
-      % Integrity & & & \tabularnewline
-      % Data & CRC-32 & Michael & CCM\tabularnewline
-      % Header & None & Michael & CCM\tabularnewline
-      % Replay & None & Use IV & Use IV\tabularnewline
-      % Key Mgmt. & None & EAP-based & EAP-based\tabularnewline
-      % \bottomrule
-      %\end{longtable}
-
-      %TKIP ist derzeit veraltet, AES wird empfohlen.
+      \begin{tabular}{c|c|c|c}
+                       & WEP             & TKIP        & CCMP                           \\\hline
+            Cipher     & RC4             & RC4         & AES                            \\
+            Key Size   & 40 or 104 bits  & 104 bits    & 128 bits encrypt, 64 bit auth. \\
+            Key Life   & 24-bit IV, wrap & 48-bit IV   & 48-bit IV                      \\
+            Packet Key & Concat.         & Mixing Fnc. & Not Needed                     \\
+            Integrity  &                 &             &                                \\
+            Data       & CRC-32          & Michael     & CCM                            \\
+            Header     & None            & Michael     & CCM                            \\
+            Replay     & None            & Use IV      & Use IV                         \\
+            Key Mgmt.  & None            & EAP-based   & EAP-based
+      \end{tabular}
+      \columnbreak
 
       \section{Sicherheit von GSM- und UMTS-Netzen}
       \subsection{GSM-Übersicht}

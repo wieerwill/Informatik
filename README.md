@@ -15,6 +15,7 @@ Mitschriften und selbst geschriebene Unterlagen und Hilfen zu Informatik Vorlesu
   - [Flashcards/Karteikarten](Betriebssysteme%20-%20Flashcards.pdf)
   - [Cheatsheet](Betriebssysteme%20-%20Cheatsheet.pdf)
   - [Fragenkatalog](Betriebssysteme%20-%20Fragen.md)
+- [Bildverarbeitung in der Medizin 1](Bildverarbeitung%20in%20der%20Medizin%201.md)
 - [Computergrafik](Computergrafik.md)
   - [Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf)
 - [Content Verwertungsmodelle](Content%20Verwertungsmodelle.md)

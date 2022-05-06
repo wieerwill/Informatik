@@ -186,6 +186,120 @@ Beispiel Fokussierungsunschärfe
 Beispiel Bewegung
 ![Quelle: Tönnies, ,,Grundlagen der Bildverarbeitung''](Assets/Bildverarbeitung-psf-bewegung.png)
 
+### Digitale Bilder
+#### Diskretisierung und Quantisierung
+##### Digitalisierung: Diskretisierung der Ortsvariablen
+
+Abtastfunktion: $s(x,y)=\sum_{m=-\infty}^{\infty} \sum_{n=-\infty}^{\infty} \delta(x-m*\Delta x, y-n*\Delta y)$
+
+Abtastung: $g_A(x,y)=s(x,y)*g(x,y)=\sum_{n=-\infty}^{\infty} \sum_{m=-\infty}^{\infty} g(m*\Delta x, n*\Delta y)* \delta(x-m*\Delta x, y-n*\Delta y)= A_{\Delta x, \Delta y}\{g(x,y)\}$
+
+Repräsentation des ortsdiskreten Bildes unabhängig von $\Delta x, \Delta y$: $\rightarrow g_A(m,n)$ (,,2D-Zahlenfolge'')
+![](Assets/Bildverarbeitung-digitalisierung-ortsvariablen.png)
+
+##### Digitalisierung: Quantisierung der Grauwerte
+$q(g)=[\frac{g-g_{min}}{g_{max}-g_{min}} * (q_{max}-q_{min}) +q_{min}]_{mathbb{N}}$ (Runden auf nächste natürliche Zahl)
+
+häufig wird $q_{min}=0$ gewählt: $q(g)=[\frac{g-g_{min}}{g_{max}-g_{min}}*q_{max}]_{mathbb{N}}$
+
+$q_{max}=2^N -1$, $N$ Auflösung des AD-Wandlers
+
+![](Assets/Bildverarbeitung-digitalisierung-grauwertquantisierung.png)
+
+![Quelle: Pratt, ,,Digital Image Processing''](Assets/Bildverarbeitung-digitalisierung-quantisierungsstufen.png)
+
+##### Digitale Bildrepräsentation
+Pixel ![](Assets/Bildverarbeitung-bildrepräsentation-pixel.png)
+
+Grauwertbild ![](Assets/Bildverarbeitung-bildrepräsentation-grauwert.png)
+
+Falschfarbendarstellung ![](Assets/Bildverarbeitung-bildrepr%C3%A4sentation-falschfarben.png)
+
+#### Nachbarschaft, Pfad, Zusammenhang und Distanzmaße
+Nachbarschaften
+- 4er-Nachbarschaft
+    - Nachbarpixel: gemeinsame Kante
+    - ![](Assets/Bildverarbeitung-4er-nachbarschaft.png)
+- 8er-Nachbarschaft
+    - Nachbarpixel: gemeinsame Kante oder Ecke
+    - ![](Assets/Bildverarbeitung-8er-nachbarschaft.png)
+- Regelmäßige 2D-Gitter
+  - Dreieckgitter
+    - ![](Assets/Bildverarbeitung-2d-dreiecksgitter.png)
+    - 3-Nachbarschaft
+    - 12-Nachbarschaft
+  - Quadratisches Gitter 
+    - ![](Assets/Bildverarbeitung-2d-quadratgitter.png)
+    - 4-Nachbarschaft
+    - 8-Nachbarschaft
+  - Hexagonales Gitter
+    - ![](Assets/Bildverarbeitung-2d-hexagongitter.png)
+    - 6-Nachbarschaft
+
+**Pfad:**
+- Zwei Pixel $P_A(m_A,n_A)$ und $P_B(m_B,n_B)$ sind durch einen Pfad verbunden, falls es eine Folge von benachbarten Pixeln $(P_A, P_1, ..., P_B)$ gibt, für die eine Homogenitätsbedingung (z.B. alle Pixel haben gleichen Grauwert, d.h. $g(P_A)=g(P_1)=...=g(P_B))$ gilt.
+- Offener Pfad: $P_A \not= P_B$
+- Geschlossener Pfad: $P_A = P_B$
+- Pfade sind an Nachbarschaftsdefinitionen gebunden!
+
+**Zusammenhang:** Eine Menge von Pixeln ist zusammenhängend, wenn zwischen zwei beliebigen Pixeln ein Pfad existiert.
+
+Zusammenhang: Definition gemäß Nachbarschaftsbeziehung
+- Zusammenhang gemäß 4-Nachbarschaft
+  - Die beiden grauen Regionen sind unter 4-Nachbarschaft nicht zusammenhängend (kein verbindender Pfad vorhanden).
+  - Der Hintergrund ist unter Annahme der komplementären8-Nachbarschaft zusammenhängend.
+  - ![](Assets/Bildverarbeitung-nachbarschaft-definition-4.png)
+- Zusammenhang gemäß 8-Nachbarschaft
+  - Die beiden grauen Regionen sind unter 8-Nachbarschaft zusammenhängend (verbindender Pfad vorhanden).
+  - Der Hintergrund ist unter Annahme der komplementären4-Nachbarschaft nicht zusammenhängend.
+  - ![](Assets/Bildverarbeitung-nachbarschaft-definition-8.png)
+- Die Nachbarschaftsdefinitionen in Vorder-und Hintergrund sollten komplementär sein!
+
+**Rand:**
+- Der Rand einer zusammenhängenden Pixelmenge $M$ ist eine Folge von Pixeln in $M$, die mindestens einen Nachbarn haben, der nicht zu $M$ gehört.
+- Die Randpixel gehören somit zu $M$ dazu.
+- Der Rand ist ein zusammenhängender Pfad und deshalb auch an eine Nachbarschaftsdefinition gebunden.
+
+Rand: Definition gemäß Nachbarschaftsbeziehung
+- Rand in 4 - Nachbarschaft zum Hintergrund
+    - Jedes Randpixel hat mind. einen Nachbarn in 4-Nachbarschaft, der nicht zu M gehört.
+    - Rand = zusammenhängender Pfad gemäß 8-Nachbarschaft
+    - ![](Assets/Bildverarbeitung-rand-4-nachbarschaft.png)
+- Rand in 8 - Nachbarschaft zum Hintergrund
+    - Jedes Randpixel hat mind. einen Nachbarn in 8-Nachbarschaft, der nicht zu M gehört.
+    - Rand = zusammenhängender Pfad gemäß 4-Nachbarschaft
+    - ![](Assets/Bildverarbeitung-rand-8-nachbarschaft.png)
+
+##### Distanzmaße zwischen zwei Pixeln
+Euklidische Distanz
+- Länge der direkten Verbindung
+- $D_E= ||P_1-P_2||_2=\sqrt{(m_1-,_2)^2 + (n_1-n_2)^2}$
+- Euklidische Norm $N=2$, $p=2$
+- ![](Assets/Bildverarbeitung-euklidische-distanz.png)
+
+Manhattan-Distanz (City-Block)
+- Länge des kürzesten Pfades unter 4er-Nachbarschaft
+- $D_4=||P_1-P_2||_1=|m_1 - m_2|+|n_1-n_2|$
+- Summennorm $N=2$, $p=1$
+- ![](Assets/Bildverarbeitung-manhatten-distanz.png)
+
+Schachbrett-Distanz
+- Länge des kürzesten Pfades unter 8er-Nachbarschaft
+- $D_8 = ||P_1-P_2||_{\infty} = max\{|m_1-m_2|, |n_1 -n_2|\}$
+- Maximalnorm $N=2$, $p=\infty$
+- ![](Assets/Bildverarbeitung-schachbrett-distanz.png)
+
+Normangabe der Distanzmaße
+- p-Norm: $||x||_p = (\sum_{i=1}^N |x_i|^p )^{\frac{1}{p}}$ mit $x_1=m_1-m_2$ und $x_2=n_1-n_2$
+- Euklidische Norm: $N=2, p=2$, $D_E=(\sum_{i=1}^2 |x_i|^2)^{frac{1}{2}}=\sqrt{x_1^2 + x_2^2}$
+- Summennorm: $N=2, p=1$, $D_4=(\sum_{i=1}^2 |x_i|)= x_1+x_2$
+- Maximalnorm: $N=2, p=\infty$, $D_8=lim_{p\rightarrow\infty}(x^p_{max} + (ax_{max})^p)^{\frac{1}{p}} = lim_{p\rightarrow\infty} (x_{max}^p (1+a^p))^{\frac{1}{p}} = x_{max}$ mit $a<1$ weil $lim_{p\rightarrow\infty}(a^p)=0$
+- $D_8\leq D_E \leq D_4$ 
+  - ![](Assets/Bildverarbeitung-schachbrett-distanz.png)
+  - ![](Assets/Bildverarbeitung-euklidische-distanz.png)
+  - ![](Assets/Bildverarbeitung-manhatten-distanz.png)
+- Schachbrett Distanz $\leq$ Euklidische Distanz $\leq$ Manhatten Distanz
+
 # Literaturempfehlungen
 - Wilhelm Burger and MarkJ. Burge, ,,Digitale Bildverarbeitung – eine algorithmische Einführung mit Java'', Springer, 3. Auflage, 2015
 - Klaus D. Tönnies, ,,Grundlagen der Bildverarbeitung'', Pearson Studium, 1. Auflage, 2005

@@ -1,0 +1,2278 @@
+\documentclass[a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{listings}
+\usepackage[compact]{titlesec} %less space for headers
+\usepackage{mdwlist} %less space for lists
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Softwaretechnik}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
+
+\pdfinfo{
+    /Title (Softwaretechnik - Cheatsheet)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+% Information boxes
+\newcommand*{\info}[4][16.3]{
+  \node [ annotation, #3, scale=0.65, text width = #1em, inner sep = 2mm ] at (#2) {
+  \list{$\bullet$}{\topsep=0pt\itemsep=0pt\parsep=0pt
+    \parskip=0pt\labelwidth=8pt\leftmargin=8pt
+    \itemindent=0pt\labelsep=2pt}
+    #4
+  \endlist
+  };
+}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+        {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+    }
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}    
+% compress space
+\setlength\abovedisplayskip{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\linespread{0.5}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\begin{document}
+
+\raggedright
+\begin{multicols}{3}\scriptsize
+  % multicol parameters
+  % These lengths are set only within the two main columns
+  %\setlength{\columnseprule}{0.25pt}
+  \setlength{\premulticols}{1pt}
+  \setlength{\postmulticols}{1pt}
+  \setlength{\multicolsep}{1pt}
+  \setlength{\columnsep}{2pt}
+
+  Wie kann man Software besser entwickeln?
+  \begin{itemize*}
+    \item Ingenieursmäßige Herangehensweise
+    \begin{itemize*}
+      \item Verwendung bekannter Prinzipien und Methoden
+      \item Systematische Vorgehensweise
+    \end{itemize*}
+    \item Verwendung von:
+    \begin{itemize*}
+      \item Abstraktion, Modelle, Notation, Simulation
+      \item Wiederverwendung:Muster, Komponenten, Framework
+    \end{itemize*}
+    \item Organisation
+    \begin{itemize*}
+      \item Arbeitsteilung, Integration, Planung
+    \end{itemize*}
+    \item Verwendung von Werkzeugen
+    \begin{itemize*}
+      \item IDE (Integrated Development Environment)
+      \item Versionierung, Bugtracker, Modellierungswerkzeug
+    \end{itemize*}
+  \end{itemize*}
+
+  \section{Modellierungskonzepte}
+  Modell: ist eine Abstraktion eines Systems mit der Zielsetzung, das Nachdenken über ein System zu vereinfachen, indem irrelevante Details ausgelassen werden
+
+  \begin{itemize*}
+    \item erstellen einer Abstraktion
+    \item abbilden signifikanter Eigenschaften
+    \item Deskriptiv/präskriptiv (real oder geplant)
+    \item Sichtweise auf ein System (Struktur, Verhalten, Zustand,...)
+    \item setzt Verstehen voraus
+    \item ist nicht automatisierbar
+  \end{itemize*}
+
+  \subsection{Objektorientierung}
+  \begin{itemize*}
+    \item Grundprinzip: Teile und Herrsche
+    \item ein System besteht aus vielen Objekten, mit:
+    \begin{itemize*}
+      \item definiertes Verhalten
+      \begin{itemize*}
+        \item Menge genau definierter Operationen
+        \item Operation beim Empfang einer Nachricht ausgeführt
+      \end{itemize*}
+      \item inneren Zustand
+      \begin{itemize*}
+        \item Zustand des Objekts ist Privatsache
+        \item Resultat hängt vom aktuellen Zustand ab
+      \end{itemize*}
+      \item eindeutige Identität
+      \begin{itemize*}
+        \item Identität ist unabhängig von anderen Eigenschaften
+        \item verschiedene Objekte mit identischem Verhalten im gleichen System möglich
+      \end{itemize*}
+    \end{itemize*}
+    \item Klasse
+    \begin{itemize*}
+      \item Gleichartige Objekte mit ggf. verschiedenen Zuständen
+      \item Verhaltensschema - Operationen
+      \item Innere Struktur - Attribute
+    \end{itemize*}
+    \item Vorteile
+    \begin{description*}
+      \item[Zuständigkeitsbereiche] Daten, Operationen und Zustand: lokal und gekapselt
+      \item[Klare Schnittstellen] Definiertes Objektverhalten, Nachrichten
+      \item[Hierarchie] Vererbung und Polymorphie (Spezialisierung), Klassenschachtelung
+      \item[Baukastenprinzip] Benutzung vorgefertigter Klassenbibliotheken, Anpassung durch Spezialisierung
+    \end{description*}
+  \end{itemize*}
+
+  \subsection{Unified Modeling Language}
+  \begin{itemize*}
+    \item Grafisches Beschreibungsmittel für Aspekte des Softwareentwurfs diskreter Systeme
+    \item Kombination von Struktur-, Verhaltens-, Interaktions-, und Verteilungsmodellen
+    \item Für Analyse, Entwurf, Implementierung und Test einsetzbar
+    \item Gute Werkzeugunterstützung für Editieren, Versionierung, Codegenerierung
+    \item Erweiterbarkeit der UML mit Stereotypen und Tags
+  \end{itemize*}
+
+  Nachteile UML
+  \begin{itemize*}
+    \item UML ist in vielen Facetten nicht präzise festgelegt
+    \item Werkzeuge für Transformation, Analyse etc. fehlen noch
+    \item UML ist keine „kleine Sprache“: Lernaufwand notwendig
+    \item Komponenten sind nicht adäquat darstellbar
+  \end{itemize*}
+
+  \subsection{Klassische Modelle}
+  \begin{description*}
+    \item[Funktionen] Funktionsbaum, Blockschaltbild
+    \item[Daten] Data Dictionary, Entity Relationship Diagram
+    \item[Systemumgebung] Datenflussdiagramm
+    \item[Algorithmen] Entscheidungstabelle, Pseudocode, Programmablaufplan
+    \item[Dynamisches Verhalten] diskrete Zustände und atomare zustandübergänge; Zustandsautomat, Flow-Chart
+    \item[Objektorientierte Modelle] Klassendiagramme, UML
+    \item[Struktur] Klassen-, Objekt-, Komponenten-, Kompositions-Strukturdiagramm
+    \item[Verhalten] Use-Case-, Aktivitäts- und Zustandsdiagramms
+    \item[Interaktion] Sequenz-, Kommunikations-, Timing-Diagramm
+  \end{description*}
+
+  \paragraph{Use-Case-Diagramm}
+  \begin{itemize*}
+    \item Beschreiben Systemfunktion aus Benutzersicht (Was, nicht Wie)
+    \item Erste Anforderungsspezifikation (requirements)
+    \item Planbare Einheiten als Inkremente für die Entwicklung
+    \item Keine Modellierung eines Ablaufs!
+    \item Erstellen von Testfällen (test case generation)
+  \end{itemize*}
+
+  \paragraph{Klassendiagramm}
+  \begin{itemize*}
+    \item Modellierung der Struktur (Aufbau) eines Systems
+    \item Modellierung von statischen Aspekten und Struktur von Daten
+    \item Klasse im Mittelpunkt (Attribute, Operationen, Beziehung)
+  \end{itemize*}
+
+  \paragraph{Objektdiagramm}
+  \begin{itemize*}
+    \item Struktur des Systems zur Laufzeit zu einem Zeitpunkt
+    \item detaillierte Sicht auf einen Aspekt
+    \item Keine Exemplare von Operationen
+    \item Kein Verlauf der Wertebelegung über die Zeit
+  \end{itemize*}
+
+  \paragraph{Paketdiagramm}
+  \begin{itemize*}
+    \item Gliederung des Systems in Teile (Pakete)
+    \item Zuordnung von Elementen zu einem Paket
+    \item Bildung von Hierarchien (Enthält-Beziehung)
+    \item Abhängigkeiten zwischen den Paketen
+    \item Zum Grobentwurf von Systemen
+    \item Löschen des Pakets bewirkt Löschen beinhalteter Elemente
+    \item Definition von Sichtbarkeit / Zugriffsrechte
+    \begin{itemize*}
+      \item '+' - public (default)
+      \item '-' - private
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Komponentendiagramm}
+  \begin{itemize*}
+    \item Strukturierung des Systems durch Komponenten
+    \item Komponente: Modulare, austauschbare Einheit (Substitution)
+    \item Modellierung der Abhängigkeiten zwischen Komponenten
+    \item Modellierung der inneren Struktur von Komponenten
+    \item Definition von Schnittstellen
+    \item Black-Box-Darstellung
+    \begin{itemize*}
+      \item Zur Verfügung gestellte Funktionalität
+      \item Benötigte Funktionalität
+    \end{itemize*}
+    \item White-Box-Darstellung
+    \begin{itemize*}
+      \item Interner Aufbau der Komponente
+      \item Artefakte‚ Realisierende physische Einheit
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Kompositionsstrukturdiagramm}
+  \begin{itemize*}
+    \item Teile-Ganzes-Strukturen $\rightarrow$ Kompositionsstruktur
+    \item Strukturell statische Kompositionsstrukturen
+    \item Strukturell dynamische Kompositionsstrukturen
+    \item Spezialisierte Kompositionsbeziehung $\rightarrow$ erweiterte Semantik
+  \end{itemize*}
+
+  \paragraph{Aktivitätsdiagramm}
+  \begin{itemize*}
+    \item Modellierung von Kontrollflüssen, Datenflüssen, Parallelem Verhalten
+    \item Geschäftsprozessmodellierung möglich
+    \item Abstrakte und detaillierte Verhaltensbeschreibung möglich
+    \item Grundlage zur Codegenerierung
+    \item Zur Verfeinerung von Use-Cases
+  \end{itemize*}
+
+  \paragraph{Interaktionsdiagramme}
+  \begin{itemize*}
+    \item Modellierung von Kommunikation \& Operationen
+    \item Sehr detaillierte Diagramme
+    \item Meist nicht zur vollständigen Beschreibung eines Systems
+    \item Betrachtung eines wichtigen Teilaspekts
+    \item Grundlage zur Codegenerierung
+    \item Ereignis des Sendens bzw. Empfangens von Nachrichten
+    \item Typen:
+    \begin{itemize*}
+      \item Operationsaufruf (synchron / asynchron)
+      \item Antwort Nachricht
+      \item Signal (asynchron), Create-/ Delete Message
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Sequenzdiagramm}
+  \begin{itemize*}
+    \item Genaue zeitliche Abfolge von Nachrichten
+    \item Umfangreichstes Interaktionsdiagramm
+    \item Kontrollelemente möglich (Schleifen, Verzweigungen)
+    \item Weitere Elemente des Sequenzdiagramms
+    \begin{itemize*}
+      \item Nachrichten ohne Sender z.B. am Beginn einer Interaktion
+      \item Verlorene Nachrichten (ohne Empfänger)
+      \item Erzeugen/Zerstören von Lebenslinien
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Kommunikationsdiagramm}
+  \begin{itemize*}
+    \item Kommunikationsbeziehungen der Kommunikationspartner stehen
+    \item Welche Komponenten arbeiten zusammen $\rightarrow$ Funktion erfüllen
+  \end{itemize*}
+
+  \paragraph{Timing-Diagramm}
+  \begin{itemize*}
+    \item Genaue zeitliche Darstellung von Zustandsübergängen
+    \item Kommunikation abhängiger Zustandsautomaten
+    \item Modellierung einzelner Interaktion
+    \item Zeitlicher Verlauf senkrecht
+    \item Kommunikationspartner waagerecht (unsortiert)
+    \item Trace: Folge von Sende- und Empfangsereignissen
+  \end{itemize*}
+
+  \paragraph{Zustandsdiagramm}
+  \begin{itemize*}
+    \item Modellierung des (vollständigen) Verhaltens
+    \begin{itemize*}
+      \item Zustände von Klassen / Objekten / Komponenten
+      \item Übergänge zwischen den Zuständen
+      \item Ereignisse, die Zustandswechsel auslösen
+    \end{itemize*}
+    \item Modellierung von endlichen Automaten (Zustandsmaschinen)
+    \item Modellierung von verteilten Systemen/parallelem Verhalten
+    \item Grundlage zur Codegenerierung
+  \end{itemize*}
+
+  Blockdiagramm
+  \begin{itemize*}
+    \item Klassisches Beschreibungsmittel für Systemaufbau
+    \item Nicht Teil von UML
+  \end{itemize*}
+
+  Konfigurationsdiagramm
+  \begin{itemize*}
+    \item meistverbreitetes Hilfsmittel zur Beschreibung der physikalischen Verteilung von System-Komponenten
+    \item Nicht Teil von UML
+  \end{itemize*}
+
+  Verteilungsdiagramm (UML deployment diagram)
+  \begin{itemize*}
+    \item Darstellung der Hardwaretopologie
+    \item Zuordnung von Artefakten zu Hardwareeinheiten (Knoten)
+    \item Kommunikationsverbindung und Abhängigkeiten zwischen Knoten
+    \item Relativ spät im Projekt Installation / Wartung des Systems
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Analyse}
+  Funktionale Anforderungen - Was soll es tun?
+  \begin{itemize*}
+    \item Was leistet das System
+    \item Welche Funktionen bietet es
+    \item Wie interagiert es mit der Umgebung
+    \item Anforderungen an: Verhalten, Struktur
+  \end{itemize*}
+
+  Nichtfunktionale Anforderungen - Wie?
+  \begin{itemize*}
+    \item Quality of Service/Qualitätsanforderungen
+    \item Hängen oft von Verhalten ab: komplex und nicht direkt sichtbar
+    \item Nicht direkt „by construction“ zu realisieren
+    \item Untersuchung der Projektrisiken bereits in der Analysephase
+    \item Modellbasierter Entwurf des Systems und seiner Umwelt
+    \item Arten - FURPS (ISO 9126):
+    \begin{description*}
+      \item[Functionality] (Funktionalität) Angemessen, Genauigkeit, Sicherheit
+      \item[Usability] (Benutzbarkeit) Verständlichkeit, Erlernbarkeit, Bedienbarkeit, Attraktivität
+      \item[Reliability] (Zuverlässigkeit) Reife (Fehler-Anzahl), Fehlertoleranz, Wiederherstellbarkeit
+      \item[Performance] (Effizienz/Portability) Zeitverhalten, Verbrauchsverhalten, Wirtschaftlichkeit, Koexistenz
+      \item[Supportability] (Änderbarkeit/Wartbarkeit) Analysierbarkeit, Änder- und Erweiterbarkeit, Stabilität, Testbarkeit
+    \end{description*}
+    \item weitere
+    \begin{itemize*}
+      \item Konformität zu Konventionen und Bestimmungen
+      \item Interoperabilität zu anderen Systemen
+      \item Implementierungsanforderungen
+      \item Schnittstellenanforderungen
+      \item Skalierbarkeit (Änderungen des Problemumfangs)
+      \item Betriebliche und rechtliche Rahmenbedingungen
+      \item Liefer- und Verpackungsanforderungen
+    \end{itemize*}
+  \end{itemize*}
+
+  Randbedingungen
+  \begin{itemize*}
+    \item Werden nicht umgesetzt
+    \item Schränken Lösungsraum ein
+    \item Kosten, Durchlaufzeit, Technische Randbedingungen
+  \end{itemize*}
+
+  %![Analysebaum von Sommerville](Assets/Softwaretechnik1_Analyseformen1.png)
+  %![Analysebaum von Sommerville](Assets/Softwaretechnik1_Analyseformen2.png)
+
+  Geforderte (Meta-)Eigenschaften
+  \begin{description*}
+    \item[Vollständig] alle Szenarien sind beschrieben
+    \item[Konsistent] keine Widersprüche
+    \item[Eindeutig] nur eine Interpretation möglich
+    \item[Korrekt] genaue und richtige Darstellung
+    \item[Realistisch] unter geg. Einschränkungen implementierbar
+    \item[Überprüfbar] durch Tests am Endprodukt nachweisbar
+    \item[Rückverfolgbar] Auswirkungen bis Implementierung nachvollziehbar
+    \item[Klassifizierbar] Risiko, Priorität, Dringlichkeit, Nutzen ...
+    \item[Validierung] mit dem Kunden
+  \end{description*}
+
+  %![Anforderungsentwicklung von Balzert](Assets/Softwaretechnik1_Anforderungsentwicklung.png)
+  %| | Anforderungsermittlung | Systemmodellierung |
+  %| -\item | -\item | -\item |
+  %| Ergebnis | Anforderungsspezifikation im Lastenheft, Glossar, Lastenheft | funktionale Spezifikation in Produktdefinition, Analysemodell, Pflichtenheft |
+  %| Notation | Text | Text + (semi-) formales Modell |
+  %| Kommunikation | mit dem Kunden | zwischen Entwicklern |
+  %| Sichtweise | des Anwenders | äußere Systemaspekte |
+  %Vor allem: Kommunikationsleistung!
+
+  \subsection{Ermitteln von Anforderungen}
+  \begin{itemize*}
+    \item Ausgangspunkt
+    \begin{itemize*}
+      \item Projektidee, schriftliche Skizze
+      \item Kurz und knapp
+      \item Stichpunkte der wichtigsten Funktionen
+      \item Lastenheft (falls schon existiert)
+    \end{itemize*}
+    \item Beteiligte Rollen
+    \begin{description*}
+      \item[Endbenutzer] Aufnahme Ist-Zustand, Domänenwissen, Anforderungen
+      \item[Kunde] Definiert Ziel des Systems, Vertragsverhandlung
+      \item[Konfigurationsmanager] Revisionsgeschichte der Dokumente, Nachvollziehbarkeit
+      \item[Architekt] Integration von Anwendungsfall- und Objektmodellen
+      \item[Analytiker] Modelliert das System und erstellt Anwendungsfälle
+      \item[Redakteur]
+      \item[Prüfer]
+    \end{description*}
+    \item Wie ermittelt man Anforderungen?
+    \begin{itemize*}
+      \item Kommunikation mit Kunden
+      \item Geschäftsprozess: fachlicher Ablauf, der Wert oder Kosten verursacht
+      \begin{description*}
+        \item[Akteur] Benutzer, Schnittstelle nach außen
+        \item[Szenario] Interaktion mit System als Ablauf
+        \item[Anwendungsfall] Automatisierter Arbeitsschritt, vom System ausgeführt
+        \item[Interviews mit Fachanwendern] Mitschrift, später strukturierter Text und Tabelle
+        \item[Strukturierte Spezifikation] Vorlagen, Formulare, Reduzierung sprachlicher Mehrdeutigkeiten
+      \end{description*}
+      \item Anwendungsfalldiagramm (Use-Case-Diagramm)
+      \begin{itemize*}
+        \item Arbeitsschritt eines Geschäftsprozesses
+        \item Anforderungen an das System modellieren
+        \item Systemgrenzen / Systemkontext festlegen
+        \item Systembeteiligte modellieren
+        \item Planbare Einheiten als Schritte für die Entwicklung
+        \item Verwendung bereits ab Projektbeginn
+      \end{itemize*}
+      \item Umgang mit Szenarien und Anwendungsfällen
+      \begin{itemize*}
+        \item Systemgrenze definieren
+        \item Beschreibungen verfeinern
+        \item Änderungen mit Kunden abstimmen
+        \item Prototypen nur zur visuellen Unterstützung
+      \end{itemize*}
+    \end{itemize*}
+    \item Typische Probleme
+    \begin{itemize*}
+      \item Kommunikations- und Verständnisprobleme
+      \item Viele verschiedene Beteiligte
+      \item Widersprüchliche Anforderungen, verschiedene Interessen
+      \item Nicht-technische organisatorische, historische oder rechtliche Rahmenbedingungen
+      \item Anforderungen ändern sich während der Entwicklung
+    \end{itemize*}
+    \item Tätigkeiten der Anforderungsanalyse
+    \begin{itemize*}
+      \item Anforderungen strukturieren
+      \begin{itemize*}
+        \item Unterteilung (Funktional, Nichtfunktional)
+        \item Hierarchische Zerlegung (Unterteilen, Verfeinern)
+        \item Ordnung festlegen, eindeutig Nummerieren
+        \item Beziehungen festhalten
+        \item Verwendung von Werkzeugen
+      \end{itemize*}
+      \item Eigenschaften der Anforderungen bestimmen
+      \item Anforderungen priorisieren
+      \begin{itemize*}
+        \item Muss-, Kann-, Optional, Nicht
+        \item Ad-hoc: Stakeholder priorisiert Anforderungen
+        \item Priorisierungsmatrix / Kosten-Wert-Analyse
+        \item Priorität berechnen $\text{Prioritäten} = \frac{\text{Nutzen} - \text{Nachteil}}{\text{Kosten} + \text{Risiko}}$
+      \end{itemize*}
+      \item Kano-Klassifikation
+      \begin{itemize*}
+        \item Basiseigenschaften: Werden vorausgesetzt
+        \item Leistungseigenschaften: Sonderwünsche
+        \item Begeisterungseigenschaften: Wird nicht erwartet
+        \item Abfragen per Fragenkatalog
+      \end{itemize*}
+      \item Reihenfolge festlegen
+      \item Anforderungen dokumentieren
+      \item Anforderungen modellieren
+      \item Anforderungen auf inhaltliche Qualität prüfen
+      \item Auf Übereinstimmung mit den Zielen prüfen
+    \end{itemize*}
+  \end{itemize*}
+
+  %![Kano Klassifikation von Balzert](Assets/Softwaretechnik1_Kano1.png)
+  %![Kano Klassifikation von Balzert](Assets/Softwaretechnik1_Kano2.png)
+
+  \subsection{Objektorientierte Analyse und Modellierung}
+  \begin{itemize*}
+    \item Systemmodell erstellen, funktionale Spezifikation (Was, nicht wie)
+    \item Analysemodell
+    \begin{itemize*}
+      \item Korrekt, vollständig, konsistent und nachprüfbar
+      \item Struktur und Verhalten
+    \end{itemize*}
+    \item Eingangsdokumente (Lastenheft, Anforderungsspezifikation)
+    \item Typische Ergebnisse
+    \begin{itemize*}
+      \item Funktionales Modell (Anwendungsfälle)
+      \item Dynamisches Modell - Systemverhalten (Zustandsdiagramme)
+      \item Vor- und Nachbedingungen von Systemoperationen
+      \item Pflichtenheft
+    \end{itemize*}
+    \item Verdeutlicht iterativen Ablauf
+    \item Unterteilung des Analysemodells
+    \begin{itemize*}
+      \item Funktionales Modell (Anwendungsfälle)
+      \item Objektmodell (Klassen und Objektdiagramme)
+      \item Dynamisches Modell (Zustands- und Sequenzdiagramme)
+      \item Unterscheidung der Objekttypen
+    \end{itemize*}
+    %![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik1_Bruegge1.png)
+    %![Analyse nach Brügge/Dutoit](Assets/Softwaretechnik1_Bruegge2.png)
+    \item Objektarten im Systemmodell
+    \begin{description*}
+      \item[Entitätsobjekte] vom System verwaltete Informationen
+      \item[Grenzobjekte] Interaktion zwischen System und Akteuren
+      \item[Steuerungsobjekte] Durchführung der Anwendungsfälle
+    \end{description*}
+    \item Identifizierung von Entitätsobjekten
+    \begin{itemize*}
+      \item Begriffe, die klargestellt werden müssen
+      \item Wiederkehrende Substantive in Anwendungsfällen
+      \item Reale Objekte, die das System kennen muss
+      \item Reale Prozesse, die das System verfolgen muss
+      \item Anwendungsfälle
+      \item Datenquellen und -senken
+    \end{itemize*}
+    \item Identifizierung von Grenzobjekten
+    \begin{itemize*}
+      \item Elemente der Benutzungsschnittstelle
+      \item Formulare für Eingaben
+      \item Nachrichten, Rückmeldungen
+      \item Endgeräte
+    \end{itemize*}
+    \item Identifizierung von Steuerungsobjekten
+    \item Abläufe der Anwendungsfälle modellieren
+    \item Use Case durch Interaktion verfeinern
+    \begin{description*}
+      \item[datengetriebener Ablauf mit Verzweigungen] Aktivitätsdiagramm
+      \item[Interaktion zwischen den Objekten wichtig] Kommunikations-, Aktivitäts-, Sequenzdiagramm
+      \item[zeitliche Abfolge steht im Mittelpunkt] Sequenzdiagramm
+      \item[Zustandswechsel / zeitliche Abfolge von Zuständen] Zustands-/Timing-Diagramm
+      \item[komplexe Abläufe mit Verzweigungen und Parallelitäten] Interaktionsübersichtsdiagramm
+      \item[komplexer strukturierter Ablauf] Kollaboration aus Kompositionsstrukturdiagramm
+    \end{description*}
+    \item Verfeinerung der Aktionen durch Aktivitäten
+    \item Aktion durch Interaktionen verfeinern (Detaillierte Diagramme)
+    \item Verfeinerung der Aktionen durch StateChart
+    \item Objekte zusammenstellen und klassifizieren
+    \begin{itemize*}
+      \item Toolunterstützung (Möglichkeiten stark toolabhängig)
+      \item Objekte Ergebnis der Verhaltensmodellierung
+      \item Ergebnis Verhaltensdiagramm: Operationen der Klassen
+      \item Klassen generalisieren / spezialisieren $\rightarrow$ Klassenhierarchie
+    \end{itemize*}
+    \item Übergang zum Entwurf: Klassenstruktur festlegen
+    \item Spezifikation von Benutzungsschnittstellen
+    \begin{itemize*}
+      \item Skizzieren, Prototyp generieren, Spezialwerkzeuge
+      \item Klassen und Operationen in Funktionen
+      \item Gestaltung MMI, style guides, Standards
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Dokumentation von Anforderungen}
+  \begin{itemize*}
+    \item Lastenheft
+    \begin{itemize*}
+      \item Forderungen eines Auftraggebers (AG) an Lieferungen und Leistungen eines Auftragnehmers (AN)
+      \item Muss-Kriterien, Kann-Kriterien, Abgrenzungskriterien
+    \end{itemize*}
+    \item Pflichtenheft: Entwurf aus AN-Sicht, Umsetzung des Lastenhefts
+    \item Anforderungsspezifikation
+    \begin{description*}
+      \item[Zielsetzung]
+      \item[Allgemeine Beschreibung] Umgebung, Funktion, Benutzer
+      \item[Spezifische funktionale Anforderungen] quantitativ + identifizierbar
+      \item[Spezifische nicht-funktionale Anforderungen] Entwicklungs- und Produkt-Standards
+      \item[Qualitäts-Zielbestimmung]
+      \item[Zu erwartende Evolution] des Systems, Versionen
+      \item[Abkürzungsverzeichnis] Glossar, Index, Referenzen
+    \end{description*}
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Grobentwurf}
+  \begin{itemize*}
+    \item Entwurfsziele identifizieren
+    \item Grobe Systemstruktur festlegen (Architektur)
+    \item Zerlegung in Subsysteme, Spezifikation
+    \item Bewerten der Zerlegung anhand der Entwurfsziele
+    \item Schnittstellen festlegen
+  \end{itemize*}
+
+  \subsection{Systemzerlegung}
+  Kopplung/Abhängigkeiten von Subsystemen
+  \begin{itemize*}
+    \item Möglichst lose Kopplung
+    \begin{itemize*}
+      \item Änderungen haben geringe Auswirkungen
+      \item Erleichtert Wartbarkeit und Arbeitsteilung
+    \end{itemize*}
+    \item Mittel zur Verringerung
+    \begin{itemize*}
+      \item Zusätzliche Unterteilung in Subsysteme
+      \item Aber: dann größere Komplexität!
+    \end{itemize*}
+    \item Kopplungsarten
+    \begin{description*}
+      \item[Daten] vermeiden oder zentralisieren
+      \item[Schnittstellen] gegenseitiges Aufrufen
+      \item[Struktur] gemeinsame Elemente vermeiden über Paketgrenzen
+    \end{description*}
+  \end{itemize*}
+
+  Kohäsion (cohesion)
+  \begin{itemize*}
+    \item Maß für Zusammengehörigkeit der Elemente
+    \item hohe Kohäsion erleichtert Verständnis, Wartung und Anpassung
+    \item Mittel zum Erreichen hoher Kohäsion: Datenkapselung
+  \end{itemize*}
+  \begin{description*}
+    \item[Fan-in] Anzahl der Stellen, wo Kontrollfluss auf das betrachtete Modul M übergeht + Anzahl globaler Variablen, die in M zugänglich sind
+    \item[Fan-out] Anzahl von Stellen, an denen M andere Module aufruft + Anzahl der globalen Variablen, die von M verändert werden
+  \end{description*}
+  \begin{itemize*}
+    \item Heuristik Kopplung / Kohäsion
+    \begin{itemize*}
+      \item Hoher Fan-out bedeutet hohe Kopplung $\rightarrow$ minimieren
+      \item Hoher Fan-in kann auf geringe Kohäsion von M hindeuten
+    \end{itemize*}
+  \end{itemize*}
+
+  Prinzipien des OO-Entwurfs
+  \begin{itemize*}
+    \item Keep it simple stupid (KISS)
+    \item Entwerfen nach Verantwortlichkeiten
+    \item Hohe Kohäsion / Geringe Kopplung
+    \item Zyklische Abhängigkeiten vermeiden
+    \item Auf Schnittstellen konzentrieren
+    \begin{itemize*}
+      \item Abhängigkeiten nur von Schnittstellen
+      \item Abtrennung von Schnitts. (viele kleine statt wenig große)
+      \item Umkehr der Abhängigkeiten (dependency inversion)
+    \end{itemize*}
+    \item Offen / Geschlossen Prinzip
+  \end{itemize*}
+
+  Symptome schlechten Designs
+  \begin{itemize*}
+    \item Starrheit (Änderungen schwer machbar)
+    \item Zerbrechlichkeit (Änderungen werfen Fehler)
+    \item Schlechte Wiederverwendbarkeit
+  \end{itemize*}
+
+  Wann ist ein Entwurf „gut“?
+  \begin{itemize*}
+    \item Korrekt (Anforderungen erfüllen)
+    \item Verständlich und präzise, gut dokumentiert
+    \item Anpassbar
+    \item Hohe Kohäsion innerhalb der Komponenten
+    \item Schwache Kopplung zwischen den Komponenten
+    \item Wiederverwendung
+    \item Kriterien gelten auf allen Ebenen des Entwurfs!
+  \end{itemize*}
+
+  \subsection{Architekturmodelle}
+  \begin{itemize*}
+    \item Definition Diagrammunabhängig: Meist Klassendiagramm
+    \item Ähnlich Semantik einer Klasse: Nur public-Attribute und Operationen
+    \item Definiert Verpflichtung zur Implementierung von
+    \begin{itemize*}
+      \item Operationen
+      \item Merkmale $\rightarrow$ Attribute dürfen definiert werden
+      \item Verpflichtungen (z.B.: Vor- / Nachbedingungen)
+    \end{itemize*}
+    \item Meist abstrakte Klassen mit abstrakten Operationen
+    \item Klasse realisiert alle Attribute und Operationen
+    \item Schnittstellen werden realisiert, nicht instanziiert
+    \item Schnittstelle kann von anderen Schnittstellen erben
+    \item Keine Schnittstellenrealisierung zwischen zwei Interface-Klassen $\rightarrow$ Generalisierung verwenden
+    \item Wiederverwendung auf sehr hoher Abstraktionsstufe
+  \end{itemize*}
+
+  Schichten-Architektur (layers)
+  \begin{itemize*}
+    \item Zuordnung von Subsystemen zu horizontalen Schichten gleicher Abstraktionsebene
+    \item Komponenten einer Schicht bieten Dienste der darüber liegenden Schicht an
+  \end{itemize*}
+
+  Client-Server (Klient/Anbieter) Two-tier
+  \begin{itemize*}
+    \item Client (front-end): Benutzungsschnittstelle
+    \item Server (back-end): Datenhaltung, evtl. Fachlogik
+    \item Asynchroner Kontrollfluss
+    \item Aufteilung Funktionen Client / Server
+    \item Vorteile
+    \begin{itemize*}
+      \item Änderungen bleiben lokal
+      \item Geringere Kopplung zwischen den Schichten
+      \item Schichten austauschbar und wiederverwendbar
+      \item Getrennte Entwicklung der Schichten möglich
+      \item Vorhandene / stabilere Schnittstellen
+    \end{itemize*}
+    \item Nachteile
+    \begin{itemize*}
+      \item Geringere Performance
+      \item Zusätzlicher Verwaltungs- oder Datenoverhead
+      \item Manche Änderungen führen zu Änderungen in allen Schichten
+    \end{itemize*}
+  \end{itemize*}
+
+  Pipes and Filters
+  \begin{itemize*}
+    \item Datenstrom- oder Kontrollflussorientiertes System
+    \item Kombination der Berechnungskomponenten nur vom Typ der Ein- und Ausgabedaten abhängig
+    \item Verwendung von globalen Steuerungskontrollstrukturen
+    \item Vorteile
+    \begin{itemize*}
+      \item Hohe Flexibilität gegenüber Änderungen \& Erweiterungen
+      \item Hoher Wiederverwendungsgrad der Komponenten
+      \item Unabhängige Entwicklung der Komponenten
+      \item Leichte Parallelisierung der Berechnungen möglich
+    \end{itemize*}
+    \item Nachteile
+    \begin{itemize*}
+      \item Schwierige Fehlerbehandlung, kein expliziter Kontrollfluss
+      \item Fehler durch inkompatible Datentypfehler erst zur Laufzeit
+      \item Häufig zusätzliche Datenkonvertierungen notwendig
+    \end{itemize*}
+  \end{itemize*}
+
+  Plug-In Architektur (Microkernel)
+  \begin{itemize*}
+    \item Stabile, schlanker verbreitete Standard-Anwendung (Kern)
+    \item Funktionalität durch Komponenten leicht erweiterbar sein
+    \item Dritte sollen Komponenten leicht erstellen können
+    \item Plugin-Manager verwaltet Komponenten: Laden, Entladen
+    \begin{itemize*}
+      \item Komponente mit Standard-Schnittstelle
+      \item Erweitert Funktionalität (extension point)
+    \end{itemize*}
+    \item Vorteile
+    \begin{itemize*}
+      \item Robustes Verhalten
+      \item Trennung der Zuständigkeiten
+      \item Erweiterbar, Austauschbar, Wiederverwendbar
+      \item Geringe Kopplung zu den Komponenten
+      \item Leichte Aufteilung der Entwicklung der Arbeitspakete
+    \end{itemize*}
+    \item Nachteile
+    \begin{itemize*}
+      \item Höherer initialer Aufwand
+      \item Verwaltungsoverhead zur Laufzeit
+      \item Versionsverwaltung der Komponenten nötig
+      \item Abhängigkeiten unter den Komponenten schwierig realisierbar
+    \end{itemize*}
+  \end{itemize*}
+
+  Model-View-Controller (MVC)
+  \begin{itemize*}
+    \item Erlauben Austausch von Anzeige- und Speichersystem
+    \begin{description*}
+      \item[Model] verwaltet Domänenwissen, Daten und Zustand; Datenbank
+      \item[View] Darstellung, Anzeige, GUI
+      \item[Controller] Steuerung der Interaktion, Nutzerbefehle
+    \end{description*}
+    \item Geeignet für interaktive Systeme
+    \item Daten enthält Kernfunktionalität, kapselt und speichert Daten
+    \item Sichten stellt die Daten in unterschiedlicher Art dar
+    \item Steuerung realisiert die Interaktion mit dem Benutzer, übernimmt die Eingaben vom View und ändert die Daten im Modell
+  \end{itemize*}
+
+  \subsection{Frameworks}
+  \begin{itemize*}
+    \item Menge von zusammengehörigen Klassen, für eine Problemfamilie
+    \item Wiederverwendung von Code, Architektur, Entwurfsprinzipien
+    \item Ähnliche Benutzungsschnittstelle
+    \item Klassifikation I
+    \begin{itemize*}
+      \item Anwendungs-Framework (application framework)
+      \item Bereichsspezifisches Framework (domain framework)
+      \item Infrastrukturgerüst (support framework)
+    \end{itemize*}
+    \item Klassifikation II
+    \begin{description*}
+      \item[Offene Programmgerüste] (white box) Erweiterbarkeit durch Vererbung und dynamische Bindung
+      \item[Geschlossene Programmgerüste] (black box) Erweiterbarkeit durch Definition von Schnittstellen für Module
+    \end{description*}
+    \item Webframeworks
+  \end{itemize*}
+
+  \subsection{Systemarchitektur und Verteilung}
+  \begin{itemize*}
+    \item Aufbau und Elemente der Ablaufumgebung, Hardware
+    \item Häufig enger Zusammenhang mit Softwarearchitektur
+    \item Besonders bei eingebetteten Systemen
+    \item Systemarchitektur hat Einfluss auf Softwarearchitektur
+  \end{itemize*}
+
+  \subsection{Globaler Kontrollfluss}
+  \begin{itemize*}
+    \item Ablaufsicht der Architektur
+    \begin{itemize*}
+      \item Definition nebenläufiger Systemeinheiten (z.B. Prozesse)
+      \item Steuerung der Abfolge von Einzelfunktionen
+      \item Synchronisation und Koordination
+      \item Reaktion auf externe Ereignisse
+    \end{itemize*}
+    \item Nebenläufigkeit auf Architekturebene
+    \begin{itemize*}
+      \item Threads , Prozesse, verteiltes System
+      \item Asynchroner Nachrichtenaustausch
+    \end{itemize*}
+    \item Einfluss auf Architektur / abhängig von Architektur
+    \begin{itemize*}
+      \item Zentral
+      \begin{itemize*}
+        \item Call/Return (prozedural, synchron)
+        \item Master/Slave (nebenläufig mit zentraler Steuerung)
+      \end{itemize*}
+      \item Dezentral
+      \begin{itemize*}
+        \item Ereignisgesteuert (event-driven)
+        \item interrupts
+        \item publish-subscribe (ähnlich observer)
+        \item Datenflussgesteuert (data flow architecture)
+      \end{itemize*}
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Weitere Aufgaben beim Grobentwurf}
+  \begin{itemize*}
+    \item Entwurf einer persistenten Datenverwaltung (Datenbank)
+    \item Sicherheit
+    \begin{itemize*}
+      \item Zugriffskontrolle
+      \item Fehlertoleranz (Daten und Hardware)
+      \item Protokollfunktionen
+    \end{itemize*}
+    \item Kontrollfluss
+    \item Dokumentation
+    \begin{itemize*}
+      \item Verständlich aus Sicht des Lesers formulieren (Glossar)
+      \item Das Warum beschreiben (Entwurfsentscheidungen)
+      \item Annahmen, Voraussetzungen, Randbedingungen
+      \item Notation erklären oder Standards verwenden (UML)
+      \item Auf Zweckdienlichkeit prüfen, Reviews durchführen
+      \item Verschiedene Sichten für verschiedene Zielgruppen
+    \end{itemize*}
+  \end{itemize*}
+
+  Schicht
+  \begin{itemize*}
+    \item Gruppe von Subsystemen in der Zerlegungshierarchie
+    \item Verwandte Dienste
+    \item Ähnlicher Abstraktionsgrad
+    \item Abhängigkeit nur von darunter liegenden!
+  \end{itemize*}
+
+  Repository (Depot, blackboard)
+  \begin{itemize*}
+    \item Zentrale Datenhaltung
+    \item Anwendungen tauschen Daten nur über Repository aus
+    \item Kontrollfluss z.B. über Signale oder Semaphore
+    \item Gut für datenintensive Verarbeitungsaufgaben geeignet
+  \end{itemize*}
+
+  Peer-to-peer
+  \begin{itemize*}
+    \item Gleichberechtigte Partner, Föderation
+    \item Verteilte kommunizierende Subsysteme
+    \item Orts- und Umgebungsunabhängigkeit
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Feinentwurf}
+  Schließen der Lücke zwischen Grobentwurf und Implementierung
+  \begin{itemize*}
+    \item Identifizieren und Entwerfen von Klassen der Lösungsdomäne
+    \item Identifikation und Verwendung von Entwurfsmustern
+    \item Detaillierte Beschreibung der Klassen
+    \item Beschreibung von Schnittstellen
+    \item Iterativer Prozess!
+  \end{itemize*}
+
+  Objektorientierter Feinentwurf
+  \begin{itemize*}
+    \item Grobdefinition der Architektur, Zerlegung in Subsysteme (evtl. unter Verwendung von Standardarchitekturen)
+    \item OO-Modell für jedes Subsystem der Architektur
+    \item OO-Modell für unterstützende Subsysteme unter Berücksichtigung gewählter Technologien
+    \item Spezifikationen der Klassen
+    \item Spezifikationen von externen Schnittstellen
+  \end{itemize*}
+
+  \subsection{Klassen- und Objektentwurf}
+  \begin{itemize*}
+    \item Klassen der Lösungsdomäne
+    \item Klassen, die nicht durch objektorientierte Analyse der Anwendungsdomäne entstehen
+    \item Entstehungsgründe
+    \begin{itemize*}
+      \item Architektur von Software und System
+      \item nichtfunktionale Anforderungen
+      \item Sichtbare Grenz- und Steuerungsobjekte werden schon in der Analyse identifiziert
+    \end{itemize*}
+  \end{itemize*}
+
+  Responsibility-Driven Design
+  \begin{description*}
+    \item[Application] set of interacting objects
+    \item[Object] implementation of role(s)
+    \item[Role] set of related responsibilities
+    \item[Responsibility] obligation to perform a task or know information
+    \item[Collaboration] interaction of objects or roles
+    \item[Contract] agreement outlining collaboration terms
+  \end{description*}
+
+  Arten von Rollen
+  \begin{description*}
+    \item[Information holder] knows and provides information
+    \item[Structurer] maintains relationship between objects and information about relationships
+    \item[Service provider] performs work, offers computing services
+    \item[Coordinator] reacts to events by delegating tasks to others
+    \item[Controller] makes decisions and directs other’s actions
+    \item[Interfacer] transforms information and requests between system parts
+  \end{description*}
+
+  Hilfsmittel: CRC-Karten
+  \begin{itemize*}
+    \item Candidate (or class), Responsibility, Collaboration
+    \item Informelles Mittel zum Finden, Beschreiben und iterativen Verändern von Klassen
+  \end{itemize*}
+
+  Ein Objekt
+  \begin{itemize*}
+    \item implementiert eine Schnittstelle und beeinflusst andere Objekte
+    \item wird in drei Teilen entworfen
+    \begin{itemize*}
+      \item Öffentliche Schnittstelle
+      \item Art und Weise der Benutzung
+      \item Innere Details der Funktionsweise
+    \end{itemize*}
+    \item Kohärenz: zusammengehörende Verantwortlichkeiten in einer Klasse konzentrieren!
+  \end{itemize*}
+
+  \subsection{Entwurfsprinzipien}
+  \begin{itemize*}
+    \item Kapselung
+    \begin{itemize*}
+      \item Verwenden von get- und set-Operationen
+      \item Zusicherungen einhalten
+      \item Zugriffe zentralisieren
+      \item Verbalisierung
+      \item Zugriffsbeschränkung
+    \end{itemize*}
+    \item Zerlegung
+    \begin{itemize*}
+      \item Teile und Herrsche
+      \item Zerlegen in Komponenten
+      \item Verantwortlichkeitsprinzip: Komponente ist klar für eine Aufgabe verantwortlich
+      \item Eigenschaften und Schnittstellen im Klassendiagramm
+      \item Beziehungen zwischen Klassen: Assoziationen
+      \item Aggregation
+      \begin{itemize*}
+        \item „besteht aus“, „ist Teil von“ oder „Ganzes-/Teile-Beziehung“
+        \item Schwache Bindung der Teile mit dem Ganzen
+      \end{itemize*}
+      \item Komposition
+      \begin{itemize*}
+        \item Wie Aggregation, jedoch stärkere Bindung
+        \item Teil nur einem Ganzen zugeordnet
+        \item Nur Multiplizität von 1 oder 0..1 möglich!
+      \end{itemize*}
+      \item Polymorphie
+      \begin{itemize*}
+        \item Reaktion auf eine Nachricht abhängig vom Typ des Objektes
+        \item Variablen können Objekte verschiedener Klassen aufnehmen
+        \item Überladen von Operationen
+        \item gleicher Operationsname, unterschiedliche Signatur
+        \item abstrakte Operationen: Virtuelle Operationen ohne Implementierung
+        \item abstrakte Klasse: Klasse mit abstrakten Operationen
+        \item Folgen:
+        \item von abstrakten Klassen können keine Objekte angelegt werden
+        \item Abgeleitete Klassen müssen Operation implementieren, damit Objekte angelegt werden können
+      \end{itemize*}
+    \end{itemize*}
+  \end{itemize*}
+
+  Vererbung im Entwurf
+  \begin{itemize*}
+    \item Klassifikation von Objekten, Taxonomie, Spezialisierung/Verallgemeinerung, Organisation von Klassen in Hierarchien
+    \item Verringerung von Redundanz und damit Inkonsistenzen
+    \begin{itemize*}
+      \item Funktionalität nur einmal implementieren!
+      \item Spezifikations-Wiederverwendung
+      \item Implementierungs-Wiederverwendung
+    \end{itemize*}
+    \item Verbesserung der Erweiterbarkeit: Abstrakte Schnittstellen einsetzen!
+  \end{itemize*}
+
+  Vererbung oder Assoziation
+  \begin{itemize*}
+    \item Schlüsselwort Vererbung: ist ein
+    \item Schlüsselwort Assoziation: besteht aus, ist Teil, hat,...
+    \item Vererbung: Unterscheidungsmerkmal definierbar (Diskriminator)
+    \item Vermeide Vererbung, wenn es Alternativen gibt
+    \item Mehrfachvererbung
+  \end{itemize*}
+
+  Abstrakte Klassen
+  \begin{itemize*}
+    \item Nur Unterklassen, keine Instanzen
+    \item Attribute in Unterklassen füllen
+  \end{itemize*}
+
+  Offen / Geschlossen-Prinzip
+  \begin{itemize*}
+    \item Erweiterbarkeit eines Entwurfs
+    \item Offen für Erweiterungen,
+    \begin{itemize*}
+      \item Virtuelle Operationen verwenden
+      \item Verändert vorhandenes Verhalten nicht
+      \item Erweiterung um zusätzliche Funktionen oder Daten
+    \end{itemize*}
+    \item Geschlossen für Änderungen (private)
+    \item Beschränkung der Erweiterbarkeit
+    \begin{itemize*}
+      \item Keine Einschränkungen der Funktionalität der Basisklasse!
+    \end{itemize*}
+  \end{itemize*}
+
+  Liskovsches Ersetzungsprinzip
+  \begin{itemize*}
+    \item Wenn S eine Unterklasse von T ist, dann können Objekte des Typs T in einem Programm durch Objekte des Typs S ersetzt werden, ohne die Funktion des Programms zu verändern
+    \item Engere Definition als „ist-ein“-Beziehung
+    \item Kein unerwartetes Verhalten eines Objektes eines Subtyps
+    \item Methoden, die Objekte der Basisklasse erwarten, müssen auch mit Objekten der abgeleiteten Klasse funktionieren
+    \item Zusicherungen der Basisklasse müssen von der abgeleiteten Klasse erfüllt werden!
+  \end{itemize*}
+
+  Gesetz von Demeter (LoD)
+  \begin{itemize*}
+    \item Objekte sollen nur mit Objekten in ihrer unmittelbaren Umgebung kommunizieren
+    \item Aus einer Methode M dürfen (sollten) nur Nachrichten an Objekte gesendet werden, die ...
+    \begin{itemize*}
+      \item unmittelbarer Bestandteil des Objekts von M sind (super)
+      \item M als Argument übergeben wurden
+      \item direkt in M erzeugt wurden
+      \item (oder sich in globalen Variablen befinden)
+    \end{itemize*}
+  \end{itemize*}
+
+  Ein Objekt sollte
+  \begin{itemize*}
+    \item Nur Methoden aufrufen, die zur eigenen Klasse gehören
+    \item Nur Methoden von Objekten aufrufen, die:
+    \begin{itemize*}
+      \item Von Attributen referenziert werden
+      \item Als Parameter übergeben wurden
+      \item Selbst erzeugt wurden
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Entwurfsmodell Klassendiagramm}
+  \begin{itemize*}
+    \item Elemente des Klassendiagramms
+    \begin{itemize*}
+      \item Klasse (Attribute, Operationen)
+      \item Vererbung / Realisierung
+      \item Assoziationen
+      \item Beziehungen / Abhängigkeiten
+    \end{itemize*}
+    \item Attribute
+    \begin{itemize*}
+      \item Klassenattribut: "X" static - statisch, nur einmal pro Klasse vorhanden
+      \item Sichtbarkeit
+      \item "+" public - im Namensraum sichtbar
+      \item "\#" protected - nur in abgeleiteten Klassen sichtbar
+      \item "~" package - im Paket sichtbar
+      \item "-" private - nur in der Klasse selbst sichtbar
+      \item Ableitung "/" derived - abgeleitetes Attribut
+    \end{itemize*}
+    \item Weitere Eigenschaften
+    \begin{itemize*}
+      \item readOnly - nach Initialisierung nicht änderbar
+      \item composite - Aggregation: Composition
+      \item redefines X - überschreibe Attr. der Oberklasse
+      \item subsets X - Teilmenge
+      \item union - Attribut ist Vereinigung der subsets
+      \item unique - Elemente eindeutig (Schlüsselattribut)
+      \item ordered - Elemente sind geordnet (unordered)
+      \item sequence - Speicherung der Elemente als Liste
+      \item bag - Elemente sind Multimenge
+    \end{itemize*}
+    \item Parameterlisten
+    \begin{itemize*}
+      \item in: Eingangsparameter
+      \item out: Ausgangsparameter
+      \item inout: Eingangs- und Ausgangsparameter
+      \item return: Rückgabewert
+    \end{itemize*}
+    \item Beziehungen
+    \begin{itemize*}
+      \item navigierbar/unspezifiziert/nicht-navigierbar
+      \item ungerichtete/gerichtete Relation/assoziation
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Schnittstellen}
+  \begin{itemize*}
+    \item Vereinbarung über Art des Aufrufs
+    \begin{itemize*}
+      \item Homogenität gleicher Funktionen
+      \item Spezifikation von Operationen
+      \item keine Implementierung, keine Attribute
+    \end{itemize*}
+    \item Schnittstellen in UML
+    \begin{itemize*}
+      \item Funktion ähnlich abstrakter Klasse
+      \item Meist für technische Aspekte
+    \end{itemize*}
+    \item Verträge („design by contract“)
+    \begin{itemize*}
+      \item Vorbedingung: Prädikat, das vor Aufruf gelten muss
+      \item Nachbedingung: Prädikat, das nach Aufruf gelten muss
+      \item Invariante: Prädikat, das immer gilt
+    \end{itemize*}
+  \end{itemize*}
+
+  Protokollrollen - Dynamisches Verhalten von Schnittstellen
+  \begin{itemize*}
+    \item Ohne Sicht auf innere Implementierung
+    \item Protokoll = Kollaboration von Protokollrollen
+    \item Modell: Zustandsautomat
+    \item Beschreibung der Synchronisation von Objekten
+  \end{itemize*}
+
+  \subsection{Entwurfsmuster}
+  schematische Lösung für eine Klasse verwandter Probleme (Höhere Ebene: Architekturmuster)
+  \begin{itemize*}
+    \item Wie helfen Muster im Entwurf?
+    \begin{itemize*}
+      \item Identifizieren von Klassen (Anwendungs- und Lösungsdomäne)
+      \item Regeln sind abstrakt oder an realen Objekten orientiert
+      \item Muster: Arten von Rollen bzw. Lösungshinweise für typische Strukturierungsaufgaben
+      \item Änderbarkeit und Lesbarkeit des Entwurfs verbessern
+    \end{itemize*}
+    \item Arten von Entwurfsmustern
+    \begin{itemize*}
+      \item Erzeugungsmuster
+      \item Strukturmuster
+      \item Verhaltensmuster
+    \end{itemize*}
+    \item Erzeugungsmuster
+    \begin{description*}
+      \item[Factory Method] Implementierungsvarianten; Erzeugung von Objekten wird an Unterklassen delegiert
+      \item[Abstract Factory] Schnittstelle zur Erzeugung von Familien verwandter Objekte
+      \item[Prototype] Objekterzeugung durch Vorlage und Kopie
+      \item[Builder] Trennung von Erzeugung und Repräsentation komplexer Objekte, für Erzeugung unterschiedlicher Repräsentationen
+      \item[Singleton] Sicherstellung, dass nur ein Objekt einer Klasse erzeugt wird, die einen globalen Zugriff bietet
+    \end{description*}
+  \end{itemize*}
+
+  Strukturmuster
+  \begin{description*}
+    \item[Adapter] Anpassung der (inkompatiblen) Schnittstelle einer Klasse oder eines Objekts an eine erwartete Schnittstelle
+    \item[Bridge] Abstraktion (Schnittstelle) von Implementierung entkoppeln, um beide unabhängig zu ändern; Impl.-Klasse nur als Verweis
+    \item[Decorator] Objekt dynamisch um Zuständigkeiten erweitern (Alternative zur Bildung von Unterklassen)
+    \item[Facade] Einheitliche Schnittstelle zu einer Schnittstellenmenge, vereinfacht Zugriff
+    \item[Flyweight] Gemeinsame Nutzung kleiner Objekte zur effizienten Verwendung großer Mengen davon (Speicheraufwand)
+    \item[Composite] Zusammenfügen verschiedener Objekte zur Repräsentation von Teil-Ganzes-Beziehungen; Objekte und Kompositionen können einheitlich behandelt werden, Baumstruktur
+    \item[Proxy] kontrollierter Zugriff auf Objekt durch vorgeschaltetes Stellvertreterobjekt
+  \end{description*}
+
+  Verhaltensmuster
+  \begin{description*}
+    \item[Command] Befehl / Operation als Objekt kapseln (Parameterübergabe, Operations-Warteschlangen, logging, Rückgängig machen)
+    \item[Observer] 1-zu-n-Beziehung zwischen Objekten, so dass die Änderung des zentralen Objekts zu einer Benachrichtigung und Aktualisierung der n (abhängigen) Zustände führt
+    \item[Visitor] Beschreibung und Kapselung einer zu definierenden Operation, die auf einer Objektmenge ausgeführt wird
+    \item[Interpreter] Repräsentation der Grammatik einer Sprache sowie Interpreter zur Analyse von Sätzen der Sprache
+    \item[Iterator] Sequentieller Zugriff auf die Elemente einer Sammlung ohne Kenntnis der Implementierung der Sammlung
+    \item[Memento] Internen Zustand eines Objekts erfassen und speichern, um Objektzustand wiederherstellen zu können
+    \item[Template Method] Beschreibung des Skeletts eines Algorithmus mit Delegation der Einzelschritte an Unterklassen; Teilschritte können von Unterklassen geändert werden
+    \item[Strategy] Ermöglicht Austausch verschiedener Implementierungen einer Aufgabe ohne Beeinflussung der sie benutzenden Objekte
+    \item[Mediator] Objekt, welches das Zusammenspiel einer lose gekoppelten Objektmenge in sich kapselt. Vermeidet direkten Bezug der Objekte untereinander und ermöglicht unabhängige Änderung des Zusammenspiels
+    \item[State] Ermöglicht Objekt, sein Verhalten abhängig von seinem inneren Zustand zu ändern, als ob es die Klasse wechselt
+    \item[Chain of Responsibility] Vermeidet direkte Kopplung von Auslöser und Empfänger einer Anfrage bzw. Operation. Mehrere Objekte werden nacheinander benachrichtigt, bis die Anfrage erledigt ist
+  \end{description*}
+
+  Anwendung von Entwurfsmustern
+  \begin{itemize*}
+    \item Untersuche Anwendbarkeit und Konsequenzen
+    \item Analysiere Struktur, Teilnehmer und Kollaborationen
+    \item Wähle aus dem Anwendungskontext Namen für Teilnehmer
+    \item Spezifiziere die teilnehmenden Klassen
+    \begin{itemize*}
+      \item Deklariere Schnittstellen, Vererbung und Variablen
+      \item Identifiziere existierende Entwurfsklassen, die durch das Muster beeinflusst werden
+    \end{itemize*}
+    \item Wähle anwendungsspezifische Namen für Operationen
+    \item Implementiere Operationen entsprechend den Verantwortlichkeiten und Kollaborationen des Musters
+  \end{itemize*}
+
+  \subsection{Klassenbibliotheken und Komponenten}
+  \begin{itemize*}
+    \item Zusammenfassung von Modulen, Klassen, etc.
+    \item Mit einem bestimmten (abstrakten) Zweck
+    \begin{itemize*}
+      \item Abstrakte Datenverwaltung, Templates
+      \item Grundlegende System-Aufgaben
+      \item Untere Kapselungs-Schicht des Laufzeitsystems oder der Programmierumgebung
+      \item Numerische Routinen, Simulation, ...
+    \end{itemize*}
+    \item Wird in Anwendung eingebunden (importiert), API
+    \item Objekte instanziieren oder Klassen ableiten
+    \item Meist passiv: Kontrollfluss wird von Anwendung gesteuert
+  \end{itemize*}
+
+  Komponentenbasierte Entwicklung
+  \begin{itemize*}
+    \item Bausteinorientierte Programmierung (component-ware)
+    \item Softwareentwicklung: Konstruktion aus vorgegebenen Bausteinen
+    \item Entsprechung für Wiederverwendung: Generische Bausteine (components)
+    \item Werkzeuggestützte bzw. grafische Kompositionsmechanismen
+    \item Komponenten-Entwicklung oft auch projektspezifisch
+    \item Warum Komponenten
+    \begin{itemize*}
+      \item Monolithische, proprietäre Software führt zunehmend zu Problemen
+      \item Zunehmend verteilte Anwendungen mit offener Struktur und Internet-Anbindung
+      \item Zusammensetzen der Funktionalität aus standardisierten Elementen, die über offene Schnittstellen kommunizieren
+      \item Komponenten sollen Flexibilität bei sich ändernden Anforderungen erhöhen
+    \end{itemize*}
+    \item Eigenschaften von Komponenten
+    \begin{itemize*}
+      \item müssen von ihrer Umgebung und anderen Komponenten unabhängig und getrennt sein
+      \item Kontextabhängigkeiten: benötigte Komponenten-Infrastruktur und Systemressourcen
+      \item Kapseln ihre angebotenen Funktionen
+      \item Werden immer als ganze Einheit eingesetzt; alle Bestandteile sind enthalten
+      \item Sind nicht von Kopien ihrer selbst unterscheidbar
+      \item Klare Spezifikation der Schnittstelle nötig; explizit definierte Interaktionen mit Komponenten und Umgebung
+    \end{itemize*}
+  \end{itemize*}
+
+  Komponenten für Client/Server-Architekturen
+  \begin{itemize*}
+    \item Wichtige Aspekte
+    \begin{itemize*}
+      \item Transaktionen
+      \item Sicherheit
+      \item Ressourcenverwaltung
+      \item Persistenz
+    \end{itemize*}
+    \item Komponentenkonzept für Server-Komponenten
+    \begin{itemize*}
+      \item meist unsichtbare Komponenten
+      \item standardisierte Realisierung der wichtigen Eigenschaften für Client/Server-Anwendungen
+      \item Realisierung: Enterprise Java Beans (EJBs) innerhalb eines Java Enterprise Edition Servers
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Dokumentation}
+  \begin{itemize*}
+    \item Möglichkeiten
+    \begin{itemize*}
+      \item Eigenständiges Dokument
+      \item Erweiterung des Lastenhefts / Grobkonzepts
+      \item Eingebettet in den Quellcode
+    \end{itemize*}
+    \item Inhalt
+    \begin{itemize*}
+      \item Ähnlich Grobkonzept
+      \item Zusätzlich detaillierte Modelle
+      \item Abwägungen des Objektentwurfs
+      \item Klassenschnittstellen
+    \end{itemize*}
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Implementierung}
+  \begin{itemize*}
+    \item Aus Spezifikationen Programm(code) erzeugen
+    \item Aufbauend auf Ergebnissen des Feinentwurfs
+    \begin{itemize*}
+      \item Algorithmen konzipieren
+      \item Datenstrukturen realisieren
+      \item Umsetzen in konkreter Programmiersprache
+      \item Dokumentation
+      \item Untersuchung des Zeit- und Speicherbedarfs
+      \item Test und Verifikation
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Konventionen und Werkzeuge}
+  \begin{description*}
+    \item[Klasse] (mit) Substantiv, „UpperCamelCase“
+    \item[Methode] (mit) Verb, Imperativ (Aufforderung), „lowerCamelCase“
+    \item[Attribut, Variable] (mit) Substantiv, „lowerCamelCase“
+    \item[Konstante] Nur Großbuchstaben, Worte mit "\_" zusammengesetzt
+  \end{description*}
+
+  Formatierungs-Richtlinien
+  \begin{itemize*}
+    \item Entsprechend Schachtelungstiefe einrücken, aber nicht zu weit
+    \item Einheitliche Verwendung von Leerzeilen und Leerzeichen
+    \item Einheitliche Dateistruktur verwenden
+    \item Werkzeuge: source beautifier, oft in IDEs enthalten
+    \item Editor: syntax highlighting
+  \end{itemize*}
+
+  Änderungsfreundlicher Code
+  \begin{itemize*}
+    \item Wahl von Variablen, Konstanten und Typen orientiert an der fachlichen Aufgabe, nicht an der Implementierung
+    \item Symbolische Konstanten statt literaler Werte verwenden, wenn spätere Änderung denkbar
+    \item Algorithmen, Formeln, Standardkonzepte in Methoden/Prozeduren kapseln
+    \item Übersichtlichkeit: Zusammenhängende Einheit nicht größer als Editorfenster
+    \item Strukturierte Programmierung (Regeln je nach Schärfe)
+    \begin{itemize*}
+      \item Kein goto verwenden (in anderen Sprachen als Java)
+      \item switch nur mit break-Anweisung nach jedem Fall
+      \item break nur in switch-Anweisungen verwenden
+      \item continue nicht verwenden (Effekt ähnlich goto)
+      \item return nur am Ende zur Rückgabe des Werts
+    \end{itemize*}
+    \item Übersichtliche Ausdrücke
+    \item Variablen möglichst lokal und immer private deklarieren
+    \item Wiederverwendung "äußerer" Namen vermeiden
+  \end{itemize*}
+
+  \subsection{Code-Qualität}
+  \begin{itemize*}
+    \item Portierbarer Code: ohne Änderungen in anderes System (Compiler, Betriebssystem, Rechner) übertragen kann
+    \item Implementierungsabhängiges Verhalten
+    \begin{itemize*}
+      \item Compiler übersetzen Sprachkonstrukte unterschiedlich
+      \item Verhalten ist konsistent festgelegt und dokumentiert
+      \item Kompilierung von standardkonformem Code ist erfolgreich
+      \item char kann signed oder unsigned sein: Nicht damit rechnen!
+    \end{itemize*}
+    \item Sicherer Code mit const
+    \begin{description*}
+      \item[Const Variable] Stellt sicher, dass sich der Wert nicht verändert
+      \item[Const Parameter] Übergabeparameter ändert sich nicht
+      \item[Const Operationen] Sicherstellen, dass Operation das Exemplar nicht ändert
+    \end{description*}
+  \end{itemize*}
+
+  \subsection{Dokumentation}
+  \begin{description*}
+    \item[Integrierte] Dokumentation
+    \begin{itemize*}
+      \item Verständlichkeit, Wartbarkeit - auch für Programmierer!
+      \item Code selbst sollte möglichst verständlich sein
+      \item Dokumentation in Programm schreiben und aktualisieren
+      \item Beschreibung der Bedeutung des Codes!
+      \item Als Konventionen festschreiben
+      \item Programmvorspann
+      \item Kurzbeschreibung Datei / Klasse / Funktion ...
+      \item Verwaltungsinformationen
+      \item Laufende Kommentare im Quellcode
+    \end{itemize*}
+    \item[Programmierer] Dokumentation
+    \begin{itemize*}
+      \item Als eigenes Dokument elektronisch oder gedruckt
+      \item Einstieg in Programmverständnis (z.B. Bachelor-Arbeit)
+      \item Konsistenz mit Quelltext? Verweise?
+      \item Technische Unterstützung: JavaDoc (Java), doxygen (C++)
+      \item Ergänztes Java-Programm: Dokumentation HTML, PDF,
+    \end{itemize*}
+    \item[Benutzer] Dokumentation
+    \begin{itemize*}
+      \item Benutzer-Handbuch, Online-Dokumentation
+      \item Unterstützung ohne Support?
+      \item Vollständige und fehlerfreie Beschreibung der Benutzung
+      \item Arten: Tutorial, Beschreibung
+    \end{itemize*}
+  \end{description*}
+
+  \subsection{Codegenerierung}
+  \begin{itemize*}
+    \item Vorwärtsmodellierung: Modell - Code
+    \item Rückwärtsmodellierung: Code - Modell
+    \item Modelltransformation, Refaktorisierung
+    \item Idealfall: Automatische Übersetzung durch SW-Werkzeug
+    \item Statisch: Quelltext der Klassen mit Beziehungen, Attributen...
+    \item Dynamisch: Quelltext der Zustandssteuerung einer Klasse
+  \end{itemize*}
+
+  Optimierung des Entwurfsmodells
+  \begin{itemize*}
+    \item Zugriffspfade
+    \item Klassen in Attribute umwandeln
+    \item Verzögerung von Berechnungen
+    \item Zwischenspeicherung aufwändiger Ergebnisse
+  \end{itemize*}
+
+  Codegenerierung aus StateCharts
+  \begin{itemize*}
+    \item Einfachste Möglichkeit: Switch (Case) Statement
+    \item Zustände werden durch Datenwerte repräsentiert
+    \item Jedes Ereignis wird durch Methode implementiert
+    \item Ausgehend von aktivem Zustand wird bei Eintreffen eines Ereignisses der entsprechende Programmcode ausgeführt
+    \item Abhängig von Zustandsvariable wird Aktion ausgeführt und der Folgezustand eingestellt
+    \item Wird in einer Klasse realisiert
+    \item Sinnvoll für einfache, “flache” Modelle
+  \end{itemize*}
+
+  Anpassung der Generierung
+  \begin{itemize*}
+    \item Verschiedene Zielsprachen (Java, C++, ...)
+    \item Model2Text-Transformationen
+    \item Generierung aus dem Modellierungswerkzeug
+  \end{itemize*}
+
+  \subsection{Implementierung aktiver Objekte}
+  Realisierung aktiver Entwurfsobjekte
+  \begin{itemize*}
+    \item Reagieren nicht nur (Methodenaufruf), sondern implementieren eigenes Verhalten
+    \item Aktive Klassen, z.B. Steuerobjekte
+  \end{itemize*}
+
+  Arten von Programmabarbeitung
+  \begin{description*}
+    \item[Sequentiell] es gibt immer genau einen nächsten Schritt, alle Schritte werden nacheinander ausgeführt
+    \item[Parallel] Spezielle Hardware bzw. Mehrkernprozessor, mehrere Befehlsfolgen werden echt parallel bearbeitet
+    \item[Quasi-parallel] Ein Prozessor arbeitet mehrere Befehlsfolgen in freier Einteilung ab
+    \item[Nebenläufig] Oberbegriff für Parallel und Quasi-parallel (concurrent)
+  \end{description*}
+
+  Vorteile
+  \begin{itemize*}
+    \item Höhere Geschwindigkeit
+    \item Kein aktives Warten auf Ereignisse
+    \item Getrennte Implementierung unabhängiger Aspekte
+  \end{itemize*}
+
+  Ergebnisse eines Programms
+  \begin{itemize*}
+    \item Ein Programm, dessen Ablauf eindeutig vorherbestimmt ist, nennt man deterministisch (deterministic)
+    \item Ein Programm, das bei gleichen Eingaben gleiche Ausgaben produziert, heißt determiniert (determined)
+    \item Programme in üblichen Programmiersprachen sind sequentiell, deterministisch und determiniert
+    \item Grund: Herkömmliche Programmiersprachen sind durch das von-Neumann-Modell geprägt
+    \item Determiniertheit nebenläufiger Programme: Synchronisation
+  \end{itemize*}
+
+  \subsection{Verifikation und Testen}
+  Wie erreicht man qualitativ hochwertige Software?
+  \begin{itemize*}
+    \item Wissen, Erfahrung und Methodenkompetenz der Programmierer
+    \item Projektstruktur, klare Verantwortlichkeiten
+    \item Kosten- und Zeitdruck? Änderungen?
+    \item Programmier- und Testmethoden (pair programming, code reading)
+    \item Technische Unterstützung (Versionierung, Dokumentation, Testen)
+  \end{itemize*}
+
+  Begriffe
+  \begin{description*}
+    \item[Zuverlässigkeit] Maß für Übereinstimmung des Systemverhaltens mit Spezifikation
+    \item[Unzuverlässigkeit] Fehler (bug, fault), fehlerhafter Programmcode
+    \item[Fehlerhafter Zustand (error)] Fehler hat zur Laufzeit zu einem internen fehlerhaften Zustand geführt, der möglicherweise zu einem Ausfall führt
+    \item[Störfall, Ausfall (failure)] Abweichung vom spezifizierten Verhalten, meist mit negativen Folgen
+  \end{description*}
+
+  \paragraph{Verifikation}
+  \begin{itemize*}
+    \item Mathematisch formaler Beweis genügt
+    \item Vorteil: wenn anwendbar, dann vollständiger Beweis
+    \item Problem: für viele (realistisch große) Fälle nicht anwendbar
+    \item Theoretische Informatik: Berechenbarkeitstheorie, Semantik
+  \end{itemize*}
+
+  Testen
+  \begin{itemize*}
+    \item Systematischer Versuch, Defekte in der Software zu finden
+    \item Ingenieurtechnik zur Erhöhung des Vertrauens
+    \item Aufgabe: Unterschiede zwischen Modell und System finden
+    \item Destruktiv im Gegensatz zu sonstigen SWE-Aufgaben
+  \end{itemize*}
+
+  Testplanung
+  \begin{itemize*}
+    \item Testen ist aufwändig, deshalb ist gute Planung nötig!
+    \item Testplanung sollte bereits mit der Anforderungsanalyse beginnen
+    \item Typische Bestandteile einer Test-Spezifikation (Testdrehbuch)
+    \begin{itemize*}
+      \item Phasenmodell des Testprozesses
+      \item Zusammenhang zur Anforderungsspezifikation
+      \item Zu testende Produkte
+      \item Zeitplan für die Tests
+      \item Abhängigkeiten der Testphasen
+      \item Aufzeichnung der Testergebnisse
+      \item Hardware- und Softwareanforderungen
+    \end{itemize*}
+  \end{itemize*}
+
+  \begin{description*}
+    \item[Komponententest] Fehler in einzelnen Objekten oder Subsystemen, losgelöst vom umgebenden System
+    \item[Integrationstest] Zusammenspiel von Komponenten
+    \item[Systemtest] Vollständiges System; Szenarios
+    \item[Strukturtest] innere Zustände, Interaktionen
+    \item[Funktionstest] Anforderungen aus Lastenheft
+    \item[Leistungstest] nichtfunktionale Anforderungen
+    \item[Benutzbarkeitstest] Fehler in der Benutzungsschnittstelle, Verständlichkeit, Akzeptanz bei Anwendern
+    \item[Akzeptanztest, Installationstest]: Kunde, Abnahme
+  \end{description*}
+
+  \begin{itemize*}
+    \item Da Tests bereits frühzeitig stattfinden sollten, ist Umgebung meist nicht vollständig implementiert
+    \begin{itemize*}
+      \item Teststumpf simuliert aufgerufene Komponenten
+      \item Testtreiber simuliert aufrufende Komponenten
+    \end{itemize*}
+    \item Vorgehensweisen: Bottom-up, Top-down, Sandwich, Schichtenweise
+  \end{itemize*}
+
+  Systematisches Testen
+  \begin{itemize*}
+    \item Testfall
+    \begin{itemize*}
+      \item Beschreibung, Name
+      \item Zu testende Komponente, Testgegenstand (Pfad, Aufrufart)
+      \item Eingabedaten (Testdaten)
+      \item Erwartete Ergebnisse („Orakel“)
+      \item Protokoll (erzeugte Ausgaben)
+      \item Bewertung des Ergebnisses
+    \end{itemize*}
+    \item Weitere Begriffe
+    \begin{itemize*}
+      \item Regressionstest: geänderte Version des Testgegenstands
+      \item Alphatest: Test eines Prototypen durch Benutzer
+      \item Betatest: Test der vollständigen Software durch Benutzer
+    \end{itemize*}
+  \end{itemize*}
+
+  Funktionaler Test (black box test)
+  \begin{itemize*}
+    \item Testfallauswahl beruht auf Spezifikation
+    \item Ohne Wissen über inneren Aufbau
+    \item E/A-Zusammenhang
+  \end{itemize*}
+
+  Strukturtest (white box test, glass box test)
+  \begin{itemize*}
+    \item Testfallauswahl beruht auf Programmstruktur
+    \item Wie erreicht man möglichst vollständige Abdeckung?
+    \item Kontrollflussorientiert (Anweisungsüberdeckung anhand Quellcode)
+    \item Datenflussorientiert (Abarbeitungspfade von Definition)
+    \item Zustandsorientiert
+  \end{itemize*}
+
+  \subsection{Testaktivitäten und Werkzeuge}
+  \begin{itemize*}
+    \item Wann wird getestet? Während der Implementierung!
+    \begin{itemize*}
+      \item Auch wenn Schreiben von Tests scheinbar unproduktiv ist
+      \item Tests sind unbeliebt, da Probleme aufgezeigt werden
+      \item Aber: spätes Testen erhöht Aufwand!
+    \end{itemize*}
+    \item Inkrementell, d.h. für jede überschaubare Änderung
+    \item Spezielle Vorgehensweise: test first-Ansatz
+    \item Wie wird getestet? Geplant, systematisch, möglichst automatisiert, dokumentiert, wiederholbar
+  \end{itemize*}
+
+  Testplanung
+  \begin{itemize*}
+    \item Iterative Erstellung eines Testplans / Testdrehbuchs
+    \item Aktivitäten - Festlegen von
+    \begin{itemize*}
+      \item Teststrategie (Testumfang, Testabdeckung, Risikoabschätzung)
+      \item Testziele und Kriterien für Testbeginn, -ende und -abbruch
+      \item Vorgehensweise (Testarten)
+      \item Testumgebung (Beschreibung)
+      \item Hilfsmittel und Werkzeuge zum Testen
+      \item Testspezifikation
+      \item Testorganisation (Termine, Rollen, Ressourcen)
+      \item Fehlermanagement (Werkzeugunterstützung)
+    \end{itemize*}
+    \item Ergebnis: Inhalt des Testplans
+  \end{itemize*}
+
+  Testspezifikation
+  \begin{itemize*}
+    \item Auswahl der zu testenden Testfälle
+    \item Definition einzelner Testfälle
+    \begin{itemize*}
+      \item Grundlage: Anwendungsfälle, Anforderungen, Fehlermeldungen (Zuordnung notwendig)
+    \end{itemize*}
+    \item Aktivitäten
+    \begin{itemize*}
+      \item Testfallfindung und Testfalloptimierung
+      \item Testfälle beschreiben (was genau ist zu testen)
+      \item Randbedingungen finden (Abhängigkeiten zu anderen Testfällen)
+      \item Festlegen und Erstellen der Eingabedaten
+      \item Festlegungen zum Testablauf und zur Testreihenfolge
+      \item Festlegen Soll-Ergebnis
+      \item Festlegung der Bedingung(en) für 'Test erfüllt'
+    \end{itemize*}
+  \end{itemize*}
+
+  Testvorbereitung
+  \begin{itemize*}
+    \item Tätigkeiten im Vorfeld des Tests
+    \item Aktivitäten
+    \begin{itemize*}
+      \item Vorbereitung der Tests entsprechend Testplan
+      \item Bereitstellen der Dokumente (Testspezifikation)
+      \item Verfügbar machen von Werkzeugen (Fehlermanagement)
+      \item Aufbauen der Testumgebung(en)
+      \item Integration der Entwicklungsergebnisse
+      \item Bereitstellung von Testdaten in die Testumgebung
+      \item Benutzer und Benutzerrechte anlegen
+    \end{itemize*}
+  \end{itemize*}
+
+  Testdurchführung
+  \begin{itemize*}
+    \item Durchführung der spezifizierten Tests (Manuell/Automatisiert)
+    \item Aktivitäten
+    \begin{itemize*}
+      \item Auswählen der zu testenden Testfälle
+      \item Bereitstellen der Testdaten
+      \item Starten, Überwachen, Abbrechen, Beenden
+      \item Erfassung des Ist-Ergebnisses zur Auswertung
+      \item Besondere Vorkommnisse dokumentieren
+      \item Umgebungsinformationen für den Testlauf archivieren, ...
+    \end{itemize*}
+  \end{itemize*}
+
+  Testauswertung
+  \begin{itemize*}
+    \item Überprüfung der Ergebnisse
+    \item Vergleich Ist-Ergebnis mit Soll-Ergebnis
+    \item Entscheidung Testergebnis (ok / Fehler)
+    \item Bei Fehler:
+    \begin{itemize*}
+      \item Klassifizierung (z. B.: Fehlerursache, Fehlerschwere etc.)
+      \item Fehler reproduzieren!
+      \item Angemessene Fehlerbeschreibung und -erläuterung
+      \item Fehler im Fehlermanagement eintragen (Bug report)
+    \end{itemize*}
+  \end{itemize*}
+
+  Bugbeschreibung
+  \begin{itemize*}
+    \item Möglichst genaue Beschreibung des Fehlers
+    \item Ziel ist die Reproduzierbarkeit des Fehlers
+    \item Zuordnung zu Projektplan: Meilenstein, Version
+    \item Fehlerklassifikation
+    \begin{description*}
+      \item[defect] Fehler in einer bestehenden Funktionalität
+      \item[enhancement/feature] Funktionale Anforderung (Erweiterung)
+      \item[task] Allgemeine Aufgabe
+    \end{description*}
+    \item Priorität festlegen
+    \begin{description*}
+      \item[blocker] Schwerwiegender Fehler, führt zur Arbeitsunfähigkeit anderer
+      \item[critical] Schwerer Fehler, grundlegende Funktionalität des Systems nicht gegeben
+      \item[major] normaler Fehler. System kann weiterhin verwendet werden
+      \item[minor] Kleiner Fehler, behindert nicht weiter die Funktionsfähigkeit des Systems
+      \item[trivial] Schönheitsfehler, stört während des Betrieb des Systems nicht.
+    \end{description*}
+  \end{itemize*}
+
+  Testabschluss
+  \begin{itemize*}
+    \item Zusammenfassen der Tests dokumentieren und kommunizieren
+    \item Entscheidungen herbeiführen
+    \begin{itemize*}
+      \item Ziele erreicht - nächste Schritte (Auslieferung)
+      \item Tests vorzeitig beenden oder unterbrechen
+      \item Gründe dokumentieren
+    \end{itemize*}
+    \item Unterlagen archivieren
+  \end{itemize*}
+
+  Testautomatisierung
+  \begin{itemize*}
+    \item Automatische Code-Validierung
+    \item Statisch: lint (C), Compiler
+    \item Dynamisch: run-time checking, memory leaks etc.
+  \end{itemize*}
+
+  Behebung funktionaler Fehler
+  \begin{itemize*}
+    \item Log-Ausschriften bzw. Signale
+    \item Debugger: Vorwärts / Rückwärts
+    \item Haltepunkte setzen: Bedingte Haltepunkte für Schleifen
+    \item Darstellung der Variablenbelegung, Werte setzen
+    \item Analyse des Aufruf-Stacks
+  \end{itemize*}
+
+  Behebung nichtfunktionaler Fehler
+  \begin{itemize*}
+    \item Geschwindigkeit: profiling z.B. mit Eclipse TPTP
+    \item Aufrufe, Zeitverbrauch in Methoden usw.
+  \end{itemize*}
+
+  Memory Leaks
+  \begin{itemize*}
+    \item Runtime heap summary: Welche Objekte verbrauchen Speicher?
+    \item Reference graph: Wer referenziert diese Objekte, so dass sie nicht per garbage collection gelöscht werden?
+  \end{itemize*}
+
+  \subsection{Softwareverteilung (deployment)}
+  \begin{itemize*}
+    \item Prozess zur Installation von Software auf PC‘s, Servern, Maschinen in Produktion
+    \item Steuerung der Installation der Software
+    \item Voraussetzungen für die Software schaffen
+    \begin{itemize*}
+      \item Schulungen planen und durchführen
+    \end{itemize*}
+    \item Softwareverteilung ist ein kritischer Prozess!
+    \item Ziele
+    \begin{itemize*}
+      \item Automatische Installation, Konfiguration und Wartung einer großen Anzahl von Systemen mit geringem Aufwand
+      \item Erreichen eines störungsarmen und sicheren Betriebs
+      \item Möglichst einheitliche Softwareversionen auf allen Systemen
+    \end{itemize*}
+  \end{itemize*}
+
+  Installationsarten
+  \begin{description*}
+    \item[Erstinstallation]
+    \item[Software-Update] Aktualisierung der Software, Daten oder Konfiguration
+    \item[Hotfixes/Service Packs] Nur bestimmte Teile der Software werden aktualisiert; Meist nur Fehlerbehebung, keine neuen Features
+    \item[Upgrade] Erweitert eine Software deutlich um neue Funktionen
+    \item[Unbeaufsichtigte (automatische)] Installation
+    \begin{itemize*}
+      \item Installation erfolgt ohne Benutzereingriff
+      \item Periodisch, durch Aufruf des Anwenders, beim Programmstart
+      \item Einstellungen in einem Skript festgelegt oder werden als Parameter übergeben
+    \end{itemize*}
+  \end{description*}
+
+  Software-Rollout
+  \begin{itemize*}
+    \item Vorgang des Veröffentlichens und Verteilens
+    \item Rollout abhängig von verschiedenen Kriterien
+    \item Rollout-Varianten
+    \begin{itemize*}
+      \item Zentral / Dezentral
+      \item Manuell (Benutzer löst Installation aus)
+      \item Automatisiert (ohne Benutzerinteraktion)
+    \end{itemize*}
+    \item Verteilungsarten
+    \begin{description}
+      \item[Vollständige Verteilung] (big bang) Alle Installationen werden mit einem Mal installiert (Sehr hohes Risiko)
+      \item[Rollback] Wiederherstellung des Ursprungszustands
+      \item[Pilot] Einführung für wenige ausgewählte Installationen (Sehr hohe Sicherheit)
+      \item[Iterativ (schrittweise)] mit definierten Anzahl von Installationen bessere Reproduzierbarkeit
+    \end{description}
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Vorgehensmodelle}
+  \begin{itemize*}
+    \item Methode zur Erstellung von Softwaresystemen
+    \item Systematisch, rational und schrittweise zur Lösung
+    \item Softwareentwicklungsprozess übersichtlich, plan- und strukturierbar
+    \item Zerlegung des Softwareentwicklungsprozesses in Einheiten
+    \item Unternehmensspezifisch, anpassbar, erweiterbar
+  \end{itemize*}
+
+  Phasen
+  \begin{itemize*}
+    \item Überwiegend zeitliche Zerlegung
+    \item Zeitlich begrenzte Phasen
+    \item Auch inhaltlich und organisatorisch begrenzte Phasen möglich
+    \item Teilprozesse / Aktivitäten
+  \end{itemize*}
+
+  Aufgabe
+  \begin{itemize*}
+    \item Erzeugt Arbeitsergebnis (Artefakt)
+    \item Verbraucht Ressourcen (z.B. Arbeitskraft, Zeit, Ausrüstung)
+  \end{itemize*}
+
+  Arbeitsergebnis (oder Artefakt)
+  \begin{itemize*}
+    \item Dokument, Modell, System, Programmcode, Lastenheft,...
+    \item Intern zu lieferndes Ergebnis
+  \end{itemize*}
+
+  Teilnehmer und Rollen
+  \begin{itemize*}
+    \item Verantwortungsbereich eines Teilnehmers (z.B. Kunde, Projektmanager, Entwickler, Architekt)
+    \item Rolle bearbeitet / enthält Satz von Aufgaben
+  \end{itemize*}
+
+  Unterstützungsprozesse / -Aktivitäten
+  \begin{description*}
+    \item[Projektmanagement] Projektplanung, -verfolgung und -steuerung, Risikomanagement
+    \item[Anforderungsmanagement] Im Gegensatz zur Anforderungsaufnahme und -analyse
+    \item[Qualitätsmanagement] Softwaremetriken, Statische + dynamische Analyse (Bestimmung von Schwachstellen)
+    \item[Konfigurationsmanagement] Versionsverwaltung, Änderungsmanagement
+    \item[Dokumentation]
+  \end{description*}
+
+  \subsection{Sequenzielle Modelle}
+  \begin{itemize*}
+    \item Wasserfallmodell
+    \begin{itemize*}
+      \item Abhängigkeiten zwischen Teilergebnissen
+      \item Ursprung in System- Hardwareentwicklung
+      \item Sequenzielles Phasenmodell (Abschluss der Phasen)
+      \item Stark Dokumentengetrieben (Ergebnisse der Phasen)
+      \item Unterteilung in abgeschlossene Phasen:
+      \begin{itemize*}
+        \item Analyse (Planung)
+        \item Design/Entwurf
+        \item Implementierung
+        \item Test \& Integration
+        \item Einführung, Betrieb \& Wartung
+      \end{itemize*}
+      \item Einfach und verständlich, bekannt und verbreitet
+      \item Starke Abhängigkeiten zwischen Teilergebnissen
+      \item Ungeeignet, falls Anforderungen zu Beginn unklar
+      \item Unflexibel gegenüber Änderungen
+    \end{itemize*}
+    \item Sequenziell
+    \begin{itemize*}
+      \item Phasen strikt nacheinander, Dokumenten-orientiert
+      \item Keine Änderungen abgeschlossener Artefakte
+    \end{itemize*}
+    \item Nebenläufig
+    \begin{itemize*}
+      \item Phasen laufen teilweise parallel für bessere Zeitnutzung
+      \item Weiterhin keine Änderungen fertiger Dokumente
+    \end{itemize*}
+    \item Inkrementell
+    \begin{itemize*}
+      \item Unterteilung des Produkts in Teile
+      \item Schnellere Auslieferung von Teilfunktionalität nach vollständiger Aufnahme der Anforderungen
+    \end{itemize*}
+    \item Evolutionär
+    \begin{itemize*}
+      \item Anforderungen entwickeln sich im Projekt
+      \item Ausgelieferte Versionen ergeben neue Anforderungen
+    \end{itemize*}
+    \item V-Modell [Boehm]
+    \begin{itemize*}
+      \item Explizite Adressierung der Qualitätssicherung
+      \item Entwicklung des V-Modells in Deutschland
+      \item V-Modell XT (extreme tailoring)
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Iterative Modelle}
+  \begin{itemize*}
+    \item Spezifikation, Entwurf und Implementierung müssen immer wieder verändert und angepasst werden
+    \item Häufiges Integrieren, Validieren und Testen
+    \item Wenn möglich, sollte es immer einen lauffähigen (unvollständigen) Prototypen geben
+    \item Neue Funktionen sofort integrieren
+    \item Neue Versionen gegenüber Anforderungen Validieren
+  \end{itemize*}
+
+  Spiralmodell
+  \begin{itemize*}
+    \item Risikogetrieben: Größte Projektrisiken identifizieren und als erstes bearbeiten
+    \item Spirale = iterativer Zyklus durch dieselben Schritte
+    \item Ziele jedes Durchlaufs aus alten Ergebnissen ableiten
+    \item Regelmäßige Überprüfung des Prozessmodells
+    \item Hoher Management-Overhead, große Projekte
+  \end{itemize*}
+
+  Unified Process
+  \begin{itemize*}
+    \item Vorgehensmodelle zur objektorientierten Softwareentwicklung
+    \item Phasen der Entwicklung
+    \begin{itemize*}
+      \item Anfang, Ausarbeitung, Erstellung, Überleitung
+      \item Unterteilung in Iterationen
+      \item Definition von Meilensteinen
+    \end{itemize*}
+    \item Definition von Kernprozessen, die in den Phasen ablaufen
+    \begin{itemize*}
+      \item Geschäftsprozessmodellierung, Anforderungsanalyse, Analyse \& Design, Implementierung, Test, Auslieferung
+      \item In unterschiedlichen Anteilen parallel ablaufend!
+    \end{itemize*}
+    \item Variation
+    \begin{itemize*}
+      \item Inkrementell, iterativ, evolutionär
+      \item Anwendungsgetrieben
+      \item Architekturzentriert
+      \item Risikoorientiert
+      \item Ereignisorientiert
+    \end{itemize*}
+    \item Passend für objektorientiertes Paradigmas und UML
+    \item Tool-Unterstützung
+    \item Reaktion auf Änderungen möglich
+    \item Hoher Bürokratischer Aufwand $\rightarrow$ Tailoring notwendig!
+    \item Relativ hohe „Lernkurve“ aller Beteiligten
+    \item Keine schnelle Reaktion auf Änderungen
+    \item Keine integrierte Qualitätssicherung
+  \end{itemize*}
+
+  \subsection{Agile Methoden}
+  Das Agile Manifest (2001)
+  \begin{itemize*}
+    \item Individuen und Interaktionen $>$ als Prozesse und Tools
+    \item Funktionierende Software $>$ als übermäßige Dokumentation
+    \item Stetige Zusammenarbeit mit Kunden $>$ als Vertragsverhandlung
+    \item Mut und Offenheit für Änderungen $>$ als Befolgen eines Plans
+  \end{itemize*}
+
+  Eigenschaften agiler Vorgehensmodelle
+  \begin{itemize*}
+    \item Team ist für Ergebnis verantwortlich und organisiert sich selbst
+    \item Kleine Teams 5-8 Personen
+    \item Definition von Richtlinien, Werten und Prinzipien
+    \item Vorteile agiler Methoden
+    \begin{itemize*}
+      \item Geringer bürokratischer Aufwand
+      \item Besseres Arbeitsklima (Berücksichtigung Sozialer Aspekte)
+      \item Ständige Verfügbarkeit einer lauffähigen Version
+      \item Mögliche / nötige Einflussnahme des Kunden
+      \item „Freie“ Wahl der Prinzipien/Regeln
+      \item Vermeidung von Spezialistentum und individuellem Besitz
+    \end{itemize*}
+    \item Nachteile
+    \begin{itemize*}
+      \item Schwierigeres Projektmanagement
+      \item Chaotische Vorgehen
+      \item Schwere Planbarkeit des Ergebnisses
+      \item Notwendige Beteiligung des Kunden
+      \item Ergebnis ist schwer vorherzusagen
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{eXtreme Programming (XP)}
+  \begin{itemize*}
+    \item Evolutionäre Entwicklung in kleinen Schritten
+    \item Konzentration auf Programmcode als Analyseergebnis, Entwurfsdokument und Dokumentation
+    \item Weglassen von explizitem Design, ausführlicher Dokumentation und Reviews
+    \item Code wird permanent lauffähig gehalten (täglich)
+    \item Schnell und flexibel
+    \item Erfordert Disziplin der Teilnehmer
+    \item Rollen: Projektleiter, Kunde (verfügbar), Entwickler
+  \end{itemize*}
+
+  \paragraph{Scrum}
+  \begin{itemize*}
+    \item Iterativ / Inkrementell, Evolutionär
+    \item stark Anwendungs- und Ereignisorientiert
+    \item schnelle Entwicklungsiterationen
+    \item Sprint: eine schnelle Iteration/Umsetzung Features (30 Tage)
+    \item Product Backlog: Liste der gewünschten Features des Produkts
+    \begin{itemize*}
+      \item Vom Produkt-Owner priorisiert / Aufwand vom Team geschätzt
+      \item Jeder kann Einträge beisteuern
+    \end{itemize*}
+    \item Rollen
+    \begin{description*}
+      \item[Product Owner] Erfasst Bedürfnisse der Kunden und Stakeholder, Pflegt Backlog, definiert, priorisiert Features pro Sprint
+      \item[Scrum Master] Berät das Team, Überprüft Einhaltung von Werten und Techniken, moderiert die Meetings, Schützt das Team vor äußeren Störungen, Repräsentiert Team gegenüber Management
+      \item[Scrum Team] Team organisiert sich und die Aufgaben selbst, gemeinsames Ziel verfolgen, selbstloses Handeln, Teamentscheidungen vertreten
+    \end{description*}
+    \item Sprint Backlog
+    \begin{itemize*}
+      \item Für die aktuelle Iteration ausgewählte Aufgaben ($\leq$ 2 Tage)
+      \item Team-Mitglieder wählen Tasks aus - keine Zuweisung
+      \item Restaufwand wird täglich aktualisiert - Burndown Chart
+      \item Team-Mitglied kann Tasks hinzufügen, löschen, ändern
+    \end{itemize*}
+    \item Daily Meeting (15 Minuten)
+    \begin{itemize*}
+      \item Was wurde geschafft? Was ist zu tun? Was behindert den Fortschritt?
+      \item Weiterführende Diskussionen erst im Anschluss
+    \end{itemize*}
+    \item Sprint Review-Meeting
+    \begin{itemize*}
+      \item Präsentation des Erreichten (Feature Demo)
+      \item Product Owner, Kunde usw. geben Feedback
+      \item Neue Anforderungen hinzufügen / Neu priorisieren
+      \item Qualitätsansprüche ändern
+    \end{itemize*}
+    \item Sprint-Retrospektive
+    \begin{itemize*}
+      \item Rückkopplungsschleife: Was war gut und was hat nicht funktioniert?
+      \item Nach jedem Sprint
+      \item Diskussion der identifizierten Probleme
+      \item Identifikation von wenigen „Action Items“
+    \end{itemize*}
+    \item Burndown Chart: Darstellung der offenen und erledigten Aufwände / Tasks
+  \end{itemize*}
+
+\end{multicols}
+\newpage
+\begin{multicols}{3}\scriptsize
+
+  \section{Projektmanagement}
+
+  Was ist ein Projekt?
+  \begin{itemize*}
+    \item Merkmale von Projekten
+    \begin{itemize*}
+      \item Zielgerichtetes Vorhaben
+      \item Einmaligkeit
+      \item Zeitliche, finanzielle und personelle Rahmenbedingungen
+      \item Abgrenzung zu anderen Vorhaben
+      \item Projektspezifische Organisation
+      \item Komplexität (Unterteilung in abhängige Teilaufgaben)
+    \end{itemize*}
+    \item Unsicherheit vor allem in den Frühphasen
+    \item Risiko durch unbekannte Aufgabe
+  \end{itemize*}
+
+  Was ist Projektmanagement?
+  \begin{itemize*}
+    \item Überbegriff für planende und durchsetzende Aktivitäten zur Vorbereitung und Durchführung eines Projekts
+    \item Management des Problemlösungsprozesses
+    \item Aufgaben
+    \begin{itemize*}
+      \item Problemabgrenzung
+      \item Zielfestlegung, Ablaufplanung
+      \item Planung und Bereitstellung personeller, finanzieller und sachlicher Ressourcen
+      \item Führen der Projektgruppe und Koordination der Aktivitäten
+      \item Steuerung und Überwachung des Projektablaufes
+      \item Zum großen Teil Planungs- und Kommunikationsleistung
+    \end{itemize*}
+  \end{itemize*}
+
+  \subsection{Projektplanung}
+  Planung des Projektablaufs
+  \begin{itemize*}
+    \item Zunächst wieder: Teile und Herrsche!
+    \item Projektstruktur
+    \begin{itemize*}
+      \item Teilung der Projektaufgabe in Arbeitspakete (work packages) und darin enthaltenen Aktivitäten (activities)
+      \item Einteilung anhand Produktstruktur, fachlicher Struktur oder Phasenmodell
+    \end{itemize*}
+    \item Überblick weiterer Planungsaufgaben
+    \begin{itemize*}
+      \item Bestimmen der Abhängigkeiten
+      \item Ermitteln der nötigen Ressourcen
+      \item Schätzen der Aufwände
+      \item Zeitplan aufstellen
+      \item Meilensteine definieren
+    \end{itemize*}
+  \end{itemize*}
+  %![Projektstruktur](Assets/Softwaretechnik1_Projektstruktur.png)
+
+  Ablaufplanung
+  \begin{itemize*}
+    \item Abhängigkeiten zwischen Vorgängen A und B
+    \begin{itemize*}
+      \item Ende-Anfang (Normalfolge)
+      \begin{itemize*}
+        \item B kann begonnen werden, sobald A beendet worden
+      \end{itemize*}
+      \item Anfang-Anfang (Anfangsfolge)
+      \begin{itemize*}
+        \item B kann begonnen werden, sobald A begonnen worden
+      \end{itemize*}
+      \item Anfang-Ende (Sprungfolge)
+      \begin{itemize*}
+        \item B kann beendet werden, sobald A begonnen worden
+      \end{itemize*}
+      \item Ende-Ende (Endfolge)
+      \begin{itemize*}
+        \item B kann beendet werden, sobald A beendet worden
+      \end{itemize*}
+    \end{itemize*}
+    \item Netzplantechnik
+    \begin{itemize*}
+      \item Planungsarten
+      \begin{itemize*}
+        \item Vorwärtsplanung (ab Startzeitpunkt)
+        \item Rückwärtsplanung (ab gewünschtem Projektende)
+      \end{itemize*}
+      \item Berechnete Daten für Vorgänge
+      \begin{itemize*}
+        \item Frühester und spätester Anfangszeitpunkt (FAZ/SAZ)
+        \item Frühester und spätester Endzeitpunkt (FEZ/SEZ)
+        \item Pufferzeiten, Gesamtpuffer
+        \item Notation unterschiedlich
+      \end{itemize*}
+      \item Allgemein
+      \begin{itemize*}
+        \item Kritischer Pfad: Verzögerung der Projektdauer
+        \item Kritische Vorgänge: Teil des kritischen Pfades
+      \end{itemize*}
+    \end{itemize*}
+  \end{itemize*}
+
+  Aufwandsschätzung
+  \begin{itemize*}
+    \item Aus Erfahrungswerten systematisiert
+    \item Versuch, wichtige Einflussfaktoren zu erfassen
+    \begin{itemize*}
+      \item Metriken für Spezifikationen
+      \item Komplexität von Teilfunktionen
+      \item Menge der Funktionen
+      \item Anpassung durch individuelle Faktoren
+    \end{itemize*}
+  \end{itemize*}
+
+  \paragraph{Function Point Analyse}
+  \begin{itemize*}
+    \item Ursprung IBM Ende 1970er Jahre
+    \item Funktionsumfang und Schwierigkeitsgrad von Software
+    \item Verschiedene Verfahren
+    \item Jeweils Anzahl x Gewicht
+    \item Summe aller Werte = Unadjusted Function Points (UFP)
+    \item Function Points = UFP x EG
+    \item Einflussgrad EG = 1 + 0.01 x SummeEinflussfaktoren
+    \item Einflussfaktoren: Einfluss auf Anwendungsentwicklung
+    %\item %![FPA2](Assets/Softwaretechnik1_FPA2.png)
+    \item Berechnung der Personen-Monate aus Erfahrungen vorangegangener Projekte
+    \begin{itemize*}
+      \item Aufwand, der von einer Person in einem Monat unter Idealbedingungen erledigt werden kann
+    \end{itemize*}
+    \item Umrechnung mit Tabelle (nichtlinearer Verlauf)
+    %\item %![FPA3](Assets/Softwaretechnik1_FPA3.png)
+  \end{itemize*}
+
+  \paragraph{CoCoMo II}
+  \begin{itemize*}
+    \item Constructive Cost Model [Boehm2000]
+    \item Ausgangspunkt: geschätzte Anzahl Zeilen Quellcode
+    \begin{itemize*}
+      \item SLOC, source lines of code (zB. aus UFP schätzen)
+    \end{itemize*}
+    \item Aufwand Personen-Monate (PM) $PM = A * Size^E \prod_{i=1}^n EM$ mit $E=B+0,01*\sum_{j=1}^5 SF_j$
+    \item Faktoren $A=2.94$ und $B=0.91$ (anpassbare Koeffizienten)
+    \item Effort multiplier $EM: n=6..16$, Tabelle nach Boehm
+    \item Scale factor SF: Fünf Einflüsse auf Rentabilität der Softwareentwicklung
+    \item Notwendige Entwicklungszeit (time to develop) $TDEV = C * PM^F$ mit $F = D + 0,2 * ( E - B )$
+    \item Faktoren $C=3,67$ und $D=0,28$, anpassbar
+    \item Ressourcenplanung %![Ressourcenplanung](Assets/Softwaretechnik1_Ressourcenplanung.png)
+    \item Zeitplanung (Gantt-Chart / Balkendiagramm)
+  \end{itemize*}
+
+  \subsection{Projektdurchführung}
+  Projektorganisation
+  \begin{itemize*}
+    \item Teilnehmer: Personen, Rollen, Verantwortung, Teams
+    \item Linienorganisation:
+    \begin{itemize*}
+      \item hierarchisch %![hierarchisch](Assets/Softwaretechnik1_Organisation_hierarchisch.png)
+      \item Matrixorganisation %![matrix](Assets/Softwaretechnik1_Organisation_matrix.png)
+      \item Reine Projektorganisation: Mitarbeiter werden aus Organisation herausgelöst und Projektleiter unterstellt
+    \end{itemize*}
+  \end{itemize*}
+
+  Projektmanager - Rolle und Aufgaben
+  \begin{itemize*}
+    \item Planung, Start, Kontrolle und Beenden des Projekts
+    \item Schnittstelle zur Umgebung des Projekts
+    \begin{itemize*}
+      \item Kunden, Unterauftragnehmer, interne Kontakte, Verträge
+    \end{itemize*}
+    \item Team zusammenstellen und steuern
+    \begin{itemize*}
+      \item 5-7 Mitglieder gemischter Qualifikation
+      \item Team von äußeren Aufgaben abschirmen
+      \item Teilaufgaben definieren, vergeben und koordinieren
+      \item Fortschritt kontrollieren und Probleme beseitigen
+    \end{itemize*}
+    \item Weitere Ressourcen bereitstellen
+    \item Notwendige Planänderungen erkennen und reagieren
+  \end{itemize*}
+
+  Projektstart
+  \begin{itemize*}
+    \item Nach Abschluss der Planungsphase
+    \item Festlegung von ...
+    \begin{itemize*}
+      \item Arbeitsstil und interne Organisation
+      \item Aufgabenverteilung und Themen-Verantwortung
+      \item Erste Aufgaben, Verantwortliche und Termine
+      \item Einigung über Meilensteine und Termine
+      \item Art und Termine der Projekttreffen
+      \item Informationen und Kommunikationswege
+      \item Technische Infrastruktur
+    \end{itemize*}
+    \item Starttreffen des Projekts (kick-off meeting)
+  \end{itemize*}
+
+  Meetings / Projekttreffen
+  \begin{itemize*}
+    \item Regelmäßige Abstimmung der Projektteilnehmer
+    \item Inhalt und Ablauf: geplant (Tagesordnung), Moderator
+    \begin{itemize*}
+      \item Aktueller Stand
+      \item Bericht über individuelle Aufgaben
+      \item Planung des nächsten Termins
+    \end{itemize*}
+    \item Protokoll
+    \begin{itemize*}
+      \item Datum, Zeit, Ort, Teilnehmer, Moderator
+      \item Bezeichnung
+      \item Tagesordnung mit einzelnen Punkten
+      \item Kurz und knapp, neutral bei Diskussionen
+    \end{itemize*}
+  \end{itemize*}
+
+  Fortschrittskontrolle
+  \begin{itemize*}
+    \item Meilensteine: Klar definiertes Zwischenresultat zur Beurteilung des Projektfortschritts
+    \item Besprechung in Projekttreffen
+    \begin{itemize*}
+      \item Besprechung des Status jedes Meilensteins / jeder Aufgabe
+      \item Welche Probleme sind aufgetreten / gelöst?
+      \item Verbleibender Aufwand - Terminverschiebung nötig?
+      \item Planung der nächsten Schritte (Aufgabe, Termin)
+    \end{itemize*}
+  \end{itemize*}
+
+  Meilenstein-Trendanalyse
+  \begin{itemize*}
+    \item Technik zur Fortschrittskontrolle
+    \item Überwachung des Projektfortschritts zur Erkennung von Terminverzögerungen
+    \item Bei Verzögerungen:
+    \begin{itemize*}
+      \item Ressourcen erhöhen
+      \item Termine verschieben
+      \item Funktionen reduzieren
+    \end{itemize*}
+  \end{itemize*}
+
+  Wie viel Planung?
+  \begin{itemize*}
+    \item Aufwand und Detaillierungsgrad der Planung an Projektgröße und „echten“ Aufwand anpassen
+    \item Pläne müssen sich ändern können!
+    \item Projekte sind einmalig und daher unvorhersehbar
+    \item Adaptiv planen: nächste Aufgaben genau, spätere grob
+    \item Einsatz von Projektmanagement-Software
+    \item Projektende
+    \begin{itemize*}
+      \item Abschlusstreffen
+      \item Bewertung von Ergebnis und Organisation
+    \end{itemize*}
+  \end{itemize*}
+
+\end{multicols}
+
+\end{document}

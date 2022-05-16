@@ -1,0 +1,1292 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{mdwlist} %less space for lists
+
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{beweis}{Beweis}
+
+\pdfinfo{
+  /Title (Betriebssysteme - Übung)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Studenten TU Ilmenau)
+  /Subject ()
+}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+
+
+\newtcolorbox{myboxii}[1][]{
+ breakable,
+ freelance,
+ title=#1,
+ colback=white,
+ colbacktitle=white,
+ coltitle=black,
+ fonttitle=\bfseries,
+ bottomrule=0pt,
+ boxrule=0pt,
+ colframe=white,
+ overlay unbroken and first={
+ \draw[red!75!black,line width=3pt]
+  ([xshift=5pt]frame.north west) -- 
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  ([xshift=-5pt]frame.north east) -- 
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay unbroken app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) -- 
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) -- 
+  ([xshift=-5pt]frame.south east);
+ },
+ overlay middle and last={
+ \draw[red!75!black,line width=3pt]
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay last app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) --
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) --
+  ([xshift=-5pt]frame.south east);
+ },
+}
+
+\lstset{
+	literate={ö}{{\"o}}1
+	{ä}{{\"a}}1
+	{ü}{{\"u}}1
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+    Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Betriebssysteme}! Für die Richtigkeit der Lösungen wird keine Gewähr gegeben. Anlagen sind im Ordner \textit{Assets/Betriebssysteme\_uebung/} zu finden.
+\end{myboxii}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 1}
+%##########################################
+\subsection{Aufgabe 1}
+\textit{Wie würden Sie heute, zu Beginn des Kurses, den Begriff "Betriebssystem" beschreiben? Sehen Sie Analogien zwischen den Aufgaben und Funktionen von Betriebssystemen und denen gesellschaftlicher oder wirtschaftlicher Einrichtungen?}
+\vspace{10mm}
+
+Begriff "Betriebssysteme" beschreiben: Verknüpfung zwischen Hard- und Software.
+\begin{itemize*}
+    \item Ermöglicht Kommunikation
+    \item Software: Browser, Office, Bibiliotheken,...
+    \item Betriebssystem: Betriebssystemdienste, Resourcenmanagement, Schnittstellen, Bibiliotheken,...
+    \item Hardware: CPU, GPU, E/A, Speicher, Netzwerk,...
+\end{itemize*}
+eine Abstraktion von Hardware-Ressourcen, Sammlung von programmen,
+Vorteil: Komplexität verborgen vor dem Nutzer
+
+%##########################################
+\subsection{Aufgabe 2}
+\textit{Wie sind diejenigen Betriebssysteme in Erscheinung getreten, mit denen Sie bisher schon gearbeitet haben? Welche Aufgaben haben sie gelöst? Welche Probleme haben sie gezeigt?}
+\vspace{10mm}
+verschiedene Betriebssysteme:
+\begin{itemize*}
+    \item Universalsysteme (Windows, Linux, Mac, Android, iOS): Benutzerfreundlich, keine Spezialisierung (GUI gehört nicht dazu)
+    \item eingebettete Systeme (Microkontroller): resourcensparend, belastbarkeit
+    \item Echtzeitsysteme (motorsteuerung): deadlines!
+    \item chipkarten/sicherheitssysteme: nicht wiederbeschreibbar, meist genau 1 Aufgabe
+\end{itemize*}
+
+%##########################################
+\subsection{Aufgabe 3}
+\textit{In der Vorlesung haben Sie ein breites Spektrum an Einsatzgebieten für Betriebssysteme kennen gelernt, das verdeutlichen sollte, welche sehr unterschiedlichen Anforderungen heute an Betriebssysteme gestellt werden. Kennen Sie über diese Szenarien hinaus Beispiele für Einsatzgebiete, in denen folgende eine zentrale Rolle spielen? Was wären die jeweiligen Konsequenzen, wenn ein Betriebssystem dabei diese Eigenschaften nicht besitzen würde?}
+\vspace{10mm}
+\begin{description*}
+    \item[Echtzeitfähigkeit] einhalten von Fristen ist Hauptziel, harte oder weiche EZS
+    \item[Robustheit] betrieb in widrigen Umgebungen (Umwelteinflüsse, Anwenderfehler)
+    \item[Sicherheit] Security: schutz gegen Angriffe von außen (Verschlüsselung etc); Safety: Schutz gegen "Angriffe von innen" (Speichersicherheit etc)
+    \item[Korrektheit] (gegenüber einer Spezifikation) Testen (keine vollständige Sicherheit), Verifikation (mathematischer Beweis)
+    \item[Performanz] Geschwindigkeit von Anwenderprogrammen, Effiziente Algorithmen für BS Dienste
+    \item[Sparsamkeit] BS Größe, energie- und ressourcenschonend
+    \item[Skalierbarkeit] Lastskalierbarkeit (Bsp Online shops), Ressourcenskalierbarkeit
+\end{description*}
+
+
+%##########################################
+\subsection{Aufgabe 4}
+\textit{Wenn Sie auf einem der heute üblichen Computer Bürosoftware, Internetprogramme (Webbrowser, E-Mail-Clients etc.) und Audio/Video-Applikationen nutzen möchten und die Wahl eines Betriebssystems hätten: Welche der oben genannten und welche weiteren Eigenschaften würden Sie von diesem Betriebssystem erwarten?}
+\vspace{10mm}
+Anforderungen an Office-PC-BS (universalsystem): Interaktivität, Performance, Robustheit, korrektheit, sicherheit, sparsamkeit, bequemlichkeit, hohe abstraktionsebene
+
+
+%##########################################
+\subsection{Aufgabe 5}
+\textit{Warum könnte es problematisch sein, ein und dasselbe Betriebssystem auf Großrechnern (Mainframes) und gleichzeitig auf eingebetteten Systemen einzusetzen?}
+\vspace{10mm}
+gleiches Betriebssystem für Großrechner und eingebetteten Systemen? Portierbarkeitsprobleme
+\begin{itemize*}
+    \item Aufgaben sehr unterschiedlich; Batch-Verarbeitung, Interaktiv
+    \item Ressourcen Verwaltung/Größen
+    \item Platformspezifische Einheiten (Befehlssätze, RISC vs CISC)
+    \item Funktionsumfang
+\end{itemize*}
+
+%##########################################
+\subsection{Aufgabe 6}
+\textit{Welche Vorteile hat es aus Anwendersicht, Betriebssysteme als Virtualisierung von Maschinen zu verstehen?}
+\vspace{10mm}
+Vorteile für Anwender die Betriebssysteme als Virtualisierung zu sehen
+\begin{itemize*}
+    \item Bequemlichkeit
+    \item Beherschbarkeit + Isolation
+\end{itemize*}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 2}
+%##########################################
+\subsection{Repetitorium}
+\begin{itemize*}
+    \item \textbf{Welcher Zusammenhang besteht zwischen den Konzepten Nebenläufigkeit und Parallelität? Wann können Aktivitäten auf einem System nur pseudoparallel ausgeführt werden?} Nebenläufigkeit ist die Voraussetzung für Parallelität. Nebenläufigkeit beschreibt wiederum den Umstand, dass zwischen zwei Aktivitäten keine kausalen Abhängigkeiten bestehen. Parallel, wenn zwei oder mehr Aktivitäten zeitgleich/ zeitlich überlappend ausgeführt werden können. Das wiederum bedeutet, dass man Aufgaben, bei welchen die Teillösungen immer aufeinander aufbauen nicht parallelisieren kann. Allerdings ist die gleichzeitige Berechnung von unabhängigen Lösungen kein Problem und somit kann sich auch ein enormer Geschwindigkeitszuwachs bieten. Aktivitäten können nur dann echt parallel ausgeführt werden, wenn auch mehrere unabhängige Prozessorcores dafür zur Verfügung stehen, das bedeutet, sobald nicht mehrere Prozessoren verfügbar sind, kann die Parallelität nur durch zeitliches Switching simuliert werden. Pseudoparallel weiter bei Abhängikeit (z.b. Synchronisation)
+    \item \textbf{Wozu dienen Prozessmodelle? Aus welchen Bausteinen setzt sich ein Prozessmodell zusammen? Welche finden sich typischerweise in Prozessdeskriptoren wieder?} Da wir einem Computer nicht einfach mehrere Aufgaben ohne Kontext und ähnliches vorwerfen können und das Rechnen darauf beginnen können, müssen wir etwas neues Einführen. Hier wählen wir Prozesse. Prozesse sind eine Betriebssystemabstraktion zur vollständigen Beschreibung einer sequentiell ablaufenden Aktivität. Im weiteren Verlauf ist es nun so, dass parallele Aufgaben durch parallele Prozesse beschrieben/repräsentiert werden. \\
+    Ein Prozessmodell definiert nun Prozesse und die konkreten Prozesseigenschaften: zum Beispiel: Semantik der Operationen auf Prozessen, also die Auswirkungen von Erzeugen, Beenden, Anhalten, Fortsetzen, sowie auch die nichtfunktionalen Eigenschaften von Prozessen, wie beispielsweise die Echtzeiteigenschaften, Safetyeigenschaften, Securityeigenschaften.\\
+    Ein Prozessdeskriptor oder PCB „Process Control Block“ beinhaltet Informationen zur Identifikation, Größe, Position, Zugriffsberechtigungen und Verwendung eines Segments und erlaubt somit erst das parallele Rechnen.\\
+    Aufbau des Prozessmodells/ Process Control Block: Identifikationsbereicht + Schedulinginformation + Programmkontext (Instruction Pointer + Stackpointer + PSR) + Ereignismanagement + Accounting + Rechte + Ressourcen
+    \item \textbf{Aus welchem Grund wurde das Thread-Konzept entwickelt? Welche zwei eigentlich unabhängigen Konzepte sind im Modell des ursprünglichen (Schwergewichts-)Prozesses vereint?} Das Thread-Modell wurde für die Parallelisierung nebenläufiger Aktivitäten erschaffen, da sich zeigte, dass ein neuer Prozess pro nebenläufiger Aufgabe eher unpraktisch ist. Die Hauptprobleme oder die wichtigsten negativen Aspekte zeigten sich bei dem hohen Managementaufwand, den hohen Kosten für die Isolation und die hohen Kosten für die Kommunikation der Prozesse untereinander. \\
+    Im ursprünglichen schwergewichtigen Prozessen war das Konzept des Ressourcenmanagements und das Management der Parallelität vereint.
+    \item \textbf{Wozu dienen Prozess- bzw. Threadzustände? Welche elementaren Zustände finden sich in jedem Prozessmodell?} Thread und Prozesszustände erlauben es mehrere Threads (pesudo)parallel auszuführen, bzw. erlauben das Scheduling, indem man per Zustand bestimmt, was ein Thread gerade macht. Hier gibt es als unterschiedliche Zustände „frisch“, „aktiv“, „blockiert“, „beendet“, „bereit“.
+    \item \textbf{Warum benötigt jeder Thread einen eigenen Stack?} Da jeder Thread seine eigene Ausführungssequenz / seinen eigenen Code haben kann, muss er einen eigenen Stack (LIFO Speicher) haben, auf den er den Inhalt seines Programmzählers schieben/einfügen kann (wenn z.B. Funktionsaufrufe und Rückgaben stattfinden).
+    \item \textbf{Worin besteht der Unterschied zwischen Kernel- und User-Level-Threads? Welche Vor- und Nachteile besitzt die jeweilige Form? Wo befinden sich die PCB- und TCB-Datenstrukturen?} Kernel-Level-Threads werden direkt durch das OS verwaltet und das Thread Management geschieht direkt durch den Kernel. Dadurch, dass sowohl die Kontextinformation als auch die Prozessthreads alle durch den Kernel gemenaged werden, kann man sagen, dass Kernel-level-threads typischerweise eher langsamer als User-Level-Threads sind und ihre Performanz durch Parallelität erreichen. (Multithreadingbetriebssystem)\\
+    \begin{itemize*}
+        \item Vorteile: Effiziente Nutzung von Multicore-Architekturen. Mehrere Threads des selben Prozess können auf verschiedenen Prozessoren geschedult werden. Ein blockierender Systemaufruf in einem Thread blockiert nicht auch gleichzeitig alle anderen Threads des gleichen Prozess.
+        \item Nachteile: Da der Kernel sowohl Threads als auch Prozesse verwalten und planen muss, benötigt er einen vollständigen Thread-Kontrollblock (TCB) für jeden Thread, um Informationen über Threads zu erhalten. Dies führt zu einem erheblichen Overhead und erhöht die Komplexität des Kernels. Die Threads auf Kernel-Ebene sind langsam und ineffizient. Beispielsweise sind die Thread-Operationen hundertmal langsamer als die Threads auf Benutzerebene.
+        \item User Level Threads werden durch Nutzer implementiert und der Kernel selbst hat kein Wissen über die Existenz dieser Threads und behandelt diese, als wären sie Single-Thread Prozesse. Userlevelthreads sind kleiner und schneller als kernel level threads. Sie werden durch einen Programmzähler (PC), Stapel, Register und einen kleinen Prozess-Steuerblock dargestellt. Außerdem gibt es keine Kernel-Beteiligung an der Synchronisation für Threads auf Benutzerebene.
+        \item ULT: Thread-Implementierung in Anwendung (OS kennt keine Threads)\\
+        Vorteile:\\
+        Threads auf Benutzerebene sind einfacher und schneller zu erstellen als Threads auf Kernel-Ebene. Sie lassen sich auch leichter verwalten.
+        Threads auf Benutzerebene können auf jedem Betriebssystem ausgeführt werden.
+        In Threads auf Benutzerebene sind keine Kernelmodus-Privilegien zum Threadwechsel erforderlich.
+        Thread-Management ohne Systemaufrufe
+        anwendungsindividuelle Thread-Schedulingstrategien möglich (für Spezialanwendungen sinnvoll)\\
+        Nachteile: \\
+        Multithread-Anwendungen in Threads auf Benutzerebene können Multiprocessing nicht zu ihrem Vorteil nutzen.
+        Der gesamte Prozess wird blockiert, wenn ein Thread auf Benutzerebene blockierende Operationen durchführt.\\
+        Beim Kernel-level-Thread befinden sich sowohl der PCB als auch TCB im Kernelspace. Beim User-level-Thread befinden sich PCB im Kernelspace und der TCB im Userlevel.
+    \end{itemize*}
+\end{itemize*}
+%##########################################
+\subsection{Aufgabe 1: Prozesserzeugung in Linux-Systemen}
+\textit{In Betriebssystemen der Unix/Linux-Familie werden neue Prozesse durch den fork-Systemaufruf erzeugt. Dabei entsteht sukzessive eine Abstammungshierarchie, in der ein Prozess, der ein fork() (erfolgreich) ausführt, zum Elternprozess ("parent") des von ihm erzeugten Kind-Prozesses ("child") wird. Die bei Unix/Linux-Systemen benutzte Technik funktioniert wie folgt: Durch fork wird eine nahezu exakte Kopie des Elternprozesses zum Zeitpunkt des fork()-Aufrufs erzeugt, bei der der neue Kindprozess eine Vielzahl der Eigenschaften des Elternprozesses erbt. Falls der Kindprozess ein anderes als das vom Elternprozess vererbte Programm ausführen soll, kann das Kind unmittelbar nach fork einen Systemaufruf der exec[ute]-Familie verwenden, der das durch den aufrufenden Prozess ausgeführte Programm austauscht.}
+\vspace{10mm}
+\textit{a) Informieren Sie sich über $fork$ und $exec*$ und finden Sie Antworten auf die folgenden Fragen. Wie unterscheiden sich Eltern- und Kindprozess unmittelbar nach dem fork()-Aufruf?}
+
+Unterscheidung: getrennte Speicherbereiche, unterschiedliche PIDs, Programmierung gleich
+Direkt nach dem fork Aufruf unterscheiden sich Vater und Kindprozess durch:
+\begin{itemize*}
+    \item Das Kind hat seine eigene und einzigartige PID, also ProzessID
+    \item Die ProzessID des Vaterprozesses des Kindes ist die selbe wie die ProzessID des Vaters.
+    \item Das Kind erbt keine Speichersperren/Memorylocks der Eltern
+    \item Prozessressourcenauslastung und CPU-Zeitzähler werden im Kind auf 0 gesetzt
+    \item Der Satz ausstehender Signale ist ursprünglich leer
+    \item Das Kind erbt keine Semaphoranpassungen des Elternteils
+    \item Das Kind erbt keine prozessbezogenen Datensatzsperren von seinem Elterneteil
+    \item Das Kind erbt keine Zeitgeber von seinem Elterneteil
+    \item Das Kind erbt keine austehenden E/A Operationen oder Kontexte
+\end{itemize*}
+Weiterhin gibt es einige Linux-Spezifische Prozessattribute welche sich verändern, hierzu zählen insbesondere:
+\begin{itemize}
+    \item Das Kind erbt keine Verzeichnisänderungsbenachrichtigungen von seinem Elternteil
+    \item Speicherzuordnungen, die mit dem $madvise(2)$ MADV\_DONTFORK-Flag markiert wurden, werden nicht über einen $Fork()$ vererbt.
+\end{itemize}
+
+\textit{Woran können sich Eltern- und Kindprozess unmittelbar nach einem fork()-Aufruf selbst erkennen ("Wer bin ich?")? Finden Sie mindestens 3 Möglichkeiten. }
+
+Selbsterkkennung: $getpid()$, $getppid()$, $system()$-calls, Rückgabewert von $fork()$
+
+\textit{Welche unterschiedlichen Werte kann der Funktionsaufruf fork() zurückgeben, und was bedeuten sie?}
+\vspace{10mm}
+
+Bei Erfolg wird im Elternprozess der PID des Kindprozesses >0 zurückgegeben, im Kindprozess wird 0 zurückgegeben. Bei einem Fehlschlag wird -1 im Elternprozess zurückgegeben, es wird kein Kindprozess erstellt und errno wird entsprechend gesetzt.
+
+Rückgabewert von $fork()$:
+\begin{itemize*}
+    \item PID des Kindes von Parent
+    \item 0 im Kindprozess
+    \item -1 Fehler (errno gesetzt)
+\end{itemize*}
+
+\textit{b) Demonstrieren Sie mit dem einfachen C-Programm p1 (in der Anlage), dass nach der Ausführung von fork() tatsächlich zwei Prozesse existieren.}
+\vspace{10mm}
+$cc -o p1 p1.c$ // Kompiliert das Programm
+Dann in selbem Directory ./p1, dies startet das Programm
+
+
+\textit{c) Führen Sie Programm p2 aus. Dieses enthält einen execl-Systemaufruf, mit dem ein Programm p4 ausgeführt werden soll. Das Programm p4 muss dabei ein (mit dem C-Compiler) übersetztes, ausführbares Programm im gleichen Verzeichnis sein. Sie können dazu das vorgegebene Programm p4 verwenden, das lediglich einen Ausdruck erzeugt.}
+\vspace{10mm}
+
+
+\textit{d) Wie viele Prozesse werden durch das Programm p3 erzeugt? Warum? Was passiert, wenn execl() nicht erfolgreich ausgeführt werden kann, weil z. B. das Programm p4 nicht gefunden wird? Führen Sie zur Kontrolle p3 aus, während das Programm p4 einmal existiert und ein weiteres Mal, während dieses nicht existiert.}
+\vspace{10mm}
+Es werden insgesamt 4 Prozesse durch die Ausführung von p3 erzeugt.
+
+Erklärung:
+Es werden, falls es sich um einen Kindprozess handelt, fork() also = 0 ist, dessen PID und die des Elternknotens ausgegeben.
+Weiterhin wird, falls es sich um einen Kindknoten handelt, das Kindprozessimage durch execl durch das Prozessimage p4 ersetzt.
+
+Sollte es sich allerdings nicht um einen Kindknoten handeln, dann wird die PID des Elternprozess ausgegeben.
+
+Dann wird unabhängig von der bisherigen Auswahl ein Fork erstellt, „PID terminating“ ausgegeben und wait(NULL) aufgerufen. wait(NULL) blockiert den Elternprozess, bis eines seiner Kinder beendet ist. Wenn der Kindprozess beendet wird, bevor der Elternprozess wait(NULL) erreicht, wird der Kindprozess zu einem Zombie-Prozess, solange bis der Elternprozess auf ihn wartet und ihn aus dem Speicher freigibt.
+
+Im Fall, dass p4 nicht vorhanden ist, wird zuerst der Elternprozess ausgegeben. Dann wird ein Fork erstellt und Terminating ausgegeben. Der Elternprozess verfällt in den Wartemodus. Daraufhin wird p3 wieder aufgerufen, da es sich nun um einen Fork handelt, wird Ausgegeben, dass ein Kind erstellt wurde und es wird versucht dieses Kindimage durch das p4 image zu ersetzen. Dies funktioniert allerdings nicht, also wird von execl -1 zurückgegeben.
+
+
+
+%##########################################
+\subsection{Aufgabe 2: Prozessdeskriptoren und Prozesszustände}
+\textit{Beschäftigen Sie sich mit dem Shell-Kommando $ps$. Es dient dazu, bestimmte Informationen aus den Prozessdeskriptoren ausgewählter Prozesse auszugeben. Die ausgewählte Prozessmenge und der Umfang der wiedergegebenen Informationen kann dabei durch entsprechende Parameter beeinflusst werden. So bedeutet z. B. $ps -el$, dass eine Liste mit vielen Parametern (l, "long") für alle Prozesse (e) erzeugt wird. Aus Gründen der Übersichtlichkeit kann auch $ps -al$ verwendet werden.}
+\vspace{10mm}
+\textit{a) Welche Prozesszustände sind in Linux-Betriebssystemen definiert, und wie erkennt man diese an den Ausgaben von ps?}
+\vspace{10mm}
+Man erkennt die Zustände an dem STAT Wert.
+
+Mit ps lassen sich Daten über die Prozesse in der Prozeßtabelle anzeigen. Die Prozeßtabelle wird mit einer Titelzeile ausgegeben. Die Spalten haben folgende Bedeutung:
+\begin{tabular}{c|c}
+    PID     & Die Process-ID des Prozesses                                                                                                                                                                                                                                                                                                                                               \\
+    PPID    & Die Parent Process ID des Prozesses                                                                                                                                                                                                                                                                                                                                        \\
+    UID     & Die User ID des Users, dem der Prozeß gehört                                                                                                                                                                                                                                                                                                                               \\
+    USER    & Der Username des Users, dem der Prozeß gehört                                                                                                                                                                                                                                                                                                                              \\
+    PRI     & Die Priorität des Prozesses. Höhere Werte bedeuten höhere Priorität.                                                                                                                                                                                                                                                                                                       \\
+    NI      & Der Nice-Wert des Prozesses. Höhere Werte bedeuten geringere Priorität.                                                                                                                                                                                                                                                                                                    \\
+    SIZE    & Die Größe des Codes plus Daten plus Stack KiloByte                                                                                                                                                                                                                                                                                                                         \\
+    TSIZE   & Die Größe des Codes in KiloByte. ELF Proz werden nicht korrekt dargestellt                                                                                                                                                                                                                                                                                                 \\
+    DSIZE   & Die Größe der Daten und Stack in Kilobyte Prozesse werden nicht korrekt dargestellt                                                                                                                                                                                                                                                                                        \\
+    TRS     & Text Resident Size - Die Größe des resident Code-Blocks in KiloByte                                                                                                                                                                                                                                                                                                        \\
+    SWAP    & Größe des ausgelagerten Bereichs des Tasks                                                                                                                                                                                                                                                                                                                                 \\
+    D       & Größe der als Dirty markierten Speicherseiten                                                                                                                                                                                                                                                                                                                              \\
+    LIB     & Größe der Library-Speicherseiten - Funktion nicht bei ELF-Prozessen.                                                                                                                                                                                                                                                                                                       \\
+    RSS     & Die Größe des physikalische Speichers, den das Programm benutzt. Für ELF-Format werden hier auch die Libraries mitgezählt, bei a.out Format nicht.                                                                                                                                                                                                                         \\
+    SHARE   & Die Größe der benutzten Shared-Libraries des Prozesses.                                                                                                                                                                                                                                                                                                                    \\
+    STAT    & Der Status des Prozesses. Das kann entweder ein S für schlafend, D für ununterbrechbar schlafend (dead), R für laufend (running) oder T für angehalten (traced). Dieser Angabe kann noch ein < für einen negativen Nice-Wert, ein N für einen positiven Nice-Wert oder ein W für einen ausgelagerten Prozeß folgen. (Das W funktioniert nicht richtig für Kernel-Prozesse) \\
+    WCHAN   & Die Kernelfunktion, die der Task gerade nutzt.                                                                                                                                                                                                                                                                                                                             \\
+    TIME    & Die gesamte CPU-Zeit, die der Prozeß verbraucht hat, seit er gestartet wurde.                                                                                                                                                                                                                                                                                              \\
+    \%CPU   & Die CPU-Zeit, die der Prozeß seit dem letzten Bildschirm-Update verbraucht hat, dargestellt als Prozentsatz der gesamten CPU-Zeit.                                                                                                                                                                                                                                         \\
+    \%MEM   & Der Anteil des Speichers, den der Task nutzt.                                                                                                                                                                                                                                                                                                                              \\
+    COMMAND & Das Kommando, mit dem der Prozeß gestartet wurde.                                                                                                                                                                                                                                                                                                                          \\
+    TTY     & Die Terminalleitung des Prozesses.                                                                                                                                                                                                                                                                                                                                         \\
+\end{tabular}
+
+\textit{b) Starten Sie das Programm p5, in dem der durch $fork()$ erzeugte Kindprozess in einer Endlosschleife läuft (Zweck?). Welche Prozesszustände haben Eltern- und Kindprozess? Beobachten Sie, welche Komponenten der Prozessdeskriptoren sich in Abhängigkeit von der Zeit ändern und interpretieren Sie dies.}
+\vspace{10mm}
+Das einzige was sich an Programm p5 zeigt, ist dass sich die Rechenzeit erhöht, sonst werden keine Prozesse mehr geforkt. Der Parentprozess ist in Zustand S+, d.h. er läuft zwar im Vordergrund, ist allerdings im unterbrechbaren Schlaf und wartet darauf, dass ein Event fertiggestellt wird. Der Kindprozess ist im Zustand R+, was bedeutet, dass er gerade ausgeführt wird und im Vordergrund läuft.
+
+Im Lauf der Zeit verändert sich vor allem die Laufzeit des Programms, also die CPU Zeit
+
+
+\textit{c) Wenn ein Prozess auf ein sogenanntes Ereignis warten muss, beispielsweise eine Eingabe, dann ändert sich dessen Zustand. Starten Sie Programm p6, welches mittels $getchar()$ auf eine Eingabe vom Standardeingabegerät (ohne weitere Maßnahmen ist dies die Tastatur) wartet, und untersuchen Sie die Zustandsinformationen des wartenden Prozesses.}
+\vspace{10mm}
+Der Prozess p6 selbst ist im S+ State, was bedeutet, dass er im aufweckbaren Zustand ist und auf die Eingabe wartet. Die CPU Zeit ändert sich nicht, was bedeutet, dass keine Zeit verbraucht wird.
+
+\textit{d) Mit dem Systemaufruf $sleep()$ kann sich ein Prozess selbst "schlafen legen". Starten Sie p7 und untersuchen Sie, welchen Zustand der hierdurch erzeugte Prozess nach dem Aufruf von $sleep()$ einnimmt.}
+\vspace{10mm}
+Bei aufruf von sleep() wird der Prozess sofort alle CPU Ressourcen freigeben, also fällt die CPU Auslastung für den Prozess auf 0, weiterhin wird der Zustand für die Zeit von sleep(time) auf S+ gesetzt, nach Ablauf der Zeit wird es sich wieder auf R+ (also runnable) wechseln. CPU Zeit wird währenddessen natürlich auch nicht verbraucht.
+
+%##########################################
+\subsection{Aufgabe 3: Dateiformate ausführbarer Programme}
+\textit{Kompilierte Programme liegen immer in einem genau definierten Format vor. Ziel dieser Aufgabe ist es, Erkenntnisse darüber zu gewinnen, wie ein Betriebssystem aus einem kompilierten Programm einen Prozess erzeugt. Ein in Linux-Betriebssystemen verbreitetes Binärformat ist ELF (Executable and Link Format), welches Gegenstand dieser Aufgabe ist.}
+\vspace{10mm}
+\textit{a) Im Mittelpunkt Ihrer Recherchen über ELF sollte stehen, welche Informationen das Betriebssystem zur Erzeugung eines Prozesses benötigt und wo und wie diese in ELF zu finden sind. Berücksichtigen Sie ebenfalls die Metainformationen, die sich im ELF-Header befinden. Finden Sie Antworten auf die folgenden Fragen.
+    \begin{itemize}
+        \item \textbf{Wie findet man (bzw. das Betriebssystem) die erste auszuführende Instruktion innerhalb des Text-Segments?} Erste Instruktion $e\_entry$ gibt die virtuelle Adresse an, an welcher der Prozess zuerst beginnt.
+        \item \textbf{Auf welche Weise bekommen bereits im Quellprogramm (z. B. C-Programm) initialisierte Variablen ihre Anfangswerte vor dem Start der Ausführung eines Programmes?} Die Initialisierung mit Anfangswerten findet durch Einträge im Programmimage statt. Hier gibt es die Sections .data und .data1, welche beide jeweils Informationen zur Inititalisierung beinhalten.
+        \item \textbf{Woran erkennt man, um welchen Typ einer in ELF dargestellten Datei es sich handelt? Für welche Dateitypen ist ELF prinzipiell vorgesehen?} Man erkennt dies an dem Eintrag in $e\_type$ im ELF Header (NoFileType, Relocatable, Executable, Shared Object, CoreFile, ProcessorSpecific)
+        \item \textbf{Unterscheiden sich ELF-Dateien für 32-Bit- und 64-Bit-Prozessorarchitekturen? Woran ist das gegebenenfalls erkennbar?} $e\_ident/EI$-CLASS identifiziert die Kapazität oder die Dateiklasse. Falls der Wert auf 1 ist, so handelt es sich um 32 Bit Objekte, falls der Wert auf 2 gesetzt ist um 64 Bit Werte
+        \item \textbf{Welchen Zweck haben die so genannten Sektionen (sections) bzw. die program headers?} Die Headertabelle einer Objektdatei ermöglicht es, alle Abschnitte der Datei zu finden. Die Headertabelle ist ein Array von $Elf32\_Shdr$-Strukturen. Ein Tabellenindex der Headertabelle ist ein Subskript in diesem Array. Das $e\_shoff$-Mitglied des ELF-Headers gibt den Byte-Offset vom Anfang der Datei in die Sectionheadertable; $e\_shnum$ gibt an, wie viele Einträge die Sektionskopftabelle enthält; $e\_shentsize$ gibt die Größe jedes Eintrags in Bytes an. Die Programmkopftabelle einer ausführbaren oder gemeinsam genutzten Objektdatei ist eine Anordnung von Strukturen, die jeweils ein Segment oder andere Informationen beschreiben, die das System benötigt, um das Programm für die Ausführung vorzubereiten. Ein Objektdateisegment enthält einen oder mehrere Abschnitte. Programm-Header sind nur für ausführbare und gemeinsam genutzte Objektdateien von Bedeutung. Eine Datei-Spezifikation bestimmt seine eigene Programm-Header-Größe mit der $e\_phentsize$ des ELF-Headers und $e\_phnum$-Mitglieder. Der ELF-Programmheader wird durch den Typ $Elf32\_Phdr$ oder $Elf64\_Phdr$ je nach Architektur gegeben.
+        \item \textbf{Welche Bedeutung hat eine Symboltabelle als Teil einer in ELF dargestellten Datei?} Die Symboltabelle einer Objektdatei enthält Informationen, die benötigt werden, um die symbolischen Definitionen und Verweise eines Programms zu lokalisieren und zu verschieben. Ein Symboltabellenindex ist ein Subskript in diesem Array. Index 0 bezeichnet sowohl den ersten Eintrag in der Tabelle als auch den undefinierten Symbolindex.
+    \end{itemize}}
+\vspace{10mm}
+
+\textit{b) Untersuchen Sie experimentell Binärdateien hinsichtlich ihrer ELF-Metainformationen. Hierzu können Sie die Werkzeuge readelf und objdump verwenden, um zu ermitteln, welche konkreten Informationen eine Datei im ELF-Format enthalten kann. Als Beispiele sollen mindestens die folgenden ELF-Binärdateien dienen:
+    \begin{itemize}
+        \item das ls-Utility, zu finden im Verzeichnis /bin,
+        \item die Executable zum Programm p1.c (siehe Anlage zu Aufgabe 1),
+        \item eine dynamisch ladbare Bibliothek aus dem Verzeichnis /lib oder /usr/lib.
+    \end{itemize}}
+\vspace{10mm}
+\begin{lstlisting}
+    readelf -a p1
+\end{lstlisting}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 3}
+%##########################################
+\subsection{Repetitorium}
+\begin{itemize*}
+    \item \textbf{Durch welche Ereignisse wechselt ein Thread vom Zustand aktiv in den Zustand blockiert? Durch welche in den Zustand suspendiert?}
+    \begin{itemize}
+        \item Der Zustandswechsel geschieht beispielsweise dadurch, dass ein aktiver Prozess auf E/A Operationen oder Timer warten muss, aufgrund dessen wird er dann in den Zustand blockiert geschickt, weiterhin kann es an einem Mangel an Betriebsmitteln liegen.
+        \item Ein Prozess wechselt in den Zustand suspendiert/ready, wenn es initial rechenbereit war, allerdings aus dem Hauptspeicher geswapped wurde und auf einem externen Speicher ausgelagert ("swapping") wurde. Der Prozess wird wieder aktiv, wenn er aus dem externen Speicher zurück in den Hauptspeicher geswappt wird.
+        \item Ein Prozess wechselt in den Zustand suspendiert/blockiert. Vom Konzpet ähnlich dem des Suspendiert/ready, mit dem Unterschied, dass der Prozess eine E/A Operation ausführte oder darauf wartete und ein Mangel an Hauptspeicher für die Auslagerung sorgte. Sobald allerdings die E/A Operation abgeschlossen ist, kann er in den Zustand suspendiert/bereit wechseln.
+        \item Der Nutzer kann selbst suspenderieren, allerdings geschieht es typischerweise eher durch das OS selbst. (z.b. durch Überlastungssituation)
+    \end{itemize}
+    \item \textbf{Welche Auswirkung hat im Round-Robin-Schedulingalgorithmus die Veränderung der Größe der Zeitscheibe?}
+    \begin{itemize}
+        \item Sollte eine große Zeitscheibe eingesetzt werden, so gibt es wenige Threadwechsel, dadurch einen geringen Schedulingoverhead, allerdings ist die Reaktivität eher schlecht, zudem entstehen bei nicht-preemptiver Implementierung viele Abschnitte mit Leerlaufsituationen.
+        \item Sollte eine kleine Zeitscheibe verwendet werden so hat man zwar einen sehr großen Overhead durch ständige Threadwechsel, allerdings eine sehr hohe Reaktivität.
+        \item In der Praxis sind typische Zeitscheiben zwischen 20-50ms lang.
+    \end{itemize}
+    \item \textbf{Round-Robin-Scheduler verwalten normalerweise eine oder mehrere Listen von Prozessen, wobei jeder lauffähige Prozess genau einmal aufgeführt wird. Was würde passieren, wenn ein Prozess 2x in einer Liste stehen würde? Aus welchen Gründen könnte man so etwas erlauben?}
+    \begin{itemize}
+        \item Wenn ein Prozess häufiger in der Liste stehen würde, so würde dieser anteilig gesehen häufiger zur Ausführung zugelassen werden, was also einer Erhöhung der Priorität gleich kommen würde, allerdings kommt er dadurch nicht unbedingt schneller zur Ausführung. Falls er n-mal in der Liste ist, dann bekommt er die n-fache Rechenzeit pro Listendurchlauf.
+        \item Unterschied zu mehreren Listen: Prozess mit hoher Prioriität rechnet solange, bis Prozess mit gleicher oder größerer Priorität existiert oder er terminiert.
+        \item Die Gründe dies zu erlauben sind offensichtlich. Die Einführung längerer Zeitscheiben für Prozesse höherer Priorität würden dazu führen, dass die Reaktivität anderer Threads verringert würde und es würde es dem Betriebssystem erschweren, bei einem Interrupt wieder einzuspringen. Die Aufrechterhaltung separater Listen für die Priorisierung von Prozessen würde einen viel komplexeren Scheduler erfordern, der im Bezug auf die Zyklen teurer würde, bzw. höhere Kosten verursachen würde, dies lässt sich durch die mehrfache Einfügung eines Prozesses aber umgehen.
+              Ein Problem könnte maximal beim Löschen von Threads auftrete, da ein Prozess nun häufiger in der Queue sein kann, müsste man alle Vorkommnisse finden und löschen, was eine Kostensteigerung des Löschens zur Folge hat.
+    \end{itemize}
+    \item \textbf{Welche Form des Schedulings – preemptiv oder nicht preemptiv – führt aus grundsätzlichen Überlegungen zu robusteren Systemen?} Ein preemptives System kann einem Prozess Ressourcen wegnehmen und später wieder erneut zuweisen, um zwischenzeitlich andere Prozesse rechnen zu lassen. Da somit Fehlerquellen wie Endlosrekursionen verhindert oder gestoppt werden können. Somit sind preemptive Systeme als robuster zu bewerten.
+\end{itemize*}
+
+%##########################################
+\subsection{Aufgabe 1: EDF}
+\textit{Die Scheduling-Strategie Earliest Deadline First (EDF) kommt dann zum Einsatz, wenn die Abarbeitung eines Prozesses bis zu einem definierten Zeitpunkt (Frist, Deadline) erfolgen muss. Wir wollen uns in dieser Aufgabe auf statische Deadlines beschränken, auch wenn diese in bestimmten, realen Anwendungen während der Abarbeitung von Prozessen (dynamisch) neu bestimmt werden können.
+    Die Strategie ist nun wie folgt: Ein Prozess wird einem anderen vorgezogen, falls er eine frühere Deadline hat. Ein neu ankommender – und aufgrund einer zeitigeren Deadline höher priorisierter – Prozess verdrängt einen bereits rechnenden, aber niedriger priorisierten Prozess. Das Verfahren ist also präemptiv.}
+\vspace{10mm}
+\textit{a) Implementieren Sie EDF. Sie finden dazu eine Musterklasse im Projekt unter Simulation → Source Packages → frm.pssav.sim → PreemptiveEDFScheduler.java.}
+\vspace{10mm}
+
+\begin{lstlisting}
+    package frm.pssav.sim;
+    
+    import frm.pssav.sim.OperatingSystem.ProcessControlBlock;
+    import java.util.Comparator;
+    import java.util.concurrent.PriorityBlockingQueue;
+    
+    /**
+     * Scheduler using the preemptive earliest deadline first algorithm
+     */
+    public class PreemptiveEDFScheduler extends Scheduler {
+        
+        PreemptiveEDFScheduler(OperatingSystem os, int queueCapacity) {
+            super(os, new PriorityBlockingQueue<Integer>(
+                    queueCapacity, new PreemptiveEDFQueueComparator(os)));
+        }
+    
+        /**
+         * Methode zur Implementierung des präemptiven Teils des 
+         * Scheduling-Algorithmus.
+         */
+        @Override
+        void doSchedule(int[] arrivals) {
+            for (int pid : arrivals) {
+                queue(pid);
+            }
+    
+            if (isProcessTerminated()) {
+                contextSwitch();
+            }
+            else {
+                if (!isProcessRunning()) {
+                    contextSwitch();
+                }
+                else {
+                    /* @student
+                     * Diese Methode wird immer dann aufgerufen, wenn dem
+                     * Scheduler ein neuer Prozess bekannt wird. Sie können
+                     * hier also den präemptiven Teil ihres Algorithmus
+                     * implementieren. 
+                     * Mittels getOS().getProcess([PID]) gelangen Sie an den
+                     * PCB des Prozesses mit dem Identifier PID. Ein kurzer Blick
+                     * in die Klasse ProcessControlBlock in "OperatingSystem.java"
+                     * gibt Ihnen Aufschluss darüber, wie Sie auf die Daten des 
+                     * PCB zugreifen können. Mit getRunningPID() bekommen Sie 
+                     * die ID des gerade laufenden Prozesses. getReadyQueue()
+                     * liefert Ihnen die Schlange der wartenden Prozesse.
+                     * Mittels contextSwitch() befehlen Sie dem Scheduler den
+                     * Prozess am Kopf der Schlange anstatt des aktuellen zu
+                     * rechnen. Dabei wird der aktuelle aber nicht automatisch wieder
+                     * in die Schlange eingereiht!
+                     * PS: Die Warteschlange enthält die PIDs der Prozesse.
+                     */
+                    if (getReadyQueue().isEmpty()) return;
+                    
+                    int runningPID = getRunningPID();
+                    int headPID = getReadyQueue().peek();
+                    ProcessControlBlock runningPCB = getOS().getProcess(runningPID);
+                    ProcessControlBlock headPCB = getOS().getProcess(headPID); 
+                    
+                    if(runningPCB.getDeadline() > headPCB.getDeadline())
+                    {
+                        contextSwitch(); 
+                        getReadyQueue().add(runningPID); 
+                    }
+                    else 
+                    {
+                        // change nothing
+                    }
+                }
+            }
+        }
+    
+        @Override
+        Comparator<Integer> getComparator(OperatingSystem os) {
+            return new PreemptiveEDFQueueComparator(os);
+        }
+    
+        /**
+         * Verlgeichsmethode für die Priority-Queue.
+         */
+        public static class PreemptiveEDFQueueComparator implements
+                Comparator<Integer> {
+    
+            private OperatingSystem os;
+    
+            public PreemptiveEDFQueueComparator(OperatingSystem os) {
+                this.os = os;
+            }
+    
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                ProcessControlBlock p1 = os.getProcess(o1);
+                ProcessControlBlock p2 = os.getProcess(o2);
+                /* @student
+                 * Diese Methode wird genutzt, um die Schlange der wartenden
+                 * Prozesse zu sortieren. Sie müssen hier also definieren, welche
+                 * Prozesse zunächst wichtiger als andere sind. Geben Sie -1 für
+                 * "o1 ist wichtiger als o2", 0 für "o1 ist genauso wichtig wie o2"
+                 * und 1 für "o1 ist weniger wichtig als o2" zurück.
+                 * Welche Methoden Ihnen für die Datenabfrage aus dem PCB zur
+                 * Verfügung stehen, erfahren Sie mit einem Blick in die Klasse
+                 * ProcessControlBlock in der Datei "OperatingSystem.java".
+                 */
+                /*
+                Hier kann ich p1.getDeadline() oder eventuell p1.getPriority() verwenden. 
+                */
+                if(p1.getDeadline() > p2.getDeadline())
+                {
+                    return 1; 
+                }
+                else if(p1.getDeadline() < p2.getDeadline())
+                {
+                    return -1; 
+                }
+                else if(p1.getDeadline() == p2.getDeadline())
+                {
+                    return 0; 
+                }
+                
+                return 0;
+            }
+        }
+    }
+    
+    \end{lstlisting}
+
+\textit{b) Vergleichen Sie nun den einfachen Round-Robin-Algorithmus (eine Warteschlange) mit EDF. Überlegen Sie sich zwei Szenarien: Im ersten sollen beide Algorithmen die gesetzten Fristen einhalten. Im zweiten sollte ersichtlich werden, in welchen Fällen Round Robin gegenüber EDF versagt.
+    Benutzen Sie ausreichend viele Prozesse, so dass die Simulation lange genug läuft, damit ihre Kommilitonen genügend Zeit haben, sich der dargestellten Probleme bewusst zu werden.}
+\vspace{10mm}
+
+Zwei Prozesse definieren (0,4,4,10) und (2,5,5,8) (Arrival,Burst,Priority,Deadline). Mit RR können die Deadlines nicht eingehalten werden.
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssysteme_uebung/u3_a1.png}
+\end{center}
+
+%##########################################
+\subsection{Aufgabe 2: Round Robin mit Prioritäten}
+\textit{Die Scheduling-Strategie Round Robin soll ein möglichst faires Scheduling mehrerer Prozesse ermöglichen. In der Vorlesung haben Sie die zusätzliche Möglichkeit kennengelernt, Round Robin mit einem Prioritätenschema zu kombinieren. Wir wollen uns in dieser Aufgabe auf statische Prioritäten beschränken, auch wenn diese in bestimmten, realen Anwendungen während der Abarbeitung von Prozessen (dynamisch) neu bestimmt werden können.}
+\vspace{10mm}
+\textit{a) Implementieren Sie Round Robin mit Prioritäten. Sie finden dazu bereits eine Implementierung der Strategie ohne Berücksichtigung von Prioritäten unter Simulation → Source Packages → frm.pssav.sim → RoundRobinScheduler.java, die Sie entsprechend anpassen müssen.}
+\vspace{10mm}
+(siehe Netbeans)
+
+\textit{b) Von welchen Faktoren ist die Länge einer Zeitscheibe in der Praxis abhängig? Von welchen die Priorität? Welcher Unterschied ergibt sich daraus für das Setzen dieser beiden Parameter?}
+\vspace{10mm}
+
+\textit{Demonstrieren Sie die Auswirkungen unterschiedlich langer Zeitscheiben sowie unterschiedlicher Prioritäten anhand zweier Szenarien: Eines mit (genügend vielen) sehr kurzen Prozessen, ein anderes mit sehr viel länger rechnenden. Diskutieren Sie, welche realen Einflussfaktoren – die in PSSAV nicht berücksichtigt werden können – hier in der Praxis eine Rolle spielen müssen.}
+
+
+%##########################################
+\subsection{Aufgabe 3: Linux-Scheduling}
+\textit{Moderne Universal-Betriebssysteme müssen heute mit Prozessen und Threads sehr unterschiedlichen Charakters umgehen können. Einerseits könnten z. B. Echtzeitprozesse zur Audio/Video-Verarbeitung ablaufen, andererseits gibt es auch zeitunabhängige aber rechenzeitintensive Prozesse wie beispielsweise das in der Vorlesung gezeigte Ray-Tracing-Programm.}
+\vspace{10mm}
+\textit{a) Recherchieren Sie für das Betriebssystem Linux die für das Scheduling von Prozessen verantwortlichen funktionalen Komponenten (Scheduling-Subsystem) und ermitteln Sie, welche Schedulingstrategien Linux unterstützt.}
+\vspace{10mm}
+\begin{itemize}
+    \item Linux verwendet seit Kernelversion 2.6.23 CFS (Completely Fair Scheduler)
+    \item Es gibt verschiedene Schedulingstrategien wie:
+          \begin{itemize}
+              \item SCHED\_FIFO: First in First out Scheduling
+              \item SCHED\_RR: Round-Robin Scheduling
+              \item SCHED\_DEADLINE: Sporadic task model deadline scheduling
+              \item SCHED\_OTHER: Default Linux time-sharing scheduling
+              \item SCHED\_BATCH: Scheduling batch processes
+              \item SCHED\_IDLE: Scheduling very low priority jobs
+          \end{itemize}
+    \item Der Scheduler selbst ist eine Kernelkomponente welche entscheidet, welcher ausführbare Thread als nächster auf der CPU ausgeführt werden wird. Die von Linux verwendete Schedulingklasse basiert auf der POSIX Expansion für Echtzeitcomputersysteme.
+\end{itemize}
+
+\textit{Damit das Betriebssystem sinnvoll mit diesen unterschiedlichen Prozessen umgehen kann, müssen Prozesse selbst ihre Lastmerkmale dem Betriebssystem mitteilen (neben der Beobachtung und Klassifizierung der Prozesse durch das Betriebssystem selbst). Eine sehr einfache Möglichkeit, das Scheduling von Prozessen zu beeinflussen, besteht in der Vergabe unterschiedlicher (Basis-)Prioritäten, auf deren Grundlage die dynamische Änderung durch das Betriebssystem vorgenommen wird. Für jeden regulären Prozess steht hierzu der Systemaufruf $nice$ zur Verfügung; ein Nutzer kann die Priorität seiner Prozesse mithilfe der Ausführung
+    der Kommandos $nice$ oder $renice$ verschlechtern (der Name deshalb, weil er damit "nett" zu anderen Prozessen ist).}
+\vspace{10mm}
+\textit{b) Starten Sie zwei gleichartige rechenzeitintensive Prozesse (ggf. hierfür ein einfaches Programm schreiben), die lange genug rechnen. Demonstrieren und erläutern Sie deren Verhalten, wenn einerseits beide die gleiche Priorität haben und andererseits ein Prozess seine Priorität verringert hat. Überlegen Sie sich geeignete Demonstrationsmöglichkeiten.}
+\vspace{10mm}
+
+\begin{itemize}
+    \item Verwendete taskset 0x1 ./simpleproc um die selben Prozessorcores zu verwenden
+    \item über top fand ich die Prozessorauslastung in Prozent heraus
+    \item Darüber hinaus zeigte sich bei meinen Programmen mit verschiedenen Prioritäten allerdiungs nicht wirklich ein Unterschied. Einzig für Prozess wie den NTP Deamon oder ASLA/Pulseaudio würde es Sinn machen, denn wenn man beispielsweise der musikausgebenden Anwendung sehr viel Priorität wegnimmt und beispielsweise einem unbedeutenden Programm hinzufügen würde, so würde man hören, dass die Musik lückenhaft wird, bzw. das Programm unresponsiv wird.
+\end{itemize}
+Siehe auch Linux Manpages
+
+\textit{
+    Hinweise:
+    Falls Sie nicht selbst geeignete Ideen haben: Beispielsweise lassen sich lange laufende Prozesse durch Hochzählen einer Variablen vom Typ long int (lange ganzzahlige Variable) erzeugen, oder durch Starten mehrerer Instanzen einer ausreichend anspruchsvollen Anwendung Ihrer Wahl (anspruchsvoll für den Hauptprozessor, nicht nur für die Grafikhardware).\\
+    Falls Sie an einem System mit einem Mehrkernprozessor arbeiten, könnten die zu zeigenden Effekte unsichtbar bleiben, wenn z. B. jeder Prozess auf einem eigenen Prozessorkern läuft. Beschäftigen Sie sich hierzu z. B. mit dem Systemaufruf $sched_setaffinity()$.
+}
+\vspace{10mm}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 4}
+%##########################################
+\subsection{Repetitorium}
+\begin{description*}
+    \item \textbf{Welche prinzipiellen Probleme entstehen, wenn parallel ablaufende Threads auf einen gemeinsamen Speicherbereich zugreifen? Welche beiden konkreten Synchronisationsprobleme bestehen beim Erzeuger/Verbraucher-Problem?}
+    \begin{itemize}
+        \item Es entstehen verschiedene Probleme bei Verwendung eines gemeinsamen Speicherbereichs durch verschiedene Threads, hierzu zählen:
+              \begin{itemize}
+                  \item Zugriff auf Arbeitsspeicher ist bestenfalls wortweise atomar (4/8 Byte). Garantiet beim parallelen Lesen und Schreiben kein Ergebnis.
+                  \item Das Grundproblem ist, dass zwei Threads gleichzeitig versuchen können Operationen auf dem Speicher auszuführen, wenn jetzt beide versuchen etwas zu speichern und zeitgleich ihre Daten schicken, ohne vorher in ausreichendem Maße zu prüfen, ob es zu diesem Zeitpunkt möglich ist, laufen sie in Gefahr entweder zeitglich zu schreiben (produziert Müll). Weiterhin können sie, falls der gemeinsame Speicher zur Synchronisation eingesetzt wird, durch Schedulingalgorithmen so beeinflusst werden, dass vorherige Tests auf Schreiberlaubnis nicht mehr gültig sind, auch hier würde sich ein Problem ergeben. Lösungsansätze müssen den folgenden Regeln genügen:
+                  \item Korrektheit: D.h. im kritischen Lese/Schreib Abschnitt befinden sich zu jedem Zeitpunkt höchstens ein Thread
+                  \item Lebendigkeit: Der Thread soll irgendwann die Möglichkeit haben, zur Ausführung zu kommen.
+                  \item Verhungerungsfreiheit: Es gibt keinen Thread, der für immer vor einem kritischen Abschnitt wartet.
+              \end{itemize}
+        \item Beim Erzeuger-Verbraucher-Problem zeigen sich zwei Synchronisationsprobleme:
+              \begin{enumerate}
+                  \item unterschiedliche Geschwindigkeiten von Erzeuger und Verbraucher führen zu leeren Puffern oder Pufferüberläufen, somit müssen hier die relativen Geschwindigkeiten synchronisiert werden. (Lösung über Zählsemaphoren)
+                  \item gleichzeitiges Lesen und Schreiben auf dem selben Pufferelement führt eventuell zu Inkonsistenzen, somit haben wir hier den Fall eines kritischen Abschnitts und müssen diesen durch Synchronisation, z.b. durch wechselseitigen Ausschluss, schützen.
+              \end{enumerate}
+    \end{itemize}
+    \item \textbf{In der Vorlesung haben wir binäre Semaphore kennen gelernt, die innerhalb eines kritischen Abschnitts strengen wechselseitigen Ausschluss garantieren. Eine allgemeinere Form der Semaphore lässt eine gewisse feste Anzahl von Aktivitäten in einen kritischen Abschnitt hinein, bevor die Sperrwirkung eintritt. Wie können derartige Semaphore implementiert werden?}
+    \begin{itemize}
+        \item Ersetze Zustandsvaribale durch Zähler. (initialisiert mit maximaler Threadanzahl)
+        \item P: Dekrementiert den Zähler, blockiert wenn Zähler = 0;
+        \item V: Inkrementiert den Zähler (setzt wartenden Thread fort)
+        \item Derartige Semaphore können mit mehreren gleichartigen Pufferelementen realisiert werden. Weiterhin könnte man eine Warteschlange verwenden um die wartenden Prozesse zu verwalten. Bei Eintritt eines Prozess in den kritischen Abschnitt würde eine Zählvariable hochgezählt, welche bei Verlassen des kritischen Abschnitts wieder dekrementiert würde. Ist der Wert der Zählvariable gleich der maximal erlaubten Anzahl an laufenden Prozessen im kritischen Abschnitt, so werden neu anfragende Prozesse vorerst in die Warteschlange geschickt.
+    \end{itemize}
+    \item \textbf{Wie viele Semaphore braucht man mindestens zur Lösung des allgemeinen Erzeuger/Verbraucher-Problems?}
+    \begin{itemize}
+        \item Einen binären Semaphor für den wechselseitigen Ausschluss. Zwei Zählsemaphore (je für Anzahl leerer Pufferelemente und belegter Pufferelemente)
+        \item Man benötigt mindestens 3 Semaphore um das Problem ausreichend gut lösen zu können. Hierzu zählen ein Semaphor A, welcher vor modifizierenden Zugriffen auf die Datenstruktur schützen soll. Wenn ein Prozess P1 gerade die Datenstruktur verändert, so zeigt er dies durch die P-Operation an. Wenn nun allerdings ein anderer Prozess P2 die Datenstrukur modifizieren, so wird dieser P2 solange blokiert, bis P1 die V-Operation aufruft. Semaphor B stellt sicher, dass Elemente zum Lesen verfügbar sind, wenn ein Verbraucher die Leseoperation ausfühhren möchte. Falls der Puffer leer ist, wird die P-Operation den aufrufenden Prozess blockieren, und ihn erst dann freigeben, wenn ein Erzeuger die V-Operation aufruft. Ist die Warteschlange gefüllt, so darf bei P-Operation eingetreten werden. Ein dritter Semaphor C, überwacht den Schreibezustand und blockiert Erzeuger, welche die P-OP aufrufen, wenn die Schlange schon voll ist. Ist sie nicht voll darf der Erzeuger weiter produzieren. Ein blockierter Prozess wird durch V-OP von einem Verbraucher wieder aufgeweckt.
+    \end{itemize}
+    \item \textbf{Wir haben Bedingungsvariable im Kontext Hoare’scher Monitore kennen gelernt. Ist ein derartiges Synchronisationsmodell (Warten auf Erfüllung einer Bedingung) nicht auch außerhalb und losgelöst vom Monitormodell nützlich? Falls ja, worauf müsste man in einem solchen Fall achten?}
+    \begin{itemize}
+        \item Klar, immer dann, wenn zustandslos ausreicht. Monitore garantieren wechselseitigen Ausschluss, losgelößt müssen wir das auch noch berücksichtigen. Somit: Bedingungsvariablen meist zusammen mit Locks/Mutex benutzt.
+    \end{itemize}
+\end{description*}
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{Assets/Betriebssysteme_uebung/u4_a1.png}
+\end{center}
+%##########################################
+\subsection{Aufgabe 1: Das Problem des schlafenden Barbiers}
+\textit{In einem Friseurladen gibt es einen Friseur, einen Frisierstuhl (an dem der Friseur arbeitet) und n Stühle für wartende Kunden. Entwickeln Sie einen Algorithmus, der unter den nachfolgenden Annahmen Friseur und Kunden so synchronisiert, dass jeder wartende Kunde (irgendwann) bedient wird.}
+\begin{itemize*}
+    \item Der Friseur und alle Kunden agieren parallel.
+    \item Falls keine Kunden da sind, geht der Friseur schlafen.
+    \item Wenn ein Kunde kommt, während der Friseur schläft, weckt der Kunde den Friseur und setzt sich in den Frisierstuhl (und wird bedient).
+    \item Wenn ein Kunde eintrifft, während der Friseur arbeitet und ein freier Kundenstuhl vorhanden ist, setzt sich der Kunde und wartet.
+    \item Trifft ein Kunde ein, während der Friseur arbeitet und alle Kundenstühle belegt sind, verlässt der Kunde den Friseurladen sofort wieder.
+    \item Wenn der Friseur mit dem Bedienen eines Kunden fertig ist, verlässt dieser Kunde den Friseurladen und einer der wartenden Kunden (falls vorhanden) belegt den Frisierstuhl und wird bedient (sonst gilt Bedingung 2).
+\end{itemize*}
+\vspace{10mm}
+Idee: Es gibt vier Ressourcen um die sich die Kunden und der Barbier streiten. Dazu zählen: Der Friseurstuhl, der Barbier selbst, die Kunden selbst und das Wartezimmer. Es werden daher vier Semaphore verwendet. Der Warteraum sollte auf einen mehrwertigen Semaphoren gesetzt werden, ebenso wie der Barbier und die Kunden. Für Rasur-fertig reicht eine Einwertige.
+
+\begin{lstlisting}
+    Semaphor Barbier = 0
+    Semaphor Haarschnitt = 0 // benötigt man nicht zwingend
+    CountSemaphor Kunden = 0
+    Semaphor SitzZugriff = frei
+    int Sitze = N //Wartezimmer
+    
+    Barbier()
+    {
+        while(true)
+        {
+            DOWN(Kunden);
+            P(SitzZugriff);
+            freieSitze++; 
+            V(Barbier);
+            V(SitzZugriff);
+            Haarschnitt();
+            V(Haarschnitt);
+        }
+    }
+    
+    Kunde()
+    {
+        P(Sitzzugriff) // bei if-clause muss in allen Zweigen wieder freigegeben werden
+        if(freieSitze > 0)
+        {
+            freieSitze--;
+            UP(Kunden);
+            V(SitzZugriff)
+            P(Barbier);
+            SchneideHaare(); 
+            P(Haarschnitt);	
+        }
+        else 
+        {
+            gehe(); 
+            V(SitzZugriff);
+        }
+    }
+    \end{lstlisting}
+
+
+%##########################################
+\subsection{Aufgabe 2: Das Achterbahnproblem}
+\textit{Das Achterbahnproblem nach J.S. Herman wird durch das folgende Szenario beschrieben. Eine Anzahl $n$ von "Vergnügungssüchtigen" (im Folgenden Passagiere genannt) versucht, möglichst oft eine Fahrt mit einem der $m$ zur Verfügung stehenden Achterbahnwagen zu unternehmen. Dabei gelten allerdings die folgenden Bedingungen.
+    \begin{itemize*}
+        \item Ein Wagen darf nur losfahren, wenn er voll besetzt ist. (Dabei gilt: Jeder Wagen fasst $c$ Passagiere, wobei die Gesamtzahl der beteiligten Passagiere mehr als nur einen Wagen füllt, d. h. $c < n$.)
+        \item Wenn ein Wagen vollständig besetzt ist, fährt er los.
+        \item Wenn der Wagen nach Abschluss der Fahrt wieder anhält, steigen alle Passagiere aus und bemühen sich erneut, in einem "neuen" Wagen eine weitere Fahrt zu unternehmen. (Unter entsprechenden Umständen kann es natürlich auch wieder der gleiche Wagen sein.)
+        \item Wagen dürfen sich nicht überholen (was ja beim gegebenen Achterbahnproblem auch technisch nicht möglich ist), d. h. die Reihenfolge der Wagen bleibt immer gleich.
+    \end{itemize*}
+    Passagiere und Wagen sollen durch Aktivitäten simuliert werden, die synchronisiert werden müssen. Für eine der möglichen Lösungen könnten die folgenden Hinweise hilfreich sein: Bei der Ankunft eines Wagens sollte dieser eine Prozedur $Einsteigen()$ aufrufen, danach sollten $c$ Passagiere ihrerseits eine Prozedur $In_Wagen_Einsteigen()$ aufrufen. Nach beendeter Fahrt sollte ein anhaltender Wagen eine Prozedur $Aussteigen()$ aufrufen, und die sich im Wagen befindenden $c$ Passagiere sollten daraufhin eine Prozedur $Wagen_Verlassen()$ aufrufen.
+}
+\vspace{10mm}
+
+\begin{itemize}
+    \item Autos: warten auf Passagiere (bis voll)
+    \item Passagiere: warten auf Start/Ende
+\end{itemize}
+
+\begin{lstlisting}
+CountSem belegt = 0; 
+CountSem frei = 0; 
+Sem Start = 0; 
+Sem Ende = 0; 
+
+Auto()
+{
+	while(true)
+	{
+		for(j in 1...m)
+		{
+			for(i in 1...c)
+			{
+				DOWN(belegt)
+			}
+			for(i in 1...c)
+			{
+				UP(start)
+			}
+			Fahre()
+			for(i in 1...c)
+			{
+				UP(Ende)
+			}
+			for(i in 1...c)
+			{
+				UP(frei)
+			}
+		}
+	}
+}
+
+
+Passagier()
+{
+	while(true)
+	{
+		UP(belegt)
+		DOWN(Start)
+		DOWN(ENDE)
+		DOWN(frei)
+	}
+}
+ 
+\end{lstlisting}
+\begin{lstlisting}
+
+int count = 0; 
+semaphore queue = c; 
+semaphore boarding = 0; 
+semaphore riding = 0; 
+semaphore unloading = 0; 
+semaphore check-in = 1; 
+
+Prozess Take-Ride()
+{
+	down(Queue);
+	down(Check-In);
+	if(++count == Maximum)
+	{
+		up(Boarding);
+	}
+	up(Check-In);
+	down(Riding);
+	up(Unloading);	
+}
+
+Prozess Car()
+{
+	int i,j; 
+	for(i = 0; i < NumberOfRides;i++)
+	{
+		for(j = 1; j <= Maximum; j++)
+		{
+			up(Queue);
+		}
+	down(Boarding); // Jetzt sind alle Passagiere in einem Wagen.
+	count = 0; //Passagiere sind in einem Auto
+	for(j = 1; j <= Maximum, j++)	// ab hier ausladen
+	{
+		up(Riding);
+		down(Unloading);
+	}
+	}
+}
+\end{lstlisting}
+
+
+%##########################################
+\subsection{Aufgabe 3: Der Kaffeeautomat}
+\textit{Ein Kaffeeautomat, seine Kunden und ein Lieferant, der den Automaten regelmäßig mit Kaffee und Kaffeebechern auffüllt, sollen sich mittels Semaphoren synchronisieren. Synchronisieren Sie das Verhalten dieser Aktivitäten so, dass folgendes Verhalten realisiert wird.
+    \begin{itemize*}
+        \item Der Automat kann entweder einen Kunden bedienen oder durch den Lieferanten nachgefüllt   werden. Beide Vorgänge sind nicht gleichzeitig möglich!
+        \item Ein Kunde muss nach Aufforderung durch den Automaten eine 1-Euro-Münze als Bezahlung einwerfen, erst danach bekommt er seinen Kaffee. (Um eine ungeeignete Betriebsweise auszuschließen, soll angenommen werden, dass sich nur Kunden anmelden, die eine 1-Euro-Münze parat haben – und nach Aufforderung natürlich auch einwerfen!)
+        \item Der Lieferant bekommt durch den Automaten mitgeteilt, dass dieser für den Auffüllvorgang bereit ist.
+        \item Ein einmal gestarteter Vorgang (Bedienen bzw. Auffüllen) kann nicht mehr unterbrochen werden. Eine neue Anmeldung (durch den nächsten Kunden oder den Lieferanten) wird erst nach Abschluss dieses Vorgangs akzeptiert.
+        \item Der nächste Kunde und der Lieferant können sich jeweils unabhängig voneinander beim Automaten anmelden. Die Reihenfolge der Bedienung hängt dann davon ab, in welcher Reihenfolge die Anmeldungen erfolgen.
+        \item Lieferant und Kunde bekommen den Abschluss des jeweiligen Vorgangs durch den Automaten mitgeteilt.
+        \item Falls der Kaffeevorrat verbraucht ist oder keine Becher mehr vorhanden sind, versetzt sich der Automat selbst in einen Wartezustand und wartet bis er durch den Lieferanten wieder befüllt ist.
+    \end{itemize*}
+}
+\vspace{10mm}
+
+\begin{itemize}
+    \item Lieferant: wartet auf Wartungsauftrag
+    \item Kunden: wartet auf Kaffee
+    \item Maschine: Portionen = 0? Wartet auf Wartung : warten auf Bestellung \& Bezahlung
+\end{itemize}
+
+\begin{lstlisting}
+Semaphor Wartungsauftrag = 0
+int Portionen = N 
+Semaphor PortionenZugriff  = 0
+Semaphor Kaffee = 0
+Semaphor Wartung = 0 
+Semaphor Bestellung = 0
+Semaphor Bezahlung = 0
+
+Lieferant()
+{
+	while(true)
+	{
+		P(Wartungsaufwand)
+		P(PortionenZugriff)
+		Portionen = N; 
+		V(Portionenzugriff)
+		V(Wartung)
+	}
+}
+
+Kunde()
+{
+	P(PortionenZugriff)
+	if(Portionen > 0)
+	{
+		V(Bestellung)
+		V(PortionenZugriff)
+		V(Bezahlung)
+		P(Kaffee)
+	}
+	else 
+	{
+		gehe()
+		V(PortionenZugriff)
+		
+	}
+}
+
+Kaffeemaschine()
+{
+	while(true)
+	{
+		P(Portionenzugriff)
+		if(Portionen > 0)
+		{
+			V(Portionenzugriff)
+			P(Bestellung)
+			P(Bezahlung)
+			MacheKaffee()
+			V(Kaffee)
+		}	
+		else 
+		{
+			V(PortionenZUgriff)
+			V(Wartungsauftrag)
+			P(Wartung)	
+		}	
+	}
+
+}
+
+\end{lstlisting}
+\begin{lstlisting}
+int Portions = n // Anzahl verfuegbarer Portionen
+semaphore maintenanceDone = 0; 
+semaphore doMaintenance = 0; 
+semaphore request = 0; 
+semaphore pay = 0; 
+semaphore coffee = 0; 
+
+Machine {
+	while(true)
+	{
+	if(Portions > 0)
+		up(request);
+		down(pay);
+		makeCoffee(); 
+		Portions = Portions -1; 
+		up(coffee);
+	}
+	else // Der Automat benoetigt einen Service
+	{
+		up(doMaintenance);
+		down(MaintenanceDone);	
+	}
+	}
+
+}
+
+Customer{
+	while(true)
+	{
+		down(request);
+		up(pay);
+		down(coffee);
+	}
+}
+
+ServiceMan{
+	while(true)
+	{
+		down(doMaintenance)
+		Portions = N; //nachfuellen
+		up(maintenanceDone)
+	}
+}
+\end{lstlisting}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 5}
+%##########################################
+\subsection{Diskussionsfragen}
+\paragraph{Frage 1: Speicherbasierte vs. nachrichtenbasierte Interprozesskommunikation}
+\textit{Stellen Sie sich vor, Ihre Übungsgruppe müsste ein Videoschnittsystem entwickeln, welches aus Robustheitsgründen die Berechnung komplexer Effekte, die En- und Dekodierung verschiedener Formate sowie die Steuerung der gesamten Applikation in jeweils unterschiedlichen Prozessen implementieren soll. Diese Prozesse müssen natürlich miteinander kommunizieren und dabei neben Kontrollinformationen auch die zu verarbeitenden Video- und Audiodaten austauschen.
+    Prinzipiell stehen dafür nachrichtenbasierte und speicherbasierte Kommunikationsmechanismen zur Verfügung. Für welche der existierenden Mechanismen würden sie sich entscheiden, um einerseits Kontrollinformationen und andererseits Mediendatenströme auszutauschen? Begründen Sie Ihre Antwort.\\
+    Hinweis: Klären Sie zuerst, was die prinzipiellen Vor- und Nachteile dieser beiden Kommunikationsvarianten sind. Betrachten Sie anschließend die Kommunikationsmuster und Anforderungen der beiden Klassen (Kontroll- und Multimediadaten), bevor Sie eine Empfehlung geben.
+}
+\begin{itemize}
+    \item \textbf{Message Passing vs. Shared Memory} Shared Memory hat die wünschenswerte Eigenschaft, dass die gesamte Kommunikation über implizites Laden und Speichern in einem globalen Adressraum erfolgt.
+          Eine weitere grundlegende Eigenschaft von Shared Memory ist, dass Synchronisation und Kommunikation getrennt sind. Zusätzlich zu den Lade- und Speicheroperationen müssen spezielle Synchronisationsoperationen (Mechanismen) verwendet werden, um zu erkennen, wann Daten produziert und/oder konsumiert wurden.
+          Im Gegensatz dazu wird beim Message Passing ein explizites Kommunikationsmodell verwendet. Explizite Nachrichten werden zwischen den Prozessen ausgetauscht.
+          Synchronisation und Kommunikation sind im Message Passing vereint. Die Erzeugung von entfernten, asynchronen Ereignissen ist ein integraler Bestandteil des Message-Passing-Kommunikationsmodells.
+          Es ist jedoch wichtig, darauf hinzuweisen, dass Shared-Memory- und Message-Passing-Kommunikationsmodelle universell sind, d.h., es ist möglich, das eine zu verwenden, um das andere zu simulieren.
+          Es ist jedoch zu beobachten, dass es einfacher ist, Shared Memory mit Message Passing zu simulieren als umgekehrt.
+          Das liegt im Wesentlichen an der asynchronen Ereignissemantik von Message Passing im Vergleich zur Polling-Semantik des Shared Memory.
+          Das Shared-Memory-Kommunikationsmodell ermöglicht es dem Programmierer, sich auf die mit der Parallelität verbundenen Probleme zu konzentrieren, indem er von den Details der Interprozessorkommunikation entlastet wird.
+          In diesem Sinne stellt das Shared-Memory-Kommunikationsmodell eine geradlinige Erweiterung des Uniprozessor-Programmierparadigmas dar. Darüber hinaus ist die Shared-Memory-Semantik unabhängig vom physikalischen Speicherort und daher offen für die dynamische Optimierung, die das zugrunde liegende Betriebssystem bietet.
+          Auf der anderen Seite ist das Shared-Memory-Kommunikationsmodell im Wesentlichen eine Polling-Schnittstelle. Dies ist ein Nachteil, was die Synchronisation betrifft.
+          Die Nachrichtenweitergabe kann als ein interruptgesteuertes Kommunikationsmodell charakterisiert werden. Bei der Nachrichtenübermittlung enthalten die Nachrichten sowohl Daten als auch Synchronisation in einer einzigen Einheit. Als solches eignet sich das Message-Passing-Kommunikationsmodell für Betriebssystemaktivitäten, bei denen die Kommunikationsmuster im Voraus explizit bekannt sind, z. B. E/A, Interprozessor-Interrupts und Task- und Datenmigration.
+          Auf der anderen Seite leidet das Message Passing unter der Notwendigkeit von Marshaling-Kosten, d. h. den Kosten für das Assemblieren und Disassemblieren der Nachricht.
+          Eine natürliche Schlussfolgerung aus der obigen Diskussion ist, dass sich Shared-Memory- und Message-Passing-Kommunikationsmodelle jeweils für bestimmte Anwendungsdomänen eignen. Shared Memory bietet sich für Anwendungsentwickler an, während Message Passing sich für Betriebssystementwickler anbietet.
+          Es ist daher naheliegend, die Kombination von Shared Memory und Message Passing in Mehrzweck-Multiprozessorsystemen in Betracht zu ziehen. Dies war die Hauptantriebskraft hinter Systemen wie dem Stanford FLexible Architecture for SHared memory (FLASH) System. Dabei handelt es sich um ein Multiprozessorsystem, das die Unterstützung für Shared Memory und Message Passing effizient integriert und dabei sowohl den Hardware- als auch den Software-Overhead minimiert.
+    \item \textbf{Nachrichtenbasiert}:  + kein Blockieren bei asynchroner Variante, einfache, einheitliche Nutzung (Architekturunabhängig), keine Synchronisation nötig, - ggf. kopieren der Daten (ineffizient und redundant), Blockieren bei der synchronen Variante, ~ unidirektional (geht nur in eine Richtung)
+    \item \textbf{Speicherbasiert}: + Ideal für große Dateien, da annähernd Verzögerungsfrei, nicht blockierend (im allgemeinen), kann bidirektional verwendet werden - Synchronisation notwenig, gemeinsamer Speicher, also nicht für verteilte Systeme geeignet, aufwändiger bei korrekter Implementierung
+    \item Idee: Verwenden von Speicherbasierterkommunikation für die großen Video \& Audiodateien, da man diese nur schwer \& insbesondere langsam per Nachrichten verschicken kann. Verwendung von Messaepassing für Kontroolldatenströme
+\end{itemize}
+
+\vspace{10mm}
+\paragraph{Frage 2: Synchronisation durch Semaphore}
+\textit{Bei asynchroner nachrichtenbasierter Kommunikation kommen stets Warteschlangen zum Einsatz, um unterschiedliche Geschwindigkeiten der Sender- und Empfängerprozesse auszugleichen. Der Zugriff auf diese Warteschlangen muss aus verschiedenen Gründen durch Synchronisationsmechanismen (z. B. Semaphore) geregelt werden. Was sind diese Gründe und weshalb sind insgesamt drei Semaphore pro Warteschlange notwendig?}
+
+Benötigen drei Semaphore: Schreibzugriff auf volle Schlange, Lesezugriff auf leere Schlange, und Zugriffskontrolle.
+
+\vspace{10mm}
+\paragraph{Frage 3: Synchronisationsvarianten bei nachrichtenbasierter Kommunikation}
+\textit{Welche Nachteile asynchroner Kommunikation treten beim Einsatz synchroner Varianten der Sende- und Empfangsoperationen nicht auf? Warum ist es trotzdem manchmal sinnvoll oder unumgänglich, die asynchronen Varianten einzusetzen? Nennen Sie mindestens drei Beispiele realer Applikationen, in denen asynchron kommuniziert wird.}
+\begin{itemize}
+    \item Pufferspeicher: Größe?
+    \item eventuell Synchronisation notwendig. (z.B. für Datenströme), eventuell extra Techniken zur Benachrichtigung oder Synchronisation
+    \item Trotzdem notwenig wenn:
+          \begin{itemize}
+              \item Hoher Grad an Parallelität notwendig
+              \item Ereignisse sporadisch oder unvorhersehbar (hier synchrones Warten ineffizient)
+              \item Auf Ereignisse zeitnah reagiert werden muss (z.B. in Echtzeitsystemen)
+          \end{itemize}
+    \item Es wird beispielsweise in E-Mails, Whatsapp, SMS asynchron kommuniziert
+\end{itemize}
+
+\vspace{10mm}
+\paragraph{Frage 4: Management asynchroner Ereignisse}
+\textit{Welche Alternativen haben die Entwickler von Betriebssystemen, um mit asynchron auftretenden Ereignissen (Mausbewegungen, Einstecken von USB-Geräten etc.) umzugehen? Welche Technik erlaubt es auch einem Benutzerprozess, auf asynchrone Ereignisse zu reagieren, ohne direkten Hardwarezugriff zu haben?}
+\begin{itemize}
+    \item Busy Waiting (Warte in Endlosschleife / sehr ineffizient)
+    \item Polling (Wahl der Zykluszeit)
+    \item Interrupts (HW-Signal, Behandlung über Routine aus IVT)
+          \begin{itemize}
+              \item inline-Prozeduraufruf
+              \item IPC über Botschaften
+              \item pop-up threads
+          \end{itemize}
+    \item Hierzu gibt es die Möglichkeit, dass der Prozessor alle Eingabe-Geräte zyklisch abfragt (Polling). Was bei der Vielzahl an Komponenten in einem Computer bedeuten würde, dass der Prozessor mit nichts anderem mehr beschäftigt wäre.
+    \item Eine Alternative ist die sogenannten Unterbrechungsanforderung (to interrupt, unterbrechen), die dann eintritt, wenn Daten von außen anstehen. Dazu wurde die Möglichkeit geschaffen den Hauptprozessor auf definierte Weise bei der laufenden Arbeit zu unterbrechen.
+    \item Auf Anwendungsebene: Registrieren von eigenen Signalhandlern
+\end{itemize}
+
+%##########################################
+\subsection{Aufgabe 1: Nachrichtenwarteschlangen (Message Queues)}
+\textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Message Queues. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert (z. B. Synchronisation durch Blockierungen, durch die Ankunft von Daten usw.)?}
+\vspace{10mm}
+\begin{itemize}
+    \item Hier werden Nachrichten von einem Prozess in eine Nachrichtenschlange (Message Queue) geschickt, welche typischerweise nach dem FIFO Prinzip arbeitet. Jede Messagequeue ist durch einen eindeutigen Bezeichner gekennzeichnet, unidirektional und mit festgelegtem Format.
+    \item MessageType: Unterscheidung innerhalb der Warteschlange möglich.
+    \item send blockiert, wenn die Queue voll ist.
+    \item receive blockiert, wenn keine Nachricht mit dem spezifizierten Type in der Queue ist.
+    \item Es gibt auch eine nichtblockierende Variante. (IPC-NOWAIT)
+    \item Das Einsatzgebiet der Warteschlangen ist typischerweise die Datenübergabe zwischen asynchronen Prozessen in verteilten Systemen.
+\end{itemize}
+
+\textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a1-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.}
+\vspace{10mm}
+
+%##########################################
+\subsection{Aufgabe 2: Gemeinsamer Speicher (Shared Memory)}
+\textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Shared Memory. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
+\vspace{10mm}
+\begin{itemize}
+    \item Shared Memory ist eine durch das Betriebssystem bereitgestellte Möglichkeit, bei welcher mehrere Prozesse gemeinsam auf einen gemeinsamen Speicher zugreifen können. Um dies zu erreichen muss zuerst ein gemeinsamer Datenspeicher angelegt werden. Nachdem dies geschehen ist, muss der Datenspeicher den Prozessen bekanntgemacht werden (einfügen in deren Adressraum), welche darauf zugreifen sollen dürfen.
+    \item Wichtig hierbei: Shared Memory ist eine der schnellsten, wenn nicht die schnellste Art der Interprozesskommunikation, da das Kopieren/Versenden zwischen Clients/Server, bzw. verschiedenen Prozessen entfällt.
+    \item Da man allerdings gemeinsam auf Speicher zugreift, ist eine Synchronisation, meist durch Semaphore oder Monitore unumgänglich.
+    \item shmat() fügt das durch shmid identifizierte Speichersegment an den Adressraum des aufrufenden Prozesses an. Die Anfügeadresse wird durch shmaddr spezifiziert.
+    \item Weiterhin gibt es Einschränkungen bezüglich der Rechte im shmflg Bitmaskargument:
+          \begin{itemize}
+              \item $SHM\_EXEC$: erlaubt eine Ausführung der Segmentinhalte
+              \item $SHM\_RDONLY$: Fall gesetzt, so ist das Segment nur für den Lesezugriff angehängt, ist es nicht gesetzt, so ist Lesen und Schreiben erlaubt.
+              \item $SHM\_REMAP$. Dieses Flag spezifiziert, dass das Mapping des Segments alle bisherigen Mappings im Bereich von shmaddr und den folgenden dateigrößelangen Segment ersetzt.
+          \end{itemize}
+    \item Ist shmat() erfolgreich, so wird $shm\_atime$ auf die jetzige Zeit gesetzt, $shm\_lpid$ auf die ProzessID des aufrufenden Prozess gesetzt und $shm\_nattch$ wird um 1 erhöht.
+\end{itemize}
+
+\textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a2-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.\\
+    Hinweis: An den verwendeten Semaphoroperationen sind keine Änderungen notwendig.}
+\vspace{10mm}
+
+%##########################################
+\subsection{Aufgabe 3: Benannte Pipes (Named Pipes, FIFOs)}
+\textit{a) Recherchieren Sie die Funktionsweise, Charakteristiken und Eigenschaften von Pipes und Named Pipes. Wie wird der Kontrollfluss der Prozesse dabei durch das Betriebssystem gesteuert? (Wann und wodurch erfolgt eine Synchronisation?)}
+\vspace{10mm}
+\begin{itemize}
+    \item Pipes stellen einen unidirektionalen Kommunikationskanal zwischen zwei Prozessen dar. Ein Pipe hat ein Lese- und ein Schreibende, wobei man am Leseende diejenigen Daten lesen kann, welche zuvor auf das Schreibende geschrieben wurden.
+    \item Wenn ein Prozess von einer leeren Pipe lesen will, so blockiert read() bis Daten vorhanden sind. Wenn ein Prozess versucht auf eine volle Pipe zu schreiben, dann wird write() solange blockieren, bis wieder genügend Platz auf der Pipe frei ist.
+    \item Die über Pipes ablaufende Kommunikation ist nachrichtenfrei und bytestromorientiert.
+    \item Eine Pipe hat eine begrenzte Kapazität
+    \item POSIX besagt, dass write() von weniger als $PIPE\_BUF$ Bytes atomar sein muss, bei mehr als $Pipe\_BUF$ Bytes kann es auch nichtatomar sein.
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u5_a5.png}
+          \end{center}
+    \item Named Pipes / FIFO sind einer Pipe sehr ähnlich, mit dem kleinen Unterschied, dass darauf als Teil des Dateisystems zugegriffen wird. Wenn Prozesse jetzt Daten über FIFO austauschen, dann behandelt der Kernel alle Daten intern ohne sie in das Dateisystem zu schreiben. Somit dienen die FIFO Dateien im Filesystem nur als Referenzpunkt und Namen und geben Prozessen Informationen darüber, an welcher Stelle Prozesse auf die Pipe zugreifen können. Dies bedeutet aber auch, dass hier im Gegensatz zu unbenannten Pipes Prozesse miteinander kommunizieren können, die nicht miteinander verwandt sind.
+    \item Der Kernel verwaltet genau ein Pipe-Objekt für jede FIFO-Spezialdatei, die von mindestens einem Prozess geöffnet wird.  Das FIFO muss an beiden Enden (lesend und schreibend) geöffnet werden, bevor Daten übergeben werden können.  Normalerweise wird auch das Öffnen der FIFO-Blöcke bis zum anderen Ende geöffnet.
+\end{itemize}
+
+\textit{b) In der Anlage zu dieser Übungsaufgabe (u4-a3-anlage) befinden sich ein Server- und ein Client-Programm, die beide Lücken enthalten. Vervollständigen und übersetzen Sie die Programme. Starten Sie anschließend zuerst den Server und dann den Client. Falls Sie die Lücken richtig ausgefüllt haben, muss das Client-Programm ein "Passwort" an den Server senden und anschließend ein Geheimnis ausgeben, das es vom Server als Antwort erhalten hat.}
+\vspace{10mm}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Übung 6}
+%##########################################
+\subsection{Repetitorium}
+\begin{description*}
+    \item \textbf{Wodurch sind die Mehrkosten eines Systemaufrufs im Vergleich zu einem regulären Prozeduraufruf bedingt?}
+    \begin{itemize}
+        \item Systemaufruf: Aufruf einer BS-Funktion über eine Schnittstelle z.b. libc
+        \item: Kosten Systemaufruf:
+        \item Die Mehrkosten für einen Systemaufruf gegenüber einem regulären Prozeduraufruf sind bedingt durch:
+              \begin{itemize}
+                  \item Kosten der Standardisierung bei der Parameterübergabe (Datenstruktur auf dem Stack), da separate Adress und Namensräume
+                  \item Isolationskosten und Privilegienwechsel (von User zu Kernel zu User) (leichtgewichtiger als Prozesswechsel, per Softwareinterrupt, z.b. TRAP)
+              \end{itemize}
+        \item Heute liegen die Mehrkosten ungefähr im Bereich von 2.
+        \item Die Kosten für einen Systemaufruf ergeben sich aus Systemaufruf = Prozeduraufruf + (Standardisierungskosten + Isolationskosten)
+    \end{itemize}
+    \item \textbf{Für die Behandlung asynchroner Unterbrechungen (Interrupts) gibt es mehrere Modelle, u.a. auch das Modell des erzwungenen Prozeduraufrufs und das Pop-up-Thread-Modell. Worin bestehen die Unterschiede bei diesen beiden Modellen?}
+    \begin{itemize}
+        \item erzwungener Prozeduraufruf: kein Threadwechsel sondern:
+              \begin{itemize}
+                  \item Unterbrechung des momentan ablaufenden Threads
+                  \item Sicherung des Ablaufkontexts
+                  \item Versetzen des Threads in Ablaufkontext der Unterbrechungsbehandlung
+                  \item Ausführung der Handlerprozedur
+                  \item Restauration des Threads
+              \end{itemize}
+        \item Pop-up-Threadmodell
+              \begin{itemize}
+                  \item 2-stufiges Konzept
+                  \item 1.Stufe
+                        \begin{itemize}
+                            \item Unterbrechung des momentan aktiven Threads
+                            \item Erzeugen des Threads
+                            \item Fortsetzung des unterbrochenen Threads
+                        \end{itemize}
+                  \item Stufe 2:
+                        \begin{itemize}
+                            \item Thread wird irgendwann vom Scheduler aktiviert.
+                        \end{itemize}
+                  \item Dieses Modell eignet sich besonders für Echtzeitsysteme, da es hier eine zeitliche Kalkulierbarkeit und Kürze der primären Interruptbehandlung gibt.
+              \end{itemize}
+    \end{itemize}
+    \item \textbf{Vor welchem fehlerhaften Verhalten von Anwendungsprozessen schützen private virtuelle Adressräume? Auf welche Weise üben Adressräume ihre Schutzfunktion aus? Aus welchen Gründen kann es sinnvoll sein, zwei oder mehreren Prozessen gleichzeitig Zugriff auf einen gemeinsamen Speicherbereich zu geben?}
+    \begin{itemize}
+        \item Idee von privaten virtuellen Adressräumen: Jeder Prozess erhält seinen eigenen isolierten, privaten, sehr großen Arbeitsspeicher. Abbildung der virtuellen Speicheradressen auf physische Speicheradressen. Somit ist kein Zugriff mehr auf den Arbeitspeicher anderer Prozesse mehr möglich. Eine Relokation ist nicht mehr nötig.
+        \item Die privaten virtuellen Adressräume schützen folglich vor:
+              \begin{itemize}
+                  \item Der Störung von Programmen untereinander, da Programme im Fehlerfall nicht mehr auf Speicherbereiche anderer Programme zugreifen können.
+                  \item Der Störung des Betriebssystems durch fehlerhafte Programme.
+              \end{itemize}
+        \item Ein gleichzeitiger Zugriff auf einen Speicherbereich für mehrere Prozesse ist vor allem zur Kommunikation und Synchronisation vorteilhaft. Angenommen wir haben eine sehr große Videodatei, dann wollen wir diese nicht zwischen zwei Prozessen des selben Rechners hin und herschieben (Kopierproblem) sondern eventuell nacheinander oder zeitgleich daran arbeiten ohne sie kopieren zu müssen.
+    \end{itemize}
+    \item \textbf{Warum ist es nur schwer möglich, schon während der Übersetzung eines Programms dafür zu sorgen, dass es bei der Ausführung keine Speicherzugriffssünden begeht?}
+    \begin{itemize}
+        \item Problem: reguläre Programmiersprachen lassen Zugriff auf beliebige Arbeitsspeicheradressen zu(Zeigeroprationen), Adressen sind eventuell zur Compilezeit noch gar nicht bekannt, weil sie erst berechnet werden. Selbst bei stark typisierten Sprachen sind Compliate noch manipulierbar.
+              Abhilfe: Verlässliche Compiler, Laufzeitüberwachung, interpretierte Sprachen.
+    \end{itemize}
+    \item \textbf{Warum ist eine optimale Pagingstrategie im Allgemeinen nicht erreichbar? Unter welcher speziellen Voraussetzung geht dies dennoch?}
+    \begin{itemize}
+        \item Problem virtueller Adressverwaltung: Anzahl virtueller Seiten >> Anzahl physischer Seiten
+        \item Das Paging beschreibt die Unterteilung des virtuellen Adressraums in gleich große Stücke. Wenn nun nicht der ganze virtuelle Adressraum nicht in den Arbeitsspeicher passt, dann werden einzelne Seiten auf den Hauptspeicher ausgelagert (gepaget).
+        \item Die optimale Pagingstrategie wäre die Auslagerung derjenigen Seite, deren:
+              \begin{itemize}
+                  \item nächster Gebrauch am weitesten in der Zukunft liegt
+                  \item deren Auslagerung nichts kostet
+              \end{itemize}
+        \item Eine optimale Pagingstrategie ist unter der Vorraussetzung, dass ... gilt möglich.
+    \end{itemize}
+    \item \textbf{Wie viele Seitentabellen gibt es in einem anlaufenden Betriebssystem mit virtueller Speicherverwaltung? Benötigt ein E/A-Adressraum eine eigene Seitentabelle?}
+    \begin{itemize}
+        \item Seitentabelle: Tabelle mit Eintrag für jede virtuelle Adresse mit evtl. physischen Adresse, weitere Informationen wie used-bit, dirty-bit, …
+        \item Eine Seitentabelle pro virtuellem Adressraum, (= 1 pro Prozess)
+        \item E/A-Adressräume: benötigen keine Seitentabelle, da nicht virtualisiert
+    \end{itemize}
+    \item \textbf{Was ist die Arbeitsmenge (Working Set) eines Prozesses? Wozu dient sie? Zu welchen Zeitpunkten bzw. unter welchen Voraussetzungen stimmt sie mit der Menge der für einen Prozess eingelagerten Seiten (Resident Set) überein?}
+    \begin{itemize}
+        \item Arbeitsmenge der Seiten, die in einem Zeitintervall (t-x,t) referenziert wurden.
+        \item In der Regel ist die Menge der eingelagerten Seite eine Annäherung an der Working set ist, außer wenn ausreichend physischer Speicher vorhanden ist.
+        \item Arbeitsspeicherzugriffsmuster von Prozessen besitzen "hot spots", also Bereiche in denen fast alle Zugriffe stattfinden. Diese bewegen sich nur langsam durch den virtuellen Adressraum
+        \item Die zu den Hotspots eines Prozesses gehörenden Seiten nennt man seine Arbeitsmenge (das Working Set)
+        \item Die Arbeitsmenge eines Prozesses beschreibt diejenigen Seiten, welche als unwahrscheinlichstes ausgelagert werden sollen, da auf diesen Seiten die meiste Zeit verbracht und die Hauptarbeit stattfindet.
+        \item Wann gilt: Resident Set = Working Set?
+              \begin{itemize}
+                  \item Beim Programmstart, bevor Seiten ausgelagert werden können.
+                  \item Dann, wenn viel Arbeitsspeicher vorhanden ist und noch überhaupt nicht ausgelagert werden muss.
+              \end{itemize}
+    \end{itemize}
+    \item \textbf{Welche Aufgaben hat eine MMU? Wozu dient ein TLB (Translation Look-aside Buffer)? Wann wird er von wem wozu benutzt?}
+    \begin{itemize}
+        \item MMU -  Memory management Unit: (Hardware):
+        \item Eine MMU (Memory Management Unit) verwaltet den Zugriff auf den Arbeitsspeichers eines PC. Sie sorgt für die Abbildung der virtuellen Adressen jedes einzelnen Prozesses in physische Adressen des externen Speichers. Dies widerum erlaubt das Auslagern von zur Zeit nicht benötigten Seiten, das Konzept von shared Memory, die Isolation von Prozessen untereinander. Weiterhin regelt die MMU auch Speicherschutzaufgaben in horizontaler und vertikaler Ebene
+        \item Ein TLB (Translation look aside Buffer) ist ein schneller Cache-Speicher für Seitentabelleneinträge welche in der MMU lokalisiert ist. Die Funktionsweise beruht darauf, dass die n zuvor ermittelten physischen Adressmappings im TLB zwischengespeichert werden, sodass erneute Zugriffe auf die selben Bereiche nicht mehr aufwändig neu berechnet werden müssen.
+        \item Genutzt wird dieser dann, wenn ein Programm einen Speicherzugriff vornimmt um zu sehen, ob das Adressmapping dort bereits berechnet ist.
+    \end{itemize}
+    \item \textbf{Seitentabellen können je nach Adressraumgröße sehr groß werden. Mit diesem Problem gehen mehrstufige Seitentabellen um. Gegeben sei die Aufteilung einer virtuellen 32-Bit-Adresse für ein zweistufiges Abbildungsverfahren (P i als Seitentabellenindex i. Stufe).}
+    \begin{itemize*}
+        \item \textbf{Wie groß ist die Seitentabelle? Wie groß ist die Seitenrahmen- bzw. Kachelgröße?} Seitengröße $2^{12}$ = 4KiB, Seitentabelle: maximal $2^{10}$ Einträge in erster Stufe und $2^{10}$ Einträge in der zweiten Stufe. 2. Stufe kann vollkommen unbesetzt sein.
+        \item \textbf{Um welchen Faktor reduziert sich die Größe der Seitentabelle, die ständig im Hauptspeicher zu halten ist, bei einem zweistufigen Seitentabellenverfahren gegenüber einer einstufigen Seitentabelle?} Sie verkleinert sich um Faktor $2^{10}$ (Nur erste Stufe wird im Speicher gehalten)
+        \item \textbf{Welche Größe haben die Seitentabellen bei einstufigen bzw. zweistufigen Verfahren bei einer Eintragsbreite von jeweils 4 Byte?} $2^{20} * 4 Byte = 4 MiB$ bei Einstufig
+    \end{itemize*}
+    \item \textbf{Bei einer Seitengröße von 8 KiByte und einem virtuellen Adressraum der Größe $2^{64}$: Wie groß wäre eine einstufige, nicht invertierte Seitentabelle eines Prozesses, wenn jeder Seiteneintrag in der Tabelle 32 Bit (= $2^2$ Byte) groß ist?}
+    \begin{itemize}
+        \item Seitengröße = 8 Kbyte = $2^{13}$ Byte
+        \item virtueller Adressraum = $2^{64}$
+        \item Jeder Seiteneintrag = 32 Bit = $2^2$ Byte
+        \item Ein virtueller Adressraum hat 64-13 = 51 Seiten
+        \item Somit haben wir insgesamt $2^{51} * 2^2$ Byte = $2^53$ Byte = 8 Pebibyte als Größe der Seitentabelle eines Prozesses
+    \end{itemize}
+\end{description*}
+
+%##########################################
+\subsection{Aufgabe 1: Systemaufrufe}
+\textit{Dienstleistungen des Betriebssystems (z. B. Erzeugen von Prozessen, Threads oder Dateien) werden unter Zwischenschaltung von Stellvertreterprozeduren aufgerufen (z. B. für Programme in der Sprache C finden diese sich bei Linux-Systemen meist in der C-Standardbibliothek libc), die dann über einen aufwändigeren als den Prozedurmechanismus den tatsächlichen Sprung ins Betriebssystem implementieren.}
+\vspace{10mm}
+\textit{a) Warum kann man aus einem Anwendungsprogramm nicht direkt eine im Betriebssystem implementierte Prozedur aufrufen? Erläutern Sie die gängige alternative Verfahrensweise. Welche prinzipiellen Bestandteile enthalten die genannten Stellvertreterprozeduren?}
+\vspace{10mm}
+\begin{itemize}
+    \item Unterschiedliche Namensräume (d.h. Syscall im Anwendungsprozess nicht bekannt)
+    \item Gängige Alternative: libc Funktion push festgelegte Parameter auf den Stack + Identifier für den Syscall, Interrupt auslösen, Interruptbehandlung ruft richtige Methode auf (switch auf Identifier) und parameter übergeben.
+    \item Eine Stellvertreterprozedur (Stub) ist ein Anknüpfungspunkt um Softwarekomponenten einfach anzusprechen, welche sonst nur über komplexe Protokolle ansprechbar wären.
+\end{itemize}
+
+\textit{b) In der Anlage zur Aufgabe finden Sie das Programm $syscall.c;$ dort ist beispielhaft ein Systemaufruf manuell implementiert. Warum enthält das Unterprogramm Assemblerbefehle? Erweitern Sie nach obigem Muster Ihren "eigenen" $exit()$-Systemaufruf $my\_exit()$, indem Sie das begonnene Fragment ergänzen. Demonstrieren Sie dessen korrekte Funktionsweise.\\
+    Hinweis: Mit dem Systemaufruf $wait()$ kann man den Terminierungsstatus von Kindprozessen überprüfen. Um das Programm zu kompilieren, auszuführen und seinen Rückgabewert anzuzeigen, können Sie alternativ das beigefügte Shell-Skript $run.sh$ benutzen.
+}
+\vspace{10mm}
+\begin{itemize}
+    \item Systemaufrufe sind im Grunde ein User-Space-Programm, das bestimmte Unterprogramme im Kernel aufruft, wobei ein in den Prozessor eingebauter und vom Kernel eingerichteter Mechanismus verwendet wird, der es dem aufgerufenen Unterprogramm erlaubt, eine höhere Privilegstufe als der reguläre User-Space-Programmcode zu haben.
+          \begin{itemize*}
+              \item Assembler-Anweisungen sind im Grunde eine menschenfreundliche Darstellung von tatsächlichen Bytes des Maschinencodes. Und der Maschinencode wird weder interpretiert noch kompiliert, sondern im Prozessor implementiert, entweder mit dem Mikrocode des Prozessors oder direkt auf der Hardware-Ebene, unter Verwendung großer Gruppen von Logikgattern.
+              \item Ein einzelner Systemaufruf in Assemblersprache besteht normalerweise aus mehreren Zeilen Code. Zuerst werden die Parameter für den Systemaufruf in entsprechende Prozessorregister und/oder auf den Stack geladen, und dann wird eine spezielle Anweisung wie int 0x80 oder syscall verwendet, um den Systemaufruf tatsächlich durchzuführen.
+              \item In der 32-Bit-x86-Architektur wird der int 0x80 als Systemaufruf-Befehl verwendet. Der Kernel hat eine Tabelle mit Software-Interrupt-Handler-Routinen für den Prozessor vorbereitet. Diese Tabelle ist für normalen User-Space-Code nicht direkt zugänglich, aber mit dem int-Befehl kann der User-Space-Code eine der Routinen auslösen, auf die in der Tabelle verwiesen wird. int 0x80 weist den Prozessor einfach an, in den Kernel-Modus zu wechseln und in die Routine zu springen, deren Adresse in Slot Nr.128 dieser Tabelle steht. Diese Routine ist die Systemaufrufschnittstelle von Linux für die 32-Bit-x86-Architektur: Sie prüft die angegebenen Parameter, identifiziert, welcher Prozess den Aufruf getätigt hat, und springt dann zu der entsprechenden Unterroutine.
+              \item In der 64-Bit-Version der x86-Architektur gibt es eine dedizierte syscall-Anweisung für den gleichen Zweck. Eigentlich hat die 32-Bit-x86-Architektur diese auch, aber entweder gab es sie noch nicht, als die 32-Bit-Linux-Systemaufrufkonvention von Linus Torvalds entworfen wurde, oder die Anweisung hatte in einigen Prozessormodellen einen Hardwarefehler, so dass sie nicht verwendet wurde. Da aber alle 64-Bit-x86-Prozessoren die syscall-Anweisung haben und sie definitiv funktioniert, wird sie verwendet.
+          \end{itemize*}
+\end{itemize}
+\begin{lstlisting}
+exitnum = __NR_exit;
+asm("mov $60, %rax"); // verwende den exitnum / 60 Syscall
+asm("mov my_exit_status, %rdi"); //status = myexitstatus oder 0 
+asm("syscall");
+\end{lstlisting}
+
+\textit{c) Vor der Einführung des Maschinenbefehls $syscall$ in modernen 64-Bit-Architekturen musste zum Auslösen eines Systemaufrufs durch ein Anwendungsprogramm ein spezieller Interrupt (trap) ausgelöst werden. Recherchieren Sie, welche Vorteile die Verwendung von $syscall$ gegenüber dieser konventionellen Verfahrensweise hat. Auch heute noch wird aus Gründen der Abwärtskompatibilität und zur Unterstützung spezieller Prozessorarchitekturen der $trap$-Mechanismus durch den Linux-Kernel unterstützt. Schaffen Sie es, Ihre $my\_exit()$-Implementierung mittels Ersetzen der $syscall$ Instruktion durch einen Trap-Interrupt ($int \$ 0x80$) entsprechend zu portieren?\\
+    Beachten Sie, dass dabei Systemaufruf-Nummern für 32-Bit-Hardwarearchitekturen und andere Register zu verwenden sind.
+}
+\vspace{10mm}
+Unterscheidung zwischen Traps und Systemcalls
+\begin{itemize}
+    \item Ein Trap ist eine Exception welches durch das Aufrufen einer Kernelsubroutine in den Kernelmode wechselt. Es stellt also einen Kontrolltransfer an das BS da.
+    \item Ein SYSCALL ist synchron und geplant.
+\end{itemize}
+
+
+\textit{Tipp zur gesamten Aufgabenstellung: Unter Linux können Sie mit $strace <Programm>$ u.a. die Systemaufrufe eines Programms verfolgen.}
+\vspace{10mm}
+
+
+%##########################################
+\subsection{Aufgabe 2: Ereignismanagement mit Linux-Signalen}
+\textit{In Linux-Systemen kann mittels des Signalmechanismus eine Behandlung bestimmter Ereignisse auf Prozessebene stattfinden (aus der Vorlesung als "Interruptbehandlung auf Prozessebene" bekannt).\\
+    Dieses Prinzip soll nun mit mittels sogenannter Dämon-Prozesse (daemons) veranschaulicht werden. Dabei handelt es sich um Hintergrundprozesse, die i. d. R. im Verlauf des Boot-Vorgangs gestartet werden und keine direkte Benutzerinteraktion vorsehen.
+    So kümmert sich beispielsweise der Line Printer Daemon (lpd) oder der Common Unix Printing System Daemon (cupsd) darum, Druckaufträge nebenläufig zu anderen Benutzerprozessen abzuwickeln.
+    Eine typische Verwendung von Signalen ist beispielsweise, einem Dämon die Änderung seiner Konfigurationsdatei(en) zur Laufzeit mitzuteilen, woraufhin diese erneut eingelesen werden sollen.
+    Hierfür hat sich die Benutzung des Signals $SIGHUP$ etabliert.
+}
+\vspace{10mm}
+
+\textit{a) Recherchieren Sie, welche Signale der für Unix-Systeme etablierte POSIX-Standard vorsieht und wie diese einem Prozess zugestellt werden. Demonstrieren Sie in der Übung, wie man auf der Kommandozeile einem beliebigen Prozess ein Signal (z. B. SIGHUP oder SIGKILL) senden kann.
+    Informationen hierzu finden Sie wie immer in den Linux-Manpages oder im Handbuch zur C-Standardbibliothek libc.}
+\vspace{10mm}
+\begin{itemize}
+    \item Jedes Signal hat eine Signaldisposition welche besagt, wie sich der Prozess bei Zustellen des Signals verhält:
+          \begin{itemize}
+              \item Term = Terminierung
+              \item IGN = Ignorieren des Signals
+              \item CORE = Terminieren und dumpen des Kerns
+              \item STOP = Stoppen des Prozess
+              \item CONT = Fortsetzen des Prozess, wenn dieser gerade eben pausiert ist
+          \end{itemize}
+    \item Ein Prozess kann die Disposition eines Signals mit sigaction(2) oder signal(2) ändern.  (Letzteres ist weniger portabel, wenn ein Signal-Handler eingerichtet wird; siehe signal(2) für Details). Mit Hilfe dieser Systemaufrufe kann ein Prozess eines der folgenden Verhaltensweisen bei der Übergabe des Signals wählen: die Standardaktion ausführen, das Signal ignorieren oder das Signal mit einem Signalhandler abfangen, einer vom Programmierer definierten Funktion, die automatisch aufgerufen wird, wenn das Signal geliefert wird.
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u6_a2.png}
+          \end{center}
+    \item Folgende Systemaufrufe erlauben es dem Aufrufer Signale zu senden:
+          \begin{center}
+              \includegraphics[width=0.5\linewidth]{Assets/Betriebssysteme_uebung/u6_a21.png}
+          \end{center}
+          Die  folgenden  Systemaufrufe setzen die Ausführung des aufrufenden Prozesses oder Threads aus, bis ein Signal abgefangen wird  (oder  ein  nicht  abgefangenes  Signal  den  Prozess
+          beendet):
+    \item pause(2) setzt die Ausführung aus, bis irgendein Signal abgefangen wird.
+    \item sigsuspend(2)   ändert  zeitweise  die  Signalmaske (siehe unten) und setzt die Ausführung aus, bis eines der nicht maskierten Signale abgefangen wird. Synchrone Signalannahme
+    \item Anstatt ein Signal asynchron mit einem Signal-Handler abzufangen,  kann  ein  Signal  auch synchron  akzeptiert  werden.  Das  heißt,  die  Ausführung wird blockiert, bis das Signal gesendet wird. Dann liefert der Kernel Informationen über das Signal an  den  Aufrufenden. Es gibt zwei allgemeine Möglichkeiten, das zu tun:
+    \item sigwaitinfo(2), sigtimedwait(2) und sigwait(3) setzen die Ausführung aus, bis ein Signal
+          gesendet wird, dass zu einer  festgelegen  Gruppe  von  Signalen  gehört.  Jeder  dieser
+          Aufrufe gibt Informationen über das empfangene Signal zurück.
+    \item signalfd(2) gibt einen Dateideskriptor zurück. Mit ihm können Informationen über Signale
+          gelesen werden, die dem Aufrufenden übermittelt werden. Jeder  Aufruf  von  read(2)  aus
+          dieser  Datei  wird  blockiert,  bis eines der Signale aus der im Aufruf von signalfd(2)
+          festgelegten  Menge  an  den  aufrufenden  Prozess  gesendet  wird.  Der   von   read(2)
+          zurückgegebene Puffer enthält eine Struktur, die das Signal beschreibt.
+    \item Ausführung über beispielsweise: killall [-9] firefox
+\end{itemize}
+
+\textit{In der Anlage zu dieser Aufgabe stellen wir Ihnen den Quellcode eines kleinen Dämon-Prozesses zur Verfügung. Zur besseren Demonstration haben wir darauf verzichtet, ihn als Hintergrundprozess zu initialisieren; er läuft daher wie ein Nutzerprozess und kann so seine Ausgaben auf der Kommandozeile sichtbar machen.}
+\vspace{10mm}
+
+\textit{b) Starten Sie den mitgelieferten Dämon und demonstrieren Sie, wie dieser auf verschiedene Signale reagiert. Erklären Sie das Verhalten mithilfe Ihrer Recherche aus Teilaufgabe a).}
+\vspace{10mm}
+\begin{itemize}
+    \item kill -KILL/SIGKILL/9 PID tötet den Thread (SIGKILL)
+    \item killall -SIGKILL / KILL / 9 BEZEICHNER tötet den Thread ebenfalls (SIGKILL)
+    \item STRG+C resultiert in einem Interrupt der Dialogstation
+    \item BUCHSTABE gibt den Buchstaben wieder aus.
+    \item kill PID sendet hingegen nur SIGTERM/ 15
+\end{itemize}
+
+\textit{c) Erweitern Sie den Dämon nun um die Fähigkeit, seine Konfigurationsdateien neu zu laden, wann immer er das Signal SIGHUP empfängt. Sie können dazu als Reaktion auf das Signal die bereits vorhandene Funktion $load_config()$ aufrufen.}
+\vspace{10mm}
+
+\textit{d) Schaffen Sie es, durch Reaktion auf die Signale SIGTERM und SIGKILL ein explizites Terminieren des Prozesses durch den Benutzer zu verhindern? Demonstrieren und erklären Sie Ihre Ergebnisse.}
+\vspace{10mm}
+
+
+%##########################################
+\subsection{Aufgabe 3: Virtuelle Speicherverwaltung von Linux-Systemen}
+\textit{Stellen Sie das virtuelle Speichermanagement von Linux-Systemen vor. Gehen Sie dabei insbesondere auf die Struktur der Seitentabellen und die Seitengröße ein.\\
+    Virtuelle Speicherverwaltung bietet auch eine elegante Möglichkeit zur dynamischen Speicherverwaltung, d. h. je nach Bedarf den von einem Prozess belegten Speicherplatz zu vergrößern bzw. wieder zu verkleinern.\\
+    Die Motivation zur Integration dieser Technik in den Linux-Kernel war die Einführung dynamischer Objekte in Programmiersprachen, die z. B. mittels new() während des Programmablaufs bei Bedarf neue Variablen, insbesondere große Arrays, erzeugen und auch wieder löschen können. Zum Ansprechen der entsprechenden Implementierungen in Linux, werden auf Nutzerebene die Funktionen malloc() ("memory allocation") und free() (Wiederfreigeben von Speicher) bereitgestellt. Beide Funktionen sind über Eintrittspunkte in die C-Standard-Bibliothek implementiert. Freier Speicher wird dabei vom Heap besorgt.}
+\vspace{10mm}
+
+\textit{a) Erklären Sie diesen Begriff im Linux-Kontext. Stellen Sie dann die beiden obigen Funktionen vor und demonstrieren Sie ihre Benutzung.}
+\vspace{10mm}
+\begin{itemize}
+    \item Stack: LIFO Speicher mit lokalen Variablen
+    \item Heap: dynamische Allokationen, langsamer als Stack, Speicherallokation mit malloc möglich.
+    \item Der Heap ist das Segment des Speichers, das vor der Kompilierung nicht auf eine konstante Größe festgelegt wird und vom Programmierer dynamisch gesteuert werden kann. Stellen Sie sich den Heap als einen "freien Pool" von Speicher vor, den Sie beim Ausführen Ihrer Anwendung verwenden können. Die Größe des Heaps für eine Anwendung wird durch die physikalischen Beschränkungen Ihres RAM (Random Access Memory) bestimmt und ist im Allgemeinen viel größer als der Stack.\\
+          Wir verwenden Speicher aus dem Heap, wenn wir nicht wissen, wie viel Platz eine Datenstruktur in unserem Programm einnehmen wird, wenn wir mehr Speicher zuweisen müssen, als auf dem Stack verfügbar ist, oder wenn wir Variablen erstellen müssen, die für die Dauer unserer Anwendung gelten. In der Programmiersprache C können wir das tun, indem wir malloc, realloc, calloc und/oder free verwenden.
+    \item Die Funktion malloc() allokiert Größenbytes und gibt einen Zeiger auf den allokierten Speicher zurück.  Der Speicher wird nicht initialisiert.  Wenn size gleich 0 ist, gibt malloc() entweder NULL oder einen eindeutigen Zeigerwert zurück, der später erfolgreich an free() übergeben werden kann. \\
+          Die Funktion free() gibt den Speicherplatz frei, auf den ptr zeigt und der durch einen vorherigen Aufruf von malloc() zurückgegeben worden sein muss,
+          calloc(), oder realloc() zurückgegeben worden sein.  Andernfalls, oder wenn free(ptr) bereits aufgerufen wurde, tritt undefiniertes Verhalten auf.  Wenn ptr NULL ist, wird keine Operation durchgeführt.
+\end{itemize}
+
+\textit{Im Linux-Kern benutzen $malloc()$ und $free()$ den Systemaufruf $brk()$ ("break"), der ebenso freien Speicher requiriert, aber für die Verwendung als Programmierschnittstelle nicht empfohlen wird. Dieser ändert den so genannten Programm-"break".}
+\vspace{10mm}
+\textit{b) Was bedeutet dies? Wie kann man dessen aktuellen Wert sowie dessen Maximalwert feststellen?}
+\vspace{10mm}
+\begin{itemize}
+	\item Der "Program break" definiert das Ende des Datensegments eines Prozesses. Er stellt somit den ersten Ort nach dem uninitialisierten Datensegment dar.
+	\item Mittels getrlimit() ist ein Auslesen des Limits möglich.
+	\item Mittels sbrk(0) ist ein Ende der uninitialisierten Daten auslesbar.
+\end{itemize}
+
+\textit{c) Wodurch unterscheiden sich die Funktionen $malloc()/free()$ und $brk()$?}
+\vspace{10mm}
+\begin{itemize}
+	\item brk() sollte in unserem Fall von Anwendungsprogrammen vermieden werden, da es nicht portabel ist und weniger komfortabel, sowie unsicher ist. Deshalb wird heute mmap() verwendet.
+\end{itemize}
+
+
+\end{document}

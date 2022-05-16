@@ -1,0 +1,156 @@
+\documentclass[10pt, a4paper]{exam}
+\printanswers			    % Comment this line to hide the answers 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+
+\pdfinfo{
+    /Title (Kryptographie - Übung)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+\title{Kryptographie - Übung}
+\author{}
+\date{}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newtcolorbox{myboxii}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+  Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Kryptographie}! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
+\end{myboxii}
+
+%##########################################
+\begin{questions}
+  \question Possibilistisch sichere Kryptosysteme
+
+  Bestimmen Sie alle possibilistisch sicheren Kryptosysteme $S=(X,K,Y,e,d)$ mit $X=\{a,b\}$ und $K=\{1,2\}$ (bis auf das Umbenennen von Chiffretexten).
+  \begin{solution}
+  \end{solution}
+
+  \question Possibilistische Sicherheit: Eine alternative Definition?
+  Beweisen oder widerlegen Sie: Ein Kryptosystem $S=(X,K,Y,e,d)$ ist possibilistisch sicher genau dann, wenn Folgendes gilt: $\forall x\in  X\forall y\in  Y\exists k\in K:d(y,k)=x$.
+  \begin{solution}
+  \end{solution}
+
+  Bemerkung: Im Gegensatz zur Definition der possibilistischen Sicherheit wird hier eine Aussage über die Entschlüsselungsfunktion gemacht.
+
+  \question Possibilistische Sicherheit bei komponentenweiser Verschlüsselung
+
+  Gegeben seien ein Kryptosystem $S=(X,K,Y,e,d)$ und $l\in\mathbb{N}^+$. Wir können $S$ benutzen, um längere Klartexte (Elemente aus $X^l$) zu verschlüsseln.
+
+  Das Kryptosystem $S'=(X^l,K,Y^l,e',d')$ mit $e'((x_1,...,x^l),k)=(e(x_1,k),...,e(x_l,k))$ verschlüsselt komponentenweise unter Verwendung eines einzigen Schlüssels $k$.
+  \begin{parts}
+    \part Definieren Sie $d'$ so, dass $S'$ tatsächlich ein Kryptosystem ist.
+    \begin{solution}
+    \end{solution}
+    \part Zeigen Sie, dass $S'$ für $|X|,l\geq 2$ nicht possibilistisch sicher ist. (Dies gilt auch dann, wenn S selber possibilistisch sicher ist!)
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  Das Kryptosystem $S^*=(X^l,K^l,Y^l,e^*,d^*)$ mit $e^*((x_1,...,x_l),(k_1,...,k_l))=(e(x_1,k_1),..., e(x_l,k_l))$ verschlüsselt komponentenweise unter Verwendung mehrerer Schlüssel $k_1,...,k_l$.
+  \begin{parts}
+    \part Definieren Sie $d^*$ so, dass $S^*$ tatsächlich ein Kryptosystem ist.
+    \begin{solution}
+    \end{solution}
+    \part Zeigen Sie, dass $S^*$ genau dann possibilistisch sicher ist, wenn $S$ possibilistisch sicher ist.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  Notation: Für eine natürliche Zahl $n\geq 2$ sei $Z_n$ die Menge der Zahlen $\{0,1,...,n-1\}$. Die Addition $+_n$ und Multiplikation $*_n$ auf $Z_n$ sind wie folgt definiert:  $a +_n b =(a+b)\ mod\ n$ und $a *_n b =(a*b)\ mod\ n$, wobei $x\ mod\ n$ der Rest von $x$ bei Division durch $n$ ist.
+
+  \question Verschiebe- und affines Kryptosystem
+
+  Für $n\in N^+$ betrachten wir zwei Kryptosysteme, um Elemente aus $Z_n$ zu verschlüsseln.
+  Das Verschiebekryptosystem (Cäsar-Chiffre) mit Parameter $n$ ist gegeben durch $C_n=(Z_n,Z_n,Z_n,e_n,d_n)$ mit $e_n(x,k)=x +_n k$.
+  \begin{parts}
+    \part Wie muss $d_n$ definiert werden, damit $C_n$ tatsächlich ein Kryptosystem ist?
+    \begin{solution}
+    \end{solution}
+    \part Zeigen Sie, dass $C_n$ possibilistisch sicher ist.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  Das affine Kryptosystem mit Parameter $n\geq 2$ ist gegeben durch $A_n=(Z_n,A_n\times Z_n,Z_n,e_n',d_n')$ mit $A_n=\{a\in Z_n| ggT(a, n) = 1\}$ und $e_n'(x,(a,b)=a *_n x +_n b$.
+  Hinweis: Falls $ggT(a,n)=1$, d.h., $a$ und $n$ teilerfremd sind, dann gilt: Es existert genau ein $b\in A_n\subseteq Z_n\backslash\{0\}$, so dass $a*_n b=b*_n a=1$. Dieses Element $b$ heißt ,,multiplikatives Inverses von a modulo n''.
+  \begin{parts}
+    \part Definieren Sie $d_n'$ so, dass $A_n$ tatsächlich ein Kryptosystem ist.
+    \begin{solution}
+    \end{solution}
+    \part Zeigen Sie, dass $A_n$ possibilistisch sicher ist.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

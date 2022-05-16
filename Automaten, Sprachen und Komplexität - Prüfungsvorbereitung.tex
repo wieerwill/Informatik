@@ -1,0 +1,904 @@
+\documentclass[10pt, a4paper]{exam}
+\printanswers			    % Comment this line to hide the answers 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
+\renewcommand{\solutiontitle}{\noindent\textbf{Antwort}: }
+\SolutionEmphasis{\small}
+\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
+
+\pdfinfo{
+    /Title (Automaten, Sprachen \& Komplexität - Prüfungsvorbereitung)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+\title{Automaten, Sprachen \& Komplexität - Prüfungsvorbereitung}
+\author{}
+\date{}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newtcolorbox{myboxii}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+  Aufgaben aus dieser Vorlage stammen aus der Vorlesung \textit{Algorithmen, Sprachen und Komplexität} und wurden zu Übungszwecken verändert oder anders formuliert! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
+\end{myboxii}
+
+%##########################################
+\begin{questions}
+  \question Definitionen der Automatentheorie. Vervollständige die folgenden Definitionen:
+  \begin{parts}
+    \part Eine Regel $(l\rightarrow r)$ einer Grammatik $G=(V,\sum,P,S)$ heißt rechtslinear, falls ...
+    \begin{solution}
+      immer das an der am weitesten rechts stehende Nicht-Terminal in ein Terminal umgewandelt wird.
+      Dazu muss $l\in V$ und $r\in \sum V\cup {\epsilon}$.
+    \end{solution}
+
+    \part Die Menge $Reg(\sum)$ der regulären Ausdrücke über dem Alphabet ist...
+    \begin{solution}
+      ist die kleinste Menge mit folgenden Eigenschaften:
+      \begin{itemize}
+        \item $\varnothing \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+        \item Wenn $\alpha, \beta \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+      \end{itemize}
+    \end{solution}
+
+    \part Ein NFA ist ein Tupel $M=(...)$
+    \begin{solution}
+      ein nichtdeterministischer endlicher Automat $M$ ist ein 5-Tupel $M=(Z,\sum,S,\delta,E)$ mit
+      \begin{itemize}
+        \item $Z$ ist eine endliche Menge von Zuständen
+        \item $\sum$ ist das Eingabealphabet
+        \item $S\subseteq Z$ die Menge der Startzustände (können mehrere sein)
+        \item $\delta: Z \times \sum \rightarrow P(Z)$ ist die (Menge der) Überführungs/Übergangsfunktion
+        \item $E\subseteq Z$ die Menge der Endzustände
+      \end{itemize}
+    \end{solution}
+
+    \part Die von einem NFA $M=(Z,\sum,S,\delta, E)$ akzeptierte Sprache ist $L(M)=...$ (ohne Definition der Mehr-Schritt Übergangsfunktion $\delta$)
+    \begin{solution}
+      $L(M)=\{w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset\}$
+
+      (Das Wort wird akzeptiert wenn es mindestens einen Pfad vom Anfangs in den Endzustand gibt)
+    \end{solution}
+
+    \part Die von einem PDA $M=(Z,\sum, \Gamma, \delta, z_0, \#)$ akzeptierten Sprache ist $L(M)=...$
+    \begin{solution}
+      $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
+    \end{solution}
+
+    \part Sei $L$ eine Sprache. Für $x,y\in\sum^*$ gilt $xR_L y$ genau dann, wenn ... ($R_L$ ist die Myhill-Nerode-Äquivalenz zu L)
+    \begin{solution}
+      wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt
+    \end{solution}
+
+    \part Sei $M=(Z,\sum,z_0,\delta, E)$ ein DFA. Die Zustände $z,z'\in Z$ heißen erkennungsäquivalent, wenn
+    \begin{solution}
+      Zwei Zustände $z,z'\in Z$ heißen erkennungsäquivalent ($z\equiv z'$) wenn für jedes Wort $w\in \sum^*$ gilt: $\hat{\sigma}(z,w)\in E \leftrightarrow \hat{\sigma}(z',w)\in E$.
+    \end{solution}
+  \end{parts}
+
+  \question Sätze und Lemmas aus der Automatentheorie. Vervollständige die folgenden Aussagen:
+  \begin{parts}
+    \part Sei $L\supseteq \sum^*$ eine Sprache. Dann sind äquivalent: 1) L ist regulär (d.h. wird von einem DFA akzeptiert), 2)..., 3)...
+    \begin{solution}
+      \begin{enumerate}
+        \item L ist regulär (d.h. von einem DFA akzeptiert)
+        \item L wird von einem NFA akzeptiert
+        \item L ist rechtslinear (d.h. von einer Typ-3 Grammatik erzeugt)
+      \end{enumerate}
+    \end{solution}
+
+    \part Die Klasse der regulären Sprachen ist unter anderem abgeschlossen unter folgenden Operationen:
+    \begin{solution}
+      \begin{itemize}
+        \item Vereinigung $(L_1,L_2\text{ regulär } \Rightarrow L_1\cup L_2\text{ regulär })$
+        \item Schnitt $(L_1,L_2\text{ regulär } \Rightarrow L_1\cap L_2\text{ regulär })$
+        \item Komplement $(L\text{ regulär } \Rightarrow \sum^*\backslash L\text{ regulär })$
+        \item Produkt/Konkatenation $(L_1, L_2\text{ regulär } \Rightarrow L_1 L_2\text{ regulär })$
+        \item Abschluss/Stern-Operation $(L\text{ regulär } \rightarrow L^*\text{ regulär })$
+      \end{itemize}
+    \end{solution}
+
+    \part Sei $\sum$ ein Alphabet. Die Anzahl der Grammatiken über $\sum$ ist ... und die Anzahl der Sprachen über $\sum$ ist ... .
+    \begin{solution}
+      Für jedes Alphabet ist die Menge der Grammatiken abzählbar unendlich und die Anzahl der Sprachen überabzählbar.
+    \end{solution}
+
+    \part Unter anderem sind folgende (mind. drei) Probleme für kontextfreie Sprachen entscheidbar:
+    \begin{solution}
+      Wortproblem, Leerheitsproblem, Äquivalenzproblem
+    \end{solution}
+
+    \part Die Klasse der Kontextfreien Sprachen ist abgeschlossen unter den Operationen 1)... und 2)... . Sie ist aber nicht abgeschlossen unter 3)... und 4)... .
+    \begin{solution}
+      Abgeschlossen unter 
+      \begin{itemize}
+        \item Vereinigung $(L_1,L_2 \Rightarrow L_1\cup L_2)$
+        \item Produkt/Konkatenation $(L_1, L_2 \Rightarrow L_1 L_2)$
+        \item Stern-Operation $(L \rightarrow L^*)$
+      \end{itemize}
+      Nicht abgschlossen unter 
+      \begin{itemize}
+        \item Schnitt $(L_1,L_2 \Rightarrow L_1\cap L_2)$
+        \item Komplement $(L \Rightarrow \sum^*\backslash L)$
+        \item es gibt kontextfreie Sprachen, die nicht deterministisch kontextfrei sind
+      \end{itemize}
+    \end{solution}
+
+    \part Der Satz von Myhill-Nerode besagt,...
+    \begin{solution}
+      Sei L eine Sprache. L ist regulär $\Leftrightarrow index(R_L)< \infty$ 
+      
+      (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat).
+    \end{solution}
+
+    \part Das Pumping-Lemma für kontextfreie Sprachen ...
+    \begin{solution}
+      Man versucht auszunutzen, daß eine kontextfreie Sprache von einer Grammatik mit endlich vielen Nichtterminalen erzeugt werden muss. Das bedeutet auch: wenn ein Ableitungsbaum ausreichend tief ist, so gibt es einen Ast, der ein Nichtterminal mehrfach enthält. Die durch diese zwei Vorkommen bestimmten Teilbäume werden ,,gepumpt''.
+
+      Wenn $L$ eine kontextfreie Sprache ist, dann gibt es $n>= 1$ derart, dass für alle $z$ in $L$ mit $|z| >= n$ gilt: es gibt Wörter $u, v , w , x, y$ in SUM mit
+      \begin{enumerate}
+        \item $z = uvwxy$,
+        \item $|vwx| <= n$,
+        \item $|vx| >= 1$ und
+        \item $uv^i  wx^i y \in L$ für alle $i >= 0$
+      \end{enumerate}
+    \end{solution}
+  \end{parts}
+
+  \question Konstruktionen der Automatentheorie
+  \begin{parts}
+
+    \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, above right = of q1] {2};
+        \node (q3) [state, accepting, below right = of q2] {3};
+
+        \path [-stealth, thick]
+        (q1) edge node {a} (q2)
+        (q1) edge node {b} (q3)
+        (q1) edge [loop above] node {a}()
+        (q2) edge node {a} (q3)
+        (q2) edge [loop above] node {b}()
+        (q3) edge [bend left] node {a} (q2);
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q3) [state, accepting, right = of q1] {3};
+          \node (q12) [state, above = of q1] {\{1,2\}};
+          \node (q123) [state, accepting, right = of q12] {\{1,2,3\}};
+
+          \path [-stealth, thick]
+          (q1) edge node {a} (q12)
+          (q1) edge node {b} (q3)
+          (q12) edge [loop above] node {b}()
+          (q12) edge [bend left] node {a} (q123)
+          (q123) edge [bend left] node {a} (q12)
+          (q123) edge [loop above] node {b}()
+          (q3) edge node {a} (q123)
+          (q3) edge [loop right] node {b}()
+
+          ;
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
+
+    \part Betrachte den folgenden NFA X. Berechne einen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, above right = of q1] {2};
+        \node (q3) [state, accepting, below right = of q2] {3};
+
+        \path [-stealth, thick]
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q3)
+        (q1) edge [loop above] node {b}()
+        (q2) edge node {a} (q3)
+        (q2) edge [loop above] node {a}()
+        (q3) edge [bend left] node {b} (q1)
+        (q3) edge [bend left] node {a} (q2)
+        (q3) edge [loop above] node {b}();
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q2) [state, right = of q12] {2};
+          \node (q3) [state, accepting, right = of q1] {3};
+          \node (q12) [state, above = of q1] {\{1,2\}};
+          \node (q13) [state, accepting, right = of q3] {\{1,3\}};
+          \node (q23) [state, accepting, right = of q123] {\{2,3\}};
+          \node (q123) [state, accepting, above right = of q12] {\{1,2,3\}};
+
+          \path [-stealth, thick]
+          (q1) edge node {a} (q3)
+          (q1) edge node {b} (q12)
+          (q2) edge node {a} (q23)
+          (q2) edge [loop left] node {b}()
+          (q3) edge node {a} (q2)
+          (q3) edge node {b} (q13)
+          (q12) edge node {a} (q123)
+          (q12) edge [loop above] node {b}()
+          (q13) edge [bend left] node {a} (q3)
+          (q13) edge node {b} (q123)
+          (q23) edge [loop above] node {a}()
+          (q23) edge node {b} (q13)
+          (q123) edge node {a} (q23)
+          (q123) edge [loop above] node {b}()
+
+          ;
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q0) [state, accepting, initial, initial text = {}] {0};
+        \node (q1) [state, below right = of q0] {1};
+        \node (q2) [state, below left = of q0] {2};
+        \node (q3) [state, accepting, above right = of q0] {3};
+        \node (q4) [state, above left = of q0] {4};
+
+        \path [-stealth, thick]
+        (q0) edge node {a} (q3)
+        (q0) edge [bend left] node {b} (q2)
+        (q1) edge node {a,b} (q0)
+        (q2) edge [bend left] node {a,b} (q0)
+        (q3) edge node {a} (q4)
+        (q3) edge node {b} (q1)
+        (q4) edge node {a,b} (q0);
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+      \begin{enumerate}
+        \item Stelle eine Tabelle aller ungeordneten Zustandspaare $\{z, z'\}$ mit $z\not = z'$ auf.
+        \item Markiere * alle Paare $\{z, z'\}$ mit $z\in E$ und $z'\not\in E$.
+        \item Markiere (*) ein beliebiges unmarkiertes Paar $\{z, z'\}$, für das es ein $a\in\sum$ gibt, so dass $\{\delta(z,a),\delta(z',a)\}$ bereits markiert ist (falls dies möglich ist).
+        \item Wiederhole den vorherigen Schritt, bis sich keine Änderung in der Tabelle mehr ergibt.
+        \item Unmarkierte Paare werden verschmolzen
+      \end{enumerate}
+
+      \begin{tabular}{c|c|c|c|c}
+        1 & *                   \\
+        2 & *   &               \\
+        3 & (*) & (*) & (*)     \\
+        4 & *   &     & *   & * \\\hline
+          & 0   & 1   & 2   & 3
+      \end{tabular}
+
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q0) [state, accepting, initial, initial text = {}] {0};
+          \node (q3) [state, accepting, below right = of q0] {3};
+          \node (q124) [state, below left = of q0] {1,2,4};
+
+          \path [-stealth, thick]
+          (q0) edge node {a} (q3)
+          (q0) edge [bend left] node {b} (q124)
+          (q3) edge node {a,b} (q124)
+          (q124) edge [bend left] node {a,b} (q0);
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, initial, initial text = {}] {1};
+        \node (q2) [state, accepting, right = of q1] {2};
+        \node (q3) [state, accepting, right = of q2] {3};
+        \node (q4) [state, below = of q1] {4};
+        \node (q5) [state, accepting, right = of q4] {5};
+        \node (q6) [state, right = of q5] {6};
+
+        \path [-stealth, thick]
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q4)
+        (q2) edge node {a} (q3)
+        (q2) edge node {b} (q5)
+        (q3) edge node {b} (q5)
+        (q3) edge [loop above] node {a}()
+        (q4) edge node {a} (q2)
+        (q4) edge [loop left] node {b}()
+        (q5) edge node {a,b} (q6)
+        (q6) edge node {a} (q3)
+        (q6) edge [loop right] node {b}();
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+
+      \begin{tabular}{c|c|c|c|c|c}
+        2 & *                       \\
+        3 & *   &                   \\
+        4 & (*) & *   & *           \\
+        5 & *   & (*) & (*) & *     \\
+        6 & (*) & *   & *   &   & * \\\hline
+          & 1   & 2   & 3   & 4 & 5
+      \end{tabular}
+
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state, initial, initial text = {}] {1};
+          \node (q23) [state, accepting, right = of q1] {2,3};
+          \node (q46) [state, below = of q1] {4,6};
+          \node (q5) [state, accepting, right = of q4] {5};
+
+          \path [-stealth, thick]
+          (q1) edge node {b} (q23)
+          (q1) edge node {a} (q46)
+          (q23) edge [loop right] node {a}()
+          (q23) edge node {b} (q5)
+          (q46) edge node {a} (q23)
+          (q46) edge [loop left] node {b}()
+          (q5) edge node {a,b} (q46);
+        \end{tikzpicture}
+      \end{center}
+    \end{solution}
+
+    \part Betrachte den folgenden DFA X. Berechne den minimalen DFA Y mit $L(X)=L(Y)$.
+    \begin{center}
+      \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+        \node (q1) [state, accepting, initial, initial text = {}] {1};
+        \node (q2) [state, accepting, right = of q1] {2};
+        \node (q3) [state, right = of q2] {3};
+        \node (q4) [state, accepting, below = of q1] {4};
+        \node (q5) [state, right = of q4] {5};
+        \node (q6) [state, accepting, right = of q5] {6};
+
+        \path [-stealth, thick]
+        (q1) edge node {b} (q2)
+        (q1) edge node {a} (q5)
+        (q2) edge [loop above] node {b}()
+        (q2) edge node {a} (q3)
+        (q3) edge [bend left] node {a} (q5)
+        (q3) edge node {b} (q6)
+        (q4) edge node {a} (q1)
+        (q4) edge node {b} (q5)
+        (q5) edge [bend left] node {a} (q3)
+        (q5) edge [bend left] node {b} (q4)
+        (q6) edge [bend left] node {a} (q2)
+        (q6) edge node {b} (q5);
+      \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+      \begin{tabular}{c|c|c|c|c|c}
+        2 &                       \\
+        3 & *   & *               \\
+        4 & (*) & (*) & *         \\
+        5 & *   & *   &   & *     \\
+        6 & (*) & (*) & * &   & * \\\hline
+          & 1   & 2   & 3 & 4 & 5
+      \end{tabular}
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q12) [state, accepting, initial, initial text = {}] {1,2};
+          \node (q35) [state, below right = of q12] {3,5};
+          \node (q46) [state, accepting, above right = of q12] {4,6};
+
+          \path [-stealth, thick]
+          (q12) edge node {a} (q35)
+          (q12) edge [loop above] node {b}()
+          (q35) edge [loop right] node {a} ()
+          (q35) edge [bend right] node {b} (q46)
+          (q46) edge [bend left] node {a} (q12)
+          (q46) edge node {b} (q35);
+        \end{tikzpicture}
+      \end{center}
+
+
+    \end{solution}
+  \end{parts}
+
+  \question Algorithmen für reguläre Sprachen. Sei $\sum=\{a,b,c\}$. Gebe einen Algorithmus an, der bei Eingabe eines NFA X entscheidet, ob alle Wörter $\omega\in L(X)$ ungerade Länge besitzen und $abc$ als Infix enthalten.
+  \begin{solution}
+  \end{solution}
+
+  \question Kontextfreie Sprachen: Sei $\sum=\{a,b,c\}$. Betrachte die Sprache $K=\{a^k b^l c^m|k\leq l \text{ oder } k\leq m\}$.
+  \begin{parts}
+    \part Zeige, dass $K$ eine kontextfreie Sprache ist.
+    \begin{solution}
+    \end{solution}
+    \part Zeige, dass $L=\sum^*\backslash K$ (Komplement von $L$) nicht kontextfrei ist.
+    \begin{solution}
+    \end{solution}
+    \part Begründe warum $K$ deterministisch kontextfrei ist oder warum nicht.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Kontextfreie Grammatiken: Sei $\sum=\{a,b,c,\}$
+  \begin{parts}
+    \part Sei $G$ die kontextfreie Grammatik mit Startsymbol S und der Regelmenge $S\rightarrow AB$, $A\rightarrow aBS|a$ und $B\rightarrow bBa|b|\epsilon$. Überführe G in eine äquivalente Grammatik in Chomsky Normalform.
+    \begin{solution}
+      Chomsky Normalform hat auf rechter Ableitungsseite nur ein Terminal oder zwei Nicht-Terminale
+      \begin{enumerate}
+        \item Startzustand \\$S\rightarrow AB$, $A\rightarrow aBS|a$, $B\rightarrow bBa|b|\epsilon$
+        \item $\epsilon$-Regel: Menge $M=\{B\}$ der $epsilon$ Terminal-Überführungen kompensieren; \\
+              $S\rightarrow AB|A$, $A\rightarrow aBS|a|aS$, $B\rightarrow bBa|b|ba$
+        \item Kettenregel: Menge $M=\{(S,A), (S,S), (A,A), (B,B)\}$ von Ketten (Ableitungen auf ein Nicht-Terminal)\\
+              $S\rightarrow AB|aBS|a|aS$, $A\rightarrow aBS|a|aS$, $B\rightarrow bBa|b|ba$
+        \item Terminale und Nicht-Terminal trennen: \\ $S\rightarrow AB|CBS|C|CS$, $A\rightarrow CBS|C|CS$, $B\rightarrow DBC|b|DC$, $C\rightarrow a$, $D\rightarrow b$
+        \item Längen verkürzen: \\$S\rightarrow AB|CX|C|CS$, $A\rightarrow CX|C|CS$, $B\rightarrow DY|b|DC$, $C\rightarrow a$, $D\rightarrow b$, $X\rightarrow BS$, $Y\rightarrow BC$
+      \end{enumerate}
+    \end{solution}
+
+    \part Sei $G'$ die kontextfreie Grammatik mit Startsymbol $S$ und der Regelmenge \\\begin{center}
+      $S\rightarrow AB$, $A\rightarrow CD|CF$, $F\rightarrow AD$, $B\rightarrow c|EB$, $C\rightarrow a$, $D\rightarrow b$, $E\rightarrow c$ \\\end{center} Entscheide mit dem CYK-Algorithmus, ob die Wörter $w_1=aaabbbcc$ oder $w_2=aaabbccc$ von $G'$ erzeugt werden.
+    \begin{solution}
+
+      $w_1=aaabbbcc$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        a & a & a & b & b & b & c   & c   \\\hline
+        C & C & C & D & D & D & B,E & B,E \\
+          &   & A &   &   &   & B         \\
+          &   & F &   &   &               \\
+          & A &   &   &                   \\
+          & F &   &                       \\
+        A &   &                           \\
+        S &                               \\
+        S
+      \end{tabular}
+      $\Rightarrow w_1$ wird von $G'$ erzeugt
+
+      $w_2=aaabbccc$
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        a & a & a & b & b & c   & c   & c   \\\hline
+        C & C & C & D & D & B,E & B,E & B,E \\
+          &   & A &   &   & B   & B         \\
+          &   & F &   &   & B               \\
+          & A &   &   &                     \\
+          & F &   &                         \\
+        A &   &                             \\
+        S &                                 \\
+      \end{tabular}
+      $\Rightarrow w_2$ wird nicht von $G'$ erzeugt
+    \end{solution}
+
+    \part Gebe für die Wörter aus b), die von $G'$ erzeugt werden, den Ableitungsbaum an.
+    \begin{solution}
+
+      $w_1=aaabbbcc$
+      \begin{center}
+        \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+          \node (q1) [state] {S};
+
+          \node (q2) [state, below left = of q1] {A};
+          \node (q3) [state, below right=2cm and 5cm = of q1] {B};
+          \node (q4) [state, below left = of q3] {E};
+          \node (q6) [below = of q4] {c};
+          \node (q5) [state, below right = of q3] {B};
+          \node (q7) [below = of q5] {c};
+          \node (q8) [state, below left = of q2] {C};
+          \node (q9) [below = of q8] {a};
+          \node (q10) [state, below right = of q2] {F};
+          \node (q11) [state, below left = of q10] {A};
+          \node (q12) [state, below right = of q10] {D};
+          \node (q13) [below = of q12] {b};
+          \node (q14) [state, below left = of q11] {C};
+          \node (q15) [below = of q14] {a};
+          \node (q16) [state, below right = of q11] {F};
+          \node (q17) [state, below left = of q16] {A};
+          \node (q18) [state, below right = of q16] {D};
+          \node (q19) [below = of q18] {b};
+          \node (q20) [state, below left = of q17] {C};
+          \node (q21) [state, below right = of q17] {D};
+          \node (q22) [below = of q20] {a};
+          \node (q23) [below = of q21] {b};
+
+          \path [-stealth, thick]
+          (q1) edge (q2)
+          (q1) edge (q3)
+          (q2) edge (q8)
+          (q2) edge (q10)
+          (q3) edge (q4)
+          (q3) edge (q5)
+          (q4) edge (q6)
+          (q5) edge (q7)
+          (q8) edge (q9)
+          (q10) edge (q11)
+          (q10) edge (q12)
+          (q11) edge (q14)
+          (q11) edge (q16)
+          (q12) edge (q13)
+          (q14) edge (q15)
+          (q16) edge (q17)
+          (q16) edge (q18)
+          (q17) edge (q20)
+          (q17) edge (q21)
+          (q18) edge (q19)
+          (q20) edge (q22)
+          (q21) edge (q23)
+          ;
+        \end{tikzpicture}
+      \end{center}
+
+      %$w_2=aaabbccc$
+    \end{solution}
+  \end{parts}
+
+  \question Definitionen der Berechnbarkeitstheorie. Verfollständige die Definitionen
+  \begin{parts}
+    \part Ein While Programm ist von der Form...
+    \begin{solution}
+      \begin{itemize}
+        \item $x_i=c, x_i=x_j+c, x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$ (Wertzuweisung) oder
+        \item $P_1,P_2$, wobei $P_1$ und $P_2$ bereits While Programme sind (sequentielle Komposition) oder
+        \item while $x_i\not = 0$ do P end, wobei P ein While Programm ist und $i\geq 1$.
+      \end{itemize}
+    \end{solution}
+
+    \part Ein Loop-Programm ist von der Form
+    \begin{solution}
+      \begin{itemize}
+        \item $x_i := c, x_i := x_j + c, x_i := x_j \div c$ mit $c\in\{0, 1\}$ und $i, j$ (Wertzuweisung) oder
+        \item $P_1 ; P_2$, wobei $P_1$ und $P_2$ Loop-Programme sind (sequentielle Komposition) oder
+        \item loop $x_i$ do P end, wobei P ein Loop-Programm ist und $i_1$.
+      \end{itemize}
+    \end{solution}
+
+    \part Eine Turingmaschine ist ein 7-Tupel $M=(Z,\sum,\Gamma,\delta,z_0,\Box, E)$, wobei...
+    \begin{solution}
+      \begin{itemize}
+        \item 7-Tupel $M=(Z,\sum, \Gamma, \delta, z_o, \Box, E)$
+        \item $\sum$ das Eingabealphabet
+        \item $\Gamma$ mit $\Gamma\supseteq\sum$ und $\Gamma\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
+        \item $z_0\in Z$ der Startzustand,
+        \item $\delta:Z\times\Gamma\rightarrow(Z\times\Gamma\times\{L,N,R\})$ die Überführungsfunktion
+        \item $\Box\in\Gamma/\sum$ das Leerzeichen oder Blank und
+        \item $E\subseteq Z$ die Menge der Endzustände ist
+      \end{itemize}
+    \end{solution}
+
+    \part Die von einer Turingmaschine $M$ akzeptierte Sprache ist $L(M)=...$
+    \begin{solution}
+      $L(M)=\{ w\in\sum^* | \text{es gibt akzeptierte Haltekonfiguration mit } z_0w\Box\vdash_M^* k\}$.
+    \end{solution}
+
+    \part Gödels Vermutung lautet,...
+    \begin{solution}
+      Eine partielle Funktion $\mathbb{N}^k \rightarrow \mathbb{N}$ ist genau dann intuitiv berechenbar, wenn sie $\mu$-rekursiv ist.
+    \end{solution}
+
+    \part Wann ist eine Sprache semi-entscheidbar?
+    \begin{solution}
+      Eine Sprache ist genau dann semi-entscheidbar, wenn sie von einer nichtdeterministischen Turingmaschine akzeptiert wird.
+    \end{solution}
+
+    \part Seien $A\subseteq \sum^*$ und B$\subseteq \Gamma^*$. Eine Reduktion von A auf B ist ...
+    \begin{solution}
+      Eine Reduktion von A auf B ist eine totale und berechenbare Funktion $f:\sum^*\rightarrow\Gamma^*$, so dass für alle $w\in\sum^*$ gilt: $w\in A\leftrightarrow f(x)\in B$. A heißt auf B reduzierbar (in Zeichen $A\leq B$), falls es eine Reduktion von A auf B gibt.
+    \end{solution}
+
+    \part Eine Sprache $L$ heißt rekursiv aufzählbar, falls ...
+    \begin{solution}
+      \begin{itemize}
+        \item L ist semi-entscheidbar
+        \item L wird von einer Turing-Maschine akzeptiert
+        \item L ist vom Typ 0 (d.h. von Grammatik erzeugt)
+        \item L ist Bild berechenbarer partiellen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist Bild berechenbarer totalen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist Definitionsbereich einer berechenbaren partiellen Funktion $\sum^*\rightarrow\sum^*$
+      \end{itemize}
+    \end{solution}
+
+    \part Sei $f:N\rightarrow N$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine $M$ gibt mit ...
+    \begin{solution}
+      \begin{itemize}
+        \item M berechnet die charakteristische Funktion von L.
+        \item Für jede Eingabe $w\in\sum^*$ erreicht M von der Startkonfiguration $z_0 w\Box$ aus nach höchstens $f(|w|)$ Rechenschritten eine akzeptierende Haltekonfiguration (und gibt 0 oder 1 aus, je nachdem ob $w\not\in L$ oder $w\in L$ gilt).
+      \end{itemize}
+    \end{solution}
+  \end{parts}
+
+  \question Sätze der Berechnbarkeitstheorie: Vervollständige die folgenden Aussagen
+  \begin{parts}
+    \part Zu jeder Mehrband-Turingmaschine $M$ gibt es ...
+    \begin{solution}
+      eine Turingmaschine M' die diesselbe Funktion löst
+      \begin{itemize}
+        \item Simulation mittels Einband-Turingmaschine durch Erweiterung des Alphabets: Wir fassen die übereinanderliegenden Bandeinträge zu einem Feld zusammen und markieren die Kopfpositionen auf jedem Band durch $\ast$.
+        \item Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Gamma\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopf anwesend ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
+      \end{itemize}
+    \end{solution}
+
+    \part Sei $f:N^k\rightarrow\mathbb{N}$ eine Funktion für ein $k\in\mathbb{N}$. Die folgenden Aussagen sind äquivalent: 1) $f$ ist Turing-berechenbar, 2)..., 3)..., 4)...
+    \begin{solution}
+      \begin{enumerate}
+        \item $f$ ist Turing berechenbar 
+        \item $f$ ist $\mu$ rekursiv 
+        \item $f$ ist rekursiv aufzählbar
+        \item $f$ ist von Menschen berechenbar
+      \end{enumerate}
+    \end{solution}
+
+    \part Sei $L\subseteq \sum^*$ eine Sprache. Sind $L$ und $\sum^*\backslash L$ semi-entscheidbar, dann...
+    \begin{solution}
+    \end{solution}
+
+    \part Der Satz von Rice lautet...
+    \begin{solution}
+      dass es unmöglich ist, eine beliebige nicht-triviale Eigenschaft der erzeugten Funktion einer Turing-Maschine (oder eines Algorithmus in einem anderen Berechenbarkeitsmodell) algorithmisch zu entscheiden.
+
+      Es sei $\mathcal{P}$ die Menge aller partiellen Turing-berechenbaren Funktionen und $\mathcal{S}\subsetneq\mathcal{P}$ eine nicht-leere, echte Teilmenge davon. Außerdem sei eine effektive Nummerierung vorausgesetzt, die einer natürlichen Zahl $n\in\mathbb{N}$ die dadurch codierte Turing-Maschine $M_{n}$ zuordnet. Dann ist die Menge $\mathcal{C}(\mathcal{S})=\{n\mid \text{die von } M_n \text{ berechnete Funktion liegt in }\mathcal{S}\}$ nicht entscheidbar.
+
+      ,,Sei U eine nicht-triviale Eigenschaft der partiellen berechenbaren Funktionen, dann ist die Sprache $L_U=\{⟨M⟩\mid \text{ M berechnet } f\in U\}$ nicht entscheidbar.''
+    \end{solution}
+  \end{parts}
+
+  \question Berechnungsmodelle
+  \begin{parts}
+    \part Gebe ein Loop-Programm an, das die Funktion $n\rightarrow n^2-n$ berechnet
+    \begin{solution}
+      \begin{lstlisting}
+      h= 1
+      for(i= 0; i < 2; i++) do {
+        h= h * n
+      }
+      h= h - 1;
+      return h
+      \end{lstlisting}
+    \end{solution}
+
+    \part Gebe ein Loop Programm an, das die Funktion $f:\mathbb{N}\rightarrow \mathbb{N}$ mit $f(n_1,n_2)=2n_1n_2$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
+    \begin{solution}
+      \begin{lstlisting}
+        h= 1
+        for (i=0; i<2; i++) do {
+          h = h * n_i
+        }
+        h = 2 * h
+        return h
+      \end{lstlisting}
+    \end{solution}
+
+    \part Gebe ein GoTo Programm an, das die Funktion $g:\mathbb{N}\rightarrow\mathbb{N}$ mit $g(n_1,n_2)=|n_1-n_2|$ berechnet. Verwende nur elementare Anweisungen und keine Abkürzungen.
+    \begin{solution}
+      \begin{lstlisting}
+        start: 
+          h = n_1 - n_2
+          if h > 0:
+            goto end 
+          h = -h
+        end: 
+          return h
+      \end{lstlisting}
+    \end{solution}
+
+    \part Gebe eine deterministische Turingmaschine $M$ für das Eingabealphabet $\{0,1\}$ an, das folgende Funktion berechnet: Für Eingabe $a_1a_2...a_{n-1}a_n$ berechnet M die Ausgabe $a_na_1...a_{n-1}$ (letzte Symbol der Eingabe an erste Stelle).
+    \begin{solution}
+      $\sum=\{0,1\}$
+
+      $z_0$ Zahlenende finden: $\delta(z_0,0)=(z_0,0,R), \delta(z_0,1)=(z_0,1,R), \delta(z_0,\Box)=(z_1,\Box,L)$
+
+      $z_1$ letzte Zahl löschen: $\delta(z_1,0)=(z_2,\Box,L), \delta(z_1,1)=(z_3,\Box,L), \delta(z_1,\Box)=(z_2,\Box,N)$
+
+      $z_2$ zurück zum Anfang bei $a_n=0$: $\delta(z_2,0)=(z_2,0,L), \delta(z_2,1)=(z_2,1,L), \delta(z_2,\Box)=(z_4,\Box,R)$
+
+      $z_3$ zurück zum Anfang bei $a_n=1$: $\delta(z_3,0)=(z_3,0,L), \delta(z_3,1)=(z_3,1,L), \delta(z_3,\Box)=(z_5,\Box,N)$
+
+      $z_4$ $a_n=0$ an Anfang schreiben: $\delta(z_4,\Box)=(z_e,0,N)$
+
+      $z_5$ $a_n=1$ an Anfang schreiben: $\delta(z_5,\Box)=(z_e,1,N)$
+
+      $z_e$ Endzustand: $\delta(z_e, 0)=(z_e,0,N), \delta(z_e,1)=(z_e,1,N), \delta(z_e,\Box)=(z_e,\Box,N)$
+    \end{solution}
+  \end{parts}
+
+  \question Reduktionen
+  \begin{parts}
+    \part Seien $A,L\subseteq \sum^*$ nichtleere Sprachen und A entscheidbar. Gebe eine Reduktion von $L\cup A$ auf $L$ an.
+    \begin{solution}
+    \end{solution}
+    \part Gebe eine Bedingung für A an, sodass $L\cup A\leq_p L$ für alle nichtleeren Sprachen $L\subseteq \sum^*$ gilt. Begründe.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Komplexitätsklassen. Ergänze zu den Paaren von Komplexitätsklassen das Relationssymbol zur Teilmengenbeziehung.
+  \begin{parts}
+    \part EXPSPACE ? EXPTIME
+    \begin{solution}
+      EXPSPACE $\geq$ EXPTIME
+    \end{solution}
+    \part NP ? P
+    \begin{solution}
+      NP $\geq$ P
+    \end{solution}
+    \part NP ? NPSPACE
+    \begin{solution}
+      NP $\leq$ NPSPACE
+    \end{solution}
+    \part NPSPACE ? PSPACE
+    \begin{solution}
+      NPSPACE $=$ PSPACE
+    \end{solution}
+  \end{parts}
+
+  \question Komplexitätsklassen. Bringe in die richtige Reihenfolge:
+  \begin{parts}
+    \part EXPSPACE, PSPACE, 2EXPTIME, EXPTIME, P
+    \begin{solution}
+      $P \subseteq PSPACE\subseteq EXPTIME\subseteq EXPSPACE\subseteq 2EXPTIME$
+    \end{solution}
+
+    \part PSPACE, EXPSPACE,2EXPSPACE, NEXPTIME, 2NEXPTIME, NP
+    \begin{solution}
+      $NP \subseteq PSPACE, NEXPTIME \subseteq EXPSPACE, 2NEXPTIME \subseteq 2EXPSPACE$
+    \end{solution}
+
+    \part NP, P, EXPTIME, NEXPTIME, PSPACE, NPSPACE, NEXPSPACE, EXPSPACE
+    \begin{solution}
+      $P\leq NP \leq PSPACE, NPSPACE \leq EXPTIME \leq NEXPTIME \leq EXPSPACE, NEXPSPACE $
+    \end{solution}
+  \end{parts}
+
+  \question Unentscheidbare Probleme:
+  \begin{parts}
+    \part Gebe entscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
+    \begin{solution}
+      \begin{itemize}
+        \item Wortproblem: Gilt $w\in L(M)$ für eine gegebene Sprache $L$ und $w\in\sum^*$
+        \item Leerheitsproblem: Gilt $L(M)=\varnothing$ für eine gegebene Sprache $L$
+        \item Endlichkeitsproblem: Ist eine gegebene Sprache endlich?
+        \item Schnittproblem: Gilt $L_1\cap L_2 =\varnothing$ für gegebene $L_1,L_2$?
+        \item Inklusionsproblem: Gilt $L_1\subseteq L_2$ für gegebene $L_1,L_2$?
+        \item Äquivalenzproblem: Gilt $L_1=L_2$ für gegebene $L_1,L_2$?
+      \end{itemize}
+    \end{solution}
+
+    \part Gebe unentscheidbare Probleme an (als Menge oder als Eingabe-Frage-Paar)
+    \begin{solution}
+      \begin{itemize}
+        \item allgemeine Halteproblem: Das Halteproblem ist die Menge aller Paare $(M, x)$, wobei $M$ eine TM ist und $x\in\{0,1\}^*$, so dass $M$ bei Eingabe von $x$ hält. $H=\{ w\# w \mid w\in L_{TM}, x\in\{0,1\}^*, M_w \text{ angesetzt auf x hält} \}$
+        \item spezielle Halteproblem: $K=\{w\in L_{TM}\mid M_w \text{ angesetzt auf w hält}\}$
+        \item Halteproblem auf leerem Band: $H_0=\{w\in L_{TM} \mid M_w\text{ hält angesetzt auf ein leeres Band}\}$
+        \item Posts Korrespondenzproblem: PCP ist die Menge der Korrespondenzsysteme (endliche Folge von Paaren), die eine Lösung besitzen
+        \item Schnittproblem: $\{(G_1, G_2) \mid G_1,G_2\text{ kontextfreie Grammatiken }, L(G_1)\cap L(G_2)=\varnothing\}$
+        \item Regularitätsproblem für PDA: $Reg_{PDA}=\{P\mid P\ PDA\text{ mit } L(P) \text{ regulär}\}$
+        \item Inklusionsproblem DPDA: $\{(P_1, P_2) \mid P_1, P_2 \text{ DPDAs mit } L(P_1)\subseteq L(P_2)$
+        \item Universalitätsproblem: $\{P\ PDA \mid L(P)=\sum^*\}$
+        \item Äquivalenzproblem PDA: $\{(P_1, P_2) \mid P_1,P_2 \text{ PDAs mit } L(P_1) = L(P_2)$
+      \end{itemize}
+    \end{solution}
+  \end{parts}
+
+  \question NP-Vollständigkeit
+  \begin{parts}
+    \part Eine Sprache $B$ ist NP-vollständig, falls ...
+    \begin{solution}
+      Eine Sprache ist NP-vollständig, falls sie zu NP gehört und NP-hart ist.
+
+      Eine Sprache $B$ ist NP-hart, falls für alle $A\in NP$ gilt: $A\leq_P B$ (A ist mindestens so schwer wie jedes Problem in NP).
+
+      Wenn $B$ NP-vollständig ist, dann gilt: $P = NP \Leftrightarrow B\in P$.
+    \end{solution}
+
+    \part Gebe NP-vollständige Probleme an (als Menge oder Eingabe-Frage-Paar).
+    \begin{solution}
+
+      Gerichteter Hamiltonkreis?
+      \begin{itemize}
+        \item Eingabe: gerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\subseteq V\times V$
+        \item Frage: Besitzt der Graph $G$ einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, daß jeder Knoten genau einmal besucht wird?
+      \end{itemize}
+
+      Ungerichteter Hamiltonkreis
+      \begin{itemize}
+        \item Eingabe: ungerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\subseteq\binom{V}{2}=\{X\subseteq V\mid |X|=2\}$.
+        \item Frage: Kann ein ungerichteter Graph so durchlaufen werden, dass jeder Knoten genau ein mal besucht wird?
+      \end{itemize}
+
+      3-Färbbarkeit
+      \begin{itemize}
+        \item Eingabe: ungerichteter Graph(V,E)
+        \item Frage: Gibt es einen ungerichteten Graphen, deren Knoten sich mit drei Farben färben lassen, so dass benachbarte Knoten unterschiedliche Farben haben
+        \item Frage (alternativ): Gibt es Zuordnung von $k$ verschiedenen Farben zu Knoten in $V$, so dass keine zwei benachbarten Knoten $v_1, v_2$ dieselbe Farbe haben?
+      \end{itemize}
+
+      3-SAT
+      \begin{itemize}
+        \item Ist eine aussagenlogische Formel in konjunktiver Normalform mit $\geq 3$ Literalen pro Klausel erfüllbar?
+        \item Eingabe: eine aussagenlogische Formel $\varphi$ in konjunktiver Normalform mit höchstens drei Literalen pro Klausel.
+        \item Frage: Hat $\varphi$ eine erfüllende Belegung?
+      \end{itemize}
+
+      Travelling Salesman Problem
+      \begin{itemize}
+        \item Eingabe: eine $n\times n$-Matrix $M=(M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
+        \item FRAGE: Gibt es eine Tour durch alle Städte, die maximal die Länge $d$ hat?
+      \end{itemize}
+
+    \end{solution}
+  \end{parts}
+
+  \question Polynomialzeitreduktion: Betrachte das Problem 4C, also die Menge der ungerichteten Graphen die sich mit vier Farben färben lassen.
+  \begin{parts}
+    \part Gebe eine Polynomialzeitreduktion von 3C auf 4C an.
+    \begin{solution}
+    \end{solution}
+
+    \part Zeige, dass wenn $4C\in P$, dann gilt $P=NP$.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+\end{questions}
+\end{document}

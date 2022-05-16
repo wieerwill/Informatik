@@ -1,0 +1,988 @@
+%
+%
+% das Paket "flashcards" erzeugt Karteikarten zum lernen
+% auf der Vorderseite steht das Buzzword oder die Frage
+% auf der Rückseite steht die Antwort
+% beim ausdrucken auf doppelseitiges Drucken achten
+%
+%
+\documentclass[avery5371]{flashcards}
+\usepackage[utf8]{inputenc}
+\usepackage[]{amsmath} 
+\usepackage[]{amssymb}
+\cardfrontstyle{headings}
+\begin{document}
+
+\begin{flashcard}[Einführung]{Wo sind Betriebssysteme zu finden?}
+    Computer, Mikroprozessoren, Flugzeuge, Maschinen, Smartphones
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Einführung]{Welches Spektrum decken Betriebssysteme ab?}
+    \begin{itemize}
+        \item viele Gemeinsamkeiten (Architekturprinzipien, Programmierparadigmen)
+        \item Voller individueller Strategien mit teils konfligierenden Zielen (Performanz <->Robustheit, Echtzeitfähigkeit <->Effizienz)
+        \item Spezialisierte Betriebssystem-Familien
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Einführung]{Welche Arten von Betriebssystemen gibt es?}
+    Mainframe, Server, Parallelrechner, Desktop/Laptop, Echtzeit, Eingebettete Systeme
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Einführung]{Welche funktionalen und nichtfunktionalen Eigenschaften spielen bei Betriebssystemen eine Rolle?}
+    Funktional: Authentisierung, Verschlüsselung, Informationsmanagement, Kommunikationsmanagement
+
+    Nichtfunktional: Echtzeitfähigkeit, Robustheit, Sicherheit, Korrektheit, Performanz, Sparsamkeit, Skalierbarkeit, Verfügbarkeit, Offenheit
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Warum existieren Prozesszustände? Gehen Sie speziell auf die Prozesszustände "bereit" und "blockiert" ein.}
+    Ein Rechner kann nicht unendlich viele Prozesse gleichzeitig laufen lassen und muss diese planen. Die Prozesszustände helfen zu unterscheiden, welche Prozesse gerade tätig sind, welche warten und welche beendet sind.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Welches sind die in praktisch jedem Betriebssystem implementierten (grundlegenden) Prozesszustände?}
+    Grundlegende Zustände: (frisch,) bereit, aktiv, blockiert (, beendet) 
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Nennen Sie Gründe für die Einführung weiterer Prozesszustände. Welche weiteren Prozesszustände sind Ihnen bekannt?}
+    Prozesse können ausgelagert (besitzt temp. keinen Arbeitsspeicher) oder temporär stillgelegt werden (benötigen keinen Prozessor) z.B. bereit/suspendiert oder blockiert/suspendiert 
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Was ist die Aufgabe von Zustandsmodellen?}
+    Beschreibung des Ablaufzustands von Threads und der möglichen Zustandsübergänge
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Charakterisieren Sie das 3/5- und das 7-Zustandsmodell.}
+    das 3/5 Modell ist Grundlegend zur Übersicht über Zustände (frisch, bereit, aktiv, blockiert, beendet) und das 7er Modell erweitert das 3/5 Modell um bereit/suspendiert und blockiert/suspendiert.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Prozesszustände und Zustandsmodelle]{Welchen Zusammenhang gibt es zwischen Prozesszuständen, Zustandsmodellen und der Automatentheorie?}
+    Prozesszustände in Zustandsmodellen können, wie bei Automaten, nur bestimmte Pfade gehen bzw zu einem anderen Zustand wechseln. z.B. frisch nur zu bereit; aktiv entweder beendet oder blockiert 
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduler]{Aus welchen Gründen existiert im Betriebssystem die Komponente "Scheduler" und welche Aufgaben hat diese?}
+    Problem: Anzahl der Threads $>>$ Anzahl der Prozessoren $\rightarrow$ nicht alle können gleichzeitig rechnen $\rightarrow$ eine Auswahl muss getroffen werden $\rightarrow$ Auswahlstrategie: Schedulingalgorithmen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduler]{Besitzt jedes Betriebssystem einen Scheduler?}
+    Nein, nicht zwingend notwendig, z.B. bei Eingebetteten System die nur einen Prozess/Programm ablaufen lassen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduler]{Charakterisieren Sie die Arbeitsweise eines Schedulers.}
+    Scheduler prüfen neue Threads, Abarbeitung und Freiwerden; greifen in die abarbeitungsreihenfolge ein. Versuchen eine geringe Last mit hohem Nutzen zu bringen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduler]{Welche Vorkommnisse können allgemein zu einer Aktivierung des Schedulers führen?}
+    \begin{itemize}
+        \item Blockierung eines aktiven Threads
+        \item Bereitwerden eines blockierten/suspendierten Threads
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduling-Strategie und Scheduling-Algorithmus]{Nennen Sie mögliche strategische Ziele des Scheduling.}
+    \begin{itemize}
+        \item abhängig von Einsatzfeld (Echtzeit, Interaktiv, Reaktiv)
+        \item Fairness
+        \item Lastbalancierung
+        \item Overhead z.b. Prozessorwechsel
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Scheduling-Strategie und Scheduling-Algorithmus]{Was ist der Unterschied zwischen Scheduling-Strategie und Scheduling-Algorithmus?}
+    Der Algorithmus beschreibt Bearbeitungsreihenfolge und wie mit Threads umgegangen wird, die Strategie beschreibt Ziele und Muster
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Kontextwechsel]{Was bedeutet es, einen Kontextwechsel auszuführen? Was muss dabei alles getan werden?}
+    Wechsel zwischen Stackkontext, Prozessorregister und floating point Units und evtl. Speicherlayout. Kopieren der Kontexte. Starke Auswirkungen auf Performanz \& Reaktivität. 
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Kontextwechsel]{Wodurch entstehen die Kosten eines Kontextwechsels und worauf wirken sich diese aus?}
+    \begin{itemize}
+        \item beim Wechsel zwischen Threads desselben Prozesses
+        \item zusätzlich beim Wechsel zwischen Threads verschiedener Prozesse (sehr hoch)
+    \end{itemize}
+    Auswirkung auf Gesamtperformance, Reaktivität, Echtzeiteigenschaften
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Last und Lastmuster]{Was ist unter "Last" in einem Computer-System zu verstehen?}
+    Die Last kann darin bestehen, dass Funktionen sehr schnell hintereinander ausgeführt werden, oder dass parallele Aktivitäten von virtuellen Benutzern (Multiuser, vUser) ausgeführt werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Last und Lastmuster]{Welche charakteristischen Lastmuster könnten dabei vorliegen?}
+    Einhaltung von Fristen oder Minimierung der Thread/Prozesswechsel
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Last und Lastmuster]{Welcher mögliche Zusammenhang existiert zwischen verschiedenen Lastmustern und verschiedenen Schedulingstrategien?}
+    Die Stategie kann wesentlich auf die Last auswirken, da Reaktivität und einhaltung von Fristen durch die Stategie bestimmt werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Batch-Systeme, Interaktive Systeme und Echtzeitsysteme]{Wodurch sind die genannten Systeme jeweils charakterisiert?}
+    \begin{description}
+        \item[Batch] aufträge in Gruppen ohne Mitwirkung des Benutzers
+        \item[Interaktiv] Benutzer kann in Aktivität eingreifen
+        \item[Echtzeit] Fristen einhalten, Berechnung ökonmisch
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Batch-Systeme, Interaktive Systeme und Echtzeitsysteme]{Nennen Sie geeignete Scheduling-Strategien für Batch Systeme und charakterisieren Sie diese.}
+    \begin{description}
+        \item[First Come First Serve] in Reihenfolge wie Rechenbereit, Threads arbeiten bis warten, extrem einfach, guter Durchsatz
+        \item[Shortest Remaining Time Next] vorr. kürzeste Restrechenzeit-Thread zuerst; Threads können verdrängt werden (Präemtpiv); extrem einfach; bevorzugt kurze Prozesse; geringes Wissen notwendig; längere Prozesse verhungern; mehr Threadwechsel
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Batch-Systeme, Interaktive Systeme und Echtzeitsysteme]{Nennen Sie geeignete Scheduling-Strategien für Interaktive Systeme und charakterisieren Sie diese.}
+    \begin{description}
+        \item[Round Robin] jeder Thread gleichen Teil der Zeitscheibe; einfach und effizient, schnelle Entscheidungen
+        \item[Round Robin + Prioritäten] Threads erhalten indiv. Prioritäten; Threads höchster Priorität erhalten Prozessor; zwischen gleichen Prioritäten Round Robin
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Batch-Systeme, Interaktive Systeme und Echtzeitsysteme]{Nennen Sie geeignete Scheduling-Strategien für Echtzeit Systeme und charakterisieren Sie diese.}
+    \begin{description}
+        \item[Earliest Deadline First] dynamische Prioritäten; kaussale und zeitliche Unabhängigkeit der Threads
+        \item[Rate monotonic Schedule] Thread mit kürzester Periodendauer zuerst; statische Prioritäten; periodische Threads; kausale und zeitliche Unabhängigkeit der Threads
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Privilegierungsebenen]{Welchen Sinn haben Privilegierungsebenen?}
+    Durchsetzung von Regeln und steuern Rechte
+    \begin{itemize}
+        \item zur Ausführung privilegierter Prozessorinstruktionen
+        \item zur Konfiguration des Arbeitsspeicher-Layouts
+        \item zum Zugriff auf Arbeitsspeicherbereiche
+        \item zum Zugriff auf E/A-Geräte
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Privilegierungsebenen]{Welches sind die grundlegenden, typischerweise verwendeten Privilegierungsebenen?}
+    \begin{description}
+        \item[Ring 0] höchste Privilegien; sämtliche Instruktionen erlaubt; sämtliche Zugriffe auf E/A, MMU, Konfiguration erlaubt; Ebene der Betriebssystem-Software
+        \item[Ring 1,2] Auswahl privilegierter Instruktionen; Auswahl an Zugriffen auf E/A; bei Nicht-Standard-Betriebssystem-Architekturen
+        \item[Ring 3] niedrigste Privilegien; keinerlei privilegierte Instruktionen; keinerlei Zugriffe auf E/A, MMU, Konfiguration; Ebene der Anwendungsprozesse
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Privilegierungsebenen]{Wie wirkt sich die Ausführung einer Aktivität in einer bestimmten Privilegierungsebene auf deren Arbeitsweise aus?}
+    Kann zT bevorzugt oder schneller abgearbeitet werden wenn Schedulingstrategie dies vorsieht (RR mit Prioritäten)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \&Kommunikation]{Was versteht man unter einem kritischen Abschnitt?}
+    Eine Phase, in der ein Thread eine exklusive Operation auf einer Ressource ausführt.\\
+    Codebereich, der exklusive Nutzung einer (geteilten) Ressource benötigt.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \&Kommunikation]{Warum darf sich in einem kritischen Abschnitt immer nur 1 Thread aufhalten?}
+    z.B. Dirty Read/Write; es wird mit veränderten oder veralteten Werten gerechnet/gespeichert. 
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \&Kommunikation]{Wie können kritische Abschnitte geschützt werden?}
+    Durch wechselseitigen Ausschuss (in einem kritischen Abschnitt befindet sich zu jedem Zeitpunkt höchstens ein Thread) durch Synchronisation
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \&Kommunikation]{Was ist eine exklusiv nutzbare Ressource?}
+    Es gibt Ressourcen, die als ganzes oder bzgl. einzelner Operationen nur exklusiv, d.h. zu einem Zeitpunkt nur durch einen einzigen Thread nutzbar sind.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \&Kommunikation]{Welchen Zusammenhang gibt es zwischen nutzbare Ressource zu kritischen Abschnitten?}
+    für kritische Abschnitte müssen genügend Ressourcen verfügbar sein um zu Kommunizieren/Synchronisieren
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Synchronisation \& Kommunikation]{Welcher Zusammenhang existiert zwischen "exkluviv nutzbarer Ressource", "kritischer Abschnitt" und "race conditions"?}
+    Es gibt Ressourcen, die als ganzes oder bzgl. einzelner Operationen nur exklusiv, d.h. zu einem Zeitpunkt nur durch einen einzigen Thread nutzbar sind. Die Race conditions werden durch solche exklusiven Ressourcen beschränkt.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Semaphor]{Beschreiben Sie einen Semaphor?}
+    Abstrakter Datentyp mit
+    \begin{itemize}
+        \item 2 Operationen Belegen (P Semaphor), Freigeben (V Semaphor)
+        \item Zustand Frei/belegt bzw Warteliste
+    \end{itemize}
+    Passives Warten (d.h. der Scheduler involviert)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Semaphor]{Wozu wird ein Semaphor verwendet?}
+    einhaltung von Zugriffsregeln auf kritische Abschnitte; erstellung von Wartelisten und Überprüfung der berechtigung
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Beschreiben Sie einen Monitor?}
+    Zusammenfassung von Daten, darauf definierten Operationen, der Zugriffssynchronisation zu einem abstrakten Datentyp, dessen Operationen wechselseitigen Ausschuss garantieren
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Wozu wird dieser verwendet?}
+    implizite/automatische Synchronisation kritischer Operationen durch Datenabstraktion
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Welche Vorteile bieten Monitore gegenüber Semaphoren? }
+    beiten Vollständigkeit, Symmetrie und Softwarequalität. Müssen zudem nicht explizit gesetzt werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Was bedeutet Atomarität (von Anweisungen)?}
+    Untrennbare/ Ununterbrechbare Ausführung ("Ganz oder gar nicht")
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Wo ist Atomarität bei Semaphoren notwendig?}
+    während Ausschluss paralleler Ausführung $rightarrow$ TestAndSetLock ("TSL") im Instruktionssatz eines Prozessors
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Wie kann Atomarität durch Maschinenbefehle unterstützt werden?}
+    atomares Vergleichen oder Tauschen unterstützen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Wozu dienen Bedingungsvariable bei Monitoren? }
+    Ähnlich aber bedingungslos. Es gibt wait() und signal(), aber Signal ohne wait geht verloren
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Monitor (Hoar‘scher)]{Welche Verwendungsmöglichkeiten von Bedingungsvariablen sind noch denkbar?}
+    Immer dann, wenn Zustandslos ausreicht. Monitore garantieren wechselseitigen Ausschuss.
+
+    Deshalb: Bedingungsvariablen meist mit Locks/Mutex zusammen benutzt
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Transaktionaler Speicher]{Welche Entwicklungen führten zu Entwicklungsarbeiten bezüglich dieses Konzepts?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Transaktionaler Speicher]{Verbirgt sich hinter diesem Konzept eine pessimistische oder eine optimistische Herangehensweise an die Synchronisationsproblematik - und warum?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Botschaften und botschaftenbasierte Kommunikation]{Unter welchen Bedingungen muss botschaftenbasierte Kommunikation zur Anwendung kommen?}
+    \begin{itemize}
+        \item falls die Beteiligten auf unterschiedlichen Rechnern ablaufen
+        \item falls die Beteiligten disjunkte Adressräume besitzen
+        \item in losen gekoppelten Multiprozessor-Architekturen
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Botschaften und botschaftenbasierte Kommunikation]{Charakterisieren Sie die 2 elementaren Methoden zur Realisierung botschaftenbasierter Kommunikation!}
+    \begin{enumerate}
+        \item Senden einer Botschaft an einen Empfänger "Send (IN Empfänger, IN Botschaft)"
+        \item Empfangen einer Botschaft von einem Absender "Receive (OUT Absender, OUT, Botschaft)"
+    \end{enumerate}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Fernaufrufe]{Warum wird unter den entsprechenden Bedingungen nicht alle Kommunikation über Botschaften abgewickelt – was ist das Besondere an den stattdessen auch verwendeten Prozedurfernaufrufen bzw. Methodenfernaufrufen?}
+    Problem:
+    \begin{itemize}
+        \item Datenmodell des send/receive-Modells: Zeichenfolge $\rightarrow$ sehr primitiv
+        \item gewohnte Datenmodelle, Signaturen
+    \end{itemize}
+    Idee: Anpassung eines anwendungsnahen, unkomplizierten, vertrauten \\Kommunikationsmodells an die Eigenschaften verteilter Systeme
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Fernaufrufe]{Wie ist die Kommunikation in Mikrokern-Betriebssystemen organisiert?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Systemaufrufe]{Welchem Zweck dienen Systemaufrufe?}
+    Aufruf einer Betriebssystemfunktion über eine Schnittstelle
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Systemaufrufe]{Welche Beispiele von Systemaufrufen sind Ihnen bekannt? – Wozu dienen diese jeweils?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Systemaufrufe]{Warum realisieren Systemaufrufe keinen direkten Einsprung in den Betriebssystemkern?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Systemaufrufe]{Mit welchen Problemen muss bei der Realisierung von Systemaufrufen umgegangen werden – und wie sehen die Lösungen aus?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Welche Dinge sind im Betriebssystemkontext Ereignisse?}
+    Timerablauf, Benutzereingaben, Eintreffen von Daten, Einlegen/Stecken von Datenträgern, Aufruf von Systemdiensten, Fehlersituationen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Welche Möglichkeiten gibt es, mit Ereignissen umzugehen?}
+    \begin{description}
+        \item[busy waiting] spezialisierte Threads prüfen andauernd Ereigniseintritt (reaktiv, aber ineffizient)
+        \item[periodic testing] spezialisierte Threads prüfen hin und wieder den Ereigniseintritt/Polling (Wahl der Zykluszeit)
+        \item[Unterbrechungen] (Interrupts) Benachrichtigung über Ereignis
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Welche Vorteile bieten Interrupts (Unterbrechungen)?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Welche drei Modelle gibt es zum Umgang mit Interrupts?}
+    \begin{description}
+        \item[Prozeduren] (inline Prozeduraufrufmodel)
+        \item[IPC-Operationen] IPC-Modell
+        \item[Threads] pop-up Thread Modell
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Was sind Interruptvektor, Interruptvektortabelle und Interrupt-Service-Routinen?}
+    \begin{description}
+        \item[Interruptvektor]
+        \item[Interrupttabelle] Assoziationen ("Interruptvektoren") der Form Interruptquelle $\rightarrow$ Handlerprozedur (ISR)
+        \item[Interrupt-Service-Routinen]
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Warum und inwieweit ist die Rechner-Hardware in die Interrupt-Bearbeitung involviert?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Ereignisse und Ereignismanagement]{Was versteht man unter Interrupts auf Anwendungsebene und wie kann damit umgegangen werden?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Eigenschaften sollte ein idealer Speicher haben?}
+    Ideale Speichermedien sind beliebig schnell, beliebig groß, beliebig billig und persistent.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Warum gibt es stattdessen in der Praxis Speicher-Hierarchien?}
+    Da reale Speichermedien nicht die Eigenschaften solcher idealer Speicher haben.
+
+    Denn: Reale Speichermedien sind teuer, schnell und flüchtig oder langsam, preiswert, persistent oder eine Vielzahl von Schattierungen dazwischen.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Charakterisieren Sie (grob) die bei Speicherhierarchien zum Einsatz kommenden Technologien und Speicherklassen.}
+    \begin{description}
+        \item[Prozessorregister/ Cachespeicher] sehr schnell, sehr teuer(klein), flüchtig
+        \item[Arbeitsspeicher] schnell, weniger teuer (mittelgroß), flüchtig
+        \item[Flash-EEPROM] (SSDs, USB-Sticks) langsam, preiswert(groß), persistent
+        \item[Magnetplatten, optische Medien, Bänder] langsam, mittel- bis sehr groß, persistent
+    \end{description}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was sollte ein Arbeitsspeicher können?}
+    Der Arbeitsspeicher sollte parallele, potentiell fehlerhafte/ unfreundliche Prozesse isolieren können. Er muss auch eine gewisse Größe besitzen, damit er auch große Prozesse bearbeiten kann. + Struktur + Typisierung
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Aus welchem Grund wurde die Relokation von Prozessen erforderlich – und was wird hierdurch erreicht?}
+    \scriptsize{
+    Das Layout des physischen Arbeitsspeichers der 60er Jahre hatte zwar einfaches Speichermanagement und parallele Prozesse als Merkmale.
+    Dies wurde aber bezahlt mit Verletzbarkeit (Zugriff auf Speicherbereiche fremder Prozesse), Enge (weniger Raum für einzelne Prozesse) und Komplexität. Das Wachsen von Prozessen wurde problematisch. Außerdem gab es keine feste Startadresse, weshalb Code- oder Datenadressen erzeugt werden mussten.\\
+
+    Lösung: Relokation
+    \begin{itemize}
+        \item Platzieren eines Prozesses an beliebige Speicheradresse
+        \item Verschieben zwecks Vergrößerung/ Speicherbereinigung/ Verschiebbarkeit
+    \end{itemize}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Nachteile bringt die Relokation mit sich?}
+    \begin{itemize}
+        \item entweder: verteuerter Programmstart (wenn Startadresse bekannt)
+        \item oder: höheren Hardware-und Laufzeitkosten
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie "funktioniert" Relokation – technisch gesehen? }
+    \scriptsize{
+    \begin{enumerate}
+        \item sämtliche Speicheradressen in einem Programm werden vom Compiler/Linker relativ zur Speicheradresse "0" berechnet, als Relativadressen markiert
+        \item beim Anlegen/ Verschieben eines Prozesses werden markierte Adressen aktualisiert (=Relokation)
+    \end{enumerate}
+        Tatsächliche Adresse = Relativadresse + Prozessanfangsadresse
+
+        Realisierung
+    \begin{itemize}
+        \item per Software->durch BS beim Erzeugen/ Verschieben
+        \item per Hardware->durch Offset-Register zur Laufzeit
+    \end{itemize}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Technik "steckt" hinter dem Begriff "Swapping"? }
+    Ziel: Beseitigung von Enge/ mehr Platz; Schaffen von freiem Arbeitsspeicher durch Auslagerung von Prozessen
+
+    Erstes Auftauchen einer Speicherhierarchie
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Probleme werden hiermit gelöst - welche nicht? }
+    \begin{itemize}
+        \item Mehr Platz
+        \item Nicht: Verletzbarkeit
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche neuen Probleme entstehen durch diese Technik (Swapping)?}
+    \begin{itemize}
+        \item Prozesswechsel werden teurer
+        \item fortschreitende Zerstückelung des Arbeitsspeichers
+        \item der pro Prozess adressierbare Speicherbereich wird durch Swapping nicht größer
+    \end{itemize}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Verfahren der Speicherverwaltung werden als Realspeicherverwaltung (im Gegensatz zu virtueller Speicherverwaltung) bezeichnet?}
+    Bisherige Speicherverwaltungstypen
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welches sind Grundidee und Zweck des virtuellen Speichers? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie wird virtueller Speicher implementiert? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Rolle spielt dabei eine Memory Management Unit (MMU)? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was versteht man unter "virtueller Speicher" und "virtuelles Speichermanagement"? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was versteht man ganz allgemein unter einem Adressraum? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Erklären Sie die Begriffe "Adressraum eines Prozesses", "physischer Adressraum" und "virtueller Adressraum" in ausreichender Tiefe. }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welchem Zweck dient die genannte Abbildung $vm_p$? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Warum wird für jeden virtuellen Adressraum eine individuelle Abbildung benötigt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Aus welchem Grund gibt es unbenutzte bzw. undefinierte Adressbereiche? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wieso realisiert vm p nur eine partielle Abbildung des virtuellen in den physischen Adressraum? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Durch welchen Effekt wird durch vm p die Isolation verschiedener virtueller Adressräume erreicht? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Warum kann es Ausnahmen von dieser Isolation geben – und was soll hierdurch ermöglicht werden? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Aufgaben hat eine MMU? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Könnten die Aufgaben einer MMU auch ohne eine solche gelöst werden – und welche Nachteile hätte dies gegebenenfalls?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was versteht man jeweils unter "Seite" (page) und Seitenrahmen (page frame) im Kontext der virtuellen Speicherverwaltung? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Aufgaben hat die Seiten(abbildungs)tabelle? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Struktur hat ein Seitentabelleneintrag?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Problemfelder existieren bei der virtuellen Speicherverwaltung (VMM)?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Lösungsmöglichkeiten existieren für die Probleme 1 bis 3?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was ist unter einem Seitenfehler zu verstehen – und wie kommt ein solcher zustande? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was ist ein Seitenfehler-Interrupt – und welchem Zweck dient er? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Aufgaben lösen jeweils die Hardware bzw. die Software im Zusammenhang mit einem Seitenfehler-Interrupt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was ist der Translation Look-aside Buffer und welche Funktion hat er? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was ist bei der Verwaltung (Management) des TLB zu beachten? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche prinzipielle Frage stellt sich bei den Seitenaustausch-Algorithmen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was versteht man unter der optimalen Seitenaustausch-Strategie – und warum wendet man diese aber nicht an?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Worin besteht die Grundannahme bei der First-In-First-Out-Strategie und was ist von dieser zu halten? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Vorteile besitzt sie trotzdem? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wodurch verbessert die Second-Chance-Strategie die FIFO-Strategie?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Vor- und Nachteile besitzt die Second-Chance-Strategie? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie unterscheidet sich die Grundannahme der LRU-Strategie von derder Second-Chance-Strategie?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Warum sind die Voraussetzungen zur Realisierung von LRU "teuer" – und wie sehen tatsächliche technische Realisierungen aus? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Komponenten eines Seitentabelleneintrags sind für die technischen Realisierungen von LRU erforderlich?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Was versteht man unter dem Working Set ("Arbeitsmenge") eines Prozesses?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Von welcher Grundannahme geht die Working-Set-Strategie aus – und welcher Typ von Seiten sind hier Auslagerungskandidaten? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie ist die Arbeitsmenge eines Prozesses definiert? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Komponenten eines Seitentabelleneintrags sind zu einer technischen Realisierung der Working-Set-Strategie erforderlich? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie ist die Working-Set-Strategie einzuschätzen (Bewertung)? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie funktioniert die WSClock-Strategie?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche (schon vorher bekannten) Ideen wurden für die WSClock verwendet? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Welche Probleme werden mittels Segmentierung gelöst?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Speichermanagement]{Wie funktioniert Segmentierung mit Paging – und wozu ist diese Verfahrensweise gut?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wozu werden Dateien benutzt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wie ist eine Datei definiert? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche wichtigen Eigenschaften sollten Dateien haben – und warum?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Aufgabe haben Dateimodelle?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wodurch unterscheiden sich verschiedene Dateimodelle? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wozu werden (symbolische) Dateinamen benutzt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Transparenzeigenschaften können durch die Gestaltung der Dateinamen ausgedrückt werden? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Was ist ein hierarchischer Namensraum und welche Vorteil hat er?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Eigenschaft besitzt der hierarchischer Namensraum? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Vorteile besitzen unstrukturierte Dateien? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Warum gibt es trotzdem strukturierte Dateien? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Nennen Sie typische Dateiattribute. }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Was sind Sicherheitsattribute und wie können diese aussehen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Dateioperationen werden in jedem Dateisystem benötigt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Funktion haben die Operationen "lseek" und "mmap" – und käme man auch ohne diese beiden Funktionen aus?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Aufgaben haben Dateisysteme?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Was ist Ihnen über das physische Layout von Magnetplatten bekannt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Charakterisieren Sie den Begriff "Sektor" – warum ist er wichtig?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welches sind wichtige Parameter von Speichermedien?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wie unterscheiden sich die Eigenschaften von Magnetplatten und SSDs prinzipiell?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche prinzipiellen Management-Datenstrukturen gibt es?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Informationen enthält ein i-Node?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Aufgaben haben Verzeichnisse?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Wie kann ein symbolischer hierarchischer Namensraum dargestellt werden?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Durch welche 2 Formen können freie Speicherbereiche beschrieben werden?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Was wird durch den Superblock beschrieben?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche prinzipiellen Informationen sind hier zu finden?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Beschreiben Sie die einzelnen Schritte verschiedener Dateizugriffsarten}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Dateisysteme]{Welche Management-Datenstrukturen sind dabei und zu welchem Zweck beteiligt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Wie sind Sockets definiert?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{In welchem Zusammenhang werden Sockets benutzt?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Wie kann man sich Sockets – symbolisch gesehen – vorstellen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Warum treten Sockets immer paarweise auf?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Beschreiben Sie das durch Sockets implementierte Kommunikationsmodell. }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Wie und wozu sind Sockets konfigurierbar? }
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Nennen Sie Beispiele für räumlich verteilte Systeme (Hardware) und verteilte Dienste und Anwendungen (Software).}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Wozu dient das Socketframework des Betriebssystems?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Netzwerkmanagement]{Aus welchen Ebenen (levels) besteht die Implementierung dieses Frameworks?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Gerätetreiber)]{Welche Aufgaben erledigt ein Geräte-Treiber?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Gerätetreiber)]{Wie muss man sich seine Arbeitsweise vorstellen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Gerätetreiber)]{Welcher Zusammenhang besteht zwischen Geräte-Treibern und dem Interrupt-System?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Gerätetreiber)]{Warum sind die Geräte-Treiber der fehleranfälligste Teil der Betriebssystem-Software?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Geräte Register)]{In welcher Form werden Geräte-Register im Betriebssystem sichtbar?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (E/A-Adressraum)]{Wie kann man sich prinzipiell die E/A-Arbeitsweise bei Verwendung eines eigenen E/A-Adressraums vorstellen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Geräte Register)]{Welche Probleme existieren in diesem Zusammenhang?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Memory-Mapped-E/A)]{Wie funktioniert prinzipiell E/A unter Verwendung von Memory-Mapped-E/A?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Memory-Mapped-E/A)]{Was ist von dem hierbei implementierten Schutzkonzept – auch im Vergleich zu E/A-Adressräumen zu halten?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[E/A Systeme (Memory-Mapped-E/A)]{Was sind in diesem Zusammenhang "nicht-cachebare Seiten" und wodurch entstehen diese?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme]{Welche Entwicklungen und Erkenntnisse der Betriebssystem-Forschung zeichnen aktuelle "High-End-Betriebssysteme" aus?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme]{Welche Ziele sind mit diesen "modernen" Entwicklungen verbunden – und warum ist dies wichtig und notwendig?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme]{Welche nichtfunktionalen Eigenschaften von Betriebssystemen sind für gesellschaftlich relevante Industriezweige und Einrichtungen von herausgehobener Bedeutung – und warum?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Sicherheit)]{Warum reichen die Sicherheitseigenschaften herkömmlicher Betriebssysteme für heutige Anforderungen nicht mehr aus – und was soll durch verbesserte Sicherheitseigenschaften erreicht werden?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Sicherheit)]{Durch welche Maßnahmen wird SELinux zu einem Beispiel eines "zeitgemäßen" Betriebssystem mit verbesserten Sicherheitseigenschaften?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Sicherheit)]{Wie kann man sich prinzipiell die Sicherheitspolitik von SELinux vorstellen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Sicherheit)]{Welche Rolle spielt der Security-Server bei SELinux?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Robustheit)]{Was ist unter Robustheit zu verstehen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Robustheit)]{Wodurch unterscheiden sich monolithische und Mikrokern-Architekturen von Betriebssystemen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[High End Betriebssysteme (Robustheit)]{Durch welche prinzipiellen Gegebenheiten sind Mikrokern-Architekturen robuster als monolithische Betriebssystemarchitekturen?}
+    ?
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

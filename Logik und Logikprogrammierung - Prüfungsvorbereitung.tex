@@ -1,0 +1,571 @@
+\documentclass[10pt, a4paper]{exam}
+\printanswers			    % Comment this line to hide the answers 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
+\renewcommand{\solutiontitle}{\noindent\textbf{Antwort}: }
+\SolutionEmphasis{\small}
+\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} 
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+\pdfinfo{
+    /Title (Logik und Logikprogrammierung - Prüfungsvorbereitung)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Robert Jeutter)
+    /Subject ()
+}
+\title{Logik und Logikprogrammierung - Prüfungsvorbereitung}
+\author{}
+\date{}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newtcolorbox{myboxii}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+  Aufgaben aus dieser Vorlage stammen aus der Vorlesung \textit{Logik und Logikprogrammierung} und wurden zu Übungszwecken verändert oder anders formuliert! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
+\end{myboxii}
+
+%##########################################
+\begin{questions}
+  \question Definitionen und Sätze
+  \begin{parts}
+    \part Der Korrektheitssatz der Aussagenlogik für den Wahrheitswertebereich $B$ lautet...
+    \begin{solution}
+      Für jede Menge von Formeln $\Gamma$ und jede Formel $\varphi$ gilt $\Gamma\vdash\varphi\Rightarrow\Gamma\vdash_B\varphi$.
+    \end{solution}
+
+    \part Eine Menge von Formeln $\Gamma$ heißt erfüllbar, wenn...
+    \begin{solution}
+      Sei $\Gamma$ eine Menge von Formeln. $\Gamma$ heißt erfüllbar, wenn es eine passende B-Belegung $B$ gibt mit $B(\gamma) = 1_B$ für alle $\gamma\in\Gamma$.
+    \end{solution}
+
+    \part Der Satz von Cook lautet...
+    \begin{solution}
+      Die Erfüllbarkeit einer endlichen Menge $\Gamma$ ist NP-vollständig.
+    \end{solution}
+
+    \part Zwei Formeln $\alpha$ und $\beta$ heißen äquivalent, wenn...
+    \begin{solution}
+      Zwei Formeln $\alpha$ und $\beta$ heißen äquivalent $(\alpha\equiv\beta)$, wenn für alle passenden B-Belegungen $B$ gilt: $B(\alpha) =B(\beta)$.
+    \end{solution}
+
+    \part Der Kompaktheitssatz der Aussagenlogik lautet...
+    \begin{solution}
+      Sei $\Gamma$ eine u.U. unendliche Menge von Formeln. Dann gilt $\Gamma$ unerfüllbar $\Leftarrow\Rightarrow\exists\Gamma'\subseteq\Gamma$ endlich: $\Gamma'$ unerfüllbar
+    \end{solution}
+
+    \part Eine Horn Klausel ist eine Formel der Form
+    \begin{solution}
+      Eine Hornklausel hat die Form $(\lnot\bot\wedge p_1\wedge p_2\wedge ... \wedge p_n)\rightarrow q$ für $n\geq 0$, atomare Formeln $p_1 ,p_2 ,... ,p_n$ und $q$ atomare Formel oder $q=\bot$.
+      Eine Hornformel ist eine Konjunktion von Hornklauseln.
+    \end{solution}
+  \end{parts}
+
+  \question Wahrheitswertebereiche
+  \begin{parts}
+    \part Werte die Formel $\varpi_a=\lnot p \wedge \lnot\lnot p$ im Heytingschen Wahrheitswertebereich $H_{\mathbb{R}}$ aus für die $H_{\mathbb{R}}$-Belegung $B$ mit $B(p)=\mathbb{R}\backslash \{0\}$
+    \begin{solution}
+      $B_{H_{mathbb{R}}}(\lnot p \wedge \lnot\lnot p)= Inneres(\mathbb{R}/ p)\cap p= Inneres(\mathbb{R}\backslash\{\mathbb{R}\backslash\{0\}\})\cap \mathbb{R}\backslash\{0\}=\{0\}\cap \mathbb{R}\backslash\{0\} = \varnothing$
+    \end{solution}
+
+    \part Überprüfe ob die Formel $\varphi_B=(\lnot p\rightarrow \lnot p)\rightarrow p$ eine $K_3$-Tautologie ist. Ist $\varphi_b$ eine $B_{\mathbb{R}}$ Tautologie?
+    \begin{solution}
+
+      \begin{tabular}{c|c|c|c}
+        $p$           & $\lnot p$     & $\phi=(\lnot p\rightarrow \lnot p)$ & $\phi\rightarrow p$ \\\hline
+        0             & 1             & 1                                   & 0                   \\
+        $\frac{1}{2}$ & $\frac{1}{2}$ & 1                                   & $\frac{1}{2}$       \\
+        1             & 0             & 1                                   & 1                   \\
+      \end{tabular}
+
+      Keine $K_3$ Tautologie.
+
+      Da keine $B$ Tautologie $\rightarrow$ keine $B_R$ Tautologie
+    \end{solution}
+
+    \part Überprüfe ob die semantische Folgeung $\{p\rightarrow q, q\rightarrow r\}\Vdash_B r\rightarrow\lnot p$ gilt.
+    \begin{solution}
+
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        $p$ & $q$ & $r$ & $\lnot p$ & $\Gamma_1=p\rightarrow q$ & $\Gamma_2=q\rightarrow r$ & $\Phi=r\rightarrow\lnot p$ & $\Gamma\Vdash\Phi$ \\\hline
+        0   & 0   & 0   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        0   & 0   & 1   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        0   & 1   & 0   & 1         & 1                         & 0                         & 1                          &                    \\
+        0   & 1   & 1   & 1         & 1                         & 1                         & 1                          & \cmark             \\
+        1   & 0   & 0   & 0         & 0                         & 1                         & 1                          &                    \\
+        1   & 0   & 1   & 0         & 0                         & 1                         & 0                          &                    \\
+        1   & 1   & 0   & 0         & 1                         & 0                         & 1                          &                    \\
+        1   & 1   & 1   & 0         & 1                         & 1                         & 0                          & \xmark
+      \end{tabular}
+
+      Folgerung gilt nicht
+    \end{solution}
+  \end{parts}
+
+  \question Erfüllbarkeit
+  \begin{parts}
+    \part Überprüfe mittels Markierungsalgorithmus, ob die Formel $\varphi_a=(\lnot p\vee q)\wedge(t\vee \lnot s)\wedge(\lnot r\vee s\vee \lnot q)\wedge r\wedge (\lnot p\vee t)\wedge \lnot s \wedge (\lnot r\vee p)$ erfüllbar ist.
+    \begin{solution}
+      \begin{itemize}
+        \item $\lnot\varphi_a=(p\wedge \lnot q)\vee(\lnot t\wedge s)\vee(r\wedge\lnot s\wedge q)\vee\lnot r\vee (p\wedge\lnot t)\vee s \vee(r\wedge\lnot p)$
+        \item Horn Klauseln
+              \begin{enumerate}
+                \item $q\rightarrow p$
+                \item $t\rightarrow s$
+                \item $s\rightarrow r\wedge q$
+                \item $r\rightarrow\bot$
+                \item $t\rightarrow p$
+                \item $\lnot\bot\rightarrow s$
+                \item $p\rightarrow r$
+              \end{enumerate}
+        \item Markieren
+              \begin{enumerate}
+                \item für 6.: $s$
+                \item für 3.: $r,q$
+                \item für 4.+1.: $\bot, p$
+                \item für 7.: $r$
+                \item Terme 2 und 5 bleiben übrig $\rightarrow$ terminiert mit ,,unerfüllbar''
+              \end{enumerate}
+        \item $\lnot\varphi_a$ unerfüllbar $\Rightarrow \varphi_a$ erfüllbar
+      \end{itemize}
+    \end{solution}
+
+    \part Überprüfe mittels SLD Resolution, ob die Formel $\varphi_b=(r\wedge p)\vee\lnot t\vee (p\wedge \lnot q)\vee \lnot p\vee (\lnot r\wedge q \wedge t)$ eine Tautologie ist
+    \begin{solution}
+      \begin{itemize}
+        \item Horn Klauseln
+              \begin{enumerate}
+                \item $\lnot\bot\rightarrow r\wedge p$
+                \item $t\rightarrow\bot$
+                \item $q\rightarrow p$
+                \item $p\rightarrow\bot$
+                \item $r\rightarrow q\wedge t$
+              \end{enumerate}
+        \item Markieren
+              \begin{enumerate}
+                \item für 2.+3.: $M_0=\{p,t\}$
+                \item für 3.: $M_1=\{q,t\}$
+                \item für 5.: $M_2=\{r\}$
+                \item für 4.: $M_3=\{r,p\}$
+                \item für 1.: $M_4=\varnothing$
+              \end{enumerate}
+        \item $M_4=\varnothing \Rightarrow \{\lnot\varphi_b\}$ unerfüllbar $\rightarrow \varphi$ Tautologie
+      \end{itemize}
+    \end{solution}
+  \end{parts}
+
+  \question Monotone Formeln: Eine aussagenlogische Formel $\varphi$ heißt monoton, falls für alle zu $\varphi$ passenden $B$-Belegungen $B_1,B_2$ mit $B_1(p_i)\leq B_2(p_i)$ für alle $i\in\mathbb{N}$ gilt $B_1(\varphi)\leq B_2(\varphi)$. Beispielsweise sind $p_1\wedge p_2$ und $\lnot\lnot p_1$ monoton.
+  \begin{parts}
+    \part Entscheide, welche der Formeln $\varphi=p_1\wedge(p_2\rightarrow p_3)$, $\psi=\lnot p_1\rightarrow p_2$ monoton sind.
+    \begin{solution}
+      Teste für B-Belegung mit Boolschem Wahrheitswertebereich
+
+      \begin{tabular}{c|c|c|c|c}
+        $p_1$ & $p_2$ & $p_3$ & $p_2\rightarrow p_3$ & $\varphi=p_1\wedge(p_2\rightarrow p_3)$ \\\hline
+        0     & 0     & 0     & 1                    & 0                                       \\
+        0     & 0     & 1     & 1                    & 0                                       \\
+        0     & 1     & 0     & 0                    & 1                                       \\
+        0     & 1     & 1     & 1                    & 0                                       \\
+        1     & 0     & 0     & 1                    & 1                                       \\
+        1     & 0     & 1     & 1                    & 1                                       \\
+        1     & 1     & 0     & 0                    & 0                                       \\
+        1     & 1     & 1     & 1                    & 1
+      \end{tabular}
+      $\Rightarrow$ nicht monoton
+
+      \begin{tabular}{c|c|c|c}
+        $p_1$ & $p_2$ & $\lnot p_1$ & $\psi=\lnot p_1\rightarrow p_2$ \\\hline
+        0     & 0     & 1           & 0                               \\
+        0     & 1     & 1           & 1                               \\
+        1     & 0     & 0           & 1                               \\
+        1     & 1     & 0           & 1
+      \end{tabular}
+      $\Rightarrow$ monoton
+    \end{solution}
+
+    \part Zeige per vollständiger Induktion über den Formelaufbau, dass aussagenlogische Formeln in denen weder $\lnot$ noch $\rightarrow$ vorkommen, monoton sind.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Definitionen und Sätze: Sei $\sum$ eine Signatur. Verfollständige die folgenden Definitionen und Sätze.
+  \begin{parts}
+    \part Es gilt $\Delta\vdash \varphi$ für eine $\sum$-Formel $\varphi$ und eine Menge $\Delta$ von $\sum$-Formeln, falls
+    \begin{solution}
+      Seien $\Delta$ eine Menge von Formeln und $\varphi$ eine Formel. Dann gilt $\Delta\vdash\varphi\Leftrightarrow\Delta\Vdash_B \varphi$
+      Insbesondere ist eine Formel genau dann eine B-Tautologie, wenn sie ein Theorem ist.
+    \end{solution}
+
+    \part Der Vollständigkeitssatz der Prädikatenlogik lautet...
+    \begin{solution}
+      Sei $\Gamma$ eine Menge von $\sum$-Formeln und $\varphi$ eine $\sum$-Formel. Dann gilt $\Gamma\Vdash\varphi \Rightarrow \Gamma\vdash\varphi$.
+      Insbesondere ist jede allgemeingültige Formel ein Theorem.
+    \end{solution}
+
+    \part Der Satz von Löwenheim-Skolem lautet...
+    \begin{solution}
+      Sei $\Gamma$ erfüllbare und höchstens abzählbar unendliche Menge von $\sum$-Formeln. Dann existiert ein höchstens abzählbar unendliches Modell von $\Gamma$.
+    \end{solution}
+
+    \part Die (elementare) Theorie einer $\sum$-Struktur $A$ ist
+    \begin{solution}
+      Eine $\sum$-Struktur ist ein Tupel $A=(U_A,(f^A)_{f\in\Omega},(R^A)_{R\in Rel})$, wobei
+      \begin{itemize}
+        \item $U_A$ eine nichtleere Menge, das Universum,
+        \item $R^A\supseteq U_A^{ar(R)}$ eine Relation der Stelligkeit $ar(R)$ für $R\in Rel$ und
+        \item $f^A:U_A^{ar(f)}\rightarrow U_A$ eine Funktion der Stelligkeit $ar(f)$ für $f\in\Omega$ ist.
+      \end{itemize}
+    \end{solution}
+  \end{parts}
+
+  \question Natürliches Schließen
+  \begin{parts}
+    \part Gebe die Regeln $(\forall-I)$, $(\exists-E)$ und $(GfG)$ inklusive Bedingung an
+    \begin{solution}
+
+      $\forall-I:\frac{\varphi}{\forall x\varphi}$ Bedingung: x nicht frei in Hypothesen
+
+      $\forall-E:\frac{\forall x\varphi}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $t$ wird in $\varphi$ quantifiziert
+
+      $\exists-I:\frac{\varphi[x:=t]}{\exists x\varphi}$ Bedingung: über keine Variable in $t$ wird in $\varphi$ quantifiziert
+
+      $\exists-E:\frac{\exists x\varphi\quad \sigma}{\sigma}$ Bedingung: x weder frei in Hypothesen noch in $\sigma$
+
+      $(GfG): \frac{\varphi[x:=s]\quad s=t}{\varphi[x:=t]}$ Bedingung: über keine Variable aus $s$ oder $t$ wird in $\varphi$ quantifiziert
+    \end{solution}
+
+    \part Zeige, dass $\forall x\exists y(f(x)=y)$ ein Theorem ist, indem du eine entsprechende Deduktion angibst
+    \begin{solution}
+    \end{solution}
+
+    \part Zeige, dass $\exists x\forall y(f(x)=y)$ nicht allgemeingültig ist
+    \begin{solution}
+    \end{solution}
+
+    \part Zeige, dass die Formel aus c) erfüllbar ist
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Prädikatenlogische Definierbarkeit: Betrachte im folgenden Graphen als $\sum$-Struktur, wobei $\sum$ eine Signatur mit einem zweistelligen Relationssymbol $E$ ist.
+  \begin{parts}
+    \part Betrachte den (kommt noch) Graphen und die $\sum$-Formel $\varphi_a=\forall x\exists y\exists z(((E(x,y)\wedge E(y,z))\vee(E(y,x)\wedge E(z,x)))\wedge y\not =z)$. Gebe eine Kante an, sodass $G$ mit dieser zusätzlichen Kante als $\sum_a$-Struktur ein Modell der Formel $\varphi_a$ ist. Begründe deine Antwort.
+    \begin{solution}
+    \end{solution}
+
+    \part Betrachte die folgenden (kommen noch) Graphen $G_1$ und $G_2$. Gebe einen $\sum$-Satz $\varphi_b$ an, so dass $G_1\Vdash \varphi_b$ und $G_2\not\Vdash\varphi_b$ gilt.
+    \begin{solution}
+    \end{solution}
+
+    \part Gebe einen $\sum$-Satz $\varphi_c$ an, so dass für alle $\sum$-Strukturen $A$ genau dann $A\Vdash \varphi_c$ gilt, wenn $E^A$ eine Äquivalenzrelation ist (d.h. reflexiv, symmetrisch und transitiv).
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Normalformeln und Unifikatoren
+  \begin{parts}
+    \part Betrachte die Formel $\varphi=\forall x(\exists y(R(x,y)\wedge \lnot \exists x(R(y,x))))$. Gebe eine Formel $\psi_1$ in Pränexform an, die äquivalent zu $\varphi$ ist und eine Formel $\psi_2$ in Skolemform, die erfüllbarkeitsäquivalent zu $\varphi$ ist.
+    \begin{solution}
+      \begin{itemize}
+        \item $\forall x(\exists y (R(x,y) \wedge \lnot \exists x(R(y,x))))$
+        \item $\forall x( \exists x_2 \exists y( R(x,y)\wedge\lnot R(y,x_2)))$
+        \item $\forall x( \exists x_2 \exists y( R(x,y)\wedge\lnot R(y,x_2)))$
+        \item $\forall x \exists x_2 \exists y( R(x,y\wedge\lnot R(y,x_2)))$ (Pränexform)
+        \item $\forall x (R(x,y)\wedge\lnot R(g(x),h(x)))[x_2:=h(x)][y:=g(x)]$
+        \item $\forall x (R(x,y)\wedge\lnot R(g(x),h(x)))$ (Skolemform)
+      \end{itemize}
+    \end{solution}
+
+    \part Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $R$, zweistelligem Funktionssymbol $f$, einstelligem Funktionssymbol $g$ und Konstanten $a,b$. Ermittle mit dem Unifikationsalgorithmus, ob die atomare Formel unifizierbar ist und gebe einen allgemeinsten Unifikator an, falls dieser existiert. $$(R(x, f(y,g(a))), R(a,f(g(x),y)))$$
+    \begin{solution}
+
+      \begin{tabular}{c|c|c}
+        $\varphi_1\sigma$    & $\varphi_2\sigma$   & $\sigma$            \\\hline
+        $R(x, f(y,g(a)))$    & $R(a,f(g(x),y))$    & $id$                \\
+        $R(a, f(y,g(a)))$    & $R(a,f(g(x),y))$    & $id[x:=a]$          \\
+        $R(a, f(g(x),g(a)))$ & $R(a,f(g(x),g(x)))$ & $id[x:=a][y:=g(x)]$ \\
+      \end{tabular}
+
+      Terminiert nicht unifizierbar
+    \end{solution}
+
+    \part Sei $\sum$ eine Signatur mit zweistelligem Relationssymbol $R$, zweistelligem Funktionssymbol $f$, einstelligem Funktionssymbol $g$ und Konstanten $a,b$. Ermittle mit dem Unifikationsalgorithmus, ob die atomare Formel unifizierbar ist und gebe einen allgemeinsten Unifikator an, falls dieser existiert. $$(R(f(g,x),y), R(f(y,z),z))$$
+    \begin{solution}
+
+      \begin{tabular}{c|c|c}
+        $\varphi_1\sigma$ & $\varphi_2\sigma$ & $\sigma$   \\\hline
+        $R(f(g,x),y)$     & $R(f(y,z),z))$    & $id$       \\
+        $R(f(y,x),y)$     & $R(f(y,z),z))$    & $id[y:=y]$
+      \end{tabular}
+
+      Terminiert nicht unifizierbar
+    \end{solution}
+  \end{parts}
+
+  \question Gegeben sei folgende Wissensbasis:\begin{itemize}
+    \item über(rot, orange).
+    \item über(orange, gelb).
+    \item über(gelb, grün).
+    \item über(grün, blau).
+    \item über(blau, violett).
+    \item top(X):~über(\_, X), !, fail.
+    \item top(\_).
+    \item oben(X):-über(X,\_),top(X).
+  \end{itemize} Wie antwortet ein Prolog System mit dieser Wissensbasis auf die folgenden Fragen:
+  \begin{parts}
+    \part ?-top(grün).
+    \begin{solution}
+      \{gelb\}, true
+    \end{solution}
+
+    \part ?-top(X).
+    \begin{solution}
+      \{rot, orange, gelb, grün, blau \}, false
+    \end{solution}
+
+    \part ?-top(rot).
+    \begin{solution}
+      \{\}, false
+    \end{solution}
+
+    \part ?-oben(grün).
+    \begin{solution}
+      false
+    \end{solution}
+
+    \part ?-oben(X).
+    \begin{solution}
+      \{rot\}, true
+    \end{solution}
+
+    \part ?-oben(rot).
+    \begin{solution}
+      true
+    \end{solution}
+  \end{parts}
+
+  \question Man implementiere folgende Prädikate in Form von Prolog Klauseln
+  \begin{parts}
+    \part Das Prädikat $parition(L,E,Kl,Gr)$ soll eine gegebene Liste ganzer Zahlen $L$ in zwei Teillisten partitionieren.\begin{itemize}
+      \item die Liste $Kl$ aller Elemente aus $L$, welche kleiner oder gleich $E$ sind und
+      \item die Liste $Gr$ aller Elemente aus $L$, welche größer als $E$ sind
+    \end{itemize}
+    Beispiel: ?-parition([1,2,3,4,5,6], 3, Kl, Gr). \begin{itemize}
+      \item $Kl=[1,2,3]$
+      \item $Gr=[4,5,6]$
+    \end{itemize}
+    \begin{solution}
+      \begin{lstlisting}
+      % delete Funktion
+      delete(_, [ ], [ ]).
+      delete(X, [X|Xs], Xs).
+      delete(X, [Y|Ys], [Y|Zs]) :-
+        delete(X, Ys, Zs).
+
+      % append Funktion 
+      append([ ], Xs, Xs).
+      append([X|Xs], Ys, [X|Zs]) :-
+        append(Xs, Ys, Zs).
+
+      % partition Funktion
+      partition([ ], E, Kl, Gr).
+      partition([K|R], E, Kl, Gr):-
+        K<E, 
+        append(K, Kl, Kl), 
+        partition(R, E, Kl, Gr).
+      partition([K|R], E, Kl, Gr):-
+        K>E, 
+        append(K, Gr, Gr), 
+        partition(R, E, Kl, Gr). 
+
+      \end{lstlisting}
+    \end{solution}
+
+    \part Das Prädikat $merge(L1,L2,L)$ soll zwei sortierte Listen mit ganzen Zahlen $L1$ und $L2$ zu einer sortierten Liste $L$ verschmelzen.
+    \begin{solution}
+      \begin{lstlisting}
+        merge([ ], L2, L2).
+        merge(L1, [ ], L1).
+        merge([K1|R2], [K2|R2], L):-
+          K1>K2,
+          append(K2, L, L),
+          merge([K1|R1], R2, L).
+        merge([K1|R2], [K2|R2], L):-
+          K2=<K1,
+          append(K1, L, L),
+          merge(R1, [K2|R2], L).      
+      \end{lstlisting}
+    \end{solution}
+
+    \part Das Prädikat $listmerge(ListenListe, L)$ bekommt eine Liste sortierter Listen $ListenListe$ und soll sie zu einer sortierten Liste L verschmelzen. Das in Aufgabe b) definierte Prädikat $merge$ kann dabei verwendet werden.
+    \begin{solution}
+      \begin{lstlisting}
+        listmerge([ ], L).
+        listmerge([K|R], L):-
+          merge(K, L, L2),
+          listmerge(R, L2).
+      \end{lstlisting}
+    \end{solution}
+
+    \part Das Prädikat $am\_groesten(L, Max)$ soll das größte Element $Max$ einer Zahlenliste $L$ ermitteln. Falls $L$ leer ist, soll ,,nein'' geantwortet werden.
+    \begin{solution}
+      \begin{lstlisting}
+        am_groesten([], Max):-
+          fail.
+        am_groesten([K|R], Max):-
+          K>Max,
+          am_groesten(R, K).
+        am_groesten([K|R], Max):-
+          K=<Max,
+          am_groesten(R, Max).
+      \end{lstlisting}
+    \end{solution}
+
+    \part Das Prädikat $am\_kuerzesten(ListenListe, L)$ soll aus einer Liste von $ListenListe$ die kürzeste Liste $L$ ermitteln. Dies soll möglichst effizient geschehen: \begin{itemize}
+      \item Gestalte die Prozedur rechtsrekursiv
+      \item Sehe davon ab, Listenlängen explizit zu ermitteln. Ermittle diese mit einem Hilfsprädikat $kuerzer\_als(L1,L2)$
+      \item Höre mit der Suche auf, sobald eine leere Liste gefunden wurde. Kürzer geht nicht
+    \end{itemize}
+    Falls $ListenListe$ leer ist, soll ,,nein'' geantwortet werden.
+    \begin{solution}
+      \begin{lstlisting}
+        am_kuerzesten([], L).
+        am_kuerzesten([K,R], L):-
+          kuerzer_als(K,L),
+          am_kuerzesten(R, K).
+        am_kuerzesten([K,R], L):-
+          !kuerzer_als(K,L),
+          am_kuerzesten(R, L).
+      \end{lstlisting}
+    \end{solution}
+  \end{parts}
+
+  \question Ein binärer Suchbaum mit natürlichen Zahlen in den Knoten sei in Prolog wie folgt als strukturierter Term repräsentiert:\begin{itemize}
+    \item leerer Baum: nil
+    \item nichtlerer Baum: baum(Wurzel, LinkerUnterbaum, RechterUnterbaum)
+  \end{itemize}
+  Beispiel Baum mit Wurzel 6, Wurzel 4 im linken Unterbaum, Wurzel 7 im rechten Unterbaum und 2,4 und 9 als Blätter: $baum(6,baum(4, baum(2,nil,nil), baum(5, nil, nil)), baum(7, nil, baum(0, nil, nil)))$.\\
+  Man implementiere folgende Prädikate in Prolog
+  \begin{parts}
+    \part Das Prädikat $enthalten(Baum, Zahl)$ bekommt einen binären Suchbaum $Baum$ sowie eine Zahl $Zahl$ und soll entscheiden, ob diese Zahl in Baum enthalten ist und die Antwort ,,ja'' oder ,,nein'' liefern.
+    \begin{solution}
+      \begin{lstlisting}
+        baum(nil).
+        baum(Wurzel, Links, Rechts):-
+          baum(Links),
+          baum(Rechts).
+        
+        ist_knoten(X, baum(X, Links, Rechts)).
+        ist_knoten(X, baum(Y, Links, Rechts)) :-
+          ist_knoten(X, Links).
+        ist_knoten(X, baum(Y, Links, Rechts)) :-
+          ist_knoten(X, Rechts).
+
+        enhalten(baum(X, Links, Rechts), X).
+        enhalten(baum(Y, Links, Rechts), X):-
+          enthalten(Links, X).
+        enthalten(baum(Y, Links, Rechts), X):-
+          enthalten(Rechts, X).
+      \end{lstlisting}
+    \end{solution}
+
+    \part Das Prädikat $flatten(Baum,Liste)$ soll aus einem gegebenen Suchbaum $Baum$ die Liste $Liste$ aller der im Baum enthaltenen Zahlen in aufsteigender sortierter Reihenfolge liefern.
+    \begin{solution}
+      \begin{lstlisting}
+        flatten([], []).          
+        flatten(baum(X, Links, Rechts), L):-
+          insert(X, L, L2),
+          flatten(Links, L2),
+          flatten(Rechts, L2).
+        flatten([], L):-
+          insertionSort(L, []).
+        
+        insert(X, [], [X]).
+        insert(X, [X1|L1], [X, X1|L1]):- 
+          X=<X1, 
+          !.
+        insert(X, [X1|L1], [X1|L]):- 
+          insert(X, L1, L).
+
+        insertionSort([], []):- 
+          !.
+        insertionSort([X|L], S):- 
+          insertionSort(L, S1), 
+          insert(X, S1, S).
+      \end{lstlisting}
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

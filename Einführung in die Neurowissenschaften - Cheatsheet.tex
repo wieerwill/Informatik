@@ -1,0 +1,859 @@
+\documentclass[a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{xcolor, listings}
+\usepackage[compact]{titlesec} %less space for headers
+\usepackage{mdwlist} %less space for lists
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{bussproofs}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Einführung in die Neurowissenschaften}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
+
+\pdfinfo{
+  /Title (Einführung in die Neurowissenschaften)
+  /Creator (TeX)
+  /Producer (pdfTex 1.40.0)
+  /Author (Robert Jeutter)
+  /Subject ()
+}
+
+%%% Code Listings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+ backgroundcolor=\color{backcolour}, 
+ commentstyle=\color{codegreen},
+ keywordstyle=\color{magenta},
+ numberstyle=\tiny\color{codegray},
+ stringstyle=\color{codepurple},
+ basicstyle=\ttfamily,
+ breakatwhitespace=false, 
+}
+\lstset{style=mystyle, upquote=true}
+
+%textmarker style from colorbox doc
+\tcbset{textmarker/.style={%
+ enhanced,
+ parbox=false,boxrule=0mm,boxsep=0mm,arc=0mm,
+ outer arc=0mm,left=2mm,right=2mm,top=3pt,bottom=3pt,
+ toptitle=1mm,bottomtitle=1mm,oversize}}
+
+% define new colorboxes
+\newtcolorbox{hintBox}{textmarker,
+ borderline west={6pt}{0pt}{yellow},
+ colback=yellow!10!white}
+\newtcolorbox{importantBox}{textmarker,
+ borderline west={6pt}{0pt}{red},
+ colback=red!10!white}
+\newtcolorbox{noteBox}{textmarker,
+ borderline west={3pt}{0pt}{green},
+ colback=green!10!white}
+
+% define commands for easy access
+\renewcommand{\note}[2]{\begin{noteBox} \textbf{#1} #2 \end{noteBox}}
+\newcommand{\warning}[1]{\begin{hintBox} \textbf{Warning:} #1 \end{hintBox}}
+\newcommand{\important}[1]{\begin{importantBox} \textbf{Important:} #1 \end{importantBox}}
+
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+ { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+ {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+ {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+ {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+ }
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+ {-1ex plus -.5ex minus -.2ex}%
+ {0.5ex plus .2ex}%x
+ {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+ {-1explus -.5ex minus -.2ex}%
+ {0.5ex plus .2ex}%
+ {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+ {-1ex plus -.5ex minus -.2ex}%
+ {1ex plus .2ex}%
+ {\normalfont\small\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex} 
+% compress space
+\setlength\abovedisplayskip{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\linespread{0.5}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\begin{document}
+
+\raggedright
+\begin{multicols}{3}\scriptsize
+  % multicol parameters
+  % These lengths are set only within the two main columns
+  %\setlength{\columnseprule}{0.25pt}
+  \setlength{\premulticols}{1pt}
+  \setlength{\postmulticols}{1pt}
+  \setlength{\multicolsep}{1pt}
+  \setlength{\columnsep}{2pt}
+
+
+  Eigenschaft Nervensystem? Reizbarkeit
+
+  andere funktionelle System zu NS? Hormonsystem (endocrines)
+
+  Untersysteme des NS? Herz/Kreislauf, Atmung, Verdauung, Haut, Urogenital, Muskulatur
+
+  Kommunikation mit äußerer Umwelt? Sensomotorische NS
+
+  Kommunikation mit anderen Organsystemen? autonomes NS
+
+  Grundbestandteile ZNS? Gehirn (Cerebrum, Pons, Cerebellum), Rückenmark (Spinal Cord, conus medullaris, region of cauda equina)
+
+  Hauptbestandteile autonomes NS? Symphatikus, Parasympathikus, Zentraler Teil, Intramurale Plexus
+
+  Untersystem autonomes NS Flucht/Kamp? Sympathikus
+
+  Zelltypen im Nervengewebe? Neuronen, Glia
+
+  Gewebe mit neuronalen Zellkörper? Ganglien, Plexus
+
+  Nervengewebe im Rückenmark außen? weiße substanz
+
+  funktionellen Merkmale von Neuronen? verbunden durch Nervenfasern, Informationstransfer elektrisch \& chemisch
+
+  Geschwindigkeit Aktionspotentiale? $0,3 - 100$ m/s
+
+  Aktionspotential ausgelöst? Membranpotential -65mV am Axonhügel
+
+  Membran-Ruhepotential Neuron? -70mV
+
+  Antriebskräfte für Ionentransport? Diffusion durch Konzentrationsgradienten, elektrischer Ionenstrom durch Potentialgradienten, aktiver Ionenaustausch durch Ionenpumpen
+
+  Ionenkanäle ausgelöst? Natriumkanäle, dann Kaliumkanäle
+
+  maximale Impulsrate auf Axonen? 500/s
+
+  Aktionspotentiale nur in eine Richtung? Na+ Refraktärzeit, verhindern Zurücklaufen
+
+  Abhängigkeit Aktionspotentiale? Durchmesser Axon, Myelinschicht um Axon $\rightarrow$ saltatorische Erregungsleitung
+
+  Saltatorischer Erregungsleitung? axonale Erregungsleitung springt von Schnürring zu Schnürring
+
+  Zelltyp Myelinscheiden im Zentral-/Perphernervensystem? Oligodendrozyten im ZNS und Schwann-Zellen in der Peripherie
+
+  Krankheit beeinträchtigt Myelinscheiden? Multiple Sklerose
+
+  Neurotransmitter in synaptischen Endknöpfen? Vesikeln
+
+  informationsverarbeitende Synapse? Diodenfunktion, Transistorfunktion
+
+  Integration von Information in Neuron? räumliche/zeitliche Dim.
+
+  Neurotransmitter? Substanzen, an chemischen Synapsen ausgeschüttet, beeinflussen andere Zellen % (Neuronen, Muskelzellen, etc.)
+
+  Merkmale Neurotransmittern? in präsynaptischen Endknöpfen synthetisiert, in großer Menge freigesetzt, können mechanisch entfernt werden, selbe Wirkung bei exogener Applikation
+
+  Arten von Neurorezeptoren? ionotrope/ metabotrobe Rezeptoren
+
+  Funktion ionotroper Rezeptor? Chemisch gesteuerte Ionenkanäle öffnet/schließt in der postsynaptischen Membran, induziert postsynaptische Potential
+
+  Funktion metabotroper Rezeptor? langsam, variabel, bindet an Ionenkanal und löst AP oder Synthese weiterer Botenstoffe
+
+  Häufiger Rezeptoren? metabotrope Rezeptoren
+
+  Neurotransmitter? Dopamin, Epinephrin, Histamin, GABA, Glutamat, Serotonin, Acetylcholin
+
+  Monoamine als Neurotransmitter? Tyrosin, Histidin, Phenylalanin
+
+  Aminosäuren als Neurotransmitter? Glutamat, GABA, Glycin
+
+  %Nennen Sie den wichtigsten erregenden und den wichtigsten hemmenden Neurotransmitter im Gehirn!
+
+  %Welches sind die drei wichtigen Orte mit dopaminergen Neuronen im Gehirn?
+
+  %Welches der drei wichtigsten dopaminergen Systeme interagiert eng mit dem neuroendokrinologischen System?
+
+  Hirnareal enthält noradrenerge Neuronen? Locus coeruleus
+
+  Wo serotonerge Neuronen? im Hirnstamm, in den Raphé-Kernen
+
+  %Nennen Sie zwei wichtige Beispiele für cholinerge Übertragung!
+
+  Gruppen cholinerger Rezeptoren? Muscarinische (metabotrop), nicotinische (ionotrop)
+
+  Substanzen synaptische Übertragung? Inhibitor (hemmend), Aktivator (fördernd)
+
+  Wirkmechanismen Agonisten? Steigerung NT-Freisetzung, NT Menge $\uparrow$, NT Synthese $\uparrow$, Blockierung von Abbau oder Wiederaufnahme von NT, Bindung an und Aktivierung von postsynaptischen Rezeptoren
+
+  Wirkmechanismen Antagonisten? NT Synthese $\downarrow$, Austreten NT aus Vesikeln, Blockierung NT-Freisetzung, Bindung und Blockierung von postsynaptischen Rezeptoren
+
+  Beispiel Antagonisten? Atropin, M1-3 Acetylcholin-Rezeptor
+
+  %Beispiel Agonist?
+
+  Anwendungsgebiete Atropin? Erweiterung Pupillen, Gegengift cholinerge Agonisten, Hemmung Magen/Darmaktivität, Kreislaufstillstand
+
+  Typen von Gliazellen? Microgliazyten, Astrozyten, Ependymzellen, Oligodendrogliazyten, (Schwann-Zellen)
+
+  Merkmale von Mikroglia? Vielfältige Formen, Amöboid beweglich, Abräum- und Abwehrfunktion
+
+  Merkmale Astrozyten? Kurzstrahlige Astrozyten in grauer Substanz, lnagstrahlige Astrozyten in weißer Substanz, Gliafüßchen bilden geschlossene Schicht um Kapillaren, Kontrolle Ionen- und Flüssigkeitsgleichgewicht, Stütz- und Transportfunktion, Abgrenzfunktion, teilungsfähig und bilden Glianarben
+
+  Gliazellen für Blut-Hirn-Schranke? Astrozyten
+
+  Merkmale Oligodendrozyten? Eng an Neuronen angelagert, Stoffwechselfunktion für Neuronen, bilden Markscheide für ZNS-Neuronen
+
+  Myelinscheide im peripheren NS gebildet? Schwann-Zellen
+
+  Typen in motorischen Endplatten? Transmitter: ACh, Rezeptor: nikotinische ACh-Rezeptoren
+
+  Gliazellen direkt an Informationsverarbeitung im Gehirn? Ja, 10-50 mal mehr als Neuronen%, direkt am Prozess der Informationsverarbeitung, -speicherung und -weiterleitung im Nervensystem beteiligt
+
+  Richtungsbezeichnungen? caudal-hinten, dorsal-oben, ventral-unten, rostal- vorn, anterior-vorn, medial-innen, lateral-außen
+
+  proximal: zum Rumpf hin gelegen
+
+  distal: vom Körperzentrum weg gelegen
+
+  Hauptabschnitte Gehirn? Telencephalon, Diencephalon, Mesencephalon, Metencephalon, Myelencephalon, Rückenmark
+
+  Wieviele Hirnnervenpaare? 12 Hirnveenenpaare
+
+  Hirnnerv entspringt im Telencephalon? N. olfactorius (sensorisch: riechen)
+
+  Hirnnerv entspringt im Diencephalon? N. opticus (sensorisch: Sehen)
+
+  Funktion N. trigenimus? sensorisch: Gesicht, Nase, Mund, Zunge; motorisch: kauen
+
+  Funktion N. vestibulocochlearis? sensorisch: Gleichgewicht, Hören
+
+  Funktion N. vagus? Motorisch (parasympathisch): Eingeweide; motorisch: Kehlkopf, Rachen; sensorisch: Kehlkopf, Rachen
+
+  Hirnfunktion in Medulla oblongata? Atem- und Kreislaufzentrum; Zentren für Nies-, Huste-, Schluck-, Saug- und Brechreflex; formatio reticularis
+
+  Hirnteil für Überleben unverzichtbar? Medulla
+
+  retikuläre Formation? Zieht durch Medulla, Pons und Mesencephalon/Diencephalon
+
+  Funktion retikulärer Formation? Zeitliche Koordination des gesamten Nervensystems; Atmung, Kreislauf, Muskeltonus; Moduation von Schmerzempfinden und Emotion, Schlaf-Wach-Rhythmus, Aufmerksamkeit
+
+  Wo Pons? Zwischen Mesencephalon und Myelencephalon%; bildet mit Cerebellum das MEtencephalon, ist von diesem durch das (4) Ventrikel getrennt
+
+  Was zwischen Pons und Cerebellum? Teile des 4.Hirnventrikels, Rautengrube
+
+  %Wo befinden sich Zellkörper und Axone cerebellarer Neuronen?
+
+  %cerebellaren Neuronentypen und ordnen Sie diese anhand der Lage ihrer Zellkörper den entsprechenden Cortexschichten zu!
+
+  Funktion Cerebellums? Feedforward-Verarbeitung, Divergenz und Konvergenz, Modularität, Plastizität
+
+  Symptome cerebellarer Störungen? Ataxie (Störung Bewegungskoordination), Nystagmus (Augenzittern), Rumpfataxie (Unfähigkeit aufrecht zu erhalten), Tremor, undeutliche Aussprache, Störungen im Bewegungsablauf
+
+  Wo Mittelhirn? zwischen Pons und Diencephalon
+
+  Hauptabschnitte Mittelhirn? Tectum, Tegmentum
+
+  inferioren und superioren Colliculi? Tectum (Mittelhirndach, Vierhügelplatte)
+
+  Neurotransmitter der Substantia nigra? Dopamin
+
+  Krankheit Störungen in Substantia nigra? Morbus Parkinson
+
+  Funktion des Thalamus? ,,Eingangskontrolle'' Großhirn, Umschaltstation sensorischer Informationen
+
+  Funktionen Hypothalamus? Regelung Körpertemperatur, Wasser, Mineralhaushaltes, Hormonausschüttung, Appetit, Schlaf, Sexualtrieb, Aggression, Flucht
+
+  Regulierungszentrum autonomen NS? Hypothalamus
+
+  Quellen für Afferenzen Hypothalamus? Limbisches System, Sensorische Informationen über interne/externe Umgebung
+
+  %Nennen Sie die 5 grundsätzlichen Efferenzen des Hypothalamus!
+
+  funktionelles System laterale/medialen Kniehöcker? Metathalamus
+
+  Hauptabschnitte des Großhirns? Großhirnhälften, Basalganglien
+
+  Kommissuren verbinden? Beide Gehirnhälften
+
+  Großhirnlappen? Frontal (Lobus frontalis), Schläfen (L. temperalis), Hinterhaupt (L. occipitalis), Scheitel (L. parietalis)
+
+  %Was verbinden Projektions- und Assoziationsbahnen?
+
+  %Welche histologischen und phylogenetischen Cortextypen gibt es?
+
+  Schichten Cortex? Isocortex: 6, Allocortex: 3
+
+  Cortexart nimmt meiste Fläche ein? Isocortex
+
+  Strukturen Basalganglien? Nucleus caudatus, Putamen, Globus pallidus, Amygdala
+
+  Strukturen unter Striatum? Nucleus caudatus, Putamen
+
+  Funktionen Amygdala? wichtig bei Emotionen, insb. Angst und Furcht
+
+  Was in Weiße Masse? Nervenfasern und Glia
+
+  Hirnhäute? Dura mater, Arachnoidea, Pia mater
+
+  Hirnhaut grenzt an Cortex? Pia mater
+
+  Hirnhaut grenzt an Schädel? Dura mater
+
+  Arterien Blutzufuhr zum Gehirn? 6 Stück
+
+  Struktur Ausfall der zuführenden Arterien ausgleichen? Ring in Hirnbasis
+
+  Anzahl Hirnventrikel? 5
+
+  Struktur bildet Nervenwasser? In Ventrikeln (durch Kapillargeflechte der Pia mater)
+
+  Wo Nervenwasser resorbiert? Arachoidalzotten im Sinus sagittalis superior
+
+  Wo weiße/graue Masse im Rückenmark? weiße Masse außen, graue Masse innen
+
+  Wo endet Rückenmark? Obere Lendenwirbelsäule
+
+  Grundfunktionen Rückenmarks? Verbindung Gehirn-(größter Teil) Körper, Implementierung somatomotorischer/viszeraler Reflexe
+
+  Wie viele Spinalnervenpaare? 31 Paare
+
+  Dermatom? Assoziation zwischen Körperoberfläche und Spiralnerv/ Rückenmarkssegmente
+
+  versorgenden Arterien Rückenmarks? A. spinales posterolateralis (paar), A. spinales anterior (unpaar)
+
+  Rückenmarks über A. spinalis anterior versorgt? Vorderen zwei drittel des Rückenmarks
+
+  Rückenmark über Arterii spinalis posteriolateralis versorgt? Hinteres drittel des Rückenmarks
+
+  Häute des Rückenmarks? Dura Mater, Arachnoidea, Pia Mater
+
+  Zwischen Rückenmarkshäuten Nervenwasser? Pia Mater, Arachnoidea
+
+  Zwischen Rückenmarkshäuten venöse Blutgefäße? Epiduralraum (Knochenhaut und Dura)
+
+  Schädigung ventrale Wurzel verursacht? schlaffe Lähmung
+
+  schlaffer Lähmung mit Muskeln? Atropie (Rückbildung der Wurzel)
+
+  Krankheitsmechanismus bei Amyotrophischer Lateralsklerose? Absterben der 1.+2. Motoneuronen im Vorderhorn, Tod in 5 Jahren
+
+  Ursachen für Querschnittslähmung? Linearfraktur, Kompressionsfraktur, Trümmerfraktur
+
+  Durchtrennung Rückenmarks bei C4? Tetraplegie, Lähmung ab Hals
+
+  Durchtrennung des Rückenmarks bei L1? Paraplegia, paralyse ab hüfte
+
+  Ursachen Bandscheibenvorfälle? Genetische Prädisposition, einseitige Belastung, Schwäche der paravertebralen Muskulatur, Altersbedingte Degeneration
+
+  Wirbelsäulenabschnitt meiste Bandscheibenvorfälle? Lenden-WS
+
+  Maßnahmen gegen Bandscheibenvorfälle! Aufbau paravertebralen Muskulatur, Rückengerechtes Heben/Sitzen%, Aufgrund genetischer Ursachen kann trotz Vorbeugung ein BS auftreten
+
+  Grundformen von Schädel-Hirn-Traumata? Gedeckt oder offen
+
+  Bewusstlosigkeit von 45 Minuten? Gehirnprellung
+
+  Symptome Schädel-Hirn-Traumata? Bewusstlosigkeit, Übelkeit, Schwindel, neurologische Ausfälle, Amnesien, Kopfschmerzen
+
+  Therapiemaßnahmen Schädel-Hirn-Traumata? Reha, Druckentlastung, Symptombehandlung, Rehabilitation
+
+  Grundformen cerebrovaskulärer Störungen? Cerebrale Hämorrhagie, Celebrale Ischämie
+
+  Ursachen Hämorrhagien? Arteriosklerose, Amyloidangiopathie, Gefäßveränderungen, Aneurysmen, Traume
+
+  Risikofaktoren Hämorrhagien? Bluthochdruck, Einnahme Gerinnungshemmern, Nikotin, Alkohol
+
+  Ursachen cerebraler Ischämien? Einengung/Verschluss von Aterien (Thrombose), Embolie, Arteriosklerose
+
+  Faktor Schlaganfalltherapie? Zeitlich schnellstmögliche Aufnahme in Stroke Unit
+
+  Therapiemaßnahmen Ischämien? Thrombolyse, Mechanische Thrombose Entferung, Rehabilitation, Behandlung von Ödemen, Stabilisierung der Atmung
+
+  Hirntumorklassen? Meningeome, Gliome, Blastome, Metastasen, andere Primäre Hirntumore (Lympphome)
+
+  häufigste Klasse von Hirntumoren? Gliome
+
+  Symptome für Hirntumore? Kopfschmerzen nachts/morgens, Übelkeit, Erbrechen, Sehstörungen, Krampfanfälle, Neurologische Anzeichen %(Lähmungserscheinungen, Sprach- und Koordinationsstörungen, Ungeschicklichkeit), Persönlichkeitsveränderung
+
+  neuropathologischen Befunde Alzheimer? Ausgedehnte neuronale Degeneration, Neurofibrilläre Verklumpung
+
+  %In welchen Hirnarealen sind neuropathologische Veränderungen bei Alzheimer besonders anzutreffen?
+
+  Art nicht von Alzheimerschen betroffen? Sensor-motorisches Lernen
+
+  Neurotransmitter bei Parkinson besonders? Dopamin
+
+  Hirnstruktur bei Parkinson besonders? Substania nigra
+
+  Symptome Parkinson? Ruhetremor, Rigor, Maskenartiges Gesicht, Bradykinese, spezifischer Gang
+
+  Behandlungsstrategien Parkinson? Medikation von L-DOPA oder Dopaminagonist, Tiefenhirnstimulation in Basalganglien
+
+  Risiko wenn Mutter Chorea Huntington? 50\% (autosomal dominant)
+
+  Nrvenzellen bei Amyotrophen Lateralsklerose? Motoneuronen im Cortex, Rückenmark, Hirnnervenkernen
+
+  Krankheit greift Myelin der Axone an? Multiple Sklerose MS
+
+  %Nennen Sie die 4 Grundprinzipien des sensomotorischen Systems!
+
+  sensomotorischen Systeme? Eigenreflexapperat, Fremdreflexapperat, Vestibulozerebellares, Extrapyramidales, Pyramidales
+
+  Aufgaben Eigenreflexapparates? Anpassung Muskellängen u. Muskelspannung an Schwerkraft
+
+  Verknüpfungen zw. Sensor und Effektor Eigenreflexapparates? Monosynaptisch (eine synaptische Verbindung)
+
+  Zellkörper der somatoafferenten Neuronen? In Spinalganglion%, keien Berührung zu anderen Axonen mit dem Zellkörper
+
+  WO in Rückenmarks Motorneuronen? Graue Masse
+
+  Worüber verlassen motorischen Fasern Rückenmark? Radix anterior
+
+  Muskel versorgt? Jeder M. von nervenfasen mehrerer Rückenmarkssegmente
+
+  motorische Einheit? Gesamtheit von Neuronen innervierten Muskelfaser
+
+  motor. Endplatten an Muskelfaser? Jede M-Zelle nur eine Endplatte
+
+  Größe motorischer Einheit? Von der komplexität der Motorik
+
+  Sensoren messen Muskellänge/spannung? Muskelspindeln
+
+  Rolle Gamma-Neuronen Eigenreflex? Längenänderung Spindelfasern
+
+  Muskel Patellarsehnenreflex inhibiert? Beinbeuger (Bizeps)
+
+  Funktion Fremdreflexapparates? Automatische Reaktion auf Reize außerhalb Muskulatur
+
+  Haut- und Körperrezeptoren? Eingekapselt+organartige->Tasten, freie Nervenenden-> Schmerz, Temperatur
+
+  Berührungs/Drucksensoren? Langsam adaptierend: Druckwahrnehmung, Schnell a.: Berührungswahrnehmung, Sehr schnell a.: Vibrationswahrnehmung
+
+  afferenten Nervenfasern größte Geschwindigkeit? Alpha-Fasern 70-120 m/s
+
+  sensorische Information durch C-Fasern? Temperatur und Schmerz
+
+  Typ afferenter Nervenfasern marklos? C-Fasern
+
+  Hinterstrangbahnen im Rückenmark ziehen? Zu Medulla oblongata
+
+  Hinterstrangbahnen kreuzen auf kontralaterale Seite? Im Hirnstamm
+
+  Assoziationscortexareale? Posterior-parietal Assoziationscortex, Dorsal präfrontal assotiationscortex
+
+  Input parietale Assoziationscortex? Sensorischen Arealen: visuell, auditorisch, somato...
+
+  %Über wie viele Neuronen wird im pyramidalen System die Information an die Muskeln übertragen?
+
+  Stationen Sehbahn? Retina, Sehnerv, Chiasma opticum, Sehnerventrakt, Äußerer Kniehöcker, Radiatio optica, Primäre Sehrinde, Sekundäre Sehrinde
+
+  Information Netzhaut rechten Auges? Linke Großhirnhemisphäre
+
+  hintere Teil des Augapfels? Hornhaut, Aderhaut, Netzhaut
+
+  Hornhaut des Auges? vordere Teil der äußeren Augenhaut, frontaler Abschluss des Augapfels
+
+  Worauf wirkt Ziliarmuskel? Zonularfasern (Bindegewebsfasern)
+
+  weite Pupille? weniger scharfes Bild; hohe Empfindlichkeit
+
+  enge Pupille? empfindlichkeit gering; schärferes Bild
+
+  Erweiterung/Verengung Pupille? durch sympathisches und parasympathisches NS
+
+  Stress auf die Pupille? Pupille wird geweitet
+
+  Müdigkeit auf die Pupille? Kontraktion der Pupille
+
+  Entspannung des Ziliarmuskels? Fernakkommodation, gespannte Zonularfasern, flache Linsenkrümmung
+
+  Linsenwölbung bewirkt Fernakkomodation? Flache Linsenkrümmung
+
+  Fehlsichtigkeit Linsen behoben? Sammel - Weitsicht, Zerstreu - Kurzsicht
+
+  Zelltypen Retina? Stäbchen, Zapfen, Horizontalzellen, Biolarzellen, retinale Ganglienzellen, amakrine Zellen
+
+  Neurotransmitter schüttet Fotorezeptoren? Glutamat
+
+  Neurotransmitter der Ganglien- und Bipolarzellen? Glutamat
+
+  Neurotransmitter der amacrinen u. Horizontalzellen? GABA
+
+  Zelltypen kontaktieren Fotorezeptoren? Horizontal und bipolarzellen
+
+  synaptische Kontakte zwischen Sehnerv und zellen? 130 Mio
+
+  Zellart der Netzhaut einfallenden Licht nahe? Axone retinaler Ganglienzellen
+
+  Art von Fotorezeptoren in der Retina? Stäbchenzellen, Zapfenzellen
+
+  Art Fotorezeptoren für Farbwahrnehmung? Zapfen
+
+  Art Fotorezeptoren ist zahlreicher? Stäbchen
+
+  Konvergenz in Retina? Geringere Auflösung, höhere Lichtempfindlichkeit
+
+  Auswirkungen laterale Inhibition in Retina? Kontrasterhöhung
+
+  Eintrittsstelle des Sehnervs? Blinder Fleck, keine Fotorezeptoren
+
+  Retina Zapfendichte am höchsten? Sehgrube
+
+  Großhirnlappen primäre Sehrinde? Primärer visueller Cortex
+
+  Durchtrennung des rechten Sehnerves? Erblindung des Rechten Auges
+
+  Durchtrennung optischen Tracts? Ausfall des linken/rechten Gesichtsfeldes beider Augen
+
+  Läsionen im prim. vis. C.? Skotome: blinde Stellen im Gesichtsfeld
+
+  Läsionen im post. Parietallappen? kann nicht mehr nach Dingen greifen aber erkennen
+
+  Läsionen im infer. Temporallappen? kann Dinge greifen aber nicht beschreiben
+
+  Theorie von Logothetis/Steinberg? Dorsale Bahn dient der Verhaltensinteraktion der Objekte, ventrale Bahn der bewussten Wahrnehmung
+
+  Propagnosie? Unfähigkeit Gesichter zu erkennen
+
+  aus rechten unteren Quadranten rechten Auges verarbeitet? primärer visueller Cortex
+
+  Farbtheorie von Young/Helmholtz? Farbe des sichtbaren Spektrums aus drei unabhängigen Farben gemischt
+
+  Farbtheorie von Hering? Farben lassen sich nicht beliebig mischen %(z.b. kein rötliche Grün), Schattenbilder nach Starren auf Farben
+
+  Farbtheorien im Gehirn? Young/Helmholtz und Hering
+
+  Farbe einer Fläche? reflektierte Wellenlänge, benutzte Lichtspektrum, umgebende Objekte
+
+  Erklärung Blindsehen? Primärer Visueller Cortex nicht vollständig zerstört; direkte Verbindung Mittelhirn und Thalamus zu höheren viusellen Gebieten
+
+  Abschnitte Ohr? Inneres, mittleres und äußeres Ohr
+
+  Struktur trennt äußeres von Mittelohr? Trommelfell
+
+  Funktion äußeres Ohr? Fokussierung Schallrichtungswahrnehmung, Schalldruckverstärkung
+
+  Hauptfunktion des Mittelohrs? Gesamtschalldruckverstärkung
+
+  %Mittelohr zur Schalldruckverstärkung? Flächenverhältnis Trommelfell-Steigbügelgrundplatte, Hebelarme des Gehörknöchelchen(Hammer/Amboss), Hebelarm durch die Biegung des Trommelfells und unsymmetrische Anheftung des Hammers
+
+  Knochenstruktur Innenohr eingebettet? Felsenbein
+
+  Struktur Hörsinneszellen? Corti-Organ
+
+  Membran ist Corti-Organ verbunden? membrana basilaris
+
+  Cochlea empfindlich für hohe Frequenzen? am ovalen Fenster
+
+  Stereozilien mit Tectorialmembran verbunden? äußere Haarzellen
+
+  Funktion äußere Haarzellen? Rückkopplung zur Regulierung von Sensoroutput
+
+  Hörbahnen unterscheiden? dorsale und ventrale Höhrbahn
+
+  Funktion dorsale Hörbahn? verursacht bewusste Wahrnehmung
+
+  Funktion ventralen Hörbahn? verursacht akustische Reflexe
+
+  Neuronen der dorsalen Hörbahn? 8er Hirnnerv(Hörnerv), Medulla(Dorsaler Cochleariskern), Mittelhirn(Colliculus inf.), Zwischenhirn(Innerer Kniehöcker)
+
+  endet dorsale Hörbahn? Linke Hirnhälfte
+
+  kortikale Verarbeitung auditorischer Information? Temporallapen
+
+  Gerät Mittel-/ Innenohrtaubheit erkennen? Stimmgabel
+
+  Ursache Mittelohrtaubheit? Riß im Trommelfell
+
+  Ursache Innenohrtaubheit? Verletzung Cochlea
+
+  Innenohrtaubheit therapieren? Cochlea Implantate
+
+  Hohlräumen des Labyrinth-Organ? Sacculus, Utriculus, anterior Kanal, posterior Kanal, horizontal Kanal
+
+  Projektionsziele vestibulärer Nervenfasern? Rückenmark, Thalamus, Retikuläre Formation, Cerebellum, auf die Kerne des 3,4,6 Hirnnervs
+
+  vestibuläre Störungen? Neuritis Vestibularis, Gutartiger Lagerungschwindel
+
+  gutartigen Lagerungsschwindels? Ablösung Otholiten, herumschlingern in Bogengängen
+
+  Ursache Neuritis vestibularis? Entzündung des Vestibularnervs
+
+  endet der Riechnerv? Riechhirn (Bulbus Olfactorius)
+
+  Art von Neuronen im ZNS ständig erneuert? Riechzellen
+
+  komplexe Geschmacksempfindungen? Interaktion mit anderen Sinnen
+
+  Teil der Zunge schmecken wir süß? Zungenspitze
+
+  kognitive Funktion mit Hippocampus? Bildung von Erinnerungen
+
+  Wo Hippocampus? Temporallappen
+
+  Wo grenzt limbischen Strukturen der Hippocampus? Amygdala, entohirnaler Cortex
+
+  Haupteingangsstruktur für den Hippocampus? Entohirnaler Cortex
+
+  struktureller Cortextyp besteht Hippocampus? Allocortex
+
+  limbische Struktur grenzt Mandelkern? Hippocampus
+
+  kognitive Funktion mit Amygdala? Angst und Furcht
+
+  Ausbreitung meister Hormone? Blutkreislauf
+
+  Wo meiste Hormone freigesetzt? Gehirn/Hypothalamus
+
+  chemischen Gruppen von Hormonen? Peptide \& Proteine, Aminosäurederivate, Steroide
+
+  Peptide? Ketten von Aminosäuren
+
+  Gehirn Hormonausschüttung? Hypothalamus
+
+  Drüse übergeordnete Rolle? Hypophyse
+
+  Hormondrüsen? Nebenniere, Schilddrüse, Hypothalamus, Bauchspeicheldrüse, Hoden/Eierstock
+
+  Hypophyse direkt vom Hypothalamus innerviert? Hypophysenhinterlappen
+
+  Signalweg Information vom Hypothalamus zum Hypophysenvorderlappen? Hypothalamusneuronen zu hypothalamo-hypophysäre Pfortadersysten zu Hypophysenstiel
+
+  Hormone durch Hypophysenhinterlappen? Oxytocin,Vasopressin
+
+  Mechanismen Hormonfreisetzung geregelt? (meist autonom) NS, andere Hormone, nichthormonelle Substanzen
+
+  steroide Sexualhormone? Keimdrüsen, Gonaden: Hoden,Eierstock
+
+  Grundklassen steroiden Sexualhormonen? Androgene, Östrogene, Gestagene
+
+  Freisetzung von Sexualhormonen? Männer = Gleichmäßig, Frauen = Zyklisch; über Hypophyse vom Hypothalamus gesteuert
+
+  Hormon für männliche Entwicklung? Testosteron
+
+  Hormon weibliches Sexualverhalten? Androgene
+
+  Stresshormonen bei kurz/langfrist Stress? Kurz: Katecholamine; Lang: Glukokortikoide
+
+  glukokortikoides Stresshormon? Cortisol
+
+  Hormon im Nebennierenmark? Adrenalin (Epinephrin), Noradrenalin (Norepinephrin)
+
+  Hormone in der Nebennierenrinde? Glukokortikoiden und Androgenen
+
+  %Wirkungen von Glukokortikoiden? Neubildung von Kohlenhydraten aus Proteinen und Fetten, Beeinflussung von Wasser- und Elektrolythaushalt, Unterdrückung der Antikörperproduktion des Immunsystems, dadurch Entzündungshemmung
+
+  chemische Elemente für Schilddrüsenhormonen? Iod und Eisen
+
+  Hauptwirkung Schilddrüsenhormone? Regelung des Grundumsatzes
+
+  Schilddrüsenunterfunktion? Stoffwechselverlangsamung, Verringerung der Leistungsfähigkeit
+
+  Hormon „Wehentropf“? Oxytocin
+
+  Ausschüttung Oxytocin? durch angenehmen Hautkontakt (Kuschelhormon)
+
+  neuronalen Populationen (Para)Sympathikus? Sym: Ganglien Nahe der Wirbelsäule, Para: Ganglien nahe oder in den Organen
+
+  Bestandteil des autonomen NS gehört Grenzstrang? Zentraler Teil
+
+  Wo autonomen Ganglien des (Para)Sympathikus? Zwischen ZNS und inneren Organen
+
+  Neurotransmitter durch präganglionären Sympaticus? Acetylcholin
+
+  Neurotransmitter durch postganglionären Sympaticus? (Nor)Adrenalin
+
+  Neurotransmitter durch präganglionären Sympaticus? Acetylcholin
+
+  Neurotransmitter durch postganglionären Parasym.? Acetylcholin
+
+  Wo präganglionären sympathischen Neuronen? Brust und Lendenmark
+
+  Wo präganglionären parasympathischen Neuronen? Hirnstamm, Mittelhirn, Sakralmark
+
+  Pfad Sympathikus globale Wirkung? Grenzstrang (Truncus sympathicus)
+
+  Rolle Sympathikus? Vorbereitung Flucht und Kampf
+
+  Rolle Parasympathikus? Entspannung und Verdauung
+
+  Wirkungen Sympathikus? Atemfrequenz+Herzfrequenz steigern, Darmtätigkeit senken, Schwitzen, Pupillenerweiterung
+
+  Wirkungen Parasympathikus? Atemfrequenz senken, Herzfrequenz senken, Darmtätigkeit steigern, Pupillen verengen
+
+  Funktion Hypothalamus? Körpertemperaturregelung, Regelung Wasserhaushalt, Regelung Hormonsekretion in Hypophyse, Regelung physiologischer Reaktion auf Erregungszustände
+
+  Phasen Energiestoffwechsels? Cephalische Phase, Absortive Phase, Fastenphase; durch Insulin und Glukagonspiegel
+
+  Merkmale cephalischen+absorptiven Phase? niedriger Glukagonspiegel, hoher Insulinspiegel, fördert Nutzung Blutzucker(Glukose) als Energiequelle
+
+  Merkmale Fastenphase? Hoher Glukagonspiegel, niedriger Insulinspiegel, fördert Umwandlung Fette zu Fettsäuren, Nutzung freier Fettsäuren als Energiequelle
+
+  Argumente gegen Sollwerthypothese? Evolution, Experiment, viele Faktoren
+  %Evolution: Nahrung musste aufgenommen werden, wenn sie verfügbar war, Experiment: Schwankungen in Körperfett und Blutzucker beeinflussen die Nahrungsaufnahme nur, wenn sie extrem sind, Nahrungsaufnahme wird durch vielerlei Faktoren bestimmt, wie visuelle und olfaktorische Reize, Emotionen, Stress usw.
+
+  Alternative zu Sollwerthypothese? Positive Anreiztheorie
+
+  Mechanismen zur Regulierung von Hunger? Magen-Darm-Trakt, Serotonin, Leptin, Insulin
+  %    \begin{itemize*}
+  %      \item Magen-Darm-Trakt: Freisetzung von Peptiden, die an Neurorezeptoren im Gehirn (z.B. im Hypothalamus) binden und als Sättigungssignal wirken.
+  %      \item Serotonin: verringert Anziehungskraft schmackhafter Nahrung, reduziert die Aufnahme pro Mahlzeit, verlagert Präferenzen weg von fetthaltiger Nahrung. Appetitszügler sind häufig Serotoninagonisten.
+  %      \item Leptin, Insulin und andere: regulieren die Anlage von Fettdepots, Leptinmangel führt zu exzessiver Nahrungsaufnahme und Fettleibigkeit. Bei Insulinmangel isst man viel und bleibt schlank, da die Nahrung nicht in Fettdepots umgewandelt werden kann.
+  %    \end{itemize*}
+
+  Schlafphasen, Slow-Wave-Sleep? 4 Phasen, 3+4 SlowWaveSleep
+
+  Korrelate von Schlafphase 1? Schnelle Augenbewegungen und Muskeltonusverlust
+
+  Schlafrhythmus im Verlauf? Anteil REM-Schlaf nimmt in der Nacht zu
+
+  Notwendigkeit von Schlaf? Regenerative Theorien, Circadiane Theorien
+
+  Auswirkungen Schlafentzug? Schlafneigung, Stimmung $\downarrow$, Aufmerskamkeit $\downarrow$
+
+  Ursachen Insomnie? Schlafmittel, Muskelprobleme, nächtliche Myoklonien, Restless-Leg-Syndrom
+
+  Arten Langzeitgedächtnis? explizit(deklarativ) = episodisch+semantisch; implizit=prozdeural und perzeptionell
+
+  Grundarten Gedächtnis? Sensorisch, Kurzzeit, Langzeit
+
+  anterograder Amnesie? Abspeicherung gestört
+
+  retrograd Amnesie? Tendenz rezente Gedächtnisinhalte zu verlieren
+
+  Entfernung führt zu Amnesie Langzeit? beider medialer Temporallappen
+
+  Wo Langzeitgedächtnis gespeichert? selbe Hirnareale, wie für ursprüngliche Erfahrung
+
+  Hebbschen Lernens? durch periodische Aktivität Langzeitveränderungen hervorrufen
+
+  Emotion Mandelkern involviert? Angst
+
+  Hirnhälfte meiste Menschen dominant? Linke Hirnhälfte
+
+  Split-Brain Patienten kommunizieren? Hälften verfügen fast über gleiche Informationen
+
+  Bestandteile Wernicke Geschwind-Modells? Broca Areal, primärer motorischer Cortex, Fasciculus arcuatus, primärer auditorischer Cortex, Wernicke Areal, Gyrus Angularis, primärer visueller Cortex
+
+  Methoden Wernicke-Geschwind-Modells? Läsionen durch chirurgische Eingriffe, Läsionen durch Krankheit oder Unfall, Elektrische Stimulation des Cortex
+
+  Voraussagen Wernicke-Geschwind-Modells? wichtige Rolle bei Sprache, anteriore Läsionen eher expressive und posteriore Läsionen rezeptiver Defizite
+
+  Symptome depressive Episode? Depressive Stimmung, Geringes Interesse,  Verminderter Antrieb, Schläfrigkeit oder Schlaflosigkeit, Appetitlosigkeit, Schuldgefühle
+  %Vermindertes Selbstwertgefühl und Selbstvertrauen, Entscheidungsschwäche, Konzentrationsschwäche, Selbstmordgedanken und -versuche, Pessimismus
+
+  manische Episode? Übersteigertes Selbstbewußtsein, Verringertes Schlafbedürfnis, Erhöhtes Redebedürfnis, Sprechzwang, Ablenkbarkeit, Erhöhte zielgerichtete Aktivität, Vergnügungssucht ohne Bedenken der Konsequenzen, Euphorie, Soziale Enthemmung
+
+  Verlaufsformen affektiver Störungen? Unipolare Depression, Bipolare Depression
+
+  affektiver Störungen Geschlechtsunterschiede? Bipolare Depression
+
+  pharmakologische Therapien gegen Depressionen? (Monoaminoxidase) MAO-Hemmer, Trizyklische Antidepressiva (TCAs), Selektive Wiederaufnahmehemmer
+
+  nicht-pharmakologische antidepressive Therapie? Elektrokonvulsive Therapie
+
+  Wirkprinzip von MAO-Hemmern? zerstört Neurotransmitter außerhalb Vesikel; Serotonin Dopamin und Noradrenalin erhöht, adaptive Änderung Repzeptordichte und Second-Messenger-Kette
+
+  Prinzip trizyklischen Antidepressiva? Blockade präsynaptischer Transporterproteine und Hemmung der Wiederaufnahme von Serotonin und/oder Noradrenalin
+  %Führt zu Veränderungen der post- und präsynaptischen Rezeptordichten
+  %Daneben Wirkung auf Histamin-, Acetylcholin- und Adrenalinrezeptoren(Wirkung auf verschiedene Rezeptoren Unterschiedlich
+
+  Nebenwirkungen MAO-Hemmern? Schlafstörungen, Blutdruckveränderungen, Heißhunger
+  % Tyraminabbau in der Leber behindert = spezielle Diät notwendig
+  % Interaktion mit vielen Drogen, z.B. Babiturate, Aspirin, Alkohol, Opiate, und Medikamenten $\rightarrow$ z.B. Serotonin-Syndrom
+
+  Nebenwirkungen trizyklischen Antidepressiva? Sedierung, Verwirrung, Gedächtnis- und Sehstörungen
+  % kardiovaskulare Probleme, Darmträgheit, Schwindel,
+
+  Nebenwirkungen von Antidepressiva 2.Gen? Abhängigkeit, emotionale Abstumpfung, Nervosität, Schlafstörungen, sexuelle/Magen-Darm-Störungen
+  % Potentiell gefährliche Interaktionen mit anderen Medikamenten und Drogen(Serotoninsyndrom)
+  % physische Abhängigkeit möglich
+
+  Prinzip Elektrokonvulsiven Therapie? Elektrische Reizung im Gehirn führ zu einem Epileptischen Anfall
+  % Kein Bewusstes Erleben des Anfalls durch Narkose und Muskelrelaxationmedikation
+  % Verstärkt Wirkung vieler Neurotransmitter(bewirkt damit Herrunterregulierung Rezeptordichte)
+
+  Theorien affektive Störungen? Monoamin-Hypothese, Glukokortikoid-Hypothese, Neurotrophische Hypothese
+
+  Beobachtungen Monoamin-Hypothese? reduzieren Depressions-Symptome + Mengen von Noradrenalin- und Seroton
+
+  Glukokortikoid-Hypothese? Stress+ Angst depressiven Episoden voraus
+  % Depression geht oft mit veränderten Stresshormonspiegeln einher.
+  % Die Wahrscheinlichkeit, dass erhöhter Stress affektive Störungen auslöst, scheint genetisch bedingt.
+
+  Angststörungen? Generalisierte Angststörung, Posttraumatisches Stresssyndrom, Phobien, Zwangsneurosen, Panikstörungen
+
+  Furcht? auf konkrete Bedrohung gerichtete Angst
+
+  Therapieform Phobien? Verhaltenstherapie (z.B. Konfrontation)
+
+  Psychopharmaka bei Angststörungen? Bariburate, Benzodiazepine
+
+  Prinzip Barbituraten? GABA Agonist, eingeteilt nach Fettlöslichkeit %und Pharmakinetik; je Fettlöslicher, desto schneller setzt Wirkung ein und desto kürzer hält sie an
+
+  Nebenwirkungen Barbituraten? reduzierte REM Perioden, Benommenheit, verlangsamte Reflexe, Müdigkeit, Koma, Tod
+
+  Prinzip Benzodiazepinen? Aktivierung Benzodiazepin Rezeptoren %(GABA-agonistischer Effekt: Wirkt nur mit GABA, Stärker an Synapsen mit wenig GABA (Aktivitätsabhängige Wirkung), verschiedene Wirkungs- und Verstoffwechlungsgeschwindigkeiten
+
+  Symptomgruppen Schizophrenie? Positive und Negative Symptome
+
+  positive Symptome Schizophrenie? Wahnvorstellungen, Halluzinationen, Sprachstörungen, Bizarres Verhalten, motorische Unruhe
+
+  negative Symptome Schizophrenie?  Emotionslosigkeit, Antriebslosigkeit, sozialer Rückzug, Niedergang normaler Hirnfunktion
+
+  Schizophrenie besser auf Neuroleptika? Positive Symptome
+
+  Prinzip klassischer Neuroleptika? Dopaminantagonismus (D2)
+
+  Dopaminpfade im Gehirn? Nigrostriataler, Mesolimbischer, Mesokortikaler, Tuberohypophysischer, Substantia Nigra
+
+  Dopaminpfad Rolle Schizophrenie?
+  \begin{itemize*}
+    \item Extrapyramidale Nebenwirkungen (Nigrostriataler Pfad)
+    \item Positive Symptome (Mesolimbischer Pfad)
+    \item Negative Symptome (Tuberohypophysischer Pfad)
+    \item Neuroendokrinologische Nebenwirkungen
+  \end{itemize*}
+
+  (Neben)Wirkung Neuroleptika:
+  \begin{itemize*}
+    \item Parkinson Symptome (Nigrostriataler Pfad)
+    \item Neuroendokrinologische Nebenwirkungen (Tuberohypophysischer Pfad)
+    \item autonome Störungen (Beeinflussung der cholinerger und adrenerger Neuronen)
+    \item Tardive Dyskines: unwillkürliche stereotype Bewegungen
+    \item Malignes neuroleptisches Syndrom: seltene, sich schnell entwickelnde und lebensbedrohliche Komplikation
+  \end{itemize*}
+
+\end{multicols}
+\end{document}

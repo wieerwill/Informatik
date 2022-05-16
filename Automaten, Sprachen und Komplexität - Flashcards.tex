@@ -1,0 +1,1341 @@
+%
+%
+% das Paket ,,flashcards'' erzeugt Karteikarten zum lernen
+% auf der Vorderseite steht das Buzzword oder die Frage
+% auf der Rückseite steht die Antwort
+% beim ausdrucken auf doppelseitiges Drucken achten
+%
+%
+\documentclass[avery5371, frame]{flashcards}
+\usepackage[utf8]{inputenc}
+\usepackage[]{amsmath} 
+\usepackage[]{amssymb}
+\usepackage{mdwlist}
+\cardfrontstyle{headings}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Alphabet}
+    Ein Alphabet ist eine endliche nichtleere Menge.
+
+    Üblicherweise heißen Alphabete hier $\sum, \Gamma, \Delta$. Ist $\sum$ Alphabet, so nennen wir die Elemente oft Buchstaben und die Elemente von $\sum*$ auch Wörter über $\sum$ (auch String/Zeichenkette).
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Menge der endlichen Folgen}
+    Für eine Menge X ist X* die Menge der endlichen Folgen über X.\\
+
+    Beispiel: Elemente von $\{a,b,c,d\}*:(a,b,c),(),(a,c,d)...$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Wort}
+    Sind $u=(a_1, a_2, ...a_n)$ und $v=(b_1, b_2,...,b_n)$ Wörter, so ist $u*v$ das Wort $(a_1,a_2,...a_n,b_1,b_2,...,b_n)$; es wird als Verkettung/Konkatenation von u und v bezeichnet.
+    An Stelle von $u*v$ schreibt man auch $uv$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Induktiv $w^n$ definieren}
+    $w^n = \begin{cases} \epsilon \quad\text{falls } n=0 \\ {w * w^{n-1}} \quad\text{ falls } n>0 \end{cases}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{y,w sind Wörter über $\sum$.\\ Dann heißt y:}
+    \begin{itemize*}
+        \item Präfix/Anfangsstück von w, wenn es $z\in\sum^*$ gibt mit $yz=w$
+        \item Infix/Faktor von w, wenn es $x,z\in\sum^*$ gibt mit $xyz = w$
+        \item Suffix/Endstück von w, wenn es $x\in\sum^*$ gibt mit $xy=w$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Sprachen}
+    f: Menge der möglichen Eingaben $\rightarrow$ Menge der möglichen Ausgaben\\
+    Spezialfall $A={0,1}$ heißt Entscheidungsproblem. Sie ist gegeben durch die Menge der Eingaben.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Präfix}
+    Seien y,w Wörter über $\sum$. Dann heißt Präfix/Anfangsstück von w, wenn es $z\in\sum*$ gibt mit $yz=w$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Infix}
+    Seien y,w Wörter über $\sum$. Dann heißt Infix/Faktor von w, wenn es $x,z \in \sum*$ gibt mit $xyz=w$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Suffix}
+    Seien y,w Wörter über $\sum$. Dann heißt Suffix/Endstück von w, wenn es $x\in \sum*$ gibt mit $xy=w$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{formale Sprachen}
+    Sei $\sum$ ein Alphabet. Teilmengen von $\sum*$ werden formale Sprachen über $\sum$ genannt.
+
+    Eine Menge L ist eine formale Sprache wenn es ein Alphabet $\sum$ gibt, so dass L formale Sprache über $\sum$ ist (d.h. $L\subseteq \sum*$).
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Verkettung von Sprachen}
+    Sind $L_1$ und $L_2$ Sprachen, so heißt die Sprache $L_1L_2=\{w|\exists w_1\in L_1,w_2\in L_2:w=w_1w_2\}$ (auch $L_1*L_2$) die Konkatenation oder Verkettung von $L_1$ und $L_2$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Kleene Abschluss}
+    Sei L eine Sprache. Dann ist $L*=\bigcup_{n\geq 0} L^n$ der Kleene-Abschluss oder die Kleene-Iteration von L.
+    Weiter ist $L^{+} = \bigcup_{n\geq 0} L^n$\\
+    ($L^{+} = L*L = L^* *L$)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Prioritätsregeln für Operationen\\ auf Sprachen}
+    \begin{itemize*}
+        \item Potenz/Iteration binden stärker \\als Konkatenation
+        \item Konkatenation stärker als \\Vereinigung/Durchschnitt/Differenz
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Grammatik}\scriptsize
+    erzeugen alle syntaktisch korrekten Sätze einer Sprache\\
+    Eine Grammatik G ist ein 4-Tupel $G=(V, \sum, P, S)$ mit
+    \begin{itemize*}
+        \item $V$ endliche Menge von Nicht-Terminalen oder Variablen
+        \item $\sum$ ein Alphabet (Menge der Terminale) mit $V\cap\sum = \varnothing$, kein Zeichen ist Terminal und Nicht-Terminal
+        \item $P\subseteq (V\cup \sum)^+ \times (v\cup\sum)^*$ ist eine endliche Menge von Regeln oder Produktionen (Produktionsmenge)
+        \item $S\in V$ ist das Startsymbol/ die Startvariable oder das Axiom
+    \end{itemize*}
+    Jede Grammatik hat nur endlich viele Regeln
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ableitung einer Grammatik}
+    Sei $G=(V, \sum, P, S)$  eine Grammatik. Eine Ableitung ist eine endliche Folge von Wörtern $w_0, w_1, w_2,...,w_n$ mit $w_0\Rightarrow w_1 \Rightarrow w_2 \Rightarrow ... \Rightarrow w_n$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{flashcard}[Definition]{Wort ist Satzform}
+    Ein Wort $w\in (V\cup\sum)^*$ heißt Satzform,\\
+    wenn es eine Ableitung gibt, deren letztes Wort w ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{erzeugte Sprache}
+    Die Sprache $L(G)={w\in \sum^* | S\Rightarrow_G^* w}$ aller Satzformen aus $\sum^*$ heißt von G erzeugte Sprache.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-0}
+    Jede Grammatik ist vom Typ 0 (Semi-Thue-System) und wird auch als rekursiv-aufzählbar bezeichnet.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-1}
+    Eine Regel heißt kontext-sensitiv, wenn es Wörter $u,v,w\in(V\cup\sum)^*,|v|>0$ und ein Nichtterminal $A\in V$ gibt mit $l=uAw$ und $r=uvw$.
+    Eine Grammatik ist vom Typ 1 (kontext-sensitiv) falls
+    \begin{itemize*}
+        \item alle Regeln aus P kontext-sensitiv sind
+        \item $(S\rightarrow \epsilon)\in P$ die einzige nicht kontext-sensitive Regel in P ist und S auf keiner rechten Seite einer Regel aus P vorkommt
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-2}
+    Eine Regel $(l\rightarrow r)$ heißt kontext-frei wenn \\
+    $l\in V$ und $r\in (V\cup \sum)^*$ gilt.
+
+    Eine Grammatik ist vom Typ 2, \\
+    falls sie nur kontext-freie Regeln enthält
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky-3}
+    Eine Regl ist rechtslinear, wenn $l\in V$ und $r\in \sum V\cup {\epsilon}$ gilt. Eine Grammatik ist vom Typ 3 wenn sie nur rechtslineare Regeln enthält.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Beweise]{Es gibt einen Algorithmus, der als Eingabe eine Typ-1-Grammatik G und ein Wort w bekommst und nach endlicher Zeit entscheidet ob $w\in L(G)$ gilt.}
+    \scriptsize{
+        \begin{enumerate*}
+            \item $w=\epsilon$: Da G vom Typ 1 ist, gilt $w\in L(G)$ genau dann wenn $(S\rightarrow \epsilon)\in P$. Dies kannn ein Algorithmus entscheiden
+            \item $|w|\geq 1$: Definiere einen gerichteten Graphen (W,E) wie folgt
+            \begin{itemize*}
+                \item Knoten sind die nichtleeren Wörter über $V\cup\sum$ der Länge $\geq|w|$ (insbes. $S,w \in W$)
+                \item $(u,v)\in E$ genau dann wenn $u\Rightarrow_G v$
+            \end{itemize*}
+            da kontext-sensitiv ist, gilt $1 = |u_0|\geq |u_1|\geq |u_2|\geq...\geq |u_n| = |w|$, also $u_i\in W$  f.a. $1\geq i \geq n$. Also existiert Pfad von S nach w im Graphen (W , E ), womit die Behauptung bewiesen ist.
+        \end{enumerate*}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Deterministische endliche Automaten}
+    ein deterministischer endlicher Automat M ist ein 5-Tupel $M=(Z, \sum, z_0, \delta, E)$
+    \begin{itemize*}
+        \item $Z$ eine endliche Menge von Zuständen
+        \item $\sum$ das Eingabealphabet (mit $Z\cap\sum = \emptyset$)
+        \item $z_0\in Z$ der Start/Anfangszustand (max Einer)
+        \item $\delta: Z \times \sum \rightarrow Z$ die Übergangsfunktion
+        \item $E\subseteq Z$ die Menge der Endzustände
+    \end{itemize*}
+    Abkürzung: DFA (deterministic finite automaton)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{DFA mit Funktion $\hat{\delta}$}
+    Zu einem gegebenen DFA definieren wir die Funktion $\hat{\delta}: Z \times \sum^* \rightarrow Z$ induktiv wie folgt, wobei $z\in Z$, $w\in\sum^+$ und $a\in \sum$:
+    \begin{itemize*}
+        \item $\hat{\delta}(z, \epsilon) = z$
+        \item $\hat{\delta}(z,aw)= \hat{\delta}(\delta(z,a),w)$
+    \end{itemize*}
+    Der Zustand $\hat{\delta}(z,w)$ ergibt sich indem man vom Zustand z aus dem Pfad folgt der mit w beschriftet ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{von einem DFA \\akzeptierte Sprache ist}
+    die von einem DFA akzeptierte Sprache ist: $L(M)={w\in\sum^* | \hat{\delta}(z_0,w)\in E}$\\
+    Ein Wort w wird genau dann akzeptiert, wenn derjenige Pfad, der im Anfangszustand beginnt und dessen Übergänge mit den Zeichen von w markiert sind, in einem Endzustand endet.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Wann ist eine Sprache regulär?}
+    Eine Sprache $L \supseteq \sum^*$ ist regulär, wenn es einen DFA mit $L(M)=L$ gibt ( bzw. wird von einem DFA akzeptiert).  Jede reguläre Sprache ist rechtslinear.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ ein nichtdeterministischer endlicher Automat M}
+    ist ein 5-Tupel $M=(Z,\sum,S,\delta,E)$ mit
+    \begin{itemize*}
+        \item $Z$ ist eine endliche Menge von Zuständen
+        \item $\sum$ ist das Eingabealphabet
+        \item $S\subseteq Z$ die Menge der Startzustände
+        \item $\delta: Z \times \sum \rightarrow P(Z)$ Menge der Überführungs/Übergangsfunktion
+        \item $E\subseteq Z$ die Menge der Endzustände
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Zu einem gegebenen NFA M definieren wir die Funktion $\hat{\delta}:P(Z)\times \sum^* \rightarrow P(Z)$}
+    induktiv wie folgt, woebei $Y \subseteq Z$, $w\in \sum^*$ und \\
+    $a\in\sum$: $\hat{\delta}(Y,\epsilon)=Y$, $\hat{\delta}(Y,aw)=\hat{delta}(\bigcup \delta(z,a),w)$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ die von einem NFA M \\akzeptierte Sprache ist}
+    $L(M)={w\in \sum^* | \hat{\delta}(S,w)\cap E \not = \emptyset}$ \\
+    (Das Wort wird akzeptiert wenn es mindestens einen Pfad vom Anfangs in den Endzustand gibt)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Sei $\sum$ ein Alphabet und $L\subseteq \sum^*$ eine Sprache. Dann sind äquivalent}
+    \begin{itemize*}
+        \item L ist regulär (von DFA akzeptiert)
+        \item L wird von einem NFA akzeptiert
+        \item L ist rechtslinear (von Typ-3 Grammatik erzeugt)
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Gegeben sei eine Klasse K und ein n-stelliger Operator $\otimes : K^n \rightarrow K$.}
+    Man sagt, eine Klasse $K'\subseteq K$ ist unter $\otimes$ abgeschlossen, wenn für beliebige Elemente $k_1,k_2,...,k_n\in K'$ gilt $\otimes (k_1,k_2,...,k_n)\in K'$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn $L\subseteq \sum^*$ eine reguläre Sprache ist,}
+    dann ist auch $\sum^* \backslash L$ regulär
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn $L_1$ und $L_2$ reguläre Sprachen sind,}
+    dann ist auch $L_1 \cup L_2$ regulär.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn $L_1$ und $L_2$ reguläre Sprachen sind,}
+    dann ist auch $L_1 \cap L_2$ regulär.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn $L_1$ und $L_2$ reguläre Sprachen sind,}
+    dann ist auch $L_1L_2$ regulär
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn L eine reguläre Sprache ist,}
+    dann ist auch $L^+$ regulär
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Wenn L eine reguläre Sprache ist,}
+    dann ist auch $L^*$ regulär.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Die Menge $Reg(\sum)$ der regulären Ausdrücke über dem Alphabet $\sum$}
+    ist die kleinste Menge mit folgenden Eigenschaften:
+    \begin{itemize*}
+        \item $\varnothing \in Reg(\sum), \lambda \in Reg(\sum), \sum \subseteq Reg(\sum)$
+        \item Wenn $\alpha, \beta \in Reg(\sum)$, dann auch $(\alpha * \beta), (\alpha + \beta), (\alpha^*)\in Reg(\sum)$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Für einen regulären Ausdruck $\alpha \in Reg(\sum)$ ist die Sprache $L(\alpha)\subseteq \sum^*$}
+    induktiv definiert
+    $$L(\alpha)=\begin{cases}
+            \varnothing            & \text{ falls } alpha=\not O             \\
+            {\epsilon}             & \text{ falls } \alpha = \lambda         \\
+            {a}                    & \text{ falls } \alpha=a\in \sum         \\
+            L(\beta)\cup L(\gamma) & \text{ falls } \alpha =(\beta + \gamma) \\
+            L(\beta)L(\gamma)      & \text{ falls } \alpha=(\beta*\gamma)    \\
+            (L(\beta))^*           & \text{ falls } \alpha=(\beta^*)
+        \end{cases}$$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Für jedes Alphabet $\sum$ ist die Menge $P(\sum^*)={L|L \text{Sprache über} \sum}$ überabzählbar}
+    , d.h. es gibt keine bijektive Funktion $F:\mathbb{N} \rightarrow P(\sum^*)$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[]{Pumping Lemma}
+    \small
+    Wenn L eine reguläre Sprache ist, dann gibt es $n\leq 1$ derart, dass für alle $x\in L$ mit $|x|\geq n$ gilt:
+    es gibt Wörter $u,v,w \in \sum^*$ mit:
+    \begin{enumerate*}
+        \item $x=uvw$
+        \item $|uv|\leq n$
+        \item $|v|\geq 1$
+        \item $uv^i w\in L$ für alle $i\geq 0$
+    \end{enumerate*}
+    \scriptsize Lemma spricht nicht über Automaten, sondern nur über die Eigenschaften der Sprache. Es ist geeignet, Aussagen über Nicht-Regularität zu machen. Dabei ist es aber nur eine notwendige Bedingung. Es kann nicht genutzt werden, um die Regularität einer Sprache L zu zeigen.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Myhill-Nerode-Äquivalenz}
+    Für eine Sprache $L\subseteq \sum^*$ definieren wir eine binäre Relation $R_L \subseteq \sum^* \times \sum^*$ wie folgt: Für alle $x,y\in \sum^*$ setze $(x,y)\in R_L$ genau dann, wenn $\forall z \in \sum^* :(xy\in L \leftrightarrow yz \in L)$ gilt. Wir schreiben hierfür auch $x R_L y$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Für eine Sprache L und ein Wort $x\in \sum^*$ ist $[x]_L=\{y\in\sum^* | x R_L y \}$ }
+    die Äquivalenzklasse von x. Ist L klar, so schreiben wir einfacher $[x]$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Satz  von Myhill-Nerode}
+    Sei L eine Sprache. L ist regulär $\leftrightarrow index(R_L)< \infty$
+    (d.h. nur wenn die Myhill-Nerode-Äquivalenz endliche Klassen hat)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Ein DFA M heißt reduziert,}
+    wenn es für jeden Zustand $z \in Z$ ein Wort $x_z\in \sum^*$ gibt mit $\hat{\sigma}(l, x_z)=z$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Sei M ein DFA. Zwei Zustände $z,z'\in Z$ heißen erkennungsäquivalent }(in Zeichen $z\equiv z'$) wenn für jedes Wort $w\in \sum^*$ gilt: $\hat{\sigma}(z,w)\in E \leftrightarrow \hat{\sigma}(z',w)\in E$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Sei M ein DFA. Dann ist $M'=(Z_{\equiv},\sum, [z_0],\sigma', E')$ mit}\begin{itemize*}
+        \item $\sigma'([z],a)=[\sigma (z,a)]$ für $z\in Z$ und $a\in \sum$ und
+        \item $E'=\{[z]|z\in E\}$
+    \end{itemize*}
+    der Quotient von M bzgl $\equiv$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Homomorphismus}
+    Seien $M_i$ DFAs (für $i\in\{1,2\}$) und $f:Z_1 \rightarrow Z_2$ eine Funktion. Dann ist f ein Homomorphismus von $M_1$ auf $M_2$, falls gilt:
+    \begin{itemize*}
+        \item $f(l_1)=l_2$
+        \item $f(\sigma_1(z,a))=\sigma_2(f(z),a)$ für alle $z\in Z_1$ und $a\in \sum$
+        \item $z\in E_1 \leftrightarrow f(z)\in E_2$ für alle $z\in Z_1$ (bildet Endzustände aufeinander ab)
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{surjektiver Homomorphismus}
+    Seien $M_i$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Sei weiter $M_2'$ der Quotient von $M_2$ bzgl $\equiv$. Dann existiert ein surjektiver Homomorphismus von $M_1$ auf $M_2'$
+    \begin{itemize*}
+        \item die Abbildung f ist surjektiv (auf $M_2$). Und damit ist $M_2 < M_1$
+        \item die Abbildung f ist ein Homomorphismus
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Seien $M_1$ und $M_2$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Sei $M_1'$ der Quotient von M bzgl $\equiv$}
+    \small
+    \begin{itemize*}
+        \item $M_2$ hat wenigstens so viele Zustände wie $M_1'$
+        \item Hat $M_2$ genauso viele Zustände wie $M_1'$, so sind $M_2$ und $M_1'$ bis auf Umbennenung der Zustände identisch (sie sind Isomorph)
+    \end{itemize*}
+
+    Folgerung: Seien $M_1$ und $M_2$ reduzierte DFAs mit $L(M_1)=L(M_2)$. Seien $M_1'$ und $M_2'$ die Quotienten bzgl $\equiv$. Dann sind $M_1'$ und $M_2'$ isomorph, d.h. für jede reguläre Sprache gibt es (bis auf Umbenennung der Zustände) genau einen minimalen DFA
+
+    Um den minimalen DFA zu erhalten bildet man den Quotienten eines beliebigen zur Sprache passenden DFA.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Markierungsalgorithmus} Für einen reduzierten DFA M wird ein Paar ${z,z'}\subseteq Z$ mit $z\not = z'$ genau dann durch den Markierungsalgorithmus markiert werden, wenn $z\not \equiv z'$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Algorithmus Minimalautomat}
+    \small
+    Eingabe: reduzierter DFA M\\
+    Ausgabe: Menge der Paare erkennungsäquivalenter Zustände
+    \begin{enumerate*}
+        \item Stelle eine Tabelle aller ungeordneten Zustandspaare $\{z,z'\}$ mit $z\not = z'$ auf
+        \item Markiere alle Paare $\{z,z'\}$ mit $z\in E$ und $z'\not\in E$
+        \item Markiere ein beliebiges unmarkiertes Paar $\{z,z'\}$, für das es ein $a\in\sum$ gibt, sodass $\{\sigma(z,a),\sigma(z',a)\}$ bereits markiert ist (falls möglich)
+        \item Wiederhole den vorherigen Schritt, bis sich keine Änderung in der Tabelle mehr ergibt
+    \end{enumerate*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Minimierungsalgorithmus}
+    Für einen gegebenen reduzierten DFA M markiert der Minimierungsalgorithmus ein $\{z,z'\}(z,z'\in Z, z\not=z')$ genau dann, wenn $z\not\equiv z'$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Wortproblem}
+    Gilt $w\in L$ für eine gegebene reguläre Sprache L und $w\in\sum^*$?
+
+    Eingabe: DFA M und $w\in\sum^*$
+
+    Verfahren: Verfolge die Zustandsübergänge von M, die durch die Symbole $a_1,...,a_n$ vorgegeben sind.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Leerheitsproblem}
+    Gilt $L=\varnothing$ für eine gegebene reguläre Sprache L?
+
+    Eingabe: NFA M
+
+    Verfahren: Sei $G=(Z,\rightarrow)$ der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in \sum: z'\in\sigma(z,a)$. Dann gilt $L(M)\not =\varnothing$ genau dann, wenn es in dem Graphen G einen Pfad von einem Knoten aus S zu einem Knoten aus E gibt. Dies kann zB mit dem Algorithmus von Dijkstra entschieden werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Endlichkeitsproblem}
+    Ist eine gegebene reguläre Sprache L endlich?
+
+    Eingabe: NFA M
+
+    Verfahren: Sei $G=(Z,\rightarrow)$ wieder der gerichtete Graph mit $z\rightarrow z' \leftrightarrow \exists a \in\sum:z'\in\sigma(z,a)$. Dann gilt L(M) ist genau dann unendlich, wenn es $z\in Z,z_0\in S$ und $z_1\in E$ gibt mit $z_0\rightarrow^* z \rightarrow^+ z \rightarrow^* z_1$. D.h. z liegt auf einem Zyklus, ist von einem Startzustand aus erreichbar und von z kann ein Endzustand erreicht werden. Dies kann wieder mit dem Algorithmus von Dijkstra entschieden werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Schnittproblem}
+    Gilt $L_1\cap L_2=\varnothing$ für gegebene reguläre $L_1,L_2$?
+
+    Eingabe: NFAs $M_1$ und $M_2$
+
+    Verfahren: Konstruiere aus $M_1$ und $M_2$ einen NFA M mit $L(M)=L(M_1)\cap L(M_2)$. Teste ob $L(M)=\varnothing$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Inklusionsproblem}
+    Gilt $L_1 \subseteq L_2$ für gegebene reguläre $L_1,L_2$?
+
+    Eingabe: NFAs $M_1$ und $M_2$
+
+    Verfahren: Aus $M_1$ und $M_2$ kann ein NFA M mit $L(M)=\bar{L(M_2)}\cap L(M_1)$ konstruieren. Es gilt $L(M_1)\subseteq L(M_2)$ genau dann, wenn $L(M)=\varnothing$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Äquivalenzproblem}
+    Gilt $L_1=L_2$ für gegebene reguläre $L_1,L_2$?
+
+    Eingabe: NFAs $M_1$ und $M_2$
+
+    Verfahren 1: es gilt $L(M_1)=L(M_2)$ genau dann, wenn $L(M_1)\subseteq L(M_2)$ und $L(M_2)\subseteq L(M_1)$.
+
+    Verfahren 2: bestimme zu $M_i (i\in\{1,2\})$ den äquivalenten minimalen DFA $N_i$. Dann gilt $L(M_1)=L(M_2)$ genau dann, wenn $N_1$ und $N_2$ isomorph sind (d.h. sie können durch Umbennenung der Zustände ineinander überführt werden).
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Kontextfreie Sprachen}
+    bei Kontext-freien Grammatiken haben alle Produktionen die Form $A\rightarrow w$ mit $A\in V$ und $w\in (V\cup \sum)^*$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ableitungsbaum (Sei G eine kontext-freie Grammatik und $X\in V\cup \sum$)}
+    \scriptsize
+    X-Ableitungsbaum ist gerichteter, geordneter Baum T mit Wurzel, dessen Knoten mit Elementen von $V\cup\sum\cup\{\epsilon\}$ beschriftet sind:
+    \begin{itemize*}
+        \item die Wurzel mit X beschriftet ist
+        \item Knoten $v$ mit $a\in\sum\cup\{\epsilon\}$ beschriftet $\Rightarrow$ v ist ein Blatt
+        \item Knoten $v$ mit $A\in V$ beschriftet und kein Blatt $\Rightarrow$
+        \begin{itemize*}
+            \item Produktion $A\rightarrow X_1...X_r$ mit $X_1...X_r\in\sum\cup V$ $(r\geq 1)$ sodass Nachfolgerknoten von $v$ mit $X_1,X_2,...,X_r$
+            \item Produktion $A\rightarrow \epsilon$ und $v$ genau einen Nachfolger $\epsilon$
+        \end{itemize*}
+        \item Blattwort $\alpha(T)$, durch Beschriftungen der Blätter von links nach rechts betrachtet
+        \item X-Ableitungsbaum vollständig, wenn Blätter mit Elementen von $\sum\cup\{\epsilon\}$ beschriftet
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Linksableitung} Eine Ableitung heißt Linksableitung wenn in jedem Schritt das am weitesten links stehende Nichtterminal ersetzt wird.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{kontextfreie Grammatik}
+    Eine Kontextfreie Grammatik G heißt mehrdeutig, wenn es zwei verschiedene vollständige Ableitungsbäume $T$ und $T'$ gibt mit $\alpha(T)=\alpha(T')$.
+    Sonst heißt G eindeutig, d.h. G ist eindeutig wenn jedes Wort $w\in L(G)$ genau eine Ableitung besitzt.
+    Eine Kontextfreie Sprache heißt inhärent mehrdeutig, wenn jede kontextfreie Grammatik mit $L=L(G)$ mehrdeutig ist
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Chomsky Normalform} Eine kontextfreie Grammatik g ist in Chomsky Normalform, falls\begin{itemize*}
+        \item alle Produktionen von G die Form $A\rightarrow AB$ oder $A\rightarrow a$ haben
+        \item oder alle Produktionen von G die Form $A\rightarrow BC$ oder $A\rightarrow a$ oder $S\rightarrow\epsilon$ haben und S nie auf der rechten Seite einer Produktion vorkommt.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Zu jeder kontextfreien Grammatik gibt es eine Grammatik G' in Chomsky Normalform mit} $L(G)=L(G')$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Der Cocke-Younger-Kasami- oder CYK-Algorithmus}
+    Sei G kontextfreie Grammatik.  Gesucht ist ein Algorithmus mit dessen Hilfe wir entscheiden können, ob ein gegebenes Wort zu L(G) gehört.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Ein Kellerautomat} M ist ein 6-Tupel $M=(Z,\sum,\Gamma, z_0, \delta, \#)$, wobei\begin{itemize*}
+        \item Z die endliche Menge der Zustände
+        \item $\sum$ das Eingabealphabet
+        \item $\Gamma$ das Kelleralphabet
+        \item $z_o\in Z$ der Startzustand
+        \item $\delta: Z \times (\sum \cup \{\epsilon\})\times \Gamma \rightarrow P_{\epsilon}Z\times\Gamma^*)$ die Überführungsfunktion
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Ein Konfiguration eines PDA}
+    ist ein Tripel $k\in Z \times \sum^* \times \Gamma^*$
+    \begin{itemize*}
+        \item $z\in Z$ ist der aktuelle Zustand
+        \item $w\in\sum$ ist der noch zu lesende Teil der Eingabe
+        \item $\gamma \in \Gamma^*$ ist der aktuelle Kellerinhalt. Dabei steht das oberste Kellerzeichen ganz links
+    \end{itemize*}
+    Übergänge zwischen Konfigurationen ergeben sich aus der Überführungsfunktion $\delta$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Seien $\gamma\in\Gamma^*, A_1B_1,...,B_k\in\Gamma, w, w'\in\sum^*$ und $z,z'\in Z$. Dann gilt $(z,w,A\gamma)\rightarrow (z',w', B_1...B_{k\gamma})$ genau dann, wenn} es $a\in\sum \cup\{\epsilon\}$ gibt mit $w=aw'$ und $(z',B_1...B_k)\in\delta(z,a,A)$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Sei M ein PDA. Dann ist die von M akzeptierte Sprache:} $L(M)=\{x\in\sum^* | \text{es gibt } z\in Z \text{mit} (z_0, x, \#) [...] ^*(z,\epsilon, \epsilon)\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Sei M ein PDA. Dann ist die von M akzeptierte Sprache}
+    $L(M)=\{x\in\sum^* | \text{ es gibt } z\in Z \text{ mit } (z_0,x,\#)\vdash^* (z,\epsilon,\epsilon)\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ eine kontextfreie Grammatik G ist in Greibach Normalform} falls alle Produktionen aus P folgende Form haben: $A\rightarrow aB_1B_2...B_k$, mit $k\in \mathbb{N}$, $A,B_1,...,B_k\in V$ und $a\in \sum$
+    Die Greibach Normalform garantiert, dass bei jedem Ableitungsschritt genau ein Alphabetsymbol entsteht.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ aus einer kontextfreien Grammatik G kann eine kontextfreie Grammatik G' in Greibach Normalform berechnet werden mit}
+    $L(G')=L(G)\ \{\epsilon\}$.
+
+    Jede kontextfreie Sprache L ist Sprache eines PDA M mit nur einem Zustand. Gilt $\epsilon\not\in L$, so werden keine $\epsilon$-Transitionen benötigt
+
+    Ist M ein PDA, so ist L(M) kontextfrei
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Sei L eine Sprache. Dann sind äquivalent}
+    \begin{itemize*}
+        \item L ist kontextfrei
+        \item es gibt einen PDA M mit $L(M)=L$
+        \item es gibt einen PDA M mit nur einem Zustand und $L(M)=L$. Gilt $\epsilon\not\in L$, so sind diese Aussagen äquivalent zu
+        \item es gibt einen PDA M mit nur einem Zustand und ohne eine $\epsilon$-Transitionen, so dass $L(M)=L$ gilt
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{PDAs mit Endzuständen}
+    Ein Kellerautomat mit Endzuständen oder PDAE ist ein 7-Tupel M, wobei $(Z,\sum,\Gamma, \iota, \delta, \#)$ ein PDa und $E\subseteq Z$ eine Menge von Endzuständen ist
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Sei M ein PDAE. Die von M akzeptierte Sprache ist}
+    $L(M)=\{w\in\sum^* | \text{es gibt } e\in E \text{ und } \gamma\in\Gamma^* \text{ mit } (\iota, w,\#)\vdash^* (e,\epsilon,\gamma)\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ ein deterministischer Kellerautomat oder DPDA ist ein PDAE M,}
+    so dass für alle $z\in Z, a\in\sum, A\in\Gamma$ gilt: $|\delta(z,a,A)|+|\delta(z,\epsilon,A)|\leq 1$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ eine Sprache L ist deterministisch kontextfrei,}
+    wenn es einen deterministischen Kellerautomaten M gibt mit $L(M)=L$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Ist $L\subseteq \sum^*$ deterministisch kontextfrei, }
+    so auch $\sum^*\backslash L$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Wie wird aus einem DPDA M ein DPDA M' berechnet?}
+    aus einem DPDA M kann ein DPDA M' berechnet werden mit $L/M'=\sum^*\backslash L(M)$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{das Lemma von Ogden (William Ogden)}
+    Wenn L eine kontextfreie Sprache ist, dann gibt es $n\geq 1$ derart, dass für alle $z\in L$, in denen n Positionen markiert sind, gilt: es gibt Wörter $u,v,w,x,y\in\sum^*$ mit
+    \begin{itemize*}
+        \item  $z=uvwxy$
+        \item v oder x enthält wenigstens eine der Markierungen oder
+        \item $uv^i wx^i y \in L$ für alle $i\geq 0$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Wortproblem für eine kontextfreie Sprache $L$}
+    Gegeben $w\in\sum^*$. Gilt $w\in L$?
+    Ist die kontextfreie Sprache L durch eine kontextfreie Grammatik in Chomsky-Normalform gegeben, so kann das Wortproblem mit dem CYK-Algorithmus in Zeit $O(|w|^3)$ gelöst werden.
+    Ist L durch einen deterministischen PDA gegeben, so kann das Wortproblem für L sogar in Zeit $O(n)$ gelöst werden.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Uniformes Wortproblem für kontextfreie Sprachen}
+    Gegeben kontextfreie Grammatik G und Wort $w\in\sum^*$. Gilt $w\in L(G)$?
+
+    Lösung:
+    \begin{itemize*}
+        \item berechne kontextfreie Grammatik G' in Chomsky Normalform mit $L(G)=L(G')$
+        \item Wende CYK-Algorithmus auf die Frage $w\in L(G')$ an
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Leerheitsproblem für kontextfreie Sprachen}
+    Gegeben eine kontextfreie Grammatik $G=(V,\sum,P,S)$. Gilt $L(G)=\varnothing$
+    Lösung: Sei $W=\{A\in V | \exists w\in\sum^*: A\Rightarrow_G^* w\}$ die Menge aller produktiven Nichtterminale. Dann gilt $L(G)\not= \varnothing \leftrightarrow S\in W$. Berechnung von W:
+    $W_0:=\{A\in V | \exists w\in\sum^*:(A\rightarrow w)\in P\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Endlichkeitsproblem für kontextfreie Sprachen}
+    Gegeben eine kontextfreie Grammatik G. Ist $L(G)$ endlich?
+    O.E. können wir annehmen, daß G in Chomsky-Normalform ist. Wir definieren einen Graphen $(W , E )$ auf der Menge der produktiven Nichtterminale mit folgender Kantenrelation: $E=\{(A,B)\in W\times W | \exists C \in W: (A\rightarrow BC)\in P \text{ oder } (A\rightarrow CB)\in P\}$
+    Beobachtung: $(A,B)\in E$ gilt genau dann, wenn es einen vollständigen A-Ableitungsbaum gibt, so daß B ein Kind der Wurzel beschriftet.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Intuitiver Berechenbarkeitsbegriff}
+    Eine Funktion $f:\mathbb{N}^k\rightarrow\mathbb{N}$ ist intuitiv berechenbar, wenn es einen Algorithmus gibt, der f berechnet, d.h.
+    \begin{itemize*}
+        \item das Verfahren erhält $(n_1,..., n_k)$ als Eingabe,
+        \item terminiert nach endlich vielen Schritten
+        \item und gibt $f(n_1,...,n_k )$ aus.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Ein Loop-Programm ist von der Form}
+    \begin{itemize*}
+        \item $x_i := c, x_i := x_j + c, x_i := x_j \div c$ mit $c\in\{0, 1\}$ und $i, j$ (Wertzuweisung) oder
+        \item $P_1 ; P_2$, wobei $P_1$ und $P_2$ Loop-Programme sind (sequentielle Komposition) oder
+        \item loop $x_i$ do P end, wobei P ein Loop-Programm ist und $i_1$.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{modifizierte Subtraktion $\div$}
+    Die modifizierte Subtraktion $\div$ ist definiert durch $\div: \mathbb{N}^2 \rightarrow \mathbb{N}: (m,n)\rightarrow max(0,m-n)$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Loop Programm P, ohne Variable $x_i$ mit $i<k$}
+    Für jedes Loop-Programm P, in dem keine Variable $x_i$ mit $i>k$ vorkommt, definieren wir zunächst eine Funktion $[[P]]_k:\mathbb{N}^k\rightarrow \mathbb{N}^k$ durch Induktion über den Aufbau von P
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Wann ist  $f:\mathbb{N}^k\rightarrow\mathbb{N}$ loop-berechnbar?}
+    Eine Funktion $f:\mathbb{N}^k\rightarrow\mathbb{N}$ (mit $k\geq 0$) heißt loop-berechenbar, falls es ein $l\geq k$ und ein Loop-Programm P, in dem höchstens die Variablen $\forall n_1,...,n_k\in\mathbb{N}:f(n_1,...,n_k)=\pi_1^l([[P]]_l(n_1,...,n_k,0,...,0))$.
+
+    Loop-Vermutung: Eine Funktion $\mathbb{N}^k\rightarrow \mathbb{N}$ mit $k \geq 0$ ist genau dann intuitiv berechenbar, wenn sie loop-berechenbar ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Seien $k\geq 0, \mathbb{N}^k\rightarrow \mathbb{N}$ und $h:\mathbb{N}^{k+2}$.\\ Wie erhält man $f:\mathbb{N}^{k+1}\rightarrow\mathbb{N}$?}
+    Die Funktion $f:\mathbb{N}^{k+1}\rightarrow\mathbb{N}$ mit $f(0,n_2,...,n_{k+2})=g(n_2,...,n_{k+1})$ und $f(m+1, n_2,...,n_{k+1})=h(f(m,n_2,...,n_{k+1}),m,n_2,...,n_{k+1})$ ensteht aus g und h mittels Rekursion.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Hilberts Vermutung (1926)}
+    Eine Funktion $\mathbb{N}^k\rightarrow\mathbb{N}$ mit $k\geq 0$ ist genau dann intuitiv berechenbar, wenn sie primitiv rekursiv ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Die primitiv rekursiven Funktionen sind induktiv wie folgt definiert}
+    \scriptsize
+    \begin{itemize*}
+        \item Alle konstanten Funktionen der Form $k_c:\mathbb{N}^0\rightarrow\mathbb{N}:()\rightarrow c$ (für ein festes $c\in\mathbb{N}$) sind primitiv rekursiv.
+        \item Alle Projektionen der Form $\pi_i^k:\mathbb{N}^k\rightarrow\mathbb{N}: (n_1,..., n_k)\rightarrow n_i$ (mit $1\geq i\geq k$) sind primitiv rekursiv.
+        \item Die Nachfolgerfunktion $s:\mathbb{N}\rightarrow\mathbb{N}: n\rightarrow n + 1$ ist primitiv rekursiv.
+        \item Wenn $f:\mathbb{N}^k\rightarrow\mathbb{N}$ und $g_11,...,g_k:\mathbb{N}^l\rightarrow\mathbb{N}$ (mit $k,l\geq 0$) primitiv rekursiv sind, dann ist auch die Funktion $f(g_1,..., g_k):\mathbb{N}^l\rightarrow\mathbb{N}$ primitiv rekursiv (Substitution).
+        \item Sind $g:\mathbb{N}^k\rightarrow\mathbb{N}$ und $h:\mathbb{N}^{k+2}\rightarrow\mathbb{N}$ primitiv rekursiv (mit $k\geq 0$) und entsteht $f:\mathbb{N}^{k+1}\rightarrow\mathbb{N}$ aus g und h mittels Rekursion, so ist auch f primitiv rekursiv (Rekursion).
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Seien $f,g: \mathbb{N}^{k+1}\rightarrow\mathbb{N}$ Funktionen\\ Wie geht g durch den beschränkten Existenzquantor aus f hervor}
+    Seien $f,g: \mathbb{N}^{k+1}\rightarrow\mathbb{N}$ Funktionen mit
+    \begin{itemize*}
+        \item $$g(m,\bar{n})= \begin{cases} 1 \quad\text{falls } \exists i\leq m: f(i,\bar{n}\geq 1) \\ 0 \quad\text{sonst} \end{cases}$$
+        \item für alle $\bar{n}\in\mathbb{N}^k$. Wir sagen, g geht durch den beschränkten Existenzquantor aus f hervor.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ackermann Funktion}
+    Die Funktion $ack:\mathbb{N}^2\rightarrow\mathbb{N}$ mit $ack(x,y,)=ack_x(y)$ heißt Ackermann Funktion
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Loop Programm P}
+    Sei P Loop-Programm mit Variablen $x_1,x_2,...,x_n$. Für Anfangswerte $(n_i)$ seien $(n'_i)$ die Werte der Variablen bei Programmende.
+
+    $$f_p:\mathbb{N}\rightarrow\mathbb{N}: n\rightarrow max\{\sum_{1\leq i\leq l} n'_i | \sum_{1\leq i \leq l} n_i\leq n \}$$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist die Ackermann Funktion ist berechenbar}
+    Die Ackermann Funktion ist nicht berechenbar.
+
+    Beweis indirekt: Angenommen P wäre Loop-Programm, das $ack$ berechnet. Nach Beschränkungslemma existiert $k\in\mathbb{N}$ mit $f_p(m)< ack_k(m)$, damit $ack_k(k)\leq f_p(2k)< ack_k(2k)$ im Widerspruch zum Monotonielemma.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Ein While Programm ist von der Form}
+    \begin{itemize*}
+        \item $x_i=c; x_i=x_j+c; x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$ (Wertzuweisung) oder
+        \item $P_1;P_2$, wobei $P_1$ und $P_2$ bereits While Programme sind (sequentielle Komposition) oder
+        \item while $x_i\not = 0$ do P end, wobei P ein While Programm ist und $i\geq 1$.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Seien $r\in\mathbb{N}$ und $D\subseteq\mathbb{N}^r$.\\ Was ist eine partielle Funktion?}
+    Seien $r\in\mathbb{N}$ und $D\subseteq\mathbb{N}^r$. Eine Funktion $f:D\rightarrow\mathbb{N}$ heißt partielle Funktion von $\mathbb{N}^r$ nach $\mathbb{N}$. Wir schreiben hierfür $f:\mathbb{N}^r \rightarrow\mathbb{N}$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{While Programm}
+    wie bei Loop Programmen definieren wir zunächst für jedes While Programm P in dem keine Variable $x_i$ mit $i>k$ vorkommt induktiv eine partielle Abbildung $[[P]]_k:\mathbb{N}^k \rightarrow\mathbb{N}^k$. Hierfür sei $\bar{n}\in\mathbb{N}^k$
+    \scriptsize{
+        \begin{itemize*}
+            \item $[[x_i=c]]_k(n_1,...,n_k)=(m_1,...,m_k)$ genau dann, wenn $m_i=c$ und $m_l=n_l$ für $l\not = i$
+            \item $[[x_i=x_j \pm c]]_k(n_1,...,n_k)=(m_1,...,m_k)$ genau dann, wenn $m_i=n_j\pm c$ und $m_l=n_l$ für $l\not = i$
+            \item $[[P_1; P_2]]_k(\bar{n})$ ist genau dann definiert, wenn $\bar{m}=[[P_1]]_k(\bar{n})\in\mathbb{N}^k$ und $[[P_2]]_k(\bar{m})$ definiert sind. In diesem Falle gilt $[[P_1; P_2]]_k(\bar{n})=[[P_2]]_k([[P_1]]_k(\bar{n}))$, sonst undefiniert.
+        \end{itemize*}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ist eine partielle Funktion while Berechenbar?}
+    Eine partielle Funktion $f:\mathbb{N}^k\rightarrow\mathbb{N}$ heißt while Berechenbar, falls es ein $l\geq k$ und ein While Programm P, in dem höchstens die Variablen $x_1,...,x_l$ vorkommen, gibt, sodass für alle $n_1,...,n_k\in\mathbb{N}$ gilt:\begin{itemize*}
+        \item $f(n_1,...,n_k)$ definiert $\leftrightarrow [[P]]_l(n_1,...,n_k,0,...,0)$ definiert
+        \item Falls $f(n_1,...,n_k)$ definiert ist, gilt $f(n_1,...,n_k)=\pi_1^l ([[P]]_l(n_1,...,n_k,0,...,0))$.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Gödels Vermutung}
+    Eine partielle Funktion $\mathbb{N}^k\rightarrow\mathbb{N}$ ist gneau dann intuitiv berechenbar, wenn sie $\mu$-rekursiv ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{$\mu$-rekursive Funktion}
+    Sei $f:\mathbb{N}^{k+1}\rightarrow\mathbb{N}$ eine partielle Funktion Dann ist $\mu f:\mathbb{N}^k\rightarrow\mathbb{N}$ definiert durch $\mu f(n_1,...,n_k)= min\{m| f(m,n_1,...,n_k)=0 \text{ und } \forall x< m: f(x,n_1,...,n_k) \text{ definiert } \}$. Dabei ist min $\varnothing$ undefiniert. Wir sagen, dass die Funktion $\mu f$ aus f durch den $\mu$-Operator hervorgeht.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Die Klasse der $\mu$-rekursiven Funktionen ist rekursiv definiert}
+    \scriptsize{
+        \begin{itemize*}
+            \item Alle konstanten Funktionen $k_m:\mathbb{N}^0\rightarrow\mathbb{N}:()\rightarrow m$, alle Projektionen $\pi_i^k:\mathbb{N}^k\rightarrow \mathbb{N}: (n_1,...,n_k)\rightarrow n_i$ und die Nachfolgerfunktion $s:\mathbb{N}\rightarrow \mathbb{N}:n\rightarrow n+1$ sind $\mu$-rekursiv.
+            \item Sind $f:\mathbb{N}^k \rightarrow \mathbb{N}$ und $g_1,...,g_k:\mathbb{N}^r\rightarrow\mathbb{N}$ $\mu$-rekursiv, so auch $F:\mathbb{N}^r\rightarrow\mathbb{N}$ mit $F(n) = f(g_1(\bar{n}),..., g_k(\bar{n}))$ (wobei $F(n)$ genau dann definiert ist, wenn $g_i(n)$ für alle i definiert ist und wenn f auf diesen Werten definiert ist).
+            \item Jede partielle Funktion f , die durch Rekursion aus $\mu$-rekursiven Funktionen entsteht, ist $\mu$-rekursiv.
+            \item Ist f $\mu$-rekursiv, so auch $\mu f$.
+        \end{itemize*}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ein GoTo Programm}
+    ist eine endliche nichtleere Datei $P=A_1;A_2;...;A_m$ von Anweisungen $A_i$ der folgenden Form:
+    \begin{itemize*}
+        \item $x_i=c, x_i=x_j+c, x_i=x_j-c$ mit $c\in\{0,1\}$ und $i,j\geq 1$
+        \item goto l mit $0\leq l\leq m$ (unbedingter Sprung)
+        \item if $x_i=0$ then l mit $i\geq 1$ und $0\leq l \leq m$ (bedingter Sprung)
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{GOTO Programm}
+    Sei $P=A_1;A_2;...;A_m$ ein Goto Programm, in dem keine Variable $x_i$ mit $i>k$ vorkommt. Eine Konfiguration von P ist ein $(k+1)$-Tupel $(n_1,n_2,...,n_k,p)\in\mathbb{N}^k\times\{0,1,...,m\}$, wobei $n_i$ die Belegung der Variablen $x_i$ und p den Wert des Programmzählers beschreibt.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{$[[P]]_k(\bar{n})$}
+    $[[P]]_k(\bar{n})$ ist definiert, falls es $\bar{n'}\in\mathbb{N}^k$ gibt mit $(\bar{n},1)\vdash_P^* (\bar{n'},0)$. In diesem Fall gilt $[[P]]_k(\bar{n})=\bar{n'}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Eine partielle Funktion $f:\mathbb{N}^k\rightarrow\mathbb{N}$ heißt Goto berechenbar,}
+    falls es ein $l\geq k$ und ein Goto Programm P, in dem keine Variable $x_i$ mit $i>l$ vorkommt, gibt, sodass für alle $\bar{n}\in\mathbb{N}^k$ gilt:\begin{itemize*}
+        \item $f(n)$ definiert $\leftrightarrow [[P]]_l(\bar{n},0,...,0)$ definiert
+        \item Falls $f(\bar{n})$ definiert ist, gilt $f(\bar{n})=\pi_1^l ([[P]]_l(\bar{n},0,...,0))$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Wann ist in einem GoTo Programm\\ $(\bar{n},p)\vdash_P (\bar{n'},p')$}
+    Seien $P=A_1;A_2;...;A_m;$ ein GoTo Programm und $(\bar{n},p), (\bar{n'},p')$ zwei Konfigurationen. Wir setzen $(\bar{n},p)\vdash_P (\bar{n'},p')$, falls $p>0$ und eine der folgenden Bedingungen gilt:
+    \scriptsize{
+        \begin{itemize*}
+            \item $A_p=(x_i=c), n'_i=c, n'_l=n_l \text{ für } l\not\ =i \text { und } p'=p+1$
+            \item $A_p=(x_i=x_j+c), n'_i=n_j+c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
+            \item $A_p=(x_i=x_j-c), n'_i=n_j-c, n'_l=n_l \text{ für } l\not\ =i \text{ und } p'=p+1$
+            \item $A_p=(goto l), \bar{n'}=\bar{n} \text{ und } p'=l$
+            \item $A_p=(if x_i=0 then l), n_i=0, \bar{n'}=\bar{n}, p'=l$
+            \item $A_p=(if x_i=0 then l), n_i\not=0, \bar{n'}=\bar{n}, p'=p+1$
+        \end{itemize*}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Eine Turingmaschine (TM)}
+    ist ein 7-Tupel $M=(Z,\sum, \Phi, \delta, z_o, \Box, E)$, wobei
+    \begin{itemize*}
+        \item $\sum$ das Eingabealphabet
+        \item $\Phi$ mit $\Phi\supseteq\sum$ und $\Phi\cap Z\not= 0$ das Arbeits- oder Bandalphabet,
+        \item $z_0\in Z$ der Startzustand,
+        \item $\delta:Z\times\Phi\rightarrow(Z\times\Phi\times\{L,N,R\})$ die Überführungsfunktion
+        \item $\Box\in\Phi/\sum$ das Leerzeichen oder Blank und
+        \item $E\subseteq Z$ die Menge der Endzustände ist
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Konfiguration einer Turingmaschine}
+    Eine Konfiguration einer Turingmaschine ist ein Wort $k\in\Phi^*Z\Phi^+$
+
+    Bedeutung: $k=uzv$
+    \begin{itemize*}
+        \item $u\in\Phi^*$ ist Abschnitt des Bandes vor Kopfposition der bereits besucht wurde
+        \item $z\in Z$ ost aktueller Zustand
+        \item $c\in\Phi^+$ ist Abschnitt des Bandes ab Kopfposition, der Besicht wurde oder im Bereich des Eingabewortes liegt.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Haltekonfiguration einer TM}
+    Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM und k eine Konfiguration. Dann heißt k Haltekonfiguration falls für alle Konfigurationen $k'$ gilt: $k\vdash_M k'\Rightarrow k=k'$ (d.h. ist $k=uzav$, so gilt $\delta(z,a)=(z,a,N)$).
+    Die Haltekonfiguration k ist akzeptierend, wenn zusätzlich $k\in\Box^*E\sum^*\Box^*$ gilt.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM\\ Wie ist die von M berechnete partielle Funktion?}
+    Sei $M=(Z,\sum,\Phi,\delta,z_o,\Box,E)$ eine TM. Die von M berechnete partielle Funktion $f_M:\sum^*\rightarrow \sum^*$ erfüllt für alle $x,y\in\sum^*: f_M(x)=y\leftrightarrow \exists z_e \in E,i,j,\in\mathbb{N}:z_0x\Box \vdash_M^* \Box^i z_e y\Box^j$ und $\Box^iz_ey\Box^j$ ist Haltekonfiguration.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Ist eine partielle Funktion berechenbar?}
+    Eine partielle Funktion $f:\sum^*\rightarrow\sum^*$ heißt Turing berechenbar, wenn es eine TM M gibt mti $g_M=f$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Sei $f:\mathbb{N}^k\rightarrow\mathbb{N}$ eine partielle Funktion.\\ Wie wird f Turing berechnebar?}
+    Sei $f:\mathbb{N}^k\rightarrow\mathbb{N}$ eine partielle Funktion. Definiere eine partielle Funktion $F:\{0,1,\#\}^*\rightarrow\{0,1,\#\}^*$ durch $F(w)=\begin{cases} bin(f(n_1,\dots ,n_k)) \quad\text{ falls } w=bin(n_1)\#bin(n_2)\#\dots \#bin(n_k) \text{ und } f(n_1,\dots,n_k) \text{ definiert} \\ \text{undefiniert} \quad{\text{ sonst }}\end{cases}$. Dann heißt f Turing berechenbar, wenn F Turing berechenbar ist.
+
+    (Für $n\in\mathbb{N}$ sei $bin(n)$ die Binärdarstellung der Zahl n)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Mehrband Tunringmaschine}
+    \begin{itemize*}
+        \item Eine Mehrband-Turingmaschine besitzt $k(k\geq 1)$ Bänder mit k unabhängigen Köpfen, aber nur eine Steuereinheit.
+        \item Aussehen der Übergangsfunktion: $\delta:Z\times\Phi^k\rightarrow (Z\times\Phi^k\times\{L,N,R\}^k)$ (ein Zustand, k Bandsymbole, k Bewegungen)
+        \item Die Ein- und Ausgabe stehen jeweils auf dem ersten Band. Zu Beginn und am Ende (in einer akzeptierenden Haltekonfiguration) sind die restlichen Bänder leer.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Zu jeder Mehrband Turingmaschine M gibt es}
+    eine Turingmaschine M' die diesselbe Funktion löst
+    \begin{itemize*}
+        \item Simulation mittels Einband-Turingmaschine durch Erweiterung des Alphabets: Wir fassen die übereinanderliegenden Bandeinträge zu einem Feld zusammen und markieren die Kopfpositionen auf jedem Band durch $\ast$. %Neues Bandalphabet: $\Phi'=\sum\uplus\{\Box\}\uplus (\Phi\times\{\ast, \diamond\})^k$
+        \item Alphabetsymbol der Form $(a,\ast,b,\diamond,c,\ast,...)\in(\Phi\times\{\ast,\diamond\})^k$ bedeutet: 1. und 3. Kopf anwesend ($\ast$ Kopf anwesend, $\diamond$ Kopf nicht anwesend)
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Sei $g:\sum^*\rightarrow\sum^*$ eine Turing-berechenbare partielle Funktion. Wie wird g von TM M berechnet?}
+    Dann wird g von einer TM M berechnet, für die gilt: $\forall x\in\sum^*\forall k$ Haltekonfiguration: $z_ox\Box\vdash_M^* k\Rightarrow k\in \Box^*E\sum^*\Box^*$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Wann ist eine partielle Funktion Turing berechenbar?}
+    Sind $f:\mathbb{N}^k\rightarrow\mathbb{N}$ und $g_1,g_2,\dots,g_k:\mathbb{N}^l\rightarrow\mathbb{N}$ Turing berechenbar, so auch die partielle Funktion $f(g_1,g_2,\dots,g_k):\mathbb{N}^l\rightarrow\mathbb{N}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Eine Sprache $L\subseteq\sum^*$ heißt entscheidbar,}
+    falls die charakteristische Funktion von L, d.h. die Funktion $\chi_L:\sum^*\rightarrow\{0,1\}$ mit $\chi_L(w= = \begin{cases} 1 \quad\text{ falls } w\in L \\ 0 \quad\text{ falls } w\not\in L \end{cases}$ berechenbar ist. Eine Sprache die nicht entscheidbar ist, heißt unentscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ das allgemeine Halteproblem ist die Sprache }
+    $H=\{w\#x | w\in L_{TM}, x\in\{0,1\}^*, M_w \text{ angesetzt auf x hält}\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ das spezielle Halteproblem ist die Sprache }
+    $K=\{w\in L_{TM} | M_w \text{ angesetzt auf w hält}\}$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das spezielle Halteproblem entscheidbar?}
+    Das spezielle Halteproblem ist unentscheidbar
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Seien $A\subseteq\sum^*,B\subseteq\Phi^*$. Was ist die Reduktion von A auf B}
+    Eine Reduktion von A auf B ist eine totale und berechenbare Funktion $f:\sum^*\rightarrow\Phi^*$, so dass für alle $w\in\sum^*$ gilt: $w\in A\leftrightarrow f(x)\in B$. A heißt auf B reduzierbar (in Zeichen $A\leq B$), falls es eine Reduktion von A auf B gibt.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das allgemeine Halteproblem entscheidbar?}
+    Das allgemeine Halteproblem ist unentscheidbar
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das Halteproblem auf leerem Band entscheidbar?}
+    Das Halteproblem auf leerem Band ist unentscheidbar
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Satz von Rice }
+    Sei $R$ die Klasse aller Turing-berechenbaren Funktionen $\{0,1\}^*\rightarrow\{0,1\}^*$, $\Omega$ die nirgendwo definierte Funktion und sei $S\subseteq R$ mit $\Omega\in S$ und $\not = R$. Dann ist die Sprache $C(S)=\{w\in L_{TM} | \phi_w\in S\}$ unentscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Eine Sprache $L\subseteq \sum^*$ heißt semi-entscheidbar, falls ...}
+    die ,,halbe'' charakteristische Funktion von L, d.h. die partielle Funktion $X'_L:\sum^* \rightarrow \{1\}$ mit $x'_L=\begin{cases} 1 \quad\text{ falls } w\in L\\ undef. \quad\text{ falls } w\not\in L \end{cases}$ berechenbar ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ein Problem $L\subseteq \sum^*$ ist genau dann entscheidbar, wenn }
+    sowohl L als auch $\bar{L}=\sum^*\backslash L$ semi-entscheidbar sind.
+    \begin{enumerate*}
+        \item $w\in L$, dann existiert $t\in\mathbb{N}$, so dass $M_L$ nach t Schritten terminiert. Wegen $w\not\in\bar{L}$ terminiert $M_{\bar{L}}$ niemals.
+        \item $w\not\in L$, dann existiert $t\in\mathbb{N}$, so dass $M_{\bar{L}}$ nach t Schritten terminiert. Wegen $w\not\in L$ terminiert $M_L$ niemals.
+    \end{enumerate*}
+    Dieses letzte Argument heißt mitunter ,,Schwalbenschwanz-Argument''
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Sei $L\subseteq \sum^*$ eine nichtleere Sprache. Dann sind äquivalent}
+    \begin{itemize*}
+        \item L ist semi-entscheidbar
+        \item L wird von einer Turing-Maschine akzeptiert
+        \item L ist vom Typ 0 (d.h. von Grammatik erzeugt)
+        \item L ist Bild berechenbarer partiellen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist Bild berechenbarer totalen Funktion $\sum^*\rightarrow\sum^*$
+        \item L ist rekursiv aufzählbar
+        \item L ist Definitionsbereich einer berechenbaren partiellen Funktion $\sum^*\rightarrow\sum^*$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Sei $M$ eine Turing Maschine. Die von M akzeptierte Sprache ist...}
+    $L(M)=\{ w\in\sum^* | \text{es gibt akzept. Haltekonf. mit } z_0w\Box\vdash_M^* k\}$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Eine Sprache $L\subseteq \sum^*$ heißt rekursiv aufzählbar, falls ... }
+    $L\not\in\varnothing$ oder es eine totale und berechenbare Funktion $f:\mathbb{N}\rightarrow\sum^*$ gibt mit $L=\{f(n)| n\in\mathbb{N}\}=\{f(0), f(1),f(2),...\}$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Eine Turing Maschine U heißt universelle Turing Maschine, wenn ...}
+    sie die folgende partielle Funktion berechnet. $\{0,1\}^*\rightarrow\{0,1\}^*$
+    $$y\rightarrow\begin{cases} \phi_w(x) \quad\text{ falls } y=w000x,w\in L_{TM},x\in\{0,1\}^* \\ undef. \quad\text{ sonst}\end{cases}$$
+    \begin{itemize*}
+        \item U hält bei Eingabe $w000x$ genau dann, wenn $M_w$ bei Eingabe x hält
+        \item U akzeptiert $w000x$ genau dann, wenn $M_w$ das Wort x akzeptiert
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Es gibt eine universelle Turing Maschine...}
+    \scriptsize{
+        Beweis: eine Turing Maschine mit drei Bändern.
+        \begin{enumerate*}
+            \item 1. Band: Kode w der simulierenden Turing Maschine $M_w$
+            \item 2. Band: aktueller Zustand der zu simulierenden TM $M_w$
+            \item 3. Band: augenblicklicher Bandinhalt der TM $M_w$
+        \end{enumerate*}
+        \begin{itemize*}
+            \item Initialisierung: auf 1.Band w000x mit $w\in L_{TM}$. Kopiere x auf 3.Band und lösche 000x auf 1.; schreibe 010 auf 2.Band
+            \item Simulation: stehen auf 2.Band $01^{i+1}0$ und auf 3. an Kopfposition j, so suche auf 1.Band Anweisung $(z_{i'},a_{j'},y)=\delta(z_i,a_j)$ und schreibe $01^{i'+1}0$ auf 2.Band; ersetzte j an Kopfposition auf 3.Band durch $j'$; bewege 3.Kopf entsprechend y nah rechts, links oder aber auch nicht.
+            \item Aufräumen: bei Erreichen akzeptierender Haltekonfiguration auf 3. Band
+        \end{itemize*}
+    }
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das spezielle Halteproblem semi-entscheidbar?}
+    das spezielle Halteproblem $K=\{w\in L_{TM} | M_w \text{ angesetzt auf w hält}\}$ ist semi-entscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Gibt es eine Grammatik, deren Wortproblem unentscheidbar ist?}
+    es gibt eine Grammatik G, deren Wortproblem $L(G)$ unentscheidbar ist.
+
+    Folgerung: es gibt eine Typ-0 Sprache, die nicht vom Typ 1 ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ist das allgemeine Wortproblem entscheidbar?}
+    das allgemeine Wortproblem $A=\{(G,w) | \text{ G ist Grammatik mit } w\in L(G)\}$ ist unentscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Was ist ein Korrespondenzsysteme}
+    \begin{enumerate*}
+        \item Korrespondezsystem ist endliche Folge von Paaren $K=((x_1,y_1),(x_2,y_2),...,(x_k,y_k))$ mit $x_i,y_i\in\sum^+$ für alle $1\leq i \leq k$ %($\sum$ beliebiges Alphabet)
+        \item Lösung von K ist endliche Folge von Indizes $i_1,i_2,...,i_n \in \{1,2,...,k\}$ mit $n\geq 1$ und $x_{i1} x_{i2} ... x_{in}=y_{i1} y_{i2}... y_{in}$.
+        \item MPCP (,,modifiziertes PCP'') ist Menge der Korrespondezsysteme, die Lösung mit $i_1=1$ besitzen
+        \item PCP Menge der Korrespondenzsysteme%, die eine besitzen
+    \end{enumerate*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist PCP entscheidbar?}
+    Emil Post, 1947: PCP ist unentscheidbar. (T. Neary 2015: 5 Paare reichen hierfür.)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist PCP semi-entscheidbar?}
+    PCP ist semi-entscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das Regularitätsproblem für PDAs semi-entscheidbar?}
+    Das Regularitätsproblem für PDAs $Reg_{PDA} = \{P | \text{P PDA mit L(P) regulär}\}$ ist nicht semi-entscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ost das Regularitätsproblem für DPDAs entscheidbar?}
+    Stearns 1967: Das Regularitätsproblem für DPDAs $Reg_{DPDA} = \{ P | \text{P DPDA mit L(P) regulär}\}$ ist entscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Ist das Schnittproblem für DPDAs semi-entscheidbar?}
+    Das Schnittproblem für DPDAs $Schn_{DPDA} = \{(P_1, P_2 ) | P_1, P_2 \text{ DPDAs mit } L(P_1)\cap L(P_2) = \varnothing\}$ ist nicht semi-entscheidbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ Church-Turing These}
+    Die Funktionen, die durch Turingmaschinen bzw. While/Goto-Programme berechnet werden können, sind genau die intuitiv berechenbaren Funktionen.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Unentscheidbarkeit}
+    Probleme, die nicht durch Turing-Maschinen gelöst werden können, sind damit prinzipiell unlösbar (wenn auch u.U. semi-entscheidbar). Beispiele:
+    \begin{itemize*}
+        \item die verschiedenen Versionen des Halteproblems
+        \item Posts Korrespondenzproblem
+        \item das Schnitt- und verwandte Probleme über kontextfreie Sprachen
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Intuitiver Effizienzbegriff}
+    Das Wortproblem einer Sprache L ist effizient entscheidbar, wenn es einen Algorithmus gibt, der die Antwort auf die Frage ,,Gehört das Wort w zu L?'' mit geringen Ressourcen (Zeit, Speicherplatz) bestimmt. ,,mit geringen Ressourcen'' heißt hier, daß die benötigten Ressourcen nur moderat mit der Eingabelänge $|w|$ wachsen.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Deterministische Zeitklassen}
+    Sei $f:\mathbb{N}\rightarrow\mathbb{N}$ eine monotone Funktion. Die Klasse $TIME(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine M gibt mit:
+    \begin{itemize*}
+        \item M berechnet die charakteristische Funktion von L.
+        \item Für jede Eingabe $w\in\sum^*$ erreicht M von der Startkonfiguration $z_0 w\Box$ aus nach höchstens $f(|w|)$ Rechenschritten eine akzeptierende Haltekonfiguration (und gibt 0 oder 1 aus, je nachdem ob $w\not\in L$ oder $w\in L$ gilt).
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{REACH}
+    REACH ist die Menge der gerichteten Graphen mit zwei ausgezeichneten Knoten s und t, in denen es einen Pfad von s nach t gibt.
+
+    REACH ist in P. (Beweis: z.B. mit Dijkstras Algorithmus)
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Euler-Kreise}
+    EC ist die Menge der ungerichteten Graphen, die einen Eulerkreis (d.h. einen Kreis, der jede Kante genau einmal durchläuft) enthalten.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Satz von Euler\\ (1707-1783, 1736)}
+    Ein Graph $(V,E)$ enthält einen Eulerkreis genau dann, wenn er höchstens eine Zusammenhangskomponente mit $>1$ Knoten enthält und jeder Knoten geraden Grad hat (d.h. jeder Knoten hat eine gerade Anzahl von Nachbarn).
+
+    Folgerung: EC ist in P, denn die genannten Bedingungen lassen sich in polynomieller Zeit prüfen.
+
+    Die erweiterte Church-Turing These: P umfaßt die Klasse der effizient lösbaren Probleme.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Deterministische Platzklassen}
+    Sei $f:\mathbb{N}\rightarrow\mathbb{N}$ eine monotone Funktion. Die Klasse $SPACE(f)$ besteht aus allen Sprachen L, für die es eine Turingmaschine M gibt mit:
+    \begin{itemize*}
+        \item M berechnet die charakteristische Funktion von L.
+        \item Für jede Eingabe $w\in\sum^*$ hat jede von der Startkonfiguration $z_0 w\Box$ aus erreichbare Konfiguration höchstens die Länge $f(|w|)$.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Definition PSPACE, EXPSPACE, 2EXPSPACE}
+    $$PSPACE = \bigcup_{f\in Poly} SPACE(f)$$
+    $$EXPSPACE = \bigcup_{f\in Poly} SPACE(2^f)$$
+    $$2EXPSPACE = \bigcup_{f\in Poly} SPACE(2^{2^{f}})...$$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{ SAT }
+    ist die Menge der erfüllbaren aussagenlogischen Formeln.
+
+    Beobachtung: SAT 2 PSPACE
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Hamilton-Kreise HC }
+    ist die Menge der ungerichteten Graphen, die einen Hamiltonkreis (d.h. einen Kreis, der jeden Knoten genau einmal besucht) enthalten.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{3-Färbbarkeit  3C}
+    3C ist die Menge der ungerichteten Graphen, deren Knoten sich mit drei Farben färben lassen, so daß benachbarte Knoten unterschiedliche Farben haben.
+
+    Beobachtung: $3C \in PSPACE$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Sei M NTM. Die von M akzeptierte Sprache ist }
+    $L(M) = \{w\in\sum^* | \text{ es gibt akzept. Haltekonf. k mit } z_0 w\Box \vdash_M^* k\}$.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Determinisierbarkeit von NTM}
+    Zu jeder nichtdeterministischen Turingmaschine gibt es eine Turingmaschine, die dieselbe Sprache akzeptiert.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Nichtdeterministische Zeitklassen}
+    Sei $f:\mathbb{N}\rightarrow\mathbb{N}$ eine monotone Funktion. Die Klasse $NTIME(f)$ besteht aus allen Sprachen L, für die es eine nichtdeterministische Turingmaschine M gibt mit:
+    \begin{itemize*}
+        \item M akzeptiert L.
+        \item Für jede Eingabe $w\in\sum^*$ hält M auf jeden Fall nach $f(|w|)$ vielen Schritten.
+    \end{itemize*}
+\end{flashcard}
+
+\begin{flashcard}[Definition]{NP, NPTIME, NEXPTIME, NTIME in Reihenfolge bringen}
+    \begin{itemize*}
+        \item $NP = \bigcup_{f\in Poly} NTIME(f)$
+        \item $NEXPTIME = \bigcup_{f\in Poly} NTIME(2^f)$
+        \item $2NEXPTIME = \bigcup_{f\in Poly} NTIME(2^{2^{f}})...$
+    \end{itemize*}
+
+    Lemma: $NP \subseteq PSPACE, NEXPTIME \subseteq EXPSPACE, 2NEXPTIME \subseteq 2EXPSPACE ...$
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{Nichtdeterministische Platzklassen}
+    Sei $f:\mathbb{N}\rightarrow\mathbb{N}$ eine monotone Funktion. Die Klasse $NSPACE(f)$ besteht aus allen Sprachen L, für die es eine nichtdeterministische Turingmaschine M gibt mit:
+    \begin{itemize*}
+        \item M akzeptiert L.
+        \item Für jede Eingabe $w\in\sum^*$ folgt $|k| \leq f(|w|)$ aus $z_0 w\Box\vdash_M^* k$
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Satz  von Kuroda (1964)}
+    Sei L eine Sprache. Dann sind äquivalent
+    \begin{enumerate*}
+        \item L ist kontextsensitiv (d.h. vom Typ 1)
+        \item $L\in NSPACE(n)$
+    \end{enumerate*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ Satz  von Savitch (1970)}
+    Für jede super-lineare monotone Funktion $f:\mathbb{N}\rightarrow\mathbb{N}$ gilt $NSPACE (f(n))\subseteq SPACE((f(n))^2)$.
+
+    Damit haben wir die folgende Struktur der Komplexitätsklassen:
+    \begin{enumerate*}
+        \item P
+        \item NP
+        \item PSPACE = NPSPACE
+        \item EXPTIME
+        \item NEXPTIME
+        \item EXPSPACE = NEXPSPACE
+    \end{enumerate*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{NP-Vollständigkeit}
+    Eine Sprache B ist NP-hart, falls für alle $A\in NP$ gilt: $A \leq_P B$ (A ist mindestens so schwer wie jedes Problem in NP). Eine Sprache ist NP-vollständig, falls sie zu NP gehört und NP-hart ist.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{SAT Vollständigkeit}
+    Stephen Cook \& Leonid Levin: SAT ist NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{3-SAT}
+    3-SAT ist die Menge der erfüllbaren aussagenlogischen Formeln in konjunktiver Normalform mit höchstens drei Literalen pro Klausel.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{3-SAT vollständigkeit}
+    Das Problem 3-SAT ist NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{SAT und 3-SAT vollständigkeit}
+    Die Probleme SAT und 3-SAT sind NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ist eine Formel $\phi$ in KNF mit höchstens zwei Literalen pro Klausel erfüllbar?}
+    Es ist in Polynomialzeit entscheidbar, ob eine Formel $\phi$ in KNF mit höchstens zwei Literalen pro Klausel erfüllbar ist.
+    Beweisidee: konstruieren gerichteten Graphen G:
+    \begin{itemize*}
+        \item Für jede atomare Formel $x$ aus $\phi$ gibt es die Knoten $x$ und $\neg x$.
+        \item Für jede Klausel $\alpha\vee\beta$ in $\phi$ gibt es Kanten $\sim\alpha\rightarrow\beta$ und $\sim\beta\rightarrow\alpha$, wobei $\sim x =\neg x$ und $\sim\neg x=x$ gelte.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Erfüllbarkeitsprobleme vollständigkeit}
+    \begin{itemize*}
+        \item Die Erfüllbarkeitsprobleme SAT und 3-SAT sind NP-vollständig.
+        \item Das Erfüllbarkeitsproblem 2-SAT ist in P.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{kC}
+    kC ist die Menge der ungerichteten Graphen, die sich mit k Farben färben lassen.
+
+    Ein Graph ist genau dann 2-färbbar, wenn er bipartit ist. Das Problem 2C ist also in P.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{ 3C vollständigkeit}
+    Das Problem 3C ist NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{DHC - Gerichteter Hamiltonkreis}
+    \begin{itemize*}
+        \item EINGABE: ein gerichteter Graph $G = (V , E )$ mit Knotenmenge $V$ und Kantenmenge $E\supseteq V\times V$.
+        \item FRAGE: Besitzt der Graph G einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, dass jeder Knoten genau einmal besucht wird?
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{DHC}
+    DHC ist die Menge der gerichteten Graphen, die einen Hamiltonkreis enthalten.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{DHV vollständigkeit}
+    Das Problem DHC ist NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{HC - Ungerichteter Hamiltonkreis\\Eingabe \& Frage}
+    \begin{itemize*}
+        \item EINGABE: ein ungerichteter Graph $G=(V,E)$ mit Knotenmenge $V$ und Kantenmenge $E\supseteq \binom{V}{2} = \{X\subseteq V | |X|=2\}$.
+        \item FRAGE: Besitzt der Graph G einen Hamiltonkreis, d.h. kann man den Graphen so durchlaufen, dass jeder Knoten genau einmal besucht wird?
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Definition]{HC}
+    ist die Menge der ungerichteten Graphen, die einen Hamiltonkreis enthalten.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{HC vollständigkeit}
+    das Problem HC ist NP-vollständig.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{TSP - Travelling Salesman}
+    \begin{itemize*}
+        \item EINGABE: eine $n\times n$-Matrix $M = (M_{i,j})$ von Entfernungen zwischen $n$ Städten und eine Zahl $d$.
+        \item FRAGE: Gibt es eine Tour durch alle Städte, die maximal die Länge d hat? Das heißt, gibt es eine Indexfolge $i_1,...,i_m$, so dass gilt:
+        \item $\{i_1,...,i_m\} = \{1,...,n\}$ (jede Stadt kommt vor)
+        \item $M_{i_1,i_2} + M_{i_2,i_3} +...+ M_{i_{m-1},i_m} + M_{i_m,i_1} \leq d$ (die Länge Tour ist höchstens d)
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}[Satz]{Das Problem TSP}
+    ist NP-vollständig.
+    \begin{itemize*}
+        \item Beweis: $TSP\in NP$, da Indexfolge geraten und in polynomieller Zeit überprüft, ob sie die Bedingungen erfüllt
+        \item Für NP-Härte zeige $HC\leq_P TSP$: Sei $G=(V,E)$ ein ungerichteter Graph, o.E. $V=\{1,...,n\}$. Konstruiere dazu folgende Matrix: $M_{i,j}=\begin{cases} 1\quad\text{ falls } \{i,j\}\in E\\ 2 \quad\text{ falls }\not\in E\end{cases}$
+        %\item Außerdem setze $d=n$.
+    \end{itemize*}
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Church-Turing These}
+    Die Church-Turing These besagt, dass die Funktionen, die durch Turingmaschinen bzw. While-/Goto-Programme berechnet werden können, genau die intuitiv berechenbaren Funktionen sind.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Unentscheidbarkeit}
+    Probleme, die nicht durch Turing-Maschinen gelöst werden können, sind damit prinzipiell unlösbar (wenn auch u.U. semi-entscheidbar).
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Erweiterte Church-Turing These}
+    Die erweiterte Church-Turing These besagt, dass die Funktionen, die durch Turingmaschine bzw. While-/Goto-Programme in Polynomialzeit berechnet werden können, genau die intuitiv und effizient berechenbaren Funktionen sind.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{flashcard}{Turing Maschinen für NP und darüber}
+    Probleme, die durch Turing-Maschinen nicht in Polynomialzeit gelöst werden können, sind damit prinzipiell nicht effizient lösbar.
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+\begin{flashcard}[Definition]{Text}
+    Text
+\end{flashcard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

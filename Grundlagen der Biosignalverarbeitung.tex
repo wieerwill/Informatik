@@ -1,0 +1,1519 @@
+\documentclass[a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{xcolor, listings}
+\usepackage[compact]{titlesec} %less space for headers
+\usepackage{mdwlist} %less space for lists
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{bussproofs}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Grundlagen der Biosignalverarbeitung}
+\fancyfoot[L]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt} %obere Trennlinie
+\renewcommand{\footrulewidth}{0pt} %untere Trennlinie
+
+\pdfinfo{
+ /Title (Grundlagen der Biosignalverarbeitung - Cheatsheet)
+ /Creator (TeX)
+ /Producer (pdfTeX 1.40.0)
+ /Author (Robert Jeutter)
+ /Subject ()
+}
+
+%%% Code Listings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+ backgroundcolor=\color{backcolour}, 
+ commentstyle=\color{codegreen},
+ keywordstyle=\color{magenta},
+ numberstyle=\tiny\color{codegray},
+ stringstyle=\color{codepurple},
+ basicstyle=\ttfamily,
+ breakatwhitespace=false, 
+}
+\lstset{style=mystyle, upquote=true}
+
+%textmarker style from colorbox doc
+\tcbset{textmarker/.style={%
+ enhanced,
+ parbox=false,boxrule=0mm,boxsep=0mm,arc=0mm,
+ outer arc=0mm,left=2mm,right=2mm,top=3pt,bottom=3pt,
+ toptitle=1mm,bottomtitle=1mm,oversize}}
+
+% define new colorboxes
+\newtcolorbox{hintBox}{textmarker,
+ borderline west={6pt}{0pt}{yellow},
+ colback=yellow!10!white}
+\newtcolorbox{importantBox}{textmarker,
+ borderline west={6pt}{0pt}{red},
+ colback=red!10!white}
+\newtcolorbox{noteBox}{textmarker,
+ borderline west={3pt}{0pt}{green},
+ colback=green!10!white}
+
+% define commands for easy access
+\renewcommand{\note}[2]{\begin{noteBox} \textbf{#1} #2 \end{noteBox}}
+\newcommand{\warning}[1]{\begin{hintBox} \textbf{Warning:} #1 \end{hintBox}}
+\newcommand{\important}[1]{\begin{importantBox} \textbf{Important:} #1 \end{importantBox}}
+
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+ { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+ {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+ {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+ {\geometry{top=1.3cm,left=1cm,right=1cm,bottom=1.2cm} }
+ }
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+ {-1ex plus -.5ex minus -.2ex}%
+ {0.5ex plus .2ex}%x
+ {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+ {-1explus -.5ex minus -.2ex}%
+ {0.5ex plus .2ex}%
+ {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+ {-1ex plus -.5ex minus -.2ex}%
+ {1ex plus .2ex}%
+ {\normalfont\small\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex} 
+% compress space
+\setlength\abovedisplayskip{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\linespread{0.5}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\begin{document}
+
+\raggedright
+\begin{multicols}{3}\scriptsize
+  % multicol parameters
+  % These lengths are set only within the two main columns
+  %\setlength{\columnseprule}{0.25pt}
+  \setlength{\premulticols}{1pt}
+  \setlength{\postmulticols}{1pt}
+  \setlength{\multicolsep}{1pt}
+  \setlength{\columnsep}{2pt}
+
+  \section{Sensorik}
+  Ein Sensor ist ein technisches Bauteil, das die physikalischen oder chemischen Eigenschaften erfassen und in ein elektronisches oder ein anderes geeignetes Signal umwandeln kann.
+  Man unterscheidet zwischen aktiven und passiven Sensoren
+  \begin{description*}
+    \item[Aktiv] gibt Spannung/Strom ab, wobei er für Funktion Energie benötigt/umwandelt. wirkt wie elektrische Signalquelle
+    \item[Passiv] ändert elektrische Größen (z.B. Widerstand) ohne Energiezufuhr von außen
+  \end{description*}
+
+  Auflösung von Sensoren:
+  \begin{description*}
+    \item[temporal] Zeitabstand zwischen Messungen (z.B. Aktionspotentiale)
+    \item[spektral] Abstand von Spektrallinien (z.B. Wärmebildkamera)
+    \item[räumlich] räumlicher Abstand (z.B. EEG, Ultraschall)
+    \item[...] Kombinationen (z.B. spatialtemporale Auflösung in Frequenzband)
+  \end{description*}
+
+  Klassifikation nach Messgröße:
+  \begin{description*}
+    \item[Physikalisch] Kraft, Druck, Moment, Durchfluss
+    \item[Elektrizität] Potential, Strom, Impedanz
+    \item[Magnetismus] Fluss, Induktion
+    \item[Optik/Licht] spektrale Dämpfung, Extinktion
+    \item[Chemisch] Partialdruck von Gasen, Zucker, Hämoglobin
+    \item[Akustik] Herzschalltöne, Atmung
+    \item[Temperatur] Körpertemperatur
+  \end{description*}
+
+  \subsection{Druck, Dehnung und Kraft}
+  Dehnmessstreifen (DMS)
+  \begin{itemize*}
+    \item Messprinzip: Dehnungsabhängiger Widerstand
+    \item Realisierung: Widerstandsdraht/Halbleiter Gitter auf Träger
+    \item Messbare Größen: Kraft, Druck, Moment
+    \item Anwendung: Atmungsdiagnostik, Fahrradergometer
+  \end{itemize*}
+  Signaleigenschaftem
+  \begin{itemize*}
+    \item passiver Sensor - thermisches und/oder Halbleiter-Rauschen
+    \item empfindlich gegen NF-elektrische/magnetische und HF-elektromagnetische Felder
+    \item temperaturabhängig sind vor allem Halbleiter
+    \item Übertragungseigenschaften abhängig von der Sensorkopplung
+    \item Signaldynamik abhängig von Masse und Technologie
+  \end{itemize*}
+
+  Grundlage ist der piezoresestive Widerstandseffekt
+  \begin{itemize*}
+    \item $R=\rho\frac{l}{A}=\rho\frac{4l}{d^2\pi}$, $\rho$ Widerstand, $l$ Länge, $d$ Durchmesser
+    \item $R+\delta R=(\rho+\delta\rho)\frac{4(l+\delta l)}{(d-\delta d)^2\pi}$
+    \item davon ist $(l+\delta l)$ relevant für die Dehnungsmessung
+    \item Temp. linear abhängig von spez. Widerstand
+    \item nicht linear abhängig von mechanischen Änderungen
+  \end{itemize*}
+  %  Die Widerstandsänderung ist linear abhängig von der Temperaturabhängigkeit des spez. Widerstandes, jedoch nicht linear abhängig von der mechanisch bedingten Änderung der Abmessungen. Natürlich hängen die Längenänderung und die des Durchmessers zusammen.
+  %Der konkrete Zusammenhang ist jedoch durch die Konstruktion und das Material gegeben und kann nicht verallgemeinert werden. Da für die Messung allein die Längenänderung von Interesse ist, wird im weiteren nur diese betrachtet.
+  \begin{itemize*}
+    \item $\frac{\delta R}{R}=k\frac{\delta l}{l}=k*\epsilon$, $\epsilon$-relative Dehnung
+    \item $\epsilon=\frac{F}{EA}$, $F=\frac{\delta R}{R}*\frac{EA}{k}$, E-Elastizitätsmodul
+    %\item In der Praxis aus Kostengründen und wegen geringer Temperaturabhängigkeit meistens Konstant an (54\% Cu, 45\% Ni, 1\% Mn mit $k=2,05$) verwendet
+  \end{itemize*}
+
+  Messverfahren: Widerstandsmessung mit Brückenschaltung
+  \begin{itemize*}
+    \item Wheatstone'sche Brücke: $U_A\rightarrow 0|_R \Rightarrow \frac{R_x}{R_V}=\frac{R_2}{R_1}$
+    \item $R_X=R_V\frac{R_2}{R_1}$
+  \end{itemize*}
+  %\includegraphics[width=.5\linewidth]{./Assets/Biosignalverarbeitung-wheatstone-brücke.png}
+  %Warum wird Rx mit Wheatstone-Brücke und nicht klassisch über Stromeinspeisung und Spannungsmessung bestimmt?
+  \begin{itemize*}
+    \item Empfindlichkeit der Messanordnung höher als bei reinen Strom/Spannungsmessung
+    \item Temperaturkompensation möglich
+    \item Starkes Messsignal sinnvoll wegen Störungen vom Netz und Leitungen%, die direkt auf die Kabel der Messanordnung wirken.
+  \end{itemize*}
+
+  Folien-DMS:
+  \begin{itemize*}
+    \item Widerstandsdraht mit ca $20\mu m$ Durchmesser oder Halbleiter
+    \item Träger Acrylharz, Epoxydharz, Polyamid
+    %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-folien-dms.png}
+    \item Dehnungsmessrosette: Messung in drei Richtungen
+    %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Dehnungsmessrosette.png}
+    %Wie man an diesen Konstruktionsbeispielen gut erkennen kann, bilden die Leitungen ungewollterweise eine Antenne, die alle vorhandenen Störungen aus der Umgebung aufnimmt, vor allem Netzeinstreuung, Mobilfunk und Computernetze.
+  \end{itemize*}
+
+  %Aufbau von Massebezogenen und Massefreien Messungen:
+  %\includegraphics[width=\linewidth]{Assets/Biosignalverarbeitung-masse-messung.png}
+  %Messspannung von $U_{R5}$ in der massebezogenen Schaltung
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-messspannung-massebezogen.png}
+  Bei massebezogener Messung - auch Single-End genannt - werden die Störungen direkt dem Messsignal überlagert, so dass später eine Trennung ohne aufwendige Signalverarbeitung kaum möglich ist.
+
+  %Massebezogne Brückenspannung (rot, blau) und Indikatorspannung $U\_d$ (grün)
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-massebezogen-brückenspannung.png}
+  Einen großen Teil der Netzstörung bilden die elektrostatischen Felder, die Gleichtaktcharakter haben. Diese lassen sich also durch Differenzbildung (Wheatstonschen Brücke) zum Teil eliminieren.
+
+  \subsection{Durchfluss, Volumen}\label{durchfluss-volumen}
+  Massendurchfluss
+  \begin{itemize*}
+    \item $\dot m=\frac{dm}{dt}$
+    \item $[\dot m]=\frac{kg}{h};\frac{g}{s}$
+    \item industriell relevant z.B. Kraftstoff, Luftverbrauch im Motor
+  \end{itemize*}
+  Volumendurchfluss
+  \begin{itemize*}
+    \item $\dot V=\frac{dV}{dt}$
+    \item $[\dot V]=\frac{m^3}{h};\frac{l}{min}$
+    \item wichtige Messgröße: Blutfluss, Atmung, Gastrointestinalapparat
+  \end{itemize*}
+  %\item Der Durchfluss eines Mediums ist eine der wichtigsten Größen in der technischen und medizinischen Messtechnik. Technisch vor allem der Massendurchfluss, medizinisch der Volumendurchfluss, da medizinisch grundsätzlich die Volumina diagnostisch relevante Größe darstellen.
+  Bei bekannter durchflossener Fläche wird der Volumenfluss über die Geschwindigkeitsmessung ermittelt
+  \begin{itemize*}
+    \item  $\dot V=\frac{dV}{dt}=\frac{A*dl}{dt}= A*v$
+    \item Reale Verteilung der Geschwindigkeit ist Parabel %mit Maximum in der Mitte
+    \item[$\rightarrow$] Gemessene Geschwindigkeit ist die mittlere Geschwindigkeit
+  \end{itemize*}
+  %\item In der Medizin kann weder eine Geschwindigkeitsverteilung - wie in der Technik - erzwungen werden, noch kann sie vollständig erfasst werden. Daher misst man tatsächlich nur eine ,,mittlere'' Geschwindigkeit, wobei der Begriff ,,mittlere'' hier nicht ganz korrekt ist, da die tatsächliche Verteilung nach wie vor unbekannt ist.
+
+  Druckdifferentmessung nach Gesetz von Hagen-Poiseuille
+  \begin{itemize*}
+    \item $\dot V=\frac{dV}{dt}\frac{\pi d^4}{128\mu}*\frac{\delta p}{l}$
+    \item $d$: Durchmesser Kappilare, $l$: Länge der Kapillare,
+    \item $\delta p=p_A - p_B$: Druckdifferenz über Kapillare%, abhängigkeit von der Strömungsgeschwindigkeit
+    , $\mu$ - Viskosität %des Mediums
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pneumotachograph.png}
+    %\item Bsp: 10\% Verengung der Kapillare $\rightarrow$ 34\% Reduktion des Durchsatzes, d.h. im Blutkreislauf Anstieg des Blutdrucks um 34\%
+    %\item Bei externen Sensoren der Durchflussmessung kann man die Messbedingungen relativ klar vorgeben, z.B. im Pneumotachographen. Man erzwingt kapillare Strömung, der Strömungswiderstand und die Fläche sind bekannt, so dass aus der Druckdifferenz direkt auf den Durchfluss geschlossen werden kann.
+  \end{itemize*}
+  Anwendung in der Medizintechnik
+  \begin{itemize*}
+    \item Messung aller vitaler Lungenvolumina
+    \item Messung des Blutflusses
+  \end{itemize*}
+  Nachteile des Messprinzips von Hagen-Poiseuille
+  \begin{itemize*}
+    \item zusätzlicher Strömungswiderstand verfälscht das Ergebnis
+    \item bei Temperaturunterschieden Kappilaren Tröpfchenbildung
+    \item geringer Dynamikbereich (1:10)
+    \item niedrige Messgenauigkeit wegen Turbulenzen an Kapillarenden
+    \item direkter Kontakt mit Medium nötig
+  \end{itemize*}
+
+  Ultraschall-Geschwindigkeitsmessung nach dem Laufzeitverfahren
+  \begin{itemize*}
+    \item $v=\frac{T_2-T_1}{T_1 T_2}*\frac{L}{2\ cos\ \alpha}$
+    \item $v$ - mittlere Strömungsgeschwindigkeit des Mediums
+    \item $T_1$ - Laufzeit mit der Strömung
+    \item $T_2$ - Laufzeit gegen die Strömung
+    \item $L$: Pfadlänge, $\alpha$: Winkel Strömung-Pfad
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ultraschall-geschwindigkeit.png}
+    \item Vorteile
+    \begin{itemize*}
+      \item kein Kontakt mit dem Medium, insbesondere Blutbahnen
+      \item Installation und Messung ohne Unterbrechnung des Flusses
+    \end{itemize*}
+    \item Nachteile
+    \begin{itemize*}
+      \item invasive Methode, da Blutgefäß freigelegt werden muss
+      \item Ungenauigkeit wegen der Verfomung der Blutgefäße
+    \end{itemize*}
+    \item Signaleigenschafte
+    \begin{itemize*}
+      \item verrauscht wegen Streuung im Medium, Sensorrauschen
+      \item Echo statisch verteilt wegen Geschwindigkeitsprofil
+    \end{itemize*}
+  \end{itemize*}
+
+  Ultraschall-Geschwindigkeitsmessung nach dem Dopplerverfahren
+  \begin{itemize*}
+    \item $f_D=f\frac{c}{c-v} \Rightarrow v=c\frac{f-f_D}{f_D}$
+    \item $c$ - Ausbreitungsgeschwindigkeit
+    \item $f$ - Originalfrequenz Signalquelle
+    \item $f_D$ - gemessene Frequenz
+    \item $v$ - Geschwindigkeit Signalquelle
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ultraschall-doppler.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ultraschall-doppler-2.png}
+    \item Anm: Feste Blutbestandteile (Blutkörperchen) reflektieren die Schallwellen und sind somit für den Ultraschall-Empfänger bewegte Signalquellen
+  \end{itemize*}
+  signalanalytisch relevante Eigenschaften
+  \begin{itemize*}
+    \item Flussgeschwindigkeit ungleichmäßig verteilt
+    \item im technischen Bereich konstruktiv beherrschbar %(Messkammer, Durchmesser, Material)
+    \item im medizinischen Bereich kein Einfluss auf die Gefäße, daher relativ ungenaue Messung der mittleren Geschwindgkeit
+  \end{itemize*}
+
+  \subsection{Optische Sensoren}\label{optische-sensoren}
+  \begin{description*}
+    \item[Kaltlichtquelle] Endoskopie; bläuliches Tageslicht wegen Farbtreue
+    \item[Diagnostische Laser] Ophthalmologie, Urologie, Dermatologie
+    \item[Leuchtdioden] Photoplethysomographie (Pulsoximetrie)
+    \item[Röntgen-/Gamma-/UV-/IR-Strahler] diagnostische Bildgebung
+    \item[Inspektionslicht] in der HNO (Halogenstrahler)
+  \end{description*}
+
+  Signalanalytisch wichtige Eigenschafte
+  \begin{description*}
+    \item[Temperaturstrahler] sind träge, daher statisches, konstantes Licht
+    \item[Halbleiter] (Leuchtdioden) Laser/Leuchtstoffröhren sind Gepulst
+  \end{description*}
+
+  Optische Sensoren
+  \begin{description*}
+    \item[Phototransistor] in Flachbilddetektoren der Radiologie
+    \item[Kamerachips] in den Endoskopen
+    \item[Szintillatoren] in Gamma-Kameras
+    \item[Photovervielfacher] (SEV) in Laser-Fluroszenzsystemen
+  \end{description*}
+
+  Sensoreigenschaften
+  \begin{itemize*}
+    \item starkes Eigenrauschen, typisch für Halbleiter, ,,Dunkelstrom''
+    \item hohe Temperaturabhängigkeit, ist materialbedingt%, variable Parameter
+    \item ungünstige Dynamikeigenschaften, Nachleuchten durch Trägheit
+    \item lange Impulsantwort
+    \item nicht invasiv, daher patientenfreundlich
+  \end{itemize*}
+
+  %Optische Messmethoden gewinnen in der Medizin immer mehr an Bedeutung, vor allem, weil sie nichtinvasiv sind und daher patientenfreundlich. Mit der Kombination von Spektralfotometrie und Photoplethysmografie kann die Sauerstoffsättigung bestimmt werden. Dazu ist es notwendig, Gewebe durchzustrahlen, welches mit arteriellem Blut versorgt wird. Sehr verbreiten ist die Transmissionsmessung -d.h., das Gewebe wird durchstrahlt, was den Anforderungen an eine Messanordnung entsprechend der Theorie noch am nächsten kommt. Eine Alternative wurde notwendig, da der Finger u.U. nicht versorgt wird, z.B. beim Schock: Die Reflexionsmessung, bei der das Licht über einem Flächenknochen eingestrahlt und das reflektierte erfasst wird.
+
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-1.png}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-2.png}
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-3.png}
+
+  Pulsoxymetrie: Signal am Photodetektor
+  \begin{itemize*}
+    \item Multiplex bzw. sequentielle Abtastung
+    \item Störung durch Rauschen und Umgebungslicht%, insbesondere Leuchtstoffröhren
+    \item Nutzsignal im unteren Prozentbereich des Signals
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-4.png}
+  \end{itemize*}
+
+  Signal am Demultiplexer
+  \begin{itemize*}
+    \item DC ca 95-98\%
+    \item AC nach DC Subtraktion verstärkt
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-5.png}
+  \end{itemize*}
+
+  % Für die Signalverarbeitung bedeutet die Analyse des empfangenen Signals eine komplexe Herausforderung: Die Störungen, das Rauschen und das Umgebungslicht (vor allem im OP), sind enorm stark, so dass ihre Trennung vom Signal schwierig ist. Hinzu kommt, dass das Nutzsignal im unteren Prozentbereich des gesamten empfangenen Signals liegt, so dass hier das SNR um weitere zwei Dekaden schlechter wird.
+
+  %Beispiel eines realen Pulsoximetriesignals
+  %\begin{itemize*}
+  %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-6.png}
+  %\item AC/DC Anteil stark schwankender gleitender Mittelwert
+  %\item Der DC-Anteil, der im Grunde durch eine Tiefpassfilterung gewonnen wird, ist real ein stark schwankender gleitender Mittelwert (unterer Verlauf)
+  %\item Der AC-Anteil (oberer Verlauf) zeigt ebenfalls starke Schwankungen. Um dem Mediziner einen einigermaßen stabilen Messwert zu bieten, sind mehrere Schritte der SV notwendig
+  %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-7.png}
+  %\item Pulsbreite 1ms, analoger Tiefpass 10kHz, Abtastrate 10 ksps
+  %\item Zunächst müssen aus dem Multiplexsignal die aktuellen Signalpegel für das rote und infrarote Licht sowie für das Umgebungslicht gewonnen werden: Durch die 10fache Überabtastung stehen für Rot und Infrarot zunächst elf Messwerte zur Verfügung. Dieser Umfang an Messdaten ist für eine Pegelbestimmung mit dem Mittelwert zu gering, daher wird der Median verwendet. Nach der Medianbildung liegen die Signalpegel für weitere Berechnung vor.
+  %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pulsoxy-8.png}
+  %\item Die gewonnenen Signalpegel werden nun einer Signalanalyse unterzogen. Die Analyse bei einer Wellenlänge ist ausreichend, da die Signalform bei allen qualitativ identisch ist. Für die Bestimmung des AC-Pegels werden die Extrema detektiert. Aus der Physiologie ist bekannt, dass die Anstiegszeit der Pulswelle höchstens 30\% der Gesamtzeit beträgt, so dass eine Prüfung im Zeitfenster folgt. Weiterhin ist der Bereich der Periode bekannt, diese Prüfung folgt im nächsten Schritt. Durch Artefakte, vor allem durch Bewegung, entstehen Schwankungen der Basislinie. Nach einem empirische ermittelten Kriterium wird ein Trend von bis zu 30\% vor der Berechnung akzeptiert.
+  %\end{itemize*}
+
+  \subsection{Akustische Sensoren}\label{akustische-sensoren}
+  Physiologischer Schall liegt im hörbaren Bereich. Konventionelle Mikrophontechnik mit spezifischer Signalverarbeitung
+  \begin{itemize*}
+    \item Verstärkung im tieffrequenten Bereich mit linearer Phase
+    \item Richtcharakteristik umschaltbar bzw einstellbar
+    \item spektrale Filterung für typische Geräusche, wie Herzklappen
+    \item Merkmalserkennung in computerbasierter Auswertung
+    \item Mustererkennung typischer pathologisch bedingter Geräusche
+  \end{itemize*}
+  Ultraschall Methoden
+  %Beim Ultraschall (CW,PW,Doppler) handelt es sich um mechanische Schwingungen bis in den zweistelligen Megahertzbereich ( ca. 30MHz). Hier müssen aufwendige Methoden der SV angewandt und entwickelt werden, die primär -d.h. bis zum Übergang in den physiologischen Bereich bzw. zur Bildgebung -eher in der Nachrichtentechnik und Stochastik ihren Ursprung haben: Signaldetektion, Korrelationsrechnung, Histogramme, Signalzerlegung. Signalanalytisch wichtige Eigenschaften:
+  \begin{description*}
+    \item[CW] (Continous Wave) keine Tiefeninformation, Information über Dopplerfrequenz mit hoher Variationsbreite, stochastischer Charakter mit viel Rauschen
+    \item[PW] (pulsed Wave) Auflösung von der Signalverarbeitung abhängig, physikalische Grenzen erreicht
+    \item[Doppler-Technologie] CW/PW vereint, Summe aller Vor- und Nachteile
+  \end{description*}
+
+  \subsection{Sensoren für elektrische Größen}\label{sensoren-fuer-elektrische-groedfen}
+  \subsubsection{Elektrochemische Grundlagen}\label{elektrochemische-grundlagen}
+  \begin{itemize*}
+    %\item Dieser Sensortyp dient der Erfassung der elektrischen Aktivität des Menschen
+    \item Mensch produziert elektrische Signale, keine Umwandung der Energieform notwendig
+    \item Mensch ist Volumentleiter 2. Art - Elektrolyt oder Ionenleiter
+    \item Messsystem mit metallischen Leitern aufgebaut - Leiter 1. Art, Elektronenleiter
+    \item Schnittstelle notwendig $\rightarrow$ Elektrode
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-elektrochemische-grundlage.png}
+    \begin{itemize*}
+      \item $mM \Leftrightarrow mM^+ + me^-$
+      \item $K_k A_a\Leftrightarrow kK^+ + aA^-$
+      \item $\leftarrow$: Reduktion; $\rightarrow$: Oxidation
+      \item Dynamisches Gleichgewicht an den Phasengrenzen
+    \end{itemize*}
+    \item an Phasengrenze der Leitertypen Raumladungszone
+    \item freie Elektronen im Metall und Kationen des Elektrolyts bilden Doppelschicht
+    \item je nach chemischer Zusammensetzung des Elektrolyts und des Metalls unterschiedlich starke chemische Reaktionen %, die beim dynamischen Gleichgewicht die sog. Elektrodenspannung bilden. Funktionell handelt es sich hierbei also um ein ungewolltes Voltaisches Element.
+  \end{itemize*}
+
+  \subsubsection{Elektroden der Diagnostik}\label{elektroden-der-diagnostik}
+  \begin{itemize*}
+    \item aus signalanalytischer Sicht: Eingangsdaten
+    \item aus messtechnischer Sicht: Systemeingang
+  \end{itemize*}
+  Ziele
+  \begin{itemize*}
+    \item geringe Elektrodenspannung
+    \item geringer Drift der Elektrodenspannung
+    \item geringes Eigenrauschen
+  \end{itemize*}
+  Realisierbarkeit
+  \begin{itemize*}
+    \item Spannung durch Materialwahl (AgAgCl)
+    \item Drift physiologisch bedingt, daher kaum beeinflussbar
+    \item Eigenrauschen: Materialwahl und Technologie
+  \end{itemize*}
+  Praktikabilität Elektroden
+  \begin{itemize*}
+    \item EMG: Nadelform, aus Edelmetall, schlechte Signaleigenschaften, große Impedanz, kapazitives Verhalten, hohe Elektrodenspannung
+    \item EKG: große Fläche, AgAgCl, niedrige Impedanz, tieffrequent, niedrige Elektrodenspannung
+  \end{itemize*}
+  %Aus signalanalytischer Sicht sind die Ziele ganz klar vorgegeben. In der Praxis muss jedoch immer ein Kompromiss zwischen diesen Zielen und den Anforderungen der Anwendung und Praktikabilität gefunden werden: Wie diese Beispiele zeigen, hängt die Konstruktion der Elektrode von ihrer Bestimmung ab und daraus ergeben sich auch die Signaleigenschaften. So z.B. muss eine subkutane EMG-Elektrode die Form eine Nadel haben und aus einem Edelmetall sein. Dies hat zur Folge, dass die EMG-Elektroden relativ schlechte Signaleigenschaften aufweist: Riesige Elektrodenimpedanz (bis einige MOhm), stark kapazitives Verhalten, sehr hohe Elektrodenspannung (bis in den Voltbereich). Im Vergleich dazu haben die EKG-Elektroden -vor allem auf Grund ihrer großen Fläche und des Materials (AgAgCl, NaCl) -sehr günstige Eigenschaften: Niedrige Elektrodenimpedanz (kOhm-Bereich), sehr tieffrequent (bis DC), niedrige Elektrodenspannung (um 100 mV).
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-elektroden.png}
+
+  \subsubsection{Elektroden der Therapie}\label{elektroden-der-therapie}
+  \begin{itemize*}
+    \item aus signalanalytischer Sicht: Ausgangsdaten
+    \item aus messtechnischer Sicht: Systemausgang
+  \end{itemize*}
+  Ziele
+  \begin{itemize*}
+    \item geringe Impedanz
+    \item geringer Drift der Impedanz
+    \item Langzeitstabilität
+  \end{itemize*}
+  Realisierbarkeit
+  \begin{itemize*}
+    \item Impedanz durch Materialwahl (beschichtet Cu)
+    \item Drift physiologisch bedingt
+    \item Stabilität durch Materialwahl und Technologie
+  \end{itemize*}
+
+  %Ebenso wichtig wie die Eigenschaften der diagnostischen Elektroden, sind es auch die der therapeutischen Elektroden. Dies liegt darin begründet, dass die Therapie von den zuvor analysierten diagnostischen Daten abhängt -natürlich im signalanalytischen Sinne, denn medizinisch ist es immer so. Man muss sich also bei der gewählten Therapie darauf verlassen können, dass das, was man auf die Elektrode schickt, so auch am biologischen Objekt ankommt. Diese Forderung technologisch umzusetzen ist ungleich leichter als bei diagnostischen Elektroden, denn hier können relative große Flächen mit gutem Kontaktmaterial verwendet werden.
+
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-elektrode-therapie.png}
+
+  \subsection{Sensoren für magnetische Größen}\label{sensoren-fuer-magnetische-groessen}
+  %\subsubsection{Messprinzipien}\label{messprinzipien}
+  %Um einen Eindruck über die Signalstärke (eher Signalschwäche) der biomagnetischen Signale zu bekommen, wird mit dem natürlichen Erdfeld verglichen, obwohl dieses für den Biomagnetismus eigentlich gar kein Problem darstellt. Störend sind die vom Menschen gemachten magnetischen Felder, vor allem die vom Stromversorgungsnetz, die jedoch weit über dem magnetischen Erdfeld liegen.
+  \begin{itemize*}
+    \item vergleich mit natürlichen Erdfeld
+    \item Störend technische M.Felder, z.B. Stromversorgungsnetz
+  \end{itemize*}
+
+  \begin{enumerate*}
+    \item stärkstes Biosignal (MKG) 6 Dekaden unter Erdfeld (120dB)%, und weitere 2...3 Dekaden unter den technischen Feldern.
+    \item MEG -7 Dekaden oder 140dB,
+    \item evozierte Felder -8 Dekaden oder 160dB
+  \end{enumerate*}
+
+  \begin{itemize*}
+    \item $10^{0}T$: MR-Tomographie-Magnete
+    \item $10^{-5}T$: Erdfeld
+    \item $10^{-6}T$: Zivilisationsfelder (Rauschen)
+    %\item $10^{-9}T$: magn. Kontamination der Lunge
+    %\item $10^{-10}T$: Magnetkardiogramm
+    %\item $10^{-12}T$: Magnetoenzephalogramm
+    %\item $10^{-13}T$: evozierte kortikale Aktivität
+    \item $10^{-15}T$: SQUID System Rauschen
+  \end{itemize*}
+
+  Biomagnetische Signale sind sehr schwach (SNR $< -120dB$).
+  Mehrere Maßnahmen zur SNR-Anhebung notwendig
+  \begin{itemize*}
+    \item Abschirmung des Messkreises gegen Störfelder
+    \item Ausnutzung der Feldeigenschaften - Gradiometer
+    \item Spezialtechnologie der Signalverstärker - SQUID
+  \end{itemize*}
+
+  \subsubsection{Gradiometer}\label{gradiometer}
+  \begin{itemize*}
+    \item Störfelder ferne Quellen, Biologische Strukuren nahe Quellen
+    \item ferne Quellen produzieren annährend homogenes Feld
+    \item nahe Quellen produzieren inhomogenes Feld
+    \item Gradiometer 1./2. räumliche Ableitung, dadurch homogenes Störfeld unterdrücken
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Gradiometer.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gradiometer-2.png}
+    %\item homogenes Fernfeld (Störung, blau): $u=u_2-u_1=0$
+    %\item inhomogenes Nahfeld (Biosignalquelle, rot): $u=u_2-u_1 < > 0$
+  \end{itemize*}
+
+  \subsubsection{Supraleitende Quanteninterferenzgerät (SQUID)}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-squid.png}
+  \begin{itemize*}
+    \item aus zwei Supraleitern, durch dünne Isolierschichten getrennt und bildet zwei parallele Josephson-Kontakte
+    \item erkennt unglaublich kleine Magnetfelder
+    \item zur Messung der Magnetfelder in Mäusehirnen verwendet %, um zu testen, ob ihr Magnetismus ausreicht, um ihre Navigationsfähigkeit auf einen inneren Kompass zurückzuführen.
+  \end{itemize*}
+  %\href{http://hyperphysics.phy-astr.gsu.edu/hbase/Solids/Squid.html}{Quelle}
+
+  \section{Verstärkung und analoge Filterung}\label{verstärkung-und-analoge-filterung}
+  %\subsection{Eigenschaften von Biosignalen und Störungen}\label{eigenschaften-von-biosignalen-und-störungen}
+  \subsubsection{Entstehung der Biosignale, biologische Signalquellen}\label{entstehung-der-biosignale-biologische-signalquellen}
+  \begin{itemize*}
+    %\item Analysegegenstand: Sensorisches, motorisches und zentrales Nervensystem
+    %\item Grundbaustein: Nervenzelle, Neuron. Einzelne Neurone kaum untersuchbar, im Einzelfall mit Mikroelektroden, dennoch für die Gesamtheit wenig Bedeutung. Wichtiger sind Untersuchungen an Neuronenverbänden und -strängen, z.B. motorische Steuerung von Muskeln in den Extremitäten. Hier haben die Nerven überschaubare und anatomisch sowie elektrophysiologisch gut bekannte Struktur.
+    \item Neuronausgang: Axon, Aktionspotentiale
+    \item Neuroneingang: Synapsen, exzitatorische/inhibitorische postsynaptische Potentiale
+    \item Sensorisches System deutlich komplexer%, vor allem das akustische und das visuelle. So hat die Retina allein mehrere Millionen Sensoren (Stäbchen und Zapfen), die mit Ganglienzellen verbunden sind und bereits vor Ort relativ einfache Informationsverarbeitung durchführen.
+    %\item Zahlenmäßig und daher in auch in seiner Komplexität ist das größte das zentrale Nervensystem (ZNS), das aus ca. 10 Milliarden Neuronen besteht, die funktionelle und anatomische Zentren bilden aber zeitlich stark variierende Eigenschaften aufweisen.
+    \item Signalanalytisches Grundelement ist Aktionspotential (AP)%, das vom Neuron nach Erreichen der Reizschwelle an seinen Eingängen über das Axon nach außen bzw. an andere Neurone abgegeben wird. Die Synapsen empfangen die Aktionspotentiale von anderen Neuronen und bewerten diese je nach Zustand mit EPSP oder IPSP, die von sich aus starken Veränderungen unterliegen. Im EEG sind die AP deutlich unterrepräsentiert (nur etwa 10\% des EEG), wesentlicher Anteil bilden die PSP. Dies ist unter anderem durch den Tiefpasscharakter des Schädels bedingt, das die hochfrequenten AP unterdrückt.
+  \end{itemize*}
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ekg.png}
+
+  %Ein medizinisch und auch signalanalytisch besonders interessantes Signal ist das EKG: Medizinische Indikation ergibt sich allein aus der besonderen Stellung des Herzens in der Physiologie als des Motors des Kreislaufs. Signalanalytisch ist es deswegen interessant, da es unter reproduzierbaren Messbedingungen (Extremitätenableitungen) formkonstanten Signalverlauf zeigt. Das EKG wurde entsprechend seiner elektromedizinischen Bedeutung extensiv untersucht, zahlreiche Erkrankungen und Schäden werden anhand typischer Formveränderungen des EKG diagnostiziert. Die Signalquelle des EKG ist das räumlich zwar recht komplizierte, aber anatomisch qualitativ konstante Reizleitungssystem des Herzens. Zur Ableitung des EKG werden standardmäßig 3-, 6-oder 12-kanalige Extremitäten-und Brustwandsysteme verwendet.
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-herz-ekg.png}
+
+  %Projektion der Reizausbreitung auf einen längs zur Herzachse liegenden Vektor (vertikal): Zu beachten ist, dass durch die Differenzbildung an zwei Punkten an der Körperoberfläche damit mathematisch die erste räumliche Ableitung (oder auch der erste Gradient) gebildet wird. Das hat zur Folge, dass die Ableitung nicht nur in Phasen der Ruhe (vor der P-Welle), sondern auch bei maximaler Erregung ( PQ-und ST-Strecke) Null ist. Wellen und Zacken im EKG sind Ausdruck der räumlich-zeitlichen Veränderung im Reizleitungssystem.
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gehirn.png}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gehirn-ekg.png}
+
+  %Zur Ableitung des EEG werden wie beim EKG standardisierte Elektrodensysteme verwendet. Allerdings ist die anatomische Zuordnung hier ungleich schwieriger, denn die einzigen einigermaßen stabilen anatomischen Bezugspunkte sind das Nasion und das Inion. Es ist jedoch bekannt, dass die Lage des Gehirns in Bezug auf diese Punkte individuell stark unterschiedlich ist und im Zentimeterbereich liegt, so dass eine genaue Zuordnung der Elektroden zu Funktionszentren gar nicht möglich ist. Die Dichte der Elektroden in der Praxis liegt höchstens bei 10\% NI, d.h. im Schnit bei etwa 3cm. Eine höhere Dichte bringt keine zusätzliche Information, da der Schädel als räumlicher Tiefpass funktioniert und keine höhere Auflösung erlaubt.
+
+  %Aus Sicht der Signalanalyse ist es besonders wichtig zu wissen, unter welchen Messbedingungen das EEG abgeleitet wurde. Im Idealfall wird unipolar gegen verbundene Ohren oder Hals abgeleitet. Aus unipolaren Daten lassen sich die bipolaren Ableitungen einfach berechnen, umgekehrt geht das jedoch nicht. Auf jeden Fall ist zu klären, wie die Verschaltung des EEG-Verstärkers und der Elektroden realisiert wurde. Vermeintlich elegante Tricks, wie hardwaremäßige CAR sind auf jeden Fall zu meiden, ebenso Antialiasingfilter mit nichtlinearer Phase.
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gehirn-eeg.png}
+  %Das EEG wird in in fünf typische Bereiche unterteilt: delta (0..4Hz), theta (4-7Hz), alpha (8..13Hz), beta (13..30Hz), gamma ($>30Hz$). Diese Bereiche sind typisch für bestimmte physiologischen (Schlaf, Konzentration, Entspannung) und pathologischen Bilder. Für die Signalanalyse ist wichtig, dass die Bereiche nicht gleichzeitig vorhanden sind, einer ist immer dominant, was die Analyse leicht vereinfacht.
+  EEG in fünf Bereiche unterteilt:
+  \begin{tabular}{c|c|c|c|c}
+    0-4 Hz & 4-7 Hz & 8-13 Hz & 13-30 Hz & $>$30 Hz \\
+    Delta  & Theta  & Alpha   & Beta     & Gamma
+  \end{tabular}
+
+  \subsubsection{Biologische und technische Störquellen}\label{biologische-und-technische-störquellen}
+  \begin{itemize*}
+    %\item Das biomedizinische Messsystem ist von vielen Störquellen umgeben, die meisten sind dem Bereich der Medienversorgung, Industrie, Verkehr und Nachrichtentechnik zuzuschreiben. Für die BSA sind periodische (Versorgungsnetz, Monitore) und quasiperiodische (rotierende Maschinen, Straßenbahn) Störungen noch ein vergleichsweise geringes Problem, denn diese lassen sich gezielt mit spektralen Filtern in der analogen Messkette oder digital nach ADC unterdrücken.
+    \item (quasi-)periodisch: geringes Problem, spektrale Filter
+    %\item Wesentlich schwieriger ist die Situation, wenn transiente Störungen vorliegen, denn diese haben im Allgemeinen einen unbekannten, einmaligen und daher nicht reproduzierbaren Verlauf. Solange die transiente Störung die Signalerfassung nicht beeinträchtigt (durch Übersteuerung des Messverstärkers) und deutlich von der Signalform abweicht (z.B. Ausgleichsvorgang mi EKG), kann sie mit relativ einfachen Mitteln beseitigt werden, dennoch im Allgemeinen ist dies kaum möglich.
+    \item transient: unbekannter, einmaliger, nicht reproduzierbarer Verlauf
+  \end{itemize*}
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-netzfrequenz-bandsperre.png}
+  %Die häufigste -weil immer vorhanden- ist die Netzstörung. Selbst batteriebetriebene portable Messgeräte sind von dieser Störung betroffen. Da die Frequenz der Störung aber bekannt ist, kann sie -falls keine Übersteuerung vorliegt- mit einer Bandsperre reduziert werden. Allerdings sollte nicht die früher übliche ,,50 Hz -Filter'' Taste verwendet werden, denn diese Filter haben einen nichtlinearen Phasenfrequenzgang und können das Biosignal deutlich verfälschen. Bei der heutigen Technologie werden ausschließlich digitale Filter verwendet.
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-trendelimination.png} 
+  %Eine sehr häufige transiente Störung im medizinischen Bereich ist die Bewegungsartefakte. Jegliche Bewegung im Messbereich erzeugt in der empfindlichen medizinischen Messtechnik Ausgleichsvorgänge. Wenn die Signalform gut bekannt ist, wie z.B. beim EKG, so lässt sich eine langsame Artefakte durch Hochpassfilterung beseitigen.
+
+  \begin{tabular}{l|l}
+    periodische                       & transiente                \\\hline
+    öffentliches Stromversorgungsnetz & Spannungsspitzen im Netz  \\
+    Straßenbahn                       & Bewegungen im Messbereich \\
+    Rotierende Maschinen              & Schaltvorgänge            \\
+    Kommunikationsnetze               & Lastschwankungen
+  \end{tabular}
+
+  Störquellen
+  \begin{itemize*}
+    \item periodische Netzstörung im 50Hz Bereich $\rightarrow$ digitaler Filter
+    \item transiente Bewegungsartefakte $\rightarrow$ langsame A. durch Hochpass
+    \begin{itemize*}
+      \item Maximal $f_{0,01}=0,5 Hz$ Patienten-Monitor EKG
+      \item Maximal $f_{0,02}=0,05Hz$ Diagnostischer Monitor bei EKG
+    \end{itemize*}
+    \item Biologische Störquellen lassen sich nicht abschalten/kaum unterdrücken
+  \end{itemize*}
+
+  Ob Biosignal gewollt oder Störung, ist von Messaufgabe abhängig:
+  \begin{itemize*}
+    \item soll das EKG gemessen werden, ist das EMG eine Störung
+    \item soll das EEG gemessen werden, ist das EKG eine Störung
+    \item soll das EOG gemessen werden, ist das EEG eine Störung
+  \end{itemize*}
+
+  % Aus Sicht der BSA gestaltet sich das Problem der Störungen wesentlich schwieriger als bei technischen Störungen. Erstens, die Biosignalquellen befinden sich innerhalb des Körpers, daher können sie weder abgeschirmt noch abgeschaltet werden. Zweitens, das biologische Signalspektrum ist für alle Biosignale in etwa gleich, streckt sich von 0 bis etwa 1kHz aus und weist ein Maximum bei etwa 100Hz auf. Daher können biologische Störsignale mit spektralen Filtern allein nicht beseitigt werden.
+
+  %Ein weiteres -messmethodisches -Problem besteh darin, dass man Biosignale nicht pauschal in Nutz-und Störsignale trennen kann. Es ist vielmehr die Messaufgabe, an Hand der man diese Klassifikation vornehmen muss.
+
+  \paragraph{Eigenschaften technischer Störungen}
+  \begin{tabular}{p{4cm}|p{4cm}}
+    periodische Störungen                                                                & transiente Störungen                                         \\\hline
+    NF-magnetische Felder nicht eliminierbar durch Schirmung, erzeugen Differenzspannung & kaum eliminierbar, Signalform unbekannt/nicht reproduzierbar \\\hline
+    NF-elektrische Felder gut beherrschbar, erzeugen Gleichtaktstörungen                 & bestenfalls Detektion möglich, Messdaten nicht korrigierbar  \\\hline
+    HF-Felder immer mehr vorhanden (Kommunikation), Abschirmung unwirtschaftlich         &                                                              \\
+  \end{tabular}
+
+  %\begin{enumerate*}
+  %  \item Naturgemäß erzeugen niederfrequente magnetische Felder am Verstärkereingang Differenzspannungen, die direkt mit dem Biosignal überlagert werden, so dass sie mit der üblichen Verstäkertechnik nicht reduziert werden können. Hinzu kommt, dass auch eine Abschirmung nicht viel bringt, da in diesem Frequenzbereich mehrere 10- Zentimeter dicke Eisenplatten verwendet werden müssten, was in der Praxis nicht realisierbar ist. Da die niederfrequenten elektrischen (kapazitiv eingekoppelten) Störfelder Gleichtaktsignale sind, können sie zum Teil gut durch die Differenzverstärkertechnik reduziert werden. In immer höheren Maße stören hochfrequente Felder, vor allem aus dem Mobilfunk, Datennetzen, WLAN, Bluetooth, etc. Eine Abschirmung ist im normalen Praxisbetrieb unwirtschaftlich, so dass eine Reduktion der Störung allein durch Maßnahmen der EMV zu erreichen ist.
+  %  \item Wie schon erwähnt, transiente Störungen sind im Grunde nicht beherrschbar, da sie eigentlich nicht bekannt und nicht vorhersehbar sind. Mit Methoden der BSA ist zum Teil ihre Detektion möglich, wenn z.B. der Messbereich oder das Spektrum des Biosignals nachweislich verlassen wird. Diese Detektion kann allerdings nur dazu genutzt werden, die beeinträchtigten Daten zu verwerfen, eine Korrektur ist nicht möglich.
+  %\end{enumerate*}
+
+  \paragraph{Eigenschaften biologischer Störungen}\label{eigenschaften-biologischer-störungen}
+
+  \begin{itemize*}
+    \item Spektral alle Biosignale im selben Band (0-100Hz)
+    \item Nichtlineare Verkopplung der Biosignale verhindern Trennung mit herkömmlichen Methoden
+    \item Kein Biosignal deterministisch und reproduzierbar
+    \item Transiente/aperiodische, instationäre Biosignale nicht qualifizierbar
+    \item Trennung kaum möglich, bestenfalls Reduktion/Abschwächung
+    \item Problem: funktionelle Verkopplung/Überlagerung im Mensch
+  \end{itemize*}
+
+  %Das größte Problem bei der Reduktion von biologischen Störsignalen ist ihre funktionelle Verkopplung und physikalische Überlagerung im Volumenleiter Mensch. Die funktionelle Verkopplung (z.B. Einfluss der Atmung auf die Herzrate) ist nicht abschaltbar, ist nichtlinear und qualitativ unbekannt bzw. mit Methoden der BSA nicht beschreibbar. Außerdem sind die Verkopplungen in ihrer Komplexität weitgehend unerforscht und höchstens in Ansätzen dokumentiert. 
+
+  %Man kann im Einzelfall den Einfluss eines Biosignals auf ein anderes zum Teil reduzieren. So z.B. ist bekannt, dass das EMG ein breitbandiges und vor allem hochfrequentes Signals ist, während das EKG seine Hauptanteile eher im niederfrequenten Bereich besitzt. Daher kann man den Einfluss des EMG mit einem relativ einfachen Tiefpass reduzieren, allerdings auch auf Kosten der Beeinträchtigung des EKG.
+
+  \subsection{Medizinische Messverstärker}\label{medizinische-messverstärker}
+  %\subsubsection{Dynamik, Linearität}\label{dynamik-linearität}
+  Messverstärker Anforderungen
+  \begin{itemize*}
+    \item Linearität im Arbeitsbereich
+    \begin{itemize*}
+      \item statische Linearität des Verstärkers
+      \item statische Beziehung zw Aus-/Eingangsspannung
+    \end{itemize*}
+    \item Linearer Phasenfrequenzgang: Erhaltung der Signalform bei Verstärkung
+    \item Geringes Eigenrauschen des Messverstärkers
+    \item Hohe Gleichtaktunterdrückung, nicht unter 100dB
+    \item Übersteuerungsfestigkeit (100v Defi, 100W HF-Leistung)
+  \end{itemize*}
+
+  %\begin{enumerate*}
+  %  \item Mit Linearität im Arbeitsbereich ist die statische Linearität des Verstärkers gemeint, also die statische Beziehung zwischen der Ausgans-zu der Eingangsspannung $U_a/U_e$.
+  %  \item Mit linearem Phasengang ist die dynamische Linearität gemeint, also die Erhaltung der Signalform bei der Verstärkung. Beim nichtlinearen Phasengang wird die Veränderung der Signalform fälschlicherweise auch als ,,lineare Verzerrung'' bezeichnet, wohl in Anlehnung an die nichtlinearen Verzerrungen im Arbeitsbereich.
+  %  \item Das Eigenrauschen des Messverstärkers ist ein sehr wichtiger Parameter vor allem in der medizinischen Messtechnik, denn das Rauschen liegt im Bereich der zu messenden Signale im unteren Mikrovoltbereich. Ausgerechnet das 1/f-Halbleiterrauschen liegt dort, wo die Biosignale ihren wesentlichen Spektralanteil aufweisen.
+  %  \item Wie schon erwähnt, ein wesentlicher Teil der beherrschbaren technischen Störungen bilden die Gleichtaktsignale. Daher wird von den Messverstärkern eine hohe CMRR gefordert, die nicht unter 100dB liegen sollte.
+  %  \item Die Empfindlichkeit eines Verstärkers allein ist noch kein hinreichendes Kriterium. Ein medizinischer Verstärker muss übersteuerungsfest sein, damit er nicht schon beim ersten Defibrilationsimpuls oder bei der ersten OP mit HF-Gerät seine Dienste aufgibt. Und dies zu gewährleisten ist für die Elektroniker eine echte Herausforderung: Es gilt nämlich das Ziel, einen Verstärker aufzubauen, der im Mikrovoltbereich arbeitet, dennoch bei Spannungen von mehreren 100V (Defibrilation) oder HF-Leistungen (um 100W) nicht beschädigt wird und zeitnah seinen Arbeitsbereich wiederfindet.
+  %\end{enumerate*}
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Linearität-arbeitsbereich.png}
+
+  Arbeitsbereich
+  \begin{itemize*}
+    \item Pegel der Biosignale gut bekannt
+    \item EKG zwischen $\pm$5 mV
+    \item Reserve bis Begrenzung ungefähr 50\% des Arbeitsbereichs
+  \end{itemize*}
+  %Die Pegel der Biosignale sind gut bekannt, so dass den Arbeitsbereich des Verstärkers vorzugeben, kein Problem darstellt. So wird dieser Bereich für das EKG etwa zwischen - 5 und +5 mV liegen. Als Reserve bis zur Begrenzung sollte man mindestens 50\% des Arbeitsbereiches vorsehen.
+
+  \subsubsection{Eigenrauschen}\label{eigenrauschen}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-eigenrauschen.png}
+  \begin{itemize*}
+    \item Halbleiterrauschen bei 10Hz weißes (Widerstands-) Rauschen
+    \item Schaltungsentwurf auf minimierung des Rauschens beschränken
+    \item Auswahl an guten Halbleitenr sehr begrenzt
+    \item Herstellerangaben teils beschönigt
+  \end{itemize*}
+
+  %Das Halbleiterrauschen (1/f) erreicht bei etwa 10Hz den Pegel des weißen (Widerstands-) Rauschens. Da aber in diesem Bereich die meiste Energie der Biosignale liegt, ist es beim Schaltungsentwurf wichtiger, geeignete Halbleiter auszusuchen als sich auf die Minimierung des Widerstandsrauschens zu beschränken. Da die Auswahl an guten Halbleitern sehr begrenzt ist und dadurch den Entwicklern deutliche technologische Grenzen gesetzt sind, versuchen einige Konstrukteure und Hersteller die Eigenschaften ihrer Technik dadurch zu beschönigen, dass sie das Spektrum nach unten durch einen Hochpass begrenzen und erst dann die Rauschspannung messen und angeben. Daher muss man bei den Vergleichen verschiedener Techniken an dieser Stelle sehr vorsichtig vorgehen. Beispielsweise ist ein Verstärker, der angeblich nur 2uV Rauschspannung erzeugt aber erst bei 1Hz beginnt sicher nicht besser, als einer mit 3uV Rauschspannung dafür aber bereits ab 0.1Hz verstärkt.
+
+  \subsubsection{Frequenzgang}\label{frequenzgang}
+  \begin{itemize*}
+    \item Linearer Phasenfrequenzgang: Keine Formverzerrung
+    \item Signalform darf nicht verfälscht werden
+    \item deshalb Gruppenlaufzeit konstant $d(f)=const.$
+    \item $\rightarrow$ Phasenfrequenzgang: $\phi(f)=\int d(f)df=\varphi_0*f$
+  \end{itemize*}
+
+  % Die wichtigste Eigenschaft der Biosignale, die von Medizinern diagnostisch genutzt wird, ist ihre Signalform. Daher lautet eine der grundlegenden Anforderungen an die Messtechnik und die BSA, dass die Signalform nicht verfälscht werden darf. Das bedeutet, dass sowohl im analogen als auch im digitalen Teil des Messsystems die Gruppenlaufzeit konstant sein muss. Daraus lässt sich die Forderung herleiten, dass der Phasengang linear sein muss, zumindest im Übertragungsbereich.
+
+  \subsection{Differenzverstärker}\label{differenzverstärker}
+  Vollkommene Symmetrie (DV und Signalanbindung)
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Differenzverstärker-funktion.png}
+    %\item Vg ist Quelle der massebezogenen Störung. Die Störspannung gelangt auf beide Eingänge über Streukapazitäten, deren Impedanzen mit R4 und R5 simuliert werden, in gleicher Phase und im Idealfall auch mit gleichem Pegel. Die Störsignale an den Eingängen U10 und U20 sind also gleich, werden daher als Gleichtaktsignale bezeichnet.
+    \item Störsignale an Eingängen Phasen/Pegel-gleich $\rightarrow$ Gleichtaktsignal
+    %\item Vd ist die gewünschte massefreie Spannung (aus Sicht der Signalquelle zählen R4 und R5 nicht als Masseverbindung, die ,,hängt in der Luft'', floating source). Die Signalquelle Vd liegt direkt zwischen den Eingängen an, erzeugt daher eine Differenzspannung (siehe Funktionsprinzip eines Differenzverstärkers: Durch die Verkopplung der beiden Zweige T1 und T2 hat eine Zunahme der Eingangsspannung U10 Abnahme von Ud1 und Zunahme von Ud2, analog gilt das für U20. Daher liegt zwischen Ud1 und Ud2 die verstärkte Differenz von U10 und U20 an).
+    \item Signalquelle erzeugt Differenzspannung
+    %\item Betrachtet man Ud1 und Ud2 massebezogen, so liegen überlagerte Gleichtakt- und Differenzspannungen an (unterer Grafik). Betrachtet man die verstärkte Spannung massefrei (also als Differenz zwischen Ud1 und Ud2), so verschwindet durch die Differenzbildung die Gleichtaktstörung und die gewünschte Differenzspannung bleibt übrig.
+    %\item Alle bisherigen Erläuterungen gelten nur im Idealfall: Sowohl der Verstärker ist ideal symmetrisch (identische Transistoren und Widerstände), als auch die Einkopplung der Gleichtaktstörung erfolgt ideal symmetrisch (über R4 und R5).
+    \item Verstärker ist ideal symmetrisch (identische Transistoren/R)
+    \item Einkopplung der Gleichtaktstörung idel symmetrisch über R
+  \end{itemize*}
+
+  Symmetrie im DV, asymmetrische (realistische) Signalanbindung
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Differenzverstärker-asymmetrisch.png}
+    \item Einkopplung der Gleichtaktstörung immer unsymmetrisch
+    \item unmöglich, im Messkreis Symmetrie herzustellen
+    \item Gleichtaktanteil der Störung unterdrückt aber zur Differenz gewordene Anteil am Ausgang besteht
+  \end{itemize*}
+
+  \subsubsection{Differenz- und Gleichtaktverhalten}\label{differenz--und-gleichtaktverhalten}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt.png}
+  \begin{itemize*}
+    \item $SNR_{in} = \frac{U_{d_in}}{U_{g_in}}=\frac{1mV}{10V}=10^{-4}\approx -80dB$
+    \item $V\_g$: Gleichtaktstörung (Netz), $V\_d$: Nutzsignal (EKG)
+    \item meistens als integrierte analoge Schaltungen mit OPVs eingesetzt
+    \item Ausgang massefrei, daher zweite Stufe zur Differenzbildung (IC3) zu Ausgang massebezogene Spannung
+    \item Anordnung ist Instrumentationsverstärker (instrumenation amplifier)
+    \item Eingang (realistisch) Signapegel von 1mV (EKG), Netzstörung 10V, SNR sehr niedrig, -80dB
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Diff-und-Gleichtakt2.png}
+    \item $CMRR=\frac{U_{d_out}}{U_{g_out}}*\frac{U_{g_in}}{U_{d_in}}=\frac{200mV}{20mV} *\frac{10V}{1mV}=10^5 \approx 100dB$
+    \item CMRR: Common-Mode Rejection Ratio, Gleichtaktunterdrückung
+    \item mit Ausgangssignal des Verstärkers $\rightarrow$ Spektralanalyse
+    \item Netzstörung am Ausgang 20mV, gewünschte Signal 200mV, SNR am Ausgang ist 10/20dB
+    % Da der SNR am Eingang - 80dB betrug, wurde eine SNR-Verbesserung von 100dB erreicht. Diese Verbesserung ist auf die Gleichtaktunterdrückung selbst bei Asymmetrie am Eingang zurückzuführen, so dass in diesem Fall das CMRR identisch der SNR-Verbesserung ist. (Common-Mode Rejection Ratio, Gleichtaktunterdrückung, muss in der Medizintechnik laut Katalog mindestens 100dB, besser 120dB erreichen).
+  \end{itemize*}
+
+  \subsection{Instrumentationsverstärker}\label{instrumentationsverstärker}
+  mehrstufiger Verstärker, mit hohem Eingangswiderstand ($>$100 MOhm) und hoher CMRR ($>$100dB)
+
+  \subsubsection{Mehrstufiger Verstärker}\label{mehrstufiger-verstärker}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-mehrstufiger-verstärker.png}
+    \item erste Stufe ist Eingangs-Differenzverstärker mit massefreiem Ausgang %die Ausgangsspannung ergibt sich aus der Differenz der Ausgangsspannungen von IC1 und IC2
+    \item zweite Stufe verstärkt zusätzlich und bezieht die verstärkte Spannung auf Masse, so dass am Ausgang massebezogene, verstärkte Eingangsdifferenz vorliegt
+    \item V1: $u_{ad}=A*u_{ed}+B*u_{eg}$, $u_{ag}=C*u_{eg}+D+u_{ed}$,
+    \begin{itemize*}
+      \item $A/B=F$: Diskriminationsfaktor
+      \item $A/C=H$: Rejektionsfaktor
+    \end{itemize*}
+    \item V2: $u_a=V_d u_{ed}+\frac{V_d}{CMR}u_{eg}=V_d(A u_{ed}+\frac{A}{F} u_{eg})+\frac{V_d}{CMR}\frac{A}{H} u_{eg}$
+    \begin{itemize*}
+      \item $u_a|_{u_{ed}=0} = V_d A(\frac{1}{F}+\frac{1}{CMR*H}) u_{eg}$
+    \end{itemize*}
+    \item Gesamt-Gleichtaktunterdrückung des mehrstufigen Verstärkers ist im wesentlichen abhängig von der ersten (Eingangs-)Stufe
+    %\item Berechnet man die Ausgangsspannung in Abhängigkeit von der Eingangs-Gleichtaktspannung und von den Verstärkerparametern, so zeigt sich, dass für den CMRR die erste Stufe entscheidend ist, die folgenden Stufen sind unwesentlich beteiligt. Daher wird in der ersten Stufe der höchste Entwicklungsaufwand getrieben.
+  \end{itemize*}
+
+  \subsubsection{Hoher Eingangswiderstand}\label{hoher-eingangswiderstand}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hoher-eingangswiderstand.png}
+    \item $R^{(1)}_{ed}=2R_D+R_C\approx 2R_D$
+    \item $R^{(2)}_{ed}=R_1+R_3 << R_D$
+    \item Eingangs-R der zweiten Stufe für Biosignale viel zu niedrig
+    \item zusätzliche Stufe mit hohem Eingangs-R zur Verstärkung nötig
+  \end{itemize*}
+
+  \subsubsection{Hohe Gleichtaktunterdrückung}\label{hohe-gleichtaktunterdrueckung}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-hohe-gleichtaktunterdrückung.png}
+    %\item rot: OPs integriert
+    %\item blau: Widerstände getrimmt
+    \item Gute Eigenschaften nur mit integrierter Technologie und getrimmten Widerständen erreichbar
+    \item ausschließlich integrierte IV eingesetzt (spezielle Ausnahmen)
+  \end{itemize*}
+
+  \subsection{Isolationsverstärker}\label{isolationsverstärker}
+  \begin{itemize*}
+    \item aus Sicherheitsgründen bzw. wegen zu hoher Spannungen
+    \item Messkreis von Umgebung galvanisch zu trennen
+    \item also bezugsfrei schweben zu lassen (floating circuit)
+  \end{itemize*}
+
+  Funktionsprinzip
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Isolationsverstäker.png}
+    \item alle Signalverbindungen und Stromversorgung werden getrennt
+    \item optisch oder transformatorisch über Isolationsbarriere realisiert
+    \item Biosignale sehr tieffrequent $\Rightarrow$ für Übertragung moduliert
+    \item Hardwareaufwand steigt enorm $\Rightarrow$ integrierte Isolationsverstärker
+  \end{itemize*}
+
+  Galvanische Trennung und ihre Auswirkung
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Galvanische-trennung.png}
+    \item Patientensicherheit enorm verbessert
+    \item Signaleingenschaften u.U. schlechter (Streukapazitäten)
+    \item notwendiger Modem erzeugt weitere Störungen und Verzerrungen des gewünschten Signals
+  \end{itemize*}
+
+  \subsection{Guardingtechnik}\label{guardingtechnik}
+  Funktionsprinzip
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding.png}
+    \item Abschirmung der Messkabel wirkungsvoll zur Störungsreduktion
+    \item Schirm und Messkabel bilden relativ große Kapazität bis 100pF
+    \item Impedanz der Kapazität parallel zum Eingangswiderstand des Verstärkers und reduziert diesen %Während ohne Schirmung der Messstrom 100nA beträgt, steigt er auf 300nA bei Schirmung an, der Eingangswiderstand wurde also auf ein Drittel seines ursprünglichen Wertes reduziert und das ist inakzeptabel.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding2.png}
+    \item Eingangsspannung über Impedanzwandler an Schirm gelegt
+    \item Schirmkapazität ist da aber keine Spannungsdifferenz mehr %$ also fließt auch kein Strom. Damit erscheint die Impedanz der Schirmkapazität vom Eingang her theoretisch unendlich groß, praktisch nah dran. Früher als Bootstrap-Prinzip bekannt.
+    \item Impedanz der Kapazität dynamisch idealerweise beseitigt, theoretisch von Eingangsklemmen nicht sichtbar % Die Kapazität ist aber nach wie vor physisch vorhanden! Diese Tatsache ist für bestimmte Fragestellungen sehr wichtig, z.B. Analyse bei implusartigen Störungen, bei den der Verstärker es natürlich dynamisch nicht schafft, den Impuls in Echtzeit auf den Schirm zu führen.
+  \end{itemize*}
+
+  Realisierung
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-guarding-real.png}
+    \item mit zusätzlichen OPV (IC4) im IV realisieren
+    \item Kanäle nicht einzeln $\rightarrow$ alle mit Gleichtaktsignal belegt
+    \item spart Hardware und ist ausreichend
+    \item kritisch ist Gleichtakt-Eingangswiderstand, der Differenz-Eingangswiderstand nicht
+  \end{itemize*}
+
+  \subsection{Aktive Elektroden}\label{aktive-elektroden}
+  Funktionsprinzip
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-aktive-elektroden.png}
+    \item Ansatz: Verstärkung und Digitalisierung direkt auf Elektrode
+    \item Datenübertragung robust gegen Störungen, da binär
+    \item Problem: Zuführung des Bezugspotentials notwendig
+  \end{itemize*}
+
+  Störungsresistenz
+  \begin{itemize*}
+    \item technologisch aufwendig aber Vorteile bei Störungen%, die direkt auf die Messanordnung wirken
+    \item Elektrode: Drift der Polarisationsspannung kompensierbar
+    \item Kabel: unempfindlich gegen kapazitiv, induktiv und HF-eingekoppelte Störungen
+    \item Verstärkereingang: durch kürzste Wege zum Sensor keine direkte Beeinträchtigung der Eingangskreise
+    \item Unsymmetrie: lässt sich in Rückkopplung computergesteuert reduzieren bzw. eliminieren
+    \item Übertragung digital $\rightarrow$ störungsresistent und distanzunabhängig
+  \end{itemize*}
+
+  Gleichtaktunterdrückung:
+  %Die unter 2.4.1 hergeleitete Gleichtaktunterdrückung gilt nicht pauschal, 
+  bei aktiven Elektroden Differenzierung
+  \begin{itemize*}
+    \item Aktive Elektroden meistens mit Verstärkung $V=1$
+    \item daher CMR rechnerisch gleich 1, theoretisch zu niedrig
+    \item prinzipbedingt starke Unterdrückung der Stör-Gleichtaktsignale
+    \item daher praktisch sehr gute CMRR von 100dB und mehr
+  \end{itemize*}
+
+  \subsection{Analoge Filter}\label{analoge-filter}
+  %Das Unterscheidungskriterium ist, ob ein aktives Bauelement im Filter eingesetzt wird, d.h. ob es die Filtercharakteristik direkt beeinflusst.
+  %Dies ist der Fall bei allen rückgekoppelten Filtern mit Transistoren oder Operationsverstärkern.
+  Filter dem OV als Impedanzwandler folgt kein aktives Filter $\rightarrow$ passiv
+
+  \subsubsection{Passive Filter}\label{passive-filter}
+  Grundlagen der Filtertheorie: spektrale Filtern verwenden folgende Parameter
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie.png}
+  \begin{enumerate*}
+    \item Eckfrequenz/Grenzfrequenz: $F_{pass}$ der Durchlassbereich in die Filterflanke übergeht und Übertragung um 3dB/70\% vom Durchlassbereiche abgesunken
+    \item Sperrfrequenz $F_{stop}$, Dämpfung im Sperrbereich erreicht
+    \item Übergangsband/Filterflanke $F_{stop}-F_{pass}$, Übergangsbereich vom Durchlass- in das Sperrband
+    \item Steilheit ist Maß für die Filterflanke in dB/Hz. steiler$\rightarrow$besser% Hängt hauptsächlich von der Filterordnung ab.
+    \item Welligkeit im Durchlassbereich $A_{pass}$, im welchen Bereich die Übertragung im Durchlassbereich schwankt% Üblich ist weniger als 1dB, um 3dB ist für niedrige Ansprüche ausreichend.
+    \item Minimale Dämpfung $A_{stop}$, die garantierte Dämpfung % Hängt hauptsächlich von der Filterordnung ab.
+    \item $F_{s/2}$ ist halbe Abtastrate oder Nyquistfrequenz
+  \end{enumerate*}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Filtertheorie2.png}
+    %\item Die Filtertheorie unterscheidet vier Grundtypen, siehe oben. Die Filtertheorie bietet ein Instrumentarium zum Entwurf von Filtern, vor allem aber für den nachrichtentechnischen Bereich, d.h. L-C-Kombinationen, also schwingfähige Systeme. Im Spektralbereich der Biosignale werden fast ausschließlich RC-Filter verwendet. Die Vorgehensweise beim klassischen Filterentwurf ist über die Schaltungsanalyse, also faktisch in einem Iterationsverfahren: Grundbausteine der spektralen Filter sind bekannt und mit diesen versucht man die gewünschte Charakteristik iterativ durch hinzufügen von Elementen und anschließender Analyse zu erreichen. Im analogen Bereich ist es kaum möglich, eine Filtercharakteristik vorzugeben und nach irgendeiner Methode die Schaltung als Ergebnis zu erhalten, der Entwurf ist daher sehr intuitiv und routineorientiert. Die Schaltungssynthese reduziert sich dann lediglich auf die Entnormung der Modelle auf konkrete Bauelemente.
+    \item Übertragungsfunktion $G(j\omega)=\frac{U_2(j\omega)}{U_1(j\omega)}=| G(j\omega)|*e^{j\omega\phi}$
+    \item Amplitudenfrequenzgang $|G(j\omega)|=\sqrt{Re{G(j\omega)}^2 +Im{G(j\omega)}^2}$
+    \item Phasenfrequenzgang $\phi(\omega)=arctan\frac{IM{G(j\omega)}}{Re{G(j\omega)}}$
+    \item Grenzfrequenz $\omega_g=\frac{1}{RC}$
+    \item Filter üblich über Übertragungsfunktion beschrieben%, wobei auch äquivalente Beschreibungen möglich sind -Impulsantwort im digitalen Bereich, Pole-Nullstellen-Diagramme, seltener Zustandsgleichungen.
+    \item für BSA entscheidend Beschreibungen über Amplituden- und Phasenfrequenzgang
+  \end{itemize*}
+
+  Filterentwurf passiver Bauelemente
+  \begin{itemize*}
+    \item R,C,L, Quarzfilter
+    \item mechanische Resonatoren
+    \item akustische Oberflächenwellenfilter
+    \item im spektralen Bereich der Biosignale (0...1kHz) nur R und C
+    \item alternativ vor allem auf mechanischen/geometrischen Stabilität der schwingenden Anordnung aufbauend: piezokeramische, Quarzfilter, akustische OWF
+    \item im Spektralbereich der Biosignale nur R-C-Kombinationen
+    %\item Beispiele: oben ein zweikreisiger Parallelschwingkreis, der zur Schmalbandfilterung in der Nachrichtentechnik eingesetzt wird. Unten ein Phasenschiebernetzwerk, z.B. in einem RC-Generator.
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-filterentwurf2.png}
+  \end{itemize*}
+
+  \subsubsection{Aktive Filter}\label{aktive-filter}
+  \begin{center}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-tiefpass-2.ordnung.png}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-hochpass-2.ordnung.png}
+  \end{center}
+  \begin{itemize*}
+    \item links: Tiefpass; rechts: Hochpass
+    \item $R_{0a}=(\epsilon-1)R_0$, $u_a=\epsilon*u_e$ $\Rightarrow$ Filtertyp mit $R_0$ einstellbar
+    \item OVs ermöglichen definierte Gegenkopplung
+    \item effektive, kleine (passiv komplizierte) Filter möglich
+    \item am beliebtesten kaskadierte Stufe 2. Ordnung
+    \item jede Stufe der Kask. verursacht 3dB-Abfall an Grenzfrequenz
+    \item Filtertyp bequem durch Veränderung eines einzigen Widerstandes über alle drei Basischarakteristiken eingestellbar
+    \item die Basistypen sind
+  \end{itemize*}
+  \begin{description*}
+    \item[Bessel] relativ flache Flanke, niedrigste Flankensteilheit, konstante Gruppenlaufzeit
+    \item[Butterworth] wenig Welligkeit im Durchlassbereich, steilere Flanke als Bessel
+    \item[Tschebysheff] steilste Flanke und Welligkeit im Durchlassbereich
+  \end{description*}
+  \begin{center}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-aktive-filter-3.png}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-aktive-filter-4.png}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-aktive-filter2.png}
+    \begin{tabular}{c|c|c|c}
+                 & Bessel  & Butterworth & Tschebyscheff (1,5dB) \\
+      $\epsilon$ & $1,267$ & $1,586$     & $2,482$               \\
+      $\gamma$   & $0,618$ & $1,0$       & $1,663$
+    \end{tabular}
+  \end{center}
+  \begin{itemize*}
+    \item Folgen nichtkonstanter Gruppenlaufzeit sind u.a. Formverzerrungen
+    \item aktive Filter häufig vor AD-Wandler ($\tau=RC$)
+    \item Alternativ Filter mit geschalteten Kapazitäten: An Stelle des Widerstandes am Eingang befindet sich eine Kapazität, die im Takt von fs zwischen Eingang und dem OV umgeschaltet wird. Der mittlere Strom, der mit C3 integriert wird, hängt also von der Schaltfrequenz und dem Kapazität C2 ab. Daher ergibt sich die Zeitkonstante aus den beiden Kapazitäten, die auf dem Chip integriert sind und aus der Abtastfrequenz. Man kann also die Zeitkonstante allein durch Veränderung der Schaltfrequenz einstellen, ohne ein Bauelement der Schaltung ändern zu müssen. ($\tau=\frac{1}{f_S}*\frac{C_3}{C_2}$)
+  \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-diskreter-integrator-mit-ov.png}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-integrierter-integrator-mit-sc.png}
+  \end{center}
+
+  \subsection{Linearer Phasenfrequenzgang}\label{linearer-phasenfrequenzgang}
+  \begin{itemize*}
+    \item Signalform der wichtigste Signalparameter
+    \item Form der Biosignale ist diagnostisch relevant
+    \item Formverzerrungen können zur falschen Diagnose führen
+    \item notwendig, dass vom Messsystem nicht verzerrt
+    \item konstante Gruppenlaufzeit Bedingung für Erhaltung der Signalform
+    \item Konstante Gruppenlaufzeit heißt, dass alle spektralen Anteile des Signals im System um gleiche Zeit verzögert werden
+    \item Ist Zeit nicht gleich, erscheinen z.B. höherfrequente Anteil am Ausgang später als niederfrequente
+    % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ekg-verzerrt.png}
+    \item EKG-Filterung mit Butterworth-Filter: nichtlinearer Phasenfrequenzgang, also nichtkonstante Gruppenlaufzeiten. Führen dazu, dass die hochfrequenten Anteile des QRS- Komplexes deutlich verspätet erscheinen, was in der Signalform schnelles Nachschwingen zur Folge hat
+    \item Spektrogramm des Original-EKG zeigt typische Energieverteilung in der t-f-Ebene: Die P-und T-Welle liegen im tieffrequenten Bereich bis ca. 10Hz. Die R-Zacke ist deutlich kürzer und hat Impulscharakter, so dass sie spektral wesentlich breiter ist und höhere Frequenzen beinhaltet, hier bis 50Hz, ohne Filterung bis 100Hz.
+    \item Spektrogramm des gefilterten Signals zeigt typischen Effekt nichtkonstanter Laufzeit: Die Frequenzen(-gruppen), die höher als ca. 20Hz liegen, werden deutlich verzögert und erzeugen das schnelle Nachschwingen.
+  \end{itemize*}
+
+  \section{Signalkonditionierung}
+  \subsection{Pegelanpassung}\label{pegelanpassung}
+  Pegelanpassung notwendig für
+  \begin{itemize*}
+    \item massebezogene Eingänge von ADC (+/- 1V...+/-10V)
+    \item standardisierte Schnittstellen (0...1V, z.B. Schreiber)
+    \item verkabelte Übertragung zur Zentrale (Elektrodenbrause bei EEG)
+  \end{itemize*}
+
+  Realisierung mit
+  \begin{itemize*}
+    \item Pegelschieber
+    \item programmierbare Verstärker (integierte analoge Elektronik)
+    \item automatische Verstärkungsregelung (Rückkopplung)
+  \end{itemize*}
+
+  massefreie und massebezogene Signale
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-pegelanpassung.png}
+    \item biologisches Objekt - Volumenleiter, immer kann nur Potentialdifferenz abgeleitet werden, d.h. massefrei (symmetrisch)
+    \item bei Verstärkung, spätestens bei AD-Wandlung, Massebezug notwendig
+    \item Wegen Störungen massefreie (symmetrische) analoge Strecke möglichst durchgängig bis zum ADC (verdrillte Leitungen, Differenzverstärker)
+  \end{itemize*}
+
+  \subsection{Abstastung, Aliasing}\label{abstastung-aliasing}
+  \begin{itemize*}
+    \item Abtastung: Erfassung des momentanen Wertes eines Signals zu definierten Zeitpunkten
+    \item Üblicherweise ist Signal zeitkontinuierlich, nach der Abtastung liegt eine zeitdiskrete Variante des Signals vor
+    \item kontinuierliches Signal (links) vs. zeitdiskretes Signal (rechts)
+  \end{itemize*}
+  \begin{center}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-kontinuierliches-signal.png}
+    \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-zeitdiskretes-signal.png}
+  \end{center}
+
+  Abtastung ist mathematisch eine Multiplikation des Signals mit einer Folge von Dirac-Pulsen:  $y(t)=x(t)*\sum_{n=-\infty}^{\infty}\sigma(t-nT_A)$ ($T_A$ ist die Abtastperiode)
+
+  Eine Multiplikation von zwei Signalen im Zeitbereich entspricht der Faltung ihrer Spektren im Frequenzbereich (und umgekehrt): $Y(\omega)=X(\omega)*\sum_{n=-\infty}^{\infty} \sigma(\omega-n\frac{1}{T_A})$
+
+  \begin{itemize*}
+    \item EKG ist digitalisiert um es darstellen zu können
+    \item stark instationäres Signal mit scharfer R-Zacke. Daraus ergibt sich ein periodisches Spektrum, da die R-Zacke einen nahezu impulsartigen Verlauf hat.
+    \item Um Überlappung (Aliasing) der Spektren und Mehrdeutigkeiten zu vermeiden, muss gelten: $\frac{1}{T_A}\geq 2*f_{max}$
+    \item Nyquist-Frequenz entspricht der halben Grundfrequenz der Abtastrate, sie begrenzt nach oben das bei Null beginnende sog. Basisband.
+    \item Basisband ist der Frequenzbereich, in dem man bei der Signalanalyse arbeitet
+    \item damit gespiegelte Spektrum nicht bis ins Basisband reicht und dadurch das Vorhandensein real nichtexistenter Signalkomponenten vortäuscht, muss gewährleistet werden, dass die halbe AR höher liegt, als die höchste Frequenz des Signals, d.h. die AR muss mindestens doppelt so hoch sein, die die höchste vorhandene Frequenz
+    \item periodische Wiederholung des Spektrums nach der Abtastung hat folgende praktische Bedeutung: Da sich das Spektrum mit jeder Harmonischen der AR wiederholt und gespiegelt wird, kann man ein bandbegrenztes Signal ins Basisband holen
+  \end{itemize*}
+
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-rekonstruierter-sinus.png}
+  \subsubsection{Rekonstruktion}
+  \begin{itemize*}
+    \item nach der Abtastung/Signalverarbeitung Ergebnis oft im ursprünglichen Bereich des Signals benötigt
+    \item Übertragung aus Analyse- in Originalbereich
+    \item Interpolation zwischen diskreten Punkten notwendig oder aus Sicht der Filtertheorie die Anwendung eines Interpolationsfilters
+    \item einfachste Interpolationsfilter ist Tiefpass in Nähe der höchsten Signalfrequenz. Wurde bei Abtastung das Abtasttheorem verletzt, treten im rekonstruierten Signal Komponenten auf, die im Originalsignal nicht vorhanden waren
+  \end{itemize*}
+  % Dieser Effekt kann auch im Fernsehen beobachtet werden: Tragen die Sprecher z.B. ein Hemd mit einem sehr feinen Strichmuster, so reicht die Bildschirmauflösung -d.h. die räumliche Abtastrate -nicht aus, um das Muster richtig zu erfassen und am Fernsehmonitor entsteht sog. Moiree, d.h. großflächige Farbmuster, die es in der Realität nicht gibt.
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-abtastung-rekonstruktion.png}
+  \begin{itemize*}
+    \item $y(t)=x(t)*\sum^{\infty}_{n=-\infty} \sigma(t-nT_A) \Leftrightarrow$ $Y(\omega)=X(\omega)*\sum^{\infty}_{n=-\infty}\sigma(\omega-n\frac{1}{T_A})$
+    \item Übergang aus dem kontinuierlichen Zeitbereich in eine Folge, d.h. Entkopplung von der Abtastperiode
+    \item $y(n)=y(nT_A) \Leftrightarrow Y(k)=Y(k\omega_A/M)=\sum_{n=1}^M y(nT_A)^{-jkn/M}$
+    \item $Y(K)\Leftrightarrow FFT(y(n))\Rightarrow$ normierte Frequenz $\omega\in(0,2\pi)\vee f\in(0,1)$
+    \item Nyquist Frequenz $\omega_N=\pi$, $f_N=0,5$
+    \item Nach Abtastung und Digitalisierung hat Signal Form einer Zahlenfolge/Vektors oder Matrix. Ist Abtastrate unbekannt, so ist Signal nicht mehr reproduzierbar
+    \item Da Analysen/digitale Filterung grundsätzlich ohne Kenntnis der Abtastrate durchführbar, wird sog. normierte Frequenz eingeführt, die bei Rekonstruktion durch reale Abtastrate ersetzt
+  \end{itemize*}
+
+  % \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-amplitudenmodulation.png}
+  %\begin{itemize*}
+  %  \item $EKG\_\{AM\}=EKG*sin(\omega\_c t)$
+  %  \item Beispiel zum Abtasttheorem: Das EKG wird für eine Kabelübertragung mit einem Träger bei 10kHz multipliziert, was nachrichtentechnisch einer Amplitudenmodulation entspricht. Das Spektrum spiegelt sich um den Träger herum, ähnlich wie bei der Abtastung. Hier gibt es allerdings nur eine Spiegelung, da der Träger eine Harmonische ist und somit im Spektrum nur eine Nadel darstellt. Es entstehen zwei Seitenbänder, das obere und das untere. Beide sind hinsichtlich des Informationsgehaltes völlig identisch.
+  %  \item Die Frage ist nun zu beantworten, wie hoch die Abtastrate für ein solches Signal sein muss.
+  %\end{itemize*}
+
+  Abtasttheorem Kotelnikov, Channon ($T_A=1/2f_{max}$)
+  \begin{itemize*}
+    \item hinreichend aber nicht notwendig $AR\geq 22ksps$
+    \item $Y(\omega)=X(\omega)*\sum^{\infty}_{n=-\infty} \sigma(\omega-n\frac{1}{T_A})$
+    \item notwendig und hinreichend: $AR\geq 2ksps$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-abtastung-kotelnikov.png}
+    \item höchste Frequenz im Signal 11kHz $\rightarrow$ Abtastrate mind. 22ksps. hinreichende, aber keine notwendige Bedingung
+    \item bezieht man sich auf Wiederholung des Spektrums um jede Harmonische der Abtastrate, wird eine AR von 2ksps ausreichen. Damit passt eine Wiederholung des Spektrums in das Basisband
+  \end{itemize*}
+
+  Pulsamplitudenmodulation (PAM)
+  \begin{itemize*}
+    \item nach Sample \& Hold: Zeit diskret, Pegel analog
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Pulsamplitudenmodulation.png}
+    \item Abtastung entspricht nachrichtentechnisch der PAM: Werte treten in definierten Abständen entsprechend dem Pulsbreite (Abtastperiode) auf und haben kontinuierlichen Wertebereich
+    \item spielt in der Nachrichtentechnik keine praktische Rolle, wichtig für Theorie
+  \end{itemize*}
+
+  Mehrkanalsystem - Simultansampling
+  \begin{itemize*}
+    \item Oft mehrkanalige Messsysteme benötigt
+    \item Für Analyse entscheidend, dass zeitlicher Zusammenhang der Kanäle identisch oder bekannt
+    \item Bei echtem Simultansampling werden alle Kanalsignale zum selben Zeitpunkt abgetastet und sequentiell digitalisiert. Im Normalfall reicht ein ADC für alle Kanäle
+    \item HW-Aufwand minimieren $\rightarrow$ Kanalsignale sequentiell abgetastet und digitalisiert
+    \item Signalanalytisch problematisch: Aus Signalsequenz wird Simultansignal über Laufzeitkorrektur in der FFT zurückgerechnet. Bei zeitkritischen Vorgängen ist dies zu verwerfen, da die durch die sequentielle Abtastung verlorengegangenen Signalteile durch Rückrechnung nicht mehr zu retten sind
+    \item parallele (links) vs sequentielle (rechts) Abtastung
+    \begin{center}
+      \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme.png}
+      \includegraphics[width=.3\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme3.png}
+    \end{center}
+    \item simultan (links) vs versetzte (rechts) Kanäle\\
+    \begin{center}
+      \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme2.png}
+      \includegraphics[width=.2\linewidth]{Assets/Biosignalverarbeitung-Mehrkanalsysteme4.png}
+    \end{center}
+    \item Versatz der Kanäle um $T_A/N$
+    \item Rechnerische Korrektur der Abtastzeit (nicht-online-fähig) $X^*(j\omega)=X(j\omega)^{j\omega T_A/N}$
+  \end{itemize*}
+
+  \subsection{Digitalisierung}\label{digitalisierung}
+  \subsubsection{Prinzipien der AD Wandlung}\label{prinzipien-der-ad-wandlung}
+  \begin{center}
+    Einrampen- (links) vs Zweirampenverfahren (rechts)
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Einrampenverfahren.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Zweirampenverfahren.png}
+  \end{center}
+
+  Einrampenverfahren, Single-Slope-Conversion
+  \begin{itemize*}
+    \item $U_r$ steigt aus negativen Bereich, kreuzt die Null so wird K1 positiv. Da K2 positiv, $U_r$ unterhalb von $U_e$, öffnet Äquivalenzgatter (=Tor) \& und Zähler beginnt zu zählen
+    \item Erreicht $U_r$ Pegel von $U_e$, wird K2 negativ/null (=schließt) und Tor geht zu, Zähler hört auf zu zählen. Erreichte Zählerstand ist proportional der Spannung $U_e$
+    \item Vorteile: einfach, wenig Aufwand, relativ schnell
+    \item Nachteil: stark temperaturabhängig (Zählgrenzen von Analogwerten bestimmt), Wandelzeit abhängig von der Eingangsspannung
+  \end{itemize*}
+
+  Zweirampenverfahren, Dual-Slope-Conversion
+  \begin{itemize*}
+    \item Phase 1: Aufladung durch Eingangsspannung $U_e$ über konstante Zeit. Damit ist integrierte Wert proportional zur Ue
+    \item Phase 2: Entladung mit konstanter Referenzspannung $U_r$ bis zum Erreichen von Null. Entladezeit proportional $U_e$. Entladezeit wird digital gezählt, damit ist Digitalwert am Ende proportional $U_e$
+    \item Vorteil: Temperatureinfluß reduziert (gespiegelte analoge Integration), Fehlerquellen mit entgegengesetzten Vorzeichen (Auf-und Abintegrieren); Gute Genauigkeit bis 16 bit
+    \item Nachteil: Wandlerzeit abhängig von $U_e$, daher nicht konstant
+  \end{itemize*}
+
+  Sukzessive Approximation
+  \begin{center}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Sukzessive-Approximation.png}
+  \end{center}
+  \begin{itemize*}
+    \item DA-Wandlung mit vorgeschaltetem Komparator; DA-Wandler präziser herstellbar als herkömmliche ADC
+    \item Prinzip: Steuerwerk beginnt mit MSB und schaltet Bits bis LSB um, bis beste Approximation von $U_e$ erreicht
+    \item Ablauf: ist bei $MSB=1$ DAC-Spannung höher als $U_e$ $\rightarrow MSB=0$, da Komparator anzeigt, dass DAC-Spannung zu hoch. Ist bei $MSB-1=1$ DAC-Spannung niedriger als $U_e$, bleibt $MSB-1=1$ und nächstes Bit folgt. Sukzessive bis LSB nach bester Annäherung gesucht
+    \item Vorteil: DAC technologisch präziser herstellbar als ADC, Konstante Wandlungszeit, planbar im Zeitregime, Gute Auflösung (bis 18bit), relativ schnell und preiswert
+  \end{itemize*}
+
+  Delta-Sigma-Wandlung
+  \begin{center}
+    %\includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandler.png}
+  \end{center}
+  \begin{itemize*}
+    \item Ein-Bit-Wandler: Sobald Eingangssignal $x(t)$ aufintegrierte digitale Folge $xD(t)$ über/unterschreitet, wird Bit gesetzt/rückgesetzt
+    \item das integrierte Binärsignal folgt Eingangssignal mit höchstens einer Schrittweite als Fehler
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-2.png}
+    \item Im Demodulator müssen die bei Modulation durchgeführten Schritte invertiert werden: Integrator im Modulator wirkt insgesamt wegen Rückführung differenzierend, im Demodulator muss integriert werden. Wegen Taktung muss im Demodulator Tiefpass folgen um Signal zu glätten
+    \item Zwischen Modulator und Demodulator liegt Übertragungsstrecke. Unter linearer Annahme, kann Integration vom Demod zum Mod vor Summierer verlagert werden. Beide Integratoren zu einem hinter Summierer zusammengefasst. Es entsteht Delta-Sigma-Wandler (Differenz-Integration-1-Bit-Modulator).
+    \item Durch Vorlagerung des Integrators reduziert sich Demodulator (signalanalytisch) auf Tiefpass
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-Delta-Sigma-Wandlung-4.png}
+    %\item Diese Grafik zeigt die typischen Zeitverläufe im D-S-Modulator. Wie man bereits an der Blockstruktur erkennen konnte, handelt es sich -wie bei sukzessiver Approximation - um einen rückgekoppelten Kreis mit negativer Rückführung. In Anlehnung an die Regelungstechnik kann man demnach die Funktion so verstehen, dass die Bits im Bitstream so gesetzt werden, dass der Mittelwert des Ausgangs (siehe Integrator im Zeitverlauf) gegen Null bzw. einen Referenzwert läuft. Das digitale Ausgangssignal (Bitstream) ist qualitativ identisch mit eine Pulsbreitenmodulierten Signal, allerdings mit quantisiertem Pulsverhältnis. Das gleitende Mittel eines solchen Signals entspricht dem Originalsignal.
+    \item erforderliche Taktrate aus gewünschter Auflösung. z.B. Abtastrate 44,1kHz $\rightarrow$ 16bit digitalisiert %, kann der Takt des DS-Wandlers weit über 10MHz liegen 
+    (Oversamplingrate von 200)
+  \end{itemize*}
+
+  Flash-Converter, Parallelwandler
+  \begin{multicols*}{2}
+    \includegraphics[width=.8\linewidth]{Assets/Biosignalverarbeitung-Parallelwandler.png}
+    \columnbreak
+
+    Am anderen Ende der Skala Flash-Converter: sind sehr schnell, arbeiten weit in Videobereich von über 100MHz hinein.
+
+    Geht nur auf Kosten der Parallelität $\rightarrow$ für jede Quantisierungsstufe muss Komparator vorhanden sein.
+
+    Für Bitbreite von 8bit werden 256 Komparatoren benötigt, ist integriert machbar aber Obergrenze.
+  \end{multicols*}
+
+  \subsection{Telemetrie}\label{telemetrie}
+  \subsubsection{Analoge Übertragung}\label{analoge-uebertragung}
+  \begin{itemize*}
+    \item Direkt: verstärktes Signal auf kurze Entfernung
+    \item Analoge Modulation über Kabel, z.B. EKG zu PC-Audiokarte
+    \item Analoge Modulation kabellos, z.B. WLAN, Bluetooth, IR
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung.png}
+    \item Prinzip: harmonischer Träger vom Modulationssignal beeinflusst, so dass momentane Amplitude dem Pegel des Modulationssignals entspricht
+    \begin{itemize*}
+      \item Mathematisch und bei tiefen Frequenzen einfach über Multiplikation des Trägers mit dem Modulationssignal realisierbar
+      \item im HF-Bereich über aufwendige Modulationsschaltungen und Leistungsverstärker
+      \item AM-Signal sehr störungsempfindlich, Störungen wirken direkt auf Amplitude und durch elektromagnetische Welle von Ausbreitungsbedingungen beeinflusst
+      \item niedrige Ansprüche: akustische Qualität akzeptabel z.B. Mittelwellen-/Kurzwellen-Funk
+      \item Messtechnik: AM kann in ersten Stufen eines mehrkanaligen Systems eingesetzt werden (Untermodulatoren), in dem keine Störungen von außen auftreten und welche notwendige Bandbreite sehr sparsam nutzen im Vergleich zur FM
+    \end{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-2.png}
+    \item Spektrum des AM-Signals: notwendige Bandbreite doppelt so groß wie Modulationssignals EKG. Diese ließe sich nochmal halbieren, also auf die ursprüngliche Bandbreite reduzieren, da das informationstragende Spektrum im AM-Signal doppelt vorhanden ist, daher auch die Bezeichnung DSB (double side band). Würde man z.B. die linke Hälfte wegfiltern, bliebe nur das eine zur Informationsübetragung notwendige Band übrig, daher die Bezeichnung SSB (single side band)
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-3.png}
+    \item Bei FM wird Trägerfrequenz moduliert, d.h. Momentanfrequenz des FM-Signals hängt vom aktuellen Pegel des Modulationssignals EKG ab. Die Amplitude des FM-Signals ist konstant, die Dichte der Nulldurchgänge nimmt mit dem Pegel des Modulationssignals zu. Die hohe Amplitude der R-Zacke erzeugt im FM-Signal hohe Frequenzen (zwischen ca. 15ms und 65ms), während links und rechts der R-Zacke sichtbar tiefere Frequenzen vorliegen
+    \item FM besonders gut für Übertragungen kabelgebunden/kabellos (Band 433MHz) geeignet, da sehr unempfindlich gegen Amplitudenstörungen
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-analoge-übertragung-4.png}
+    \item FM Nachteil ist sehr hohe erforderliche Bandbreite des FM-Signals: diese beträgt das 10 bis 20-fache der Bandbreite des Modulationssignals. Beim EKG können daher Bandbreiten von bis zu 20kHz notwendig sein. Spektrum erstreckt sich weit hinter Nyquistfrequenz (2000Hz), so dass es vor Abtastung mit einem Antialiasingtiefpass beschränken bzw. mit einer viel höheren Abtastrate abtasten müsste
+  \end{itemize*}
+
+  \subsubsection{Digitale Übertragung}\label{digitale-uebertragung}
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-1.png}
+  \end{center}
+  binäre Übertragung, PCM
+  \begin{itemize*}
+    \item PCM ist einfachste binäre Übertragung: nach Begrenzung des Spektrums bleibt ein Band von ca. 300 Hz bis 3.4 kHz
+    \begin{itemize*}
+      \item Nach Abtastung mit 8 ksps liegt zeitdiskretes wertanaloges Signal vor, entspricht Puls-Amplituden-Modulation
+      \item Nach AD-Wandlung mit 8 bit und P/S-Wandlung liegt serielles, binäres Signal vor: das PCM-Signal
+      \item Das PCM-Signal wird über Leistungsverstärker und Leitungsanpassung auf Kabel gelegt
+      \item Nicht eingezeichnet ist Kompression, die Dynamik des Sprachsignals begrenzt und Reduktion der Bitbreite und Übertragungskapazität ermöglicht
+    \end{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-digitale-übertragung-2.png}
+    \item Zur Übertragung über (Telefon-)Kanäle ist es notwendig, die Pulse im Übertragungsband zur transportieren. Dazu werden logische Nullen und Einsen zwei verschiedenen Frequenzen zugeteilt, die im Sender und Empfänger gleich sind
+    \item mehr Frequenzen möglich, z.B. mit 16 Frequenzen kann man direkt Hexadezimalzahlen übertragen
+  \end{itemize*}
+
+  Klassifikation nach Impulsantwort als LTI-System (Linear Time Invariant)
+  \begin{itemize*}
+    \item IIR: Infinite Impulse Response
+    \begin{itemize*}
+      \item Funktionales Äquivalent zu analogen Filtern
+      \item Im allg. nichtlinearer Phasenfrequenzgang
+      \item Durch rekursive Struktur ist Impulsantwort unendlich lang
+      \item IIR werden auf Grund ihrer Struktur auch Rekursivfilter genannt
+      \item unendlich langer Datenspeicher eines Zeitverlaufs realisierbar, denn der letzte Wert am Filterausgang reicht immer aus, um den Wert am Filtereingang zu berechnen
+      \item Problematisch ist i.A. nichtlineare Phasengang, der für Formanalyse unzulässig ist
+    \end{itemize*}
+    \item FIR: Finite Impulse Response
+    \begin{itemize*}
+      \item Filtertypen realisierbar, die es in der analogen Welt nicht gibt (Hilbert, Allpass, adaptive Filter)
+      \item Linearer Phasenfrequenzgang realisierbar
+      \item theoretisch unendlich lange IR, für realisierbarkeit nach bestimmter Länge abgeschnitten und damit endlich
+      \item in Form eines Koeffizientenvektors realisiert und daher als Transversalfilter bezeichnet
+      \item Typenbreite ungleich größer als bei IIR, da mit Filtertypen realisierbar, die es in der analogen Welt gar nicht gibt
+      \item mit Transversalstruktur ist Linearität des Phasenganges gewährleistet
+      \item im Vergleich zu IIR-Filtern haben FIR um Größenordnungen mehr Filterkoeffizienten
+    \end{itemize*}
+  \end{itemize*}
+
+  \section{Digitale Filterung}\label{digitale-filterung}
+  IIR - Infinite Impulse Response
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-1.png}
+    \item $y(t)=g(t)*x(t)=\int_{-\infty}^{\infty} g(\tau)x(t-\tau) d\tau$
+    \item $Y(j\omega)=G(j\omega)* X(j\omega)$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-2.png}
+    \item $g(t)=\frac{1}{\tau}exp(-t/\tau)$
+    \item $G(j\omega)=\frac{1}{1+j\omega\tau}$
+    \item Im analogen Zeitbereich ergibt sich der Filterausgang aus der Faltung der Impulsantwort mit dem Eingangssignal. Entsprechend der FT ist dies äquivalent der Multiplikation von Spektren im f-Bereich.
+    \item Die Impulsantwort ist eine fallende e-Funktion, im f-Bereich ein T1-Glied.
+  \end{itemize*}
+
+  \subsection{IIR-Filter}\label{iir-filter}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-iir-3.png} $q\_0=5, q=exp(-T/\tau) = 0,61$
+    \item zeitdiskret (nach Abtastung)
+    \begin{itemize*}
+      \item $g_a(t)=q_0(\delta(t)+q\delta(t-T)+q^2\delta(t-2T)+...)$
+      \item $FT\{\delta(t-T)\}=e^{-j\omega T}$
+      \item $G_a(j\omega)=q_0(1+qe^{-j\omega T}+ q^2e^{-2j\omega T}...)$
+      \item $G_a(j\omega)=q_0\frac{1}{1-qe^{-j\omega T}}$
+      \item Z-Transformation $z=e^{j\omega T} \Rightarrow G(z)=q_0\frac{1}{1-qz^{-t}}$
+      \item Verzögerung um $T_A$
+    \end{itemize*}
+    \item Anlehnung an Impulsantwort-Invariant-Technik wird IR abgetastet $\rightarrow$ zeitdiskrete Version der IR, diese lässt sich als exponentielle Folge beschreiben
+    \item FT der Zeitverschiebung ist bekannt $\rightarrow$ Äquivalent der Reihe im f-Bereich
+    \item Über Näherungsrechnung geometrische Folge im f-Bereich zu einem Quotienten zusammenfassen
+    \item z-Transformation: Übergang aus zeitanalogem in zeitdiskreten Bereich
+    \item Exponent über z gibt Anzahl der Einheitsverzögerungen als Vielfaches der Abtastperiode an
+    \item Filter der Ordnung N: $G(z)=\frac{k_1}{1-q_1z^{-1}}+\frac{k_2}{1-q_2z^{-1}}+...+\frac{k_N}{1-q_Nz^{-1}}$
+    \item gemeinsamer Nenner: $G(z)=\frac{b_0+g_1z^{-1}+...+b_mz^{-m}}{1+a_1z^{-1}+a_2z^{-2}+...+a_nz^{-n}}=\frac{Y(z)}{X(z)}$
+    \item $Y(z)+a_1z^{-1} Y(z)+... =b_0X(z)+b_1z^{-1}X(z)+...$
+    \item zeitkontinuierlich $y(t)+a_1y(t-T)+... = b_0x(t)+b_1x(t-T)+...$
+    \item Sequenz: $y(n)=b_0x(n) +b_1x(n-1)+.... -a_1y(n-1)-...$
+    \item auf beliebiges Filter verallgemeinert: IIR allg. viel komplizierter als TP 1 Ordnung, lässt sich auf Summe von abklingenden e-Funktionen zurückführen
+    \item Formel auf gemeinsamen Nenner$\rightarrow$ in Terme für Eingang x und Ausgang y trennen
+    \item Rücktransformation in zeitanalogen Bereich zur Überprüfung der gewünschten Übertragungsfunktion
+    \item Übertragung in zeitdiskreten Bereich $\rightarrow$ Rekursionsformel für Ausgang $y(n)$
+  \end{itemize*}
+
+  IIR-Filter rekursiv
+  \begin{center}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv.png}
+    \includegraphics[width=.4\linewidth]{Assets/Biosignalverarbeitung-iir-rekursiv-2.png}
+  \end{center}
+  \begin{itemize*}
+    \item links: $y(n)=\sum_{i=0}^{N} b_ix(n-i) - \sum_{i=1}{N} a_iy(n-i)$
+    \item rechts: $y(n)=\sum_{i=0}^N b_ix(n-i) - \sum_{i=1}^N a_iy(n-i) = b_0x(n)+ \sum_{i=1}^N [b_ix(n-i) - a_iy(n-i)]$
+  \end{itemize*}
+
+  Entwurf eines IIR-Filters
+  \begin{enumerate*}
+    \item Übertragungsfunktion $G(j\omega)$ des Analogfilters
+    \item Kontinuierliche Impulsantwort $g(t)$ des Analogfilters
+    \item abgetastete Impulsantwort $g(nT)$ aus Impulsantwort $g(t)$
+    \item aus Reihe für $g(nT)$ z-Übertragungsfunktion $G(z)$ des IIR
+    \item aus $G(z)$ durch Rücktransformation in Zeitbereich die Rekursionsformel für Ausgangssignal $y(n)$
+  \end{enumerate*}
+
+  %  Entwurf eines IIR-Filter - Beispiel
+  %  \begin{lstlisting}[language=matlab]
+  % % Analoger Tiefpass bei 45 Hz
+  % [b,a] = butter(3, 2*pi*45, 'low', 's'); % Polynomformel fuer Butterworth-Tiefpass
+  % sys = tf(b,a); % Transformation des Polynoms in die Uebertragungsfunktion
+  % 
+  % figure
+  % impulse(sys) % Impulsantwort der Uebertragungsfunktion
+  % hold $ Bild halten zum Vergleich mit der Matlab-Impuls-Varianz
+  % 
+  % [bz,az]= impinvar(b,a,250) % Matlab Funktion zur Diskretisierung
+  % impz(250*bz, az, [], 250) % Darstellung der diskreten Impulsantwort
+  % 
+  % %Partialbruchzerlegung der analogen Formulierung
+  % [r,p,k]= residue(b,a)
+  % 
+  % % Inverse Laplace Transformation fuer die analoge Impulsantowrt
+  % % Vereinfachend kann fuer s=jw ersetzt werden
+  % gil=(282.7*exp(-282.7*t) + (-141.4-81.6*sqrt(-1))*exp((-141.4+244.8*sqrt(-1))*t) + (-141.4+81.6*sqrt(-1))*exp((-141.4-244.8*sqrt(-1))*t))
+  % 
+  % % abgetastete Impulsantwort
+  % tax = (0:15000-1)/250/1000;
+  % gab = 0.004 * ((282.7 * exp(-287.7 * tax) + (-141.4-81.6 * sqrt(-1))* exp((-141.4+244.8*sqrt(-1))*tax) + (-141.4+81.6*sqrt(-1))* exp((-141.4-244.8*sqrt(-1))*tax)));
+  % figure
+  % plot(tax,gab), title('abgetastete Impulsantwort Butterworth 3. Ordnung')
+  % 
+  % % Polynomdarstellung
+  % [bg ag] = residue(0.004*[282.7(-141.4-81.6*sqrt(-1))(-141.4+81.6*sqrt(-1))], [exp(-282.7/250) exp((-141.4+244.8*sqrt(-1))/250) exp((-141.4 -244.8 *sqrt(-1))/250)], [0])
+  % figure
+  % impz(bg,ag,[],250)
+  % figure
+  % freqz(bg,ag) 
+  % \end{lstlisting}
+
+  Eigenschaften von IIR-Filtern
+  \begin{itemize*}
+    \item aus analogen Filtern direkt herleiten (analoge ,,Prototypen'')
+    \item diesselben analogen Filter im digitalen Bereich
+    \item keinen linearen Phasenfrequenzgang
+    \item Nullphase nur bei gespiegelter Filterung
+  \end{itemize*}
+
+  \subsection{FIR-Filter}\label{fir-filter}
+  \begin{itemize*}
+    \item kein rekursiver Anteil: $G(z)=\frac{b_0+b_1z^{-1}+...+b_mz^{-m}}{1}=\frac{Y(z)}{X(z)}$
+    \item zeitdiskrete Realisierung: $Y(z)=b_0X(z)+b_1z^{-1}X(z)+...$
+    \item analoge Faltung: $y(t)=b_0x(t)+b_1x(t-T)+...$
+    \item diskrete Faltung: $y(n)=b_0x(n)+b_1x(n-1)+...$
+    \item Filterkoeffizienten gleich der abgetasteten Impulsantwort: $g(t)=b_0\delta(t)+b_1\delta(t-T)+...+b_L\delta(t-NT)$
+    \item $y(n)=\sum_{i=0}^N b_ix(n-i)$
+  \end{itemize*}
+  %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-nichtrekursiv.png}
+
+  Entwurf eines FIR-Filters
+  \begin{enumerate*}
+    \item Definition des Freqzenzgangs $G(j\omega)$ eines idealen analogen Filters
+    \item Berechnung der Impulsantwort $g(t)$ des analogen Filters
+    \item Abtastung der Impulsantwort $g(nT)$ des idealen FIR-Filters
+    \item Definition eines Fenstertyps (Rechteck, Hanning, Hamming) und Begrenzung der Impulsantwort $g(nT)$ durch Fenster
+    \item Verschiebung der Impulsantwort so, dass Filter kausal wird
+    \item Die Filterkoeffizienten $b\_i$ sind identisch mit den Werten der begrenzten und verschobenen Impulsantwort
+  \end{enumerate*}
+
+  Eigenschaften von FIR-Filtern
+  \begin{itemize*}
+    \item kein analoges Gegenstück
+    \item exklusive Übertragungsfunktion (Hilbert, Allpass)
+    \item Länge und Koeffizienten völlig frei wählbar
+    \item ideale Filter mit definierbarem Fehler realisierbar
+    \item linear- und nullphasige Filter realisierbar
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass.png}
+    %\item Impulsantwort des idealen Tiefpasses: erste 501 Filterkoeffizienten
+    % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-2.png}
+    %\item Digitaler Tiefpass der Länge $L=501$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-3.png}
+    \item Durch die Beschneidung der IR-Länge weicht Filtercharakteristik in Abhängigkeit von tatsächlichen Länge ab
+    \item Gibb's Effekt: Je kürzer Impulsantwort abgeschnitten, umso mehr Gibb`s-Effekt$\rightarrow$ Filtercharakteristik wird immer welliger. Im praktischen Einsatz weitgehend akzeptabel
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-gibbs-effekt.png}
+  \end{itemize*}
+
+  Phasenfrequenzgang von FIR Filtern
+  \begin{itemize*}
+    \item ideale Phase identisch Null - nullphasiger Filter, nur off-line, kausales Filter um halbe Länge zeitverschoben
+    \item konstante Gruppenlaufzeit - lineare Phase, on-line-fähig: $\phi(\omega)=-\omega\tau$
+    \item definierter Phasenverlauf - Allpass
+    \item In echtzeitfähiger Signalverarbeitung mit FIR beträgt die Gruppenlaufzeit die halbe Filterlänge unabhängig von Frequenz%. Dies wird deutlich, wenn man sich die kanonische Form anschaut. Damit ist gewährleistet, dass der Phasenfrequenzgang linear ist und es zu keinen Formverzerrungen kommt.
+    % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-tiefpass-4.png}
+    %  \item Dieses Beispiel eines Tiefpasses mit 63 Filterkoeffizienten zeigt ein realisierbares Filter.
+    %  \item Im Zeitverlauf des EKG vor (blau) und nach (rot) der Filterung ist die durch die halbe Filterlänge verursachte Verzögerung gut erkennbar. Für Patientenmonitoring wäre eine solche Verzögerung akzeptabel, für Aufgaben der Echtzeitanalyse z.B. im Herzschrittmacher nicht mehr.
+    \item Gruppenlaufzeit: $\tau(\omega)=L\emph{T\_A=31}T\_A$
+    \item Phasenfrequenzband: $\phi(\omega)=-2\pi*LT\_A$
+  \end{itemize*}
+
+  FIR Realisierung
+  \begin{itemize*}
+    \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung.png}
+    \item FIR-Impulsantworten symmetrisch, während die eine Hälfte immer im zeitnegativen, also im nichtkausalen Bereich liegt%. Ein kausales Filter lässt sich nur realisieren, wenn es um die negative Hälfte in den positiven Bereich verschoben wird. Dann erhält man reale Ausgangsdaten, die allerdings zum Eingangssignal um die Zeit verschoben sind, die der halben Filterlänge entspricht. In diesem Beispiel ,,hängen'' die Ausgangsdaten dem Eingang um zwei Samples -zeitlich also um zwei Abtastperioden - hinterher.
+    %\item Anm.: Der Index 1 bei y sagt nur aus, dass es der erste Ausgangswert ist. Auf der Zeitachse liegt er neben dem Index 3 von x. Es mussten also zwei Werte von x hineinlaufen in das Filter, bevor überhaupt der erste Ausgangswert erschien.
+    \item diskrete Faltung ist Kern der DSP, da im Normalfall in Echtzeit gefiltert werden muss, welches Filter auch immer verwendet wird
+    \item DSP oft on-chip Multiplikator und Addierer
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-2.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-3.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-4.png}
+    \item Ausgangssignal um Filterlänge-1 kürzer bei ungerader Anzahl der Filterkoeffizienten
+  \end{itemize*}
+
+  %FIR Programm
+  %\begin{itemize*}
+  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-5.png}
+  % \item Filterung mit FIR entspricht einer diskreten Faltung, so dass sie sich algorithmisch einfach mit zwei verschachtelten Schleifen realisieren lässt
+  % \item Da beim FIR die Filterkoeffizienten identisch mit der IR sind, erhält man nach der FFT direkt die spektrale Filterfunktion
+  % \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-fir-realisierung-6.png}
+  % \item Im Zeitverlauf des weißen Rauschens ist erkennbar, dass das gefilterte Signal (rot) kürzer und nach links verschoben ist. Für einen zeitlichen Vergleich der beiden Signale wäre es notwendig, mit geeigneten Maßnahmen Zeitgleichheit herzustellen, z.B. durch Verschiebung des gefilterten Signals um (die verlorene) halbe Länge nach rechts. Oder durch Auffüllen von jeweils (L-1)/2 Nullen links und rechts des Eingangssignals wird erreicht, dass das gefilterte Signal gleich lang und zeitgleich erscheint.
+  % \item Der Spektrenvergleich bestätigt, dass es sich hier um einen Tiefpass handelt.
+  %\end{itemize*}
+
+  \subsubsection{DSP - Überblick über Architekturen}
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-tiger-super-harvard.png}
+  \end{center}
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-von-neumann.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-harvard.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-super-harvard.png}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-ad-tigersharcs.png}
+    \item Konventionelle CPU auf von Neumann-Architektur
+    \item ein Speicher hardwaremäßig vorteilhaft; Überschreibungsprobleme
+    \item Harvard-Architektur löst Überschreibungsproblem durch Trennung von Instruktionen und Daten in zwei Speicher. Außerdem erfolgen Zugriffe parallel $\rightarrow$ Geschwindigkeit enorm gesteigert
+    \item Algorithmen der DSV häufig identisch $\rightarrow$ Abfolge der Instruktionen gut vorhergesagt $\rightarrow$ mehrere vorab im instruction cache der CPU befinden, dekodiert und in pipeline vorbereitet
+    \item über I/O-Controller direkt vom Speicher Daten mit Außwenwelt organisieren %Vor allem für die Echtzeitverarbeitung ist es sinnvoll, die Daten nicht von der CPU mit der Außenwelt zu organisieren, sondern 
+    \item Tiger-Sharc-Architektur lagert Daten in zwei Speichern. Vorteil parallelen Zugriffs auf Instruktionen und zwei Datenblöcke $\rightarrow$ Rechengeschwindigkeit steigt enorm
+    %\item typische Architektur des AD-TigerSharcs: Zu beachten sind insbesondere drei Adress-und Datenbusse sowie der Vier-Port-Speicher.
+  \end{itemize*}
+
+  \subsection{Adaptive Filter}\label{adaptive-filter}
+  \begin{center}
+    \includegraphics[width=.45\linewidth]{Assets/Biosignalverarbeitung-adaptiv-fir.png}
+  \end{center}
+  \begin{itemize*}
+    \item FIR-Filterlänge = $2L+1$
+    \item Filterausgang: $y(n)=w(-L)x(n-L)+...+ w(L)x(n+L)= \overline{x}^T \overline{w}$
+    \item Modellfunktion, Sollsignal, desired response: $d(n)$
+    \item Fehlersignal F, error: $e(n)=d(n)-y(n)$
+    \item adaptive Filter ist Rückgekoppeltes System mit negativer Rückkopplung, so dass Stabilitätsbedingungen eingehalten werden
+    \item einfachste Variante: FIR mit Länge $2L+1$% Grundsätzlich kann der Eingangsvektor x physisch ein Spaltenvektor sein, dann entsprechend die Filterkoeffizienten der Wichtung von Signalen in parallel liegenden Kanälen, üblich in der spatialen Signalverarbeitung, kommt im nächsten Kapitel. Oder x ist ein Zeilenvektor, d.h. er wird als Analysefenster temporal über ein Signal geschoben, ist also ein Filter im üblichen Sinne der temporalen Filterung. Die physikalische Anordnung ist jedoch für die Herleitung an dieser Stelle irrelevant, im weiteren gehen wir wegen der einheitlichen Schreibweise von einem Spaltenvektor aus, wie üblich in der Signalverarbeitung.
+    \item Ausgang entspricht Faltung des Filtervektors mit Eingangssignal im Punkt n, jeweils L samples nach links und rechts bzw. nach oben und unten
+    \item $d(n)$ ist regelungstechnisch Sollsignal oder analytisch Modell
+    \item aus Differenz von $d(n)$ und $y(n)$ wird Errorsignal gebildet, das von Adaptionsalgorithmus ausgewertet und Filterkoeffizienten vom Algorithmus so verändert, dass Fehler gegen Null konvergiert
+    \item Errorsignal (spatial gültig): $e=d-y=d-\overline{x}^T \overline{w}$
+    \item Quadrat des Errorsignals: $e^2=d^2-2d\overline{x}^T\overline{w}+\overline{w}^T\overline{x}\overline{x}^T\overline{w}$
+    \item Erwartungswert: $F=E\{e^2\}=E\{d^2\}-2E\{d\overline{x}^T\overline{w}\}+E\{\overline{w}^T\overline{x}\overline{x}^T\overline{w}\}$
+    \item Wiener Filter: $E\{d\overline{x}\}=\overline{w}E\{\overline{x}\overline{x}^T\}$
+    \begin{itemize*}
+      \item $\overline{w}=R^{-1}*p$, R = Autokovarianzmatrix, p = Kreuzkovarianzvektor
+      \item $W=\frac{p_{xd}}{p_{xx}}$, $p_{xd}=$ Kreuzleistungsdichte, $p_{xx}=$ Autoleistungsdichte
+    \end{itemize*}
+    \item Errorsignal ist Skalar aus Differenz $d(n)$ und Skalarprodukt des Eingangsvektors mit Filtervektor (Filterkoeffizienten)
+    \item stationärer Fall der Signalstatistik$\rightarrow$ primär nicht Momentanwert des Errors Null, sondern seine Energie/Leistung. Dazu wird Error quadriert% (zweite Potenz ist Maß für Energie bzw. Leistung).
+    \item Erwartungswert des Fehlers ($\sim$quadratische Mittelwert) soll minimal werden, dann entspricht der Filterausgang der Modellfunktion
+    \item Wiener/Optimalfilter: erste Ableitung des Fehlers nach Filterkoeffizienten und setzt diese gleich Null
+    \item Wienerfilter im Originalbereich mit Hilfe von Auto-und Kreuzkovarianzen beschrieben
+    \item oder im Spektralbereich mit Auto-und Kreuzleistungsdichte
+    \item Schätzung des Fehlerquadrats: $E\{e^2\}\approx \frac{1}{M}\sum_{i=1}^M e_i^2$
+    \item Schätzung der Autokorrelationsmatrix: $R=E\{x*x^T\}\approx\begin{pmatrix} x(0)x(0) &...& x(0)x(M-1)\\ ...\\ x(M-1)x(0)& ...& x(M-1)x(M-1)\end{pmatrix}$
+    \item Schätzung des Kreuzkorrelationsvektors: $p=E\{dx\}\approx dx$
+    \item kontinuierliche Zeit
+    \begin{itemize*}
+      \item Kreuzkorrelationsfunktion: $r_{xd}(\tau)=lim_{T\rightarrow\infty}\frac{1}{2T}\int_{-T}^T x(\tau)d(t+\tau)dt$
+      \item Autokorrelationsfunktion: $r_{xx}(\tau)=r_{xd}(\tau)|_{d=x}$
+      \item Kreuzleistungsdichte: $S_{xd}(f)=\int_{-\infty}^{\infty} r_{xd}(\tau)e^{-i2\pi ft}dt$
+      \item Autoleistungsdichte: $S_{xx}(f)=S_{xd}(f)|_{d=x}$
+    \end{itemize*}
+    \item diskrete Zeit
+    \begin{itemize*}
+      \item Kreuzkorrelationsfunktion: $r_{xd}(m)=\frac{1}{N}\sum_{n=1}^N x(n)d(n+m)$
+      \item Autokorrelationsfunktion: $r_{xx}(m)=r_{xd}(m)|_{d=x}$
+      \item Kreuzleistungsdichte: $S_{xd}(k)=\frac{1}{M}\sum_{m=0}^{M-1} r_{xd}(m)e^{-i2\pi km}$
+      \item Autoleistungsdichte: $S_{xx}(k)=S_{xd}(k)|_{d=x}$
+    \end{itemize*}
+  \end{itemize*}
+
+  Proleme bei der Realisierung des optimalen Filters
+  \begin{itemize*}
+    \item Inverse Autokovarianzmatrix - rechentechnisches Problem
+    \item Leistungsspektrum berechenbar aber nur im stationären Fall
+    \item Warum unbekanntes Signal filtern, wenn gesuchte als Sollsignal bekannt
+    \item Wiener Filter existiert nur theoretisch
+    \item Wienerfilter realisieren in Praxis sehr schwierig. (inversen Autokovarianzmatrix)% stößt schon bei niedrigen Rangordnungen (etwa N=10) auf ihre Grenzen.
+    \item Leistungsspektrum gilt nur für stationären Fall, bei Biosignalen nicht annähernd
+    \item Wienerfilter für Filtertheorie grundlegende Bedeutung und kann in modifizierten Varianten umgesetzt werden
+  \end{itemize*}
+
+  Stochastischer Prozess: Ensemble, Sequenz von Zufallsvariablen
+  \begin{itemize*}
+    \item $X=\{X(n-m),...,X(n),....,X(n+m)\}$
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-stochastik.png}
+    \item Starke Stationarität: Verteilungen der Zufallsvariablen identisch
+    \item Annahme der starken Stationarität für viele Methoden der Signalstatistik notwendig % (i.i.d. = independent identically distributed). Sie 
+    kann aber pratkisch nicht erfüllt/geprüft werden
+  \end{itemize*}
+
+  Schwache Stationarität
+  \begin{itemize*}
+    \item $E\{x_t\}=\mu$, $var(x_t)<\infty$, $cov(x_{t1}, x_{t2})$
+    \item Annahme der Gleichheit von Verteilungen der Zufallsgrößen nicht gefordert
+    \item nur Momente erster und zweiter Ordnung müsen zeitlich konstant sein
+    \item für signalanalytische Praxis oft zu wenig, da Momente dritter und vierter Ordnung nicht gleich sein müssen% (Schiefe, Exzess).
+  \end{itemize*}
+
+  Praktikable Koeffizientenberechnung - LMS
+  \begin{itemize*}
+    \item alternativer Weg zum Fehlerminimum über Gradienten: $\Delta_j=\frac{\delta F(\bar{w})}{\delta \bar{w}}|_{w=w_j}$
+    \item Schätzung des Gradienten über aktuellen Wert: $\hat{\Delta}_j=\frac{\delta(e_j^2(\bar{w}))}{\delta \bar{w}}|_{w=w_j} =we_j \frac{\delta e_j}{\delta \bar{w}}|_{w=w_j}=-2e_j \bar{x}_j$
+    \item Rekursionsformel für Filterkoeffizienten $\bar{w}_{j+1}=\bar{w}_j + 2\mu e_j \bar{x}_j$
+    \item $\mu$: Adoptionskonstante; $\lambda\_\{max\}$: größter Eigenwert der Autokovarianzmatrix; $\frac{1}{\lambda_{max}}>\mu >0$
+    \item Obergrenze durch Signalenergie: $\frac{1}{\sum_{j=0}^N x^2(j)}>\mu >0$
+    \item Fehlerfunktion $F(w)$ ist ($2L+1$ -dimensionale) Parabel, deren Minimum der Optimallösung entspricht%. Es gibt mehrere Wege, dieses Minimum zu erreichen. An dieser Stelle leiten wir die Optimallösung mit Hilfe des sehr anschaulichen LMS-Algorithmus her (LMS - Least-Mean-Square, Methode der kleinsten Quadrate).
+    \item Weg zum Optimum über inverse Autokovarianzmatrix und Leistungsdichten verbaut, Näherung des Minimum der Parabel mit Hilfe des Gradienten iterativ%. Der Gradient ist mathematisch über die partiellen Ableitungen der Parameter definiert. Das stößt in der Praxis -vor allem bei der Online-Analyse -bald an Grenzen, da der Erwartungswert über längere Zeit ermittelt werden müsste.
+    \item Gradienten aus aktuellen Fehler schätzen, Mittelwertbildung weglassen, unter Annahme der Stationarität. Geschätzter Gradient aus Produkt des Fehlers und Eingangsvektors
+    \item Gradienten nutzen, durch Adaptionskonstante bestimmten Schritten auf Minimum zu konvergieren
+    \item Stabilitätsbedingung durch größten Eigenwert der Autokovarianzmatrix. In Praxis wird einfachere Signalenergie verwendet%, die größer ist als der Eigenwert und damit die Stabilität auch hinreichend sicher gewährleistet.
+  \end{itemize*}
+
+  %Reale Aufname: IPG, periodische Störung, Rauschen
+  %\begin{itemize*}
+  %  \item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-reale-aufnahme.png}
+  %  \item Ein reales IPG wurde nachträglich mit additiven simulierten Störungen (50 Hz, 75 Hz, Rauschen) stark gestört (Amplitude der %Harmonischen $A=1$, Effektivwert des Rauschens 20).
+  %  \item Eine Modellfunktion liegt daher vor.
+  %  \item Das gefilterte Signal erreicht relativ schnell die Qualität des Originals.
+  %  \item Basiert auf der Übung 5.4 des Buches Biosignalverarbeitung/Elektrische Biosignale in der Medizintechnik
+  %\end{itemize*}
+
+  Adaptiver Muster-Filter
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-aufbau.png}
+    \item $x(n)$: reales Signal, $e(n)$: Fehler, $y(n)$: Filterausgang
+    \item $d(n)$: ungestörtes Muster (woher?)
+    \item Funktion: Im Ausgang $y(n)$ erscheinen diejenigen Signalanteile von $x(n)$, die gut mit $d(n)$ korrelieren
+    \item Im stationären Fall und nach erfolgter Konvergenz$\rightarrow$ Filterausgang enthält die Anteile von $x(n)$, die mit $d(n)$ gut korrelieren (nur wenn Mustersignal bekannt und vorgegeben)
+    \item Fazit: nicht realisierbar/Sinnvoll, wenn Muster vorliegt
+  \end{itemize*}
+
+  Adaptiver Noise Canceller - ein praktikables adaptives Filter
+  \begin{itemize*}
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-noise-canceller.png}
+    \item $x(n)$: Rauschreferenz, $e(n)$: Signal, $y(n)$: Rauschen
+    \item $d(n)$: Signal + Rauschen
+    \item kein Mustersignal aber Rauschreferenz vorleigend
+    \item Störung beseitigen, wenn diese bekannt %Im Idealfall ist die Störung eliminiert und das gewünschte Signal bleibt übrig.
+    \item Filteranschlüsse umfunktioniert: Filtereingang wird Rauschreferenz ohne Anteile des gewünschten Signals%, hier wird die vorliegende Störung eingespeist, die allerdings keine Anteile des gewünschten Signals enthalten darf. Dies ist aber bei technischen Störungen bei Biosignalverarbeitung kein wesentliches Problem.
+    %\item Der Eingang für Mustersignal wird zum Primäreingang, in den das gestörte aber noch unbekannte Wunschsignal eingespeist wird.
+    \item am Filterausgang, Störung=Signal das gut mit Primärsignal korreliert %-die Störung, in diesem Beispiel die Netzstörung. Da aber das Primärsignal mit dem Referenzsignal nicht korreliert, muss das gesuchte Signal als Rest -als Errorsignal -übrig bleiben. Demzufolge ist der eigentliche Ausgang eines ANC das ursprüngliche Errorsignal.
+    \item Am Filterausgang liegen die Signalanteile vom Filtereingang an, die gut mit dem Primäreingang korrelieren.
+    \item Filter stellt sich relativ langsam auf Optimallösung ein, da stationärer Prozess und konvergiert auf Optimum mit Adaptionskonstante tau
+    \item Lage für stationäre und korrelierende Störung ändert sich nicht %Wenn man nun des gestörte Signal auf den primären Eingang legt und auf den Referenzeingang statt der Rauschreferenz -die nicht immer verfügbar ist -das gleiche, jedoch zeitlich verschobenes Signal, so ändert sich die Lage für die stationäre und gut korrelierende Störung nicht -sie ist in beiden, dem Referenz-und dem Primäreingang enthalten. Demzufolge wird sie auch am Ausgang des Filters -wie mit Rauschreferenz erscheinen. 
+    \item Störung aus Errorsignal wie mit Referenz wegfiltern und übrig bleibt gewünschtes Signal% auch ohne die Notwendigkeit, eine Störungsreferenz bereitstellen zu müssen. 
+    \item funktioniert nur so lange, wie zeitverschobene Anteile des gewünschten Signals miteinander bei der konkreten Zeitverschiebung unkorreliert sind%, daher kommt der Wahl des Zeitversatzes entscheidende Bedeutung zu. 
+    \item nicht immer möglich gute Verschiebung anzugeben; wird empirisch eingestellt
+  \end{itemize*}
+
+  EKG mit MF (Matched Filter)
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptive-filter-match-filter.png}
+  \end{center}
+  \begin{itemize*}
+    \item In bestimmten Messsituationen (Ruhe EKG vor Ergometrie) liegt Musterfunktion/Template vor
+    \item Für signalanalytische korrekte Detektion/Filterung müssen Signal (EKG) sowie Template (Muster) weißes Spektrum haben
+    \item Zum Prewhitening wird LMS mit binärem Gradienten verwendet. Die selben Filterkoeffizienten filtern auch das Template für das MF
+    \item Lineare Prädikation: $x_p[k]=a_1x[k-1]+a_2x[k-2]+...+a_nx[k-n]$
+    \item Residualfehler ist weiß: $x_{err}[k]=x[k]-x_p[k]$
+    \item Robuster LMS mit binärem Gradienten: $w[k+1]=w[k]+\mu*sng(e[k]x[k])$
+    %\includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-roh-weiß.png}
+    \item Da Biosignale relativ tieffrequente Signale sind (10-100 Hz), führt Prewhitening zur relativen Anhebung der hochfrequenten Anteile sowie breitbandigen Rauschens
+    \item Wegen relativer Anhebung hochfrequenter Anteile haben Prewhitener implizit Hochpass-Charakter. Tieffrequenten Anteile (,,langsame Wellen'') nach Prewhitening deutlich reduziert
+
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-qrs.png}
+    %\item QRS Template wird aus den letzten 9 detektierten Komplexen berechnet
+    %\item das Template wird mit dem adaptiven Filter gefiltert, mit dem das EKG geweißt wurde
+    %\item mit dem geweißten Template wird das geweißte EKG gefiltert
+    %\item \includegraphics[width=.5\linewidth]{Assets/Biosignalverarbeitung-adaptiver-filter-ekg-mtchfit.png}
+    \item Durch Prewhitening und nach MF ist Signalform des Biosignals zum Teil stark verändert$\Rightarrow$ MF eignet sich nur zur Detektion von Biosignalkomponenten, nicht zur diagnostischen Kurvenvermessung
+    \item MF ist empfindlichster und sicherster Detektor von bekannten Mustern
+  \end{itemize*}
+
+\end{multicols}
+\end{document}

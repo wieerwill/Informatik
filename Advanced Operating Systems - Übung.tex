@@ -1,0 +1,426 @@
+\documentclass[10pt, a4paper]{exam}
+\printanswers			  % Comment this line to hide the answers 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{color,graphicx,overpic}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage[many]{tcolorbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+
+\pdfinfo{
+  /Title (Advanced Operating Systems - Übung)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Robert Jeutter)
+  /Subject ()
+}
+\title{Advanced Operating Systems - Übung}
+\author{}
+\date{}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newtcolorbox{myboxii}[1][]{
+ breakable,
+ freelance,
+ title=#1,
+ colback=white,
+ colbacktitle=white,
+ coltitle=black,
+ fonttitle=\bfseries,
+ bottomrule=0pt,
+ boxrule=0pt,
+ colframe=white,
+ overlay unbroken and first={
+ \draw[red!75!black,line width=3pt]
+  ([xshift=5pt]frame.north west) -- 
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  ([xshift=-5pt]frame.north east) -- 
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay unbroken app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) -- 
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) -- 
+  ([xshift=-5pt]frame.south east);
+ },
+ overlay middle and last={
+ \draw[red!75!black,line width=3pt]
+  (frame.north west) -- 
+  (frame.south west);
+ \draw[red!75!black,line width=3pt]
+  (frame.north east) -- 
+  (frame.south east);
+ },
+ overlay last app={
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south west) --
+  ([xshift=5pt]frame.south west);
+ \draw[red!75!black,line width=3pt,line cap=rect]
+  (frame.south east) --
+  ([xshift=-5pt]frame.south east);
+ },
+}
+
+\begin{document}
+\begin{myboxii}[Disclaimer]
+  Die Übungen die hier gezeigt werden stammen aus der Vorlesung \textit{Advanced Operating Systems}! Für die Korrektheit der Lösungen wird keine Gewähr gegeben.
+\end{myboxii}
+
+%##########################################
+\begin{questions}
+  \question Funktionale und nichtfuntionale Eigenschaften
+  \begin{parts}
+    \part Was ist eine nichtfunktionale Eigenschaft? Finden Sie Beispiele für sowohl funktionale als auch nichtfunktionale Eigenschaften
+    \begin{itemize}
+      \item eines Flugzeugs,
+      \item eines Smartphones,
+      \item eines Betriebssystems.
+    \end{itemize}
+    \begin{solution}
+      \begin{itemize}
+        \item Flugzeugs
+              \begin{itemize}
+                \item F: fliegen, bremsen,
+                \item NF: Innentemperatur halten, automatisierte Steuerung
+              \end{itemize}
+        \item Smartphones
+              \begin{itemize}
+                \item F: telefonieren ermöglichen, Internetzugang
+                \item NF: klein, leicht, energiesparend, strahlungsarm, umweltfreundlich,
+              \end{itemize}
+        \item Betriebssystems
+              \begin{itemize}
+                \item F: den Zugriff auf Daten ermöglichen
+                \item NF: leicht zu bedienen, skalierbar, offen, performant,
+              \end{itemize}
+      \end{itemize}
+    \end{solution}
+    \part Charakterisieren Sie den Unterschied zwischen Laufzeiteigenschaften und Evolutionseigenschaften anhand je einer beispielhaften Eigenschaft.
+    \begin{solution}
+      Laufzeiteigenschaften Verfügbarkeit: während das System aktiv ist (läuft) muss es verfügbar sein. Überwachbar für ein einzelnes System nur über kurze Zeit.
+
+      Evolutionseigenschaft Wartbarkeit: das System kann über eine längere Zeit überarbeitet/verbessert werden auch ohne dass dieses aktiv ist oder laufen muss. Überwachbar über eine Reihe von Systemen und nur eine lange Zeit
+    \end{solution}
+  \end{parts}
+
+  \question Anforderungen an Betriebssysteme
+  \begin{parts}
+    \part Welche grundlegenden funktionalen Eigenschaften muss jedes Betriebssystem qua definitione besitzen?
+    \begin{solution}
+      \begin{itemize}
+        \item Harware Multiplexen
+        \item Hardware Schutz
+        \item Harware Abstraktion
+      \end{itemize}
+    \end{solution}
+    \part Die Erfüllung spezieller nichtfunktionaler Eigenschaften kann Auswirkungen auf den gesamten Hard- und Softwarestack eines IT-Systems haben. Kennen Sie Anwendungsfälle für Betriebssysteme, die \begin{itemize}
+      \item keinen Scheduler,
+      \item kein Paging,
+      \item keinen privilegierten Prozessormodus
+    \end{itemize}
+    benutzen? Recherchieren und begründen Sie, warum solche Designs möglich und sinnvoll sein können!
+    \begin{solution}
+      Embedded Systems mit nur einem Programm verwenden kein Scheduler oder Paging
+
+
+    \end{solution}
+  \end{parts}
+
+  \question Sparsamkeitsbegriff
+  \begin{parts}
+    \part Erläutern Sie die Begriffe  ,,Sparsamkeit'' und  ,,Effizienz''. Nennen und begründen Sie in diesem Zusammenhang mögliche Ziele eines sparsamen Betriebssystems.
+    \begin{solution}
+    \end{solution}
+    \part Ist Sparsamkeit grundsätzlich als Laufzeit- oder als Evolutionseigenschaft anzusehen? Begründen Sie anhand Ihrer Antwort auf Frage a).
+    \begin{solution}
+    \end{solution}
+    \part Begründen Sie anhand selbstgewählter Anwendungsszenarien, wann Effizienz im Umgang
+    \begin{itemize}
+      \item mit Energie
+      \item mit Speicherplatz
+    \end{itemize} eine zentrale nichtfunktionale Eigenschaft eines Betriebssystems ist.
+    \begin{solution}
+    \end{solution}
+    \part Sparsamkeit ist auch eine mögliche Anforderung an den Betrieb eines IT-Systems. Können Sie sich vorstellen, warum dabei  ,,Sparsamkeit mit Funktionalität'' oder  ,,Sparsamkeit mit Code'' eine Rolle spielen könnte? Bewerten Sie den aktuellen Linux-Mainline Kernel1 nach diesen Kriterien. . .
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Energieeffizienz
+  \begin{parts}
+    \part Welche hardwareseitigen Voraussetzungen müssen für energieeffizienten Betrieb eines Rechnersystems vorliegen? Welche Rolle spielt das Betriebssystem hierbei?
+    \begin{solution}
+      Hardware kann Energiesparmodi bereitstellen (sleep mode) und das Betriebssystem muss diese einstellen/umstellen können
+    \end{solution}
+    \part Erklären Sie die Begriffe Reaktivität und Nutzererfahrung vor dem Hintergrund Ihrer Antwort auf Frage a).
+    \begin{solution}
+      Aus dem Energiesparenden Modi wird die Reaktivität niedriger sein aber kann durch das Betriebssystem für die jeweilige Anwendung angepasst wieder in einen Aktiven Modi versetzt werden.
+      Z.B. anpassung der Framerate einer GUI oder Grafik-intensiven Anwendung
+    \end{solution}
+  \end{parts}
+
+  \question Speichereffizienz
+  \begin{parts}
+    \part Erläutern Sie den Begriff Fragmentierung bei Realspeicherverwaltung. Warum kann dies auch für virtuelle Speicherverwaltung zum Problem werden?
+    \begin{solution}
+      Fragmentierung = bei blockorientierten Datenträgern die Verteilung zusammengehöriger Daten auf nicht aufeinander folgende Datenblöcke. Allgemein die Zerstückelung oder Zergliederung von Speicherbereichen
+
+
+    \end{solution}
+    \part Welchen Einfluss hat die Seitentabelle für virtuelle Speicherverwaltung auf den unmittelbaren Speicherbedarf eines Betriebssystem-Kernels? Welchen haben etwaige Gerätetreiber? Und welche Möglichkeiten hat ein BS-Entwickler, mit beiden Problemen umzugehen?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Betriebssystemarchitekturen für Sparsamkeit und Effizienz
+
+  Welche Vor- und Nachteile haben die beiden Architekturkonzepte Makro- und Mikrokernel für Entwurf und Implementierung energie- und speichereffizienter Betriebssysteme? Diskutieren Sie anhand der Betriebssysteme TinyOS und RIOT!
+  \begin{solution}
+  \end{solution}
+
+  \question Energieeffiziente Dateizugriffe
+  Nehmen Sie an, eine Anwendung referenziert eine Folge von Festplattenblöcken: $A,B,C,A,C,D,E,A$.
+  Zur Optimierung von sowohl Performanz als auch Energieverbrauch beim Zugriff auf diese Blöcke soll energieeffizientes Prefetching zum Einsatz kommen. Nehmen Sie weiterhin an, dass ein Blockzugriff (access) jeweils konstant 4 Zeiteinheiten (ZE) dauert, ein fetch oder prefetch je 1 ZE sowie dass der verwendete Festplattencache maximal 3 Blöcke fasst. Die gegebene Referenzfolge können Sie als gesichert annehmen (d. h. es sind keine Abweichungen im tatsächlichen Verhalten der Anwendung zu erwarten).
+  \begin{parts}
+    \part Entwickeln Sie zwei Zugriffsabläufe für diese Referenzfolge: einen, bei dem traditionelles Prefetching angewandt wird, sowie einen weiteren mit dem in Vorlesung besprochenen Verfahren zum engergieeffizienten Prefetching.
+    \begin{solution}
+    \end{solution}
+    \part Begründen Sie anhand des Vergleichs beider Abläufe, welche Vorteile das energieeffizente Verfahren in diesem Beispiel hat. Kann es Referenzfolgen geben, bei denen beide Verfahren (nahezu oder völlig) gleichen Energieverbrauch verursachen? Unter welchen Umständen, bzw. warum nicht?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Energieeffizientes Scheduling
+
+  Schedulingalgorithmen, welche die optimale Reaktivität eines interaktiven Systems zum Ziel haben, basieren in der Regel auf Round Robin (RR) unter Einbeziehung von Prioritäten. Wenn zugleich Strategien zum sparsamen Umgang mit Prozessorenergie durchgesetzt werden, können solche Algorithmen ihr Ziel jedoch verfehlen.
+  \begin{parts}
+    \part Begründen Sie obige These anhand einer geeignet konstruierten, beispielhaften Prozessmenge.
+    \begin{solution}
+    \end{solution}
+    \part Das Schedulingziel von RR ( ,,maximale Reaktivität'') lässt sich als die möglichst faire Verteilung von Rechenzeit auf Threads beschreibt. Finden Sie eine analoge Beschreibung des Schedulingziels  ,,Energieeffizienz'' im Sinne der Antwort auf Frage a). Definieren Sie hierfür einen formalen Schedulingparameter analog zur Zeitscheibenlänge T bei RR.
+    \begin{solution}
+    \end{solution}
+    \part Implementieren Sie die einfache RR-Strategie (ohne Prioritäten) so, dass beide in Frage b)beschriebenen Schedulingziele verfolgt werden. Beachten Sie insbesondere, dass \begin{itemize}
+      \item stark interaktive Threads durch verlängerte Antwortzeiten behindert sowie
+      \item energiesparsame Threads durch relativ geringere Prozessorzeit benachteiligt werden können.
+    \end{itemize}
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+  Als Ablaufumgebung zur Simulation einer Prozessmenge können Sie entweder ein kleines multi-threaded Programm schreiben oder den Scheduling-Simulator PSSAV verwenden, den Sie evtl. noch aus der zweiten Übung im Grundlagenfach Betriebssysteme kennen. Im letzteren Fall können Sie bereits auf eine RR-Implementierung zurückgreifen; diese und die vom Simulator vorgesehenen Prozessinformationen müssen natürlich modifiziert werden.
+  Stellen Sie Ihren Algorithmus (in knappem Pseudocode) im Seminar vor und zeigen Sie möglichst eine kleine Demonstration. Gehen Sie dabei auf die in der Vorlesung gestellten Implementierungsfragen ein.
+  Tipps: Zur Simulation des Energieverbrauchs eines ablaufenden Prozesses dürfen Sie annehmen, dass dieser linear abhängig von der Prozesslaufzeit ist. Sie müssen daher dieses Prozessmerkmal lediglich als Faktor repräsentieren, der bspw. das verbleibende Energiebudget zum Zeitpunkt des Ablaufs einer Zeitscheibe errechnet oder bestimmt, wann einzum Prozessstart gegebenes Energiebudget aufgebraucht sein wird (als zusätzlichen Schedulingzeitpunkt).
+
+  \question Begriffe
+  \begin{parts}
+    \part Was verstehen wir unter einem  ,,Ausfall''? Erläutern Sie, wie es im abstrakten Fehlermodell nach Laprie\footnote{Algirdas Avižienis, Jean-Claude Laprie, Brian Randell, and Carl E. Landwehr. Basic Concepts and Taxonomy of Dependable and Secure Computing. IEEE Transactions on Dependable and Secure Computing} zu einem Ausfall kommen kann. Wo können demzufolge Betriebssystemmechanismen zum Erreichen von Robustheit ansetzen?
+    \begin{solution}
+    \end{solution}
+    \part In Politik und Gesellschaft ist oft vom Datenschutz die Rede, wenn es um die Sicherheitseigenschaften von IT-Systemen geht. Analysieren Sie diesen Begriff aus technischer Sicht: Was verstehen Sie (als Informatiker) unter  ,,Daten'' und deren  ,,Schutz''? Welche Differenzen ergeben sich zum Wortsinn von  ,,Datenschutz''? Welche grundlegenden Sicherheitsziele sind aus Ihrer Sicht damit gemeint?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Isolation: Welche Isolationsmechanismen in Betriebssystemen kennen Sie? Diskutieren Sie für jeden bislang behandelten Isolationsmechanimus,
+  \begin{parts}
+    \part welche konkreten Ziele dieser verfolgt,
+    \begin{solution}
+    \end{solution}
+    \part auf welcher Idee bzw. welchem Prinzip er basiert,
+    \begin{solution}
+    \end{solution}
+    \part welche Kosten er mit sich bringt.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Referenzmonitorprinzipien: In der Vorlesung wurden bereits die Referenzmonitorprinzipien als Kriterien dafür diskutiert, wie weit die Politikimplementierung der Linux-Sicherheitsarchitektur die nicht-funktionale Eigenschaft Security unterstützt. Wiederholen Sie nun diese Diskussion von
+  \begin{itemize}
+    \item Unumgehbarkeit,
+    \item Manipulationssicherheit,
+    \item Verifizierbarkeit
+  \end{itemize}
+  für die SELinux-Sicherheitsarchitektur.
+  \begin{solution}
+  \end{solution}
+
+  \question Zugriffssteuerungsmechanismen: Traditionell werden IBAC-Sicherheitspolitiken mittels Zugriffssteuerungsmatrizen (ACMs) modelliert. Zu deren effizienter Implementierung in Betriebssystemen kommen aber verteilte Zugriffssteuerungslisten (ACLs) zum Einsatz.
+  \begin{parts}
+    \part Implementieren Sie am Beispiel eines Unix-Dateisystems eine IBAC-Zugriffssteuerungspolitik mittels ACLs. Ihre Lösung soll enthalten:
+    \begin{itemize}
+      \item eine rudimentäre I-Node-Liste, welche lediglich I-Node-IDs Ihrer ACL-Datenstruktur zuordnet (Sie sollen selbstverständlich kein Dateisystem implementieren!),
+      \item eine rudimentäre PCB-Datenstruktur, welche genau die für die Zugriffssteuerung relevanten Metainformationen enthält,
+      \item eine Implementierung der Zugriffsoperationen read (lesen), write (schreiben) und chmod (Rechte ändern)
+      \item Denken Sie an die Unix-Besonderheiten hinsichtlich der Nutzer-ID 0 für root!
+    \end{itemize}
+    \begin{solution}
+    \end{solution}
+    \part Wo liegt der Unterschied zwischen einer zentralen, zweidimensionalen (tabellarischen) Datenstruktur zur direkten Implementierung einer ACM und der dezentralen, listenartigen Datenstruktur zur Implementierung von ACLs? Diskutieren Sie jeweils Vor- und Nachteile anhand Ihrer Implementierung!
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Echtzeitsysteme
+  \begin{parts}
+    \part Was ist ein Echtzeitsystem? Wie unterscheiden sich Echtzeit- von Nichtechtzeitsystemen?
+    \begin{solution}
+    \end{solution}
+    \part Ist Performanz (im Sinne einer möglichst kurzen Antwortzeit) ein hinreichendes, notwendiges, oder gar kein Kriterium für Echtzeitfähigkeit?
+    \begin{solution}
+    \end{solution}
+    \part Welche Arten von Fristen kennen Sie? Nennen Sie je eine typische Beispielanwendung.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Echtzeit-Scheduling
+  \begin{parts}
+    \part Ist Round Robin (RR) eine geeignete Strategie zum Echtzeitscheduling? Warum/warum nicht?
+    \begin{solution}
+    \end{solution}
+    \part Würde sich Ihre Antwort auf die vorherige Frage ändern, wenn man RR mit einem Prioritätenschema versieht? Falls ja: unter welchen Bedingungen? Falls nein: begründen Sie.
+    \begin{solution}
+    \end{solution}
+    \part Welchen Parameter müssen Echtzeit-Schedulingstrategien optimieren?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Scheduling periodischer Prozesse
+  \begin{parts}
+    \part Vergleichen Sie die Eigenschaften von EDF und RM: Welche Vorteile (Nachteile?) hat der Einsatz der dynamischen Strategie gegenüber der statischen?
+    \begin{solution}
+    \end{solution}
+    \part Überprüfen Sie die Planbarkeit folgender periodischer Prozessmenge durch RM anhand der oberen Schranke des Prozessorauslastungsfaktors ($U_{lub}$):
+    \begin{center}
+      \begin{tabular}{c|c|c}
+                 & $C_i$ & $T_i$ \\\hline
+        $\tau_1$ & 2     & 7     \\
+        $\tau_2$ & 1     & 10    \\
+        $\tau_3$ & 3     & 8
+      \end{tabular}
+    \end{center}
+    \begin{solution}
+    \end{solution}
+    \part Ergänzen Sie die Prozessmenge der vorherigen Teilaufgabe um einen Prozess $\tau_4$ mit $C_4=3$ ,$T_4=20$. Wiederholen Sie die Planbarkeitsanalyse und interpretieren Sie das Ergebnis.
+    \begin{solution}
+    \end{solution}
+    \part Entwickeln Sie für die Prozessmenge aus Teilaufgabe 2 jeweils den Schedule für EDF und RM. Modifizieren Sie anschließend Ihre Lösung, unter Berücksichtigung Ihrer Planbarkeitsanalyse aus Teilaufgabe 3, indem Sie $\tau_4$ aufnehmen.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Prioritätsumkehr: Die unten abgebildeten aperiodischen Prozesse $\tau_1...\tau_3$ sind nach EDF planbar (aufsteigende Pfeile bedeuten Ankunft, absteigende Pfeile Frist eines Prozesses).
+  \begin{center}
+    \includegraphics[width=.5\linewidth]{Assets/AdvancedOperatingSystems-edf-prioritätsumkehr.png}
+  \end{center}
+  \begin{parts}
+    \part Entwickeln Sie mittels EDF einen Schedule für diese Prozessmenge.
+    \begin{solution}
+    \end{solution}
+    \part Sowohl $\tau_1$ als auch $\tau_3$ möchten denselben kritischen Abschnitt betreten, beispielsweise in denselben Puffer eines Geräteregisters schreiben. Der Eintritt in den kritischen Abschnitt erfolgt bei $\tau_1$ nach 2 Zeiteinheiten (ZE) Rechenzeit, bei $\tau_3$ nach 1 ZE Rechenzeit. Die Verweildauer im kritischen Abschnitt beträgt bei $\tau_1$ 1 ZE, bei $\tau_3$ 4 ZE. Modifizieren Sie den Schedule unter Berücksichtigung der hierdurch entstandenen kausalen Abhängigkeiten. Diskutieren Sie an diesem Beispiel das Problem der Prioritätsumkehr und seine Folgen.
+    \begin{solution}
+    \end{solution}
+    \part Lösen Sie das in Teilaufgabe 2 beschrieben Problem mittels Prioritätsvererbung und modifizieren Sie Ihren Schedule entsprechend.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Cyclic Asynchronous Buffers: Als Datenstruktur für echtzeitkritische Kommunikation, etwa als Alternative zu linearen Message-Queues, werden in Betriebssystemen sog. \texttt{cyclic asynchronous buffers} (CAB, dt. ,,Ringpuffer'') implementiert. Ihre Aufgabe ist es nun, einen solchen CAB der Länge $n$ zu implementieren. Demonstrieren Sie anschließend, über eine kleines (Kommandozeilen-) Programm das Auslesen einer Folge von $>n$ Nachrichten durch
+  \begin{itemize}
+    \item 1 Empfänger, welcher schneller liest als der Sender schreibt
+    \item 1 Empfänger, welcher langsamer liest als der Sender schreibt
+    \item > 1 Empfänger mit unterschiedlichen relativen, optional sogar variablen Geschwindigkeiten.
+  \end{itemize}
+  Um die Anschaulichkeit zu verbessern, benutzen Sie Nachrichtenfolgen der Länge $i*n( i > 1 ,i\in\mathbb{N})$ oder lassen Sie die einzelnen Threads endlos rechnen und interaktiv bzw. mittels Prozessmanagement abbrechen.\\
+  Diskutieren Sie anhand Ihrer Implementierung Voraussetzungen und Besonderheiten eines CAB verglichen mit linearen, endlichen Warteschlangen. Gehen Sie dabei insbesondere auf die Notwendigkeit von Synchronisationsoperationen ein (vgl. klassisches Reader-Writer-Problem) sowie auf die Eignung hinsichtlich echtzeitkritischer Prozesse als Kommunikationspartner.
+  \begin{solution}
+  \end{solution}
+
+  \question Adaptivität und komplementäre nichtfunktionale Eigenschaften
+  \begin{parts}
+    \part Erklären Sie anhand selbstgewählter Anwendungsbeispiele, warum Adaptivität zur Umsetzung der komplementären nichtfunktionalen Eigenschaften
+    \begin{itemize}
+      \item Echtzeitfähigkeit,
+      \item Robustheit,
+      \item Wartbarkeit und Portabilität
+    \end{itemize} beiträgt.
+    \begin{solution}
+    \end{solution}
+    \part Nennen Sie jeweils eine für diese Eigenschaften geeignete, adaptive Architektur eines Anwendungs-Laufzeitsystems. Ordnen Sie diese in die grundlegende, funktionale Schichtung aus Hardware, Betriebssystem (-kernel), API, User-Space-Ressourcen und Anwendungen ein.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Exokernel und Virtualisierung
+  \begin{parts}
+    \part Ein erklärtes Ziel der Exokernel-Architekturen besteht darin, die im Kernel implementierten Betriebssystemfunktionen so klein und wenig komplex wie möglich zu halten. Warum wurde hierfür ein neues Architekturparadigma geschaffen, anstatt die mit einem ähnlichen Ziel geschaffenen Mikrokernarchitekturen zu nutzen?
+    \begin{solution}
+    \end{solution}
+    \part Wodurch unterscheidet sich ein Paravirtualisierungs-Hypervisor von klassischen Typ-1-Hypervisoren? Welche (über Typ-1-Virtualisierung hinaus gehenden) Ziele verfolgt man dabei, und wo liegen die Kosten dieses Ansatzes?
+    \begin{solution}
+    \end{solution}
+    \part Diskutieren Sie, in wieweit sich die Ideen von TinyOS und MirageOS unterscheiden. Gehen Sie dabei auf Gemeinsamkeiten und Unterschiede in deren Zielen sowie in den für beide Betriebssysteme notwendigen Hard- und Softwarevoraussetzungen ein.
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Parallelität in Betriebssystemen
+  \begin{parts}
+    \part Wo liegt der prinzipielle Unterschied zwischen den Parallelisierungstechniken der Superskalarität und Multithreading?
+    \begin{solution}
+    \end{solution}
+    \part Welche prinzipiellen Aufgaben hat ein Betriebssystem bei der Parallelisierung von Anwendungen?
+    \begin{solution}
+    \end{solution}
+    \part Am Beispiel der Linux-Kernels haben wir verschiedene Implementierungen von Locks als Synchronisationsmechanismus kennen gelernt. Dabei waren atomare Einzeloperationen (atomic\_*) die mit Abstand feingranularste, effizienteste und zugleich fehlerunanfälligste Lösung. Warum benutzt man überhaupt andere und komplexere Arten von Locks? Wo liegen deren jeweilige Stärken/Schwächen?
+    \begin{solution}
+    \end{solution}
+    \part Die in der Vorlesung beispielhaft am Linux-Kernel vorgestellten Arten von Locks finden sich in ähnlicher Form auch in anderen monolithischen Betriebssystemen (beispielsweise kennt MacOS die Lock-Arten Mutex, Semaphore und Spinlock). Für Mikrokernarchitekturen hingegen wurde gezeigt, dass bei geschicktem Kerneldesign ein globales Lock (big kernel lock, BKL) den feingranularen Alternativen in puncto Performanz sogar überlegen ist \footnote{Sean Peters, Adrian Danis, Kevin Elphinstone, and Gernot Heiser. For a Microkernel, a Big Lock Is Fine. In Proceedings of the 6th Asia-Pacific Workshop on Systems}. Warum?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+  \question Parallelisierbarkeit und Effizienz\\
+  In der Vorlesung haben Sie das Gesetz von Amdahl kennen gelernt, welches die theoretische Verringerung der Berechnungszeit für ein Problem mit gegebenem sequenziellem Anteil $f$ beschreibt. Auf dieser Basis wurde die Beschleunigung (Speedup) $S(n)$ als Quotient aus dem jeweiligen Zeitbedarf voll sequenzieller $(T(1))$ und $n$-fach paralleler Bearbeitung des Problems definiert, also $S(n)=\frac{T(1)}{T(n)}=\frac{1}{f+\frac{1-f}{n}}$. In dieser Aufgabe sollen Sie die Auswirkungen dieses Zusammenhangs auf ein vereinfachtes Problem aus der Praxis untersuchen. Gegeben sei folgendes Szenario:
+
+  \textsf{Ein Unternehmen bietet als Cloud-basierte Dienstleistung die Berechnung großer Datenmengen (z.B. Marktforschungsinformationen) für einen festen Kundenstamm an. Hierfür wurde Hardware für das hauseigene Rechenzentrum ausgewählt und so dimensioniert, dass höchstens x Rechenaufträge pro Zeiteinheit innerhalb der jedem Kunden zugesicherten Latenzen bearbeitet werden können (Durchsatzgarantie). Durch die Einstellung eines branchenerfahrenen Marketingexperten konnte kürzlich die Anzahl der Neukunden jedoch überdurchschnittlich gesteigert werden, so dass für das kommende Geschäftsjahr neue technische Herausforderungen erwartet werden: unter Beibehaltung sämtlicher Durchsatzgarantien muss das Unternehmen nun bis zu 3 x Rechenaufträge pro Zeiteinheit bearbeiten können. Dieses Problem soll durch höhere Parallelisierung gelöst werden.}
+  \begin{parts}
+    \part Bestimmen Sie den Faktor $n$, um den die Hardware des Rechenzentrums leistungsfähiger werden muss, um die Durchsatzgarantien weiter erfüllen zu können (z. B. durch die Ver-$n$-fachung der eingesetzten Prozessoren). Bestimmen Sie hierfür zunächst den erforderlichen Speedup, berechnen Sie dann $n$ unter der Annahme, dass jeder Rechenauftrag einen vertraglich vereinbarten sequenziellen Anteil von 20\% nicht überschreitet.\\
+    Hinweis: Behandeln Sie für diese Aufgabe die Summe aller Rechenaufträge so, als wäre es eine einzige, zu parallelisierende Berechnung.
+    \begin{solution}
+    \end{solution}
+    \part Wie effizient ist der Einsatz der zusätzlichen Prozessoren aus Teilaufgabe 1? Quantifizieren Sie mittels des in der Vorlesung definierten Leistungsmaßes Wirkungsgrad $(E(n))$.
+    \begin{solution}
+    \end{solution}
+    \part Angenommen, Ihre Antwort auf Teilaufgabe 2 erscheint der Unternehmensleitung zu unwirtschaftlich. Als Kompromiss sollen die Durchsatzgarantien - und damit der zu erzielende Speedup - reduziert werden, um einen optimierten Faktor $n_{opt}$ an Prozessoren einzusetzen. Bestimmen Sie $n_{opt}$ sowie $S(n_{opt})$ anhand des Maximums der Beschleunigungseffizenz $\eta_{max}$.
+    \begin{solution}
+    \end{solution}
+    \part Beurteilen Sie, wie realistisch die in den bisherigen Teilaufgaben erzielten Ergebnisse für das gegebene Problem in der Praxis sind. Welche bisher nicht berücksichtigten Aspekte realer Systeme können Speedup sowie Effizienz der Parallelisierung beeinflussen?
+    \begin{solution}
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

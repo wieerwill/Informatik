@@ -1,1395 +1,370 @@
-# Einführung - Übersicht Bildverarbeitungsprozess
-
-## Bildverarbeitung
-Bildverarbeitung / Bildanalyse
-- Wissenschaft von der algorithmischen Verarbeitung von Informationen in Bildern
-- Ziel: Ableitung relevanter (nützlicher) Parameter
-- Anwendung in nahezu allen Bereichen von Wissenschaft und Technik, Medizin und Alltag
-
-Vorlesung BVM
-- Grundlagen der Digitalen Bildverarbeitung
-- Anwendungsfokus: Medizinische Bildverarbeitung
-
-Anwendungsfelder digitaler Bildverarbeitung
-- Medizinische Diagnostik und Therapie
-    - Röntgen, CT, DSA, PET, SPECT, Ultraschall, MRI, fMRI, OCT
-- Biolog. Bildgebung
-    - Histologie, Mikroskopie, Zählung, Klassifikation u. Morphologie von Zellen, Bewegungsanalyse, Wachstum
-- Forensik / Rechtsmedizin
-    - Fingerabdruck, Gesichtserkennung
-- Mensch-Maschine-Kommunikation / Robotik
-    - Gestenerkennung, Zeichensprache, Orientierung im Raum
-- Dokumentenverarbeitung
-    - Automatische Texterkennung (OCR), Scannen, Archivieren, Fotografie
-- Industrie / Materialforschung
-    - Qualitätssicherung, automatisches Zählen, Komponentenerkennung
-- Remote Sensing
-    - Ernte, Wetter, Vermessung, Militär, Astronomie
-
-Medizinische Bildverarbeitung
-- Anwendungsfelder
-    - Diagnose
-    - Screening
-    - OP-Planung
-    - Bestrahlungsplanung
-    - Ausbildung
-- Eigenschaften
-    - Große Komplexität / multimodal (verschiedene bildgebende Verfahren)
-    - Variabilität der Objekte /individuelle Unterschiede
-    - Große Bedeutung feinster Strukturen
-    - Dreidimensionale / dynamische Bilddaten
-    - Vergleichbarkeit mit Standardfällen
-    - Hohe Robustheit notwendig
-
-Modellgestützte Interpretation
-- Bildinformationen
-    - Modell- bzw. anwendungsspezifische Interpretation des Bildes
-    - Bild nur unter Erwartungshaltung bzw. mit Hilfe eines Modells interpretierbar
-    - Können verfälscht oder widersprüchlich sein
-- Bildrestauration
-    - ''Pin Cushion'' Verzerrung, ''Barrel'' Verzerrung
-    - Verzerrung durch Bewegung (Restauration durch inverse Filterung)
-    - Fokussierungsunschärfe
-    - Verrauschtes Bild -> Gauß-Filter
-    - ,,Salz und Pfeffer'' Rauschen -> Medianfilter
-    - Kontraständerung
-- Bildregistrierung
-- Segmentierung
-    - Schwellwertsegmentierung
-    - Erkennung von Kreisen (Hough-Transformation)
-- Merkmale und Klassifikation
-
-## Vorlesungsinhalt
-0. Einführung
-    - Bildverarbeitungsprozess
-1. Bildrepräsentation und Bildeigenschaften
-    - Ortsbereich
-    - Spektralbereich
-    - Diskrete 2D-Faltung
-2. Bildvorverarbeitung
-    - Bildrestauration
-    - Bildregistrierung
-    - Bildverbesserung
-3. Segmentierung
-    - Pixel- bzw. histogrammbasierteSegmentierung
-    - Regionen-basierte Segmentierung
-    - Kantenbasierte Segmentierung
-    - Wasserscheidentransformation
-    - Modellbasierte Segmentierung
-4. Morphologische Operationen
-    - Morphologische Basisoperationen
-    - Entfernen von Segmentierungsfehlern
-    - Bestimmung von Formmerkmalen
-5. Merkmalsextraktion und Klassifikation
-    - RegionenbasierteMerkmale
-    - Formbasierte Merkmale
-    - Einführung in die Klassifikation
-
-# Bildrepräsentation und Bildeigenschaften im Ortsbereich
+# Bildrepräsentation und Bildeigenschaften
 ## Ortsbereich
-### Kontinuierliche Bilder
-####  Wiederholung: Kontinuierliche Signale
-##### Das kontinuierliche Signal
-Definition: $x(t)\in\mathbb{R}$ eindimensionale Funktion
-- kontinuierliche Zeitvariable $t\in\mathbb{R}$
-- Funktionswert x = kontinuierlicher Signalwert (Spannung, Strom, ...)
+kontinuierliche Bild: Definition als 2D-Grauwertfunktion $g(x,y)\in \mathbb{R}$
 
-##### Dirac Stoß
-- Definition: $\inf_{-\infty}^{\infty} \delta(t) dt=1$, $\delta(t)=\begin{cases}\rightarrow\infty\quad \text{ für } t=0\\ 0\quad\text{ für } t\not= 0\end{cases}$
-- Approximation (Definition): $\delta(t)=lim_{\epsilon\rightarrow 0} \frac{1}{\epsilon}* rect(\frac{t}{\epsilon})$
-- Symmetrie $\delta(-t)=\delta(t)$
-- Stoßgewicht $\inf_{-\infty}^{\infty} a\delta(t)dt = a$
-- Ausblendeigenschaft (Siebeigenschaft) $u(t)*\delta(t-\tau)=u(\tau)*\delta(t-\tau)$
-- Faltung $\inf_{-\infty}^{\infty} u(t)*\delta(t-\tau)d\tau = u(t)*\delta(t)=u(t)$
-- Verschiebung $u(t)*\delta(t-\tau)=u(t-\tau)$
-- Fourier Transformierte $\delta(t) \laplace 1$, $1\Laplace \delta(f)$
+Digitalisierung: Quantisierung der Grauwerte
+$q(g)=[\frac{g-g_{min}}{g_max}-g_{min} *q_{max}]_{mathbb{N}}$ mit $q_{max}=2^N-1$
 
-##### 1D Faltung
-- Definition: $u_1(t)*u_2(t)=\inf_{-\infty}{\infty} u_1(\tau) * u_2(t-\tau) d\tau$
-- Kommutativgesetz: $u_1(t)*u_2(t)=u_2(t)*u_1(t)$
-- Assoziativgesetz: $[u_1(t)*u_2(t)]*u_3(t)=u_1(t)*[u_2(t)*u_3(t)]$
-- Distributivgesetz: $u_1(t)*[u_2(t)+u_3(t)]= u_1(t)*u_2(t) + u_1(t)*u_3(t)$
-- Neutrales Element: (Einheitselement) $u(t)*\delta(t)=\inf_{-\infty}^{\infty} u(\tau)*\delta(t-\tau)d\tau = u(t)$
-- ![](Assets/Bilderverarbeitung-1d-faltung.png)
+4-Nachbarschaft: gemeinsame Kanten
+8-Nachbarschaft: gemeinsame Kanten oder Ecken
 
-##### LTI (Linear Time-Invariant) Systeme
-- $x(t)\rightarrow LTI System g(t) \rightarrow y(t)$
-- Eingang/Ausgang: $y(t)=x(t)*g(t) \fourier Y(f)=X(f)*G(f)$
-- Kausalität $g(t)=0$ gilt falls $t<0$
-- BIBO Stabilität $\inf_{-\infty}^{\infty} |g(t)|dt < \infty$
-- Sprungantwort / Stoßantwort
-  - $h(t)=\inf_{-\infty}^t g(\tau)d\tau$
-  - $g(t)=\frac{d}{dt} h(t)$
-
-#### Kontinuierliche Bilder
-Das kontinuierliche Bild: Definition als 2D-Grauwertfunktion
-
-Definition: $g(x, y) \in\mathbb{R} \rightarrow$ zweidimensionale Funktion
-- g: Funktionswert = kontinuierlicher Grauwert (Lichtstärke oder Schwächung von Röntgenstrahlung)
-- kontinuierliche Ortsvariablen $x$ und $y$: $x,y\in\mathbb{R}$
-
-Alternativ: $g(\underline{r})\in\mathbb{R}$ mit $\underline{r}=\binom{x}{y}\in\mathbb{R}^2$ mit Ortsvektor $\underline{r}$ 
-
-Bild als 2D Grauwertfunktion: ![](Assets/Bildverarbeitung-grauwertfunktion.png)
-
-Beispiel 2D Rechteck
-- $g(x,y)=rect(x,y)=\begin{cases} 1\quad\text{ für } |x,y|\leq 0,5\\ 0 \quad\text{ sonst}\end{cases}$
-- $g(x,y)=rect(x,y)=rect(x)*rect(y)=g_1(x)*g_2(y)$
-- ...ist eine separierbare Funktion, d.h. $g(x,y)=g_1(x)*g_2(y)$
-- ![](Assets/Bildverarbeitung-2d-rechteck.png)
+- Pixel: Jeder Abtastwert $q(m,n)$ entspricht einem quadratischen Bildelement (Pixel) mit homogenem Grauwert.
+- Falschfarbendarstellung: $g$ wird als Index in eine Farbtabelle (Video Lookup Table - VLT) behandelt -> Kontrasterhöhung
   
-Beispiel: 2D Rechteck skaliert
-- $g(x,y)=rect(\frac{x}{\epsilon_x}, \frac{y}{\epsilon_y})=\begin{cases} 1\quad\text{ für } |\frac{x}{\epsilon_x},\frac{y}{\epsilon_y}\leq 0,5 \\ 0\quad\text{ sonst } \end{cases}$
-- $g(x,y)=rect(\frac{x}{\epsilon_x}= rect(\frac{x}{\epsilon_x}) * rect(\frac{y}{\epsilon_y})$
-- ... ist eine separierbare Funktion, d.h.: $g(x,y)=g_1(x)*g_2(y)$
-- ![](Assets/Bildverarbeitung-2d-rechteck-skaliert.png)
-
-Beispiel: Approximation des 2D Dirac-Stoßes
-- $\delta(x,y)=lim_{\epsilon\rightarrow 0} \frac{1}{\epsilon^1} * rect(\frac{x}{\epsilon},\frac{y}{\epsilon})$
-- ... ist ebenso separierbar, d.h.: $\delta(x,y)=\delta(x)*\delta(y)$
-- ![](Assets/Bildverarbeitung-2d-dirac-stoß.png)
-
-2D-Dirac-Stoß
-- Definition: $\delta(x,y)=\begin{cases} \rightarrow\infty \quad\text{ für } x,y=0 \\ 0 \quad\text{ für } x,y\not=0\end{cases}$
-- $\inf_{-\infty}^{\infty} \inf_{-\infty}^{\infty} \delta(x,y)dx dy=1$
-- Verschobener Dirac-Stoß: $\delta(x-v, y-\eta)$
-  - ![](Assets/Bildverarbeitung-verschobener-dirac-stoß.png)
-- Abtasteigenschaft (Ausblendeigenschaft)
-  - ![](Assets/Bildverarbeitung-dirac-abtasteigenschaft.png)
-  - weil $\inf_{-\infty}^{\infty} \inf_{-\infty}^{\infty} \delta(x,y)dx dy=1$
-  - $g(v,\eta)=\inf_{-\infty}^{\infty} \inf_{-\infty}^{\infty} g(x,y) * \delta(x-v, y-\eta) dx dy$
-  - Mit Hilfe eines um $v, \eta$ verschobenen 2D-Dirac-Stoßes lässt sich $g(x,y)$ an den Ortskoordinaten $v,\eta$ abtasten $\rightarrow g(v,\eta)$
-- 2D-Faltung mit Dirac Stoß: $g(x,y)=\inf_{-\infty}^{\infty} \inf_{-\infty}^{\infty}  g(x,y) * \delta(x-v, y-\eta) dv d\eta = g(x,y) ** \delta(x,y)$
-  - Die Faltung eines Bildes $g(x,y)$ mit dem 2D-Dirac-Stoß ergibt wieder das Bild $g(x,y)$.
-  - $\delta(x,y)=$ Einheitselement (neutrales Element) der 2D Faltung
-
-#### Lineare kontinuierliche Operatoren / Point Spread Function
-
-Eigenschaft: $g_2(x,y)=U\{g_1(x,y)\}$
-
-Linearität: $O\{a_1g_{11} (x,y) +a_2g_{22}(x,y)\}=a_1*O\{g_{11}(x,y)\} + a_2*O\{g_{22}(x,y)\}$
-
-Ein- / Ausgangsbeziehung: $g_2(x,y) = Ο\{g_1(x,y)\}= \inf_{-\infty}^{\infty}\inf_{-\infty}^{\infty} g_1(v,\eta)*O\{\delta(x-v,y-\eta)\} dv dn$
-
-Impulsantwort (Point Spread Function) $g_2(x,y)=\inf_{-\infty}^{\infty}\inf_{-\infty}^{\infty} g_1(v,\eta)*h(x,y,v,\eta)dv d\eta$
-
-Für räumlich invariante (verschiebungsinvariante) Operatoren gilt: $h(x,y,v,\eta)=O\{\delta(x-v,y-\eta)\}=h(x-v,y-\eta)$
-
-2D-Faltung mit der Impulsantwort des linearen Operators (Point SpreadFunction): $g_2(x,y)=\inf_{-\infty}^{\infty}\inf_{-\infty}^{\infty} g_1(v,\eta)*h(x-v,y-\eta)dv dn = g_1(x,y) * * h(x,y)$
-
-##### Point Spread Function (PSF)
-Beispiel Fokussierungsunschärfe
-![Quelle: Tönnies, ,,Grundlagen der Bildverarbeitung''](Assets/Bildverarbeitung-fokussierungsunsch%C3%A4rfe.png)
-
-![Quelle: Tönnies, ,,Grundlagen der Bildverarbeitung''](Assets/Bildverarbeitung-fokussierungsunsch%C3%A4rfe2.png)
-
-Beispiel Bewegung
-![Quelle: Tönnies, ,,Grundlagen der Bildverarbeitung''](Assets/Bildverarbeitung-psf-bewegung.png)
-
-### Digitale Bilder
-#### Diskretisierung und Quantisierung
-##### Digitalisierung: Diskretisierung der Ortsvariablen
-
-Abtastfunktion: $s(x,y)=\sum_{m=-\infty}^{\infty} \sum_{n=-\infty}^{\infty} \delta(x-m*\Delta x, y-n*\Delta y)$
-
-Abtastung: $g_A(x,y)=s(x,y)*g(x,y)=\sum_{n=-\infty}^{\infty} \sum_{m=-\infty}^{\infty} g(m*\Delta x, n*\Delta y)* \delta(x-m*\Delta x, y-n*\Delta y)= A_{\Delta x, \Delta y}\{g(x,y)\}$
-
-Repräsentation des ortsdiskreten Bildes unabhängig von $\Delta x, \Delta y$: $\rightarrow g_A(m,n)$ (,,2D-Zahlenfolge'')
-![](Assets/Bildverarbeitung-digitalisierung-ortsvariablen.png)
-
-##### Digitalisierung: Quantisierung der Grauwerte
-$q(g)=[\frac{g-g_{min}}{g_{max}-g_{min}} * (q_{max}-q_{min}) +q_{min}]_{mathbb{N}}$ (Runden auf nächste natürliche Zahl)
-
-häufig wird $q_{min}=0$ gewählt: $q(g)=[\frac{g-g_{min}}{g_{max}-g_{min}}*q_{max}]_{mathbb{N}}$
-
-$q_{max}=2^N -1$, $N$ Auflösung des AD-Wandlers
-
-![](Assets/Bildverarbeitung-digitalisierung-grauwertquantisierung.png)
-
-![Quelle: Pratt, ,,Digital Image Processing''](Assets/Bildverarbeitung-digitalisierung-quantisierungsstufen.png)
-
-##### Digitale Bildrepräsentation
-Pixel ![](Assets/Bildverarbeitung-bildrepräsentation-pixel.png)
-
-Grauwertbild ![](Assets/Bildverarbeitung-bildrepräsentation-grauwert.png)
-
-Falschfarbendarstellung ![](Assets/Bildverarbeitung-bildrepr%C3%A4sentation-falschfarben.png)
-
-#### Nachbarschaft, Pfad, Zusammenhang und Distanzmaße
-Nachbarschaften
-- 4er-Nachbarschaft
-    - Nachbarpixel: gemeinsame Kante
-    - ![](Assets/Bildverarbeitung-4er-nachbarschaft.png)
-- 8er-Nachbarschaft
-    - Nachbarpixel: gemeinsame Kante oder Ecke
-    - ![](Assets/Bildverarbeitung-8er-nachbarschaft.png)
-- Regelmäßige 2D-Gitter
-  - Dreieckgitter
-    - ![](Assets/Bildverarbeitung-2d-dreiecksgitter.png)
-    - 3-Nachbarschaft
-    - 12-Nachbarschaft
-  - Quadratisches Gitter 
-    - ![](Assets/Bildverarbeitung-2d-quadratgitter.png)
-    - 4-Nachbarschaft
-    - 8-Nachbarschaft
-  - Hexagonales Gitter
-    - ![](Assets/Bildverarbeitung-2d-hexagongitter.png)
-    - 6-Nachbarschaft
-
-**Pfad:**
-- Zwei Pixel $P_A(m_A,n_A)$ und $P_B(m_B,n_B)$ sind durch einen Pfad verbunden, falls es eine Folge von benachbarten Pixeln $(P_A, P_1, ..., P_B)$ gibt, für die eine Homogenitätsbedingung (z.B. alle Pixel haben gleichen Grauwert, d.h. $g(P_A)=g(P_1)=...=g(P_B))$ gilt.
-- Offener Pfad: $P_A \not= P_B$
+Pfad
+- Zwei Pixel $P_A(m_A,n_A)$ und $P_B(m_B,n_B)$ sind durch einen Pfad verbunden, falls es eine Folge von benachbarten Pixeln $(P_A,P_1, ...,P_B)$ gibt, für die eine Homogenitätsbedingung (z.B. alle Pixel haben gleichen Grauwert, d.h. $g(P_A)=g(P_1)=...=g(P_B))$ gilt.
+- Offener Pfad: $P_A\not = P_B$
 - Geschlossener Pfad: $P_A = P_B$
 - Pfade sind an Nachbarschaftsdefinitionen gebunden!
 
-**Zusammenhang:** Eine Menge von Pixeln ist zusammenhängend, wenn zwischen zwei beliebigen Pixeln ein Pfad existiert.
+Zusammenhang: Eine Menge von Pixeln ist zusammenhängend, wenn zwischen zwei beliebigen Pixeln ein Pfad existiert.
 
-Zusammenhang: Definition gemäß Nachbarschaftsbeziehung
-- Zusammenhang gemäß 4-Nachbarschaft
-  - Die beiden grauen Regionen sind unter 4-Nachbarschaft nicht zusammenhängend (kein verbindender Pfad vorhanden).
-  - Der Hintergrund ist unter Annahme der komplementären8-Nachbarschaft zusammenhängend.
-  - ![](Assets/Bildverarbeitung-nachbarschaft-definition-4.png)
-- Zusammenhang gemäß 8-Nachbarschaft
-  - Die beiden grauen Regionen sind unter 8-Nachbarschaft zusammenhängend (verbindender Pfad vorhanden).
-  - Der Hintergrund ist unter Annahme der komplementären4-Nachbarschaft nicht zusammenhängend.
-  - ![](Assets/Bildverarbeitung-nachbarschaft-definition-8.png)
-- Die Nachbarschaftsdefinitionen in Vorder-und Hintergrund sollten komplementär sein!
-
-**Rand:**
+Rand:
 - Der Rand einer zusammenhängenden Pixelmenge $M$ ist eine Folge von Pixeln in $M$, die mindestens einen Nachbarn haben, der nicht zu $M$ gehört.
 - Die Randpixel gehören somit zu $M$ dazu.
 - Der Rand ist ein zusammenhängender Pfad und deshalb auch an eine Nachbarschaftsdefinition gebunden.
-
-Rand: Definition gemäß Nachbarschaftsbeziehung
-- Rand in 4 - Nachbarschaft zum Hintergrund
-    - Jedes Randpixel hat mind. einen Nachbarn in 4-Nachbarschaft, der nicht zu M gehört.
-    - Rand = zusammenhängender Pfad gemäß 8-Nachbarschaft
-    - ![](Assets/Bildverarbeitung-rand-4-nachbarschaft.png)
-- Rand in 8 - Nachbarschaft zum Hintergrund
-    - Jedes Randpixel hat mind. einen Nachbarn in 8-Nachbarschaft, der nicht zu M gehört.
-    - Rand = zusammenhängender Pfad gemäß 4-Nachbarschaft
-    - ![](Assets/Bildverarbeitung-rand-8-nachbarschaft.png)
-
-##### Distanzmaße zwischen zwei Pixeln
-Euklidische Distanz
-- Länge der direkten Verbindung
-- $D_E= ||P_1-P_2||_2=\sqrt{(m_1-,_2)^2 + (n_1-n_2)^2}$
-- Euklidische Norm $N=2$, $p=2$
-- ![](Assets/Bildverarbeitung-euklidische-distanz.png)
-
-Manhattan-Distanz (City-Block)
-- Länge des kürzesten Pfades unter 4er-Nachbarschaft
-- $D_4=||P_1-P_2||_1=|m_1 - m_2|+|n_1-n_2|$
-- Summennorm $N=2$, $p=1$
-- ![](Assets/Bildverarbeitung-manhatten-distanz.png)
-
-Schachbrett-Distanz
-- Länge des kürzesten Pfades unter 8er-Nachbarschaft
-- $D_8 = ||P_1-P_2||_{\infty} = max\{|m_1-m_2|, |n_1 -n_2|\}$
-- Maximalnorm $N=2$, $p=\infty$
-- ![](Assets/Bildverarbeitung-schachbrett-distanz.png)
-
-Normangabe der Distanzmaße
-- p-Norm: $||x||_p = (\sum_{i=1}^N |x_i|^p )^{\frac{1}{p}}$ mit $x_1=m_1-m_2$ und $x_2=n_1-n_2$
-- Euklidische Norm: $N=2, p=2$, $D_E=(\sum_{i=1}^2 |x_i|^2)^{frac{1}{2}}=\sqrt{x_1^2 + x_2^2}$
-- Summennorm: $N=2, p=1$, $D_4=(\sum_{i=1}^2 |x_i|)= x_1+x_2$
-- Maximalnorm: $N=2, p=\infty$, $D_8=lim_{p\rightarrow\infty}(x^p_{max} + (ax_{max})^p)^{\frac{1}{p}} = lim_{p\rightarrow\infty} (x_{max}^p (1+a^p))^{\frac{1}{p}} = x_{max}$ mit $a<1$ weil $lim_{p\rightarrow\infty}(a^p)=0$
-- $D_8\leq D_E \leq D_4$ 
-  - ![](Assets/Bildverarbeitung-schachbrett-distanz.png)
-  - ![](Assets/Bildverarbeitung-euklidische-distanz.png)
-  - ![](Assets/Bildverarbeitung-manhatten-distanz.png)
-- Schachbrett Distanz $\leq$ Euklidische Distanz $\leq$ Manhatten Distanz
-
-## Spektralbereich
-### Kontinuierliche 2D-Fouriertransformation
-Wiederholung 1D-Fouriertransformation
-- $U(f)=\inf_{-\infty}^{\infty} u(t)e^{-j2\pi ft}dt$
-- $z=e^{j2\pi ft}=cos(2\pi ft)+ j*sin(2\pi ft)$
-- ![](Assets/Bildverarbeitung-1d-fouriertransformation.png)
-- ![](Assets/Bildverarbeitung-1d-fourier-transformationspaare.png)
-
-Kern der 2D-Fouriertransformation
-- $z=e^{j2\pi [f_x*x +f_y*y]}$
-- ![](Assets/Bildverarbeitung-2d-fouriertransformation-1.png)
-- $f=\sqrt{f_x^2 + f_y^2}$
-- Fourierkern = ebene Welle in Richtung $\underline{f}=\binom{f_x}{f_y}$ mit Wellenlänge $\lambda=\frac{1}{f}$
-
-
-Eigenschaften
-- Definition 
-  - $G(f_x,f_y)=\inf_{-\infty}^{\infty} g(x,y)e^{-j2\pi [f_x x+ f_y y]} dxdy$
-  - $g(x,y)=\inf_{-\infty}^{infty} \inf_{-\infty}^{\infty} G(f_x, f_y) e^{j2\pi [f_x x+ f_y y]} df_x df_y$
-- Linearität $c_1 g_1(x,y)+ c_2 g_2(x,y) \Fourier c_1 G_1(f_x,f_y) + c_2G_2(f_x,f_y)$
-- Verschiebung $g(x-x_0, y-y_0) \Fourier G(f_x,f_y)*e^{-j2\pi [f_x x_0+ f_y y_0]}$
-- Differentiation 
-  - $\frac{\delta}{\delta x} g(x,y) \Fourier G(x,y)*j2\pi f_x$
-  - $\frac{\delta}{\delta x} g(x,y) \Fourier G(x,y)*j2\pi f_y$ 
-- Faltung $g_1(x,y)**g_2(x,y) \Fourier G_1(f_x,f_y)*G_2(f_x,f_y)$
-- Gleichanteile $G(0,0)=\inf_{-\infty}^{\infty} g(x,y)dxdy$
-
-Beispiel 1 ![](Assets/Bildverarbeitung-2d-fourier-beispiel-1.png)
-
-Beispiel 2 ![](Assets/Bildverarbeitung-2d-fourier-beispiel-2.png)
-
-
-2D Fouriertransformationfür separierbare Funktionen
-- 2D-Fouriertrafo, Multiplikation im Zeitbereich: $g(x,y)=g_1(x,y)*g_2(x,y) \Fourier G_1(f_x,f_y)**G_2(f_x,f_y)$
-- 2D-Fouriertrafo, separierbareFunktionen: $g(x,y)=g_1(x,y)*g_2(x,y) \Fourier G_1(f_x) *G_2(f_y) =G(f_x,f_y)$
-- 1D Korrespondenzen: 
-  - $g_1(x)\Fourier G_1(f_x)$
-  - $g_2(x)\Fourier G_2(f_y)$ 
-- 2D Korrespondenzen:
-  - $g(x,y)\Fourier G(f_x,f_y)$
-  - $g_1(x,y)\Fourier G_1(x,y)$
-  - $g_2(x,y)\Fourier G_2(x,y)$
-
-###### 2D-Fouriertransformation
-
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-Fouriertransformation
-
-**Spektrum - 2D-Rechteck**
-
-( ) ( )
-
-( ) ( )
-
-_g x y_ ,, _rect x y_
-
-_rect x rect y_
-
-=
-
-= ⋅
-
-( ) ( ) ( )
-
-, = ⋅
-
-```
-xy x y
-```
-_G f f si_ ππ _f si f_
-
-```
-xy ,
-x
-```
-```
-y
-```
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-Fouriertransformation
-
-**Spektrum – 2D-Gauss**
-
-( )
-
-( )
-
-```
-22
-```
-```
-22
-```
-,
-
-```
-xy
-```
-```
-xy
-```
-_g xy e_
-
-_ee_
-
-```
-π
-```
-```
-ππ
-```
-```
-−+
-```
-```
-−−
-```
-=
-
-= ⋅
-
-( )
-
-```
-2
-2
-```
-,
-
-```
-−
-−
-```
-= ⋅
-
-```
-y
-x
-```
-```
-f
-f
-```
-```
-xy
-```
-_Gf f e e_
-
-```
-π
-π
-```
-```
-xy ,
-x
-```
-```
-y
-```
-
-```
-Bildverarbeitung in der Medizin 1
-```
-# 1. BILDREPRÄSENTATION UND
-
-# BILDEIGENSCHAFTEN
-
-## 1.2 Frequenzbereich
-
-## 1.2.2 Diskrete 2D-Fouriertransformation
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 1D-DFT
-
-**Abtastung und Periodifizierung(1)**
-
-**Wiederholung**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 1D-DFT
-
-**Abtastung und Periodifizierung(2)**
-
-**Wiederholung**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 1D-DFT
-
-**Abtastung und Periodifizierung(3)**
-
-**Wiederholung**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 1D-DFT
-
-**Abtastung und Periodifizierung(4)**
-
-**Wiederholung**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 1D-DFT
-
-**Abtastung und Periodifizierung(5)**
-
-**Wiederholung**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierung im Ortsbereich**
-
-**Diskretisierungim Ortsbereich**
-
-Abtastfunktion im Ortsbereich
-
-( ) ( )
-
-```
-mn
-```
-s x,y x m· x, y n· y
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-= δ − ∆ −∆
-
-∑∑
-
-∆∆ _xy_ ,
-Diskretisierungsintervalleim Ortsbereich
-
-```
-11
-```
-```
-,
-```
-```
-∆∆ xy
-```
-2D-Fouriertransformaion der Abtastfunktion
-
-```
-( )
-xy x y
-```
-```
-mn
-```
-1 mn
-
-S f ,f f ,f
-
-x· y x y
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-
-
-= δ− −
-
-
-
-∆∆ ∆ ∆
-
-
-
-∑∑
-
-Periodisierungsintervalle im Ortsfrequenzbereich
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierung im Ortsbereich**
-
-**Diskretisierungim Ortsbereich**
-
-( ) ( )
-
-```
-mn
-```
-s x,y x m· x, y n· y
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-= δ − ∆ −∆
-
-```
-∑∑ ( )
-xy x y
-```
-```
-mn
-```
-1 mn
-
-S f ,f f ,f
-
-x· y x y
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-
-
-= δ− −
-
-
-
-∆∆ ∆ ∆
-
-
-
-∑∑
-
-Abtastung = Multiplikation des kontinuierlichen
-
-Bildes mit der Abtastfunktion
-
-```
-( )
-{ }
-x, y
-```
-A g x,y
-
-```
-∆∆
-```
-###### ( )
-
-### { }
-
-```
-11 x y
-```
-```
-,
-```
-```
-xy
-```
-1
-
-P G f ,f
-
-x· y
-
-```
-∆∆
-```
-⋅
-
-∆∆
-
-Faltung der 2D-FT des Bildes mit der
-
-2D-FT der Abtastfunktion
-
- **Periodifizierungim Ortsfrequenzbereich**
-
-Periodifizierungmit den Intervallen
-
-bzw.
-
-```
-1
-```
-```
-∆ x
-```
-```
-1
-```
-```
-∆ y
-```
-∆∆ _xy_ ,
-Diskretisierungsintervalleim Ortsbereich
-
-```
-11
-```
-```
-,
-```
-```
-∆∆ xy
-```
-Periodisierungsintervalle im Ortsfrequenzbereich
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierung im Ortsbereich**
-
-```
-= Höhenlinien von
-```
-```
-( )
-{ }
-11 x y
-```
-```
-,
-```
-```
-xy
-```
-```
-1
-```
-```
-P G f ,f
-```
-```
-x· y
-∆∆
-```
-```
-⋅
-```
-```
-∆∆
-```
-**Diskretisierungim Ortsbereich**  **Periodifizierungim Ortsfrequenzbereich**
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Aliasing**
-
-Hohe Abtastrate Niedrige Abtastrate
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierungim Ortsfrequenzbereich**
-
-```
-( ) ( )
-xy x x y y
-```
-```
-uv
-```
-Sf,f f u·f,f v·f
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-= δ −∆ −∆
-
-∑∑
-
-Abtastfunktion im Ortsfrequenzbereich
-
-**Diskretisierungim Ortsfrequenzbereich**
-
-( )
-
-```
-uv
-xy x y
-```
-1 uv
-
-s x,y x , y
-
-f·f f f
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-
-
-```
-= δ− −
-
-```
-
-
-∆∆ ∆ ∆
-
-
-
-∑∑
-
-2D-IFT der Abtastfunktion
-
-```
-Periodisierungsintervalle im Ortsbereich Diskretisierungsintervalleim Ortsfrequenzbereich
-,
-```
-```
-xy
-```
-∆∆ _ff_
-
-11
-
-,
-
-```
-xy
-```
-∆∆ _ff_
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierungim Ortsfrequenzbereich**
-
-```
-( ) ( )
-xy x x y y
-```
-```
-uv
-```
-Sf,f f u·f,f v·f
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-= δ −∆ −∆
-
-∑∑
-
-( )
-
-```
-uv
-xy x y
-```
-1 uv
-
-s x,y x , y
-
-f·f f f
-
-```
-∞∞
-```
-```
-=−∞ =−∞
-```
-
-
-```
-= δ− −
-
-```
-
-
-∆∆ ∆ ∆
-
-
-
-∑∑
-
-Abtastung = Multiplikation des kontinuierlichen
-
-Bildspektrums mit der Abtastfunktion
-
-Faltung des Bildes mit der 2D-IFT der
-
-Abtastfunktion
-
-**Diskretisierungim Ortsfrequenzbereich**
-
-{ ( )}
-
-##### { }
-
-```
-xy
-```
-```
-1 1 x, y
-```
-```
-,
-```
-```
-xy
-ff
-```
-1
-
-P A g x,y
-
-f·f
-
-```
-∆∆
-```
-```
-∆∆
-```
-⋅
-
-∆∆
-
-###### ( )
-
-### { }
-
-```
-xy
-```
-```
-f,f 1 1 x y
-```
-```
-,
-```
-```
-xy
-```
-1
-
-A P G f ,f
-
-x· y
-
-```
-∆∆
-```
-```
-∆∆
-```
-
-
-
-
-⋅
-
-
-
-∆∆
-
-```
-
-
-```
-Periodifizierungmit den Intervallen
-
-bzw.
-
-```
-1
-```
-```
-x
-```
-```
-∆ f
-```
-```
-1
-```
-```
-y
-```
-```
-∆ f
-```
-**Periodifizierungim Ortsbereich** 
-
-Periodisierungsintervalle im Ortsbereich Diskretisierungsintervalleim Ortsfrequenzbereich
-
-11
-
-,
-
-```
-xy
-```
-∆∆ _ff_ ,
-
-```
-xy
-```
-∆∆ _ff_
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierungim Ortsfrequenzbereich**
-
-**Diskretisierungim Ortsfrequenzbereich
-Periodifizierungim Ortsbereich** 
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Diskretisierung und Periodifizierung-Zusammenfassung**
-
-```
-{ ( )}
-x, y
-```
-A g x,y
-
-```
-∆∆
-```
-###### ( )
-
-### { }
-
-```
-11 x y
-```
-```
-,
-```
-```
-xy
-```
-1
-
-P G f ,f
-
-x· y
-
-```
-∆∆
-```
-⋅
-
-∆∆
-
-```
-( )
-{ }
-```
-##### { }
-
-```
-xy
-```
-```
-1 1 x, y
-```
-```
-,
-```
-```
-xy
-ff
-```
-1
-
-P A g x,y
-
-f·f
-
-```
-∆∆
-```
-```
-∆∆
-```
-⋅
-
-∆∆
-
-###### ( )
-
-### { }
-
-```
-xy
-```
-```
-f,f 1 1 x y
-```
-```
-,
-```
-```
-xy
-```
-1
-
-A P G f ,f
-
-x· y
-
-```
-∆∆
-```
-```
-∆∆
-```
-
-
-
-
-```
-⋅
-
-```
-∆∆
-
-```
-
-
-```
-**Diskretisierungim Ortsbereich**  **Periodifizierungim Ortsfrequenzbereich**
-
-**Periodifizierungim Ortsbereich**  **Diskretisierungim Ortsfrequenzbereich**
-
-```
-∆∆ xy ,
-Diskretisierungsintervalleim Ortsbereich
-```
-```
-11
-```
-```
-,
-```
-```
-∆∆ xy
-```
-Periodisierungsintervalle im Ortsfrequenzbereich
-
-```
-x
-```
-1
-
-f
-
-Mx
-
-∆=
-
-⋅∆
-
-**Spektrale Auflösung**
-
-```
-y
-```
-1
-
-f
-
-Ny
-
-∆=
-
-⋅∆
-
-und
-
-```
-Periodisierungsintervalle im Ortsbereich Diskretisierungsintervalleim Ortsfrequenzbereich
-,
-```
-```
-xy
-```
-∆∆ _ff_
-
-11
-
-,
-
-```
-xy
-```
-∆∆ _ff_
-
-Anzahl Abtastwerte
-
-in x- bzw. y-Richtung
-
-M,N :
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Nichtzentrierte Darstellung -** fft2
-
-```
-= Höhenlinien von G(u,v)
-```
-xx
-
-f uf= ⋅∆
-
-yy
-
-f vf= ⋅∆
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-DFT
-
-**Zentrierte Darstellung** – fftshift(fft2)
-
-```
-xx
-```
-M
-
-fu f
-
-2
-
-```
-
-
-```
-= − ⋅∆
-
-```
-
-
-```
-```
-
-
-```
-```
-yy
-```
-N
-
-fv f
-
-2
-
-```
-
-
-```
-= − ⋅∆
-
-```
-
-
-```
-```
-
-
-```
-```
-= Höhenlinien von G(u,v)
-```
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-Fouriertransformation
-
-**Beispiel 3**
-
-Im Folgenden ist das Spektrum einer abgetasteten 2D-Gaußfunktion skizziert.
-
-In welchem Abstand wurde sie im Ortsbereich abgetastet?
-
-
-```
-Bildverarbeitung in der Medizin 1
-```
-###### 2D-Fouriertransformation
-
-**Beispiel 4**
-
-Gegeben sind die Höhenlinien einer kontinuierlichen 2D-Gaußfunktion im
-
-Ortsbereich. Skizzieren Sie das 2D-Fourierspektrum dieser Funktion.
-
-x
-
-y
-
-f
-
-```
-x
-```
-f
-
-```
-y
-```
-```
-1
-```
-```
-∆ x
-```
-1
-
-∆ _y_
-
-
-
-# Literaturempfehlungen
-- Wilhelm Burger and MarkJ. Burge, ,,Digitale Bildverarbeitung – eine algorithmische Einführung mit Java'', Springer, 3. Auflage, 2015
-- Klaus D. Tönnies, ,,Grundlagen der Bildverarbeitung'', Pearson Studium, 1. Auflage, 2005
-- Heinz Handels, ,,Medizinische Bildverarbeitung'', Vieweg+Teubner, 2. Auflage, 2009
-- Bernd Jähne, ,,Digitale Bildverarbeitung'', Springer, 6. Auflage, 2005
-- Angelika Erhardt, ,,Einführung in die Digitale Bildverarbeitung'', Vieweg+Teubner, 1.Auflage, 2008
-- Rafael C. Gonzales and Richard E. Woods, ,,Digital Image Processing'', Pearson International, 3. Edition,2008
-- Geoff Dougherty, ,,Digital Image Processing for Medical Applications'', Cambridge University Press, 1. Edition, 2009
-- William K. Pratt, ,,DigitalImageProcessing'', Wiley, 4. Edition, 2007
-- John L. Semmlow, ,,Biosignal and Medical Image Processing'', CRCPress, 2. Edition, 2009
+- Rand in 4-Nachbarschaft zum Hintergrund -> zusammenhängender Pfad gemäß 8-Nachbarschaft
+- Rand in 8-Nachbarschaft zum Hintergrund -> zusammenhängender Pfad gemäß 4-Nachbarschaft
+
+Distanzmaße:
+- Euklidische Distanz (Länge der direkten Verbindung): $D_E=||P_1 - P_2||_2=\sqrt{(m_1-m_2)^2 + (n_1+n_2)^2}$
+- Manhatten Distanz (City Block, Länge des kürzesten Pfades unter 4er-Nachbarschaft): $D_4=||P_1-P_2||_1=|m_1-m_2| + |n_1-n_2|$
+- Schachbrett-Distanz (Länge des kürzesten Pfades unter 8er-Nachbarschaft): $D_8=||P_1-P_2||_{\infty}= max\{|m_1-m_2|, |n_1-n_2|\}$
+- Schachbrett D. $\leq$ Euklidische D. $\leq$ Manhatten D.
+
+Diskretisierung im Ortsbereich
+- Multiplikation des Bildes mit der Abtastfunktion ( Dirac-Gitter) = Faltung im Ortsfrequenzbereich mit 2D-FT der Abtastfunktion (Dirac-Gitter)
+- Periodifizierung im Ortsfrequenzbereich mit den Intervallen $\frac{1}{\Delta x}$ bzw. $\frac{1}{\Delta y}$
+- Aliasing (spektrale Überlappung): Vermeidung, wenn $f_{x,max}\leq\frac{1}{2*\Delta x}$ und $f_{y,max}\leq\frac{1}{2*\Delta y}$, dann ist Rekonstruktion mit idealem 2D-Rechteckfilter möglich
+
+Diskrete 2D-Faltung
+- nicht zyklische vs. zyklische Berechnung
+  - Fortsetzung der Bildpunkte außerhalb der Bildgrenzen von $g_1(m,n)$
+  - Nicht zyklische Fortsetzung durch Anfügen von Nullen
+  - Zyklische Fortsetzung durch periodisches Anfügen von Pixeln (von anderem Bildende)
+- Indizierung des Operators
+  - Festlegung des Referenzpunktes im Operator
+  - positiv indiziert: bei $h(0,0)$
+    - Theoretisch konsistent mit der Faltungseigenschaft der 2D - DFT
+  - symmetrisch indiziert: in der Operatormitte
+    - Genau genommen nicht konsistent mit der Faltungseigenschaft der 2D - DFT
+  - jew. um $180°$ gedrehter Operator
+- Umfang (Grenzen) der Operatoranwendung auf das Eingangsbild $g_1(m,n)$
+  - verschiedene Berechnungs-Modi
+  - full: die Berechnung erfolgt, solange mindestens ein Pixel des Bildes von $h(m,n)$ überdeckt wird.
+    - Folglich ist das Ausgangsbild $g_2(m,n)$ größer als das Eingangsbild $g_1(m,n)$.
+  - same: die Berechnung erfolgt so, dass das Ausgangsbild $g_2(m,n)$ genauso groß wie das Eingangsbild $g_1(m,n)$ ist.
+  - valid: Die Berechnung erfolgt nur, wenn $h(m,n)$ vollständig (d.h. $K\times L$) Pixel des Eingangsbildes $g_1(m,n)$ überdeckt.
+    - Folglich ist das Ausgangsbild $g_2(m,n)$ kleiner als das Eingangsbild $g_1(m,n)$.
+
+Wiener-Filter = Minimum Mean Square Error Filter
+- unter der Annahme, dass Rauschen und Bild unkorreliert sind
+- $H_W=\frac{H^*}{|H|^2 + \frac{S_{\eta}}{S_f}}$
+
+# Bildvorverarbeitung
+
+## Bildfehler
+Pin Cushion Verzerrung
+Barrel Verzerrung
+Verzerrung durch Bewegung
+Fokusierungsunschärfe
+Verrauschen
+Salz und Pfeffer Rauschen
+
+## Bildrestauration
+Beseitigen von Störungen / Verzerrungen, die bei der Bildaufnahme entstanden sind
+- = Beseitigen von deterministischen Störungen, die i. A. bei der Bildaufnahme entstehen
+- mögliche Ursachen: 
+  - Aliasing
+  - Verschmieren (Blurring) durch Defokussierung und/oder Bewegung
+  - Geometrische Verzerrung
+  - Pixel- oder Zeilenfehler
+- Ursachen von Verschmierungen
+  - Defokussierung
+  - Bewegungsartefakte (z.B.: Horizontale Kamerabewegung über 5 Pixel auf dem Kamerasensor während der Belichtungszeit:
+
+Geometrische Verzerrungen
+- Entzerrung mittels Matrixmultiplikation
+- Affine Transformation
+  - Translation $\hat{r}= \begin{pmatrix}x^* +dx\\ y^* +dy\\ 1\end{pmatrix}=\begin{pmatrix} 1 & 0 & dx \\ 0 & 1 & dy \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x^*\\ y^*\\ 1\end{pmatrix}= T^{*} * \hat{r}^{*}$
+  - Skalierung $\hat{r}=\begin{pmatrix} S_x*x^* \\ S_y* y^*\\1 \end{pmatrix} =\begin{pmatrix} S_x & 0 & 0 \\ 0 & S_y & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x^*\\ y^*\\ 1\end{pmatrix}=T^{*} * \hat{r}^{*}$
+  - Scherung $\hat{r}=\begin{pmatrix} x^* +b_x*y^* \\ b_y*x^*+y^*\\ 1 \end{pmatrix} =\begin{pmatrix} 1 & b_x & 0 \\ b_y & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x^*\\ y^*\\ 1\end{pmatrix}=T^{*} * \hat{r}^{*}$
+  - Rotation $\hat{r}=\begin{pmatrix} cos\ \alpha*x^* - sin\ \alpha*y^* \\ sin\ \alpha*x^* + cos\ \alpha*y^*\\ 1 \end{pmatrix} =\begin{pmatrix} cos\ \alpha & -sin\ \alpha & 0 \\ sin\ \alpha & cos\ \alpha & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x^*\\ y^*\\ 1\end{pmatrix}=T^{*} * \hat{r}^{*}$
+  - Eigenschaften: 
+    - bestimmt durch 6 Parameter
+    - Linear
+    - Geraden bleiben Geraden
+    - Parallele Geraden bleiben parallel
+    - Distanzverhältnisse auf Geraden bleiben erhalten
+  - Matrix-Multiplikation ist im Allgemeinen nicht kommutativ, d.h.: Reihenfolge beachten! Aus Ausführungsreihenfolge $T_1,T_2,...,T_{n-1},T_n$ wird Multiplikation $\hat{r}=T_n,T_{n-1}...,T_2,T_1$ 
+- Abbildung von 3 Passpunkten (affine 3-punkt-transformation)
+  - $\hat{r}=\begin{pmatrix}x\\ y\\ 1\end{pmatrix}= T^*_A*\hat{r}^*=\begin{pmatrix} a_{11} & a_{12} & a_{13}\\ a_{21}& a_{22}& a_{23} \\ 0 & 0 & 1\end{pmatrix}\begin{pmatrix} x^* \\ y^* \\ 1\end{pmatrix}$
+  - Rekonstruktion der Inverser: $T_A=\frac{1}{a_{11}a_{22}-a_{12}a_{21}} * \begin{pmatrix} a_{22}& -a_{12}& a_{12}a_{23}-a_{13}a_{22}\\ -a_{21}& a_{11}& a_{13}a_{21}-a_{11}a_{23}\\ 0 & 0 & a_{11}a_{22}-a_{12}a_{21} \end{pmatrix}$
+
+Projektive Transformation
+- Abbildung von 4 Passpunkten: $\hat{r}=\begin{pmatrix}x\\ y\\ 1\end{pmatrix}=T^*_p * \hat{r}^*=\begin{pmatrix} a_{11}& a_{12}& a_{13}\\ a_{21}&a_{22}&a_{23}\\ a_{31}&a_{32}& 1\end{pmatrix}\begin{pmatrix}x^*\\ y^*\\ 1\end{pmatrix}$
+- Eigenschaften: 
+  - bestimmt durch 8 Parameter
+  - Nur mit homogenen Koordinaten linear darstellbar
+  - Geraden bleiben Geraden
+
+Radialsymmetrische Transformation
+- Rotationssymmetrisch (Pin Cushion, Barrel Verzerrung)
+- in Polarkoordinaten $R=\frac{1}{1+k*R^*}*R^*$
+  - $k>0$: Barrel Transformation
+  - $k<0$: Pin Cushion Transformation
+- Eigenschaften: 
+  - Nicht linear!
+  - Radialsymm. Verzerrungen i. A. bei Linsen-Systemen
+
+Interpolation auf 2-Support Grid
+- Lineare Interpolation: $g(m,y_0)=g(m,n)+\frac{y_0-n}{(n+1)-n}*[g(m,n+1)-g(m,n)]$
+- Nearest Neighbor, Ideale Interpolation, Kubische Interpolation
+- Nur die Pixel im jeweiligen SupportGrid sind für die Berechnung von $g(x_0,y_0)$ relevant
+- 1D: $g_1(x)=w(x)*g(x)=\sum_m w(x-m)*g(m)$ mit $m\in\mathbb{Z}$
+- 2D: $g_1(x,y)=w(w,y)**g(x,y)=\sum_m \sum_n w(x-m,y-n)*g(m,n)$
+- Interpolationsbedingung: $w(0)=1$, $w(|m,n|\geq 1)=0$
+
+## Bildregistrierung
+Anpassung (Transformation) von Zielbildern auf ein Referenzbild (z.B. mit Ziel der Bildfusion)
+- Passpunktbasierte registrierung
+  $\begin{pmatrix} x_1\\ x_2 \\ x_3\\y_1\\ y_2\\ y_3\end{pmatrix}=\begin{pmatrix} x_1&y_1&1&0&0&0\\ x_2&y_2&1&0&0&0\\ x_3&y_3&1&0&0&0\\ 0&0&0&x_1&y_1&1\\ 0&0&0&x_2&y_2&1\\ 0&0&0&x_2&y_3&1\end{pmatrix} * \begin{pmatrix} a_{1,1}\\ a_{1,2}\\ a_{1,3}\\ a_{2,1}\\ a_{2,2}\\ a_{2,3} \end{pmatrix}$ 
+- Passpunktunabhängige registierung
+  - normierte Kreuzkorrelation
+  - Fourier-Mellin-Transformation 
+
+## Bildverbesserung
+Verbesserung des subjektiven Wahrnehmung
+Anhebung der für den Betrachter (diagnostisch) relevanten Bildinformation
+
+Pixelbasierte Kontrastverbesserung (Differenz zwischen min. und max. Grauwert erhöhen)
+- Intensitäts-Transformatins-Kennlinie (Gradiationskurve)
+- Grauwertspreizung -> Histogramm $q=[q_{min}+\frac{g-g_{min}}{g_{max}-g_{min}}*(q_{max}-q_{min})]_{\mathbb{N}}$
+- Clipping durch Intensity Transformation Function (ITF)
+- Logarithmus Transformation $q=[q_{max}*\frac{ln(g+1)}{ln(g_{max}+1)}]_{\mathbb{N}}$
+  - Spreizung niedriger (dunkler) GW
+  - Stauchung hoher (heller) GW
+- Gammakorrektur (Potenztransformation) $q=[q_{max}(\frac{g}{g_{max}}^y)]_{mathbb{N}}$
+  - steile kurve -> spreizung der jew. grauwerte
+  - flache kurve -> stauchung der jew. grauwerte
+- Histogramm-Linearisierung $q_i=\lceil N_q*\frac{\sum_{k=0}^i h(k)}{M*N} \rceil_{mathbb{N}} -1$
+  - Spreizung häufiger GW, Stauchung seltener GW
+
+Rauschunterdrückung (Tiefpassfilter)
+- Prinzip $g_{TP}(x,y)=g(x,y)** h_{TP}(x,y)$
+- gegen Gauß/ Salz&Pfeffer- Rauschen
+- Mittelwertfilter $h(x,y)=rect(\frac{x,s_x},\frac{y}{s_y})*\frac{1}{s_x*s_y}$
+- Idelaer Tiefpass (erzeugt Ringing-Artefakte aufgrund der Nebenmaxima der entsprechenden Ortsbereichsfunktion (2D-si-Funktion, rotationssymmetrisch))
+- Gauß Tiefpass (minimales Zeitdauer-Bandbreite-Produkt)
+- Binominal Filter $b=\frac{1}{n}[n\ (n-1)\ ...]$ (ganzzahlige Approximation des Gauß-Filter)
+- Medianfilter (sortierte Umgebungspixel)
+- nichtlinearer Median-Filter $g(x,y)=median\{g(x',y')\}$
+  - Bildung des Medians aller Grauwerte der Pixel in der Umgebung von $(x,y)$
+  - gehört zu den Rangordnungsfiltern
+  - besonders für Salz- und Pfeffer-Rauschen geeignet
+  - starke gerade Kanten bleiben erhalten
+
+Hervorhebung von Kanten (Hochpassfilter)
+- Lineare Hochpass Filter: Mittelwert, Ideal, Gauß
+- Gradientenbild (vertikal, horizontal, kombiniert)
+  - Problem: Rauschempfindlichkeit schlecht
+  - geringe Verschiebung
+- symmetrische Gradientenschätzung
+  - keine Verschiebung im Gradientenbild
+  - etwas robuster gegen Rauschen
+- Prewitt-Operator (robuster gegen Rauscheinflüsse)
+- Sobel-Operator (äquivalent zum Prewitt-Operator, jedoch Mittelwert-Filter durch Binomial-Filter ersetzt)
+- Laplace-Operator $\Delta g(x,y)=\frac{\delta^2 g}{\delta x^2}+\frac{\delta^2 g}{\delta y^2}$
+  - ist sehr rauschempfindlich
+  - ist richtungsunabhängig
+  - vorheriges Gauß-Filter führt zu ,Laplacian of Gaussian'-Filter (LoG) zur Erhöhung der Robustheit gegen Rauschen
+
+# Segmentierung
+Unterteilung des Bildes hinsichtlich der Struktur in einzelne Bildabschnitte (Segmente)
+- Unterteilung des Bildes in Teilbereiche (Regionen, Segmente, Bildobjekte) mit gleichen Eigenschaften
+- Trennung Vordergrund / Hintergrund
+- Extraktion von Objekten (Organe, Zellen, ...)
+
+Eigenschaften:
+- Vollständigkeit: jedes Pixel wird mindestens einem Segment zugeordnet
+- Überdeckungsfreiheit: ein Pixel wird maximal einem Segment zugeordnet
+- Zusammenhang: jedes Vordergrundsegment bildet ein zusammenhängendes Objekt
+
+
+## Pixel- bzw. histogrammbasierte Segmentierung
+Schwellwertsegmentierung
+- festlegen von Schwellwert -> trennung von Vorder- und Hintergrund
+- durch Gauß Schnittpunkte oder Otsu, Histogramm
+- bei Rauschen zuvor Filtern (z.B. Median)
+- bei Shading zuvor Filter (z.B. Median)
+- optimaler Schwellwert nach Otsu
+  - Normierung der Häufigkeit $h(g)$ -> Wahrscheinlichkeit $p(g)
+  - Wahrscheinlichkeit eines Grauwerts $g: p(g)=\frac{h(g)}{M*N}$
+  - Wahrscheinlichkeit der Klassen $C_1$ und $C_2$: $P_{C_1}(S)=\sum_{g=0}^S p(G)$, $P_{C_2} p(g)=1-P_{C_1}(S)$
+
+## Regionen-basierte Segmentierung
+Annahme: Die Pixel eines Segmentes erfüllen ein gegebenes Homogenitätskriterium (Ähnlichkeitskriterium)!
+
+Region-Growing
+1. Festlegung eines Saatpunktes (manuell oder automatisch) $P_S$ innerhalb des Segments
+2. Festlegung eines Homogenitätskriteriums $q$ z.B. GW variieren um 20 Stufen um den Grauwert des Saatpunktes
+3. Bestimmung aller Nachbarpixel um die aktuelle Region
+    - 1. Region = Saatpunktregion) unter 4- bzw. 8-Nachbarschaft
+4. Hinzufügen aller Nachbarpixel P zur aktuellen Region für die gilt: $q(P,P_S)=1$ (d.h. Homogenitätskriterium erfüllt ist)
+5. Wiederholen von Schritt 3-4 bis keine Nachbarn mehr hinzugefügt werden
+
+Region-Mergin
+1. zu Beginn: Jedes Pixel ist ein Segment.
+2. Zwei benachbarte Segmente werden zusammengefasst, wenn sie eine Homogenitätsbedingung erfüllen.
+3. Die Segmentierung ist beendet, wenn nichts mehr zusammengefügt werden kann
+
+Split-and-Merge
+1. Gesamtes Bild ≙ einem Segment
+2. Jedes Segment wird (rekursiv) in 4 gleich große Teile (Split) zerlegt, falls es einer Homogenitätsbedingung (HB) nicht genügt
+3. Zerlegung endet, falls alle Segmente homogen sind
+4. Zusammenfassung (Merge) benachbarter homogener Segmente
+
+## Kantenbasierte Segmentierung
+Schwellwertsegmentierung des Gradientenbildes
+- Originalbild -> Tiefpassfilter -> Gradientenbild -> Schwellwertsegmentierung -> Thinning
+- segmentierter Sobel-Gradient
+
+Canny-Edge-Operator
+- non-maxima-suppression (thinning)
+- echte Kanten möglichst zuverlässig detektieren
+- Kantenposition zuverlässig detektieren
+- Anzahl falscher Kanten minimieren
+1. Tiefpassfilterung des Bildes mit Gauß-Filter der Varianz $\delta$
+2. Berechnung des Gradientenbildes und der Gradientenrichtung
+3. Non-Maximum-Suppression: Extraktion aller lokalen Maxima im Gradientenbild in Gradientenrichtung
+4. Extraktion der starken Kantenpixel
+5. Extraktion der schwachen Kantenpixel
+6. Auffüllen der Lücken in den Kantenzügen mit Lückenpixel
+- Merkmale:
+  - Empirische Bestimmung der Parameter $\delta$, $S_1$ und $S_2$
+  - Optimal für ideale Kanten unter Gauß-förmigem Rausch- und Defokussierungseinfluss
+- Ergebnis: Binärbild (Kanten als Vordergrund)
+
+## Wasserscheidentransformation
+- Interpretation des Bildes als 2D-Funktion („Gebirge“)
+- Wasserscheiden („Gebirgskämme“) trennen in unterschiedliche „entwässernde“ Senken
+- Flutungs-Algorithmus
+- Kantendetektion: WST auf Gradientenbild berechnen
+- Problem: oft Effekt der Übersegmentierung
+
+## Modellbasierte Segmentierung 
+Einbringen von Modellinformationen in den Segmentierungsprozess (Detektion von Bildobjekten)
+
+Template Matching
+- Vorgabe eines Musters, das Form und Orientierung der Segmente im Bild bestimmt
+- Bestimmung des normierten Kreuzkorrelationskoeffizienten
+- Ergebnis: Segmente befinden sich an den lokalen Extrema 
+
+Hough Transformation
+- Hough Transformation von Geraden -> Hesse-Normalform
+  - $cos\ \phi*x + sin\ \phi*y =d$
+  - Koordinaten-Transformation $H_K$ in den Hough-Raum (Parameterraum)
+  - Transformation aller Vordergrundpixel von $g$ in die entsprechenden Kurven im $(\phi,d)$-Parameterraum für alle
+  - Suche nach Punkten im $(\phi,d)$-Raum, an denen sich besonders viele $H_k$-Kurven schneiden
+- für Kreise/Ellipsen Kreisgleichung $(x-x_c)^2 + (y-y_c)^2=r^2$
+
+# Morphologische Operationen
+Anwendung: 
+- Veränderung von Formen
+- Extraktion von Formmerkmalen
+- Detektion von bekannten Formen
+
+## Grundoperationen
+- Dilatation $\oplus$: $B\oplus M$
+  - vergrößert Objekte
+  - verbindet Strukturen
+  - füllt Löcher
+  - glättet Segmentrände
+- Erosion $\ominus$: $B\ominus M$
+  -  verkleinert Objekte
+  - entfernt Strukturen „kleiner“ als
+  - vergrößert Löcher
+- Dualität: $B\oplus M=\overline{\overline{B}\ominus M}$, $B\ominus M=\overline{\overline{B}\oplus M}$ 
+- Opening: Erosion & Dilatation  $B\circ M= (B\ominus M)\oplus M$
+- Closing: Dilatation & Erosion  $B\circ M= (B\oplus M)\ominus M$
+
+
+
+## Bestimmung von Formmerkmalen
+Berechnung des Randes: 
+- $R_{4/8}=B\backslash (B\ominus M_{4/8})$
+- Erosion mit Strukturelement entfernt alle Pixel in deren 4/8-Nachbarschaft sich mindestens ein Hintergrundpixel befindet
+- Rand ergibt sich durch Subtraktion vom Original
+- Der Rand gehört also zum Objekt und ist nicht die Umrandung drum herum
+
+Hit-or-Miss-Operator
+- Detektion von def. Objekten (d.h. def. Vordergrund vor def. Hintergrund)
+1. Bestimmung aller Positionen (Instanzen) an denen der Vordergrund des Objektes liegen kann
+2. Bestimmung aller Positionen an denen der erwartete Hintergrund des Objektes liegen kann
+3. Schnittmenge beider Ergebnisse
+- Hit-Operator $M_H$ und Miss-Operator $M_M$ (jew. gegenteilig zueinander)
+- 0, 1, X (x für nicht-beachtet)
+
+Iterative Distanztransformation
+- Allen Pixeln des $k$-ten Randes werden die Grauwerte $k-1$ zugewiesen. (Alternativ ist auch $k$ möglich)
+- Distanztransformation ersetzt jeden Pixel (GW) innerhalb eines Objektes durch seinen kürzesten Abstand zum Objektrand
+- Iterative Bestimmung durch wiederholte Bestimmung des Objektrandes
+
+Skelettierung
+- Definition mittels maximal eingeschriebener Kreise
+- Der digitale Kreis um das Skelettpixel muss vollständig innerhalb des Segmentes liegen.
+- Für ein von einem Kreis berührtes Randpixel darf es keinen Kreis mit größerem Radius geben, der die Bedingung 1 erfüllt, damit der Mittelpunkt ein Skelletpixel ist.
+- Skelett besteht aus den Zentren aller maximal eingeschriebenen Kreise
+- Kann aus den „Gebirgskämmen“ des distanztransformierten Bildes gewonnen werden.
+- Anwendung: Zeichenerkennung, Datenreduktion, Merkmalsextraktion für Klassifizierung
+
+Morphing
+- Lineare Interpolation zwischen den Distanzwerten von zwei Segmenten
+- Vorzeichenbehaftete Distanztransformation -> Linearkombination $A_i=i*A_1+ (1-i)*A_2$
+
+# Merkmalsextraktion und Klassifikation
+- Merkmalsextraktion: Erfassung von Merkmalen (Eigenschaften) zusammenhängender Bildobjekte (Segmente)
+- Merkmal: Skalar, welcher einen bestimmten Aspekt der Objektbedeutung beschreibt
+- Klassifikation: Zuordnung von Bildobjekten
+- Merkmale werden für jedes zusammenhängende Objekt im Bild bestimmt
+
+## Regionenbasierte Merkmale
+Merkmale werden vom Objektinneren (Textur = gemeinsame Eigenschaft der GW-Verteilung einer Region) bestimmt
+z.B.: 
+- mittlerer GW
+- GW-Varianz, Momente (Schiefe, Exzess)
+- Haralick’sche Texturmaße
+- Frequenzbereichsmerkmale, z.B. mittlere Amplitude in einem Bereich des Spektrums
+
+Co-Occurrence-Matrix
+- Berechnung der Wahrscheinlichkeit des Auftretens von Grauwertpaaren in definiertem Abstand/Richtung
+- Hohe Werte auf der Diagonalen spiegeln geringe Grauwertdifferenzen benachbarter Pixel wider
+
+Haralick‘sche Texturmaße
+- Skalare Kenngrößen, die aus den normierten Co-Occurrence-Matrizen ermittelt werden
+- je mehr Grauwerte (Grauwertpaare), desto kleiner der Wert
+- Werte auf der Diagonalen spiegeln Homogenität in Richtung 𝛼𝛼 wider
+- je größer die Grauwertdifferenz (Abweichung von der Diagonalen), desto kleiner der Quotient
+
+## Formbasierte Merkmale
+Merkmale werden vom Objektrand (Form) bestimmt
+- Flächeninhalt des Segments
+- Umfang des Segments
+- Flächendifferenz zwischen Segment und seiner konvexen Hülle
+- Kreisähnlichkeit
+- Euler-Zahl $E=V-L$
+
+## Einführung in die Klassifikation
+- Bestimmung einer Abbildungsvorschrift, die einem Merkmalsvektor eine Klassennummer zuordnet
+- Die Abbildungsvorschrift wird aus einem möglichst repräsentativen, vorklassifizierten Trainingsdatensatz bestimmt
+- Annahme: Die Merkmale bilden verschiedene Objekte in getrennte, kompakte Bereiche im Merkmalsraum ab
+- Minimum Distance Transformation
+  - gegeben Traningsdatensätze
+  - berechnung der zentrumsvektoren aller klassen 
+  - graphische Darstellung -> Voronoi-Diagramm
+- Weitere Klassifikatoren
+  - Nearest Neighbor Klassifikation
+  - Nearest k-Neighbor Klassifikation
+  - Support-Vector Machines
+  - Statistische Klassifikatoren
+  - Neuronale Netze

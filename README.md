@@ -19,7 +19,7 @@ Mitschriften und selbst angefertigte Unterlagen und Hilfen zu Informatik Vorlesu
   - [Cheatsheet](Betriebssysteme%20-%20Cheatsheet.pdf)
   - [Fragenkatalog](Betriebssysteme%20-%20Fragen.md)
   - Quellen/frei nach: [Dr. Peter Amthor](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-praktische-informatik/fachgebiet-verteilte-systeme-und-betriebssysteme/team/peter-amthor), [Dr. Hans-Albrecht Schindler](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-praktische-informatik/fachgebiet-verteilte-systeme-und-betriebssysteme/team)
-- Bildverarbeitung in der Medizin 1  (Mitschrift aktuell nicht verfügbar)
+- [Bildverarbeitung in der Medizin 1](Bildverarbeitung%20in%20der%20Medizin%201.md)
   - Quellen/frei nach: [Dr.-Ing. Marko Helbig ](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-biomedizinische-technik-und-informatik/bmti/fachgebiete/biosignalverarbeitung/dr-ing-marko-helbig)
 - Computergrafik
   - [Cheatsheet](Computergrafik%20-%20Cheatsheet.pdf)
@@ -85,7 +85,7 @@ Mitschriften und selbst angefertigte Unterlagen und Hilfen zu Informatik Vorlesu
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
   - Quellen/frei nach: [Prof. Dr.-Ing. habil. Armin Zimmermann](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/prof-armin-zimmermann), [Dr.-Ing. Ralph Maschotta](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/dr-ralph-maschotta)
-- Softwaretechnik 2 (Mitschrift nicht verfügbar)
+- Softwaretechnik 2
   - [Softwaretechnik 2 Cheatsheet](Softwaretechnik%202%20-%20Cheatsheet.pdf) 
   - Quellen/frei nach: [Prof. Dr.-Ing. habil. Armin Zimmermann](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/prof-armin-zimmermann), [Dr.-Ing. Ralph Maschotta](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/dr-ralph-maschotta)
 - [Stochastik](Stochastik.md)

@@ -3,6 +3,11 @@ Mitschriften und selbst angefertigte Unterlagen und Hilfen zu Informatik Vorlesu
 
 > Kein Mensch kann Wissen besitzen. Wissen ist frei und muss weitergegeben werden
 
+---
+Du willst in Ilmenau studieren oder bist neu? Lies unseren [Hinweis](#hinweis-für-studenten)
+
+---
+## Übersicht aller Dokumente
 - [Advanced Operating Systems](Advanced%20Operating%20Systems.md)
   - [Übung](Advanced%20Operating%20Systems%20-%20Übung.pdf) 
   - [Cheatsheet](Advanced%20Operating%20Systems%20-%20Cheatsheet.pdf)
@@ -65,8 +70,9 @@ Mitschriften und selbst angefertigte Unterlagen und Hilfen zu Informatik Vorlesu
   - Quellen/frei nach: [Prof. Dr.-Ing. Günter Schäfer](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-praktische-informatik/fachgebiet-telematik/rechnernetze/mitarbeiter/prof-guenter-schaefer)
 - [Neurobiologische Informationsverarbeitung](Neurobiologische%20Informationsverarbeitung.md)
   - Quellen/frei nach: 
-- [Neuroinformatik](Neuroinformatik.md) (letzte 2 Kapitel fehlen)
-  - Quellen/frei nach: [Prof. Dr.-Ing. Horst-Michael Groß ](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-neuroinformatik-und-kognitive-robotik/team/mitarbeiter/prof-dr-horst-michael-gross), [Dr.-Ing. Klaus Debes](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-neuroinformatik-und-kognitive-robotik/team/mitarbeiter/dr-ing-klaus-debes)
+- ~~Neuroinformatik~~
+  - gelöscht auf Wunsch des Professors
+  - Quelle: [Prof. Dr.-Ing. Horst-Michael Groß ](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-neuroinformatik-und-kognitive-robotik/team/mitarbeiter/prof-dr-horst-michael-gross), [Dr.-Ing. Klaus Debes](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-neuroinformatik-und-kognitive-robotik/team/mitarbeiter/dr-ing-klaus-debes)
 - Praktika
   - [Neuroinformatik](Praktikum%20Neuroinformatik.pdf)
   - [Labor BMT - Deep Learning](Praktikum%20BMT%20-%20Deep%20Learning%20in%20der%20Biomedizintechnik.pdf)
@@ -84,12 +90,12 @@ Mitschriften und selbst angefertigte Unterlagen und Hilfen zu Informatik Vorlesu
 - [Schaltsysteme](Schaltsysteme.md)
   - Quellen/frei nach: [Dr.-Ing. Prof. h. c. Karsten Henke](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-integrierte-kommunikationssysteme/team/karsten-henke)
 - [Softwareprojekt 2021](Softwareprojekt%202021.md)
-- Softwaretechnik 1 (Mitschrift temporär nicht verfügbar)
+- Softwaretechnik 1 (Mitschrift gelöscht auf Wunsch des Professors)
   - [Zusammenfassung](Softwaretechnik%20-%20Cheatsheet.pdf)
   - [Seminar](Softwaretechnik%20-%20Seminar.pdf)
   - [Beispiel Flowchart](Softwaretechnik%20Flowchart.tex)
   - Quellen/frei nach: [Prof. Dr.-Ing. habil. Armin Zimmermann](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/prof-armin-zimmermann), [Dr.-Ing. Ralph Maschotta](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/dr-ralph-maschotta)
-- Softwaretechnik 2 (Mitschrift temporär nicht verfügbar)
+- Softwaretechnik 2 (Mitschrift gelöscht auf Wunsch des Professors)
   - [Softwaretechnik 2 Cheatsheet](Softwaretechnik%202%20-%20Cheatsheet.pdf) 
   - Quellen/frei nach: [Prof. Dr.-Ing. habil. Armin Zimmermann](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/prof-armin-zimmermann), [Dr.-Ing. Ralph Maschotta](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/sse/team/dr-ralph-maschotta)
 - [Stochastik](Stochastik.md)
@@ -118,9 +124,11 @@ Wir freuen uns über jeden der mitmacht.
 ## Recht auf Kopie deiner Prüfungsleistung
 Die TU Ilmenau ist sich ja selbst nicht sehr sicher wie sie damit umgeht und, wie so oft, verbietet es erstmal ganz. Nach bereits erfolgreichen Teilschritten hoffen wir bald wieder vollständig Einblick in unsere eigenen Leistungen nehmen zu können und tatsächlich aus unseren Fehlern lernen zu können. Falls du eine Kopie deiner Prüfung mit Aufgaben und Bemerkungen einholen willst, nutze gerne unsere Vorlage.
 
-! Hinweis: Wir sind keine Juristen oder haben ähnliche Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
+Achtung! Wir sind keine Juristen oder ähnlicher Ausbildung. Der Antrag ist eine Sammlung verschiedener Gesetztestexte und Entscheidungen die in den letzten Jahren vor Gerichten in Deutschland und dem Europäischem Hof getroffen wurden. Hilf mit, dieses Dokument zu vervollständigen und schreib mich bei Problemen/Fragen an.
 
-Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort ("[Wir sind] nicht berechtigt solche Fragen zu stellen.[...]" aus der Antwort des Dezernat). Wir sind weiter dran.
+Update: Das Dezernat Recht der TU Ilmenau verweigert eine Antwort ("[Wir sind] nicht berechtigt solche Fragen zu stellen.[...]" aus der Antwort des Dezernat).
+
+Update II: Die TU Ilmenau vertritt weiterhin den Stand, nur geschwärzte Kopien von Prüfungsunterlagen herauszugeben. Die stellt für uns einen klaren Verstoß gegen das Einsichts- und Informationsrecht dar. 
 
 Hier gehts zum: [Antrag auf Kopie einer Prüfung](Antrag%20auf%20Kopie%20einer%20Prüfung.pdf)
 
@@ -143,8 +151,10 @@ Sollte Ihnen ein Verstoß auffallen, geben Sie uns bitte umgehend Bescheid, wir 
 
 *Update*: auf Nachfrage eines Professors werden neben dem Fachnamen/Bezeichnung die jeweils tätigen Professoren und Quellen nachgetragen. Im ersten Schritt wurden alle Dozenten zu Ihrem Fach ausgewiesen. Demnächst folgend sind alle weiteren Quellen aus denen Informationen zusammengetragen wurden um diese Vorlesungsunterlagen zu erstellen. Wir bitten um etwas Geduld, bis dieser Prozess abgeschlossen ist.
 
-## Lizenz
-Dieses Repository und sein Inhalt sind unter der GNU GENERAL PUBLIC LICENSE Version 3 veröffentlicht. Was das bedeutet könnt in der [Lizenz](LICENSE) nachlesen.
+## Hinweis für Studenten
+Leider baut unsere Universität in den letzten Jahrzehnten stark ab. Wenn du noch nicht in Ilmenau studierst, empfehlen wir dies ausdrücklich NICHT. Falls du bereits eingeschrieben bist, schaue dich gerne um aber behalte im Hinterkopf, dass es genügend andere Universitäten und Hochschulen auf gleichem Niveau, besserer Verwaltung und freundlicheren Dozenten gibt. Viele Studenten, die während des Studiums die Universität verlassen und zu einer anderen gewechselt sind (z.B Hochschule Erfurt für Informatik) haben bis heute diese Entscheidung nicht bereut und sind sehr zufrieden damit.
+
+Es hat einen guten Grund, warum die TU Ilmenau über die letzten Jahre rapide an neuen Studenten abbaut und auch viele bestehende Studenten verliert. Das hat nicht mit "Elite" zu tun, sondern vielmehr Schikane durch bestimmte Professoren.
 
 ## Hinweis für Dozenten
 Wir freuen uns immer helfen und zusammenarbeiten zu können. Für Fragen und Hinweise können Sie uns jederzeit kontaktieren. Sollten Sie ein Problem mit Persönlichkeits- oder Urheberrechten finden geben Sie uns bitte umgehend bescheid (per Email oder Issue), wir nehmen jeden Hinweis ernst.
